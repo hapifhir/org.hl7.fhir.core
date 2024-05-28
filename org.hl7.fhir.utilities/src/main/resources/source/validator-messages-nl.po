@@ -38,19 +38,19 @@ msgstr "Verkeerd pad toegevoegd in profiel {0}: {1} versus {2}"
 # All_observations_should_have_a_performer
 #| All observations should have a performer
 msgid "Best Practice Recommendation: In general, all observations should have a performer"
-msgstr "Best practice aanbeveling: Alle Observations zouden een performer moeten bevatten"
+msgstr "Best practice aanbeveling: alle Observations zouden een performer moeten bevatten"
 
 #: All_observations_should_have_a_subject
 # All_observations_should_have_a_subject
 #| All observations should have a subject
 msgid "Best Practice Recommendation: In general, all observations should have a subject"
-msgstr "Best practice aanbeveling: Alle Observations zouden een subject moeten bevatten"
+msgstr "Best practice aanbeveling: alle Observations zouden een subject moeten bevatten"
 
 #: All_observations_should_have_an_effectiveDateTime_or_an_effectivePeriod
 # All_observations_should_have_an_effectiveDateTime_or_an_effectivePeriod
 #| All observations should have an effectiveDateTime or an effectivePeriod
 msgid "Best Practice Recommendation: In general, all observations should have an effective[x] ({0})"
-msgstr "Best practice aanbeveling: Alle Observations zouden een effective[x] ({0}) moeten bevatten"
+msgstr "Best practice aanbeveling: alle Observations zouden een effective[x] ({0}) moeten bevatten"
 
 #: Attempt_to_a_slice_an_element_that_does_not_repeat__from__in_
 # Attempt_to_a_slice_an_element_that_does_not_repeat__from__in_
@@ -268,7 +268,7 @@ msgstr "SearchSet bundles zouden search.mode op de entries moeten hebben"
 #: BUNDLE_SEARCH_SELF_NOT_UNDERSTOOD
 # BUNDLE_SEARCH_SELF_NOT_UNDERSTOOD
 msgid "No types could be determined from the search string, so the types can''t be checked"
-msgstr "er kunnen geen typen worden bepaald uit een de zoekstring, dus de typen kunnen niet worden gecontroleerd"
+msgstr "Er kunnen geen typen worden bepaald vanuit de zoekstring, dus de typen kunnen niet worden gecontroleerd"
 
 #: Bad_file_path_error
 # Bad_file_path_error
@@ -512,7 +512,7 @@ msgstr "Het codesysteem is gemarkeerd als supplement maar het definieert niet wa
 # CODESYSTEM_CS_UNK_EXPANSION
 #| The code provided ({2}) is not in the expansion in the value set {0}, and a code is required from this value set. The system {1} is unknown.
 msgid "The code provided ({2}) is not in the expansion in the value set {0}, and a code is required from this value set. The system {1} could not be found."
-msgstr "De gevonden code ({2}) bestaat niet in de expansie van de waardelijst {0} en een code uit deze waardelijst is verplicht. Het systeem {1} is onbekend."
+msgstr "De gevonden code ({2}) bestaat niet in de expansie van de waardelijst {0} en een code uit deze waardelijst is verplicht. Het systeem {1} is niet gevonden."
 
 #: CODESYSTEM_CS_VS_EXP_MISMATCH
 # CODESYSTEM_CS_VS_EXP_MISMATCH
@@ -567,7 +567,7 @@ msgstr "Deze eigenschap heeft alleen de standaardcode (''{0}'') maar niet de sta
 #: CODESYSTEM_PROPERTY_NO_VALUE
 # CODESYSTEM_PROPERTY_NO_VALUE
 msgid "The property ''{0}'' has no value, and cannot be understood"
-msgstr "De eigenschap ''{0}'' heeft geen waarde en kan niet worden geïnterpreteerd."
+msgstr "De eigenschap ''{0}'' heeft geen waarde en kan niet worden geïnterpreteerd"
 
 #: CODESYSTEM_PROPERTY_SYNONYM_CHECK
 # CODESYSTEM_PROPERTY_SYNONYM_CHECK
@@ -587,7 +587,7 @@ msgstr "Deze eigenschap heeft alleen een code (''{0}'') en geen uri, dus heeft g
 #: CODESYSTEM_PROPERTY_URI_CODE_MISMATCH
 # CODESYSTEM_PROPERTY_URI_CODE_MISMATCH
 msgid "The URI ''{0}'' is normally assigned the code ''{1}''. Using the code ''{2}'' will usually create confusion in ValueSet filters etc"
-msgstr "De uri ''{0}'' heeft normaal code ''{1}''. Met code ''{2}'' ontstaat vaak verwarring in ValueSet filters etc."
+msgstr "De uri ''{0}'' heeft normaal code ''{1}''. Met code ''{2}'' ontstaat vaak verwarring in ValueSet filters etc"
 
 #: CODESYSTEM_PROPERTY_URI_TYPE_MISMATCH
 # CODESYSTEM_PROPERTY_URI_TYPE_MISMATCH
@@ -603,25 +603,25 @@ msgstr "De eigenschap ''{0}'' heeft ongeldig type ''{1}''. Deze is gedefinieerd 
 # CODESYSTEM_SHAREABLE_EXTRA_MISSING
 #| The ShareableCodeSystem profile recommends that the {0} element is populated, but it is not present. Published code systems SHOULD conform to the ShareableCodeSystem profile
 msgid "Published code systems SHOULD conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not"
-msgstr "Gepubliceerde codesystemen ZOUDEN zich MOETEN houden aan het ShareableCodeSystem profiel, wat zegt dat het element CodeSystem.{0} aanwezig zou moeten zijn maar deze ontbreekt"
+msgstr "Gepubliceerde codesystemen ZOUDEN zich MOETEN houden aan het ShareableCodeSystem profiel, wat zegt dat het element CodeSystem.{0} aanwezig zou moeten zijn, maar deze ontbreekt"
 
 #: CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
 # CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
 #| The ShareableCodeSystem profile recommends that the {0} element is populated, but it is not found. HL7 Published code systems SHALL conform to the ShareableCodeSystem profile
 msgid "Published code systems SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not"
-msgstr "Door HL7 gepubliceerde codesystemen MOETEN zich houden aan het ShareableCodeSystem profiel, wat zegt dat het element CodeSystem.{0} aanwezig zou moeten zijn maar deze ontbreekt"
+msgstr "Door HL7 gepubliceerde codesystemen MOETEN zich houden aan het ShareableCodeSystem profiel, wat zegt dat het element CodeSystem.{0} aanwezig zou moeten zijn, maar deze ontbreekt"
 
 #: CODESYSTEM_SHAREABLE_MISSING
 # CODESYSTEM_SHAREABLE_MISSING
 #| The ShareableCodeSystem profile says that the {0} element is mandatory, but it is not present. Published code systems SHOULD conform to the ShareableCodeSystem profile
 msgid "Published code systems SHOULD conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} is mandatory, but it is not present"
-msgstr "Gepubliceerde codesystemen ZOUDEN zich MOETEN houden aan het ShareableCodeSystem profiel, wat zegt dat het element CodeSystem.{0} aanwezig moet zijn maar deze ontbreekt"
+msgstr "Gepubliceerde codesystemen ZOUDEN zich MOETEN houden aan het ShareableCodeSystem profiel, wat zegt dat het element CodeSystem.{0} aanwezig moet zijn, maar deze ontbreekt"
 
 #: CODESYSTEM_SHAREABLE_MISSING_HL7
 # CODESYSTEM_SHAREABLE_MISSING_HL7
 #| The ShareableCodeSystem profile says that the {0} element is mandatory, but it is not found. HL7 Published code systems SHALL conform to the ShareableCodeSystem profile
 msgid "Published code systems SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} is mandatory, but it is not present"
-msgstr "Door HL7 gepubliceerde codesystemen MOETEN zich houden aan het ShareableCodeSystem profiel, wat zegt dat het element CodeSystem.{0} aanwezig moet zijn maar deze ontbreekt"
+msgstr "Door HL7 gepubliceerde codesystemen MOETEN zich houden aan het ShareableCodeSystem profiel, wat zegt dat het element CodeSystem.{0} aanwezig moet zijn, maar deze ontbreekt"
 
 #: CODESYSTEM_SUPP_NO_DISPLAY
 # CODESYSTEM_SUPP_NO_DISPLAY
@@ -646,13 +646,13 @@ msgstr "De bron-code ''{0}'' is niet geldig in het codesysteem {1}"
 #: CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS
 # CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS
 msgid "The source code ''{0}'' is not valid in the value set {1}"
-msgstr "De bron code ''{0}'' is niet geldig in de waardelijst {1}"
+msgstr "De bron-code ''{0}'' is niet geldig in de waardelijst {1}"
 
 #: CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID
 # CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID
 #| The source display ''{0}'' is not valid. Possible codes {1}
 msgid "The source display ''{0}'' for the code ''{2}'' is not valid. Possible displays: {1}"
-msgstr "De source weergave ''{0}'' voor de code ''{2}'' is niet geldig. Mogelijke weergave(n): {1}"
+msgstr "De bron-weergave ''{0}'' voor de code ''{2}'' is niet geldig. Mogelijke weergave(n): {1}"
 
 #: CONCEPTMAP_GROUP_SOURCE_INCOMPLETE
 # CONCEPTMAP_GROUP_SOURCE_INCOMPLETE
@@ -673,7 +673,7 @@ msgstr "Bron CodeSystem {0} wordt alleen ondersteund in de terminologieserver du
 # CONCEPTMAP_GROUP_SOURCE_UNKNOWN
 #| Unknown Source Code System {0}, so the source codes cannot be checked
 msgid "The Source Code System {0} is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed"
-msgstr "Het bron CodeSystem {0} is niet volledig gedefinieerd en gevuld en er is geen sourceScope gedefinieerd, dus er zal geen controle op bron-codes worden gedaan"
+msgstr "Het bron CodeSystem {0} is niet volledig gedefinieerd en gevuld, en er is geen sourceScope gedefinieerd, dus er zal geen controle op bron-codes worden gedaan"
 
 #: CONCEPTMAP_GROUP_TARGET_CODE_INVALID
 # CONCEPTMAP_GROUP_TARGET_CODE_INVALID
@@ -848,7 +848,7 @@ msgstr "Contained resource lijkt geen FHIR-type hebben (onbekende naam ''{0}'')"
 msgid "Could not match discriminator ({0}) for slice {1} in profile {2} - the discriminator {3} does not have fixed value, binding or existence assertions"
 msgid_plural "Could not match any discriminators ({1}) for slice {2} in profile {3} - None of the {0} discriminators {4} have fixed value, binding or existence assertions"
 msgstr[0] "Kan geen overeenkomende discriminator ({0}) bepalen voor slice {1} in profiel {2} - de discriminator {3} heeft geen vaste waarde, binding of aanwezigheidverplichtingen"
-msgstr[1] ""
+msgstr[1] "Kan geen overeenkomende discriminators ({1}) bepalen voor slice {2} in profiel {3} - geen van de {0} discriminators {4} heeft een vaste waarde, binding of aanwezigheidverplichtingen"
 
 #: DISCRIMINATOR_BAD_PATH
 # DISCRIMINATOR_BAD_PATH
@@ -1354,12 +1354,12 @@ msgstr "Fout bij evalueren FHIRPath expressie: De functie {0} kan alleen worden 
 #: FHIRPATH_DISCRIMINATOR_BAD_NAME
 # FHIRPATH_DISCRIMINATOR_BAD_NAME
 msgid "Invalid function name {0}() in discriminator"
-msgstr "ongeldige functienaam {0}() in discriminator"
+msgstr "Ongeldige functienaam {0}() in discriminator"
 
 #: FHIRPATH_DISCRIMINATOR_BAD_SYNTAX_CONST
 # FHIRPATH_DISCRIMINATOR_BAD_SYNTAX_CONST
 msgid "Invalid expression syntax in discriminator (const)"
-msgstr "onjuiste expressiesyntax in discriminator (const)"
+msgstr "Onjuiste expressiesyntax in discriminator (const)"
 
 #: FHIRPATH_DISCRIMINATOR_BAD_SYNTAX_GROUP
 # FHIRPATH_DISCRIMINATOR_BAD_SYNTAX_GROUP
@@ -1405,7 +1405,7 @@ msgstr "Fout in discriminator bij {0}: geen onderliggende elementen, geen type"
 #: FHIRPATH_DISCRIMINATOR_NO_CODE
 # FHIRPATH_DISCRIMINATOR_NO_CODE
 msgid "Invalid use of ofType() in discriminator - Type has no code on {0}"
-msgstr "onjuist gebruik van ofType() in discriminator - Type heeft geen code op {0}"
+msgstr "Onjuist gebruik van ofType() in discriminator - Type heeft geen code op {0}"
 
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
@@ -1418,17 +1418,17 @@ msgstr[1] "onjuist gebruik van resolve() in discriminator - {0} mogelijke typen 
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
 # FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
 msgid "Invalid use of resolve() in discriminator - type on {0} is not Reference {1}"
-msgstr "onjuist gebruik van resolve() in discriminator - Type op {0} is niet Reference {1}"
+msgstr "Onjuist gebruik van resolve() in discriminator - Type op {0} is niet Reference {1}"
 
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_NO_TYPE
 # FHIRPATH_DISCRIMINATOR_RESOLVE_NO_TYPE
 msgid "Invalid use of resolve() in discriminator - no type on element {0}"
-msgstr "onjuist gebruik van resolve() in discriminator - geen type op element {0}"
+msgstr "Onjuist gebruik van resolve() in discriminator - geen type op element {0}"
 
 #: FHIRPATH_DISCRIMINATOR_TYPE_NONE
 # FHIRPATH_DISCRIMINATOR_TYPE_NONE
 msgid "Invalid use of ofType() in discriminator - no type on element {0}"
-msgstr "onjuist gebruik van ofType() in discriminator - geen type op element {0}"
+msgstr "Onjuist gebruik van ofType() in discriminator - geen type op element {0}"
 
 #: FHIRPATH_FOCUS
 # FHIRPATH_FOCUS
@@ -2162,8 +2162,8 @@ msgstr "Het element {0} is niet gemarkeerd als ''mustSupport'' in het profiel {1
 # NO_VALID_DISPLAY_FOUND
 msgid "No valid Display Names found for {1}#{2} in the language {4}"
 msgid_plural "No valid Display Names found for {1}#{2} in the languages {4}"
-msgstr[0] "Er zijn geen geldige weergavenamen gevonden voor {1}#{2} in de taal {3}"
-msgstr[1] "Er zijn geen geldige weergavenamen gevonden voor {1}#{2} in de talen {3}"
+msgstr[0] "Er zijn geen geldige weergavenamen gevonden voor {1}#{2} in de taal {4}"
+msgstr[1] "Er zijn geen geldige weergavenamen gevonden voor {1}#{2} in de talen {4}"
 
 #: Named_items_are_out_of_order_in_the_slice
 # Named_items_are_out_of_order_in_the_slice
@@ -3187,7 +3187,7 @@ msgstr "Het type ''{0}'' heeft mode ''{1}'' welke niet overeenkomt met de Struct
 # SM_GROUP_INPUT_NO_TYPE
 #| The group parameter {0} has no type, so the paths cannot be validated
 msgid "Group {1} parameter {0} has no type, so the paths cannot be validated"
-msgstr "Group parameter {0} heeft geen type, dus de paden kunnen niet worden gevalideerd"
+msgstr "Group {1} parameter {0} heeft geen type, dus de paden kunnen niet worden gevalideerd"
 
 #: SM_GROUP_INPUT_TYPE_NOT_DECLARED
 # SM_GROUP_INPUT_TYPE_NOT_DECLARED
@@ -4188,7 +4188,7 @@ msgstr "De waarde ''{0}'' is geen geldige Base64 waarde"
 #: Type_Specific_Checks_DT_Boolean_Value
 # Type_Specific_Checks_DT_Boolean_Value
 msgid "Boolean values must be ''true'' or ''false''"
-msgstr "boolean waarden moeten ''true'' of ''false'' zijn"
+msgstr "Boolean waarden moeten ''true'' of ''false'' zijn"
 
 #: Type_Specific_Checks_DT_Code_WS
 # Type_Specific_Checks_DT_Code_WS
@@ -4208,7 +4208,7 @@ msgstr "De instant ''{0}'' is niet geldig (op basis van regex)"
 #: Type_Specific_Checks_DT_DateTime_TZ
 # Type_Specific_Checks_DT_DateTime_TZ
 msgid "If a date has a time, it must have a timezone"
-msgstr "als een datum een tijd bevat, dan moet deze ook een tijdzone bevatten"
+msgstr "Als een datum een tijd bevat, dan moet deze ook een tijdzone bevatten"
 
 #: Type_Specific_Checks_DT_DateTime_Valid
 # Type_Specific_Checks_DT_DateTime_Valid
@@ -4460,7 +4460,7 @@ msgstr "Er is geen definitie gevonden voor CodeSystem {0} versie {1},  dus kan d
 #: UNKNOWN_CODE_IN_FRAGMENT
 # UNKNOWN_CODE_IN_FRAGMENT
 msgid "Unknown Code ''{0}'' in the system ''{1}'' version ''{2}'' - note that the code system is labeled as a fragment, so the code may be valid in some other fragment"
-msgstr "Onbekende code {0} in {1} - merk op dat het codesysteem is gemarkeerd als fragment, waardoor mogelijk geldig is in een ander fragment"
+msgstr "Onbekende code ‘’{0}’’ in system ‘’{1}’’ versie ‘’{2}’’ - merk op dat het codesysteem is gemarkeerd als fragment, waardoor deze mogelijk geldig is in een ander fragment"
 
 #: UNRECOGNISED_PROPERTY_TYPE
 # UNRECOGNISED_PROPERTY_TYPE
@@ -5422,7 +5422,7 @@ msgstr "{0} heeft geen onderliggende elementen ({1}) en geen typen in profiel {2
 #: defined_in_the_profile
 # defined_in_the_profile
 msgid "Defined in the profile"
-msgstr "gedefinieerd in het profiel"
+msgstr "Gedefinieerd in het profiel"
 
 #: documentmsg
 # documentmsg
@@ -5437,12 +5437,12 @@ msgstr "Element = null: {0}"
 #: element_id__null__on_
 # element_id__null__on_
 msgid "Element id = null: {0} on {1}"
-msgstr "element id = null: {0} op {1}"
+msgstr "Element id = null: {0} op {1}"
 
 #: error_writing_number__to_JSON
 # error_writing_number__to_JSON
 msgid "Error writing number ''{0}'' to JSON"
-msgstr "fout bij schrijven van getal ''{0}'' in JSON"
+msgstr "Fout bij schrijven van getal ''{0}'' in JSON"
 
 #: getSliceList_should_only_be_called_when_the_element_has_slicing
 # getSliceList_should_only_be_called_when_the_element_has_slicing
@@ -5452,42 +5452,42 @@ msgstr "getSliceList moet alleen worden aangeroepen als het element slicing heef
 #: needs_a_snapshot
 # needs_a_snapshot
 msgid "Needs a snapshot"
-msgstr "heeft snapshot nodig"
+msgstr "Heeft snapshot nodig"
 
 #: no_base_profile_provided
 # no_base_profile_provided
 msgid "No base profile provided"
-msgstr "geen basisprofiel gevonden"
+msgstr "Geen basisprofiel gevonden"
 
 #: no_derived_structure_provided
 # no_derived_structure_provided
 msgid "No derived structure provided"
-msgstr "geen afgeleide structuur gevonden"
+msgstr "Geen afgeleide structuur gevonden"
 
 #: no_url_in_expand_value_set
 # no_url_in_expand_value_set
 msgid "No url in expand value set"
-msgstr "geen url in expand waardelijst"
+msgstr "Geen url in expand waardelijst"
 
 #: no_url_in_expand_value_set_2
 # no_url_in_expand_value_set_2
 msgid "No url in expand value set 2"
-msgstr "geen url in expand waardelijst 2"
+msgstr "Geen url in expansie waardelijst 2"
 
 #: no_value_set
 # no_value_set
 msgid "ValueSet has no url property"
-msgstr "waardelijst heeft geen url property"
+msgstr "Waardelijst heeft geen url property"
 
 #: not_done_yet_cant_fetch_
 # not_done_yet_cant_fetch_
 msgid "Not done yet: can''t fetch {0}"
-msgstr "nog niet gedaan: kan niet {0} ophalen"
+msgstr "Nog niet gedaan: kan niet {0} ophalen"
 
 #: not_the_right_kind_of_structure_to_generate_schematrons_for
 # not_the_right_kind_of_structure_to_generate_schematrons_for
 msgid "Not the right kind of structure to generate schematrons for"
-msgstr "niet de juiste structuur om schematrons voor te genereren"
+msgstr "Niet de juiste structuur om schematrons voor te genereren"
 
 #: null_min
 # null_min
@@ -5502,12 +5502,12 @@ msgstr "reference naar {0} kan niet worden gevonden"
 #: type_on_first_differential_element
 # type_on_first_differential_element
 msgid "Type on first differential element!"
-msgstr "type op eerste differential element!"
+msgstr "Type op eerste differential-element!"
 
 #: type_on_first_snapshot_element_for__in__from_
 # type_on_first_snapshot_element_for__in__from_
 msgid "Type on first snapshot element for {0} in {1} from {2}"
-msgstr "type op eerste snapshotelement voor {0} in {1} van {2}"
+msgstr "Type op eerste snapshot-element voor {0} in {1} van {2}"
 
 #: xml_attr_value_invalid
 # xml_attr_value_invalid
