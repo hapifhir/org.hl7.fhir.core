@@ -458,13 +458,14 @@ msgid "CodeSystems SHOULD NOT have a stated value for the {0} element when they 
 msgstr "CodeSystems ZOUDEN GEEN waarde MOETEN hebben voor het {0} element als het een supplement betreft"
 
 # CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING
-msgstr "CodeSystem Supplements met content-waarde ''supplement'' MOETEN een supplements element hebben waarin staat voor welk codesysteem het een supplement is"
+#: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING
 msgid "CodeSystem Supplements with a content value of ''supplement'' SHALL have a supplements element that specifies which code system is being supplemented"
+msgstr "CodeSystem Supplements met content-waarde ''supplement'' MOETEN een supplements element hebben waarin staat voor welk codesysteem het een supplement is"
 
 # CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
 msgid "CodeSystem Supplements SHALL have a content value of ''supplement''"
-msgstr "!!CodeSystem Supplements MOETEN de content-waarde ''supplement'' hebben"
+msgstr "CodeSystem supplementen MOETEN de content-waarde ''supplement'' hebben"
 
 # CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
 #: CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
@@ -504,7 +505,7 @@ msgstr "De code ''{1}'' is niet gedeclareerd in het basis CodeSystem {0} dus dez
 # CODESYSTEM_CS_SUPP_NO_SUPP
 #: CODESYSTEM_CS_SUPP_NO_SUPP
 msgid "The code system is marked as a supplement, but it does not define what code system it supplements"
-msgstr "Het codesysteem is gemarkeerd als supplement maar het definieert niet waarvan het een supplement is"
+msgstr "Het codesysteem is gemarkeerd als supplement maar het definieert niet van welk codesysteem het een supplement is"
 
 # CODESYSTEM_CS_UNK_EXPANSION
 #: CODESYSTEM_CS_UNK_EXPANSION
@@ -525,11 +526,12 @@ msgstr "De designation ''{0}'' mist use en heeft dezelfde taal (''{2}'') als, du
 # CODESYSTEM_DESIGNATION_DISP_CLASH_NO_LANG
 #: CODESYSTEM_DESIGNATION_DISP_CLASH_NO_LANG
 msgid "The designation ''{0}'' has no use and no language, so is not differentiated from the base display (''{1}'')"
-msgstr "De designation ''{0}'' mist use en heeft geen taal, dus is niet onderscheidbaar van, de basis weergavenaam (''{1}'')"
+msgstr "De designation ''{0}'' mist use en heeft geen taal, dus is niet onderscheidbaar van de basis weergavenaam (''{1}'')"
 
 # CODESYSTEM_NOT_CONTAINED
-msgstr "CodeSystems wordt direct naar verwezen vanuit Coding.system, dus is het generiek goed als het geen contained resources zijn"
+#: CODESYSTEM_NOT_CONTAINED
 msgid "CodeSystems are referred to directly from Coding.system, so it''s generally best for them not to be contained resources"
+msgstr "CodeSystems wordt direct naar verwezen vanuit Coding.system, dus is het generiek goed als het geen contained resources zijn"
 
 # CODESYSTEM_PROPERTY_BAD_HL7_URI
 #: CODESYSTEM_PROPERTY_BAD_HL7_URI
@@ -603,9 +605,9 @@ msgid "Published code systems SHOULD conform to the ShareableCodeSystem profile,
 msgstr "Gepubliceerde codesystemen ZOUDEN zich MOETEN houden aan het ShareableCodeSystem profiel, wat zegt dat het element CodeSystem.{0} aanwezig zou moeten zijn, maar deze ontbreekt"
 
 # CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
-msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not"
-#| Published code systems SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not
 #: CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
+#| Published code systems SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not
+msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not"
 msgstr "Door HL7 gepubliceerde codesystemen MOETEN zich houden aan het ShareableCodeSystem profiel, wat zegt dat het element CodeSystem.{0} aanwezig zou moeten zijn, maar deze ontbreekt"
 
 # CODESYSTEM_SHAREABLE_MISSING
@@ -648,7 +650,7 @@ msgstr "De bron-code ''{0}'' is niet geldig in de waardelijst {1}"
 #: CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID
 #| The source display ''{0}'' is not valid. Possible codes {1}
 msgid "The source display ''{0}'' for the code ''{2}'' is not valid. Possible displays: {1}"
-msgstr "De bron-weergave ''{0}'' voor de code ''{2}'' is niet geldig. Mogelijke weergave(n): {1}"
+msgstr "De bron-weergave ''{0}'' voor de code ''{2}'' is niet geldig. Mogelijke weergaven: {1}"
 
 # CONCEPTMAP_GROUP_SOURCE_INCOMPLETE
 #: CONCEPTMAP_GROUP_SOURCE_INCOMPLETE
@@ -3934,10 +3936,10 @@ msgid "The code provided ({1}) is not in the value set {0}, and a code should co
 msgstr "De code ({1}) staat niet in de waardelijst {0} en een code uit deze waardelijst is verplicht tenzij er geen relevante code is (de validator kan niet bepalen wat relevant is)"
 
 # Terminology_TX_Confirm_6
-msgstr "De code ({1}) staat niet in de waardelijst {0} en een code uit deze waardelijst is aanbevolen"
 #: Terminology_TX_Confirm_6
 #| The code provided ({1}) is not in the value set in the value set {0}, and a code is recommended to come from this value set
 msgid "The code provided ({1}) is not in the value set {0}, and a code is recommended to come from this value set"
+msgstr "De code ({1}) staat niet in de waardelijst {0} en een code uit deze waardelijst is aanbevolen"
 
 # Terminology_TX_Display_Wrong
 #: Terminology_TX_Display_Wrong
@@ -4028,7 +4030,7 @@ msgstr "Geen van de gevonden codings bestaat in de waardelijst {0} en een coding
 # Terminology_TX_NoValid_3_CC
 #: Terminology_TX_NoValid_3_CC
 msgid "None of the codings provided are in the value set {0}, and a coding is recommended to come from this value set (codes = {1})"
-msgstr "!!Geen van de gevonden codings bestaat in de waardelijst {0} en een coding uit deze waardelijst is aanbevolen (codes = {1})"
+msgstr "Geen van de gevonden codings bestaat in de waardelijst {0} en een coding uit deze waardelijst is aanbevolen (codes = {1})"
 
 # Terminology_TX_NoValid_4
 #: Terminology_TX_NoValid_4
@@ -4364,7 +4366,7 @@ msgstr "URL-waarde ''{0}'' komt nergens uit"
 # Type_Specific_Checks_DT_UUID_Strat
 #: Type_Specific_Checks_DT_UUID_Strat
 msgid "UUIDs must start with urn:uuid:"
-msgstr "UUID''s moet beginnen met urn:uuid:"
+msgstr "Uuid''s moet beginnen met urn:uuid:"
 
 # Type_Specific_Checks_DT_UUID_Valid
 #: Type_Specific_Checks_DT_UUID_Valid
@@ -5077,7 +5079,7 @@ msgstr ""
 # VALUESET_NO_SYSTEM_WARNING
 #: VALUESET_NO_SYSTEM_WARNING
 msgid "No System specified, so Concepts and Filters can''t be checked"
-msgstr "!!Geen System gespecificeerd, dus Concepts en Filters kunnen niet worden gecontroleerd"
+msgstr "Geen System gespecificeerd, dus Concepten en Filters kunnen niet worden gecontroleerd"
 
 # VALUESET_REFERENCE_INVALID_TYPE
 #: VALUESET_REFERENCE_INVALID_TYPE
