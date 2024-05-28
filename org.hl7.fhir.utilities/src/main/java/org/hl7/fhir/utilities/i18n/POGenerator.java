@@ -89,14 +89,14 @@ public class POGenerator {
   private void execute(String core, String igpub, String pascal) throws IOException {
     String source = Utilities.path(core, "/org.hl7.fhir.utilities/src/main/resources");
     if (checkState(source, core, igpub, pascal)) {
-      generate(source, "rendering-phrases.properties",  "rendering-phrases.po",       null, 2);
+      generate(source, "rendering-phrases.properties",  "rendering-phrases-en.po",       null, 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-de.po",    "rendering-phrases_de.properties", 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-es.po",    "rendering-phrases_es.properties", 3);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-ja.po",    "rendering-phrases_ja.properties", 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-nl.po",    "rendering-phrases_nl.properties", 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-pt-BR.po", "rendering-phrases_pt-BR.properties", 2);
 
-      generate(source, "Messages.properties", "validator-messages.po",    null, 2);
+      generate(source, "Messages.properties", "validator-messages-en.po",    null, 2);
       generate(source, "Messages.properties", "validator-messages-de.po",    "Messages_de.properties", 2);
       generate(source, "Messages.properties", "validator-messages-es.po",    "Messages_es.properties", 3);
       generate(source, "Messages.properties", "validator-messages-ja.po",    "Messages_ja.properties", 2);
