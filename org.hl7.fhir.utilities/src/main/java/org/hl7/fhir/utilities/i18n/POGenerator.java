@@ -373,9 +373,9 @@ public class POGenerator {
     }
     b.append("\r\n");
     for (POObject o : objects) {
-      b.append("#: "+o.id+"\r\n");
       // for POEdit
       b.append("# "+o.comment+"\r\n");
+      b.append("#: "+o.id+"\r\n");
       if (!tfxMode && o.oldMsgId != null) {
         b.append("#| "+o.oldMsgId+"\r\n");        
       }
@@ -472,15 +472,21 @@ public class POGenerator {
       if (Utilities.noString(line)) {
         // else 
       } else if (line.startsWith("#:")) {
-        obj = new POObject();
-        obj.id = line.substring(2).trim();
-        list.add(obj);
+        if (obj == null || obj.id != null) {
+          obj = new POObject();
+          list.add(obj);
+        }
+        obj.id = line.substring(2).trim();  
+      } else if (line.startsWith("# ")) {
+        if (obj == null || obj.comment != null) {
+          obj = new POObject();
+          list.add(obj);
+        }
+        obj.comment = line.substring(1).trim();
       } else if (obj == null) {
         prefixes.add(line);  
       } else if (line.startsWith("#|")) {
         obj.oldMsgId = line.substring(2).trim();
-      } else if (line.startsWith("# ")) {
-        obj.comment = line.substring(1).trim();
       } else if (line.startsWith("msgid ")) {
         obj.msgid = trimQuotes(line.substring(5).trim());
         if (obj.msgid.endsWith("("+obj.id+")")) {
