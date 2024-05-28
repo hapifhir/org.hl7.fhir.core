@@ -427,7 +427,7 @@ msgstr ""
 
 #: CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO
 # CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO
-msgid "The code system has no content, but the exceeds the stated total number is 0 concepts - check that this isn't a complete code system that has no concepts, or update/remove the stated count"
+msgid "The code system has no content, but the exceeds the stated total number is 0 concepts - check that this isn''t a complete code system that has no concepts, or update/remove the stated count"
 msgstr ""
 
 #: CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED
@@ -457,13 +457,13 @@ msgstr "CodeSysteme SOLLTEN KEINEN angegebenen Wert f\u00fcr das Element {0} hab
 
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING
 # CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING
-msgid "CodeSystem Supplements with a content value of 'supplement' SHALL have a supplements element that specifies which code system is being supplemented"
-msgstr "CodeSystem-Erg\u00e4nzungen mit dem Content-Wert \"supplement\" M\u00dcSSEN ein supplements-Element haben, das angibt, welches Codesystem erg\u00e4nzt wird."
+msgid "CodeSystem Supplements with a content value of ''supplement'' SHALL have a supplements element that specifies which code system is being supplemented"
+msgstr "!!CodeSystem-Erg\u00e4nzungen mit dem Content-Wert \"supplement\" M\u00dcSSEN ein supplements-Element haben, das angibt, welches Codesystem erg\u00e4nzt wird."
 
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
 # CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
-msgid "CodeSystem Supplements SHALL have a content value of 'supplement'"
-msgstr "CodeSystem Supplements M\u00dcSSEN einen Content-Wert von \"supplement\" haben."
+msgid "CodeSystem Supplements SHALL have a content value of ''supplement''"
+msgstr "!!CodeSystem Supplements M\u00dcSSEN einen Content-Wert von \"supplement\" haben."
 
 #: CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
 # CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
@@ -527,7 +527,7 @@ msgstr ""
 
 #: CODESYSTEM_NOT_CONTAINED
 # CODESYSTEM_NOT_CONTAINED
-msgid "CodeSystems are referred to directly from Coding.system, so it's generally best for them not to be contained resources"
+msgid "CodeSystems are referred to directly from Coding.system, so it''s generally best for them not to be contained resources"
 msgstr ""
 
 #: CODESYSTEM_PROPERTY_BAD_HL7_URI
@@ -602,8 +602,8 @@ msgstr "!!Das ShareableCodeSystem-Profil empfiehlt, dass das Element {0} bef\u00
 
 #: CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
 # CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
-msgid "Published code systems SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not"
-msgstr "!!Das ShareableCodeSystem-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Code-Systeme M\u00dcSSEN dem ShareableCodeSystem-Profil entsprechen"
+msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not"
+msgstr "!!!!Das ShareableCodeSystem-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Code-Systeme M\u00dcSSEN dem ShareableCodeSystem-Profil entsprechen"
 
 #: CODESYSTEM_SHAREABLE_MISSING
 # CODESYSTEM_SHAREABLE_MISSING
@@ -612,12 +612,12 @@ msgstr "!!Das ShareableCodeSystem-Profil sagt, dass das {0}-Element obligatorisc
 
 #: CODESYSTEM_SHAREABLE_MISSING_HL7
 # CODESYSTEM_SHAREABLE_MISSING_HL7
-msgid "Published code systems SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} is mandatory, but it is not present"
-msgstr "!!Das ShareableCodeSystem-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Code-Systeme M\u00dcSSEN dem ShareableCodeSystem-Profil entsprechen"
+msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} is mandatory, but it is not present"
+msgstr "!!!!Das ShareableCodeSystem-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Code-Systeme M\u00dcSSEN dem ShareableCodeSystem-Profil entsprechen"
 
 #: CODESYSTEM_SUPP_NO_DISPLAY
 # CODESYSTEM_SUPP_NO_DISPLAY
-msgid "This display (''{0}'') differs from that defined by the base code system (''{1}''). Both displays claim to be 'the \"primary designation\" for the same language (''{2}''), and the correct interpretation of this is undefined"
+msgid "This display (''{0}'') differs from that defined by the base code system (''{1}''). Both displays claim to be the ''primary designation'' for the same language (''{2}''), and the correct interpretation of this is undefined"
 msgstr ""
 
 #: CODESYSTEM_THO_CHECK
@@ -732,8 +732,8 @@ msgstr "!!Das ShareableConceptMap-Profil empfiehlt, dass das Element {0} bef\u00
 
 #: CONCEPTMAP_SHAREABLE_EXTRA_MISSING_HL7
 # CONCEPTMAP_SHAREABLE_EXTRA_MISSING_HL7
-msgid "Published concept maps SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} should be present, but it is not"
-msgstr "!!Das ShareableConceptMap-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Concept Maps M\u00dcSSEN mit dem ShareableConceptMap-Profil \u00fcbereinstimmen"
+msgid "Concept maps published by HL7 SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} should be present, but it is not"
+msgstr "!!!!Das ShareableConceptMap-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Concept Maps M\u00dcSSEN mit dem ShareableConceptMap-Profil \u00fcbereinstimmen"
 
 #: CONCEPTMAP_SHAREABLE_MISSING
 # CONCEPTMAP_SHAREABLE_MISSING
@@ -742,8 +742,8 @@ msgstr "!!Das ShareableConceptMap-Profil sagt, dass das {0}-Element obligatorisc
 
 #: CONCEPTMAP_SHAREABLE_MISSING_HL7
 # CONCEPTMAP_SHAREABLE_MISSING_HL7
-msgid "Published concept maps SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} is mandatory, but it is not present"
-msgstr "!!Das ShareableConceptMap-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Concept Maps M\u00dcSSEN mit dem ShareableConceptMap-Profil \u00fcbereinstimmen"
+msgid "Concept maps published by HL7 SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} is mandatory, but it is not present"
+msgstr "!!!!Das ShareableConceptMap-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Concept Maps M\u00dcSSEN mit dem ShareableConceptMap-Profil \u00fcbereinstimmen"
 
 #: CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM
 # CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM
@@ -1446,7 +1446,7 @@ msgstr "(bei {0})"
 
 #: FHIRPATH_NOT_A_COLLECTION
 # FHIRPATH_NOT_A_COLLECTION
-msgid "Found a use of a collection operator on something that is not a collection at ''{0}'' - check that there's no mistakes in the expression syntax"
+msgid "Found a use of a collection operator on something that is not a collection at ''{0}'' - check that there''s no mistakes in the expression syntax"
 msgstr ""
 
 #: FHIRPATH_NOT_IMPLEMENTED
@@ -2002,8 +2002,8 @@ msgstr "!!Das ShareableMeasure-Profil empfiehlt, dass das Element {0} ausgef\u00
 
 #: MEASURE_SHAREABLE_EXTRA_MISSING_HL7
 # MEASURE_SHAREABLE_EXTRA_MISSING_HL7
-msgid "Published measures SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} should be present, but it is not"
-msgstr "!!Das ShareableMeasure-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Measures M\u00dcSSEN dem ShareableMeasure-Profil entsprechen"
+msgid "Measures published by HL7 SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} should be present, but it is not"
+msgstr "!!!!Das ShareableMeasure-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Measures M\u00dcSSEN dem ShareableMeasure-Profil entsprechen"
 
 #: MEASURE_SHAREABLE_MISSING
 # MEASURE_SHAREABLE_MISSING
@@ -2012,8 +2012,8 @@ msgstr "!!Das ShareableMeasure-Profil sagt, dass das {0}-Element obligatorisch i
 
 #: MEASURE_SHAREABLE_MISSING_HL7
 # MEASURE_SHAREABLE_MISSING_HL7
-msgid "Published measures SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} is mandatory, but it is not present"
-msgstr "!!Das ShareableMeasure-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Measures M\u00dcSSEN dem ShareableMeasure-Profil entsprechen"
+msgid "Measures published by HL7 SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} is mandatory, but it is not present"
+msgstr "!!!!Das ShareableMeasure-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Measures M\u00dcSSEN dem ShareableMeasure-Profil entsprechen"
 
 #: MSG_DEPENDS_ON_DEPRECATED
 # MSG_DEPENDS_ON_DEPRECATED
@@ -2799,7 +2799,7 @@ msgstr "!!\u00dcberpr\u00fcfen Sie den Erweiterungstyp: Extensions sollten nicht
 
 #: SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH
 # SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH
-msgid "Review the extension type for {1}: the context of {0} appears to be a simple element, so the context type should be 'element' not 'fhirpath'"
+msgid "Review the extension type for {1}: the context of {0} appears to be a simple element, so the context type should be ''element'' not ''fhirpath''"
 msgstr ""
 
 #: SD_DERIVATION_KIND_MISMATCH
@@ -3006,12 +3006,12 @@ msgstr ""
 
 #: SD_OBGLIGATION_PROFILE_PATH_WRONG
 # SD_OBGLIGATION_PROFILE_PATH_WRONG
-msgid "The element ''{0}'' path value of ''{1}'' doesn't match the base path ''{2}''"
+msgid "The element ''{0}'' path value of ''{1}'' doesn''t match the base path ''{2}''"
 msgstr ""
 
 #: SD_OBGLIGATION_PROFILE_UKNOWN
 # SD_OBGLIGATION_PROFILE_UKNOWN
-msgid "The profile is marked as an obligation profile, but it's correctness cannot be checked since the base profile ''{0}'' is not known"
+msgid "The profile is marked as an obligation profile, but it''s correctness cannot be checked since the base profile ''{0}'' is not known"
 msgstr ""
 
 #: SD_OBGLIGATION_PROFILE_UNMATCHED
@@ -3046,8 +3046,8 @@ msgstr "Der Typ {0} ist nicht zul\u00e4ssig, da er nicht in der FHIR-Spezifikati
 
 #: SD_TYPE_NOT_LOGICAL
 # SD_TYPE_NOT_LOGICAL
-msgid "The type {0} can only be defined if the kind is 'logical' not {1}"
-msgstr "Der Typ {0} kann nur definiert werden, wenn die Art 'logisch' ist, nicht {1}"
+msgid "The type {0} can only be defined if the kind is ''logical'' not {1}"
+msgstr "!!Der Typ {0} kann nur definiert werden, wenn die Art 'logisch' ist, nicht {1}"
 
 #: SD_TYPE_NOT_MATCH_NS
 # SD_TYPE_NOT_MATCH_NS
@@ -3086,7 +3086,7 @@ msgstr "Der Ausdruck ''{2}'' ist nicht kompatibel mit dem Ausdruck ''{1}'' im de
 
 #: SEARCHPARAMETER_MISSING_COMPONENTS
 # SEARCHPARAMETER_MISSING_COMPONENTS
-msgid "When the SearchParameter has a type of 'composite', then the SearchParameter must define two or more components"
+msgid "When the SearchParameter has a type of ''composite'', then the SearchParameter must define two or more components"
 msgstr ""
 
 #: SEARCHPARAMETER_NOTFOUND
@@ -3481,7 +3481,7 @@ msgstr "Die System-URL ''{0}'' beginnt f\u00e4lschlicherweise mit https: und nic
 
 #: TERMINOLOGY_TX_SYSTEM_NOT_USABLE
 # TERMINOLOGY_TX_SYSTEM_NOT_USABLE
-msgid "The definition for the Code System with URI ''{0}'' doesn't provide any codes so the code cannot be validated"
+msgid "The definition for the Code System with URI ''{0}'' doesn''t provide any codes so the code cannot be validated"
 msgstr ""
 
 #: TERMINOLOGY_TX_SYSTEM_NO_CODE
@@ -3891,13 +3891,13 @@ msgstr "!!Der angegebene Code ({2}) befindet sich nicht im ValueSet {0}, und es 
 
 #: Terminology_TX_Confirm_5
 # Terminology_TX_Confirm_5
-msgid "The code provided ({1}) is not in the value set in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable)"
-msgstr "!!Konnte nicht best\u00e4tigen, dass die angegebenen Codes im ValueSet {0} enthalten sind, und ein Code sollte aus diesem ValueSet stammen. Es sei denn, er hat enth\u00e4lt keinen geeigneten Code"
+msgid "The code provided ({1}) is not in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable)"
+msgstr "!!!!Konnte nicht best\u00e4tigen, dass die angegebenen Codes im ValueSet {0} enthalten sind, und ein Code sollte aus diesem ValueSet stammen. Es sei denn, er hat enth\u00e4lt keinen geeigneten Code"
 
 #: Terminology_TX_Confirm_6
 # Terminology_TX_Confirm_6
-msgid "The code provided ({1}) is not in the value set in the value set {0}, and a code is recommended to come from this value set"
-msgstr "!!Konnte nicht best\u00e4tigen, dass die angegebenen Codes im ValueSet {0} enthalten sind, und es wird empfohlen, einen Code aus diesem ValueSet zu verwenden."
+msgid "The code provided ({1}) is not in the value set {0}, and a code is recommended to come from this value set"
+msgstr "!!!!Konnte nicht best\u00e4tigen, dass die angegebenen Codes im ValueSet {0} enthalten sind, und es wird empfohlen, einen Code aus diesem ValueSet zu verwenden."
 
 #: Terminology_TX_Display_Wrong
 # Terminology_TX_Display_Wrong
@@ -3966,8 +3966,8 @@ msgstr "!!Der angegebene Wert (''{0}'') ist nicht im Valueset {1}, und ein Code 
 
 #: Terminology_TX_NoValid_18
 # Terminology_TX_NoValid_18
-msgid "The value provided (''{0}'') was not found in the value set {1}, and a code is recommended to come from this value set){2}"
-msgstr "!!Der angegebene Wert (''{0}'') ist nicht im Valueset {1}, und es wird empfohlen, einen Code aus diesem Valueset zu verwenden){2}"
+msgid "The value provided (''{0}'') was not found in the value set {1}, and a code is recommended to come from this value set{2}"
+msgstr "!!!!Der angegebene Wert (''{0}'') ist nicht im Valueset {1}, und es wird empfohlen, einen Code aus diesem Valueset zu verwenden){2}"
 
 #: Terminology_TX_NoValid_1_CC
 # Terminology_TX_NoValid_1_CC
@@ -3981,8 +3981,8 @@ msgstr "Keiner der angegebenen Codes ist im Valueset {0}, und ein Code sollte au
 
 #: Terminology_TX_NoValid_3_CC
 # Terminology_TX_NoValid_3_CC
-msgid "None of the codings provided are in the value set {0}, and a coding is recommended to come from this value set) (codes = {1})"
-msgstr "Keiner der angegebenen Codes ist im Valueset {0}, und es wird empfohlen, einen Code aus dieserm Valueset zu verwenden) (Codes = {1})"
+msgid "None of the codings provided are in the value set {0}, and a coding is recommended to come from this value set (codes = {1})"
+msgstr "!!Keiner der angegebenen Codes ist im Valueset {0}, und es wird empfohlen, einen Code aus dieserm Valueset zu verwenden) (Codes = {1})"
 
 #: Terminology_TX_NoValid_4
 # Terminology_TX_NoValid_4
@@ -4341,7 +4341,7 @@ msgstr ""
 
 #: UNABLE_TO_DETERMINE_TYPE_CONTEXT_INV
 # UNABLE_TO_DETERMINE_TYPE_CONTEXT_INV
-msgid "The types could not be determined from the extension context, so the invariant can't be validated (types = {0})"
+msgid "The types could not be determined from the extension context, so the invariant can''t be validated (types = {0})"
 msgstr ""
 
 #: UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__
@@ -4868,7 +4868,7 @@ msgstr ""
 
 #: VALUESET_BAD_FILTER_VALUE_HAS_COMMA
 # VALUESET_BAD_FILTER_VALUE_HAS_COMMA
-msgid "The filter value has a comma, but the operation is different to 'in' and 'not-in', so the comma will be interpreted as part of the {0} value"
+msgid "The filter value has a comma, but the operation is different to ''in'' and ''not-in'', so the comma will be interpreted as part of the {0} value"
 msgstr ""
 
 #: VALUESET_BAD_FILTER_VALUE_INTEGER
@@ -4958,7 +4958,7 @@ msgstr ""
 
 #: VALUESET_INCLUDE_CS_NOT_CS
 # VALUESET_INCLUDE_CS_NOT_CS
-msgid "The include system ''{0}'' is a reference to a contained resource, but the contained resource with that id is not a CodeSystem, it's a {1}"
+msgid "The include system ''{0}'' is a reference to a contained resource, but the contained resource with that id is not a CodeSystem, it''s a {1}"
 msgstr ""
 
 #: VALUESET_INCLUDE_CS_NOT_FOUND
@@ -4998,8 +4998,8 @@ msgstr ""
 
 #: VALUESET_NO_SYSTEM_WARNING
 # VALUESET_NO_SYSTEM_WARNING
-msgid "No System specified, so Concepts and Filters can't be checked"
-msgstr "Kein System angegeben, daher k\u00f6nnen Konzepte und Filter nicht \u00fcberpr\u00fcft werden"
+msgid "No System specified, so Concepts and Filters can''t be checked"
+msgstr "!!Kein System angegeben, daher k\u00f6nnen Konzepte und Filter nicht \u00fcberpr\u00fcft werden"
 
 #: VALUESET_REFERENCE_INVALID_TYPE
 # VALUESET_REFERENCE_INVALID_TYPE
@@ -5018,8 +5018,8 @@ msgstr "!!Das ShareableValueSet-Profil empfiehlt, dass das Element {0} gef\u00fc
 
 #: VALUESET_SHAREABLE_EXTRA_MISSING_HL7
 # VALUESET_SHAREABLE_EXTRA_MISSING_HL7
-msgid "Published value sets SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} should be present, but it is not"
-msgstr "!!Das ShareableValueSet-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published ValueSets M\u00dcSSEN mit dem ShareableValueSet-Profil \u00fcbereinstimmen"
+msgid "Value sets published by HL7 SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} should be present, but it is not"
+msgstr "!!!!Das ShareableValueSet-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published ValueSets M\u00dcSSEN mit dem ShareableValueSet-Profil \u00fcbereinstimmen"
 
 #: VALUESET_SHAREABLE_MISSING
 # VALUESET_SHAREABLE_MISSING
@@ -5028,8 +5028,8 @@ msgstr "!!Das ShareableValueSet-Profil sagt, dass das {0}-Element obligatorisch 
 
 #: VALUESET_SHAREABLE_MISSING_HL7
 # VALUESET_SHAREABLE_MISSING_HL7
-msgid "Published value sets SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} is mandatory, but it is not present"
-msgstr "!!Das ShareableValueSet-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published ValueSets M\u00dcSSEN mit dem ShareableValueSet-Profil \u00fcbereinstimmen"
+msgid "Value sets published by HL7 SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} is mandatory, but it is not present"
+msgstr "!!!!Das ShareableValueSet-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published ValueSets M\u00dcSSEN mit dem ShareableValueSet-Profil \u00fcbereinstimmen"
 
 #: VALUESET_SUPPLEMENT_MISSING
 # VALUESET_SUPPLEMENT_MISSING

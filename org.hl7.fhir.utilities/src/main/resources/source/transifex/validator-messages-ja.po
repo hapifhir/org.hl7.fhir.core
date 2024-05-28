@@ -427,8 +427,8 @@ msgstr "CodeSystem.contentがfragment/exampleであるにもかかわらず、co
 
 #: CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO
 # CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO
-msgid "The code system has no content, but the exceeds the stated total number is 0 concepts - check that this isn't a complete code system that has no concepts, or update/remove the stated count"
-msgstr "CodeSystem.contentがnot-presentであるにもかかわらず、CodeSystem.countに0より大きい値が指定されています。これがconceptを持たないcompleteなコードシステムであることを確認するか、countの値を更新/削除してください。"
+msgid "The code system has no content, but the exceeds the stated total number is 0 concepts - check that this isn''t a complete code system that has no concepts, or update/remove the stated count"
+msgstr "!!CodeSystem.contentがnot-presentであるにもかかわらず、CodeSystem.countに0より大きい値が指定されています。これがconceptを持たないcompleteなコードシステムであることを確認するか、countの値を更新/削除してください。"
 
 #: CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED
 # CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED
@@ -457,13 +457,13 @@ msgstr "CodeSystemsがsupplementである場合は{0} 要素に対する明確�
 
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING
 # CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING
-msgid "CodeSystem Supplements with a content value of 'supplement' SHALL have a supplements element that specifies which code system is being supplemented"
-msgstr "CodeSystem Supplementsは、ontent要素の値が'supplement'である場合、どのコードシステムが補足されているかを指定するsupplements要素を持つべきです"
+msgid "CodeSystem Supplements with a content value of ''supplement'' SHALL have a supplements element that specifies which code system is being supplemented"
+msgstr "!!CodeSystem Supplementsは、ontent要素の値が'supplement'である場合、どのコードシステムが補足されているかを指定するsupplements要素を持つべきです"
 
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
 # CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
-msgid "CodeSystem Supplements SHALL have a content value of 'supplement'"
-msgstr "CodeSystem Supplementsは、content要素の値が'supplement'であるべきです"
+msgid "CodeSystem Supplements SHALL have a content value of ''supplement''"
+msgstr "!!CodeSystem Supplementsは、content要素の値が'supplement'であるべきです"
 
 #: CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
 # CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
@@ -527,7 +527,7 @@ msgstr ""
 
 #: CODESYSTEM_NOT_CONTAINED
 # CODESYSTEM_NOT_CONTAINED
-msgid "CodeSystems are referred to directly from Coding.system, so it's generally best for them not to be contained resources"
+msgid "CodeSystems are referred to directly from Coding.system, so it''s generally best for them not to be contained resources"
 msgstr ""
 
 #: CODESYSTEM_PROPERTY_BAD_HL7_URI
@@ -602,8 +602,8 @@ msgstr "公開されたcode systemsはCodeSystem.{0}の存在を推奨してい�
 
 #: CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
 # CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
-msgid "Published code systems SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not"
-msgstr "公開されたcode systemsはCodeSystem.{0}の存在を推奨しているShareableCodeSystemプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
+msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not"
+msgstr "!!公開されたcode systemsはCodeSystem.{0}の存在を推奨しているShareableCodeSystemプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
 
 #: CODESYSTEM_SHAREABLE_MISSING
 # CODESYSTEM_SHAREABLE_MISSING
@@ -612,12 +612,12 @@ msgstr "公開されたcode systemsはCodeSystem.{0}の存在を必須として�
 
 #: CODESYSTEM_SHAREABLE_MISSING_HL7
 # CODESYSTEM_SHAREABLE_MISSING_HL7
-msgid "Published code systems SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} is mandatory, but it is not present"
-msgstr "公開されたcode systemsはCodeSystem.{0}の存在を必須としているShareableCodeSystemプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
+msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} is mandatory, but it is not present"
+msgstr "!!公開されたcode systemsはCodeSystem.{0}の存在を必須としているShareableCodeSystemプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
 
 #: CODESYSTEM_SUPP_NO_DISPLAY
 # CODESYSTEM_SUPP_NO_DISPLAY
-msgid "This display (''{0}'') differs from that defined by the base code system (''{1}''). Both displays claim to be 'the \"primary designation\" for the same language (''{2}''), and the correct interpretation of this is undefined"
+msgid "This display (''{0}'') differs from that defined by the base code system (''{1}''). Both displays claim to be the ''primary designation'' for the same language (''{2}''), and the correct interpretation of this is undefined"
 msgstr ""
 
 #: CODESYSTEM_THO_CHECK
@@ -732,8 +732,8 @@ msgstr "公開されたコンセプトマップはConceptMap.{0}の存在を推�
 
 #: CONCEPTMAP_SHAREABLE_EXTRA_MISSING_HL7
 # CONCEPTMAP_SHAREABLE_EXTRA_MISSING_HL7
-msgid "Published concept maps SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} should be present, but it is not"
-msgstr "公開されたコンセプトマップはConceptMap.{0}の存在を必須としているShareableConceptMapプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
+msgid "Concept maps published by HL7 SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} should be present, but it is not"
+msgstr "!!公開されたコンセプトマップはConceptMap.{0}の存在を必須としているShareableConceptMapプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
 
 #: CONCEPTMAP_SHAREABLE_MISSING
 # CONCEPTMAP_SHAREABLE_MISSING
@@ -742,8 +742,8 @@ msgstr "公開されたコンセプトマップはConceptMap.{0}の存在を必�
 
 #: CONCEPTMAP_SHAREABLE_MISSING_HL7
 # CONCEPTMAP_SHAREABLE_MISSING_HL7
-msgid "Published concept maps SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} is mandatory, but it is not present"
-msgstr "公開されたコンセプトマップはConceptMap.{0}の存在を必須としているShareableConceptMapプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
+msgid "Concept maps published by HL7 SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} is mandatory, but it is not present"
+msgstr "!!公開されたコンセプトマップはConceptMap.{0}の存在を必須としているShareableConceptMapプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
 
 #: CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM
 # CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM
@@ -1446,7 +1446,7 @@ msgstr "(at {0})"
 
 #: FHIRPATH_NOT_A_COLLECTION
 # FHIRPATH_NOT_A_COLLECTION
-msgid "Found a use of a collection operator on something that is not a collection at ''{0}'' - check that there's no mistakes in the expression syntax"
+msgid "Found a use of a collection operator on something that is not a collection at ''{0}'' - check that there''s no mistakes in the expression syntax"
 msgstr ""
 
 #: FHIRPATH_NOT_IMPLEMENTED
@@ -2002,7 +2002,7 @@ msgstr ""
 
 #: MEASURE_SHAREABLE_EXTRA_MISSING_HL7
 # MEASURE_SHAREABLE_EXTRA_MISSING_HL7
-msgid "Published measures SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} should be present, but it is not"
+msgid "Measures published by HL7 SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} should be present, but it is not"
 msgstr ""
 
 #: MEASURE_SHAREABLE_MISSING
@@ -2012,7 +2012,7 @@ msgstr ""
 
 #: MEASURE_SHAREABLE_MISSING_HL7
 # MEASURE_SHAREABLE_MISSING_HL7
-msgid "Published measures SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} is mandatory, but it is not present"
+msgid "Measures published by HL7 SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} is mandatory, but it is not present"
 msgstr ""
 
 #: MSG_DEPENDS_ON_DEPRECATED
@@ -2799,7 +2799,7 @@ msgstr "!!extensionタイプを確認してください：extensionはそれら�
 
 #: SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH
 # SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH
-msgid "Review the extension type for {1}: the context of {0} appears to be a simple element, so the context type should be 'element' not 'fhirpath'"
+msgid "Review the extension type for {1}: the context of {0} appears to be a simple element, so the context type should be ''element'' not ''fhirpath''"
 msgstr ""
 
 #: SD_DERIVATION_KIND_MISMATCH
@@ -3006,13 +3006,13 @@ msgstr "要素 ''{0}'' は、基本 (''{2}'') とは異なるバインディン�
 
 #: SD_OBGLIGATION_PROFILE_PATH_WRONG
 # SD_OBGLIGATION_PROFILE_PATH_WRONG
-msgid "The element ''{0}'' path value of ''{1}'' doesn't match the base path ''{2}''"
-msgstr "要素 ''{0}'' のパス値 ''{1}'' は、基本パス ''{2}'' と一致しません"
+msgid "The element ''{0}'' path value of ''{1}'' doesn''t match the base path ''{2}''"
+msgstr "!!要素 ''{0}'' のパス値 ''{1}'' は、基本パス ''{2}'' と一致しません"
 
 #: SD_OBGLIGATION_PROFILE_UKNOWN
 # SD_OBGLIGATION_PROFILE_UKNOWN
-msgid "The profile is marked as an obligation profile, but it's correctness cannot be checked since the base profile ''{0}'' is not known"
-msgstr "プロファイルはobligationプロファイルとしてマークされていますが、基本プロファイル ''{0}'' が不明なため、その正確さを確認することはできません"
+msgid "The profile is marked as an obligation profile, but it''s correctness cannot be checked since the base profile ''{0}'' is not known"
+msgstr "!!プロファイルはobligationプロファイルとしてマークされていますが、基本プロファイル ''{0}'' が不明なため、その正確さを確認することはできません"
 
 #: SD_OBGLIGATION_PROFILE_UNMATCHED
 # SD_OBGLIGATION_PROFILE_UNMATCHED
@@ -3046,8 +3046,8 @@ msgstr "タイプ {0} は、FHIR仕様で定義されていないため、合法
 
 #: SD_TYPE_NOT_LOGICAL
 # SD_TYPE_NOT_LOGICAL
-msgid "The type {0} can only be defined if the kind is 'logical' not {1}"
-msgstr "タイプ {0} は、種類が 'logical' でない {1} の場合にのみ定義できます"
+msgid "The type {0} can only be defined if the kind is ''logical'' not {1}"
+msgstr "!!タイプ {0} は、種類が 'logical' でない {1} の場合にのみ定義できます"
 
 #: SD_TYPE_NOT_MATCH_NS
 # SD_TYPE_NOT_MATCH_NS
@@ -3086,7 +3086,7 @@ msgstr "式 ''{2}'' は、派生元のSearchParameter {0} の式 ''{1}'' と互�
 
 #: SEARCHPARAMETER_MISSING_COMPONENTS
 # SEARCHPARAMETER_MISSING_COMPONENTS
-msgid "When the SearchParameter has a type of 'composite', then the SearchParameter must define two or more components"
+msgid "When the SearchParameter has a type of ''composite'', then the SearchParameter must define two or more components"
 msgstr ""
 
 #: SEARCHPARAMETER_NOTFOUND
@@ -3481,8 +3481,8 @@ msgstr "システムURL ''{0}''が誤ってhttps：で始まっています。ht
 
 #: TERMINOLOGY_TX_SYSTEM_NOT_USABLE
 # TERMINOLOGY_TX_SYSTEM_NOT_USABLE
-msgid "The definition for the Code System with URI ''{0}'' doesn't provide any codes so the code cannot be validated"
-msgstr "URIが''{0}''のCodeSystemの定義にはcodeが提供されていないため、codeを検証できません"
+msgid "The definition for the Code System with URI ''{0}'' doesn''t provide any codes so the code cannot be validated"
+msgstr "!!URIが''{0}''のCodeSystemの定義にはcodeが提供されていないため、codeを検証できません"
 
 #: TERMINOLOGY_TX_SYSTEM_NO_CODE
 # TERMINOLOGY_TX_SYSTEM_NO_CODE
@@ -3891,13 +3891,13 @@ msgstr "!!提供されたcode（{2}）がValueSet{0}に含まれていません�
 
 #: Terminology_TX_Confirm_5
 # Terminology_TX_Confirm_5
-msgid "The code provided ({1}) is not in the value set in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable)"
-msgstr "!!提供されたcodeがValueSet{0}に含まれていることを確認できませんでした。適切なコードがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）"
+msgid "The code provided ({1}) is not in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable)"
+msgstr "!!!!提供されたcodeがValueSet{0}に含まれていることを確認できませんでした。適切なコードがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）"
 
 #: Terminology_TX_Confirm_6
 # Terminology_TX_Confirm_6
-msgid "The code provided ({1}) is not in the value set in the value set {0}, and a code is recommended to come from this value set"
-msgstr "!!提供されたcodeがValueSet {0}に含まれていることを確認できませんでした。このValueSetからのcodeが推奨されています"
+msgid "The code provided ({1}) is not in the value set {0}, and a code is recommended to come from this value set"
+msgstr "!!!!提供されたcodeがValueSet {0}に含まれていることを確認できませんでした。このValueSetからのcodeが推奨されています"
 
 #: Terminology_TX_Display_Wrong
 # Terminology_TX_Display_Wrong
@@ -3966,8 +3966,8 @@ msgstr "!!提供された値（''{0}''）はValueSet {1}に含まれていませ
 
 #: Terminology_TX_NoValid_18
 # Terminology_TX_NoValid_18
-msgid "The value provided (''{0}'') was not found in the value set {1}, and a code is recommended to come from this value set){2}"
-msgstr "!!提供された値（''{0}''）はValueSet{1}に含まれていません。このValueSetからのcodeが推奨されています）{2}"
+msgid "The value provided (''{0}'') was not found in the value set {1}, and a code is recommended to come from this value set{2}"
+msgstr "!!!!提供された値（''{0}''）はValueSet{1}に含まれていません。このValueSetからのcodeが推奨されています）{2}"
 
 #: Terminology_TX_NoValid_1_CC
 # Terminology_TX_NoValid_1_CC
@@ -3981,8 +3981,8 @@ msgstr "提供されたcodingのいずれもがValueSet{0}に含まれていま�
 
 #: Terminology_TX_NoValid_3_CC
 # Terminology_TX_NoValid_3_CC
-msgid "None of the codings provided are in the value set {0}, and a coding is recommended to come from this value set) (codes = {1})"
-msgstr "提供されたcodingのいずれもがValueSet{0}に含まれていないません。このValueSetからのcodingが推奨されています）（codes = {1}）"
+msgid "None of the codings provided are in the value set {0}, and a coding is recommended to come from this value set (codes = {1})"
+msgstr "!!提供されたcodingのいずれもがValueSet{0}に含まれていないません。このValueSetからのcodingが推奨されています）（codes = {1}）"
 
 #: Terminology_TX_NoValid_4
 # Terminology_TX_NoValid_4
@@ -4341,7 +4341,7 @@ msgstr ""
 
 #: UNABLE_TO_DETERMINE_TYPE_CONTEXT_INV
 # UNABLE_TO_DETERMINE_TYPE_CONTEXT_INV
-msgid "The types could not be determined from the extension context, so the invariant can't be validated (types = {0})"
+msgid "The types could not be determined from the extension context, so the invariant can''t be validated (types = {0})"
 msgstr ""
 
 #: UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__
@@ -4868,7 +4868,7 @@ msgstr ""
 
 #: VALUESET_BAD_FILTER_VALUE_HAS_COMMA
 # VALUESET_BAD_FILTER_VALUE_HAS_COMMA
-msgid "The filter value has a comma, but the operation is different to 'in' and 'not-in', so the comma will be interpreted as part of the {0} value"
+msgid "The filter value has a comma, but the operation is different to ''in'' and ''not-in'', so the comma will be interpreted as part of the {0} value"
 msgstr ""
 
 #: VALUESET_BAD_FILTER_VALUE_INTEGER
@@ -4958,7 +4958,7 @@ msgstr ""
 
 #: VALUESET_INCLUDE_CS_NOT_CS
 # VALUESET_INCLUDE_CS_NOT_CS
-msgid "The include system ''{0}'' is a reference to a contained resource, but the contained resource with that id is not a CodeSystem, it's a {1}"
+msgid "The include system ''{0}'' is a reference to a contained resource, but the contained resource with that id is not a CodeSystem, it''s a {1}"
 msgstr ""
 
 #: VALUESET_INCLUDE_CS_NOT_FOUND
@@ -4998,8 +4998,8 @@ msgstr "!!value setに大量のcodeが含まれるため、バリデーション
 
 #: VALUESET_NO_SYSTEM_WARNING
 # VALUESET_NO_SYSTEM_WARNING
-msgid "No System specified, so Concepts and Filters can't be checked"
-msgstr "systemが指定されていないため、conceptとfilterは確認できません"
+msgid "No System specified, so Concepts and Filters can''t be checked"
+msgstr "!!systemが指定されていないため、conceptとfilterは確認できません"
 
 #: VALUESET_REFERENCE_INVALID_TYPE
 # VALUESET_REFERENCE_INVALID_TYPE
@@ -5018,8 +5018,8 @@ msgstr "公開されたvalue setsはValueSet.{0}の存在を推奨しているSh
 
 #: VALUESET_SHAREABLE_EXTRA_MISSING_HL7
 # VALUESET_SHAREABLE_EXTRA_MISSING_HL7
-msgid "Published value sets SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} should be present, but it is not"
-msgstr "公開されたvalue setsはValueSet.{0}の存在を推奨しているShareableValueSetプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
+msgid "Value sets published by HL7 SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} should be present, but it is not"
+msgstr "!!公開されたvalue setsはValueSet.{0}の存在を推奨しているShareableValueSetプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
 
 #: VALUESET_SHAREABLE_MISSING
 # VALUESET_SHAREABLE_MISSING
@@ -5028,8 +5028,8 @@ msgstr "公開されたvalue setsはValueSet.{0}の存在を必須としてい�
 
 #: VALUESET_SHAREABLE_MISSING_HL7
 # VALUESET_SHAREABLE_MISSING_HL7
-msgid "Published value sets SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} is mandatory, but it is not present"
-msgstr "公開されたvalue setsはValueSet.{0}の存在を必須としているShareableValueSetプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
+msgid "Value sets published by HL7 SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} is mandatory, but it is not present"
+msgstr "!!公開されたvalue setsはValueSet.{0}の存在を必須としているShareableValueSetプロファイルに準拠しなければなりません(SHALL)が、要素が存在しません。"
 
 #: VALUESET_SUPPLEMENT_MISSING
 # VALUESET_SUPPLEMENT_MISSING
