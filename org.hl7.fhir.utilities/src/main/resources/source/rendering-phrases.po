@@ -128,27 +128,27 @@ msgstr ""
 #: BUNDLE_DOCUMENT_CONTENT
 # BUNDLE_DOCUMENT_CONTENT
 msgid "Additional Document Content"
-msgstr "Contenido adicional del documento"
+msgstr ""
 
 #: BUNDLE_ETAG
 # BUNDLE_ETAG
 msgid "ETag = {0}"
-msgstr "ETag = {0}"
+msgstr ""
 
 #: BUNDLE_HEADER_DOC_ENTRY_RD
 # BUNDLE_HEADER_DOC_ENTRY_RD
 msgid "{0}. {2}/{3}"
-msgstr "{0}. {2}/{3}"
+msgstr ""
 
 #: BUNDLE_HEADER_DOC_ENTRY_U
 # BUNDLE_HEADER_DOC_ENTRY_U
 msgid "{0}. {1}"
-msgstr "{0}. {1}"
+msgstr ""
 
 #: BUNDLE_HEADER_DOC_ENTRY_URD
 # BUNDLE_HEADER_DOC_ENTRY_URD
 msgid "{0}. {1} ({2}/{3})"
-msgstr "{0}. {1} ({2}/{3})"
+msgstr ""
 
 #: BUNDLE_HEADER_ENTRY
 # BUNDLE_HEADER_ENTRY
@@ -178,7 +178,7 @@ msgstr ""
 #: BUNDLE_IF_NONE
 # BUNDLE_IF_NONE
 msgid "If-None-Exist = {0}"
-msgstr "IExist = {0}"
+msgstr ""
 
 #: BUNDLE_IF_NON_MATCH
 # BUNDLE_IF_NON_MATCH
@@ -193,7 +193,7 @@ msgstr ""
 #: BUNDLE_LOCATION
 # BUNDLE_LOCATION
 msgid "Location = {0}"
-msgstr "Lo= {0}"
+msgstr ""
 
 #: BUNDLE_REQUEST
 # BUNDLE_REQUEST
@@ -203,7 +203,7 @@ msgstr ""
 #: BUNDLE_RESOURCE
 # BUNDLE_RESOURCE
 msgid "Resource {0}:"
-msgstr "Rec}:"
+msgstr ""
 
 #: BUNDLE_RESPONSE
 # BUNDLE_RESPONSE
@@ -223,7 +223,7 @@ msgstr ""
 #: BUNDLE_SEARCH
 # BUNDLE_SEARCH
 msgid "Search:"
-msgstr "Búsqueda:"
+msgstr ""
 
 #: BUNDLE_SEARCH_MODE
 # BUNDLE_SEARCH_MODE
@@ -1771,7 +1771,6 @@ msgid "Contained Resource"
 msgid_plural "Contained Resources"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: PAT_DECEASED
 # PAT_DECEASED
@@ -1804,7 +1803,6 @@ msgid "Language:"
 msgid_plural "Languages:"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: PAT_LANG_HINT
 # PAT_LANG_HINT
@@ -1812,7 +1810,6 @@ msgid "Language spoken"
 msgid_plural "Languages spoken"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: PAT_LANG_PREFERRED
 # PAT_LANG_PREFERRED
@@ -1911,7 +1908,6 @@ msgid "Other Id:"
 msgid_plural "Other Ids:"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: PAT_OTHER_ID_HINT
 # PAT_OTHER_ID_HINT
@@ -1919,7 +1915,6 @@ msgid "Other Id (see the one above)"
 msgid_plural "Other Ids (see the one above)"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: PAT_PERIOD
 # PAT_PERIOD
@@ -2683,7 +2678,6 @@ msgid "The element {0} is sliced based on the value of {1}"
 msgid_plural "The element {0} is sliced based on the values of {1}"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: SD_SUMMARY_SLICES
 # SD_SUMMARY_SLICES
@@ -4269,7 +4263,6 @@ msgid "Import all the codes that are contained in"
 msgid_plural "Import all the codes that are contained in the intersection of"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: VALUE_SET_IN
 # VALUE_SET_IN
