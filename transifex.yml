@@ -4,5 +4,4 @@ git:
     file_format: PO
     source_file: org.hl7.fhir.utilities/src/main/resources/source/transifex/rendering-phrases-en.po
     source_language: en
-    source_file_extension: .po
     translation_files_expression: 'org.hl7.fhir.utilities/src/main/resources/source/transifex/rendering-phrases_<lang>.po'
