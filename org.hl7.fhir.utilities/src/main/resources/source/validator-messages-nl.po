@@ -17,7 +17,7 @@ msgstr "Array kan niet leeg zijn - deze eigenschap zou niet aanwezig moeten zijn
 # ATTEMPT_TO_CHANGE_SLICING
 #: ATTEMPT_TO_CHANGE_SLICING
 msgid "The element at {0} defines the slicing {1} but then an element in the slicing {2} tries to redefine the slicing to {3}"
-msgstr "Het element op {0} definieert de slicing {1} maar vervolgens probeert een element in de slicing {2} de slicing opnieuw te definiëren als {3}"
+msgstr "Het element op {0} definieert de slicing {1} maar vervolgens probeert een element in de slicing {2} deze opnieuw te definiëren als {3}"
 
 # Adding_wrong_path
 #: Adding_wrong_path
@@ -671,7 +671,7 @@ msgstr "Bron CodeSystem {0} wordt alleen ondersteund in de terminologieserver du
 #: CONCEPTMAP_GROUP_SOURCE_UNKNOWN
 #| Unknown Source Code System {0}, so the source codes cannot be checked
 msgid "The Source Code System {0} is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed"
-msgstr "Het bron CodeSystem {0} is niet volledig gedefinieerd en gevuld, en er is geen sourceScope gedefinieerd, dus er zal geen controle op bron-codes worden gedaan"
+msgstr "Het bron CodeSystem {0} is niet volledig gedefinieerd en gevuld en er is geen sourceScope gedefinieerd, dus er zal geen controle op bron-codes worden gedaan"
 
 # CONCEPTMAP_GROUP_TARGET_CODE_INVALID
 #: CONCEPTMAP_GROUP_TARGET_CODE_INVALID
@@ -926,7 +926,7 @@ msgstr "Discriminator ({0}) is gebaseerd op type, maar slice {1} in {2} heeft ge
 msgid "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid display is {3} (for the language(s) ''{5}'')"
 msgid_plural "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid display is one of {0} choices: {3} (for the language(s) ''{5}'')"
 msgstr[0] "Verkeerde whitespace in weergavenaam ''{4}'' voor {1}#{2}. Geldige weergave is {3} (voor de taal/talen ''{5}'')"
-msgstr[1] "Verkeerde whitespace in weergavenaam ''{4}'' voor {1}#{2}. Geldige weergave is een van de volgende {0} opties (voor de taal/talen ''{5}'')"
+msgstr[1] "Verkeerde whitespace in weergavenaam ''{4}'' voor {1}#{2}. Geldige weergave is een van de volgende {0} opties: {3} (voor de taal/talen ''{5}'')"
 
 # Display_Name_for__should_be_one_of__instead_of
 #: Display_Name_for__should_be_one_of__instead_of
@@ -1277,7 +1277,7 @@ msgstr "Fout in datumberekening: kan type {0} niet optellen bij {1}"
 # FHIRPATH_ARITHMETIC_QTY
 #: FHIRPATH_ARITHMETIC_QTY
 msgid "Error in date arithmetic: attempt to add a definite quantity duration time unit {0}"
-msgstr "Fout in datumberekening: poging om een eindige hoeveelheid tijdsduur kan type {0} niet afhalen van {1}"
+msgstr "Fout in datumberekening: poging om een eindige quantity duration tijdseenheid erbij op te tellen {0}"
 
 # FHIRPATH_ARITHMETIC_UNIT
 #: FHIRPATH_ARITHMETIC_UNIT
@@ -2912,7 +2912,7 @@ msgstr[1] "Het type {0} staat niet in de lijst met geldige typen {1} in het prof
 # SD_ELEMENT_FIXED_WRONG_TYPE
 #: SD_ELEMENT_FIXED_WRONG_TYPE
 msgid "The base element has a fixed type of ''{0}'', so this element must have a fixed value of the same type, not ''{1}''"
-msgstr "Het basiselement heeft een vast type ''{0}'', dus dit element moet dit zelfde vaste type hebben, niet ''{0}''"
+msgstr "Het basiselement heeft een vast type ''{0}'', dus dit element moet dit zelfde vaste type hebben, niet ‘’{1}’’"
 
 # SD_ELEMENT_NOT_IN_CONSTRAINT
 #: SD_ELEMENT_NOT_IN_CONSTRAINT
@@ -2987,7 +2987,7 @@ msgstr "Snapshot voor {1} element {0} heeft type.code zonder een waarde"
 # SD_OBGLIGATION_INHERITS_PROFILE_NOT_RIGHT_BASE
 #: SD_OBGLIGATION_INHERITS_PROFILE_NOT_RIGHT_BASE
 msgid "The profile ''{0}'' has a different base ''{1}'' from that expected ''{2}''"
-msgstr "Het profile ''{0]'' heeft een andere basis ''{1}'' dan verwacht ''{2}''"
+msgstr "Het profile ‘’{0}’’ heeft een andere basis ''{1}'' dan verwacht ''{2}''"
 
 # SD_OBGLIGATION_INHERITS_PROFILE_NOT_RIGHT_TYPE
 #: SD_OBGLIGATION_INHERITS_PROFILE_NOT_RIGHT_TYPE
@@ -3047,7 +3047,7 @@ msgstr "Het element ''{0}'' is gemarkeerd als obligation-profiel maar de geldigh
 # SD_OBGLIGATION_PROFILE_UNMATCHED
 #: SD_OBGLIGATION_PROFILE_UNMATCHED
 msgid "The element ''{0}'' has no equivalent in the profile ''{1}'' on which this Obligation Profile is based"
-msgstr "Het element ''{0}'' heeft geen equivalent in het profiel ''{0}'' waarop dit obligation-profiel is gebaseerd"
+msgstr "Het element ''{0}'' heeft geen equivalent in het profiel ‘’{1}’’ waarop dit obligation-profiel is gebaseerd"
 
 # SD_PATH_TYPE_MISMATCH
 #: SD_PATH_TYPE_MISMATCH
@@ -4987,7 +4987,7 @@ msgstr "Deze inclusie heeft diverse concepten met weergaven en sommige zonder - 
 # VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
 #: VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
 msgid "This SNOMED-CT based include has some concepts with semantic tags (FSN terms) and some without (preferred terms) - check that this is what is intended  (examples for FSN: {0} and examples for no FSN: {1})"
-msgstr "Deze SNOMED CT-gebaseerde inclusie heeft diverse concepten met semantische markeringen (FSN termen) en sommige zonder (voorkeurstermen) - controleer of dit de intentie was (voorbeelden voor FSN: {0} en voorbeelden zonder FSN: {1)}"
+msgstr "Deze SNOMED CT-gebaseerde inclusie heeft diverse concepten met semantische markeringen (FSN termen) en sommige zonder (voorkeurstermen) - controleer of dit de intentie was (voorbeelden voor FSN: {0} en voorbeelden zonder FSN: {1})"
 
 # VALUESET_EXAMPLE_SYSTEM_ERROR
 #: VALUESET_EXAMPLE_SYSTEM_ERROR
@@ -5074,7 +5074,7 @@ msgstr "Uri-waarden in ValueSet.compose.include.system moeten absoluut zijn. Om 
 # VALUESET_INC_TOO_MANY_CODES
 #: VALUESET_INC_TOO_MANY_CODES
 msgid "The value set include has too many codes to validate ({0}), so each individual code has not been checked"
-msgstr "De waardelijst-inclusie heeft teveel codes om te valideren ({0}), dus niet elke individuele code is gecontroleerd."
+msgstr "De waardelijst-inclusie heeft teveel codes om te valideren ({0}), dus niet elke individuele code is gecontroleerd"
 
 # VALUESET_NO_SYSTEM_WARNING
 #: VALUESET_NO_SYSTEM_WARNING
