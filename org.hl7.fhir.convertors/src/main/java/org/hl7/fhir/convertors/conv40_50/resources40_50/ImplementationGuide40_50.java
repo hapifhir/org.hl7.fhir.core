@@ -350,7 +350,7 @@ public class ImplementationGuide40_50 {
       tgt.setExample(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getProfile().get(0)));
     }
     if (src.getProfile().size() > 1) {
-      for (CanonicalType p: src.getProfile().subList(1, src.getProfile().size()-1)) {
+      for (CanonicalType p: src.getProfile().subList(1, src.getProfile().size())) {
         tgt.addExtension(EXT_IG_DEFINITION_RESOURCE_PROFILE, Canonical40_50.convertCanonical(p));
       }
     }

@@ -320,8 +320,8 @@ public class ImplementationGuide43_50 {
       tgt.setIsExample(true);
       tgt.getProfile().add(Canonical43_50.convertCanonical(src.getExampleCanonicalType()));
     }
-    for (Extension ext: src.getExtensionsByUrl(EXT_IG_DEFINITION_RESOURCE_PROFILE)) {
-      tgt.getProfile().add(Canonical43_50.convertCanonical((org.hl7.fhir.r43.model.CanonicalType)ext.getValue()));
+    for (org.hl7.fhir.r4b.model.Extension ext: src.getExtensionsByUrl(EXT_IG_DEFINITION_RESOURCE_PROFILE)) {
+      tgt.getProfile().add(Canonical43_50.convertCanonical((org.hl7.fhir.r4b.model.CanonicalType)ext.getValue()));
     }
     if (src.hasGroupingId())
       tgt.setGroupingIdElement(Id43_50.convertId(src.getGroupingIdElement()));
@@ -347,7 +347,7 @@ public class ImplementationGuide43_50 {
     if (src.hasProfile())
       tgt.setExample(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getProfile().get(0)));
     if (src.getProfile().size() > 1) {
-      for (CanonicalType p: src.getProfile().subList(1, src.getProfile().size()-1)) {
+      for (CanonicalType p: src.getProfile().subList(1, src.getProfile().size())) {
         tgt.addExtension(EXT_IG_DEFINITION_RESOURCE_PROFILE, Canonical43_50.convertCanonical(p));
       }
     }

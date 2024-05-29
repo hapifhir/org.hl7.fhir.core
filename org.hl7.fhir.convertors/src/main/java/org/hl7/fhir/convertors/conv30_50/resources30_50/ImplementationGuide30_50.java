@@ -22,9 +22,9 @@ import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Enumeration;
 
-static final String EXT_IG_DEFINITION_RESOURCE_PROFILE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.definition.resource.profile";
-
 public class ImplementationGuide30_50 {
+
+  static final String EXT_IG_DEFINITION_RESOURCE_PROFILE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.definition.resource.profile";
 
   public static org.hl7.fhir.dstu3.model.ImplementationGuide convertImplementationGuide(org.hl7.fhir.r5.model.ImplementationGuide src) throws FHIRException {
     if (src == null)
@@ -211,8 +211,8 @@ public class ImplementationGuide30_50 {
       tgt.setExampleFor(Reference30_50.convertCanonicalToReference(src.getProfile().get(0)));
       tgt.setExample(true);
       if (src.getProfile().size() > 1) {
-        for (CanonicalType p: src.getProfile().subList(1, src.getProfile().size()-1)) {
-          tgt.addExtension(EXT_IG_DEFINITION_RESOURCE_PROFILE, Canonical30_50.convertCanonical(p));
+        for (CanonicalType p: src.getProfile().subList(1, src.getProfile().size())) {
+          tgt.addExtension(EXT_IG_DEFINITION_RESOURCE_PROFILE, Reference30_50.convertCanonicalToReference(p));
         }
       }
     } else if (src.hasIsExample())
@@ -234,8 +234,8 @@ public class ImplementationGuide30_50 {
       return null;
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
-    for (Extension ext: src.getExtensionsByUrl(EXT_IG_DEFINITION_RESOURCE_PROFILE)) {
-      tgt.getProfile().add(Canonical30_50.convertCanonical((org.hl7.fhir.r3.model.CanonicalType)ext.getValue()));
+    for (org.hl7.fhir.dstu3.model.Extension ext: src.getExtensionsByUrl(EXT_IG_DEFINITION_RESOURCE_PROFILE)) {
+      tgt.getProfile().add(Reference30_50.convertReferenceToCanonical((org.hl7.fhir.dstu3.model.Reference)ext.getValue()));
     }
     if (src.hasExampleFor()) {
       tgt.getProfile().add(Reference30_50.convertReferenceToCanonical(src.getExampleFor()));
