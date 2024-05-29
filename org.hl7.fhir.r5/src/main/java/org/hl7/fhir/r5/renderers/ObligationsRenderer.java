@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.fhir.ucum.Canonical;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
@@ -146,7 +147,11 @@ public class ObligationsRenderer {
     }
 
     public boolean hasActor(String id) {
-      return actors.contains(new CanonicalType(id));
+      for (CanonicalType actor: actors) {
+        if (actor.getValue().equals(id))
+          return true;
+      }
+      return false;
     }
   }
 
@@ -319,9 +324,20 @@ public class ObligationsRenderer {
 
   private void renderObligationLI(XhtmlNodeList children, ObligationDetail ob) throws IOException {
     renderCodes(children, ob.getCodeList());
-    if (ob.hasFilter() || ob.hasUsage()) {
+    if (ob.hasFilter() || ob.hasUsage() || !ob.elementIds.isEmpty()) {
       children.tx(" (");
       boolean ffirst = !ob.hasFilter();
+      boolean firstEid = true;
+
+      for (String eid: ob.elementIds) {
+        if (firstEid) {
+          children.span().i().tx("Elements: ");
+          firstEid = false;
+        } else
+          children.tx(", ");
+        String trimmedElement = eid.substring(eid.indexOf(".")+ 1);
+        children.tx(trimmedElement);
+      }
       if (ob.hasFilter()) {
         children.span(null, ob.getFilterDesc()).code().tx(ob.getFilter());
       }
