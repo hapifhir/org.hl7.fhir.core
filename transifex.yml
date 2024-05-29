@@ -5,3 +5,12 @@ git:
     source_file: org.hl7.fhir.utilities/src/main/resources/source/transifex/rendering-phrases-en.po
     source_language: en
     translation_files_expression: 'org.hl7.fhir.utilities/src/main/resources/source/transifex/rendering-phrases_<lang>.po'
+
+
+git:
+  filters:
+  - filter_type: dynamic
+    file_format: PO
+    source_language: en
+    source_files_expression: org.hl7.fhir.utilities/src/main/resources/source/transifex/<file>-en.po
+    translation_files_expression: 'org.hl7.fhir.utilities/src/main/resources/source/transifex/translations/<file>-<lang>.po'
