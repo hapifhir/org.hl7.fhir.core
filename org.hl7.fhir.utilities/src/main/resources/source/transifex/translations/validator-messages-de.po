@@ -36,16 +36,19 @@ msgstr "Falscher Pfad im Profil hinzugef\u00fcgt {0}: {1} vs {2}"
 
 # All_observations_should_have_a_performer
 #: All_observations_should_have_a_performer
+#| msgid All observations should have a performer
 msgid "Best Practice Recommendation: In general, all observations should have a performer"
 msgstr "!!Alle Observations sollten einen Performer haben"
 
 # All_observations_should_have_a_subject
 #: All_observations_should_have_a_subject
+#| msgid All observations should have a subject
 msgid "Best Practice Recommendation: In general, all observations should have a subject"
 msgstr "!!Alle Observations sollten ein Subject haben"
 
 # All_observations_should_have_an_effectiveDateTime_or_an_effectivePeriod
 #: All_observations_should_have_an_effectiveDateTime_or_an_effectivePeriod
+#| msgid All observations should have an effectiveDateTime or an effectivePeriod
 msgid "Best Practice Recommendation: In general, all observations should have an effective[x] ({0})"
 msgstr "!!Alle Observations sollten ein effectiveDateTime oder eine effectivePeriode haben"
 
@@ -269,8 +272,8 @@ msgstr "Es konnten keine Typen aus dem Suchstring ermittelt werden, so dass die 
 
 # Bad_file_path_error
 #: Bad_file_path_error
-msgid "\n********************\n* The file name you passed in, ''{0}'', doesn''t exist on the local filesystem.\n* Please verify that this is valid file location.\n********************\n\n"
-msgstr "\n********************\n* Der \u00fcbergebene Dateiname ''{0}'' existiert nicht im lokalen Dateisystem.\n* Bitte \u00fcberpr\u00fcfen Sie, ob dies ein g\u00fcltiger Pfad f\u00fcr die Datei ist.\n********************\n\n"
+msgid "** Error: The file name you passed in, ''{0}'', doesn''t exist on the local filesystem. Please verify that this is valid file location **"
+msgstr "!!\n********************\n* Der \u00fcbergebene Dateiname ''{0}'' existiert nicht im lokalen Dateisystem.\n* Bitte \u00fcberpr\u00fcfen Sie, ob dies ein g\u00fcltiger Pfad f\u00fcr die Datei ist.\n********************\n\n"
 
 # Base__Derived_profiles_have_different_types____vs___
 #: Base__Derived_profiles_have_different_types____vs___
@@ -507,6 +510,7 @@ msgstr ""
 
 # CODESYSTEM_CS_UNK_EXPANSION
 #: CODESYSTEM_CS_UNK_EXPANSION
+#| msgid The code provided ({2}) is not in the expansion in the value set {0}, and a code is required from this value set. The system {1} is unknown.
 msgid "The code provided ({2}) is not in the expansion in the value set {0}, and a code is required from this value set. The system {1} could not be found."
 msgstr "!!Der angegebene Code ({2}) befindet sich nicht in der Expansion im ValueSet {0}, und es wird ein Code aus diesem ValueSet ben\u00f6tigt. Das System {1} ist unbekannt."
 
@@ -597,21 +601,25 @@ msgstr ""
 
 # CODESYSTEM_SHAREABLE_EXTRA_MISSING
 #: CODESYSTEM_SHAREABLE_EXTRA_MISSING
+#| msgid The ShareableCodeSystem profile recommends that the {0} element is populated, but it is not present. Published code systems SHOULD conform to the ShareableCodeSystem profile
 msgid "Published code systems SHOULD conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not"
 msgstr "!!Das ShareableCodeSystem-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es ist nicht vorhanden. Ver\u00f6ffentlichte Codesysteme SOLLTEN mit dem ShareableCodeSystem-Profil \u00fcbereinstimmen"
 
 # CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
 #: CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7
+#| msgid Published code systems SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not
 msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} should be present, but it is not"
 msgstr "!!!!Das ShareableCodeSystem-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Code-Systeme M\u00dcSSEN dem ShareableCodeSystem-Profil entsprechen"
 
 # CODESYSTEM_SHAREABLE_MISSING
 #: CODESYSTEM_SHAREABLE_MISSING
+#| msgid The ShareableCodeSystem profile says that the {0} element is mandatory, but it is not present. Published code systems SHOULD conform to the ShareableCodeSystem profile
 msgid "Published code systems SHOULD conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} is mandatory, but it is not present"
 msgstr "!!Das ShareableCodeSystem-Profil sagt, dass das {0}-Element obligatorisch ist, aber es ist nicht vorhanden. Ver\u00f6ffentlichte Codesysteme SOLLTEN mit dem ShareableCodeSystem-Profil \u00fcbereinstimmen"
 
 # CODESYSTEM_SHAREABLE_MISSING_HL7
 #: CODESYSTEM_SHAREABLE_MISSING_HL7
+#| msgid Published code systems SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} is mandatory, but it is not present
 msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem profile, which says that the element CodeSystem.{0} is mandatory, but it is not present"
 msgstr "!!!!Das ShareableCodeSystem-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Code-Systeme M\u00dcSSEN dem ShareableCodeSystem-Profil entsprechen"
 
@@ -642,6 +650,7 @@ msgstr ""
 
 # CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID
 #: CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID
+#| msgid The source display ''{0}'' is not valid. Possible codes {1}
 msgid "The source display ''{0}'' for the code ''{2}'' is not valid. Possible displays: {1}"
 msgstr "!!Source display ''{0}'' ist nicht g\u00fcltig. M\u00f6gliche Codes {1}"
 
@@ -662,6 +671,7 @@ msgstr ""
 
 # CONCEPTMAP_GROUP_SOURCE_UNKNOWN
 #: CONCEPTMAP_GROUP_SOURCE_UNKNOWN
+#| msgid Unknown Source Code System {0}, so the source codes cannot be checked
 msgid "The Source Code System {0} is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed"
 msgstr "!!Unbekanntes Quellcode-System {0}, daher k\u00f6nnen die Quellcodes nicht \u00fcberpr\u00fcft werden"
 
@@ -677,6 +687,7 @@ msgstr ""
 
 # CONCEPTMAP_GROUP_TARGET_DISPLAY_INVALID
 #: CONCEPTMAP_GROUP_TARGET_DISPLAY_INVALID
+#| msgid The target display ''{0}'' is not valid. Possible displays {1}
 msgid "The target display ''{0}'' for the code ''{2}'' is not valid. Possible displays: {1}"
 msgstr "!!Target display ''{0}'' ist nicht g\u00fcltig. M\u00f6gliche Codes {1}"
 
@@ -712,6 +723,7 @@ msgstr "Da kein System zur Verf\u00fcgung gestellt wurde, kann kein reiner Code 
 
 # CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_UNKNOWN_SYSTEM
 #: CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_UNKNOWN_SYSTEM
+#| msgid The system {0} is unknown, so code values can''t be checked
 msgid "The code system {0} could not be found, so code values can''t be checked"
 msgstr "!!Das System {0} ist unbekannt, daher k\u00f6nnen die Codes nicht \u00fcberpr\u00fcft werden."
 
@@ -722,26 +734,31 @@ msgstr ""
 
 # CONCEPTMAP_GROUP_TARGET_UNKNOWN
 #: CONCEPTMAP_GROUP_TARGET_UNKNOWN
+#| msgid Unknown Target Code System {0}, so the target codes cannot be checked
 msgid "The Target Code System {0} is not fully defined and populated, and no targetScope is specified, so the target code checking will not be performed"
 msgstr "!!Unbekanntes Zielcodesystem {0}, daher k\u00f6nnen die Zielcodes nicht \u00fcberpr\u00fcft werden"
 
 # CONCEPTMAP_SHAREABLE_EXTRA_MISSING
 #: CONCEPTMAP_SHAREABLE_EXTRA_MISSING
+#| msgid The ShareableConceptMap profile recommends that the {0} element is populated, but it is not present. Published concept maps SHOULD conform to the ShareableConceptMap profile
 msgid "Published concept maps SHOULD conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} should be present, but it is not"
 msgstr "!!Das ShareableConceptMap-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es ist nicht vorhanden. Ver\u00f6ffentlichte Concept Maps SOLLTEN mit dem ShareableConceptMap-Profil \u00fcbereinstimmen"
 
 # CONCEPTMAP_SHAREABLE_EXTRA_MISSING_HL7
 #: CONCEPTMAP_SHAREABLE_EXTRA_MISSING_HL7
+#| msgid Published concept maps SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} should be present, but it is not
 msgid "Concept maps published by HL7 SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} should be present, but it is not"
 msgstr "!!!!Das ShareableConceptMap-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Concept Maps M\u00dcSSEN mit dem ShareableConceptMap-Profil \u00fcbereinstimmen"
 
 # CONCEPTMAP_SHAREABLE_MISSING
 #: CONCEPTMAP_SHAREABLE_MISSING
+#| msgid The ShareableConceptMap profile says that the {0} element is mandatory, but it is not present. Published concept maps SHOULD conform to the ShareableConceptMap profile
 msgid "Published concept maps SHOULD conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} is mandatory, but it is not present"
 msgstr "!!Das ShareableConceptMap-Profil sagt, dass das {0}-Element obligatorisch ist, aber es ist nicht vorhanden. Ver\u00f6ffentlichte Concept Maps SOLLTEN mit dem ShareableConceptMap-Profil \u00fcbereinstimmen"
 
 # CONCEPTMAP_SHAREABLE_MISSING_HL7
 #: CONCEPTMAP_SHAREABLE_MISSING_HL7
+#| msgid Published concept maps SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} is mandatory, but it is not present
 msgid "Concept maps published by HL7 SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} is mandatory, but it is not present"
 msgstr "!!!!Das ShareableConceptMap-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Concept Maps M\u00dcSSEN mit dem ShareableConceptMap-Profil \u00fcbereinstimmen"
 
@@ -817,6 +834,7 @@ msgstr "Code in der Erweiterung gefunden, jedoch: {0}"
 
 # Coding_has_no_system__cannot_validate
 #: Coding_has_no_system__cannot_validate
+#| msgid Coding has no system - cannot validate
 msgid "Coding has no system. A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
 msgstr "!!Kodierung hat kein System - kann nicht validiert werden"
 
@@ -1131,6 +1149,7 @@ msgstr "Fehler beim Lesen {0} aus dem Paket {1}#{2}: {3}"
 
 # Error_validating_code_running_without_terminology_services
 #: Error_validating_code_running_without_terminology_services
+#| msgid Error validating code: running without terminology services
 msgid "Unable to validate code ''{0}'' in system ''{1}'' because the validator is running without terminology services"
 msgstr "!!Fehler beim Validieren des Codes: Ausf\u00fchrung ohne Terminologiedienste"
 
@@ -1211,11 +1230,13 @@ msgstr "Unbekannte extension {0}"
 
 # Extension_EXT_Unknown_NotHere
 #: Extension_EXT_Unknown_NotHere
+#| msgid The extension {0} is unknown, and not allowed here
 msgid "The extension {0} could not be found so is not allowed here"
 msgstr "!!Die extension {0} ist nicht bekannt, and hier nicht erlaubt"
 
 # Extension_EXT_Url_NotFound
 #: Extension_EXT_Url_NotFound
+#| msgid Extension.url is required
 msgid "Extension.url is required in order to identify, use and validate the extension"
 msgstr "!!Extension.url ist erforderlich"
 
@@ -1461,6 +1482,7 @@ msgstr "Fehler bei der Auswertung des FHIRPath-Ausdrucks: Die Funktion {0} kann 
 
 # FHIRPATH_NO_TYPE
 #: FHIRPATH_NO_TYPE
+#| msgid Error evaluating FHIRPath expression: The type ''{0}'' is unknown or not supported at {1}
 msgid "Error evaluating FHIRPath expression: No type provided at {1}"
 msgstr "!!Fehler bei der Auswertung des FHIRPath-Ausdrucks: Der Typ ''{0}'' ist unbekannt oder wird nicht unterst\u00fctzt bei {1}"
 
@@ -1537,6 +1559,7 @@ msgstr "Fehler bei der Auswertung des FHIRPath-Ausdrucks: Die Funktion {0} kann 
 
 # FHIRPATH_STRING_SING_ONLY
 #: FHIRPATH_STRING_SING_ONLY
+#| msgid Error evaluating FHIRPath expression: The function {0} can only be used on string, uri, code, id but found {1}
 msgid "Error evaluating FHIRPath expression: The function {0} can only be used on string, uri, url, code, id but found {1}"
 msgstr "!!Fehler bei der Auswertung des FHIRPath-Ausdrucks: Die Funktion {0} kann nur auf string, uri, code, id angewendet werden, aber gefunden {1}"
 
@@ -1622,6 +1645,7 @@ msgstr ""
 
 # INV_FAILED
 #: INV_FAILED
+#| msgid Rule {0} Failed
 msgid "Constraint failed: {0}"
 msgstr "!!Regel {0} fehlgeschlagen"
 
@@ -1642,6 +1666,7 @@ msgstr "Unzul\u00e4ssiger Pfad ''{0}'' in Differential in {1}: unzul\u00e4ssige 
 
 # Illegal_path__in_differential_in__must_start_with_
 #: Illegal_path__in_differential_in__must_start_with_
+#| msgid Invalid path ''{0}'' in differential in {1}: must start with {2}.{3}
 msgid "Invalid path ''{0}'' in input differential in {1}: must start with {2}.{3}"
 msgstr "!!Illegaler Pfad ''{0}'' in Differential in {1}: muss mit {2}.{3} beginnen"
 
@@ -1997,21 +2022,25 @@ msgstr "Eine Measure sollte mindestens eine Gruppe enthalten"
 
 # MEASURE_SHAREABLE_EXTRA_MISSING
 #: MEASURE_SHAREABLE_EXTRA_MISSING
+#| msgid The ShareableMeasure profile recommends that the {0} element is populated, but it is not present. Published measures SHOULD conform to the ShareableMeasure profile
 msgid "Published measures SHOULD conform to the ShareableMeasure profile, which says that the element Measure.{0} should be present, but it is not"
 msgstr "!!Das ShareableMeasure-Profil empfiehlt, dass das Element {0} ausgef\u00fcllt wird, aber es ist nicht vorhanden. Ver\u00f6ffentlichte Ma\u00dfnahmen SOLLTEN mit dem ShareableMeasure-Profil \u00fcbereinstimmen"
 
 # MEASURE_SHAREABLE_EXTRA_MISSING_HL7
 #: MEASURE_SHAREABLE_EXTRA_MISSING_HL7
+#| msgid Published measures SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} should be present, but it is not
 msgid "Measures published by HL7 SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} should be present, but it is not"
 msgstr "!!!!Das ShareableMeasure-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published Measures M\u00dcSSEN dem ShareableMeasure-Profil entsprechen"
 
 # MEASURE_SHAREABLE_MISSING
 #: MEASURE_SHAREABLE_MISSING
+#| msgid The ShareableMeasure profile says that the {0} element is mandatory, but it is not present. Published measures SHOULD conform to the ShareableMeasure profile
 msgid "Published measures SHOULD conform to the ShareableMeasure profile, which says that the element Measure.{0} is mandatory, but it is not present"
 msgstr "!!Das ShareableMeasure-Profil sagt, dass das {0}-Element obligatorisch ist, aber es ist nicht vorhanden. Ver\u00f6ffentlichte Ma\u00dfnahmen SOLLTEN mit dem ShareableMeasure-Profil \u00fcbereinstimmen"
 
 # MEASURE_SHAREABLE_MISSING_HL7
 #: MEASURE_SHAREABLE_MISSING_HL7
+#| msgid Published measures SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} is mandatory, but it is not present
 msgid "Measures published by HL7 SHALL conform to the ShareableMeasure profile, which says that the element Measure.{0} is mandatory, but it is not present"
 msgstr "!!!!Das ShareableMeasure-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published Measures M\u00dcSSEN dem ShareableMeasure-Profil entsprechen"
 
@@ -2359,6 +2388,7 @@ msgstr[1] "Profilbasierte Diskriminatoren d\u00fcrfen nur einen Typ ({1} im Prof
 
 # QUESTIONNAIRE_QR_ITEM_BADOPTION_CS
 #: QUESTIONNAIRE_QR_ITEM_BADOPTION_CS
+#| msgid The code provided {1} cannot be validated in the options value set ({2}) in the questionnaire because the system {0} is unknown
 msgid "The code provided {1} cannot be validated in the options value set ({2}) in the questionnaire because the system {0} could not be found"
 msgstr "!!Der angegebene Code {1} kann im ValueSet der Optionen ({2}) im Fragebogen nicht validiert werden, da das System {0} unbekannt ist"
 
@@ -2449,6 +2479,7 @@ msgstr ""
 
 # Questionnaire_QR_Item_BadOption
 #: Questionnaire_QR_Item_BadOption
+#| msgid The code provided {1} in the system {0}) is not in the options value set ({2}) in the questionnaire: {3}
 msgid "The code ''{1}'' in the system ''{0}'' is not in the options value set ({2}) specified by the questionnaire. Terminology Error: {3}"
 msgstr "!!Der angegebene Wert ({0}::{1}) ist nicht in den im Fragebogen gesetzten options value set enthalten."
 
@@ -2794,6 +2825,7 @@ msgstr "Der Typ {0} muss derselbe sein wie der Typ in der Basisstruktur {1}, die
 
 # SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
 #: SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
+#| msgid Review the extension type: extensions should not have a context of {0} unless it''s really intended that they can be used anywhere
 msgid "Review the extension type for {1}: extensions should not have a context of {0} unless it''s really intended that they can be used anywhere"
 msgstr "!!\u00dcberpr\u00fcfen Sie den Erweiterungstyp: Extensions sollten nicht den Kontext {0} haben, es sei denn, es ist wirklich beabsichtigt, dass sie \u00fcberall verwendet werden k\u00f6nnen."
 
@@ -3054,6 +3086,31 @@ msgstr "!!Der Typ {0} kann nur definiert werden, wenn die Art 'logisch' ist, nic
 msgid "The type namespace {0} SHOULD match the url namespace {1} for the definition of the type"
 msgstr "Der Typ-Namensraum {0} SOLLTE mit dem Url-Namensraum {1} f\u00fcr die Definition des Typs \u00fcbereinstimmen"
 
+# SD_TYPE_PARAMETER_INVALID
+#: SD_TYPE_PARAMETER_INVALID
+msgid "The type definition ''{2}'' has a type parameter ''{3}'', which is not consistent with it''s ancestor type definition ''{0}'' which has the type parameter ''{1}''"
+msgstr ""
+
+# SD_TYPE_PARAMETER_INVALID_REF
+#: SD_TYPE_PARAMETER_INVALID_REF
+msgid "The type ''{0}'' is a reference to ''{1}'' which has a type parameter ''{2}'' with a base type of {3} but the type parameter provided is ''{4}'' which is not the right type"
+msgstr ""
+
+# SD_TYPE_PARAMETER_MISSING
+#: SD_TYPE_PARAMETER_MISSING
+msgid "The type definition ''{2}'' does not declare a type parameter, but it is derived from the type definition ''{0}'' which has the type parameter ''{1}''"
+msgstr ""
+
+# SD_TYPE_PARAMETER_UNKNOWN
+#: SD_TYPE_PARAMETER_UNKNOWN
+msgid "The type definition ''{0}'' has the type parameter ''{1}'' but it is not a known type so derivation consistency cannot be checked"
+msgstr ""
+
+# SD_TYPE_PARAM_NOT_SPECIFIED
+#: SD_TYPE_PARAM_NOT_SPECIFIED
+msgid "The type ''{0}'' at {3} is a reference to ''{1}'' which needs a type parameter ''{2}'' but a type parameter is not provided for ''{2}''"
+msgstr ""
+
 # SD_VALUE_COMPLEX_FIXED
 #: SD_VALUE_COMPLEX_FIXED
 msgid "For the complex type {0}, consider using a pattern rather than a fixed value to avoid over-constraining the instance"
@@ -3146,11 +3203,13 @@ msgstr "Der Gruppenparameter {0} Modus {1} ist nicht g\u00fcltig"
 
 # SM_GROUP_INPUT_MODE_MISMATCH
 #: SM_GROUP_INPUT_MODE_MISMATCH
+#| msgid The type {0} has mode {1} which doesn''t match the structure definition {2}
 msgid "The type ''{0}'' has mode ''{1}'' which doesn''t match the structure definition mode of ''{2}''"
 msgstr "!!Der Typ {0} hat den Modus {1}, der nicht mit der Strukturdefinition {2} \u00fcbereinstimmt."
 
 # SM_GROUP_INPUT_NO_TYPE
 #: SM_GROUP_INPUT_NO_TYPE
+#| msgid The group parameter {0} has no type, so the paths cannot be validated
 msgid "Group {1} parameter {0} has no type, so the paths cannot be validated"
 msgstr "!!Der Gruppenparameter {0} hat keinen Typ, daher k\u00f6nnen die Pfade nicht validiert werden"
 
@@ -3206,6 +3265,7 @@ msgstr "Eine Liste ruleId sollte nicht angegeben werden, da es sich um eine Rege
 
 # SM_ORPHAN_GROUP
 #: SM_ORPHAN_GROUP
+#| msgid The group {0} is not called from within this mapping script, and does not have types on it''s inputs, so type verification is not possible
 msgid "The group {0} is not called successfully from within this mapping script, and does not have types on it''s inputs, so type verification is not possible"
 msgstr "!!Die Gruppe {0} wird nicht von diesem Mapping-Skript aus aufgerufen und hat keine Typen f\u00fcr ihre Inputs definiert, so dass eine Typenpr\u00fcfung nicht m\u00f6glich ist"
 
@@ -3401,7 +3461,7 @@ msgstr "Der erzeugte Snapshot hat eine andere Anzahl von Elementen {1} als der u
 
 # SNAPSHOT_IS_EMPTY
 #: SNAPSHOT_IS_EMPTY
-msgid "The snapshot for the profile ''{0}'' is empty. This is usually due to a processing logged elsewhere"
+msgid "The snapshot for the profile ''{0}'' is empty. This is usually due to a processing error logged elsewhere"
 msgstr ""
 
 # STATUS_CODE_HINT
@@ -3486,6 +3546,7 @@ msgstr ""
 
 # TERMINOLOGY_TX_SYSTEM_NO_CODE
 #: TERMINOLOGY_TX_SYSTEM_NO_CODE
+#| msgid A code with no system has no defined meaning. A system should be provided
 msgid "A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
 msgstr "!!Ein Code ohne System hat keine definierte Bedeutung. Es sollte ein System angegeben werden"
 
@@ -3811,6 +3872,7 @@ msgstr "Kein Typ-Spezifikator matcht, und der zugrunde liegende Typ {0} ist nich
 
 # Terminology_PassThrough_TX_Message
 #: Terminology_PassThrough_TX_Message
+#| msgid {0} for ''{1}#{2}''
 msgid "{0} (for ''{1}#{2}'')"
 msgstr "!!{0} f\u00fcr ''{1}#{2}''"
 
@@ -3831,6 +3893,7 @@ msgstr "Binding f\u00fcr {0} fehlt"
 
 # Terminology_TX_Binding_NoServer
 #: Terminology_TX_Binding_NoServer
+#| msgid The value provided could not be validated in the absence of a terminology server
 msgid "The value provided ([{0}]) could not be validated in the absence of a terminology server"
 msgstr "!!Der angegebene Wert konnte in Ermangelung eines Terminologieservers nicht validiert werden"
 
@@ -3886,16 +3949,19 @@ msgstr "Konnte nicht best\u00e4tigen, dass die angegebenen Codes im ValueSet {0}
 
 # Terminology_TX_Confirm_4a
 #: Terminology_TX_Confirm_4a
+#| msgid The code provided ({2}) is not in the value set {0}, and a code from this value set is required: {1}
 msgid "The code provided ({2}) was not found in the value set {0}, and a code from this value set is required: {1}"
 msgstr "!!Der angegebene Code ({2}) befindet sich nicht im ValueSet {0}, und es wird ein Code aus diesem ValueSet ben\u00f6tigt: {1}"
 
 # Terminology_TX_Confirm_5
 #: Terminology_TX_Confirm_5
+#| msgid The code provided ({1}) is not in the value set in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable)
 msgid "The code provided ({1}) is not in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable)"
 msgstr "!!!!Konnte nicht best\u00e4tigen, dass die angegebenen Codes im ValueSet {0} enthalten sind, und ein Code sollte aus diesem ValueSet stammen. Es sei denn, er hat enth\u00e4lt keinen geeigneten Code"
 
 # Terminology_TX_Confirm_6
 #: Terminology_TX_Confirm_6
+#| msgid The code provided ({1}) is not in the value set in the value set {0}, and a code is recommended to come from this value set
 msgid "The code provided ({1}) is not in the value set {0}, and a code is recommended to come from this value set"
 msgstr "!!!!Konnte nicht best\u00e4tigen, dass die angegebenen Codes im ValueSet {0} enthalten sind, und es wird empfohlen, einen Code aus diesem ValueSet zu verwenden."
 
@@ -3936,16 +4002,19 @@ msgstr "Der bereitgestellte Code ist nicht im maximum value set {0}, und ein Cod
 
 # Terminology_TX_NoValid_12
 #: Terminology_TX_NoValid_12
+#| msgid The Coding provided ({2}) is not in the value set {0}, and a code is required from this value set. {1}
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code is required from this value set. {1}"
 msgstr "!!Die angegebene Codierung ist nicht im ValueSet {0} enthalten, und es wird ein Code aus diesem ValueSet ben\u00f6tigt. {1}"
 
 # Terminology_TX_NoValid_13
 #: Terminology_TX_NoValid_13
+#| msgid The Coding provided ({2}) is not in the value set {0}, and a code should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable). {1}
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable). {1}"
 msgstr "!!Die bereitgestellte Codierung ist nicht im ValueSet {0} enthalten, und ein Code sollte aus diesem ValueSet stammen, es sei denn, er hat enth\u00e4lt geeigneten Code. {1}"
 
 # Terminology_TX_NoValid_14
 #: Terminology_TX_NoValid_14
+#| msgid The Coding provided ({2}) is not in the value set {0}, and a code is recommended to come from this value set. {1}
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code is recommended to come from this value set. {1}"
 msgstr "!!Die angegebene Codierung ist nicht im ValueSet {0} enthalten, und es wird empfohlen, einen Code aus diesem ValueSet zu verwenden. {1}"
 
@@ -3956,16 +4025,19 @@ msgstr "Der angegebene Wert (''{0}'') konnte in Ermangelung eines Terminologiese
 
 # Terminology_TX_NoValid_16
 #: Terminology_TX_NoValid_16
+#| msgid The value provided (''{0}'') is not in the value set {1}, and a code is required from this value set){2}
 msgid "The value provided (''{0}'') was not found in the value set {1}, and a code is required from this value set {2}"
 msgstr "!!Der angegebene Wert (''{0}'') ist nicht im ValueSet {1}, und ein Code aus diesem Valueset ist erforderlich){2}"
 
 # Terminology_TX_NoValid_17
 #: Terminology_TX_NoValid_17
+#| msgid The value provided (''{0}'') is not in the value set {1}, and a code should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable) {2}
 msgid "The value provided (''{0}'') was not found in the value set {1}, and a code should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable) {2}"
 msgstr "!!Der angegebene Wert (''{0}'') ist nicht im Valueset {1}, und ein Code sollte aus diesem Valueset stammen, es sei denn, er hat enth\u00e4lt geeigneten Code){2}"
 
 # Terminology_TX_NoValid_18
 #: Terminology_TX_NoValid_18
+#| msgid The value provided (''{0}'') was not found in the value set {1}, and a code is recommended to come from this value set){2}
 msgid "The value provided (''{0}'') was not found in the value set {1}, and a code is recommended to come from this value set{2}"
 msgstr "!!!!Der angegebene Wert (''{0}'') ist nicht im Valueset {1}, und es wird empfohlen, einen Code aus diesem Valueset zu verwenden){2}"
 
@@ -3986,16 +4058,19 @@ msgstr "!!Keiner der angegebenen Codes ist im Valueset {0}, und es wird empfohle
 
 # Terminology_TX_NoValid_4
 #: Terminology_TX_NoValid_4
+#| msgid The Coding provided ({2}) is not in the value set {0}, and a code is required from this value set {1}
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code is required from this value set {1}"
 msgstr "!!Die bereitgestellte Codierung ist nicht im Valueset {0}, und es wird ein Code aus diesem Valueset ben\u00f6tigt{1}"
 
 # Terminology_TX_NoValid_5
 #: Terminology_TX_NoValid_5
+#| msgid The Coding provided ({2}) is not in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable) {1}
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable) {1}"
 msgstr "!!Die angegebene Codierung ist nicht im Valueset {0}, und ein Code sollte aus diesem Valueset stammen, es sei denn, er enth\u00e4lt keinen geeigneten Code{1}"
 
 # Terminology_TX_NoValid_6
 #: Terminology_TX_NoValid_6
+#| msgid The Coding provided ({2}) is not in the value set {0}, and a code is recommended to come from this value set {1}
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code is recommended to come from this value set {1}"
 msgstr "!!Die bereitgestellte Codierung ist nicht im Valueset {0} enthalten, und es wird empfohlen, einen Code aus diesem Valueset zu verwenden{1}"
 
@@ -4011,6 +4086,7 @@ msgstr "Keiner der bereitgestellten Codes befindet sich im maximum value sete {0
 
 # Terminology_TX_NoValid_9
 #: Terminology_TX_NoValid_9
+#| msgid The code provided could not be validated against the maximum value set {0}, (error = {1})
 msgid "The code provided ({2}) could not be validated against the maximum value set {0}, (error = {1})"
 msgstr "!!Der bereitgestellte Code konnte nicht gegen das the maximum value set {0} validiert werden, (Fehler = {1})"
 
@@ -4041,11 +4117,13 @@ msgstr "Die Codierung bezieht sich auf ein ValueSet, nicht auf ein Codesystem ('
 
 # Terminology_TX_ValueSet_NotFound
 #: Terminology_TX_ValueSet_NotFound
+#| msgid ValueSet {0} not found by validator
 msgid "ValueSet ''{0}'' not found"
 msgstr "!!ValueSet {0} vom Validator nicht gefunden"
 
 # Terminology_TX_ValueSet_NotFound_CS
 #: Terminology_TX_ValueSet_NotFound_CS
+#| msgid Found a reference to a CodeSystem ({0}) where a ValueSet belongs
 msgid "Found a reference to a CodeSystem ''{0}'' where a ValueSet belongs"
 msgstr "!!Ein Verweis auf ein CodeSystem ({0}) gefunden wo ein ValueSet vorgeschrieben ist"
 
@@ -4061,6 +4139,7 @@ msgstr "Der base snapshot markiert ein Slicing als closed, aber das Differential
 
 # This__cannot_be_parsed_as_a_FHIR_object_no_namespace
 #: This__cannot_be_parsed_as_a_FHIR_object_no_namespace
+#| msgid This ''{0}'' cannot be parsed as a FHIR object (no namespace)
 msgid "This ''{0}'' cannot be parsed (no namespace on the XML Root element)"
 msgstr "!!Dieses ''{0}2 kann nicht als FHIR-Objekt geparst werden (kein Namensraum)."
 
@@ -4071,21 +4150,25 @@ msgstr "Diese Basiseigenschaft muss ein Array sein, nicht {0}"
 
 # This_cannot_be_parsed_as_a_FHIR_object_no_name
 #: This_cannot_be_parsed_as_a_FHIR_object_no_name
+#| msgid This cannot be parsed as a FHIR object (no name)
 msgid "This content cannot be parsed (no name)"
 msgstr "!!Dies kann nicht als FHIR-Objekt geparst werden (kein Name)"
 
 # This_does_not_appear_to_be_a_FHIR_resource_unknown_name_
 #: This_does_not_appear_to_be_a_FHIR_resource_unknown_name_
+#| msgid This does not appear to be a FHIR resource (unknown name ''{0}'')
 msgid "This content cannot be parsed (unknown or unrecognized resource name ''{0}'')"
 msgstr "!!Dies scheint keine FHIR-Ressource zu sein (unbekannter Name ''{0}'')"
 
 # This_does_not_appear_to_be_a_FHIR_resource_unknown_namespacename_
 #: This_does_not_appear_to_be_a_FHIR_resource_unknown_namespacename_
+#| msgid This does not appear to be a FHIR resource (unknown namespace/name ''{0}::{1}'')
 msgid "This content cannot be parsed (unknown or unrecognized XML Root element namespace/name ''{0}::{1}'')"
 msgstr "!!Dies scheint keine FHIR-Ressource zu sein (unbekannter Namensraum/Name ''{0}::{1}'')"
 
 # This_element_does_not_match_any_known_slice_
 #: This_element_does_not_match_any_known_slice_
+#| msgid This element does not match any known slice {0}
 msgid "This element does not match any known slice {0} (this may not be a problem, but you should check that it''s not intended to match a slice)"
 msgstr "!!Dieses Element stimmt mit keinem bekannten Slice{0} \u00fcberein."
 
@@ -4351,6 +4434,7 @@ msgstr "System {0} Property Filter mit op = {1} kann nicht verarbeitet werden"
 
 # UNABLE_TO_INFER_CODESYSTEM
 #: UNABLE_TO_INFER_CODESYSTEM
+#| msgid The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'' (UNABLE_TO_INFER_CODESYSTEM)
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}''"
 msgstr "!!!!!!!!!!!!!!!!Die System-URI konnte f\u00fcr den Code {0} im ValueSet {1} nicht ermittelt werden"
 
@@ -4366,11 +4450,13 @@ msgstr "Das Codesystem {1}, auf das sich das ValueSet {0} bezieht, verf\u00fcgt 
 
 # UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED
 #: UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED
+#| msgid The Unicode sequence has bi-di control characters which are not allowed in this context: {1}
 msgid "The Unicode sequence has bi-di control characters which are not allowed in this context: {0}"
 msgstr "!!Die Unicode-Sequenz enth\u00e4lt bidirektionale Steuerzeichen, die in diesem Zusammenhang nicht zul\u00e4ssig sind: {1}"
 
 # UNICODE_BIDI_CONTROLS_CHARS_MATCH
 #: UNICODE_BIDI_CONTROLS_CHARS_MATCH
+#| msgid The Unicode sequence has unterminated bi-di control characters (see CVE-2021-42574): {1}
 msgid "The Unicode sequence has unterminated bi-di control characters (see CVE-2021-42574): {0}"
 msgstr "!!Die Unicode-Sequenz hat unterminierte bi-di Steuerzeichen (siehe CVE-2021-42574): {1}"
 
@@ -4383,11 +4469,13 @@ msgstr[1] ""
 
 # UNKNOWN_CODESYSTEM
 #: UNKNOWN_CODESYSTEM
+#| msgid A definition for CodeSystem ''{0}'' could not be found, so the code cannot be validated (UNKNOWN_CODESYSTEM)
 msgid "A definition for CodeSystem ''{0}'' could not be found, so the code cannot be validated"
 msgstr "!!!!!!!!Das CodeSystem {0} ist unbekannt"
 
 # UNKNOWN_CODESYSTEM_VERSION
 #: UNKNOWN_CODESYSTEM_VERSION
+#| msgid The CodeSystem {0} version {1} is unknown. Valid versions: {2}
 msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. Valid versions: {2}"
 msgstr "!!Das CodeSystem {0} Version {1} ist unbekannt. G\u00fcltige Versionen: {2}"
 
@@ -4418,11 +4506,13 @@ msgstr "Nicht unterst\u00fctzte Eigenschaft {3} auf Typ {2} f\u00fcr Pattern des
 
 # Unable_to_connect_to_terminology_server
 #: Unable_to_connect_to_terminology_server
+#| msgid Unable to connect to terminology server. Error = {0}
 msgid "Unable to connect to terminology server at {1}. Error = {0}"
 msgstr "!!Verbindung zum Terminologieserver kann nicht hergestellt werden. Fehler = {0}"
 
 # Unable_to_connect_to_terminology_server_Use_parameter_tx_na_tun_run_without_using_terminology_services_to_validate_LOINC_SNOMED_ICDX_etc_Error__
 #: Unable_to_connect_to_terminology_server_Use_parameter_tx_na_tun_run_without_using_terminology_services_to_validate_LOINC_SNOMED_ICDX_etc_Error__
+#| msgid Unable to connect to terminology server. Use parameter ''-tx n/a'' to run without using terminology services to validate LOINC, SNOMED, ICD-X etc. Error = {0}
 msgid "Unable to connect to terminology server at {1}. Use parameter ''-tx n/a'' to run without using terminology services to validate LOINC, SNOMED, ICD-X etc. Error = {0}"
 msgstr "!!Keine Verbindung zum Terminologieserver m\u00f6glich. Verwenden Sie den Parameter ''-tx n/a'' um ohne Verwendung von Terminologiediensten zu laufen welche LOINC, SNOMED, ICD-X usw. zu validieren. Fehler = {0}"
 
@@ -4538,16 +4628,19 @@ msgstr "System nicht aufl\u00f6sbar - kein ValueSet"
 
 # Unable_to_resolve_system__value_set_expansion_has_multiple_systems
 #: Unable_to_resolve_system__value_set_expansion_has_multiple_systems
+#| msgid Unable to resolve system - value set expansion has multiple systems
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set expansion has multiple systems"
 msgstr "!!System nicht aufl\u00f6sbar - Extension des ValueSets enth\u00e4lt mehrere Systeme"
 
 # Unable_to_resolve_system__value_set_has_imports
 #: Unable_to_resolve_system__value_set_has_imports
+#| msgid Unable to resolve system - value set has imports
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set has imports"
 msgstr "!!System nicht aufl\u00f6sbar - ValueSet enth\u00e4lt Importe"
 
 # Unable_to_resolve_system__value_set_has_include_with_filter
 #: Unable_to_resolve_system__value_set_has_include_with_filter
+#| msgid The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': include #{2} has a filter on system {3}
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': include #{2} has a filter on system {3}: {4}"
 msgstr "!!!!System kann nicht aufgel\u00f6st werden - ValueSet {0} include #{1} hat einen Filter auf System {2}"
 
@@ -4558,21 +4651,25 @@ msgstr "System nicht aufl\u00f6sbar - ValueSet enth\u00e4lt Include ohne System"
 
 # Unable_to_resolve_system__value_set_has_include_with_unknown_system
 #: Unable_to_resolve_system__value_set_has_include_with_unknown_system
+#| msgid Unable to resolve system - value set {0} include #{1} has system {2} which is unknown, and the server return error {3}
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': include #{2} has system {3} which could not be found, and the server returned error {4}"
 msgstr "!!System kann nicht aufgel\u00f6st werden - ValueSet {0} include #{1} hat System {2}, das unbekannt ist, und der Server liefert Fehler {3}"
 
 # Unable_to_resolve_system__value_set_has_multiple_matches
 #: Unable_to_resolve_system__value_set_has_multiple_matches
+#| msgid Unable to resolve system - value set expansion has multiple matches: {0}
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set expansion has multiple matches: {2}"
 msgstr "!!System kann nicht aufgel\u00f6st werden - ValueSet-Expansion der Wertemenge hat mehrere \u00dcbereinstimmungen: {0}"
 
 # Unable_to_resolve_system__value_set_has_no_includes_or_expansion
 #: Unable_to_resolve_system__value_set_has_no_includes_or_expansion
+#| msgid Unable to resolve system - value set {0} has no includes or expansion
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set has no includes or expansion"
 msgstr "!!System nicht aufl\u00f6sbar - ValueSet enth\u00e4lt keine Includes oder Extensions"
 
 # Unable_to_resolve_value_Set_
 #: Unable_to_resolve_value_Set_
+#| msgid Unable to resolve value Set {0}
 msgid "A definition for the value Set ''{0}'' could not be found"
 msgstr "!!ValueSet {0} kann nicht gefunden werden"
 
@@ -4588,6 +4685,7 @@ msgstr "Undefiniertes Attribut ''@{0}'' auf {1} f\u00fcr Typ {2} (properties = {
 
 # Undefined_element_
 #: Undefined_element_
+#| msgid Undefined element ''{0}''
 msgid "Undefined element ''{0}'' at {1}"
 msgstr "!!Undefiniertes Element ''{0}''"
 
@@ -4643,11 +4741,13 @@ msgstr "Unbekannter Typ {0} bei {1}"
 
 # Unrecognised_extension_context_
 #: Unrecognised_extension_context_
+#| msgid Unrecognised extension context {0}
 msgid "Unrecognized extension context {0}"
 msgstr "!!Unerkannter Erweiterungskontext {0}"
 
 # Unrecognised_predicate_
 #: Unrecognised_predicate_
+#| msgid Unrecognised predicate ''{0}''
 msgid "Unrecognized predicate ''{0}''"
 msgstr "!!Nicht anerkanntes predicate ''{0}''"
 
@@ -4808,16 +4908,19 @@ msgstr "Profil ist f\u00fcr diese Version von FHIR, aber ist ein ung\u00fcltiger
 
 # VALIDATION_VAL_PROFILE_UNKNOWN_ERROR
 #: VALIDATION_VAL_PROFILE_UNKNOWN_ERROR
+#| msgid Profile reference ''{0}'' has not been checked because it is unknown, and fetching it resulted in the error {1}
 msgid "Profile reference ''{0}'' has not been checked because it could not be found, and fetching it resulted in the error {1}"
 msgstr "!!Die Profilreferenz ''{0}'' wurde nicht gepr\u00fcft, da sie unbekannt ist, und das Abrufen f\u00fchrte zu dem Fehler {1}"
 
 # VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK
 #: VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK
+#| msgid Profile reference ''{0}'' has not been checked because it is unknown, and the host {1} cannot be found
 msgid "Profile reference ''{0}'' has not been checked because it could not be found, and the host {1} cannot be found"
 msgstr "!!Profilreferenz ''{0}'' wurde nicht gepr\u00fcft, da sie unbekannt ist, und der Host {1} kann nicht gefunden werden"
 
 # VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY
 #: VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY
+#| msgid Profile reference ''{0}'' has not been checked because it is unknown, and the validator is set to not fetch unknown profiles
 msgid "Profile reference ''{0}'' has not been checked because it could not be found, and the validator is set to not fetch unknown profiles"
 msgstr "!!Die Profilreferenz ''{0}'' wurde nicht gepr\u00fcft, weil sie unbekannt ist und der Validator so eingestellt ist, dass er keine unbekannten Profile abruft."
 
@@ -4973,11 +5076,13 @@ msgstr ""
 
 # VALUESET_INCLUDE_INVALID_CONCEPT_CODE
 #: VALUESET_INCLUDE_INVALID_CONCEPT_CODE
+#| msgid The code {1} is not valid in the system {0}
 msgid "The code ''{1}'' is not valid in the system {0} ({2})"
 msgstr "!!Der Code {1} ist im System {0} nicht g\u00fcltig"
 
 # VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER
 #: VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER
+#| msgid The code {2} is not valid in the system {0} version {1}
 msgid "The code ''{2}'' is not valid in the system {0} version {1} ({2})"
 msgstr "!!Der Code {2} ist im System {0} Version {1} nicht g\u00fcltig"
 
@@ -5013,21 +5118,25 @@ msgstr "Der ValueSet-Import {0} konnte nicht gefunden werden und kann daher nich
 
 # VALUESET_SHAREABLE_EXTRA_MISSING
 #: VALUESET_SHAREABLE_EXTRA_MISSING
+#| msgid The ShareableValueSet profile recommends that the {0} element is populated, but it is not present. Published value sets SHOULD conform to the ShareableValueSet profile
 msgid "Published value sets SHOULD conform to the ShareableValueSet profile, which says that the element ValueSet.{0} should be present, but it is not"
 msgstr "!!Das ShareableValueSet-Profil empfiehlt, dass das Element {0} gef\u00fcllt wird, aber es ist nicht vorhanden. Ver\u00f6ffentlichte ValueSets SOLLTEN mit dem ShareableValueSet-Profil \u00fcbereinstimmen"
 
 # VALUESET_SHAREABLE_EXTRA_MISSING_HL7
 #: VALUESET_SHAREABLE_EXTRA_MISSING_HL7
+#| msgid Published value sets SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} should be present, but it is not
 msgid "Value sets published by HL7 SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} should be present, but it is not"
 msgstr "!!!!Das ShareableValueSet-Profil empfiehlt, dass das Element {0} bef\u00fcllt wird, aber es wird nicht gefunden. HL7 Published ValueSets M\u00dcSSEN mit dem ShareableValueSet-Profil \u00fcbereinstimmen"
 
 # VALUESET_SHAREABLE_MISSING
 #: VALUESET_SHAREABLE_MISSING
+#| msgid The ShareableValueSet profile says that the {0} element is mandatory, but it is not present. Published value sets SHOULD conform to the ShareableValueSet profile
 msgid "Published value sets SHOULD conform to the ShareableValueSet profile, which says that the element ValueSet.{0} is mandatory, but it is not present"
 msgstr "!!Das ShareableValueSet-Profil sagt, dass das {0}-Element obligatorisch ist, aber es ist nicht vorhanden. Ver\u00f6ffentlichte ValueSets SOLLTEN mit dem ShareableValueSet-Profil \u00fcbereinstimmen"
 
 # VALUESET_SHAREABLE_MISSING_HL7
 #: VALUESET_SHAREABLE_MISSING_HL7
+#| msgid Published value sets SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} is mandatory, but it is not present
 msgid "Value sets published by HL7 SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} is mandatory, but it is not present"
 msgstr "!!!!Das ShareableValueSet-Profil sagt, dass das {0}-Element obligatorisch ist, aber es wird nicht gefunden. HL7 Published ValueSets M\u00dcSSEN mit dem ShareableValueSet-Profil \u00fcbereinstimmen"
 
@@ -5040,6 +5149,7 @@ msgstr[1] ""
 
 # VALUESET_TOO_COSTLY
 #: VALUESET_TOO_COSTLY
+#| msgid The value set {0} has too many codes to display ({1})
 msgid "The value set ''{0}'' expansion has too many codes to display ({1})"
 msgstr "!!Das ValueSet {0} hat zu viele Codes f\u00fcr die Anzeige ({1})"
 
@@ -5080,6 +5190,7 @@ msgstr "Der erste Eintrag in einer Nachricht muss ein MessageHeader sein"
 
 # Validation_VAL_Content_Unknown
 #: Validation_VAL_Content_Unknown
+#| msgid Unrecognised Content {0}
 msgid "Unrecognized Content {0}"
 msgstr "!!Unerkannter Inhalt {0}"
 
@@ -5152,6 +5263,7 @@ msgstr "StructureDefinition hat keinen Snapshot - die Validierung erfolgt gegen 
 
 # Validation_VAL_Profile_NoType
 #: Validation_VAL_Profile_NoType
+#| msgid The type of element {0} is not known, which is invalid. Valid types at this point are {1}
 msgid "The type of element {0} is not known - it could not be determined from the information available. Valid types at this point are {1}"
 msgstr "!!Der Typ des Elements {0} ist nicht bekannt, was illegal ist. G\u00fcltige Typen an dieser Stelle sind {1}"
 
@@ -5177,6 +5289,7 @@ msgstr "Durch das Profil {0} spezifiziert, ist das Element ''{1}'' an der falsch
 
 # Validation_VAL_Profile_Unknown
 #: Validation_VAL_Profile_Unknown
+#| msgid Profile reference ''{0}'' has not been checked because it is unknown
 msgid "Profile reference ''{0}'' has not been checked because it could not be found"
 msgstr "!!Profil Reference ''{0}'' konnte nicht aufgel\u00f6st werden, wurde also nicht \u00fcberpr\u00fcft"
 
@@ -5269,6 +5382,7 @@ msgstr "Fehlerhaftes XHTML: Es wurde eine DocType-Deklaration gefunden, die nich
 
 # XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA
 #: XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA
+#| msgid Invalid element name inside in a paragraph in the XHTML (''{0}'')
 msgid "Invalid element name inside a paragraph in the XHTML (''{0}'')"
 msgstr "!!Ung\u00fcltiger Elementname innerhalb eines Absatzes im XHTML (''{0}'')"
 
@@ -5309,6 +5423,7 @@ msgstr ""
 
 # _DT_Fixed_Wrong
 #: _DT_Fixed_Wrong
+#| msgid Value is ''{0}'' but must be ''{1}''
 msgid "Value is ''{0}'' but must be ''{1}''{2}"
 msgstr "!!Der Wert ist ''{0}'', muss aber ''{1}'' sein."
 

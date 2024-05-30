@@ -94,14 +94,14 @@ public class POGenerator {
       generate(source, "rendering-phrases.properties",  "rendering-phrases-es.po",    "rendering-phrases_es.properties", 3);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-ja.po",    "rendering-phrases_ja.properties", 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-nl.po",    "rendering-phrases_nl.properties", 2);
-      generate(source, "rendering-phrases.properties",  "rendering-phrases-pt-BR.po", "rendering-phrases_pt-BR.properties", 2);
+      generate(source, "rendering-phrases.properties",  "rendering-phrases-pt_BR.po", "rendering-phrases_pt-BR.properties", 2);
 
       generate(source, "Messages.properties", "validator-messages-en.po",    null, 2);
       generate(source, "Messages.properties", "validator-messages-de.po",    "Messages_de.properties", 2);
       generate(source, "Messages.properties", "validator-messages-es.po",    "Messages_es.properties", 3);
       generate(source, "Messages.properties", "validator-messages-ja.po",    "Messages_ja.properties", 2);
       generate(source, "Messages.properties", "validator-messages-nl.po",    "Messages_nl.properties", 2);
-      generate(source, "Messages.properties", "validator-messages-pt-BR.po", "Messages_pt-BR.properties", 2);
+      generate(source, "Messages.properties", "validator-messages-pt_BR.po", "Messages_pt-BR.properties", 2);
 
       System.out.println("Finished");
     } 
@@ -137,6 +137,9 @@ public class POGenerator {
         pns.add(p.getName());
       } else {
         System.out.println("Error: PV "+p.getName()+ " duplicated");
+      }
+      if (p.getValue().contains("\\n")) {
+        System.out.println("Error: PV "+p.getName()+ " has a \\n");
       }
     }
     
@@ -181,7 +184,11 @@ public class POGenerator {
         pns.add(p.getName());
       } else {
         System.out.println("Error: PV "+p.getName()+ " duplicated");
+      }      
+      if (p.getValue().contains("\\n")) {
+        System.out.println("Error: PV "+p.getName()+ " has a \\n");
       }
+
     }
     
     for (ConstantDefinition cd : consts) {
@@ -380,8 +387,8 @@ public class POGenerator {
       // for POEdit
       b.append("# "+o.comment+"\r\n");
       b.append("#: "+o.id+"\r\n");
-      if (!tfxMode && o.oldMsgId != null) {
-        b.append("#| "+o.oldMsgId+"\r\n");        
+      if (/*!tfxMode && */o.oldMsgId != null) {
+        b.append("#| msgid "+o.oldMsgId+"\r\n");        
       }
       if (o.duplicate) {
         b.append("msgctxt \""+o.id+"\"\r\n");        
@@ -492,6 +499,9 @@ public class POGenerator {
         prefixes.add(line);  
       } else if (line.startsWith("#|")) {
         obj.oldMsgId = line.substring(2).trim();
+        if (obj.oldMsgId.startsWith("msgid ")) {
+          obj.oldMsgId = trimQuotes(obj.oldMsgId.substring(6));
+        }
       } else if (line.startsWith("msgid ")) {
         obj.msgid = trimQuotes(line.substring(5).trim());
         if (obj.msgid.endsWith("("+obj.id+")")) {
@@ -524,6 +534,7 @@ public class POGenerator {
   }
 
   private String trimQuotes(String s) {
+    s = s.trim();
     if (s.startsWith("\"")) {
       s = s.substring(1);
     }

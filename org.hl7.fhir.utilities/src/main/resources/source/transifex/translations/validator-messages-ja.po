@@ -36,16 +36,19 @@ msgstr "プロファイル {0} で誤ったパスを追加しています: {1} v
 
 # All_observations_should_have_a_performer
 #: All_observations_should_have_a_performer
+#| msgid All observations should have a performer
 msgid "Best Practice Recommendation: In general, all observations should have a performer"
 msgstr "!!すべてのObservationにはperformerが必要です"
 
 # All_observations_should_have_a_subject
 #: All_observations_should_have_a_subject
+#| msgid All observations should have a subject
 msgid "Best Practice Recommendation: In general, all observations should have a subject"
 msgstr "!!すべてのObservationにはsubjectが必要です"
 
 # All_observations_should_have_an_effectiveDateTime_or_an_effectivePeriod
 #: All_observations_should_have_an_effectiveDateTime_or_an_effectivePeriod
+#| msgid All observations should have an effectiveDateTime or an effectivePeriod
 msgid "Best Practice Recommendation: In general, all observations should have an effective[x] ({0})"
 msgstr "!!すべてのObservationにはeffectiveDateTimeまたはeffectivePeriodが必要です"
 
@@ -269,8 +272,8 @@ msgstr "検索文字列からタイプを特定できないため、タイプを
 
 # Bad_file_path_error
 #: Bad_file_path_error
-msgid "\n********************\n* The file name you passed in, ''{0}'', doesn''t exist on the local filesystem.\n* Please verify that this is valid file location.\n********************\n\n"
-msgstr "\n********************\n* あなたが指定したファイル名、 ''{0}'' はローカルファイルシステム上に存在しません。\n* これが有効なファイルの場所であることを確認してください。\n********************\n\n"
+msgid "** Error: The file name you passed in, ''{0}'', doesn''t exist on the local filesystem. Please verify that this is valid file location **"
+msgstr "!!\n********************\n* あなたが指定したファイル名、 ''{0}'' はローカルファイルシステム上に存在しません。\n* これが有効なファイルの場所であることを確認してください。\n********************\n\n"
 
 # Base__Derived_profiles_have_different_types____vs___
 #: Base__Derived_profiles_have_different_types____vs___
@@ -507,6 +510,7 @@ msgstr ""
 
 # CODESYSTEM_CS_UNK_EXPANSION
 #: CODESYSTEM_CS_UNK_EXPANSION
+#| msgid The code provided ({2}) is not in the expansion in the value set {0}, and a code is required from this value set. The system {1} is unknown.
 msgid "The code provided ({2}) is not in the expansion in the value set {0}, and a code is required from this value set. The system {1} could not be found."
 msgstr "!!提供されたコード（{2}）は、ValueSet {0}のexpansionには含まれておらず、このValueSetからコードが必要です。system {1}は未知です。"
 
@@ -642,6 +646,7 @@ msgstr "source code ''{0}'' はValue Set {1} で有効ではありません"
 
 # CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID
 #: CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID
+#| msgid The source display ''{0}'' is not valid. Possible codes {1}
 msgid "The source display ''{0}'' for the code ''{2}'' is not valid. Possible displays: {1}"
 msgstr "!!source display ''{0}'' は有効ではありません。可能性のあるcode {1}"
 
@@ -677,6 +682,7 @@ msgstr "target code ''{0}'' はValue Set {1} で有効ではありません"
 
 # CONCEPTMAP_GROUP_TARGET_DISPLAY_INVALID
 #: CONCEPTMAP_GROUP_TARGET_DISPLAY_INVALID
+#| msgid The target display ''{0}'' is not valid. Possible displays {1}
 msgid "The target display ''{0}'' for the code ''{2}'' is not valid. Possible displays: {1}"
 msgstr "!!target display ''{0}'' は有効ではありません。可能なdisplayは {1} です"
 
@@ -712,6 +718,7 @@ msgstr "systemが提供されていないため、プレーンなコードは使
 
 # CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_UNKNOWN_SYSTEM
 #: CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_UNKNOWN_SYSTEM
+#| msgid The system {0} is unknown, so code values can''t be checked
 msgid "The code system {0} could not be found, so code values can''t be checked"
 msgstr "!!system {0} は未知なので、コードの値をチェックすることはできません"
 
@@ -817,6 +824,7 @@ msgstr "拡張中にコードが見つかりました。しかしながら: {0}"
 
 # Coding_has_no_system__cannot_validate
 #: Coding_has_no_system__cannot_validate
+#| msgid Coding has no system - cannot validate
 msgid "Coding has no system. A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
 msgstr "!!Codingにはsystemがない - 検証できません"
 
@@ -1131,6 +1139,7 @@ msgstr "パッケージ {1}#{2} から {0} の読み取りエラー: {3}"
 
 # Error_validating_code_running_without_terminology_services
 #: Error_validating_code_running_without_terminology_services
+#| msgid Error validating code: running without terminology services
 msgid "Unable to validate code ''{0}'' in system ''{1}'' because the validator is running without terminology services"
 msgstr "!!コードの検証エラー: 用語サービス無しで実行中"
 
@@ -1211,11 +1220,13 @@ msgstr "未知のextension {0}"
 
 # Extension_EXT_Unknown_NotHere
 #: Extension_EXT_Unknown_NotHere
+#| msgid The extension {0} is unknown, and not allowed here
 msgid "The extension {0} could not be found so is not allowed here"
 msgstr "!!extension {0} は未知であり、ここでは許可されていません"
 
 # Extension_EXT_Url_NotFound
 #: Extension_EXT_Url_NotFound
+#| msgid Extension.url is required
 msgid "Extension.url is required in order to identify, use and validate the extension"
 msgstr "!!Extension.urlは必須です"
 
@@ -1537,6 +1548,7 @@ msgstr "FHIRPath式の評価エラー: 関数 {0} は順序付けされた文字
 
 # FHIRPATH_STRING_SING_ONLY
 #: FHIRPATH_STRING_SING_ONLY
+#| msgid Error evaluating FHIRPath expression: The function {0} can only be used on string, uri, code, id but found {1}
 msgid "Error evaluating FHIRPath expression: The function {0} can only be used on string, uri, url, code, id but found {1}"
 msgstr "!!FHIRPath式の評価エラー: 関数 {0} は文字列、URI、code、idに対してのみ使用できますが、{1} を見つけました"
 
@@ -1622,6 +1634,7 @@ msgstr ""
 
 # INV_FAILED
 #: INV_FAILED
+#| msgid Rule {0} Failed
 msgid "Constraint failed: {0}"
 msgstr "!!ルール {0} が失敗しました"
 
@@ -1642,6 +1655,7 @@ msgstr "{1}内のdifferentialにおける無効なパス ''{0}'': 無効な文�
 
 # Illegal_path__in_differential_in__must_start_with_
 #: Illegal_path__in_differential_in__must_start_with_
+#| msgid Invalid path ''{0}'' in differential in {1}: must start with {2}.{3}
 msgid "Invalid path ''{0}'' in input differential in {1}: must start with {2}.{3}"
 msgstr "!!{1}内のdifferantialにおける無効なパス ''{0}'': {2}.{3}で始まる必要があります"
 
@@ -2359,6 +2373,7 @@ msgstr[1] "プロファイルベースのディスクリミネータは一つの
 
 # QUESTIONNAIRE_QR_ITEM_BADOPTION_CS
 #: QUESTIONNAIRE_QR_ITEM_BADOPTION_CS
+#| msgid The code provided {1} cannot be validated in the options value set ({2}) in the questionnaire because the system {0} is unknown
 msgid "The code provided {1} cannot be validated in the options value set ({2}) in the questionnaire because the system {0} could not be found"
 msgstr "!!提供されたコード {1} はQuestionnaireのオプションValueSet（{2}）で検証できません。システム {0} は未知です"
 
@@ -2449,6 +2464,7 @@ msgstr "派生に参照されるQuestionnaire ''{0}'' が見つかりません�
 
 # Questionnaire_QR_Item_BadOption
 #: Questionnaire_QR_Item_BadOption
+#| msgid The code provided {1} in the system {0}) is not in the options value set ({2}) in the questionnaire: {3}
 msgid "The code ''{1}'' in the system ''{0}'' is not in the options value set ({2}) specified by the questionnaire. Terminology Error: {3}"
 msgstr "!!提供されたコード {1}（システム {0}）はQuestionnaireのオプションValueSet（{2}）には存在しません: {3}"
 
@@ -2794,6 +2810,7 @@ msgstr "タイプ {0} は、制約対象の基本構造 {1} のタイプと同�
 
 # SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
 #: SD_CONTEXT_SHOULD_NOT_BE_ELEMENT
+#| msgid Review the extension type: extensions should not have a context of {0} unless it''s really intended that they can be used anywhere
 msgid "Review the extension type for {1}: extensions should not have a context of {0} unless it''s really intended that they can be used anywhere"
 msgstr "!!extensionタイプを確認してください：extensionはそれらが本当にどこでも使用できることを意図したものではない限り、 {0} のコンテキストを持つべきではありません"
 
@@ -3053,6 +3070,31 @@ msgstr "!!タイプ {0} は、種類が 'logical' でない {1} の場合にの�
 #: SD_TYPE_NOT_MATCH_NS
 msgid "The type namespace {0} SHOULD match the url namespace {1} for the definition of the type"
 msgstr "タイプの名前空間 {0} は、タイプの定義のためのurl名前空間 {1} と一致すべきです"
+
+# SD_TYPE_PARAMETER_INVALID
+#: SD_TYPE_PARAMETER_INVALID
+msgid "The type definition ''{2}'' has a type parameter ''{3}'', which is not consistent with it''s ancestor type definition ''{0}'' which has the type parameter ''{1}''"
+msgstr ""
+
+# SD_TYPE_PARAMETER_INVALID_REF
+#: SD_TYPE_PARAMETER_INVALID_REF
+msgid "The type ''{0}'' is a reference to ''{1}'' which has a type parameter ''{2}'' with a base type of {3} but the type parameter provided is ''{4}'' which is not the right type"
+msgstr ""
+
+# SD_TYPE_PARAMETER_MISSING
+#: SD_TYPE_PARAMETER_MISSING
+msgid "The type definition ''{2}'' does not declare a type parameter, but it is derived from the type definition ''{0}'' which has the type parameter ''{1}''"
+msgstr ""
+
+# SD_TYPE_PARAMETER_UNKNOWN
+#: SD_TYPE_PARAMETER_UNKNOWN
+msgid "The type definition ''{0}'' has the type parameter ''{1}'' but it is not a known type so derivation consistency cannot be checked"
+msgstr ""
+
+# SD_TYPE_PARAM_NOT_SPECIFIED
+#: SD_TYPE_PARAM_NOT_SPECIFIED
+msgid "The type ''{0}'' at {3} is a reference to ''{1}'' which needs a type parameter ''{2}'' but a type parameter is not provided for ''{2}''"
+msgstr ""
 
 # SD_VALUE_COMPLEX_FIXED
 #: SD_VALUE_COMPLEX_FIXED
@@ -3401,8 +3443,9 @@ msgstr "生成されたsnapshotには、元の提供されたsnapshot{0}と要�
 
 # SNAPSHOT_IS_EMPTY
 #: SNAPSHOT_IS_EMPTY
-msgid "The snapshot for the profile ''{0}'' is empty. This is usually due to a processing logged elsewhere"
-msgstr "!!プロファイル''{0}''のsnapshotが空です（これは起こるべきではありません）"
+#| msgid The snapshot for the profile ''{0}'' is empty. This is usually due to a processing logged elsewhere
+msgid "The snapshot for the profile ''{0}'' is empty. This is usually due to a processing error logged elsewhere"
+msgstr "!!!!プロファイル''{0}''のsnapshotが空です（これは起こるべきではありません）"
 
 # STATUS_CODE_HINT
 #: STATUS_CODE_HINT
@@ -3486,6 +3529,7 @@ msgstr "!!URIが''{0}''のCodeSystemの定義にはcodeが提供されていな�
 
 # TERMINOLOGY_TX_SYSTEM_NO_CODE
 #: TERMINOLOGY_TX_SYSTEM_NO_CODE
+#| msgid A code with no system has no defined meaning. A system should be provided
 msgid "A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
 msgstr "!!systemが提供されていないコードは定義された意味がありません。systemを提供する必要があります"
 
@@ -3811,6 +3855,7 @@ msgstr "Type specifierに一致するものはなく、基底型 {0} は有効�
 
 # Terminology_PassThrough_TX_Message
 #: Terminology_PassThrough_TX_Message
+#| msgid {0} for ''{1}#{2}''
 msgid "{0} (for ''{1}#{2}'')"
 msgstr "!!{0} for ''{1}#{2}''"
 
@@ -3886,16 +3931,19 @@ msgstr "提供されたcodingがValueSet{0}に含まれていることを確認�
 
 # Terminology_TX_Confirm_4a
 #: Terminology_TX_Confirm_4a
+#| msgid The code provided ({2}) is not in the value set {0}, and a code from this value set is required: {1}
 msgid "The code provided ({2}) was not found in the value set {0}, and a code from this value set is required: {1}"
 msgstr "!!提供されたcode（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが必要です：{1}"
 
 # Terminology_TX_Confirm_5
 #: Terminology_TX_Confirm_5
+#| msgid The code provided ({1}) is not in the value set in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable)
 msgid "The code provided ({1}) is not in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable)"
 msgstr "!!!!提供されたcodeがValueSet{0}に含まれていることを確認できませんでした。適切なコードがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）"
 
 # Terminology_TX_Confirm_6
 #: Terminology_TX_Confirm_6
+#| msgid The code provided ({1}) is not in the value set in the value set {0}, and a code is recommended to come from this value set
 msgid "The code provided ({1}) is not in the value set {0}, and a code is recommended to come from this value set"
 msgstr "!!!!提供されたcodeがValueSet {0}に含まれていることを確認できませんでした。このValueSetからのcodeが推奨されています"
 
@@ -3936,16 +3984,19 @@ msgstr "提供されたcodeは最大ValueSet {0}に含まれていません。�
 
 # Terminology_TX_NoValid_12
 #: Terminology_TX_NoValid_12
+#| msgid The Coding provided ({2}) is not in the value set {0}, and a code is required from this value set. {1}
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code is required from this value set. {1}"
 msgstr "!!提供されたCoding（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが必要です。{1}"
 
 # Terminology_TX_NoValid_13
 #: Terminology_TX_NoValid_13
+#| msgid The Coding provided ({2}) is not in the value set {0}, and a code should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable). {1}
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable). {1}"
 msgstr "!!提供されたCoding（{2}）がValueSet{0}に含まれていません。適切なcodeがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）。{1}"
 
 # Terminology_TX_NoValid_14
 #: Terminology_TX_NoValid_14
+#| msgid The Coding provided ({2}) is not in the value set {0}, and a code is recommended to come from this value set. {1}
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code is recommended to come from this value set. {1}"
 msgstr "!!提供されたCoding（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが推奨されます。{1}"
 
@@ -3956,16 +4007,19 @@ msgstr "用語サーバーが存在しないため、提供された値（''{0}'
 
 # Terminology_TX_NoValid_16
 #: Terminology_TX_NoValid_16
+#| msgid The value provided (''{0}'') is not in the value set {1}, and a code is required from this value set {2}
 msgid "The value provided (''{0}'') was not found in the value set {1}, and a code is required from this value set {2}"
 msgstr "!!提供された値（''{0}''）はValueSet {1}に含まれていません。このValueSetからのcodeが必要です）{2}"
 
 # Terminology_TX_NoValid_17
 #: Terminology_TX_NoValid_17
+#| msgid The value provided (''{0}'') is not in the value set {1}, and a code should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable) {2}
 msgid "The value provided (''{0}'') was not found in the value set {1}, and a code should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable) {2}"
 msgstr "!!提供された値（''{0}''）はValueSet {1}に含まれていません。適切なコードがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）{2}"
 
 # Terminology_TX_NoValid_18
 #: Terminology_TX_NoValid_18
+#| msgid The value provided (''{0}'') was not found in the value set {1}, and a code is recommended to come from this value set){2}
 msgid "The value provided (''{0}'') was not found in the value set {1}, and a code is recommended to come from this value set{2}"
 msgstr "!!!!提供された値（''{0}''）はValueSet{1}に含まれていません。このValueSetからのcodeが推奨されています）{2}"
 
@@ -3986,16 +4040,19 @@ msgstr "!!提供されたcodingのいずれもがValueSet{0}に含まれてい�
 
 # Terminology_TX_NoValid_4
 #: Terminology_TX_NoValid_4
+#| msgid The Coding provided ({2}) is not in the value set {0}, and a code is required from this value set {1}
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code is required from this value set {1}"
 msgstr "!!提供されたCoding（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが必要です{1}"
 
 # Terminology_TX_NoValid_5
 #: Terminology_TX_NoValid_5
+#| msgid The Coding provided ({2}) is not in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable) {1}
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code should come from this value set unless it has no suitable code (the validator cannot judge what is suitable) {1}"
 msgstr "!!提供されたCoding（{2}）がValueSet{0}に含まれていません。適切なコードがない場合を除き、このValueSetからのcodeが必要です（バリデータは何が適切か判断できません）{1}"
 
 # Terminology_TX_NoValid_6
 #: Terminology_TX_NoValid_6
+#| msgid The Coding provided ({2}) is not in the value set {0}, and a code is recommended to come from this value set {1}
 msgid "The Coding provided ({2}) was not found in the value set {0}, and a code is recommended to come from this value set {1}"
 msgstr "!!提供されたCoding（{2}）がValueSet{0}に含まれていません。このValueSetからのcodeが推奨されています {1}"
 
@@ -4041,11 +4098,13 @@ msgstr "CodingがCodeSystemではなく、ValueSetを参照しています（''{
 
 # Terminology_TX_ValueSet_NotFound
 #: Terminology_TX_ValueSet_NotFound
+#| msgid ValueSet {0} not found
 msgid "ValueSet ''{0}'' not found"
 msgstr "!!ValueSet {0}が見つかりません"
 
 # Terminology_TX_ValueSet_NotFound_CS
 #: Terminology_TX_ValueSet_NotFound_CS
+#| msgid Found a reference to a CodeSystem ({0}) where a ValueSet belongs
 msgid "Found a reference to a CodeSystem ''{0}'' where a ValueSet belongs"
 msgstr "!!ValueSetがあるべき場所にCodeSystem（{0}）への参照が見つかりました"
 
@@ -4061,6 +4120,7 @@ msgstr "ベースsnapshotはスライスをclosedとしてマークしていま�
 
 # This__cannot_be_parsed_as_a_FHIR_object_no_namespace
 #: This__cannot_be_parsed_as_a_FHIR_object_no_namespace
+#| msgid This ''{0}'' cannot be parsed as a FHIR object (no namespace)
 msgid "This ''{0}'' cannot be parsed (no namespace on the XML Root element)"
 msgstr "!!これはFHIRオブジェクトとして解析できません（名前空間がありません）"
 
@@ -4071,21 +4131,25 @@ msgstr "このベースプロパティは配列でなければなりません。
 
 # This_cannot_be_parsed_as_a_FHIR_object_no_name
 #: This_cannot_be_parsed_as_a_FHIR_object_no_name
+#| msgid This cannot be parsed as a FHIR object (no name)
 msgid "This content cannot be parsed (no name)"
 msgstr "!!これはFHIRオブジェクトとして解析できません（名前がありません）"
 
 # This_does_not_appear_to_be_a_FHIR_resource_unknown_name_
 #: This_does_not_appear_to_be_a_FHIR_resource_unknown_name_
+#| msgid This does not appear to be a FHIR resource (unknown name ''{0}'')
 msgid "This content cannot be parsed (unknown or unrecognized resource name ''{0}'')"
 msgstr "!!これはFHIRリソースではないようです（未知の名前''{0}''）"
 
 # This_does_not_appear_to_be_a_FHIR_resource_unknown_namespacename_
 #: This_does_not_appear_to_be_a_FHIR_resource_unknown_namespacename_
+#| msgid This does not appear to be a FHIR resource (unknown namespace/name ''{0}::{1}'')
 msgid "This content cannot be parsed (unknown or unrecognized XML Root element namespace/name ''{0}::{1}'')"
 msgstr "!!これはFHIRリソースではないようです（未知の名前空間/名前''{0}::{1}''）"
 
 # This_element_does_not_match_any_known_slice_
 #: This_element_does_not_match_any_known_slice_
+#| msgid This element does not match any known slice {0}
 msgid "This element does not match any known slice {0} (this may not be a problem, but you should check that it''s not intended to match a slice)"
 msgstr "!!この要素はどの既知のスライスとも一致しません {0}"
 
@@ -4351,6 +4415,7 @@ msgstr "system {0}のプロパティフィルターをop = {1}で処理するこ
 
 # UNABLE_TO_INFER_CODESYSTEM
 #: UNABLE_TO_INFER_CODESYSTEM
+#| msgid The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'' (UNABLE_TO_INFER_CODESYSTEM)
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}''"
 msgstr "!!!!!!!!!!!!!!!!ValueSet {1}内のコード{0}のシステムURIを決定できませんでした"
 
@@ -4383,11 +4448,13 @@ msgstr[1] "この内容には文字{1}（16進数値）が含まれています�
 
 # UNKNOWN_CODESYSTEM
 #: UNKNOWN_CODESYSTEM
+#| msgid A definition for CodeSystem ''{0}'' could not be found, so the code cannot be validated (UNKNOWN_CODESYSTEM)
 msgid "A definition for CodeSystem ''{0}'' could not be found, so the code cannot be validated"
 msgstr "!!!!!!!!CodeSystem {0}は未知です"
 
 # UNKNOWN_CODESYSTEM_VERSION
 #: UNKNOWN_CODESYSTEM_VERSION
+#| msgid The CodeSystem {0} version {1} is unknown. Valid versions: {2}
 msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. Valid versions: {2}"
 msgstr "!!CodeSystem {0}のバージョン{1}は未知です。有効なバージョン: {2}"
 
@@ -4538,16 +4605,19 @@ msgstr "systemを解決できません - ValueSetがありません"
 
 # Unable_to_resolve_system__value_set_expansion_has_multiple_systems
 #: Unable_to_resolve_system__value_set_expansion_has_multiple_systems
+#| msgid Unable to resolve system - value set expansion has multiple systems
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set expansion has multiple systems"
 msgstr "!!systemを解決できません - ValueSetのexpansionに複数のsystemがあります"
 
 # Unable_to_resolve_system__value_set_has_imports
 #: Unable_to_resolve_system__value_set_has_imports
+#| msgid Unable to resolve system - value set has imports
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set has imports"
 msgstr "!!systemを解決できません - ValueSetにインポートがあります"
 
 # Unable_to_resolve_system__value_set_has_include_with_filter
 #: Unable_to_resolve_system__value_set_has_include_with_filter
+#| msgid The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': include #{2} has a filter on system {3}
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': include #{2} has a filter on system {3}: {4}"
 msgstr "!!!!systemを解決できません - ValueSet {0}のインクルード#{1}にsystem {2}のフィルターがあります"
 
@@ -4558,21 +4628,25 @@ msgstr "systemを解決できません - ValueSet {0}のインクルード#{1}�
 
 # Unable_to_resolve_system__value_set_has_include_with_unknown_system
 #: Unable_to_resolve_system__value_set_has_include_with_unknown_system
+#| msgid Unable to resolve system - value set {0} include #{1} has system {2} which is unknown, and the server return error {3}
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': include #{2} has system {3} which could not be found, and the server returned error {4}"
 msgstr "!!systemを解決できません - ValueSet {0}のインクルード#{1}には未知のsystem{2}があり、サーバーはエラー{3}を返しました"
 
 # Unable_to_resolve_system__value_set_has_multiple_matches
 #: Unable_to_resolve_system__value_set_has_multiple_matches
+#| msgid Unable to resolve system - value set expansion has multiple matches: {0}
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set expansion has multiple matches: {2}"
 msgstr "!!systemを解決できません - ValueSetのexpansionに複数の一致があります: {0}"
 
 # Unable_to_resolve_system__value_set_has_no_includes_or_expansion
 #: Unable_to_resolve_system__value_set_has_no_includes_or_expansion
+#| msgid Unable to resolve system - value set {0} has no includes or expansion
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set has no includes or expansion"
 msgstr "!!systemを解決できません - ValueSet{0}にはインクルードまたは展開がありません"
 
 # Unable_to_resolve_value_Set_
 #: Unable_to_resolve_value_Set_
+#| msgid Unable to resolve value Set {0}
 msgid "A definition for the value Set ''{0}'' could not be found"
 msgstr "!!ValueSet{0}を解決できません"
 
@@ -4643,11 +4717,13 @@ msgstr "{1}で未知の型{0}"
 
 # Unrecognised_extension_context_
 #: Unrecognised_extension_context_
+#| msgid Unrecognised extension context {0}
 msgid "Unrecognized extension context {0}"
 msgstr "!!認識できないextensionコンテキスト{0}"
 
 # Unrecognised_predicate_
 #: Unrecognised_predicate_
+#| msgid Unrecognised predicate ''{0}''
 msgid "Unrecognized predicate ''{0}''"
 msgstr "!!認識できない述語''{0}''"
 
@@ -4808,16 +4884,19 @@ msgstr "プロファイルはこのバージョンのFHIRのためのもので�
 
 # VALIDATION_VAL_PROFILE_UNKNOWN_ERROR
 #: VALIDATION_VAL_PROFILE_UNKNOWN_ERROR
+#| msgid Profile reference ''{0}'' has not been checked because it is unknown, and fetching it resulted in the error {1}
 msgid "Profile reference ''{0}'' has not been checked because it could not be found, and fetching it resulted in the error {1}"
 msgstr "!!プロファイル参照''{0}''は未知のため、確認されていません。取得はエラー {1}により失敗しました"
 
 # VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK
 #: VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK
+#| msgid Profile reference ''{0}'' has not been checked because it is unknown, and the host {1} cannot be found
 msgid "Profile reference ''{0}'' has not been checked because it could not be found, and the host {1} cannot be found"
 msgstr "!!プロファイル参照''{0}''は未知のため、確認されていません。ホスト {1} が見つかりません"
 
 # VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY
 #: VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY
+#| msgid Profile reference ''{0}'' has not been checked because it is unknown, and the validator is set to not fetch unknown profiles
 msgid "Profile reference ''{0}'' has not been checked because it could not be found, and the validator is set to not fetch unknown profiles"
 msgstr "!!プロファイル参照''{0}''は未知のため、確認されていません。バリデーターは未知のプロファイルを取得しない設定になっています"
 
@@ -4908,6 +4987,7 @@ msgstr "この含有物には表示ありのconceptと表示なしのconceptが�
 
 # VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
 #: VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
+#| msgid This SNOMED-CT based include has some concepts with semantic tags (FSN terms) and some without (preferred terms) - check that this is what is intended
 msgid "This SNOMED-CT based include has some concepts with semantic tags (FSN terms) and some without (preferred terms) - check that this is what is intended  (examples for FSN: {0} and examples for no FSN: {1})"
 msgstr "!!このSNOMED-CTベースの含有物には、セマンティックタグ（FSN用語）付きのconceptとそれ無し（優先用語）のconceptが混在しています - 意図した通りか確認してください"
 
@@ -4973,11 +5053,13 @@ msgstr ""
 
 # VALUESET_INCLUDE_INVALID_CONCEPT_CODE
 #: VALUESET_INCLUDE_INVALID_CONCEPT_CODE
+#| msgid The code ''{1}'' is not valid in the system {0}
 msgid "The code ''{1}'' is not valid in the system {0} ({2})"
 msgstr "!!code''{1}''はsystem{0}では有効ではありません"
 
 # VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER
 #: VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER
+#| msgid The code ''{2}'' is not valid in the system {0} version {1}
 msgid "The code ''{2}'' is not valid in the system {0} version {1} ({2})"
 msgstr "!!code''{2}''はsystem {0}のversion {1}では有効ではありません"
 
@@ -4993,6 +5075,7 @@ msgstr ""
 
 # VALUESET_INC_TOO_MANY_CODES
 #: VALUESET_INC_TOO_MANY_CODES
+#| msgid The value set include has too many codes to validate ({0})
 msgid "The value set include has too many codes to validate ({0}), so each individual code has not been checked"
 msgstr "!!value setに大量のcodeが含まれるため、バリデーションできません: {0}"
 
@@ -5040,6 +5123,7 @@ msgstr[1] "必要なsupplementが見つかりません: {1}"
 
 # VALUESET_TOO_COSTLY
 #: VALUESET_TOO_COSTLY
+#| msgid The value set {0} has too many codes to display ({1})
 msgid "The value set ''{0}'' expansion has too many codes to display ({1})"
 msgstr "!!ValueSet {0}には多すぎるコードがあり、表示できません({1})"
 
@@ -5050,6 +5134,7 @@ msgstr ""
 
 # VALUESET_TOO_COSTLY_TIME
 #: VALUESET_TOO_COSTLY_TIME
+#| msgid The value set {0} took too long to process (>{1}sec)
 msgid "The value set ''{0}'' expansion took too long to process (>{1}sec)"
 msgstr "!!ValueSet {0}の処理に時間がかかっています (>{1}sec)"
 
@@ -5080,6 +5165,7 @@ msgstr "メッセージの最初のエントリはMessageHeaderでなければ�
 
 # Validation_VAL_Content_Unknown
 #: Validation_VAL_Content_Unknown
+#| msgid Unrecognised Content {0}
 msgid "Unrecognized Content {0}"
 msgstr "!!認識できない内容 {0}"
 
@@ -5152,6 +5238,7 @@ msgstr "StructureDefinition {0}にはsnapshotがありません - 検証はsnaps
 
 # Validation_VAL_Profile_NoType
 #: Validation_VAL_Profile_NoType
+#| msgid The type of element {0} is not known, which is invalid. Valid types at this point are {1}
 msgid "The type of element {0} is not known - it could not be determined from the information available. Valid types at this point are {1}"
 msgstr "!!要素{0}の型が未知であり、無効です。この時点で有効な型は{1}です"
 
@@ -5177,6 +5264,7 @@ msgstr "プロファイル {0}によると、順序付けされたスライス�
 
 # Validation_VAL_Profile_Unknown
 #: Validation_VAL_Profile_Unknown
+#| msgid Profile reference ''{0}'' has not been checked because it is unknown
 msgid "Profile reference ''{0}'' has not been checked because it could not be found"
 msgstr "!!プロファイル参照''{0}''は未知のため、確認されていません"
 
@@ -5269,6 +5357,7 @@ msgstr "形式が正しくないXHTML: DocType宣言が見つかりましたが�
 
 # XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA
 #: XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA
+#| msgid Invalid element name inside in a paragraph in the XHTML (''{0}'')
 msgid "Invalid element name inside a paragraph in the XHTML (''{0}'')"
 msgstr "!!段落内のXHTMLの要素名が無効です(''{0}'')"
 
@@ -5309,6 +5398,7 @@ msgstr ""
 
 # _DT_Fixed_Wrong
 #: _DT_Fixed_Wrong
+#| msgid Value is ''{0}'' but must be ''{1}''
 msgid "Value is ''{0}'' but must be ''{1}''{2}"
 msgstr "!!値は ''{0}'' ですが、 ''{1}'' でなければなりません"
 

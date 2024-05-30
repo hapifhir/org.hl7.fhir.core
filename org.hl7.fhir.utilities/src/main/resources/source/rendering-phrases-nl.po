@@ -1207,8 +1207,8 @@ msgstr "Stap"
 
 # EX_SCEN_TIME
 #: EX_SCEN_TIME
-msgid "... time passes ...\n"
-msgstr "... tijd schrijdt voort ...\n"
+msgid "... time passes ..."
+msgstr "!!... tijd schrijdt voort ...\n"
 
 # EX_SCEN_UN
 #: EX_SCEN_UN
@@ -3754,6 +3754,11 @@ msgstr "Deze structuur verwijst naar deze andere structuren"
 #: STRUC_DEF_TYPE_BOUND
 msgid "This type can be bound to a value set using the {0}"
 msgstr "Dit type kan worden gekoppeld aan een waardelijst met de {0}"
+
+# STRUC_DEF_TYPE_PARAMETER
+#: STRUC_DEF_TYPE_PARAMETER
+msgid "Type Parameter"
+msgstr ""
 
 # STRUC_DEF_TYPE_SET
 #: STRUC_DEF_TYPE_SET
