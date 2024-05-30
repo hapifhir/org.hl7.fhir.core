@@ -89,17 +89,19 @@ public class POGenerator {
   private void execute(String core, String igpub, String pascal) throws IOException {
     String source = Utilities.path(core, "/org.hl7.fhir.utilities/src/main/resources");
     if (checkState(source, core, igpub, pascal)) {
+      generate(source, "rendering-phrases.properties",  "rendering-phrases-en.po",       null, 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-de.po",    "rendering-phrases_de.properties", 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-es.po",    "rendering-phrases_es.properties", 3);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-ja.po",    "rendering-phrases_ja.properties", 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-nl.po",    "rendering-phrases_nl.properties", 2);
-      generate(source, "rendering-phrases.properties",  "rendering-phrases-pt-BR.po", "rendering-phrases_pt-BR.properties", 2);
+      generate(source, "rendering-phrases.properties",  "rendering-phrases-pt_BR.po", "rendering-phrases_pt-BR.properties", 2);
 
+      generate(source, "Messages.properties", "validator-messages-en.po",    null, 2);
       generate(source, "Messages.properties", "validator-messages-de.po",    "Messages_de.properties", 2);
       generate(source, "Messages.properties", "validator-messages-es.po",    "Messages_es.properties", 3);
       generate(source, "Messages.properties", "validator-messages-ja.po",    "Messages_ja.properties", 2);
       generate(source, "Messages.properties", "validator-messages-nl.po",    "Messages_nl.properties", 2);
-      generate(source, "Messages.properties", "validator-messages-pt-BR.po", "Messages_pt-BR.properties", 2);
+      generate(source, "Messages.properties", "validator-messages-pt_BR.po", "Messages_pt-BR.properties", 2);
 
       System.out.println("Finished");
     } 
@@ -135,6 +137,9 @@ public class POGenerator {
         pns.add(p.getName());
       } else {
         System.out.println("Error: PV "+p.getName()+ " duplicated");
+      }
+      if (p.getValue().contains("\\n")) {
+        System.out.println("Error: PV "+p.getName()+ " has a \\n");
       }
     }
     
@@ -179,7 +184,11 @@ public class POGenerator {
         pns.add(p.getName());
       } else {
         System.out.println("Error: PV "+p.getName()+ " duplicated");
+      }      
+      if (p.getValue().contains("\\n")) {
+        System.out.println("Error: PV "+p.getName()+ " has a \\n");
       }
+
     }
     
     for (ConstantDefinition cd : consts) {
@@ -345,8 +354,14 @@ public class POGenerator {
       }
     }
     savePOFile(Utilities.path(source, "source", dest), objects, count, false);
-    savePOFile(Utilities.path(source, "source", "transifex", dest), objects, count, true);
-    savePropFile(Utilities.path(source, tgt), objects);
+    if (tgt == null) {
+      savePOFile(Utilities.path(source, "source", "transifex", dest), objects, count, true);
+    } else {
+      savePOFile(Utilities.path(source, "source", "transifex", "translations", dest), objects, count, true);
+    }
+    if (tgt != null) {
+      savePropFile(Utilities.path(source, tgt), objects);
+    }
   }
 
   private Set<String> listIds(List<POObject> objects, String msgid) {
@@ -369,16 +384,18 @@ public class POGenerator {
     }
     b.append("\r\n");
     for (POObject o : objects) {
-      b.append("#: "+o.id+"\r\n");
       // for POEdit
-      b.append("# "+o.comment+"\r\n");
-      if (!tfxMode && o.oldMsgId != null) {
-        b.append("#| "+o.oldMsgId+"\r\n");        
+      if (o.oldMsgId != null) {
+        b.append("# "+o.comment+" (!!when last translated was: "+o.oldMsgId+")\r\n");        
+      } else {
+        b.append("# "+o.comment+"\r\n");
       }
+      b.append("#: "+o.id+"\r\n");
       if (o.duplicate) {
         b.append("msgctxt \""+o.id+"\"\r\n");        
       } 
-      b.append("msgid \""+wrapQuotes(o.msgid)+"\"\r\n");
+      String m = tfxMode && Utilities.noString(o.msgid) ? "-- no content: do not translate --" : o.msgid; 
+      b.append("msgid \""+wrapQuotes(m)+"\"\r\n");
       if (o.msgidPlural != null) {
         b.append("msgid_plural \""+wrapQuotes(o.msgidPlural)+"\"\r\n"); 
         while (o.msgstr.size() < count) {
@@ -468,15 +485,31 @@ public class POGenerator {
       if (Utilities.noString(line)) {
         // else 
       } else if (line.startsWith("#:")) {
-        obj = new POObject();
-        obj.id = line.substring(2).trim();
-        list.add(obj);
+        if (obj == null || obj.id != null) {
+          obj = new POObject();
+          list.add(obj);
+        }
+        obj.id = line.substring(2).trim();  
+      } else if (line.startsWith("# ")) {
+        if (obj == null || obj.comment != null) {
+          obj = new POObject();
+          list.add(obj);
+        }
+        obj.comment = line.substring(1).trim();
+        if (obj.comment.contains("!!when")) {
+          obj.oldMsgId = obj.comment.substring(obj.comment.indexOf("!!when"));
+          obj.comment = obj.comment.substring(0, obj.comment.indexOf("!!when")-1);
+          obj.oldMsgId = obj.oldMsgId.substring(obj.oldMsgId.indexOf(": ")+2).trim();
+          obj.oldMsgId = obj.oldMsgId.substring(0, obj.oldMsgId.length()-1);
+        }
       } else if (obj == null) {
         prefixes.add(line);  
       } else if (line.startsWith("#|")) {
+        // retired use of #| because it caused problems with the tools
         obj.oldMsgId = line.substring(2).trim();
-      } else if (line.startsWith("# ")) {
-        obj.comment = line.substring(1).trim();
+        if (obj.oldMsgId.startsWith("msgid ")) {
+          obj.oldMsgId = trimQuotes(obj.oldMsgId.substring(6));
+        }
       } else if (line.startsWith("msgid ")) {
         obj.msgid = trimQuotes(line.substring(5).trim());
         if (obj.msgid.endsWith("("+obj.id+")")) {
@@ -493,7 +526,7 @@ public class POGenerator {
         int i = s.indexOf("]");
         int c = Integer.valueOf(s.substring(0, i));
         s = trimQuotes(s.substring(i+1).trim());
-        if (s.startsWith("!!")) {
+        while (s.startsWith("!!")) {
           s = s.substring(2);
         }
         if (c != obj.msgstr.size()) {
@@ -509,6 +542,7 @@ public class POGenerator {
   }
 
   private String trimQuotes(String s) {
+    s = s.trim();
     if (s.startsWith("\"")) {
       s = s.substring(1);
     }

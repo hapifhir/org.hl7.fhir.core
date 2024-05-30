@@ -889,6 +889,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VS_ABSTRACT_CODE_HINT = "VS_ABSTRACT_CODE_HINT";
   public static final String GENERAL_CODE = "GENERAL_CODE";
   public static final String GENERAL_DESC = "GENERAL_DESC";
+  public static final String STRUC_DEF_TYPE_PARAMETER = "STRUC_DEF_TYPE_PARAMETER";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";

@@ -173,6 +173,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   }
 
   private String sentenceForContent(CodeSystemContentMode mode, CodeSystem cs) {
+    if (mode == null) {
+      return formatPhrase(RenderingContext.CODESYSTEM_CONTENT_NOTPRESENT);
+    }
     switch (mode) {
     case COMPLETE: return formatPhrase(RenderingContext.CODESYSTEM_CONTENT_COMPLETE);
     case EXAMPLE: return formatPhrase(RenderingContext.CODESYSTEM_CONTENT_EXAMPLE);
