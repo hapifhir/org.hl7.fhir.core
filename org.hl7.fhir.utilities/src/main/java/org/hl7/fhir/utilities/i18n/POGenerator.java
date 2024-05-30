@@ -385,11 +385,12 @@ public class POGenerator {
     b.append("\r\n");
     for (POObject o : objects) {
       // for POEdit
-      b.append("# "+o.comment+"\r\n");
-      b.append("#: "+o.id+"\r\n");
-      if (/*!tfxMode && */o.oldMsgId != null) {
-        b.append("#| msgid "+o.oldMsgId+"\r\n");        
+      if (o.oldMsgId != null) {
+        b.append("# "+o.comment+" (!!when last translated was: "+o.oldMsgId+")\r\n");        
+      } else {
+        b.append("# "+o.comment+"\r\n");
       }
+      b.append("#: "+o.id+"\r\n");
       if (o.duplicate) {
         b.append("msgctxt \""+o.id+"\"\r\n");        
       } 
@@ -495,9 +496,16 @@ public class POGenerator {
           list.add(obj);
         }
         obj.comment = line.substring(1).trim();
+        if (obj.comment.contains("!!when")) {
+          obj.oldMsgId = obj.comment.substring(obj.comment.indexOf("!!when"));
+          obj.comment = obj.comment.substring(0, obj.comment.indexOf("!!when")-1);
+          obj.oldMsgId = obj.oldMsgId.substring(obj.oldMsgId.indexOf(": ")+2).trim();
+          obj.oldMsgId = obj.oldMsgId.substring(0, obj.oldMsgId.length()-1);
+        }
       } else if (obj == null) {
         prefixes.add(line);  
       } else if (line.startsWith("#|")) {
+        // retired use of #| because it caused problems with the tools
         obj.oldMsgId = line.substring(2).trim();
         if (obj.oldMsgId.startsWith("msgid ")) {
           obj.oldMsgId = trimQuotes(obj.oldMsgId.substring(6));
@@ -518,7 +526,7 @@ public class POGenerator {
         int i = s.indexOf("]");
         int c = Integer.valueOf(s.substring(0, i));
         s = trimQuotes(s.substring(i+1).trim());
-        if (s.startsWith("!!")) {
+        while (s.startsWith("!!")) {
           s = s.substring(2);
         }
         if (c != obj.msgstr.size()) {
