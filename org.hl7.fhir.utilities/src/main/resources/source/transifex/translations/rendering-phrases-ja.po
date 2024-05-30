@@ -1207,7 +1207,7 @@ msgstr ""
 
 # EX_SCEN_TIME
 #: EX_SCEN_TIME
-msgid "... time passes ...\n"
+msgid "... time passes ..."
 msgstr ""
 
 # EX_SCEN_UN
@@ -3753,6 +3753,11 @@ msgstr ""
 # STRUC_DEF_TYPE_BOUND
 #: STRUC_DEF_TYPE_BOUND
 msgid "This type can be bound to a value set using the {0}"
+msgstr ""
+
+# STRUC_DEF_TYPE_PARAMETER
+#: STRUC_DEF_TYPE_PARAMETER
+msgid "Type Parameter"
 msgstr ""
 
 # STRUC_DEF_TYPE_SET
