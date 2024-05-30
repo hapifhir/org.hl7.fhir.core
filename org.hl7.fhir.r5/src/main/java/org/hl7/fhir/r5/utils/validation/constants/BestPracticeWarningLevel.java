@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.utils.validation.constants;
 
-public enum RuleImplementationLevel {
+public enum BestPracticeWarningLevel {
   Ignore,
   Hint,
   Warning,
