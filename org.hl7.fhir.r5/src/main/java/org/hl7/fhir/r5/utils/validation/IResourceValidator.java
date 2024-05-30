@@ -35,7 +35,7 @@ import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UsageContext;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.r5.utils.validation.constants.RuleImplementationLevel;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -70,8 +70,11 @@ public interface IResourceValidator {
    * whether the validator should enforce best practice guidelines
    * as defined by various HL7 committees 
    */
-  BestPracticeWarningLevel getBestPracticeWarningLevel();
-  IResourceValidator setBestPracticeWarningLevel(BestPracticeWarningLevel value);
+  RuleImplementationLevel getBestPracticeWarningLevel();
+  IResourceValidator setBestPracticeWarningLevel(RuleImplementationLevel value);
+
+  RuleImplementationLevel getVitalSignsProfileCheckLevel();
+  IResourceValidator setVitalSignsProfileCheckLevel(RuleImplementationLevel value);
 
   IValidatorResourceFetcher getFetcher();
   IResourceValidator setFetcher(IValidatorResourceFetcher value);
