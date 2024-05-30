@@ -1,8 +1,7 @@
 git:
   filters:
-  - filter_type: dir
+  - filter_type: dynamic
     file_format: PO
-    source_file_dir: org.hl7.fhir.utilities/src/main/resources/source/transifex
     source_language: en
-    source_file_extension: .po
-    translation_files_expression: 'rendering-phrases_<lang>.po'
+    source_files_expression: org.hl7.fhir.utilities/src/main/resources/source/transifex/<file>-en.po
+    translation_files_expression: 'org.hl7.fhir.utilities/src/main/resources/source/transifex/translations/<file>-<lang>.po'
