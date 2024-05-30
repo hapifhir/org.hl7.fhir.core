@@ -2,7 +2,6 @@ package org.hl7.fhir.validation.cli.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -11,6 +10,7 @@ import java.lang.management.MemoryMXBean;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 
@@ -75,10 +75,9 @@ public class ValidationService {
   private final SessionCache sessionCache;
   private String runDate;
 
-  private Map<String, ValidationEngine> baseEngines = new HashMap<>();
+  private final Map<String, ValidationEngine> baseEngines = new ConcurrentHashMap<>();
 
   public void putBaseEngine(String key, CliContext cliContext) throws IOException, URISyntaxException {
-
     String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
 
     ValidationEngine baseEngine = buildValidationEngine(cliContext, definitions, new TimeTracker());
@@ -88,6 +87,8 @@ public class ValidationService {
   public ValidationEngine getBaseEngine(String key) {
     return baseEngines.get(key);
   }
+
+  public Set<String> getBaseEngineKeys() { return baseEngines.keySet(); }
 
   public boolean hasBaseEngineForKey(String key) { return baseEngines.containsKey(key); }
 
