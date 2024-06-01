@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.utils.ResourceUtilities;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.utilities.MimeType;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import javax.annotation.Nonnull;
@@ -91,7 +92,9 @@ public class FhirRequestBuilder {
    */
   protected static void addResourceFormatHeaders(Request.Builder request, String format) {
     request.addHeader("Accept", format);
-    request.addHeader("Content-Type", format + ";charset=" + DEFAULT_CHARSET);
+    if (Utilities.existsInList(request.getMethod$okhttp(), "POST", "PUT")) {
+      request.addHeader("Content-Type", format + ";charset=" + DEFAULT_CHARSET);
+    }
   }
 
   /**
