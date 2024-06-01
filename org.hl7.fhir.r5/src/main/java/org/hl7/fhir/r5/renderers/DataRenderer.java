@@ -1483,7 +1483,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
           x.addText(displayContactPoint(contact)); 
           break; 
         case PHONE: 
-          if (contact.hasValue() && contact.getValue().startsWith("+")) { 
+          if (contact.hasPrimitiveValue() && contact.getValue().startsWith("+")) { 
             x.ah("tel:"+contact.getValue().replace(" ", "")).tx(contact.getValue()); 
           } else { 
             x.addText(displayContactPoint(contact)); 
