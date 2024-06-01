@@ -10,7 +10,6 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.validation.instance.BasePolicyAdvisorForMandatoryProfiles;
 import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ElementValidationAction;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
@@ -135,7 +134,7 @@ public interface IValidationPolicyAdvisor {
 
   /**
    * This is called after a resource has been validated against the base structure, 
-   * but before any profiles specified in .meta.profile or in the parameters are applied. 
+   * but before it's validated against any profiles specified in .meta.profile or in the parameters. 
    * This can be used to determine what additional profiles should be applied, for instance
    * those derived from the http://hl7.org/fhir/tools/StructureDefinition/profile-mapping extension
    *  
@@ -144,9 +143,9 @@ public interface IValidationPolicyAdvisor {
    * might be any version from R2-R6)
    * 
    * The base implementation applies the mandatory vital signs to observations that have LOINC or SNOMED CT
-   * codes that indicate that they are vital signs. Note that these profiles are not optional; all resources 
+   * codes that indicate that they are vital signs. Note that these profiles are not optional; all vital sign resources 
    * are required to conform to them. For this reason, if you're providing your own policy advisor, you should
-   * keep a reference to the default one, or call BasePolicyAdvisorForMandatoryProfiles. You can choose not to,
+   * keep a reference to the default one, or call BasePolicyAdvisorForFullValidation directly. You can choose not to,
    * but if you do, you are allowing for resources that deviate from the FHIR specification (in a way that the 
    * community considers clinically unsafe, since it means that software (probably) will miss vital signs for 
    * patients).
@@ -161,13 +160,14 @@ public interface IValidationPolicyAdvisor {
    * @param messages all the validation messages. Implementations can inspect this, but the real purpose is to populate the messages with information messages explaining why profiles were (or weren't) applied
    * @return
    */
-  List<StructureDefinition> getImpliedProfilesForInstance(IResourceValidator validator,
+  List<StructureDefinition> getImpliedProfilesForResource(IResourceValidator validator,
                                                         Object appContext,
                                                         String stackPath,
                                                         ElementDefinition definition,
                                                         StructureDefinition structure,
                                                         Element resource,
                                                         boolean valid,
+                                                        IMessagingServices msgServices,
                                                         List<ValidationMessage> messages);
   
 }

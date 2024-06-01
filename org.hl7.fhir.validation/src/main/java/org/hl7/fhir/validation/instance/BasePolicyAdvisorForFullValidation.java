@@ -1,65 +1,166 @@
 package org.hl7.fhir.validation.instance;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.AdditionalBindingPurpose;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.CodedContentValidationAction;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ElementValidationAction;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ResourceValidationAction;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
 public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvisor {
 
   @Override
-  public ReferenceValidationPolicy policyForReference(IResourceValidator validator, Object appContext, String path,
-      String url) {
-    // TODO Auto-generated method stub
-    return null;
+  public ReferenceValidationPolicy policyForReference(IResourceValidator validator, Object appContext, String path, String url) {
+    return ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS;
   }
 
   @Override
   public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator, Object appContext,
       StructureDefinition structure, ElementDefinition element, String containerType, String containerId,
       SpecialElement containingResourceType, String path, String url) {
-    // TODO Auto-generated method stub
-    return null;
-  }
 
+    return ContainedReferenceValidationPolicy.CHECK_VALID;
+  }
+  
   @Override
   public EnumSet<ResourceValidationAction> policyForResource(IResourceValidator validator, Object appContext,
       StructureDefinition type, String path) {
-    // TODO Auto-generated method stub
-    return null;
+    return EnumSet.allOf(ResourceValidationAction.class);
   }
 
   @Override
   public EnumSet<ElementValidationAction> policyForElement(IResourceValidator validator, Object appContext,
       StructureDefinition structure, ElementDefinition element, String path) {
-    // TODO Auto-generated method stub
-    return null;
+    return EnumSet.allOf(ElementValidationAction.class);
   }
 
   @Override
-  public EnumSet<CodedContentValidationAction> policyForCodedContent(IResourceValidator validator, Object appContext,
-      String stackPath, ElementDefinition definition, StructureDefinition structure, BindingKind kind,
-      AdditionalBindingPurpose purpose, ValueSet valueSet, List<String> systems) {
-    // TODO Auto-generated method stub
-    return null;
+  public EnumSet<CodedContentValidationAction> policyForCodedContent(IResourceValidator validator,
+      Object appContext,
+      String stackPath,
+      ElementDefinition definition,
+      StructureDefinition structure,
+      BindingKind kind,
+      AdditionalBindingPurpose purpose,
+      ValueSet valueSet,
+      List<String> systems) {
+    return EnumSet.allOf(CodedContentValidationAction.class);
   }
 
   @Override
-  public List<StructureDefinition> getImpliedProfilesForInstance(IResourceValidator validator, Object appContext,
+  public List<StructureDefinition> getImpliedProfilesForResource(IResourceValidator validator, Object appContext,
       String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
-      List<ValidationMessage> messages) {
-    // TODO Auto-generated method stub
-    return null;
+      IMessagingServices msgServices, List<ValidationMessage> messages) {
+    List<StructureDefinition> profiles = new ArrayList<StructureDefinition>();
+    if ("Observation".equals(resource.fhirType()) && VersionUtilities.isR4Plus(validator.getContext().getVersion())) {
+      getImpliedProfilesForObservation(profiles, msgServices, messages, validator.getContext(), stackPath, resource);
+    }
+    return profiles;
+  }
+    
+
+  private void getImpliedProfilesForObservation(List<StructureDefinition> profiles, IMessagingServices msgServices, List<ValidationMessage> messages, IWorkerContext context, String stackPath, Element resource) {
+    Element code = resource.getNamedChild("code", false);
+    List<String> codes = new ArrayList<>();
+    if (hasLoincCode(code, codes, "85353-1")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/vitalspanel", "Vital Signs Panel", "LOINC", codes);
+    } else if (hasLoincCode(code, codes, "9279-1", "76170-0", "76172-6", "76171-8", "19840-8", "33438-3", "76270-8", "11291-2")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/resprate", "Respiratory Rate", "LOINC", codes);
+    } else if (hasLoincCode(code, codes, "60978-4", "73795-7", "73799-9", "76476-1", "76477-9", "8867-4", "8889-8", "8890-6", "8891-4", "8892-2", "8893-0", "40443-4", "55425-3", "68999-2", "11328-2", "69000-8", "69000-8", "60978-4", "60978-4", "8890-6", "8886-4", "68999-2", "68999-2")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/heartrate", "Heart rate", "LOINC", codes);
+    } else if (hasLoincCode(code, codes, "2708-6", "19224-5", "20564-1", "2709-4", "2710-2", "2713-6", "51733-4", "59408-5", "59417-6", "89276-0", "97549-0")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/oxygensat", "Oxygen saturation", "LOINC", codes);
+    } else if (hasLoincCode(code, codes, "8310-5", "60834-9", "60835-6", "60836-4", "60838-0", "60955-2", "61009-7", "75539-7", "75987-8", "76010-8", "76011-6", "76278-1", "8309-7", "8310-5", "8328-7", "8329-5", "8330-3", "8331-1", "8332-9", "8333-7", "8334-5", "91371-5", "98657-0", "98663-8")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodytemp", "Body temperature", "LOINC", codes);
+    } else if (hasLoincCode(code, codes, "8302-2", "3137-7", "3138-5", "8302-2", "8306-3", "8308-9")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodyheight", "Body height", "LOINC", codes);
+    } else if (hasLoincCode(code, codes, "9843-4", "8287-5", "9843-4")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/headcircum", "Head circumference", "LOINC", codes);
+    } else if (hasLoincCode(code, codes, "29463-7", "29463-7", "3141-9", "3142-7", "75292-3", "79348-9", "8350-1", "8351-9")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodyweight", "Body weight", "LOINC", codes);
+    } else if (hasLoincCode(code, codes, "39156-5", "39156-5", "59574-4", "89270-3")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bmi", "Body mass index", "LOINC", codes);
+    } else if (hasLoincCode(code, codes, "85354-9", "35094-2", "8459-0", "85354-9", "76534-7", "55284-4", "8480-6")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bp", "Blood pressure systolic and diastolic", "LOINC", codes);
+    
+    } else if (hasSctCode(code, codes, "46680005")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/vitalspanel", "Vital Signs Panel", "SNOMED CT", codes);
+    } else if (hasSctCode(code, codes, "86290005", "271625008", "271306003")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bp", "Blood pressure systolic and diastolic", "SNOMED CT", codes);
+    } else if (hasSctCode(code, codes, "271306003", "249043002", "444981005", "399017001", "251670001", "429525003", "429614003")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/heartrate", "Heart rate", "SNOMED CT", codes);
+    } else if (hasSctCode(code, codes, "103228002", "103228002", "442349007", "442476006", "442440005", "431314004", "442734002", "713194001")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/oxygensat", "Oxygen saturation", "SNOMED CT", codes);
+    } else if (hasSctCode(code, codes, "386725007", "276885007", "300076005", "1222808002", "364246006", "307047009", "708499008", "708499008", "431598003", "698831002", "698832009", "415882003", "415974002", "415929009", "415945006")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodytemp", "Body temperature", "SNOMED CT", codes);
+    } else if (hasSctCode(code, codes, "1153637007", "1162419008", "50373000", "1162418000", "1230278008", "1162392001", "1162417005")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodyheight", "Body height", "SNOMED CT", codes);
+    } else if (hasSctCode(code, codes, "363812007", "169876006", "1269262007", "363811000")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/headcircum", "Head circumference", "SNOMED CT", codes);
+    } else if (hasSctCode(code, codes, "363811000", "60621009", "735395000", "425024002", "424927000", "784399000", "1162416001", "1162415002")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodyweight", "Body weight", "SNOMED CT", codes);
+    } else if (hasSctCode(code, codes, "60621009")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bmi", "Body mass index", "SNOMED CT", codes);
+    } else if (hasSctCode(code, codes, "75367002", "251076008", "163033001", "163035008", "386534000", "386536003", "271649006", "271649006", "271650006", "407556006", "407554009", "716579001", "399304008")) {
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bp", "Blood pressure systolic and diastolic", "SNOMED CT", codes);
+    }  
+    
   }
 
+  private void addProfile(List<StructureDefinition> profiles, IMessagingServices msgServices, List<ValidationMessage> messages, IWorkerContext context, String stackPath, Element resource, String url, String name, String systemName, List<String> codes) {
+    resource.addMessage(msgServices.signpost(messages, null, IssueType.INFORMATIONAL, resource.line(), resource.col(), stackPath, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_OBS, url, name, systemName, codes.get(0)));
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+    if (sd != null) {
+      profiles.add(sd);
+    } else {
+      // complain?
+    }
+  }
+
+  protected boolean hasLoincCode(Element code, List<String> codes, String... values) {
+    if (code != null) {
+      List<Element> codings = code.getChildren("coding");
+      for (Element coding : codings) {
+        if ("http://loinc.org".equals(coding.getNamedChildValue("system", false)) && Utilities.existsInList(coding.getNamedChildValue("code", false), values)) {
+          codes.add(coding.getNamedChildValue("code", false));
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  protected boolean hasSctCode(Element code, List<String> codes, String... values) {
+    if (code != null) {
+      List<Element> codings = code.getChildren("coding");
+      for (Element coding : codings) {
+        if ("http://snomed.info/sct".equals(coding.getNamedChildValue("system", false)) && Utilities.existsInList(coding.getNamedChildValue("code", false), values)) {
+          codes.add(coding.getNamedChildValue("code", false));
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  
 }
