@@ -25,6 +25,8 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 
 public class ComparisonSession {
 
@@ -39,8 +41,9 @@ public class ComparisonSession {
   private String title;
   private ProfileKnowledgeProvider pkpLeft;
   private ProfileKnowledgeProvider pkpRight;
+  private RenderingI18nContext i18n;
   
-  public ComparisonSession(IWorkerContext contextLeft, IWorkerContext contextRight, String title, ProfileKnowledgeProvider pkpLeft, ProfileKnowledgeProvider pkpRight) {
+  public ComparisonSession(RenderingI18nContext i18n, IWorkerContext contextLeft, IWorkerContext contextRight, String title, ProfileKnowledgeProvider pkpLeft, ProfileKnowledgeProvider pkpRight) {
     super();
     this.contextLeft = contextLeft;
     this.contextRight = contextRight;
@@ -48,6 +51,7 @@ public class ComparisonSession {
     this.title = title;
     this.pkpLeft = pkpLeft;
     this.pkpRight = pkpRight;
+    this.i18n = i18n;
     debug = false;
   }
   
@@ -173,6 +177,10 @@ public class ComparisonSession {
 
   public boolean isAnnotate() {
     return annotate;
+  }
+
+  public RenderingI18nContext getI18n() {
+    return i18n;
   }
 
   public void setAnnotate(boolean annotate) {

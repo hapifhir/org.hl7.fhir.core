@@ -493,6 +493,11 @@ public class ValidationService {
     System.out.println(" - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
 
     loadIgsAndExtensions(validationEngine, cliContext, timeTracker);
+    if (validationEngine.getContext().getTxCache() == null) {
+      System.out.println("  No Terminology Cache");      
+    } else {
+      System.out.println("  Terminology Cache at "+validationEngine.getContext().getTxCache().getFolder());
+    }
     System.out.print("  Get set... ");
     validationEngine.setQuestionnaireMode(cliContext.getQuestionnaireMode());
     validationEngine.setLevel(cliContext.getLevel());
@@ -546,7 +551,7 @@ public class ValidationService {
       igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.fhir.uv.extensions", false);
     }
     System.out.print("  Terminology server " + cliContext.getTxServer());
-    String txver = validationEngine.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver);
+    String txver = validationEngine.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver, !cliContext.getNoEcosystem());
     System.out.println(" - Version " + txver + " (" + timeTracker.milestone() + ")");
     validationEngine.setDebug(cliContext.isDoDebug());
     validationEngine.getContext().setLogger(new SystemOutLoggingService(cliContext.isDoDebug()));

@@ -25,6 +25,8 @@ public class ValidationOptions {
   private boolean exampleOK = false;
   private FhirPublication fhirVersion;
 
+  public ValidationOptions() { this(FhirPublication.R5); }
+
   public ValidationOptions(FhirPublication fhirVersion) {
     super();
     this.fhirVersion = fhirVersion;

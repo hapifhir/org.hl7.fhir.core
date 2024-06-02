@@ -1558,7 +1558,6 @@
           <xs:attribute name="onsubmit" type="Script"/>
           <xs:attribute name="onreset" type="Script"/>
           <xs:attribute name="accept" type="ContentTypes"/>
-          <xs:attribute name="accept-charset" type="Charsets"/>
         </xs:extension>
       </xs:complexContent>
     </xs:complexType>

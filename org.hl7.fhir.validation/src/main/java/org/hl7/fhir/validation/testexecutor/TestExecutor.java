@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.tests.TestConfig;
 import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
 import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
@@ -148,7 +149,7 @@ public class TestExecutor {
     if (txCacheDirectoryParam != null) {
       txCacheDirectory = txCacheDirectoryParam;
     } else {
-      txCacheDirectory = Files.createTempDirectory("validator-test-tx-cache").toFile().getAbsolutePath();
+      txCacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("validator-test-tx-cache")).getAbsolutePath();
       TxCacheResourceExtractor.extractTxCacheResources(txCacheDirectory);
     }
 

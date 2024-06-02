@@ -45,7 +45,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    case DEFNS: return renderDefns(x, q);
     case TREE:  return renderTree(x, q);
     default:
-      throw new Error(/*!#*/"Unknown QuestionnaireResponse Renderer Mode");
+      throw new Error(context.formatPhrase(RenderingContext.QUEST_UNKNOWN_MODE));
     }
   }
   
@@ -57,7 +57,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    case DEFNS: return renderDefns(x, q);
     case TREE:  return renderTree(x, qr);
     default:
-      throw new Error(/*!#*/"Unknown QuestionnaireResponse Renderer Mode");
+      throw new Error(context.formatPhrase(RenderingContext.QUEST_UNKNOWN_MODE));
     }
   }
   
@@ -71,10 +71,10 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png"));
     }
     model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table");
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), /*!#*/"LinkId", /*!#*/"The linkId for the item", null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), /*!#*/"Text", /*!#*/"Text for the item", null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), /*!#*/"Definition", /*!#*/"Minimum and Maximum # of times the the itemcan appear in the instance", null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), /*!#*/"Answer", /*!#*/"The type of the item", null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_LINKID), context.formatPhrase(RenderingContext.QUEST_LINK), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_TEXT), context.formatPhrase(RenderingContext.QUEST_TEXTFOR), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_DEFINITION), context.formatPhrase(RenderingContext.QUEST_TIMES), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_ANSWER), context.formatPhrase(RenderingContext.QUEST_TYPE_ITEM), null, 0));
 
     boolean hasExt = false;
     // first we add a root for the questionaire itself
@@ -98,10 +98,10 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png"));
     }
     model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table");
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), /*!#*/"LinkId", /*!#*/"The linkId for the item", null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), /*!#*/"Text", /*!#*/"Text for the item", null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), /*!#*/"Definition", /*!#*/"Minimum and Maximum # of times the the itemcan appear in the instance", null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), /*!#*/"Answer", /*!#*/"The type of the item", null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_LINKID), context.formatPhrase(RenderingContext.QUEST_LINK), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_TEXT), context.formatPhrase(RenderingContext.QUEST_TEXTFOR), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_DEFINITION), context.formatPhrase(RenderingContext.QUEST_TIMES), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_ANSWER), context.formatPhrase(RenderingContext.QUEST_TYPE_ITEM), null, 0));
 
     boolean hasExt = false;
     // first we add a root for the questionaire itself
@@ -120,10 +120,10 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     Row r = gen.new Row();
     rows.add(r);
 
-    r.setIcon("icon_q_root.gif", /*!#*/"QuestionnaireResponseRoot");
+    r.setIcon("icon_q_root.gif", context.formatPhrase(RenderingContext.QUEST_RESP_ROOT));
     r.getCells().add(gen.new Cell(null, null, q.getId(), null, null));
     r.getCells().add(gen.new Cell(null, null, "", null, null));
-    r.getCells().add(gen.new Cell(null, null, /*!#*/"QuestionnaireResponse", null, null));
+    r.getCells().add(gen.new Cell(null, null, context.formatPhrase(RenderingContext.QUEST_RESP), null, null));
     r.getCells().add(gen.new Cell(null, null, "", null, null));
     return r;    
   }
@@ -136,18 +136,18 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     String ref = b == null ? null : b.primitiveValue();
     Questionnaire q = context.getContext().fetchResource(Questionnaire.class, ref);
     
-    r.setIcon("icon_q_root.gif", /*!#*/"QuestionnaireResponseRoot");
+    r.setIcon("icon_q_root.gif", context.formatPhrase(RenderingContext.QUEST_RESP_ROOT));
     r.getCells().add(gen.new Cell(null, null, qr.getId(), null, null));
     r.getCells().add(gen.new Cell(null, null, "", null, null));
     if (ref == null ) {
       r.getCells().add(gen.new Cell(null, null, "", null, null));
-      r.getCells().add(gen.new Cell(/*!#*/"Questionnaire:", null, /*!#*/"None specified", null, null));
+      r.getCells().add(gen.new Cell(context.formatPhrase(RenderingContext.QUEST_QUESTION), null, context.formatPhrase(RenderingContext.QUEST_NONE_SPEC), null, null));
     } else if (q == null || !q.hasWebPath()) {
       r.getCells().add(gen.new Cell(null, null, "", null, null));
-      r.getCells().add(gen.new Cell(/*!#*/"Questionnaire:", null, ref, null, null));
+      r.getCells().add(gen.new Cell(context.formatPhrase(RenderingContext.QUEST_QUESTION), null, ref, null, null));
     } else{
       r.getCells().add(gen.new Cell(null, null, "", null, null));
-      r.getCells().add(gen.new Cell(/*!#*/"Questionnaire:", q.getWebPath(), q.present(), null, null));
+      r.getCells().add(gen.new Cell(context.formatPhrase(RenderingContext.QUEST_QUESTION), q.getWebPath(), q.present(), null, null));
     }
     return r;    
   }
@@ -168,9 +168,9 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       }
     }
     if (hasItem) {
-      r.setIcon("icon-q-group.png", /*!#*/"Group");
+      r.setIcon("icon-q-group.png", context.formatPhrase(RenderingContext.QUEST_GROUP));
     } else {
-      r.setIcon("icon-q-string.png", /*!#*/"Item");
+      r.setIcon("icon-q-string.png", context.formatPhrase(RenderingContext.QUEST_ITEM));
     }
     String linkId = i.has("linkId") ? i.get("linkId").primitiveValue() : "??";
     String text = i.has("text") ? i.get("text").primitiveValue() : "";
@@ -235,9 +235,9 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       hasItem = a.hasItem();
     }
     if (hasItem) {
-      r.setIcon("icon-q-group.png", /*!#*/"Group");
+      r.setIcon("icon-q-group.png", context.formatPhrase(RenderingContext.QUEST_GROUP));
     } else {
-      r.setIcon("icon-q-string.png", /*!#*/"Item");
+      r.setIcon("icon-q-string.png", context.formatPhrase(RenderingContext.QUEST_ITEM));
     }
     r.getCells().add(gen.new Cell(null, context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget()+"#item."+i.getLinkId(), i.getLinkId(), null, null));
     r.getCells().add(gen.new Cell(null, null, i.getText(), null, null));
@@ -327,7 +327,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   public boolean renderForm(XhtmlNode x, ResourceWrapper q) throws UnsupportedEncodingException, IOException {
     boolean hasExt = false;
     XhtmlNode d = x.div();
-    d.tx(/*!#*/"todo");
+    d.tx(context.formatPhrase(RenderingContext.GENERAL_TODO));
 //    boolean hasPrefix = false;
 //    for (QuestionnaireItemComponent c : q.getItem()) {
 //      hasPrefix = hasPrefix || doesItemHavePrefix(c);
@@ -370,7 +370,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    }
 //    p.span(null, "linkId: "+i.getLinkId()).tx(i.getText());
 //    if (i.getRequired()) {
-//      p.span("color: red", /*!#*/"Mandatory").tx("*");
+//      p.span("color: red", context.formatPhrase(RenderingContext.QUEST_MAND)).tx("*");
 //    }
 //
 //    XhtmlNode input = null;
@@ -605,16 +605,16 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //  }
 // 
   private boolean renderLinks(XhtmlNode x, QuestionnaireResponse q) {
-    x.para().tx(/*!#*/"Try this QuestionnaireResponse out:");
+    x.para().tx(context.formatPhrase(RenderingContext.QUEST_TRY_QUEST));
     XhtmlNode ul = x.ul();
-    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getLink(KnownLinkType.SELF), "package.tgz")+"&q="+q.getId()+".json").tx(/*!#*/"NLM Forms Library");
+    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getLink(KnownLinkType.SELF), "package.tgz")+"&q="+q.getId()+".json").tx(context.formatPhrase(RenderingContext.QUEST_NLM));
     return false;
   }
 
   private boolean renderLinks(XhtmlNode x, ResourceWrapper q) {
-    x.para().tx(/*!#*/"Try this QuestionnaireResponse out:");
+    x.para().tx(context.formatPhrase(RenderingContext.QUEST_TRY_QUEST));
     XhtmlNode ul = x.ul();
-    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getLink(KnownLinkType.SELF), "package.tgz")+"&q="+q.getId()+".json").tx(/*!#*/"NLM Forms Library");
+    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getLink(KnownLinkType.SELF), "package.tgz")+"&q="+q.getId()+".json").tx(context.formatPhrase(RenderingContext.QUEST_NLM));
     return false;
   }
 
@@ -711,13 +711,13 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    }
 //    if (qi.hasAnswerOption()) {
 //      XhtmlNode tr = tbl.tr();
-//      tr.td().tx(/*!#*/"Allowed Answers");
+//      tr.td().tx(context.formatPhrase(RenderingContext.QUEST_ALLOWED));
 //      XhtmlNode ul = tr.td().ul();
 //      for (QuestionnaireItemAnswerOptionComponent ans : qi.getAnswerOption()) {
 //        XhtmlNode li = ul.li();
 //        render(li, ans.getValue());
 //        if (ans.getInitialSelected()) {
-//          li.tx(/*!#*/" (initially selected)");
+//          li.tx(context.formatPhrase(RenderingContext.QUEST_INITIALLY));
 //        }
 //      }      
 //    }
@@ -738,7 +738,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    // appearance 
 //    if (qi.hasExtension(" http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory")) {
 //      XhtmlNode tr = tbl.tr();
-//      tr.td().ah("http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory").tx(/*!#*/"Display Category");
+//      tr.td().ah("http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory").tx(context.formatPhrase(RenderingContext.QUEST_DISPLAY_CAT));
 //      render(tr.td(), qi.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory").getValue());
 //    }
 //    if (ToolingExtensions.readBoolExtension(qi, "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-hidden")) {
@@ -763,14 +763,14 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    }
 //    if (qi.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-observationLinkPeriod")) {
 //      XhtmlNode tr = tbl.tr();
-//      tr.td().ah(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-observationLinkPeriod").tx(/*!#*/"Observation Link Period");
+//      tr.td().ah(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-observationLinkPeriod").tx(context.formatPhrase(RenderingContext.QUEST_OBSERVATION));
 //      render(tr.td(), qi.getExtensionByUrl("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-observationLinkPeriod").getValue());
 //    }
 //    
 //    // dynamic management
 //    if (qi.hasEnableWhen()) {
 //      XhtmlNode tr = tbl.tr();
-//      tr.td().tx(/*!#*/"Enable When");
+//      tr.td().tx(context.formatPhrase(RenderingContext.QUEST_ENABLE));
 //      td = tr.td();
 //      if (qi.getEnableWhen().size() == 1) {
 //        renderEnableWhen(td, qi.getEnableWhen().get(0));
@@ -876,12 +876,12 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 
   @Override
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
-    return /*!#*/"todo";
+    return context.formatPhrase(RenderingContext.GENERAL_TODO);
   }
 
   @Override
   public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    return /*!#*/"Not done yet";
+    return context.formatPhrase(RenderingContext.GENERAL_TODO);
   }
 
 }

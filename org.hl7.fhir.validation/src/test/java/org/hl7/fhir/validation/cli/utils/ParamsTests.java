@@ -8,6 +8,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.Locale;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ public class ParamsTests {
 
   @Test
   void testFhirSettingsFile() throws Exception {
-    File tempFile = Files.createTempFile("fhir-settings", "json").toFile();
+    File tempFile = ManagedFileAccess.fromPath(Files.createTempFile("fhir-settings", "json"));
     CliContext cliContext = Params.loadCliContext(new String[]{"-fhir-settings", tempFile.getAbsolutePath()});
     assertEquals(tempFile.getAbsolutePath(), cliContext.getFhirSettingsFile());
   }

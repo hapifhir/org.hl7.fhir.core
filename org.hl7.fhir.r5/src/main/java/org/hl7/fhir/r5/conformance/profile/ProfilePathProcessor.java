@@ -559,7 +559,7 @@ public class ProfilePathProcessor {
         }
       }
       if (!allowedTypes.isEmpty()) {
-        if (currentBasePath.contains("xtension.value")) {
+        if (currentBasePath.contains("xtension.value") && shortCut) {
           for (Iterator<ElementDefinition.TypeRefComponent> iter = elementDefinition.getType().iterator(); iter.hasNext(); ) {
             ElementDefinition.TypeRefComponent tr = iter.next();
             if (allowedTypes.contains(tr.getCode())) {
@@ -595,7 +595,8 @@ public class ProfilePathProcessor {
     } else if (diffMatches.get(0).hasType()
       && diffMatches.get(0).getType().size() == 1
       && diffMatches.get(0).getType().get(0).hasProfile()
-      && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())) {
+      && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())
+      && !(currentBase.getType().get(0).hasProfile() && currentBase.getType().get(0).getProfile().get(0).primitiveValue().equals(diffMatches.get(0).getType().get(0).getProfile().get(0).primitiveValue()))) {
       CanonicalType firstTypeProfile = diffMatches.get(0).getType().get(0).getProfile().get(0);
       StructureDefinition firstTypeStructureDefinition = profileUtilities.getContext().fetchResource(StructureDefinition.class, firstTypeProfile.getValue());
       if (firstTypeStructureDefinition == null && profileUtilities.getXver() != null && profileUtilities.getXver().matchingUrl(firstTypeProfile.getValue())) {

@@ -25,10 +25,10 @@ import org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r4.model.ValueSet.FilterOperator;
 import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -380,7 +380,7 @@ public class ICD11Generator {
     cs.setPublisher("WHO");
     cs.setCopyright("Consult WHO For terms of use");
     cs.setCaseSensitive(true);
-    cs.setHierarchyMeaning(CodeSystemHierarchyMeaning.ISA); // though we aren't going to have a heirarchy
+    cs.setHierarchyMeaning(CodeSystemHierarchyMeaning.ISA); // though we aren't going to have a hierarchy
 //    cs.setCompositional(true);
 //    cs.setVersionNeeded(true);
     cs.setValueSet("http://id.who.int/icd11/ValueSet/all-foundation");
@@ -395,10 +395,7 @@ public class ICD11Generator {
 
 
   private JsonObject fetchJson(String source) throws IOException {
-    SimpleHTTPClient http = new SimpleHTTPClient();
-    http.addHeader("API-Version", "v2");
-    http.addHeader("Accept-Language", "en");
-    HTTPResult res = http.get(source, "application/json");
+    HTTPResult res = ManagedWebAccess.builder().withAccept("application/json").withHeader("API-Version", "v2").withHeader("Accept-Language", "en").get(source);
     res.checkThrowException();
     return JsonParser.parseObject(res.getContent());
   }

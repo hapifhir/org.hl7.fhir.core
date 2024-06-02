@@ -20,6 +20,8 @@ import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.hl7.fhir.convertors.conv40_50.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -96,8 +98,12 @@ public class TxTester {
       ITerminologyClient tx = connectToServer();
       boolean ok = checkClient(tx);
       for (JsonObject suite : tests.getJsonObjects("suites")) {
-        if (!suite.has("mode") || modes.contains(suite.asString("mode"))) {
-          ok = runSuite(suite, tx, modes, filter, json.forceArray("suites")) && ok;
+        if ((!suite.has("mode") || modes.contains(suite.asString("mode")))) {
+          if (suite.asBoolean("disabled")) {
+            // ok = true;
+          } else {
+            ok = runSuite(suite, tx, modes, filter, json.forceArray("suites")) && ok;
+          }
         }
       }
       TextFile.stringToFile(JsonParser.compose(json, true), Utilities.path(output, "test-results.json"));
@@ -167,7 +173,11 @@ public class TxTester {
     List<Resource> setup = loadSetupResources(suite);
     boolean ok = true;
     for (JsonObject test : suite.getJsonObjects("tests")) {
-      ok = runTest(test, tx, setup, modes, filter, outputS.forceArray("tests")) && ok;      
+      if (test.asBoolean("disabled")) {
+        ok = true;
+      } else {
+        ok = runTest(test, tx, setup, modes, filter, outputS.forceArray("tests")) && ok;
+      }
     }
     return ok;
   }
@@ -201,6 +211,10 @@ public class TxTester {
           msg = validate(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
         } else if (test.asString("operation").equals("cs-validate-code")) {
           msg = validateCS(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
+        } else if (test.asString("operation").equals("lookup")) {
+          msg = lookup(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
+        } else if (test.asString("operation").equals("translate")) {
+          msg = translate(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -247,6 +261,56 @@ public class TxTester {
 
   private String serverId() throws URISyntaxException {
     return new URI(server).getHost();
+  }
+
+  private String lookup(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+    for (Resource r : setup) {
+      p.addParameter().setName("tx-resource").setResource(r);
+    }
+    tx.setContentLanguage(lang);
+    p.getParameter().addAll(profile.getParameter());
+    String pj;
+    try {
+      Parameters po = tx.lookupCode(p);
+      TxTesterScrubbers.scrubParams(po);
+      TxTesterSorters.sortParameters(po);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+    } catch (EFhirClientException e) {
+      OperationOutcome oo = e.getServerError(); 
+      TxTesterScrubbers.scrubOO(oo, tight);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+    }
+    String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, pj, false, ext);
+    if (diff != null) {
+      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
+      TextFile.stringToFile(pj, fp);        
+    }
+    return diff;
+  }
+
+  private String translate(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+    for (Resource r : setup) {
+      p.addParameter().setName("tx-resource").setResource(r);
+    }
+    tx.setContentLanguage(lang);
+    p.getParameter().addAll(profile.getParameter());
+    String pj;
+    try {
+      Parameters po = tx.translate(p);
+      TxTesterScrubbers.scrubParams(po);
+      TxTesterSorters.sortParameters(po);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+    } catch (EFhirClientException e) {
+      OperationOutcome oo = e.getServerError(); 
+      TxTesterScrubbers.scrubOO(oo, tight);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+    }
+    String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, pj, false, ext);
+    if (diff != null) {
+      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
+      TextFile.stringToFile(pj, fp);        
+    }
+    return diff;
   }
 
   private String expand(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
@@ -369,7 +433,7 @@ public class TxTester {
         for (ZipEntry ze; (ze = zipIn.getNextEntry()) != null; ) {
           if (ze.getName().startsWith("fhir-test-cases-master/tx/")) {
             Path path = Path.of(Utilities.path(this.folder, ze.getName().substring(26))).normalize();
-            String pathString = path.toFile().getAbsolutePath();
+            String pathString = ManagedFileAccess.fromPath(path).getAbsolutePath();
             if (!path.startsWith(Path.of(this.folder).normalize())) {
               // see: https://snyk.io/research/zip-slip-vulnerability
               throw new RuntimeException("Entry with an illegal path: " + ze.getName());
@@ -407,7 +471,12 @@ public class TxTester {
 
     @Override
     public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
-      return new org.hl7.fhir.r5.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, filename)));
+      Resource res = new org.hl7.fhir.r5.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, filename)));
+      org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_40_50.convertResource(res);
+      String p = Utilities.path(folder, "r4", filename);
+      Utilities.createDirectory(Utilities.getDirectoryForFile(p));
+      new org.hl7.fhir.r4.formats.JsonParser().compose(ManagedFileAccess.outStream(p), r4);
+      return res;
     }
 
     @Override

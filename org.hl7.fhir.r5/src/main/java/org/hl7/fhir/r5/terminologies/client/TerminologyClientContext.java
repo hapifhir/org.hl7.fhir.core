@@ -16,18 +16,25 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 
 public class TerminologyClientContext {
   public enum TerminologyClientContextUseType {
-    expand, validate, readVS
+    expand, validate, readVS, readCS
   }
   public class TerminologyClientContextUseCount {
     private int expands;
     private int validates;
     private int readVS;
-    
+    private int readCS;
+
     public int getReadVS() {
       return readVS;
     }
     public void setReadVS(int readVS) {
       this.readVS = readVS;
+    }
+    public int getReadCS() {
+      return readCS;
+    }
+    public void setReadCS(int readCS) {
+      this.readCS = readCS;
     }
     public int getExpands() {
       return expands;
@@ -93,6 +100,9 @@ public class TerminologyClientContext {
       break;
     case readVS:
       uc.readVS++;
+      break;
+    case readCS:
+      uc.readCS++;
       break;
     case validate:
       uc.validates++;

@@ -40,10 +40,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Stack;
 
-import org.hl7.fhir.utilities.SimpleHTTPClient;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -724,15 +724,13 @@ public class JsonTrackingParser {
   }
   
   public static JsonObject fetchJson(String source) throws IOException {
-    SimpleHTTPClient fetcher = new SimpleHTTPClient();
-    HTTPResult res = fetcher.get(source+"?nocache=" + System.currentTimeMillis());
+    HTTPResult res = ManagedWebAccess.get(source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
     res.checkThrowException();
     return parseJson(res.getContent());
   }
   
   public static JsonArray fetchJsonArray(String source) throws IOException {
-    SimpleHTTPClient fetcher = new SimpleHTTPClient();
-    HTTPResult res = fetcher.get(source+"?nocache=" + System.currentTimeMillis());
+    HTTPResult res = ManagedWebAccess.get(source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
     res.checkThrowException();
     return parseJsonArray(res.getContent());
   }

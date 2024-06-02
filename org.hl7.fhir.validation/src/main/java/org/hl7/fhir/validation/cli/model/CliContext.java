@@ -88,6 +88,8 @@ public class CliContext {
   private String snomedCT = "900000000000207008";
   @JsonProperty("targetVer")
   private String targetVer = null;
+  @JsonProperty("noEcosystem")
+  private boolean noEcosystem = false;
 
   @JsonProperty("extensions")
   private List<String> extensions = new ArrayList<String>();
@@ -242,6 +244,17 @@ public class CliContext {
   @JsonProperty("txServer")
   public CliContext setTxServer(String txServer) {
     this.txServer = txServer;
+    return this;
+  }
+
+  @JsonProperty("noEcosystem")
+  public boolean getNoEcosystem() {
+    return noEcosystem;
+  }
+
+  @JsonProperty("noEcosystem")
+  public CliContext setNoEcosystem(boolean noEcosystem) {
+    this.noEcosystem = noEcosystem;
     return this;
   }
 
