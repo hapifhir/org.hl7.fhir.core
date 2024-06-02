@@ -613,7 +613,8 @@ public class Element extends Base implements NamedItem {
 
 	@Override
 	public boolean hasPrimitiveValue() {
-		return property.isPrimitiveName(name) || property.IsLogicalAndHasPrimitiveValue(name);
+		//return property.isPrimitiveName(name) || property.IsLogicalAndHasPrimitiveValue(name);
+	  return super.hasPrimitiveValue();
 	}
 	
 

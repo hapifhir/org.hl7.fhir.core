@@ -267,7 +267,7 @@ public abstract class Base implements Serializable, IBase, IElement {
   }
 
 	public boolean hasPrimitiveValue() {
-		return isPrimitive();
+		return primitiveValue() != null;
 	}
 	
 	public String primitiveValue() {
