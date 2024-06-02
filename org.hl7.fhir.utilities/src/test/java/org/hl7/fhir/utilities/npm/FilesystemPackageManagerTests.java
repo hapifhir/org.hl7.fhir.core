@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nonnull;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
@@ -102,7 +103,7 @@ public class FilesystemPackageManagerTests {
 
   @Test
   public void multithreadingTest() throws IOException {
-    String pcmPath = Files.createTempDirectory("fpcm-multithreadingTest").toFile().getAbsolutePath();
+    String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
 
     final AtomicInteger totalSuccessful = new AtomicInteger();

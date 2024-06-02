@@ -18,7 +18,7 @@ class WorkingContext {
   private Set<String> excludeKeys = new HashSet<String>();
   private Set<String> excludeSystems = new HashSet<String>();
   
-  private boolean canBeHeirarchy = true;
+  private boolean canBeHierarchy = true;
   private Integer offsetParam;
   private Integer countParam; // allowed count. Because of internal processing, we allow more 
   private int total; // running count. This might be more than actually seen if we call out to an external server and only get the first 1000 codes
@@ -48,12 +48,12 @@ class WorkingContext {
     return excludeSystems;
   }
 
-  public boolean isCanBeHeirarchy() {
-    return canBeHeirarchy;
+  public boolean isCanBeHierarchy() {
+    return canBeHierarchy;
   }
 
-  public void setCanBeHeirarchy(boolean canBeHeirarchy) {
-    this.canBeHeirarchy = canBeHeirarchy;
+  public void setCanBeHierarchy(boolean canBeHierarchy) {
+    this.canBeHierarchy = canBeHierarchy;
   }
   
   public boolean hasOffsetParam() {
@@ -98,6 +98,10 @@ class WorkingContext {
 
   public void setNoTotal(boolean noTotal) {
     this.noTotal = noTotal;
+  }
+
+  public void resetTotal() {
+    total = 0;
   }
   
 }

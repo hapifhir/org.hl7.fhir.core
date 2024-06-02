@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.utilities.CanonicalPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -272,7 +273,7 @@ public class CodeSystemValidator  extends BaseValidator {
           ukp = KnownProperty.ItemWeight;
           break;
         default:
-          ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), isBaseSpec(cs.getNamedChildValue("url")), I18nConstants.CODESYSTEM_PROPERTY_BAD_HL7_URI, uri);
+          ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), isBaseSpec(cs.getNamedChildValue("url")) || isSelfRef(cs.getNamedChildValue("url"), uri), I18nConstants.CODESYSTEM_PROPERTY_BAD_HL7_URI, uri);
         }
       }
     }    
@@ -368,6 +369,10 @@ public class CodeSystemValidator  extends BaseValidator {
 
   private boolean isBaseSpec(String url) {
     return url.startsWith("http://hl7.org/fhir/") && !url.substring(20).contains("/");
+  }
+
+  private boolean isSelfRef(String url, String uri) {
+    return (url != null) && uri.startsWith(url);
   }
 
   private boolean checkConcept(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean caseSensitive, String hierarchyMeaning, CodeSystem csB, Element concept, Set<String> codes, Map<String, PropertyDef> properties) {
@@ -552,7 +557,7 @@ public class CodeSystemValidator  extends BaseValidator {
           hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_NONHL7_MISSING_ELEMENT, "caseSensitive");          
         } 
       }      
-      if (Utilities.noString(hierarchyMeaning) && hasHeirarchy(cs)) {
+      if (Utilities.noString(hierarchyMeaning) && hasHierarchy(cs)) {
         NodeStack s = stack;
         Element c = cs.getNamedChild("hierarchyMeaning", false);
         if (c != null) {
@@ -604,7 +609,7 @@ public class CodeSystemValidator  extends BaseValidator {
   }
 
 
-  private boolean hasHeirarchy(Element cs) {
+  private boolean hasHierarchy(Element cs) {
     for (Element c : cs.getChildren("concept")) {
       if (c.hasChildren("concept")) {
         return true;
@@ -616,7 +621,8 @@ public class CodeSystemValidator  extends BaseValidator {
   private boolean validateSupplementConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String supp, ValidationOptions options) {
     String code = concept.getChildValue("code");
     if (!Utilities.noString(code)) {
-      org.hl7.fhir.r5.terminologies.utilities.ValidationResult res = context.validateCode(options, systemFromCanonical(supp), versionFromCanonical(supp), code, null);
+      var canonical = new CanonicalPair(supp);
+      org.hl7.fhir.r5.terminologies.utilities.ValidationResult res = context.validateCode(options, canonical.getUrl(), canonical.getVersion(), code, null);
       return rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), res.isOk(), I18nConstants.CODESYSTEM_CS_SUPP_INVALID_CODE, supp, code);
     } else {
       return true;

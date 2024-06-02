@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import java.util.stream.Stream;
@@ -64,6 +65,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.json.model.*;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -154,11 +156,11 @@ public class ComparisonTests {
     prefix = loadResource("html-prefix.html");
     suffix = loadResource("html-suffix.html");
 
-    ComparisonSession session = new ComparisonSession(context, context, "Comparison Tests", null, null);
+    ComparisonSession session = new ComparisonSession(new RenderingI18nContext(), context, context, "Comparison Tests", null, null);
     if (content.has("version")) {
       session.setAnnotate(true);
     }
-    RenderingContext lrc = new RenderingContext(context, new MarkDownProcessor(Dialect.COMMON_MARK), null, "http://hl7.org/fhir", "", "en", ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER);
+    RenderingContext lrc = new RenderingContext(context, new MarkDownProcessor(Dialect.COMMON_MARK), null, "http://hl7.org/fhir", "", new Locale("en"), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER);
     lrc.setDestDir(Utilities.path("[tmp]", "comparison"));
     lrc.setPkp(new TestProfileKnowledgeProvider(context));
     if (content.has("version")) {

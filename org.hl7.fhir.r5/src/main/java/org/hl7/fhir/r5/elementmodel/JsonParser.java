@@ -165,6 +165,10 @@ public class JsonParser extends ParserBase {
   }
 
   public Element parse(List<ValidationMessage> errors, JsonObject object) throws FHIRException {
+    return parse(errors, object, null);
+  }
+  
+  public Element parse(List<ValidationMessage> errors, JsonObject object, String statedPath) throws FHIRException {
     if (object == null) {
       System.out.println("What?");
     }
@@ -187,16 +191,16 @@ public class JsonParser extends ParserBase {
          return null;
         }
       }
-      path = name;
+      path = statedPath == null ? name : statedPath;
     } else {
       name = sd.getType();
-      path = sd.getTypeTail();
+      path = statedPath == null ? sd.getTypeTail() : statedPath;
     }
     baseElement = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.getProfileUtilities(), this.getContextUtilities())).setFormat(FhirFormat.JSON);
     checkObject(errors, object, baseElement, path);
     baseElement.markLocation(line(object), col(object));
     baseElement.setType(name);
-    baseElement.setPath(baseElement.fhirTypeRoot());
+    baseElement.setPath(statedPath == null ? baseElement.fhirTypeRoot() : statedPath);
     parseChildren(errors, path, object, baseElement, true, null);
     baseElement.numberChildren();
     return baseElement;
@@ -273,7 +277,7 @@ public class JsonParser extends ParserBase {
           } else {
             JsonProperty p = getFoundJsonPropertyByName(e.getName(), children);
             if (p != null) {
-              logError(errors, "2022-11-26", line(e.getValue()), col(e.getValue()), path, IssueType.INVALID, context.formatMessage(I18nConstants.DUPLICATE_JSON_PROPERTY, e.getName()), IssueSeverity.ERROR);            
+              logError(errors, "2022-11-26", line(e.getValue()), col(e.getValue()), path, IssueType.INVALID, context.formatMessage(I18nConstants.DUPLICATE_JSON_PROPERTY_KEY, e.getName()), IssueSeverity.ERROR);            
             } else {
               logError(errors, ValidationMessage.NO_RULE_DATE, line(e.getValue()), col(e.getValue()), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_, e.getName()), IssueSeverity.ERROR);
             }

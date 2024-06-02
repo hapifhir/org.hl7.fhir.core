@@ -42,4 +42,12 @@ public abstract class Subtag {
   public List<String> getComments() {
     return List.copyOf(comments);
   }
+  
+  public String getDisplay() {
+    if (descriptions.size() == 0) {
+      return "";
+    } else {
+      return descriptions.get(0);
+    }
+  }
 }

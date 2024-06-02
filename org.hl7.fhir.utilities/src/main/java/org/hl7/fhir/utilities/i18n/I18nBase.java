@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.i18n;
 
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -29,7 +30,7 @@ public abstract class I18nBase {
     if (Objects.nonNull(locale)) {
       return locale;
     } else {
-      return Locale.US;
+      return Locale.getDefault();
     }
   }
 
@@ -65,12 +66,16 @@ public abstract class I18nBase {
     if (!messageKeyExistsForLocale(message)) {
       if (!message.contains(" ")) {
         if (warnAboutMissingMessages && (hasArgs || !message.contains(" "))) {
-          System.out.println("Attempting to localize message " + message + ", but no such equivalent message exists for" +
+          System.out.println("Attempting to localize "+typeOfString()+" " + message + ", but no such equivalent message exists for" +
               " the locale " + getLocale());
         }
       }
     }
     return messageKeyExistsForLocale(message);
+  }
+
+  protected String typeOfString() {
+    return "message";
   }
 
   protected boolean messageKeyExistsForLocale(String message) {
@@ -98,6 +103,11 @@ public abstract class I18nBase {
       .map(entry -> baseKey + KEY_DELIMITER + entry).collect(Collectors.toSet());
   }
 
+
+  protected Set<String> getPluralSuffixes() {
+    return Collections.unmodifiableSet(pluralRules.getKeywords());
+  }
+  
   protected String getRootKeyFromPlural(@Nonnull String pluralKey) {
     checkPluralRulesAreLoaded();
     for (String keyword : pluralRules
@@ -115,7 +125,7 @@ public abstract class I18nBase {
       if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
         message = MessageFormat.format(messages.getString(theMessage).trim(), theMessageArguments);
       } else {
-        message = messages.getString(theMessage).trim();
+        message = MessageFormat.format(messages.getString(theMessage).trim(), null);
       }
     }
     return message;

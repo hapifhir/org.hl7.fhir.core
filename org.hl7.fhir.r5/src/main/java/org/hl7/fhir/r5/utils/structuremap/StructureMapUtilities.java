@@ -2396,7 +2396,7 @@ public class StructureMapUtilities {
     if (Utilities.noString(code))
       throw new FHIRException("Describe Transform, but the code is blank");
     Coding c = buildCoding(uri, code);
-    return TerminologyRenderer.describeSystem(c.getSystem()) + "#" + c.getCode() + (c.hasDisplay() ? "(" + c.getDisplay() + ")" : "");
+    return c.getSystem() + "#" + c.getCode() + (c.hasDisplay() ? "(" + c.getDisplay() + ")" : "");
   }
 
 

@@ -17,15 +17,18 @@ import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.CanonicalResourceManager;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.TerminologyClientContextUseType;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ServerOptionList;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedCodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -100,6 +103,8 @@ public class TerminologyClientManager {
 
   private String monitorServiceURL;
 
+  private boolean useEcosystem;
+
   public TerminologyClientManager(ITerminologyClientFactory factory, String cacheId) {
     super();
     this.factory = factory;
@@ -115,6 +120,7 @@ public class TerminologyClientManager {
     serverList.addAll(other.serverList);
     serverMap.putAll(other.serverMap);
     resMap.putAll(other.resMap);
+    useEcosystem = other.useEcosystem;
     monitorServiceURL = other.monitorServiceURL;
     factory = other.factory;
     usage = other.usage;
@@ -179,6 +185,19 @@ public class TerminologyClientManager {
       }
     }
     
+    for (String sys : systems) {
+      String uri = sys.contains("|") ? sys.substring(0, sys.indexOf("|")) : sys;
+      // this list is the list of code systems that have special handling on tx.fhir.org, and might not be resolved above.
+      // we don't want them to go to secondary servers (e.g. VSAC) by accident (they might go deliberately above)
+      if (Utilities.existsInList(uri, "http://unitsofmeasure.org", "http://loinc.org", "http://snomed.info/sct",
+          "http://www.nlm.nih.gov/research/umls/rxnorm", "http://hl7.org/fhir/sid/cvx", "urn:ietf:bcp:13", "urn:ietf:bcp:47",
+          "urn:ietf:rfc:3986", "http://www.ama-assn.org/go/cpt", "urn:oid:1.2.36.1.2001.1005.17", "urn:iso:std:iso:3166", 
+          "http://varnomen.hgvs.org", "http://unstats.un.org/unsd/methods/m49/m49.htm", "urn:iso:std:iso:4217", 
+          "http://hl7.org/fhir/sid/ndc", "http://fhir.ohdsi.org/CodeSystem/concepts", "http://fdasis.nlm.nih.gov", "https://www.usps.com/")) {
+        return serverList.get(0);
+      }
+    }
+
     // no agreement? Then what we do depends     
     if (vs != null) {
       if (vs.hasUserData("External.Link")) {
@@ -238,7 +257,7 @@ public class TerminologyClientManager {
   }
 
   private ServerOptionList decideWhichServer(String url) {
-    if (IGNORE_TX_REGISTRY) {
+    if (IGNORE_TX_REGISTRY || !useEcosystem) {
       return new ServerOptionList(getMasterClient().getAddress());
     }
     if (expParameters != null) {
@@ -315,7 +334,8 @@ public class TerminologyClientManager {
     }
   }
 
-  public TerminologyClientContext setMasterClient(ITerminologyClient client) {
+  public TerminologyClientContext setMasterClient(ITerminologyClient client, boolean useEcosystem) {
+    this.useEcosystem = useEcosystem;
     TerminologyClientContext details = new TerminologyClientContext(client, cacheId, true);
     details.setTxCache(cache);
     serverList.clear();
@@ -419,7 +439,7 @@ public class TerminologyClientManager {
   }
 
   public SourcedValueSet findValueSetOnServer(String canonical) {
-    if (IGNORE_TX_REGISTRY || getMasterClient() == null) {
+    if (IGNORE_TX_REGISTRY || getMasterClient() == null || !useEcosystem) {
       return null;
     }
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+Utilities.URLEncode(canonical));
@@ -487,6 +507,86 @@ public class TerminologyClientManager {
       }
       ValueSet vs = (ValueSet) client.getClient().read("ValueSet", rid);
       return new SourcedValueSet(server, vs);
+    } catch (Exception e) {
+      e.printStackTrace();
+      String msg = "Error resolving valueSet "+canonical+": "+e.getMessage()+" ("+request+")";
+      if (!internalLog.contains(msg)) {
+        internalLog.add(msg);
+      }
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public SourcedCodeSystem findCodeSystemOnServer(String canonical) {
+    if (IGNORE_TX_REGISTRY || getMasterClient() == null || !useEcosystem) {
+      return null;
+    }
+    String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode(canonical));
+    if (usage != null) {
+      request = request + "&usage="+usage;
+    }
+    String server = null;
+    try {
+      JsonObject json = JsonParser.parseObjectFromUrl(request);
+      for (JsonObject item : json.getJsonObjects("authoritative")) {
+        if (server == null) {
+          server = item.asString("url");
+        }
+      }
+      for (JsonObject item : json.getJsonObjects("candidates")) {
+        if (server == null) {
+          server = item.asString("url");
+        }
+      }
+      if (server == null) {
+        return null;
+      }
+      if (server.contains("://tx.fhir.org")) {
+        try {
+          server = server.replace("tx.fhir.org", new URL(getMasterClient().getAddress()).getHost());
+        } catch (MalformedURLException e) {
+        }
+      }
+      TerminologyClientContext client = serverMap.get(server);
+      if (client == null) {
+        try {
+          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
+        } catch (URISyntaxException e) {
+          throw new TerminologyServiceException(e);
+        }
+        client.setTxCache(cache);
+        serverList.add(client);
+        serverMap.put(server, client);
+      }
+      client.seeUse(canonical, TerminologyClientContextUseType.readCS);
+      String criteria = canonical.contains("|") ? 
+          "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+"&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)): 
+            "?_format=json&url="+Utilities.URLEncode(canonical);
+      request = Utilities.pathURL(client.getAddress(), "CodeSystem"+ criteria);
+      Bundle bnd = client.getClient().search("CodeSystem", criteria);
+      String rid = null;
+      if (bnd.getEntry().size() == 0) {
+        return null;
+      } else if (bnd.getEntry().size() > 1) {
+        List<CodeSystem> cslist = new ArrayList<>();
+        for (BundleEntryComponent be : bnd.getEntry()) {
+          if (be.hasResource() && be.getResource() instanceof CodeSystem) {
+            cslist.add((CodeSystem) be.getResource());
+          }
+        }
+        Collections.sort(cslist, new CodeSystemUtilities.CodeSystemSorter());
+        rid = cslist.get(cslist.size()-1).getIdBase();
+      } else {
+        if (bnd.getEntryFirstRep().hasResource() && bnd.getEntryFirstRep().getResource() instanceof CodeSystem) {
+          rid = bnd.getEntryFirstRep().getResource().getIdBase();
+        }
+      }
+      if (rid == null) {
+        return null;
+      }
+      CodeSystem vs = (CodeSystem) client.getClient().read("CodeSystem", rid);
+      return new SourcedCodeSystem(server, vs);
     } catch (Exception e) {
       e.printStackTrace();
       String msg = "Error resolving valueSet "+canonical+": "+e.getMessage()+" ("+request+")";

@@ -29,11 +29,11 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonElementType;
@@ -287,9 +287,7 @@ public class SHLParser extends ParserBase {
 
 
   private HTTPResult fetchFile(String url, String ct) throws IOException {
-    SimpleHTTPClient fetcher = new SimpleHTTPClient();
-    fetcher.addHeader("Accept", ct);
-    HTTPResult res = fetcher.get(url);
+    HTTPResult res = ManagedWebAccess.get(url, ct);
     res.checkThrowException();
     return res;
   }
@@ -298,10 +296,10 @@ public class SHLParser extends ParserBase {
     if (testMode) {
       return new HTTPResult(url, 200, "OK", "application/json", TextFile.streamToBytes(TestingUtilities.loadTestResourceStream("validator", "shlink.manifest.json")));
     }
-    SimpleHTTPClient fetcher = new SimpleHTTPClient();
+
     JsonObject j = new JsonObject();
     j.add("recipient", "FHIR Validator");
-    HTTPResult res = fetcher.post(url, "application/json", org.hl7.fhir.utilities.json.parser.JsonParser.composeBytes(j), "application/json");        
+    HTTPResult res = ManagedWebAccess.post(url, org.hl7.fhir.utilities.json.parser.JsonParser.composeBytes(j), "application/json", "application/json");        
     res.checkThrowException();
     return res;
   }

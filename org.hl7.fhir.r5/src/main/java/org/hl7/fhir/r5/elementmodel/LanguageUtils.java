@@ -19,10 +19,14 @@ import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
+import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.MarkdownType;
+import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
@@ -55,8 +59,9 @@ public class LanguageUtils {
 
   private static final String ORPHAN_TRANSLATIONS_NAME = "translations.orphans";
 
-  private static final String SUPPLEMENT_NAME = "translations.supplement";
-
+  private static final String SUPPLEMENT_SOURCE_RESOURCE = "translations.supplemented";
+  private static final String SUPPLEMENT_SOURCE_TRANSLATIONS = "translations.source-list";
+  
   IWorkerContext context;
   private List<String> crlist;
   
@@ -124,13 +129,17 @@ public class LanguageUtils {
   }
 
   private String pathForElement(Element element) {
+    String bp = element.getBasePath();
+    return pathForElement(bp, element.getProperty().getStructure().getType());
+  }
+  
+  private String pathForElement(String path, String type) {
     // special case support for metadata elements prior to R5:
     if (crlist == null) {
       crlist = new ContextUtilities(context).getCanonicalResourceNames();
     }
-    String bp = element.getBasePath();
-    if (crlist.contains(element.getProperty().getStructure().getType())) {
-      String fp = bp.replace(element.getProperty().getStructure().getType()+".", "CanonicalResource.");
+    if (crlist.contains(type)) {
+      String fp = path.replace(type+".", "CanonicalResource.");
       if (Utilities.existsInList(fp,
          "CanonicalResource.url", "CanonicalResource.identifier", "CanonicalResource.version", "CanonicalResource.name", 
          "CanonicalResource.title", "CanonicalResource.status", "CanonicalResource.experimental", "CanonicalResource.date",
@@ -139,7 +148,7 @@ public class LanguageUtils {
         return fp;
       }
     }
-    return bp; 
+    return path; 
   }
   
   
@@ -154,6 +163,22 @@ public class LanguageUtils {
       r = importFromTranslationsForSD(null, resource, translations, usedUnits);
     } else {
      r = importFromTranslations(null, resource, translations, usedUnits);
+    }
+    for (TranslationUnit t : translations) {
+      if (!usedUnits.contains(t)) {
+        messages.add(new ValidationMessage(Source.Publisher, IssueType.INFORMATIONAL, t.getId(), "Unused '"+t.getLanguage()+"' translation '"+t.getSrcText()+"' -> '"+t.getTgtText()+"'", IssueSeverity.INFORMATION));
+      }
+    }
+    return r;
+  }
+  
+  public int importFromTranslations(Resource resource, List<TranslationUnit> translations, List<ValidationMessage> messages) {
+    Set<TranslationUnit> usedUnits = new HashSet<>();
+    int r = 0;
+    if (resource.fhirType().equals("StructureDefinition")) {
+      // todo... r = importFromTranslationsForSD(null, resource, translations, usedUnits);
+    } else {
+     r = importResourceFromTranslations(null, resource, translations, usedUnits, resource.fhirType());
     }
     for (TranslationUnit t : translations) {
       if (!usedUnits.contains(t)) {
@@ -220,12 +245,48 @@ public class LanguageUtils {
     return r;
   }
 
+  private int importResourceFromTranslations(Base parent, Base element, List<TranslationUnit> translations, Set<TranslationUnit> usedUnits, String path) {
+    int t = 0;
+    if (element.isPrimitive() && isTranslatable(element, path) && element instanceof org.hl7.fhir.r5.model.Element) {
+      org.hl7.fhir.r5.model.Element e = (org.hl7.fhir.r5.model.Element) element;
+      String base = element.primitiveValue();
+      if (base != null) {
+        String epath = pathForElement(path, element.fhirType());
+        Set<TranslationUnit> tlist = findTranslations(epath, base, translations);
+        for (TranslationUnit translation : tlist) {
+          t++;
+          if (!handleAsSpecial(parent, element, translation)) {
+            ToolingExtensions.setLanguageTranslation(e, translation.getLanguage(), translation.getTgtText());
+            usedUnits.add(translation);
+          }
+        }
+      }
+    }
+    for (Property c : element.children()) {
+      for (Base v : c.getValues()) {
+        if (!c.getName().equals("designation")) {
+          t = t + importResourceFromTranslations(element, v, translations, usedUnits, path+"."+c.getName());
+        }
+      }
+    }
+    return t;
+  }
+
+  private boolean handleAsSpecial(Base parent, Base element, TranslationUnit translation) {
+    return false;
+  }
+
+  private boolean isTranslatable(Base element, String path) {
+    return Utilities.existsInList(element.fhirType(), "string", "markdown");
+  }
+
   private int importFromTranslations(Element parent, Element element, List<TranslationUnit> translations, Set<TranslationUnit> usedUnits) {
     int t = 0;
     if (element.isPrimitive() && isTranslatable(element)) {
       String base = element.primitiveValue();
       if (base != null) {
-        Set<TranslationUnit> tlist = findTranslations(pathForElement(element), base, translations);
+        String path = pathForElement(element);
+        Set<TranslationUnit> tlist = findTranslations(path, base, translations);
         for (TranslationUnit translation : tlist) {
           t++;
           if (!handleAsSpecial(parent, element, translation)) {
@@ -235,7 +296,7 @@ public class LanguageUtils {
         }
       }
     }
-    for (Element c: element.getChildren()) {
+    for (Element c : element.getChildren()) {
       if (!c.getName().equals("designation")) {
         t = t + importFromTranslations(element, c, translations, usedUnits);
       }
@@ -331,19 +392,64 @@ public class LanguageUtils {
     return dstLang == null || srcLang == null ? false : dstLang.startsWith(srcLang) || "*".equals(srcLang);
   }
 
-  public static void fillSupplement(CodeSystem cs, List<TranslationUnit> list) {
-    cs.setUserData(SUPPLEMENT_NAME, "true");
+  public void fillSupplement(CodeSystem csSrc, CodeSystem csDst, List<TranslationUnit> list) {
+    csDst.setUserData(SUPPLEMENT_SOURCE_RESOURCE, csSrc);
+    csDst.setUserData(SUPPLEMENT_SOURCE_TRANSLATIONS, list);
     for (TranslationUnit tu : list) {
-      ConceptDefinitionComponent cd = CodeSystemUtilities.getCode(cs, tu.getId());
-      if (cd != null && cd.hasDisplay() && cd.getDisplay().equals(tu.getSrcText())) {
-        cd.addDesignation().setLanguage(tu.getLanguage()).setValue(tu.getTgtText());
-      } else {
-        addOrphanTranslation(cs, tu);
+      String code = tu.getId();
+      String subCode = null;
+      if (code.contains("@")) {
+        subCode = code.substring(code.indexOf("@")+1);
+        code = code.substring(0, code.indexOf("@"));
       }
+      ConceptDefinitionComponent cdSrc = CodeSystemUtilities.getCode(csSrc, tu.getId());
+      if (cdSrc == null) {
+        addOrphanTranslation(csSrc, tu);
+      } else {
+        ConceptDefinitionComponent cdDst = CodeSystemUtilities.getCode(csDst, cdSrc.getCode());
+        if (cdDst == null) {
+          cdDst = csDst.addConcept().setCode(cdSrc.getCode());
+        }
+        String tt = tu.getTgtText();
+        if (tt.startsWith("!!")) {
+          tt = tt.substring(3);
+        }
+        if (subCode == null) {
+          cdDst.setDisplay(tt);
+        } else if ("definition".equals(subCode)) {
+          cdDst.setDefinition(tt);
+        } else {
+          boolean found = false;
+          for (ConceptDefinitionDesignationComponent d : cdSrc.getDesignation()) {
+            if (d.hasUse() && subCode.equals(d.getUse().getCode())) {
+              found = true;
+              cdDst.addDesignation().setUse(d.getUse()).setLanguage(tu.getLanguage()).setValue(tt); //.setUserData(SUPPLEMENT_SOURCE, tu);       
+              break;
+            }
+          }
+          if (!found) {
+            for (Extension e : cdSrc.getExtension()) {
+              if (subCode.equals(tail(e.getUrl()))) {
+                found = true;
+                cdDst.addExtension().setUrl(e.getUrl()).setValue(
+                    e.getValue().fhirType().equals("markdown") ? new MarkdownType(tt) : new StringType(tt)); //.setUserData(SUPPLEMENT_SOURCE, tu);          
+                break;
+              }
+            }
+          }
+          if (!found) {
+            addOrphanTranslation(csSrc, tu);            
+          }
+        }
+      }      
     }    
   }
 
-  private static void addOrphanTranslation(CodeSystem cs, TranslationUnit tu) {
+  private String tail(String url) {
+    return url.contains("/") ? url.substring(url.lastIndexOf("/")+1) : url;
+  }
+
+  private void addOrphanTranslation(CodeSystem cs, TranslationUnit tu) {
     List<TranslationUnit> list = (List<TranslationUnit>) cs.getUserData(ORPHAN_TRANSLATIONS_NAME);
     if (list == null) {
       list = new ArrayList<>();
@@ -352,7 +458,7 @@ public class LanguageUtils {
     list.add(tu);
   }
 
-  public static String nameForLang(String lang) {
+  public String nameForLang(String lang) {
     // todo: replace with structures from loading languages properly
     switch (lang) {
     case "en" : return "English";
@@ -363,7 +469,7 @@ public class LanguageUtils {
     return Utilities.capitalize(lang);
   }
 
-  public static String titleForLang(String lang) {
+  public String titleForLang(String lang) {
     // todo: replace with structures from loading languages properly
     switch (lang) {
     case "en" : return "English";
@@ -374,29 +480,42 @@ public class LanguageUtils {
     return Utilities.capitalize(lang);
   }
 
-  public static boolean handlesAsResource(Resource resource) {
-    return (resource instanceof CodeSystem && resource.hasUserData(SUPPLEMENT_NAME)) || (resource instanceof StructureDefinition);
+  public boolean handlesAsResource(Resource resource) {
+    return (resource instanceof CodeSystem && resource.hasUserData(SUPPLEMENT_SOURCE_RESOURCE)) || (resource instanceof StructureDefinition);
   }
 
-  public static boolean handlesAsElement(Element element) {
+  public boolean handlesAsElement(Element element) {
     return true; // for now...
   }
 
-  public static List<TranslationUnit> generateTranslations(Resource res, String lang) {
+  public List<TranslationUnit> generateTranslations(Resource res, String lang) {
     List<TranslationUnit> list = new ArrayList<>();
     if (res instanceof StructureDefinition) {
       StructureDefinition sd = (StructureDefinition) res;
       generateTranslations(list, sd, lang);
+      if (res.hasUserData(ORPHAN_TRANSLATIONS_NAME)) {
+        List<TranslationUnit> orphans = (List<TranslationUnit>) res.getUserData(ORPHAN_TRANSLATIONS_NAME);
+        for (TranslationUnit t : orphans) {
+          list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext1(), t.getSrcText(), t.getTgtText()));
+        }
+      }
     } else {
-      CodeSystem cs = (CodeSystem) res;
+      CodeSystem cs = (CodeSystem) res.getUserData(SUPPLEMENT_SOURCE_RESOURCE);
+      List<TranslationUnit> inputs = res.hasUserData(SUPPLEMENT_SOURCE_TRANSLATIONS) ? (List<TranslationUnit>) res.getUserData(SUPPLEMENT_SOURCE_TRANSLATIONS) : new ArrayList<>();
       for (ConceptDefinitionComponent cd : cs.getConcept()) {
-        generateTranslations(list, cd, lang);
+        generateTranslations(list, cd, lang, inputs);
+      }
+      if (cs.hasUserData(ORPHAN_TRANSLATIONS_NAME)) {
+        List<TranslationUnit> orphans = (List<TranslationUnit>) cs.getUserData(ORPHAN_TRANSLATIONS_NAME);
+        for (TranslationUnit t : orphans) {
+          list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext1(), t.getSrcText(), t.getTgtText()));
+        }
       }
     }
     return list;
   }
 
-  private static void generateTranslations(List<TranslationUnit> list, StructureDefinition sd, String lang) {
+  private void generateTranslations(List<TranslationUnit> list, StructureDefinition sd, String lang) {
     addToList(list, lang, sd, "name", "name", sd.getNameElement());
     addToList(list, lang, sd, "title", "title", sd.getTitleElement());
     addToList(list, lang, sd, "publisher", "publisher", sd.getPublisherElement());
@@ -426,34 +545,49 @@ public class LanguageUtils {
     }
   }
 
-  private static void addToList(List<TranslationUnit> list, String lang, Base ctxt, String name, String propName, DataType value) {
+  private void addToList(List<TranslationUnit> list, String lang, Base ctxt, String name, String propName, DataType value) {
     if (value != null && value.hasPrimitiveValue()) {
       list.add(new TranslationUnit(lang, name, ctxt.getNamedProperty(propName).getDefinition(), value.primitiveValue(), value.getTranslation(lang)));
     }
     
   }
 
-  private static void generateTranslations(List<TranslationUnit> list, ConceptDefinitionComponent cd, String lang) {
-    String code = cd.getCode();
-    String display = cd.getDisplay();
-    String target = null;
-    for (ConceptDefinitionDesignationComponent d : cd.getDesignation()) {
-      if (target == null && !d.hasUse() && d.hasLanguage() && lang.equals(d.getLanguage())) {
-        target = d.getValue();
-      }
+  private void generateTranslations(List<TranslationUnit> list, ConceptDefinitionComponent cd, String lang, List<TranslationUnit> inputs) {
+    // we generate translation units for the display, the definition, and any designations and extensions that we find
+    // the id of the designation is the use.code (there will be a use) and for the extension, the tail of the extension URL 
+    // todo: do we need to worry about name clashes? why would we, and more importantly, how would we solve that?
+
+    addTranslationUnit(list, cd.getCode(), cd.getDisplay(), lang, inputs);
+    if (cd.hasDefinition()) {
+      addTranslationUnit(list, cd.getCode()+"@definition", cd.getDefinition(), lang, inputs);        
     }
     for (ConceptDefinitionDesignationComponent d : cd.getDesignation()) {
-      if (target == null && d.hasLanguage() && lang.equals(d.getLanguage())) {
-        target = d.getValue();
-      }
+      addTranslationUnit(list, cd.getCode()+"@"+d.getUse().getCode(), d.getValue(), lang, inputs);              
     }
-    list.add(new TranslationUnit(lang, code, getDefinition(cd), display, target));
-    for (ConceptDefinitionComponent cd1 : cd.getConcept()) {
-      generateTranslations(list, cd1, lang);
+    for (Extension e : cd.getExtension()) {
+      addTranslationUnit(list, cd.getCode()+"@"+tail(e.getUrl()), e.getValue().primitiveValue(), lang, inputs);                    
     }
   }
 
-  private static String getDefinition(ConceptDefinitionComponent cd) {
+  private void addTranslationUnit(List<TranslationUnit> list, String id, String srcText, String lang, List<TranslationUnit> inputs) {
+    TranslationUnit existing = null;
+    for (TranslationUnit t : inputs) {
+      if (id.equals(t.getId())) {
+        existing = t;
+        break;
+      }
+    }
+    // not sure what to do with context?
+    if (existing == null) {
+      list.add(new TranslationUnit(lang, id, null, srcText, null));
+    } else if (srcText.equals(existing.getSrcText())) {
+      list.add(new TranslationUnit(lang, id, null, srcText, existing.getTgtText()));
+    } else {
+      list.add(new TranslationUnit(lang, id, null, srcText, "!!"+existing.getTgtText()).setOriginal(existing.getSrcText()));
+    }    
+  }
+  
+  private String getDefinition(ConceptDefinitionComponent cd) {
     ConceptPropertyComponent v = CodeSystemUtilities.getProperty(cd, "translation-context");
     if (v != null && v.hasValue()) {
       return v.getValue().primitiveValue();
@@ -462,15 +596,15 @@ public class LanguageUtils {
     }
   }
 
-  public static List<TranslationUnit> generateTranslations(Element e, String lang) {
+  public List<TranslationUnit> generateTranslations(Element e, String lang) {
     List<TranslationUnit> list = new ArrayList<>();
     generateTranslations(e, lang, list);
     return list;
   }
 
-  private static void generateTranslations(Element e, String lang, List<TranslationUnit> list) {
+  private void generateTranslations(Element e, String lang, List<TranslationUnit> list) {
     if (e.getProperty().isTranslatable()) {
-      String id = e.getProperty().getDefinition().getPath();
+      String id = pathForElement(e); // .getProperty().getDefinition().getPath();
       String context = e.getProperty().getDefinition().getDefinition();
       String src = e.primitiveValue();
       String tgt = getTranslation(e, lang);
@@ -484,7 +618,7 @@ public class LanguageUtils {
     
   }
 
-  private static String getTranslation(Element e, String lang) {
+  private String getTranslation(Element e, String lang) {
     if (!e.hasChildren()) {
       return null;
     }
@@ -507,5 +641,22 @@ public class LanguageUtils {
     }
     return null;
   }
-  
+ 
+  public boolean switchLanguage(Element e, String lang) {
+    if (e.getProperty().isTranslatable()) {
+      String cnt = getTranslation(e, lang);
+      e.removeExtension(ToolingExtensions.EXT_TRANSLATION);
+      if (cnt != null) {
+        e.setValue(cnt);
+      }
+    }
+    if (e.hasChildren()) {
+      for (Element c : e.getChildren()) {
+        if (!switchLanguage(c, lang)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 }

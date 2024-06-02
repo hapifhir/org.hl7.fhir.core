@@ -9,6 +9,7 @@ public class ResolvedReference {
     private Element focus;
     private boolean external;
     private NodeStack stack;
+    private NodeStack via;
 
     public ResolvedReference setResource(Element resource) {
         this.resource = resource;
@@ -48,6 +49,14 @@ public class ResolvedReference {
 
     public Element getFocus() {
         return focus;
+    }
+
+    public NodeStack getVia() {
+      return via;
+    }
+
+    public void setVia(NodeStack via) {
+      this.via = via;
     }
 
     public ValidationContext valContext(ValidationContext valContext, StructureDefinition profile) {

@@ -544,6 +544,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private String invId;
   private String comment;
   private List<ValidationMessage> sliceInfo;
+  private int count;
 
   /**
    * Constructor
@@ -661,8 +662,13 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   }
 
   public String getMessage() {
-    return message;
+    return message+showCount();
   }
+  
+  private String showCount() {
+    return count == 0 ? "" : " (also in "+count+" other files)";
+  }
+
   public ValidationMessage setMessage(String message) {
     this.message = message;
     return this;
@@ -718,20 +724,20 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   }
 
   public String summary() {
-    return level.toString()+" @ "+location+(line>= 0 && col >= 0 ? " (line "+Integer.toString(line)+", col"+Integer.toString(col)+"): " : ": ") +message +(server != null ? " (src = "+server+")" : "");
+    return level.toString()+" @ "+location+(line>= 0 && col >= 0 ? " (line "+Integer.toString(line)+", col"+Integer.toString(col)+"): " : ": ") +message+showCount() +(server != null ? " (src = "+server+")" : "");
   }
 
 
   public String toXML() {
-    return "<message source=\"" + source + "\" line=\"" + line + "\" col=\"" + col + "\" location=\"" + Utilities.escapeXml(location) + "\" type=\"" + type + "\" level=\"" + level + "\" display=\"" + Utilities.escapeXml(getDisplay()) + "\" ><plain>" + Utilities.escapeXml(message) + "</plain><html>" + html + "</html></message>";
+    return "<message source=\"" + source + "\" line=\"" + line + "\" col=\"" + col + "\" location=\"" + Utilities.escapeXml(location) + "\" type=\"" + type + "\" level=\"" + level + "\" display=\"" + Utilities.escapeXml(getDisplay()) + "\" ><plain>" + Utilities.escapeXml(message)+showCount() + "</plain><html>" + html + "</html></message>";
   }
 
   public String getHtml() {
-    return html == null ? Utilities.escapeXml(message) : html;
+    return (html == null ? Utilities.escapeXml(message) : html)+showCount();
   }
 
   public String getDisplay() {
-    return level + ": " + (location==null || location.isEmpty() ? "" : (location + ": ")) + message;
+    return level + ": " + (location==null || location.isEmpty() ? "" : (location + ": ")) + message+showCount();
   }
 
   /**
@@ -745,7 +751,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     b.append("level", level);
     b.append("type", type);
     b.append("location", location);
-    b.append("message", message);
+    b.append("message", message+showCount());
     return b.build();
   }
 
@@ -953,6 +959,19 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
   public void setServer(String server) {
     this.server = server;
+  }
+
+  public void incCount() {
+    count++;
+  }
+
+  public boolean containsText(List<String> fragements) {
+    for (String s : fragements) {
+      if ((getMessage() != null && getMessage().contains(s)) || (getMessageId() != null && getMessageId().contains(s))) {
+        return true;
+      }
+    }
+    return false;
   }  
   
 }

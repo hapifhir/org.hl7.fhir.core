@@ -1062,7 +1062,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return null;
     }
     if (sys.size() == 0) {
-      problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_MATCHES, code, valueset.getVersionedUrl())));
+      problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_INFER_CODESYSTEM, code, valueset.getVersionedUrl())));
       return null;
     } else if (sys.size() > 1) {
       problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES, code, valueset.getVersionedUrl(), sys.toString())));
@@ -1082,87 +1082,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
       int i = 0;
       for (ConceptSetComponent vsi : valueset.getCompose().getInclude()) {
         opContext.deadCheck();
-        if (vsi.hasValueSet()) {
-          for (CanonicalType u : vsi.getValueSet()) {
-            if (!checkForCodeInValueSet(code, u.getValue(), sys, problems)) {
-              return false;
-            }
-          }
-        } else if (!vsi.hasSystem()) { 
-          problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_NO_SYSTEM, code, valueset.getVersionedUrl(), i)));
-          return false;
-        }
-        if (vsi.hasSystem()) {
-          if (vsi.hasFilter()) {
-            ValueSet vsDummy = new ValueSet();
-            vsDummy.setUrl(Utilities.makeUuidUrn());
-            vsDummy.setStatus(PublicationStatus.ACTIVE);
-            vsDummy.getCompose().addInclude(vsi);
-            Coding c = new Coding().setCode(code).setSystem(vsi.getSystem());
-            ValidationResult vr = context.validateCode(options.withGuessSystem(false), c, vsDummy);
-            if (vr.isOk()) {
-              sys.add(vsi.getSystem());
-            } else {
-              problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_FILTER, code, valueset.getVersionedUrl(), i, vsi.getSystem())));
-              return false;
-            }
-          }
-          CodeSystemProvider csp = CodeSystemProvider.factory(vsi.getSystem());
-          if (csp != null) {
-            Boolean ok = csp.checkCode(code);
-            if (ok == null) {
-              problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE, code, valueset.getVersionedUrl(), vsi.getSystem())));
-              sys.add(vsi.getSystem());
-            } else if (ok) {
-              sys.add(vsi.getSystem());
-            }
-          } else {
-            CodeSystem cs = resolveCodeSystem(vsi.getSystem(), vsi.getVersion());
-            if (cs != null && cs.getContent() == CodeSystemContentMode.COMPLETE) {
-
-              if (vsi.hasConcept()) {
-                for (ConceptReferenceComponent cc : vsi.getConcept()) {
-                  boolean match = cs.getCaseSensitive() ? cc.getCode().equals(code) : cc.getCode().equalsIgnoreCase(code);
-                  if (match) {
-                    sys.add(vsi.getSystem());
-                  }
-                }
-              } else {
-                ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), code, cs.getCaseSensitive(), allAltCodes);
-                if (cc != null) {
-                  sys.add(vsi.getSystem());
-                }
-              }
-            } else if (vsi.hasConcept()) {
-              for (ConceptReferenceComponent cc : vsi.getConcept()) {
-                boolean match = cc.getCode().equals(code);
-                if (match) {
-                  sys.add(vsi.getSystem());
-                }
-              }
-            } else {
-              ValueSet vsDummy = new ValueSet();
-              vsDummy.setUrl(Utilities.makeUuidUrn());
-              vsDummy.setStatus(PublicationStatus.ACTIVE);
-              vsDummy.getCompose().addInclude(vsi);
-              ValidationResult vr = context.validateCode(options.withNoClient(), code, vsDummy);
-              if (vr.isOk()) {
-                sys.add(vsi.getSystem());
-              } else {
-                // ok, we'll try to expand this one then 
-                ValueSetExpansionOutcome vse = context.expandVS(vsi, false, false);
-                if (vse.isOk()) {
-                  if (!checkSystems(vse.getValueset().getExpansion().getContains(), code, sys, problems)) {
-                    return false;
-                  }
-                } else {
-                  problems.add(new StringWithCode(OpIssueCode.NotFound, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_UNKNOWN_SYSTEM, code, valueset.getVersionedUrl(), i, vsi.getSystem(), vse.getAllErrors().toString())));              
-                  return false;
-                }
-
-              }
-            }
-          }
+        if (scanForCodeInValueSetInclude(code, sys, problems, i, vsi)) {
+          return true;
         }
         i++;
       }
@@ -1173,6 +1094,100 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     }
     return true;
+  }
+
+  private boolean scanForCodeInValueSetInclude(String code, Set<String> sys, List<StringWithCode> problems, int i, ConceptSetComponent vsi) {
+    if (vsi.hasValueSet()) {
+      for (CanonicalType u : vsi.getValueSet()) {
+        if (!checkForCodeInValueSet(code, u.getValue(), sys, problems)) {
+          return false;
+        }
+      }
+    } else if (!vsi.hasSystem()) { 
+      problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_NO_SYSTEM, code, valueset.getVersionedUrl(), i)));
+      return false;
+    }
+    if (vsi.hasSystem()) {
+      if (vsi.hasFilter()) {
+        ValueSet vsDummy = new ValueSet();
+        vsDummy.setUrl(Utilities.makeUuidUrn());
+        vsDummy.setStatus(PublicationStatus.ACTIVE);
+        vsDummy.getCompose().addInclude(vsi);
+        Coding c = new Coding().setCode(code).setSystem(vsi.getSystem());
+        ValidationResult vr = context.validateCode(options.withGuessSystem(false), c, vsDummy);
+        if (vr.isOk()) {
+          sys.add(vsi.getSystem());
+        } else {
+          // problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_FILTER, code, valueset.getVersionedUrl(), i, vsi.getSystem(), filterSummary(vsi))));
+          return false;
+        }
+      }
+      CodeSystemProvider csp = CodeSystemProvider.factory(vsi.getSystem());
+      if (csp != null) {
+        Boolean ok = csp.checkCode(code);
+        if (ok == null) {
+          problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE, code, valueset.getVersionedUrl(), vsi.getSystem())));
+          sys.add(vsi.getSystem());
+        } else if (ok) {
+          sys.add(vsi.getSystem());
+        }
+      } else {
+        CodeSystem cs = resolveCodeSystem(vsi.getSystem(), vsi.getVersion());
+        if (cs != null && cs.getContent() == CodeSystemContentMode.COMPLETE) {
+
+          if (vsi.hasConcept()) {
+            for (ConceptReferenceComponent cc : vsi.getConcept()) {
+              boolean match = cs.getCaseSensitive() ? cc.getCode().equals(code) : cc.getCode().equalsIgnoreCase(code);
+              if (match) {
+                sys.add(vsi.getSystem());
+              }
+            }
+          } else {
+            ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), code, cs.getCaseSensitive(), allAltCodes);
+            if (cc != null) {
+              sys.add(vsi.getSystem());
+            }
+          }
+        } else if (vsi.hasConcept()) {
+          for (ConceptReferenceComponent cc : vsi.getConcept()) {
+            boolean match = cc.getCode().equals(code);
+            if (match) {
+              sys.add(vsi.getSystem());
+            }
+          }
+        } else {
+          ValueSet vsDummy = new ValueSet();
+          vsDummy.setUrl(Utilities.makeUuidUrn());
+          vsDummy.setStatus(PublicationStatus.ACTIVE);
+          vsDummy.getCompose().addInclude(vsi);
+          ValidationResult vr = context.validateCode(options.withNoClient(), code, vsDummy);
+          if (vr.isOk()) {
+            sys.add(vsi.getSystem());
+          } else {
+            // ok, we'll try to expand this one then 
+            ValueSetExpansionOutcome vse = context.expandVS(vsi, false, false);
+            if (vse.isOk()) {
+              if (!checkSystems(vse.getValueset().getExpansion().getContains(), code, sys, problems)) {
+                return false;
+              }
+            } else {
+              problems.add(new StringWithCode(OpIssueCode.NotFound, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_UNKNOWN_SYSTEM, code, valueset.getVersionedUrl(), i, vsi.getSystem(), vse.getAllErrors().toString())));              
+              return false;
+            }
+
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  private String filterSummary(ConceptSetComponent vsi) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (ConceptSetFilterComponent f : vsi.getFilter()) {
+      b.append(f.getProperty()+f.getOp().toCode()+f.getValue());
+    }
+    return b.toString();
   }
 
   private boolean checkForCodeInValueSet(String code, String uri, Set<String> sys, List<StringWithCode> problems) {
@@ -1289,7 +1304,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           if (info != null && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
             // server didn't know the code system either - we'll take it face value
             if (!info.hasNotFound(system)) {
-              String msg = context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system);
+              String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, system);
               info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.UNKNOWN, path, msg, OpIssueCode.NotFound, null));
               for (ConceptReferenceComponent cc : vsi.getConcept()) {
                 if (cc.getCode().equals(code)) {
