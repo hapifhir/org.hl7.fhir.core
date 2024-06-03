@@ -39,7 +39,7 @@ public class ScanTask extends ValidationEngineTask {
 
   @Override
   public void executeTask(ValidationService validationService, ValidationEngine validationEngine, CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
-    Scanner validationScanner = new Scanner(validationEngine.getContext(), validationEngine.getValidator(null), validationEngine.getIgLoader(), validationEngine.getFhirPathEngine());
+    Scanner validationScanner = new Scanner(validationEngine.getContext(), validationEngine.getValidator(null ), validationEngine.getIgLoader(), validationEngine.getFhirPathEngine());
     validationScanner.validateScan(cliContext.getOutput(), cliContext.getSources());
   }
 

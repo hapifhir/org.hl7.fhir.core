@@ -800,10 +800,13 @@ public class IgLoader implements IValidationEngineLoader {
       r = VersionConvertorFactory_30_50.convertResource(res);
     } else if (fhirVersion.startsWith("4.0")) {
       org.hl7.fhir.r4.model.Resource res;
+      String str = new String( content );
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         res = new org.hl7.fhir.r4.formats.XmlParser().parse(new ByteArrayInputStream(content));
-      else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
-        res = new org.hl7.fhir.r4.formats.JsonParser().parse(new ByteArrayInputStream(content));
+      else if (fn.endsWith(".json") && !fn.endsWith("template.json")) {
+//        res = new org.hl7.fhir.r4.formats.JsonParser().parse(new ByteArrayInputStream(content));
+        res = new org.hl7.fhir.r4.formats.JsonParser().parse(str);
+      }
       else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
         res = new org.hl7.fhir.r4.utils.StructureMapUtilities(org.hl7.fhir.r4.context.SimpleWorkerContext.fromNothing()).parse(new String(content), fn);
       else
@@ -861,8 +864,9 @@ public class IgLoader implements IValidationEngineLoader {
   }
 
   @Override
-  public void load(Content cnt) throws FHIRException, IOException {
+  public Resource load(Content cnt) throws FHIRException, IOException {
     Resource res = loadResourceByVersion(version, cnt.getFocus().getBytes(), cnt.getExampleFileName());
     context.cacheResource(res);
+    return res;
   }
 }

@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
@@ -70,12 +69,9 @@ import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.AdditionalBindingPurpose;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.CodedContentValidationAction;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
-import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
@@ -105,6 +101,7 @@ import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.cli.utils.SchemaValidator;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.instance.R5EvaluationContext;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.xml.sax.SAXException;
@@ -190,7 +187,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   public interface IValidationEngineLoader {
 
-    void load(Content cnt) throws FHIRException, IOException;
+    Resource load(Content cnt) throws FHIRException, IOException;
 
   }
 
@@ -556,7 +553,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   // testing entry point
   public OperationOutcome validate(FhirFormat format, InputStream stream, List<String> profiles) throws FHIRException, IOException, EOperationOutcome {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    InstanceValidator validator = getValidator(format);
+    InstanceValidator validator = getValidator(format );
     validator.validate(null, messages, stream, format, asSdList(profiles));
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
@@ -598,7 +595,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     } else if (!first && delay != 0) {
       Thread.sleep(delay);
     }
-    
+
     // round one: try to read them all natively
     // Ignore if it fails.The purpose of this is to make dependencies 
     // available for other resources to depend on. if it fails to load, there'll be an error if there's
@@ -608,7 +605,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         ref.setCnt(igLoader.loadContent(ref.getRef(), "validate", false, first));
         if (loader != null && ref.getCnt() != null) {
           try {
-            loader.load(ref.getCnt());
+            Resource res = loader.load(ref.getCnt());
+            ref.setResourceType( res.getResourceType() );
+            ref.setId( res.getIdElement().getIdPart() );
           } catch (Throwable t) {
             if (debug) {
                System.out.println("Error during round 1 scanning: "+t.getMessage());
@@ -617,7 +616,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         }
       }
     }
-    
+
+    R5EvaluationContext r5EvaluationContext = new R5EvaluationContext(context, refs);
+
     for (SourceFile ref : refs) {
       if ((ref.isProcess() || all) && ref.getCnt() != null) {
         TimeTracker.Session tts = context.clock().start("validation");
@@ -625,7 +626,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         System.out.println("  Validate " + ref.getRef());
         
         try {
-          OperationOutcome outcome = validate(ref.getRef(), ref.getCnt().getFocus(), ref.getCnt().getCntType(), profiles, record);
+          OperationOutcome outcome = validate( ref.getRef(), ref.getCnt().getFocus(), ref.getCnt().getCntType(), profiles, record, r5EvaluationContext );
           ToolingExtensions.addStringExtension(outcome, ToolingExtensions.EXT_OO_FILE, ref.getRef());
           System.out.println(" " + context.clock().milestone());
           results.addEntry().setResource(outcome);
@@ -646,25 +647,25 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
 
   public ValidatedFragments validateAsFragments(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
-    InstanceValidator validator = getValidator(cntType);
+    InstanceValidator validator = getValidator(cntType );
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     return new ValidatedFragments(validator.validatedContent,
       ValidationTime.fromTimeTracker(validator.timeTracker));
   }
 
   public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
-    InstanceValidator validator = getValidator(cntType);
+    InstanceValidator validator = getValidator( cntType );
 
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
 
-  public OperationOutcome validate(String location, ByteProvider source, FhirFormat cntType, List<String> profiles, List<ValidationRecord> record) throws FHIRException, IOException, EOperationOutcome, SAXException {
+  public OperationOutcome validate(String location, ByteProvider source, FhirFormat cntType, List<String> profiles, List<ValidationRecord> record, R5EvaluationContext r5EvaluationContext) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
       SchemaValidator.validateSchema(location, cntType, messages);
     }
-    InstanceValidator validator = getValidator(cntType);
+    InstanceValidator validator = getValidator( cntType, r5EvaluationContext );
     validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(profiles));
     if (showTimes) {
       System.out.println(location + ": " + validator.reportTimes());
@@ -810,7 +811,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   public String evaluateFhirPath(String source, String expression) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false, true);
-    FHIRPathEngine fpe = this.getValidator(null).getFHIRPathEngine();
+    FHIRPathEngine fpe = this.getValidator(null ).getFHIRPathEngine();
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
     ExpressionNode exp = fpe.parse(expression);
     return fpe.evaluateToString(new ValidationContext(context, e), e, e, e, exp);
@@ -847,7 +848,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public InstanceValidator getValidator(FhirFormat format) throws FHIRException, IOException {
-    InstanceValidator validator = new InstanceValidator(context, null, null);
+    return getValidator( format, new R5EvaluationContext() );
+  }
+
+  public InstanceValidator getValidator(FhirFormat format, R5EvaluationContext evaluationContext) throws FHIRException, IOException {
+    InstanceValidator validator = new InstanceValidator(context, evaluationContext, null);
     context.getTxClientManager().setUsage("validation");
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);

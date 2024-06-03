@@ -25,6 +25,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.ResourceType;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
@@ -49,7 +50,9 @@ public class ValidatorUtils {
     private long date;
     private boolean process;
     private Content cnt;
-    
+    private ResourceType resourceType;
+    private String id;
+
     public boolean isProcess() {
       return process;
     }
@@ -72,6 +75,15 @@ public class ValidatorUtils {
     public boolean isKnownToBeMissing () { 
       return date == 0;  // File::lastModified() returns 0 if the file is missing
     }
+
+    public void setResourceType(ResourceType resourceType ){
+      this.resourceType = resourceType;
+    }
+    public ResourceType getResourceType(){return this.resourceType;}
+    public void setId( String id ){
+      this.id = id;
+    }
+    public String getId(){return this.id;}
   }
   
   protected static void grabNatives(Map<String, ByteProvider> source, Map<String, ByteProvider> binaries, String prefix) {
