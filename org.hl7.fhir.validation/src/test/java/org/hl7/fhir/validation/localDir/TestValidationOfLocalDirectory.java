@@ -26,43 +26,16 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.*;
 
 public class TestValidationOfLocalDirectory {
+
+  // TODO remove Medication and test for load failure
+
+
   @Test
   public void testIpsComposition() throws Exception {
     Path tempDir = Files.createTempDirectory("ips-dir-load");
     String[] files = {"Composition-composition-minimal.json", "Condition-eumfh-39-07-1.json"
       , "MedicationStatement-eumfh-39-07-1.json", "Organization-simple-org.json", "Patient-eumfh-39-07.json"
-      , "Practitioner-eumfh-39-07.json"
-    };
-    String IPSDIR = "ips-dir/";
-    for( String file : files ){
-      ResourceLoaderTests.copyResourceToFile(
-        this.getClass(),
-        tempDir.resolve(file), IPSDIR+file );
-    }
-    CliContext cliContext = new CliContext();
-    // loadRefTest/ -version 4.0 -watch-mode all -output-style compact -output validator.log
-    cliContext.setIgs( List.of(tempDir.toString()));
-    cliContext.setTargetVer("4.0");
-    cliContext.setTxServer("http://tx.fhir.org");
-    cliContext.setSv("4.0");
-    cliContext.setOutputStyle("compact");
-    cliContext.setSources( List.of(tempDir.toString()));
-    ValidationService validationService = new ValidationService();
-    TimeTracker tt = new TimeTracker();
-    ValidationEngine validationEngine = validationService.initializeValidator(cliContext, "hl7.fhir.r4.core#4.0.1", tt);
-    TimeTracker.Session tts = tt.start("Loading");
-    validationService.validateSources( cliContext,
-      validationEngine,
-      cliContext.getWatchMode(), cliContext.getWatchScanDelay(), cliContext.getWatchSettleTime()
-    );
-  }
-
-  @Test
-  public void testIpsComposition2() throws Exception {
-    Path tempDir = Files.createTempDirectory("ips-dir-load");
-    String[] files = {"Composition-composition-minimal.json", "Condition-eumfh-39-07-1.json"
-      , "MedicationStatement-eumfh-39-07-1.json", "Organization-simple-org.json", "Patient-eumfh-39-07.json"
-      , "Practitioner-eumfh-39-07.json"
+      , "Practitioner-eumfh-39-07.json", "AllergyIntolerance-eumfh-39-07-1.json", "Medication-eumfh-39-07-1.json"
     };
     String IPSDIR = "ips-dir/";
     for( String file : files ){
@@ -98,7 +71,7 @@ public class TestValidationOfLocalDirectory {
     Bundle resBundle = (Bundle)r;
 
     // results for all 6 resources
-    assertEquals( 6, resBundle.getEntry().size() );
+    assertEquals( 8, resBundle.getEntry().size() );
     List<OperationOutcome> opOutcList = resBundle.getEntry().stream()
       .map( Bundle.BundleEntryComponent::getResource )
       .filter( res -> res instanceof OperationOutcome )
