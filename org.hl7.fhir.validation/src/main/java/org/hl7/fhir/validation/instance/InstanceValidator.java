@@ -3969,7 +3969,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       valContext.getInternalRefs().add(ref.substring(1));
       refType = "contained";
     } else {
-      if (we == null) {
+      if ( externalHostServices.resolveReference( getFHIRPathEngine(),null, reference.getReference(), null )!=null ){
+        refType = "localFile";
+      } else if (we == null) {
         refType = "remote";
       } else {
         refType = "bundled";
@@ -3991,7 +3993,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   
     } else if (pol.checkExists()) {
       if (we == null) {
-        if (!refType.equals("contained")) {
+        if (!refType.equals("contained") && !refType.equals("localFile")) {
           if (fetcher == null) {
             throw new FHIRException(context.formatMessage(I18nConstants.RESOURCE_RESOLUTION_SERVICES_NOT_PROVIDED));
           } else {
