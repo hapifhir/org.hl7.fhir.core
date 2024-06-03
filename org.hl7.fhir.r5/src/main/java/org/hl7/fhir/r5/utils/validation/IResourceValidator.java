@@ -31,6 +31,7 @@ package org.hl7.fhir.r5.utils.validation;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -53,6 +54,8 @@ import java.util.List;
    *
    */
 public interface IResourceValidator {
+  
+  IWorkerContext getContext();
 
   /**
    * how much to check displays for coded elements 

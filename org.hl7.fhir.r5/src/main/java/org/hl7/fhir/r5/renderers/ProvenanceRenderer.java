@@ -40,7 +40,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
       }
     }
     // summary table
-    x.para().tx(context.formatPhrase(RenderingContext.PROV_SUM));
+    x.para().tx(context.formatPhrase(RenderingContext.GENERAL_SUMM));
     XhtmlNode t = x.table("grid");
     XhtmlNode tr;
     if (prv.hasOccurred()) {
@@ -71,7 +71,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
     }
     if (prv.hasLocation()) {
       tr = t.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.PROV_LOC));
+      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_LOCATION));
       renderReference(prv, tr.td(), prv.getLocation());      
     }
     if (prv.hasActivity()) {
@@ -92,7 +92,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
     t = x.table("grid");
     tr = t.tr();
     if (hasType) {
-      tr.td().b().tx(context.formatPhrase(RenderingContext.PROV_TYPE));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_TYPE));
     }
     if (hasRole) {
       tr.td().b().tx(context.formatPhrase(RenderingContext.PROV_ROLE));
@@ -152,7 +152,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
  
   @Override
   public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    return (context.formatPhrase(RenderingContext.PROV_NOT));
+    return (context.formatPhrase(RenderingContext.GENERAL_TODO));
   }
 
 }

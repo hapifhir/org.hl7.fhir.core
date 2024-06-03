@@ -336,7 +336,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         }
         if (rest.getResource().size() >0) {
           x.h(nextLevel,"resourcesCap" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.CAPABILITY_RES_PRO));
-          x.h(nextLevel+1,"resourcesSummary" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.CAPABILITY_SUMM));
+          x.h(nextLevel+1,"resourcesSummary" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.GENERAL_SUMM));
           addSummaryIntro(x);
           addSummaryTable(x, rest, hasVRead, hasPatch, hasDelete, hasHistory, hasUpdates, count);
           x.addTag("hr");
@@ -746,7 +746,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     XhtmlNode t = x.div().attribute("class","table-responsive").table("table table-condensed table-hover");
     XhtmlNode tr = t.addTag("thead").tr();
     tr.th().b().tx(context.formatPhrase(RenderingContext.CAPABILITY_RES_TYP));
-    tr.th().b().tx(context.formatPhrase(RenderingContext.CAPABILITY_PROF));
+    tr.th().b().tx(context.formatPhrase(RenderingContext.GENERAL_PROF));
     tr.th().attribute("class", "text-center").b().attribute("title", context.formatPhrase(RenderingContext.CAPABILITY_READ_INT)).tx("R");
     if (hasVRead)
       tr.th().attribute("class", "text-center").b().attribute("title", context.formatPhrase(RenderingContext.CAPABILITY_VREAD_INT)).tx("V-R");
@@ -861,10 +861,10 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         doco = doco || ext.hasExtension("documentation");
       }
       XhtmlNode tr = tbl.tr();
-      tr.th().tx(context.formatPhrase(RenderingContext.CAPABILITY_CRIT));
-      tr.th().tx(context.formatPhrase(RenderingContext.CAPABILITY_PROF));
+      tr.th().tx(context.formatPhrase(RenderingContext.GENERAL_CRIT));
+      tr.th().tx(context.formatPhrase(RenderingContext.GENERAL_PROF));
       if (doco) {
-        tr.th().tx(context.formatPhrase(RenderingContext.CAPABILITY_CRIT));
+        tr.th().tx(context.formatPhrase(RenderingContext.GENERAL_CRIT));
       }
       for (Extension ext : r.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_MAPPING)) {
         tr = tbl.tr();
@@ -1024,7 +1024,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     if (supportedProfiles.size() > 0) {
       row = body.div().attribute("class", "row");
       cell = row.div().attribute("class", "col-6");
-      addLead(cell, context.formatPhrase(RenderingContext.CAPABILITY_SUPP_PROF));
+      addLead(cell, context.formatPhrase(RenderingContext.CAPABILITY_SUPP_PROFS));
       XhtmlNode para = cell.para();
       boolean first = true;
       for (CanonicalType c : supportedProfiles) {
@@ -1049,7 +1049,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     if (!Utilities.noString(mdText)) {
       row = body.div().attribute("class", "row");
       cell = row.div().attribute("class", "col-12");
-      addLead(cell, context.formatPhrase(RenderingContext.CAPABILITY_DOC));
+      addLead(cell, context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION));
       addMarkdown(cell.blockquote(), mdText);
     }
 
@@ -1076,9 +1076,9 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     addLead(cell, context.formatPhrase(RenderingContext.CAPABILITY_EXT_OP));
     table = cell.table("table table-condensed table-hover");
     tr = table.addTag("thead").tr();
-    tr.th().addText(context.formatPhrase(RenderingContext.CAPABILITY_CONF));
+    tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_CONFORMANCE));
     tr.th().addText(context.formatPhrase(RenderingContext.CAPABILITY_OPER));
-    tr.th().addText(context.formatPhrase(RenderingContext.CAPABILITY_DOC));
+    tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION));
     tbody = table.addTag("tbody");
     addOps(tbody, map, "supported");
     addOps(tbody, map, "SHALL");
@@ -1202,10 +1202,10 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     addLead(cell, context.formatPhrase(RenderingContext.CAPABILITY_SEARCH_PARS));
     table = cell.table("table table-condensed table-hover");
     tr = table.addTag("thead").tr();
-    tr.th().addText(context.formatPhrase(RenderingContext.CAPABILITY_CONF));
-    tr.th().addText(context.formatPhrase(RenderingContext.CAPABILITY_PAR));
-    tr.th().addText(context.formatPhrase(RenderingContext.CAPABILITY_TYP));
-    tr.th().addText(context.formatPhrase(RenderingContext.CAPABILITY_DOC));
+    tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_CONFORMANCE));
+    tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_PAR));
+    tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
+    tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION));
     tbody = table.addTag("tbody");
     Map<String,List<SingleParam>> map = sParams.getIndbyExp();
     addIndRows(tbody, map, "supported");
@@ -1218,8 +1218,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       addLead(cell, context.formatPhrase(RenderingContext.CAPABILITY_COMB_SEARCH_PAR));
       table = cell.table("table table-condensed table-hover");
       tr = table.addTag("thead").tr();
-      tr.th().addText(context.formatPhrase(RenderingContext.CAPABILITY_CONF));
-      tr.th().addText(context.formatPhrase(RenderingContext.CAPABILITY_PARS));
+      tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_CONFORMANCE));
+      tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_PARS));
       tr.th().addText(context.formatPhrase(RenderingContext.CAPABILITY_TYPS));
       tbody = table.addTag("tbody");
       addComboRows(tbody, comboMap, "supported");

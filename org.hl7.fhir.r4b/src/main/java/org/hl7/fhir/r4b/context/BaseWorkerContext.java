@@ -895,11 +895,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
               TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS));
         } else if (unsupportedCodeSystems.contains(codeKey)) {
           t.setResult(new ValidationResult(IssueSeverity.ERROR,
-              formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, t.getCoding().getSystem()),
+              formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, t.getCoding().getSystem()),
               TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED));
         } else if (noTerminologyServer) {
           t.setResult(new ValidationResult(IssueSeverity.ERROR,
-              formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES),
+              formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES, t.getCoding().getCode(), t.getCoding().getSystem()),
               TerminologyServiceErrorClass.NOSERVICE));
         }
       }
@@ -1012,14 +1012,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (unsupportedCodeSystems.contains(codeKey)) {
       return new ValidationResult(IssueSeverity.ERROR,
-          formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, code.getSystem()),
+          formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, code.getSystem()),
           TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
     }
 
     // if that failed, we try to validate on the server
     if (noTerminologyServer) {
       return new ValidationResult(IssueSeverity.ERROR,
-          formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES),
+          formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES, code.getCode(), code.getSystem()),
           TerminologyServiceErrorClass.NOSERVICE);
     }
     String csumm = txCache != null ? txCache.summary(code) : null;

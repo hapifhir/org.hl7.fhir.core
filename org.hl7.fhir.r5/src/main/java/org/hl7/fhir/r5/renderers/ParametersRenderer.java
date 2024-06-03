@@ -37,7 +37,7 @@ public class ParametersRenderer extends ResourceRenderer {
 
   @Override
   public boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    x.h2().tx(context.formatPhrase(RenderingContext.PAR_REND_PAR));
+    x.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
     XhtmlNode tbl = x.table("grid");
     params(tbl, ((Parameters) r).getParameter(), 0);
     return false;
@@ -55,7 +55,7 @@ public class ParametersRenderer extends ResourceRenderer {
 
   @Override
   public boolean render(XhtmlNode x, ResourceWrapper params) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    x.h2().tx(context.formatPhrase(RenderingContext.PAR_REND_PAR));
+    x.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
     XhtmlNode tbl = x.table("grid");
     PropertyWrapper pw = getProperty(params, "parameter");
     if (valued(pw)) {
@@ -102,7 +102,7 @@ public class ParametersRenderer extends ResourceRenderer {
   
   public XhtmlNode render(Parameters params) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
-    div.h2().tx(context.formatPhrase(RenderingContext.PAR_REND_PAR));
+    div.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
     XhtmlNode tbl = div.table("grid");
     params(tbl, params.getParameter(), 0);
     return div;

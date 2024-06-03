@@ -245,10 +245,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
     XhtmlNode tr = t.tr();
     if (doLevel)
       tr.td().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_LEVEL));
-    tr.td().attribute("style", "white-space:nowrap").b().tx(context.formatPhrase(RenderingContext.VALUE_SET_CODE));
+    tr.td().attribute("style", "white-space:nowrap").b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
     tr.td().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_SYSTEM));
     XhtmlNode tdDisp = tr.td();
-    tdDisp.b().tx(context.formatPhrase(RenderingContext.VALUE_SET_DISPLAY));
+    tdDisp.b().tx(context.formatPhrase(RenderingContext.TX_DISPLAY));
     boolean doDesignations = false;
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
       scanForDesignations(c, langs, designations);
@@ -258,7 +258,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       tr.td().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_INACTIVE));
     }
     if (doDefinition) {
-      tr.td().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_DEF));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINITION));
       doDesignations = false;
       for (String n : Utilities.sorted(properties.keySet())) {
         tr.td().b().ah(properties.get(n)).addText(n);        
@@ -294,7 +294,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (!doDesignations && langs.size() + designations.size() > 0) {
       Collections.sort(langs);
       if (designations.size() == 0) {
-        x.para().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_ADD_LANG));
+        x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_ADD_LANG));
       } else if (langs.size() == 0) {
         x.para().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_DESIG));
       } else {
@@ -302,7 +302,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
       t = x.table("codes");
       tr = t.tr();
-      tr.td().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_CODE));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       for (String url : designations.keySet()) {
         tr.td().b().addText(designations.get(url));
       }
@@ -518,7 +518,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           x.tx(context.formatPhrase(RenderingContext.VALUE_SET_SNOMED, m));
         }
       } else {
-        x.tx(displaySystem(u)+" "+ context.formatPhrase(RenderingContext.VALUE_SET_VERSION) + " " +v);
+        x.tx(displaySystem(u)+" "+ context.formatPhrase(RenderingContext.GENERAL_VER_LOW) + " " +v);
       }
     } else if (u.equals("http://loinc.org")) {
       String vd = describeLoincVer(v);
@@ -547,7 +547,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           x.tx(t+" "+displaySystem(u)+" v"+v+" ("+cr.fhirType()+")");
         }
       } else {
-        x.tx(t+" "+displaySystem(u)+" "+ context.formatPhrase(RenderingContext.VALUE_SET_VERSION)+v);
+        x.tx(t+" "+displaySystem(u)+" "+ context.formatPhrase(RenderingContext.GENERAL_VER_LOW)+v);
       }
     }
   }
@@ -989,7 +989,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (!doDesignations && langs.size() + designations.size() > 0) {
       Collections.sort(langs);
       if (designations.size() == 0) {
-        x.para().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_ADD_LANG));        
+        x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_ADD_LANG));        
       } else if (langs.size() == 0) {
         x.para().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_DESIG));       
       } else {
@@ -997,7 +997,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
       XhtmlNode t = x.table("codes");
       XhtmlNode tr = t.tr();
-      tr.td().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_CODE));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       for (String url : designations.keySet()) {
         tr.td().b().addText(designations.get(url));
       }
@@ -1032,8 +1032,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("exp.h="+index, context.getRules() == GenerationRules.IG_PUBLISHER);    
     model.setAlternating(true);
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.VALUE_SET_CODE), context.formatPhrase(RenderingContext.VALUE_SET_CODE_ITEM), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.VALUE_SET_DISPLAY), context.formatPhrase(RenderingContext.VALUE_SET_DISPLAY_ITEM), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_CODE), context.formatPhrase(RenderingContext.VALUE_SET_CODE_ITEM), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.TX_DISPLAY), context.formatPhrase(RenderingContext.VALUE_SET_DISPLAY_ITEM), null, 0));
 
     for (Extension ext : inc.getExtensionsByUrl(ToolingExtensions.EXT_EXPAND_GROUP)) {
       renderExpandGroup(gen, model, ext, inc, definitions);
@@ -1184,7 +1184,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           li.addText(type+" "+ context.formatPhrase(RenderingContext.VALUE_SET_THESE_CODES_DEF) + " ");
           addCsRef(inc, li, e);
           if (inc.hasVersion()) {
-            li.addText(" "+ context.formatPhrase(RenderingContext.VALUE_SET_VERSION) + " ");
+            li.addText(" "+ context.formatPhrase(RenderingContext.GENERAL_VER_LOW) + " ");
             li.code(inc.getVersion());  
           }
 

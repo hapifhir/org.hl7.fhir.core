@@ -423,7 +423,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_REL));
         tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT));
         if (comment)
-          tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_CMNT));
+          tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
         for (SourceElementComponent ccl : grp.getElement()) {
           tr = tbl.tr();
           XhtmlNode td = tr.td();
@@ -476,15 +476,15 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         }
         tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT_DET));
         if (comment) {
-          tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_CMNT));
+          tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
         }
-        tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.CONC_MAP_PROP));
+        tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.GENERAL_PROPS));
         tr = tbl.tr();
         if (sources.get("code").size() == 1) {
           String url = sources.get("code").iterator().next();
           renderCSDetailsLink(tr, url, true);           
         } else
-          tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_CODE));
+          tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
         for (String s : sources.keySet()) {
           if (s != null && !s.equals("code")) {
             if (sources.get(s).size() == 1) {
@@ -501,7 +501,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           String url = targets.get("code").iterator().next();
           renderCSDetailsLink(tr, url, true);           
         } else
-          tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_CODE));
+          tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
         for (String s : targets.keySet()) {
           if (s != null && !s.equals("code")) {
             if (targets.get(s).size() == 1) {

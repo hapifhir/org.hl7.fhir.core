@@ -91,7 +91,7 @@ public class LibraryRenderer extends ResourceRenderer {
     }
     PropertyWrapper parameters = lib.getChildByName("parameter");
     if (parameters != null && parameters.hasValues()) {
-      x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_PARA));
+      x.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
       XhtmlNode t = x.table("grid");
       boolean doco = false;
       for (BaseWrapper p : parameters.getValues()) {
@@ -183,7 +183,7 @@ public class LibraryRenderer extends ResourceRenderer {
       }      
     }
     if (lib.hasParameter()) {
-      x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_PARA));
+      x.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
       XhtmlNode t = x.table("grid");
       boolean doco = false;
       for (ParameterDefinition p : lib.getParameter()) {

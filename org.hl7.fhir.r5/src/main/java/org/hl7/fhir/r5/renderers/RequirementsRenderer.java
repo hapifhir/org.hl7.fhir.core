@@ -87,7 +87,7 @@ public class RequirementsRenderer extends ResourceRenderer {
     }
     if (req.hasReference()) {
       XhtmlNode p = x.para();
-      p.tx(context.formatPhrase(RenderingContext.REQ_REFERENCES)+" ");
+      p.tx(context.formatPhrase(RenderingContext.GENERAL_REFS)+" ");
       int i = 0;
       for (UrlType c : req.getReference()) {
         i++;
@@ -162,7 +162,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         }
         if (stmt.hasReference()) {
           XhtmlNode li = ul.li();
-          li.tx(context.formatPhrase(RenderingContext.REQ_REFERENCES)+" ");
+          li.tx(context.formatPhrase(RenderingContext.GENERAL_REFS)+" ");
           int i = 0;
           for (UrlType c : stmt.getReference()) {
             i++;
@@ -176,7 +176,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         }
         if (stmt.hasSource()) {
           XhtmlNode li = ul.li();
-          li.tx(context.formatPhrase(RenderingContext.REQ_SOURCES)+" ");
+          li.tx(context.formatPhrase(RenderingContext.GENERAL_SRC)+" ");
           first = true;
           for (Reference c : stmt.getSource()) {
             if (first) first = false; else li.tx(", ");

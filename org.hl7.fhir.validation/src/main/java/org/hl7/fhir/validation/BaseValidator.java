@@ -67,6 +67,7 @@ import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
@@ -87,7 +88,7 @@ import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
-public class BaseValidator implements IValidationContextResourceLoader {
+public class BaseValidator implements IValidationContextResourceLoader, IMessagingServices {
 
   public static class BooleanHolder {
     private boolean value = true;
@@ -411,7 +412,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return thePass;
   }
 
-  protected ValidationMessage signpost(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, String theMessage, Object... theMessageArguments) {
+  public ValidationMessage signpost(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, String theMessage, Object... theMessageArguments) {
     String message = context.formatMessage(theMessage, theMessageArguments);
     return addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage).setSignpost(true);
   }

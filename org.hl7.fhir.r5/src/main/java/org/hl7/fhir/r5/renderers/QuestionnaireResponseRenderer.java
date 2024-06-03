@@ -73,7 +73,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table");
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_LINKID), context.formatPhrase(RenderingContext.QUEST_LINK), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_TEXT), context.formatPhrase(RenderingContext.QUEST_TEXTFOR), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_DEFINITION), context.formatPhrase(RenderingContext.QUEST_TIMES), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_DEFINITION), context.formatPhrase(RenderingContext.QUEST_TIMES), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_ANSWER), context.formatPhrase(RenderingContext.QUEST_TYPE_ITEM), null, 0));
 
     boolean hasExt = false;
@@ -100,7 +100,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table");
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_LINKID), context.formatPhrase(RenderingContext.QUEST_LINK), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_TEXT), context.formatPhrase(RenderingContext.QUEST_TEXTFOR), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_DEFINITION), context.formatPhrase(RenderingContext.QUEST_TIMES), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_DEFINITION), context.formatPhrase(RenderingContext.QUEST_TIMES), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_ANSWER), context.formatPhrase(RenderingContext.QUEST_TYPE_ITEM), null, 0));
 
     boolean hasExt = false;
@@ -327,7 +327,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   public boolean renderForm(XhtmlNode x, ResourceWrapper q) throws UnsupportedEncodingException, IOException {
     boolean hasExt = false;
     XhtmlNode d = x.div();
-    d.tx(context.formatPhrase(RenderingContext.QUEST_TODO));
+    d.tx(context.formatPhrase(RenderingContext.GENERAL_TODO));
 //    boolean hasPrefix = false;
 //    for (QuestionnaireItemComponent c : q.getItem()) {
 //      hasPrefix = hasPrefix || doesItemHavePrefix(c);
@@ -876,12 +876,12 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 
   @Override
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
-    return context.formatPhrase(RenderingContext.QUEST_TODO);
+    return context.formatPhrase(RenderingContext.GENERAL_TODO);
   }
 
   @Override
   public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    return context.formatPhrase(RenderingContext.QUEST_NOT_DONE);
+    return context.formatPhrase(RenderingContext.GENERAL_TODO);
   }
 
 }

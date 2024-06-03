@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.utils;
 
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
@@ -57,6 +58,22 @@ public class PackageHackerR5 {
      for (ElementDefinition ed : sd.getDifferential().getElement()) {
        if (ed.hasRequirements()) {
          ed.setRequirements(ed.getRequirements().replace("[http://hl7.org/fhir/StructureDefinition/bodySite](null.html)", "[http://hl7.org/fhir/StructureDefinition/bodySite](http://hl7.org/fhir/extension-bodysite.html)"));
+       }
+     }
+   }
+   if (r.getUrl() != null && r.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/") && "StructureDefinition".equals(r.getType()) && "4.0.1".equals(r.getVersion())) {
+     // the R4 profile wrongly applies this value set to all types. Fixing it properly is too big a thing to do here, but we can at least back off the binding strength
+     StructureDefinition sd = (StructureDefinition) r.getResource();
+     if (sd.getType().equals("Observation") && ("http://hl7.org/fhir/StructureDefinition/vitalsigns".equals(sd.getUrl()) || "http://hl7.org/fhir/StructureDefinition/vitalsigns".equals(sd.getBaseDefinition()))) {
+       for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+         if (ed.getPath().equals("Observation.component.value[x]") && ed.hasBinding() && "http://hl7.org/fhir/ValueSet/ucum-vitals-common|4.0.1".equals(ed.getBinding().getValueSet())) {
+           ed.getBinding().setStrength(BindingStrength.EXTENSIBLE);
+         }
+       }
+       for (ElementDefinition ed : sd.getDifferential().getElement()) {
+         if (ed.getPath().equals("Observation.component.value[x]") && ed.hasBinding() && "http://hl7.org/fhir/ValueSet/ucum-vitals-common|4.0.1".equals(ed.getBinding().getValueSet())) {
+           ed.getBinding().setStrength(BindingStrength.EXTENSIBLE);
+         }
        }
      }
    }

@@ -181,7 +181,7 @@ public class BundleValidator extends BaseValidator {
           }
         }
         // also, while we're here, check the specials, since this doesn't happen anywhere else 
-        ((InstanceValidator) parent).checkSpecials(hostContext, errors, res, rstack, true, pct, mode, true);
+        ((InstanceValidator) parent).checkSpecials(hostContext, errors, res, rstack, true, pct, mode, true, ok);
       }
       
       // todo: check specials
