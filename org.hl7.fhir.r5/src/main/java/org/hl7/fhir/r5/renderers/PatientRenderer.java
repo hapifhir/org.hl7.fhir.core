@@ -567,7 +567,7 @@ public class PatientRenderer extends ResourceRenderer {
     if (rels.size() == 1) {
       nameCell(tr, (rels.get(0).getCodingFirstRep().hasDisplay() ? rels.get(0).getCodingFirstRep().getDisplay() : display(rels.get(0)))+":",  context.formatPhrase(RenderingContext.PAT_NOM_CONTACT)+" "+display(rels.get(0)));
     } else {
-      nameCell(tr, context.formatPhrase(RenderingContext.PAT_NOK_CONTACT), context.formatPhrase(RenderingContext.PAT_NOK_CONTACT_HINT));
+      nameCell(tr, context.formatPhrase(RenderingContext.GENERAL_CONTACT), context.formatPhrase(RenderingContext.PAT_NOK_CONTACT_HINT));
     }
     XhtmlNode td = tr.td();
     td.colspan("3");

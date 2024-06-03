@@ -53,7 +53,7 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
       for (SubscriptionTopicResourceTriggerComponent rt : st.getResourceTrigger()) {
         TableRowData tr = td.addRow();
         if (rt.hasResource()) {
-          tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_RES), rt.getResourceElement());
+          tr.value(context.formatPhrase(RenderingContext.GENERAL_RESOURCE), rt.getResourceElement());
         }
         for (Enumeration<InteractionTrigger> t : rt.getSupportedInteraction()) {          
           tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_INT), t);
@@ -75,13 +75,13 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
           if (rt.getQueryCriteria().hasRequireBoth()) {
             md.append(context.formatPhrase(RenderingContext.SUB_TOPIC_REQ, rt.getQueryCriteria().getRequireBoth()+"\r\n")+" ");
           }
-          tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_CRITERIA), new MarkdownType(md.toString()));          
+          tr.value(context.formatPhrase(RenderingContext.GENERAL_CRIT), new MarkdownType(md.toString()));          
         }
         if (rt.hasFhirPathCriteriaElement()) {
           tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_FHIR_PATH), rt.getFhirPathCriteriaElement());
         }
         if (rt.hasDescription()) {
-          tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_DESC), rt.getDescriptionElement());
+          tr.value(context.formatPhrase(RenderingContext.GENERAL_DESC), rt.getDescriptionElement());
         }
       }
       renderTable(td, x);
@@ -92,13 +92,13 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
       for (SubscriptionTopicEventTriggerComponent rt : st.getEventTrigger()) {
         TableRowData tr = td.addRow();
         if (rt.hasResource()) {
-          tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_RES), rt.getResourceElement());
+          tr.value(context.formatPhrase(RenderingContext.GENERAL_RESOURCE), rt.getResourceElement());
         }
         if (rt.hasEvent()) {
           tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_EVENT), rt.getEvent());
         }
         if (rt.hasDescription()) {
-          tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_DESC), rt.getDescriptionElement());
+          tr.value(context.formatPhrase(RenderingContext.GENERAL_DESC), rt.getDescriptionElement());
         }
       }
       renderTable(td, x);
@@ -109,7 +109,7 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
       for (SubscriptionTopicCanFilterByComponent rt : st.getCanFilterBy()) {
         TableRowData tr = td.addRow();
         if (rt.hasResource()) {
-          tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_RES), rt.getResourceElement());
+          tr.value(context.formatPhrase(RenderingContext.GENERAL_RESOURCE), rt.getResourceElement());
         }
         if (rt.hasFilterParameter()) {
           tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_FILT_PAR), rt.getFilterParameterElement());
@@ -118,10 +118,10 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
           tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_FILT_DEF), rt.getFilterDefinitionElement());
         }
         for (Enumeration<SearchComparator> t : rt.getComparator()) {
-          tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_COMP), t);
+          tr.value(context.formatPhrase(RenderingContext.GENERAL_COMPARATORS), t);
         }
         for (Enumeration<SearchModifierCode> t : rt.getModifier()) {
-          tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_MOD), t);
+          tr.value(context.formatPhrase(RenderingContext.GENERAL_MODIFIERS), t);
         }
       }
       renderTable(td, x);
@@ -132,7 +132,7 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
       for (SubscriptionTopicNotificationShapeComponent rt : st.getNotificationShape()) {
         TableRowData tr = td.addRow();
         if (rt.hasResource()) {
-          tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_RES), rt.getResourceElement());
+          tr.value(context.formatPhrase(RenderingContext.GENERAL_RESOURCE), rt.getResourceElement());
         }
         for (StringType t : rt.getInclude()) {
           tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_INCL), t);

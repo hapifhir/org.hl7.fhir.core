@@ -173,6 +173,7 @@ import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.sql.Validator;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
+import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidationProfileUsageTracker;
@@ -595,7 +596,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noBindingMsgSuppressed;
   private Map<String, Element> fetchCache = new HashMap<>();
   private HashMap<Element, ResourceValidationTracker> resourceTracker = new HashMap<>();
-  private IValidationPolicyAdvisor policyAdvisor;
+  private IValidationPolicyAdvisor policyAdvisor = new BasePolicyAdvisorForFullValidation();
   long time = 0;
   long start = 0;
   long lastlog = 0;
@@ -691,6 +692,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   @Override
   public IResourceValidator setPolicyAdvisor(IValidationPolicyAdvisor advisor) {
+    if (advisor == null) {
+      throw new Error("Cannot set advisor to null");
+    }
     this.policyAdvisor = advisor;
     return this;
   }
@@ -1171,7 +1175,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         CodeSystem cs = getCodeSystem(system);
         if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs != null, I18nConstants.TERMINOLOGY_TX_SYSTEM_UNKNOWN, system)) {
           ConceptDefinitionComponent def = getCodeDefinition(cs, code);
-          if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, def != null, I18nConstants.TERMINOLOGY_TX_CODE_UNKNOWN, system, code))
+          if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, def != null, I18nConstants.UNKNOWN_CODESYSTEM, system, code))
             return warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, display == null || display.equals(def.getDisplay()), I18nConstants.TERMINOLOGY_TX_DISPLAY_WRONG, def.getDisplay()) && ok;
         }
         return false;
@@ -1200,7 +1204,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (!isAllowExamples() || !Utilities.startsWithInList(system, "http://example.org", "https://example.org")) {
           CodeSystem cs = context.fetchCodeSystem(system);
           if (cs == null) {
-            hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, done, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system);
+            hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, done, I18nConstants.UNKNOWN_CODESYSTEM, system);
           } else {
             if (hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, cs.getContent() != CodeSystemContentMode.NOTPRESENT, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOT_USABLE, system)) {
               ok = rule(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, false, "Error - this should not happen? (Consult GG)") && ok; 
@@ -1530,7 +1534,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
           // Then, for any codes that are in code systems we are able
           // to validate, we'll validate that the codes actually exist
-          if (bindingsOk) {
+          if (bindingsOk && false) {
             for (Coding nextCoding : cc.getCoding()) {
               bh.see(checkBindings(errors, path, element, stack, valueset, nextCoding));
             }
@@ -2746,9 +2750,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       if (url != null && url.startsWith("urn:oid:")) {
         String cc = url.substring(8);
-        // OIDs shorter than 5 chars are almost never valid for namespaces, except for the special OIDs 1.3.88 and 1.3.160
-        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isOid(cc) && (cc.lastIndexOf('.') >= 5 ||
-            Utilities.existsInList(cc, "1.3.160", "1.3.88")), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID, cc) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, 
+            // OIDs roots shorter than 4 chars are almost never valid for namespaces except for 1.3.x
+            Utilities.isOid(cc) && ((cc.lastIndexOf('.') >= 4 || cc.startsWith("1.3"))), 
+            I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID, cc) && ok;
       }
 
       if (isCanonicalURLElement(e, node)) {
@@ -3110,7 +3115,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       if (!found) {
         if (type.equals("canonical")) {
-          ReferenceValidationPolicy rp = policyAdvisor == null ? ReferenceValidationPolicy.CHECK_VALID : policyAdvisor.policyForReference(this, valContext, path, url);
+          ReferenceValidationPolicy rp = policyAdvisor.policyForReference(this, valContext, path, url);
           if (rp == ReferenceValidationPolicy.CHECK_EXISTS || rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url) && ok;
           } else {
@@ -3127,7 +3132,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       } else {
         if (type.equals("canonical")) {
-          ReferenceValidationPolicy rp = policyAdvisor == null ? ReferenceValidationPolicy.CHECK_VALID : policyAdvisor.policyForReference(this, valContext, path, url);
+          ReferenceValidationPolicy rp = policyAdvisor.policyForReference(this, valContext, path, url);
           if (rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE || rp == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS || rp == ReferenceValidationPolicy.CHECK_VALID) {
             try {
               Resource r = null;
@@ -3580,8 +3585,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = false;
         }
       } else {
-        EnumSet<CodedContentValidationAction> validationPolicy = getPolicyAdvisor() == null ?
-            EnumSet.allOf(CodedContentValidationAction.class) : getPolicyAdvisor().policyForCodedContent(this, valContext, stack.getLiteralPath(), elementContext, profile, BindingKind.PRIMARY, null, vs, new ArrayList<>());
+        EnumSet<CodedContentValidationAction> validationPolicy = policyAdvisor.policyForCodedContent(this, valContext, stack.getLiteralPath(), elementContext, profile, BindingKind.PRIMARY, null, vs, new ArrayList<>());
 
         if (!validationPolicy.isEmpty()) {
           long t = System.nanoTime();
@@ -3686,7 +3690,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     if (definition.hasMinValue()) {
       if (warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_VALUE)) {
-        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, definition.getMinValue() instanceof Quantity, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_QTY, definition.getMinValue().fhirType())) {
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, definition.getMinValue() instanceof Quantity, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_NO_QTY, definition.getMinValue().fhirType())) {
           Quantity min = definition.getMinValueQuantity();
           if (warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(min.getSystem()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_SYSTEM) &&
               warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(system), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_SYSTEM) && 
@@ -3721,7 +3725,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     
     if (definition.hasMaxValue()) {
       if (warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_VALUE)) {
-        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, definition.getMaxValue() instanceof Quantity, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_QTY, definition.getMaxValue().fhirType())) {
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, definition.getMaxValue() instanceof Quantity, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_NO_QTY, definition.getMaxValue().fhirType())) {
           Quantity max = definition.getMaxValueQuantity();
           if (warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(max.getSystem()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_SYSTEM) &&
               warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(system), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_SYSTEM) && 
@@ -3917,11 +3921,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (refType.equals("contained") || refType.equals("bundled")) {
       pol = ReferenceValidationPolicy.CHECK_VALID;
     } else {
-      if (policyAdvisor == null) {
-        pol = ReferenceValidationPolicy.IGNORE;
-      } else {
-        pol = policyAdvisor.policyForReference(this, valContext.getAppContext(), path, ref);
-      }
+      pol = policyAdvisor.policyForReference(this, valContext.getAppContext(), path, ref);
     }
 
     if (conditional) {
@@ -4447,7 +4447,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         String id = p.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT) ? p.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT) : null;
         StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getValue(), profile);
         if (sd == null)
-          throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_PROFILE_, p));
+          throw new DefinitionException(context.formatMessage(I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p));
         profile = sd;
         if (id == null)
           element = sd.getSnapshot().getElementFirstRep();
@@ -4959,7 +4959,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * @throws IOException
    * @throws FHIRException
    */
-  private boolean sliceMatches(ValidationContext valContext, Element element, String path, ElementDefinition slicer, ElementDefinition ed, StructureDefinition profile, List<ValidationMessage> errors, List<ValidationMessage> sliceInfo, NodeStack stack, StructureDefinition srcProfile) throws DefinitionException, FHIRException {
+  private boolean sliceMatches(ValidationContext valContext, Element element, String path, ElementDefinition slicer, List<ElementDefinition> slicerSlices, ElementDefinition ed, StructureDefinition profile, List<ValidationMessage> errors, List<ValidationMessage> sliceInfo, NodeStack stack, StructureDefinition srcProfile) throws DefinitionException, FHIRException {
     if (!slicer.getSlicing().hasDiscriminator())
       return false; // cannot validate in this case
 
@@ -5033,6 +5033,25 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             } else {
               throw new FHIRException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_ELEMENT_EXISTENCE_BUT_SLICE__NEITHER_SETS_MIN1_OR_MAX0, discriminator, ed.getId()));
             }
+          } else if (s.getType() == DiscriminatorType.POSITION) {
+            // we don't evaluate this one using FHIRPath, and it can't share 
+            if (slicer.getSlicing().getDiscriminator().size() != 1) {
+              throw new DefinitionException(context.formatMessagePlural(slicer.getSlicing().getDiscriminator().size(), I18nConstants.Could_not_match_discriminator_for_slice_in_profile, discriminators, ed.getId(), profile.getVersionedUrl(), discriminators));
+            } else {
+              int offset = 0;
+              for (ElementDefinition ts : slicerSlices) {
+                if (ts == ed) {
+                  break;
+                } else if (!ts.getMax().equals(Integer.toString(ts.getMin()))) {
+                  throw new DefinitionException(context.formatMessagePlural(slicer.getSlicing().getDiscriminator().size(), I18nConstants.Could_not_match_discriminator_for_slice_in_profile, discriminators, ed.getId(), profile.getVersionedUrl(), discriminators));                  
+                } else {
+                  offset = offset + ts.getMin();
+                }
+              }
+              int maxPos = (ed.getMax().equals("*") ? Integer.MAX_VALUE : offset + Integer.parseInt(ed.getMax()));
+              int position = path.endsWith("]") ? Integer.parseInt(path.substring(path.lastIndexOf("[")+1).replace("]", "")) : 0;
+              return position >= offset && position < maxPos;
+            }                        
           } else if (criteriaElement.hasFixed()) {
             buildFixedExpression(ed, expression, discriminator, criteriaElement);
           } else if (criteriaElement.hasPattern()) {
@@ -5685,15 +5704,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ok = false;
     }
     if (checkSpecials) {      
-      ok = checkSpecials(valContext, errors, element, stack, checkSpecials, pct, mode, fromContained) && ok;
+      ok = checkSpecials(valContext, errors, element, stack, checkSpecials, pct, mode, fromContained, ok) && ok;
       ok = validateResourceRules(errors, element, stack) && ok;
     }
     return ok;
   }
 
-  public boolean checkSpecials(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode, boolean contained) {
+  public boolean checkSpecials(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode, boolean contained, boolean isOk) {
     boolean ok = true;
     
+    // first, does the policy advisor have profiles it wants us to check? 
+    List<StructureDefinition> profiles = policyAdvisor.getImpliedProfilesForResource(this, valContext.getAppContext(), stack.getLiteralPath(), 
+        element.getProperty().getDefinition(), element.getProperty().getStructure(), element, isOk, this, errors);
+    for (StructureDefinition sd : profiles) {
+      ok = startInner(valContext, errors, element, element, sd, stack, false, pct, mode, false) && ok;
+    }
+
     long t = System.nanoTime();
     try {
       if (VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(element.getType())) {
@@ -5946,8 +5972,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       SpecialElement special = element.getSpecial();
 
-      ContainedReferenceValidationPolicy containedValidationPolicy = getPolicyAdvisor() == null ?
-          ContainedReferenceValidationPolicy.CHECK_VALID : getPolicyAdvisor().policyForContained(this,
+      ContainedReferenceValidationPolicy containedValidationPolicy = policyAdvisor.policyForContained(this,
               valContext, parentProfile, child, context.fhirType(), context.getId(), special, path, parentProfile.getUrl());
 
       if (containedValidationPolicy.ignore()) {
@@ -6001,7 +6026,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           }
           
-          checkSpecials(valContext, errors, element, stack, ok, pct, mode, true);
+          checkSpecials(valContext, errors, element, stack, ok, pct, mode, true, ok);
 
           if (typeForResource.getProfile().size() == 1) {
             long t = System.nanoTime();
@@ -6407,8 +6432,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (debug) {
       System.out.println("  check " + localStack.getLiteralPath()+" against "+ei.getDefinition().getId()+" in profile "+profile.getVersionedUrl()+time());
     }
-    EnumSet<ElementValidationAction> actionSet = policyAdvisor == null ? EnumSet.allOf(ElementValidationAction.class) : 
-      policyAdvisor.policyForElement(this, valContext.getAppContext(), profile, ei.getDefinition(), localStack.getLiteralPath());
+    EnumSet<ElementValidationAction> actionSet = policyAdvisor.policyForElement(this, valContext.getAppContext(), profile, ei.getDefinition(), localStack.getLiteralPath());
     
     String localStackLiteralPath = localStack.getLiteralPath();
     String eiPath = ei.getPath();
@@ -6807,6 +6831,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // 2. assign children to a definition
     // for each definition, for each child, check whether it belongs in the slice
     ElementDefinition slicer = null;
+    List<ElementDefinition> slicerSlices = null;
+    
     boolean unsupportedSlicing = false;
     List<String> problematicPaths = new ArrayList<String>();
     String slicingPath = null;
@@ -6834,14 +6860,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         slicer = ed;
         process = false;
         sliceOffset = i;
-      } else if (slicer != null && !slicer.getPath().equals(ed.getPath()))
+        slicerSlices = new ArrayList<>();
+        for (int j = i+1; j < childDefinitions.getList().size(); j++) {
+          if (ed.getPath().equals(childDefinitions.getList().get(j).getPath())) {
+            slicerSlices.add(childDefinitions.getList().get(j));
+          }
+        }
+      } else if (slicer != null && !slicer.getPath().equals(ed.getPath())) {
         slicer = null;
+        slicerSlices = null;
+      }
 
       for (ElementInfo ei : children) {
         if (ei.sliceInfo == null) {
           ei.sliceInfo = new ArrayList<>();
         }
-        unsupportedSlicing = matchSlice(valContext, errors, ei.sliceInfo, profile, stack, slicer, unsupportedSlicing, problematicPaths, sliceOffset, i, ed, childUnsupportedSlicing, ei, bh);
+        unsupportedSlicing = matchSlice(valContext, errors, ei.sliceInfo, profile, stack, slicer, slicerSlices, unsupportedSlicing, problematicPaths, sliceOffset, i, ed, childUnsupportedSlicing, ei, bh);
       }
     }
     int last = -1;
@@ -6927,7 +6961,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean matchSlice(ValidationContext valContext, List<ValidationMessage> errors, List<ValidationMessage> sliceInfo, StructureDefinition profile, NodeStack stack,
-    ElementDefinition slicer, boolean unsupportedSlicing, List<String> problematicPaths, int sliceOffset, int i, ElementDefinition ed,
+    ElementDefinition slicer, List<ElementDefinition> slicerSlices, boolean unsupportedSlicing, List<String> problematicPaths, int sliceOffset, int i, ElementDefinition ed,
     boolean childUnsupportedSlicing, ElementInfo ei, BooleanHolder bh) {
     boolean match = false;
     if (slicer == null || slicer == ed) {
@@ -6936,7 +6970,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (nameMatches(ei.getName(), tail(ed.getPath())))
         try {
 //          System.out.println("match slices for "+stack.getLiteralPath()+": "+slicer.getId()+" = "+slicingSummary(slicer.getSlicing()));
-          match = sliceMatches(valContext, ei.getElement(), ei.getPath(), slicer, ed, profile, errors, sliceInfo, stack, profile);
+          match = sliceMatches(valContext, ei.getElement(), ei.getPath(), slicer, slicerSlices, ed, profile, errors, sliceInfo, stack, profile);
           if (match) {
             ei.slice = slicer;
 

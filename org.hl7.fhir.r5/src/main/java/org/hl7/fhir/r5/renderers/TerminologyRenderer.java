@@ -211,31 +211,25 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     if (hasHierarchy) {
       tr.td().b().tx(context.formatPhrase(RenderingContext.TERMINOLOGY_LVL));
     }
-    tr.td().attribute("style", "white-space:nowrap").b().tx(formatPhrase(RenderingContext.TX_CODE));
+    tr.td().attribute("style", "white-space:nowrap").b().tx(formatPhrase(RenderingContext.GENERAL_CODE));
     if (hasDisplay) {
       tr.td().b().tx(formatPhrase(RenderingContext.TX_DISPLAY));
     }
     if (definitions) {
-      tr.td().b().tx(formatPhrase(RenderingContext.TX_DEFINITION));
+      tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_DEFINITION));
     }
     if (deprecated) {
-      tr.td().b().tx(formatPhrase(RenderingContext.TX_DEPRECATED));
+      tr.td().b().tx(formatPhrase(RenderingContext.CODESYSTEM_DEPRECATED));
     }
     if (comments) {
-      tr.td().b().tx(formatPhrase(RenderingContext.TX_COMMENTS));
+      tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_COMMENTS));
     }
     if (version) {
-      tr.td().b().tx(formatPhrase(RenderingContext.TX_VERSION));
+      tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_VER));
     }
     if (properties != null) {
       for (PropertyComponent pc : properties) {
-        String display = ToolingExtensions.getPresentation(pc, pc.getCodeElement());
-        if (display == null || display.equals(pc.getCode()) && pc.hasUri()) {
-          display = getDisplayForProperty(pc.getUri());
-          if (display == null) {
-            display = pc.getCode();
-          }
-        }
+        String display = getDisplayForProperty(pc);
         tr.td().b().tx(display);      
       }
     }
@@ -252,6 +246,17 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       }
     }
     return tr;
+  }
+
+  protected String getDisplayForProperty(PropertyComponent pc) {
+    String display = ToolingExtensions.getPresentation(pc, pc.getCodeElement());
+    if (display == null || display.equals(pc.getCode()) && pc.hasUri()) {
+      display = getDisplayForProperty(pc.getUri());
+      if (display == null) {
+        display = pc.getCode();
+      }
+    }
+    return display;
   }
 
 
@@ -307,7 +312,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
         a.addText(value);
       } else if (value.equals("http://snomed.info/sct") || value.equals("http://snomed.info/id")) {
         XhtmlNode a = li.ah(value);
-        a.tx(context.formatPhrase(RenderingContext.TERMINOLOGY_SNOMED));
+        a.tx(context.formatPhrase(RenderingContext.STRUC_DEF_SNOMED));
       }
       else {
         if (value.startsWith("http://hl7.org") && !Utilities.existsInList(value, "http://hl7.org/fhir/sid/icd-10-us")) {

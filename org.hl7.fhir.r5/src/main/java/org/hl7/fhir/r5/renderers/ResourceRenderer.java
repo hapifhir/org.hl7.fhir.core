@@ -494,7 +494,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (url.startsWith("#") && res != null) {
       for (ResourceWrapper r : res.getContained()) {
         if (r.getId().equals(url.substring(1)))
-          return new ResourceWithReference(ResourceReferenceKind.CONTAINED, null, r);
+          return new ResourceWithReference(ResourceReferenceKind.CONTAINED, url, r);
       }
       return null;
     }
@@ -562,7 +562,7 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   public String displayReference(Resource res, Reference r) throws UnsupportedEncodingException, IOException {
-    return (context.formatPhrase(RenderingContext.RES_REND_TODO)); 
+    return (context.formatPhrase(RenderingContext.GENERAL_TODO)); 
    }
    
 
@@ -607,7 +607,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
    protected String describeStatus(PublicationStatus status, boolean experimental) {
      switch (status) {
-     case ACTIVE: return experimental ? (context.formatPhrase(RenderingContext.RES_REND_EXP)) : (context.formatPhrase(RenderingContext.RES_REND_ACT)); 
+     case ACTIVE: return experimental ? (context.formatPhrase(RenderingContext.GENERAL_EXPER)) : (context.formatPhrase(RenderingContext.RES_REND_ACT)); 
      case DRAFT: return (context.formatPhrase(RenderingContext.RES_REND_DRAFT));
      case RETIRED: return (context.formatPhrase(RenderingContext.RES_REND_RET));
      default: return (context.formatPhrase(RenderingContext.RES_REND_UNKNOWN));
@@ -656,14 +656,14 @@ public abstract class ResourceRenderer extends DataRenderer {
     
     if (id != null || lang != null || versionId != null || lastUpdated != null) {
       XhtmlNode p = plateStyle(div.para());
-      p.tx(context.formatPhrase(RenderingContext.RES_REND_RESOURCE));
+      p.tx(context.formatPhrase(RenderingContext.GENERAL_RESOURCE));
       p.tx(r.fhirType());
       p.tx(" ");
       if (id != null) {
         p.tx("\""+id+"\" ");
       }
       if (versionId != null) {
-        p.tx(context.formatPhrase(RenderingContext.RES_REND_VERSION) + "\""+versionId+"\" ");
+        p.tx(context.formatPhrase(RenderingContext.GENERAL_VER) + "\""+versionId+"\" ");
       }
       if (lastUpdated != null) {
         p.tx(context.formatPhrase(RenderingContext.RES_REND_UPDATED) + "\"");
@@ -684,7 +684,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       PropertyWrapper pl = meta.getChildByName("profile");
       if (pl.hasValues()) {
         XhtmlNode p = plateStyle(div.para());
-        p.tx(Utilities.pluralize(context.formatPhrase(RenderingContext.RES_REND_PROFILE), pl.getValues().size())+": ");
+        p.tx(Utilities.pluralize(context.formatPhrase(RenderingContext.GENERAL_PROF), pl.getValues().size())+": ");
         boolean first = true;
         for (BaseWrapper bw : pl.getValues()) {
           if (first) first = false; else p.tx(", ");
@@ -708,7 +708,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       PropertyWrapper sl = meta.getChildByName("security");
       if (sl.hasValues()) {
         XhtmlNode p = plateStyle(div.para());
-        p.tx(Utilities.pluralize(context.formatPhrase(RenderingContext.RES_REND_SECURITY_LABEL), tl.getValues().size())+": ");
+        p.tx(Utilities.pluralize(context.formatPhrase(RenderingContext.GENERAL_SECURITY_LABEL), tl.getValues().size())+": ");
         boolean first = true;
         for (BaseWrapper bw : sl.getValues()) {
           if (first) first = false; else p.tx(", ");
