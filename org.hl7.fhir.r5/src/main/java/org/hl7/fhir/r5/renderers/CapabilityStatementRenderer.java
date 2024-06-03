@@ -347,6 +347,11 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
             resCount++;
           }
         }
+        if (rest.getOperation().size() > 0) {
+          //TODO Figure out what should come out of this
+          x.h(nextLevel,"operationsCap" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.OP_DEF_NAME));
+          x.h(nextLevel+1,"operationsSummary" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.OP_DEF_USE));
+        }
         count++;
       }
     }
