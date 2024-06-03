@@ -29,7 +29,7 @@ public class R5EvaluationContext implements FHIRPathEngine.IEvaluationContext {
   public R5EvaluationContext(SimpleWorkerContext context, List<ValidatorUtils.SourceFile> refs) {
     for (ValidatorUtils.SourceFile ref : refs) {
       List<ValidatedFragment> validatedContent = getValidatedFragmentList(context, ref);
-      if (validatedContent.size() == 1 && validatedContent.get(0).getElement() != null) {
+      if (validatedContent.size() == 1 && validatedContent.get(0).getElement() != null && ref.getResourceType()!=null ) {
         this.validatedContentMap.put(ref.getResourceType().name() + "/" + ref.getId(), validatedContent.get(0).getElement());
       }
     }

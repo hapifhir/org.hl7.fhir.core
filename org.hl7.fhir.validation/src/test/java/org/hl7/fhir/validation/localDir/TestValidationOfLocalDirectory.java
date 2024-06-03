@@ -89,7 +89,7 @@ public class TestValidationOfLocalDirectory {
 
     // no errors should be present
     assertTrue( compOpOutc.getIssue().stream()
-      .noneMatch( issue -> issue.getSeverity() != OperationOutcome.IssueSeverity.ERROR )
+      .noneMatch( issue -> issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR )
     );
   }
 
