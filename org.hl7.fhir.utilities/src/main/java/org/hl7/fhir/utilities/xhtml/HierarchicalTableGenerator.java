@@ -95,22 +95,22 @@ public class HierarchicalTableGenerator {
     XML, XHTML
   }
 
-  /*!#*/public static final String TEXT_ICON_REFERENCE = "Reference to another Resource";
-  /*!#*/public static final String TEXT_ICON_PRIMITIVE = "Primitive Data Type";
-  /*!#*/public static final String TEXT_ICON_KEY = "JSON Key Value";
-  /*!#*/public static final String TEXT_ICON_DATATYPE = "Data Type";
-  /*!#*/public static final String TEXT_ICON_RESOURCE = "Resource";
-  /*!#*/public static final String TEXT_ICON_ELEMENT = "Element";
-  /*!#*/public static final String TEXT_ICON_OBJECT_BOX = "Object";
-  /*!#*/public static final String TEXT_ICON_REUSE = "Reference to another Element";
-  /*!#*/public static final String TEXT_ICON_EXTENSION = "Extension";
-  /*!#*/public static final String TEXT_ICON_CHOICE = "Choice of Types";
-  /*!#*/public static final String TEXT_ICON_SLICE = "Slice Definition";
-  /*!#*/public static final String TEXT_ICON_SLICE_ITEM = "Slice Item";
-  /*!#*/public static final String TEXT_ICON_FIXED = "Fixed Value";
-  /*!#*/public static final String TEXT_ICON_EXTENSION_SIMPLE = "Simple Extension";
-  /*!#*/public static final String TEXT_ICON_PROFILE = "Profile";
-  /*!#*/public static final String TEXT_ICON_EXTENSION_COMPLEX = "Complex Extension";
+  public static final String TEXT_ICON_REFERENCE = "Reference to another Resource";
+  public static final String TEXT_ICON_PRIMITIVE = "Primitive Data Type";
+  public static final String TEXT_ICON_KEY = "JSON Key Value";
+  public static final String TEXT_ICON_DATATYPE = "Data Type";
+  public static final String TEXT_ICON_RESOURCE = "Resource";
+  public static final String TEXT_ICON_ELEMENT = "Element";
+  public static final String TEXT_ICON_OBJECT_BOX = "Object";
+  public static final String TEXT_ICON_REUSE = "Reference to another Element";
+  public static final String TEXT_ICON_EXTENSION = "Extension";
+  public static final String TEXT_ICON_CHOICE = "Choice of Types";
+  public static final String TEXT_ICON_SLICE = "Slice Definition";
+  public static final String TEXT_ICON_SLICE_ITEM = "Slice Item";
+  public static final String TEXT_ICON_FIXED = "Fixed Value";
+  public static final String TEXT_ICON_EXTENSION_SIMPLE = "Simple Extension";
+  public static final String TEXT_ICON_PROFILE = "Profile";
+  public static final String TEXT_ICON_EXTENSION_COMPLEX = "Complex Extension";
 
   public static final int NEW_REGULAR = 0;
   public static final int CONTINUE_REGULAR = 1;
@@ -671,11 +671,11 @@ public class HierarchicalTableGenerator {
       model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
     }
     model.setDocoRef(Utilities.pathURL("https://build.fhir.org/ig/FHIR/ig-guidance", "readingIgs.html#table-views"));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_HEAD_NAME), i18n.formatMessage(RenderingI18nContext.SD_HEAD_NAME_DESC), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_HEAD_FLAGS), i18n.formatMessage(RenderingI18nContext.SD_HEAD_FLAGS_DESC), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_HEAD_CARD), i18n.formatMessage(RenderingI18nContext.SD_HEAD_CARD_DESC), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_HEAD_TYPE), i18n.formatMessage(RenderingI18nContext.SD_HEAD_TYPE_DESC), null, 100));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_HEAD_DESC), i18n.formatMessage(RenderingI18nContext.SD_HEAD_DESC_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_NAME), i18n.formatPhrase(RenderingI18nContext.GENERAL_LOGICAL_NAME), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_FLAGS), i18n.formatPhrase(RenderingI18nContext.SD_HEAD_FLAGS_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_CARD), i18n.formatPhrase(RenderingI18nContext.SD_HEAD_CARD_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_TYPE), i18n.formatPhrase(RenderingI18nContext.SD_GRID_HEAD_TYPE_DESC), null, 100));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_DESC_CONST), i18n.formatPhrase(RenderingI18nContext.SD_HEAD_DESC_DESC), null, 0));
     if (isLogical) {
       model.getTitles().add(new Title(null, prefix+"structuredefinition.html#logical", "Implemented As", "How this logical data item is implemented in a concrete resource", null, 0));
     }
@@ -692,16 +692,16 @@ public class HierarchicalTableGenerator {
       model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
     }
     model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table"));    
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_NAME), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_NAME_DESC), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_FLAGS_L), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_FLAGS_L_DESC), null, 0).setStyle("border-left: 1px grey solid"));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_CARD_L), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_CARD_L_DESC), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_TYPE_L), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_TYPE_L_DESC), null, 100));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_DESC_L), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_DESC_L_DESC), null, 0).setStyle("border-right: 1px grey solid"));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_FLAGS_R), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_FLAGS_R_DESC), null, 0).setStyle("border-left: 1px grey solid"));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_CARD_R), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_CARD_R_DESC), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_TYPE_R), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_TYPE_R_DESC), null, 100));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_DESC_R), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_DESC_R_DESC), null, 0).setStyle("border-right: 1px grey solid"));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_COMP), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_COMP_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_NAME), i18n.formatPhrase(RenderingI18nContext.GENERAL_LOGICAL_NAME), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_FLAGS_L), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_FLAGS_L_DESC), null, 0).setStyle("border-left: 1px grey solid"));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_CARD_L), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_CARD_L_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_TYPE_L), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_TYPE_L_DESC), null, 100));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_DESC_L), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_DESC_L_DESC), null, 0).setStyle("border-right: 1px grey solid"));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_FLAGS_R), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_FLAGS_R_DESC), null, 0).setStyle("border-left: 1px grey solid"));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_CARD_R), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_CARD_R_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_TYPE_R), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_TYPE_R_DESC), null, 100));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_DESC_R), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_DESC_R_DESC), null, 0).setStyle("border-right: 1px grey solid"));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_COMMENTS), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_COMP_DESC), null, 0));
     return model;
   }
 
@@ -709,10 +709,10 @@ public class HierarchicalTableGenerator {
 
   public TableModel initGridTable(String prefix, String id) {
     TableModel model = new TableModel(id, false);
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_NAME), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_NAME_DESC), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_CARD), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_CARD_DESC), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_TYPE), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_TYPE_DESC), null, 100));
-    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_DESC), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_DESC_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_NAME), i18n.formatPhrase(RenderingI18nContext.SD_GRID_HEAD_NAME_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_CARD), i18n.formatPhrase(RenderingI18nContext.SD_GRID_HEAD_CARD_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_TYPE), i18n.formatPhrase(RenderingI18nContext.SD_GRID_HEAD_TYPE_DESC), null, 100));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_GRID_HEAD_DESC), i18n.formatPhrase(RenderingI18nContext.SD_GRID_HEAD_DESC_DESC), null, 0));
     
     return model;
   }
@@ -755,10 +755,10 @@ public class HierarchicalTableGenerator {
       tc.setAttribute("class", "hierarchy");
       tc.setAttribute("colspan", Integer.toString(model.getTitles().size()));
       tc.addTag("br");
-      XhtmlNode a = tc.addTag("a").setAttribute("title", i18n.formatMessage(RenderingI18nContext.SD_LEGEND)).setAttribute("href", model.getDocoRef());
+      XhtmlNode a = tc.addTag("a").setAttribute("title", i18n.formatPhrase(RenderingI18nContext.SD_LEGEND)).setAttribute("href", model.getDocoRef());
       if (model.getDocoImg() != null)
         a.addTag("img").setAttribute("alt", "doco").setAttribute("style", "background-color: inherit").setAttribute("src", model.getDocoImg());
-      a.addText(" "+i18n.formatMessage(RenderingI18nContext.SD_DOCO));
+      a.addText(" "+i18n.formatPhrase(RenderingI18nContext.SD_DOCO));
     }
     return table;
   }

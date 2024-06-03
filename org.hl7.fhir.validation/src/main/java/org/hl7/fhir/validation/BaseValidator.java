@@ -67,6 +67,7 @@ import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
@@ -87,7 +88,7 @@ import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
-public class BaseValidator implements IValidationContextResourceLoader {
+public class BaseValidator implements IValidationContextResourceLoader, IMessagingServices {
 
   public static class BooleanHolder {
     private boolean value = true;
@@ -108,6 +109,9 @@ public class BaseValidator implements IValidationContextResourceLoader {
     }
     public void see(boolean ok) {
       value = value && ok;
+    }
+    public void set(boolean value) {
+      this.value = value;
     }
   }
   
@@ -408,7 +412,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return thePass;
   }
 
-  protected ValidationMessage signpost(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, String theMessage, Object... theMessageArguments) {
+  public ValidationMessage signpost(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, String theMessage, Object... theMessageArguments) {
     String message = context.formatMessage(theMessage, theMessageArguments);
     return addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage).setSignpost(true);
   }
@@ -1613,5 +1617,40 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return usage.getValue() instanceof Coding && context.subsumes(baseOptions, usage.getCode(), use) && context.subsumes(baseOptions, (Coding) usage.getValue(), value);
   }
   
+
+  protected boolean isKnownUsage(UsageContext usage) {
+    for (UsageContext t : usageContexts) {
+      if (usagesMatch(usage, t)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean usagesMatch(UsageContext usage, UsageContext t) {
+    if (usage.hasCode() && t.hasCode() && usage.hasValue() && t.hasValue()) {
+      if (usage.getCode().matches(t.getCode())) {
+        if (usage.getValue().fhirType().equals(t.getValue().fhirType())) {
+          switch (usage.getValue().fhirType()) {
+          case "CodeableConcept": 
+            for (Coding uc : usage.getValueCodeableConcept().getCoding()) {              
+              for (Coding tc : t.getValueCodeableConcept().getCoding()) {
+                if (uc.matches(tc)) {
+                  return true;
+                }
+              }
+            }
+          case "Quantity":  
+            return false; // for now
+          case "Range": 
+            return false; // for now
+          case "Reference":
+            return false; // for now
+          }
+        }
+      }
+    }
+    return false;
+  }
 
 }

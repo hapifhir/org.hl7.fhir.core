@@ -1062,7 +1062,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return null;
     }
     if (sys.size() == 0) {
-      problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_MATCHES, code, valueset.getVersionedUrl())));
+      problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_INFER_CODESYSTEM, code, valueset.getVersionedUrl())));
       return null;
     } else if (sys.size() > 1) {
       problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES, code, valueset.getVersionedUrl(), sys.toString())));
@@ -1304,7 +1304,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           if (info != null && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
             // server didn't know the code system either - we'll take it face value
             if (!info.hasNotFound(system)) {
-              String msg = context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system);
+              String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, system);
               info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.UNKNOWN, path, msg, OpIssueCode.NotFound, null));
               for (ConceptReferenceComponent cc : vsi.getConcept()) {
                 if (cc.getCode().equals(code)) {

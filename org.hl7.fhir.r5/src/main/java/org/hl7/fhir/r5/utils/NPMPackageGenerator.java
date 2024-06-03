@@ -249,6 +249,10 @@ public class NPMPackageGenerator {
     npm.add("directories", dir);
     dir.add("lib", "package");
     dir.add("example", "example");
+    if (ig.hasJurisdiction() && ig.getJurisdiction().size() == 1 && ig.getJurisdictionFirstRep().getCoding().size() == 1) {
+      Coding c = ig.getJurisdictionFirstRep().getCodingFirstRep();
+      npm.add("jurisdiction", c.getSystem()+"#"+c.getCode());
+    }
     String json = JsonParser.compose(npm, true);
     try {
       addFile(Category.RESOURCE, "package.json", json.getBytes("UTF-8"));

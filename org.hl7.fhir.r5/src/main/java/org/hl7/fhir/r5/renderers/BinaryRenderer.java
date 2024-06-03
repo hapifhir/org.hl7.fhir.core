@@ -71,7 +71,7 @@ public class BinaryRenderer {
   public void render(XhtmlNode x, String id, String ct, byte[] cnt) throws IOException {
     filenames.clear();
     if (ct == null) {
-      error(x, /*!#*/"No Content Type");
+      error(x,"No Content Type");
     } else if (ct.startsWith("image/")) {
       image(x, id, ct, cnt);
     } else if (isXml(ct)) {
@@ -83,7 +83,7 @@ public class BinaryRenderer {
     } else if (isText(ct)) {
       text(x, cnt);      
     } else {
-      error(x, /*!#*/"The Content Type '"+ct+"' is not rendered in this context");
+      error(x, "The Content Type '"+ct+"' is not rendered in this context");
     }
   }
 
@@ -101,7 +101,7 @@ public class BinaryRenderer {
     }
     
     if (ext == null) {
-      error(x, /*!#*/"The Image Type '"+ct+"' is not rendered in this context");
+      error(x, "The Image Type '"+ct+"' is not rendered in this context");
     } else {
       String fn = "Binary-Native-"+id+ext;
       TextFile.bytesToFile(cnt, Utilities.path(folder, fn));
