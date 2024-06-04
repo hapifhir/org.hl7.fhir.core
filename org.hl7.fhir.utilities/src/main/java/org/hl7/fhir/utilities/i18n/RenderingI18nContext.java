@@ -83,6 +83,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CAPABILITY_CREATE_INT = "CAPABILITY_CREATE_INT";
   public static final String GENERAL_CRIT = "GENERAL_CRIT";
   public static final String CAPABILITY_DELETE_INT = "CAPABILITY_DELETE_INT";
+  public static final String CAPABILITY_ERR_DET = "CAPABILITY_ERR_DET";
   public static final String CAPABILITY_EXT_OP = "CAPABILITY_EXT_OP";
   public static final String CAPABILITY_FHIR = "CAPABILITY_FHIR";
   public static final String CAPABILITY_FHIR_VER = "CAPABILITY_FHIR_VER";
@@ -93,6 +94,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CAPABILITY_INTER_SUPP = "CAPABILITY_INTER_SUPP";
   public static final String CAPABILITY_INT_DESC = "CAPABILITY_INT_DESC";
   public static final String CAPABILITY_INT_SUMM = "CAPABILITY_INT_SUMM";
+  public static final String CAPABILITY_MULT_EXT = "CAPABILITY_MULT_EXT";
   public static final String CAPABILITY_NOTE_CAP = "CAPABILITY_NOTE_CAP";
   public static final String CAPABILITY_OP = "CAPABILITY_OP";
   public static final String CAPABILITY_OPER = "CAPABILITY_OPER";

@@ -266,6 +266,28 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
   }
 
+  private class ResourceInteraction {
+    private String codeString;
+    private String documentation;
+    public ResourceInteraction(String code, String markdown) {
+      codeString = code;
+      if (!Utilities.noString(markdown)) {
+        documentation = markdown;
+      }
+      else {
+        documentation = null;
+      }
+    }
+
+    public String getDocumentation() {
+      return documentation;
+    }
+
+    public String getInteraction() {
+      return codeString;
+    }
+  }
+
   //Constructors
   public CapabilityStatementRenderer(RenderingContext context) {
     super(context);
@@ -349,7 +371,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         }
         if (rest.getOperation().size() > 0) {
           //TODO Figure out what should come out of this
-          x.h(nextLevel,"operationsCap" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.OP_DEF_NAME));
+          x.h(nextLevel,"operationsCap" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.CAPABILITY_OP));
           x.h(nextLevel+1,"operationsSummary" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.OP_DEF_USE));
         }
         count++;
@@ -357,7 +379,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     }
 
     if (multExpectationsPresent) {
-      addWarningPanel(x,"⹋⹋ - this mark indicates that there are more than one expectation extensions present");
+      addWarningPanel(x,"⹋⹋ - " + context.formatPhrase(RenderingContext.CAPABILITY_MULT_EXT));
     }
 
     return true;
@@ -688,7 +710,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     }
   }
 
-  private void addInteractionSummaryList(XhtmlNode uList, String verb, List<String> interactions) {
+  private void addInteractionSummaryList(XhtmlNode uList, String verb, List<ResourceInteraction> interactions) {
     if (interactions.size() == 0) return;
     XhtmlNode item = uList.li();
     if (Utilities.noString(verb)) {
@@ -698,8 +720,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       item.addTag("strong").addText(verb);
       item.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP) + " ");
     }
-    addSeparatedListOfCodes(item, interactions, ",");
-    item.addText(".");
+
+    applyInteractionsList(item, interactions);  
   }
 
   private void addSummaryIntro(XhtmlNode x) {
@@ -958,8 +980,42 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
           result.add("$"+op.getName());
         }
       }
+      else {
+        result.add("$"+op.getName());
+      }
     }
     return result;
+  }
+
+  private void applyInteractionsList(XhtmlNode item, List<ResourceInteraction> list) {
+    List<String> noDocList = new ArrayList<String>();
+    List<ResourceInteraction> docList = new ArrayList<ResourceInteraction>();
+    for (ResourceInteraction inter : list) {
+      if (Utilities.noString(inter.getDocumentation())) {
+        noDocList.add(inter.getInteraction());
+      }
+      else {
+        docList.add(inter);
+      }
+    }
+    if (noDocList.size() > 0) {
+      addSeparatedListOfCodes(item,noDocList, ",");
+    }
+    if (docList.size() > 0) {
+      item.br();
+      for (ResourceInteraction inter : docList) {
+        item.code().addText(inter.getInteraction());
+        try {
+          addMarkdown(item, inter.getDocumentation());
+        }
+        catch(IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    else {
+      item.addText(".");
+    }
   }
 
   private void addResourceConfigPanel(XhtmlNode x, CapabilityStatementRestResourceComponent r, int nextLevel, int count, int resCount, boolean igRenderingMode) throws FHIRFormatError, DefinitionException, IOException {
@@ -1109,28 +1165,32 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   private void addInteractions(XhtmlNode row, CapabilityStatementRestResourceComponent r, int width) {
     String capExpectation;
     String widthString = "col-lg-" + Integer.toString(width);
-    List<String> shalls = new ArrayList<String>();
-    List<String> shoulds = new ArrayList<String>();
-    List<String> mays = new ArrayList<String>();
-    List<String> shouldnots = new ArrayList<String>();
-    List<String> supporteds = new ArrayList<String>();
+    //Need to build a different structure
+    List<ResourceInteraction> shalls = new ArrayList<ResourceInteraction>();
+    List<ResourceInteraction> shoulds = new ArrayList<ResourceInteraction>();
+    List<ResourceInteraction> mays = new ArrayList<ResourceInteraction>();
+    List<ResourceInteraction> shouldnots = new ArrayList<ResourceInteraction>();
+    List<ResourceInteraction> supporteds = new ArrayList<ResourceInteraction>();
+
+    ResourceInteraction tempInteraction = null;
 
     for (ResourceInteractionComponent op : r.getInteraction()) {
       capExpectation = expectationForDisplay(op,EXPECTATION);
+      tempInteraction = new ResourceInteraction(op.getCode().toCode(), op.getDocumentation());
       if (!Utilities.noString(capExpectation)) {
         switch(capExpectation) {
-          case "SHALL"      : shalls.add(op.getCode().toCode());
+          case "SHALL"      : shalls.add(tempInteraction);
                               break;
-          case "SHOULD"     : shoulds.add(op.getCode().toCode());
+          case "SHOULD"     : shoulds.add(tempInteraction);
                               break;
-          case "MAY"        : mays.add(op.getCode().toCode());
+          case "MAY"        : mays.add(tempInteraction);
                               break;
-          case "SHOULD-NOT" : shouldnots.add(op.getCode().toCode());
+          case "SHOULD-NOT" : shouldnots.add(tempInteraction);
                               break;
         }
       }
       else {
-        supporteds.add(op.getCode().toCode());
+        supporteds.add(tempInteraction);
       }
     }
     XhtmlNode cell = row.div().attribute("class", widthString);
@@ -1528,7 +1588,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
   private void addWarningPanel(XhtmlNode node, String text) {
     XhtmlNode panel = node.addTag("div").attribute("class","panel panel-danger").addTag("div").attribute("class","panel-body");
-    panel.addTag("span").attribute("class","label label-danger").addText("Error detected");
+    panel.addTag("span").attribute("class","label label-danger").addText(context.formatPhrase(RenderingContext.CAPABILITY_ERR_DET));
     panel.addText(" " + text);
   }
 }
