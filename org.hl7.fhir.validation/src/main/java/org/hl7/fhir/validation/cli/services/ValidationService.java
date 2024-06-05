@@ -490,7 +490,7 @@ public class ValidationService {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
       ValidationEngine validationEngine;
-      if (hasBaseEngineForKey(cliContext.getBaseEngine())) {
+      if (cliContext.getBaseEngine() != null && hasBaseEngineForKey(cliContext.getBaseEngine())) {
         System.out.println("Building new validator engine from base engine: " + cliContext.getBaseEngine());
         validationEngine = new ValidationEngine(getBaseEngine(cliContext.getBaseEngine()));
         /* As a service, it wouldn't be efficient to have a base validation engine
