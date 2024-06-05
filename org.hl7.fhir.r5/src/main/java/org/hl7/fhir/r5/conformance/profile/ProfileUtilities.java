@@ -700,9 +700,11 @@ public class ProfileUtilities {
         throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_BASE__FOR_, base.getBaseDefinition(), base.getUrl()));
       checkNotGenerating(sdb, "an extension base");
       generateSnapshot(sdb, base, base.getUrl(), (sdb.hasWebPath()) ? Utilities.extractBaseUrl(sdb.getWebPath()) : webUrl, base.getName());
-
     }
     fixTypeOfResourceId(base);
+    if (base.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+      checkTypeParameters(base, derived);
+    }
     
     if (snapshotStack.contains(derived.getUrl())) {
       throw new DefinitionException(context.formatMessage(I18nConstants.CIRCULAR_SNAPSHOT_REFERENCES_DETECTED_CANNOT_GENERATE_SNAPSHOT_STACK__, snapshotStack.toString()));
@@ -975,6 +977,29 @@ public class ProfileUtilities {
     derived.setUserData("profileutils.snapshot.generated", true); // used by the publisher
   }
 
+
+  private void checkTypeParameters(StructureDefinition base, StructureDefinition derived) {
+    String bt = ToolingExtensions.readStringExtension(base, ToolingExtensions.EXT_TYPE_PARAMETER);
+    if (!derived.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.SD_TYPE_PARAMETER_MISSING, base.getVersionedUrl(), bt, derived.getVersionedUrl()));
+    }
+    String dt = ToolingExtensions.readStringExtension(derived, ToolingExtensions.EXT_TYPE_PARAMETER);
+    StructureDefinition bsd = context.fetchTypeDefinition(bt);
+    StructureDefinition dsd = context.fetchTypeDefinition(dt);
+    if (bsd == null) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, base.getVersionedUrl(), bt));
+    }
+    if (dsd == null) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, derived.getVersionedUrl(), dt));
+    }
+    StructureDefinition t = dsd;
+    while (t != bsd && t != null) {
+      t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
+    }
+    if (t == null) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.SD_TYPE_PARAMETER_INVALID, base.getVersionedUrl(), bt, derived.getVersionedUrl(), dt));
+    }
+  }
 
   private XVerExtensionManager makeXVer() {
     if (xver == null) {

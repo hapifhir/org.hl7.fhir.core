@@ -173,6 +173,7 @@ import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.sql.Validator;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
+import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidationProfileUsageTracker;
@@ -595,7 +596,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noBindingMsgSuppressed;
   private Map<String, Element> fetchCache = new HashMap<>();
   private HashMap<Element, ResourceValidationTracker> resourceTracker = new HashMap<>();
-  private IValidationPolicyAdvisor policyAdvisor;
+  private IValidationPolicyAdvisor policyAdvisor = new BasePolicyAdvisorForFullValidation();
   long time = 0;
   long start = 0;
   long lastlog = 0;
@@ -691,6 +692,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   @Override
   public IResourceValidator setPolicyAdvisor(IValidationPolicyAdvisor advisor) {
+    if (advisor == null) {
+      throw new Error("Cannot set advisor to null");
+    }
     this.policyAdvisor = advisor;
     return this;
   }
@@ -3111,7 +3115,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       if (!found) {
         if (type.equals("canonical")) {
-          ReferenceValidationPolicy rp = policyAdvisor == null ? ReferenceValidationPolicy.CHECK_VALID : policyAdvisor.policyForReference(this, valContext, path, url);
+          ReferenceValidationPolicy rp = policyAdvisor.policyForReference(this, valContext, path, url);
           if (rp == ReferenceValidationPolicy.CHECK_EXISTS || rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url) && ok;
           } else {
@@ -3128,7 +3132,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       } else {
         if (type.equals("canonical")) {
-          ReferenceValidationPolicy rp = policyAdvisor == null ? ReferenceValidationPolicy.CHECK_VALID : policyAdvisor.policyForReference(this, valContext, path, url);
+          ReferenceValidationPolicy rp = policyAdvisor.policyForReference(this, valContext, path, url);
           if (rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE || rp == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS || rp == ReferenceValidationPolicy.CHECK_VALID) {
             try {
               Resource r = null;
@@ -3581,8 +3585,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = false;
         }
       } else {
-        EnumSet<CodedContentValidationAction> validationPolicy = getPolicyAdvisor() == null ?
-            EnumSet.allOf(CodedContentValidationAction.class) : getPolicyAdvisor().policyForCodedContent(this, valContext, stack.getLiteralPath(), elementContext, profile, BindingKind.PRIMARY, null, vs, new ArrayList<>());
+        EnumSet<CodedContentValidationAction> validationPolicy = policyAdvisor.policyForCodedContent(this, valContext, stack.getLiteralPath(), elementContext, profile, BindingKind.PRIMARY, null, vs, new ArrayList<>());
 
         if (!validationPolicy.isEmpty()) {
           long t = System.nanoTime();
@@ -3918,11 +3921,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (refType.equals("contained") || refType.equals("bundled")) {
       pol = ReferenceValidationPolicy.CHECK_VALID;
     } else {
-      if (policyAdvisor == null) {
-        pol = ReferenceValidationPolicy.IGNORE;
-      } else {
-        pol = policyAdvisor.policyForReference(this, valContext.getAppContext(), path, ref);
-      }
+      pol = policyAdvisor.policyForReference(this, valContext.getAppContext(), path, ref);
     }
 
     if (conditional) {
@@ -5705,15 +5704,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ok = false;
     }
     if (checkSpecials) {      
-      ok = checkSpecials(valContext, errors, element, stack, checkSpecials, pct, mode, fromContained) && ok;
+      ok = checkSpecials(valContext, errors, element, stack, checkSpecials, pct, mode, fromContained, ok) && ok;
       ok = validateResourceRules(errors, element, stack) && ok;
     }
     return ok;
   }
 
-  public boolean checkSpecials(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode, boolean contained) {
+  public boolean checkSpecials(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode, boolean contained, boolean isOk) {
     boolean ok = true;
     
+    // first, does the policy advisor have profiles it wants us to check? 
+    List<StructureDefinition> profiles = policyAdvisor.getImpliedProfilesForResource(this, valContext.getAppContext(), stack.getLiteralPath(), 
+        element.getProperty().getDefinition(), element.getProperty().getStructure(), element, isOk, this, errors);
+    for (StructureDefinition sd : profiles) {
+      ok = startInner(valContext, errors, element, element, sd, stack, false, pct, mode, false) && ok;
+    }
+
     long t = System.nanoTime();
     try {
       if (VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(element.getType())) {
@@ -5966,8 +5972,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       SpecialElement special = element.getSpecial();
 
-      ContainedReferenceValidationPolicy containedValidationPolicy = getPolicyAdvisor() == null ?
-          ContainedReferenceValidationPolicy.CHECK_VALID : getPolicyAdvisor().policyForContained(this,
+      ContainedReferenceValidationPolicy containedValidationPolicy = policyAdvisor.policyForContained(this,
               valContext, parentProfile, child, context.fhirType(), context.getId(), special, path, parentProfile.getUrl());
 
       if (containedValidationPolicy.ignore()) {
@@ -6021,7 +6026,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           }
           
-          checkSpecials(valContext, errors, element, stack, ok, pct, mode, true);
+          checkSpecials(valContext, errors, element, stack, ok, pct, mode, true, ok);
 
           if (typeForResource.getProfile().size() == 1) {
             long t = System.nanoTime();
@@ -6427,8 +6432,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (debug) {
       System.out.println("  check " + localStack.getLiteralPath()+" against "+ei.getDefinition().getId()+" in profile "+profile.getVersionedUrl()+time());
     }
-    EnumSet<ElementValidationAction> actionSet = policyAdvisor == null ? EnumSet.allOf(ElementValidationAction.class) : 
-      policyAdvisor.policyForElement(this, valContext.getAppContext(), profile, ei.getDefinition(), localStack.getLiteralPath());
+    EnumSet<ElementValidationAction> actionSet = policyAdvisor.policyForElement(this, valContext.getAppContext(), profile, ei.getDefinition(), localStack.getLiteralPath());
     
     String localStackLiteralPath = localStack.getLiteralPath();
     String eiPath = ei.getPath();

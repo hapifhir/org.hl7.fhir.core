@@ -61,6 +61,7 @@ public class ManagedFileAccess {
     FileInputStream inStream(String pathname);
     FileOutputStream outStream(String pathname);
     CSFile csfile(String pathname);
+    File[] listFiles(File file) throws IOException; // file would be returned from file() above
   }
 
   public enum FileAccessPolicy {
@@ -215,6 +216,22 @@ public class ManagedFileAccess {
       return path.toFile();
     case MANAGED:
       return accessor.file(path.toString());
+    case PROHIBITED:
+      throw new IOException("Access to files is not allowed by local security policy");
+    default:
+      throw new IOException("Internal Error");
+    }
+  }
+
+  public static File[] listFiles(File f) throws IOException {
+    switch (accessPolicy) {
+    case DIRECT:
+      if (!inAllowedPaths(f.getAbsolutePath())) {
+        throw new IOException("The pathname '"+f.getAbsolutePath()+"' cannot be accessed by policy");
+      }
+      return f.listFiles();
+    case MANAGED:
+      return accessor.listFiles(f);
     case PROHIBITED:
       throw new IOException("Access to files is not allowed by local security policy");
     default:
