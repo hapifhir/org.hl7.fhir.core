@@ -277,10 +277,17 @@ public abstract class Base implements Serializable, IBase, IElement {
   /**
    * @return true if the type is primitive, and there's value (e.g. no Data-Absent-Reason extension etc)
    */
-	public boolean hasPrimitiveValue() {
-		return primitiveValue() != null;
-	}
-	
+  public boolean hasPrimitiveValue() {
+    return primitiveValue() != null;
+  }
+  
+  /**
+   * @return true if the type is primitive, and there could be a value (irrespective of whether it's present e.g. no Data-Absent-Reason extension etc)
+   */
+  public boolean canHavePrimitiveValue() {
+    return false;
+  }
+  
 	/**
 	 * @return the primitive value if there is one, as a string irrespective of the actual type (e.g. dates converted to their FHIR string representation)
 	 *    return null if the value is not a primitive or there is no value (might be extensions instead)
