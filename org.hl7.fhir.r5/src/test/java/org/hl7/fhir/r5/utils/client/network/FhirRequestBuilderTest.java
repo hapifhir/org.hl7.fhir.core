@@ -26,10 +26,27 @@ class FhirRequestBuilderTest {
   }
 
   @Test
-  @DisplayName("Test resource format headers are added correctly.")
-  void addResourceFormatHeaders() {
+  @DisplayName("Test resource format headers are added correctly (GET).")
+  void addResourceFormatHeadersGET() {
     String testFormat = "yaml";
     Request.Builder request = new Request.Builder().url("http://www.google.com");
+    request.setMethod$okhttp("GET");
+    FhirRequestBuilder.addResourceFormatHeaders(request, testFormat);
+
+    Map<String, List<String>> headersMap = request.build().headers().toMultimap();
+    Assertions.assertNotNull(headersMap.get("Accept"), "Accept header null.");
+    Assertions.assertEquals(testFormat, headersMap.get("Accept").get(0),
+      "Accept header not populated with expected value " + testFormat + ".");
+
+    Assertions.assertNull(headersMap.get("Content-Type"), "Content-Type header not null.");
+  }
+
+  @Test
+  @DisplayName("Test resource format headers are added correctly (POST).")
+  void addResourceFormatHeadersPOST() {
+    String testFormat = "yaml";
+    Request.Builder request = new Request.Builder().url("http://www.google.com");
+    request.setMethod$okhttp("POST");
     FhirRequestBuilder.addResourceFormatHeaders(request, testFormat);
 
     Map<String, List<String>> headersMap = request.build().headers().toMultimap();

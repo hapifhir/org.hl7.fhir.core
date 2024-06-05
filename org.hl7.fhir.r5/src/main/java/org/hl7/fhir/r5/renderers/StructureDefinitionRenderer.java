@@ -79,7 +79,7 @@ import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult; 
 import org.hl7.fhir.r5.utils.PublicationHacker; 
 import org.hl7.fhir.r5.utils.ToolingExtensions; 
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder; 
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor; 
 import org.hl7.fhir.utilities.StandardsStatus; 
 import org.hl7.fhir.utilities.TextFile; 
@@ -1060,6 +1060,19 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
     Cell left = gen.new Cell(null, ref, sName, hint, null); 
     row.getCells().add(left); 
+    if (profile.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+      Extension etp = profile.getExtensionByUrl(ToolingExtensions.EXT_TYPE_PARAMETER);
+      String name = etp.getExtensionString("name");
+      String type = etp.getExtensionString("type");
+      StructureDefinition t = context.getContext().fetchTypeDefinition(type);
+      if (t == null) {
+        left.addPiece(gen.new Piece(null, "<"+name+" : "+type+">", null));        
+      } else if (t.getWebPath() == null) {
+        left.addPiece(gen.new Piece(type, "<"+name+" : "+t.present()+">", null));        
+      } else {
+        left.addPiece(gen.new Piece(t.getWebPath(), "<"+name+" : "+t.present()+">", null));        
+      }
+    }
     return left; 
   } 
  
@@ -1964,6 +1977,28 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } else { 
             c.addPiece(checkForNoChange(t, gen.new Piece(null, tc, null))); 
           } 
+          if (t.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+            c.addPiece(checkForNoChange(t, gen.new Piece(null, "<", null)));
+            boolean pfirst = true;
+            List<Extension> exl = t.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_PARAMETER);
+            for (Extension ex : exl) {
+              if (pfirst) { pfirst = false; } else { c.addPiece(checkForNoChange(t, gen.new Piece(null, ";", null))); }
+              if (exl.size() > 1) {
+                c.addPiece(checkForNoChange(t, gen.new Piece(null, ex.getExtensionString("name")+": ", null)));
+              }
+              String type = ex.getExtensionString("type");
+              StructureDefinition psd = context.getContext().fetchTypeDefinition(type);
+              if (psd == null) {
+                c.addPiece(checkForNoChange(t, gen.new Piece(null, type, null))); 
+              } else if (psd.getWebPath() == null) {
+                c.addPiece(checkForNoChange(t, gen.new Piece(type, psd.present(), null))); 
+              } else {
+                c.addPiece(checkForNoChange(t, gen.new Piece(psd.getWebPath(), psd.present(), null))); 
+              }
+            }
+            c.addPiece(checkForNoChange(t, gen.new Piece(null, ">", null))); 
+
+          }
           if (!mustSupportMode && isMustSupportDirect(t) && e.getMustSupport()) { 
             c.addPiece(gen.new Piece(null, " ", null)); 
             c.addStyledText((context.formatPhrase(RenderingContext.STRUC_DEF_TYPE_SUPP)), "S", "white", "red", null, false); 
@@ -3670,6 +3705,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else { 
       tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_TYPE), "datatypes.html", strikethrough, describeTypes(d.getType(), false, d, compare, mode, value, compareValue, sd));  
     } 
+    if (root && sd.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+      tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_TYPE_PARAMETER), "http://hl7.org/fhir/tools/StructureDefinition-type-parameter.html", strikethrough, renderTypeParameter(sd.getExtensionByUrl(ToolingExtensions.EXT_TYPE_PARAMETER)));
+    }
     if (d.hasExtension(ToolingExtensions.EXT_DEF_TYPE)) { 
       tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_DEFAULT_TYPE), "datatypes.html", strikethrough, ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_DEF_TYPE));           
     } 
@@ -3830,6 +3868,20 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     tbl.tx("\r\n"); 
   } 
    
+  private XhtmlNode renderTypeParameter(Extension ext) {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div"); 
+    x.tx(ext.getExtensionString("name"));
+    x.tx(" : ");
+    String t = ext.getExtensionString("type");
+    StructureDefinition sd = context.getContext().fetchTypeDefinition(t);
+    if (sd == null) {
+      x.code().tx(t);
+    } else {
+      x.ah(sd.getWebPath(), t).tx(sd.present());
+    }
+    return x;
+  }
+
   private XhtmlNode presentModifier(ElementDefinition d, int mode, ElementDefinition compare) throws FHIRException, IOException { 
     XhtmlNode x1 = compareString(encodeValue(d.getIsModifierElement(), null), d.getIsModifierElement(), null, "isModifier", d, compare == null ? null : encodeValue(compare.getIsModifierElement(), null), null, mode, false, false); 
     if (x1 != null) { 
@@ -4318,7 +4370,28 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else { 
       ts = compareString(x, t.getWorkingCode(), t, getTypeLink(t, sd), "code", t, compare==null ? null : compare.getWorkingCode(), compare==null ? null : getTypeLink(compare, sd), mode, false, false); 
     } 
-     
+    if (t.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+      x.tx("<");
+      boolean first = true;
+      List<Extension> exl = t.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_PARAMETER);
+      for (Extension ex : exl) {
+        if (first) { first = false; } else { x.tx("; "); }
+        if (exl.size() > 1) {
+          x.tx(ex.getExtensionString("name"));
+          x.tx(":");
+        }
+        String type = ex.getExtensionString("type");
+        StructureDefinition psd = context.getContext().fetchTypeDefinition(type);
+        if (psd == null) {
+          x.code().tx(type);
+        } else if (psd.getWebPath() == null) {
+          x.ah(type).tx(type);
+        } else {
+          x.ah(psd.getWebPath()).tx(type);          
+        }
+      }
+      x.tx(">");
+    }
     if ((!mustSupportOnly && (t.hasProfile() || (compare!=null && compare.hasProfile()))) || isMustSupport(t.getProfile())) { 
       StatusList<ResolvedCanonical> profiles = analyseProfiles(t.getProfile(), compare == null ? null : compare.getProfile(), mustSupportOnly, mode);       
       if (profiles.size() > 0) { 
@@ -4647,6 +4720,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         break; 
       } 
     } 
+    if (Utilities.noString(newMap) && compare == null) {
+      return null;
+    }
     if (compare==null) 
       return new XhtmlNode(NodeType.Element, "div").tx(newMap); 
     String oldMap = null; 
@@ -4656,7 +4732,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         break; 
       } 
     } 
- 
+    if (Utilities.noString(newMap) && Utilities.noString(oldMap)) {
+      return null;
+    }
     return compareString(Utilities.escapeXml(newMap), null, null, "mapping", d, Utilities.escapeXml(oldMap), null, mode, false, false); 
   } 
  

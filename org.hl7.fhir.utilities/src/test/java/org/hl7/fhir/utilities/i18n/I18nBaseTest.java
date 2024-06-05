@@ -110,6 +110,20 @@ class I18nBaseTest {
   }
 
   @Test
+  @DisplayName("Test double single quotes behaviour.")
+  void testDoubleSingleQuotes() {
+    I18nTestClass testClass = new I18nTestClass();
+    testClass.setLocale(Locale.US);
+    String actualMessageA = testClass.formatMessage(I18nConstants.VALUESET_EXAMPLE_SYSTEM_HINT, "Mazooma");
+    assertEquals("Example System 'Mazooma' specified, so Concepts and Filters can't be checked", actualMessageA);
+
+    String actualMessageB = testClass.formatMessage(I18nConstants.VALUESET_NO_SYSTEM_WARNING);
+    System.out.println(actualMessageB);
+    assertEquals("No System specified, so Concepts and Filters can't be checked", actualMessageB);
+  }
+
+
+  @Test
   @DisplayName("Test German localization file contains no umlauts.")
   void testThatNoOneHasMessedWithTheGermans() {
     I18nTestClass testClass = new I18nTestClass();

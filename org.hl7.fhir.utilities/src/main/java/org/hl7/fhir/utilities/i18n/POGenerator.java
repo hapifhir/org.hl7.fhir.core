@@ -16,6 +16,8 @@ import java.util.Set;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.DirectoryVisitor;
+import org.hl7.fhir.utilities.filesystem.DirectoryVisitor.IDirectoryVisitorImplementation;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 /**
@@ -123,9 +125,9 @@ public class POGenerator {
       }
       cd.defined = found;
     }
-    scanJavaSource(new File(core), consts, "RenderingI18nContext", "RenderingContext");
-    scanJavaSource(new File(igpub), consts, "RenderingI18nContext", "RenderingContext");
-    scanPascalSource(new File(pascal), props);
+    scanJavaSource(core, consts, "RenderingI18nContext", "RenderingContext");
+    scanJavaSource(igpub, consts, "RenderingI18nContext", "RenderingContext");
+    scanPascalSource(pascal, props);
     
     Set<String> pns = new HashSet<>();
     for (PropertyValue p : props) {
@@ -170,9 +172,9 @@ public class POGenerator {
       cd.defined = found;
     }
 
-    scanJavaSource(new File(core), consts, "I18nConstants");
-    scanJavaSource(new File(igpub), consts, "I18nConstants");
-    scanPascalSource(new File(pascal), props);
+    scanJavaSource(core, consts, "I18nConstants");
+    scanJavaSource(igpub, consts, "I18nConstants");
+    scanPascalSource(pascal, props);
 
     pns = new HashSet<>();
     for (PropertyValue p : props) {
@@ -212,72 +214,85 @@ public class POGenerator {
     return ok;
   }
 
-  private boolean scanJavaSource(File file, List<ConstantDefinition> consts, String... names) throws FileNotFoundException, IOException {
-    if (file.isDirectory()) {
-      boolean found = true;
-      for (File f : file.listFiles()) {
-        if (!Utilities.existsInList(f.getName(), "model", "formats")) {
-          found = scanJavaSource(f, consts, names) && found;
-        }
-      }
-      return false;
-    } else {
-      String ext = file.getName().substring(file.getName().lastIndexOf(".")+1);
-      if ("java".equals(ext)) {
-        String source = TextFile.fileToString(file);
-        for (ConstantDefinition cd : consts) {
-          if (!cd.used) {
-            boolean found = false;
-            for (String n : names) {
-              if (source.contains(n+"."+cd.name+",")) {
-                found = true;
-              } 
-              if (source.contains(n+"."+cd.name+")")) {
-                found = true;
-              } 
-              if (source.contains(n+"."+cd.name+" :")) {
-                found = true;
-              } 
-              if (source.contains(n+"."+cd.name+";")) {
-                found = true;
-              } 
-            } 
-            if (found) {
-              cd.used = true;
-            }
-          }
-        }
-        return true;
-      } else {
-        return false;
-      }
+  private class JavaScanner implements IDirectoryVisitorImplementation {
+    List<ConstantDefinition> consts;
+    List<String> names;
+    
+    @Override
+    public boolean enterDirectory(File f) throws IOException {
+      return !Utilities.existsInList(f.getName(), "model", "formats");
     }
-  }
 
-
-  private void scanPascalSource(File file, List<PropertyValue> defs) throws FileNotFoundException, IOException {
-    if (file.isDirectory()) {
-      for (File f : file.listFiles()) {
-        scanPascalSource(f, defs);
-      }
-    } else {
-      String ext = file.getName().substring(file.getName().lastIndexOf(".")+1);
-      if ("pas".equals(ext)) {
-        String source = TextFile.fileToString(file);
-        for (PropertyValue pv : defs) {
-          if (!pv.used) {
-            boolean found = false;
-            String pn = pv.getBaseName();
-            if (source.contains("'"+pn+"'")) {
+    @Override
+    public boolean visitFile(File file) throws IOException {
+      String source = TextFile.fileToString(file);
+      for (ConstantDefinition cd : consts) {
+        if (!cd.used) {
+          boolean found = false;
+          for (String n : names) {
+            if (source.contains(n+"."+cd.name+",")) {
               found = true;
             } 
-            if (found) {
-              pv.used = true;
-            }
+            if (source.contains(n+"."+cd.name+")")) {
+              found = true;
+            } 
+            if (source.contains(n+"."+cd.name+" :")) {
+              found = true;
+            } 
+            if (source.contains(n+"."+cd.name+";")) {
+              found = true;
+            } 
+          } 
+          if (found) {
+            cd.used = true;
+          }
+        }  
+      }
+      return true;
+    }
+  }
+  
+  private void scanJavaSource(String path, List<ConstantDefinition> consts, String... names) throws FileNotFoundException, IOException {
+    JavaScanner scanner = new JavaScanner();
+    scanner.consts = consts;
+    scanner.names = new ArrayList<String>();
+    for (String s : names) {
+      scanner.names.add(s);
+    }
+    DirectoryVisitor.visitDirectory(scanner, path, "java");
+  }
+
+  private class PascalScanner implements IDirectoryVisitorImplementation {
+    private List<PropertyValue> defs;
+    
+    @Override
+    public boolean enterDirectory(File directory) throws IOException {
+      return true;
+    }
+
+    @Override
+    public boolean visitFile(File file) throws IOException {
+      String source = TextFile.fileToString(file);
+      for (PropertyValue pv : defs) {
+        if (!pv.used) {
+          boolean found = false;
+          String pn = pv.getBaseName();
+          if (source.contains("'"+pn+"'")) {
+            found = true;
+          } 
+          if (found) {
+            pv.used = true;
           }
         }
       }
+      return true;
     }
+  }
+  
+  private void scanPascalSource(String path, List<PropertyValue> defs) throws FileNotFoundException, IOException {
+    PascalScanner scanner = new PascalScanner();
+    scanner.defs = defs;
+    DirectoryVisitor.visitDirectory(scanner, path, "pas");
   }
 
   
@@ -438,7 +453,7 @@ public class POGenerator {
           }
         }
       } else {
-        // we don't care; nothing to do 
+        o.oldMsgId = null;
       }
     } else if (mode == 1) {
       if (!value.equals(o.msgid)) {
@@ -451,7 +466,7 @@ public class POGenerator {
           o.msgstr.set(0, "!!"+o.msgstr.get(0));
         }
       } else {
-        // we don't care; nothing to do 
+        o.oldMsgId = null;
       }
     } else if (mode == 2) {
       if (!value.equals(o.msgidPlural)) {
@@ -464,7 +479,7 @@ public class POGenerator {
           o.msgstr.set(1, "!!"+o.msgstr.get(1));
         }
       } else {
-        // we don't care; nothing to do 
+        o.oldMsgId = null;
       }
     }
   }
