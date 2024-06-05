@@ -58,7 +58,7 @@ public class StandAloneValidatorFetcher extends BasePolicyAdvisorForFullValidati
   private Map<String, NpmPackage> pidMap = new HashMap<>();
 
   public StandAloneValidatorFetcher(FilesystemPackageCacheManager pcm, IWorkerContext context, IPackageInstaller installer) {
-    super();
+    super(ReferenceValidationPolicy.IGNORE);
     this.pcm = pcm;
     this.context = context;
     this.installer = installer;
@@ -74,7 +74,7 @@ public class StandAloneValidatorFetcher extends BasePolicyAdvisorForFullValidati
                                                       Object appContext,
                                                       String path,
                                                       String url) {
-    return ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS;
+    return ReferenceValidationPolicy.IGNORE;
   }
   
   @Override
