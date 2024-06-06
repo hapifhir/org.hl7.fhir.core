@@ -32,3 +32,4 @@
 * Try deploying javadoc with SNAPSHOT
 * Add utility to unpack the spec.internals file
 * v2 in FHIR tests
+* Fix bug loading language pack NPMs
