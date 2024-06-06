@@ -13,6 +13,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Date
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Uri30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Consent;
 import org.hl7.fhir.r4.model.Identifier;
 
 public class Consent30_40 {
@@ -47,7 +48,7 @@ public class Consent30_40 {
       tgt.setPolicyRule(new CodeableConcept(c));
     }
     if (src.hasSecurityLabel() || src.hasPeriod() || src.hasActor() || src.hasAction() || src.hasPurpose() || src.hasDataPeriod() || src.hasData() || src.hasExcept()) {
-      org.hl7.fhir.r4.model.Consent.provisionComponent pc = new org.hl7.fhir.r4.model.Consent.provisionComponent();
+      Consent.ProvisionComponent pc = new Consent.ProvisionComponent();
       if (src.hasPeriod())
         pc.setPeriod(Period30_40.convertPeriod(src.getPeriod()));
       for (org.hl7.fhir.dstu3.model.Consent.ConsentActorComponent t : src.getActor())
@@ -104,7 +105,7 @@ public class Consent30_40 {
       }
     }
     if (src.hasProvision()) {
-      org.hl7.fhir.r4.model.Consent.provisionComponent p = src.getProvision();
+      Consent.ProvisionComponent p = src.getProvision();
       if (p.hasPeriod())
         tgt.setPeriod(Period30_40.convertPeriod(p.getPeriod()));
       for (org.hl7.fhir.r4.model.Consent.provisionActorComponent t : p.getActor())
@@ -117,7 +118,7 @@ public class Consent30_40 {
         tgt.setDataPeriod(Period30_40.convertPeriod(p.getDataPeriod()));
       for (org.hl7.fhir.r4.model.Consent.provisionDataComponent t : p.getData())
         tgt.addData(convertConsentDataComponent(t));
-      for (org.hl7.fhir.r4.model.Consent.provisionComponent t : p.getProvision())
+      for (Consent.ProvisionComponent t : p.getProvision())
         tgt.addExcept(convertExceptComponent(t));
     }
     return tgt;
@@ -369,7 +370,7 @@ public class Consent30_40 {
     return tgt;
   }
 
-  static public org.hl7.fhir.dstu3.model.Consent.ExceptComponent convertExceptComponent(org.hl7.fhir.r4.model.Consent.provisionComponent src) throws FHIRException {
+  static public org.hl7.fhir.dstu3.model.Consent.ExceptComponent convertExceptComponent(Consent.ProvisionComponent src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Consent.ExceptComponent tgt = new org.hl7.fhir.dstu3.model.Consent.ExceptComponent();
@@ -393,10 +394,10 @@ public class Consent30_40 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r4.model.Consent.provisionComponent convertExceptComponent(org.hl7.fhir.dstu3.model.Consent.ExceptComponent src) throws FHIRException {
+  static public Consent.ProvisionComponent convertExceptComponent(org.hl7.fhir.dstu3.model.Consent.ExceptComponent src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r4.model.Consent.provisionComponent tgt = new org.hl7.fhir.r4.model.Consent.provisionComponent();
+    Consent.ProvisionComponent tgt = new Consent.ProvisionComponent();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertConsentExceptType(src.getTypeElement()));
