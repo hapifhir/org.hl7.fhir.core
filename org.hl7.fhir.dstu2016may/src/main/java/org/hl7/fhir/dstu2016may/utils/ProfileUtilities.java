@@ -1281,6 +1281,87 @@ public class ProfileUtilities {
     return false;
   }
 
+  public XhtmlNode generateExtensionTable(String defFile, StructureDefinition ed, String imageFolder,
+      boolean inlineGraphics, boolean full, String corePath, Set<String> outputTracker)
+      throws IOException, FHIRException {
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), imageFolder, inlineGraphics);
+    TableModel model = gen.initNormalTable(corePath, false, true, ed.getId(), false, TableGenerationMode.XML);
+
+    boolean deep = false;
+    boolean vdeep = false;
+    for (ElementDefinition eld : ed.getSnapshot().getElement()) {
+      deep = deep || eld.getPath().contains("Extension.extension.");
+      vdeep = vdeep || eld.getPath().contains("Extension.extension.extension.");
+    }
+    Row r = gen.new Row();
+    model.getRows().add(r);
+    r.getCells().add(gen.new Cell(null, defFile == null ? "" : defFile + "-definitions.html#extension." + ed.getName(),
+        ed.getSnapshot().getElement().get(0).getIsModifier() ? "modifierExtension" : "extension", null, null));
+    r.getCells().add(gen.new Cell());
+    r.getCells().add(gen.new Cell(null, null,
+        describeCardinality(ed.getSnapshot().getElement().get(0), null, new UnusedTracker()), null, null));
+
+    if (full || vdeep) {
+      r.getCells().add(gen.new Cell("", "", "Extension", null, null));
+
+      r.setIcon(deep ? "icon_extension_complex.png" : "icon_extension_simple.png",
+          deep ? HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX
+              : HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);
+      List<ElementDefinition> children = getChildren(ed.getSnapshot().getElement(),
+          ed.getSnapshot().getElement().get(0));
+      for (ElementDefinition child : children)
+        if (!child.getPath().endsWith(".id"))
+          genElement(defFile == null ? "" : defFile + "-definitions.html#extension.", gen, r.getSubRows(), child,
+              ed.getSnapshot().getElement(), null, true, defFile, true, full, corePath, true, false);
+    } else if (deep) {
+      List<ElementDefinition> children = new ArrayList<ElementDefinition>();
+      for (ElementDefinition ted : ed.getSnapshot().getElement()) {
+        if (ted.getPath().equals("Extension.extension"))
+          children.add(ted);
+      }
+
+      r.getCells().add(gen.new Cell("", "", "Extension", null, null));
+      r.setIcon("icon_extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
+
+      for (ElementDefinition c : children) {
+        ElementDefinition ved = getValueFor(ed, c);
+        ElementDefinition ued = getUrlFor(ed, c);
+        if (ved != null && ued != null) {
+          Row r1 = gen.new Row();
+          r.getSubRows().add(r1);
+          r1.getCells()
+              .add(gen.new Cell(null, defFile == null ? "" : defFile + "-definitions.html#extension." + ed.getName(),
+                  ((UriType) ued.getFixed()).getValue(), null, null));
+          r1.getCells().add(gen.new Cell());
+          r1.getCells().add(gen.new Cell(null, null, describeCardinality(c, null, new UnusedTracker()), null, null));
+          genTypes(gen, r1, ved, defFile, ed, corePath);
+          r1.getCells().add(gen.new Cell(null, null, c.getDefinition(), null, null));
+          r1.setIcon("icon_extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);
+        }
+      }
+    } else {
+      ElementDefinition ved = null;
+      for (ElementDefinition ted : ed.getSnapshot().getElement()) {
+        if (ted.getPath().startsWith("Extension.value"))
+          ved = ted;
+      }
+
+      genTypes(gen, r, ved, defFile, ed, corePath);
+
+      r.setIcon("icon_extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);
+    }
+    Cell c = gen.new Cell("", "", "URL = " + ed.getUrl(), null, null);
+    c.addPiece(gen.new Piece("br")).addPiece(gen.new Piece(null, ed.getName() + ": " + ed.getDescription(), null));
+    c.addPiece(gen.new Piece("br")).addPiece(gen.new Piece(null, describeExtensionContext(ed), null));
+    r.getCells().add(c);
+
+    try {
+      return gen.generate(model, corePath, 0, outputTracker);
+    } catch (org.hl7.fhir.exceptions.FHIRException e) {
+      throw new FHIRException(e.getMessage(), e);
+    }
+  }
+
   private ElementDefinition getUrlFor(StructureDefinition ed, ElementDefinition c) {
     int i = ed.getSnapshot().getElement().indexOf(c) + 1;
     while (i < ed.getSnapshot().getElement().size()
@@ -1479,6 +1560,25 @@ public class ProfileUtilities {
       piece.addStyle("opacity: 0.5");
     }
     return piece;
+  }
+
+  public XhtmlNode generateTable(String defFile, StructureDefinition profile, boolean diff, String imageFolder,
+      boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, boolean logicalModel,
+      Set<String> outputTracker) throws IOException, FHIRException {
+    assert (diff != snapshot);// check it's ok to get rid of one of these
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), imageFolder, inlineGraphics);
+    TableModel model = gen.initNormalTable(corePath, false, true, profile.getId() + (diff ? "d" : "s"), false,
+        TableGenerationMode.XML);
+    List<ElementDefinition> list = diff ? profile.getDifferential().getElement() : profile.getSnapshot().getElement();
+    List<StructureDefinition> profiles = new ArrayList<StructureDefinition>();
+    profiles.add(profile);
+    genElement(defFile == null ? null : defFile + "#" + profile.getId() + ".", gen, model.getRows(), list.get(0), list,
+        profiles, diff, profileBaseFileName, null, snapshot, corePath, true, logicalModel);
+    try {
+      return gen.generate(model, corePath, 0, outputTracker);
+    } catch (org.hl7.fhir.exceptions.FHIRException e) {
+      throw new FHIRException(e.getMessage(), e);
+    }
   }
 
   private void genElement(String defPath, HierarchicalTableGenerator gen, List<Row> rows, ElementDefinition element,
