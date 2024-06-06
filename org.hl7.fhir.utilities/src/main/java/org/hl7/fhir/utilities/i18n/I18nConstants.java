@@ -1074,4 +1074,10 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_CODE_VALUESETMAX = "Terminology_TX_Code_ValueSetMax";
   public static final String TERMINOLOGY_TX_CODE_VALUESET_EXT = "Terminology_TX_Code_ValueSet_Ext";
   public static final String SD_ED_SHOULD_BIND = "SD_ED_SHOULD_BIND";
+  public static final String SD_TYPE_PARAMETER_MISSING = "SD_TYPE_PARAMETER_MISSING";
+  public static final String SD_TYPE_PARAMETER_UNKNOWN = "SD_TYPE_PARAMETER_UNKNOWN";
+  public static final String SD_TYPE_PARAMETER_INVALID = "SD_TYPE_PARAMETER_INVALID";
+  public static final String SD_TYPE_PARAMETER_INVALID_REF = "SD_TYPE_PARAMETER_INVALID_REF";
+  public static final String SD_TYPE_PARAM_NOT_SPECIFIED = "SD_TYPE_PARAM_NOT_SPECIFIED";
+  public static final String SD_TYPE_PARAMETER_ABSTRACT_WARNING = "SD_TYPE_PARAMETER_ABSTRACT_WARNING";
 }

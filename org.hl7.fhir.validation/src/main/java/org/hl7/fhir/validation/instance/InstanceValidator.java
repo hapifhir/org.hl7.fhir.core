@@ -173,6 +173,7 @@ import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.sql.Validator;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
+import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidationProfileUsageTracker;
@@ -595,7 +596,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noBindingMsgSuppressed;
   private Map<String, Element> fetchCache = new HashMap<>();
   private HashMap<Element, ResourceValidationTracker> resourceTracker = new HashMap<>();
-  private IValidationPolicyAdvisor policyAdvisor;
+  private IValidationPolicyAdvisor policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID);
   long time = 0;
   long start = 0;
   long lastlog = 0;
@@ -691,6 +692,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   @Override
   public IResourceValidator setPolicyAdvisor(IValidationPolicyAdvisor advisor) {
+    if (advisor == null) {
+      throw new Error("Cannot set advisor to null");
+    }
     this.policyAdvisor = advisor;
     return this;
   }
@@ -1025,7 +1029,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         validateResource(new ValidationContext(appContext, element), errors, element, element, defn, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.ConfigProfile), false, false);
       }
     }
-    if (hintAboutNonMustSupport) {
+    if (hintAboutNonMustSupport && !profiles.isEmpty()) {
       checkElementUsage(errors, element, stack);
     }
     codingObserver.finish(errors, stack);
@@ -1038,10 +1042,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
 
   private void checkElementUsage(List<ValidationMessage> errors, Element element, NodeStack stack) {
-    String elementUsage = element.getUserString("elementSupported");
-    hint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), elementUsage == null || elementUsage.equals("Y"), I18nConstants.MUSTSUPPORT_VAL_MUSTSUPPORT, element.getName(), element.getProperty().getStructure().getVersionedUrl());
+    if (element.getPath()==null
+      || (element.getName().equals("id")  && !element.getPath().substring(0, element.getPath().length()-3).contains("."))
+      || (element.getName().equals("text")  && !element.getPath().substring(0, element.getPath().length()-5).contains(".")))
+      return;
+    String hasFixed = element.getUserString("hasFixed");
+    if (element.getPath().contains(".") && (hasFixed== null || !hasFixed.equals("Y"))) {
+      String elementUsage = element.getUserString("elementSupported");
+      hint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), elementUsage != null && (elementUsage.equals("Y") || elementUsage.equals("NA")), I18nConstants.MUSTSUPPORT_VAL_MUSTSUPPORT, element.getName(), element.getProperty().getStructure().getVersionedUrl());
+      if (elementUsage==null || !elementUsage.equals("Y"))
+        return;
+    }
 
-    if (element.hasChildren()) {
+    if (element.hasChildren() && (hasFixed== null || !hasFixed.equals("Y"))) {
       String prevName = "";
       int elementCount = 0;
       for (Element ce : element.getChildren()) {
@@ -3111,7 +3124,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       if (!found) {
         if (type.equals("canonical")) {
-          ReferenceValidationPolicy rp = policyAdvisor == null ? ReferenceValidationPolicy.CHECK_VALID : policyAdvisor.policyForReference(this, valContext, path, url);
+          ReferenceValidationPolicy rp = policyAdvisor.policyForReference(this, valContext, path, url);
           if (rp == ReferenceValidationPolicy.CHECK_EXISTS || rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url) && ok;
           } else {
@@ -3128,7 +3141,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       } else {
         if (type.equals("canonical")) {
-          ReferenceValidationPolicy rp = policyAdvisor == null ? ReferenceValidationPolicy.CHECK_VALID : policyAdvisor.policyForReference(this, valContext, path, url);
+          ReferenceValidationPolicy rp = policyAdvisor.policyForReference(this, valContext, path, url);
           if (rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE || rp == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS || rp == ReferenceValidationPolicy.CHECK_VALID) {
             try {
               Resource r = null;
@@ -3581,8 +3594,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = false;
         }
       } else {
-        EnumSet<CodedContentValidationAction> validationPolicy = getPolicyAdvisor() == null ?
-            EnumSet.allOf(CodedContentValidationAction.class) : getPolicyAdvisor().policyForCodedContent(this, valContext, stack.getLiteralPath(), elementContext, profile, BindingKind.PRIMARY, null, vs, new ArrayList<>());
+        EnumSet<CodedContentValidationAction> validationPolicy = policyAdvisor.policyForCodedContent(this, valContext, stack.getLiteralPath(), elementContext, profile, BindingKind.PRIMARY, null, vs, new ArrayList<>());
 
         if (!validationPolicy.isEmpty()) {
           long t = System.nanoTime();
@@ -3918,11 +3930,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (refType.equals("contained") || refType.equals("bundled")) {
       pol = ReferenceValidationPolicy.CHECK_VALID;
     } else {
-      if (policyAdvisor == null) {
-        pol = ReferenceValidationPolicy.IGNORE;
-      } else {
-        pol = policyAdvisor.policyForReference(this, valContext.getAppContext(), path, ref);
-      }
+      pol = policyAdvisor.policyForReference(this, valContext.getAppContext(), path, ref);
     }
 
     if (conditional) {
@@ -4960,7 +4968,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * @throws IOException
    * @throws FHIRException
    */
-  private boolean sliceMatches(ValidationContext valContext, Element element, String path, ElementDefinition slicer, ElementDefinition ed, StructureDefinition profile, List<ValidationMessage> errors, List<ValidationMessage> sliceInfo, NodeStack stack, StructureDefinition srcProfile) throws DefinitionException, FHIRException {
+  private boolean sliceMatches(ValidationContext valContext, Element element, String path, ElementDefinition slicer, List<ElementDefinition> slicerSlices, ElementDefinition ed, StructureDefinition profile, List<ValidationMessage> errors, List<ValidationMessage> sliceInfo, NodeStack stack, StructureDefinition srcProfile) throws DefinitionException, FHIRException {
     if (!slicer.getSlicing().hasDiscriminator())
       return false; // cannot validate in this case
 
@@ -5034,6 +5042,25 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             } else {
               throw new FHIRException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_ELEMENT_EXISTENCE_BUT_SLICE__NEITHER_SETS_MIN1_OR_MAX0, discriminator, ed.getId()));
             }
+          } else if (s.getType() == DiscriminatorType.POSITION) {
+            // we don't evaluate this one using FHIRPath, and it can't share 
+            if (slicer.getSlicing().getDiscriminator().size() != 1) {
+              throw new DefinitionException(context.formatMessagePlural(slicer.getSlicing().getDiscriminator().size(), I18nConstants.Could_not_match_discriminator_for_slice_in_profile, discriminators, ed.getId(), profile.getVersionedUrl(), discriminators));
+            } else {
+              int offset = 0;
+              for (ElementDefinition ts : slicerSlices) {
+                if (ts == ed) {
+                  break;
+                } else if (!ts.getMax().equals(Integer.toString(ts.getMin()))) {
+                  throw new DefinitionException(context.formatMessagePlural(slicer.getSlicing().getDiscriminator().size(), I18nConstants.Could_not_match_discriminator_for_slice_in_profile, discriminators, ed.getId(), profile.getVersionedUrl(), discriminators));                  
+                } else {
+                  offset = offset + ts.getMin();
+                }
+              }
+              int maxPos = (ed.getMax().equals("*") ? Integer.MAX_VALUE : offset + Integer.parseInt(ed.getMax()));
+              int position = path.endsWith("]") ? Integer.parseInt(path.substring(path.lastIndexOf("[")+1).replace("]", "")) : 0;
+              return position >= offset && position < maxPos;
+            }                        
           } else if (criteriaElement.hasFixed()) {
             buildFixedExpression(ed, expression, discriminator, criteriaElement);
           } else if (criteriaElement.hasPattern()) {
@@ -5686,15 +5713,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ok = false;
     }
     if (checkSpecials) {      
-      ok = checkSpecials(valContext, errors, element, stack, checkSpecials, pct, mode, fromContained) && ok;
+      ok = checkSpecials(valContext, errors, element, stack, checkSpecials, pct, mode, fromContained, ok) && ok;
       ok = validateResourceRules(errors, element, stack) && ok;
     }
     return ok;
   }
 
-  public boolean checkSpecials(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode, boolean contained) {
+  public boolean checkSpecials(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode, boolean contained, boolean isOk) {
     boolean ok = true;
     
+    // first, does the policy advisor have profiles it wants us to check? 
+    List<StructureDefinition> profiles = policyAdvisor.getImpliedProfilesForResource(this, valContext.getAppContext(), stack.getLiteralPath(), 
+        element.getProperty().getDefinition(), element.getProperty().getStructure(), element, isOk, this, errors);
+    for (StructureDefinition sd : profiles) {
+      ok = startInner(valContext, errors, element, element, sd, stack, false, pct, mode, false) && ok;
+    }
+
     long t = System.nanoTime();
     try {
       if (VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(element.getType())) {
@@ -5947,8 +5981,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       SpecialElement special = element.getSpecial();
 
-      ContainedReferenceValidationPolicy containedValidationPolicy = getPolicyAdvisor() == null ?
-          ContainedReferenceValidationPolicy.CHECK_VALID : getPolicyAdvisor().policyForContained(this,
+      ContainedReferenceValidationPolicy containedValidationPolicy = policyAdvisor.policyForContained(this,
               valContext, parentProfile, child, context.fhirType(), context.getId(), special, path, parentProfile.getUrl());
 
       if (containedValidationPolicy.ignore()) {
@@ -6002,7 +6035,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           }
           
-          checkSpecials(valContext, errors, element, stack, ok, pct, mode, true);
+          checkSpecials(valContext, errors, element, stack, ok, pct, mode, true, ok);
 
           if (typeForResource.getProfile().size() == 1) {
             long t = System.nanoTime();
@@ -6408,8 +6441,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (debug) {
       System.out.println("  check " + localStack.getLiteralPath()+" against "+ei.getDefinition().getId()+" in profile "+profile.getVersionedUrl()+time());
     }
-    EnumSet<ElementValidationAction> actionSet = policyAdvisor == null ? EnumSet.allOf(ElementValidationAction.class) : 
-      policyAdvisor.policyForElement(this, valContext.getAppContext(), profile, ei.getDefinition(), localStack.getLiteralPath());
+    EnumSet<ElementValidationAction> actionSet = policyAdvisor.policyForElement(this, valContext.getAppContext(), profile, ei.getDefinition(), localStack.getLiteralPath());
     
     String localStackLiteralPath = localStack.getLiteralPath();
     String eiPath = ei.getPath();
@@ -6722,13 +6754,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       profile.setUserData("usesMustSupport", usesMustSupport);
     }
-    if (usesMustSupport.equals("Y")) {
-      String elementSupported = ei.getElement().getUserString("elementSupported");
-      if (elementSupported == null || ei.definition.getMustSupport())
-        if (ei.definition.getMustSupport()) {
-          ei.getElement().setUserData("elementSupported", "Y");
-        }
-    }
+    String elementSupported = ei.getElement().getUserString("elementSupported");
+    String fixedValue = ei.getElement().getUserString("hasFixed");
+    if ((elementSupported == null || !elementSupported.equals("Y")) && ei.definition.getMustSupport()) {
+      if (ei.definition.getMustSupport()) {
+        ei.getElement().setUserData("elementSupported", "Y");
+      }
+    } else if (elementSupported == null && !usesMustSupport.equals("Y"))
+      ei.getElement().setUserData("elementSupported", "NA");
+    if (fixedValue==null  && (ei.definition.hasFixed() || ei.definition.hasPattern()))
+      ei.getElement().setUserData("hasFixed", "Y");
   }
 
   public boolean checkCardinalities(List<ValidationMessage> errors, StructureDefinition profile, Element element, NodeStack stack,
@@ -6808,6 +6843,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // 2. assign children to a definition
     // for each definition, for each child, check whether it belongs in the slice
     ElementDefinition slicer = null;
+    List<ElementDefinition> slicerSlices = null;
+    
     boolean unsupportedSlicing = false;
     List<String> problematicPaths = new ArrayList<String>();
     String slicingPath = null;
@@ -6835,14 +6872,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         slicer = ed;
         process = false;
         sliceOffset = i;
-      } else if (slicer != null && !slicer.getPath().equals(ed.getPath()))
+        slicerSlices = new ArrayList<>();
+        for (int j = i+1; j < childDefinitions.getList().size(); j++) {
+          if (ed.getPath().equals(childDefinitions.getList().get(j).getPath())) {
+            slicerSlices.add(childDefinitions.getList().get(j));
+          }
+        }
+      } else if (slicer != null && !slicer.getPath().equals(ed.getPath())) {
         slicer = null;
+        slicerSlices = null;
+      }
 
       for (ElementInfo ei : children) {
         if (ei.sliceInfo == null) {
           ei.sliceInfo = new ArrayList<>();
         }
-        unsupportedSlicing = matchSlice(valContext, errors, ei.sliceInfo, profile, stack, slicer, unsupportedSlicing, problematicPaths, sliceOffset, i, ed, childUnsupportedSlicing, ei, bh);
+        unsupportedSlicing = matchSlice(valContext, errors, ei.sliceInfo, profile, stack, slicer, slicerSlices, unsupportedSlicing, problematicPaths, sliceOffset, i, ed, childUnsupportedSlicing, ei, bh);
       }
     }
     int last = -1;
@@ -6928,7 +6973,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean matchSlice(ValidationContext valContext, List<ValidationMessage> errors, List<ValidationMessage> sliceInfo, StructureDefinition profile, NodeStack stack,
-    ElementDefinition slicer, boolean unsupportedSlicing, List<String> problematicPaths, int sliceOffset, int i, ElementDefinition ed,
+    ElementDefinition slicer, List<ElementDefinition> slicerSlices, boolean unsupportedSlicing, List<String> problematicPaths, int sliceOffset, int i, ElementDefinition ed,
     boolean childUnsupportedSlicing, ElementInfo ei, BooleanHolder bh) {
     boolean match = false;
     if (slicer == null || slicer == ed) {
@@ -6937,7 +6982,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (nameMatches(ei.getName(), tail(ed.getPath())))
         try {
 //          System.out.println("match slices for "+stack.getLiteralPath()+": "+slicer.getId()+" = "+slicingSummary(slicer.getSlicing()));
-          match = sliceMatches(valContext, ei.getElement(), ei.getPath(), slicer, ed, profile, errors, sliceInfo, stack, profile);
+          match = sliceMatches(valContext, ei.getElement(), ei.getPath(), slicer, slicerSlices, ed, profile, errors, sliceInfo, stack, profile);
           if (match) {
             ei.slice = slicer;
 
