@@ -473,10 +473,12 @@ public class ValidationService {
       if (sessionId != null) {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
+        System.out.println("Building new validator engine from CliContext");
       ValidationEngine validator = buildValidationEngine(cliContext, definitions, tt);
       sessionId = sessionCache.cacheSession(validator);
+      System.out.println("Cached new session. Cache size = " + sessionCache.getSessionIds().size());
     } else {
-      System.out.println("Cached session exists for session id " + sessionId + ", returning stored validator session id.");
+      System.out.println("Cached session exists for session id " + sessionId + ", returning stored validator session id. Cache size = " + sessionCache.getSessionIds().size());
     }
     return sessionId;
   }
