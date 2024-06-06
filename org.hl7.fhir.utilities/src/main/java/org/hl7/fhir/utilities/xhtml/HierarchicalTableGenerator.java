@@ -120,7 +120,7 @@ public class HierarchicalTableGenerator {
   public static final int CONTINUE_SLICE = 5;
   private static final String BACKGROUND_ALT_COLOR = "#F7F7F7";
   public static boolean ACTIVE_TABLES = false;
-    
+
   public enum TextAlignment {
     LEFT, CENTER, RIGHT;  
   }
@@ -617,7 +617,9 @@ public class HierarchicalTableGenerator {
 
   private String dest;
   private boolean makeTargets;
-  
+  private String defPath = "";
+  private String anchorPrefix = "";
+
   /**
    * There are circumstances where the table has to present in the absence of a stable supporting infrastructure.
    * and the file paths cannot be guaranteed. For these reasons, you can tell the builder to inline all the graphics
@@ -629,11 +631,6 @@ public class HierarchicalTableGenerator {
   private TableGenerationMode mode;
   private RenderingI18nContext i18n;
   
-  public HierarchicalTableGenerator(RenderingI18nContext i18n) {
-    super();
-    this.i18n = i18n;
-  }
-
   public HierarchicalTableGenerator(RenderingI18nContext i18n, String dest, boolean inlineGraphics) {
     super();
     this.i18n = i18n;
@@ -643,11 +640,30 @@ public class HierarchicalTableGenerator {
     checkSetup();
   }
 
+  public String getDefPath() {
+    return defPath;
+  }
+
+  public String getAnchorPrefix() {
+    return anchorPrefix;
+  }
+
   private void checkSetup() {
     if (dest == null) {
       throw new Error("what");
     }
     
+  }
+
+  public HierarchicalTableGenerator(RenderingI18nContext i18n, String dest, boolean inlineGraphics, boolean makeTargets, String defPath, String anchorPrefix) {
+    super();
+    this.i18n = i18n;
+    this.dest = dest;
+    this.inLineGraphics = inlineGraphics;
+    this.makeTargets = makeTargets;
+    this.defPath = defPath;
+    this.anchorPrefix = anchorPrefix;
+    checkSetup();
   }
 
   public HierarchicalTableGenerator(RenderingI18nContext i18n, String dest, boolean inlineGraphics, boolean makeTargets) {
