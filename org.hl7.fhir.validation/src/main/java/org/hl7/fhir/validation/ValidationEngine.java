@@ -887,7 +887,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
     validator.setJurisdiction(jurisdiction);
     validator.setLogProgress(true);
-    validator.setPolicyAdvisor(policyAdvisor);
+    if (policyAdvisor != null) {
+      validator.setPolicyAdvisor(policyAdvisor);
+    }
     return validator;
   }
 
