@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Files;
@@ -2242,6 +2243,15 @@ public class Utilities {
       return "";
     }
     return text.replace("\r\n",  " ").replace("\n",  " ").replace("\r",  " ");
+  }
+
+  public static String extractDomain(String source) {
+    try {
+      URI uri = URI.create(source);
+      return uri.getHost();
+    } catch (Exception e) {
+      return "??";
+    }
   }
 
 }

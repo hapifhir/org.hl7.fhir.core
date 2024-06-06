@@ -958,10 +958,11 @@ public class NpmPackage {
   public String fhirVersion() {
     if ("hl7.fhir.core".equals(npm.asString("name")))
       return npm.asString("version");
-    else if (npm.asString("name").startsWith("hl7.fhir.r2.") || npm.asString("name").startsWith("hl7.fhir.r2b.") || npm.asString("name").startsWith("hl7.fhir.r3.") || 
-        npm.asString("name").startsWith("hl7.fhir.r4.") || npm.asString("name").startsWith("hl7.fhir.r4b.") || npm.asString("name").startsWith("hl7.fhir.r5."))
+    else if ("fhir.core".equals(npm.asString("type")) &&
+         Utilities.startsWithInList( npm.asString("name"), "hl7.fhir.r2.", "hl7.fhir.r2b.", "hl7.fhir.r3.", 
+             "hl7.fhir.r4.", "hl7.fhir.r4b.", "hl7.fhir.r5.")) {
       return npm.asString("version");
-    else {
+    } else {
       JsonObject dep = null;
       if (npm.hasObject("dependencies")) {
         dep = npm.getJsonObject("dependencies");
