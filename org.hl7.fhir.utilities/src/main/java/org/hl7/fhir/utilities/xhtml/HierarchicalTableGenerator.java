@@ -631,6 +631,11 @@ public class HierarchicalTableGenerator {
   private TableGenerationMode mode;
   private RenderingI18nContext i18n;
   
+  public HierarchicalTableGenerator(RenderingI18nContext i18n) {
+    super();
+    this.i18n = i18n;
+  }
+
   public HierarchicalTableGenerator(RenderingI18nContext i18n, String dest, boolean inlineGraphics) {
     super();
     this.i18n = i18n;

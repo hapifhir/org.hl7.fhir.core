@@ -1657,7 +1657,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
       r.getCells().add(gen.new Cell("", "", "Extension", null, null));
       r.setIcon("icon_"+m+"extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
-
+      
       for (ElementDefinition c : children) {
         ved = getValueFor(ed, c);
         ElementDefinition ued = getUrlFor(ed, c);
@@ -1697,7 +1697,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     c.addPiece(gen.new Piece("br")).addPiece(gen.new Piece(null, describeExtensionContext(ed), null));
     r.getCells().add(c);
-
+    
     try {
       return gen.generate(model, corePath, 0, outputTracker);
   	} catch (org.hl7.fhir.exceptions.FHIRException e) {
@@ -3484,7 +3484,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     TableModel model = initSpanningTable(gen, "", false, profile.getId());
     Set<String> processed = new HashSet<String>();
     SpanEntry span = buildSpanningTable("(focus)", "", profile, processed, onlyConstraints, constraintPrefix);
-
+    
     genSpanEntry(gen, model.getRows(), span);
     return gen.generate(model, "", 0, outputTracker);
   }

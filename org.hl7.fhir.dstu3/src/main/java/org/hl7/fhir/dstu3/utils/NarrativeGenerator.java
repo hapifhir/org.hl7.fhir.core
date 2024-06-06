@@ -3701,6 +3701,13 @@ public class NarrativeGenerator implements INarrativeGenerator {
 	  return null;
   }
 
+  public boolean generate(ResourceContext rcontext, StructureDefinition sd, java.util.Set<String> outputTracker) throws EOperationOutcome, FHIRException, IOException {
+    ProfileUtilities pu = new ProfileUtilities(context, null, pkp);
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    x.getChildNodes().add(pu.generateTable(definitionsTarget, sd, true, destDir, false, sd.getId(), false, corePath, "", false, false, outputTracker));
+    inject(sd, x, NarrativeStatus.GENERATED);
+    return true;
+  }
   public boolean generate(ResourceContext rcontext, ImplementationGuide ig) throws EOperationOutcome, FHIRException, IOException {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     x.h2().addText(ig.getName());
