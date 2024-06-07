@@ -79,7 +79,7 @@ import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult; 
 import org.hl7.fhir.r5.utils.PublicationHacker; 
 import org.hl7.fhir.r5.utils.ToolingExtensions; 
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder; 
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor; 
 import org.hl7.fhir.utilities.StandardsStatus; 
 import org.hl7.fhir.utilities.TextFile; 
@@ -549,7 +549,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   public XhtmlNode generateTable(String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, 
       boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix) throws IOException, FHIRException { 
     assert(diff != snapshot);// check it's ok to get rid of one of these 
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true); 
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, anchorPrefix);
  
     List<ElementDefinition> list; 
     if (diff) 
@@ -815,7 +815,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         genElementObligations(gen, element, columns, row, corePath, profile); 
         break; 
       case SUMMARY: 
-        genElementCells(gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName, nc, mustSupport, true, rc, children.size() > 0); 
+        genElementCells(gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName, nc, mustSupport, true, rc, children.size() > 0, defPath, anchorPrefix, all);
         break; 
       } 
       if (element.hasSlicing()) { 
@@ -1060,12 +1060,25 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
     Cell left = gen.new Cell(null, ref, sName, hint, null); 
     row.getCells().add(left); 
+    if (profile.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+      Extension etp = profile.getExtensionByUrl(ToolingExtensions.EXT_TYPE_PARAMETER);
+      String name = etp.getExtensionString("name");
+      String type = etp.getExtensionString("type");
+      StructureDefinition t = context.getContext().fetchTypeDefinition(type);
+      if (t == null) {
+        left.addPiece(gen.new Piece(null, "<"+name+" : "+type+">", null));        
+      } else if (t.getWebPath() == null) {
+        left.addPiece(gen.new Piece(type, "<"+name+" : "+t.present()+">", null));        
+      } else {
+        left.addPiece(gen.new Piece(t.getWebPath(), "<"+name+" : "+t.present()+">", null));        
+      }
+    }
     return left; 
   } 
  
   public List<Cell> genElementCells(HierarchicalTableGenerator gen, ElementDefinition element, String profileBaseFileName, boolean snapshot, String corePath, 
       String imagePath, boolean root, boolean logicalModel, boolean allInvariants, StructureDefinition profile, Row typesRow, Row row, boolean hasDef, 
-      boolean ext, UnusedTracker used, String ref, String sName, Cell nameCell, boolean mustSupport, boolean allowSubRows, RenderingContext rc, boolean walksIntoThis) throws IOException { 
+      boolean ext, UnusedTracker used, String ref, String sName, Cell nameCell, boolean mustSupport, boolean allowSubRows, RenderingContext rc, boolean walksIntoThis, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws IOException {
     List<Cell> res = new ArrayList<>(); 
     Cell gc = gen.new Cell(); 
     row.getCells().add(gc); 
@@ -1108,7 +1121,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (extDefn == null) { 
             res.add(genCardinality(gen, element, row, hasDef, used, null)); 
             res.add(addCell(row, gen.new Cell(null, null, "?gen-e1? "+element.getType().get(0).getProfile(), null, null))); 
-            res.add(generateDescription(gen, row, element, (ElementDefinition) element.getUserData(ProfileUtilities.UD_DERIVATION_POINTER), used.used, profile == null ? "" : profile.getUrl(), eurl, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot, mustSupport, allowSubRows, rc)); 
+            res.add(generateDescription(gen, row, element, (ElementDefinition) element.getUserData(ProfileUtilities.UD_DERIVATION_POINTER), used.used, profile == null ? "" : profile.getUrl(), eurl, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot, mustSupport, allowSubRows, rc, inScopeElements));
           } else { 
             String name = element.hasSliceName() ? element.getSliceName() : urltail(eurl); 
             nameCell.getPieces().get(0).setText(name); 
@@ -1121,7 +1134,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             else // if it's complex, we just call it nothing 
               // genTypes(gen, row, extDefn.getSnapshot().getElement().get(0), profileBaseFileName, profile); 
               res.add(addCell(row, gen.new Cell(null, null, "("+(context.formatPhrase(RenderingContext.STRUC_DEF_COMPLEX))+")", null, null))); 
-            res.add(generateDescription(gen, row, element, extDefn.getElement(), used.used, null, extDefn.getUrl(), profile, corePath, imagePath, root, logicalModel, allInvariants, valueDefn, snapshot, mustSupport, allowSubRows, rc)); 
+            res.add(generateDescription(gen, row, element, extDefn.getElement(), used.used, null, extDefn.getUrl(), profile, corePath, imagePath, root, logicalModel, allInvariants, valueDefn, snapshot, mustSupport, allowSubRows, rc, inScopeElements));
           } 
         } else { 
           res.add(genCardinality(gen, element, row, hasDef, used, null)); 
@@ -1129,7 +1142,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             res.add(addCell(row, gen.new Cell()));             
           else 
             res.add(genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath, root, mustSupport)); 
-          res.add(generateDescription(gen, row, element, (ElementDefinition) element.getUserData(ProfileUtilities.UD_DERIVATION_POINTER), used.used, null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot, mustSupport, allowSubRows, rc)); 
+          res.add(generateDescription(gen, row, element, (ElementDefinition) element.getUserData(ProfileUtilities.UD_DERIVATION_POINTER), used.used, null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot, mustSupport, allowSubRows, rc, inScopeElements));
         } 
       } 
     } else if (element != null) { 
@@ -1138,7 +1151,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         res.add(genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath, root, mustSupport)); 
       else 
         res.add(addCell(row, gen.new Cell())); 
-      res.add(generateDescription(gen, row, element, (ElementDefinition) element.getUserData(ProfileUtilities.UD_DERIVATION_POINTER), used.used, null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot, mustSupport, allowSubRows, rc)); 
+      res.add(generateDescription(gen, row, element, (ElementDefinition) element.getUserData(ProfileUtilities.UD_DERIVATION_POINTER), used.used, null, null, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot, mustSupport, allowSubRows, rc, inScopeElements));
     } 
     return res; 
   } 
@@ -1296,10 +1309,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   public Cell generateDescription(HierarchicalTableGenerator gen, Row row, ElementDefinition definition, ElementDefinition fallback, boolean used, String baseURL, String url, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean logicalModel, boolean allInvariants, boolean snapshot, boolean mustSupportOnly, boolean allowSubRows, RenderingContext rc) throws IOException, FHIRException { 
-    return generateDescription(gen, row, definition, fallback, used, baseURL, url, profile, corePath, imagePath, root, logicalModel, allInvariants, null, snapshot, mustSupportOnly, allowSubRows, rc); 
-  } 
- 
-  public Cell generateDescription(HierarchicalTableGenerator gen, Row row, ElementDefinition definition, ElementDefinition fallback, boolean used, String baseURL, String url, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean logicalModel, boolean allInvariants, ElementDefinition valueDefn, boolean snapshot, boolean mustSupportOnly, boolean allowSubRows, RenderingContext rc) throws IOException, FHIRException { 
+    return generateDescription(gen, row, definition, fallback, used, baseURL, url, profile, corePath, imagePath, root, logicalModel, allInvariants, null, snapshot, mustSupportOnly, allowSubRows, rc, new ArrayList<ElementDefinition>());
+  }
+
+  public Cell generateDescription(HierarchicalTableGenerator gen, Row row, ElementDefinition definition, ElementDefinition fallback, boolean used, String baseURL, String url, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean logicalModel, boolean allInvariants, boolean snapshot, boolean mustSupportOnly, boolean allowSubRows, RenderingContext rc, List<ElementDefinition> inScopeElements) throws IOException, FHIRException {
+    return generateDescription(gen, row, definition, fallback, used, baseURL, url, profile, corePath, imagePath, root, logicalModel, allInvariants, null, snapshot, mustSupportOnly, allowSubRows, rc, inScopeElements);
+  }
+
+  public Cell generateDescription(HierarchicalTableGenerator gen, Row row, ElementDefinition definition, ElementDefinition fallback, boolean used, String baseURL, String url, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean logicalModel, boolean allInvariants, ElementDefinition valueDefn, boolean snapshot, boolean mustSupportOnly, boolean allowSubRows, RenderingContext rc, List<ElementDefinition> inScopeElements) throws IOException, FHIRException {
     Cell c = gen.new Cell(); 
     row.getCells().add(c); 
  
@@ -1678,7 +1695,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!definition.getPath().contains(".") && profile.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) { 
             obr.seeObligations(profile.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)); 
           } 
-          obr.renderTable(gen, c); 
+          obr.renderTable(gen, c, inScopeElements);
  
           if (definition.hasMaxLength() && definition.getMaxLength()!=0) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
@@ -1964,6 +1981,28 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } else { 
             c.addPiece(checkForNoChange(t, gen.new Piece(null, tc, null))); 
           } 
+          if (t.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+            c.addPiece(checkForNoChange(t, gen.new Piece(null, "<", null)));
+            boolean pfirst = true;
+            List<Extension> exl = t.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_PARAMETER);
+            for (Extension ex : exl) {
+              if (pfirst) { pfirst = false; } else { c.addPiece(checkForNoChange(t, gen.new Piece(null, ";", null))); }
+              if (exl.size() > 1) {
+                c.addPiece(checkForNoChange(t, gen.new Piece(null, ex.getExtensionString("name")+": ", null)));
+              }
+              String type = ex.getExtensionString("type");
+              StructureDefinition psd = context.getContext().fetchTypeDefinition(type);
+              if (psd == null) {
+                c.addPiece(checkForNoChange(t, gen.new Piece(null, type, null))); 
+              } else if (psd.getWebPath() == null) {
+                c.addPiece(checkForNoChange(t, gen.new Piece(type, psd.present(), null))); 
+              } else {
+                c.addPiece(checkForNoChange(t, gen.new Piece(psd.getWebPath(), psd.present(), null))); 
+              }
+            }
+            c.addPiece(checkForNoChange(t, gen.new Piece(null, ">", null))); 
+
+          }
           if (!mustSupportMode && isMustSupportDirect(t) && e.getMustSupport()) { 
             c.addPiece(gen.new Piece(null, " ", null)); 
             c.addStyledText((context.formatPhrase(RenderingContext.STRUC_DEF_TYPE_SUPP)), "S", "white", "red", null, false); 
@@ -3011,7 +3050,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
  
   public XhtmlNode generateSpanningTable(StructureDefinition profile, String imageFolder, boolean onlyConstraints, String constraintPrefix, Set<String> outputTracker) throws IOException, FHIRException { 
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, false, true); 
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, false, true, "", "");
     TableModel model = initSpanningTable(gen, "", false, profile.getId()); 
     Set<String> processed = new HashSet<String>(); 
     SpanEntry span = buildSpanningTable("(focus)", "", profile, processed, onlyConstraints, constraintPrefix); 
@@ -3114,8 +3153,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return first ? null : x; 
   } 
  
-  public XhtmlNode generateExtensionTable(String defFile, StructureDefinition ed, String imageFolder, boolean inlineGraphics, boolean full, String corePath, String imagePath, Set<String> outputTracker, RenderingContext rc) throws IOException, FHIRException { 
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true); 
+  public XhtmlNode generateExtensionTable(String defFile, StructureDefinition ed, String imageFolder, boolean inlineGraphics, boolean full, String corePath, String imagePath, Set<String> outputTracker, RenderingContext rc, String defPath, String anchorPrefix) throws IOException, FHIRException {
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defPath, anchorPrefix);
     TableModel model = gen.initNormalTable(corePath, false, true, ed.getId()+(full ? "f" : "n"), true, TableGenerationMode.XHTML); 
  
     boolean deep = false; 
@@ -3176,7 +3215,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           r1.getCells().add(gen.new Cell(null, null, describeCardinality(c, null, new UnusedTracker()), null, null)); 
           genTypes(gen, r1, ved, defFile, ed, corePath, imagePath, false, false); 
           r1.setIcon("icon_"+m+"extension_simple.png", context.formatPhrase(RenderingContext.TEXT_ICON_EXTENSION_SIMPLE));       
-          generateDescription(gen, r1, c, null, true, corePath, corePath, ed, corePath, imagePath, false, false, false, ved, false, false, false, rc); 
+          generateDescription(gen, r1, c, null, true, corePath, corePath, ed, corePath, imagePath, false, false, false, ved, false, false, false, rc, new ArrayList<ElementDefinition>());
         } 
       } 
     } else  { 
@@ -3289,7 +3328,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (isProfiledExtension(ec)) { 
           StructureDefinition extDefn = context.getContext().fetchResource(StructureDefinition.class, ec.getType().get(0).getProfile().get(0).getValue()); 
           if (extDefn == null) { 
-            generateElementInner(t, sd, ec, 1, null, compareElement, null, false); 
+            generateElementInner(t, sd, ec, 1, null, compareElement, null, false, "", anchorPrefix, elements);
           } else { 
             ElementDefinition valueDefn = getExtensionValueDefinition(extDefn); 
             ElementDefinition compareValueDefn = null; 
@@ -3297,15 +3336,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               StructureDefinition compareExtDefn = context.getContext().fetchResource(StructureDefinition.class, compareElement.getType().get(0).getProfile().get(0).getValue()); 
               compareValueDefn = getExtensionValueDefinition(extDefn); 
             } catch (Exception except) {} 
-            generateElementInner(t, sd, ec, valueDefn == null || valueDefn.prohibited() ? 2 : 3, valueDefn, compareElement, compareValueDefn, false); 
+            generateElementInner(t, sd, ec, valueDefn == null || valueDefn.prohibited() ? 2 : 3, valueDefn, compareElement, compareValueDefn, false, "", anchorPrefix, elements);
             // generateElementInner(b, extDefn, extDefn.getSnapshot().getElement().get(0), valueDefn == null ? 2 : 3, valueDefn); 
           } 
         } else { 
           while (!dstack.isEmpty() && !isParent(dstack.peek(), ec)) { 
-            finish(t, sd, dstack.pop(), mode); 
+            finish(t, sd, dstack.pop(), mode, "", anchorPrefix);
           } 
           dstack.push(ec);             
-          generateElementInner(t, sd, ec, mode, null, compareElement, null, false); 
+          generateElementInner(t, sd, ec, mode, null, compareElement, null, false, "", anchorPrefix, elements);
           if (ec.hasSlicing()) { 
             generateSlicing(t, sd, ec, ec.getSlicing(), compareElement, mode, false); 
           } 
@@ -3315,12 +3354,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       i++; 
     } 
     while (!dstack.isEmpty()) { 
-      finish(t, sd, dstack.pop(), mode); 
+      finish(t, sd, dstack.pop(), mode, "", anchorPrefix);
     } 
-    finish(t, sd, null, mode); 
+    finish(t, sd, null, mode, "", anchorPrefix);
   } 
  
-  private void finish(XhtmlNode t, StructureDefinition sd, ElementDefinition ed, int mode) throws FHIRException, IOException { 
+  private void finish(XhtmlNode t, StructureDefinition sd, ElementDefinition ed, int mode, String defPath, String anchorPrefix) throws FHIRException, IOException {
  
     for (Base b : VersionComparisonAnnotation.getDeleted(ed == null ? sd : ed, "element")) { 
       ElementDefinition ec = (ElementDefinition) b; 
@@ -3330,7 +3369,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       sp.span("color: grey", null).tx("--"); 
       sp.b().tx(". "+title); 
        
-      generateElementInner(t, sd, ec, mode, null, null, null, true); 
+      generateElementInner(t, sd, ec, mode, null, null, null, true, defPath, anchorPrefix, new ArrayList<ElementDefinition>());
       if (ec.hasSlicing()) { 
         generateSlicing(t, sd, ec, ec.getSlicing(), null, mode, true); 
       }       
@@ -3650,7 +3689,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return "color:DarkGray;text-decoration:line-through"; 
   } 
  
-  private void generateElementInner(XhtmlNode tbl, StructureDefinition sd, ElementDefinition d, int mode, ElementDefinition value, ElementDefinition compare, ElementDefinition compareValue, boolean strikethrough) throws FHIRException, IOException { 
+  private void generateElementInner(XhtmlNode tbl, StructureDefinition sd, ElementDefinition d, int mode, ElementDefinition value, ElementDefinition compare, ElementDefinition compareValue, boolean strikethrough, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws FHIRException, IOException {
     boolean root = !d.getPath().contains("."); 
     boolean slicedExtension = d.hasSliceName() && (d.getPath().endsWith(".extension") || d.getPath().endsWith(".modifierExtension")); 
 //    int slicedExtensionMode = (mode == GEN_MODE_KEY) && slicedExtension ? GEN_MODE_SNAP : mode; // see ProfileUtilities.checkExtensionDoco / Task 3970 
@@ -3670,6 +3709,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else { 
       tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_TYPE), "datatypes.html", strikethrough, describeTypes(d.getType(), false, d, compare, mode, value, compareValue, sd));  
     } 
+    if (root && sd.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+      tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_TYPE_PARAMETER), "http://hl7.org/fhir/tools/StructureDefinition-type-parameter.html", strikethrough, renderTypeParameter(sd.getExtensionByUrl(ToolingExtensions.EXT_TYPE_PARAMETER)));
+    }
     if (d.hasExtension(ToolingExtensions.EXT_DEF_TYPE)) { 
       tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_DEFAULT_TYPE), "datatypes.html", strikethrough, ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_DEF_TYPE));           
     } 
@@ -3741,7 +3783,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_COMP_PROF), "http://hl7.org/fhir/extensions/StructureDefinition-structuredefinition-compliesWithProfile.html", strikethrough,  
           renderCanonicalListExt(context.formatPhrase(RenderingContext.STRUC_DEF_PROF_COMP)+" ", sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE))); 
     } 
-    tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_OBLIG), null, strikethrough, describeObligations(d, root, sd));    
+    tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_OBLIG), null, strikethrough, describeObligations(d, root, sd, defPath, anchorPrefix, inScopeElements));
  
     if (d.hasExtension(ToolingExtensions.EXT_EXTENSION_STYLE)) { 
       String es = d.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE); 
@@ -3830,6 +3872,20 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     tbl.tx("\r\n"); 
   } 
    
+  private XhtmlNode renderTypeParameter(Extension ext) {
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div"); 
+    x.tx(ext.getExtensionString("name"));
+    x.tx(" : ");
+    String t = ext.getExtensionString("type");
+    StructureDefinition sd = context.getContext().fetchTypeDefinition(t);
+    if (sd == null) {
+      x.code().tx(t);
+    } else {
+      x.ah(sd.getWebPath(), t).tx(sd.present());
+    }
+    return x;
+  }
+
   private XhtmlNode presentModifier(ElementDefinition d, int mode, ElementDefinition compare) throws FHIRException, IOException { 
     XhtmlNode x1 = compareString(encodeValue(d.getIsModifierElement(), null), d.getIsModifierElement(), null, "isModifier", d, compare == null ? null : encodeValue(compare.getIsModifierElement(), null), null, mode, false, false); 
     if (x1 != null) { 
@@ -3929,7 +3985,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
  
-  private XhtmlNode describeObligations(ElementDefinition d, boolean root, StructureDefinition sdx) throws IOException { 
+  private XhtmlNode describeObligations(ElementDefinition d, boolean root, StructureDefinition sdx, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws IOException {
     XhtmlNode ret = new XhtmlNode(NodeType.Element, "div"); 
     ObligationsRenderer obr = new ObligationsRenderer(corePath, sdx, d.getPath(), context, hostMd, this); 
     obr.seeObligations(d.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)); 
@@ -3959,7 +4015,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
       if (obr.hasObligations()) { 
         XhtmlNode tbl = ret.table("grid"); 
-        obr.renderTable(tbl.getChildNodes(), true); 
+        obr.renderTable(tbl.getChildNodes(), true, defPath, anchorPrefix, inScopeElements);
         if (tbl.isEmpty()) { 
           ret.remove(tbl); 
         } 
@@ -4318,7 +4374,28 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else { 
       ts = compareString(x, t.getWorkingCode(), t, getTypeLink(t, sd), "code", t, compare==null ? null : compare.getWorkingCode(), compare==null ? null : getTypeLink(compare, sd), mode, false, false); 
     } 
-     
+    if (t.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+      x.tx("<");
+      boolean first = true;
+      List<Extension> exl = t.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_PARAMETER);
+      for (Extension ex : exl) {
+        if (first) { first = false; } else { x.tx("; "); }
+        if (exl.size() > 1) {
+          x.tx(ex.getExtensionString("name"));
+          x.tx(":");
+        }
+        String type = ex.getExtensionString("type");
+        StructureDefinition psd = context.getContext().fetchTypeDefinition(type);
+        if (psd == null) {
+          x.code().tx(type);
+        } else if (psd.getWebPath() == null) {
+          x.ah(type).tx(type);
+        } else {
+          x.ah(psd.getWebPath()).tx(type);          
+        }
+      }
+      x.tx(">");
+    }
     if ((!mustSupportOnly && (t.hasProfile() || (compare!=null && compare.hasProfile()))) || isMustSupport(t.getProfile())) { 
       StatusList<ResolvedCanonical> profiles = analyseProfiles(t.getProfile(), compare == null ? null : compare.getProfile(), mustSupportOnly, mode);       
       if (profiles.size() > 0) { 
@@ -4647,6 +4724,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         break; 
       } 
     } 
+    if (Utilities.noString(newMap) && compare == null) {
+      return null;
+    }
     if (compare==null) 
       return new XhtmlNode(NodeType.Element, "div").tx(newMap); 
     String oldMap = null; 
@@ -4656,7 +4736,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         break; 
       } 
     } 
- 
+    if (Utilities.noString(newMap) && Utilities.noString(oldMap)) {
+      return null;
+    }
     return compareString(Utilities.escapeXml(newMap), null, null, "mapping", d, Utilities.escapeXml(oldMap), null, mode, false, false); 
   } 
  
