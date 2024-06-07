@@ -494,7 +494,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (url.startsWith("#") && res != null) {
       for (ResourceWrapper r : res.getContained()) {
         if (r.getId().equals(url.substring(1)))
-          return new ResourceWithReference(ResourceReferenceKind.CONTAINED, null, r);
+          return new ResourceWithReference(ResourceReferenceKind.CONTAINED, url, r);
       }
       return null;
     }

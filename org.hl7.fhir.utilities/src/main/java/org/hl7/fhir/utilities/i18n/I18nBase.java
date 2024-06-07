@@ -125,7 +125,7 @@ public abstract class I18nBase {
       if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
         message = MessageFormat.format(messages.getString(theMessage).trim(), theMessageArguments);
       } else {
-        message = messages.getString(theMessage).trim();
+        message = MessageFormat.format(messages.getString(theMessage).trim(), null);
       }
     }
     return message;
