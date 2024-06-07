@@ -5,10 +5,13 @@ import java.util.Locale;
 
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.tests.TestConfig;
 import org.hl7.fhir.utilities.tests.TestConstants;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher;
+import org.hl7.fhir.validation.instance.BasePolicyAdvisorForFullValidation;
 
 public class TestUtilities {
 
@@ -64,6 +67,7 @@ public class TestUtilities {
       TerminologyCache.setCacheErrors(true);
     }
 
+    validationEngine.setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.IGNORE));
     return validationEngine;
   }
 
