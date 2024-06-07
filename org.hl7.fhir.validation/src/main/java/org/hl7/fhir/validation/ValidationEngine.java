@@ -887,6 +887,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
     validator.setJurisdiction(jurisdiction);
     validator.setLogProgress(true);
+    if (policyAdvisor != null) {
+      validator.setPolicyAdvisor(policyAdvisor);
+    }
     return validator;
   }
 
@@ -1259,7 +1262,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public List<StructureDefinition> getImpliedProfilesForResource(IResourceValidator validator, Object appContext,
       String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
       IMessagingServices msgServices, List<ValidationMessage> messages) {
-    return new BasePolicyAdvisorForFullValidation().getImpliedProfilesForResource(validator, appContext, stackPath, 
+    return new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID).getImpliedProfilesForResource(validator, appContext, stackPath, 
           definition, structure, resource, valid, msgServices, messages);
   }
 

@@ -611,18 +611,24 @@ public class Element extends Base implements NamedItem {
   }
   
 
-	@Override
-	public boolean hasPrimitiveValue() {
-		return property.isPrimitiveName(name) || property.IsLogicalAndHasPrimitiveValue(name);
-	}
-	
+  @Override
+  public boolean hasPrimitiveValue() {
+    //return property.isPrimitiveName(name) || property.IsLogicalAndHasPrimitiveValue(name);
+    return super.hasPrimitiveValue();
+  }
+  
+  @Override
+  public boolean canHavePrimitiveValue() {
+    return property.isPrimitiveName(name) || property.IsLogicalAndHasPrimitiveValue(name);
+  }
+  
 
 	@Override
 	public String primitiveValue() {
 		if (isPrimitive() || value != null)
 		  return value;
 		else {
-			if (hasPrimitiveValue() && children != null) {
+			if (canHavePrimitiveValue() && children != null) {
 				for (Element c : children) {
 					if (c.getName().equals("value"))
 						return c.primitiveValue();
