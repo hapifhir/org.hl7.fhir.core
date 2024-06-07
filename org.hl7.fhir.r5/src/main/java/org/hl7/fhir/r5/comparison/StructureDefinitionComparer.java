@@ -1253,7 +1253,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
   public XhtmlNode renderStructure(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(session.getI18n(), Utilities.path("[tmp]", "compare"), false, true);
     TableModel model = gen.initComparisonTable(corePath, id);
-    genElementComp(null /* come back to this later */, gen, model.getRows(), comp.combined, corePath, prefix, null, true);
+    genElementComp(null /* come back to this later */, null /* come back to this later */, gen, model.getRows(), comp.combined, corePath, prefix, null, true);
     return gen.generate(model, prefix, 0, null);
   }
 
@@ -1268,7 +1268,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     return sdr.generateTable(corePath, comp.intersection, false, prefix, false, id, true, corePath, prefix, false, true, null, false, sdr.getContext(), "i");
   }
 
-  private void genElementComp(String defPath, HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<ElementDefinitionNode> combined, String corePath, String prefix, Row slicingRow, boolean root) throws IOException {
+  private void genElementComp(String defPath, String anchorPrefix, HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<ElementDefinitionNode> combined, String corePath, String prefix, Row slicingRow, boolean root) throws IOException {
     Row originalRow = slicingRow;
     Row typesRow = null;
     
@@ -1334,19 +1334,19 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
         nc = sdrRight.genElementNameCell(gen, combined.getRight().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, false, ext, used , ref, sName, null);
       }
       if (combined.hasLeft()) {
-        frame(sdrLeft.genElementCells(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, true, ext, used , ref, sName, nc, false, false, sdrLeft.getContext(), children.size() > 0), leftColor);
+        frame(sdrLeft.genElementCells(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, true, ext, used , ref, sName, nc, false, false, sdrLeft.getContext(), children.size() > 0, defPath, anchorPrefix, new ArrayList<ElementDefinition>()), leftColor);
       } else {
         frame(spacers(row, 4, gen), leftColor);
       }
       if (combined.hasRight()) {
-        frame(sdrRight.genElementCells(gen, combined.getRight().getDef(), "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, true, ext, used, ref, sName, nc, false, false, sdrRight.getContext(), children.size() > 0), rightColor);
+        frame(sdrRight.genElementCells(gen, combined.getRight().getDef(), "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, true, ext, used, ref, sName, nc, false, false, sdrRight.getContext(), children.size() > 0, defPath, anchorPrefix, new ArrayList<ElementDefinition>()), rightColor);
       } else {
         frame(spacers(row, 4, gen), rightColor);
       }
       row.getCells().add(cellForMessages(gen, combined.getMessages()));
 
       for (StructuralMatch<ElementDefinitionNode> child : children) {
-        genElementComp(defPath, gen, row.getSubRows(), child, corePath, prefix, originalRow, false);
+        genElementComp(defPath, anchorPrefix, gen, row.getSubRows(), child, corePath, prefix, originalRow, false);
       }
     }
 

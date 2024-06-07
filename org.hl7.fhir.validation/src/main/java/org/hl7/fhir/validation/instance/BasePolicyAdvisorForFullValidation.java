@@ -27,10 +27,17 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
 public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvisor {
+  
+  private ReferenceValidationPolicy refpol = ReferenceValidationPolicy.CHECK_VALID;
+  
+  public BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy refpol) {
+    super();
+    this.refpol = refpol;
+  }
 
   @Override
   public ReferenceValidationPolicy policyForReference(IResourceValidator validator, Object appContext, String path, String url) {
-    return ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS;
+    return refpol;
   }
 
   @Override
