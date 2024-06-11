@@ -41,7 +41,11 @@ public class ResourceElementTests {
   private void checkTree(ResourceElement bnd) {
     Assertions.assertTrue(bnd.fhirType().equals("Bundle"));
     Assertions.assertNull(bnd.name());
+    Assertions.assertNull(bnd.getId());
     Assertions.assertEquals("Bundle", bnd.path());
+    Assertions.assertEquals("5.0.0", bnd.fhirVersion());
+    Assertions.assertFalse(bnd.canHaveNarrative());
+    Assertions.assertFalse(bnd.hasNarrative());
     Assertions.assertEquals(ElementKind.IndependentResource, bnd.kind());
     
     ResourceElement type = bnd.child("type");
@@ -115,20 +119,24 @@ public class ResourceElementTests {
   private void checkObservation(ResourceElement obs) {
     Assertions.assertTrue(obs.fhirType().equals("Observation"));
     Assertions.assertEquals("resource", obs.name());
+    Assertions.assertEquals("obs1", obs.getId());
     Assertions.assertEquals("Bundle.entry[0].resource", obs.path());
     Assertions.assertEquals(ElementKind.BundleEntry, obs.kind());
+    Assertions.assertTrue(obs.canHaveNarrative());
+    Assertions.assertTrue(obs.hasNarrative());
+    Assertions.assertNotNull(obs.getNarrative());
     
     List<ResourceElement> children = obs.children();
-    assertEquals(3, children.size());
+    assertEquals(5, children.size());
 
-    checkObsCode(children.get(1));
+    checkObsCode(children.get(3));
 
-    assertEquals(children.get(2), obs.child("value"));
-    assertEquals(children.get(2), obs.child("value[x]"));
-    checkObsValue(children.get(2));
+    assertEquals(children.get(4), obs.child("value"));
+    assertEquals(children.get(4), obs.child("value[x]"));
+    checkObsValue(children.get(4));
     
-    assertEquals(children.get(0), obs.child("contained"));
-    checkContained(children.get(0));
+    assertEquals(children.get(2), obs.child("contained"));
+    checkContained(children.get(2));
   }
 
   private void checkContained(ResourceElement cont) {

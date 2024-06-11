@@ -30,9 +30,19 @@ import org.hl7.fhir.utilities.xml.XmlGenerator;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+/**
+ * This class is only used in kindling, and it's going to be phased out and replaced by 
+ * ElementWrappers. Don't use in any other context
+ */
+@Deprecated
 public class DOMWrappers {
 
 
+/**
+ * This class is only used in kindling, and it's going to be phased out and replaced by 
+ * ElementWrappers. Don't use in any other context
+ */
+@Deprecated
   public static class BaseWrapperElement extends WrapperBaseImpl implements BaseWrapper {
     private Element element;
     private String type;
@@ -117,6 +127,11 @@ public class DOMWrappers {
 
   }
 
+/**
+ * This class is only used in kindling, and it's going to be phased out and replaced by 
+ * ElementWrappers. Don't use in any other context
+ */
+@Deprecated
   public static class PropertyWrapperElement extends RendererWrapperImpl implements PropertyWrapper {
 
     private StructureDefinition structure;
@@ -237,6 +252,11 @@ public class DOMWrappers {
 
   }
 
+/**
+ * This class is only used in kindling, and it's going to be phased out and replaced by 
+ * ElementWrappers. Don't use in any other context
+ */
+@Deprecated
   public static class ResourceWrapperElement extends WrapperBaseImpl implements ResourceWrapper {
 
     private Element wrapped;
@@ -422,8 +442,6 @@ public class DOMWrappers {
     public Resource getResource() {
       return null;
     }
-
-
   }
 
 }
