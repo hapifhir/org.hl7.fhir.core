@@ -1,14 +1,23 @@
 package org.hl7.fhir.r5.renderers.utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.BooleanSupplier;
 
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.client.network.FhirRequestBuilder;
+import org.hl7.fhir.utilities.xhtml.NodeType;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /** 
  * This class is used to walk through the resources when rendering, whether
@@ -46,6 +55,15 @@ public class ResourceElement {
     this.element = resource;
   }
 
+  public ResourceElement(ContextUtilities context, DataType type) {
+    this.context = context;
+    this.parent = null;
+    this.name = null;
+    this.index = -1;
+    this.kind = null;
+    this.element = type;
+  }
+
   public ResourceElement(ContextUtilities context, ResourceElement parent, String name, int index, ElementKind kind, Base element) {
     this.context = context;
     this.parent = parent;
@@ -73,6 +91,13 @@ public class ResourceElement {
     this.model = em;
   }
 
+  public String fhirVersion() {
+    if (element != null) {
+      return element.getFHIRPublicationVersion().toCode();
+    } else {
+      return model.getFHIRPublicationVersion().toCode();
+    }
+  }
   public String path() {
     if (parent == null) {
       return fhirType();
@@ -147,6 +172,16 @@ public class ResourceElement {
 
   public String primitiveValue(String name) {
     ResourceElement child = child(name);
+    return child == null ? null : child.primitiveValue();
+  }
+
+  public String primitiveValueMN(String... names) {
+    ResourceElement child = childMN(names);
+    return child == null ? null : child.primitiveValue();
+  }
+
+  public String firstPrimitiveValue(String name) {
+    ResourceElement child = firstChild(name);
     return child == null ? null : child.primitiveValue();
   }
 
@@ -248,6 +283,24 @@ public class ResourceElement {
     return list;
   }
 
+  /**
+   * For when an item has been renamed - find by any of the names
+   * @param name
+   * @return
+   */
+  public List<ResourceElement> childrenMN(String... names) {
+    loadChildren();
+    List<ResourceElement> list = new ArrayList<ResourceElement>();
+    for (ResourceElement e : children) {
+      for (String name : names) {
+        if (name.equals(e.name())) {
+          list.add(e);
+        }
+      }
+    }
+    return list;
+  }
+
   public ResourceElement child(String name) {
     loadChildren();
     
@@ -259,6 +312,30 @@ public class ResourceElement {
           res = e;
         } else {
           throw new Error("Duplicated element '"+name+"' @ '"+path()+"'");
+        }
+      }
+    }
+    return res;
+  }
+
+  /** 
+   * For when an item has been renamed - find by any of the names
+   * @param names
+   * @return
+   */
+  public ResourceElement childMN(String... names) {
+    loadChildren();
+
+    ResourceElement res = null;
+
+    for (ResourceElement e : children) {
+      for (String name : names) {
+        if (name.equals(e.name()) || (name+"[x]").equals(e.name())) {
+          if (res == null) {
+            res = e;
+          } else {
+            throw new Error("Duplicated element '"+name+"' @ '"+path()+"'");
+          }
         }
       }
     }
@@ -346,6 +423,17 @@ public class ResourceElement {
     return res;
   }
   
+  public List<ResourceElement> extensions() {
+    List<ResourceElement> res = new ArrayList<ResourceElement>();
+    loadChildren();
+    for (ResourceElement e : children) {
+      if ("Extension".equals(e.fhirType())) {
+        res.add(e);
+      }
+    }
+    return res;
+  }
+  
   public List<ResourceElement> extensionValues(String url) {
     List<ResourceElement> res = new ArrayList<ResourceElement>();
     loadChildren();
@@ -359,5 +447,159 @@ public class ResourceElement {
     return res;
   }
 
+  public boolean canHaveNarrative() {
+    if (!isResource()) {
+      return false;
+    }
+    if (element != null) {
+      return element instanceof DomainResource;
+    } else {
+      return context.isDomainResource(fhirType()); 
+    }
+  }
+  
+  public XhtmlNode getNarrative() {
+    if (!canHaveNarrative()) {
+      return null;
+    }
+    ResourceElement text = child("text");
+    if (text == null) {
+      return null;
+    }
+    ResourceElement div = text.child("div");
+    if (div == null) {
+      return null;
+    }
+    if (div.element != null) {
+      return div.element.getXhtml();
+    } else {
+      return div.model.getXhtml(); 
+    }
+  }
+  
+  public boolean hasNarrative() {
+    if (!canHaveNarrative()) {
+      return false;
+    }
+    ResourceElement text = child("text");
+    if (text == null) {
+      return false;
+    }
+    ResourceElement div = text.child("div");
+    if (div == null) {
+      return false;
+    }
+    if (div.element != null) {
+      return div.element.getXhtml() != null;
+    } else {
+      return div.model.getXhtml() != null; 
+    }
+  }
+  
+  public void setNarrative(XhtmlNode x, String status, boolean multiLangMode, Locale locale) {
+    if (element != null) {
+      if (element instanceof DomainResource) {
+        DomainResource r = (DomainResource) element;    
+        r.getText().setUserData("renderer.generated", true);
+        if (!r.hasText() || !r.getText().hasDiv()) {
+          r.setText(new Narrative());
+          r.getText().setStatusAsString(status);      
+        }
+        if (multiLangMode) {
+          if (!r.getText().hasDiv()) { 
+            XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
+            div.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+            r.getText().setDiv(div);
+          } else {
+            r.getText().getDiv().getChildNodes().removeIf(c -> !"div".equals(c.getName()) || !c.hasAttribute("xml:lang"));
+          }
+          markLanguage(x, locale);
+          r.getText().getDiv().getChildNodes().add(x);
+        } else {
+          if (!x.hasAttribute("xmlns"))
+            x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+          if (r.hasLanguage()) {
+            // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
+            x.setAttribute("lang", r.getLanguage());
+            x.setAttribute("xml:lang", r.getLanguage());
+          }
+          r.getText().setDiv(x);
+        }
+      } else {
+        throw new Error("Cannot call setNarrative on a "+element.fhirType());
+      }
+    }
+  }
 
+  public void markLanguage(XhtmlNode x, Locale locale) {
+    x.setAttribute("lang", locale.toString());
+    x.setAttribute("xml:lang", locale.toString());
+    x.addTag(0, "hr");
+    x.addTag(0, "p").b().tx(locale.getDisplayName());
+    x.addTag(0, "hr");
+  }
+  
+
+  public String getId() {
+    if (element != null) {
+      return element.getIdBase();
+    } else {
+      return model.getIdBase(); 
+    }
+  }
+  
+  @Override
+  public String toString() {
+    return name + (index == -1 ? "" : "["+index+"]")+": "+fhirType()+" ("+kind+")";
+  }
+
+  public boolean matches(ResourceElement b) {
+  }
+
+  public String extensionString(String url) {
+    ResourceElement re = extensionValue(url);
+    return re == null ?  null : re.primitiveValue();
+  }
+
+  public boolean isEmpty() {
+    if (hasChildren()) {
+      for (ResourceElement c : children) {
+        if (!c.isEmpty()) {
+          return false;
+        }
+      }
+    }
+    return !isPrimitive() || !hasPrimitiveValue();
+  }
+
+  public Resource getResource() {
+    return element == null ? null : (Resource) element;
+  }
+
+  public ResourceElement firstChild(String name) {
+    List<ResourceElement> list = children(name);
+    return list.size() == 0 ? null : list.get(0);
+  }
+
+  public ContextUtilities getContextUtilities() {
+    return context;
+  }
+
+  public boolean hasFormatComment() {
+    if (element != null) {
+      return element.hasFormatComment();
+    } else {
+      return model.hasFormatComment();
+    }
+  }
+
+  public Collection<String> getFormatCommentsPre() {
+    if (element != null) {
+      return element.getFormatCommentsPre();
+    } else {
+      return model.getFormatCommentsPre();
+    }
+  }
+
+  
 }
