@@ -41,14 +41,25 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.turtle.Turtle;
+import org.hl7.fhir.validation.IgLoader.IDirectPackageProvider;
 import org.hl7.fhir.validation.ValidationEngine.IValidationEngineLoader;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
 import org.hl7.fhir.validation.cli.utils.Common;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 
 import lombok.Getter;
+import lombok.Setter;
 
 public class IgLoader implements IValidationEngineLoader {
+
+  /**
+   * This is used in testing to allow tests to deal with unreleased packages 
+   */
+  public interface IDirectPackageProvider {
+
+    InputStream fetchByPackage(String src) throws IOException;
+
+  }
 
   private static final String[] IGNORED_EXTENSIONS = {"md", "css", "js", "png", "gif", "jpg", "html", "tgz", "pack", "zip"};
   private static final String[] EXEMPT_FILES = {"spec.internals", "version.info", "schematron.zip", "package.json"};
@@ -58,6 +69,7 @@ public class IgLoader implements IValidationEngineLoader {
   @Getter private final SimpleWorkerContext context;
   @Getter private final String version;
   @Getter private final boolean isDebug;
+  @Getter @Setter private IDirectPackageProvider directProvider;
 
   public IgLoader(FilesystemPackageCacheManager packageCacheManager,
                   SimpleWorkerContext context,
@@ -481,6 +493,13 @@ public class IgLoader implements IValidationEngineLoader {
 
 
   private Map<String, ByteProvider> fetchByPackage(String src, boolean loadInContext) throws FHIRException, IOException {
+    NpmPackage pi;
+    
+    InputStream stream = directProvider.fetchByPackage(src);
+    if (stream != null) {
+      pi = NpmPackage.fromPackage(stream);
+      return loadPackage(pi, loadInContext);
+    }
     String id = src;
     String version = null;
     if (src.contains("#")) {
@@ -490,7 +509,6 @@ public class IgLoader implements IValidationEngineLoader {
     if (version == null) {
       version = getPackageCacheManager().getLatestVersion(id);
     }
-    NpmPackage pi;
     if (version == null) {
       pi = getPackageCacheManager().loadPackageFromCacheOnly(id);
       if (pi != null)
