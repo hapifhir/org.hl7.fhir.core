@@ -150,6 +150,11 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
   public boolean render(XhtmlNode x, DiagnosticReport dr) throws IOException, FHIRException, EOperationOutcome { 
     render(x, new DirectWrappers.ResourceWrapperDirect(this.context, dr)); 
  
+    for (Resource resource : dr.getContained()) {
+      x.hr();
+      RendererFactory.factory(resource, context).render(x, resource);
+    }
+    
     return true; 
   } 
  
@@ -461,7 +466,9 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       td = tr.td(); 
       pw = getProperty(obs, "note"); 
       if (valued(pw)) { 
-        render(td, pw.value()); 
+        for (BaseWrapper b : pw.getValues()) {
+          render(td, b); 
+        }
       } 
     } 
     if (effectiveTime) { 

@@ -28,6 +28,7 @@ public class Resolver {
     String resolveUri(RenderingContext context, String uri);
   }
 
+  /*
   public static class ResourceContext {
     private ResourceContext container;
 
@@ -183,7 +184,7 @@ public class Resolver {
       }
     }
   }
-
+*/
 
   public enum ResourceReferenceKind {
     CONTAINED, BUNDLE, EXTERNAL, UNKNOWN
@@ -194,9 +195,9 @@ public class Resolver {
 
     private ResourceReferenceKind kind;
     private String reference;
-    private ResourceWrapper resource;
+    private ResourceElement resource;
 
-    public ResourceWithReference(ResourceReferenceKind kind, String reference, ResourceWrapper resource) {
+    public ResourceWithReference(ResourceReferenceKind kind, String reference, ResourceElement resource) {
       super();
       this.kind = kind;
       this.reference = reference;
@@ -211,7 +212,7 @@ public class Resolver {
       return reference;
     }
 
-    public ResourceWrapper getResource() {
+    public ResourceElement getResource() {
       return resource;
     }
   }

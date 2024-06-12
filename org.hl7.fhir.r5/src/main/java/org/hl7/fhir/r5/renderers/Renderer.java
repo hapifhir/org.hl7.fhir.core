@@ -37,6 +37,18 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  */
 public class Renderer  {
 
+  public static class RenderingStatus {
+    private boolean extensions;
+
+    public void setExtensions(boolean b) {
+      extensions = b;
+    }
+
+    public boolean getExtensions() {
+      return extensions;
+    }
+
+  }
   protected RenderingContext context;
   
   public Renderer(RenderingContext context) {

@@ -34,7 +34,8 @@ import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept; 
 import org.hl7.fhir.r5.model.Coding; 
 import org.hl7.fhir.r5.model.DataType; 
-import org.hl7.fhir.r5.model.DecimalType; 
+import org.hl7.fhir.r5.model.DecimalType;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Element; 
 import org.hl7.fhir.r5.model.ElementDefinition; 
 import org.hl7.fhir.r5.model.ElementDefinition.AdditionalBindingPurposeVS; 
@@ -70,13 +71,15 @@ import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.InternalMarkdownProcessor; 
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.RenderStyle; 
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.SourcedElementDefinition; 
-import org.hl7.fhir.r5.renderers.utils.RenderingContext; 
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.FixedValueFormat; 
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules; 
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType; 
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.StructureDefinitionRendererMode; 
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext; 
-import org.hl7.fhir.r5.terminologies.utilities.ValidationResult; 
+import org.hl7.fhir.r5.renderers2.Renderer.RenderingStatus;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.PublicationHacker; 
 import org.hl7.fhir.r5.utils.ToolingExtensions; 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -101,6 +104,27 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
  
 public class StructureDefinitionRenderer extends ResourceRenderer { 
  
+  public StructureDefinitionRenderer(RenderingContext context) { 
+    super(context); 
+    hostMd = new InternalMarkdownProcessor(); 
+    corePath = context.getContext().getSpecUrl(); 
+  } 
+ 
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    throw new Error("StructureDefinitionRenderer only renders native resources directly");
+  }
+  
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    render(status, x, (StructureDefinition) r);
+  }
+  
+  @Override
+  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
+  }
+
   public enum RenderStyle { 
  
   } 
@@ -302,16 +326,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private Map<String, Map<String, ElementDefinition>> sdMapCache = new HashMap<>(); 
   private IMarkdownProcessor hostMd; 
  
-  public StructureDefinitionRenderer(RenderingContext context) { 
-    super(context); 
-    hostMd = new InternalMarkdownProcessor(); 
-    corePath = context.getContext().getSpecUrl(); 
-  } 
- 
-  public StructureDefinitionRenderer(RenderingContext context, ResourceContext rcontext) { 
-    super(context, rcontext); 
-  } 
- 
    
   public Map<String, Map<String, ElementDefinition>> getSdMapCache() { 
     return sdMapCache; 
@@ -329,18 +343,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     this.hostMd = hostMd; 
   } 
  
-  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException { 
-    return render(x, (StructureDefinition) dr); 
-  } 
  
-  public boolean render(XhtmlNode x, StructureDefinition sd) throws FHIRFormatError, DefinitionException, IOException { 
+  public void render(RenderingStatus status, XhtmlNode x, StructureDefinition sd) throws FHIRFormatError, DefinitionException, IOException { 
     if (context.getStructureMode() == StructureDefinitionRendererMode.DATA_DICT) { 
       renderDict(sd, sd.getDifferential().getElement(), x.table("dict"), false, GEN_MODE_DIFF, ""); 
     } else { 
       x.getChildNodes().add(generateTable(context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,  
         context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context, "")); 
     } 
-    return true; 
+    status.setExtensions(true);
   } 
  
   public void describe(XhtmlNode x, StructureDefinition sd) { 
@@ -351,10 +362,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return sd.present(); 
   } 
  
-  @Override 
-  public String display(Resource r) throws UnsupportedEncodingException, IOException { 
-    return ((StructureDefinition) r).present(); 
-  } 
  
   public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException { 
     if (r.has("title")) { 

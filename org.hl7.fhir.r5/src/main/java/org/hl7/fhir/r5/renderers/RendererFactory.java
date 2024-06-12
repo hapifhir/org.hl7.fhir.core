@@ -4,7 +4,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.utilities.Utilities;
 
 public class RendererFactory {
@@ -62,14 +62,14 @@ public class RendererFactory {
   }
 
 
-  public static ResourceRenderer factory(ResourceWrapper resource, RenderingContext context, ResourceContext resourceContext) {
+  public static ResourceRenderer factory(ResourceElement resource, RenderingContext context) {
     if (context.getTemplateProvider() != null) {
-      String liquidTemplate = context.getTemplateProvider().findTemplate(context, resource.getName());
+      String liquidTemplate = context.getTemplateProvider().findTemplate(context, resource.fhirType());
       if (liquidTemplate != null) {
         return new LiquidRenderer(context, liquidTemplate);
       }
     }
-    switch (resource.getName()) {
+    switch (resource.fhirType()) {
     case "DiagnosticReport": return new DiagnosticReportRenderer(context);
     case "Library": return new LibraryRenderer(context);
     case "List": return new ListRenderer(context);
@@ -77,11 +77,11 @@ public class RendererFactory {
     case "QuestionnaireResponse": return new QuestionnaireResponseRenderer(context);
     }
 
-    return new ProfileDrivenRenderer(context, resourceContext);    
+    return new ProfileDrivenRenderer(context);    
   }
 
   public static ResourceRenderer factory(ResourceWrapper rw, RenderingContext lrc) {
-    return factory(rw, lrc, null);
+    return factory(rw, lrc);
   }
 
   public static boolean hasSpecificRenderer(String rt) {
