@@ -6,16 +6,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.BooleanSupplier;
 
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.utils.client.network.FhirRequestBuilder;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -34,47 +36,78 @@ public class ResourceElement {
     BundleEntry,
     IndependentResource
   }
+  
+  public static class NamedResourceElementList {
+    private String name;
+    private List<ResourceElement> values = new ArrayList<ResourceElement>();
+    
+    public NamedResourceElementList(String name) {
+      super();
+      this.name = name;
+    }
+    
+    public String getName() {
+      return name;
+    }
+    public List<ResourceElement> getValues() {
+      return values;
+    }
+    
+  }
 
-  private ContextUtilities context;
+  private ContextUtilities contextUtils;
+  private ProfileUtilities profileUtils;
   private ResourceElement parent;
   private String name; // null at root
   private int index; // -1 if not repeating
   private ElementKind kind;
+  private StructureDefinition classDefinition;
+  private ElementDefinition propertyDefinition;
 
   private Base element;
   private Element model;
 
   private List<ResourceElement> children;
 
-  public ResourceElement(ContextUtilities context, Resource resource) {
-    this.context = context;
+  public ResourceElement(ContextUtilities contextUtils, ProfileUtilities profileUtils, Resource resource) {
+    this.contextUtils = contextUtils;
+    this.profileUtils = profileUtils;
     this.parent = null;
     this.name = null;
     this.index = -1;
     this.kind = ElementKind.IndependentResource;
     this.element = resource;
+    this.classDefinition = profileUtils.getContext().fetchTypeDefinition(resource.fhirType());
+    this.propertyDefinition = this.classDefinition.getSnapshot().getElementFirstRep();
   }
 
-  public ResourceElement(ContextUtilities context, DataType type) {
-    this.context = context;
+  public ResourceElement(ContextUtilities contextUtils, ProfileUtilities profileUtils, DataType type) {
+    this.contextUtils = contextUtils;
+    this.profileUtils = profileUtils;
     this.parent = null;
     this.name = null;
     this.index = -1;
     this.kind = null;
     this.element = type;
+    this.classDefinition = profileUtils.getContext().fetchTypeDefinition(type.fhirType());
+    this.propertyDefinition = this.classDefinition.getSnapshot().getElementFirstRep();
   }
 
-  public ResourceElement(ContextUtilities context, ResourceElement parent, String name, int index, ElementKind kind, Base element) {
-    this.context = context;
+  public ResourceElement(ContextUtilities contextUtils, ProfileUtilities profileUtils, ResourceElement parent, String name, int index, ElementKind kind, Base element, StructureDefinition classDefinition, ElementDefinition propertyDefinition) {
+    this.contextUtils = contextUtils;
+    this.profileUtils = profileUtils;
     this.parent = parent;
     this.name = name;
     this.index = index;
     this.kind = kind;
     this.element = element;
+    this.classDefinition = classDefinition;
+    this.propertyDefinition = propertyDefinition;
   }
 
-  public ResourceElement(ContextUtilities context, Element resource) {
-    this.context = context;
+  public ResourceElement(ContextUtilities contextUtils, ProfileUtilities profileUtils, Element resource) {
+    this.contextUtils = contextUtils;
+    this.profileUtils = profileUtils;
     this.parent = null;
     this.name = null;
     this.index = -1;
@@ -82,13 +115,16 @@ public class ResourceElement {
     this.model = resource;
   }
   
-  public ResourceElement(ContextUtilities context, ResourceElement parent, String name, int index, ElementKind kind, Element em) {
-    this.context = context;
+  public ResourceElement(ContextUtilities contextUtils, ProfileUtilities profileUtils, ResourceElement parent, String name, int index, ElementKind kind, Element em) {
+    this.contextUtils = contextUtils;
+    this.profileUtils = profileUtils;
     this.parent = parent;
     this.name = name;
     this.index = index;
     this.kind = kind;
     this.model = em;
+    this.classDefinition = em.getProperty().getStructure();
+    this.propertyDefinition = em.getProperty().getDefinition();
   }
 
   public String fhirVersion() {
@@ -201,7 +237,7 @@ public class ResourceElement {
       String name = child.getProperty().isChoice() ? child.getProperty().getName() : child.getName();
       int index = child.isList() ? child.getIndex() : -1;
       ElementKind kind = determineModelKind(child);
-      children.add(new ResourceElement(context, this, name, index, kind, child));
+      children.add(new ResourceElement(contextUtils, profileUtils, this, name, index, kind, child));
     }
   }
 
@@ -233,13 +269,29 @@ public class ResourceElement {
   }
 
   private void loadElementChildren() {
+    SourcedChildDefinitions childDefs = propertyDefinition == null ? null : profileUtils.getChildMap(classDefinition, propertyDefinition);
     for (Property p : element.children()) {
       String name = p.getName();
       int i = 0;
       for (Base v : p.getValues()) {
         ElementKind kind = determineModelKind(p, v);      
         int index = p.isList() ? i : -1;
-        children.add(new ResourceElement(context, this, name, index, kind, v));
+        ElementDefinition ed = null;
+        if (childDefs != null) {
+          for (ElementDefinition t : childDefs.getList()) {
+            if (t.getName().equals(name)) {
+              ed = t;
+              break;
+            }
+          }
+        }
+        if (ed != null) {
+          children.add(new ResourceElement(contextUtils, profileUtils, this, name, index, kind, v, childDefs.getSource(), ed));
+        } else {
+          StructureDefinition sd = profileUtils.getContext().fetchTypeDefinition(v.fhirType());
+          ElementDefinition ted = sd.getSnapshot().getElementFirstRep();
+          children.add(new ResourceElement(contextUtils, profileUtils, this, name, index, kind, v, sd, ted));          
+        }
         i++;
       }
     }
@@ -248,7 +300,7 @@ public class ResourceElement {
   private ElementKind determineModelKind(Property p, Base v) {
     if (v.isPrimitive()) {
       return ElementKind.PrimitiveType;
-    } else if (context.isDatatype(v.fhirType())) {
+    } else if (contextUtils.isDatatype(v.fhirType())) {
       return ElementKind.DataType;
     } else if (!v.isResource()) {
       return ElementKind.BackboneElement;
@@ -270,6 +322,25 @@ public class ResourceElement {
   public List<ResourceElement> children() {
     loadChildren();
     return children;
+  }
+
+  public List<NamedResourceElementList> childrenInGroups() {
+    loadChildren();
+    List<NamedResourceElementList> list = new ArrayList<ResourceElement.NamedResourceElementList>(); 
+    for (ResourceElement e : children) {
+      NamedResourceElementList nl = null;
+      for (NamedResourceElementList t : list) {
+        if (t.name.equals(e.name())) {
+          nl = t;
+        }
+      }
+      if (nl == null) {
+        nl = new NamedResourceElementList(e.name());
+        list.add(nl);
+      }
+      nl.values.add(e);
+    }
+    return list;
   }
 
   public List<ResourceElement> children(String name) {
@@ -454,7 +525,7 @@ public class ResourceElement {
     if (element != null) {
       return element instanceof DomainResource;
     } else {
-      return context.isDomainResource(fhirType()); 
+      return contextUtils.isDomainResource(fhirType()); 
     }
   }
   
@@ -582,7 +653,7 @@ public class ResourceElement {
   }
 
   public ContextUtilities getContextUtilities() {
-    return context;
+    return contextUtils;
   }
 
   public boolean hasFormatComment() {
@@ -599,6 +670,14 @@ public class ResourceElement {
     } else {
       return model.getFormatCommentsPre();
     }
+  }
+
+  public StructureDefinition getClassDefinition() {
+    return classDefinition;
+  }
+
+  public ElementDefinition getPropertyDefinition() {
+    return propertyDefinition;
   }
 
   

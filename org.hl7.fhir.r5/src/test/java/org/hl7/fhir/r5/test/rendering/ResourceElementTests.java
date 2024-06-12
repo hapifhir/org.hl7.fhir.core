@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -26,7 +27,7 @@ public class ResourceElementTests {
   public void testDirect() throws FHIRFormatError, IOException {
     IWorkerContext worker = TestingUtilities.getSharedWorkerContext();
     Resource res = new XmlParser().parse(TestingUtilities.loadTestResource("r5", "bundle-resource-element-test.xml"));
-    ResourceElement re = new ResourceElement(new ContextUtilities(worker), res);
+    ResourceElement re = new ResourceElement(new ContextUtilities(worker), new ProfileUtilities(worker, null, null), res);
     checkTree(re); 
   }
   
@@ -34,7 +35,7 @@ public class ResourceElementTests {
   public void testIndirect() throws FHIRFormatError, IOException {
     IWorkerContext worker = TestingUtilities.getSharedWorkerContext();
     List<ValidatedFragment> res = Manager.parse(worker, TestingUtilities.loadTestResourceStream("r5", "bundle-resource-element-test.xml"), FhirFormat.XML);
-    ResourceElement re = new ResourceElement(new ContextUtilities(worker), res.get(0).getElement());
+    ResourceElement re = new ResourceElement(new ContextUtilities(worker), new ProfileUtilities(worker, null, null), res.get(0).getElement());
     checkTree(re);
   }
 
