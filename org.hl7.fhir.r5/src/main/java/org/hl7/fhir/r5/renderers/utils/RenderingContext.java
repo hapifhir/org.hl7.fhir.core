@@ -800,21 +800,6 @@ public class RenderingContext extends RenderingI18nContext {
     return t.asStringValue();
   }
 
-  public String getTranslated(ResourceElement t) {
-    if (locale != null) {
-      for (ResourceElement e : t.extensions(ToolingExtensions.EXT_TRANSLATION)) {
-        String l = e.extensionString("lang");
-        if (l != null && l.equals(locale.toString())) {
-          String v = e.extensionString("content");
-          if (v != null) {
-            return v;
-          }
-        }
-      }
-    }
-    return t.primitiveValue();
-  }
-
   public StringType getTranslatedElement(PrimitiveType<?> t) {
     if (locale != null) {
       StringType v = ToolingExtensions.getLanguageTranslationElement(t, locale.toString());
