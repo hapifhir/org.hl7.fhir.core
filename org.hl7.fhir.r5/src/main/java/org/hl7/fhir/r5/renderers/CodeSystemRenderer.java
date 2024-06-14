@@ -1,10 +1,10 @@
 package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -13,7 +13,6 @@ import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -21,27 +20,48 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.renderers.CodeSystemRenderer.Translateable;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.MultiLanguagePolicy;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class CodeSystemRenderer extends TerminologyRenderer {
 
+
+  public CodeSystemRenderer(RenderingContext context) { 
+    super(context); 
+  } 
+ 
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    throw new Error("CodeSystemRenderer only renders native resources directly");
+  }
+  
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    render(status, x, (CodeSystem) r);
+  }
+  
+  @Override
+  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
+  }
+
+  
   public class Translateable {
 
     private String lang;
@@ -62,25 +82,10 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   }
 
-
-  private Boolean doMarkdown = null;
-
-  public CodeSystemRenderer(RenderingContext context) {
-    super(context);
-  }
-
-  public CodeSystemRenderer(RenderingContext context, ResourceContext rcontext) {
-    super(context, rcontext);
-  }
+  private Boolean doMarkdown = null;  
   
-
-  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
-    return render(x, (CodeSystem) dr);
-  }
-  
-  public boolean render(XhtmlNode x, CodeSystem cs) throws FHIRFormatError, DefinitionException, IOException {
-    boolean hasExtensions = false;
-
+  public void render(RenderingStatus status, XhtmlNode x, CodeSystem cs) throws FHIRFormatError, DefinitionException, IOException {
+    
     if (context.isHeader()) {
       XhtmlNode h = x.h2();
       h.addText(cs.hasTitle() ? cs.getTitle() : cs.getName());
@@ -92,9 +97,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     boolean props = generateProperties(x, cs);
     generateFilters(x, cs);
     List<UsedConceptMap> maps = new ArrayList<UsedConceptMap>();
-    hasExtensions = generateCodeSystemContent(x, cs, hasExtensions, maps, props);
-
-    return hasExtensions;
+    generateCodeSystemContent(status, x, cs, maps, props);
   }
 
   public void describe(XhtmlNode x, CodeSystem cs) {
@@ -200,7 +203,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
   }
   
-  private boolean generateCodeSystemContent(XhtmlNode x, CodeSystem cs, boolean hasExtensions, List<UsedConceptMap> maps, boolean props) throws FHIRFormatError, DefinitionException, IOException {
+  private void generateCodeSystemContent(RenderingStatus status, XhtmlNode x, CodeSystem cs, List<UsedConceptMap> maps, boolean props) throws FHIRFormatError, DefinitionException, IOException {
     if (props) {
       x.para().b().tx(formatPhrase(RenderingContext.CODESYSTEM_CONCEPTS));
     }
@@ -212,7 +215,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     p.paramValue("code-count", CodeSystemUtilities.countCodes(cs));
     p.sentenceForParams(sentenceForContent(cs.getContent(), cs));
     if (cs.getContent() == CodeSystemContentMode.NOTPRESENT) {
-      return false;
+      return;
     }
     
     XhtmlNode t = x.table( "codes");
@@ -258,7 +261,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       addCopyColumn(addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, definitions, commentS, version, deprecated, properties, null, null, false), maps));      
     }
     for (ConceptDefinitionComponent c : csNav.getConcepts(null)) {
-      hasExtensions = addDefineRowToTable(t, c, 0, hierarchy, display, definitions, commentS, version, deprecated, maps, cs.getUrl(), cs, properties, csNav, langs.size() < 2 ? langs : null, isSupplement) || hasExtensions;
+      addDefineRowToTable(status, t, c, 0, hierarchy, display, definitions, commentS, version, deprecated, maps, cs.getUrl(), cs, properties, csNav, langs.size() < 2 ? langs : null, isSupplement);
     }
     if (langs.size() >= 2) {
       Collections.sort(langs);
@@ -272,7 +275,6 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         addLanguageRow(c, t, langs);
       }
     }
-    return hasExtensions;
   }
 
   private void makeHierarchyParam(XhtmlNode x, CodeSystem cs, Enumeration<CodeSystemHierarchyMeaning> hm) {
@@ -421,7 +423,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
 
 
-  private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int level, boolean hasHierarchy, boolean hasDisplay, boolean hasDefinitions, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, List<PropertyComponent> properties, CodeSystemNavigator csNav, List<String> langs, boolean isSupplement) throws FHIRFormatError, DefinitionException, IOException {
+  private void addDefineRowToTable(RenderingStatus status, XhtmlNode t, ConceptDefinitionComponent c, int level, boolean hasHierarchy, boolean hasDisplay, boolean hasDefinitions, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, List<PropertyComponent> properties, CodeSystemNavigator csNav, List<String> langs, boolean isSupplement) throws FHIRFormatError, DefinitionException, IOException {
     boolean hasExtensions = false;
     XhtmlNode tr = t.tr();
     boolean notCurrent = CodeSystemUtilities.isNotCurrent(cs, c);
@@ -615,7 +617,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     List<ConceptDefinitionComponent> ocl = csNav.getOtherChildren(c);
     for (ConceptDefinitionComponent cc : csNav.getConcepts(c)) {
-      hasExtensions = addDefineRowToTable(t, cc, level+1, hasHierarchy, hasDisplay, hasDefinitions, comment, version, deprecated, maps, system, cs, properties, csNav, langs, isSupplement) || hasExtensions;
+       addDefineRowToTable(status, t, cc, level+1, hasHierarchy, hasDisplay, hasDefinitions, comment, version, deprecated, maps, system, cs, properties, csNav, langs, isSupplement);
     }
     for (ConceptDefinitionComponent cc : ocl) {
       tr = t.tr();
@@ -643,7 +645,6 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       td.nbsp();
       clipboard(td, "icon_clipboard_j.png", "JSON", "\"system\" : \""+Utilities.escapeXml(cs.getUrl())+"\",\n"+(cs.getVersionNeeded() ? "\"version\" : \""+Utilities.escapeXml(cs.getVersion())+"\",\n" : "")+"\"code\" : \""+Utilities.escapeXml(c.getCode())+"\",\n\"display\" : \""+Utilities.escapeXml(c.getDisplay())+"\"\n");
     }
-    return hasExtensions;
   }
 
   private String getDisplay(String lang, ConceptDefinitionComponent c) {

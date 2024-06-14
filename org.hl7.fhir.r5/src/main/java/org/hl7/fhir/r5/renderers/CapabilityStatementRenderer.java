@@ -27,6 +27,7 @@ import org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteraction;
 import org.hl7.fhir.r5.model.CapabilityStatement.TypeRestfulInteraction;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
@@ -35,11 +36,13 @@ import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
+import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
+import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.InternalMarkdownProcessor;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -47,7 +50,26 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
 public class CapabilityStatementRenderer extends ResourceRenderer {
+
+  public CapabilityStatementRenderer(RenderingContext context) { 
+    super(context); 
+  } 
+ 
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    throw new Error("CapabilityStatementRenderer only renders native resources directly");
+  }
   
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    render(status, x, (CapabilityStatement) r);
+  }
+  
+  @Override
+  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
+  }
+
   private static final String EXPECTATION = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation";
   private static final String COMBINED = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-search-parameter-combination";
   private static final String SP_BASE = "http://hl7.org/fhir/searchparameter/";
@@ -266,20 +288,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
   }
 
-  //Constructors
-  public CapabilityStatementRenderer(RenderingContext context) {
-    super(context);
-  }
-
-  public CapabilityStatementRenderer(RenderingContext context, ResourceContext rcontext) {
-    super(context, rcontext);
-  }
-  
-  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
-    return render(x, (CapabilityStatement) dr);
-  }
-
-  public boolean render(XhtmlNode x, CapabilityStatement conf) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(RenderingStatus status, XhtmlNode x, CapabilityStatement conf) throws FHIRFormatError, DefinitionException, IOException {
+    status.setExtensions(true);
     boolean igRenderingMode = (context.getRules() == GenerationRules.IG_PUBLISHER);
     FHIRVersion currentVersion = conf.getFhirVersion();
     String versionPathComponent = getVersionPathComponent(currentVersion.getDefinition());
@@ -298,7 +308,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_FHIR_VER, currentVersion.toCode()) + " ");
     addSupportedFormats(uList, conf);
     
-    uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_PUB_ON, displayDateTime(conf.getDateElement()) + " "));
+    uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_PUB_ON, displayDateTime(new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), conf.getDateElement())) + " "));
     uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_PUB_BY, conf.getPublisherElement().asStringValue()) + " ");
 
 
@@ -355,7 +365,6 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       addWarningPanel(x,"⹋⹋ - this mark indicates that there are more than one expectation extensions present");
     }
 
-    return true;
   }
 
   private String getVersionPathComponent(String definition) {
@@ -373,12 +382,6 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   public String display(CapabilityStatement cs) {
     return cs.present();
   }
-
-  @Override
-  public String display(Resource r) throws UnsupportedEncodingException, IOException {
-    return ((CapabilityStatement) r).present();
-  }
-
 
   private boolean hasOp(CapabilityStatementRestResourceComponent r, TypeRestfulInteraction on) {
     for (ResourceInteractionComponent op : r.getInteraction()) {
@@ -1449,16 +1452,6 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
   private void addLead(XhtmlNode node, String text) {
     node.addTag("span").attribute("class", "lead").addText(text);
-  }
-
-  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    if (r.has("title")) {
-      return r.children("title").get(0).getBase().primitiveValue();
-    }
-    if (r.has("name")) {
-      return r.children("name").get(0).getBase().primitiveValue();
-    }
-    return "??";
   }
 
   private void addResourceLink(XhtmlNode node, String name, String canonicalUri) {
