@@ -216,7 +216,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (vs.getExpansion().hasTotal()) {
         if (count != vs.getExpansion().getTotal()) {
           x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px")
-            .addText(context.formatPhrase(hasFragment ? RenderingContext.VALUE_SET_HAS_AT_LEAST : RenderingContext.VALUE_SET_HAS, vs.getExpansion().getTotal()));
+            .addText(context.formatPhrase(hasFragment ? RenderingContext.VALUE_SET_HAS_AT_LEAST : RenderingContext.VALUE_SET_HAS, vs.getExpansion().getTotal(), count));
         } else {
           x.para().tx(context.formatPhrase(hasFragment ? RenderingContext.VALUE_SET_CONTAINS_AT_LEAST : RenderingContext.VALUE_SET_CONTAINS, vs.getExpansion().getTotal()));          
         }

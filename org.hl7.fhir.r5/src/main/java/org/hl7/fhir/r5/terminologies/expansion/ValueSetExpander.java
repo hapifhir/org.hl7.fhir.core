@@ -319,7 +319,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
 
     String s = key(n);
-    if (wc.getMap().containsKey(s) || wc.getExcludeKeys().contains(s)) {
+    if (wc.getExcludeKeys().contains(s)) {
+      return null;
+    } else if (wc.getMap().containsKey(s)) {
       wc.setCanBeHierarchy(false);
     } else {
       wc.getCodes().add(n);
@@ -832,8 +834,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
       throws ETooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
     compose.checkNoModifiers("ValueSet.compose", "expanding");
     // Exclude comes first because we build up a map of things to exclude
-    for (ConceptSetComponent inc : compose.getExclude())
+    for (ConceptSetComponent inc : compose.getExclude()) {
       excludeCodes(dwc, inc, expParams, exp, valueSet);
+    }
     dwc.setCanBeHierarchy(!expParams.getParameterBool("excludeNested") && dwc.getExcludeKeys().isEmpty() && dwc.getExcludeSystems().isEmpty() && dwc.getOffsetParam() == 0);
     includeAbstract = !expParams.getParameterBool("excludeNotForUI");
     boolean first = true;
@@ -898,9 +901,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
         }
       } 
     }
-    if (evs.hasTotal()) {
-      dwc.incTotal(evs.getTotal());
-    } else {
+    if (!evs.hasTotal()) {
+      // because if there's no total, we can't know if we got everything
       dwc.setNoTotal(true);
     }
     for (ValueSetExpansionParameterComponent p : evs.getParameter()) {
