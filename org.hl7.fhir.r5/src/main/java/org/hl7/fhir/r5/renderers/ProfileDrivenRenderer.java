@@ -1068,7 +1068,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                 ed = xverManager.makeDefinition(url);
                 new ContextUtilities(getContext().getWorker()).generateSnapshot(ed);
                 getContext().getWorker().cacheResource(ed);
-              }
+              } 
             }
             if (p.getName().equals("modifierExtension") && ed == null) {
               throw new DefinitionException("Unknown modifier extension "+url);
@@ -1076,11 +1076,6 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             PropertyWrapper pe = map.get(p.getName()+"["+url+"]");
             if (pe == null) {
               if (ed == null) {
-                if (url != null && url.startsWith("http://hl7.org/fhir") && !url.startsWith("http://hl7.org/fhir/us")) {
-                  if (!ProfileUtilities.isSuppressIgnorableExceptions()) {
-                    throw new DefinitionException("unknown extension "+url);
-                  }
-                }
                 // System.out.println("unknown extension "+url);
                 pe = new PropertyWrapperDirect(this.context, new Property(p.getName()+"["+url+"]", p.getTypeCode(), p.getDefinition(), p.getMinCardinality(), p.getMaxCardinality(), ex), null);
               } else {

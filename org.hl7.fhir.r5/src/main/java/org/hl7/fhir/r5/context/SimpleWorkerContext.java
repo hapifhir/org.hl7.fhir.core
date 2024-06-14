@@ -806,7 +806,21 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   public boolean hasPackage(String idAndver) {
-    return loadedPackages.contains(idAndver);
+    if (loadedPackages.contains(idAndver)) {
+      return true;
+    }
+    // not clear whether the same logic should apply to other cross-version packages?
+    if (idAndver.startsWith("hl7.fhir.uv.extensions")) {
+      String v = idAndver.substring(idAndver.lastIndexOf("#")+1);
+      for (String s : loadedPackages) {
+        String v2 = s.substring(s.lastIndexOf("#")+1);
+        if (s.startsWith("hl7.fhir.uv.extensions.") && VersionUtilities.versionsMatch(v, v2)) {
+          return true;
+        }
+      }
+    }
+    return false;
+    
   }
 
   @Override
