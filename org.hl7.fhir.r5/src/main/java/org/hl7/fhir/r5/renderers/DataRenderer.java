@@ -657,7 +657,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   }
 
 
-  private String displayReference(ResourceElement type) {
+  protected String displayReference(ResourceElement type) {
     if (type.has("display")) {
       return type.primitiveValue("display");
     } else if (type.has("reference")) {

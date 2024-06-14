@@ -2,7 +2,6 @@ package org.hl7.fhir.r5.renderers;
 
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.utilities.Utilities;
@@ -78,10 +77,6 @@ public class RendererFactory {
     }
 
     return new ProfileDrivenRenderer(context);    
-  }
-
-  public static ResourceRenderer factory(ResourceWrapper rw, RenderingContext lrc) {
-    return factory(rw, lrc);
   }
 
   public static boolean hasSpecificRenderer(String rt) {

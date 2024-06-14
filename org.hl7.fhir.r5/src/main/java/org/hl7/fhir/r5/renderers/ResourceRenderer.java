@@ -29,11 +29,6 @@ import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
-import org.hl7.fhir.r5.renderers.utils.DirectWrappers.ResourceWrapperDirect;
-import org.hl7.fhir.r5.renderers.utils.ElementWrappers.ResourceWrapperMetaElement;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceReferenceKind;
@@ -370,7 +365,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     pieces.add(gen.new Piece(link,text.toString(), null));
   }
   
-  private String getNameForResource(ResourceElement resource) {
+  protected String getNameForResource(ResourceElement resource) {
     ResourceElement name = resource.firstChild("name");
     if (name != null && !name.isEmpty()) {
       if (name.isPrimitive()) {
@@ -601,19 +596,6 @@ public abstract class ResourceRenderer extends DataRenderer {
      return null;
    }
 
-   protected PropertyWrapper getProperty(BaseWrapper res, String name) {
-     for (PropertyWrapper t : res.children()) {
-       if (t.getName().equals(name))
-         return t;
-     }
-     return null;
-   }
-
-   protected boolean valued(PropertyWrapper pw) {
-     return pw != null && pw.hasValues();
-   }
-
-
 //   protected ResourceElement fetchResource(BaseWrapper subject) throws UnsupportedEncodingException, FHIRException, IOException {
 //     if (context.getResolver() == null)
 //       return null;
@@ -741,14 +723,6 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   private XhtmlNode plateStyle(XhtmlNode para) {
     return para.style("margin-bottom: 0px");
-  }
-
-  private String getPrimitiveValue(BaseWrapper b, String name) throws UnsupportedEncodingException, FHIRException, IOException {
-    return b != null && b.has(name) && b.getChildByName(name).hasValues() ? b.getChildByName(name).getValues().get(0).getBase().primitiveValue() : null;
-  }
-
-  private String getPrimitiveValue(ResourceWrapper r, String name) throws UnsupportedEncodingException, FHIRException, IOException {
-    return r.has(name) && r.getChildByName(name).hasValues() ? r.getChildByName(name).getValues().get(0).getBase().primitiveValue() : null;
   }
 
 //  public void renderOrError(DomainResource dr) {

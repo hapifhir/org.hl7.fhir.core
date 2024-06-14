@@ -52,7 +52,9 @@ public class ResourceElement {
     public List<ResourceElement> getValues() {
       return values;
     }
-    
+    public ElementDefinition getPropertyDefinition() {
+      return values.isEmpty() ? null : values.get(0).getPropertyDefinition();
+    }
   }
 
   private ContextUtilities contextUtils;
@@ -82,8 +84,8 @@ public class ResourceElement {
   }
 
   public ResourceElement(ContextUtilities contextUtils, ProfileUtilities profileUtils, DataType type) {
-    this.contextUtils = contextUtils;
-    this.profileUtils = profileUtils;
+    this.contextUtils = parent.contextUtils;
+    this.profileUtils = parent.profileUtils;
     this.parent = null;
     this.name = null;
     this.index = -1;
@@ -93,7 +95,7 @@ public class ResourceElement {
     this.propertyDefinition = this.classDefinition.getSnapshot().getElementFirstRep();
   }
 
-  public ResourceElement(ContextUtilities contextUtils, ProfileUtilities profileUtils, ResourceElement parent, String name, int index, ElementKind kind, Base element, StructureDefinition classDefinition, ElementDefinition propertyDefinition) {
+  public ResourceElement(ResourceElement parent, String name, int index, ElementKind kind, Base element, StructureDefinition classDefinition, ElementDefinition propertyDefinition) {
     this.contextUtils = contextUtils;
     this.profileUtils = profileUtils;
     this.parent = parent;
@@ -115,9 +117,9 @@ public class ResourceElement {
     this.model = resource;
   }
   
-  public ResourceElement(ContextUtilities contextUtils, ProfileUtilities profileUtils, ResourceElement parent, String name, int index, ElementKind kind, Element em) {
-    this.contextUtils = contextUtils;
-    this.profileUtils = profileUtils;
+  public ResourceElement(ResourceElement parent, String name, int index, ElementKind kind, Element em) {
+    this.contextUtils = parent.contextUtils;
+    this.profileUtils = parent.profileUtils;
     this.parent = parent;
     this.name = name;
     this.index = index;
@@ -237,7 +239,7 @@ public class ResourceElement {
       String name = child.getProperty().isChoice() ? child.getProperty().getName() : child.getName();
       int index = child.isList() ? child.getIndex() : -1;
       ElementKind kind = determineModelKind(child);
-      children.add(new ResourceElement(contextUtils, profileUtils, this, name, index, kind, child));
+      children.add(new ResourceElement(this, name, index, kind, child));
     }
   }
 
@@ -286,11 +288,11 @@ public class ResourceElement {
           }
         }
         if (ed != null) {
-          children.add(new ResourceElement(contextUtils, profileUtils, this, name, index, kind, v, childDefs.getSource(), ed));
+          children.add(new ResourceElement(this, name, index, kind, v, childDefs.getSource(), ed));
         } else {
           StructureDefinition sd = profileUtils.getContext().fetchTypeDefinition(v.fhirType());
           ElementDefinition ted = sd.getSnapshot().getElementFirstRep();
-          children.add(new ResourceElement(contextUtils, profileUtils, this, name, index, kind, v, sd, ted));          
+          children.add(new ResourceElement(this, name, index, kind, v, sd, ted));          
         }
         i++;
       }
