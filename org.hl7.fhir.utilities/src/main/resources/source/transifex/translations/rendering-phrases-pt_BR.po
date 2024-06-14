@@ -547,7 +547,7 @@ msgstr ""
 
 # CAPABILTY_ALLOW_CAP
 #: CAPABILTY_ALLOW_CAP
-msgid "Any FHIR capability may be 'allowed' by the system unless explicitly marked as 'SHALL NOT'. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
+msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
 msgstr ""
 
 # CAPABILTY_SHALL_SUPP
@@ -2721,7 +2721,7 @@ msgstr ""
 
 # SEARCH_PAR_MULTIPLE_AND_SERVER
 #: SEARCH_PAR_MULTIPLE_AND_SERVER
-msgid "multipleAnd: It's up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
+msgid "multipleAnd: It''s up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
 msgstr ""
 
 # SEARCH_PAR_MULTIPLE_OR_MULTIPLE
@@ -2736,7 +2736,7 @@ msgstr ""
 
 # SEARCH_PAR_MULTIPLE_OR_SERVER
 #: SEARCH_PAR_MULTIPLE_OR_SERVER
-msgid "multipleOr: It's up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
+msgid "multipleOr: It''s up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
 msgstr ""
 
 # SEARCH_PAR_NONE
