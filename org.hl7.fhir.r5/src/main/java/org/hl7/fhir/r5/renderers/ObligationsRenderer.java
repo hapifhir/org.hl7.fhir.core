@@ -381,19 +381,19 @@ public class ObligationsRenderer {
     children.add(tr);
     tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_OBLIG));
     if (actor) {
-      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.OBLIG_ACT));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.OBLIG_ACT));
     }
     if (elementId) {
-      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.OBLIG_ELE));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.OBLIG_ELE));
     }
     if (usage) {
-      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.GENERAL_USAGE));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_USAGE));
     }
     if (doco) {
-      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION));
     }
     if (filter) {
-      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.GENERAL_FILTER));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_FILTER));
     }
     for (ObligationDetail ob : obligations) {
       tr =  new XhtmlNode(NodeType.Element, "tr");
@@ -416,19 +416,19 @@ public class ObligationsRenderer {
 
       XhtmlNode actorId = tr.td().style("font-size: 11px");
       if (!ob.actors.isEmpty() || ob.compare.actors.isEmpty()) {
-        boolean firstActor = false;
+        boolean firstActor = true;
         for (CanonicalType anActor : ob.actors) {
-          ActorDefinition ad = context.getContext().fetchResource(ActorDefinition.class, anActor.toString());
+          ActorDefinition ad = context.getContext().fetchResource(ActorDefinition.class, anActor.getValue());
           boolean existingActor = ob.compare != null && ob.compare.actors.contains(anActor);
 
           if (!firstActor) {
             actorId.br();
-            firstActor = true;
+            firstActor = false;
           }
 
           if (!existingActor)
             actorId.style(STYLE_UNCHANGED);
-
+          actorId.addText(ad.getTitle());
         }
 
         if (ob.compare != null) {
