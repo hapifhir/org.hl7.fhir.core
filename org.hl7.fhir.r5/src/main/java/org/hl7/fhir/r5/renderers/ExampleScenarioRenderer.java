@@ -2,18 +2,25 @@ package org.hl7.fhir.r5.renderers;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
+
+import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ExampleScenario.*;
+import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.xhtml.XhtmlDocument;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import net.sourceforge.plantuml.SourceStringReader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,26 +29,40 @@ import java.util.Map;
 
 public class ExampleScenarioRenderer extends TerminologyRenderer {
 
-  public ExampleScenarioRenderer(RenderingContext context) {
-    super(context);
+  public ExampleScenarioRenderer(RenderingContext context) { 
+    super(context); 
+  } 
+ 
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    throw new Error("ExampleScenarioRenderer only renders native resources directly");
   }
   
-  public boolean render(XhtmlNode x, Resource scen) throws IOException {
-    return render(x, (ExampleScenario) scen);
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    render(status, x, (ExampleScenario) r);
+  }
+  
+  @Override
+  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
   }
 
-  public boolean render(XhtmlNode x, ExampleScenario scen) throws FHIRException {
+  public void render(RenderingStatus status, XhtmlNode x, ExampleScenario scen) throws FHIRException {
     try {
       if (context.getScenarioMode() == null) {
-        return renderActors(x, scen);
+        renderActors(status, x, scen);
       } else {
         switch (context.getScenarioMode()) {
         case ACTORS:
-          return renderActors(x, scen);
+          renderActors(status, x, scen);
+          break;
         case INSTANCES:
-          return renderInstances(x, scen);
+          renderInstances(status, x, scen);
+          break;
         case PROCESSES:
-          return renderProcesses(x, scen);
+          renderProcesses(status, x, scen);
+          break;
         default:
           throw new FHIRException(context.formatPhrase(RenderingContext.EX_SCEN_UN, context.getScenarioMode()) + " ");
         }
@@ -117,7 +138,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     String plantUml = "";
     if (step.hasWorkflow()) {
       XhtmlNode n = new XhtmlDocument();
-      renderCanonical(scen, n, step.getWorkflow());
+      renderCanonical(wrap(scen), n, step.getWorkflow());
       XhtmlNode ref = n.getChildNodes().get(0);
       plantUml += noteOver(scen.getActor(), context.formatPhrase(RenderingContext.EXAMPLE_SCEN_STEP_SCEN, trimPrefix(prefix), creolLink((ref.getContent()), ref.getAttribute("href"))));
     } else if (step.hasProcess())
@@ -208,7 +229,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return s;
   }
 
-  public boolean renderActors(XhtmlNode x, ExampleScenario scen) throws IOException {
+  public boolean renderActors(RenderingStatus status, XhtmlNode x, ExampleScenario scen) throws IOException {
     XhtmlNode tbl = x.table("table-striped table-bordered");
     XhtmlNode thead = tbl.tr();
     thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));
@@ -225,7 +246,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return true;
   }
 
-  public boolean renderInstances(XhtmlNode x, ExampleScenario scen) throws IOException {
+  public boolean renderInstances(RenderingStatus status, XhtmlNode x, ExampleScenario scen) throws IOException {
     XhtmlNode tbl = x.table("table-striped table-bordered");
     XhtmlNode thead = tbl.tr();
     thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));
@@ -256,23 +277,23 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
         if (instance.hasStructureVersion())
           typeCell.tx((context.formatPhrase(RenderingContext.EX_SCEN_FVER, instance.getStructureVersion()) + " ") + " ");
         if (instance.hasStructureProfile()) {
-          renderCanonical(scen, typeCell, instance.getStructureProfile().toString());
+          renderCanonical(wrap(scen), typeCell, instance.getStructureProfile().toString());
         } else {
-          renderCanonical(scen, typeCell, "http://hl7.org/fhir/StructureDefinition/" + instance.getStructureType().getCode());
+          renderCanonical(wrap(scen), typeCell, "http://hl7.org/fhir/StructureDefinition/" + instance.getStructureType().getCode());
         }
       } else {
-          render(typeCell, instance.getStructureVersionElement());
+          renderDataType(status, typeCell, wrap(instance.getStructureVersionElement()));
           typeCell.tx(" "+(context.formatPhrase(RenderingContext.GENERAL_VER_LOW, instance.getStructureVersion())+" "));
         if (instance.hasStructureProfile()) {
           typeCell.tx(" ");
-          renderCanonical(scen, typeCell, instance.getStructureProfile().toString());
+          renderCanonical(wrap(scen), typeCell, instance.getStructureProfile().toString());
         }
       }
       if (instance.hasContent() && instance.getContent().hasReference()) {
         // Force end-user mode to avoid ugly references
         RenderingContext.ResourceRendererMode mode = context.getMode();
         context.setMode(RenderingContext.ResourceRendererMode.END_USER);
-        renderReference(scen, row.td(), instance.getContent().copy().setDisplay("here"));
+        renderReference(status, wrap(scen), row.td(), wrap(instance.getContent().copy().setDisplay("here")));
         context.setMode(mode);
       } else
         row.td();
@@ -307,7 +328,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
           // Force end-user mode to avoid ugly references
           RenderingContext.ResourceRendererMode mode = context.getMode();
           context.setMode(RenderingContext.ResourceRendererMode.END_USER);
-          renderReference(scen, row.td(), version.getContent().copy().setDisplay("here"));
+          renderReference(status, wrap(scen), row.td(), wrap(version.getContent().copy().setDisplay("here")));
           context.setMode(mode);
         } else
           row.td();
@@ -319,7 +340,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return true;
   }
 
-  public boolean renderProcesses(XhtmlNode x, ExampleScenario scen) throws IOException {
+  public boolean renderProcesses(RenderingStatus status, XhtmlNode x, ExampleScenario scen) throws IOException {
     Map<String, ExampleScenarioActorComponent> actors = new HashMap<>();
     for (ExampleScenarioActorComponent actor: scen.getActor()) {
       actors.put(actor.getKey(), actor);
@@ -332,13 +353,13 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
 
     int num = 1;
     for (ExampleScenarioProcessComponent process : scen.getProcess()) {
-      renderProcess(x, process, Integer.toString(num), actors, instances);
+      renderProcess(status, x, process, Integer.toString(num), actors, instances);
       num++;
     }
     return true;
   }
 
-  public void renderProcess(XhtmlNode x, ExampleScenarioProcessComponent process, String prefix, Map<String, ExampleScenarioActorComponent> actors, Map<String, ExampleScenarioInstanceComponent> instances) throws IOException {
+  public void renderProcess(RenderingStatus status, XhtmlNode x, ExampleScenarioProcessComponent process, String prefix, Map<String, ExampleScenarioActorComponent> actors, Map<String, ExampleScenarioInstanceComponent> instances) throws IOException {
     XhtmlNode div = x.div();
     div.an("p_" + prefix);
     div.b().tx(context.formatPhrase(RenderingContext.EX_SCEN_PROC, process.getTitle())+" ");
@@ -363,14 +384,14 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_RES));
     int stepCount = 1;
     for (ExampleScenarioProcessStepComponent step: process.getStep()) {
-      renderStep(tbl, step, stepPrefix(prefix, step, stepCount), actors, instances);
+      renderStep(status, tbl, step, stepPrefix(prefix, step, stepCount), actors, instances);
       stepCount++;
     }
 
     // Now go through the steps again and spit out any child processes
     stepCount = 1;
     for (ExampleScenarioProcessStepComponent step: process.getStep()) {
-      stepSubProcesses(tbl, step, stepPrefix(prefix, step, stepCount), actors, instances);
+      stepSubProcesses(status, tbl, step, stepPrefix(prefix, step, stepCount), actors, instances);
       stepCount++;
     }
   }
@@ -384,15 +405,15 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return stepPrefix(prefix + "-Alt" + Integer.toString(altNum) + ".", step, stepCount);
   }
 
-  private void stepSubProcesses(XhtmlNode x, ExampleScenarioProcessStepComponent step, String prefix, Map<String, ExampleScenarioActorComponent> actors, Map<String, ExampleScenarioInstanceComponent> instances) throws IOException {
+  private void stepSubProcesses(RenderingStatus status, XhtmlNode x, ExampleScenarioProcessStepComponent step, String prefix, Map<String, ExampleScenarioActorComponent> actors, Map<String, ExampleScenarioInstanceComponent> instances) throws IOException {
     if (step.hasProcess())
-      renderProcess(x, step.getProcess(), prefix, actors, instances);
+      renderProcess(status, x, step.getProcess(), prefix, actors, instances);
     if (step.hasAlternative()) {
       int altNum = 1;
       for (ExampleScenarioProcessStepAlternativeComponent alt: step.getAlternative()) {
         int stepCount = 1;
         for (ExampleScenarioProcessStepComponent altStep: alt.getStep()) {
-          stepSubProcesses(x, altStep, altStepPrefix(prefix, altStep, altNum, stepCount), actors, instances);
+          stepSubProcesses(status, x, altStep, altStepPrefix(prefix, altStep, altNum, stepCount), actors, instances);
           stepCount++;
         }
         altNum++;
@@ -400,7 +421,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     }
   }
 
-  private boolean renderStep(XhtmlNode tbl, ExampleScenarioProcessStepComponent step, String stepLabel, Map<String, ExampleScenarioActorComponent> actors, Map<String, ExampleScenarioInstanceComponent> instances) throws IOException {
+  private boolean renderStep(RenderingStatus status, XhtmlNode tbl, ExampleScenarioProcessStepComponent step, String stepLabel, Map<String, ExampleScenarioActorComponent> actors, Map<String, ExampleScenarioInstanceComponent> instances) throws IOException {
     XhtmlNode row = tbl.tr();
     XhtmlNode prefixCell = row.td();
     prefixCell.an("s_" + stepLabel);
@@ -424,7 +445,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       name.tx(op.getTitle());
       if (op.hasType()) {
         name.tx(" - ");
-        renderCoding(name, op.getType());
+        renderCoding(status, name, wrap(op.getType()));
       }
       XhtmlNode descCell = row.td();
       addMarkdown(descCell, op.getDescription());
@@ -443,7 +464,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
         addMarkdown(altHeading, alt.getDescription());
       int stepCount = 1;
       for (ExampleScenarioProcessStepComponent subStep : alt.getStep()) {
-        renderStep(tbl, subStep, altStepPrefix(stepLabel, step, altNum, stepCount), actors, instances);
+        renderStep(status, tbl, subStep, altStepPrefix(stepLabel, step, altNum, stepCount), actors, instances);
         stepCount++;
       }
       altNum++;

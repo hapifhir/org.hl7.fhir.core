@@ -21,6 +21,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
+import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.utils.PublicationHacker;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -290,7 +291,7 @@ public class AdditionalBindingsRenderer {
       if (usage) {
         if (binding.usage != null) {
           // TODO: This isn't rendered at all yet.  Ideally, we want it to render with comparison...
-          new DataRenderer(context).render(tr.td(), binding.usage);
+          new DataRenderer(context).renderBase(new RenderingStatus(), tr.td(), binding.usage);
         } else {
           tr.td();          
         }

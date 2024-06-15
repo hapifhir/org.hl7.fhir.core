@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.SearchComparator;
 import org.hl7.fhir.r5.model.Enumerations.SearchModifierCode;
@@ -18,7 +20,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -27,19 +29,27 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class SearchParameterRenderer extends TerminologyRenderer {
 
-  public SearchParameterRenderer(RenderingContext context) {
-    super(context);
-  }
 
-  public SearchParameterRenderer(RenderingContext context, ResourceContext rcontext) {
-    super(context, rcontext);
+  public SearchParameterRenderer(RenderingContext context) { 
+    super(context); 
+  } 
+ 
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    throw new Error("SearchParameterRenderer only renders native resources directly");
   }
   
-  public boolean render(XhtmlNode x, Resource dr) throws IOException, FHIRException, EOperationOutcome {
-    return render(x, (SearchParameter) dr);
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    render(status, x, (SearchParameter) r);
+  }
+  
+  @Override
+  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
   }
 
-  public boolean render(XhtmlNode x, SearchParameter spd) throws IOException, FHIRException, EOperationOutcome {
+  public void render(RenderingStatus status, XhtmlNode x, SearchParameter spd) throws IOException, FHIRException, EOperationOutcome {
     XhtmlNode h2 = x.h2();
     h2.addText(spd.getName());
     StandardsStatus ss = ToolingExtensions.getStandardsStatus(spd);
@@ -161,7 +171,6 @@ public class SearchParameterRenderer extends TerminologyRenderer {
         tr.td().code().tx(t.getExpression());
       }
     }
-    return false;
   }
 
   private boolean isAllConcreteResources(List<Enumeration<VersionIndependentResourceTypesAll>> list) {

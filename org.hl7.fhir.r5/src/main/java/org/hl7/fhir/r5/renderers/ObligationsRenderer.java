@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.ObligationsRenderer.ObligationDetail;
+import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.utils.PublicationHacker;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -40,7 +41,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlNodeList;
 
-public class ObligationsRenderer {
+public class ObligationsRenderer extends Renderer {
   public static class ObligationDetail {
     private List<String> codes = new ArrayList<>();
     private List<String> elementIds = new ArrayList<>();
@@ -167,6 +168,7 @@ public class ObligationsRenderer {
   private CodeResolver cr;
 
   public ObligationsRenderer(String corePath, StructureDefinition profile, String path, RenderingContext context, IMarkdownProcessor md, CodeResolver cr) {
+    super(context);
     this.corePath = corePath;
     this.profile = profile;
     this.path = path;
@@ -286,24 +288,24 @@ public class ObligationsRenderer {
     return abr;
   }
 
-  public String render(String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws IOException {
+  public String render(RenderingStatus status, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws IOException {
     if (obligations.isEmpty()) {
       return "";
     } else {
       XhtmlNode tbl = new XhtmlNode(NodeType.Element, "table");
       tbl.attribute("class", "grid");
-      renderTable(tbl.getChildNodes(), true, defPath, anchorPrefix, inScopeElements);
+      renderTable(status, tbl.getChildNodes(), true, defPath, anchorPrefix, inScopeElements);
       return new XhtmlComposer(false).compose(tbl);
     }
   }
 
-  public void renderTable(HierarchicalTableGenerator gen, Cell c, List<ElementDefinition> inScopeElements) throws FHIRFormatError, DefinitionException, IOException {
+  public void renderTable(RenderingStatus status, HierarchicalTableGenerator gen, Cell c, List<ElementDefinition> inScopeElements) throws FHIRFormatError, DefinitionException, IOException {
     if (obligations.isEmpty()) {
       return;
     } else {
       Piece piece = gen.new Piece("table").attr("class", "grid");
       c.getPieces().add(piece);
-      renderTable(piece.getChildren(), false, gen.getDefPath(), gen.getAnchorPrefix(), inScopeElements);
+      renderTable(status, piece.getChildren(), false, gen.getDefPath(), gen.getAnchorPrefix(), inScopeElements);
     }
   }
 
@@ -358,7 +360,7 @@ public class ObligationsRenderer {
   }
 
 
-  public void renderTable(List<XhtmlNode> children, boolean fullDoco, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws FHIRFormatError, DefinitionException, IOException {
+  public void renderTable(RenderingStatus status, List<XhtmlNode> children, boolean fullDoco, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws FHIRFormatError, DefinitionException, IOException {
     boolean doco = false;
     boolean usage = false;
     boolean actor = false;
@@ -483,7 +485,7 @@ public class ObligationsRenderer {
           XhtmlNode td = tr.td();
           for (UsageContext u : ob.usage) {
             if (first) first = false; else td.tx(", ");
-            new DataRenderer(context).render(td, u);
+            new DataRenderer(context).renderDataType(status, td, wrap(u));
           }
         } else {
           tr.td();          

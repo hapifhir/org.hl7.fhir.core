@@ -418,13 +418,13 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
       pp.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
       if (grp.hasSource()) {
-        renderCanonical(new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), cm), pp, grp.getSource());
+        renderCanonical(wrap(cm), pp, grp.getSource());
       } else {
         pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
       }
       pp.tx(" to ");
       if (grp.hasTarget()) {
-        renderCanonical(new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), cm), pp, grp.getTarget());
+        renderCanonical(wrap(cm), pp, grp.getTarget());
       } else {
         pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
       }

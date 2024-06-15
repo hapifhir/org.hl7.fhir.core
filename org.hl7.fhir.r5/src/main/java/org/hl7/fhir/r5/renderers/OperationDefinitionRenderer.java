@@ -1,11 +1,15 @@
 package org.hl7.fhir.r5.renderers; 
  
 import java.io.IOException; 
-import java.io.UnsupportedEncodingException; 
- 
-import org.hl7.fhir.exceptions.FHIRException; 
-import org.hl7.fhir.r5.model.CanonicalType; 
-import org.hl7.fhir.r5.model.CodeType; 
+import java.io.UnsupportedEncodingException;
+
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration; 
 import org.hl7.fhir.r5.model.Enumerations.FHIRTypes; 
 import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll; 
@@ -14,10 +18,11 @@ import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent; 
 import org.hl7.fhir.r5.model.OperationDefinition.OperationParameterScope; 
 import org.hl7.fhir.r5.model.Resource; 
-import org.hl7.fhir.r5.model.StructureDefinition; 
-import org.hl7.fhir.r5.renderers.utils.RenderingContext; 
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType; 
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext; 
 import org.hl7.fhir.r5.utils.EOperationOutcome; 
 import org.hl7.fhir.r5.utils.ToolingExtensions; 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder; 
@@ -28,19 +33,27 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  
 public class OperationDefinitionRenderer extends TerminologyRenderer { 
  
+
   public OperationDefinitionRenderer(RenderingContext context) { 
     super(context); 
   } 
  
-  public OperationDefinitionRenderer(RenderingContext context, ResourceContext rcontext) { 
-    super(context, rcontext); 
-  } 
-   
-  public boolean render(XhtmlNode x, Resource dr) throws IOException, FHIRException, EOperationOutcome { 
-    return render(x, (OperationDefinition) dr); 
-  } 
- 
-  public boolean render(XhtmlNode x, OperationDefinition opd) throws IOException, FHIRException, EOperationOutcome { 
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    throw new Error("OperationDefinitionRenderer only renders native resources directly");
+  }
+  
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    render(status, x, (OperationDefinition) r);
+  }
+
+  @Override
+  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
+  }
+
+  public void render(RenderingStatus status, XhtmlNode x, OperationDefinition opd) throws IOException, FHIRException, EOperationOutcome { 
     if (context.isHeader()) { 
       x.h2().addText(opd.getName()); 
       x.para().addText(Utilities.capitalize(opd.getKind().toString())+": "+opd.getName());     
@@ -91,7 +104,6 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       genOpParam(tbl, "", p, opd); 
     } 
     addMarkdown(x, opd.getComment()); 
-    return true; 
   } 
  
   public void describe(XhtmlNode x, OperationDefinition opd) { 
