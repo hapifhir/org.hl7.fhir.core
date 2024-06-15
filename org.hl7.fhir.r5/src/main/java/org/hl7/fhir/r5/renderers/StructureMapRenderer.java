@@ -9,20 +9,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
+import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
-import org.hl7.fhir.r5.model.Enumerations.SearchComparator;
-import org.hl7.fhir.r5.model.Enumerations.SearchModifierCode;
-import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
+import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.SearchParameter;
-import org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent;
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupComponent;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupInputComponent;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleComponent;
@@ -33,27 +36,38 @@ import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterCo
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapTransform;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
-import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
-import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
-import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.xhtml.XhtmlFluent;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class StructureMapRenderer extends TerminologyRenderer {
 
+  public StructureMapRenderer(RenderingContext context) { 
+    super(context); 
+  } 
+ 
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    throw new Error("StructureMapRenderer only renders native resources directly");
+  }
+  
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    renderMap(status, x, (StructureMap) r);
+  }
+  
+  @Override
+  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
+  }
+
+  
+  
   private static final String COLOR_COMMENT = "green";
   private static final String COLOR_METADATA = "#cc00cc";
   private static final String COLOR_CONST = "blue";
@@ -62,24 +76,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
   private static final boolean MULTIPLE_TARGETS_ONELINE = true;
   private static final String COLOR_SPECIAL = "#b36b00";
 
-  public StructureMapRenderer(RenderingContext context) {
-    super(context);
-  }
-
-  public StructureMapRenderer(RenderingContext context, ResourceContext rcontext) {
-    super(context, rcontext);
-  }
-  
-  public boolean render(XhtmlNode x, Resource dr) throws IOException, FHIRException, EOperationOutcome {
-    return render(x, (StructureMap) dr);
-  }
-
-  public boolean render(XhtmlNode x, StructureMap map) throws IOException, FHIRException, EOperationOutcome {
-    renderMap(x.pre("fml"), map);
-    return false;
-  }
-
-  public void renderMap(XhtmlNode x, StructureMap map) {
+  public void renderMap(RenderingStatus status, XhtmlNode x, StructureMap map) {
     x.tx("\r\n");
     if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
       renderMetadata(x, "url", map.getUrlElement());

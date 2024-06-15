@@ -682,5 +682,11 @@ public class ResourceElement {
     return propertyDefinition;
   }
 
+  public List<XhtmlNode> getXhtml() {
+  }
+
+  public Base getBase() {
+  }
+
   
 }

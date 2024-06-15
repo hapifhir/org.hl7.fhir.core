@@ -5,8 +5,11 @@ import java.util.Date;
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
@@ -230,4 +233,13 @@ public class Renderer  {
   public String toStr(Date value) {
     return value.toString();
   }
+  
+  protected ResourceElement wrap(DataType type) {
+    return new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), type);
+  }
+  
+  protected ResourceElement wrap(Resource resource) {
+    return new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), resource);
+  }
+      
 }

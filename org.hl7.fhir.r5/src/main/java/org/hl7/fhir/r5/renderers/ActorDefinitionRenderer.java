@@ -4,33 +4,41 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.CapabilityStatement;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Library;
-import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.UrlType;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ActorDefinitionRenderer extends ResourceRenderer {
 
-  public ActorDefinitionRenderer(RenderingContext context) {
-    super(context);
-  }
 
-  public ActorDefinitionRenderer(RenderingContext context, ResourceContext rcontext) {
-    super(context, rcontext);
+  public ActorDefinitionRenderer(RenderingContext context) { 
+    super(context); 
+  } 
+ 
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    throw new Error("ActorDefinitionRenderer only renders native resources directly");
   }
   
-  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
-    return render(x, (ActorDefinition) dr);
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    render(status, x, (ActorDefinition) r);
+  }
+  
+  @Override
+  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
   }
 
-
-  public boolean render(XhtmlNode x, ActorDefinition acd) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(RenderingStatus status, XhtmlNode x, ActorDefinition acd) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();
     tr.td().b().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_ACT, acd.getName())  + " ");
@@ -44,7 +52,7 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
       boolean first = true;
       for (UrlType t : acd.getReference()) {
         if (first) first = false; else x.br();
-        render(td, t);
+        renderUri(status, td, wrap(t));
       }      
     }
     if (acd.hasCapabilities()) {
@@ -54,7 +62,7 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
       if (cs != null) {
         td.ah(cs.getWebPath()).tx(cs.present());
       } else {
-        render(td, acd.getCapabilitiesElement());
+        renderCanonical(status, wrap(acd), td, wrap(acd.getCapabilitiesElement()));
       }      
     }
     if (acd.hasDerivedFrom()) {
@@ -67,11 +75,10 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
         if (df != null) {
           td.ah(df.getWebPath()).tx(df.present());
         } else {
-          render(td, t);
+          renderUri(status, td, wrap(t));
         }      
       }      
     }
-    return false;
   }
   
   public void describe(XhtmlNode x, Library lib) {
@@ -80,19 +87,6 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
 
   public String display(Library lib) {
     return lib.present();
-  }
-
-  @Override
-  public String display(Resource r) throws UnsupportedEncodingException, IOException {
-    return ((Library) r).present();
-  }
-
-  @Override
-  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    if (r.has("title")) {
-      return r.children("title").get(0).getBase().primitiveValue();
-    }
-    return "??";
   }
   
 }

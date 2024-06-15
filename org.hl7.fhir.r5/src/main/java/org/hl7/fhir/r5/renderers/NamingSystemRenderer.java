@@ -4,32 +4,46 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
+import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class NamingSystemRenderer extends ResourceRenderer {
 
-  public NamingSystemRenderer(RenderingContext context) {
-    super(context);
-  }
 
-  public NamingSystemRenderer(RenderingContext context, ResourceContext rcontext) {
-    super(context, rcontext);
+  public NamingSystemRenderer(RenderingContext context) { 
+    super(context); 
+  } 
+ 
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    throw new Error("NamingSystemRenderer only renders native resources directly");
   }
   
-  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
-    return render(x, (NamingSystem) dr);
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    render(status, x, (NamingSystem) r);
+  }
+  
+  @Override
+  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
   }
 
-  public boolean render(XhtmlNode x, NamingSystem ns) throws FHIRFormatError, DefinitionException, IOException {
+  
+
+  public void render(RenderingStatus status, XhtmlNode x, NamingSystem ns) throws FHIRFormatError, DefinitionException, IOException {
     x.h3().tx(context.formatPhrase(RenderingContext.GENERAL_SUMM));
     XhtmlNode tbl = x.table("grid"); 
     row(tbl, (context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)), ns.getUrl());
@@ -88,13 +102,12 @@ public class NamingSystemRenderer extends ResourceRenderer {
         tr.td().tx(id.getPreferredElement().primitiveValue());
       }
       if (hasPeriod) {
-        tr.td().tx(display(id.getPeriod()));
+        tr.td().tx(displayDataType(id.getPeriod()));
       }
       if (hasComment) {
         tr.td().tx(id.getComment());
       }
     }    
-    return false;
   }
 
   private XhtmlNode row(XhtmlNode tbl, String name) {
@@ -115,21 +128,6 @@ public class NamingSystemRenderer extends ResourceRenderer {
 
   public String display(NamingSystem ns) {
     return ns.present();
-  }
-
-  @Override
-  public String display(Resource r) throws UnsupportedEncodingException, IOException {
-    return ((NamingSystem) r).present();
-  }
-
-  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    if (r.has("title")) {
-      return r.children("title").get(0).getBase().primitiveValue();
-    }
-    if (r.has("name")) {
-      return r.children("name").get(0).getBase().primitiveValue();
-    }
-    return "??";
   }
 
 }

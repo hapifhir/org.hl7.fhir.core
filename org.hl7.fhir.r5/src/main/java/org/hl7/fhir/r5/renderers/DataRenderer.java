@@ -604,7 +604,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
    
   public String displayDataType(DataType type) { 
-    return displayDataType(new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), type));
+    return displayDataType(wrap(type));
   }
   
   public String displayDataType(ResourceElement type) { 
@@ -769,7 +769,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
    
   public void renderBase(RenderingStatus status, XhtmlNode x, Base b) throws FHIRFormatError, DefinitionException, IOException { 
     if (b instanceof DataType) { 
-      renderDataType(status, x, new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), (DataType) b)); 
+      renderDataType(status, x, wrap((DataType) b)); 
     } else { 
       x.tx(context.formatPhrase(RenderingContext.DATA_REND_NO_DISP, b.fhirType()) + " ");       
     } 
@@ -917,7 +917,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
 //  } 
  
 
-  private boolean renderPrimitiveWithNoValue(RenderingStatus status, XhtmlNode x, ResourceElement prim) throws FHIRFormatError, DefinitionException, IOException {
+  protected boolean renderPrimitiveWithNoValue(RenderingStatus status, XhtmlNode x, ResourceElement prim) throws FHIRFormatError, DefinitionException, IOException {
     if (prim.hasPrimitiveValue()) {
       return false;
     }
@@ -1108,7 +1108,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   public String displayCoding(List<Coding> list) { 
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(); 
     for (Coding c : list) { 
-      b.append(displayCoding(new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), c))); 
+      b.append(displayCoding(wrap(c))); 
     } 
     return b.toString(); 
   } 
@@ -1226,7 +1226,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
    
   public CodeResolution resolveCode(Coding code) {
-    return resolveCode(new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), code));
+    return resolveCode(wrap(code));
   }
   
   public CodeResolution resolveCode(CodeableConcept code) { 
@@ -1771,7 +1771,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
  
    
   protected void renderQuantity(HierarchicalTableGenerator gen, List<Piece> pieces, Quantity q, boolean showCodeDetails) { 
-    pieces.add(gen.new Piece(null, displayQuantity(new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), q)), null)); 
+    pieces.add(gen.new Piece(null, displayQuantity(wrap(q)), null)); 
   } 
  
   public String displayRange(ResourceElement q) { 

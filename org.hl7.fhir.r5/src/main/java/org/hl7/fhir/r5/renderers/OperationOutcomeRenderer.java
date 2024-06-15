@@ -13,11 +13,9 @@ import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent; 
 import org.hl7.fhir.r5.model.Resource; 
 import org.hl7.fhir.r5.model.StringType; 
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceElement;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions; 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder; 
@@ -41,12 +39,13 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
     boolean hasSource = false; 
     boolean success = true; 
     for (ResourceElement i : op.children("issue")) { 
-      success = success && i.getSeverity() == IssueSeverity.INFORMATION; 
-      hasSource = hasSource || ExtensionHelper.hasExtension(i, ToolingExtensions.EXT_ISSUE_SOURCE); 
+      success = success && "information".equals(i.primitiveValue("severity")); 
+      hasSource = hasSource || i.hasExtension(ToolingExtensions.EXT_ISSUE_SOURCE); 
     } 
-    if (success) 
-      x.para().tx(context.formatPhrase(RenderingContext.OP_OUT_OK)); 
-    if (op.getIssue().size() > 0) { 
+    if (success) { 
+      x.para().tx(context.formatPhrase(RenderingContext.OP_OUT_OK));
+    }
+    if (op.has("issue")) { 
       XhtmlNode tbl = x.table("grid"); // on the basis that we'll most likely be rendered using the standard fhir css, but it doesn't really matter 
       XhtmlNode tr = tbl.tr(); 
       tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_SEV)); 
@@ -54,31 +53,30 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE)); 
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_DETAILS)); 
       tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_DIAG)); 
-      if (hasSource) 
-        tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_SRC)); 
-      for (OperationOutcomeIssueComponent i : op.getIssue()) { 
+      if (hasSource) {
+        tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_SRC));
+      }
+      for (ResourceElement i : op.children("issue")) { 
         tr = tbl.tr(); 
-        tr.td().addText(i.getSeverity().toString()); 
+        tr.td().addText(i.primitiveValue("severity")); 
         XhtmlNode td = tr.td(); 
         boolean d = false; 
-        for (StringType s : i.hasExpression() ? i.getExpression() : i.getLocation()) { 
+        for (ResourceElement s : i.has("expression") ? i.children("expression") : i.children("location")) { 
           if (d) 
             td.tx(", "); 
           else 
             d = true; 
-          td.addText(s.getValue()); 
+          td.addText(s.primitiveValue()); 
         } 
-        tr.td().addText(i.getCode().getDisplay()); 
-        tr.td().addText(display(i.getDetails())); 
-        smartAddText(tr.td(), i.getDiagnostics()); 
+        tr.td().addText(i.child("code").primitiveValue("display")); 
+        tr.td().addText(i.primitiveValue("details")); 
+        smartAddText(tr.td(), i.primitiveValue("diagnostics")); 
         if (hasSource) { 
-          Extension ext = ExtensionHelper.getExtension(i, ToolingExtensions.EXT_ISSUE_SOURCE); 
-          tr.td().addText(ext == null ? "" : display(ext)); 
+          ResourceElement ext = i.extension(ToolingExtensions.EXT_ISSUE_SOURCE); 
+          tr.td().addText(ext == null || !ext.has("value") ? "" : displayDataType(ext.child("value"))); 
         } 
       } 
     } 
-    return true; 
- 
   } 
  
   public void describe(XhtmlNode x, OperationOutcome oo) { 
@@ -87,16 +85,6 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
  
   public String display(OperationOutcome oo) { 
     return (context.formatPhrase(RenderingContext.GENERAL_TODO)); 
-  } 
- 
-  @Override 
-  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException { 
-    return (context.formatPhrase(RenderingContext.GENERAL_TODO)); 
-  } 
- 
-  @Override 
-  public String display(Resource r) throws UnsupportedEncodingException, IOException { 
-    return display((OperationOutcome) r); 
   } 
  
   public static String toString(OperationOutcome oo) { 

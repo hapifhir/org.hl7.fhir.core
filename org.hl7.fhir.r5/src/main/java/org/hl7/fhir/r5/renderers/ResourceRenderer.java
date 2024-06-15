@@ -147,7 +147,7 @@ public abstract class ResourceRenderer extends DataRenderer {
   // these three are what the descendants of this class override
   public abstract void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome;
   public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    renderResource(status, x, new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), r));
+    renderResource(status, x, wrap(r));
   }
   public abstract String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException;
     
@@ -207,6 +207,12 @@ public abstract class ResourceRenderer extends DataRenderer {
     x.addTag(0, "hr");
     x.addTag(0, "p").b().tx(context.getLocale().getDisplayName());
     x.addTag(0, "hr");
+  }
+  
+  public void renderCanonical(RenderingStatus status, ResourceElement resource,  XhtmlNode x, ResourceElement canonical) throws UnsupportedEncodingException, IOException {
+    if (!renderPrimitiveWithNoValue(status, x, canonical)) {
+      renderCanonical(resource, x, canonical.primitiveValue(), true, resource); 
+    }
   }
   
   public void renderCanonical(ResourceElement res, XhtmlNode x, String url) throws UnsupportedEncodingException, IOException {
@@ -299,7 +305,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     String link = null;
     StringBuilder text = new StringBuilder();
     if (r.hasReferenceElement() && allowLinks) {
-      tr = resolveReference(new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), res), r.getReference());
+      tr = resolveReference(wrap(res), r.getReference());
 
       if (!r.getReference().startsWith("#")) {
         if (tr != null && tr.getReference() != null) {
@@ -322,7 +328,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (!Utilities.noString(r.getReference())) {
         text.append(r.getReference());
       } else if (r.hasIdentifier()) {
-        text.append(displayIdentifier(new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), r.getIdentifier())));
+        text.append(displayIdentifier(wrap(r.getIdentifier())));
       } else {
         text.append("??");        
       }
