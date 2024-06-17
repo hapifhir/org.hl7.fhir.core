@@ -18,6 +18,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
+import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -73,13 +74,20 @@ public class ValueSetRenderer extends TerminologyRenderer {
  
   @Override
   public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    throw new Error("ValueSetRenderer only renders native resources directly");
+    if (!r.isDirect()) {
+      throw new Error("ValueSetRenderer only renders native resources directly");
+    }
+    ValueSet vs = (ValueSet) r.getBase();
+    List<UsedConceptMap> maps = findReleventMaps(vs);
+    
+    if (vs.hasExpansion()) {
+      // for now, we just accept an expansion if there is one
+      generateExpansion(status, r, x, vs, false, maps);
+    } else {
+      generateComposition(status, r, x, vs, false, maps);
+    }
   }
   
-  @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    render(status, x, (ValueSet) r, false);
-  }
   
   @Override
   public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
@@ -94,14 +102,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   
 
   public void render(RenderingStatus status, XhtmlNode x, ValueSet vs, boolean header) throws FHIRFormatError, DefinitionException, IOException {
-    List<UsedConceptMap> maps = findReleventMaps(vs);
     
-    if (vs.hasExpansion()) {
-      // for now, we just accept an expansion if there is one
-      generateExpansion(status, x, vs, header, maps);
-    } else {
-      generateComposition(status, x, vs, header, maps);
-    }
   }
 
   public void describe(XhtmlNode x, ValueSet vs) {
@@ -177,7 +178,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return vs.hasUrl() && source != null && vs.getUrl().equals(source.primitiveValue());
   }  
   
-  private void generateExpansion(RenderingStatus status, XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
+  private void generateExpansion(RenderingStatus status, ResourceElement res, XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
     List<String> langs = new ArrayList<String>();
     Map<String, String> designations = new HashMap<>(); //  map of url = description, where url is the designation code. Designations that are for languages won't make it into this list
     Map<String, String> properties = new HashMap<>(); //  map of url = description, where url is the designation code. Designations that are for languages won't make it into this list
@@ -188,7 +189,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (IsNotFixedExpansion(vs))
         addMarkdown(x, vs.getDescription());
       if (vs.hasCopyright())
-        generateCopyright(x, vs);
+        generateCopyright(x, res);
     }
     boolean hasFragment = generateContentModeNotices(x, vs.getExpansion(), vs);
     generateVersionNotice(x, vs.getExpansion(), vs);
@@ -934,7 +935,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 //    a.addText(code);
   }
 
-  private void generateComposition(RenderingStatus status, XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRException, IOException {
+  private void generateComposition(RenderingStatus status, ResourceElement res, XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRException, IOException {
     List<String> langs = new ArrayList<String>();
     Map<String, String> designations = new HashMap<>(); //  map of url = description, where url is the designation code. Designations that are for languages won't make it into this list 
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
@@ -950,7 +951,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       h.addText(vs.present());
       addMarkdown(x, vs.getDescription());
       if (vs.hasCopyrightElement())
-        generateCopyright(x, vs);
+        generateCopyright(x, res);
     }
     int index = 0;
     if (vs.getCompose().getInclude().size() == 1 && vs.getCompose().getExclude().size() == 0 && !VersionComparisonAnnotation.hasDeleted(vs.getCompose(), "include", "exclude")) {

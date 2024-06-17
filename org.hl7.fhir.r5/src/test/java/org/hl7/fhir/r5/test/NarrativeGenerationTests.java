@@ -25,8 +25,8 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.RendererFactory;
-import org.hl7.fhir.r5.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
@@ -256,7 +256,7 @@ public class NarrativeGenerationTests {
       source = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"));      
     }
     
-    XhtmlNode x = RendererFactory.factory(source, rc).build(source);
+    XhtmlNode x = RendererFactory.factory(source, rc).build(ResourceElement.forResource(rc.getContextUtilities(), rc.getProfileUtilities(), source));
     String expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".html"));
     String actual = HEADER+new XhtmlComposer(true, test.pretty).compose(x)+FOOTER;
     String expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.html");
@@ -268,7 +268,7 @@ public class NarrativeGenerationTests {
     
     if (test.isMeta()) {
       org.hl7.fhir.r5.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
-      x = RendererFactory.factory(source, rc).render(new ElementWrappers.ResourceWrapperMetaElement(rc, e));
+      x = RendererFactory.factory(source, rc).build(ResourceElement.forResource(rc.getContextUtilities(), rc.getProfileUtilities(), e));
 
       expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + "-meta.html"));
       actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;

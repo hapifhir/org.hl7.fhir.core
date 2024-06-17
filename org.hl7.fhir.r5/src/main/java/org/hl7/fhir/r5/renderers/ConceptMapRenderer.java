@@ -13,6 +13,7 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
@@ -45,12 +46,11 @@ public class ConceptMapRenderer extends TerminologyRenderer {
  
   @Override
   public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    throw new Error("ConceptMapRenderer only renders native resources directly");
-  }
-  
-  @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    render(status, x, (ConceptMap) r, false);
+    if (r.isDirect()) {
+      render(status, r, x, (ConceptMap) r.getBase(), false);      
+    } else {
+      throw new Error("ConceptMapRenderer only renders native resources directly");
+    }
   }
   
   @Override
@@ -323,7 +323,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
   
 
-  public void render(RenderingStatus status, XhtmlNode x, ConceptMap cm, boolean header) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(RenderingStatus status, ResourceElement res, XhtmlNode x, ConceptMap cm, boolean header) throws FHIRFormatError, DefinitionException, IOException {
     if (header) {
       x.h2().addText(cm.getName()+" ("+cm.getUrl()+")");
     }
@@ -362,7 +362,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             first = false;
           else
             p.tx(", ");
-          addTelecom(p, c);
+          addTelecom(p, wrapWC(res, c));
         }
       }
       p.tx(")");
@@ -418,13 +418,13 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
       pp.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
       if (grp.hasSource()) {
-        renderCanonical(wrap(cm), pp, grp.getSource());
+        renderCanonical(status, res, pp, CodeSystem.class, grp.getSourceElement());
       } else {
         pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
       }
       pp.tx(" to ");
       if (grp.hasTarget()) {
-        renderCanonical(wrap(cm), pp, grp.getTarget());
+        renderCanonical(status, res, pp, CodeSystem.class, grp.getTargetElement());
       } else {
         pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
       }

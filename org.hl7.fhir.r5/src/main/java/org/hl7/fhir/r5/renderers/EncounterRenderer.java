@@ -13,11 +13,9 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class EncounterRenderer extends ResourceRenderer {
 
-
   public EncounterRenderer(RenderingContext context) { 
     super(context); 
   } 
- 
   
   @Override
   public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {

@@ -112,11 +112,11 @@ public class ProvenanceRenderer extends ResourceRenderer {
         if (tl.size() == 0) {
           tr.td();
         } else if (tl.size() == 1) {
-          renderCodeableConcept(status, tr.td(), tl.get(0), false);
+          renderCodeableConcept(status, tr.td(), tl.get(0));
         } else {
           XhtmlNode ul = tr.td().ul();
           for (ResourceElement cc : tl) {
-            renderCodeableConcept(status, ul.li(), cc, false);
+            renderCodeableConcept(status, ul.li(), cc);
           }
         }
       }

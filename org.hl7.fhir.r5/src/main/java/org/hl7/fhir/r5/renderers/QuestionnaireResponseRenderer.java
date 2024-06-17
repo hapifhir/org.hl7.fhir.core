@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.QuestionnaireResponse;
@@ -13,11 +14,11 @@ import org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnsw
 import org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
@@ -29,39 +30,35 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class QuestionnaireResponseRenderer extends ResourceRenderer {
 
-  public QuestionnaireResponseRenderer(RenderingContext context) {
-    super(context);
-  }
+  public QuestionnaireResponseRenderer(RenderingContext context) { 
+    super(context); 
+  } 
   
-  public boolean render(XhtmlNode x, Resource q) throws UnsupportedEncodingException, IOException {
-    return render(x, (QuestionnaireResponse) q);
+  @Override
+  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+    return "todo";
   }
-  
-  public boolean render(XhtmlNode x, QuestionnaireResponse q) throws UnsupportedEncodingException, IOException {
+
+  @Override
+  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement qr) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     switch (context.getQuestionnaireMode()) {
-    case FORM:  return renderForm(x, q);
-    case LINKS: return renderLinks(x, q);
+    case FORM:
+      renderTree(status, x, qr);
+      break;
+    case LINKS: 
+      renderLinks(status, x, qr);
+      break;
 //    case LOGIC: return renderLogic(x, q);
 //    case DEFNS: return renderDefns(x, q);
-    case TREE:  return renderTree(x, q);
+    case TREE:  
+      renderTree(status, x, qr);
+      break;
     default:
       throw new Error(context.formatPhrase(RenderingContext.QUEST_UNKNOWN_MODE));
     }
   }
   
-  public boolean render(XhtmlNode x, ResourceWrapper qr) throws UnsupportedEncodingException, IOException {
-    switch (context.getQuestionnaireMode()) {
-    case FORM:  return renderTree(x, qr);
-    case LINKS: return renderLinks(x, qr);
-//    case LOGIC: return renderLogic(x, q);
-//    case DEFNS: return renderDefns(x, q);
-    case TREE:  return renderTree(x, qr);
-    default:
-      throw new Error(context.formatPhrase(RenderingContext.QUEST_UNKNOWN_MODE));
-    }
-  }
-  
-  public boolean renderTree(XhtmlNode x, ResourceWrapper qr) throws UnsupportedEncodingException, IOException {
+  public void renderTree(RenderingStatus status, XhtmlNode x, ResourceElement qr) throws UnsupportedEncodingException, IOException {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("qtree="+qr.getId(), false);    
     model.setAlternating(true);
@@ -76,63 +73,21 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_DEFINITION), context.formatPhrase(RenderingContext.QUEST_TIMES), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_ANSWER), context.formatPhrase(RenderingContext.QUEST_TYPE_ITEM), null, 0));
 
-    boolean hasExt = false;
     // first we add a root for the questionaire itself
     Row row = addTreeRoot(gen, model.getRows(), qr);
-    List<BaseWrapper> items = qr.children("item");
-    for (BaseWrapper i : items) {
-      hasExt = renderTreeItem(gen, row.getSubRows(), qr, i) || hasExt;
+    List<ResourceElement> items = qr.children("item");
+    for (ResourceElement i : items) {
+      renderTreeItem(status, gen, row.getSubRows(), qr, i);
     }
     XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
     x.getChildNodes().add(xn);
-    return hasExt;
   }
 
-  public boolean renderTree(XhtmlNode x, QuestionnaireResponse q) throws UnsupportedEncodingException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true);
-    TableModel model = gen.new TableModel("qtree="+q.getId(), true);    
-    model.setAlternating(true);
-    if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) {
-      model.setDocoImg(HierarchicalTableGenerator.help16AsData());      
-    } else {
-      model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "help16.png"));
-    }
-    model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table");
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_LINKID), context.formatPhrase(RenderingContext.QUEST_LINK), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_TEXT), context.formatPhrase(RenderingContext.QUEST_TEXTFOR), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_DEFINITION), context.formatPhrase(RenderingContext.QUEST_TIMES), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_ANSWER), context.formatPhrase(RenderingContext.QUEST_TYPE_ITEM), null, 0));
-
-    boolean hasExt = false;
-    // first we add a root for the questionaire itself
-    Row row = addTreeRoot(gen, model.getRows(), q);
-    for (QuestionnaireResponseItemComponent i : q.getItem()) {
-      hasExt = renderTreeItem(gen, row.getSubRows(), q, i) || hasExt;
-    }
-    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
-    x.getChildNodes().add(xn);
-    return hasExt;
-  }
-
-
-
-  private Row addTreeRoot(HierarchicalTableGenerator gen, List<Row> rows, QuestionnaireResponse q) throws IOException {
+  private Row addTreeRoot(HierarchicalTableGenerator gen, List<Row> rows, ResourceElement qr) throws IOException {
     Row r = gen.new Row();
     rows.add(r);
 
-    r.setIcon("icon_q_root.gif", context.formatPhrase(RenderingContext.QUEST_RESP_ROOT));
-    r.getCells().add(gen.new Cell(null, null, q.getId(), null, null));
-    r.getCells().add(gen.new Cell(null, null, "", null, null));
-    r.getCells().add(gen.new Cell(null, null, context.formatPhrase(RenderingContext.QUEST_RESP), null, null));
-    r.getCells().add(gen.new Cell(null, null, "", null, null));
-    return r;    
-  }
-
-  private Row addTreeRoot(HierarchicalTableGenerator gen, List<Row> rows, ResourceWrapper qr) throws IOException {
-    Row r = gen.new Row();
-    rows.add(r);
-
-    Base b = qr.get("questionnaire");
+    ResourceElement b = qr.child("questionnaire");
     String ref = b == null ? null : b.primitiveValue();
     Questionnaire q = context.getContext().fetchResource(Questionnaire.class, ref);
     
@@ -152,18 +107,16 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     return r;    
   }
 
-
-
-  private boolean renderTreeItem(HierarchicalTableGenerator gen, List<Row> rows, ResourceWrapper q, BaseWrapper i) throws IOException {
+  private boolean renderTreeItem(RenderingStatus status, HierarchicalTableGenerator gen, List<Row> rows, ResourceElement qr, ResourceElement i) throws IOException {
     Row r = gen.new Row();
     rows.add(r);
     boolean hasExt = false;
 
-    List<BaseWrapper> items = i.children("item");
-    List<BaseWrapper> answers = i.children("answer");
+    List<ResourceElement> items = i.children("item");
+    List<ResourceElement> answers = i.children("answer");
     boolean hasItem = items != null && !items.isEmpty();
     if (answers != null) {
-      for (BaseWrapper a : answers) {
+      for (ResourceElement a : answers) {
         hasItem = a.has("item");
       }
     }
@@ -172,40 +125,39 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     } else {
       r.setIcon("icon-q-string.png", context.formatPhrase(RenderingContext.QUEST_ITEM));
     }
-    String linkId = i.has("linkId") ? i.get("linkId").primitiveValue() : "??";
-    String text = i.has("text") ? i.get("text").primitiveValue() : "";
+    String linkId = i.has("linkId") ? i.primitiveValue("linkId") : "??";
+    String text = i.has("text") ? i.primitiveValue("text") : "";
     r.getCells().add(gen.new Cell(null, context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget()+"#item."+linkId, linkId, null, null));
     r.getCells().add(gen.new Cell(null, null, text, null, null));
     r.getCells().add(gen.new Cell(null, null, null, null, null));
     if (answers == null ||  answers.size() == 0) {
       r.getCells().add(gen.new Cell(null, null, null, null, null));
       if (items != null) {
-        for (BaseWrapper si : items) {
-          renderTreeItem(gen, r.getSubRows(), q, si);
+        for (ResourceElement si : items) {
+          renderTreeItem(status, gen, r.getSubRows(), qr, si);
         }
       }
     } else if (answers.size() == 1) {
-      BaseWrapper ans = answers.get(0);
-      renderAnswer(gen, q, r, ans);
+      ResourceElement ans = answers.get(0);
+      renderAnswer(status, gen, qr, r, ans);
     } else {
       r.getCells().add(gen.new Cell(null, null, null, null, null));          
-      for (BaseWrapper ans : answers) {
+      for (ResourceElement ans : answers) {
         Row ar = gen.new Row();
         ar.setIcon("icon-q-string.png", "Item");
         ar.getSubRows().add(ar);
         ar.getCells().add(gen.new Cell(null, null, null, null, null));
         ar.getCells().add(gen.new Cell(null, null, text, null, null));
         ar.getCells().add(gen.new Cell(null, null, null, null, null));
-        renderAnswer(gen, q, ar, ans);
+        renderAnswer(status, gen, qr, ar, ans);
       }
     }
 
     return hasExt;    
   }
 
-  public void renderAnswer(HierarchicalTableGenerator gen, ResourceWrapper q, Row r, BaseWrapper ans) throws UnsupportedEncodingException, IOException {
-    List<BaseWrapper> items;
-    Base b = ans.get("value[x]");
+  public void renderAnswer(RenderingStatus status, HierarchicalTableGenerator gen, ResourceElement qr, Row r, ResourceElement ans) throws UnsupportedEncodingException, IOException {
+    ResourceElement b = ans.child("value[x]");
     if (b == null) {
       r.getCells().add(gen.new Cell(null, null, "null!", null, null));
     } else if (b.isPrimitive()) {
@@ -216,12 +168,11 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       Piece p = gen.new Piece("span");
       p.getChildren().add(x);
       cell.addPiece(p);
-      render(x, (DataType) b);
+      renderDataType(status, x, b);
       r.getCells().add(cell);
     }
-    items = ans.children("item");
-    for (BaseWrapper si : items) {
-      renderTreeItem(gen, r.getSubRows(), q, si);
+    for (ResourceElement si : ans.children("item")) {
+      renderTreeItem(status, gen, r.getSubRows(), qr, si);
     }
   }
   
@@ -324,7 +275,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     return false;
   }
 
-  public boolean renderForm(XhtmlNode x, ResourceWrapper q) throws UnsupportedEncodingException, IOException {
+  public boolean renderForm(XhtmlNode x, ResourceElement q) throws UnsupportedEncodingException, IOException {
     boolean hasExt = false;
     XhtmlNode d = x.div();
     d.tx(context.formatPhrase(RenderingContext.GENERAL_TODO));
@@ -604,14 +555,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    return "QuestionnaireResponse "+q.present();
 //  }
 // 
-  private boolean renderLinks(XhtmlNode x, QuestionnaireResponse q) {
-    x.para().tx(context.formatPhrase(RenderingContext.QUEST_TRY_QUEST));
-    XhtmlNode ul = x.ul();
-    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getLink(KnownLinkType.SELF), "package.tgz")+"&q="+q.getId()+".json").tx(context.formatPhrase(RenderingContext.QUEST_NLM));
-    return false;
-  }
-
-  private boolean renderLinks(XhtmlNode x, ResourceWrapper q) {
+  private boolean renderLinks(RenderingStatus status, XhtmlNode x, ResourceElement q) {
     x.para().tx(context.formatPhrase(RenderingContext.QUEST_TRY_QUEST));
     XhtmlNode ul = x.ul();
     ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getLink(KnownLinkType.SELF), "package.tgz")+"&q="+q.getId()+".json").tx(context.formatPhrase(RenderingContext.QUEST_NLM));
@@ -873,15 +817,5 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    }    
 //  }
 
-
-  @Override
-  public String display(Resource r) throws UnsupportedEncodingException, IOException {
-    return context.formatPhrase(RenderingContext.GENERAL_TODO);
-  }
-
-  @Override
-  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    return context.formatPhrase(RenderingContext.GENERAL_TODO);
-  }
 
 }
