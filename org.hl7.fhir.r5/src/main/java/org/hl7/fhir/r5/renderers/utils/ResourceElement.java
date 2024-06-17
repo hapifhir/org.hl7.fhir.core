@@ -56,6 +56,9 @@ public class ResourceElement {
     public ElementDefinition getPropertyDefinition() {
       return values.isEmpty() ? null : values.get(0).getPropertyDefinition();
     }
+    public StructureDefinition getClassDefinition() {
+      return values.isEmpty() ? null : values.get(0).getClassDefinition();
+    }
   }
 
   private ContextUtilities contextUtils;
