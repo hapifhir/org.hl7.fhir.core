@@ -51,6 +51,11 @@ public class Renderer  {
       return extensions;
     }
 
+    public boolean isShowCodeDetails() {
+      // TODO Auto-generated method stub
+      return false;
+    }
+
   }
   protected RenderingContext context;
   
@@ -234,12 +239,16 @@ public class Renderer  {
     return value.toString();
   }
   
-  protected ResourceElement wrap(DataType type) {
-    return new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), type);
+  protected ResourceElement wrapNC(DataType type) {
+    return ResourceElement.forType(context.getContextUtilities(), context.getProfileUtilities(), type);
   }
   
   protected ResourceElement wrap(Resource resource) {
-    return new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), resource);
+    return ResourceElement.forResource(context.getContextUtilities(), context.getProfileUtilities(), resource);
   }
+  protected ResourceElement wrapWC(ResourceElement resource, DataType type) {
+    return ResourceElement.forType(context.getContextUtilities(), context.getProfileUtilities(), resource, type);
+  }
+  
       
 }

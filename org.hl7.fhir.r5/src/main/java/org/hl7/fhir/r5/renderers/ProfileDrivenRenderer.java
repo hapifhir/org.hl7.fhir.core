@@ -64,14 +64,6 @@ import org.hl7.fhir.r5.model.Timing;
 import org.hl7.fhir.r5.model.TriggerDefinition;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UsageContext;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
-import org.hl7.fhir.r5.renderers.utils.DirectWrappers;
-import org.hl7.fhir.r5.renderers.utils.DirectWrappers.BaseWrapperDirect;
-import org.hl7.fhir.r5.renderers.utils.DirectWrappers.PropertyWrapperDirect;
-import org.hl7.fhir.r5.renderers.utils.DirectWrappers.ResourceWrapperDirect;
-import org.hl7.fhir.r5.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.r5.renderers.utils.ResourceElement;
@@ -378,7 +370,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if ("DomainResource.contained".equals(child.getBase().getPath())) {
       if (round2) {
         for (ResourceElement v : p.getValues()) {
-          if (v.getResource() != null && !RendererFactory.hasSpecificRenderer(v.fhirType())) {
+          if (v.getResourceWrapper() != null && !RendererFactory.hasSpecificRenderer(v.fhirType())) {
             x.hr();
             RenderingContext ctxt = context.copy();
             ctxt.setContained(true);

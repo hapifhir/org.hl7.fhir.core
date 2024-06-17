@@ -28,6 +28,7 @@ import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.ObligationsRenderer.ObligationDetail;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.utils.PublicationHacker;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.MarkDownProcessor;
@@ -288,24 +289,24 @@ public class ObligationsRenderer extends Renderer {
     return abr;
   }
 
-  public String render(RenderingStatus status, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws IOException {
+  public String render(RenderingStatus status, ResourceElement res, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws IOException {
     if (obligations.isEmpty()) {
       return "";
     } else {
       XhtmlNode tbl = new XhtmlNode(NodeType.Element, "table");
       tbl.attribute("class", "grid");
-      renderTable(status, tbl.getChildNodes(), true, defPath, anchorPrefix, inScopeElements);
+      renderTable(status, res, tbl.getChildNodes(), true, defPath, anchorPrefix, inScopeElements);
       return new XhtmlComposer(false).compose(tbl);
     }
   }
 
-  public void renderTable(RenderingStatus status, HierarchicalTableGenerator gen, Cell c, List<ElementDefinition> inScopeElements) throws FHIRFormatError, DefinitionException, IOException {
+  public void renderTable(RenderingStatus status, ResourceElement res, HierarchicalTableGenerator gen, Cell c, List<ElementDefinition> inScopeElements) throws FHIRFormatError, DefinitionException, IOException {
     if (obligations.isEmpty()) {
       return;
     } else {
       Piece piece = gen.new Piece("table").attr("class", "grid");
       c.getPieces().add(piece);
-      renderTable(status, piece.getChildren(), false, gen.getDefPath(), gen.getAnchorPrefix(), inScopeElements);
+      renderTable(status, res, piece.getChildren(), false, gen.getDefPath(), gen.getAnchorPrefix(), inScopeElements);
     }
   }
 
@@ -360,7 +361,7 @@ public class ObligationsRenderer extends Renderer {
   }
 
 
-  public void renderTable(RenderingStatus status, List<XhtmlNode> children, boolean fullDoco, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws FHIRFormatError, DefinitionException, IOException {
+  public void renderTable(RenderingStatus status, ResourceElement res, List<XhtmlNode> children, boolean fullDoco, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws FHIRFormatError, DefinitionException, IOException {
     boolean doco = false;
     boolean usage = false;
     boolean actor = false;
@@ -485,7 +486,7 @@ public class ObligationsRenderer extends Renderer {
           XhtmlNode td = tr.td();
           for (UsageContext u : ob.usage) {
             if (first) first = false; else td.tx(", ");
-            new DataRenderer(context).renderDataType(status, td, wrap(u));
+            new DataRenderer(context).renderDataType(status, td, wrapWC(res, u));
           }
         } else {
           tr.td();          

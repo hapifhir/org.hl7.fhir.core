@@ -19,11 +19,9 @@ import org.hl7.fhir.r5.model.Requirements.ConformanceExpectation;
 import org.hl7.fhir.r5.model.Requirements.RequirementsStatementComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.UrlType;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceElement;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
@@ -45,48 +43,29 @@ public class RequirementsRenderer extends ResourceRenderer {
     if (req.has("actor")) {
       List<ResourceElement> actors = req.children("actor");
       if (actors.size() == 1) {
-        ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, actors.get(0).primitiveValue(), req);
+        ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, actors.get(0).primitiveValue(), req.getResourceNative());
         XhtmlNode p = x.para();
         p.tx(context.formatPhrase(RenderingContext.REQ_ACTOR)+" ");
-        if (acd == null) {
-          p.code(actors.get(0).primitiveValue());
-        } else {
-          p.ah(acd.getWebPath()).tx(acd.present());
-        }
+        renderCanonical(status, p, ActorDefinition.class, actors.get(0));
       } else {
         x.para().tx(context.formatPhrase(RenderingContext.REQ_FOLLOWING_ACTOR)+" ");
         XhtmlNode ul = x.ul();
         for (ResourceElement a : actors) {
-          ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, a.primitiveValue(), req);
-          if (acd == null) {
-            ul.li().code(a.primitiveValue());
-          } else {
-            ul.li().ah(acd.getWebPath()).tx(acd.present());
-          }
+          renderCanonical(status, ul.li(), ActorDefinition.class, a);
         }
       }
     }
     if (req.has("derivedFrom")) {
       List<ResourceElement> list = req.children("derivedFrom");
       if (list.size() == 1) {
-        Requirements reqd = context.getWorker().fetchResource(Requirements.class, list.get(0).primitiveValue(), req);
         XhtmlNode p = x.para();
         p.tx(context.formatPhrase(RenderingContext.REQ_DERIVE)+" ");
-        if (reqd == null) {
-          p.code(list.get(0).primitiveValue());
-        } else {
-          p.ah(reqd.getWebPath()).tx(reqd.present());
-        }
+        renderCanonical(status, p, Requirements.class, list.get(0));
       } else {
         x.para().tx(context.formatPhrase(RenderingContext.REQ_FOLLOWING_REQ)+" ");
         XhtmlNode ul = x.ul();
         for (ResourceElement a : list) {
-          Requirements reqd = context.getWorker().fetchResource(Requirements.class, a.primitiveValue(), req);
-          if (reqd == null) {
-            ul.li().code(a.primitiveValue());
-          } else {
-            ul.li().ah(reqd.getWebPath()).tx(reqd.present());
-          }
+          renderCanonical(status, ul.li(), Requirements.class, a);
         }
       }
     }
@@ -108,7 +87,7 @@ public class RequirementsRenderer extends ResourceRenderer {
 
     for (ResourceElement stmt : req.children("statement")) {
       XhtmlNode tr = tbl.tr();
-      String lbl = stmt.has("label") ? stmt.primitiveValue("label") : stmt..primitiveValue("key");
+      String lbl = stmt.has("label") ? stmt.primitiveValue("label") : stmt.primitiveValue("key");
       XhtmlNode td = tr.td();
       td.b().an(stmt.primitiveValue("key"));
       td.tx(lbl);
@@ -134,7 +113,7 @@ public class RequirementsRenderer extends ResourceRenderer {
           String url = stmt.primitiveValue("derivedFrom");
           String key = url.contains("#") ? url.substring(url.indexOf("#")+1) : "";
           if (url.contains("#")) { url = url.substring(0, url.indexOf("#")); };
-          Requirements reqr = context.getWorker().fetchResource(Requirements.class, url, req);
+          Requirements reqr = context.getWorker().fetchResource(Requirements.class, url, req.getResourceNative());
           if (reqr != null) {
             RequirementsStatementComponent stmtr = reqr.findStatement(key);
             if (stmtr != null) {
@@ -156,7 +135,7 @@ public class RequirementsRenderer extends ResourceRenderer {
             if (url.contains("#")) {
               url = url.substring(0, url.indexOf("#"));
             }
-            Resource r = context.getWorker().fetchResource(Resource.class, url, req);
+            Resource r = context.getWorker().fetchResource(Resource.class, url, req.getResourceNative());
             if (r != null) {
               String desc = getResourceDescription(r, null);
               li.ah(c.primitiveValue()).tx(desc);
@@ -190,10 +169,10 @@ public class RequirementsRenderer extends ResourceRenderer {
               if (url.contains("#")) {
                 url = url.substring(0, url.indexOf("#"));
               }
-              Resource r = context.getWorker().fetchResource(Resource.class, url, req);
+              Resource r = context.getWorker().fetchResource(Resource.class, url, req.getResourceNative());
               ResourceWithReference t = null;
               if (r == null && context.getResolver() != null) {
-                t = context.getResolver().resolve(context, url);                
+                t = context.getResolver().resolve(context, url, null);                
               }
               if (r != null) {
                 String desc = getResourceDescription(r, c.primitiveValue("display"));
@@ -219,7 +198,7 @@ public class RequirementsRenderer extends ResourceRenderer {
     if (!Utilities.noString(display)) {
       return display;
     }
-    return RendererFactory.factory(res.getResource(), context).display(res.getResource());
+    return RendererFactory.factory(res.getResource(), context).displayResource(res.getResource());
   }
 
   private String getResourceDescription(Resource res, String display) throws UnsupportedEncodingException, IOException {
@@ -229,7 +208,7 @@ public class RequirementsRenderer extends ResourceRenderer {
     if (res instanceof CanonicalResource) {
       return ((CanonicalResource) res).present();
     }
-    return RendererFactory.factory(res, context).display(res);
+    return RendererFactory.factory(res, context).displayResource(wrap(res));
   }
 
   public void describe(XhtmlNode x, Library lib) {

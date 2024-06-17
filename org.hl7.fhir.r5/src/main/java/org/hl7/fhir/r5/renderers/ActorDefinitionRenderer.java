@@ -25,12 +25,11 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
  
   @Override
   public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    throw new Error("ActorDefinitionRenderer only renders native resources directly");
-  }
-  
-  @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    render(status, x, (ActorDefinition) r);
+    if (r.isDirect()) {
+      render(status, x, (ActorDefinition) r.getBase(), r);      
+    } else {
+      throw new Error("ActorDefinitionRenderer only renders native resources directly");
+    }
   }
   
   @Override
@@ -38,7 +37,7 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
     return canonicalTitle(r);
   }
 
-  public void render(RenderingStatus status, XhtmlNode x, ActorDefinition acd) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(RenderingStatus status, XhtmlNode x, ActorDefinition acd, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();
     tr.td().b().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_ACT, acd.getName())  + " ");
@@ -52,18 +51,13 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
       boolean first = true;
       for (UrlType t : acd.getReference()) {
         if (first) first = false; else x.br();
-        renderUri(status, td, wrap(t));
+        renderUri(status, td, wrapWC(r, t));
       }      
     }
     if (acd.hasCapabilities()) {
       tbl.tr().td().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_CAP));
       td = tr.td().colspan("2");
-      CapabilityStatement cs = context.getWorker().fetchResource(CapabilityStatement.class, acd.getCapabilities(), acd);
-      if (cs != null) {
-        td.ah(cs.getWebPath()).tx(cs.present());
-      } else {
-        renderCanonical(status, wrap(acd), td, wrap(acd.getCapabilitiesElement()));
-      }      
+      renderCanonical(status, r, td, CapabilityStatement.class, acd.getCapabilitiesElement());      
     }
     if (acd.hasDerivedFrom()) {
       tbl.tr().td().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_DER));
@@ -71,12 +65,7 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
       boolean first = true;
       for (UrlType t : acd.getReference()) {
         if (first) first = false; else x.br();
-        ActorDefinition df = context.getWorker().fetchResource(ActorDefinition.class, t.getValue(), acd);
-        if (df != null) {
-          td.ah(df.getWebPath()).tx(df.present());
-        } else {
-          renderUri(status, td, wrap(t));
-        }      
+        renderUri(status, r, td, t);
       }      
     }
   }

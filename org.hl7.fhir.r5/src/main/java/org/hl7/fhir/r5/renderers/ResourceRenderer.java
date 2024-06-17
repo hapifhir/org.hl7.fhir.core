@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeableReference;
@@ -29,11 +30,15 @@ import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceReferenceKind;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement.ElementKind;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -77,27 +82,20 @@ public abstract class ResourceRenderer extends DataRenderer {
   /**
    * given a resource, update it's narrative with the best rendering available. 
    * 
-   * Explanation about native vs wrapped
+   * ResourceElement is a facade to either a org.hl7.fhir.r5.model Resource, or
+   * to a org.hl7.fhir.r5.elementModel (which might a resource of any version). 
    * 
+   * Note that some resource renderers - only canonical ones - only render native
+   * resources, and not element model ones. These may be migrated in the future 
+   * (only reason not to is the sheer size of the task, though performance might 
+   * be a factor)
+   *  
    * @param r - the domain resource in question
    * 
    * @throws IOException
    * @throws EOperationOutcome 
    * @throws FHIRException 
    */
-  public void renderResource(DomainResource r) throws IOException, FHIRException, EOperationOutcome {
-    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    RenderingStatus status = new RenderingStatus();
-    renderResource(status, x, r);
-    String an = r.fhirType()+"_"+r.getId();
-    if (context.isAddName()) {
-      if (!hasAnchorName(x, an)) {
-        injectAnchorName(x, an);
-      }
-    }
-    inject(r, x, status.getExtensions() ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
-  }
-  
   public void renderResource(ResourceElement r) throws IOException, FHIRException, EOperationOutcome {  
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     RenderingStatus status = new RenderingStatus();
@@ -146,9 +144,6 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   // these three are what the descendants of this class override
   public abstract void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome;
-  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    renderResource(status, x, wrap(r));
-  }
   public abstract String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException;
     
 
@@ -173,33 +168,33 @@ public abstract class ResourceRenderer extends DataRenderer {
     r.setNarrative(x, status.toCode(), multiLangMode, context.getLocale());
   }
 
-  public void inject(DomainResource r, XhtmlNode x, NarrativeStatus status) {
-    r.getText().setUserData("renderer.generated", true);
-    if (!r.hasText() || !r.getText().hasDiv()) {
-      r.setText(new Narrative());
-      r.getText().setStatus(status);      
-    }
-    if (multiLangMode) {
-      if (!r.getText().hasDiv()) { 
-        XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
-        div.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-        r.getText().setDiv(div);
-      } else {
-        r.getText().getDiv().getChildNodes().removeIf(c -> !"div".equals(c.getName()) || !c.hasAttribute("xml:lang"));
-      }
-      markLanguage(x);
-      r.getText().getDiv().getChildNodes().add(x);
-    } else {
-      if (!x.hasAttribute("xmlns"))
-        x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-      if (r.hasLanguage()) {
-        // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
-        x.setAttribute("lang", r.getLanguage());
-        x.setAttribute("xml:lang", r.getLanguage());
-      }
-      r.getText().setDiv(x);
-    }
-  }
+//  public void inject(DomainResource r, XhtmlNode x, NarrativeStatus status) {
+//    r.getText().setUserData("renderer.generated", true);
+//    if (!r.hasText() || !r.getText().hasDiv()) {
+//      r.setText(new Narrative());
+//      r.getText().setStatus(status);      
+//    }
+//    if (multiLangMode) {
+//      if (!r.getText().hasDiv()) { 
+//        XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
+//        div.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+//        r.getText().setDiv(div);
+//      } else {
+//        r.getText().getDiv().getChildNodes().removeIf(c -> !"div".equals(c.getName()) || !c.hasAttribute("xml:lang"));
+//      }
+//      markLanguage(x);
+//      r.getText().getDiv().getChildNodes().add(x);
+//    } else {
+//      if (!x.hasAttribute("xmlns"))
+//        x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+//      if (r.hasLanguage()) {
+//        // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
+//        x.setAttribute("lang", r.getLanguage());
+//        x.setAttribute("xml:lang", r.getLanguage());
+//      }
+//      r.getText().setDiv(x);
+//    }
+//  }
 
   public void markLanguage(XhtmlNode x) {
     x.setAttribute("lang", context.getLocale().toString());
@@ -209,94 +204,101 @@ public abstract class ResourceRenderer extends DataRenderer {
     x.addTag(0, "hr");
   }
   
-  public void renderCanonical(RenderingStatus status, ResourceElement resource,  XhtmlNode x, ResourceElement canonical) throws UnsupportedEncodingException, IOException {
+  public <T extends Resource> void renderCanonical(RenderingStatus status, XhtmlNode x, Class<T> class_, ResourceElement canonical) throws UnsupportedEncodingException, IOException {
     if (!renderPrimitiveWithNoValue(status, x, canonical)) {
-      renderCanonical(resource, x, canonical.primitiveValue(), true, resource); 
+      CanonicalResource target = (CanonicalResource) context.getWorker().fetchResource(class_, canonical.primitiveValue(), canonical.getResourceNative());
+      if (target != null && target.hasWebPath()) {
+        if (canonical.primitiveValue().contains("|")) {
+          x.ah(target.getWebPath()).tx(target.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +target.getVersion()+")");
+        } else {
+          x.ah(target.getWebPath()).tx(target.present());
+        }
+        return;
+      }
+      // we can't resolve it as a canonical in the context. We'll try to do a local resolution instead
+      ResourceWithReference rr = resolveReference(canonical);
+      if (rr != null) {
+        x.ah(rr.getReference()).tx(RendererFactory.factory(rr.getResource(), context).displayResource(rr.getResource()));        
+      } else {
+        x.tx("??");
+      }
     }
   }
   
-  public void renderCanonical(ResourceElement res, XhtmlNode x, String url) throws UnsupportedEncodingException, IOException {
-    renderCanonical(res, x, url, true, res); 
-  }
-  
-  public void renderCanonical(ResourceElement rw, XhtmlNode x, String url, boolean allowLinks, ResourceElement src) throws UnsupportedEncodingException, IOException {
-    if (url == null) {
+  /**
+   * @param <T>
+   * @param status
+   * @param res
+   * @param x
+   * @param class_ - makes resolution faster, but can just be Resource.class
+   * @param canonical
+   * @throws UnsupportedEncodingException
+   * @throws IOException
+   */
+  public <T extends Resource> void renderCanonical(RenderingStatus status, ResourceElement res, XhtmlNode x, Class<T> class_, CanonicalType canonical) throws UnsupportedEncodingException, IOException {
+    if (canonical == null || !canonical.hasPrimitiveValue()) {
       return;
     }
-    Resource target = context.getWorker().fetchResource(Resource.class, url, src.getResource());
-    if (target == null || !(target instanceof CanonicalResource)) {
+    String url = canonical.asStringValue();
+    Resource target = context.getWorker().fetchResource(Resource.class, url, res.getResourceNative());
+    if (target == null || !(target instanceof CanonicalResource) || !target.hasWebPath()) {
       x.code().tx(url);
     } else {
       CanonicalResource cr = (CanonicalResource) target;
       if (url.contains("|")) {
-        if (target.hasWebPath()) {
-          x.ah(target.getWebPath()).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +cr.getVersion()+")");
-        } else {
-          url = url.substring(0, url.indexOf("|"));
-          x.code().tx(url);
-          x.tx(": "+cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +cr.getVersion()+")");          
-        }
+        x.ah(target.getWebPath()).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +cr.getVersion()+")");
       } else {
-        if (target.hasWebPath()) {
-          x.ah(target.getWebPath()).tx(cr.present());
-        } else {
-          x.code().tx(url);
-          x.tx(" ("+cr.present()+")");          
-        }
+        x.ah(target.getWebPath()).tx(cr.present());
       }
-    }
+    }     
   }
 
-  public void renderReference(RenderingStatus status, ResourceElement res, XhtmlNode x, ResourceElement type) throws FHIRFormatError, DefinitionException, IOException {
-    if (type.fhirType().equals("Reference")) {
-      renderReference(status, res, x, type);
-    } else if (type.fhirType().equals("CodeableReference")) {
+  // todo: if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID) || r.hasExtension(ToolingExtensions.EXT_TARGET_PATH)) {
+  @Override
+  public void renderReference(RenderingStatus status, XhtmlNode x, ResourceElement type) throws FHIRFormatError, DefinitionException, IOException {
+    ResourceElement display = null;
+    ResourceElement actual = null;
+    ResourceElement id = null;
+    if (type.fhirType().equals("CodeableReference")) {
       if (type.has("reference")) {
-        renderReference(status, res, x, type, true);
+        type = type.child("reference");
       } else {
-        renderDataType(status, x, type);
-      } 
-    } else { 
-      renderDataType(status, x, type);
+        renderCodeableConcept(status, x, type.child("concept"));
+        return;
+      }
+    }
+    if (type.fhirType().equals("Reference")) {
+      display = type.child("display");
+      actual = type.child("reference");
+      id = type.child("identifier");
+    } else {
+      actual = type;
+    }
+    if (actual != null && actual.hasPrimitiveValue()) {
+      ResourceWithReference rr = resolveReference(actual);
+      if (rr == null) {
+        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : actual.primitiveValue();
+        x.ah(actual.primitiveValue()).tx(disp);
+      } else {
+        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : RendererFactory.factory(rr.getResource(), context).displayResource(rr.getResource());
+        x.ah(rr.getReference()).tx(disp);
+      }
+    } else if (display != null && id != null) {
+      renderDataType(status, x, display);
+      x.tx(" (Identifier: ");
+      renderIdentifier(status, x, id);
+      x.tx(")");
+    } else if (display != null) {
+      renderDataType(status, x, display);
+    } else if (id != null) {
+      x.tx("Identifier: ");
+      renderIdentifier(status, x, id);
+    } else {
+      x.tx("??");
     }
   }
-
-  /*
-   * } else if (ew.fhirType().equals("Reference")) {
-      Reference r = (Reference) e;
-      if (r.getReference() != null && r.getReference().contains("#")) {
-        if (containedIds.contains(r.getReference().substring(1))) {
-          x.ah("#hc"+r.getReference().substring(1)).tx("See "+r.getReference());
-        } else {          
-          // in this case, we render the resource in line
-          ResourceWrapper rw = null;
-          for (ResourceWrapper t : res.getContained()) {
-            if (r.getReference().substring(1).equals(t.getId())) {
-              rw = t;
-            }
-          }
-          if (rw == null) {
-            renderReference(res, x, r);
-          } else {
-            String ref = context.getResolver() != null ?context.getResolver().urlForContained(context, res.fhirType(), res.getId(), rw.fhirType(), rw.getId()) : null;
-            if (ref == null) {
-              x.an("hc"+rw.getId());
-              RenderingContext ctxtc = context.copy();
-              ctxtc.setAddGeneratedNarrativeHeader(false);
-              ctxtc.setContained(true);
-              ResourceRenderer rr = RendererFactory.factory(rw, ctxtc);
-              rr.setRcontext(new ResourceContext(rcontext, rw));
-              rr.render(parent.blockquote(), rw);
-            } else {
-              x.ah(ref).tx("See "+rw.fhirType());              
-            }
-          }
-        }
-      } else {
-        renderReference(res, x, r);
-      }
-   */
-  public void renderReference(Resource res, HierarchicalTableGenerator gen, List<Piece> pieces, Reference r, boolean allowLinks) throws UnsupportedEncodingException, IOException {
+  
+  public void renderReference(ResourceElement res, HierarchicalTableGenerator gen, List<Piece> pieces, Reference r, boolean allowLinks) throws UnsupportedEncodingException, IOException {
     if (r == null) { 
       pieces.add(gen.new Piece(null, "null!", null));
       return;
@@ -305,7 +307,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     String link = null;
     StringBuilder text = new StringBuilder();
     if (r.hasReferenceElement() && allowLinks) {
-      tr = resolveReference(wrap(res), r.getReference());
+      tr = resolveReference(res, r.getReference());
 
       if (!r.getReference().startsWith("#")) {
         if (tr != null && tr.getReference() != null) {
@@ -328,7 +330,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (!Utilities.noString(r.getReference())) {
         text.append(r.getReference());
       } else if (r.hasIdentifier()) {
-        text.append(displayIdentifier(wrap(r.getIdentifier())));
+        text.append(displayIdentifier(wrapWC(res, r.getIdentifier())));
       } else {
         text.append("??");        
       }
@@ -371,6 +373,81 @@ public abstract class ResourceRenderer extends DataRenderer {
     pieces.add(gen.new Piece(link,text.toString(), null));
   }
   
+  public void renderReference(ResourceElement res, HierarchicalTableGenerator gen, List<Piece> pieces, ResourceElement r, boolean allowLinks) throws UnsupportedEncodingException, IOException {
+    if (r == null) { 
+      pieces.add(gen.new Piece(null, "null!", null));
+      return;
+    }
+    ResourceWithReference trt = null;
+    String link = null;
+    StringBuilder text = new StringBuilder();
+    if (r.has("reference") && allowLinks) {
+      trt = resolveReference(res, r.primitiveValue("reference"));
+
+      if (!r.primitiveValue("reference").startsWith("#")) {
+        if (trt != null && trt.getReference() != null) {
+          link = trt.getReference();
+        } else if (r.primitiveValue("reference").contains("?")) {
+          text.append(context.formatPhrase(RenderingContext.RES_REND_COND_REF)+" ");
+        } else {
+          link = r.primitiveValue("reference");
+        }
+      } 
+    }
+    if (trt != null && trt.getReference() != null && trt.getReference().startsWith("#")) {
+      text.append(context.formatPhrase(RenderingContext.RES_REND_SEE_ON_THIS_PAGE)+" ");
+    }
+    // what to display: if text is provided, then that. if the reference was resolved, then show the name, or the generated narrative
+    String display = r.has("display") ? r.primitiveValue("display") : null;
+    String name = trt != null && trt.getResource() != null ? getNameForResource(trt.getResource()) : null; 
+    
+    if (display == null && (trt == null || trt.getResource() == null)) {
+      if (!Utilities.noString(r.primitiveValue("reference"))) {
+        text.append(r.primitiveValue("reference"));
+      } else if (r.has("identifier")) {
+        text.append(displayIdentifier(r.child("identifier")));
+      } else {
+        text.append("??");        
+      }
+    } else if (context.isTechnicalMode()) {
+      text.append(r.primitiveValue("reference"));
+      if (display != null) {
+        text.append(": "+display);
+      }
+      if ((trt == null || (trt.getReference() != null && !trt.getReference().startsWith("#"))) && name != null) {
+        text.append(" \""+name+"\"");
+      }
+      if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID) || r.hasExtension(ToolingExtensions.EXT_TARGET_PATH)) {
+        text.append("(");
+        for (ResourceElement ex : r.extensions(ToolingExtensions.EXT_TARGET_ID)) {
+          if (ex.has("value")) {
+            text.append(", ");
+            text.append("#"+ex.primitiveValue("value"));
+          }
+        }
+        for (ResourceElement ex : r.extensions(ToolingExtensions.EXT_TARGET_PATH)) {
+          if (ex.has("value")) {
+            text.append(", ");
+            text.append("#"+ex.primitiveValue("value"));
+          }
+        }
+        text.append(")");
+      }  
+    } else {
+      if (display != null) {
+        text.append(display);
+      } else if (name != null) {
+        text.append(name);
+      } else {
+        text.append(context.formatPhrase(RenderingContext.RES_REND_DESC));
+      }
+    }
+    if (trt != null && trt.getReference() != null && trt.getReference().startsWith("#")) {
+      text.append(")");
+    }      
+    pieces.add(gen.new Piece(link,text.toString(), null));
+  }
+  
   protected String getNameForResource(ResourceElement resource) {
     ResourceElement name = resource.firstChild("name");
     if (name != null && !name.isEmpty()) {
@@ -395,181 +472,186 @@ public abstract class ResourceRenderer extends DataRenderer {
     }
   }
 
-  public void renderReference(RenderingStatus status, ResourceElement rw, XhtmlNode x, ResourceElement r, boolean allowLinks) throws UnsupportedEncodingException, IOException {
-    if (r == null) {
-      x.tx("null!");
-      return;
-    }
-    XhtmlNode c = null;
-    ResourceWithReference tr = null;
-    boolean onPage = false;
-    String rref = r.primitiveValue("reference");
-    if (r.has("reference") && allowLinks) {
-      tr = resolveReference(rw, r.primitiveValue("reference"));
-
-      if (!rref.startsWith("#")) {
-        if (tr != null && tr.getReference() != null) {
-          if (tr.getReference().startsWith("#")) {
-            onPage = true;
-            if (context.getRules() == GenerationRules.IG_PUBLISHER || (tr != null && tr.getKind() != ResourceReferenceKind.BUNDLE)) {
-              c = x.ah("#hc"+tr.getReference().substring(1));
-            } else {
-              c = x;
-            }
-          } else {
-            c = x.ah(tr.getReference());
-          }
-        } else if (rref.contains("?")) {
-          x.tx(context.formatPhrase(RenderingContext.RES_REND_COND_REF)+" ");
-          c = x.code("");
+  protected void renderUri(RenderingStatus status, ResourceElement resource, XhtmlNode x, UriType uri) throws FHIRFormatError, DefinitionException, IOException { 
+    if (!renderPrimitiveWithNoValue(status, x, uri)) {
+      String v = uri.primitiveValue();
+      if (v.startsWith("mailto:")) { 
+        x.ah(v).addText(v.substring(7)); 
+      } else { 
+        ResourceWithReference rr = resolveReference(resource, uri.primitiveValue());
+        if (rr != null) {
+          x.ah(rr.getReference()).addText(RendererFactory.factory(rr.getResource(), context).displayResource(rr.getResource()));           
         } else {
-          c = x.ah(rref);
+          Resource r = context.getContext().fetchResource(Resource.class, v); 
+          if (r != null && r.getWebPath() != null) { 
+              x.ah(r.getWebPath()).addText(RendererFactory.factory(r, context).displayResource(wrap(r)));           
+          } else { 
+            String url = context.getResolver() != null ? context.getResolver().resolveUri(context, v) : null; 
+            if (url != null) {           
+              x.ah(url).addText(v); 
+            } else if (Utilities.isAbsoluteUrlLinkable(v) && !uri.fhirType().equals("id")) { 
+              x.ah(v).addText(v); 
+            } else { 
+              x.addText(v); 
+            } 
+          } 
         }
-      } else if ("#".equals(rref)) {
-        c = x.ah("#");
-      } else if (context.getRules() == GenerationRules.IG_PUBLISHER || (tr != null && tr.getKind() != ResourceReferenceKind.BUNDLE)) {
-        c = x.ah("#hc"+rref.substring(1));
-        onPage = true;
-      } else {
-        c = x;
-      }
-    } else {
-      c = x.span(null, null);
+      } 
     }
-    if (onPage) {
-      c.tx(context.formatPhrase(RenderingContext.RES_REND_SEE_ON_THIS_PAGE)+" ");
-    }
-    // what to display: if text is provided, then that. if the reference was resolved, then show the name, or the generated narrative
-    String display = r.has("display") ? r.primitiveValue("display") : null;
-    String name = tr != null && tr.getResource() != null ? getNameForResource(tr.getResource()) : null; 
-    
-    if (display == null && (tr == null || tr.getResource() == null)) {
-      if (!Utilities.noString(rref)) {
-        c.addText(rref);
-      } else if (r.has("identifier")) {
-        renderIdentifier(status, c, r.child("identifier"));
-      } else {
-        c.addText("??");        
-      }
-    } else if (context.isTechnicalMode()) {
-      c.addText(rref);
-      if (display != null) {
-        c.addText(": "+display);
-      }
-      if ((tr == null || (tr.getReference() != null && !tr.getReference().startsWith("#"))) && name != null) {
-        x.addText(" \""+name+"\"");
-      }
-      if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID) || r.hasExtension(ToolingExtensions.EXT_TARGET_PATH)) {
-        x.addText("(");
-        for (ResourceElement ex : r.extensions(ToolingExtensions.EXT_TARGET_ID)) {
-          if (ex.has("value")) {
-            x.sep(", ");
-            x.addText("#"+ex.primitiveValue("value"));
-          }
-        }
-        for (ResourceElement ex : r.extensions(ToolingExtensions.EXT_TARGET_PATH)) {
-          if (ex.has("value")) {
-            x.sep(", ");
-            x.addText("/#"+ex.primitiveValue("value"));
-          }
-        }
-        x.addText(")");
-      }  
-    } else {
-      if (display != null) {
-        c.addText(display);
-      } else if (name != null) {
-        c.addText(name);
-      } else {
-        c.tx(context.formatPhrase(RenderingContext.RES_REND_GEN_SUM)+" ");
-        if (tr != null) {
-          new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), true, rref.startsWith("#"), true);
-        }
-      }
-    }
-  }
-//
-//  public void renderReference(ResourceWrapper rw, XhtmlNode x, BaseWrapper r) throws UnsupportedEncodingException, IOException {
-//    XhtmlNode c = x;
-//    ResourceWithReference tr = null;
-//    String v;
-//    if (r.has("reference")) {
-//      v = r.get("reference").primitiveValue();
-//      tr = resolveReference(rw, v);
-//
-//      if (!v.startsWith("#")) {
-//        if (tr != null && tr.getReference() != null)
-//          c = x.ah(tr.getReference());
-//        else
-//          c = x.ah(v);
-//      }
-//    } else {
-//      v = "";
-//    }
-//    // what to display: if text is provided, then that. if the reference was resolved, then show the generated narrative
-//    if (r.has("display")) {
-//      c.addText(r.get("display").primitiveValue());
-//      if (tr != null && tr.getResource() != null) {
-//        c.tx(context.formatPhrase(RenderingContext.RES_REND_GEN_SUM)+" ");
-//        new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), true, v.startsWith("#"), false);
-//      }
-//    } else if (tr != null && tr.getResource() != null) {
-//      new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), v.startsWith("#"), v.startsWith("#"), false);
-//    } else {
-//      c.addText(v);
-//    }
-//  }
+  } 
   
-  protected ResourceWithReference resolveReference(ResourceElement res, String url) {
-    if (url == null)
-      return null;
-    if (url.startsWith("#") && res != null) {
-      for (ResourceElement r : res.children("contained")) {
-        if (r.getId().equals(url.substring(1)))
-          return new ResourceWithReference(ResourceReferenceKind.CONTAINED, url, r);
-      }
-      return null;
-    }
-    String version = null;
-    if (url.contains("/_history/")) {
-      version = url.substring(url.indexOf("/_history/")+10);
-      url = url.substring(0, url.indexOf("/_history/"));
-    }
-    /*
-    if (rcontext != null) {
-      BundleEntryComponent bundleResource = rcontext.resolve(url);
-      if (bundleResource != null) {
-        String id = bundleResource.getResource().getId();
-        if (id == null) {
-          id = makeIdFromBundleEntry(bundleResource.getFullUrl());
-        }
-        String bundleUrl = "#" + bundleResource.getResource().getResourceType().name() + "_" + id; 
-        return new ResourceWithReference(ResourceReferenceKind.BUNDLE, bundleUrl, new ResourceElement(this.context.getContextUtilities(), bundleResource.getResource()));
-      }
-      org.hl7.fhir.r5.elementmodel.Element bundleElement = rcontext.resolveElement(url, version);
-      if (bundleElement != null) {
-        String bundleUrl = null;
-        Element br = bundleElement.getNamedChild("resource", false);
-        if (br.getChildValue("id") != null) {
-          if ("Bundle".equals(br.fhirType())) {
-            bundleUrl = "#";
-          } else {
-            bundleUrl = "#" + br.fhirType() + "_" + br.getChildValue("id");
-          }
+  @Override
+  protected void renderUri(RenderingStatus status, XhtmlNode x, ResourceElement uri) throws FHIRFormatError, DefinitionException, IOException { 
+    if (!renderPrimitiveWithNoValue(status, x, uri)) {
+      String v = uri.primitiveValue();
+      if (v.startsWith("mailto:")) { 
+        x.ah(v).addText(v.substring(7)); 
+      } else { 
+        ResourceWithReference rr = resolveReference(uri);
+        if (rr != null) {
+          x.ah(rr.getReference()).addText(RendererFactory.factory(rr.getResource(), context).displayResource(rr.getResource()));           
         } else {
-          bundleUrl = "#" +fullUrlToAnchor(bundleElement.getChildValue("fullUrl"));          
+          Resource r = context.getContext().fetchResource(Resource.class, v); 
+          if (r != null && r.getWebPath() != null) { 
+              x.ah(r.getWebPath()).addText(RendererFactory.factory(r, context).displayResource(wrap(r)));           
+          } else { 
+            String url = context.getResolver() != null ? context.getResolver().resolveUri(context, v) : null; 
+            if (url != null) {           
+              x.ah(url).addText(v); 
+            } else if (Utilities.isAbsoluteUrlLinkable(v) && !uri.fhirType().equals("id")) { 
+              x.ah(v).addText(v); 
+            } else { 
+              x.addText(v); 
+            } 
+          } 
         }
-        return new ResourceWithReference(ResourceReferenceKind.BUNDLE, bundleUrl, new ResourceElement(this.context.getContextUtilities(), br));
+      } 
+    }
+  } 
+
+  /**
+   * Eventually this will be retired if and when there's no more direct renderers 
+   * 
+   * @param <T>
+   */
+  protected <T extends Resource> T findCanonical(Class<T> class_, UriType canonical, ResourceElement sourceOfReference) {
+    return context.getContext().fetchResource(class_, canonical.asStringValue(), sourceOfReference.getResourceNative());
+  }
+
+  protected <T extends Resource> T findCanonical(Class<T> class_, String canonical, ResourceElement sourceOfReference) {
+    return context.getContext().fetchResource(class_, canonical, sourceOfReference.getResourceNative());
+  }
+
+
+  private ResourceWithReference resolveContained(ResourceElement resource, String url) {
+    ResourceElement container = findContainer(resource);
+    if (container == null) {
+      return null;
+    } else if ("#".equals(url)) {
+      return new ResourceWithReference(ResourceReferenceKind.CONTAINER, "#hc"+container.getScopedId(), container);
+    } else {
+      String tid = url.substring(1);
+      for (ResourceElement c : container.children("contained")) {
+        if (tid.equals(c.getId())) {
+          return new ResourceWithReference(ResourceReferenceKind.CONTAINED, "#hc"+c.getScopedId(), c);
+        }
       }
     }
-*/
-    Resource ae = getContext().getWorker().fetchResource(null, url, version);
-    if (ae != null)
-      return new ResourceWithReference(ResourceReferenceKind.EXTERNAL, url, new ResourceElement(this.context.getContextUtilities(), this.context.getProfileUtilities(), ae));
-    else if (context.getResolver() != null) {
-      return context.getResolver().resolve(context, url);
-    } else
+    return null;
+  }
+  
+  private ResourceElement findContainer(ResourceElement resource) {
+    ResourceElement container = resource;
+    while (container != null) {
+      if (container.isResource() && container.kind() != ElementKind.ContainedResource) {
+        break;
+      }
+      container = container.parent();
+    }
+    return container;
+  }
+
+  private ResourceWithReference resolveOutside(ResourceElement resource, String url, String version) {
+    ResourceElement container = findContainer(resource);
+    if (container != null) {
+      while (container != null) {
+        if (container.isResource() && container.fhirType().equals("Bundle")) {
+          ResourceWithReference rr = findInBundle(resource, url);
+          if (rr != null) {
+            return null;
+          }
+        }
+        container = container.parent();
+      }
+    } 
+    // ok, we didn't find it in the current instance, so we go look elsewhere 
+    if (context.getResolver() != null) {
+      ResourceWithReference rr = context.getResolver().resolve(context, url, version);
+      if (rr != null) {
+        return rr;
+      }
+    }
+    Resource r = context.getWorker().fetchResource(Resource.class, url, version);
+    if (r != null) {
+      return new ResourceWithReference(ResourceReferenceKind.EXTERNAL, r.getWebPath(), wrap(r));
+    }
+    return null;
+  }
+  
+  private ResourceWithReference findInBundle(ResourceElement resource, String url) {
+    if (url.equals("Bundle/"+resource.getId())) {
+      return new ResourceWithReference(ResourceReferenceKind.BUNDLE, "#"+resource.getScopedId(), resource);
+    }
+    for (ResourceElement entry : resource.children("entry")) {
+      if (entry.has("resource")) {
+        ResourceElement res = entry.child("resource");  
+        if (entry.has("fullUrl")) { 
+          String fu = entry.primitiveValue("fullUrl");
+          if (url.equals(fu)) {
+           return new ResourceWithReference(ResourceReferenceKind.BUNDLE, "#"+res.getScopedId(), res);
+          }
+        }
+        if ("Bundle".equals(res.fhirType())) {
+          ResourceWithReference rr = findInBundle(res, url);
+          if (rr != null) {
+            return rr;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  protected ResourceWithReference resolveReference(ResourceElement resource, String url) {
+    if (url == null) {
       return null;
+    }
+    if (url.startsWith("#")) {
+      return resolveContained(resource, url);
+    } else {
+      String version = null;
+      if (url.contains("/_history/")) {
+        version = url.substring(url.indexOf("/_history/")+10);
+        url = url.substring(0, url.indexOf("/_history/"));
+      }
+      
+      return resolveOutside(resource, url, version);
+    }
+
+  }
+
+  protected ResourceWithReference resolveReference(ResourceElement reference) {
+    if (reference.fhirType().equals("CodeableReference")) {
+      if (reference.has("reference")) {
+        return resolveReference(reference.child("reference"));
+      } else {
+        return null;
+      }
+    } else if (reference.fhirType().equals("Reference")) {
+      return resolveReference(reference.getResourceWrapper(), reference.primitiveValue("reference"));
+    } else {
+      return resolveReference(reference.getResourceWrapper(), reference.primitiveValue());
+    }
   }
   
   
@@ -587,10 +669,10 @@ public abstract class ResourceRenderer extends DataRenderer {
     return url.replace(":", "").replace("/", "_");
   }
 
-  protected void generateCopyright(XhtmlNode x, CanonicalResource cs) {
+  protected void generateCopyright(XhtmlNode x, ResourceElement cs) {
     XhtmlNode p = x.para();
     p.b().tx(getContext().formatPhrase(RenderingContext.RESOURCE_COPYRIGHT));
-    smartAddText(p, " " + cs.getCopyright());
+    smartAddText(p, " " + cs.primitiveValue("copyright"));
   }
 
   public String displayReference(Resource res, Reference r) throws UnsupportedEncodingException, IOException {
@@ -700,7 +782,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         boolean first = true;
         for (ResourceElement bw : items) {
           if (first) first = false; else p.tx(", ");
-          renderCanonical(r, p, bw.primitiveValue());
+          renderCanonical(status, p, StructureDefinition.class, bw);
         }
       }
       items = meta.children("tag");

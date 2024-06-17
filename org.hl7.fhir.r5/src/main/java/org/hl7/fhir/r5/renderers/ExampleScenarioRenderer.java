@@ -35,12 +35,11 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
  
   @Override
   public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    throw new Error("ExampleScenarioRenderer only renders native resources directly");
-  }
-  
-  @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    render(status, x, (ExampleScenario) r);
+    if (r.isDirect()) {
+      render(status, x, (ExampleScenario) r.getBase(), r);      
+    } else {
+      throw new Error("ExampleScenarioRenderer only renders native resources directly");
+    }
   }
   
   @Override
@@ -48,17 +47,17 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return canonicalTitle(r);
   }
 
-  public void render(RenderingStatus status, XhtmlNode x, ExampleScenario scen) throws FHIRException {
+  public void render(RenderingStatus status, XhtmlNode x, ExampleScenario scen, ResourceElement res) throws FHIRException {
     try {
       if (context.getScenarioMode() == null) {
-        renderActors(status, x, scen);
+        renderActors(status, res, x, scen);
       } else {
         switch (context.getScenarioMode()) {
         case ACTORS:
-          renderActors(status, x, scen);
+          renderActors(status, res, x, scen);
           break;
         case INSTANCES:
-          renderInstances(status, x, scen);
+          renderInstances(status, res, x, scen);
           break;
         case PROCESSES:
           renderProcesses(status, x, scen);
@@ -72,8 +71,8 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     }
   }
 
-  public String renderDiagram(ExampleScenario scen) throws IOException {
-    String plantUml = toPlantUml(scen);
+  public String renderDiagram(RenderingStatus status, ResourceElement res, ExampleScenario scen) throws IOException {
+    String plantUml = toPlantUml(status, res, scen);
     SourceStringReader reader = new SourceStringReader(plantUml);
     final ByteArrayOutputStream os = new ByteArrayOutputStream();
     reader.outputImage(os, new FileFormatOption(FileFormat.SVG));
@@ -83,7 +82,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return svg;
   }
 
-  protected String toPlantUml(ExampleScenario scen) throws IOException {
+  protected String toPlantUml(RenderingStatus status, ResourceElement res, ExampleScenario scen) throws IOException {
     String plantUml = "@startuml\r\n";
     plantUml += "Title " + (scen.hasTitle() ? scen.getTitle() : scen.getName()) + "\r\n\r\n";
     Map<String, String> actorKeys = new HashMap<String, String>();
@@ -97,7 +96,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
 
     int processNum = 1;
     for (ExampleScenarioProcessComponent process: scen.getProcess()) {
-      plantUml += toPlantUml(process, Integer.toString(processNum), scen, actorKeys);
+      plantUml += toPlantUml(status, res, process, Integer.toString(processNum), scen, actorKeys);
       processNum++;
     }
     plantUml += "@enduml";
@@ -115,7 +114,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return new String(chars);
   }
 
-  protected String toPlantUml(ExampleScenarioProcessComponent process, String prefix, ExampleScenario scen, Map<String, String> actorKeys) throws IOException {
+  protected String toPlantUml(RenderingStatus status, ResourceElement res, ExampleScenarioProcessComponent process, String prefix, ExampleScenario scen, Map<String, String> actorKeys) throws IOException {
     String plantUml = "group " + process.getTitle() + " " + creolLink("details", "#p_" + prefix, process.getDescription()) + "\r\n";
 
     Map<String,Boolean> actorsActive = new HashMap<String, Boolean>();
@@ -124,7 +123,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     }
     int stepCount = 1;
     for (ExampleScenarioProcessStepComponent step: process.getStep()) {
-      plantUml += toPlantUml(step, stepPrefix(prefix, step, stepCount), scen, actorsActive, actorKeys);
+      plantUml += toPlantUml(status, res, step, stepPrefix(prefix, step, stepCount), scen, actorsActive, actorKeys);
       if (step.getPause())
         plantUml += context.formatPhrase(RenderingContext.EX_SCEN_TIME)+"\n";
       stepCount++;
@@ -134,15 +133,15 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return plantUml;
   }
 
-  protected String toPlantUml(ExampleScenarioProcessStepComponent step, String prefix, ExampleScenario scen, Map<String,Boolean> actorsActive, Map<String, String> actorKeys) throws IOException {
+  protected String toPlantUml(RenderingStatus status, ResourceElement res, ExampleScenarioProcessStepComponent step, String prefix, ExampleScenario scen, Map<String,Boolean> actorsActive, Map<String, String> actorKeys) throws IOException {
     String plantUml = "";
     if (step.hasWorkflow()) {
       XhtmlNode n = new XhtmlDocument();
-      renderCanonical(wrap(scen), n, step.getWorkflow());
+      renderCanonical(status, res, n, Resource.class, step.getWorkflowElement());
       XhtmlNode ref = n.getChildNodes().get(0);
       plantUml += noteOver(scen.getActor(), context.formatPhrase(RenderingContext.EXAMPLE_SCEN_STEP_SCEN, trimPrefix(prefix), creolLink((ref.getContent()), ref.getAttribute("href"))));
     } else if (step.hasProcess())
-      plantUml += toPlantUml(step.getProcess(), prefix, scen, actorKeys);
+      plantUml += toPlantUml(status, res, step.getProcess(), prefix, scen, actorKeys);
     else {
       // Operation
       plantUml += toPlantUml(step.getOperation(), prefix, scen, actorsActive, actorKeys);
@@ -229,7 +228,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return s;
   }
 
-  public boolean renderActors(RenderingStatus status, XhtmlNode x, ExampleScenario scen) throws IOException {
+  public boolean renderActors(RenderingStatus status, ResourceElement res, XhtmlNode x, ExampleScenario scen) throws IOException {
     XhtmlNode tbl = x.table("table-striped table-bordered");
     XhtmlNode thead = tbl.tr();
     thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));
@@ -246,7 +245,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return true;
   }
 
-  public boolean renderInstances(RenderingStatus status, XhtmlNode x, ExampleScenario scen) throws IOException {
+  public boolean renderInstances(RenderingStatus status, ResourceElement res, XhtmlNode x, ExampleScenario scen) throws IOException {
     XhtmlNode tbl = x.table("table-striped table-bordered");
     XhtmlNode thead = tbl.tr();
     thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));
@@ -276,24 +275,29 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       if (!instance.hasStructureVersion() || instance.getStructureType().getSystem().equals("")) {
         if (instance.hasStructureVersion())
           typeCell.tx((context.formatPhrase(RenderingContext.EX_SCEN_FVER, instance.getStructureVersion()) + " ") + " ");
-        if (instance.hasStructureProfile()) {
-          renderCanonical(wrap(scen), typeCell, instance.getStructureProfile().toString());
+        if (instance.hasStructureProfileCanonicalType()) {
+          renderCanonical(status, res, typeCell, StructureDefinition.class, instance.getStructureProfileCanonicalType());
+        } else if (instance.hasStructureProfileUriType()) {
+          renderBase(status, typeCell, instance.getStructureProfileUriType());
         } else {
-          renderCanonical(wrap(scen), typeCell, "http://hl7.org/fhir/StructureDefinition/" + instance.getStructureType().getCode());
+          CanonicalType ct = new CanonicalType("http://hl7.org/fhir/StructureDefinition/" + instance.getStructureType().getCode());
+          renderCanonical(status, res, typeCell, StructureDefinition.class, ct);
         }
       } else {
-          renderDataType(status, typeCell, wrap(instance.getStructureVersionElement()));
+          renderDataType(status, typeCell, wrapWC(res, instance.getStructureVersionElement()));
           typeCell.tx(" "+(context.formatPhrase(RenderingContext.GENERAL_VER_LOW, instance.getStructureVersion())+" "));
         if (instance.hasStructureProfile()) {
           typeCell.tx(" ");
-          renderCanonical(wrap(scen), typeCell, instance.getStructureProfile().toString());
+          if (instance.hasStructureProfileCanonicalType()) {
+            renderCanonical(status, res, typeCell, StructureDefinition.class, instance.getStructureProfileCanonicalType());
+          }
         }
       }
       if (instance.hasContent() && instance.getContent().hasReference()) {
         // Force end-user mode to avoid ugly references
         RenderingContext.ResourceRendererMode mode = context.getMode();
         context.setMode(RenderingContext.ResourceRendererMode.END_USER);
-        renderReference(status, wrap(scen), row.td(), wrap(instance.getContent().copy().setDisplay("here")));
+        renderReference(status, row.td(), wrapWC(res, instance.getContent().copy().setDisplay("here")));
         context.setMode(mode);
       } else
         row.td();
@@ -328,7 +332,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
           // Force end-user mode to avoid ugly references
           RenderingContext.ResourceRendererMode mode = context.getMode();
           context.setMode(RenderingContext.ResourceRendererMode.END_USER);
-          renderReference(status, wrap(scen), row.td(), wrap(version.getContent().copy().setDisplay("here")));
+          renderReference(status, row.td(), wrapWC(res, version.getContent().copy().setDisplay("here")));
           context.setMode(mode);
         } else
           row.td();
@@ -445,7 +449,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       name.tx(op.getTitle());
       if (op.hasType()) {
         name.tx(" - ");
-        renderCoding(status, name, wrap(op.getType()));
+        renderCoding(status, name, wrapNC(op.getType()));
       }
       XhtmlNode descCell = row.td();
       addMarkdown(descCell, op.getDescription());

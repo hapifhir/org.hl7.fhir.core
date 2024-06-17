@@ -12,6 +12,7 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
@@ -53,13 +54,13 @@ public class StructureMapRenderer extends TerminologyRenderer {
  
   @Override
   public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    throw new Error("StructureMapRenderer only renders native resources directly");
+    if (r.isDirect()) {
+      renderMap(status, x, (StructureMap) r.getBase());      
+    } else {
+      throw new Error("StructureMapRenderer only renders native resources directly");
+    }
   }
   
-  @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    renderMap(status, x, (StructureMap) r);
-  }
   
   @Override
   public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {

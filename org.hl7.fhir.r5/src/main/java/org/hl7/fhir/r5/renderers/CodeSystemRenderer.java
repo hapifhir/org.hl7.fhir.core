@@ -10,6 +10,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
+import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -48,12 +49,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
  
   @Override
   public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    throw new Error("CodeSystemRenderer only renders native resources directly");
-  }
-  
-  @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    render(status, x, (CodeSystem) r);
+    if (r.isDirect()) {
+      render(status, x, (CodeSystem) r.getBase(), r);      
+    } else {
+      throw new Error("CodeSystemRenderer only renders native resources directly");
+    }
   }
   
   @Override
@@ -84,14 +84,14 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private Boolean doMarkdown = null;  
   
-  public void render(RenderingStatus status, XhtmlNode x, CodeSystem cs) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(RenderingStatus status, XhtmlNode x, CodeSystem cs, ResourceElement res) throws FHIRFormatError, DefinitionException, IOException {
     
     if (context.isHeader()) {
       XhtmlNode h = x.h2();
       h.addText(cs.hasTitle() ? cs.getTitle() : cs.getName());
       addMarkdown(x, cs.getDescription());
       if (cs.hasCopyright())
-        generateCopyright(x, cs );
+        generateCopyright(x, res);
     }
 
     boolean props = generateProperties(x, cs);

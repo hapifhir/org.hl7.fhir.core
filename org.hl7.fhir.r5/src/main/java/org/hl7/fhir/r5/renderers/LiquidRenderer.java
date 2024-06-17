@@ -95,9 +95,9 @@ public class LiquidRenderer extends ResourceRenderer implements ILiquidRendering
       LiquidRendererContext ctxt = (LiquidRendererContext) appContext;
       ResourceElement r = null;
       if (base instanceof Element) {
-        r = new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), (Element) base);
+        r = ResourceElement.forType(context.getContextUtilities(), context.getProfileUtilities(), (Element) base);
       } else if (base instanceof DataType) {
-        r = new ResourceElement(context.getContextUtilities(), context.getProfileUtilities(), (DataType) base);        
+        r = ResourceElement.forType(context.getContextUtilities(), context.getProfileUtilities(), (DataType) base);        
       } else {
         return base.toString(); 
       }

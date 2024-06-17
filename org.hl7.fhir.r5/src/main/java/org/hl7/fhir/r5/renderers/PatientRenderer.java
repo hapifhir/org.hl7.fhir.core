@@ -252,7 +252,7 @@ public class PatientRenderer extends ResourceRenderer {
     }
 
     for (String url : extensions.keySet()) {
-      StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, url);
+      StructureDefinition sd = findCanonical(StructureDefinition.class, url, r);
       if (sd != null) {
         List<ResourceElement> list = extensions.get(url);
         boolean anyComplex = false;

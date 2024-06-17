@@ -7,6 +7,7 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.SearchComparator;
@@ -36,13 +37,13 @@ public class SearchParameterRenderer extends TerminologyRenderer {
  
   @Override
   public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    throw new Error("SearchParameterRenderer only renders native resources directly");
+    if (r.isDirect()) {
+      render(status, x, (SearchParameter) r.getBase());      
+    } else {
+      throw new Error("SearchParameterRenderer only renders native resources directly");
+    }
   }
   
-  @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    render(status, x, (SearchParameter) r);
-  }
   
   @Override
   public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {

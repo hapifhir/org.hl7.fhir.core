@@ -77,7 +77,7 @@ public class LibraryRenderer extends ResourceRenderer {
         citation = citation || ra.has("citation");
       }
       for (ResourceElement ra : artifacts) {
-        renderArtifact(t, ra, lib, label, display, citation);
+        renderArtifact(status, t, ra, lib, label, display, citation);
       }      
     }
     List<ResourceElement> parameters = lib.children("parameter");
@@ -157,7 +157,7 @@ public class LibraryRenderer extends ResourceRenderer {
   }
 
 
-  private void renderArtifact(XhtmlNode t, ResourceElement ra, ResourceElement lib, boolean label, boolean display, boolean citation) throws UnsupportedEncodingException, FHIRException, IOException {
+  private void renderArtifact(RenderingStatus status, XhtmlNode t, ResourceElement ra, ResourceElement lib, boolean label, boolean display, boolean citation) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode tr = t.tr();
     tr.td().tx(ra.has("type") ? ra.primitiveValue("type") : null);
     if (label) {
@@ -170,7 +170,7 @@ public class LibraryRenderer extends ResourceRenderer {
       tr.td().markdown(ra.has("citation") ? ra.primitiveValue("citation") : null, "Citation");
     }
     if (ra.has("resource")) {
-      renderCanonical(lib, tr.td(), ra.primitiveValue("resource"));
+      renderCanonical(status, tr.td(), Resource.class, ra.child("resource"));
     } else {
       tr.td().tx(ra.has("url") ? ra.primitiveValue("url") : null);
     }

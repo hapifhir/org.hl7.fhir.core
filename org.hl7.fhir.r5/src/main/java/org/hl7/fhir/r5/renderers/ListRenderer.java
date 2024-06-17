@@ -48,15 +48,15 @@ public class ListRenderer extends ResourceRenderer {
     td = tr.td(); 
     if (list.has("subject")) { 
       td.tx(context.formatPhrase(RenderingContext.LIST_REND_SUB)+" "); 
-      shortForRef(td, list.child("subject")); 
+      renderReference(status, td, list.child("subject")); 
     } 
     if (list.has("encounter")) { 
       td.tx(context.formatPhrase(RenderingContext.LIST_REND_ENC)+" "); 
-      shortForRef(td, list.child("encounter")); 
+      renderReference(status, td, list.child("encounter")); 
     } 
     if (list.has("source")) { 
       td.tx(context.formatPhrase(RenderingContext.GENERAL_SRC)+" "); 
-      shortForRef(td, list.child("encounter")); 
+      renderReference(status, td, list.child("encounter")); 
     } 
     if (list.has("orderedBy")) { 
       td.tx(context.formatPhrase(RenderingContext.LIST_REND_ORD, displayDataType(list.child("orderedBy")))+" "); 
@@ -86,7 +86,7 @@ public class ListRenderer extends ResourceRenderer {
     } 
     for (ResourceElement e : list.children("entry")) { 
       tr = t.tr(); 
-      shortForRef(tr.td(), e.child("item")); 
+      renderReference(status, tr.td(), e.child("item")); 
       if (date) { 
         tr.td().tx(e.has("date") ? displayDateTime(e.child("date")) : "");       
       } 
@@ -107,13 +107,5 @@ public class ListRenderer extends ResourceRenderer {
     return list.getTitle(); 
   } 
  
-  private void shortForRef(XhtmlNode x, ResourceElement ref) throws UnsupportedEncodingException, IOException { 
-    ResourceWithReference r = context.getResolver() == null ? null : context.getResolver().resolve(context, ref.primitiveValue("reference")); 
-    if (r == null) {  
-      x.tx(displayReference(ref)); 
-    } else {
-      x.ah(r.getReference()).tx(RendererFactory.factory(r.getResource().fhirType(), context).displayResource(r.getResource())); 
-    } 
-  } 
  
 } 

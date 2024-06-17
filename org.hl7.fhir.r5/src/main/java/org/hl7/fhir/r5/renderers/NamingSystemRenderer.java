@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.NamingSystem;
@@ -28,12 +29,11 @@ public class NamingSystemRenderer extends ResourceRenderer {
  
   @Override
   public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    throw new Error("NamingSystemRenderer only renders native resources directly");
-  }
-  
-  @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    render(status, x, (NamingSystem) r);
+    if (r.isDirect()) {
+      render(status, x, (NamingSystem) r.getBase());      
+    } else {
+      throw new Error("NamingSystemRenderer only renders native resources directly");
+    }
   }
   
   @Override

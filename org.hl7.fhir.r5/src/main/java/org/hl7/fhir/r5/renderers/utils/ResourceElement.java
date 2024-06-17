@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -71,64 +72,106 @@ public class ResourceElement {
 
   private List<ResourceElement> children;
 
-  public ResourceElement(ContextUtilities contextUtils, ProfileUtilities profileUtils, Resource resource) {
-    this.contextUtils = contextUtils;
-    this.profileUtils = profileUtils;
-    this.parent = null;
-    this.name = null;
-    this.index = -1;
-    this.kind = ElementKind.IndependentResource;
-    this.element = resource;
-    this.classDefinition = profileUtils.getContext().fetchTypeDefinition(resource.fhirType());
-    this.propertyDefinition = this.classDefinition.getSnapshot().getElementFirstRep();
+  // -- Constructors ------------------------------------------------------------------
+  
+  private ResourceElement() {
+    // TODO Auto-generated constructor stub
   }
 
-  public ResourceElement(ContextUtilities contextUtils, ProfileUtilities profileUtils, DataType type) {
-    this.contextUtils = parent.contextUtils;
-    this.profileUtils = parent.profileUtils;
-    this.parent = null;
-    this.name = null;
-    this.index = -1;
-    this.kind = null;
-    this.element = type;
-    this.classDefinition = profileUtils.getContext().fetchTypeDefinition(type.fhirType());
-    this.propertyDefinition = this.classDefinition.getSnapshot().getElementFirstRep();
+  public static ResourceElement forResource(ContextUtilities contextUtils, ProfileUtilities profileUtils, Resource resource) {
+    ResourceElement self = new ResourceElement();
+    self.contextUtils = contextUtils;
+    self.profileUtils = profileUtils;
+    self.parent = null;
+    self.name = null;
+    self.index = -1;
+    self.kind = ElementKind.IndependentResource;
+    self.element = resource;
+    self.classDefinition = profileUtils.getContext().fetchTypeDefinition(resource.fhirType());
+    self.propertyDefinition = self.classDefinition.getSnapshot().getElementFirstRep();
+    return self;
   }
 
-  public ResourceElement(ResourceElement parent, String name, int index, ElementKind kind, Base element, StructureDefinition classDefinition, ElementDefinition propertyDefinition) {
-    this.contextUtils = contextUtils;
-    this.profileUtils = profileUtils;
-    this.parent = parent;
-    this.name = name;
-    this.index = index;
-    this.kind = kind;
-    this.element = element;
-    this.classDefinition = classDefinition;
-    this.propertyDefinition = propertyDefinition;
+  public static ResourceElement forResource(ContextUtilities contextUtils, ProfileUtilities profileUtils, Element resource) {
+    ResourceElement self = new ResourceElement();
+    self.contextUtils = contextUtils;
+    self.profileUtils = profileUtils;
+    self.parent = null;
+    self.name = null;
+    self.index = -1;
+    self.kind = ElementKind.IndependentResource;
+    self.model = resource;
+    return self;
   }
 
-  public ResourceElement(ContextUtilities contextUtils, ProfileUtilities profileUtils, Element resource) {
-    this.contextUtils = contextUtils;
-    this.profileUtils = profileUtils;
-    this.parent = null;
-    this.name = null;
-    this.index = -1;
-    this.kind = ElementKind.IndependentResource;
-    this.model = resource;
+  public static ResourceElement forType(ContextUtilities contextUtils, ProfileUtilities profileUtils, Element resource) {
+    ResourceElement self = new ResourceElement();
+    self.contextUtils = contextUtils;
+    self.profileUtils = profileUtils;
+    self.parent = null;
+    self.name = null;
+    self.index = -1;
+    self.kind = ElementKind.DataType;
+    self.model = resource;
+    return self;
+  }
+
+  public static ResourceElement forType(ContextUtilities contextUtils, ProfileUtilities profileUtils, DataType type) {
+    ResourceElement self = new ResourceElement();
+    self.contextUtils = contextUtils;
+    self.profileUtils = profileUtils;
+    self.parent = null;
+    self.name = null;
+    self.index = -1;
+    self.kind = null;
+    self.element = type;
+    self.classDefinition = profileUtils.getContext().fetchTypeDefinition(type.fhirType());
+    self.propertyDefinition = self.classDefinition.getSnapshot().getElementFirstRep();
+    return self;
   }
   
-  public ResourceElement(ResourceElement parent, String name, int index, ElementKind kind, Element em) {
-    this.contextUtils = parent.contextUtils;
-    this.profileUtils = parent.profileUtils;
-    this.parent = parent;
-    this.name = name;
-    this.index = index;
-    this.kind = kind;
-    this.model = em;
-    this.classDefinition = em.getProperty().getStructure();
-    this.propertyDefinition = em.getProperty().getDefinition();
+  public static ResourceElement forType(ContextUtilities contextUtils, ProfileUtilities profileUtils, ResourceElement parent, DataType type) {
+    ResourceElement self = new ResourceElement();
+    self.contextUtils = contextUtils;
+    self.profileUtils = profileUtils;
+    self.parent = parent;
+    self.name = null;
+    self.index = -1;
+    self.kind = null;
+    self.element = type;
+    self.classDefinition = profileUtils.getContext().fetchTypeDefinition(type.fhirType());
+    self.propertyDefinition = self.classDefinition.getSnapshot().getElementFirstRep();
+    return self;
+  }
+  
+  private ResourceElement makeChild(String name, int index, ElementKind kind, Element em) {
+    ResourceElement self = new ResourceElement();
+    self.contextUtils = this.contextUtils;
+    self.profileUtils = this.profileUtils;
+    self.parent = this;
+    self.name = name;
+    self.index = index;
+    self.kind = kind;
+    self.model = em;
+    self.classDefinition = em.getProperty().getStructure();
+    self.propertyDefinition = em.getProperty().getDefinition();
+    return self;
   }
 
+  private ResourceElement makeChild(String name, int index, ElementKind kind, Base element, StructureDefinition classDefinition, ElementDefinition propertyDefinition) {
+    ResourceElement self = new ResourceElement();
+    self.contextUtils = this.contextUtils;
+    self.profileUtils = this.profileUtils;
+    self.parent = this;
+    self.name = name;
+    self.index = index;
+    self.kind = kind;
+    self.element = element;
+    self.classDefinition = classDefinition;
+    self.propertyDefinition = propertyDefinition;
+    return self;
+  }
+  
   public String fhirVersion() {
     if (element != null) {
       return element.getFHIRPublicationVersion().toCode();
@@ -136,6 +179,7 @@ public class ResourceElement {
       return model.getFHIRPublicationVersion().toCode();
     }
   }
+  
   public String path() {
     if (parent == null) {
       return fhirType();
@@ -239,7 +283,7 @@ public class ResourceElement {
       String name = child.getProperty().isChoice() ? child.getProperty().getName() : child.getName();
       int index = child.isList() ? child.getIndex() : -1;
       ElementKind kind = determineModelKind(child);
-      children.add(new ResourceElement(this, name, index, kind, child));
+      children.add(makeChild(name, index, kind, child));
     }
   }
 
@@ -288,11 +332,11 @@ public class ResourceElement {
           }
         }
         if (ed != null) {
-          children.add(new ResourceElement(this, name, index, kind, v, childDefs.getSource(), ed));
+          children.add(makeChild(name, index, kind, v, childDefs.getSource(), ed));
         } else {
           StructureDefinition sd = profileUtils.getContext().fetchTypeDefinition(v.fhirType());
           ElementDefinition ted = sd.getSnapshot().getElementFirstRep();
-          children.add(new ResourceElement(this, name, index, kind, v, sd, ted));          
+          children.add(makeChild(name, index, kind, v, sd, ted));          
         }
         i++;
       }
@@ -627,6 +671,25 @@ public class ResourceElement {
   }
 
   public boolean matches(ResourceElement b) {
+    if (isEmpty() || b.isEmpty()) {
+      return isEmpty() && b.isEmpty();
+    } else {
+      if (hasPrimitiveValue() || b.hasPrimitiveValue()) {
+        if (!hasPrimitiveValue() || !b.hasPrimitiveValue() || !primitiveValue().equals(b.primitiveValue())) {
+          return false;
+        }
+      }
+      if (children().size() != b.children().size()) {
+        return false;
+      } else {
+        for (int i = 0; i < children().size(); i++) {
+          if (!children().get(i).matches(b.children().get(i))) {
+            return false;
+          }
+        }
+        return true;
+      }
+    }
   }
 
   public String extensionString(String url) {
@@ -645,8 +708,17 @@ public class ResourceElement {
     return !isPrimitive() || !hasPrimitiveValue();
   }
 
-  public Resource getResource() {
-    return element == null ? null : (Resource) element;
+  public Resource getResourceNative() {
+    ResourceElement focus = getResourceWrapper();
+    return (Resource) focus.element;
+  }
+
+  public ResourceElement getResourceWrapper() {
+    ResourceElement focus = this;
+    while (focus != null && !focus.isResource()) {
+      focus = focus.parent;
+    }
+    return focus;
   }
 
   public ResourceElement firstChild(String name) {
@@ -682,10 +754,61 @@ public class ResourceElement {
     return propertyDefinition;
   }
 
-  public List<XhtmlNode> getXhtml() {
+  public XhtmlNode getXhtml() {
+    if (element != null) {
+      return element.getXhtml();
+    } else {
+      return model.getXhtml();
+    }
   }
 
   public Base getBase() {
+    if (element != null) {
+      return element;
+    } else {
+      return model;
+    }
+  }
+
+  public boolean isDirect() {
+    return element != null;
+  }
+
+  public String getScopedId() {
+    if (!isResource()) {
+      return null;
+    } else {
+      String res = getId();
+      if (parent != null) {
+        res = parent.getResourceWrapper().getScopedId()+"/"+getId();
+      }
+      return res;
+    }
+  }
+
+  public ResourceElement parent() {
+    return parent;
+  }
+
+  public ResourceElement getContained(String id) {
+    if (isResource()) {
+      List<ResourceElement> contained = children("contained");
+      for (ResourceElement e : contained) {
+        if (id.equals(e.getId())) {
+          return e;
+        }
+      }
+    }
+    return null;
+  }
+
+  public String getWebPath() {
+    if (isResource()) {
+      if (element != null) {
+        return ((Resource) element).getWebPath();
+      }      
+    }
+    return null;
   }
 
   
