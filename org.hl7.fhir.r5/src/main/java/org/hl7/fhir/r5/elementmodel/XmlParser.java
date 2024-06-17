@@ -100,6 +100,7 @@ public class XmlParser extends ParserBase {
   }
 
   private String schemaPath;
+  private int bundleEntryCounter = 0;
 
   public String getSchemaPath() {
     return schemaPath;
@@ -117,10 +118,10 @@ public class XmlParser extends ParserBase {
   }
 
   public List<ValidatedFragment> parse(InputStream inStream) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
-    
+
     byte[] content = TextFile.streamToBytes(inStream);
     ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "xml", content, false);
-    
+
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     Document doc = null;
     try {
@@ -318,7 +319,7 @@ public class XmlParser extends ParserBase {
     }
     return null;
   }
-  
+
   public Element parse(List<ValidationMessage> errors, org.w3c.dom.Element base, String type) throws Exception {
     StructureDefinition sd = getDefinition(errors, 0, 0, FormatUtilities.FHIR_NS, type);
     Element result = new Element(base.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd, getProfileUtilities(), getContextUtilities())).setFormat(FhirFormat.XML).setNativeObject(base);
@@ -429,7 +430,7 @@ public class XmlParser extends ParserBase {
     while (child != null) {
       if (child.getNodeType() == Node.ELEMENT_NODE) {
         Property property = getElementProp(properties, child.getLocalName(), child.getNamespaceURI());
-        
+
         if (property != null) {
           if (property.getName().equals(lastName)) {
             repeatCount++;
@@ -507,13 +508,13 @@ public class XmlParser extends ParserBase {
                 lastName = cgProp.getName();
                 repeatCount = 0;
               }
-              
+
               String npath = path+"/"+pathPrefix(cgProp.getXmlNamespace())+cgProp.getName();
               String name = cgProp.getName();
               Element cgn = new Element(cgProp.getName(), cgProp).setFormat(FhirFormat.XML);
               cgn.setPath(element.getPath()+"."+cgProp.getName()+"["+repeatCount+"]"); 
               element.getChildren().add(cgn);
-              
+
               npath = npath+"/"+pathPrefix(child.getNamespaceURI())+child.getLocalName();
               name = child.getLocalName();
               Element n = new Element(name, property).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML).setNativeObject(child);
@@ -534,20 +535,20 @@ public class XmlParser extends ParserBase {
           lastName = cgProp.getName();
           repeatCount = 0;
         }
-        
+
         String npath = path+"/"+pathPrefix(cgProp.getXmlNamespace())+cgProp.getName();
         String name = cgProp.getName();
         Element cgn = new Element(cgProp.getName(), cgProp).setFormat(FhirFormat.XML);
         cgn.setPath(element.getPath()+"."+cgProp.getName()+"["+repeatCount+"]"); 
         element.getChildren().add(cgn);
-        
+
         npath = npath+"/text()";
         name = mtProp.getName();
         Element n = new Element(name, mtProp, mtProp.getType(), child.getTextContent().trim()).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML).setNativeObject(child);
         cgn.getChildren().add(n);
         n.setPath(element.getPath()+"."+mtProp.getName());
 
-        
+
       } else if (child.getNodeType() == Node.CDATA_SECTION_NODE) {
         logError(errors, ValidationMessage.NO_RULE_DATE, line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.CDATA_IS_NOT_ALLOWED), IssueSeverity.ERROR);
       } else if (!Utilities.existsInList(child.getNodeType(), 3, 8)) {
@@ -565,7 +566,7 @@ public class XmlParser extends ParserBase {
     }
     return null;
   }
-  
+
   private boolean validAttrValue(String value) {
     if (version == null) {
       return true;
@@ -608,7 +609,7 @@ public class XmlParser extends ParserBase {
           return p;
       }
     }
-    
+
 
     return null;
   }
@@ -737,7 +738,7 @@ public class XmlParser extends ParserBase {
     if (hasTypeAttr(e))
       xml.namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
     addNamespaces(xml, e);
-    composeElement(xml, e, e.getType(), true);
+    composeElement(xml, e, e.getType(), true, "");
     xml.end();
   }
 
@@ -795,11 +796,11 @@ public class XmlParser extends ParserBase {
     if (schemaPath != null) {
       xml.setSchemaLocation(FormatUtilities.FHIR_NS, Utilities.pathURL(schemaPath, e.fhirType()+".xsd"));
     }
-    composeElement(xml, e, e.getType(), true);
+    composeElement(xml, e, e.getType(), true, "");
     xml.end();
   }
 
-  private void composeElement(IXMLWriter xml, Element element, String elementName, boolean root) throws IOException, FHIRException {
+  private void composeElement(IXMLWriter xml, Element element, String elementName, boolean root, String tgtPath) throws IOException, FHIRException {
     if (showDecorations) {
       @SuppressWarnings("unchecked")
       List<ElementDecoration> decorations = (List<ElementDecoration>) element.getUserData("fhir.decorations");
@@ -833,7 +834,7 @@ public class XmlParser extends ParserBase {
           new CDANarrativeFormat().convert(xml, new XhtmlParser().parseFragment(rawXhtml));
         } else {
           xml.escapedText(rawXhtml);
-          xml.anchor("end-xhtml");
+          xml.anchor(tgtPath+"end-xhtml");
         }
       } else if (isText(element.getProperty())) {
         if (linkResolver != null)
@@ -857,7 +858,7 @@ public class XmlParser extends ParserBase {
             }
           }
           for (Element child : element.getChildren()) 
-            composeElement(xml, child, child.getName(), false);
+            composeElement(xml, child, child.getName(), false, tgtPath);
           xml.exit(element.getProperty().getXmlNamespace(),elementName);
         } else
           xml.element(elementName);
@@ -908,8 +909,18 @@ public class XmlParser extends ParserBase {
             if (linkResolver != null)
               xml.link(linkResolver.resolveProperty(element.getProperty()));
             xml.text(child.getValue());
-          } else if (!isAttr(child.getProperty()))
-            composeElement(xml, child, child.getName(), false);
+          } else if (!isAttr(child.getProperty())) {
+            String tp = tgtPath;
+            if (child.getSpecial() == SpecialElement.BUNDLE_ENTRY) {
+              bundleEntryCounter ++;
+              if (Utilities.noString(tp)) {
+                tp = "Bnd."+bundleEntryCounter+".";
+              } else {
+                tp = tgtPath+bundleEntryCounter+".";
+              }
+            }
+            composeElement(xml, child, child.getName(), false, tp);
+          }
         }
       }
       if (!root && element.getSpecial() != null)
@@ -924,12 +935,12 @@ public class XmlParser extends ParserBase {
     ElementDefinition ed = property.getDefinition();
     String ns = property.getXmlNamespace();
     String n = property.getXmlName();
-    
+
     String diff = property.getName().toLowerCase().replace(n.toLowerCase(), "");
     if (!Utilities.noString(diff) && diff.length() <= 5 && Utilities.isToken(diff) && !xml.abbreviationDefined(diff)) {
       return diff;
     }
-    
+
     int i = ns.length()-1;
     while (i > 0) {
       if (Character.isAlphabetic(ns.charAt(i)) || Character.isDigit(ns.charAt(i))) {
@@ -942,7 +953,7 @@ public class XmlParser extends ParserBase {
     if (!Utilities.noString(tail) && tail.length() <= 5 && Utilities.isToken(tail) && !xml.abbreviationDefined(tail)) {
       return tail;
     }
-    
+
     i = 0;
     while (xml.abbreviationDefined("ns"+i)) {
       i++;
@@ -1008,17 +1019,17 @@ public class XmlParser extends ParserBase {
   class NullErrorHandler implements ErrorHandler {
     @Override
     public void fatalError(SAXParseException e) {
-        // do nothing
+      // do nothing
     }
 
     @Override
     public void error(SAXParseException e) {
-        // do nothing
+      // do nothing
     }
-    
+
     @Override
     public void warning(SAXParseException e) {
-        // do nothing
+      // do nothing
     }
-}
+  }
 }
