@@ -16,6 +16,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
@@ -245,6 +246,7 @@ public class RenderingContext extends RenderingI18nContext {
   private List<String> codeSystemPropList = new ArrayList<>();
 
   private ProfileUtilities profileUtilitiesR;
+  private ContextUtilities contextUtilities;
   private String definitionsTarget;
   private String destDir;
   private boolean inlineGraphics;
@@ -308,6 +310,7 @@ public class RenderingContext extends RenderingI18nContext {
     res.codeSystemPropList.addAll(codeSystemPropList);
 
     res.profileUtilitiesR = profileUtilitiesR;
+    res.contextUtilities = contextUtilities;
     res.definitionsTarget = definitionsTarget;
     res.destDir = destDir;
     res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
@@ -843,6 +846,21 @@ public class RenderingContext extends RenderingI18nContext {
     }
   }
 
+  public String getTranslatedCode(String code, String codeSystem) {
+
+    if (locale != null) {
+      try {
+        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toString()).withVersionFlexible(true), codeSystem, null, code, null);
+        if (t.isOk() && t.getDisplay() != null) {
+          return t.getDisplay();
+        }
+      } catch (Exception ex) {
+        // nothing
+      }
+    }
+    return code;
+  }
+  
   public String getTranslatedCode(Enumeration<?> e, String codeSystem) {
     if (locale != null) {
       String v = ToolingExtensions.getLanguageTranslation(e, locale.toString());
@@ -911,6 +929,13 @@ public class RenderingContext extends RenderingI18nContext {
   public RenderingContext withLocaleCode(String locale) {
     setLocale(new Locale(locale));
     return this;
+  }
+
+  public ContextUtilities getContextUtilities() {
+    if (contextUtilities == null) {
+      contextUtilities = new ContextUtilities(worker);
+    }
+    return contextUtilities;
   }
   
 }
