@@ -171,7 +171,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       boolean last = false;
       for (NamedResourceElementList p : res.childrenInGroups()) {
         if (!ignoreProperty(p) && !p.getPropertyDefinition().getBase().getPath().startsWith("Resource.")) {
-          ElementDefinition child = getPropertyDefinition(profile.getSnapshot().getElement(), path+"."+p.getName(), p);
+          ElementDefinition child = getElementDefinition(profile.getSnapshot().getElement(), path+"."+p.getName(), p);
           if (p.getValues().size() > 0 && p.getValues().get(0) != null && child != null && isSimple(child) && includeInSummary(child, p)) {
             if (firstElement)
               firstElement = false;
@@ -191,6 +191,16 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       }
     }
   }
+  
+  private ElementDefinition getElementDefinition(List<ElementDefinition> elements, String path, NamedResourceElementList p) {
+    for (ElementDefinition element : elements)
+      if (element.getPath().equals(path))
+        return element;
+    if (path.endsWith("\"]") && p.getClassDefinition() != null)
+      return p.getClassDefinition().getSnapshot().getElement().get(0);
+    return null;
+  }
+
 
 
   private boolean ignoreProperty(NamedResourceElementList p) {

@@ -54,6 +54,7 @@ import org.hl7.fhir.r5.renderers.CodeSystemRenderer;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
 import org.hl7.fhir.r5.renderers.ValueSetRenderer;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
@@ -179,7 +180,7 @@ public class ComparisonTests {
       String xml2 = new XhtmlComposer(true).compose(cs.renderConcepts(csc, "", ""));
       TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Concepts") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
-      new CodeSystemRenderer(lrc).render(right);
+      new CodeSystemRenderer(lrc).renderResource(ResourceElement.forResource(lrc.getContextUtilities(), lrc.getProfileUtilities(), right));
       checkOutput(id, content.getJsonObject("version").asString("filename"), right);
     } else if (left instanceof ValueSet && right instanceof ValueSet) {
       ValueSetComparer cs = new ValueSetComparer(session);
@@ -193,7 +194,7 @@ public class ComparisonTests {
       String xml3 = new XhtmlComposer(true).compose(cs.renderExpansion(csc, "", ""));
       TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Definition") + xml2 + BREAK + hd("Expansion") + xml3 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
-      new ValueSetRenderer(lrc).render(right);
+      new ValueSetRenderer(lrc).renderResource(ResourceElement.forResource(lrc.getContextUtilities(), lrc.getProfileUtilities(), right));
       checkOutput(id, content.getJsonObject("version").asString("filename"), right);
     } else if (left instanceof StructureDefinition && right instanceof StructureDefinition) {
       ProfileUtilities utils = new ProfileUtilities(context, null, null);
@@ -213,11 +214,11 @@ public class ComparisonTests {
       
 
       lrc.setStructureMode(StructureDefinitionRendererMode.DATA_DICT);
-      new StructureDefinitionRenderer(lrc).render(right);
+      new StructureDefinitionRenderer(lrc).renderResource(ResourceElement.forResource(lrc.getContextUtilities(), lrc.getProfileUtilities(), right));
       checkOutput(id, content.getJsonObject("version").asString("filename-dd"), right);
       
       lrc.setStructureMode(StructureDefinitionRendererMode.SUMMARY);
-      new StructureDefinitionRenderer(lrc).render(right);
+      new StructureDefinitionRenderer(lrc).renderResource(ResourceElement.forResource(lrc.getContextUtilities(), lrc.getProfileUtilities(), right));
       checkOutput(id, content.getJsonObject("version").asString("filename-tree"), right);
     } else if (left instanceof CapabilityStatement && right instanceof CapabilityStatement) {
       CapabilityStatementComparer pc = new CapabilityStatementComparer(session);

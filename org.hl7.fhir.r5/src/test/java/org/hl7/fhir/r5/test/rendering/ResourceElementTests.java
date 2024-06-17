@@ -27,7 +27,7 @@ public class ResourceElementTests {
   public void testDirect() throws FHIRFormatError, IOException {
     IWorkerContext worker = TestingUtilities.getSharedWorkerContext();
     Resource res = new XmlParser().parse(TestingUtilities.loadTestResource("r5", "bundle-resource-element-test.xml"));
-    ResourceElement re = new ResourceElement(new ContextUtilities(worker), new ProfileUtilities(worker, null, null), res);
+    ResourceElement re = ResourceElement.forResource(new ContextUtilities(worker), new ProfileUtilities(worker, null, null), res);
     checkTree(re); 
   }
   
@@ -35,7 +35,7 @@ public class ResourceElementTests {
   public void testIndirect() throws FHIRFormatError, IOException {
     IWorkerContext worker = TestingUtilities.getSharedWorkerContext();
     List<ValidatedFragment> res = Manager.parse(worker, TestingUtilities.loadTestResourceStream("r5", "bundle-resource-element-test.xml"), FhirFormat.XML);
-    ResourceElement re = new ResourceElement(new ContextUtilities(worker), new ProfileUtilities(worker, null, null), res.get(0).getElement());
+    ResourceElement re = ResourceElement.forResource(new ContextUtilities(worker), new ProfileUtilities(worker, null, null), res.get(0).getElement());
     checkTree(re);
   }
 

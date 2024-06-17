@@ -28,6 +28,7 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
+import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.utilities.ByteProvider;
@@ -151,7 +152,7 @@ public class ValidatorUtils {
       op.addIssue().setSeverity(OperationOutcome.IssueSeverity.INFORMATION).setCode(OperationOutcome.IssueType.INFORMATIONAL).getDetails().setText(context.formatMessage(I18nConstants.ALL_OK));
     }
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
-    RendererFactory.factory(op, rc).render(op);
+    RendererFactory.factory(op, rc).renderResource(ResourceElement.forResource(rc.getContextUtilities(), rc.getProfileUtilities(), op));
     return op;
   }
 
