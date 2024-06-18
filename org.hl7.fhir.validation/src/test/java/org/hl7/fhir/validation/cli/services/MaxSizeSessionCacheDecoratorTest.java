@@ -32,23 +32,54 @@ public class MaxSizeSessionCacheDecoratorTest {
   }
 
   @Test
-  public void trivialCase() {
+  public void trivialExpiryTest() {
 
-    MaxSizeSessionCacheDecorator maxSizeSessionCacheDecorator = new MaxSizeSessionCacheDecorator(new PassiveExpiringSessionCache(), 4);
+    ExplicitExpirySessionCacheDecorator sessionCache = new ExplicitExpirySessionCacheDecorator(new PassiveExpiringSessionCache());
 
-    LinkedHashMap<String, ValidationEngine> initialEngines = addMockedEngines(maxSizeSessionCacheDecorator, 3);
+    LinkedHashMap<String, ValidationEngine> initialEngines = addMockedEngines(sessionCache, 3);
 
-    Assertions.assertEquals(3, maxSizeSessionCacheDecorator.getSessionIds().size());
+    Assertions.assertEquals(3, sessionCache.getSessionIds().size());
 
-    LinkedHashMap<String, ValidationEngine> newEngines = addMockedEngines(maxSizeSessionCacheDecorator, 2);
+    Assertions.assertTrue(sessionCache.getSessionIds().contains(getKeyByIndex(initialEngines, 0)));
+    Assertions.assertTrue(sessionCache.getSessionIds().contains(getKeyByIndex(initialEngines, 1)));
+    Assertions.assertTrue(sessionCache.getSessionIds().contains(getKeyByIndex(initialEngines, 2)));
 
+    Assertions.assertTrue(sessionCache.expireOldestSession());
 
-    Assertions.assertEquals(4, maxSizeSessionCacheDecorator.getSessionIds().size());
-    Assertions.assertTrue(maxSizeSessionCacheDecorator.getSessionIds().contains(getKeyByIndex(initialEngines, 1)));
-    Assertions.assertTrue(maxSizeSessionCacheDecorator.getSessionIds().contains(getKeyByIndex(initialEngines, 2)));
-    Assertions.assertTrue(maxSizeSessionCacheDecorator.getSessionIds().contains(getKeyByIndex(newEngines, 0)));
-    Assertions.assertTrue(maxSizeSessionCacheDecorator.getSessionIds().contains(getKeyByIndex(newEngines, 1)));
+    Assertions.assertEquals(2, sessionCache.getSessionIds().size());
+    Assertions.assertTrue(sessionCache.getSessionIds().contains(getKeyByIndex(initialEngines, 1)));
+    Assertions.assertTrue(sessionCache.getSessionIds().contains(getKeyByIndex(initialEngines, 2)));
 
+    LinkedHashMap<String, ValidationEngine> newEngines = addMockedEngines(sessionCache, 2);
+
+    Assertions.assertEquals(4, sessionCache.getSessionIds().size());
+    Assertions.assertTrue(sessionCache.getSessionIds().contains(getKeyByIndex(initialEngines, 1)));
+    Assertions.assertTrue(sessionCache.getSessionIds().contains(getKeyByIndex(initialEngines, 2)));
+    Assertions.assertTrue(sessionCache.getSessionIds().contains(getKeyByIndex(newEngines, 0)));
+    Assertions.assertTrue(sessionCache.getSessionIds().contains(getKeyByIndex(newEngines, 1)));
+
+    Assertions.assertTrue(sessionCache.expireOldestSession());
+
+    Assertions.assertEquals(3, sessionCache.getSessionIds().size());
+    Assertions.assertTrue(sessionCache.getSessionIds().contains(getKeyByIndex(initialEngines, 2)));
+    Assertions.assertTrue(sessionCache.getSessionIds().contains(getKeyByIndex(newEngines, 0)));
+    Assertions.assertTrue(sessionCache.getSessionIds().contains(getKeyByIndex(newEngines, 1)));
+
+    Assertions.assertTrue(sessionCache.expireOldestSession());
+    Assertions.assertTrue(sessionCache.expireOldestSession());
+    Assertions.assertTrue(sessionCache.expireOldestSession());
+    Assertions.assertFalse(sessionCache.expireOldestSession());
+  }
+
+  @Test
+  public void producerAddTest() {
+    ExplicitExpirySessionCacheDecorator maxSizeSessionCacheDecorator = new ExplicitExpirySessionCacheDecorator(new PassiveExpiringSessionCache());
+    ValidationEngine producedEngine = mock(ValidationEngine.class);
+    String sessionId = maxSizeSessionCacheDecorator.cacheSession(() -> {
+      return producedEngine;
+    });
+    Assertions.assertEquals(1, maxSizeSessionCacheDecorator.getSessionIds().size());
+    Assertions.assertSame(producedEngine, maxSizeSessionCacheDecorator.fetchSessionValidatorEngine(sessionId));
   }
 
   private String getKeyByIndex(LinkedHashMap<String, ValidationEngine> engineMap, int index) {

@@ -7,25 +7,31 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
-public class MaxSizeSessionCacheDecorator implements SessionCache {
+public class ExplicitExpirySessionCacheDecorator implements SessionCache {
 
-  public final int maxSize;
+
   public final SessionCache sessionCache;
 
   private final List<String> sessionIds;
 
-  public MaxSizeSessionCacheDecorator(SessionCache sessionCache, int maxSize) {
+  public ExplicitExpirySessionCacheDecorator(SessionCache sessionCache) {
     this.sessionCache = sessionCache;
-    this.maxSize = maxSize;
     this.sessionIds = new ArrayList<>(sessionCache.getSessionIds());
-    if (this.sessionIds.size() > maxSize) {
-      throw new IllegalArgumentException("Session cache size exceeds the maximum size");
+  }
+
+  public boolean expireOldestSession() {
+    if (sessionIds.isEmpty()) {
+      return false;
     }
+    String oldestSessionId = sessionIds.get(0);
+    sessionIds.remove(oldestSessionId);
+    sessionCache.removeSession(oldestSessionId);
+    return true;
   }
 
   @Override
   public String cacheSession(ValidationEngine validationEngine) {
-    checkSizeAndMaintainMax(null);
+    maintainSessionIds(null);
     String key = sessionCache.cacheSession(validationEngine);
     sessionIds.add(key);
     return key;
@@ -33,12 +39,14 @@ public class MaxSizeSessionCacheDecorator implements SessionCache {
 
   @Override
   public String cacheSession(Supplier<ValidationEngine> validationEngineSupplier) {
-    checkSizeAndMaintainMax(null);
+    maintainSessionIds(null);
     ValidationEngine validationEngine = validationEngineSupplier.get();
-    return sessionCache.cacheSession(validationEngine);
+    String key = sessionCache.cacheSession(validationEngine);
+    sessionIds.add(key);
+    return key;
   }
 
-  private void checkSizeAndMaintainMax(String keyToAdd) {
+  private void maintainSessionIds(String keyToAdd) {
     if (keyToAdd != null || sessionCache.sessionExists(keyToAdd)) {
       return;
     }
@@ -46,16 +54,11 @@ public class MaxSizeSessionCacheDecorator implements SessionCache {
     //Sync our tracked keys, in case the underlying cache has changed
     this.sessionIds.removeIf(key -> !sessionIds.contains(key));
 
-    if (this.sessionIds.size() >= maxSize) {
-      final String key = this.sessionIds.remove(0);
-      sessionCache.removeSession(key);
-    }
   }
 
   @Override
   public String cacheSession(String sessionId, ValidationEngine validationEngine) {
-    checkSizeAndMaintainMax(sessionId);
-    cacheSession(sessionId, validationEngine);
+    maintainSessionIds(sessionId);
     return sessionCache.cacheSession(
         sessionId, validationEngine);
   }
