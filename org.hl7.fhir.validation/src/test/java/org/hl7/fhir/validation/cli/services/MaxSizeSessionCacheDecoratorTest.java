@@ -40,15 +40,18 @@ public class MaxSizeSessionCacheDecoratorTest {
 
     Assertions.assertEquals(3, maxSizeSessionCacheDecorator.getSessionIds().size());
 
-    List<ValidationEngine> newEngines = getMockedEngines(2);
+    LinkedHashMap<String, ValidationEngine> newEngines = addMockedEngines(maxSizeSessionCacheDecorator, 2);
 
-    for (ValidationEngine engine : newEngines) {
-      maxSizeSessionCacheDecorator.cacheSession(engine);
-    }
 
     Assertions.assertEquals(4, maxSizeSessionCacheDecorator.getSessionIds().size());
+    Assertions.assertTrue(maxSizeSessionCacheDecorator.getSessionIds().contains(getKeyByIndex(initialEngines, 1)));
+    Assertions.assertTrue(maxSizeSessionCacheDecorator.getSessionIds().contains(getKeyByIndex(initialEngines, 2)));
+    Assertions.assertTrue(maxSizeSessionCacheDecorator.getSessionIds().contains(getKeyByIndex(newEngines, 0)));
+    Assertions.assertTrue(maxSizeSessionCacheDecorator.getSessionIds().contains(getKeyByIndex(newEngines, 1)));
 
-    Assertions.assertTrue(maxSizeSessionCacheDecorator.getSessionIds().contains()
   }
 
+  private String getKeyByIndex(LinkedHashMap<String, ValidationEngine> engineMap, int index) {
+    return (String) engineMap.keySet().toArray()[index];
+  }
 }
