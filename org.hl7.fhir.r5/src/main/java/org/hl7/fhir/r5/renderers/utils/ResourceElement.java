@@ -463,6 +463,7 @@ public class ResourceElement {
   }
 
   public boolean has(String name) {
+    loadChildren();
     for (ResourceElement e : children) {
       if (name.equals(e.name())) {
         return true;
