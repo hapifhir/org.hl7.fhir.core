@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.cli.services;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 import org.apache.commons.collections4.map.PassiveExpiringMap;
 import org.hl7.fhir.validation.ValidationEngine;
@@ -42,6 +43,12 @@ public class PassiveExpiringSessionCache implements SessionCache {
     String generatedId = generateID();
     cachedSessions.put(generatedId, validationEngine);
     return generatedId;
+  }
+
+  @Override
+  public String cacheSession(Supplier<ValidationEngine> validationEngineSupplier) {
+    ValidationEngine engine = validationEngineSupplier.get();
+    return this.cacheSession(engine);
   }
 
   /**
@@ -94,6 +101,11 @@ public class PassiveExpiringSessionCache implements SessionCache {
   public boolean sessionExists(String sessionId) {
     removeExpiredSessions();
     return cachedSessions.containsKey(sessionId);
+  }
+
+  @Override
+  public ValidationEngine removeSession(String sessionId) {
+    return cachedSessions.remove(sessionId);
   }
 
   /**
