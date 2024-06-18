@@ -38,8 +38,9 @@ public class NarrativeGeneratorTests {
   private static RenderingContext rc;
 
   @BeforeAll
-  public static void setUp() throws FHIRException {
+  public static void setUp() throws FHIRException, IOException {
     rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    rc.setDestDir(Utilities.path("[tmp]"));
   }
 
   @Test
