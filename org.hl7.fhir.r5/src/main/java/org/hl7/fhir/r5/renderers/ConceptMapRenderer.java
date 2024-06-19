@@ -314,23 +314,23 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     }
 
     XhtmlNode p = x.para();
-    p.tx(context.formatMessage(RenderingContext.CONC_MAP_FROM) + " ");
+    p.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
     if (cm.hasSourceScope())
       AddVsRef(cm.getSourceScope().primitiveValue(), p, cm);
     else
-      p.tx(context.formatMessage(RenderingContext.CONC_MAP_NOT_SPEC));
-    p.tx(" "+ (context.formatMessage(RenderingContext.CONC_MAP_TO) + " "));
+      p.tx(context.formatPhrase(RenderingContext.CONC_MAP_NOT_SPEC));
+    p.tx(" "+ (context.formatPhrase(RenderingContext.CONC_MAP_TO) + " "));
     if (cm.hasTargetScope())
       AddVsRef(cm.getTargetScope().primitiveValue(), p, cm);
     else 
-      p.tx(context.formatMessage(RenderingContext.CONC_MAP_NOT_SPEC));
+      p.tx(context.formatPhrase(RenderingContext.CONC_MAP_NOT_SPEC));
 
     p = x.para();
     if (cm.getExperimental())
-      p.addText(Utilities.capitalize(cm.getStatus().toString())+" "+ (context.formatMessage(RenderingContext.CONC_MAP_NO_PROD_USE) + " "));
+      p.addText(Utilities.capitalize(cm.getStatus().toString())+" "+ (context.formatPhrase(RenderingContext.CONC_MAP_NO_PROD_USE) + " "));
     else
       p.addText(Utilities.capitalize(cm.getStatus().toString())+". ");
-    p.tx(context.formatMessage(RenderingContext.CONC_MAP_PUB_ON, (cm.hasDate() ? display(cm.getDateElement()) : "?ngen-10?")+" by "+cm.getPublisher()) + " ");
+    p.tx(context.formatPhrase(RenderingContext.CONC_MAP_PUB_ON, (cm.hasDate() ? display(cm.getDateElement()) : "?ngen-10?")+" by "+cm.getPublisher()) + " ");
     if (!cm.getContact().isEmpty()) {
       p.tx(" (");
       boolean firsti = true;
@@ -400,18 +400,18 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         x.hr();
       }
       XhtmlNode pp = x.para();
-      pp.b().tx(context.formatMessage(RenderingContext.CONC_MAP_GRP, gc) + " ");
-      pp.tx(context.formatMessage(RenderingContext.CONC_MAP_FROM) + " ");
+      pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
+      pp.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
       if (grp.hasSource()) {
         renderCanonical(cm, pp, grp.getSource());
       } else {
-        pp.code(context.formatMessage(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
+        pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
       }
       pp.tx(" to ");
       if (grp.hasTarget()) {
         renderCanonical(cm, pp, grp.getTarget());
       } else {
-        pp.code(context.formatMessage(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
+        pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
       }
       
       String display;
@@ -419,11 +419,11 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         // simple
         XhtmlNode tbl = x.table( "grid");
         XhtmlNode tr = tbl.tr();
-        tr.td().b().tx(context.formatMessage(RenderingContext.CONC_MAP_SOURCE));
-        tr.td().b().tx(context.formatMessage(RenderingContext.CONC_MAP_REL));
-        tr.td().b().tx(context.formatMessage(RenderingContext.CONC_MAP_TRGT));
+        tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SOURCE));
+        tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_REL));
+        tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT));
         if (comment)
-          tr.td().b().tx(context.formatMessage(RenderingContext.CONC_MAP_CMNT));
+          tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
         for (SourceElementComponent ccl : grp.getElement()) {
           tr = tbl.tr();
           XhtmlNode td = tr.td();
@@ -470,21 +470,21 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         XhtmlNode tbl = x.table( "grid");
         XhtmlNode tr = tbl.tr();
         XhtmlNode td;
-        tr.td().colspan(Integer.toString(1+sources.size())).b().tx(context.formatMessage(RenderingContext.CONC_MAP_SRC_DET));
+        tr.td().colspan(Integer.toString(1+sources.size())).b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SRC_DET));
         if (hasRelationships) {
-          tr.td().b().tx(context.formatMessage(RenderingContext.CONC_MAP_REL));
+          tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_REL));
         }
-        tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatMessage(RenderingContext.CONC_MAP_TRGT_DET));
+        tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT_DET));
         if (comment) {
-          tr.td().b().tx(context.formatMessage(RenderingContext.CONC_MAP_CMNT));
+          tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
         }
-        tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatMessage(RenderingContext.CONC_MAP_PROP));
+        tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.GENERAL_PROPS));
         tr = tbl.tr();
         if (sources.get("code").size() == 1) {
           String url = sources.get("code").iterator().next();
           renderCSDetailsLink(tr, url, true);           
         } else
-          tr.td().b().tx(context.formatMessage(RenderingContext.CONC_MAP_CODE));
+          tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
         for (String s : sources.keySet()) {
           if (s != null && !s.equals("code")) {
             if (sources.get(s).size() == 1) {
@@ -501,7 +501,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           String url = targets.get("code").iterator().next();
           renderCSDetailsLink(tr, url, true);           
         } else
-          tr.td().b().tx(context.formatMessage(RenderingContext.CONC_MAP_CODE));
+          tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
         for (String s : targets.keySet()) {
           if (s != null && !s.equals("code")) {
             if (targets.get(s).size() == 1) {
@@ -698,8 +698,8 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     if (span2) {
       td.colspan("2");
     }
-    td.b().tx(context.formatMessage(RenderingContext.CONC_MAP_CODES));
-    td.tx(" " + (context.formatMessage(RenderingContext.CONC_MAP_FRM) + " "));
+    td.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_CODES));
+    td.tx(" " + (context.formatPhrase(RenderingContext.CONC_MAP_FRM) + " "));
     if (cs == null)
       td.tx(url);
     else
@@ -783,7 +783,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
   private static void renderLinks(XhtmlNode td, List<CollateralDefinition> collateral) {
     if (collateral.size() > 0) {
-      td.tx(/*!#*/"Links:");
+      td.tx( "Links:");
       td.tx(" ");
       boolean first = true;
       for (CollateralDefinition c : collateral) {

@@ -7,8 +7,8 @@ import java.util.Map;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.JsonParser;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -160,8 +160,7 @@ public class IPAValidator {
 
   private Element makeRequest(ValidationNode vn, String url)  {
     try {
-      SimpleHTTPClient http = new SimpleHTTPClient();
-      HTTPResult result = http.get(url, "application/fhir+json");
+      HTTPResult result = ManagedWebAccess.get(url, "application/fhir+json");
       if (result.getCode() >= 300) {
         vn.getIssues().add(new ValidationMessage(Source.IPAValidator, IssueType.EXCEPTION, "http.request", 
             "HTTP Return code is "+result.getCode()+" "+result.getMessage(),

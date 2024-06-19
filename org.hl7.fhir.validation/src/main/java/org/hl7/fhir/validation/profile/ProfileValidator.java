@@ -128,7 +128,9 @@ public class ProfileValidator extends BaseValidator {
             throw new Error("Diff Element is null - this is not an expected thing");
           ElementDefinition snapElement = snapshotElements.get(diffElement.getId());
           if (snapElement!=null) { // Happens with profiles in the main build - should be able to fix once snapshot generation is fixed - Lloyd
-            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, diffElement.getId(), !checkMustSupport || snapElement.hasMustSupport(), "Elements included in the differential should declare mustSupport");
+            // We don't care about mustSupport for the root element, if the element is just declaring slicing, if there's a pattern or fixed value, or if the element is being prohibited.
+            boolean noMustSupport = !checkMustSupport || !snapElement.getPath().contains(".") || snapElement.hasSlicing() || snapElement.hasPattern() || snapElement.hasFixed() || snapElement.getMax().equals("0") || snapElement.hasMustSupport();
+            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, diffElement.getId(), noMustSupport, "Elements included in the differential that aren't prohibited and don't have fixed values or patterns should declare mustSupport: " + snapElement.getPath());
             if (checkAggregation) {
               for (TypeRefComponent type : snapElement.getType()) {
                 if ("http://hl7.org/fhir/Reference".equals(type.getWorkingCode()) || "http://hl7.org/fhir/canonical".equals(type.getWorkingCode())) {

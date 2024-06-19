@@ -23,17 +23,30 @@ class FhirRequestBuilderTest {
     Assertions.assertNotNull(headersMap.get("User-Agent"), "User-Agent header null.");
     Assertions.assertEquals("hapi-fhir-tooling-client", headersMap.get("User-Agent").get(0),
       "User-Agent header not populated with expected value \"hapi-fhir-tooling-client\".");
-
-    Assertions.assertNotNull(headersMap.get("Accept-Charset"), "Accept-Charset header null.");
-    Assertions.assertEquals(FhirRequestBuilder.DEFAULT_CHARSET, headersMap.get("Accept-Charset").get(0),
-      "Accept-Charset header not populated with expected value " + FhirRequestBuilder.DEFAULT_CHARSET);
   }
 
   @Test
-  @DisplayName("Test resource format headers are added correctly.")
-  void addResourceFormatHeaders() {
+  @DisplayName("Test resource format headers are added correctly (GET).")
+  void addResourceFormatHeadersGET() {
     String testFormat = "yaml";
     Request.Builder request = new Request.Builder().url("http://www.google.com");
+    request.setMethod$okhttp("GET");
+    FhirRequestBuilder.addResourceFormatHeaders(request, testFormat);
+
+    Map<String, List<String>> headersMap = request.build().headers().toMultimap();
+    Assertions.assertNotNull(headersMap.get("Accept"), "Accept header null.");
+    Assertions.assertEquals(testFormat, headersMap.get("Accept").get(0),
+      "Accept header not populated with expected value " + testFormat + ".");
+
+    Assertions.assertNull(headersMap.get("Content-Type"), "Content-Type header not null.");
+  }
+
+  @Test
+  @DisplayName("Test resource format headers are added correctly (POST).")
+  void addResourceFormatHeadersPOST() {
+    String testFormat = "yaml";
+    Request.Builder request = new Request.Builder().url("http://www.google.com");
+    request.setMethod$okhttp("POST");
     FhirRequestBuilder.addResourceFormatHeaders(request, testFormat);
 
     Map<String, List<String>> headersMap = request.build().headers().toMultimap();

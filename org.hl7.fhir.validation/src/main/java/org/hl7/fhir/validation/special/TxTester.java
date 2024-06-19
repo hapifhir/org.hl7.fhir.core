@@ -100,7 +100,7 @@ public class TxTester {
       for (JsonObject suite : tests.getJsonObjects("suites")) {
         if ((!suite.has("mode") || modes.contains(suite.asString("mode")))) {
           if (suite.asBoolean("disabled")) {
-            ok = true;
+            // ok = true;
           } else {
             ok = runSuite(suite, tx, modes, filter, json.forceArray("suites")) && ok;
           }

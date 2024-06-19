@@ -66,12 +66,16 @@ public abstract class I18nBase {
     if (!messageKeyExistsForLocale(message)) {
       if (!message.contains(" ")) {
         if (warnAboutMissingMessages && (hasArgs || !message.contains(" "))) {
-          System.out.println("Attempting to localize message " + message + ", but no such equivalent message exists for" +
+          System.out.println("Attempting to localize "+typeOfString()+" " + message + ", but no such equivalent message exists for" +
               " the locale " + getLocale());
         }
       }
     }
     return messageKeyExistsForLocale(message);
+  }
+
+  protected String typeOfString() {
+    return "message";
   }
 
   protected boolean messageKeyExistsForLocale(String message) {
@@ -121,7 +125,7 @@ public abstract class I18nBase {
       if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
         message = MessageFormat.format(messages.getString(theMessage).trim(), theMessageArguments);
       } else {
-        message = messages.getString(theMessage).trim();
+        message = MessageFormat.format(messages.getString(theMessage).trim(), null);
       }
     }
     return message;

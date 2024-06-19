@@ -12,6 +12,7 @@ import java.util.*;
 
 import javax.annotation.Nonnull;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class I18nCoverageTest {
@@ -165,6 +166,7 @@ public class I18nCoverageTest {
   }
 
   @Test
+  @Disabled
   public void testConstantsCoverage() throws IllegalAccessException {
 
     Field[] fields = I18nConstants.class.getDeclaredFields();

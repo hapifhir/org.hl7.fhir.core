@@ -42,7 +42,6 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -1252,9 +1251,9 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
   }
 
   public XhtmlNode renderStructure(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), Utilities.path("[tmp]", "compare"), false, true);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(session.getI18n(), Utilities.path("[tmp]", "compare"), false, true);
     TableModel model = gen.initComparisonTable(corePath, id);
-    genElementComp(null /* come back to this later */, gen, model.getRows(), comp.combined, corePath, prefix, null, true);
+    genElementComp(null /* come back to this later */, null /* come back to this later */, gen, model.getRows(), comp.combined, corePath, prefix, null, true);
     return gen.generate(model, prefix, 0, null);
   }
 
@@ -1269,7 +1268,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     return sdr.generateTable(corePath, comp.intersection, false, prefix, false, id, true, corePath, prefix, false, true, null, false, sdr.getContext(), "i");
   }
 
-  private void genElementComp(String defPath, HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<ElementDefinitionNode> combined, String corePath, String prefix, Row slicingRow, boolean root) throws IOException {
+  private void genElementComp(String defPath, String anchorPrefix, HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<ElementDefinitionNode> combined, String corePath, String prefix, Row slicingRow, boolean root) throws IOException {
     Row originalRow = slicingRow;
     Row typesRow = null;
     
@@ -1289,32 +1288,32 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       boolean ext = false;
       if (tail(path).equals("extension")) {
         if (elementIsComplex(combined))
-          row.setIcon("icon_extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
+          row.setIcon("icon_extension_complex.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_EXTENSION_COMPLEX));
         else
-          row.setIcon("icon_extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);
+          row.setIcon("icon_extension_simple.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_EXTENSION_SIMPLE));
         ext = true;
       } else if (tail(path).equals("modifierExtension")) {
         if (elementIsComplex(combined))
-          row.setIcon("icon_modifier_extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
+          row.setIcon("icon_modifier_extension_complex.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_EXTENSION_COMPLEX));
         else
-          row.setIcon("icon_modifier_extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);
+          row.setIcon("icon_modifier_extension_simple.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_EXTENSION_SIMPLE));
       } else if (hasChoice(combined)) {
         if (allAreReference(combined))
-          row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
+          row.setIcon("icon_reference.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_REFERENCE));
         else {
-          row.setIcon("icon_choice.gif", HierarchicalTableGenerator.TEXT_ICON_CHOICE);
+          row.setIcon("icon_choice.gif", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_CHOICE));
           typesRow = row;
         }
       } else if (combined.either().getDef().hasContentReference())
-        row.setIcon("icon_reuse.png", HierarchicalTableGenerator.TEXT_ICON_REUSE);
+        row.setIcon("icon_reuse.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_REUSE));
       else if (isPrimitive(combined))
-        row.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
+        row.setIcon("icon_primitive.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_PRIMITIVE));
       else if (hasTarget(combined))
-        row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
+        row.setIcon("icon_reference.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_REFERENCE));
       else if (isDataType(combined))
-        row.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
+        row.setIcon("icon_datatype.gif", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_DATATYPE));
       else
-        row.setIcon("icon_resource.png", HierarchicalTableGenerator.TEXT_ICON_RESOURCE);
+        row.setIcon("icon_resource.png", session.getI18n().formatPhrase(RenderingContext.GENERAL_RESOURCE));
       String ref = defPath == null ? null : defPath + combined.either().getDef().getId();
       String sName = tail(path);
       String sn = getSliceName(combined);
@@ -1335,19 +1334,19 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
         nc = sdrRight.genElementNameCell(gen, combined.getRight().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, false, ext, used , ref, sName, null);
       }
       if (combined.hasLeft()) {
-        frame(sdrLeft.genElementCells(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, true, ext, used , ref, sName, nc, false, false, sdrLeft.getContext(), children.size() > 0), leftColor);
+        frame(sdrLeft.genElementCells(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, true, ext, used , ref, sName, nc, false, false, sdrLeft.getContext(), children.size() > 0, defPath, anchorPrefix, new ArrayList<ElementDefinition>()), leftColor);
       } else {
         frame(spacers(row, 4, gen), leftColor);
       }
       if (combined.hasRight()) {
-        frame(sdrRight.genElementCells(gen, combined.getRight().getDef(), "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, true, ext, used, ref, sName, nc, false, false, sdrRight.getContext(), children.size() > 0), rightColor);
+        frame(sdrRight.genElementCells(gen, combined.getRight().getDef(), "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, true, ext, used, ref, sName, nc, false, false, sdrRight.getContext(), children.size() > 0, defPath, anchorPrefix, new ArrayList<ElementDefinition>()), rightColor);
       } else {
         frame(spacers(row, 4, gen), rightColor);
       }
       row.getCells().add(cellForMessages(gen, combined.getMessages()));
 
       for (StructuralMatch<ElementDefinitionNode> child : children) {
-        genElementComp(defPath, gen, row.getSubRows(), child, corePath, prefix, originalRow, false);
+        genElementComp(defPath, anchorPrefix, gen, row.getSubRows(), child, corePath, prefix, originalRow, false);
       }
     }
 

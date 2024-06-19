@@ -68,11 +68,11 @@ import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
@@ -958,10 +958,12 @@ public class NpmPackage {
   public String fhirVersion() {
     if ("hl7.fhir.core".equals(npm.asString("name")))
       return npm.asString("version");
-    else if (npm.asString("name").startsWith("hl7.fhir.r2.") || npm.asString("name").startsWith("hl7.fhir.r2b.") || npm.asString("name").startsWith("hl7.fhir.r3.") || 
-        npm.asString("name").startsWith("hl7.fhir.r4.") || npm.asString("name").startsWith("hl7.fhir.r4b.") || npm.asString("name").startsWith("hl7.fhir.r5."))
+    else if (
+        Utilities.existsInList(npm.asString("type"), "fhir.core", "fhir.examples") &&
+        Utilities.startsWithInList( npm.asString("name"), "hl7.fhir.r2.", "hl7.fhir.r2b.", "hl7.fhir.r3.", 
+             "hl7.fhir.r4.", "hl7.fhir.r4b.", "hl7.fhir.r5.")) {
       return npm.asString("version");
-    else {
+    } else {
       JsonObject dep = null;
       if (npm.hasObject("dependencies")) {
         dep = npm.getJsonObject("dependencies");
@@ -1443,8 +1445,7 @@ public class NpmPackage {
   }
 
   public static NpmPackage fromUrl(String source) throws IOException {
-    SimpleHTTPClient fetcher = new SimpleHTTPClient();
-    HTTPResult res = fetcher.get(source+"?nocache=" + System.currentTimeMillis());
+    HTTPResult res = ManagedWebAccess.get(source+"?nocache=" + System.currentTimeMillis());
     res.checkThrowException();
     return fromPackage(new ByteArrayInputStream(res.getContent()));
   }

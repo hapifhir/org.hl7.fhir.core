@@ -277,7 +277,7 @@ public class JsonParser extends ParserBase {
           } else {
             JsonProperty p = getFoundJsonPropertyByName(e.getName(), children);
             if (p != null) {
-              logError(errors, "2022-11-26", line(e.getValue()), col(e.getValue()), path, IssueType.INVALID, context.formatMessage(I18nConstants.DUPLICATE_JSON_PROPERTY, e.getName()), IssueSeverity.ERROR);            
+              logError(errors, "2022-11-26", line(e.getValue()), col(e.getValue()), path, IssueType.INVALID, context.formatMessage(I18nConstants.DUPLICATE_JSON_PROPERTY_KEY, e.getName()), IssueSeverity.ERROR);            
             } else {
               logError(errors, ValidationMessage.NO_RULE_DATE, line(e.getValue()), col(e.getValue()), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_, e.getName()), IssueSeverity.ERROR);
             }
@@ -779,7 +779,7 @@ public class JsonParser extends ParserBase {
     prop("resourceType", e.getType(), null);
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
-      compose(e.getName(), e, done, child);
+      compose(e.getName(), e, done, child, "");
     }
     json.endObject();
     json.finish();
@@ -804,28 +804,28 @@ public class JsonParser extends ParserBase {
     prop("resourceType", e.getType(), linkResolver == null ? null : linkResolver.resolveProperty(e.getProperty()));
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
-      compose(e.getName(), e, done, child);
+      compose(e.getName(), e, done, child, "");
     }
     json.endObject();
     json.finish();
   }
 
-  private void compose(String path, Element e, Set<String> done, Element child) throws IOException {
+  private void compose(String path, Element e, Set<String> done, Element child, String tgtPath) throws IOException {
     checkComposeComments(child);
     if (wantCompose(path, child)) {
       boolean isList = child.hasElementProperty() ? child.getElementProperty().isList() : child.getProperty().isList();
       if (!isList) {// for specials, ignore the cardinality of the stated type
-        compose(path, child);
+        compose(path, child, tgtPath);
       } else if (!done.contains(child.getName())) {
         done.add(child.getName());
         List<Element> list = e.getChildrenByName(child.getName());
-        composeList(path, list);
+        composeList(path, list, tgtPath);
       }
     }
   }
 
 
-  private void composeList(String path, List<Element> list) throws IOException {
+  private void composeList(String path, List<Element> list, String tgtPath) throws IOException {
     // there will be at least one element
     String name = list.get(0).getName();
     boolean complex = true;
@@ -858,6 +858,7 @@ public class JsonParser extends ParserBase {
     }
     if (complex) {
       openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
+      int i = 0;
       for (Element item : list) {
         if (item.hasChildren()) {
           open(null,null);
@@ -872,11 +873,21 @@ public class JsonParser extends ParserBase {
           }
           Set<String> done = new HashSet<String>();
           for (Element child : item.getChildren()) {
-            compose(path+"."+name+"[]", item, done, child);
+            String tp = tgtPath;
+            if (child.getSpecial() == SpecialElement.BUNDLE_ENTRY) {
+              if (Utilities.noString(tp)) {
+                tp = "Bnd."+i+".";
+              } else {
+                tp = tgtPath+i+".";
+              }
+            }
+            compose(path+"."+name+"[]", item, done, child, tp);
           }
           close();
-        } else
+        } else {
           json.nullValue();
+        }
+        i++;
       }
       closeArray();
     }
@@ -903,14 +914,14 @@ public class JsonParser extends ParserBase {
       json.value(item.getValue());
   }
 
-  private void compose(String path, Element element) throws IOException {
+  private void compose(String path, Element element, String tgtPath) throws IOException {
     String name = element.getName();
     if (element.isPrimitive() || isPrimitive(element.getType())) {
       if (element.hasValue())
         primitiveValue(name, element);
       name = "_"+name;
       if (element.getType().equals("xhtml"))
-        json.anchor("end-xhtml");
+        json.anchor(tgtPath+"end-xhtml");
     }
     if (element.hasChildren()) {
       open(name, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()));
@@ -925,7 +936,7 @@ public class JsonParser extends ParserBase {
       }
       Set<String> done = new HashSet<String>();
       for (Element child : element.getChildren()) {
-        compose(path+"."+element.getName(), element, done, child);
+        compose(path+"."+element.getName(), element, done, child, tgtPath);
       }
       close();
     }

@@ -3708,6 +3708,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     inject(sd, x, NarrativeStatus.GENERATED);
     return true;
   }
+  
   public boolean generate(ResourceContext rcontext, ImplementationGuide ig) throws EOperationOutcome, FHIRException, IOException {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     x.h2().addText(ig.getName());
