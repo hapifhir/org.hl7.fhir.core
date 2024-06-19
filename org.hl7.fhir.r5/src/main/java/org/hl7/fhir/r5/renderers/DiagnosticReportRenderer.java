@@ -1,10 +1,10 @@
 package org.hl7.fhir.r5.renderers; 
- 
+
 import java.io.IOException; 
 import java.io.UnsupportedEncodingException; 
 import java.util.ArrayList; 
 import java.util.List; 
- 
+
 import org.hl7.fhir.exceptions.DefinitionException; 
 import org.hl7.fhir.exceptions.FHIRException; 
 import org.hl7.fhir.exceptions.FHIRFormatError; 
@@ -19,24 +19,24 @@ import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.utils.EOperationOutcome; 
 import org.hl7.fhir.utilities.Utilities; 
 import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
- 
+
 public class DiagnosticReportRenderer extends ResourceRenderer { 
- 
+
   public class ObservationNode { 
     private String ref; 
     private ResourceWithReference resolution;
     private List<ObservationNode> contained; 
   } 
- 
+
   public DiagnosticReportRenderer(RenderingContext context) { 
     super(context); 
   } 
- 
+
   @Override
   public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement dr) throws IOException, FHIRException, EOperationOutcome {
     renderDiagnosticReport(status, x, dr);
   }
-  
+
   public void renderDiagnosticReport(RenderingStatus status, XhtmlNode x, ResourceElement dr) throws IOException, FHIRException, EOperationOutcome {
     XhtmlNode h2 = x.h2(); 
     renderDataType(status, h2, dr.child("code")); 
@@ -54,9 +54,9 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     XhtmlNode tbl = x.table("grid"); 
     XhtmlNode tr; 
     if (dr.has("subject")) { 
-       tr = tbl.tr(); 
-       tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_SUBJ)); 
-       populateSubjectSummary(status, tr.td(), dr.child("subject")); 
+      tr = tbl.tr(); 
+      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_SUBJ)); 
+      populateSubjectSummary(status, tr.td(), dr.child("subject")); 
     } 
 
     ResourceElement eff = null;
@@ -77,15 +77,15 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     addTableRow(status, tbl, dr, RenderingContext.DIAG_REP_REND_PER, "performer");
     addTableRow(status, tbl, dr, RenderingContext.DIAG_REP_REND_IDENTIFIER, "identifier");
     addTableRow(status, tbl, dr, RenderingContext.GENERAL_REQUEST, "request"); 
-     
+
     x.para().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_REPDET)); 
- 
+
     List<ResourceElement> items = dr.children("result"); 
     if (!items.isEmpty()) { 
       List<ObservationNode> observations = fetchObservations(items); 
       buildObservationsTable(status, x, observations, eff, iss); 
     } 
- 
+
     if (dr.has("conclusion")) { 
       ResourceElement conc = dr.child("conclusion");
       if (conc.fhirType().equals("markdown")) {         
@@ -95,14 +95,17 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       } 
     } 
 
-    tbl = x.table("grid"); 
-    addTableRow(status, tbl, dr, RenderingContext.DIAG_REP_REND_CODECON, "conclusionCode", "codedDiagnosis"); 
+    if (dr.hasMN("conclusionCode", "codedDiagnosis")) {
+      x.para().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_CODECON));
+      addListRows(status, x.ul(), dr, RenderingContext.DIAG_REP_REND_CODECON, "conclusionCode", "codedDiagnosis"); 
+    }
+    
     for (ResourceElement cont : dr.children("contained")) {
       x.hr();
       RendererFactory.factory(cont, context).renderResource(status, x, cont);
     }
   } 
- 
+
   private void addTableRow(RenderingStatus status, XhtmlNode tbl, ResourceElement dr, String constName, String... names) throws FHIRFormatError, DefinitionException, IOException {
     List<ResourceElement> items = dr.childrenMN(names); 
     if (!items.isEmpty()) { 
@@ -116,20 +119,30 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     } 
   }
 
+  private void addListRows(RenderingStatus status, XhtmlNode ul, ResourceElement dr, String constName, String... names) throws FHIRFormatError, DefinitionException, IOException {
+    List<ResourceElement> items = dr.childrenMN(names); 
+    if (!items.isEmpty()) { 
+      for (ResourceElement v : items) { 
+        XhtmlNode li = ul.li(); 
+        renderDataType(status, li, v); 
+      } 
+    } 
+  }
+
   public void describeDiagnosticReport(XhtmlNode x, ResourceElement dr) { 
     x.tx(displayDiagnosticReport(dr)); 
   } 
- 
+
   public String displayDiagnosticReport(ResourceElement dr) { 
     return displayDataType(dr.child("code")); 
   } 
- 
+
   @Override 
   public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException { 
     return displayDiagnosticReport(r); 
   } 
- 
- 
+
+
   private void populateSubjectSummary(RenderingStatus status, XhtmlNode container, ResourceElement subject) throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome { 
     ResourceWithReference r = resolveReference(subject); 
     if (r == null) 
@@ -139,11 +152,11 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     else 
       container.tx(context.formatPhrase(RenderingContext.GENERAL_TODO)); 
   } 
- 
+
   private void generatePatientSummary(XhtmlNode c, ResourceElement r) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome { 
     new PatientRenderer(context).describe(c, r); 
   } 
-   
+
   private List<ObservationNode> fetchObservations(List<ResourceElement> list) throws UnsupportedEncodingException, FHIRException, IOException { 
     List<ObservationNode> res = new ArrayList<ObservationNode>(); 
     for (ResourceElement b : list) { 
@@ -162,7 +175,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     } 
     return res; 
   } 
- 
+
   private void buildObservationsTable(RenderingStatus status, XhtmlNode root, List<ObservationNode> observations, ResourceElement eff, ResourceElement iss) throws UnsupportedEncodingException, FHIRException, IOException { 
     XhtmlNode tbl = root.table("grid"); 
     boolean refRange = scanObsForRefRange(observations); 
@@ -198,90 +211,100 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       addObservationToTable(status, tbl, o, 0, Integer.toString(cs), refRange, flags, note, effectiveTime, issued, eff, iss); 
     } 
   } 
- 
+
   private boolean scanObsForRefRange(List<ObservationNode> observations) { 
     for (ObservationNode o : observations) {  
-      ResourceElement obs = o.resolution.getResource();
-      if (obs != null && obs.has("referenceRange")) { 
-        return true; 
-      } 
-      if (o.contained != null) { 
-        if (scanObsForRefRange(o.contained)) { 
+      if (o.resolution != null) {
+        ResourceElement obs = o.resolution.getResource();
+        if (obs != null && obs.has("referenceRange")) { 
           return true; 
         } 
-      } 
+        if (o.contained != null) { 
+          if (scanObsForRefRange(o.contained)) { 
+            return true; 
+          } 
+        } 
+      }
     }       
     return false; 
   } 
- 
+
   private boolean scanObsForNote(List<ObservationNode> observations) { 
     for (ObservationNode o : observations) { 
-      ResourceElement obs = o.resolution.getResource();
-      if (obs != null && obs.has("note")) { 
-        return true; 
-      } 
-      if (o.contained != null) { 
-        if (scanObsForNote(o.contained)) { 
+      if (o.resolution != null) {
+        ResourceElement obs = o.resolution.getResource();
+        if (obs != null && obs.has("note")) { 
           return true; 
         } 
-      } 
+        if (o.contained != null) { 
+          if (scanObsForNote(o.contained)) { 
+            return true; 
+          } 
+        } 
+      }
     }       
     return false; 
   } 
- 
+
   private boolean scanObsForIssued(List<ObservationNode> observations, ResourceElement iss) throws UnsupportedEncodingException, FHIRException, IOException { 
     for (ObservationNode o : observations) { 
-      ResourceElement obs = o.resolution.getResource();
-      if (obs != null && obs.has("issued") && (iss == null || !iss.matches(obs.child("issued")))) { 
-        return true; 
-      } 
-      if (o.contained != null) { 
-        if (scanObsForIssued(o.contained, iss)) { 
+      if (o.resolution != null) {
+        ResourceElement obs = o.resolution.getResource();
+        if (obs != null && obs.has("issued") && (iss == null || !iss.matches(obs.child("issued")))) { 
           return true; 
         } 
-      } 
+        if (o.contained != null) { 
+          if (scanObsForIssued(o.contained, iss)) { 
+            return true; 
+          } 
+        } 
+      }
     }       
     return false; 
   } 
- 
+
   private boolean scanObsForEffective(List<ObservationNode> observations, ResourceElement eff) throws UnsupportedEncodingException, FHIRException, IOException { 
     for (ObservationNode o : observations) { 
-      ResourceElement obs = o.resolution.getResource();
-      if (obs != null && obs.has("effective[x]") && (eff == null || !eff.matches(obs.child("effective[x]")))) { 
-        return true; 
-      } 
-      if (o.contained != null) { 
-        if (scanObsForEffective(o.contained, eff)) { 
+      if (o.resolution != null) {
+        ResourceElement obs = o.resolution.getResource();
+        if (obs != null && obs.has("effective[x]") && (eff == null || !eff.matches(obs.child("effective[x]")))) { 
           return true; 
         } 
-      } 
+        if (o.contained != null) { 
+          if (scanObsForEffective(o.contained, eff)) { 
+            return true; 
+          } 
+        } 
+      }
     }       
     return false; 
   } 
- 
+
   private boolean scanObsForFlags(List<ObservationNode> observations) throws UnsupportedEncodingException, FHIRException, IOException { 
     for (ObservationNode o : observations) { 
-      ResourceElement obs = o.resolution.getResource();
-      if (obs != null && (obs.has("interpretation") || obs.has("status"))) { 
-        return true; 
-      } 
-      if (o.contained != null) { 
-        if (scanObsForFlags(o.contained)) { 
+      if (o.resolution != null) {
+        ResourceElement obs = o.resolution.getResource();
+        if (obs != null && (obs.has("interpretation") || obs.has("status"))) { 
           return true; 
         } 
-      } 
+        if (o.contained != null) { 
+          if (scanObsForFlags(o.contained)) { 
+            return true; 
+          } 
+        } 
+      }
     }       
     return false; 
   } 
- 
+
   private void addObservationToTable(RenderingStatus status, XhtmlNode tbl, ObservationNode o, int i, String cs, boolean refRange, boolean flags, boolean note, boolean effectiveTime, boolean issued, ResourceElement eff, ResourceElement iss) throws UnsupportedEncodingException, FHIRException, IOException { 
     XhtmlNode tr = tbl.tr(); 
     if (o.resolution == null) { 
       XhtmlNode td = tr.td().colspan(cs); 
-      td.i().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_NOTRES)); 
+      td.i().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_NOTRES, o.ref)); 
     } else { 
       if (o.resolution.getResource() != null) { 
-        addObservationToTable(status, tr, o.resolution.getResource(), i, o.resolution.getReference(), refRange, flags, note, effectiveTime, issued, eff, iss); 
+        addObservationToTable(status, tr, o.resolution.getResource(), i, o.resolution.getWebPath(), refRange, flags, note, effectiveTime, issued, eff, iss); 
       } else { 
         XhtmlNode td = tr.td().colspan(cs); 
         td.i().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_OBS)); 
@@ -293,9 +316,9 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       } 
     }  
   } 
- 
+
   private void addObservationToTable(RenderingStatus status, XhtmlNode tr, ResourceElement obs, int i, String ref, boolean refRange, boolean flags, boolean note, boolean effectiveTime, boolean issued, ResourceElement eff, ResourceElement iss) throws UnsupportedEncodingException, FHIRException, IOException { 
- 
+
     // code (+bodysite) 
     XhtmlNode td = tr.td(); 
     if (obs.has("code")) { 
@@ -306,7 +329,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       renderDataType(status, td, obs.child("bodySite")); 
       td.tx(")"); 
     } 
- 
+
     // value / dataAbsentReason (in red) 
     td = tr.td(); 
     if (obs.has("value[x]")) { 
@@ -375,7 +398,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     addCellToTable(note, status, tr, obs, null, "note");
     addCellToTable(effectiveTime, status, tr, obs, eff, "effective[x]");
     addCellToTable(issued, status, tr, obs, iss, "issued");
-   
+
   }
 
   private void addCellToTable(boolean included, RenderingStatus status, XhtmlNode tr, ResourceElement obs, ResourceElement diff, String... names) throws FHIRFormatError, DefinitionException, IOException {
@@ -393,5 +416,5 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       } 
     }
   } 
-  
+
 } 

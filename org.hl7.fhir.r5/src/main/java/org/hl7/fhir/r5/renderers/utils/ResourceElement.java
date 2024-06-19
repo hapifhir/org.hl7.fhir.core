@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -319,30 +320,41 @@ public class ResourceElement {
 
   private void loadElementChildren() {
     SourcedChildDefinitions childDefs = propertyDefinition == null ? null : profileUtils.getChildMap(classDefinition, propertyDefinition);
+    if ((childDefs == null || childDefs.getList().isEmpty()) && (propertyDefinition != null && propertyDefinition.getType().size() == 1))  {
+      StructureDefinition classDefinition =  profileUtils.getContext().fetchTypeDefinition(fhirType());
+      childDefs = profileUtils.getChildMap(classDefinition, classDefinition.getSnapshot().getElementFirstRep());
+    }
     for (Property p : element.children()) {
       String name = p.getName();
       int i = 0;
       for (Base v : p.getValues()) {
-        ElementKind kind = determineModelKind(p, v);      
-        int index = p.isList() ? i : -1;
-        ElementDefinition ed = null;
-        if (childDefs != null) {
-          for (ElementDefinition t : childDefs.getList()) {
-            if (t.getName().equals(name)) {
-              ed = t;
-              break;
-            }
-          }
-        }
-        if (ed != null) {
-          children.add(makeChild(name, index, kind, v, childDefs.getSource(), ed));
-        } else {
-          StructureDefinition sd = profileUtils.getContext().fetchTypeDefinition(v.fhirType());
-          ElementDefinition ted = sd.getSnapshot().getElementFirstRep();
-          children.add(makeChild(name, index, kind, v, sd, ted));          
-        }
+        loadElementChild(childDefs, p, name, i, v);
         i++;
       }
+    }
+  }
+
+  private void loadElementChild(SourcedChildDefinitions childDefs, Property p, String name, int i, Base v) {
+    ElementKind kind = determineModelKind(p, v);      
+    int index = p.isList() ? i : -1;
+    ElementDefinition ed = null;
+    if (childDefs != null) {
+      for (ElementDefinition t : childDefs.getList()) {
+        if (t.getName().equals(name)) {
+          ed = t;
+          break;
+        }
+      }
+    }
+    if (ed != null) {
+      children.add(makeChild(name, index, kind, v, childDefs.getSource(), ed));
+    } else {
+      StructureDefinition sd = profileUtils.getContext().fetchTypeDefinition(v.fhirType());
+      if (sd == null) {
+        DebugUtilities.breakpoint();
+      }
+      ElementDefinition ted = sd.getSnapshot().getElementFirstRep();
+      children.add(makeChild(name, index, kind, v, sd, ted));          
     }
   }
 
@@ -465,8 +477,20 @@ public class ResourceElement {
   public boolean has(String name) {
     loadChildren();
     for (ResourceElement e : children) {
-      if (name.equals(e.name())) {
+      if (name.equals(e.name()) || (name+"[x]").equals(e.name())) {
         return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean hasMN(String... names) {
+    loadChildren();
+    for (ResourceElement e : children) {
+      for (String name : names) {
+        if (name.equals(e.name()) || (name+"[x]").equals(e.name())) {
+          return true;
+        }
       }
     }
     return false;
@@ -814,6 +838,5 @@ public class ResourceElement {
     }
     return null;
   }
-
   
 }

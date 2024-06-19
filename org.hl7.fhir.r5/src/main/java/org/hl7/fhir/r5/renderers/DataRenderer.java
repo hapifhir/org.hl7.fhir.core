@@ -736,6 +736,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
       renderDateTime(status, x, type);
       break;
     case "uri" :
+    case "url" :
+    case "canonical" :
       renderUri(status, x, type); 
       break;
     case "Annotation": 
@@ -799,11 +801,21 @@ public class DataRenderer extends Renderer implements CodeResolver {
         renderReference(status, x, type.child("reference")); 
       } 
       break;
-    case "MarkdownType": 
+    case "code": 
+      x.tx(getTranslatedCode(type)); 
+      break;
+    case "markdown": 
       addMarkdown(x, context.getTranslated(type)); 
       break;
-    case "Base64BinaryType":  
-      x.tx(context.formatPhrase(RenderingContext.DATA_REND_BASE64, type.primitiveValue().length()));
+    case "base64Binary":
+      int length = type.primitiveValue().length();
+      if (length >= context.getBase64Limit()) {
+        x.tx(context.formatPhrase(RenderingContext.DATA_REND_BASE64, length));
+      } else {
+        x.code(type.primitiveValue());
+        
+      }
+      break;
     default:
       if (type.isPrimitive()) { 
         if (!renderPrimitiveWithNoValue(status, x, type)) {
@@ -958,6 +970,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
   protected void renderUri(RenderingStatus status, XhtmlNode x, ResourceElement uri) throws FHIRFormatError, DefinitionException, IOException { 
     if (!renderPrimitiveWithNoValue(status, x, uri)) {
       String v = uri.primitiveValue();
+      if (context.getContextUtilities().isResource(v)) {
+        v = "http://hl7.org/fhir/"+v;
+      }
       if (v.startsWith("mailto:")) { 
         x.ah(v).addText(v.substring(7)); 
       } else { 
@@ -1555,7 +1570,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
 
-  public static String displayContactPoint(ResourceElement contact) { 
+  public String displayContactPoint(ResourceElement contact) { 
     StringBuilder s = new StringBuilder(); 
     s.append(describeSystem(contact.primitiveValue("system"))); 
     if (Utilities.noString(contact.primitiveValue("value"))) 
@@ -1563,11 +1578,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
     else 
       s.append(contact.primitiveValue("value")); 
     if (contact.has("use")) 
-      s.append("("+contact.primitiveValue("use")+")"); 
+      s.append("("+getTranslatedCode(contact.child("use"))+")"); 
     return s.toString(); 
   } 
 
-  public static String displayContactDetail(ResourceElement contact) { 
+  public String displayContactDetail(ResourceElement contact) { 
     CommaSeparatedStringBuilder s = new CommaSeparatedStringBuilder(); 
     for (ResourceElement cp : contact.children("telecom")) { 
       s.append(displayContactPoint(cp)); 

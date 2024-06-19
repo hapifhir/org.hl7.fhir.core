@@ -31,21 +31,20 @@ public class ListRenderer extends ResourceRenderer {
     } 
     XhtmlNode t = x.table("clstu"); 
     XhtmlNode tr = t.tr(); 
-    XhtmlNode td = tr.td(); 
     if (list.has("date")) { 
-      td.tx(context.formatPhrase(RenderingContext.LIST_REND_DATE, displayDateTime(list.child("date")))+" "); 
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_DATE, displayDateTime(list.child("date")))+" "); 
     }  
     if (list.has("mode")) { 
-      td.tx(context.formatPhrase(RenderingContext.LIST_REND_MODE, list.primitiveValue("mode"))+" "); 
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_MODE, getTranslatedCode(list.child("mode")))+" "); 
     } 
     if (list.has("status")) { 
-      td.tx(context.formatPhrase(RenderingContext.LIST_REND_STAT, list.primitiveValue("status"))+" "); 
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_STAT, getTranslatedCode(list.child("status")))+" "); 
     } 
     if (list.has("code")) { 
-      td.tx(context.formatPhrase(RenderingContext.LIST_REND_CODE, displayDataType(list.child("code")))+" "); 
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_CODE, displayDataType(list.child("code")))+" "); 
     }     
     tr = t.tr(); 
-    td = tr.td(); 
+    XhtmlNode td = tr.td(); 
     if (list.has("subject")) { 
       td.tx(context.formatPhrase(RenderingContext.LIST_REND_SUB)+" "); 
       renderReference(status, td, list.child("subject")); 

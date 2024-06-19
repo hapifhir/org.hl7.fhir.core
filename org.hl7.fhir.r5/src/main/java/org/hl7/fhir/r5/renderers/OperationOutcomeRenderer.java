@@ -5,14 +5,16 @@ import java.io.UnsupportedEncodingException;
  
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError; 
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Extension; 
 import org.hl7.fhir.r5.model.ExtensionHelper; 
 import org.hl7.fhir.r5.model.OperationOutcome; 
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity; 
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent; 
 import org.hl7.fhir.r5.model.Resource; 
-import org.hl7.fhir.r5.model.StringType; 
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceElement;
@@ -58,7 +60,7 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
       }
       for (ResourceElement i : op.children("issue")) { 
         tr = tbl.tr(); 
-        tr.td().addText(i.primitiveValue("severity")); 
+        tr.td().addText(getTranslatedCode(i.child("severity"))); 
         XhtmlNode td = tr.td(); 
         boolean d = false; 
         for (ResourceElement s : i.has("expression") ? i.children("expression") : i.children("location")) { 
@@ -68,8 +70,8 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
             d = true; 
           td.addText(s.primitiveValue()); 
         } 
-        tr.td().addText(i.child("code").primitiveValue("display")); 
-        tr.td().addText(i.primitiveValue("details")); 
+        tr.td().addText(getTranslatedCode(i.child("code"))); 
+        tr.td().addText(i.child("details").primitiveValue("text")); 
         smartAddText(tr.td(), i.primitiveValue("diagnostics")); 
         if (hasSource) { 
           ResourceElement ext = i.extension(ToolingExtensions.EXT_ISSUE_SOURCE); 
@@ -78,7 +80,8 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
       } 
     } 
   } 
- 
+
+
   public void describe(XhtmlNode x, OperationOutcome oo) { 
     x.tx(display(oo)); 
   } 

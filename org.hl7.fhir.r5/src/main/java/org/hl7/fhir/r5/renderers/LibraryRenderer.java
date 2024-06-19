@@ -159,7 +159,7 @@ public class LibraryRenderer extends ResourceRenderer {
 
   private void renderArtifact(RenderingStatus status, XhtmlNode t, ResourceElement ra, ResourceElement lib, boolean label, boolean display, boolean citation) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode tr = t.tr();
-    tr.td().tx(ra.has("type") ? ra.primitiveValue("type") : null);
+    tr.td().tx(ra.has("type") ? getTranslatedCode(ra.child("type")) : null);
     if (label) {
       tr.td().tx(ra.has("label") ? ra.primitiveValue("label") : null);
     }

@@ -24,7 +24,7 @@ public class EncounterRenderer extends ResourceRenderer {
 
   @Override
   public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    throw new Error("todo");
+    x.tx("Not done yet");
   }
   
 
