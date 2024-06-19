@@ -236,7 +236,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         } else {
           url = url.substring(0, url.indexOf("|"));
           x.code().tx(url);
-          x.tx(": "+cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +cr.getVersion()+")");          
+          x.tx(": "+cr.present()+ " " + context.formatPhrase(RenderingContext.RES_REND_VER) + " " + cr.getVersion()+")");
         }
       } else {
         if (target.hasWebPath()) {
