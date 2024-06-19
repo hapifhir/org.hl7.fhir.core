@@ -190,13 +190,15 @@ public class Resolver {
   public static class ResourceWithReference {
 
     private ResourceReferenceKind kind;
-    private String reference;
+    private String urlReference;
+    private String webPath;
     private ResourceElement resource;
 
-    public ResourceWithReference(ResourceReferenceKind kind, String reference, ResourceElement resource) {
+    public ResourceWithReference(ResourceReferenceKind kind, String urlReference, String webPath, ResourceElement resource) {
       super();
       this.kind = kind;
-      this.reference = reference;
+      this.urlReference = urlReference;
+      this.webPath = webPath;
       this.resource = resource;
     }
 
@@ -204,8 +206,12 @@ public class Resolver {
       return kind;
     }
 
-    public String getReference() {
-      return reference;
+    public String getUrlReference() {
+      return urlReference;
+    }
+
+    public String getWebPath() {
+      return webPath == null ? urlReference : webPath;
     }
 
     public ResourceElement getResource() {

@@ -6,8 +6,10 @@ import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
@@ -250,5 +252,20 @@ public class Renderer  {
     return ResourceElement.forType(context.getContextUtilities(), context.getProfileUtilities(), resource, type);
   }
   
-      
+  protected String getTranslatedCode(ResourceElement child) {   
+    return context.getTranslatedCode(child.primitiveValue(), impliedCodeSystem(child));
+  }
+
+  protected String impliedCodeSystem(ResourceElement i) {
+    ElementDefinition pd = i.getPropertyDefinition();
+    if (pd != null && pd.hasBinding() && pd.getBinding().hasValueSet()) {
+      ValueSet vs = context.getWorker().fetchResource(ValueSet.class, pd.getBinding().getValueSet());
+      if (vs != null && vs.hasCompose() && !vs.getCompose().hasExclude() && vs.getCompose().getInclude().size() == 1) {
+        return vs.getCompose().getIncludeFirstRep().getSystem();
+      }
+    }
+    return null;
+  }
+
+
 }

@@ -56,7 +56,7 @@ public class BundleRenderer extends ResourceRenderer {
     } else if ("collection".equals(b.primitiveValue("type")) && allEntriesAreHistoryProvenance(entries)) {
       // nothing
     } else {
-      XhtmlNode root = new XhtmlNode(NodeType.Element, "div");
+      XhtmlNode root = x;
       root.para().addText(formatPhrase(RenderingContext.BUNDLE_HEADER_ROOT, b.getId(), b.primitiveValue("type")));
       int i = 0;
       for (ResourceElement be : entries) {
@@ -80,6 +80,9 @@ public class BundleRenderer extends ResourceRenderer {
         } else {
           root.para().addText(formatPhrase(RenderingContext.BUNDLE_HEADER_ENTRY, Integer.toString(i)));
         }
+        if (be.has("search")) {
+          renderSearch(x, be.child("search"));
+        }
 //        if (be.hasRequest())
 //          renderRequest(root, be.getRequest());
 //        if (be.hasSearch())
@@ -101,9 +104,6 @@ public class BundleRenderer extends ResourceRenderer {
             }
           }
           root.blockquote().para().addChildren(xn);
-        }
-        if (be.has("search")) {
-          renderSearch(x, be.child("search"));
         }
         if (be.has("request")) {
           renderRequest(x, be.child("request"));

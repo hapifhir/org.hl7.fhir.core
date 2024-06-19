@@ -50,7 +50,7 @@ public class PatientRenderer extends ResourceRenderer {
     ResourceElement dt = pat.child("birthDate"); 
 
     StringBuilder b = new StringBuilder();
-    if (b == null) {
+    if (n != null) {
       b.append(displayHumanName(n));
     } else {
       b.append(context.formatPhrase(RenderingContext.PAT_NO_NAME));      
@@ -97,7 +97,7 @@ public class PatientRenderer extends ResourceRenderer {
 
   @Override
   public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement pat) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    if (SHORT) {
+    if (context.isShortPatientForm()) {
       ResourceElement id = null;
       List<ResourceElement> list = pat.children("identifier");
       for (ResourceElement t : list) {
@@ -111,7 +111,7 @@ public class PatientRenderer extends ResourceRenderer {
       String gender = null;
       ResourceElement item = pat.child("gender");
       if (item != null) {
-        gender = context.getTranslatedCode(item.primitiveValue(), "http://hl7.org/fhir/administrative-gender");
+        gender = getTranslatedCode(item);
       }
       ResourceElement dt = pat.child("birthDate");
 
@@ -139,7 +139,7 @@ public class PatientRenderer extends ResourceRenderer {
       }
     } else {
       // banner
-      describe(makeBanner(x.para()), pat);
+      makeBanner(x.para()).tx(displayResource(pat));
       x.hr();
       XhtmlNode tbl;
       if (hasRenderablePhoto(pat)) {
@@ -271,7 +271,7 @@ public class PatientRenderer extends ResourceRenderer {
               renderDataType(status, li, s.child("value"));
             }
           } else {
-            renderDataType(status, td, list.get(0));
+            renderDataType(status, td, list.get(0).child("value"));
           }
         } else {
           for (ResourceElement ext : list) {

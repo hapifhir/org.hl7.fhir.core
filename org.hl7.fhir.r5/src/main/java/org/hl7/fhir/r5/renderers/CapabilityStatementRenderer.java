@@ -434,7 +434,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       boolean first = true;
       for (CanonicalType ct : cap.getInstantiates()) {
         if (first) {first = false;} else {p.tx(", ");};
-        renderCanonical(status, res, x, CapabilityStatement.class, ct);
+        renderCanonical(status, res, p, CapabilityStatement.class, ct);
       }
     }
     if (cap.hasImports()) {
@@ -443,7 +443,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       boolean first = true;
       for (CanonicalType ct : cap.getImports()) {
         if (first) {first = false;} else {p.tx(", ");};
-        renderCanonical(status, res, x, CapabilityStatement.class, ct);
+        renderCanonical(status, res, p, CapabilityStatement.class, ct);
       }      
     }
   }

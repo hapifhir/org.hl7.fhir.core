@@ -270,6 +270,8 @@ public class RenderingContext extends RenderingI18nContext {
   private Map<String, String> namedLinks = new HashMap<>();
   private boolean addName = false;
   private Map<String, String> typeMap = new HashMap<>(); // type aliases that can be resolved in Markdown type links (mainly for cross-version usage)
+  private int base64Limit = 1024;
+  private boolean shortPatientForm;
   
   /**
    * 
@@ -801,6 +803,9 @@ public class RenderingContext extends RenderingI18nContext {
   }
 
   public String getTranslated(ResourceElement t) {
+    if (t == null) {
+      return null;
+    }
     if (locale != null) {
       for (ResourceElement e : t.extensions(ToolingExtensions.EXT_TRANSLATION)) {
         String l = e.extensionString("lang");
@@ -952,5 +957,22 @@ public class RenderingContext extends RenderingI18nContext {
     }
     return contextUtilities;
   }
+
+  public int getBase64Limit() {
+    return base64Limit;
+  }
+
+  public void setBase64Limit(int base64Limit) {
+    this.base64Limit = base64Limit;
+  }
+
+  public boolean isShortPatientForm() {
+    return shortPatientForm;
+  }
+
+  public void setShortPatientForm(boolean shortPatientForm) {
+    this.shortPatientForm = shortPatientForm;
+  }
+  
   
 }

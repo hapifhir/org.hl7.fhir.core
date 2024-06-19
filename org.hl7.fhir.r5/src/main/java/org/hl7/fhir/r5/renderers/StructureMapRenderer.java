@@ -55,7 +55,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
   @Override
   public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (r.isDirect()) {
-      renderMap(status, x, (StructureMap) r.getBase());      
+      renderMap(status, x.pre("fml"), (StructureMap) r.getBase());      
     } else {
       throw new Error("StructureMapRenderer only renders native resources directly");
     }

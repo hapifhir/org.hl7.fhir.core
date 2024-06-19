@@ -179,7 +179,7 @@ public class RequirementsRenderer extends ResourceRenderer {
                 li.ah(c.primitiveValue("reference")).tx(desc);
               } else if (t != null) {
                 String desc = getResourceDescription(t, c.primitiveValue("display"));
-                li.ah(t.getReference()).tx(desc);
+                li.ah(t.getWebPath()).tx(desc);
               } else {
                 li.ah(c.primitiveValue("reference")).tx(url);
               }
