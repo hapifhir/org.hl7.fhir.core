@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli.utils;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
@@ -33,6 +32,6 @@ public class ParamsTests {
     java.lang.Error error = Assertions.assertThrows(java.lang.Error.class, () -> {
       CliContext cliContext = Params.loadCliContext(new String[]{"-fhir-settings", "this-does-not-exist.json"});
     });
-    assertThat(error.getMessage(), containsString("this-does-not-exist.json"));
+    assertThat(error.getMessage()).contains("this-does-not-exist.json");
   }
 }
