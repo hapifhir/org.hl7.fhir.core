@@ -229,18 +229,7 @@ import org.hl7.fhir.validation.instance.type.StructureMapValidator;
 import org.hl7.fhir.validation.instance.type.StructureMapValidator.VariableDefn;
 import org.hl7.fhir.validation.instance.type.StructureMapValidator.VariableSet;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator;
-import org.hl7.fhir.validation.instance.utils.CanonicalResourceLookupResult;
-import org.hl7.fhir.validation.instance.utils.CanonicalTypeSorter;
-import org.hl7.fhir.validation.instance.utils.ChildIterator;
-import org.hl7.fhir.validation.instance.utils.ElementInfo;
-import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator;
-import org.hl7.fhir.validation.instance.utils.FHIRPathExpressionFixer;
-import org.hl7.fhir.validation.instance.utils.IndexedElement;
-import org.hl7.fhir.validation.instance.utils.NodeStack;
-import org.hl7.fhir.validation.instance.utils.ResolvedReference;
-import org.hl7.fhir.validation.instance.utils.ResourceValidationTracker;
-import org.hl7.fhir.validation.instance.utils.StructureDefinitionSorterByUrl;
-import org.hl7.fhir.validation.instance.utils.ValidationContext;
+import org.hl7.fhir.validation.instance.utils.*;
 import org.w3c.dom.Document;
 
 /**
@@ -3528,7 +3517,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (p[0].startsWith(" ")) {
           p[0] = Utilities.trimWS(p[0]); 
         }
-        String mMsg = checkValidMimeType(p[0].substring(0, p[0].lastIndexOf(";")));
+        String mMsg = MimeTypeUtil.checkValidMimeType(p[0].substring(0, p[0].lastIndexOf(";")));
         if (mMsg != null) {
           return context.formatMessage(I18nConstants.XHTML_URL_DATA_MIMETYPE, value, mMsg);                  
         }
@@ -3549,13 +3538,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return context.formatMessagePlural(c, I18nConstants.XHTML_URL_INVALID_CHARS, invalidChars.toString());
       }
     }
-  }
-
-  private String checkValidMimeType(String mt) {
-    if (!mt.matches("^(\\w+|\\*)\\/([\\w-]+|\\*)((;\\s*(\\w+)=\\s*(\\S+))?)$")) {
-      return "Mime type invalid";
-    }
-    return null;
   }
 
   private boolean checkInnerNS(List<ValidationMessage> errors, Element e, String path, List<XhtmlNode> list) {
