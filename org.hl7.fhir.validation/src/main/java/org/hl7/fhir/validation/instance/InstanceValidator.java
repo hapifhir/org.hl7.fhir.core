@@ -3552,7 +3552,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private String checkValidMimeType(String mt) {
-    if (!mt.matches("^(\\w+|\\*)\\/(\\w+|\\*)((;\\s*(\\w+)=\\s*(\\S+))?)$")) {
+    if (!mt.matches("^(\\w+|\\*)\\/([\\w-]+|\\*)((;\\s*(\\w+)=\\s*(\\S+))?)$")) {
       return "Mime type invalid";
     }
     return null;
