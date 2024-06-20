@@ -28,6 +28,7 @@ import org.hl7.fhir.r4b.renderers.utils.RenderingContext;
 import org.hl7.fhir.r4b.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r4b.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.CanonicalPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -325,8 +326,14 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       }
     }
   }
+  
 
-  protected String getDisplayForConcept(String system, String version, String value) {
+  protected String getDisplayForConcept(String canonical, String value) {
+    var split = CanonicalPair.of(canonical);
+    return getDisplayForConcept(split.getUrl(), split.getVersion(), value);
+  }
+
+  private String getDisplayForConcept(String system, String version, String value) {
     if (value == null || system == null)
       return null;
     ValidationResult cl = getContext().getWorker().validateCode(

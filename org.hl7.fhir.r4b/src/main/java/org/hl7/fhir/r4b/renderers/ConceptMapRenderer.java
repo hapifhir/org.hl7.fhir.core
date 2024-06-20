@@ -152,8 +152,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           td = tr.td();
           td.addText(ccl.getCode());
           display = ccl.hasDisplay() ? ccl.getDisplay()
-              : getDisplayForConcept(systemFromCanonical(grp.getSource()), versionFromCanonical(grp.getSource()),
-                  ccl.getCode());
+              : getDisplayForConcept(grp.getSource(), ccl.getCode());
           if (display != null && !isSameCodeAndDisplay(ccl.getCode(), display))
             td.tx(" (" + display + ")");
           TargetElementComponent ccm = ccl.getTarget().get(0);
@@ -166,8 +165,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           td = tr.td();
           td.addText(ccm.getCode());
           display = ccm.hasDisplay() ? ccm.getDisplay()
-              : getDisplayForConcept(systemFromCanonical(grp.getTarget()), versionFromCanonical(grp.getTarget()),
-                  ccm.getCode());
+              : getDisplayForConcept(grp.getTarget(), ccm.getCode());
           if (display != null && !isSameCodeAndDisplay(ccm.getCode(), display))
             td.tx(" (" + display + ")");
           if (comment)
@@ -247,8 +245,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               td.addText(ccl.getCode());
             else
               td.addText(grp.getSource() + " / " + ccl.getCode());
-            display = getDisplayForConcept(systemFromCanonical(grp.getSource()), versionFromCanonical(grp.getSource()),
-                ccl.getCode());
+            display = getDisplayForConcept(grp.getSource(), ccl.getCode());
             tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
             tr.td().colspan("4").style("background-color: #efefef").tx("(not mapped)");
 
@@ -270,8 +267,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
                 else
                   td.addText(grp.getSource() + " / " + ccl.getCode());
                 display = ccl.hasDisplay() ? ccl.getDisplay()
-                    : getDisplayForConcept(systemFromCanonical(grp.getSource()), versionFromCanonical(grp.getSource()),
-                        ccl.getCode());
+                    : getDisplayForConcept(grp.getSource(), ccl.getCode());
                 td = tr.td();
                 if (!last)
                   td.style("border-left-width: 0px; border-bottom-style: none");
@@ -311,7 +307,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               else
                 td.addText(grp.getTarget() + " / " + ccm.getCode());
               display = ccm.hasDisplay() ? ccm.getDisplay()
-                  : getDisplayForConcept(systemFromCanonical(grp.getTarget()), versionFromCanonical(grp.getTarget()),
+                  : getDisplayForConcept(grp.getTarget(),
                       ccm.getCode());
               tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
 
