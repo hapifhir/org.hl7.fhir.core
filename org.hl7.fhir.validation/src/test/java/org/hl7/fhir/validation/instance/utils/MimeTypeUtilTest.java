@@ -12,8 +12,9 @@ public class MimeTypeUtilTest {
   @ValueSource(strings = {
     "application/fhir",
     "text/plain",
+    "text/plain;charset=UTF-8",
     "application/octet-stream",
-    //"application/xhtml+xml", // This is technically valid but doesn't currently pass
+    "application/xhtml+xml",
   })
   public void testValidMimeTypes(String mimeType) {
     testMimeType(mimeType, true);
@@ -21,7 +22,8 @@ public class MimeTypeUtilTest {
 
   @ParameterizedTest
   @ValueSource(strings = {
-    "application/fhir;anything" // semicolon and everything after shouldn't work.
+    "application/fhir;anything", // semicolon and everything after shouldn't work if it's not a parameter=value pair
+    "application/fhir;parameter=", // parameter without value shouldn't work.
   })
   public void testInvalidMimeTypes(String mimeType) {
     testMimeType(mimeType, false);
