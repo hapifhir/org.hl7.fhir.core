@@ -59,7 +59,7 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
     Sheet sheet = makeSheet("Expansion Parameters");
     addHeaders(sheet, "Parameter", "Value");
     for (ValueSetExpansionParameterComponent p : params) {
-      addRow(sheet, p.getName(), dr.display(p.getValue()));          
+      addRow(sheet, p.getName(), dr.displayDataType(p.getValue()));          
     }    
   }
 

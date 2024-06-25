@@ -5,15 +5,18 @@ import java.util.Date;
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -37,6 +40,23 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  */
 public class Renderer  {
 
+  public static class RenderingStatus {
+    private boolean extensions;
+
+    public void setExtensions(boolean b) {
+      extensions = b;
+    }
+
+    public boolean getExtensions() {
+      return extensions;
+    }
+
+    public boolean isShowCodeDetails() {
+      // TODO Auto-generated method stub
+      return false;
+    }
+
+  }
   protected RenderingContext context;
   
   public Renderer(RenderingContext context) {
@@ -218,4 +238,20 @@ public class Renderer  {
   public String toStr(Date value) {
     return value.toString();
   }
+  
+  protected ResourceWrapper wrapNC(DataType type) {
+    return ResourceWrapper.forType(context.getContextUtilities(), type);
+  }
+  
+  protected ResourceWrapper wrap(Resource resource) {
+    return ResourceWrapper.forResource(context.getContextUtilities(), resource);
+  }
+  protected ResourceWrapper wrapWC(ResourceWrapper resource, DataType type) {
+    return ResourceWrapper.forType(context.getContextUtilities(), resource, type);
+  }
+  
+  protected String getTranslatedCode(ResourceWrapper child) {   
+    return context.getTranslatedCode(child.primitiveValue(), child.getCodeSystemUri());
+  }
+
 }
