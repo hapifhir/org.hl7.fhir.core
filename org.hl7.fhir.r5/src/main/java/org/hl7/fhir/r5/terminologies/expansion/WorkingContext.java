@@ -21,7 +21,8 @@ class WorkingContext {
   private boolean canBeHierarchy = true;
   private Integer offsetParam;
   private Integer countParam; // allowed count. Because of internal processing, we allow more 
-  private int total; // running count. This might be more than actually seen if we call out to an external server and only get the first 1000 codes
+  
+  private int extraCount; // running count. This might be more than actually seen if we call out to an external server and only get the first 1000 codes
   private boolean noTotal; // we lost count of the correct total
   
   public List<ValueSetExpansionContainsComponent> getCodes() {
@@ -80,18 +81,22 @@ class WorkingContext {
     this.countParam = countParam;
   }
   
-  public int getTotal() {
-    return total;
+  public int getExtraCount() {
+    return extraCount;
   }
 
-  public void incTotal() {
-    total++;
+  public void incExtraCount() {
+    extraCount++;
   }
 
-  public void incTotal(int amount) {
-    total += amount;
+  public void incExtraCount(int amount) {
+    extraCount += amount;
   }
 
+  public void resetExtraCount() {
+    extraCount = 0;
+  }
+  
   public boolean isNoTotal() {
     return noTotal;
   }
@@ -100,8 +105,12 @@ class WorkingContext {
     this.noTotal = noTotal;
   }
 
-  public void resetTotal() {
-    total = 0;
+  public int getCount() {
+    return codes.size();
   }
-  
+
+  public int getStatedTotal() {
+    return codes.size() + extraCount;
+  }
+
 }
