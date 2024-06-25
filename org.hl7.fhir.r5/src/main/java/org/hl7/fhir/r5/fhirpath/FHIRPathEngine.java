@@ -2750,7 +2750,9 @@ public class FHIRPathEngine {
       result.add(new DecimalType(new BigDecimal(l.primitiveValue()).add(new BigDecimal(r.primitiveValue()))));
     } else if ((l.isDateTime() || l.hasType("Date")) && r.hasType("Quantity")) {
       if (l.hasType("Date")) {
-        result.add(dateAdd((BaseDateTimeType) l, (Quantity) r, false, expr));
+        BaseDateTimeType dt = l instanceof BaseDateTimeType ? (BaseDateTimeType) l : TypeConvertor.castToDateTime(l);
+        Quantity qty = r instanceof Quantity ? (Quantity) r : TypeConvertor.castToQuantity(r);
+        result.add(dateAdd(dt, qty, false, expr));
       } else {
         DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue());
         result.add(dateAdd(dl, (Quantity) r, false, expr));
@@ -3019,7 +3021,9 @@ public class FHIRPathEngine {
       }
     } else if ((l.isDateTime() || l.hasType("Date")) && r.hasType("Quantity")) {
       if (l.hasType("Date")) {
-        result.add(dateAdd((BaseDateTimeType) l, (Quantity) r, true, expr));
+        BaseDateTimeType dt = l instanceof BaseDateTimeType ? (BaseDateTimeType) l : TypeConvertor.castToDateTime(l);
+        Quantity qty = r instanceof Quantity ? (Quantity) r : TypeConvertor.castToQuantity(r);
+        result.add(dateAdd(dt, qty, true, expr));
       } else {
         DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue());
         result.add(dateAdd(dl, (Quantity) r, true, expr));
