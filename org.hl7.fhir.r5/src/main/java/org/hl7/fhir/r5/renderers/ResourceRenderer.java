@@ -289,8 +289,14 @@ public abstract class ResourceRenderer extends DataRenderer {
     } else {
       CanonicalResource cr = (CanonicalResource) target;
       if (!target.hasWebPath()) {
-        x.code().tx(url);
-        x.tx(" ("+cr.present()+")");
+        if (url.contains("|")) {
+          x.code().tx(cr.getUrl());
+          x.tx(context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion()));
+          x.tx(" ("+cr.present()+")");
+        } else {
+          x.code().tx(url);
+          x.tx(" ("+cr.present()+")");
+        }
       } else {
         if (url.contains("|")) {
           x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +cr.getVersion()+")");
