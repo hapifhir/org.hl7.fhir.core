@@ -45,12 +45,6 @@ public class PassiveExpiringSessionCache implements SessionCache {
     return generatedId;
   }
 
-  @Override
-  public String cacheSession(Supplier<ValidationEngine> validationEngineSupplier) {
-    ValidationEngine engine = validationEngineSupplier.get();
-    return this.cacheSession(engine);
-  }
-
   /**
    * Stores the initialized {@link ValidationEngine} in the cache with the passed in id as the key. If a null key is
    * passed in, a new key is generated and returned.

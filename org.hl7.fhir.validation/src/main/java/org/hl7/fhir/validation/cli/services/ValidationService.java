@@ -490,19 +490,10 @@ public class ValidationService {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
 
-      // Send a supplier instead of instantiating. This will permit the sessionCache to manage existing sessions (drop
-      // or expire old sessions as needed)
-      sessionId = sessionCache.cacheSession(() -> {
+      ValidationEngine validationEngine = getValidationEngineFromCliContext(cliContext, definitions, tt);
+      sessionId = sessionCache.cacheSession(validationEngine);
+      System.out.println("Cached new session. Cache size = " + sessionCache.getSessionIds().size());
 
-        try {
-          return buildValidationEngine(cliContext, definitions, tt);
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        } catch (URISyntaxException e) {
-          throw new RuntimeException(e);
-        }
-
-      });
     } else {
       System.out.println("Cached session exists for session id " + sessionId + ", returning stored validator session id. Cache size = " + sessionCache.getSessionIds().size());
     }
