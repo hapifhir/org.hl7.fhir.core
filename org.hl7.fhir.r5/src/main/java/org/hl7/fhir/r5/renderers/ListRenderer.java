@@ -8,8 +8,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.ListResource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
  
@@ -20,12 +19,17 @@ public class ListRenderer extends ResourceRenderer {
   } 
  
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
-    return "todo";
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    ResourceWrapper c = r.child("code");
+    String cd = c == null ? context.formatPhrase(RenderingContext.LIST_UNSPECIFIED_CODE) : displayCodeableConcept(c);
+    ResourceWrapper s = r.child("subject");
+    String sd = s == null ? context.formatPhrase(RenderingContext.LIST_UNSPECIFIED_SUBJECT) : displayReference(s);
+    return context.formatPhrase(RenderingContext.LIST_SUMMARY, cd, sd);
   }
 
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement list) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper list) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    renderResourceTechDetails(list, x);
     if (list.has("title")) { 
       x.h2().tx(list.primitiveValue("title")); 
     } 
@@ -60,13 +64,13 @@ public class ListRenderer extends ResourceRenderer {
     if (list.has("orderedBy")) { 
       td.tx(context.formatPhrase(RenderingContext.LIST_REND_ORD, displayDataType(list.child("orderedBy")))+" "); 
     } 
-    for (ResourceElement a : list.children("note")) { 
+    for (ResourceWrapper a : list.children("note")) { 
       renderAnnotation(status, x, a); 
     } 
     boolean flag = false; 
     boolean deleted = false; 
     boolean date = false; 
-    for (ResourceElement e : list.children("entry")) { 
+    for (ResourceWrapper e : list.children("entry")) { 
       flag = flag || e.has("flag"); 
       deleted = deleted || e.has("deleted"); 
       date = date || e.has("date"); 
@@ -83,7 +87,7 @@ public class ListRenderer extends ResourceRenderer {
     if (deleted) { 
       tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_DEL));       
     } 
-    for (ResourceElement e : list.children("entry")) { 
+    for (ResourceWrapper e : list.children("entry")) { 
       tr = t.tr(); 
       renderReference(status, tr.td(), e.child("item")); 
       if (date) { 

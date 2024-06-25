@@ -8,8 +8,9 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ParametersRenderer extends ResourceRenderer {
@@ -20,8 +21,17 @@ public class ParametersRenderer extends ResourceRenderer {
  
   
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
-    return "todo";
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    List<ResourceWrapper> params = r.children("parameter");
+    if (params.size() < 8) {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      for (ResourceWrapper p : params) {
+        b.append(p.primitiveValue("name"));
+      }
+      return context.formatMessage(RenderingContext.PARS_SUMMARY_LIST, b.toString());
+    } else {
+      return context.formatMessage(RenderingContext.PARS_SUMMARY_SIZE, params.size());
+    }
   }
 
   public ParametersRenderer setMultiLangMode(boolean multiLangMode) {
@@ -30,14 +40,15 @@ public class ParametersRenderer extends ResourceRenderer {
   }
 
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    renderResourceTechDetails(r, x);
     x.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
     XhtmlNode tbl = x.table("grid");
     params(status, tbl, r.children("parameter"), 0);
   }
 
-  private void params(RenderingStatus status, XhtmlNode tbl, List<ResourceElement> list, int indent) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
-    for (ResourceElement p : list) {
+  private void params(RenderingStatus status, XhtmlNode tbl, List<ResourceWrapper> list, int indent) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
+    for (ResourceWrapper p : list) {
       XhtmlNode tr = tbl.tr();
       XhtmlNode td = tr.td();
       for (int i = 0; i < indent; i++) {
@@ -51,18 +62,18 @@ public class ParametersRenderer extends ResourceRenderer {
       if (p.has("value")) {
         renderDataType(status, tr.td(), p.child("value"));
       } else if (p.has("resource")) {
-        ResourceElement rw = p.child("resource");
+        ResourceWrapper rw = p.child("resource");
         td = tr.td();
         XhtmlNode para = td.para();
         para.tx(rw.fhirType()+"/"+rw.getId());
-        para.an(rw.fhirType()+"_"+rw.getId()).tx(" ");
-        para.an("hc"+rw.fhirType()+"_"+rw.getId()).tx(" ");
+        para.an(context.prefixAnchor(rw.fhirType()+"_"+rw.getId())).tx(" ");
+        para.an(context.prefixAnchor("hc"+rw.fhirType()+"_"+rw.getId())).tx(" ");
         XhtmlNode x = rw.getNarrative();
         if (x != null) {
           td.addChildren(x);
         } else {
           ResourceRenderer rr = RendererFactory.factory(rw, context);
-          rr.renderResource(status, td, rw);
+          rr.buildNarrative(status, td, rw);
         }
       } else if (p.has("part")) {
         tr.td();

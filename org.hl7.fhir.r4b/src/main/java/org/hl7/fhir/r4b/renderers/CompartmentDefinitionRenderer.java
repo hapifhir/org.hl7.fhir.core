@@ -17,6 +17,13 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class CompartmentDefinitionRenderer extends ResourceRenderer {
 
   public CompartmentDefinitionRenderer(RenderingContext context) {

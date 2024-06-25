@@ -9,11 +9,8 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.LiquidEngine;
 import org.hl7.fhir.r5.utils.LiquidEngine.ILiquidRenderingSupport;
@@ -29,8 +26,8 @@ public class LiquidRenderer extends ResourceRenderer implements ILiquidRendering
 
   private class LiquidRendererContext {
     private RenderingStatus status;
-    private ResourceElement resource;
-    protected LiquidRendererContext(RenderingStatus status, ResourceElement resource) {
+    private ResourceWrapper resource;
+    protected LiquidRendererContext(RenderingStatus status, ResourceWrapper resource) {
       super();
       this.status = status;
       this.resource = resource;
@@ -44,7 +41,7 @@ public class LiquidRenderer extends ResourceRenderer implements ILiquidRendering
   } 
    
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return canonicalTitle(r);
   }
 
@@ -66,7 +63,7 @@ public class LiquidRenderer extends ResourceRenderer implements ILiquidRendering
   }
   
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     LiquidEngine engine = new LiquidEngine(context.getWorker(), context.getServices());
     XhtmlNode xn;
     try {
@@ -93,11 +90,11 @@ public class LiquidRenderer extends ResourceRenderer implements ILiquidRendering
   public String renderForLiquid(Object appContext, Base base) throws FHIRException {
     try {
       LiquidRendererContext ctxt = (LiquidRendererContext) appContext;
-      ResourceElement r = null;
+      ResourceWrapper r = null;
       if (base instanceof Element) {
-        r = ResourceElement.forType(context.getContextUtilities(), context.getProfileUtilities(), (Element) base);
+        r = ResourceWrapper.forType(context.getContextUtilities(), (Element) base);
       } else if (base instanceof DataType) {
-        r = ResourceElement.forType(context.getContextUtilities(), context.getProfileUtilities(), (DataType) base);        
+        r = ResourceWrapper.forType(context.getContextUtilities(), (DataType) base);        
       } else {
         return base.toString(); 
       }

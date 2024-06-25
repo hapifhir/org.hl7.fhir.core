@@ -12,13 +12,11 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.IdType;
@@ -39,7 +37,7 @@ import org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapTransform;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -53,8 +51,10 @@ public class StructureMapRenderer extends TerminologyRenderer {
   } 
  
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (r.isDirect()) {
+      renderResourceTechDetails(r, x);
+      genSummaryTable(status, x, (StructureMap) r.getBase());
       renderMap(status, x.pre("fml"), (StructureMap) r.getBase());      
     } else {
       throw new Error("StructureMapRenderer only renders native resources directly");
@@ -63,7 +63,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
   
   
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return canonicalTitle(r);
   }
 
@@ -78,6 +78,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
   private static final String COLOR_SPECIAL = "#b36b00";
 
   public void renderMap(RenderingStatus status, XhtmlNode x, StructureMap map) {
+    
     x.tx("\r\n");
     if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
       renderMetadata(x, "url", map.getUrlElement());
@@ -153,7 +154,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
         x.color(COLOR_SYNTAX).tx(" = \"");
         CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, cg.getSource());
         if (cs != null && cs.hasWebPath()) {
-          x.ah(cs.getWebPath(), cs.present()).tx(cg.getSource());
+          x.ah(context.prefixLocalHref(cs.getWebPath()), cs.present()).tx(cg.getSource());
         } else {
           x.tx(cg.getSource());
         }
@@ -167,7 +168,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
         x.color(COLOR_SYNTAX).tx(" = \"");
         CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, cg.getTarget());
         if (cs != null && cs.hasWebPath()) {
-          x.ah(cs.getWebPath(), cs.present()).tx(cg.getTarget());
+          x.ah(context.prefixLocalHref(cs.getWebPath()), cs.present()).tx(cg.getTarget());
         } else {
           x.tx(""+cg.getTarget());
         }
@@ -255,7 +256,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.color(COLOR_SYNTAX).tx(" \"");
       StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, s.getUrl());
       if (sd != null && sd.hasWebPath()) {
-        x.ah(sd.getWebPath(), sd.present()).tx(s.getUrl());
+        x.ah(context.prefixLocalHref(sd.getWebPath()), sd.present()).tx(s.getUrl());
       } else {
         x.tx(s.getUrl());
       }
@@ -280,7 +281,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.color(COLOR_SYNTAX).tx(" \"");
       StructureMap m = context.getContext().fetchResource(StructureMap.class, s.getValue());
       if (m != null) {
-        x.ah(m.getWebPath(), m.present()).tx(s.getValue());
+        x.ah(context.prefixLocalHref(m.getWebPath()), m.present()).tx(s.getValue());
       } else {
         x.tx(s.getValue());
       }
@@ -320,7 +321,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.b().tx(" extends ");
       String ref = resolveRuleReference(g.getExtendsElement());
       if (ref != null) {
-        x.ah(ref).tx(g.getExtends()); 
+        x.ah(context.prefixLocalHref(ref)).tx(g.getExtends()); 
       } else {
         x.tx(g.getExtends());
       }
@@ -410,7 +411,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
             x.color(COLOR_SYNTAX).tx(", ");
           String ref = resolveRuleReference(rd.getNameElement());
           if (ref != null) {
-            x.ah(ref).tx(rd.getName());
+            x.ah(context.prefixLocalHref(ref)).tx(rd.getName());
           } else {
             x.tx(rd.getName());
           }

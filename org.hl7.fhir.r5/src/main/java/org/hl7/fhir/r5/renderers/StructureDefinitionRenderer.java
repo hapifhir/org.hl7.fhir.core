@@ -1,104 +1,95 @@
 package org.hl7.fhir.r5.renderers; 
  
-import java.io.ByteArrayOutputStream; 
-import java.io.IOException; 
-import java.io.UnsupportedEncodingException; 
-import java.util.ArrayList; 
-import java.util.HashMap; 
-import java.util.HashSet; 
-import java.util.List; 
-import java.util.Stack; 
-import java.util.Map; 
-import java.util.Set; 
- 
-import org.apache.commons.lang3.StringUtils; 
-import org.hl7.fhir.exceptions.DefinitionException; 
-import org.hl7.fhir.exceptions.FHIRException; 
-import org.hl7.fhir.exceptions.FHIRFormatError; 
-import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation; 
-import org.hl7.fhir.r5.conformance.profile.BindingResolution; 
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities; 
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ElementChoiceGroup; 
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ExtensionContext; 
-import org.hl7.fhir.r5.formats.IParser; 
-import org.hl7.fhir.r5.formats.IParser.OutputStyle; 
-import org.hl7.fhir.r5.formats.JsonParser; 
-import org.hl7.fhir.r5.formats.XmlParser; 
-import org.hl7.fhir.r5.model.ActorDefinition; 
-import org.hl7.fhir.r5.model.Base; 
-import org.hl7.fhir.r5.model.BooleanType; 
-import org.hl7.fhir.r5.model.CanonicalResource; 
-import org.hl7.fhir.r5.model.CanonicalType; 
-import org.hl7.fhir.r5.model.CodeSystem; 
-import org.hl7.fhir.r5.model.CodeType; 
-import org.hl7.fhir.r5.model.CodeableConcept; 
-import org.hl7.fhir.r5.model.Coding; 
-import org.hl7.fhir.r5.model.DataType; 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
+import org.hl7.fhir.r5.conformance.profile.BindingResolution;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ElementChoiceGroup;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ExtensionContext;
+import org.hl7.fhir.r5.formats.IParser;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.model.ActorDefinition;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DecimalType;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Element; 
-import org.hl7.fhir.r5.model.ElementDefinition; 
-import org.hl7.fhir.r5.model.ElementDefinition.AdditionalBindingPurposeVS; 
-import org.hl7.fhir.r5.model.ElementDefinition.AggregationMode; 
-import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType; 
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent; 
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent; 
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent; 
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionExampleComponent; 
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent; 
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent; 
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent; 
-import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation; 
-import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules; 
-import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent; 
-import org.hl7.fhir.r5.model.Enumeration; 
-import org.hl7.fhir.r5.model.Enumerations.BindingStrength; 
-import org.hl7.fhir.r5.model.Extension; 
-import org.hl7.fhir.r5.model.IdType; 
-import org.hl7.fhir.r5.model.IntegerType; 
-import org.hl7.fhir.r5.model.MarkdownType; 
-import org.hl7.fhir.r5.model.PrimitiveType; 
-import org.hl7.fhir.r5.model.Quantity; 
-import org.hl7.fhir.r5.model.Resource; 
-import org.hl7.fhir.r5.model.StringType; 
-import org.hl7.fhir.r5.model.StructureDefinition; 
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind; 
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent; 
-import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule; 
-import org.hl7.fhir.r5.model.UriType; 
-import org.hl7.fhir.r5.model.ValueSet; 
-import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.InternalMarkdownProcessor; 
-import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.RenderStyle; 
-import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.SourcedElementDefinition; 
+import org.hl7.fhir.r5.model.Element;
+import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.AdditionalBindingPurposeVS;
+import org.hl7.fhir.r5.model.ElementDefinition.AggregationMode;
+import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionExampleComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
+import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
+import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.IdType;
+import org.hl7.fhir.r5.model.IntegerType;
+import org.hl7.fhir.r5.model.MarkdownType;
+import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.Quantity;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
+import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.FixedValueFormat; 
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules; 
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType; 
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.StructureDefinitionRendererMode; 
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.FixedValueFormat;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.PublicationHacker; 
-import org.hl7.fhir.r5.utils.ToolingExtensions; 
+import org.hl7.fhir.r5.utils.PublicationHacker;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkDownProcessor; 
-import org.hl7.fhir.utilities.StandardsStatus; 
-import org.hl7.fhir.utilities.TextFile; 
-import org.hl7.fhir.utilities.Utilities; 
-import org.hl7.fhir.utilities.VersionUtilities; 
-import org.hl7.fhir.utilities.i18n.I18nConstants; 
-import org.hl7.fhir.utilities.i18n.RenderingI18nContext; 
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity; 
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator; 
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell; 
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece; 
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row; 
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableGenerationMode; 
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel; 
-import org.hl7.fhir.utilities.xhtml.NodeType; 
-import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
-import org.hl7.fhir.utilities.xhtml.XhtmlNodeList; 
+import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.StandardsStatus;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableGenerationMode;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
+import org.hl7.fhir.utilities.xhtml.NodeType;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser; 
  
 public class StructureDefinitionRenderer extends ResourceRenderer { 
@@ -110,11 +101,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (!r.isDirect()) {
       throw new Error("StructureDefinitionRenderer only renders native resources directly");
     } 
+    renderResourceTechDetails(r, x);
     StructureDefinition sd = (StructureDefinition) r.getBase();
+    genSummaryTable(status, x, sd);
     if (context.getStructureMode() == StructureDefinitionRendererMode.DATA_DICT) { 
       renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict"), false, GEN_MODE_DIFF, "", r); 
     } else { 
@@ -125,7 +118,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
   
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return canonicalTitle(r);
   }
 
@@ -224,7 +217,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
     public void renderDetails(XhtmlNode f) { 
       if (cr != null && cr.hasWebPath()) { 
-        f.ah(cr.getWebPath()).tx(cr.present()); 
+        f.ah(context.prefixLocalHref(cr.getWebPath())).tx(cr.present()); 
       } else { 
         f.code().tx(url);             
       } 
@@ -298,7 +291,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
      
     public void renderDetails(XhtmlNode f) { 
       if (value.hasUserData("render.link")) { 
-        f = f.ah(value.getUserString("render.link")); 
+        f = f.ah(context.prefixLocalHref(value.getUserString("render.link"))); 
       } 
       f.tx(value.asStringValue()); 
     } 
@@ -318,7 +311,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     public void renderDetails(XhtmlNode f) throws IOException { 
  
       if (value.hasUserData("render.link")) { 
-        f = f.ah(value.getUserString("render.link")); 
+        f = f.ah(context.prefixLocalHref(value.getUserString("render.link"))); 
       } 
       f.tx(summarize(value)); 
     } 
@@ -537,10 +530,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
    
   public XhtmlNode generateTable(RenderingStatus status, String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, 
-      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceElement res) throws IOException, FHIRException { 
+      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res) throws IOException, FHIRException { 
     assert(diff != snapshot);// check it's ok to get rid of one of these 
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, anchorPrefix);
  
+    gen.setUniqueLocalPrefix(context.getUniqueLocalPrefix());
+    
     List<ElementDefinition> list; 
     if (diff) 
       list = supplementMissingDiffElements(profile); 
@@ -705,7 +700,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   private Row genElement(RenderingStatus status, String defPath, HierarchicalTableGenerator gen, List<Row> rows, ElementDefinition element, List<ElementDefinition> all, List<StructureDefinition> profiles, boolean showMissing, String profileBaseFileName, Boolean extensions,  
-      boolean snapshot, String corePath, String imagePath, boolean root, boolean logicalModel, boolean isConstraintMode, boolean allInvariants, Row slicingRow, boolean mustSupport, RenderingContext rc, String anchorPrefix, Resource srcSD, List<Column> columns, ResourceElement res) throws IOException, FHIRException { 
+      boolean snapshot, String corePath, String imagePath, boolean root, boolean logicalModel, boolean isConstraintMode, boolean allInvariants, Row slicingRow, boolean mustSupport, RenderingContext rc, String anchorPrefix, Resource srcSD, List<Column> columns, ResourceWrapper res) throws IOException, FHIRException { 
     Row originalRow = slicingRow; 
     StructureDefinition profile = profiles == null ? null : profiles.get(profiles.size()-1); 
     Row typesRow = null; 
@@ -1068,7 +1063,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   public List<Cell> genElementCells(RenderingStatus status, HierarchicalTableGenerator gen, ElementDefinition element, String profileBaseFileName, boolean snapshot, String corePath, 
       String imagePath, boolean root, boolean logicalModel, boolean allInvariants, StructureDefinition profile, Row typesRow, Row row, boolean hasDef, 
-      boolean ext, UnusedTracker used, String ref, String sName, Cell nameCell, boolean mustSupport, boolean allowSubRows, RenderingContext rc, boolean walksIntoThis, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements, ResourceElement resource) throws IOException {
+      boolean ext, UnusedTracker used, String ref, String sName, Cell nameCell, boolean mustSupport, boolean allowSubRows, RenderingContext rc, boolean walksIntoThis, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements, ResourceWrapper resource) throws IOException {
     List<Cell> res = new ArrayList<>(); 
     Cell gc = gen.new Cell(); 
     row.getCells().add(gc); 
@@ -1298,15 +1293,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         && element.getSlicing().getRules() != SlicingRules.CLOSED && element.getSlicing().getDiscriminator().size() == 1 && element.getSlicing().getDiscriminator().get(0).getPath().equals("url") && element.getSlicing().getDiscriminator().get(0).getType().equals(DiscriminatorType.VALUE); 
   } 
  
-  public Cell generateDescription(RenderingStatus status, HierarchicalTableGenerator gen, Row row, ElementDefinition definition, ElementDefinition fallback, boolean used, String baseURL, String url, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean logicalModel, boolean allInvariants, boolean snapshot, boolean mustSupportOnly, boolean allowSubRows, RenderingContext rc, ResourceElement res) throws IOException, FHIRException { 
+  public Cell generateDescription(RenderingStatus status, HierarchicalTableGenerator gen, Row row, ElementDefinition definition, ElementDefinition fallback, boolean used, String baseURL, String url, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean logicalModel, boolean allInvariants, boolean snapshot, boolean mustSupportOnly, boolean allowSubRows, RenderingContext rc, ResourceWrapper res) throws IOException, FHIRException { 
     return generateDescription(status, gen, row, definition, fallback, used, baseURL, url, profile, corePath, imagePath, root, logicalModel, allInvariants, null, snapshot, mustSupportOnly, allowSubRows, rc, new ArrayList<ElementDefinition>(), res);
   }
 
-  public Cell generateDescription(RenderingStatus status, HierarchicalTableGenerator gen, Row row, ElementDefinition definition, ElementDefinition fallback, boolean used, String baseURL, String url, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean logicalModel, boolean allInvariants, boolean snapshot, boolean mustSupportOnly, boolean allowSubRows, RenderingContext rc, List<ElementDefinition> inScopeElements, ResourceElement res) throws IOException, FHIRException {
+  public Cell generateDescription(RenderingStatus status, HierarchicalTableGenerator gen, Row row, ElementDefinition definition, ElementDefinition fallback, boolean used, String baseURL, String url, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean logicalModel, boolean allInvariants, boolean snapshot, boolean mustSupportOnly, boolean allowSubRows, RenderingContext rc, List<ElementDefinition> inScopeElements, ResourceWrapper res) throws IOException, FHIRException {
     return generateDescription(status, gen, row, definition, fallback, used, baseURL, url, profile, corePath, imagePath, root, logicalModel, allInvariants, null, snapshot, mustSupportOnly, allowSubRows, rc, inScopeElements, res);
   }
 
-  public Cell generateDescription(RenderingStatus status, HierarchicalTableGenerator gen, Row row, ElementDefinition definition, ElementDefinition fallback, boolean used, String baseURL, String url, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean logicalModel, boolean allInvariants, ElementDefinition valueDefn, boolean snapshot, boolean mustSupportOnly, boolean allowSubRows, RenderingContext rc, List<ElementDefinition> inScopeElements, ResourceElement res) throws IOException, FHIRException {
+  public Cell generateDescription(RenderingStatus status, HierarchicalTableGenerator gen, Row row, ElementDefinition definition, ElementDefinition fallback, boolean used, String baseURL, String url, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean logicalModel, boolean allInvariants, ElementDefinition valueDefn, boolean snapshot, boolean mustSupportOnly, boolean allowSubRows, RenderingContext rc, List<ElementDefinition> inScopeElements, ResourceWrapper res) throws IOException, FHIRException {
     Cell c = gen.new Cell(); 
     row.getCells().add(c); 
  
@@ -3137,13 +3132,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (sd == null) { 
         x.code().tx(type); 
       } else { 
-        x.ah(sd.getWebPath()).tx(sd.getTypeName()); 
+        x.ah(context.prefixLocalHref(sd.getWebPath())).tx(sd.getTypeName()); 
       } 
     } 
     return first ? null : x; 
   } 
  
-  public XhtmlNode generateExtensionTable(RenderingStatus status, String defFile, StructureDefinition ed, String imageFolder, boolean inlineGraphics, boolean full, String corePath, String imagePath, Set<String> outputTracker, RenderingContext rc, String defPath, String anchorPrefix, ResourceElement res) throws IOException, FHIRException {
+  public XhtmlNode generateExtensionTable(RenderingStatus status, String defFile, StructureDefinition ed, String imageFolder, boolean inlineGraphics, boolean full, String corePath, String imagePath, Set<String> outputTracker, RenderingContext rc, String defPath, String anchorPrefix, ResourceWrapper res) throws IOException, FHIRException {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defPath, anchorPrefix);
     TableModel model = gen.initNormalTable(corePath, false, true, ed.getId()+(full ? "f" : "n"), true, TableGenerationMode.XHTML); 
  
@@ -3285,7 +3280,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return null; 
   } 
  
-  public void renderDict(RenderingStatus status, StructureDefinition sd, List<ElementDefinition> elements, XhtmlNode t, boolean incProfiledOut, int mode, String anchorPrefix, ResourceElement res) throws FHIRException, IOException { 
+  public void renderDict(RenderingStatus status, StructureDefinition sd, List<ElementDefinition> elements, XhtmlNode t, boolean incProfiledOut, int mode, String anchorPrefix, ResourceWrapper res) throws FHIRException, IOException { 
     int i = 0; 
     Map<String, ElementDefinition> allAnchors = new HashMap<>(); 
     List<ElementDefinition> excluded = new ArrayList<>(); 
@@ -3310,7 +3305,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         XhtmlNode tr = t.tr(); 
         XhtmlNode sp = renderStatus(ec, tr.td("structure").colspan(2).spanClss("self-link-parent")); 
         for (String s : anchors) { 
-          sp.an(s).tx(" "); 
+          sp.an(context.prefixAnchor(s)).tx(" "); 
         } 
         sp.span("color: grey", null).tx(Integer.toString(i++)); 
         sp.b().tx(". "+title); 
@@ -3349,7 +3344,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     finish(status, t, sd, null, mode, "", anchorPrefix, res);
   } 
  
-  private void finish(RenderingStatus status, XhtmlNode t, StructureDefinition sd, ElementDefinition ed, int mode, String defPath, String anchorPrefix, ResourceElement res) throws FHIRException, IOException {
+  private void finish(RenderingStatus status, XhtmlNode t, StructureDefinition sd, ElementDefinition ed, int mode, String defPath, String anchorPrefix, ResourceWrapper res) throws FHIRException, IOException {
  
     for (Base b : VersionComparisonAnnotation.getDeleted(ed == null ? sd : ed, "element")) { 
       ElementDefinition ec = (ElementDefinition) b; 
@@ -3506,7 +3501,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
  
   private void link(XhtmlNode x, String id, String anchorPrefix) { 
-    var ah = x.ah("#" + anchorPrefix + id); 
+    var ah = x.ah(context.prefixLocalHref("#" + anchorPrefix + id)); 
     ah.attribute("title", "link to here"); 
     ah.attribute("class", "self-link"); 
     var svg = ah.svg(); 
@@ -3617,7 +3612,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div"); 
     if (mode != GEN_MODE_KEY) { 
       if (newStr != null) { 
-        renderStatus(source, x).ah(nLink).txOrCode(code, newStr).iff(externalN).txN(" ").img("external.png", null); 
+        renderStatus(source, x).ah(context.prefixLocalHref(nLink)).txOrCode(code, newStr).iff(externalN).txN(" ").img("external.png", null); 
       } else if (VersionComparisonAnnotation.hasDeleted(parent, name)) { 
         PrimitiveType p = (PrimitiveType) VersionComparisonAnnotation.getDeletedItem(parent, name); 
         renderStatus(p, x).txOrCode(code, p.primitiveValue());         
@@ -3628,27 +3623,27 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (newStr==null || newStr.isEmpty()) { 
         return null; 
       } else { 
-        renderStatus(source, x).ah(nLink).txOrCode(code, newStr).iff(externalN).txN(" ").img("external.png", null); 
+        renderStatus(source, x).ah(context.prefixLocalHref(nLink)).txOrCode(code, newStr).iff(externalN).txN(" ").img("external.png", null); 
       } 
     } else if (oldStr!=null && !oldStr.isEmpty() && (newStr==null || newStr.isEmpty())) { 
       if (mode == GEN_MODE_DIFF) { 
         return null; 
       } else { 
-        removed(x).ah(oLink).txOrCode(code, oldStr).iff(externalO).txN(" ").img("external.png", null); 
+        removed(x).ah(context.prefixLocalHref(oLink)).txOrCode(code, oldStr).iff(externalO).txN(" ").img("external.png", null); 
       } 
     } else if (oldStr.equals(newStr)) { 
       if (mode==GEN_MODE_DIFF) { 
         return null; 
       } else { 
-        unchanged(x).ah(nLink).txOrCode(code, newStr).iff(externalN).txN(" ").img("external.png", null); 
+        unchanged(x).ah(context.prefixLocalHref(nLink)).txOrCode(code, newStr).iff(externalN).txN(" ").img("external.png", null); 
       } 
     } else if (newStr.startsWith(oldStr)) { 
-      unchanged(x).ah(oLink).txOrCode(code, oldStr).iff(externalO).txN(" ").img("external.png", null); 
-      renderStatus(source, x).ah(nLink).txN(newStr.substring(oldStr.length())).iff(externalN).txN(" ").img("external.png", null); 
+      unchanged(x).ah(context.prefixLocalHref(oLink)).txOrCode(code, oldStr).iff(externalO).txN(" ").img("external.png", null); 
+      renderStatus(source, x).ah(context.prefixLocalHref(nLink)).txN(newStr.substring(oldStr.length())).iff(externalN).txN(" ").img("external.png", null); 
     } else { 
       // TODO: improve comparision in this fall-through case, by looking for matches in sub-paragraphs? 
-      renderStatus(source, x).ah(nLink).txOrCode(code, newStr).iff(externalN).txN(" ").img("external.png", null); 
-      removed(x).ah(oLink).txOrCode(code, oldStr).iff(externalO).txN(" ").img("external.png", null); 
+      renderStatus(source, x).ah(context.prefixLocalHref(nLink)).txOrCode(code, newStr).iff(externalN).txN(" ").img("external.png", null); 
+      removed(x).ah(context.prefixLocalHref(oLink)).txOrCode(code, oldStr).iff(externalO).txN(" ").img("external.png", null); 
     } 
     return x; 
   } 
@@ -3679,7 +3674,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return "color:DarkGray;text-decoration:line-through"; 
   } 
  
-  private void generateElementInner(RenderingStatus status, XhtmlNode tbl, StructureDefinition sd, ElementDefinition d, int mode, ElementDefinition value, ElementDefinition compare, ElementDefinition compareValue, boolean strikethrough, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements, ResourceElement res) throws FHIRException, IOException {
+  private void generateElementInner(RenderingStatus status, XhtmlNode tbl, StructureDefinition sd, ElementDefinition d, int mode, ElementDefinition value, ElementDefinition compare, ElementDefinition compareValue, boolean strikethrough, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements, ResourceWrapper res) throws FHIRException, IOException {
     boolean root = !d.getPath().contains("."); 
     boolean slicedExtension = d.hasSliceName() && (d.getPath().endsWith(".extension") || d.getPath().endsWith(".modifierExtension")); 
 //    int slicedExtensionMode = (mode == GEN_MODE_KEY) && slicedExtension ? GEN_MODE_SNAP : mode; // see ProfileUtilities.checkExtensionDoco / Task 3970 
@@ -3871,7 +3866,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (sd == null) {
       x.code().tx(t);
     } else {
-      x.ah(sd.getWebPath(), t).tx(sd.present());
+      x.ah(context.prefixLocalHref(sd.getWebPath()), t).tx(sd.present());
     }
     return x;
   }
@@ -3975,7 +3970,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
  
-  private XhtmlNode describeObligations(RenderingStatus status, ElementDefinition d, boolean root, StructureDefinition sdx, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements, ResourceElement res) throws IOException {
+  private XhtmlNode describeObligations(RenderingStatus status, ElementDefinition d, boolean root, StructureDefinition sdx, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements, ResourceWrapper res) throws IOException {
     XhtmlNode ret = new XhtmlNode(NodeType.Element, "div"); 
     ObligationsRenderer obr = new ObligationsRenderer(corePath, sdx, d.getPath(), context, hostMd, this); 
     obr.seeObligations(d.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)); 
@@ -3994,9 +3989,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (sd == null) {  
             bb.code().tx(iu);                      
           } else if (sd.hasWebPath()) {  
-            bb.ah(sd.getWebPath()).tx(sd.present()); 
+            bb.ah(context.prefixLocalHref(sd.getWebPath())).tx(sd.present()); 
           } else {  
-            bb.ah(iu).tx(sd.present()); 
+            bb.ah(context.prefixLocalHref(iu)).tx(sd.present()); 
           }  
         }   
         if (ul.isEmpty()) { 
@@ -4040,9 +4035,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (cr == null) { 
       x.code().tx(url); 
     } else if (!cr.hasWebPath()) { 
-      x.ah(url).tx(cr.present()); 
+      x.ah(context.prefixLocalHref(url)).tx(cr.present()); 
     } else { 
-      x.ah(cr.getWebPath()).tx(cr.present()); 
+      x.ah(context.prefixLocalHref(cr.getWebPath())).tx(cr.present()); 
     } 
   } 
  
@@ -4177,7 +4172,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         tr.style("text-decoration: line-through"); 
       } 
       addFirstCell(name, defRef, tr); 
-      tr.td().ah(link).tx(text); 
+      tr.td().ah(context.prefixLocalHref(link)).tx(text); 
     } 
   } 
  
@@ -4189,9 +4184,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (defRef == null) { 
       td.tx(name); 
     } else if (Utilities.isAbsoluteUrl(defRef)) { 
-      td.ah(defRef).tx(name); 
+      td.ah(context.prefixLocalHref(defRef)).tx(name); 
     } else { 
-      td.ah(corePath+defRef).tx(name); 
+      td.ah(context.prefixLocalHref(corePath+defRef)).tx(name); 
     } 
   } 
  
@@ -4212,14 +4207,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (name.equals("identifier")) { 
       XhtmlNode ret = new XhtmlNode(NodeType.Element, "div"); 
       ret.tx(context.formatPhrase(RenderingContext.STRUC_DEF_BUSINESS_ID)+" "); 
-      ret.ah(corePath + "resource.html#identifiers").tx(context.formatPhrase(RenderingContext.STRUC_DEF_DISCUSSION)); 
+      ret.ah(context.prefixLocalHref(corePath + "resource.html#identifiers")).tx(context.formatPhrase(RenderingContext.STRUC_DEF_DISCUSSION)); 
       ret.tx(")"); 
       return ret; 
     }  
     if (name.equals("version")) {// && !resource.equals("Device")) 
       XhtmlNode ret = new XhtmlNode(NodeType.Element, "div"); 
       ret.tx(context.formatPhrase(RenderingContext.STRUC_DEF_BUSINESS_VERID)+" "); 
-      ret.ah(corePath + "resource.html#versions").tx(context.formatPhrase(RenderingContext.STRUC_DEF_DISCUSSION)); 
+      ret.ah(context.prefixLocalHref(corePath + "resource.html#versions")).tx(context.formatPhrase(RenderingContext.STRUC_DEF_DISCUSSION)); 
       ret.tx(")"); 
       return ret; 
     } 
@@ -4379,9 +4374,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (psd == null) {
           x.code().tx(type);
         } else if (psd.getWebPath() == null) {
-          x.ah(type).tx(type);
+          x.ah(context.prefixLocalHref(type)).tx(type);
         } else {
-          x.ah(psd.getWebPath()).tx(type);          
+          x.ah(context.prefixLocalHref(psd.getWebPath())).tx(type);          
         }
       }
       x.tx(">");
@@ -4481,7 +4476,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private void getTypeLink(XhtmlNode x, TypeRefComponent t, StructureDefinition sd) { 
     String s = context.getPkp().getLinkFor(sd.getWebPath(), t.getWorkingCode()); 
     if (s != null) { 
-      x.ah(s).tx(t.getWorkingCode()); 
+      x.ah(context.prefixLocalHref(s)).tx(t.getWorkingCode()); 
     } else { 
       x.code().tx(t.getWorkingCode()); 
     } 
@@ -4597,7 +4592,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       span.br(); 
       span.tx("("); 
       if (binding.hasStrength()) { 
-        span.ah(Utilities.pathURL(corePath, "terminologies.html#"+binding.getStrength().toCode())).tx(binding.getStrength().toCode()); 
+        span.ah(context.prefixLocalHref(Utilities.pathURL(corePath, "terminologies.html#"+binding.getStrength().toCode()))).tx(binding.getStrength().toCode()); 
       } 
       if (binding.hasStrength() && binding.hasValueSet()) { 
         span.tx(" "); 

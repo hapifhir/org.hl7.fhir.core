@@ -1,26 +1,19 @@
 package org.hl7.fhir.r5.renderers; 
  
-import java.io.IOException; 
-import java.io.UnsupportedEncodingException; 
- 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.Extension; 
-import org.hl7.fhir.r5.model.ExtensionHelper; 
-import org.hl7.fhir.r5.model.OperationOutcome; 
-import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity; 
-import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent; 
-import org.hl7.fhir.r5.model.Resource; 
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
+import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions; 
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder; 
+import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
  
 public class OperationOutcomeRenderer extends ResourceRenderer { 
@@ -32,15 +25,40 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
  
   
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
-    return "todo";
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    List<ResourceWrapper> issues = r.children("issue");
+    int hint = 0;
+    int warn = 0;
+    int err = 0;
+    for (ResourceWrapper issue : issues) {
+      switch (issue.primitiveValue("severity")) {
+      case "information" : 
+        hint++; 
+        break;
+      case "warning" : 
+        warn++; 
+        break;
+      case "error" : 
+      case "fatal" : 
+        err++; 
+        break;
+      }
+    }
+    if (hint + warn + err == 0) {
+      return context.formatPhrase(RenderingContext.OP_OUT_SUMM_ALL_OK);
+    } else if (hint == 0) {
+      return context.formatPhrase(RenderingContext.OP_OUT_SUMM_NOHINT, err, warn);
+    } else {
+      return context.formatPhrase(RenderingContext.OP_OUT_SUMM, err, warn, hint);
+    }
   }
 
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement op) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper op) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    renderResourceTechDetails(op, x);
     boolean hasSource = false; 
     boolean success = true; 
-    for (ResourceElement i : op.children("issue")) { 
+    for (ResourceWrapper i : op.children("issue")) { 
       success = success && "information".equals(i.primitiveValue("severity")); 
       hasSource = hasSource || i.hasExtension(ToolingExtensions.EXT_ISSUE_SOURCE); 
     } 
@@ -58,12 +76,12 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
       if (hasSource) {
         tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_SRC));
       }
-      for (ResourceElement i : op.children("issue")) { 
+      for (ResourceWrapper i : op.children("issue")) { 
         tr = tbl.tr(); 
         tr.td().addText(getTranslatedCode(i.child("severity"))); 
         XhtmlNode td = tr.td(); 
         boolean d = false; 
-        for (ResourceElement s : i.has("expression") ? i.children("expression") : i.children("location")) { 
+        for (ResourceWrapper s : i.has("expression") ? i.children("expression") : i.children("location")) { 
           if (d) 
             td.tx(", "); 
           else 
@@ -74,7 +92,7 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
         tr.td().addText(i.child("details").primitiveValue("text")); 
         smartAddText(tr.td(), i.primitiveValue("diagnostics")); 
         if (hasSource) { 
-          ResourceElement ext = i.extension(ToolingExtensions.EXT_ISSUE_SOURCE); 
+          ResourceWrapper ext = i.extension(ToolingExtensions.EXT_ISSUE_SOURCE); 
           tr.td().addText(ext == null || !ext.has("value") ? "" : displayDataType(ext.child("value"))); 
         } 
       } 

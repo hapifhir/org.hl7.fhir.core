@@ -38,18 +38,18 @@ import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -373,7 +373,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return context.getTranslated(value); 
   } 
 
-  public String gt(ResourceElement value) { 
+  public String gt(ResourceWrapper value) { 
     return context.getTranslated(value); 
   } 
 
@@ -397,8 +397,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return element.hasModifierExtension();   
   } 
 
-  public boolean hasRenderableExtensions(ResourceElement element) { 
-    for (ResourceElement ext : element.extensions()) { 
+  public boolean hasRenderableExtensions(ResourceWrapper element) { 
+    for (ResourceWrapper ext : element.extensions()) { 
       if (canRender(ext)) { 
         return true; 
       } 
@@ -418,7 +418,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return null;     
   } 
 
-  private String getExtensionLabel(ResourceElement ext) { 
+  private String getExtensionLabel(ResourceWrapper ext) { 
     StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, ext.primitiveValue("url")); 
     if (sd != null && ext.has("value") && ext.child("value").isPrimitive() && sd.hasSnapshot()) { 
       for (ElementDefinition ed : sd.getSnapshot().getElement()) { 
@@ -435,7 +435,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
 
-  private boolean canRender(ResourceElement ext) { 
+  private boolean canRender(ResourceWrapper ext) { 
     StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, ext.primitiveValue("url")); 
     if (sd != null && ext.has("value") && ext.isPrimitive("value") && sd.hasSnapshot()) { 
       for (ElementDefinition ed : sd.getSnapshot().getElement()) { 
@@ -447,8 +447,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return false;     
   }
 
-  public void renderExtensionsInList(RenderingStatus status, XhtmlNode ul, ResourceElement element) throws FHIRFormatError, DefinitionException, IOException { 
-    for (ResourceElement ext : element.extensions()) { 
+  public void renderExtensionsInList(RenderingStatus status, XhtmlNode ul, ResourceWrapper element) throws FHIRFormatError, DefinitionException, IOException { 
+    for (ResourceWrapper ext : element.extensions()) { 
       if (canRender(ext)) { 
         String lbl = getExtensionLabel(ext); 
         XhtmlNode li = ul.li(); 
@@ -485,9 +485,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
   //    } 
   //  } 
   //   
-  public void renderExtensionsInText(RenderingStatus status, XhtmlNode div, ResourceElement element, String sep) throws FHIRFormatError, DefinitionException, IOException { 
+  public void renderExtensionsInText(RenderingStatus status, XhtmlNode div, ResourceWrapper element, String sep) throws FHIRFormatError, DefinitionException, IOException { 
     boolean first = true; 
-    for (ResourceElement ext : element.extensions()) { 
+    for (ResourceWrapper ext : element.extensions()) { 
       if (canRender(ext)) { 
         if (first) { 
           first = false; 
@@ -557,10 +557,13 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
   public String displayDataType(DataType type) { 
+    if (type == null) {
+      return "";
+    }
     return displayDataType(wrapNC(type));
   }
 
-  public String displayDataType(ResourceElement type) { 
+  public String displayDataType(ResourceWrapper type) { 
     if (type == null || type.isEmpty()) { 
       return ""; 
     } 
@@ -597,11 +600,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
     }
   } 
 
-  private String displayAnnotation(ResourceElement type) {
+  private String displayAnnotation(ResourceWrapper type) {
     return type.primitiveValue("text");
   }
 
-  private String displayCodeableReference(ResourceElement type) {
+  private String displayCodeableReference(ResourceWrapper type) {
     if (type.has("reference")) {
       return displayReference(type.child("reference"));
     } else {
@@ -610,7 +613,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   }
 
 
-  protected String displayReference(ResourceElement type) {
+  protected String displayReference(ResourceWrapper type) {
     if (type.has("display")) {
       return type.primitiveValue("display");
     } else if (type.has("reference")) {
@@ -622,11 +625,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
     }
   }
 
-  private String displayRatio(ResourceElement type) {
+  private String displayRatio(ResourceWrapper type) {
     return displayQuantity(type.child("numerator"))+" / "+displayQuantity(type.child("denominator"));
   }
 
-  protected String displayDateTime(ResourceElement type) { 
+  protected String displayDateTime(ResourceWrapper type) { 
     if (!type.hasPrimitiveValue()) { 
       return ""; 
     } 
@@ -705,7 +708,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
 
-  //  public void renderDataType(RenderingStatus status, XhtmlNode x, ResourceElement type) throws FHIRFormatError, DefinitionException, IOException  { 
+  //  public void renderDataType(RenderingStatus status, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException  { 
   ////    Base base = null; 
   ////    try { 
   ////      base = type.getBase(); 
@@ -728,7 +731,10 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  public boolean renderDataType(RenderingStatus status, XhtmlNode x, ResourceElement type) throws FHIRFormatError, DefinitionException, IOException { 
+  public boolean renderDataType(RenderingStatus status, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException {
+    return renderDataType(status, null, x, type);
+  }
+  public boolean renderDataType(RenderingStatus status, XhtmlNode parent, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException { 
     switch (type.fhirType()) {
     case "dateTime":
     case "date" : 
@@ -737,8 +743,10 @@ public class DataRenderer extends Renderer implements CodeResolver {
       break;
     case "uri" :
     case "url" :
-    case "canonical" :
       renderUri(status, x, type); 
+      break;
+    case "canonical" :
+      renderCanonical(status, x, type); 
       break;
     case "Annotation": 
       renderAnnotation(status, x, type); 
@@ -805,7 +813,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       x.tx(getTranslatedCode(type)); 
       break;
     case "markdown": 
-      addMarkdown(x, context.getTranslated(type)); 
+      addMarkdown(parent == null ? x : parent, context.getTranslated(type)); // note parent not focus, because of paragraph issues and markdown 
       break;
     case "base64Binary":
       int length = type.primitiveValue().length();
@@ -829,24 +837,29 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return true;
   } 
 
-  private void renderRatio(RenderingStatus status, XhtmlNode x, ResourceElement type) {
+  // overide in ResourceRenderer
+  protected void renderCanonical(RenderingStatus status, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException {
+    renderUri(status, x, type);
+  }
+
+  private void renderRatio(RenderingStatus status, XhtmlNode x, ResourceWrapper type) {
     renderQuantity(status, x, type.child("numerator"));
     x.tx("/");
     renderQuantity(status, x, type.child("denominator"));
   }
 
-  private void renderContactDetail(RenderingStatus status, XhtmlNode x, ResourceElement cd) {
+  private void renderContactDetail(RenderingStatus status, XhtmlNode x, ResourceWrapper cd) {
     if (cd.has("name")) {
       x.tx(cd.primitiveValue("name")+": ");
     }
     boolean first = true;
-    for (ResourceElement c : cd.children("telecom")) {
+    for (ResourceWrapper c : cd.children("telecom")) {
       if (first) first = false; else x.tx(",");
       renderContactPoint(status, x, c);
     }
   }
 
-  private void renderDateTime(RenderingStatus status, XhtmlNode x, ResourceElement type) throws FHIRFormatError, DefinitionException, IOException {
+  private void renderDateTime(RenderingStatus status, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException {
     if (!renderPrimitiveWithNoValue(status, x, type)) {
       x.tx(displayDateTime(type));
     }
@@ -861,7 +874,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
    * @throws DefinitionException 
    * @throws FHIRFormatError 
    */
-  protected void renderReference(RenderingStatus status, XhtmlNode x, ResourceElement ref) throws FHIRFormatError, DefinitionException, IOException { 
+  protected void renderReference(RenderingStatus status, XhtmlNode x, ResourceWrapper ref) throws FHIRFormatError, DefinitionException, IOException { 
     if (ref.has("display")) { 
       x.tx(context.getTranslated(ref.child("display"))); 
     } else if (ref.has("reference")) { 
@@ -925,12 +938,12 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return true;
   }
 
-  protected boolean renderPrimitiveWithNoValue(RenderingStatus status, XhtmlNode x, ResourceElement prim) throws FHIRFormatError, DefinitionException, IOException {
+  protected boolean renderPrimitiveWithNoValue(RenderingStatus status, XhtmlNode x, ResourceWrapper prim) throws FHIRFormatError, DefinitionException, IOException {
     if (prim.hasPrimitiveValue()) {
       return false;
     }
     boolean first = true;
-    for (ResourceElement ext : prim.extensions()) {
+    for (ResourceWrapper ext : prim.extensions()) {
       if (first) first = false; else x.tx(", ");
       String url = ext.primitiveValue("url");
       if (url.equals(ToolingExtensions.EXT_DAR)) {
@@ -963,13 +976,18 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return url.contains("/") ? url.substring(url.lastIndexOf("/")+1) : url;
   }
 
-  private void displayCode(XhtmlNode x, ResourceElement code) {
+  private void displayCode(XhtmlNode x, ResourceWrapper code) {
     x.tx(code.primitiveValue());
   }
 
-  protected void renderUri(RenderingStatus status, XhtmlNode x, ResourceElement uri) throws FHIRFormatError, DefinitionException, IOException { 
+  protected void renderUri(RenderingStatus status, XhtmlNode x, ResourceWrapper uri) throws FHIRFormatError, DefinitionException, IOException { 
     if (!renderPrimitiveWithNoValue(status, x, uri)) {
       String v = uri.primitiveValue();
+      if ("/Binary/1-note".equals(v)) {
+        DebugUtilities.breakpoint();
+      }
+
+      
       if (context.getContextUtilities().isResource(v)) {
         v = "http://hl7.org/fhir/"+v;
       }
@@ -979,16 +997,16 @@ public class DataRenderer extends Renderer implements CodeResolver {
         Resource r = context.getContext().fetchResource(Resource.class, v); 
         if (r != null && r.getWebPath() != null) { 
           if (r instanceof CanonicalResource) { 
-            x.ah(r.getWebPath()).addText(crPresent((CanonicalResource) r));           
+            x.ah(context.prefixLocalHref(r.getWebPath())).addText(crPresent((CanonicalResource) r));           
           } else { 
-            x.ah(r.getWebPath()).addText(v);           
+            x.ah(context.prefixLocalHref(r.getWebPath())).addText(v);           
           } 
         } else { 
           String url = context.getResolver() != null ? context.getResolver().resolveUri(context, v) : null; 
           if (url != null) {           
-            x.ah(url).addText(v); 
+            x.ah(context.prefixLocalHref(url)).addText(v); 
           } else if (Utilities.isAbsoluteUrlLinkable(v) && !uri.fhirType().equals("id")) { 
-            x.ah(v).addText(v); 
+            x.ah(context.prefixLocalHref(v)).addText(v); 
           } else { 
             x.addText(v); 
           } 
@@ -996,12 +1014,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
       } 
     }
   } 
-
-  protected void renderAnnotation(RenderingStatus status, XhtmlNode x, ResourceElement annot) { 
-    renderAnnotation(status, x, annot, false); 
-  } 
-
-  protected void renderAnnotation(RenderingStatus status, XhtmlNode x, ResourceElement a, boolean showCodeDetails) throws FHIRException { 
+  
+  protected void renderAnnotation(RenderingStatus status, XhtmlNode x, ResourceWrapper a) throws FHIRException { 
     StringBuilder b = new StringBuilder(); 
     if (a.has("text")) { 
       b.append(context.getTranslated(a.child("text"))); 
@@ -1013,7 +1027,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
     if (a.has("author")) { 
       b.append(context.formatPhrase(RenderingContext.DATA_REND_BY) + " "); 
-      ResourceElement auth = a.child("author");
+      ResourceWrapper auth = a.child("author");
       if (auth.fhirType().equals("Reference")) { 
         b.append(auth.primitiveValue("reference")); 
       } else if (auth.fhirType().equals("string")) { 
@@ -1036,7 +1050,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     x.addText(b.toString()); 
   } 
 
-  public String displayCoding(ResourceElement c) { 
+  public String displayCoding(ResourceWrapper c) { 
     String s = ""; 
     if (context.isTechnicalMode()) { 
       s = context.getTranslated(c.child("display")); 
@@ -1093,10 +1107,6 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return b.toString(); 
   } 
 
-  protected void renderCoding(RenderingStatus status, XhtmlNode x, ResourceElement c) { 
-    renderCoding(status, x, c, false); 
-  } 
-
   protected void renderCoding(HierarchicalTableGenerator gen, List<Piece> pieces, Coding c) { 
     if (c.isEmpty()) { 
       return; 
@@ -1119,7 +1129,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected void renderCoding(HierarchicalTableGenerator gen, List<Piece> pieces, ResourceElement c) { 
+  protected void renderCoding(HierarchicalTableGenerator gen, List<Piece> pieces, ResourceWrapper c) { 
     if (c.isEmpty()) { 
       return; 
     } 
@@ -1203,7 +1213,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return resolveCode(new Coding().setSystem(system).setCode(code)); 
   } 
 
-  public CodeResolution resolveCode(ResourceElement c) { 
+  public CodeResolution resolveCode(ResourceWrapper c) { 
     String systemName; 
     String systemLink; 
     String link; 
@@ -1238,7 +1248,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       return new CodeResolution(null, null, null, code.getText(), code.getText()); 
     } 
   } 
-  protected void renderCodingWithDetails(RenderingStatus status, XhtmlNode x, ResourceElement c) { 
+  protected void renderCodingWithDetails(RenderingStatus status, XhtmlNode x, ResourceWrapper c) { 
     String s = ""; 
     if (c.has("display")) 
       s = context.getTranslated(c.child("display")); 
@@ -1250,7 +1260,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     String sn = cs != null ? crPresent(cs) : displaySystem(c.primitiveValue("system")); 
     String link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")); 
     if (link != null) { 
-      x.ah(link).tx(sn); 
+      x.ah(context.prefixLocalHref(link)).tx(sn); 
     } else { 
       x.tx(sn); 
     } 
@@ -1266,7 +1276,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected void renderCoding(RenderingStatus status, XhtmlNode x, ResourceElement c, boolean showCodeDetails) { 
+  protected void renderCoding(RenderingStatus status, XhtmlNode x, ResourceWrapper c) { 
     String s = ""; 
     if (c.has("display")) 
       s = context.getTranslated(c.child("display")); 
@@ -1276,16 +1286,16 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (Utilities.noString(s)) 
       s = c.primitiveValue("code"); 
 
-    if (showCodeDetails) { 
+    if (context.isTechnicalMode()) { 
       x.addText(s+" "+context.formatPhrase(RenderingContext.DATA_REND_DETAILS_STATED, displaySystem(c.primitiveValue("system")), c.primitiveValue("code"), " = '", lookupCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")), c.primitiveValue("display"), "')")); 
     } else 
       x.span(null, "{"+c.primitiveValue("system")+" "+c.primitiveValue("code")+"}").addText(s); 
   } 
 
-  public String displayCodeableConcept(ResourceElement cc) { 
+  public String displayCodeableConcept(ResourceWrapper cc) { 
     String s = context.getTranslated(cc.child("Text")); 
     if (Utilities.noString(s)) { 
-      for (ResourceElement c : cc.children("coding")) { 
+      for (ResourceWrapper c : cc.children("coding")) { 
         if (c.has("display")) { 
           s = context.getTranslated(c.child("display")); 
           break; 
@@ -1294,7 +1304,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
     if (Utilities.noString(s)) { 
       // still? ok, let's try looking it up 
-      for (ResourceElement c : cc.children("coding")) { 
+      for (ResourceWrapper c : cc.children("coding")) { 
         if (c.has("code") && c.has("system")) { 
           s = lookupCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")); 
           if (!Utilities.noString(s)) 
@@ -1313,7 +1323,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
 
-  protected void renderCodeableReference(RenderingStatus status, XhtmlNode x, ResourceElement e) throws FHIRFormatError, DefinitionException, IOException { 
+  protected void renderCodeableReference(RenderingStatus status, XhtmlNode x, ResourceWrapper e) throws FHIRFormatError, DefinitionException, IOException { 
     if (e.has("concept")) { 
       renderCodeableConcept(status, x, e.child("concept")); 
     } 
@@ -1322,14 +1332,14 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected void renderCodeableConcept(RenderingStatus status, XhtmlNode x, ResourceElement cc) throws FHIRFormatError, DefinitionException, IOException { 
+  protected void renderCodeableConcept(RenderingStatus status, XhtmlNode x, ResourceWrapper cc) throws FHIRFormatError, DefinitionException, IOException { 
     if (cc.isEmpty()) { 
       return; 
     } 
 
     String s = context.getTranslated(cc.child("text")); 
     if (Utilities.noString(s)) { 
-      for (ResourceElement c : cc.children("coding")) { 
+      for (ResourceWrapper c : cc.children("coding")) { 
         if (c.has("display")) { 
           s = context.getTranslated(c.child("display")); 
           break; 
@@ -1338,7 +1348,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
     if (Utilities.noString(s)) { 
       // still? ok, let's try looking it up 
-      for (ResourceElement c : cc.children("coding")) { 
+      for (ResourceWrapper c : cc.children("coding")) { 
         if (c.has("code") && c.has("system")) { 
           s = lookupCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")); 
           if (!Utilities.noString(s)) 
@@ -1359,7 +1369,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       XhtmlNode sp = x.span("background: LightGoldenRodYellow; margin: 4px; border: 1px solid khaki", null); 
       sp.tx(" ("); 
       boolean first = true; 
-      for (ResourceElement c : cc.children("coding")) { 
+      for (ResourceWrapper c : cc.children("coding")) { 
         if (first) { 
           first = false; 
         } else { 
@@ -1367,7 +1377,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         } 
         String url = getLinkForSystem(c.primitiveValue("system"), c.primitiveValue("version")); 
         if (url != null) { 
-          sp.ah(url).tx(displayCodeSource(c.primitiveValue("system"), c.primitiveValue("version"))); 
+          sp.ah(context.prefixLocalHref(url)).tx(displayCodeSource(c.primitiveValue("system"), c.primitiveValue("version"))); 
         } else { 
           sp.tx(displayCodeSource(c.primitiveValue("system"), c.primitiveValue("version"))); 
         } 
@@ -1388,7 +1398,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } else { 
 
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(); 
-      for (ResourceElement c : cc.children("coding")) { 
+      for (ResourceWrapper c : cc.children("coding")) { 
         if (c.has("code") && c.has("system")) { 
           b.append("{"+c.primitiveValue("system")+" "+c.primitiveValue("code")+"}"); 
         } 
@@ -1398,7 +1408,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected String displayIdentifier(ResourceElement ii) { 
+  protected String displayIdentifier(ResourceWrapper ii) { 
     String s = Utilities.noString(ii.primitiveValue("value")) ? "?ngen-9?" : ii.primitiveValue("value"); 
     if ("urn:ietf:rfc:3986".equals(ii.primitiveValue("system")) && s.startsWith("urn:oid:")) { 
       s = "OID:"+s.substring(8); 
@@ -1410,7 +1420,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         s = crPresent(ns)+"#"+s; 
       } 
       if (ii.has("type")) { 
-        ResourceElement type = ii.child("type");
+        ResourceWrapper type = ii.child("type");
         if (type.has("text")) 
           s = context.getTranslated(type.child("text"))+":\u00A0"+s; 
         else if (type.has("coding") && type.children("coding").get(0).has("display")) 
@@ -1438,9 +1448,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return s; 
   } 
 
-  protected void renderIdentifier(RenderingStatus status, XhtmlNode x, ResourceElement ii) {     
+  protected void renderIdentifier(RenderingStatus status, XhtmlNode x, ResourceWrapper ii) {     
     if (ii.has("type")) { 
-      ResourceElement type = ii.child("type");
+      ResourceWrapper type = ii.child("type");
       if (type.has("text")) { 
         x.tx(context.getTranslated(type.child("text"))); 
       } else if (type.has("coding") && type.children("coding").get(0).has("display")) { 
@@ -1453,7 +1463,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       NamingSystem ns = context.getContext().getNSUrlMap().get(ii.primitiveValue("system")); 
       if (ns != null) { 
         if (ns.hasWebPath()) { 
-          x.ah(ns.getWebPath(), ns.getDescription()).tx(crPresent(ns));         
+          x.ah(context.prefixLocalHref(ns.getWebPath()), ns.getDescription()).tx(crPresent(ns));         
         } else { 
           x.tx(crPresent(ns)); 
         } 
@@ -1491,12 +1501,12 @@ public class DataRenderer extends Renderer implements CodeResolver {
     }         
   } 
 
-  public static String displayHumanName(ResourceElement name) { 
+  public static String displayHumanName(ResourceWrapper name) { 
     StringBuilder s = new StringBuilder(); 
     if (name.has("text")) 
       s.append(name.primitiveValue("text")); 
     else { 
-      for (ResourceElement p : name.children("given")) { 
+      for (ResourceWrapper p : name.children("given")) { 
         s.append(p.primitiveValue()); 
         s.append(" "); 
       } 
@@ -1511,12 +1521,12 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
 
-  protected void renderHumanName(RenderingStatus status, XhtmlNode x, ResourceElement name) { 
+  protected void renderHumanName(RenderingStatus status, XhtmlNode x, ResourceWrapper name) { 
     StringBuilder s = new StringBuilder(); 
     if (name.has("text")) 
       s.append(context.getTranslated(name.child("text"))); 
     else { 
-      for (ResourceElement p : name.children("given")) { 
+      for (ResourceWrapper p : name.children("given")) { 
         s.append(context.getTranslated(p)); 
         s.append(" "); 
       } 
@@ -1531,12 +1541,12 @@ public class DataRenderer extends Renderer implements CodeResolver {
     x.addText(s.toString()); 
   } 
 
-  private String displayAddress(ResourceElement address) { 
+  private String displayAddress(ResourceWrapper address) { 
     StringBuilder s = new StringBuilder(); 
     if (address.has("text")) 
       s.append(context.getTranslated(address.child("text"))); 
     else { 
-      for (ResourceElement p : address.children("line")) { 
+      for (ResourceWrapper p : address.children("line")) { 
         s.append(context.getTranslated(p)); 
         s.append(" "); 
       } 
@@ -1565,12 +1575,12 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return s.toString(); 
   } 
 
-  protected void renderAddress(RenderingStatus status, XhtmlNode x, ResourceElement address) { 
+  protected void renderAddress(RenderingStatus status, XhtmlNode x, ResourceWrapper address) { 
     x.addText(displayAddress(address)); 
   } 
 
 
-  public String displayContactPoint(ResourceElement contact) { 
+  public String displayContactPoint(ResourceWrapper contact) { 
     StringBuilder s = new StringBuilder(); 
     s.append(describeSystem(contact.primitiveValue("system"))); 
     if (Utilities.noString(contact.primitiveValue("value"))) 
@@ -1582,9 +1592,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return s.toString(); 
   } 
 
-  public String displayContactDetail(ResourceElement contact) { 
+  public String displayContactDetail(ResourceWrapper contact) { 
     CommaSeparatedStringBuilder s = new CommaSeparatedStringBuilder(); 
-    for (ResourceElement cp : contact.children("telecom")) { 
+    for (ResourceWrapper cp : contact.children("telecom")) { 
       s.append(displayContactPoint(cp)); 
     } 
     return contact.primitiveValue("name")+(s.length() == 0 ? "" : " ("+s.toString()+")"); 
@@ -1598,7 +1608,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return numberFormat.format(input); 
   } 
 
-  protected void renderMoney(RenderingStatus status, XhtmlNode x, ResourceElement money) { 
+  protected void renderMoney(RenderingStatus status, XhtmlNode x, ResourceWrapper money) { 
     if (x.getName().equals("blockquote")) { 
       x = x.para(); 
     } 
@@ -1616,7 +1626,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected void renderExpression(RenderingStatus status, XhtmlNode x, ResourceElement expr) { 
+  protected void renderExpression(RenderingStatus status, XhtmlNode x, ResourceWrapper expr) { 
     // there's two parts: what the expression is, and how it's described.  
     // we start with what it is, and then how it's described  
     XhtmlNode p = x; 
@@ -1625,7 +1635,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
     if (expr.has("expression")) { 
       if (expr.has("reference")) { 
-        p = x.ah(expr.primitiveValue("reference"));         
+        p = x.ah(context.prefixLocalHref(expr.primitiveValue("reference")));         
       } 
       XhtmlNode c = p; 
       if (expr.has("language")) { 
@@ -1633,7 +1643,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       } 
       c.code().tx(expr.primitiveValue("expression")); 
     } else if (expr.has("reference")) { 
-      p.ah(expr.primitiveValue("reference")).tx(context.formatPhrase(RenderingContext.DATA_REND_SOURCE)); 
+      p.ah(context.prefixLocalHref(expr.primitiveValue("reference"))).tx(context.formatPhrase(RenderingContext.DATA_REND_SOURCE)); 
     } 
     if (expr.has("name") || expr.has("description")) { 
       p.tx("("); 
@@ -1650,7 +1660,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
 
-  protected void renderContactPoint(RenderingStatus status, XhtmlNode x, ResourceElement contact) { 
+  protected void renderContactPoint(RenderingStatus status, XhtmlNode x, ResourceWrapper contact) { 
     if (contact != null) { 
       if (!contact.has("system")) { 
         x.addText(displayContactPoint(contact));         
@@ -1680,7 +1690,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
           x.addText(displayContactPoint(contact)); 
           break; 
         case "url": 
-          x.ah(v).tx(v); 
+          x.ah(context.prefixLocalHref(v)).tx(v); 
           break; 
         default: 
           break;       
@@ -1707,7 +1717,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected void addTelecom(XhtmlNode p, ResourceElement c) { 
+  protected void addTelecom(XhtmlNode p, ResourceWrapper c) { 
     String sys = c.primitiveValue("system");
     String value = c.primitiveValue("value");
     if (sys.equals("phone")) { 
@@ -1718,9 +1728,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
       p.ah("mailto:"+value).addText(value); 
     } else if (sys.equals("url")) { 
       if (value.length() > 30) 
-        p.ah(value).addText(value.substring(0, 30)+"..."); 
+        p.ah(context.prefixLocalHref(value)).addText(value.substring(0, 30)+"..."); 
       else 
-        p.ah(value).addText(value); 
+        p.ah(context.prefixLocalHref(value)).addText(value); 
     } 
   } 
   private static String describeSystem(String system) { 
@@ -1734,7 +1744,10 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected String displayQuantity(ResourceElement q) { 
+  protected String displayQuantity(ResourceWrapper q) { 
+    if (q == null) {
+      return "";
+    }
     StringBuilder s = new StringBuilder(); 
 
     s.append(q.has("value") ? q.primitiveValue("value") : "?"); 
@@ -1746,11 +1759,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return s.toString(); 
   }   
 
-  protected void renderQuantity(RenderingStatus status, XhtmlNode x, ResourceElement q) { 
-    renderQuantity(status, x, q, false); 
-  } 
-
-  protected void renderQuantity(RenderingStatus status, XhtmlNode x, ResourceElement q, boolean showCodeDetails) { 
+  protected void renderQuantity(RenderingStatus status, XhtmlNode x, ResourceWrapper q) { 
     if (q.has("comparator")) 
       x.addText(q.primitiveValue("comparator")); 
     if (q.has("value")) { 
@@ -1765,13 +1774,13 @@ public class DataRenderer extends Renderer implements CodeResolver {
       else 
         x.tx("(unit "+q.primitiveValue("code")+" from "+q.primitiveValue("system")+")"); 
     } 
-    if (showCodeDetails && q.has("code")) { 
+    if (context.isTechnicalMode() && q.has("code")) { 
       x.span("background: LightGoldenRodYellow", null).tx(" "+ (context.formatPhrase(RenderingContext.DATA_REND_DETAILS, displaySystem(q.primitiveValue("system")))) +q.primitiveValue("code")+" = '"+lookupCode(q.primitiveValue("system"), null, q.primitiveValue("code"))+"')"); 
     } 
   } 
 
 
-  protected void renderQuantity(HierarchicalTableGenerator gen, List<Piece> pieces, ResourceElement q, boolean showCodeDetails) { 
+  protected void renderQuantity(HierarchicalTableGenerator gen, List<Piece> pieces, ResourceWrapper q, boolean showCodeDetails) { 
     pieces.add(gen.new Piece(null, displayQuantity(q), null)); 
   } 
 
@@ -1779,25 +1788,27 @@ public class DataRenderer extends Renderer implements CodeResolver {
     pieces.add(gen.new Piece(null, displayQuantity(wrapNC(q)), null)); 
   } 
 
-  public String displayRange(ResourceElement q) { 
+  public String displayRange(ResourceWrapper q) { 
     if (!q.has("low") && !q.has("high")) 
       return "?"; 
 
     StringBuilder b = new StringBuilder(); 
 
-    boolean sameUnits = (q.child("low").has("unit") && q.child("high").has("unit") && q.child("low").child("unit").matches(q.child("high").child("unit")))  
-        || (q.child("low").has("code") && q.child("high").has("code") && q.child("low").child("code").matches(q.child("high").child("code"))); 
+    ResourceWrapper lowC = q.child("low");
+    ResourceWrapper highC = q.child("high");
+    boolean sameUnits = (lowC != null && highC != null) && ((lowC.has("unit") && highC.has("unit") && lowC.child("unit").matches(highC.child("unit")))  
+        || (lowC.has("code") && highC.has("code") && lowC.child("code").matches(highC.child("code")))); 
     String low = "?"; 
-    if (q.has("low") && q.child("low").has("value")) 
-      low = sameUnits ? q.child("low").primitiveValue("value").toString() : displayQuantity(q.child("low")); 
-    String high = displayQuantity(q.child("high")); 
+    if (q.has("low") && lowC.has("value")) 
+      low = sameUnits ? lowC.primitiveValue("value").toString() : displayQuantity(lowC); 
+    String high = displayQuantity(highC); 
     if (high.isEmpty()) 
       high = "?"; 
     b.append(low).append("\u00A0to\u00A0").append(high); 
     return b.toString(); 
   } 
 
-  protected void renderRange(RenderingStatus status, XhtmlNode x, ResourceElement q) { 
+  protected void renderRange(RenderingStatus status, XhtmlNode x, ResourceWrapper q) { 
     if (q.has("low")) 
       x.addText(q.child("low").primitiveValue("value").toString()); 
     else 
@@ -1811,26 +1822,26 @@ public class DataRenderer extends Renderer implements CodeResolver {
       x.tx(" "+q.child("low").child("unit")); 
   } 
 
-  public String displayPeriod(ResourceElement p) { 
+  public String displayPeriod(ResourceWrapper p) { 
     String s = !p.has("start") ? "(?)" : displayDateTime(p.child("start")); 
     s = s + " --> "; 
     return s + (!p.has("end") ? context.formatPhrase(RenderingContext.DATA_REND_ONGOING) : displayDateTime(p.child("end"))); 
   } 
 
-  public void renderPeriod(RenderingStatus status, XhtmlNode x, ResourceElement p) { 
+  public void renderPeriod(RenderingStatus status, XhtmlNode x, ResourceWrapper p) { 
     x.addText(!p.has("start") ? "??" : displayDateTime(p.child("start"))); 
     x.tx(" --> "); 
     x.addText(!p.has("end") ? context.formatPhrase(RenderingContext.DATA_REND_ONGOING) : displayDateTime(p.child("end"))); 
   } 
 
-  public void renderUsageContext(RenderingStatus status, XhtmlNode x, ResourceElement u) throws FHIRFormatError, DefinitionException, IOException { 
+  public void renderUsageContext(RenderingStatus status, XhtmlNode x, ResourceWrapper u) throws FHIRFormatError, DefinitionException, IOException { 
     renderCoding(status, x, u.child("code")); 
     x.tx(": "); 
     renderDataType(status, x, u.child("value"));     
   } 
 
 
-  public void renderTriggerDefinition(RenderingStatus status, XhtmlNode x, ResourceElement td) throws FHIRFormatError, DefinitionException, IOException { 
+  public void renderTriggerDefinition(RenderingStatus status, XhtmlNode x, ResourceWrapper td) throws FHIRFormatError, DefinitionException, IOException { 
     if (x.isPara()) { 
       x.b().tx(context.formatPhrase(RenderingContext.GENERAL_TYPE)); 
       x.tx(": "); 
@@ -1890,7 +1901,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  public void renderDataRequirement(RenderingStatus status, XhtmlNode x, ResourceElement dr) throws FHIRFormatError, DefinitionException, IOException { 
+  public void renderDataRequirement(RenderingStatus status, XhtmlNode x, ResourceWrapper dr) throws FHIRFormatError, DefinitionException, IOException { 
     XhtmlNode tbl = x.table("grid"); 
     XhtmlNode tr = tbl.tr();     
     XhtmlNode td = tr.td().colspan("2"); 
@@ -1898,18 +1909,18 @@ public class DataRenderer extends Renderer implements CodeResolver {
     td.tx(": "); 
     StructureDefinition sd = context.getWorker().fetchTypeDefinition(dr.primitiveValue("type")); 
     if (sd != null && sd.hasWebPath()) { 
-      td.ah(sd.getWebPath()).tx(dr.primitiveValue("type")); 
+      td.ah(context.prefixLocalHref(sd.getWebPath())).tx(dr.primitiveValue("type")); 
     } else { 
       td.tx(dr.primitiveValue("type")); 
     } 
     if (dr.has("profile")) { 
       td.tx(" ("); 
       boolean first = true; 
-      for (ResourceElement p : dr.children("profile")) { 
+      for (ResourceWrapper p : dr.children("profile")) { 
         if (first) first = false; else td.tx(" | "); 
         sd = context.getWorker().fetchResource(StructureDefinition.class, p.primitiveValue()); 
         if (sd != null && sd.hasWebPath()) { 
-          td.ah(sd.getWebPath()).tx(crPresent(sd)); 
+          td.ah(context.prefixLocalHref(sd.getWebPath())).tx(crPresent(sd)); 
         } else { 
           td.tx(p.primitiveValue()); 
         } 
@@ -1920,7 +1931,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       tr = tbl.tr();     
       td = tr.td().colspan("2"); 
       td.b().tx(context.formatPhrase(RenderingContext.GENERAL_SUBJ)); 
-      ResourceElement subj = dr.child("subject");
+      ResourceWrapper subj = dr.child("subject");
       if (subj.fhirType().equals("reference")) { 
         renderReference(status, td, subj); 
       } else { 
@@ -1932,7 +1943,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_FILTER)); 
       tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_VALUE)); 
     } 
-    for (ResourceElement cf : dr.children("codeFilter")) { 
+    for (ResourceWrapper cf : dr.children("codeFilter")) { 
       tr = tbl.tr();     
       if (cf.has("path")) { 
         tr.td().tx(cf.primitiveValue("path")); 
@@ -1947,13 +1958,13 @@ public class DataRenderer extends Renderer implements CodeResolver {
         boolean first = true; 
         td = tr.td(); 
         td.tx(context.formatPhrase(RenderingContext.DATA_REND_THESE_CODES) + " "); 
-        for (ResourceElement c : cf.children("code")) { 
+        for (ResourceWrapper c : cf.children("code")) { 
           if (first) first = false; else td.tx(", "); 
           renderDataType(status, td, c); 
         } 
       } 
     } 
-    for (ResourceElement cf : dr.children("dateFilter")) { 
+    for (ResourceWrapper cf : dr.children("dateFilter")) { 
       tr = tbl.tr();     
       if (cf.has("path")) { 
         tr.td().tx(cf.primitiveValue("path")); 
@@ -1977,7 +1988,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         td.b().tx(context.formatPhrase(RenderingContext.DATA_REND_SORT)); 
         td.tx(": "); 
         boolean first = true; 
-        for (ResourceElement p : dr.children("sort")) { 
+        for (ResourceWrapper p : dr.children("sort")) { 
           if (first) first = false; else td.tx(" | "); 
           td.tx(p.primitiveValue("direction").equals("ascending") ? "+" : "-"); 
           td.tx(p.primitiveValue("path")); 
@@ -1987,7 +1998,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
 
-  private String displayTiming(ResourceElement s) throws FHIRException { 
+  private String displayTiming(ResourceWrapper s) throws FHIRException { 
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(); 
     if (s.has("code")) {
       b.append(context.formatPhrase(RenderingContext.GENERAL_CODE, displayCodeableConcept(s.child("code"))) + " "); 
@@ -1995,7 +2006,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
     if (s.has("event")) { 
       CommaSeparatedStringBuilder c = new CommaSeparatedStringBuilder(); 
-      for (ResourceElement p : s.children("event")) { 
+      for (ResourceWrapper p : s.children("event")) { 
         if (p.hasPrimitiveValue()) { 
           c.append(displayDateTime(p)); 
         } else if (!renderExpression(c, p)) { 
@@ -2006,7 +2017,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
 
     if (s.has("repeat")) { 
-      ResourceElement rep = s.child("repeat"); 
+      ResourceWrapper rep = s.child("repeat"); 
       if (rep.has("boundsPeriod") && rep.child("boundsPeriod").has("start")) 
         b.append(context.formatPhrase(RenderingContext.DATA_REND_STARTING, displayDateTime(rep.child("boundsPeriod").child("start"))) + " "); 
       if (rep.has("count")) 
@@ -2020,7 +2031,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
           st = rep.primitiveValue("offset")+"min "; 
         } 
         b.append(st); 
-        for (ResourceElement wh : rep.children("when"))  {
+        for (ResourceWrapper wh : rep.children("when"))  {
           b.append(displayEventCode(wh.primitiveValue()));
         }
       } else { 
@@ -2046,8 +2057,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return b.toString(); 
   } 
 
-  private boolean renderExpression(CommaSeparatedStringBuilder c, ResourceElement p) { 
-    ResourceElement exp = p.extensionValue("http://hl7.org/fhir/StructureDefinition/cqf-expression"); 
+  private boolean renderExpression(CommaSeparatedStringBuilder c, ResourceWrapper p) { 
+    ResourceWrapper exp = p.extensionValue("http://hl7.org/fhir/StructureDefinition/cqf-expression"); 
     if (exp == null) { 
       return false; 
     } 
@@ -2090,12 +2101,12 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected void renderTiming(RenderingStatus status, XhtmlNode x, ResourceElement s) throws FHIRException { 
+  protected void renderTiming(RenderingStatus status, XhtmlNode x, ResourceWrapper s) throws FHIRException { 
     x.addText(displayTiming(s)); 
   } 
 
 
-  private String displaySampledData(ResourceElement s) { 
+  private String displaySampledData(ResourceWrapper s) { 
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(); 
     if (s.has("origin")) 
       b.append(context.formatPhrase(RenderingContext.DATA_REND_ORIGIN, displayQuantity(s.child("origin"))) + " "); 
@@ -2125,7 +2136,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return b.toString(); 
   } 
 
-  protected void renderSampledData(RenderingStatus status, XhtmlNode x, ResourceElement sampledData) { 
+  protected void renderSampledData(RenderingStatus status, XhtmlNode x, ResourceWrapper sampledData) { 
     x.addText(displaySampledData(sampledData)); 
   } 
 

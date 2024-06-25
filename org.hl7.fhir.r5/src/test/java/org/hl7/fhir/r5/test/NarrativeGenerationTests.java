@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.test;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
@@ -122,6 +123,12 @@ public class NarrativeGenerationTests {
       throw new NotImplementedException();      
     }
 
+    @Override
+    public String getCanonicalForDefaultContext() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
   }
 
   public class TestTypeParser implements ITypeParser {
@@ -158,6 +165,7 @@ public class NarrativeGenerationTests {
     private boolean meta;
     private boolean technical;
     private String register;
+    private String prefix;
 
     public TestDetails(Element test) {
       super();
@@ -169,6 +177,10 @@ public class NarrativeGenerationTests {
       register = test.getAttribute("register");
       if ("".equals(register)) {
         register = null;
+      }
+      prefix = test.getAttribute("prefix");
+      if ("".equals(prefix)) {
+        prefix = null;
       }
       header = "true".equals(test.getAttribute("header"));
       pretty = !"false".equals(test.getAttribute("pretty"));
@@ -230,7 +242,7 @@ public class NarrativeGenerationTests {
     }
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setDestDir(Utilities.path("[tmp]", "narrative"));
-    rc.setHeader(test.isHeader());
+    rc.setShowSummaryTable(test.isHeader());
     rc.setDefinitionsTarget("test.html");
     rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
     rc.setParser(new TestTypeParser());
@@ -246,6 +258,9 @@ public class NarrativeGenerationTests {
     if (test.getSDMode() != null) {
       rc.setStructureMode(StructureDefinitionRendererMode.valueOf(test.getSDMode().toUpperCase()));
     }
+    if (test.prefix != null) {
+      rc.setUniqueLocalPrefix(test.prefix);
+    }
     
     Resource source;
     if (TestingUtilities.findTestResource("r5", "narrative", test.getId() + ".json")) {
@@ -256,7 +271,7 @@ public class NarrativeGenerationTests {
       source = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"));      
     }
     
-    XhtmlNode x = RendererFactory.factory(source, rc).build(ResourceElement.forResource(rc.getContextUtilities(), rc.getProfileUtilities(), source));
+    XhtmlNode x = RendererFactory.factory(source, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), source));
     String expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".html"));
     String actual = HEADER+new XhtmlComposer(true, test.pretty).compose(x)+FOOTER;
     String expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.html");
@@ -265,7 +280,18 @@ public class NarrativeGenerationTests {
     TextFile.stringToFile(actual, actualFileName);
     String msg = CompareUtilities.checkXMLIsSame(id, expectedFileName, actualFileName);
     Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
-//    
+
+    String disp = RendererFactory.factory(source, rc).buildSummary(ResourceWrapper.forResource(rc.getContextUtilities(), source));
+    expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".txt"));
+    actual = disp;
+    expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.txt");
+    actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".txt");
+    TextFile.stringToFile(expected, expectedFileName);
+    TextFile.stringToFile(actual, actualFileName);
+    msg = CompareUtilities.checkTextIsSame(id, expected, actual);
+    Assertions.assertTrue(msg == null, "Summary Output does not match expected: "+msg);
+    
+    //    
 //    if (test.isMeta()) {
 //      org.hl7.fhir.r5.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
 //      x = RendererFactory.factory(source, rc).build(ResourceElement.forResource(rc.getContextUtilities(), rc.getProfileUtilities(), e));

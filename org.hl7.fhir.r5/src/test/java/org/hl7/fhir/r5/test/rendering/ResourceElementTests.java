@@ -15,8 +15,8 @@ import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ValidatedFragment;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement.ElementKind;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper.ElementKind;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ public class ResourceElementTests {
   public void testDirect() throws FHIRFormatError, IOException {
     IWorkerContext worker = TestingUtilities.getSharedWorkerContext();
     Resource res = new XmlParser().parse(TestingUtilities.loadTestResource("r5", "bundle-resource-element-test.xml"));
-    ResourceElement re = ResourceElement.forResource(new ContextUtilities(worker), new ProfileUtilities(worker, null, null), res);
+    ResourceWrapper re = ResourceWrapper.forResource(new ContextUtilities(worker), res);
     checkTree(re); 
   }
   
@@ -35,11 +35,11 @@ public class ResourceElementTests {
   public void testIndirect() throws FHIRFormatError, IOException {
     IWorkerContext worker = TestingUtilities.getSharedWorkerContext();
     List<ValidatedFragment> res = Manager.parse(worker, TestingUtilities.loadTestResourceStream("r5", "bundle-resource-element-test.xml"), FhirFormat.XML);
-    ResourceElement re = ResourceElement.forResource(new ContextUtilities(worker), new ProfileUtilities(worker, null, null), res.get(0).getElement());
+    ResourceWrapper re = ResourceWrapper.forResource(new ContextUtilities(worker), res.get(0).getElement());
     checkTree(re);
   }
 
-  private void checkTree(ResourceElement bnd) {
+  private void checkTree(ResourceWrapper bnd) {
     Assertions.assertTrue(bnd.fhirType().equals("Bundle"));
     Assertions.assertNull(bnd.name());
     Assertions.assertNull(bnd.getId());
@@ -49,7 +49,7 @@ public class ResourceElementTests {
     Assertions.assertFalse(bnd.hasNarrative());
     Assertions.assertEquals(ElementKind.IndependentResource, bnd.kind());
     
-    ResourceElement type = bnd.child("type");
+    ResourceWrapper type = bnd.child("type");
     Assertions.assertTrue(type.fhirType().equals("code"));
     Assertions.assertEquals("type", type.name());
     Assertions.assertEquals("Bundle.type", type.path());
@@ -59,7 +59,7 @@ public class ResourceElementTests {
     Assertions.assertFalse(type.hasChildren());
     Assertions.assertEquals(ElementKind.PrimitiveType, type.kind());
     
-    ResourceElement id = bnd.child("identifier");
+    ResourceWrapper id = bnd.child("identifier");
     Assertions.assertEquals("Identifier", id.fhirType());
     Assertions.assertEquals("identifier", id.name());
     Assertions.assertEquals("Bundle.identifier", id.path());
@@ -68,7 +68,7 @@ public class ResourceElementTests {
     Assertions.assertTrue(id.hasChildren());
     Assertions.assertEquals(ElementKind.DataType, id.kind());
 
-    ResourceElement system = id.child("system");
+    ResourceWrapper system = id.child("system");
     Assertions.assertEquals("uri", system.fhirType());
     Assertions.assertEquals("system", system.name());
     Assertions.assertEquals("Bundle.identifier.system", system.path());
@@ -78,7 +78,7 @@ public class ResourceElementTests {
     Assertions.assertFalse(system.hasChildren());
     Assertions.assertEquals(ElementKind.PrimitiveType, system.kind());
 
-    ResourceElement value = id.child("value");
+    ResourceWrapper value = id.child("value");
     Assertions.assertEquals("string", value.fhirType());
     Assertions.assertEquals("value", value.name());
     Assertions.assertEquals("Bundle.identifier.value", value.path());
@@ -89,12 +89,12 @@ public class ResourceElementTests {
     Assertions.assertEquals(ElementKind.PrimitiveType, value.kind());
 
     int i = 0;
-    for (ResourceElement link : bnd.children("link")) {
+    for (ResourceWrapper link : bnd.children("link")) {
       checkLink(i, link);
       i++;
     }
 
-    ResourceElement entry = bnd.child("entry");
+    ResourceWrapper entry = bnd.child("entry");
     Assertions.assertEquals("Bundle.entry", entry.fhirType());
     Assertions.assertEquals("entry", entry.name());
     Assertions.assertEquals("Bundle.entry[0]", entry.path());
@@ -103,7 +103,7 @@ public class ResourceElementTests {
     Assertions.assertTrue(entry.hasChildren());
     Assertions.assertEquals(ElementKind.BackboneElement, entry.kind());
 
-    ResourceElement fu = entry.child("fullUrl");
+    ResourceWrapper fu = entry.child("fullUrl");
     Assertions.assertEquals("uri", fu.fhirType());
     Assertions.assertEquals("fullUrl", fu.name());
     Assertions.assertEquals("Bundle.entry[0].fullUrl", fu.path());
@@ -113,11 +113,11 @@ public class ResourceElementTests {
     Assertions.assertFalse(fu.hasChildren());
     Assertions.assertEquals(ElementKind.PrimitiveType, fu.kind());
 
-    ResourceElement obs = entry.child("resource");
+    ResourceWrapper obs = entry.child("resource");
     checkObservation(obs);
   }
 
-  private void checkObservation(ResourceElement obs) {
+  private void checkObservation(ResourceWrapper obs) {
     Assertions.assertTrue(obs.fhirType().equals("Observation"));
     Assertions.assertEquals("resource", obs.name());
     Assertions.assertEquals("obs1", obs.getId());
@@ -127,7 +127,7 @@ public class ResourceElementTests {
     Assertions.assertTrue(obs.hasNarrative());
     Assertions.assertNotNull(obs.getNarrative());
     
-    List<ResourceElement> children = obs.children();
+    List<ResourceWrapper> children = obs.children();
     assertEquals(5, children.size());
 
     checkObsCode(children.get(3));
@@ -140,7 +140,7 @@ public class ResourceElementTests {
     checkContained(children.get(2));
   }
 
-  private void checkContained(ResourceElement cont) {
+  private void checkContained(ResourceWrapper cont) {
     Assertions.assertEquals("Provenance", cont.fhirType());
     Assertions.assertEquals("contained", cont.name());
     Assertions.assertEquals("Bundle.entry[0].resource.contained[0]", cont.path());
@@ -150,7 +150,7 @@ public class ResourceElementTests {
     Assertions.assertEquals(ElementKind.ContainedResource, cont.kind());
   }
 
-  private void checkObsValue(ResourceElement obsValue) {
+  private void checkObsValue(ResourceWrapper obsValue) {
     Assertions.assertEquals("Quantity", obsValue.fhirType());
     Assertions.assertEquals("value[x]", obsValue.name());
     Assertions.assertEquals("Bundle.entry[0].resource.value[x]", obsValue.path());
@@ -160,7 +160,7 @@ public class ResourceElementTests {
     Assertions.assertEquals(ElementKind.DataType, obsValue.kind());
   }
 
-  private void checkObsCode(ResourceElement obsCode) {
+  private void checkObsCode(ResourceWrapper obsCode) {
     Assertions.assertEquals("CodeableConcept", obsCode.fhirType());
     Assertions.assertEquals("code", obsCode.name());
     Assertions.assertEquals("Bundle.entry[0].resource.code", obsCode.path());
@@ -169,7 +169,7 @@ public class ResourceElementTests {
     Assertions.assertTrue(obsCode.hasChildren());
     Assertions.assertEquals(ElementKind.DataType, obsCode.kind());
 
-    ResourceElement txt = obsCode.children().get(1);
+    ResourceWrapper txt = obsCode.children().get(1);
     Assertions.assertEquals("string", txt.fhirType());
     Assertions.assertEquals("text", txt.name());
     Assertions.assertEquals("Bundle.entry[0].resource.code.text", txt.path());
@@ -178,7 +178,7 @@ public class ResourceElementTests {
     Assertions.assertTrue(txt.hasChildren());
     Assertions.assertEquals(ElementKind.PrimitiveType, txt.kind());
 
-    ResourceElement e1 = txt.extension("http://something11");
+    ResourceWrapper e1 = txt.extension("http://something11");
     Assertions.assertEquals("Extension", e1.fhirType());
     Assertions.assertEquals("extension", e1.name());
     Assertions.assertEquals("Bundle.entry[0].resource.code.text.extension[0]", e1.path());
@@ -188,7 +188,7 @@ public class ResourceElementTests {
     Assertions.assertEquals(ElementKind.DataType, e1.kind());
     Assertions.assertEquals("http://something11", e1.primitiveValue("url"));
     
-    ResourceElement ev = txt.extensionValue("http://something11");
+    ResourceWrapper ev = txt.extensionValue("http://something11");
     Assertions.assertEquals(ev, e1.child("value"));
     Assertions.assertEquals(ev, e1.child("value[x]"));
     
@@ -202,7 +202,7 @@ public class ResourceElementTests {
     Assertions.assertEquals("something12", ev.primitiveValue());
   }
 
-  private void checkLink(int i, ResourceElement link) {
+  private void checkLink(int i, ResourceWrapper link) {
     Assertions.assertEquals("Bundle.link", link.fhirType());
     Assertions.assertEquals("link", link.name());
     Assertions.assertEquals("Bundle.link["+i+"]", link.path());
@@ -211,7 +211,7 @@ public class ResourceElementTests {
     Assertions.assertTrue(link.hasChildren());
     Assertions.assertEquals(ElementKind.BackboneElement, link.kind());
 
-    ResourceElement rel = link.child("relation");
+    ResourceWrapper rel = link.child("relation");
     Assertions.assertEquals("code", rel.fhirType());
     Assertions.assertEquals("relation", rel.name());
     Assertions.assertEquals("Bundle.link["+i+"].relation", rel.path());
@@ -221,7 +221,7 @@ public class ResourceElementTests {
     Assertions.assertFalse(rel.hasChildren());
     Assertions.assertEquals(ElementKind.PrimitiveType, rel.kind());
 
-    ResourceElement url = link.child("url");
+    ResourceWrapper url = link.child("url");
     Assertions.assertEquals("uri", url.fhirType());
     Assertions.assertEquals("url", url.name());
     Assertions.assertEquals("Bundle.link["+i+"].url", url.path());

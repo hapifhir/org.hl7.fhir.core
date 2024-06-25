@@ -6,19 +6,17 @@ import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -241,31 +239,19 @@ public class Renderer  {
     return value.toString();
   }
   
-  protected ResourceElement wrapNC(DataType type) {
-    return ResourceElement.forType(context.getContextUtilities(), context.getProfileUtilities(), type);
+  protected ResourceWrapper wrapNC(DataType type) {
+    return ResourceWrapper.forType(context.getContextUtilities(), type);
   }
   
-  protected ResourceElement wrap(Resource resource) {
-    return ResourceElement.forResource(context.getContextUtilities(), context.getProfileUtilities(), resource);
+  protected ResourceWrapper wrap(Resource resource) {
+    return ResourceWrapper.forResource(context.getContextUtilities(), resource);
   }
-  protected ResourceElement wrapWC(ResourceElement resource, DataType type) {
-    return ResourceElement.forType(context.getContextUtilities(), context.getProfileUtilities(), resource, type);
+  protected ResourceWrapper wrapWC(ResourceWrapper resource, DataType type) {
+    return ResourceWrapper.forType(context.getContextUtilities(), resource, type);
   }
   
-  protected String getTranslatedCode(ResourceElement child) {   
-    return context.getTranslatedCode(child.primitiveValue(), impliedCodeSystem(child));
+  protected String getTranslatedCode(ResourceWrapper child) {   
+    return context.getTranslatedCode(child.primitiveValue(), child.getCodeSystemUri());
   }
-
-  protected String impliedCodeSystem(ResourceElement i) {
-    ElementDefinition pd = i.getPropertyDefinition();
-    if (pd != null && pd.hasBinding() && pd.getBinding().hasValueSet()) {
-      ValueSet vs = context.getWorker().fetchResource(ValueSet.class, pd.getBinding().getValueSet());
-      if (vs != null && vs.hasCompose() && !vs.getCompose().hasExclude() && vs.getCompose().getInclude().size() == 1) {
-        return vs.getCompose().getIncludeFirstRep().getSystem();
-      }
-    }
-    return null;
-  }
-
 
 }

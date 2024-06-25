@@ -26,6 +26,13 @@ import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class SearchParameterRenderer extends TerminologyRenderer {
 
   public SearchParameterRenderer(RenderingContext context) {

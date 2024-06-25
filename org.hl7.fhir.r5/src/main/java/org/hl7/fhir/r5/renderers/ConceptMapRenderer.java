@@ -13,7 +13,6 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
@@ -25,11 +24,10 @@ import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -45,8 +43,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   } 
  
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (r.isDirect()) {
+      renderResourceTechDetails(r, x);
+      genSummaryTable(status, x, (ConceptMap) r.getBase());
       render(status, r, x, (ConceptMap) r.getBase(), false);      
     } else {
       throw new Error("ConceptMapRenderer only renders native resources directly");
@@ -54,7 +54,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   }
   
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return canonicalTitle(r);
   }
 
@@ -323,7 +323,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
   
 
-  public void render(RenderingStatus status, ResourceElement res, XhtmlNode x, ConceptMap cm, boolean header) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(RenderingStatus status, ResourceWrapper res, XhtmlNode x, ConceptMap cm, boolean header) throws FHIRFormatError, DefinitionException, IOException {
     if (header) {
       x.h2().addText(cm.getName()+" ("+cm.getUrl()+")");
     }
@@ -455,9 +455,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             else {
               if (ccm.hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
                 String code = ToolingExtensions.readStringExtension(ccm, ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                tr.td().ah(eqpath+"#"+code, code).tx(presentEquivalenceCode(code));                
+                tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
               } else {
-                tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode(), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+                tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
               }
             }
             td = tr.td();
@@ -607,9 +607,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
                 else {
                   if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
                     String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                    tr.td().ah(eqpath+"#"+code, code).tx(presentEquivalenceCode(code));                
+                    tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
                   } else {
-                    tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode(), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+                    tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
                   }
                 }
               }
@@ -717,7 +717,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     if (cs == null)
       td.tx(url);
     else
-      td.ah(context.fixReference(cs.getWebPath())).attribute("title", url).tx(cs.present());
+      td.ah(context.prefixLocalHref(context.fixReference(cs.getWebPath()))).attribute("title", url).tx(cs.present());
   }
 
   private void addUnmapped(XhtmlNode tbl, ConceptMapGroupComponent grp) {

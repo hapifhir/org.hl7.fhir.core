@@ -6,15 +6,10 @@ import java.io.UnsupportedEncodingException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.ActorDefinition;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -28,16 +23,18 @@ public class NamingSystemRenderer extends ResourceRenderer {
   } 
  
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    if (r.isDirect()) {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    if (r.isDirect()) { 
+      renderResourceTechDetails(r, x);
+      genSummaryTable(status, x, (NamingSystem) r.getBase());
       render(status, x, (NamingSystem) r.getBase());      
     } else {
       throw new Error("NamingSystemRenderer only renders native resources directly");
     }
   }
-  
+
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return canonicalTitle(r);
   }
 
@@ -67,7 +64,7 @@ public class NamingSystemRenderer extends ResourceRenderer {
       renderCommitteeLink(row(tbl, "Committee"), ns);
     }
     if (CodeSystemUtilities.hasOID(ns)) {
-      row(tbl, (context.formatPhrase(RenderingContext.GENERAL_OID)), CodeSystemUtilities.getOID(ns)).tx("("+(context.formatPhrase(RenderingContext.CODE_SYS_FOR_OID))+")");
+      row(tbl, context.formatPhrase(RenderingContext.GENERAL_OID)).tx(context.formatPhrase(RenderingContext.CODE_SYS_FOR_OID, CodeSystemUtilities.getOID(ns)));
     }
     if (ns.hasCopyright()) {
       addMarkdown(row(tbl, (context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT))), ns.getCopyright());

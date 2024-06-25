@@ -4,28 +4,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
 import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.utils.PublicationHacker;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -260,7 +254,7 @@ public class AdditionalBindingsRenderer {
       if (binding.compare!=null && binding.valueSet.equals(binding.compare.valueSet))
         valueset.style(STYLE_UNCHANGED);
       if (br.url != null) {
-        XhtmlNode a = valueset.ah(determineUrl(br.url), br.uri);
+        XhtmlNode a = valueset.ah(context.prefixLocalHref(determineUrl(br.url)), br.uri);
         a.tx(br.display);
         if (br.external) {
           a.tx(" ");
@@ -273,7 +267,7 @@ public class AdditionalBindingsRenderer {
         valueset.br();
         valueset = valueset.span(STYLE_REMOVED, null);
         if (compBr.url != null) {
-          valueset.ah(determineUrl(compBr.url), binding.compare.valueSet).tx(compBr.display);
+          valueset.ah(context.prefixLocalHref(determineUrl(compBr.url)), binding.compare.valueSet).tx(compBr.display);
         } else {
           valueset.span(null, binding.compare.valueSet).tx(compBr.display);
         }
@@ -350,37 +344,33 @@ public class AdditionalBindingsRenderer {
     case "extensible" :
       td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-extensible" : corePath+"terminologies.html#strength", context.formatPhrase(RenderingContext.ADD_BIND_VALID_EXT)).tx(context.formatPhrase(RenderingContext.ADD_BIND_EX_BIND));
       break;
+    case "preferred" :
+      td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-preferred" : corePath+"terminologies.html#strength", context.formatPhrase(RenderingContext.ADD_BIND_RECOM_VALUE_SET)).tx(context.formatPhrase(RenderingContext.ADD_BIND_PREF_BIND));
+      break;
     case "current" :
       if (r5) {
-        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-current" : corePath+"terminologies.html#strength", context.formatPhrase(RenderingContext.ADD_BIND_NEW_REC)).tx(context.formatPhrase(RenderingContext.ADD_BIND_CURR_BIND));
+        td.ah(corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-current", context.formatPhrase(RenderingContext.ADD_BIND_NEW_REC)).tx(context.formatPhrase(RenderingContext.ADD_BIND_CURR_BIND));
       } else {
         td.span(null, context.formatPhrase(RenderingContext.ADD_BIND_NEW_REC)).tx(context.formatPhrase(RenderingContext.GENERAL_REQUIRED));
       }
       break;
-    case "preferred" :
-      if (r5) {
-        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-preferred" : corePath+"terminologies.html#strength", context.formatPhrase(RenderingContext.ADD_BIND_RECOM_VALUE_SET)).tx(context.formatPhrase(RenderingContext.ADD_BIND_PREF_BIND));
-      } else {
-        td.span(null, context.formatPhrase(RenderingContext.ADD_BIND_RECOM_VALUE_SET)).tx(context.formatPhrase(RenderingContext.GENERAL_PREFERRED));
-      }
-      break;
     case "ui" :
       if (r5) {
-        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-ui" : corePath+"terminologies.html#strength", context.formatPhrase(RenderingContext.ADD_BIND_GIVEN_CONT)).tx(context.formatPhrase(RenderingContext.ADD_BIND_UI_BIND));
+        td.ah(corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-ui", context.formatPhrase(RenderingContext.ADD_BIND_GIVEN_CONT)).tx(context.formatPhrase(RenderingContext.ADD_BIND_UI_BIND));
       } else {
         td.span(null, context.formatPhrase(RenderingContext.ADD_BIND_GIVEN_CONT)).tx(context.formatPhrase(RenderingContext.ADD_BIND_UI));        
       }
       break;
     case "starter" :
       if (r5) {
-        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-starter" : corePath+"terminologies.html#strength", "This value set is a good set of codes to start with when designing your system").tx("Starter Set");
+        td.ah(corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-starter", "This value set is a good set of codes to start with when designing your system").tx("Starter Set");
       } else {
         td.span(null, context.formatPhrase(RenderingContext.ADD_BIND_DESIG_SYS)).tx(context.formatPhrase(RenderingContext.GENERAL_STARTER));        
       }
       break;
     case "component" :
       if (r5) {
-        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-component" : corePath+"terminologies.html#strength", "This value set is a component of the base value set").tx("Component");
+        td.ah(corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-component", "This value set is a component of the base value set").tx("Component");
       } else {
         td.span(null, context.formatPhrase(RenderingContext.ADD_BIND_VALUE_COMP)).tx(context.formatPhrase(RenderingContext.GENERAL_COMPONENT));        
       }
@@ -440,7 +430,7 @@ public class AdditionalBindingsRenderer {
           children.tx("=");
         }
         CodeResolution ccr = cr.resolveCode(uc.getValueCodeableConcept());
-        children.ah(ccr.getLink(), ccr.getHint()).tx(ccr.getDisplay());
+        children.ah(context.prefixLocalHref(ccr.getLink()), ccr.getHint()).tx(ccr.getDisplay());
       }
       children.tx(")");
     }

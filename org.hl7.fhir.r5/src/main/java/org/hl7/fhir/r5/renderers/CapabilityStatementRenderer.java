@@ -2,7 +2,6 @@ package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,10 +10,8 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.ActorDefinition;
-import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
@@ -28,25 +25,19 @@ import org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteraction;
 import org.hl7.fhir.r5.model.CapabilityStatement.TypeRestfulInteraction;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
-import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.InternalMarkdownProcessor;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
@@ -57,8 +48,9 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   } 
  
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (r.isDirect()) {
+      renderResourceTechDetails(r, x);
       render(status, x, (CapabilityStatement) r.getBase(), r);      
     } else {
       throw new Error("CapabilityStatementRenderer only renders native resources directly");
@@ -66,7 +58,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   }
   
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return canonicalTitle(r);
   }
 
@@ -288,7 +280,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
   }
 
-  public void render(RenderingStatus status, XhtmlNode x, CapabilityStatement conf, ResourceElement res) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(RenderingStatus status, XhtmlNode x, CapabilityStatement conf, ResourceWrapper res) throws FHIRFormatError, DefinitionException, IOException {
     status.setExtensions(true);
     boolean igRenderingMode = (context.getRules() == GenerationRules.IG_PUBLISHER);
     FHIRVersion currentVersion = conf.getFhirVersion();
@@ -427,7 +419,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     return null;
   }
 
-  private void addSupportedCSs(RenderingStatus status, XhtmlNode x, CapabilityStatement cap, ResourceElement res) throws UnsupportedEncodingException, IOException {
+  private void addSupportedCSs(RenderingStatus status, XhtmlNode x, CapabilityStatement cap, ResourceWrapper res) throws UnsupportedEncodingException, IOException {
     if (cap.hasInstantiates()) {
       XhtmlNode p = x.para();
       p.tx(cap.getInstantiates().size() > 1 ? "This CapabilityStatement instantiates these CapabilityStatements" : "This CapabilityStatement instantiates the CapabilityStatement");
@@ -730,7 +722,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_RES_OPER));
   }
 
-  private void addSummaryTable(RenderingStatus status, ResourceElement res, XhtmlNode x, CapabilityStatement.CapabilityStatementRestComponent rest, boolean hasVRead, boolean hasPatch, boolean hasDelete, boolean hasHistory, boolean hasUpdates, int count) throws IOException {
+  private void addSummaryTable(RenderingStatus status, ResourceWrapper res, XhtmlNode x, CapabilityStatement.CapabilityStatementRestComponent rest, boolean hasVRead, boolean hasPatch, boolean hasDelete, boolean hasHistory, boolean hasUpdates, int count) throws IOException {
     XhtmlNode t = x.div().attribute("class","table-responsive").table("table table-condensed table-hover");
     XhtmlNode tr = t.addTag("thead").tr();
     tr.th().b().tx(context.formatPhrase(RenderingContext.CAPABILITY_RES_TYP));
@@ -829,7 +821,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     return paramNames;
   }
 
-  private void renderSupportedProfiles(RenderingStatus status, ResourceElement res, XhtmlNode profCell, CapabilityStatementRestResourceComponent r) throws IOException {
+  private void renderSupportedProfiles(RenderingStatus status, ResourceWrapper res, XhtmlNode profCell, CapabilityStatementRestResourceComponent r) throws IOException {
     for (CanonicalType sp: r.getSupportedProfile()) { 
       profCell.br();
       profCell.nbsp().nbsp();
