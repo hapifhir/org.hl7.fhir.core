@@ -1738,24 +1738,5 @@ public class DataRenderer extends Renderer {
     return b.toString();
   }
 
-  protected String versionFromCanonical(String system) {
-    if (system == null) {
-      return null;
-    } else if (system.contains("|")) {
-      return system.substring(0, system.indexOf("|"));
-    } else {
-      return null;
-    }
-  }
-
-  protected String systemFromCanonical(String system) {
-    if (system == null) {
-      return null;
-    } else if (system.contains("|")) {
-      return system.substring(system.indexOf("|") + 1);
-    } else {
-      return system;
-    }
-  }
 
 }

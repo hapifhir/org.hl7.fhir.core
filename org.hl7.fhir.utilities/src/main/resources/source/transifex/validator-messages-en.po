@@ -106,7 +106,7 @@ msgstr ""
 
 # BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON
 #: BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON
-msgid "The {1} resource did not math the profile {2} because: {3}"
+msgid "The {1} resource did not match the profile {2} because: {3}"
 msgstr ""
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
@@ -1610,6 +1610,61 @@ msgstr ""
 msgid "Found {0} items for {1} resolving discriminator {2} from {3}"
 msgstr ""
 
+# IG_DEPENDENCY_CLASH_CANONICAL
+#: IG_DEPENDENCY_CLASH_CANONICAL
+msgid "The packageId {0} points to the canonical {1} which is inconsistent with the stated canonical of {2}"
+msgstr ""
+
+# IG_DEPENDENCY_CLASH_PACKAGEID
+#: IG_DEPENDENCY_CLASH_PACKAGEID
+msgid "The canonical URL {0} points to the package {1} which is inconsistent with the stated packageId of {2}"
+msgstr ""
+
+# IG_DEPENDENCY_DIRECT
+#: IG_DEPENDENCY_DIRECT
+msgid "The URL should refer directly to the ImplementationGuide resource (e.g. include ''/ImplementationGuide/'')"
+msgstr ""
+
+# IG_DEPENDENCY_EXCEPTION
+#: IG_DEPENDENCY_EXCEPTION
+msgid "Exception checking package version consistency: {0}"
+msgstr ""
+
+# IG_DEPENDENCY_INVALID_PACKAGEID
+#: IG_DEPENDENCY_INVALID_PACKAGEID
+msgid "The packageId {0} is not valid"
+msgstr ""
+
+# IG_DEPENDENCY_INVALID_PACKAGE_VERSION
+#: IG_DEPENDENCY_INVALID_PACKAGE_VERSION
+msgid "The version {0} is not a valid NPM package version"
+msgstr ""
+
+# IG_DEPENDENCY_NO_PACKAGE
+#: IG_DEPENDENCY_NO_PACKAGE
+msgid "No NPM package id could be determined so the version consistency can't be checked"
+msgstr ""
+
+# IG_DEPENDENCY_NO_VERSION
+#: IG_DEPENDENCY_NO_VERSION
+msgid "No version was specified for the package so the version consistency can't be checked"
+msgstr ""
+
+# IG_DEPENDENCY_PACKAGE_UNKNOWN
+#: IG_DEPENDENCY_PACKAGE_UNKNOWN
+msgid "The package {0} could not be found so the version consistency can't be checked"
+msgstr ""
+
+# IG_DEPENDENCY_VERSION_ERROR
+#: IG_DEPENDENCY_VERSION_ERROR
+msgid "The ImplementationGuide is based on FHIR version {0} but package {1} is based on FHIR version {2}. Use the package {3} instead"
+msgstr ""
+
+# IG_DEPENDENCY_VERSION_WARNING
+#: IG_DEPENDENCY_VERSION_WARNING
+msgid "The ImplementationGuide is based on FHIR version {0} but package {1} is based on FHIR version {2}. In general, this version mismatch should be avoided - some tools will try to make this work with variable degrees of success, but others will not even try"
+msgstr ""
+
 # ILLEGAL_COMMENT_TYPE
 #: ILLEGAL_COMMENT_TYPE
 msgid "The fhir_comments property must be an array of strings"
@@ -3052,6 +3107,11 @@ msgstr ""
 # SD_TYPE_NOT_MATCH_NS
 #: SD_TYPE_NOT_MATCH_NS
 msgid "The type namespace {0} SHOULD match the url namespace {1} for the definition of the type"
+msgstr ""
+
+# SD_TYPE_PARAMETER_ABSTRACT_WARNING
+#: SD_TYPE_PARAMETER_ABSTRACT_WARNING
+msgid "The type ''{0}'' at {3} refers to the abstract type ''{1}'' but the context is not an abstract type - this is usually an error"
 msgstr ""
 
 # SD_TYPE_PARAMETER_INVALID

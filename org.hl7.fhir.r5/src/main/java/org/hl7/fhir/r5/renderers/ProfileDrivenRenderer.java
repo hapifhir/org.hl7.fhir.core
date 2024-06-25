@@ -547,7 +547,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                 ed = xverManager.makeDefinition(url);
                 new ContextUtilities(getContext().getWorker()).generateSnapshot(ed);
                 getContext().getWorker().cacheResource(ed);
-              }
+              } 
             }
             if (p.getName().equals("modifierExtension") && ed == null) {
               throw new DefinitionException("Unknown modifier extension "+url);

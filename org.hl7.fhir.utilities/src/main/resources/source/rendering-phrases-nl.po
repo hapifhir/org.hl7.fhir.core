@@ -547,8 +547,8 @@ msgstr "GET vorige versies van resources (vread interactie)"
 
 # CAPABILTY_ALLOW_CAP
 #: CAPABILTY_ALLOW_CAP
-msgid "Any FHIR capability may be 'allowed' by the system unless explicitly marked as 'SHALL NOT'. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
-msgstr "!!!!Elke FHIR functie is 'toegestaan' door het systeem tenzij epxliciet gemarkeerd als \"MOET NIET\". Er zijn mogelijk een paar dingen gemarkeerd als MAG in de implementatiegids om hun mogelijke relevantie voor de usecase te benadrukken."
+msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
+msgstr "!!!!!!Elke FHIR functie is 'toegestaan' door het systeem tenzij epxliciet gemarkeerd als \"MOET NIET\". Er zijn mogelijk een paar dingen gemarkeerd als MAG in de implementatiegids om hun mogelijke relevantie voor de usecase te benadrukken."
 
 # CAPABILTY_SHALL_SUPP
 #: CAPABILTY_SHALL_SUPP
@@ -2721,8 +2721,8 @@ msgstr "multipleAnd: De parameter kan herhalen ten behoeve van meerdere waarden 
 
 # SEARCH_PAR_MULTIPLE_AND_SERVER
 #: SEARCH_PAR_MULTIPLE_AND_SERVER
-msgid "multipleAnd: It's up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
-msgstr "!!!!multipleAnd: Het is aan de server of de parameter kan herhalen ten behoeven van meerdere waarden die alle waar moeten zijn"
+msgid "multipleAnd: It''s up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
+msgstr "!!!!!!multipleAnd: Het is aan de server of de parameter kan herhalen ten behoeven van meerdere waarden die alle waar moeten zijn"
 
 # SEARCH_PAR_MULTIPLE_OR_MULTIPLE
 #: SEARCH_PAR_MULTIPLE_OR_MULTIPLE
@@ -2736,8 +2736,8 @@ msgstr "De parameter mag slechts één waarde bevatten (geen komma's als scheide
 
 # SEARCH_PAR_MULTIPLE_OR_SERVER
 #: SEARCH_PAR_MULTIPLE_OR_SERVER
-msgid "multipleOr: It's up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
-msgstr "!!!!multipleOr: Het is aan de server of de parameter meerdere waarden kan bevatten (gescheiden door komma) waarvan tenminste één waar moet zijn"
+msgid "multipleOr: It''s up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
+msgstr "!!!!!!multipleOr: Het is aan de server of de parameter meerdere waarden kan bevatten (gescheiden door komma) waarvan tenminste één waar moet zijn"
 
 # SEARCH_PAR_NONE
 #: SEARCH_PAR_NONE
