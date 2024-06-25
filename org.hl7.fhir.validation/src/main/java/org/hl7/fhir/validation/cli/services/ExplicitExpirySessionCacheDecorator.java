@@ -37,15 +37,6 @@ public class ExplicitExpirySessionCacheDecorator implements SessionCache {
     return key;
   }
 
-  @Override
-  public String cacheSession(Supplier<ValidationEngine> validationEngineSupplier) {
-    maintainSessionIds(null);
-    ValidationEngine validationEngine = validationEngineSupplier.get();
-    String key = sessionCache.cacheSession(validationEngine);
-    sessionIds.add(key);
-    return key;
-  }
-
   private void maintainSessionIds(String keyToAdd) {
     if (keyToAdd != null || sessionCache.sessionExists(keyToAdd)) {
       return;

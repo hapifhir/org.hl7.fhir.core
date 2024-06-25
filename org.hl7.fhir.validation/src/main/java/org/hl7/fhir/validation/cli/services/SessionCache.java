@@ -16,14 +16,6 @@ public interface SessionCache {
   String cacheSession(ValidationEngine validationEngine);
 
   /**
-   * Uses the passed  {@link Supplier} to generate a {@link ValidationEngine} and add it to the cache. Returns the
-   * session id that will be associated with the generated instance.
-   * @param validationEngineSupplier {@link Supplier} of {@link ValidationEngine}
-   * @return The {@link String} id associated with the stored instance.
-   */
-  String cacheSession(Supplier<ValidationEngine> validationEngineSupplier);
-
-  /**
    * Stores the initialized {@link ValidationEngine} in the cache with the passed in id as the key. If a null key is
    * passed in, a new key is generated and returned.
    * @param sessionId The {@link String} key to associate with this stored {@link ValidationEngine}

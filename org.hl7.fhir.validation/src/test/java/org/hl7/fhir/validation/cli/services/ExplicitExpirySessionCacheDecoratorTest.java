@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import static org.mockito.Mockito.mock;
 
-public class MaxSizeSessionCacheDecoratorTest {
+public class ExplicitExpirySessionCacheDecoratorTest {
 
   private List<ValidationEngine> getMockedEngines(int count) {
     List<ValidationEngine> engines = new ArrayList<>();
@@ -69,17 +69,6 @@ public class MaxSizeSessionCacheDecoratorTest {
     Assertions.assertTrue(sessionCache.expireOldestSession());
     Assertions.assertTrue(sessionCache.expireOldestSession());
     Assertions.assertFalse(sessionCache.expireOldestSession());
-  }
-
-  @Test
-  public void producerAddTest() {
-    ExplicitExpirySessionCacheDecorator maxSizeSessionCacheDecorator = new ExplicitExpirySessionCacheDecorator(new PassiveExpiringSessionCache());
-    ValidationEngine producedEngine = mock(ValidationEngine.class);
-    String sessionId = maxSizeSessionCacheDecorator.cacheSession(() -> {
-      return producedEngine;
-    });
-    Assertions.assertEquals(1, maxSizeSessionCacheDecorator.getSessionIds().size());
-    Assertions.assertSame(producedEngine, maxSizeSessionCacheDecorator.fetchSessionValidatorEngine(sessionId));
   }
 
   private String getKeyByIndex(LinkedHashMap<String, ValidationEngine> engineMap, int index) {
