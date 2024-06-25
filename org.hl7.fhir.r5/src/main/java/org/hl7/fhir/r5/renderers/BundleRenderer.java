@@ -13,7 +13,6 @@ import org.hl7.fhir.r5.model.Provenance;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -36,9 +35,7 @@ public class BundleRenderer extends ResourceRenderer {
   
   @Override
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper b) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    if ("ex-fhir-document-bundle".equals(b.getId())) {
-      DebugUtilities.breakpoint();
-    }
+
     List<ResourceWrapper> entries = b.children("entry");
     if ("collection".equals(b.primitiveValue("type")) && allEntriesAreHistoryProvenance(entries)) {
       // nothing

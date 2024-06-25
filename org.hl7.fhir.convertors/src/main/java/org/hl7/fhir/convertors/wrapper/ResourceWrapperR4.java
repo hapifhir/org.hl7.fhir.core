@@ -11,7 +11,6 @@ import org.hl7.fhir.r4.model.Narrative;
 import org.hl7.fhir.r4.model.Property;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -81,9 +80,6 @@ public class ResourceWrapperR4 extends ResourceWrapper {
   }
 
   private ElementKind determineModelKind(Property p, Base v) {
-    if ("DataRequirement".equals(v.fhirType())) {
-      DebugUtilities.breakpoint();
-    }
     if (v.isPrimitive()) {
       return ElementKind.PrimitiveType;
     } else if (contextUtils.isDatatype(v.fhirType())) {
