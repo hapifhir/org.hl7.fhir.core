@@ -314,6 +314,12 @@
                 <artifactId>logback-core</artifactId>
                 <version>1.2.13</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>3.22.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -398,14 +404,14 @@
                         <goals>
                             <goal>checkstyle</goal>
                         </goals>
-                        <configuration>
-                            <failsOnError>true</failsOnError>
-                            <suppressionsLocation>${project.basedir}/checkstyle_suppressions.xml</suppressionsLocation>
-                            <enableRulesSummary>true</enableRulesSummary>
-                            <enableSeveritySummary>true</enableSeveritySummary>
-                            <consoleOutput>true</consoleOutput>
-                            <configLocation>${checkstyle_config_location}/checkstyle.xml</configLocation>
-                        </configuration>
+                <configuration>
+                    <failsOnError>true</failsOnError>
+                    <suppressionsLocation>${project.basedir}/checkstyle_suppressions.xml</suppressionsLocation>
+                    <enableRulesSummary>true</enableRulesSummary>
+                    <enableSeveritySummary>true</enableSeveritySummary>
+                    <consoleOutput>true</consoleOutput>
+                    <configLocation>${checkstyle_config_location}/checkstyle.xml</configLocation>
+                </configuration>
                     </execution>
                 </executions>
             </plugin>

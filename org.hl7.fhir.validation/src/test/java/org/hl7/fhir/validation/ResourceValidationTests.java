@@ -1,9 +1,5 @@
 package org.hl7.fhir.validation;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
