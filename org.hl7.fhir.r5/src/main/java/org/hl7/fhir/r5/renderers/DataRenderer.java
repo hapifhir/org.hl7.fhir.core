@@ -49,7 +49,6 @@ import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -983,11 +982,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   protected void renderUri(RenderingStatus status, XhtmlNode x, ResourceWrapper uri) throws FHIRFormatError, DefinitionException, IOException { 
     if (!renderPrimitiveWithNoValue(status, x, uri)) {
       String v = uri.primitiveValue();
-      if ("/Binary/1-note".equals(v)) {
-        DebugUtilities.breakpoint();
-      }
 
-      
       if (context.getContextUtilities().isResource(v)) {
         v = "http://hl7.org/fhir/"+v;
       }

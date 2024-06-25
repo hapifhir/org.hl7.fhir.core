@@ -10,7 +10,6 @@ import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -33,9 +32,6 @@ public class ResourceWrapperNative extends ResourceWrapper {
     self.name = name;
     self.index = index;
     self.kind = kind;
-    if (element == null) {
-      DebugUtilities.breakpoint();
-    }
     self.element = element;
     return self;
   }
@@ -65,9 +61,7 @@ public class ResourceWrapperNative extends ResourceWrapper {
   }
 
   protected void loadTheChildren() {
-    if (element == null) {
-      DebugUtilities.breakpoint();
-    }
+
     for (Property p : element.children()) {
       String name = p.getName();
       int i = 0;
