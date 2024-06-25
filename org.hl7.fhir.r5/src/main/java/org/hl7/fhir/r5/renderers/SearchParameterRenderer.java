@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.SearchComparator;
 import org.hl7.fhir.r5.model.Enumerations.SearchModifierCode;
@@ -18,7 +19,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -27,19 +28,30 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class SearchParameterRenderer extends TerminologyRenderer {
 
-  public SearchParameterRenderer(RenderingContext context) {
-    super(context);
-  }
 
-  public SearchParameterRenderer(RenderingContext context, ResourceContext rcontext) {
-    super(context, rcontext);
+  public SearchParameterRenderer(RenderingContext context) { 
+    super(context); 
+  } 
+ 
+  @Override
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    if (r.isDirect()) {
+      renderResourceTechDetails(r, x);
+      genSummaryTable(status, x, (SearchParameter) r.getBase());
+
+      render(status, x, (SearchParameter) r.getBase());      
+    } else {
+      throw new Error("SearchParameterRenderer only renders native resources directly");
+    }
   }
   
-  public boolean render(XhtmlNode x, Resource dr) throws IOException, FHIRException, EOperationOutcome {
-    return render(x, (SearchParameter) dr);
+  
+  @Override
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
   }
 
-  public boolean render(XhtmlNode x, SearchParameter spd) throws IOException, FHIRException, EOperationOutcome {
+  public void render(RenderingStatus status, XhtmlNode x, SearchParameter spd) throws IOException, FHIRException, EOperationOutcome {
     XhtmlNode h2 = x.h2();
     h2.addText(spd.getName());
     StandardsStatus ss = ToolingExtensions.getStandardsStatus(spd);
@@ -61,7 +73,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.getCode());
       if (sd != null && sd.hasWebPath()) {
         td.sep(", ");
-        td.ah(sd.getWebPath()).tx(t.getCode());
+        td.ah(context.prefixLocalHref(context.prefixLocalHref(sd.getWebPath()))).tx(t.getCode());
       } else {
         td.sep(", ");
         td.tx(t.getCode());
@@ -84,13 +96,13 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.SEARCH_PAR_REND_TARGET), spd.getTarget().size()));
       td = tr.td();
       if (isAllConcreteResources(spd.getTarget())) {
-        td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "resourcelist.html")).tx(context.formatPhrase(RenderingContext.SEARCH_PAR_RES));
+        td.ah(context.prefixLocalHref(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "resourcelist.html"))).tx(context.formatPhrase(RenderingContext.SEARCH_PAR_RES));
       } else {
         for (Enumeration<VersionIndependentResourceTypesAll> t : spd.getTarget()) {
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.getCode());
           if (sd != null && sd.hasWebPath()) {
             td.sep(", ");
-            td.ah(sd.getWebPath()).tx(t.getCode());
+            td.ah(context.prefixLocalHref(sd.getWebPath())).tx(t.getCode());
           } else {
             td.sep(", ");
             td.tx(t.getCode());
@@ -154,14 +166,13 @@ public class SearchParameterRenderer extends TerminologyRenderer {
         tr = tbl.tr();
         SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), spd);
         if (tsp != null && tsp.hasWebPath()) {
-          tr.td().ah(tsp.getWebPath()).tx(tsp.present());          
+          tr.td().ah(context.prefixLocalHref(tsp.getWebPath())).tx(tsp.present());          
         } else {
           tr.td().tx(t.getDefinition());
         }
         tr.td().code().tx(t.getExpression());
       }
     }
-    return false;
   }
 
   private boolean isAllConcreteResources(List<Enumeration<VersionIndependentResourceTypesAll>> list) {

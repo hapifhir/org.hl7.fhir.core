@@ -1,24 +1,11 @@
 package org.hl7.fhir.r5.renderers.utils;
 
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceReferenceKind;
-import org.w3c.dom.Element;
-
 public class Resolver {
 
 
   public interface IReferenceResolver {
-    ResourceWithReference resolve(RenderingContext context, String url);
+    ResourceWithReference resolve(RenderingContext context, String url, String version);
     
-    // returns null if contained resource is inlined 
-    String urlForContained(RenderingContext context, String containingType, String containingId, String containedType, String containedId);
-
     /**
      * returns the correct literal URL for the specified logical uri
      * @param context
@@ -28,6 +15,7 @@ public class Resolver {
     String resolveUri(RenderingContext context, String uri);
   }
 
+  /*
   public static class ResourceContext {
     private ResourceContext container;
 
@@ -183,23 +171,25 @@ public class Resolver {
       }
     }
   }
-
+*/
 
   public enum ResourceReferenceKind {
-    CONTAINED, BUNDLE, EXTERNAL, UNKNOWN
+    CONTAINED, BUNDLE, EXTERNAL, UNKNOWN, CONTAINER
 
   }
   
   public static class ResourceWithReference {
 
     private ResourceReferenceKind kind;
-    private String reference;
+    private String urlReference;
+    private String webPath;
     private ResourceWrapper resource;
 
-    public ResourceWithReference(ResourceReferenceKind kind, String reference, ResourceWrapper resource) {
+    public ResourceWithReference(ResourceReferenceKind kind, String urlReference, String webPath, ResourceWrapper resource) {
       super();
       this.kind = kind;
-      this.reference = reference;
+      this.urlReference = urlReference;
+      this.webPath = webPath;
       this.resource = resource;
     }
 
@@ -207,8 +197,12 @@ public class Resolver {
       return kind;
     }
 
-    public String getReference() {
-      return reference;
+    public String getUrlReference() {
+      return urlReference;
+    }
+
+    public String getWebPath() {
+      return webPath == null ? urlReference : webPath;
     }
 
     public ResourceWrapper getResource() {

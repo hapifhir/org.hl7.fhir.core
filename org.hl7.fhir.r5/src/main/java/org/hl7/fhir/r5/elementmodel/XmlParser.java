@@ -100,7 +100,7 @@ public class XmlParser extends ParserBase {
   }
 
   private String schemaPath;
-  private int bundleEntryCounter = 0;
+  private boolean markedXhtml;
 
   public String getSchemaPath() {
     return schemaPath;
@@ -724,6 +724,7 @@ public class XmlParser extends ParserBase {
 
   @Override
   public void compose(Element e, OutputStream stream, OutputStyle style, String base) throws IOException, FHIRException {
+    markedXhtml = false;
     XMLWriter xml = new XMLWriter(stream, "UTF-8");
     xml.setSortAttributes(false);
     xml.setPretty(style == OutputStyle.PRETTY);
@@ -738,7 +739,7 @@ public class XmlParser extends ParserBase {
     if (hasTypeAttr(e))
       xml.namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
     addNamespaces(xml, e);
-    composeElement(xml, e, e.getType(), true, "");
+    composeElement(xml, e, e.getType(), true);
     xml.end();
   }
 
@@ -791,16 +792,17 @@ public class XmlParser extends ParserBase {
     if (e.getPath() == null) {
       e.populatePaths(null);
     }
+    markedXhtml = false;
     xml.start();
     xml.setDefaultNamespace(e.getProperty().getXmlNamespace());
     if (schemaPath != null) {
       xml.setSchemaLocation(FormatUtilities.FHIR_NS, Utilities.pathURL(schemaPath, e.fhirType()+".xsd"));
     }
-    composeElement(xml, e, e.getType(), true, "");
+    composeElement(xml, e, e.getType(), true);
     xml.end();
   }
 
-  private void composeElement(IXMLWriter xml, Element element, String elementName, boolean root, String tgtPath) throws IOException, FHIRException {
+  private void composeElement(IXMLWriter xml, Element element, String elementName, boolean root) throws IOException, FHIRException {
     if (showDecorations) {
       @SuppressWarnings("unchecked")
       List<ElementDecoration> decorations = (List<ElementDecoration>) element.getUserData("fhir.decorations");
@@ -834,7 +836,10 @@ public class XmlParser extends ParserBase {
           new CDANarrativeFormat().convert(xml, new XhtmlParser().parseFragment(rawXhtml));
         } else {
           xml.escapedText(rawXhtml);
-          xml.anchor(tgtPath+"end-xhtml");
+          if (!markedXhtml) {
+            xml.anchor("end-xhtml");
+            markedXhtml = true;
+          }
         }
       } else if (isText(element.getProperty())) {
         if (linkResolver != null)
@@ -858,7 +863,7 @@ public class XmlParser extends ParserBase {
             }
           }
           for (Element child : element.getChildren()) 
-            composeElement(xml, child, child.getName(), false, tgtPath);
+            composeElement(xml, child, child.getName(), false);
           xml.exit(element.getProperty().getXmlNamespace(),elementName);
         } else
           xml.element(elementName);
@@ -910,16 +915,7 @@ public class XmlParser extends ParserBase {
               xml.link(linkResolver.resolveProperty(element.getProperty()));
             xml.text(child.getValue());
           } else if (!isAttr(child.getProperty())) {
-            String tp = tgtPath;
-            if (child.getSpecial() == SpecialElement.BUNDLE_ENTRY) {
-              bundleEntryCounter ++;
-              if (Utilities.noString(tp)) {
-                tp = "Bnd."+bundleEntryCounter+".";
-              } else {
-                tp = tgtPath+bundleEntryCounter+".";
-              }
-            }
-            composeElement(xml, child, child.getName(), false, tp);
+            composeElement(xml, child, child.getName(), false);
           }
         }
       }

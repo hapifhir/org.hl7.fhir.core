@@ -282,4 +282,3 @@ This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew
 [Badge-cliSonatypeSnapshot]: https://img.shields.io/nexus/s/https/oss.sonatype.org/ca.uhn.hapi.fhir/org.hl7.fhir.validation.cli.svg "Sonatype Snapshots"
 [Badge-validationSonatypeRelease]: https://img.shields.io/nexus/r/https/oss.sonatype.org/ca.uhn.hapi.fhir/org.hl7.fhir.validation.svg "Sonatype Releases"
 [Badge-validationSonatypeSnapshot]: https://img.shields.io/nexus/s/https/oss.sonatype.org/ca.uhn.hapi.fhir/org.hl7.fhir.validation.svg "Sonatype Snapshots"
-
