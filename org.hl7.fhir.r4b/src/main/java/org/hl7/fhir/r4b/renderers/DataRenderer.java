@@ -96,6 +96,13 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class DataRenderer extends Renderer {
 
   // -- 1. context --------------------------------------------------------------

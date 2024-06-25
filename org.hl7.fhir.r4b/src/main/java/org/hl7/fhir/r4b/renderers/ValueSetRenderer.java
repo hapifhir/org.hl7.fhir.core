@@ -54,6 +54,13 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class ValueSetRenderer extends TerminologyRenderer {
 
   public ValueSetRenderer(RenderingContext context) {

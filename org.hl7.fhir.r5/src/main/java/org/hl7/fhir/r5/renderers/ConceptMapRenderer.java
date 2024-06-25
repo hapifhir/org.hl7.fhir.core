@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Coding;
@@ -24,9 +26,9 @@ import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.ConceptMapRenderer.CollateralDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -35,6 +37,29 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ConceptMapRenderer extends TerminologyRenderer {
 
+
+  public ConceptMapRenderer(RenderingContext context) { 
+    super(context); 
+  } 
+ 
+  @Override
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    if (r.isDirect()) {
+      renderResourceTechDetails(r, x);
+      genSummaryTable(status, x, (ConceptMap) r.getBase());
+      render(status, r, x, (ConceptMap) r.getBase(), false);      
+    } else {
+      throw new Error("ConceptMapRenderer only renders native resources directly");
+    }
+  }
+  
+  @Override
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
+  }
+
+  
+  
   public static class CollateralDefinition {
     private Resource resource;
     private String label;
@@ -296,19 +321,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     }
   }
 
-  public ConceptMapRenderer(RenderingContext context) {
-    super(context);
-  }
-
-  public ConceptMapRenderer(RenderingContext context, ResourceContext rcontext) {
-    super(context, rcontext);
-  }
   
-  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
-    return render(x, (ConceptMap) dr, false);
-  }
 
-  public boolean render(XhtmlNode x, ConceptMap cm, boolean header) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(RenderingStatus status, ResourceWrapper res, XhtmlNode x, ConceptMap cm, boolean header) throws FHIRFormatError, DefinitionException, IOException {
     if (header) {
       x.h2().addText(cm.getName()+" ("+cm.getUrl()+")");
     }
@@ -330,7 +345,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       p.addText(Utilities.capitalize(cm.getStatus().toString())+" "+ (context.formatPhrase(RenderingContext.CONC_MAP_NO_PROD_USE) + " "));
     else
       p.addText(Utilities.capitalize(cm.getStatus().toString())+". ");
-    p.tx(context.formatPhrase(RenderingContext.CONC_MAP_PUB_ON, (cm.hasDate() ? display(cm.getDateElement()) : "?ngen-10?")+" by "+cm.getPublisher()) + " ");
+    p.tx(context.formatPhrase(RenderingContext.CONC_MAP_PUB_ON, (cm.hasDate() ? displayDataType(cm.getDateElement()) : "?ngen-10?")+" by "+cm.getPublisher()) + " ");
     if (!cm.getContact().isEmpty()) {
       p.tx(" (");
       boolean firsti = true;
@@ -347,7 +362,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             first = false;
           else
             p.tx(", ");
-          addTelecom(p, c);
+          addTelecom(p, wrapWC(res, c));
         }
       }
       p.tx(")");
@@ -403,13 +418,13 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
       pp.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
       if (grp.hasSource()) {
-        renderCanonical(cm, pp, grp.getSource());
+        renderCanonical(status, res, pp, CodeSystem.class, grp.getSourceElement());
       } else {
         pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
       }
       pp.tx(" to ");
       if (grp.hasTarget()) {
-        renderCanonical(cm, pp, grp.getTarget());
+        renderCanonical(status, res, pp, CodeSystem.class, grp.getTargetElement());
       } else {
         pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
       }
@@ -440,9 +455,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             else {
               if (ccm.hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
                 String code = ToolingExtensions.readStringExtension(ccm, ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                tr.td().ah(eqpath+"#"+code, code).tx(presentEquivalenceCode(code));                
+                tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
               } else {
-                tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode(), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+                tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
               }
             }
             td = tr.td();
@@ -592,9 +607,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
                 else {
                   if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
                     String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                    tr.td().ah(eqpath+"#"+code, code).tx(presentEquivalenceCode(code));                
+                    tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
                   } else {
-                    tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode(), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+                    tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
                   }
                 }
               }
@@ -630,7 +645,6 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         }
       }
     }
-    return true;
   }
 
   public void describe(XhtmlNode x, ConceptMap cm) {
@@ -703,7 +717,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     if (cs == null)
       td.tx(url);
     else
-      td.ah(context.fixReference(cs.getWebPath())).attribute("title", url).tx(cs.present());
+      td.ah(context.prefixLocalHref(context.fixReference(cs.getWebPath()))).attribute("title", url).tx(cs.present());
   }
 
   private void addUnmapped(XhtmlNode tbl, ConceptMapGroupComponent grp) {

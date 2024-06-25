@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
 import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -29,7 +29,6 @@ import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ExtensionHelper;
-import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
@@ -47,20 +46,16 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.CacheToken;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
-import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
@@ -71,12 +66,32 @@ import com.google.common.collect.Multimap;
 
 public class ValueSetRenderer extends TerminologyRenderer {
 
-  public ValueSetRenderer(RenderingContext context) {
-    super(context);
+  public ValueSetRenderer(RenderingContext context) { 
+    super(context); 
   }
-
-  public ValueSetRenderer(RenderingContext context, ResourceContext rcontext) {
-    super(context, rcontext);
+ 
+  @Override
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    if (!r.isDirect()) {
+      throw new Error("ValueSetRenderer only renders native resources directly");
+    }
+    renderResourceTechDetails(r, x);
+    ValueSet vs = (ValueSet) r.getBase();
+    genSummaryTable(status, x, vs);
+    List<UsedConceptMap> maps = findReleventMaps(vs);
+    
+    if (vs.hasExpansion()) {
+      // for now, we just accept an expansion if there is one
+      generateExpansion(status, r, x, vs, false, maps);
+    } else {
+      generateComposition(status, r, x, vs, false, maps);
+    }
+  }
+  
+  
+  @Override
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
   }
 
   private static final int MAX_DESIGNATIONS_IN_LINE = 5;
@@ -84,23 +99,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private static final int MAX_BATCH_VALIDATION_SIZE = 1000;
 
   private List<ConceptMapRenderInstructions> renderingMaps = new ArrayList<ConceptMapRenderInstructions>();
-
-  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
-    return render(x, (ValueSet) dr, false);
-  }
   
 
-  public boolean render(XhtmlNode x, ValueSet vs, boolean header) throws FHIRFormatError, DefinitionException, IOException {
-    List<UsedConceptMap> maps = findReleventMaps(vs);
+  public void render(RenderingStatus status, XhtmlNode x, ValueSet vs, boolean header) throws FHIRFormatError, DefinitionException, IOException {
     
-    boolean hasExtensions;
-    if (vs.hasExpansion()) {
-      // for now, we just accept an expansion if there is one
-      hasExtensions = generateExpansion(x, vs, header, maps);
-    } else {
-      hasExtensions = generateComposition(x, vs, header, maps);
-    }
-    return hasExtensions;
   }
 
   public void describe(XhtmlNode x, ValueSet vs) {
@@ -176,8 +178,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return vs.hasUrl() && source != null && vs.getUrl().equals(source.primitiveValue());
   }  
   
-  private boolean generateExpansion(XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
-    boolean hasExtensions = false;
+  private void generateExpansion(RenderingStatus status, ResourceWrapper res, XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
     List<String> langs = new ArrayList<String>();
     Map<String, String> designations = new HashMap<>(); //  map of url = description, where url is the designation code. Designations that are for languages won't make it into this list
     Map<String, String> properties = new HashMap<>(); //  map of url = description, where url is the designation code. Designations that are for languages won't make it into this list
@@ -188,7 +189,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (IsNotFixedExpansion(vs))
         addMarkdown(x, vs.getDescription());
       if (vs.hasCopyright())
-        generateCopyright(x, vs);
+        generateCopyright(x, res);
     }
     boolean hasFragment = generateContentModeNotices(x, vs.getExpansion(), vs);
     generateVersionNotice(x, vs.getExpansion(), vs);
@@ -261,11 +262,11 @@ public class ValueSetRenderer extends TerminologyRenderer {
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_DEFINITION));
       doDesignations = false;
       for (String n : Utilities.sorted(properties.keySet())) {
-        tr.td().b().ah(properties.get(n)).addText(n);        
+        tr.td().b().ah(context.prefixLocalHref(properties.get(n))).addText(n);        
       }
     } else {
       for (String n : Utilities.sorted(properties.keySet())) {
-        tr.td().b().ah(properties.get(n)).addText(n);        
+        tr.td().b().ah(context.prefixLocalHref(properties.get(n))).addText(n);        
       }
       // if we're not doing definitions and we don't have too many languages, we'll do them in line
       doDesignations = langs.size() + properties.size() + designations.size() < MAX_DESIGNATIONS_IN_LINE;
@@ -286,7 +287,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     
     addMapHeaders(tr, maps);
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
-      addExpansionRowToTable(t, vs, c, 1, doLevel, doDefinition, doInactive, maps, langs, designations, doDesignations, properties);
+      addExpansionRowToTable(t, vs, c, 1, doLevel, doDefinition, doInactive, maps, langs, designations, doDesignations, properties, res);
     }
 
     // now, build observed languages
@@ -314,7 +315,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
     }
 
-    return hasExtensions;
   }
 
 
@@ -458,7 +458,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (cs == null) {
       x.code(url);
     } else if (cs.hasWebPath()) {
-      x.ah(cs.getWebPath()).tx(cs.present());
+      x.ah(context.prefixLocalHref(cs.getWebPath())).tx(cs.present());
     } else {
       x.code(url);
       x.tx(" ("+cs.present()+")");
@@ -531,7 +531,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, source);
       if (cr != null) {
         if (cr.hasWebPath()) {
-          x.ah(cr.getWebPath()).tx(t+" "+cr.present()+" "+ context.formatPhrase(RenderingContext.VALUE_SET_NO_VERSION)+cr.fhirType()+")");          
+          x.ah(context.prefixLocalHref(cr.getWebPath())).tx(t+" "+cr.present()+" "+ context.formatPhrase(RenderingContext.VALUE_SET_NO_VERSION)+cr.fhirType()+")");          
         } else {
           x.tx(t+" "+displaySystem(u)+" "+context.formatPhrase(RenderingContext.VALUE_SET_NO_VERSION)+cr.fhirType()+")");
         }
@@ -542,7 +542,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u+"|"+v, source);
       if (cr != null) {
         if (cr.hasWebPath()) {
-          x.ah(cr.getWebPath()).tx(t+" "+cr.present()+" v"+v+" ("+cr.fhirType()+")");          
+          x.ah(context.prefixLocalHref(cr.getWebPath())).tx(t+" "+cr.present()+" v"+v+" ("+cr.fhirType()+")");          
         } else {
           x.tx(t+" "+displaySystem(u)+" v"+v+" ("+cr.fhirType()+")");
         }
@@ -800,7 +800,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }    
   }
 
-  private void addExpansionRowToTable(XhtmlNode t, ValueSet vs, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doDefinition, boolean doInactive, List<UsedConceptMap> maps, List<String> langs, Map<String, String> designations, boolean doDesignations, Map<String, String> properties) throws FHIRFormatError, DefinitionException, IOException {
+  private void addExpansionRowToTable(XhtmlNode t, ValueSet vs, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doDefinition, boolean doInactive, List<UsedConceptMap> maps, List<String> langs, Map<String, String> designations, boolean doDesignations, Map<String, String> properties, ResourceWrapper res) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode tr = t.tr();
     if (ValueSetUtilities.isDeprecated(vs, c)) {
       tr.setAttribute("style", "background-color: #ffeeee");
@@ -809,7 +809,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     XhtmlNode td = tr.td();
 
     String tgt = makeAnchor(c.getSystem(), c.getCode());
-    td.an(tgt);
+    td.an(res.getScopedId()+"-"+context.prefixAnchor(tgt));
 
     if (doLevel) {
       td.addText(Integer.toString(i));
@@ -865,7 +865,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       addLangaugesToRow(c, langs, tr);
     }
     for (ValueSetExpansionContainsComponent cc : c.getContains()) {
-      addExpansionRowToTable(t, vs, cc, i+1, doLevel, doDefinition, doInactive, maps, langs, designations, doDesignations, properties);
+      addExpansionRowToTable(t, vs, cc, i+1, doLevel, doDefinition, doInactive, maps, langs, designations, doDesignations, properties, res);
     }
   }
 
@@ -898,9 +898,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (isAbstract)
         td.i().setAttribute("title", context.formatPhrase(RenderingContext.VS_ABSTRACT_CODE_HINT)).addText(code);
       else if ("http://snomed.info/sct".equals(system)) {
-        td.ah(sctLink(code)).addText(code);
+        td.ah(context.prefixLocalHref(sctLink(code))).addText(code);
       } else if ("http://loinc.org".equals(system)) {
-          td.ah(LoincLinker.getLinkForCode(code)).addText(code);
+          td.ah(context.prefixLocalHref(LoincLinker.getLinkForCode(code))).addText(code);
       } else        
         td.addText(code);
     } else {
@@ -910,9 +910,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
       else
         href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(code);
       if (isAbstract)
-        td.ah(href).setAttribute("title", context.formatPhrase(RenderingContext.VS_ABSTRACT_CODE_HINT)).i().addText(code);
+        td.ah(context.prefixLocalHref(href)).setAttribute("title", context.formatPhrase(RenderingContext.VS_ABSTRACT_CODE_HINT)).i().addText(code);
       else
-        td.ah(href).addText(code);
+        td.ah(context.prefixLocalHref(href)).addText(code);
     }
   }
 
@@ -931,12 +931,11 @@ public class ValueSetRenderer extends TerminologyRenderer {
 //    if (!Utilities.isAbsoluteUrl(link)) {
 //      link = getContext().getSpecificationLink()+link;
 //    }
-//    XhtmlNode a = td.ah(link);
+//    XhtmlNode a = td.ah(context.prefixLocalHref(link));
 //    a.addText(code);
   }
 
-  private boolean generateComposition(XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRException, IOException {
-    boolean hasExtensions = false;
+  private void generateComposition(RenderingStatus status, ResourceWrapper res, XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRException, IOException {
     List<String> langs = new ArrayList<String>();
     Map<String, String> designations = new HashMap<>(); //  map of url = description, where url is the designation code. Designations that are for languages won't make it into this list 
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
@@ -952,21 +951,21 @@ public class ValueSetRenderer extends TerminologyRenderer {
       h.addText(vs.present());
       addMarkdown(x, vs.getDescription());
       if (vs.hasCopyrightElement())
-        generateCopyright(x, vs);
+        generateCopyright(x, res);
     }
     int index = 0;
     if (vs.getCompose().getInclude().size() == 1 && vs.getCompose().getExclude().size() == 0 && !VersionComparisonAnnotation.hasDeleted(vs.getCompose(), "include", "exclude")) {
-      hasExtensions = genInclude(x.ul(), vs.getCompose().getInclude().get(0), "Include", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
+      genInclude(status, x.ul(), vs.getCompose().getInclude().get(0), "Include", langs, doDesignations, maps, designations, index, vs);
     } else {
       XhtmlNode p = x.para();
       p.tx(context.formatPhrase(RenderingContext.VALUE_SET_RULES_INC));
       XhtmlNode ul = x.ul();
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-        hasExtensions = genInclude(ul, inc, context.formatPhrase(RenderingContext.VALUE_SET_INC), langs, doDesignations, maps, designations, index, vs) || hasExtensions;
+        genInclude(status, ul, inc, context.formatPhrase(RenderingContext.VALUE_SET_INC), langs, doDesignations, maps, designations, index, vs);
         index++;
       }
       for (Base inc : VersionComparisonAnnotation.getDeleted(vs.getCompose(), "include")) {
-        genInclude(ul, (ConceptSetComponent) inc, context.formatPhrase(RenderingContext.VALUE_SET_INC), langs, doDesignations, maps, designations, index, vs);
+        genInclude(status, ul, (ConceptSetComponent) inc, context.formatPhrase(RenderingContext.VALUE_SET_INC), langs, doDesignations, maps, designations, index, vs);
         index++;
       }
       if (vs.getCompose().hasExclude() || VersionComparisonAnnotation.hasDeleted(vs.getCompose(), "exclude")) {
@@ -974,11 +973,11 @@ public class ValueSetRenderer extends TerminologyRenderer {
         p.tx(context.formatPhrase(RenderingContext.VALUE_SET_RULES_EXC));
         ul = x.ul();
         for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
-          hasExtensions = genInclude(ul, exc, context.formatPhrase(RenderingContext.VALUE_SET_EXCL), langs, doDesignations, maps, designations, index, vs) || hasExtensions;
+          genInclude(status, ul, exc, context.formatPhrase(RenderingContext.VALUE_SET_EXCL), langs, doDesignations, maps, designations, index, vs);
           index++;
         }
         for (Base inc : VersionComparisonAnnotation.getDeleted(vs.getCompose(), "exclude")) {
-          genInclude(ul, (ConceptSetComponent) inc, context.formatPhrase(RenderingContext.VALUE_SET_EXCL), langs, doDesignations, maps, designations, index, vs);
+          genInclude(status, ul, (ConceptSetComponent) inc, context.formatPhrase(RenderingContext.VALUE_SET_EXCL), langs, doDesignations, maps, designations, index, vs);
           index++;
         }
       }
@@ -1010,9 +1009,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
         }
       }
     }
-
-  
-    return hasExtensions;
   }
 
   private void renderExpansionRules(XhtmlNode x, ConceptSetComponent inc, int index, Map<String, ConceptDefinitionComponent> definitions) throws FHIRException, IOException {
@@ -1166,8 +1162,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
   }
 
-  private boolean genInclude(XhtmlNode ul, ConceptSetComponent inc, String type, List<String> langs, boolean doDesignations, List<UsedConceptMap> maps, Map<String, String> designations, int index, ValueSet vsRes) throws FHIRException, IOException {
-    boolean hasExtensions = false;
+  private void genInclude(RenderingStatus status, XhtmlNode ul, ConceptSetComponent inc, String type, List<String> langs, boolean doDesignations, List<UsedConceptMap> maps, Map<String, String> designations, int index, ValueSet vsRes) throws FHIRException, IOException {
     XhtmlNode li;
     li = ul.li();
     li = renderStatus(inc, li);
@@ -1200,8 +1195,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
             ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
             hasDefinition = hasDefinition || ((cc != null && cc.hasDefinition()) || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION));
           }
-          if (hasComments || hasDefinition)
-            hasExtensions = true;
+          if (hasComments || hasDefinition) {
+            status.setExtensions(true);
+          }
           addMapHeaders(addTableHeaderRowStandard(t, false, true, hasDefinition, hasComments, false, false, null, langs, designations, doDesignations), maps);
           for (ConceptReferenceComponent c : inc.getConcept()) {
             renderConcept(inc, langs, doDesignations, maps, designations, definitions, t, hasComments, hasDefinition, c);
@@ -1238,7 +1234,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
                   href = href + "-"+Utilities.nmtokenize(f.getValue());
                 else
                   href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(f.getValue());
-                wli.ah(href).addText(f.getValue());
+                wli.ah(context.prefixLocalHref(href)).addText(f.getValue());
               } else if ("concept".equals(f.getProperty()) && inc.hasSystem()) {
                 wli.addText(f.getValue());
                 ValidationResult vr = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), inc.getVersion(), f.getValue(), null);
@@ -1268,7 +1264,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         }
       }
       if (inc.hasExtension(ToolingExtensions.EXT_EXPAND_RULES) || inc.hasExtension(ToolingExtensions.EXT_EXPAND_GROUP)) {
-        hasExtensions = true;
+        status.setExtensions(true);
         renderExpansionRules(li, inc, index, definitions);
       }
     } else {
@@ -1296,7 +1292,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
         
       }
     }
-    return hasExtensions;
   }
 
   private void renderConcept(ConceptSetComponent inc, List<String> langs, boolean doDesignations,
@@ -1521,10 +1516,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return null;
   }
 
-
-
- 
-
   private boolean inConcept(String code, ConceptDefinitionComponent c) {
     if (c.hasCodeElement() && c.getCode().equals(code))
       return true;
@@ -1535,5 +1526,19 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return false;
   }
 
+
+  @Override
+  protected void genSummaryTableContent(RenderingStatus status, XhtmlNode tbl, CanonicalResource cr) throws IOException {
+    super.genSummaryTableContent(status, tbl, cr);
+    
+    ValueSet vs = (ValueSet) cr;
+    XhtmlNode tr;
+
+    if (CodeSystemUtilities.hasOID(vs)) {
+      tr = tbl.tr();
+      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_OID)+":");
+      tr.td().tx(context.formatPhrase(RenderingContext.CODE_SYS_FOR_OID, CodeSystemUtilities.getOID(vs)));
+    }
+  }
 
 }

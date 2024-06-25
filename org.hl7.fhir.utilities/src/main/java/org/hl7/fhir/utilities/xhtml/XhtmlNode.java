@@ -799,11 +799,19 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return span("color: "+color, null);
   }
   
-  public XhtmlNode param(String name) {
-    XhtmlNode node = new XhtmlNode(NodeType.Element, "p"); // this node is dead will never appear anywhere, but we are in paragraph mode
-    if (namedParams == null) {
-      namedParams = new HashMap<>();
+  public void startScript(String name) {
+    if (namedParams != null) {
+      throw new Error("Sequence Error - script is already open @ "+name);
     }
+    namedParams = new HashMap<>();    
+    namedParamValues = new HashMap<>();
+  }
+  
+  public XhtmlNode param(String name) {
+    if (namedParams == null) {
+      throw new Error("Sequence Error - script is not already open");
+    }
+    XhtmlNode node = new XhtmlNode(NodeType.Element, "p"); // this node is dead will never appear anywhere, but we are in paragraph mode
     namedParams.put(name, node);
     return node;
   }
@@ -811,39 +819,68 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
   public void paramValue(String name, String value) {
     if (namedParamValues == null) {
-      namedParamValues = new HashMap<>();
+      throw new Error("Sequence Error - script is not already open");
     }
     namedParamValues.put(name, value); 
   }
 
   public void paramValue(String name, int value) {
     if (namedParamValues == null) {
-      namedParamValues = new HashMap<>();
+      throw new Error("Sequence Error - script is not already open");
     }
     namedParamValues.put(name, Integer.toString(value)); 
   }
 
-  public void sentenceForParams(String structure) throws FHIRException, IOException {
+  /**
+   * To set up a script, you do the following:
+   * 
+   * * call startScript - setting up the parameter infrastructure 
+   * * define a set of parameters. Parameter values can be provided as string or integer, or:
+   * * you can use param(name) to render an arbitrarily complicated html fragment that will be inserted by the script
+   * * you can redefine parameters with the same name 
+   * * call execScript() to execute the script. You can call this any number of times
+   * * call closeScript
+   * 
+   * The script format is an xhtml fragment that can have any html in it, and also the following tags:
+   *   param: <param name="{name}"/> - replace this tag with the named parameter (or delete it if no value)
+   *   if: <if test="{condition}"/> - condition is param op value, where value is a string, and op is =, != <, >
+   *   
+   * @param structure
+   * @throws FHIRException
+   * @throws IOException
+   */
+  public void execScript(String structure) throws FHIRException, IOException {
     XhtmlNode script = new XhtmlParser().parseFragment("<div>"+structure+"</div>");
-    for (XhtmlNode n : script.getChildNodes()) {
+    parseNodes(script.getChildNodes(), this.getChildNodes());
+  }
+
+  private void parseNodes(XhtmlNodeList source, XhtmlNodeList dest) {
+    for (XhtmlNode n : source) {
       if ("param".equals(n.getName())) {
         XhtmlNode node = namedParams.get(n.getAttribute("name"));
         if (node != null) {
-          this.getChildNodes().addAll(node.getChildNodes());
+          parseNodes(node.getChildNodes(), dest);
         }
       } else if ("if".equals(n.getName())) {
         String test = n.getAttribute("test");
         if (passesTest(test)) {
-          this.getChildNodes().addAll(n.getChildNodes());
+          parseNodes(n.getChildNodes(), dest);
         }
       } else {
-        this.getChildNodes().add(n);
+        dest.add(n);
       }
     }
-    namedParams = null;
-    namedParamValues = null;
+
   }
 
+
+  public void closeScript() {
+    if (namedParams == null) {
+      throw new Error("Sequence Error - script is not already open");
+    }
+    namedParams = null;    
+    namedParamValues = null;
+  }
 
   private boolean passesTest(String test) {
     String[] p = test.split("\\s+");
