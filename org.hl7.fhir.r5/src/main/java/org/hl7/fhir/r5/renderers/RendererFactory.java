@@ -3,7 +3,7 @@ package org.hl7.fhir.r5.renderers;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.utilities.Utilities;
 
 public class RendererFactory {
@@ -61,7 +61,7 @@ public class RendererFactory {
   }
 
 
-  public static ResourceRenderer factory(ResourceElement resource, RenderingContext context) {
+  public static ResourceRenderer factory(ResourceWrapper resource, RenderingContext context) {
     if (context.getTemplateProvider() != null) {
       String liquidTemplate = context.getTemplateProvider().findTemplate(context, resource.fhirType());
       if (liquidTemplate != null) {
@@ -71,16 +71,43 @@ public class RendererFactory {
     switch (resource.fhirType()) {
     case "DiagnosticReport": return new DiagnosticReportRenderer(context);
     case "Library": return new LibraryRenderer(context);
+    case "Questionnaire": return new LibraryRenderer(context);
     case "List": return new ListRenderer(context);
     case "Patient": return new PatientRenderer(context);
+    case "Provenance": return new ProvenanceRenderer(context);
+    case "Parameters": return new ParametersRenderer(context);
     case "QuestionnaireResponse": return new QuestionnaireResponseRenderer(context);
+    }
+    if (resource.isDirect()) {
+      switch (resource.fhirType()) {
+
+      case "ActorDefinition": return new ActorDefinitionRenderer(context);
+      case "Bundle": return new BundleRenderer(context);
+      case "CapabilityStatement": return new CapabilityStatementRenderer(context);
+      case "CodeSystem": return new CodeSystemRenderer(context);
+      case "CompartmentDefinition":  return new CompartmentDefinitionRenderer(context);
+      case "ConceptMap": return new ConceptMapRenderer(context);
+      case "Encounter": return new EncounterRenderer(context);
+      case "ExampleScenario": return new ExampleScenarioRenderer(context);
+      case "ImplementationGuide": return new ImplementationGuideRenderer(context);
+      case "NamingSystem": return new NamingSystemRenderer(context);
+      case "OperationDefinition": return new OperationDefinitionRenderer(context);
+      case "OperationOutcome": return new OperationOutcomeRenderer(context);
+      case "Requirements": return new RequirementsRenderer(context);
+      case "SearchParameter": return new SearchParameterRenderer(context);
+      case "StructureDefinition": return new StructureDefinitionRenderer(context);
+      case "StructureMap": return new StructureMapRenderer(context);
+      case "SubscriptionTopic": return new SubscriptionTopicRenderer(context);
+      case "TestPlan": return new TestPlanRenderer(context);
+      case "ValueSet": return new ValueSetRenderer(context);
+      }
     }
 
     return new ProfileDrivenRenderer(context);    
   }
 
   public static boolean hasSpecificRenderer(String rt) {
-    
+
     return Utilities.existsInList(rt, 
         "CodeSystem", "ValueSet", "ConceptMap", 
         "CapabilityStatement", "CompartmentDefinition", "ImplementationGuide", "Library", "NamingSystem", "OperationDefinition", 
@@ -94,9 +121,9 @@ public class RendererFactory {
    * @return
    */
   public static boolean hasIGSpecificRenderer(String rt) {
-    
+
     return Utilities.existsInList(rt, "ValueSet", "CapabilityStatement", "Questionnaire");
   }
-  
+
 
 }

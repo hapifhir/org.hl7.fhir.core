@@ -61,7 +61,7 @@ import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
@@ -801,7 +801,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         }
       }
     } else {
-      RendererFactory.factory(res, rc).renderResource(ResourceElement.forResource(rc.getContextUtilities(), rc.getProfileUtilities(), res));
+      RendererFactory.factory(res, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), res));
     }
   }
 

@@ -7,8 +7,9 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -21,19 +22,21 @@ public class TestPlanRenderer extends ResourceRenderer {
   } 
 
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return canonicalTitle(r);
   }
 
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement tp) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper tp) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    renderResourceTechDetails(tp, x);
+    genSummaryTable(status, x, (CanonicalResource) tp.getResourceNative());
     XhtmlNode p = null;
     if (tp.has("contact")) {
       p = x.para();
       p.b().tx(context.formatPhrase(RenderingContext.GENERAL_CONTACT));
       p.tx(" (");
       boolean firsti = true;
-      for (ResourceElement ci : tp.children("contact")) {
+      for (ResourceWrapper ci : tp.children("contact")) {
         if (firsti)
           firsti = false;
         else
@@ -41,7 +44,7 @@ public class TestPlanRenderer extends ResourceRenderer {
         if (ci.has("name"))
           p.addText(ci.primitiveValue("name") + ": ");
         boolean first = true;
-        for (ResourceElement c : ci.children("telecom")) {
+        for (ResourceWrapper c : ci.children("telecom")) {
           if (first)
             first = false;
           else
@@ -56,7 +59,7 @@ public class TestPlanRenderer extends ResourceRenderer {
       p = x.para();
       p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_CATEGORY)+" ");
       boolean first = true;
-      for (ResourceElement cc : tp.children("category")) {
+      for (ResourceWrapper cc : tp.children("category")) {
         if (first)
           first = false;
         else
@@ -66,7 +69,7 @@ public class TestPlanRenderer extends ResourceRenderer {
     }
 
     if (tp.has("scope")) {
-      List<ResourceElement> scopes = tp.children("scope");
+      List<ResourceWrapper> scopes = tp.children("scope");
       if (scopes.size() == 1) {
         p = x.para();
         p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPE)+" ");
@@ -74,16 +77,16 @@ public class TestPlanRenderer extends ResourceRenderer {
       } else {
         x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPES));
         XhtmlNode ul = x.ul();
-        for (ResourceElement ref : scopes) {
+        for (ResourceWrapper ref : scopes) {
           renderReference(status, ul.li(), ref);
         }
       }
     }
 
     if (tp.has("dependency")) {
-      List<ResourceElement> deps = tp.children("dependency");
+      List<ResourceWrapper> deps = tp.children("dependency");
       if (deps.size() == 1) {
-        ResourceElement dep = deps.get(0);
+        ResourceWrapper dep = deps.get(0);
         p = x.para();
         p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_DEP)+" ");
         XhtmlNode t = x.table("grid");
@@ -97,7 +100,7 @@ public class TestPlanRenderer extends ResourceRenderer {
         x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_DEPEN));
         XhtmlNode ul = x.ul();
         XhtmlNode li = null;
-        for (ResourceElement d : deps) {
+        for (ResourceWrapper d : deps) {
           li = ul.li();
           if (!Utilities.noString(d.primitiveValue("description"))) {
             addMarkdown(li, d.primitiveValue("description"));
@@ -118,11 +121,11 @@ public class TestPlanRenderer extends ResourceRenderer {
       addMarkdown(x, tp.primitiveValue("exitCriteria"));
     }
 
-    for (ResourceElement tc : tp.children("testCase")) {
+    for (ResourceWrapper tc : tp.children("testCase")) {
       x.h2().addText(tc.has("sequence") ? formatPhrase(RenderingContext.TEST_PLAN_CASE) : formatPhrase(RenderingContext.TEST_PLAN_CASE_SEQ, tc.primitiveValue("sequence")));
 
       if (tc.has("scope")) {
-        List<ResourceElement> scopes = tc.children("scope");
+        List<ResourceWrapper> scopes = tc.children("scope");
         if (scopes.size() == 1) {
           p = x.para();
           p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPE)+" ");
@@ -130,16 +133,16 @@ public class TestPlanRenderer extends ResourceRenderer {
         } else {
           x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPES));
           XhtmlNode ul = x.ul();
-          for (ResourceElement ref : scopes) {
+          for (ResourceWrapper ref : scopes) {
             renderReference(status, ul.li(), ref);
           }
         }
       }
 
       if (tc.has("dependency")) {
-        List<ResourceElement> deps = tc.children("dependency");
+        List<ResourceWrapper> deps = tc.children("dependency");
         if (deps.size() == 1) {
-          ResourceElement dep = deps.get(0);
+          ResourceWrapper dep = deps.get(0);
           x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_DEP));
           XhtmlNode t = x.table("grid");
           XhtmlNode tr = t.tr();
@@ -153,7 +156,7 @@ public class TestPlanRenderer extends ResourceRenderer {
           x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_DEPEN));
           XhtmlNode ul = x.ul();
           XhtmlNode li = null;
-          for (ResourceElement d : deps) {
+          for (ResourceWrapper d : deps) {
             li = ul.li();
             if (!Utilities.noString(d.primitiveValue("description"))) {
               addMarkdown(li, d.primitiveValue("description"));
@@ -171,14 +174,14 @@ public class TestPlanRenderer extends ResourceRenderer {
       }
 
       if (tc.has("testRun")) {
-        List<ResourceElement> runs = tc.children("testRun");
+        List<ResourceWrapper> runs = tc.children("testRun");
         if (runs.size() == 1) {
           x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_RUN));
           renderTestRun(status, x, tp, runs.get(0));
         }
         else {
           int count = 0;
-          for (ResourceElement trun : runs) {
+          for (ResourceWrapper trun : runs) {
             count++;
             x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_TEST_RUN, count)+" ");
             renderTestRun(status, x, tp, trun);
@@ -187,14 +190,14 @@ public class TestPlanRenderer extends ResourceRenderer {
       }
 
       if (tc.has("testData")) {
-        List<ResourceElement> dl = tc.children("testData");
+        List<ResourceWrapper> dl = tc.children("testData");
         if (dl.size() == 1) {
           x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_DATA));
           renderTestData(status, x, tp, dl.get(0));
         }
         else {
           int count = 0;
-          for (ResourceElement tdata : dl) {
+          for (ResourceWrapper tdata : dl) {
             count++;
             x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_TEST_DATA, count)+" ");
             renderTestData(status, x, tp, tdata);
@@ -203,14 +206,14 @@ public class TestPlanRenderer extends ResourceRenderer {
       }
 
       if (tc.has("assertion")) {
-        List<ResourceElement> al = tc.children("assertion");
+        List<ResourceWrapper> al = tc.children("assertion");
         if (al.size() == 1) {
           x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_ASS));
           renderAssertion(status, x, tp, al.get(0));
         }
         else {
           int count = 0;
-          for (ResourceElement as : al) {
+          for (ResourceWrapper as : al) {
             count++;
             x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_ASSERTION, count)+" ");
             renderAssertion(status, x, tp, as);
@@ -220,13 +223,13 @@ public class TestPlanRenderer extends ResourceRenderer {
     }
   }
 
-  private void renderTestRun(RenderingStatus status, XhtmlNode x, ResourceElement tp, ResourceElement trun) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  private void renderTestRun(RenderingStatus status, XhtmlNode x, ResourceWrapper tp, ResourceWrapper trun) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (trun.hasNarrative()) {
       addMarkdown(x, trun.primitiveValue("narrative"));
     }
 
     if (trun.has("script")) {
-      ResourceElement script = trun.child("script");
+      ResourceWrapper script = trun.child("script");
       XhtmlNode t = x.table("grid");
       XhtmlNode tr = t.tr();
       tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_LANG));
@@ -245,7 +248,7 @@ public class TestPlanRenderer extends ResourceRenderer {
     }
   }
 
-  private void renderTestData(RenderingStatus status, XhtmlNode x, ResourceElement tp, ResourceElement tdata) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  private void renderTestData(RenderingStatus status, XhtmlNode x, ResourceWrapper tp, ResourceWrapper tdata) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     XhtmlNode t = x.table("grid");
     XhtmlNode tr = t.tr();
     tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
@@ -271,7 +274,7 @@ public class TestPlanRenderer extends ResourceRenderer {
     }
   }
 
-  private void renderAssertion(RenderingStatus status, XhtmlNode x, ResourceElement tp, ResourceElement as) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  private void renderAssertion(RenderingStatus status, XhtmlNode x, ResourceWrapper tp, ResourceWrapper as) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     XhtmlNode t = x.table("grid");
     XhtmlNode tr = t.tr();
     tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
@@ -281,7 +284,7 @@ public class TestPlanRenderer extends ResourceRenderer {
     if (as.has("type")) {
       XhtmlNode td = tr.td();
       XhtmlNode ul = td.ul();
-      for (ResourceElement cc : as.children("type")) {
+      for (ResourceWrapper cc : as.children("type")) {
         renderCodeableConcept(status, ul.li(), cc);
       }
     }
@@ -291,7 +294,7 @@ public class TestPlanRenderer extends ResourceRenderer {
     if (as.has("object")) {
       XhtmlNode td = tr.td();
       XhtmlNode ul = td.ul();
-      for (ResourceElement cr : as.children("object")) {
+      for (ResourceWrapper cr : as.children("object")) {
         renderCodeableReference(status, ul.li(), cr);
       }
     }
@@ -301,7 +304,7 @@ public class TestPlanRenderer extends ResourceRenderer {
     if (as.has("result")) {
       XhtmlNode td = tr.td();
       XhtmlNode ul = td.ul();
-      for (ResourceElement cr : as.children("result")) {
+      for (ResourceWrapper cr : as.children("result")) {
         renderCodeableReference(status, ul.li(), cr);
       }
     }

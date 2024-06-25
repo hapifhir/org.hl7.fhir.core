@@ -6,9 +6,10 @@ import java.io.UnsupportedEncodingException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -19,35 +20,42 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
   } 
   
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return canonicalTitle(r);
   }
 
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement st) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper st) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    renderResourceTechDetails(st, x);
+    genSummaryTable(status, x, (CanonicalResource) st.getResourceNative());
 
-    if (context.isHeader()) {
-      XhtmlNode h = x.h2();
-      h.addText(st.has("title") ? st.primitiveValue("title") : st.primitiveValue("name"));
-      addMarkdown(x, st.primitiveValue("description"));
-      if (st.has("copyright")) {
-        generateCopyright(x, st);
-      }
+    XhtmlNode tbl = x.table("grid");
+    XhtmlNode ttr = tbl.tr();
+    ttr.td().b().tx("SubscriptionTopic");
+    ttr.td().tx(context.getTranslated(st.has("title") ? st.child("title") : st.child("name")));
+    if (st.has("description")) {
+      ttr = tbl.tr();
+      ttr.td().b().tx("Description");
+      addMarkdown(ttr.td(), st.primitiveValue("description"));
     }
+    if (st.has("copyright")) {
+      generateCopyrightTableRow(tbl, st);
+    }
+
     
     if (st.has("resourceTrigger")) {
       TableData td = new TableData(context.formatPhrase(RenderingContext.SUB_TOPIC_RES_TRIG));
-      for (ResourceElement rt : st.children("resourceTrigger")) {
+      for (ResourceWrapper rt : st.children("resourceTrigger")) {
         TableRowData tr = td.addRow();
         if (rt.has("resource")) {
           tr.value(context.formatPhrase(RenderingContext.GENERAL_RESOURCE), rt.child("resource"));
         }
-        for (ResourceElement t : rt.children("supportedInteraction")) {          
+        for (ResourceWrapper t : rt.children("supportedInteraction")) {          
           tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_INT), t);
         }
         if (rt.has("queryCriteria")) {
           StringBuilder md = new StringBuilder(); 
-          ResourceElement qc = rt.child("queryCriteria");
+          ResourceWrapper qc = rt.child("queryCriteria");
           if (qc.has("previous")) {
             md.append(context.formatPhrase(RenderingContext.SUB_TOPIC_PREV, qc.primitiveValue("previous")+"\r\n")+" ");
           }
@@ -77,7 +85,7 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
 
     if (st.has("eventTrigger")) {
       TableData td = new TableData("Event Triggers");
-      for (ResourceElement rt : st.children("eventTrigger")) {
+      for (ResourceWrapper rt : st.children("eventTrigger")) {
         TableRowData tr = td.addRow();
         if (rt.has("resource")) {
           tr.value(context.formatPhrase(RenderingContext.GENERAL_RESOURCE), rt.child("resource"));
@@ -94,7 +102,7 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
 
     if (st.has("canFilterBy")) {
       TableData td = new TableData("Can Filter By");
-      for (ResourceElement rt : st.children("canFilterBy")) {
+      for (ResourceWrapper rt : st.children("canFilterBy")) {
         TableRowData tr = td.addRow();
         if (rt.has("resource")) {
           tr.value(context.formatPhrase(RenderingContext.GENERAL_RESOURCE), rt.child("resource"));
@@ -105,10 +113,10 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
         if (rt.has("filterDefinition")) {
           tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_FILT_DEF), rt.child("filterDefinition"));
         }
-        for (ResourceElement t : rt.children("comparator")) {
+        for (ResourceWrapper t : rt.children("comparator")) {
           tr.value(context.formatPhrase(RenderingContext.GENERAL_COMPARATORS), t);
         }
-        for (ResourceElement t : rt.children("modifier")) {
+        for (ResourceWrapper t : rt.children("modifier")) {
           tr.value(context.formatPhrase(RenderingContext.GENERAL_MODIFIERS), t);
         }
       }
@@ -117,15 +125,15 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
 
     if (st.has("notificationShape")) {
       TableData td = new TableData("Notification Shapes");
-      for (ResourceElement rt : st.children("notificationShape")) {
+      for (ResourceWrapper rt : st.children("notificationShape")) {
         TableRowData tr = td.addRow();
         if (rt.has("resource")) {
           tr.value(context.formatPhrase(RenderingContext.GENERAL_RESOURCE), rt.child("resource"));
         }
-        for (ResourceElement t : rt.children("include")) {
+        for (ResourceWrapper t : rt.children("include")) {
           tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_INCL), t);
         }
-        for (ResourceElement t : rt.children("revInclude")) {
+        for (ResourceWrapper t : rt.children("revInclude")) {
           tr.value(context.formatPhrase(RenderingContext.SUB_TOPIC_REV_INCL), t);
         }
       }

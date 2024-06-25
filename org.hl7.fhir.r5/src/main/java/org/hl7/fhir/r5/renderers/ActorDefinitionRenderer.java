@@ -8,11 +8,10 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -24,8 +23,10 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
   } 
  
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (r.isDirect()) {
+      renderResourceTechDetails(r, x);
+      genSummaryTable(status, x, (ActorDefinition) r.getBase());
       render(status, x, (ActorDefinition) r.getBase(), r);      
     } else {
       throw new Error("ActorDefinitionRenderer only renders native resources directly");
@@ -33,11 +34,11 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
   }
   
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return canonicalTitle(r);
   }
 
-  public void render(RenderingStatus status, XhtmlNode x, ActorDefinition acd, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(RenderingStatus status, XhtmlNode x, ActorDefinition acd, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();
     tr.td().b().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_ACT, acd.getName())  + " ");

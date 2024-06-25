@@ -63,6 +63,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -87,6 +88,7 @@ public class JsonParser extends ParserBase {
   private boolean allowComments;
 
   private Element baseElement;
+  private boolean markedXhtml;
 
   public JsonParser(IWorkerContext context, ProfileUtilities utilities) {
     super(context, utilities);
@@ -766,6 +768,7 @@ public class JsonParser extends ParserBase {
       e.populatePaths(null);
     }
 
+    markedXhtml = false;
     OutputStreamWriter osw = new OutputStreamWriter(stream, "UTF-8");
     if (style == OutputStyle.CANONICAL) {
       json = new JsonCreatorCanonical(osw);
@@ -779,7 +782,7 @@ public class JsonParser extends ParserBase {
     prop("resourceType", e.getType(), null);
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
-      compose(e.getName(), e, done, child, "");
+      compose(e.getName(), e, done, child);
     }
     json.endObject();
     json.finish();
@@ -804,28 +807,28 @@ public class JsonParser extends ParserBase {
     prop("resourceType", e.getType(), linkResolver == null ? null : linkResolver.resolveProperty(e.getProperty()));
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
-      compose(e.getName(), e, done, child, "");
+      compose(e.getName(), e, done, child);
     }
     json.endObject();
     json.finish();
   }
 
-  private void compose(String path, Element e, Set<String> done, Element child, String tgtPath) throws IOException {
+  private void compose(String path, Element e, Set<String> done, Element child) throws IOException {
     checkComposeComments(child);
     if (wantCompose(path, child)) {
       boolean isList = child.hasElementProperty() ? child.getElementProperty().isList() : child.getProperty().isList();
       if (!isList) {// for specials, ignore the cardinality of the stated type
-        compose(path, child, tgtPath);
+        compose(path, child);
       } else if (!done.contains(child.getName())) {
         done.add(child.getName());
         List<Element> list = e.getChildrenByName(child.getName());
-        composeList(path, list, tgtPath);
+        composeList(path, list);
       }
     }
   }
 
 
-  private void composeList(String path, List<Element> list, String tgtPath) throws IOException {
+  private void composeList(String path, List<Element> list) throws IOException {
     // there will be at least one element
     String name = list.get(0).getName();
     boolean complex = true;
@@ -873,15 +876,7 @@ public class JsonParser extends ParserBase {
           }
           Set<String> done = new HashSet<String>();
           for (Element child : item.getChildren()) {
-            String tp = tgtPath;
-            if (child.getSpecial() == SpecialElement.BUNDLE_ENTRY) {
-              if (Utilities.noString(tp)) {
-                tp = "Bnd."+i+".";
-              } else {
-                tp = tgtPath+i+".";
-              }
-            }
-            compose(path+"."+name+"[]", item, done, child, tp);
+            compose(path+"."+name+"[]", item, done, child);
           }
           close();
         } else {
@@ -914,14 +909,15 @@ public class JsonParser extends ParserBase {
       json.value(item.getValue());
   }
 
-  private void compose(String path, Element element, String tgtPath) throws IOException {
+  private void compose(String path, Element element) throws IOException {
     String name = element.getName();
     if (element.isPrimitive() || isPrimitive(element.getType())) {
       if (element.hasValue())
         primitiveValue(name, element);
       name = "_"+name;
-      if (element.getType().equals("xhtml"))
-        json.anchor(tgtPath+"end-xhtml");
+      if (!markedXhtml && element.getType().equals("xhtml"))
+        json.anchor("end-xhtml");
+        markedXhtml = true;
     }
     if (element.hasChildren()) {
       open(name, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()));
@@ -936,7 +932,7 @@ public class JsonParser extends ParserBase {
       }
       Set<String> done = new HashSet<String>();
       for (Element child : element.getChildren()) {
-        compose(path+"."+element.getName(), element, done, child, tgtPath);
+        compose(path+"."+element.getName(), element, done, child);
       }
       close();
     }

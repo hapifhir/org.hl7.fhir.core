@@ -19,6 +19,13 @@ import org.hl7.fhir.r4b.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r4b.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class ListRenderer extends ResourceRenderer {
 
   public ListRenderer(RenderingContext context) {

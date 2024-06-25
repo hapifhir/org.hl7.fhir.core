@@ -1,14 +1,5 @@
 package org.hl7.fhir.r5.renderers.utils;
 
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceReferenceKind;
-import org.w3c.dom.Element;
-
 public class Resolver {
 
 
@@ -192,9 +183,9 @@ public class Resolver {
     private ResourceReferenceKind kind;
     private String urlReference;
     private String webPath;
-    private ResourceElement resource;
+    private ResourceWrapper resource;
 
-    public ResourceWithReference(ResourceReferenceKind kind, String urlReference, String webPath, ResourceElement resource) {
+    public ResourceWithReference(ResourceReferenceKind kind, String urlReference, String webPath, ResourceWrapper resource) {
       super();
       this.kind = kind;
       this.urlReference = urlReference;
@@ -214,7 +205,7 @@ public class Resolver {
       return webPath == null ? urlReference : webPath;
     }
 
-    public ResourceElement getResource() {
+    public ResourceWrapper getResource() {
       return resource;
     }
   }

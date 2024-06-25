@@ -4,36 +4,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
-import org.fhir.ucum.Canonical;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.profile.BindingResolution;
-import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
-import org.hl7.fhir.r5.renderers.ObligationsRenderer.ObligationDetail;
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
-import org.hl7.fhir.r5.utils.PublicationHacker;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
@@ -289,7 +274,7 @@ public class ObligationsRenderer extends Renderer {
     return abr;
   }
 
-  public String render(RenderingStatus status, ResourceElement res, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws IOException {
+  public String render(RenderingStatus status, ResourceWrapper res, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws IOException {
     if (obligations.isEmpty()) {
       return "";
     } else {
@@ -300,7 +285,7 @@ public class ObligationsRenderer extends Renderer {
     }
   }
 
-  public void renderTable(RenderingStatus status, ResourceElement res, HierarchicalTableGenerator gen, Cell c, List<ElementDefinition> inScopeElements) throws FHIRFormatError, DefinitionException, IOException {
+  public void renderTable(RenderingStatus status, ResourceWrapper res, HierarchicalTableGenerator gen, Cell c, List<ElementDefinition> inScopeElements) throws FHIRFormatError, DefinitionException, IOException {
     if (obligations.isEmpty()) {
       return;
     } else {
@@ -351,7 +336,7 @@ public class ObligationsRenderer extends Renderer {
           children.tx("=");
         }
         CodeResolution ccr = this.cr.resolveCode(uc.getValueCodeableConcept());
-        children.ah(ccr.getLink(), ccr.getHint()).tx(ccr.getDisplay());
+        children.ah(context.prefixLocalHref(ccr.getLink()), ccr.getHint()).tx(ccr.getDisplay());
       }
       children.tx(")");
     }
@@ -361,7 +346,7 @@ public class ObligationsRenderer extends Renderer {
   }
 
 
-  public void renderTable(RenderingStatus status, ResourceElement res, List<XhtmlNode> children, boolean fullDoco, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws FHIRFormatError, DefinitionException, IOException {
+  public void renderTable(RenderingStatus status, ResourceWrapper res, List<XhtmlNode> children, boolean fullDoco, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws FHIRFormatError, DefinitionException, IOException {
     boolean doco = false;
     boolean usage = false;
     boolean actor = false;
@@ -444,7 +429,7 @@ public class ObligationsRenderer extends Renderer {
               }
               actorId = actorId.span(STYLE_REMOVED, null);
               if (compAd.hasWebPath()) {
-                actorId.ah(compAd.getWebPath(), compActor.toString()).tx(compAd.present());
+                actorId.ah(context.prefixLocalHref(compAd.getWebPath()), compActor.toString()).tx(compAd.present());
               } else {
                 actorId.span(null, compActor.toString()).tx(compAd.present());
               }
@@ -465,7 +450,7 @@ public class ObligationsRenderer extends Renderer {
           String name = eid.substring(eid.indexOf(".") + 1);
           if (ed != null && inScope) {
             String link = defPath + "#" + anchorPrefix + eid;
-            elementIds.ah(link).tx(name);
+            elementIds.ah(context.prefixLocalHref(link)).tx(name);
           } else {
             elementIds.code().tx(name);
           }
@@ -548,7 +533,7 @@ public class ObligationsRenderer extends Renderer {
         CodeResolution cr = this.cr.resolveCode("http://hl7.org/fhir/tools/CodeSystem/obligation", code);
         code = code.replace("will-", "").replace("can-", "");
         if (cr.getLink() != null) {
-          children.ah(cr.getLink(), cr.getHint()).tx(code);
+          children.ah(context.prefixLocalHref(cr.getLink()), cr.getHint()).tx(code);
         } else {
           children.span(null, cr.getHint()).tx(code);
         }

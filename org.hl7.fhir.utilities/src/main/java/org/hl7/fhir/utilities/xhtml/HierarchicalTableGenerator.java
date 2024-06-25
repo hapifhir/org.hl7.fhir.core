@@ -630,6 +630,7 @@ public class HierarchicalTableGenerator {
   
   private TableGenerationMode mode;
   private RenderingI18nContext i18n;
+  private String uniqueLocalPrefix;
 
   public HierarchicalTableGenerator(RenderingI18nContext i18n) {
     super();
@@ -904,7 +905,7 @@ public class HierarchicalTableGenerator {
         }
       } else if (!Utilities.noString(p.getReference())) {
         XhtmlNode a = addStyle(tc.addTag("a"), p);
-        a.setAttribute("href", p.getReference());
+        a.setAttribute("href", prefixLocalHref(p.getReference()));
         if (mode == TableGenerationMode.XHTML && suppressExternals) {
           a.setAttribute("no-external", "true");
         }
@@ -944,8 +945,9 @@ public class HierarchicalTableGenerator {
         }
       }
     }
-    if (makeTargets && !Utilities.noString(anchor))
-      tc.addTag("a").setAttribute("name", nmTokenize(anchor)).addText(" ");
+    if (makeTargets && !Utilities.noString(anchor)) {
+      tc.addTag("a").setAttribute("name", prefixAnchor(nmTokenize(anchor))).addText(" ");
+    }
     return tc;
   }
 
@@ -1132,4 +1134,25 @@ public class HierarchicalTableGenerator {
       r.getCells().add(new Cell());
     }
   }
+  
+
+  public String getUniqueLocalPrefix() {
+    return uniqueLocalPrefix;
+  }
+
+  public void setUniqueLocalPrefix(String uniqueLocalPrefix) {
+    this.uniqueLocalPrefix = uniqueLocalPrefix;
+  }
+
+  public String prefixAnchor(String anchor) {
+    return uniqueLocalPrefix == null ? anchor : uniqueLocalPrefix+"-" + anchor;
+  }
+
+  public String prefixLocalHref(String url) {
+    if (url == null || uniqueLocalPrefix == null || !url.startsWith("#")) {
+      return url;
+    }
+    return "#"+uniqueLocalPrefix+"-"+url.substring(1);
+  }
+  
 }

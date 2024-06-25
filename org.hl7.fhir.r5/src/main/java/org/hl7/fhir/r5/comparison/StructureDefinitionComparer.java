@@ -1479,6 +1479,12 @@ public boolean prependLinks() {
 public String getLinkForUrl(String corePath, String s) {
   return null;
 }
+
+@Override
+public String getCanonicalForDefaultContext() {
+  // TODO Auto-generated method stub
+  return null;
+}
   
 
 }

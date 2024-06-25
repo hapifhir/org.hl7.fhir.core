@@ -7,25 +7,13 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryRequestComponent;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryResponseComponent;
-import org.hl7.fhir.r5.model.Bundle.BundleEntrySearchComponent;
-import org.hl7.fhir.r5.model.Bundle.BundleType;
-import org.hl7.fhir.r5.model.Composition;
-import org.hl7.fhir.r5.model.Composition.SectionComponent;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Provenance;
-import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -37,8 +25,8 @@ public class BundleRenderer extends ResourceRenderer {
   } 
  
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
-    return "Bundle";
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return context.formatPhrase(RenderingContext.BUNDLE_SUMMARY, getTranslatedCode(r.child("type")), r.children("entry").size());
   }
 
   public BundleRenderer setMultiLangMode(boolean multiLangMode) {
@@ -47,104 +35,149 @@ public class BundleRenderer extends ResourceRenderer {
   }
   
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement b) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    List<ResourceElement> entries = b.children("entry");
-    if ("document".equals(b.primitiveValue("type"))) {
-      if (entries.isEmpty() || (entries.get(0).has("resource") && !"Composition".equals(entries.get(0).child("resource").fhirType())))
-        throw new FHIRException(context.formatPhrase(RenderingContext.BUND_REND_INVALID_DOC, b.getId(), entries.get(0).child("resource").fhirType()+"')"));
-      renderDocument(status, x, b, entries);
-    } else if ("collection".equals(b.primitiveValue("type")) && allEntriesAreHistoryProvenance(entries)) {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper b) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    if ("ex-fhir-document-bundle".equals(b.getId())) {
+      DebugUtilities.breakpoint();
+    }
+    List<ResourceWrapper> entries = b.children("entry");
+    if ("collection".equals(b.primitiveValue("type")) && allEntriesAreHistoryProvenance(entries)) {
       // nothing
     } else {
+      int start = 0;
       XhtmlNode root = x;
-      root.para().addText(formatPhrase(RenderingContext.BUNDLE_HEADER_ROOT, b.getId(), b.primitiveValue("type")));
-      int i = 0;
-      for (ResourceElement be : entries) {
-        i++;
-        if (be.has("fullUrl")) {
-          root.an(makeInternalBundleLink(be.primitiveValue("fullUrl")));
+      if ("document".equals(b.primitiveValue("type"))) {
+        if (entries.isEmpty() || (entries.get(0).has("resource") && !"Composition".equals(entries.get(0).child("resource").fhirType())))
+          throw new FHIRException(context.formatPhrase(RenderingContext.BUND_REND_INVALID_DOC, b.getId(), entries.get(0).child("resource").fhirType()+"')"));
+        renderDocument(status, root, b, entries);
+        if (!context.isTechnicalMode()) {
+          return;
         }
-        if (be.has("resource")) {
-          if (be.child("resource").has("id")) {
-            root.an(be.child("resource").fhirType() + "_" + be.child("resource").primitiveValue("id"));
-            root.an("hc"+be.child("resource").fhirType() + "_" + be.child("resource").primitiveValue("id"));
-          } else {
-            String id = makeIdFromBundleEntry(be.primitiveValue("fullUrl"));
-            root.an(be.child("resource").fhirType() + "_" + id);
-            root.an("hc"+be.child("resource").fhirType() + "_" + id);
-          }
-        }
+        start = 1;
         root.hr();
-        if (be.has("fullUrl")) {
-          root.para().addText(formatPhrase(RenderingContext.BUNDLE_HEADER_ENTRY_URL, Integer.toString(i), be.primitiveValue("fullUrl")));
-        } else {
-          root.para().addText(formatPhrase(RenderingContext.BUNDLE_HEADER_ENTRY, Integer.toString(i)));
-        }
-        if (be.has("search")) {
-          renderSearch(x, be.child("search"));
-        }
-//        if (be.hasRequest())
-//          renderRequest(root, be.getRequest());
-//        if (be.hasSearch())
-//          renderSearch(root, be.getSearch());
-//        if (be.hasResponse())
-//          renderResponse(root, be.getResponse());
-        if (be.has("resource")) {
-          ResourceElement r = be.child("resource");
-          root.para().addText(formatPhrase(RenderingContext.BUNDLE_RESOURCE, r.fhirType()));
-          XhtmlNode xn = r.getNarrative();
-          if (xn == null || xn.isEmpty()) {
-            ResourceRenderer rr = RendererFactory.factory(r, context);
-            try {
-              xn = new XhtmlNode(NodeType.Element, "div"); 
-              rr.renderResource(new RenderingStatus(), xn, r);
-            } catch (Exception e) {
-              xn = new XhtmlNode();
-              xn.para().b().tx(context.formatPhrase(RenderingContext.BUNDLE_REV_EXCP, e.getMessage()) + " ");
+        root.h2().addText(formatPhrase(RenderingContext.BUNDLE_HEADER_DOCUMENT_CONTENTS));
+      } else {
+        renderResourceTechDetails(b, x);
+        root.para().addText(formatPhrase(RenderingContext.BUNDLE_HEADER_ROOT, b.getId(), b.primitiveValue("type")));
+      }
+      int i = 0;
+      for (ResourceWrapper be : entries) {
+        i++;
+        if (i >= start) {
+          if (be.has("fullUrl")) {
+            root.an(context.prefixAnchor(makeInternalBundleLink(be.primitiveValue("fullUrl"))));
+          }
+          if (be.has("resource")) {
+            if (be.child("resource").has("id")) {
+              root.an(context.prefixAnchor(be.child("resource").fhirType() + "_" + be.child("resource").primitiveValue("id")));
+              root.an(context.prefixAnchor("hc"+be.child("resource").fhirType() + "_" + be.child("resource").primitiveValue("id")));
+            } else {
+              String id = makeIdFromBundleEntry(be.primitiveValue("fullUrl"));
+              root.an(context.prefixAnchor(be.child("resource").fhirType() + "_" + id));
+              root.an(context.prefixAnchor("hc"+be.child("resource").fhirType() + "_" + id));
             }
           }
-          root.blockquote().para().addChildren(xn);
-        }
-        if (be.has("request")) {
-          renderRequest(x, be.child("request"));
-        }
-        if (be.has("response")) {
-          renderResponse(x, be.child("response"));
+          root.hr();
+          if (be.has("fullUrl")) {
+            root.para().addText(formatPhrase(RenderingContext.BUNDLE_HEADER_ENTRY_URL, Integer.toString(i), be.primitiveValue("fullUrl")));
+          } else {
+            root.para().addText(formatPhrase(RenderingContext.BUNDLE_HEADER_ENTRY, Integer.toString(i)));
+          }
+          if (be.has("search")) {
+            renderSearch(x, be.child("search"));
+          }
+          //        if (be.hasRequest())
+          //          renderRequest(root, be.getRequest());
+          //        if (be.hasSearch())
+          //          renderSearch(root, be.getSearch());
+          //        if (be.hasResponse())
+          //          renderResponse(root, be.getResponse());
+          if (be.has("resource")) {
+            ResourceWrapper r = be.child("resource");
+            root.para().addText(formatPhrase(RenderingContext.BUNDLE_RESOURCE, r.fhirType()));
+            XhtmlNode xn = r.getNarrative();
+            if (xn == null || xn.isEmpty()) {
+              ResourceRenderer rr = RendererFactory.factory(r, context);
+              try {
+                xn = new XhtmlNode(NodeType.Element, "div"); 
+                rr.buildNarrative(new RenderingStatus(), xn, r);
+              } catch (Exception e) {
+                xn = new XhtmlNode();
+                xn.para().b().tx(context.formatPhrase(RenderingContext.BUNDLE_REV_EXCP, e.getMessage()) + " ");
+              }
+            }
+            root.blockquote().para().addChildren(xn);
+          }
+          if (be.has("request")) {
+            renderRequest(x, be.child("request"));
+          }
+          if (be.has("response")) {
+            renderResponse(x, be.child("response"));
+          }
         }
       }
     }
   }
- 
 
-
-  private void renderDocument(RenderingStatus status, XhtmlNode x, ResourceElement b, List<ResourceElement> entries) throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome {
+  private void renderDocument(RenderingStatus status, XhtmlNode x, ResourceWrapper b, List<ResourceWrapper> entries) throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome {
     // from the spec:
     //
     // When the document is presented for human consumption, applications SHOULD present the collated narrative portions in order:
     // * The subject resource Narrative
     // * The Composition resource Narrative
     // * The section.text Narratives
-    ResourceElement comp = (ResourceElement) entries.get(0).child("resource");
-    ResourceElement subject = resolveReference(entries, comp.child("subject"));
+
+    ResourceWrapper comp = (ResourceWrapper) entries.get(0).child("resource");
+    
+    XhtmlNode sum = renderResourceTechDetails(b, docSection(x, "Document Details"), comp.primitiveValueMN("title", "name"));
+    if (sum != null) {
+      XhtmlNode p = sum.para();
+      p.startScript("doc");
+      renderDataType(status, p.param("status"), comp.child("status"));
+      renderDataType(status, p.param("date"), comp.child("date"));
+      renderDataType(status, p.param("author"), comp.child("author"));
+      renderDataType(status, p.param("subject"), comp.child("subject"));
+      if (comp.has("encounter")) {
+        renderDataType(status, p.param("encounter"), comp.child("encounter"));
+        p.paramValue("has-encounter", "true");
+      } else {
+        p.paramValue("has-encounter", "false");
+      }
+      p.execScript(context.formatMessage(RenderingContext.DOCUMENT_SUMMARY));
+      p.closeScript();
+
+      // status, type, category, subject, encounter, date, author, 
+      x.hr();
+    }
+
+    ResourceWrapper subject = resolveReference(entries, comp.child("subject"));
+    XhtmlNode sec = docSection(x, "Document Subject");
     if (subject != null) {
       if (subject.hasNarrative()) {
-        x.addChildren(subject.getNarrative());        
+        sec.addChildren(subject.getNarrative());        
       } else {
-        RendererFactory.factory(subject, context).renderResource(status, x, subject);
+        RendererFactory.factory(subject, context).buildNarrative(status, sec, subject);
       }
     }
     x.hr();
+    sec = docSection(x, "Document Content");
     if (comp.hasNarrative()) {
-      x.addChildren(comp.getNarrative());
-      x.hr();
+      sec.addChildren(comp.getNarrative());
+      sec.hr();
     }
-    List<ResourceElement> sections = comp.children("section");
-    for (ResourceElement section : sections) {
-      addSection(status, x, section, 2, false);
+    List<ResourceWrapper> sections = comp.children("section");
+    for (ResourceWrapper section : sections) {
+      addSection(status, sec, section, 2, false);
     }
   }
 
-  private void addSection(RenderingStatus status, XhtmlNode x, ResourceElement section, int level, boolean nested) throws UnsupportedEncodingException, FHIRException, IOException {
+  private XhtmlNode docSection(XhtmlNode x, String name) {
+    XhtmlNode div = x.div();
+    div.style("border: 1px solid maroon; padding: 10px; background-color: #f2faf9; min-height: 160px;");
+    div.para().b().tx(name);
+    return div;
+  }
+
+  private void addSection(RenderingStatus status, XhtmlNode x, ResourceWrapper section, int level, boolean nested) throws UnsupportedEncodingException, FHIRException, IOException {
     if (section.has("title") || section.has("code") || section.has("text") || section.has("section")) {
       XhtmlNode div = x.div();
       if (section.has("title")) {
@@ -153,12 +186,12 @@ public class BundleRenderer extends ResourceRenderer {
         renderDataType(status, div.h(level), section.child("code"));                
       }
       if (section.has("text")) {
-        ResourceElement narrative = section.child("text");
+        ResourceWrapper narrative = section.child("text");
         x.addChildren(narrative.getXhtml());
       }      
       if (section.has("section")) {
-        List<ResourceElement> sections = section.children("section");
-        for (ResourceElement child : sections) {
+        List<ResourceWrapper> sections = section.children("section");
+        for (ResourceWrapper child : sections) {
           if (nested) {
             addSection(status, x.blockquote().para(), child, level+1, true);
           } else {
@@ -170,13 +203,13 @@ public class BundleRenderer extends ResourceRenderer {
     // children
   }
 
-  private ResourceElement resolveReference(List<ResourceElement> entries, ResourceElement base) throws UnsupportedEncodingException, FHIRException, IOException {
+  private ResourceWrapper resolveReference(List<ResourceWrapper> entries, ResourceWrapper base) throws UnsupportedEncodingException, FHIRException, IOException {
     if (base == null) {
       return null;
     }
-    ResourceElement prop = base.child("reference");
+    ResourceWrapper prop = base.child("reference");
     if (prop != null && prop.hasPrimitiveValue()) {
-      for (ResourceElement entry : entries) {
+      for (ResourceWrapper entry : entries) {
         if (entry.has("fullUrl")) {
           String fu = entry.primitiveValue("fullUrl");
           if (prop.primitiveValue().equals(fu)) {
@@ -188,8 +221,8 @@ public class BundleRenderer extends ResourceRenderer {
     return null;
   }
   
-  public static boolean allEntriesAreHistoryProvenance(List<ResourceElement> entries) throws UnsupportedEncodingException, FHIRException, IOException {
-    for (ResourceElement be : entries) {
+  public static boolean allEntriesAreHistoryProvenance(List<ResourceWrapper> entries) throws UnsupportedEncodingException, FHIRException, IOException {
+    for (ResourceWrapper be : entries) {
       if (!"Provenance".equals(be.child("resource").fhirType())) {
         return false;
       }
@@ -233,7 +266,7 @@ public class BundleRenderer extends ResourceRenderer {
     }
   }
 
-  private void renderSearch(XhtmlNode root, ResourceElement search) {
+  private void renderSearch(XhtmlNode root, ResourceWrapper search) {
     StringBuilder b = new StringBuilder();
     b.append(formatPhrase(RenderingContext.BUNDLE_SEARCH));
     if (search.has("mode"))
@@ -247,7 +280,7 @@ public class BundleRenderer extends ResourceRenderer {
     root.para().addText(b.toString());    
   }
 
-  private void renderResponse(XhtmlNode root, ResourceElement response) {
+  private void renderResponse(XhtmlNode root, ResourceWrapper response) {
     root.para().addText(formatPhrase(RenderingContext.BUNDLE_RESPONSE));
     StringBuilder b = new StringBuilder();
     b.append(response.primitiveValue("status")+"\r\n");
@@ -260,7 +293,7 @@ public class BundleRenderer extends ResourceRenderer {
     root.pre().addText(b.toString());    
   }
 
-  private void renderRequest(XhtmlNode root, ResourceElement request) {
+  private void renderRequest(XhtmlNode root, ResourceWrapper request) {
     root.para().addText(formatPhrase(RenderingContext.BUNDLE_REQUEST));
     StringBuilder b = new StringBuilder();
     b.append(request.primitiveValue("method")+" "+request.primitiveValue("url")+"\r\n");

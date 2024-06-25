@@ -101,7 +101,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       XhtmlNode td = tr.td();
       XhtmlNode b = td.b();
       String link = m.getLink();
-      XhtmlNode a = b.ah(link);
+      XhtmlNode a = b.ah(context.prefixLocalHref(link));
       a.addText(m.getDetails().getName());
       if (m.getDetails().isDoDescription() && m.getMap().hasDescription())
         addMarkdown(td, m.getMap().getDescription());
@@ -163,13 +163,13 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     }
     String spec = getSpecialReference(inc.getSystem());
     if (spec != null) {
-      XhtmlNode a = li.ah(spec);
+      XhtmlNode a = li.ah(context.prefixLocalHref(spec));
       a.code(inc.getSystem());
     } else if (cs != null && ref != null) {
       if (addHtml && !ref.contains(".html"))
         ref = ref + ".html";
       ref = context.fixReference(ref);
-      XhtmlNode a = li.ah(ref.replace("\\", "/"));
+      XhtmlNode a = li.ah(context.prefixLocalHref(ref.replace("\\", "/")));
       a.code(inc.getSystem());
     } else {
       li.code(inc.getSystem());
@@ -278,17 +278,17 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       String ref = (String) vs.getWebPath();
 
       ref = context.fixReference(ref);
-      XhtmlNode a = li.ah(ref == null ? "?ngen-11?" : ref.replace("\\", "/"));
+      XhtmlNode a = li.ah(context.prefixLocalHref(ref == null ? "?ngen-11?" : ref.replace("\\", "/")));
       a.addText(vs.present());
     } else {
       CodeSystem cs = getContext().getWorker().fetchCodeSystem(value);
       if (cs != null) {
         String ref = (String) cs.getWebPath();
         ref = context.fixReference(ref);
-        XhtmlNode a = li.ah(ref == null ? "?ngen-12?" : ref.replace("\\", "/"));
+        XhtmlNode a = li.ah(context.prefixLocalHref(ref == null ? "?ngen-12?" : ref.replace("\\", "/")));
         a.addText(value);
       } else if (value.equals("http://snomed.info/sct") || value.equals("http://snomed.info/id")) {
-        XhtmlNode a = li.ah(value);
+        XhtmlNode a = li.ah(context.prefixLocalHref(value));
         a.tx(context.formatPhrase(RenderingContext.STRUC_DEF_SNOMED));
       }
       else {

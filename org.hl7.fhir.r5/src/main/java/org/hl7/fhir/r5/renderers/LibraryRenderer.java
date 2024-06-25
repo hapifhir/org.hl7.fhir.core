@@ -8,18 +8,10 @@ import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.Attachment;
 import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.ContactDetail;
-import org.hl7.fhir.r5.model.ContactPoint;
-import org.hl7.fhir.r5.model.DataRequirement;
-import org.hl7.fhir.r5.model.Library;
-import org.hl7.fhir.r5.model.ParameterDefinition;
-import org.hl7.fhir.r5.model.RelatedArtifact;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -33,78 +25,79 @@ public class LibraryRenderer extends ResourceRenderer {
   } 
  
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return canonicalTitle(r);
   }
 
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement lib) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-   
-    List<ResourceElement> authors = lib.children("author");
-    List<ResourceElement> editors = lib.children("editor");
-    List<ResourceElement> reviewers = lib.children("reviewer");
-    List<ResourceElement> endorsers = lib.children("endorser");
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper lib) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    renderResourceTechDetails(lib, x);
+    genSummaryTable(status, x, (CanonicalResource) lib.getResourceNative());
+    List<ResourceWrapper> authors = lib.children("author");
+    List<ResourceWrapper> editors = lib.children("editor");
+    List<ResourceWrapper> reviewers = lib.children("reviewer");
+    List<ResourceWrapper> endorsers = lib.children("endorser");
     if (!authors.isEmpty() || !editors.isEmpty() || !reviewers.isEmpty() || !endorsers.isEmpty()) {
       boolean email = hasCT(authors, "email") || hasCT(editors, "email") || hasCT(reviewers, "email") || hasCT(endorsers, "email"); 
       boolean phone = hasCT(authors, "phone") || hasCT(editors, "phone") || hasCT(reviewers, "phone") || hasCT(endorsers, "phone"); 
       boolean url = hasCT(authors, "url") || hasCT(editors, "url") || hasCT(reviewers, "url") || hasCT(endorsers, "url"); 
       x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_PAR));
       XhtmlNode t = x.table("grid");
-      for (ResourceElement cd : authors) {
+      for (ResourceWrapper cd : authors) {
         participantRow(status, t, (context.formatPhrase(RenderingContext.LIB_REND_AUT)), cd, email, phone, url);
       }
 
-      for (ResourceElement cd : editors) {
+      for (ResourceWrapper cd : editors) {
         participantRow(status, t, (context.formatPhrase(RenderingContext.LIB_REND_ED)), cd, email, phone, url);
       }
-      for (ResourceElement cd : reviewers) {
+      for (ResourceWrapper cd : reviewers) {
         participantRow(status, t, (context.formatPhrase(RenderingContext.LIB_REND_REV)), cd, email, phone, url);
       }
-      for (ResourceElement cd : endorsers) {
+      for (ResourceWrapper cd : endorsers) {
         participantRow(status, t, (context.formatPhrase(RenderingContext.LIB_REND_END)), cd, email, phone, url);
       }
     }
-    List<ResourceElement> artifacts = lib.children("relatedArtifact");
+    List<ResourceWrapper> artifacts = lib.children("relatedArtifact");
     if (!artifacts.isEmpty()) {
       x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_ART));
       XhtmlNode t = x.table("grid");
       boolean label = false;
       boolean display = false;
       boolean citation = false;
-      for (ResourceElement ra : artifacts) {
+      for (ResourceWrapper ra : artifacts) {
         label = label || ra.has("label");
         display = display || ra.has("display");
         citation = citation || ra.has("citation");
       }
-      for (ResourceElement ra : artifacts) {
+      for (ResourceWrapper ra : artifacts) {
         renderArtifact(status, t, ra, lib, label, display, citation);
       }      
     }
-    List<ResourceElement> parameters = lib.children("parameter");
+    List<ResourceWrapper> parameters = lib.children("parameter");
     if (!parameters.isEmpty()) {
       x.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
       XhtmlNode t = x.table("grid");
       boolean doco = false;
-      for (ResourceElement p : parameters) {
+      for (ResourceWrapper p : parameters) {
         doco = doco || p.has("documentation");
       }
-      for (ResourceElement p : parameters) {
+      for (ResourceWrapper p : parameters) {
         renderParameter(t, p, doco);
       }      
     }
-    List<ResourceElement> dataRequirements = lib.children("dataRequirement");
+    List<ResourceWrapper> dataRequirements = lib.children("dataRequirement");
     if (!dataRequirements.isEmpty()) {
       x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_REQ));
-      for (ResourceElement p : dataRequirements) {
+      for (ResourceWrapper p : dataRequirements) {
         renderDataRequirement(status, x, p);
       }      
     }
-    List<ResourceElement> contents = lib.children("content");
+    List<ResourceWrapper> contents = lib.children("content");
     if (!contents.isEmpty()) {
       x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_CONT));          
       boolean isCql = false;
       int counter = 0;
-      for (ResourceElement p : contents) {
+      for (ResourceWrapper p : contents) {
         renderAttachment(x, p, isCql, counter, lib.getId());
         isCql = isCql || (p.has("contentType") && p.primitiveValue("contentType").startsWith("text/cql"));
         counter++;
@@ -112,9 +105,9 @@ public class LibraryRenderer extends ResourceRenderer {
     }
   }
     
-  private boolean hasCT(List<ResourceElement> list, String type) throws UnsupportedEncodingException, FHIRException, IOException {
-    for (ResourceElement cd : list) {
-      List<ResourceElement> telecoms = cd.children("telecom");
+  private boolean hasCT(List<ResourceWrapper> list, String type) throws UnsupportedEncodingException, FHIRException, IOException {
+    for (ResourceWrapper cd : list) {
+      List<ResourceWrapper> telecoms = cd.children("telecom");
       if (hasContactPoint(telecoms, type)) {
         return true;
       }
@@ -122,9 +115,9 @@ public class LibraryRenderer extends ResourceRenderer {
     return false;
   }
 
-  private boolean hasContactPoint(List<ResourceElement> list, String type) {
-    for (ResourceElement cd : list) {
-      for (ResourceElement t : cd.children("telecom")) {
+  private boolean hasContactPoint(List<ResourceWrapper> list, String type) {
+    for (ResourceWrapper cd : list) {
+      for (ResourceWrapper t : cd.children("telecom")) {
         if (type.equals(t.primitiveValue("system"))) {
           return true;
         }
@@ -133,9 +126,9 @@ public class LibraryRenderer extends ResourceRenderer {
     return false;
   }
 
-  private ResourceElement getContactPoint(List<ResourceElement> list, String type) {
-    for (ResourceElement cd : list) {
-      for (ResourceElement t : cd.children("telecom")) {
+  private ResourceWrapper getContactPoint(List<ResourceWrapper> list, String type) {
+    for (ResourceWrapper cd : list) {
+      for (ResourceWrapper t : cd.children("telecom")) {
         if (type.equals(t.primitiveValue("system"))) {
           return t;
         }
@@ -144,7 +137,7 @@ public class LibraryRenderer extends ResourceRenderer {
     return null;
   }
 
-  private void renderParameter(XhtmlNode t, ResourceElement p, boolean doco) throws UnsupportedEncodingException, FHIRException, IOException {
+  private void renderParameter(XhtmlNode t, ResourceWrapper p, boolean doco) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode tr = t.tr();
     tr.td().tx(p.has("name") ? p.primitiveValue("name") : null);
     tr.td().tx(p.has("use") ? p.primitiveValue("use") : null);
@@ -157,7 +150,7 @@ public class LibraryRenderer extends ResourceRenderer {
   }
 
 
-  private void renderArtifact(RenderingStatus status, XhtmlNode t, ResourceElement ra, ResourceElement lib, boolean label, boolean display, boolean citation) throws UnsupportedEncodingException, FHIRException, IOException {
+  private void renderArtifact(RenderingStatus status, XhtmlNode t, ResourceWrapper ra, ResourceWrapper lib, boolean label, boolean display, boolean citation) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode tr = t.tr();
     tr.td().tx(ra.has("type") ? getTranslatedCode(ra.child("type")) : null);
     if (label) {
@@ -176,11 +169,11 @@ public class LibraryRenderer extends ResourceRenderer {
     }
   }
 
-  private void participantRow(RenderingStatus status, XhtmlNode t, String label, ResourceElement cd, boolean email, boolean phone, boolean url) throws UnsupportedEncodingException, FHIRException, IOException {
+  private void participantRow(RenderingStatus status, XhtmlNode t, String label, ResourceWrapper cd, boolean email, boolean phone, boolean url) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode tr = t.tr();
     tr.td().tx(label);
     tr.td().tx(cd.has("name") ? cd.primitiveValue("name") : null);
-    List<ResourceElement> telecoms = cd.children("telecom");
+    List<ResourceWrapper> telecoms = cd.children("telecom");
     if (email) {
       renderContactPoint(status, tr.td(), getContactPoint(telecoms, "email"));
     }
@@ -193,7 +186,7 @@ public class LibraryRenderer extends ResourceRenderer {
   }
 
 
-  private void renderAttachment(XhtmlNode x, ResourceElement att, boolean noShowData, int counter, String baseId) {
+  private void renderAttachment(XhtmlNode x, ResourceWrapper att, boolean noShowData, int counter, String baseId) {
     String url = att.primitiveValue("url");
     String title = att.primitiveValue("title");
     String ct =  att.primitiveValue("contentType");
@@ -207,11 +200,11 @@ public class LibraryRenderer extends ResourceRenderer {
       }
       Resource res = context.getContext().fetchResource(Resource.class, url);
       if (res == null || !res.hasWebPath()) {
-        p.code().ah(url).tx(url);        
+        p.code().ah(context.prefixLocalHref(url)).tx(url);        
       } else if (res instanceof CanonicalResource) {
-        p.code().ah(res.getWebPath()).tx(((CanonicalResource) res).present());        
+        p.code().ah(context.prefixLocalHref(res.getWebPath())).tx(((CanonicalResource) res).present());        
       } else {
-        p.code().ah(res.getWebPath()).tx(url);        
+        p.code().ah(context.prefixLocalHref(res.getWebPath())).tx(url);        
       }
       p.tx(" (");
       p.code().tx(ct);
@@ -306,7 +299,7 @@ public class LibraryRenderer extends ResourceRenderer {
     return imgExtension(contentType) != null;
   }
 
-  private String lang(ResourceElement att) {
+  private String lang(ResourceWrapper att) {
     if (att.has("language")) {
       return ", language = "+describeLang(att.primitiveValue("language"));
     }

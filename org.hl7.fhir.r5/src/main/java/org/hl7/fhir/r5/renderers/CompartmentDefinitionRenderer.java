@@ -6,18 +6,12 @@ import java.io.UnsupportedEncodingException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.CompartmentDefinition;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent;
-import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
-import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.InternalMarkdownProcessor;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
@@ -29,8 +23,10 @@ public class CompartmentDefinitionRenderer extends ResourceRenderer {
   } 
  
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (r.isDirect()) {
+      renderResourceTechDetails(r, x);
+      genSummaryTable(status, x, (CompartmentDefinition) r.getBase());
       render(status, x, (CompartmentDefinition) r.getBase());      
     } else {
       throw new Error("CompartmentDefinitionRenderer only renders native resources directly");
@@ -38,7 +34,7 @@ public class CompartmentDefinitionRenderer extends ResourceRenderer {
   }
 
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return canonicalTitle(r);
   }
 

@@ -1,23 +1,5 @@
 package org.hl7.fhir.r5.renderers;
 
-import net.sourceforge.plantuml.FileFormat;
-import net.sourceforge.plantuml.FileFormatOption;
-
-import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.ExampleScenario.*;
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
-import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.xhtml.XhtmlDocument;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import net.sourceforge.plantuml.SourceStringReader;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -27,6 +9,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.Enumerations;
+import org.hl7.fhir.r5.model.ExampleScenario;
+import org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorComponent;
+import org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceComponent;
+import org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceContainedInstanceComponent;
+import org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceVersionComponent;
+import org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessComponent;
+import org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepAlternativeComponent;
+import org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepComponent;
+import org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepOperationComponent;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.xhtml.XhtmlDocument;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+
+import net.sourceforge.plantuml.FileFormat;
+import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.SourceStringReader;
+
 public class ExampleScenarioRenderer extends TerminologyRenderer {
 
   public ExampleScenarioRenderer(RenderingContext context) { 
@@ -34,8 +44,10 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
   } 
  
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (r.isDirect()) {
+      renderResourceTechDetails(r, x);
+      genSummaryTable(status, x, (ExampleScenario) r.getBase());
       render(status, x, (ExampleScenario) r.getBase(), r);      
     } else {
       throw new Error("ExampleScenarioRenderer only renders native resources directly");
@@ -43,11 +55,11 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
   }
   
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return canonicalTitle(r);
   }
 
-  public void render(RenderingStatus status, XhtmlNode x, ExampleScenario scen, ResourceElement res) throws FHIRException {
+  public void render(RenderingStatus status, XhtmlNode x, ExampleScenario scen, ResourceWrapper res) throws FHIRException {
     try {
       if (context.getScenarioMode() == null) {
         renderActors(status, res, x, scen);
@@ -71,7 +83,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     }
   }
 
-  public String renderDiagram(RenderingStatus status, ResourceElement res, ExampleScenario scen) throws IOException {
+  public String renderDiagram(RenderingStatus status, ResourceWrapper res, ExampleScenario scen) throws IOException {
     String plantUml = toPlantUml(status, res, scen);
     SourceStringReader reader = new SourceStringReader(plantUml);
     final ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -82,7 +94,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return svg;
   }
 
-  protected String toPlantUml(RenderingStatus status, ResourceElement res, ExampleScenario scen) throws IOException {
+  protected String toPlantUml(RenderingStatus status, ResourceWrapper res, ExampleScenario scen) throws IOException {
     String plantUml = "@startuml\r\n";
     plantUml += "Title " + (scen.hasTitle() ? scen.getTitle() : scen.getName()) + "\r\n\r\n";
     Map<String, String> actorKeys = new HashMap<String, String>();
@@ -114,7 +126,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return new String(chars);
   }
 
-  protected String toPlantUml(RenderingStatus status, ResourceElement res, ExampleScenarioProcessComponent process, String prefix, ExampleScenario scen, Map<String, String> actorKeys) throws IOException {
+  protected String toPlantUml(RenderingStatus status, ResourceWrapper res, ExampleScenarioProcessComponent process, String prefix, ExampleScenario scen, Map<String, String> actorKeys) throws IOException {
     String plantUml = "group " + process.getTitle() + " " + creolLink("details", "#p_" + prefix, process.getDescription()) + "\r\n";
 
     Map<String,Boolean> actorsActive = new HashMap<String, Boolean>();
@@ -133,7 +145,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return plantUml;
   }
 
-  protected String toPlantUml(RenderingStatus status, ResourceElement res, ExampleScenarioProcessStepComponent step, String prefix, ExampleScenario scen, Map<String,Boolean> actorsActive, Map<String, String> actorKeys) throws IOException {
+  protected String toPlantUml(RenderingStatus status, ResourceWrapper res, ExampleScenarioProcessStepComponent step, String prefix, ExampleScenario scen, Map<String,Boolean> actorsActive, Map<String, String> actorKeys) throws IOException {
     String plantUml = "";
     if (step.hasWorkflow()) {
       XhtmlNode n = new XhtmlDocument();
@@ -228,7 +240,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return s;
   }
 
-  public boolean renderActors(RenderingStatus status, ResourceElement res, XhtmlNode x, ExampleScenario scen) throws IOException {
+  public boolean renderActors(RenderingStatus status, ResourceWrapper res, XhtmlNode x, ExampleScenario scen) throws IOException {
     XhtmlNode tbl = x.table("table-striped table-bordered");
     XhtmlNode thead = tbl.tr();
     thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));
@@ -237,7 +249,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     for (ExampleScenarioActorComponent actor : scen.getActor()) {
       XhtmlNode tr = tbl.tr();
       XhtmlNode nameCell = tr.td();
-      nameCell.an("a_" + actor.getKey());
+      nameCell.an(context.prefixAnchor("a_" + actor.getKey()));
       nameCell.tx(actor.getTitle());
       tr.td().tx(actor.getType().getDisplay());
       addMarkdown(tr.td().style("overflow-wrap:break-word"), actor.getDescription());
@@ -245,7 +257,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     return true;
   }
 
-  public boolean renderInstances(RenderingStatus status, ResourceElement res, XhtmlNode x, ExampleScenario scen) throws IOException {
+  public boolean renderInstances(RenderingStatus status, ResourceWrapper res, XhtmlNode x, ExampleScenario scen) throws IOException {
     XhtmlNode tbl = x.table("table-striped table-bordered");
     XhtmlNode thead = tbl.tr();
     thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));
@@ -266,7 +278,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     for (ExampleScenarioInstanceComponent instance : scen.getInstance()) {
       XhtmlNode row = tbl.tr();
       XhtmlNode nameCell = row.td();
-      nameCell.an("i_" + instance.getKey());
+      nameCell.an(context.prefixAnchor("i_" + instance.getKey()));
       nameCell.tx(instance.getTitle());
       XhtmlNode typeCell = row.td();
       if (instance.hasVersion())
@@ -314,7 +326,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
           String description = instanceNames.get(key);
           if (description==null)
             throw new FHIRException("Unable to find contained instance " + key + " under " + instance.getKey());
-          descCell.ah("#" + key).tx(description);
+          descCell.ah(context.prefixLocalHref("#" + key)).tx(description);
           containedCount++;
           if (instance.getContainedInstance().size() > containedCount)
             descCell.tx(", ");
@@ -365,7 +377,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
 
   public void renderProcess(RenderingStatus status, XhtmlNode x, ExampleScenarioProcessComponent process, String prefix, Map<String, ExampleScenarioActorComponent> actors, Map<String, ExampleScenarioInstanceComponent> instances) throws IOException {
     XhtmlNode div = x.div();
-    div.an("p_" + prefix);
+    div.an(context.prefixAnchor("p_" + prefix));
     div.b().tx(context.formatPhrase(RenderingContext.EX_SCEN_PROC, process.getTitle())+" ");
     if (process.hasDescription())
       addMarkdown(div, process.getDescription());
@@ -428,19 +440,19 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
   private boolean renderStep(RenderingStatus status, XhtmlNode tbl, ExampleScenarioProcessStepComponent step, String stepLabel, Map<String, ExampleScenarioActorComponent> actors, Map<String, ExampleScenarioInstanceComponent> instances) throws IOException {
     XhtmlNode row = tbl.tr();
     XhtmlNode prefixCell = row.td();
-    prefixCell.an("s_" + stepLabel);
+    prefixCell.an(context.prefixAnchor("s_" + stepLabel));
     prefixCell.tx(stepLabel.substring(stepLabel.indexOf(".") + 1));
     if (step.hasProcess()) {
       XhtmlNode n = row.td().colspan(6);
       n.tx(context.formatPhrase(RenderingContext.EX_SCEN_SEE));
-      n.ah("#p_" + stepLabel, step.getProcess().getTitle());
+      n.ah(context.prefixLocalHref("#p_" + stepLabel), step.getProcess().getTitle());
       n.tx(" "+ context.formatPhrase(RenderingContext.EX_SCEN_BEL));
 
     } else if (step.hasWorkflow()) {
       XhtmlNode n = row.td().colspan(6);
       n.tx(context.formatPhrase(RenderingContext.EX_SCEN_OTH));
       String link = new ContextUtilities(context.getWorker()).getLinkForUrl(context.getLink(KnownLinkType.SPEC), step.getWorkflow());
-      n.ah(link, step.getProcess().getTitle());
+      n.ah(context.prefixLocalHref(link), step.getProcess().getTitle());
 
     } else {
       // Must be an operation
@@ -504,9 +516,9 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       }
       if (theVersion==null)
         throw new FHIRException("Unable to find referenced version " + instanceRef.getVersionReference() + " within instance " + instanceRef.getInstanceReference());
-      instanceCell.ah("#i_" + instance.getKey() + "v_"+ theVersion.getKey() , theVersion.getDescription()).tx(theVersion.getTitle());
+      instanceCell.ah(context.prefixLocalHref("#i_" + instance.getKey() + "v_"+ theVersion.getKey()) , theVersion.getDescription()).tx(theVersion.getTitle());
 
     } else
-      instanceCell.ah("#i_" + instance.getKey(), instance.getDescription()).tx(instance.getTitle());
+      instanceCell.ah(context.prefixLocalHref("#i_" + instance.getKey()), instance.getDescription()).tx(instance.getTitle());
   }
 }

@@ -10,7 +10,6 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
-import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -21,17 +20,17 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.MultiLanguagePolicy;
-import org.hl7.fhir.r5.renderers.utils.ResourceElement;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
@@ -48,16 +47,18 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   } 
  
   @Override
-  public void renderResource(RenderingStatus status, XhtmlNode x, ResourceElement r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    if (r.isDirect()) {
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    if (r.isDirect()) {   
+      renderResourceTechDetails(r, x);
+      genSummaryTable(status, x, (CodeSystem) r.getBase());
       render(status, x, (CodeSystem) r.getBase(), r);      
     } else {
       throw new Error("CodeSystemRenderer only renders native resources directly");
     }
   }
-  
+
   @Override
-  public String displayResource(ResourceElement r) throws UnsupportedEncodingException, IOException {
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return canonicalTitle(r);
   }
 
@@ -84,9 +85,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private Boolean doMarkdown = null;  
   
-  public void render(RenderingStatus status, XhtmlNode x, CodeSystem cs, ResourceElement res) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(RenderingStatus status, XhtmlNode x, CodeSystem cs, ResourceWrapper res) throws FHIRFormatError, DefinitionException, IOException {
     
-    if (context.isHeader()) {
+    if (context.isShowSummaryTable()) {
       XhtmlNode h = x.h2();
       h.addText(cs.hasTitle() ? cs.getTitle() : cs.getName());
       addMarkdown(x, cs.getDescription());
@@ -208,12 +209,15 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       x.para().b().tx(formatPhrase(RenderingContext.CODESYSTEM_CONCEPTS));
     }
     XhtmlNode p = x.para();
+    
+    p.startScript("csc");
     renderStatus(cs.getUrlElement(), p.param("cs")).code().tx(cs.getUrl());
     makeCasedParam(p.param("cased"), cs, cs.getCaseSensitiveElement());
     makeHierarchyParam(p.param("h"), cs, cs.getHierarchyMeaningElement());
-
     p.paramValue("code-count", CodeSystemUtilities.countCodes(cs));
-    p.sentenceForParams(sentenceForContent(cs.getContent(), cs));
+    p.execScript(sentenceForContent(cs.getContent(), cs));
+    p.closeScript();
+    
     if (cs.getContent() == CodeSystemContentMode.NOTPRESENT) {
       return;
     }
@@ -440,13 +444,13 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     String link = isSupplement ? getLinkForCode(cs.getSupplements(), null, c.getCode()) : null;
     if (link != null) {
-      td.ah(link).style( "white-space:nowrap").addText(c.getCode());
+      td.ah(context.prefixLocalHref(link)).style( "white-space:nowrap").addText(c.getCode());
     } else {
       td.style("white-space:nowrap").addText(c.getCode());
     }      
     XhtmlNode a;
     if (c.hasCodeElement()) {
-      td.an(cs.getId()+"-" + Utilities.nmtokenize(c.getCode()));
+      td.an(context.prefixAnchor(cs.getId()+"-" + Utilities.nmtokenize(c.getCode())));
     }
 
     if (hasDisplay) {
@@ -514,7 +518,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
           td.tx(" "+ context.formatPhrase(RenderingContext.CODE_SYS_REPLACED_BY) + " ");
           String url = getCodingReference(cc, system);
           if (url != null) {
-            td.ah(url).addText(cc.getCode());
+            td.ah(context.prefixLocalHref(url)).addText(cc.getCode());
             td.tx(": "+cc.getDisplay()+")");
           } else
             td.addText(cc.getCode()+" '"+cc.getDisplay()+"' in "+cc.getSystem()+")");
@@ -578,14 +582,14 @@ public class CodeSystemRenderer extends TerminologyRenderer {
             } else if (pcv.hasValueStringType() && Utilities.isAbsoluteUrl(pcv.getValue().primitiveValue())) {
               CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, pcv.getValue().primitiveValue());
               if (cr != null) {
-                td.ah(cr.getWebPath(), cr.getVersionedUrl()).tx(cr.present());
+                td.ah(context.prefixLocalHref(cr.getWebPath()), cr.getVersionedUrl()).tx(cr.present());
               } else if (Utilities.isAbsoluteUrlLinkable(pcv.getValue().primitiveValue())) {
-                td.ah(pcv.getValue().primitiveValue()).tx(pcv.getValue().primitiveValue());
+                td.ah(context.prefixLocalHref(pcv.getValue().primitiveValue())).tx(pcv.getValue().primitiveValue());
               } else {
                 td.code(pcv.getValue().primitiveValue());                
               }
             } else if ("parent".equals(pcv.getCode())) {              
-              td.ah("#"+cs.getId()+"-"+Utilities.nmtokenize(pcv.getValue().primitiveValue())).addText(pcv.getValue().primitiveValue());
+              td.ah(context.prefixLocalHref("#"+cs.getId()+"-"+Utilities.nmtokenize(pcv.getValue().primitiveValue()))).addText(pcv.getValue().primitiveValue());
             } else {
               td.addText(pcv.getValue().primitiveValue());
             }
@@ -609,7 +613,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         first = false;
         XhtmlNode span = td.span(null, mapping.comp.hasRelationship() ?  mapping.comp.getRelationship().toCode() : "");
         span.addText(getCharForRelationship(mapping.comp));
-        a = td.ah(getContext().getLink(KnownLinkType.SPEC)+m.getLink()+"#"+makeAnchor(mapping.group.getTarget(), mapping.comp.getCode()));
+        a = td.ah(context.prefixLocalHref(getContext().getLink(KnownLinkType.SPEC)+m.getLink()+"#"+makeAnchor(mapping.group.getTarget(), mapping.comp.getCode())));
         a.addText(mapping.comp.getCode());
         if (!Utilities.noString(mapping.comp.getComment()))
           td.i().tx("("+mapping.comp.getComment()+")");
@@ -627,7 +631,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       String s = Utilities.padLeft("", '\u00A0', (level+1)*2);
       td.addText(s);
       td.style("white-space:nowrap");
-      a = td.ah("#"+cs.getId()+"-" + Utilities.nmtokenize(cc.getCode()));
+      a = td.ah(context.prefixLocalHref("#"+cs.getId()+"-" + Utilities.nmtokenize(cc.getCode())));
       a.addText(cc.getCode());
       if (hasDisplay) {
         td = tr.td();
@@ -739,4 +743,58 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
   }
  
+
+  @Override
+  protected void genSummaryTableContent(RenderingStatus status, XhtmlNode tbl, CanonicalResource cr) throws IOException {
+    super.genSummaryTableContent(status, tbl, cr);
+
+    CodeSystem cs = (CodeSystem) cr;
+    XhtmlNode tr;
+    if (cs.hasContent()) {
+      tr = tbl.tr();
+      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_CONTENT)+":");
+      XhtmlNode td = tr.td();
+      td.tx((cs.getContent().getDisplay())+": "+describeContent(cs.getContent(), cs));
+      if (cs.getContent() == CodeSystemContentMode.SUPPLEMENT) {
+        td.tx(" ");
+        CodeSystem tgt = context.getContext().fetchCodeSystem(cs.getSupplements());
+        if (tgt != null) {
+          td.ah(tgt.getWebPath()).tx(tgt.present());
+        } else {
+          td.code().tx(cs.getSupplements());
+        }            
+      }
+    }
+    
+    if (CodeSystemUtilities.hasOID(cs)) {
+      tr = tbl.tr();
+      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_OID)+":");
+      tr.td().tx(context.formatPhrase(RenderingContext.CODE_SYS_FOR_OID, CodeSystemUtilities.getOID(cs)));
+    }
+
+    if (cs.hasValueSet()) {
+      tr = tbl.tr();
+      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_VALUESET)+":");
+      ValueSet vs = context.getContext().findTxResource(ValueSet.class, cs.getValueSet());
+      if (vs == null) {
+        tr.td().tx(context.formatPhrase(RenderingContext.CODE_SYS_THE_VALUE_SET, cs.getValueSet())+")");
+      } else {
+        tr.td().ah(vs.getWebPath()).tx(context.formatPhrase(RenderingContext.CODE_SYS_THE_VALUE_SET, cs.getValueSet())+")");
+      }
+    }
+  }
+
+  private String describeContent(CodeSystemContentMode content, CodeSystem cs) {
+    switch (content) {
+    case COMPLETE: return (context.formatPhrase(RenderingContext.CODE_SYS_COMPLETE));
+    case NOTPRESENT: return (context.formatPhrase(RenderingContext.CODE_SYS_NOTPRESENT));
+    case EXAMPLE: return (context.formatPhrase(RenderingContext.CODE_SYS_EXAMPLE));
+    case FRAGMENT: return (context.formatPhrase(RenderingContext.CODE_SYS_FRAGMENT));
+    case SUPPLEMENT: return (context.formatPhrase(RenderingContext.CODE_SYS_SUPPLEMENT));
+    default:
+      return "?? illegal content status value "+(content == null ? "(null)" : content.toCode());
+    }
+  }
+
+
 }
