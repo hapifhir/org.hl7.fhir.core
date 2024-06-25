@@ -36,6 +36,16 @@ public class ImplementationGuide40_50Test {
 
   }
 
+  @Test
+  public void testRoundTripProfiles() throws IOException {
+    ImplementationGuide r5_actual = getR5ImplementationGuide();
+
+    org.hl7.fhir.r4.model.ImplementationGuide converted = (org.hl7.fhir.r4.model.ImplementationGuide) VersionConvertorFactory_40_50.convertResource(r5_actual);
+    ImplementationGuide r5_converted = (ImplementationGuide) VersionConvertorFactory_40_50.convertResource(converted);
+
+    assertEquals(r5_actual.getDefinition().getResourceFirstRep().getProfile().size(), r5_converted.getDefinition().getResourceFirstRep().getProfile().size());
+  }
+
   private ImplementationGuide getR5ImplementationGuide() throws IOException {
     ImplementationGuide r5_actual;
     InputStream r5_stream = this.getClass().getResourceAsStream("/implementation_guide_50.json");
