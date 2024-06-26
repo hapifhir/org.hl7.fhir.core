@@ -1,7 +1,6 @@
 package org.hl7.fhir.utilities.i18n;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -67,11 +66,11 @@ class I18nBaseTest {
 
     //Answer value must be of the type {1}
     String resultOne = testClass.formatMessagePlural(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
-    assertThat(resultOne, containsString("be of the type"));
+    assertThat(resultOne).contains("be of the type");
 
     //Answer value must be one of the {0} types {1}
     String resultMany = testClass.formatMessagePlural(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
-    assertThat(resultMany, containsString("one of the 3 types "));
+    assertThat(resultMany).contains("one of the 3 types ");
 
   }
 
@@ -83,11 +82,11 @@ class I18nBaseTest {
     testClass.setLocale(Locale.GERMAN);
     //Answer value muss vom Typ {0} sein.
     String resultOne = testClass.formatMessagePlural(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
-    assertThat(resultOne, containsString("muss vom Typ"));
+    assertThat(resultOne).contains("muss vom Typ");
 
     //Answer value muss einer der Typen {1} sein
     String resultMany = testClass.formatMessagePlural(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
-    assertThat(resultMany, containsString("einer der Typen "));
+    assertThat(resultMany).contains("einer der Typen ");
 
   }
 

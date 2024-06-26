@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -22,12 +21,11 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.CanonicalPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -40,22 +38,8 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     super(context);
   }
 
-  public TerminologyRenderer(RenderingContext context, ResourceContext rcontext) {
-    super(context, rcontext);
-  }
-
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return ((CanonicalResource) r).present();
-  }
-
-  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    if (r.has("title")) {
-      return r.children("title").get(0).getBase().primitiveValue();
-    }
-    if (r.has("name")) {
-      return r.children("name").get(0).getBase().primitiveValue();
-    }
-    return "??";
   }
 
   protected class TargetElementComponentWrapper {
@@ -118,7 +102,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       XhtmlNode td = tr.td();
       XhtmlNode b = td.b();
       String link = m.getLink();
-      XhtmlNode a = b.ah(link);
+      XhtmlNode a = b.ah(context.prefixLocalHref(link));
       a.addText(m.getDetails().getName());
       if (m.getDetails().isDoDescription() && m.getMap().hasDescription())
         addMarkdown(td, m.getMap().getDescription());
@@ -180,13 +164,13 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     }
     String spec = getSpecialReference(inc.getSystem());
     if (spec != null) {
-      XhtmlNode a = li.ah(spec);
+      XhtmlNode a = li.ah(context.prefixLocalHref(spec));
       a.code(inc.getSystem());
     } else if (cs != null && ref != null) {
       if (addHtml && !ref.contains(".html"))
         ref = ref + ".html";
       ref = context.fixReference(ref);
-      XhtmlNode a = li.ah(ref.replace("\\", "/"));
+      XhtmlNode a = li.ah(context.prefixLocalHref(ref.replace("\\", "/")));
       a.code(inc.getSystem());
     } else {
       li.code(inc.getSystem());
@@ -280,12 +264,6 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
 
   protected void AddVsRef(String value, XhtmlNode li, Resource source) {
     Resource res = null;
-    if (rcontext != null) {
-      BundleEntryComponent be = rcontext.resolve(value);
-      if (be != null) {
-        res = be.getResource(); 
-      }
-    }
     if (res != null && !(res instanceof CanonicalResource)) {
       li.addText(value);
       return;      
@@ -301,17 +279,17 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       String ref = (String) vs.getWebPath();
 
       ref = context.fixReference(ref);
-      XhtmlNode a = li.ah(ref == null ? "?ngen-11?" : ref.replace("\\", "/"));
+      XhtmlNode a = li.ah(context.prefixLocalHref(ref == null ? "?ngen-11?" : ref.replace("\\", "/")));
       a.addText(vs.present());
     } else {
       CodeSystem cs = getContext().getWorker().fetchCodeSystem(value);
       if (cs != null) {
         String ref = (String) cs.getWebPath();
         ref = context.fixReference(ref);
-        XhtmlNode a = li.ah(ref == null ? "?ngen-12?" : ref.replace("\\", "/"));
+        XhtmlNode a = li.ah(context.prefixLocalHref(ref == null ? "?ngen-12?" : ref.replace("\\", "/")));
         a.addText(value);
       } else if (value.equals("http://snomed.info/sct") || value.equals("http://snomed.info/id")) {
-        XhtmlNode a = li.ah(value);
+        XhtmlNode a = li.ah(context.prefixLocalHref(value));
         a.tx(context.formatPhrase(RenderingContext.STRUC_DEF_SNOMED));
       }
       else {
@@ -325,6 +303,11 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     }
   }
 
+  protected String getDisplayForConcept(String canonical, String value) {
+    var split = CanonicalPair.of(canonical);
+    return getDisplayForConcept(split.getUrl(), split.getVersion(), value);
+  }
+  
   protected String getDisplayForConcept(String system, String version, String value) {
     if (value == null || system == null)
       return null;

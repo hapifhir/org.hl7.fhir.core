@@ -180,8 +180,10 @@ public class XhtmlNodeTest {
   public void testComposeScripted4() throws IOException {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     XhtmlNode p = x.para();
+    p.startScript("test");
     p.param("long").b().tx("long");
-    p.sentenceForParams("This <b>is</b> a <param name='long'/> paragraph");
+    p.execScript("This <b>is</b> a <param name='long'/> paragraph");
+    p.closeScript();
     Assertions.assertEquals("<div><p>This <b>is</b> a <b>long</b> paragraph</p></div>", new XhtmlComposer(true, false).compose(x));
   }
 
@@ -190,9 +192,11 @@ public class XhtmlNodeTest {
   public void testComposeScripted5() throws IOException {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     XhtmlNode p = x.para();
+    p.startScript("test");
     p.param("long").b().tx("long");
     p.paramValue("count", "2");
-    p.sentenceForParams("This <b>is</b> a <param name='long'/> paragraph<if test='count != 1'>s</if>");
+    p.execScript("This <b>is</b> a <param name='long'/> paragraph<if test='count != 1'>s</if>");
+    p.closeScript();
     Assertions.assertEquals("<div><p>This <b>is</b> a <b>long</b> paragraphs</p></div>", new XhtmlComposer(true, false).compose(x));
   }
 
@@ -201,9 +205,11 @@ public class XhtmlNodeTest {
   public void testComposeScripted6() throws IOException {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     XhtmlNode p = x.para();
+    p.startScript("test");
     p.param("long").b().tx("long");
     p.paramValue("count", "1");
-    p.sentenceForParams("This <b>is</b> a <param name='long'/> paragraph<if test='count != 1'>s</if>");
+    p.execScript("This <b>is</b> a <param name='long'/> paragraph<if test='count != 1'>s</if>");
+    p.closeScript();
     Assertions.assertEquals("<div><p>This <b>is</b> a <b>long</b> paragraph</p></div>", new XhtmlComposer(true, false).compose(x));
   }
 
