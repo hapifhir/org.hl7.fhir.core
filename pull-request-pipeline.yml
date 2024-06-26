@@ -160,6 +160,7 @@ jobs:
         displayName: 'Publish JaCoCo test results'
         inputs:
           summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
+          pathToSources: '$(System.DefaultWorkingDirectory)/**/src/main/java/'
 
       - bash: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
