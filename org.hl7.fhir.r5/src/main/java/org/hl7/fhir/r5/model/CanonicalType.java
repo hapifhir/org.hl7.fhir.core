@@ -33,6 +33,8 @@ package org.hl7.fhir.r5.model;
 
 import java.net.URI;
 
+import org.hl7.fhir.r5.utils.ToolingExtensions;
+
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
@@ -86,6 +88,16 @@ public class CanonicalType extends UriType {
   public String version() {
     var s = primitiveValue();
     return s == null || !s.contains("|") ? null : s.substring(s.indexOf("|")+1);
+  }
+
+  public String getCanonical() {
+    if (hasPrimitiveValue()) {
+      return primitiveValue();
+    }
+    if (hasExtension(ToolingExtensions.EXT_ALTERNATE_CANONICAL)) {
+      return getExtensionString(ToolingExtensions.EXT_ALTERNATE_CANONICAL);
+    }
+    return null;
   }
 	
 
