@@ -2749,8 +2749,14 @@ public class FHIRPathEngine {
     } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) { 
       result.add(new DecimalType(new BigDecimal(l.primitiveValue()).add(new BigDecimal(r.primitiveValue()))));
     } else if ((l.isDateTime() || l.hasType("Date")) && r.hasType("Quantity")) {
-      DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue()); 
-      result.add(dateAdd(dl, (Quantity) r, false, expr));
+      if (l.hasType("Date")) {
+        BaseDateTimeType dt = l instanceof BaseDateTimeType ? (BaseDateTimeType) l : TypeConvertor.castToDateTime(l);
+        Quantity qty = r instanceof Quantity ? (Quantity) r : TypeConvertor.castToQuantity(r);
+        result.add(dateAdd(dt, qty, false, expr));
+      } else {
+        DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue());
+        result.add(dateAdd(dl, (Quantity) r, false, expr));
+      }
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "+", left.get(0).fhirType(), right.get(0).fhirType());
     }
@@ -3014,8 +3020,14 @@ public class FHIRPathEngine {
         result.add(qty.copy().setValue(qty.getValue().abs()));
       }
     } else if ((l.isDateTime() || l.hasType("Date")) && r.hasType("Quantity")) {
-      DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue()); 
-      result.add(dateAdd(dl, (Quantity) r, true, expr));
+      if (l.hasType("Date")) {
+        BaseDateTimeType dt = l instanceof BaseDateTimeType ? (BaseDateTimeType) l : TypeConvertor.castToDateTime(l);
+        Quantity qty = r instanceof Quantity ? (Quantity) r : TypeConvertor.castToQuantity(r);
+        result.add(dateAdd(dt, qty, true, expr));
+      } else {
+        DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue());
+        result.add(dateAdd(dl, (Quantity) r, true, expr));
+      }
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "-", left.get(0).fhirType(), right.get(0).fhirType());
     }
