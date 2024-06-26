@@ -15,6 +15,7 @@
   * don't raise needless and wrong exceptions about extension definitions when rendering
   * fix duplicate link creation
   * Stop recursive rendering crash
+  * Obligation rendering improvements
 * Handle extra profiles on resources in an IG when converting between versions
 * Fixed issue with actor title not rendering in obligations
 * Test and adaption for dateOp #1655

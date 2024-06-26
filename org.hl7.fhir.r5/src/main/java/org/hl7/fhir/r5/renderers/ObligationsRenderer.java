@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
@@ -406,7 +407,7 @@ public class ObligationsRenderer extends Renderer {
       if (!ob.actors.isEmpty() || ob.compare.actors.isEmpty()) {
         boolean firstActor = true;
         for (CanonicalType anActor : ob.actors) {
-          ActorDefinition ad = context.getContext().fetchResource(ActorDefinition.class, anActor.getValue());
+          ActorDefinition ad = context.getContext().fetchResource(ActorDefinition.class, anActor.getCanonical());
           boolean existingActor = ob.compare != null && ob.compare.actors.contains(anActor);
 
           if (!firstActor) {
@@ -416,7 +417,11 @@ public class ObligationsRenderer extends Renderer {
 
           if (!existingActor)
             actorId.style(STYLE_UNCHANGED);
-          actorId.addText(ad.getTitle());
+          if (ad == null) {
+            actorId.addText(anActor.getCanonical());
+          } else {
+            actorId.ah(ad.getWebPath()).tx(ad.getTitle());
+          }
         }
 
         if (ob.compare != null) {
@@ -428,7 +433,9 @@ public class ObligationsRenderer extends Renderer {
                 firstActor = true;
               }
               actorId = actorId.span(STYLE_REMOVED, null);
-              if (compAd.hasWebPath()) {
+              if (compAd == null) {
+                actorId.ah(context.prefixLocalHref(compActor.toString()), compActor.toString()).tx(compActor.toString());
+              } else if (compAd.hasWebPath()) {
                 actorId.ah(context.prefixLocalHref(compAd.getWebPath()), compActor.toString()).tx(compAd.present());
               } else {
                 actorId.span(null, compActor.toString()).tx(compAd.present());
@@ -446,13 +453,15 @@ public class ObligationsRenderer extends Renderer {
         for (String eid : ob.elementIds) {
           elementIds.sep(", ");
           ElementDefinition ed = profile.getSnapshot().getElementById(eid);
-          boolean inScope = inScopePaths.contains(ed.getPath());
-          String name = eid.substring(eid.indexOf(".") + 1);
-          if (ed != null && inScope) {
-            String link = defPath + "#" + anchorPrefix + eid;
-            elementIds.ah(context.prefixLocalHref(link)).tx(name);
-          } else {
-            elementIds.code().tx(name);
+          if (ed != null) {
+            boolean inScope = inScopePaths.contains(ed.getPath());
+            String name = eid.substring(eid.indexOf(".") + 1);
+            if (ed != null && inScope) {
+              String link = defPath + "#" + anchorPrefix + eid;
+              elementIds.ah(context.prefixLocalHref(link)).tx(name);
+            } else {
+              elementIds.code().tx(name);
+            }
           }
         }
 
