@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.cli.services;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.hl7.fhir.validation.ValidationEngine;
 
@@ -23,15 +24,19 @@ public interface SessionCache {
    */
   String cacheSession(String sessionId, ValidationEngine validationEngine);
 
-
-
-
   /**
    * Checks if the passed in {@link String} id exists in the set of stored session id.
    * @param sessionId The {@link String} id to search for.
    * @return {@link Boolean#TRUE} if such id exists.
    */
   boolean sessionExists(String sessionId);
+
+  /**
+   * Removes the {@link ValidationEngine} associated with the passed in session id.
+   * @param sessionId The {@link String} session id.
+   * @return The {@link ValidationEngine} instance that was removed.
+   */
+  ValidationEngine removeSession(String sessionId);
 
   /**
    * Returns the stored {@link ValidationEngine} associated with the passed in session id, if one such instance exists.

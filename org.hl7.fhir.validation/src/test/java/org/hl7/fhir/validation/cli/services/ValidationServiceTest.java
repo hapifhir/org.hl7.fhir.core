@@ -38,6 +38,7 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
+import org.hl7.fhir.validation.cli.model.ValidationResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,15 +55,14 @@ class ValidationServiceTest  {
 
   final String DUMMY_SV = "1.2.3";
 
+  @DisplayName("Test validation session persists in session cache")
   @Test
-  void validateSources() throws Exception {
+  void validationSessionTest() throws Exception {
     TestingUtilities.injectCorePackageLoader();
     SessionCache sessionCache = Mockito.spy(new PassiveExpiringSessionCache());
     ValidationService myService = new ValidationService(sessionCache);
 
-    String resource = IOUtils.toString(getFileFromResourceAsStream("detected_issues.json"), StandardCharsets.UTF_8);
-    List<FileInfo> filesToValidate = new ArrayList<>();
-    filesToValidate.add(new FileInfo().setFileName("test_resource.json").setFileContent(resource).setFileType(Manager.FhirFormat.JSON.getExtension()));
+    List<FileInfo> filesToValidate = getFilesToValidate();
 
     ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"))).setFilesToValidate(filesToValidate);
     // Validation run 1...nothing cached yet
@@ -80,6 +80,44 @@ class ValidationServiceTest  {
       // If no sessions exist within the cache after a run, we auto-fail.
       fail();
     }
+  }
+
+  @DisplayName("Test validation session will inherit a base validation engine")
+  @Test
+  void validationSessionBaseEngineTest() throws Exception {
+    TestingUtilities.injectCorePackageLoader();
+
+    ValidationService myService = Mockito.spy(new ValidationService());
+
+    CliContext baseContext = new CliContext().setBaseEngine("myDummyKey").setSv("4.0.1").setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"));
+    myService.putBaseEngine("myDummyKey", baseContext);
+    verify(myService, Mockito.times(1)).buildValidationEngine(any(), any(), any());
+
+    {
+      final List<FileInfo> filesToValidate = getFilesToValidate();
+      final ValidationRequest request = new ValidationRequest().setCliContext(new CliContext()).setFilesToValidate(filesToValidate);
+      myService.validateSources(request);
+
+      verify(myService, Mockito.times(0)).getBaseEngine("myDummyKey");
+      verify(myService, Mockito.times(2)).buildValidationEngine(any(), any(), any());
+    }
+
+    {
+      final List<FileInfo> filesToValidate = getFilesToValidate();
+      final ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setBaseEngine("myDummyKey")).setFilesToValidate(filesToValidate);
+      myService.validateSources(request);
+
+      verify(myService, Mockito.times(1)).getBaseEngine("myDummyKey");
+      verify(myService, Mockito.times(2)).buildValidationEngine(any(), any(), any());
+    }
+  }
+
+  private List<FileInfo> getFilesToValidate() throws IOException {
+    List<FileInfo> filesToValidate = new ArrayList<>();
+    String resource = IOUtils.toString(getFileFromResourceAsStream("detected_issues.json"), StandardCharsets.UTF_8);
+
+    filesToValidate.add(new FileInfo().setFileName("test_resource.json").setFileContent(resource).setFileType(Manager.FhirFormat.JSON.getExtension()));
+  return filesToValidate;
   }
 
   private InputStream getFileFromResourceAsStream(String fileName) {

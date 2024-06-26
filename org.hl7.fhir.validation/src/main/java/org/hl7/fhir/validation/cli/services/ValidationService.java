@@ -2,7 +2,6 @@ package org.hl7.fhir.validation.cli.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -11,6 +10,7 @@ import java.lang.management.MemoryMXBean;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 
@@ -75,20 +75,36 @@ public class ValidationService {
   private final SessionCache sessionCache;
   private String runDate;
 
+  private final Map<String, ValidationEngine> baseEngines = new ConcurrentHashMap<>();
+
+  public void putBaseEngine(String key, CliContext cliContext) throws IOException, URISyntaxException {
+    String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
+
+    ValidationEngine baseEngine = buildValidationEngine(cliContext, definitions, new TimeTracker());
+    baseEngines.put(key, baseEngine);
+  }
+
+  public ValidationEngine getBaseEngine(String key) {
+    return baseEngines.get(key);
+  }
+
+  public Set<String> getBaseEngineKeys() { return baseEngines.keySet(); }
+
+  public boolean hasBaseEngineForKey(String key) { return baseEngines.containsKey(key); }
+
   public ValidationService() {
     sessionCache = new PassiveExpiringSessionCache();
     runDate = new SimpleDateFormat("hh:mm:ss", new Locale("en", "US")).format(new Date());
   }
+
+
 
   public ValidationService(SessionCache cache) {
     this.sessionCache = cache;
   }
 
   public ValidationResponse validateSources(ValidationRequest request) throws Exception {
-    if (request.getCliContext().getSv() == null) {
-      String sv = determineVersion(request.getCliContext(), request.sessionId);
-      request.getCliContext().setSv(sv);
-    }
+
 
     String definitions = VersionUtilities.packageForVersion(request.getCliContext().getSv()) + "#" + VersionUtilities.getCurrentVersion(request.getCliContext().getSv());
 
@@ -473,14 +489,37 @@ public class ValidationService {
       if (sessionId != null) {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
-        System.out.println("Building new validator engine from CliContext");
-      ValidationEngine validator = buildValidationEngine(cliContext, definitions, tt);
-      sessionId = sessionCache.cacheSession(validator);
+
+      ValidationEngine validationEngine = getValidationEngineFromCliContext(cliContext, definitions, tt);
+      sessionId = sessionCache.cacheSession(validationEngine);
       System.out.println("Cached new session. Cache size = " + sessionCache.getSessionIds().size());
+
     } else {
       System.out.println("Cached session exists for session id " + sessionId + ", returning stored validator session id. Cache size = " + sessionCache.getSessionIds().size());
     }
     return sessionId;
+  }
+
+  private ValidationEngine getValidationEngineFromCliContext(CliContext cliContext, String definitions, TimeTracker tt) throws Exception {
+    ValidationEngine validationEngine;
+    if (cliContext.getBaseEngine() != null && hasBaseEngineForKey(cliContext.getBaseEngine())) {
+      System.out.println("Building new validator engine from base engine: " + cliContext.getBaseEngine());
+      validationEngine = new ValidationEngine(getBaseEngine(cliContext.getBaseEngine()));
+      /* As a service, it wouldn't be efficient to have a base validation engine
+       * for every language. So we just use the baseEngine and set the language
+       * manually afterward.
+       */
+      validationEngine.setLanguage(cliContext.getLang());
+      validationEngine.setLocale(cliContext.getLocale());
+    } else {
+      System.out.println("Building new validator engine from CliContext");
+      if (cliContext.getSv() == null) {
+        String sv = determineVersion(cliContext);
+        cliContext.setSv(sv);
+      }
+      validationEngine  = buildValidationEngine(cliContext, definitions, tt);
+    }
+    return validationEngine;
   }
 
   protected ValidationEngine.ValidationEngineBuilder getValidationEngineBuilder() {
@@ -564,12 +603,7 @@ public class ValidationService {
     System.out.println("  Package Summary: "+ validationEngine.getContext().loadedPackageSummary());
   }
 
-
   public String determineVersion(CliContext cliContext) throws Exception {
-    return determineVersion(cliContext, null);
-  }
-
-  public String determineVersion(CliContext cliContext, String sessionId) throws Exception {
     if (cliContext.getMode() != EngineMode.VALIDATION && cliContext.getMode() != EngineMode.INSTALL) {
       return "5.0";
     }
