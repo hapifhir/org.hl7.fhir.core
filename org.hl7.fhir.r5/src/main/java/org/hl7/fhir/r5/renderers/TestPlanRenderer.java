@@ -2,342 +2,315 @@ package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.CodeableReference;
-import org.hl7.fhir.r5.model.ContactDetail;
-import org.hl7.fhir.r5.model.ContactPoint;
-import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.TestPlan;
-import org.hl7.fhir.r5.model.TestPlan.TestCaseDependencyComponent;
-import org.hl7.fhir.r5.model.TestPlan.TestPlanDependencyComponent;
-import org.hl7.fhir.r5.model.TestPlan.TestPlanTestCaseAssertionComponent;
-import org.hl7.fhir.r5.model.TestPlan.TestPlanTestCaseComponent;
-import org.hl7.fhir.r5.model.TestPlan.TestPlanTestCaseTestDataComponent;
-import org.hl7.fhir.r5.model.TestPlan.TestPlanTestCaseTestRunComponent;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class TestPlanRenderer extends ResourceRenderer {
 
-	public TestPlanRenderer(RenderingContext context) {
-		super(context);
-	}
 
-	public TestPlanRenderer(RenderingContext context, ResourceContext rcontext) {
-		super(context, rcontext);
-	}
+  public TestPlanRenderer(RenderingContext context) { 
+    super(context); 
+  } 
 
-	@Override
-	public boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-		return render(x, (TestPlan) r);
-	}
+  @Override
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
+  }
 
-	public boolean render(XhtmlNode x, TestPlan tp) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-		XhtmlNode p = null;
-		if (!tp.getContact().isEmpty()) {
-			p = x.para();
+  @Override
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper tp) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    renderResourceTechDetails(tp, x);
+    genSummaryTable(status, x, (CanonicalResource) tp.getResourceNative());
+    XhtmlNode p = null;
+    if (tp.has("contact")) {
+      p = x.para();
       p.b().tx(context.formatPhrase(RenderingContext.GENERAL_CONTACT));
-			p.tx(" (");
-			boolean firsti = true;
-			for (ContactDetail ci : tp.getContact()) {
-				if (firsti)
-					firsti = false;
-				else
-					p.tx(", ");
-				if (ci.hasName())
-					p.addText(ci.getName() + ": ");
-				boolean first = true;
-				for (ContactPoint c : ci.getTelecom()) {
-					if (first)
-						first = false;
-					else
-						p.tx(", ");
-					addTelecom(p, c);
-				}
-			}
-			p.tx(")");
-		}
+      p.tx(" (");
+      boolean firsti = true;
+      for (ResourceWrapper ci : tp.children("contact")) {
+        if (firsti)
+          firsti = false;
+        else
+          p.tx(", ");
+        if (ci.has("name"))
+          p.addText(ci.primitiveValue("name") + ": ");
+        boolean first = true;
+        for (ResourceWrapper c : ci.children("telecom")) {
+          if (first)
+            first = false;
+          else
+            p.tx(", ");
+          addTelecom(p, c);
+        }
+      }
+      p.tx(")");
+    }
 
-		if (tp.hasCategory()) {
-			p = x.para();
-			p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_CATEGORY)+" ");
+    if (tp.has("category")) {
+      p = x.para();
+      p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_CATEGORY)+" ");
       boolean first = true;
-			for (CodeableConcept cc : tp.getCategory()) {
+      for (ResourceWrapper cc : tp.children("category")) {
         if (first)
           first = false;
         else
           p.tx(", ");
-				renderCodeableConcept(p, cc, false);
-			}
-		}
+        renderCodeableConcept(status, p, cc);
+      }
+    }
 
-		if (tp.hasScope()) {
-			if (tp.getScope().size() == 1) {
-				p = x.para();
-				p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPE)+" ");
-				renderReference(tp, p, tp.getScopeFirstRep());
-			} else {
-				x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPES));
-				XhtmlNode ul = x.ul();
-				for (Reference ref : tp.getScope()) {
-					renderReference(tp, ul.li(), ref);
-				}
-			}
-		}
+    if (tp.has("scope")) {
+      List<ResourceWrapper> scopes = tp.children("scope");
+      if (scopes.size() == 1) {
+        p = x.para();
+        p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPE)+" ");
+        renderReference(status, p, scopes.get(0));
+      } else {
+        x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPES));
+        XhtmlNode ul = x.ul();
+        for (ResourceWrapper ref : scopes) {
+          renderReference(status, ul.li(), ref);
+        }
+      }
+    }
 
-		if (tp.hasDependency()) {
-			if (tp.getDependency().size() == 1) {
-				p = x.para();
-				p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_DEP)+" ");
-				XhtmlNode t = x.table("grid");
-				XhtmlNode tr = t.tr();
-			    if (!Utilities.noString(tp.getDependencyFirstRep().getDescription())) {
-			        addMarkdown(tr.td(), tp.getDependencyFirstRep().getDescription());
-			    }
-			    tr = t.tr();
-				renderReference(tp, tr.td(), tp.getDependencyFirstRep().getPredecessor());
-			} else {
-				x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_DEPEN));
-				XhtmlNode ul = x.ul();
-				XhtmlNode li = null;
-				for (TestPlanDependencyComponent d : tp.getDependency()) {
-					li = ul.li();
-				    if (!Utilities.noString(d.getDescription())) {
-				        addMarkdown(li, d.getDescription());
-				    }
-				    else {
-				    	li.addText(context.formatPhrase(RenderingContext.TEST_PLAN_DESC));
-				    }
-				    if (d.hasPredecessor()) {
-						XhtmlNode liul = li.ul();
-						XhtmlNode liulli = liul.li();
-						renderReference(tp, liulli, d.getPredecessor());
-				    }
-				}
-			}
-		}
-
-		if (tp.hasExitCriteria()) {
-			addMarkdown(x, tp.getExitCriteria());
-		}
-
-		if (tp.hasTestCase()) {
-		  for (TestPlanTestCaseComponent tc : tp.getTestCase()) {
-		    x.h2().addText(tc.hasSequence() ? formatPhrase(RenderingContext.TEST_PLAN_CASE) : formatPhrase(RenderingContext.TEST_PLAN_CASE_SEQ, tc.getSequence()));
-
-		    if (tc.hasScope()) {
-		      if (tc.getScope().size() == 1) {
-		        p = x.para();
-		        p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPE)+" ");
-		        renderReference(tp, p, tc.getScopeFirstRep());
-		      } else {
-		        x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPES));
-		        XhtmlNode ul = x.ul();
-		        for (Reference ref : tc.getScope()) {
-		          renderReference(tp, ul.li(), ref);
-		        }
-		      }
-		    }
-
-		    if (tc.hasDependency()) {
-		      if (tc.getDependency().size() == 1) {
-		        x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_DEP));
-		        XhtmlNode t = x.table("grid");
-		        XhtmlNode tr = t.tr();
-	          if (!Utilities.noString(tc.getDependencyFirstRep().getDescription())) {
-	            addMarkdown(tr.td(), tc.getDependencyFirstRep().getDescription());
-	          }
-	          tr = t.tr();
-	          renderReference(tp, tr.td(), tc.getDependencyFirstRep().getPredecessor());
-		      } else {
-            x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_DEPEN));
-		        XhtmlNode ul = x.ul();
-		        XhtmlNode li = null;
-		        for (TestCaseDependencyComponent d : tc.getDependency()) {
-		          li = ul.li();
-		            if (!Utilities.noString(d.getDescription())) {
-		                addMarkdown(li, d.getDescription());
-		            }
-		            else {
-		              li.addText(context.formatPhrase(RenderingContext.TEST_PLAN_DESC));
-		            }
-		            if (d.hasPredecessor()) {
-		            XhtmlNode liul = li.ul();
-		            XhtmlNode liulli = liul.li();
-		            renderReference(tp, liulli, d.getPredecessor());
-		            }
-		        }
-		      }
-		    }
-
-		    if (tc.hasTestRun()) {
-		      if (tc.getTestRun().size() == 1) {
-		        x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_RUN));
-		        renderTestRun(x, tp, tc.getTestRunFirstRep());
-		      }
-		      else {
-		        int count = 0;
-		        for (TestPlanTestCaseTestRunComponent trun : tc.getTestRun()) {
-		          count++;
-		          x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_TEST_RUN, count)+" ");
-	            renderTestRun(x, tp, trun);
-		        }
-		      }
-		    }
-
-        if (tc.hasTestData()) {
-          if (tc.getTestData().size() == 1) {
-            x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_DATA));
-            renderTestData(x, tp, tc.getTestDataFirstRep());
+    if (tp.has("dependency")) {
+      List<ResourceWrapper> deps = tp.children("dependency");
+      if (deps.size() == 1) {
+        ResourceWrapper dep = deps.get(0);
+        p = x.para();
+        p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_DEP)+" ");
+        XhtmlNode t = x.table("grid");
+        XhtmlNode tr = t.tr();
+        if (!Utilities.noString(dep.primitiveValue("description"))) {
+          addMarkdown(tr.td(), dep.primitiveValue("description"));
+        }
+        tr = t.tr();
+        renderReference(status, tr.td(), dep.child("predecessor"));
+      } else {
+        x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_DEPEN));
+        XhtmlNode ul = x.ul();
+        XhtmlNode li = null;
+        for (ResourceWrapper d : deps) {
+          li = ul.li();
+          if (!Utilities.noString(d.primitiveValue("description"))) {
+            addMarkdown(li, d.primitiveValue("description"));
           }
           else {
-            int count = 0;
-            for (TestPlanTestCaseTestDataComponent tdata : tc.getTestData()) {
-              count++;
-              x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_TEST_DATA, count)+" ");
-              renderTestData(x, tp, tdata);
+            li.addText(context.formatPhrase(RenderingContext.TEST_PLAN_DESC));
+          }
+          if (d.has("predecessor")) {
+            XhtmlNode liul = li.ul();
+            XhtmlNode liulli = liul.li();
+            renderReference(status, liulli, d.child("predecessor"));
+          }
+        }
+      }
+    }
+
+    if (tp.has("exitCriteria")) {
+      addMarkdown(x, tp.primitiveValue("exitCriteria"));
+    }
+
+    for (ResourceWrapper tc : tp.children("testCase")) {
+      x.h2().addText(tc.has("sequence") ? formatPhrase(RenderingContext.TEST_PLAN_CASE) : formatPhrase(RenderingContext.TEST_PLAN_CASE_SEQ, tc.primitiveValue("sequence")));
+
+      if (tc.has("scope")) {
+        List<ResourceWrapper> scopes = tc.children("scope");
+        if (scopes.size() == 1) {
+          p = x.para();
+          p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPE)+" ");
+          renderReference(status, p, scopes.get(0));
+        } else {
+          x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPES));
+          XhtmlNode ul = x.ul();
+          for (ResourceWrapper ref : scopes) {
+            renderReference(status, ul.li(), ref);
+          }
+        }
+      }
+
+      if (tc.has("dependency")) {
+        List<ResourceWrapper> deps = tc.children("dependency");
+        if (deps.size() == 1) {
+          ResourceWrapper dep = deps.get(0);
+          x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_DEP));
+          XhtmlNode t = x.table("grid");
+          XhtmlNode tr = t.tr();
+          if (!Utilities.noString(dep.primitiveValue("description"))) {
+            addMarkdown(tr.td(), dep.primitiveValue("description"));
+          }
+          tr = t.tr();
+          renderReference(status, tr.td(), dep.child("predecessor"));
+              
+        } else {
+          x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_DEPEN));
+          XhtmlNode ul = x.ul();
+          XhtmlNode li = null;
+          for (ResourceWrapper d : deps) {
+            li = ul.li();
+            if (!Utilities.noString(d.primitiveValue("description"))) {
+              addMarkdown(li, d.primitiveValue("description"));
+            }
+            else {
+              li.addText(context.formatPhrase(RenderingContext.TEST_PLAN_DESC));
+            }
+            if (d.has("predecessor")) {
+              XhtmlNode liul = li.ul();
+              XhtmlNode liulli = liul.li();
+              renderReference(status, liulli, d.child("predecessor"));
             }
           }
         }
+      }
 
-	      if (tc.hasAssertion()) {
-	        if (tc.getAssertion().size() == 1) {
-	          x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_ASS));
-	          renderAssertion(x, tp, tc.getAssertionFirstRep());
-	        }
-	        else {
-	          int count = 0;
-	          for (TestPlanTestCaseAssertionComponent as : tc.getAssertion()) {
-	            count++;
-	            x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_ASSERTION, count)+" ");
-	            renderAssertion(x, tp, as);
-	          }
-	        }
-	      }
-		  }
+      if (tc.has("testRun")) {
+        List<ResourceWrapper> runs = tc.children("testRun");
+        if (runs.size() == 1) {
+          x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_RUN));
+          renderTestRun(status, x, tp, runs.get(0));
+        }
+        else {
+          int count = 0;
+          for (ResourceWrapper trun : runs) {
+            count++;
+            x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_TEST_RUN, count)+" ");
+            renderTestRun(status, x, tp, trun);
+          }
+        }
+      }
+
+      if (tc.has("testData")) {
+        List<ResourceWrapper> dl = tc.children("testData");
+        if (dl.size() == 1) {
+          x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_DATA));
+          renderTestData(status, x, tp, dl.get(0));
+        }
+        else {
+          int count = 0;
+          for (ResourceWrapper tdata : dl) {
+            count++;
+            x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_TEST_DATA, count)+" ");
+            renderTestData(status, x, tp, tdata);
+          }
+        }
+      }
+
+      if (tc.has("assertion")) {
+        List<ResourceWrapper> al = tc.children("assertion");
+        if (al.size() == 1) {
+          x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_ASS));
+          renderAssertion(status, x, tp, al.get(0));
+        }
+        else {
+          int count = 0;
+          for (ResourceWrapper as : al) {
+            count++;
+            x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_ASSERTION, count)+" ");
+            renderAssertion(status, x, tp, as);
+          }
+        }
+      }
     }
+  }
 
-		return false;
-	}
-
-  private void renderTestRun(XhtmlNode x, TestPlan tp, TestPlanTestCaseTestRunComponent trun) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  private void renderTestRun(RenderingStatus status, XhtmlNode x, ResourceWrapper tp, ResourceWrapper trun) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (trun.hasNarrative()) {
-      addMarkdown(x, trun.getNarrative());
+      addMarkdown(x, trun.primitiveValue("narrative"));
     }
 
-    if (trun.hasScript()) {
+    if (trun.has("script")) {
+      ResourceWrapper script = trun.child("script");
       XhtmlNode t = x.table("grid");
       XhtmlNode tr = t.tr();
       tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_LANG));
       tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_SOURCE));
       tr = t.tr();
-      if (trun.getScript().hasLanguage()) {
-        renderCodeableConcept(tr.td(), trun.getScript().getLanguage(), false);
-      }
-      else {
+      if (script.has("language")) {
+        renderCodeableConcept(status, tr.td(), script.child("language"));
+      } else {
         tr.td().addText("??");
       }
-      if (trun.getScript().hasSourceReference()) {
-        renderReference(tp, tr.td(), trun.getScript().getSourceReference());
-      }
-      else if(trun.getScript().hasSourceStringType()) {
-        tr.td().addText(trun.getScript().getSourceStringType().asStringValue());
-      }
-      else {
+      if (script.has("source")) {
+        renderDataType(status, tr.td(), script.child("script"));
+      } else {
         tr.td().addText("??");
       }
     }
-	}
+  }
 
-  private void renderTestData(XhtmlNode x, TestPlan tp, TestPlanTestCaseTestDataComponent tdata) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  private void renderTestData(RenderingStatus status, XhtmlNode x, ResourceWrapper tp, ResourceWrapper tdata) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     XhtmlNode t = x.table("grid");
     XhtmlNode tr = t.tr();
     tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
     tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_CONTENT));
     tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_SOURCE));
     tr = t.tr();
-    if (tdata.hasType()) {
-      renderCoding(tr.td(), tdata.getType());
+    if (tdata.has("type")) {
+      renderCoding(status, tr.td(), tdata.child("type"));
     }
     else {
       tr.td().addText("??");
     }
-    if (tdata.hasContent()) {
-      renderReference(tp, tr.td(), tdata.getContent());
+    if (tdata.has("content")) {
+      renderReference(status, tr.td(), tdata.child("content"));
     }
     else {
       tr.td().addText("??");
     }
-    if (tdata.hasSourceReference()) {
-      renderReference(tp, tr.td(), tdata.getSourceReference());
-    }
-    else if(tdata.hasSourceStringType()) {
-      tr.td().addText(tdata.getSourceStringType().asStringValue());
-    }
-    else {
+    if (tdata.has("source")) {
+      renderDataType(status, tr.td(), tdata.child("source"));
+    } else {
       tr.td().addText("??");
     }
   }
 
-  private void renderAssertion(XhtmlNode x, TestPlan tp, TestPlanTestCaseAssertionComponent as) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  private void renderAssertion(RenderingStatus status, XhtmlNode x, ResourceWrapper tp, ResourceWrapper as) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     XhtmlNode t = x.table("grid");
     XhtmlNode tr = t.tr();
     tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
     tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_CONTENT));
     tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_RESULT));
     tr = t.tr();
-    if (as.hasType()) {
+    if (as.has("type")) {
       XhtmlNode td = tr.td();
       XhtmlNode ul = td.ul();
-      for (CodeableConcept cc : as.getType()) {
-        renderCodeableConcept(ul.li(), cc, false);
+      for (ResourceWrapper cc : as.children("type")) {
+        renderCodeableConcept(status, ul.li(), cc);
       }
     }
     else {
       tr.td().addText("??");
     }
-    if (as.hasObject()) {
+    if (as.has("object")) {
       XhtmlNode td = tr.td();
       XhtmlNode ul = td.ul();
-      for (CodeableReference cr : as.getObject()) {
-        renderCodeableReference(ul.li(), cr, false);
+      for (ResourceWrapper cr : as.children("object")) {
+        renderCodeableReference(status, ul.li(), cr);
       }
     }
     else {
       tr.td().addText("??");
     }
-    if (as.hasResult()) {
+    if (as.has("result")) {
       XhtmlNode td = tr.td();
       XhtmlNode ul = td.ul();
-      for (CodeableReference cr : as.getResult()) {
-        renderCodeableReference(ul.li(), cr, false);
+      for (ResourceWrapper cr : as.children("result")) {
+        renderCodeableReference(status, ul.li(), cr);
       }
     }
     else {
       tr.td().addText("??");
     }
   }
-
-	@Override
-	public String display(Resource r) throws UnsupportedEncodingException, IOException {
-		return null;
-	}
-
-	@Override
-	public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-		if (r.has("title")) {
-			return r.children("title").get(0).getBase().primitiveValue();
-		}
-		return "??";
-	}
 
 }

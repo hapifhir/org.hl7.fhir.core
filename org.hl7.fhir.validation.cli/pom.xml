@@ -248,19 +248,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-            <version>${hamcrest_version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest</artifactId>
-            <version>${hamcrest_version}</version>
-            <scope>compile</scope>
-        </dependency>
 
         <!-- /org.hl7.fhir.core test-jar dependencies -->
 

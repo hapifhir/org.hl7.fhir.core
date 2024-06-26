@@ -16,4 +16,5 @@ public interface ProfileKnowledgeProvider {
   String getLinkForProfile(StructureDefinition profile, String url);
   boolean prependLinks();
   String getLinkForUrl(String corePath, String s);
+  String getCanonicalForDefaultContext();
 }
