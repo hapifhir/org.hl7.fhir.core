@@ -801,6 +801,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
     case "Ratio": 
       renderRatio(status, x, type); 
       break;
+    case "Attachment": 
+      renderAttachment(status, x, type); 
+      break;
     case "CodeableReference": 
       if (type.has("concept")) { 
         renderCodeableConcept(status, x, type.child("concept")); 
@@ -845,6 +848,15 @@ public class DataRenderer extends Renderer implements CodeResolver {
     renderQuantity(status, x, type.child("numerator"));
     x.tx("/");
     renderQuantity(status, x, type.child("denominator"));
+  }
+
+  private void renderAttachment(RenderingStatus status, XhtmlNode x, ResourceWrapper att) {
+    String ct = att.primitiveValue("contentType");
+    if (att.has("url")) {
+      x.tx(context.formatMessage(RenderingContext.DATA_REND_ATT_URL, ct, att.primitiveValue("url")));
+    } else if (att.has("data")) {
+      x.tx(context.formatMessage(RenderingContext.DATA_REND_ATT_DATA, ct, displayDataType(att.child("data"))));      
+    }    
   }
 
   private void renderContactDetail(RenderingStatus status, XhtmlNode x, ResourceWrapper cd) {
