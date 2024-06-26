@@ -24,7 +24,7 @@ public class Base64UtilTest {
   @ParameterizedTest
   @ValueSource(strings = {
     "A==", // Improperly padded
-    "A(B=", // Invalid character in the defualt encoding
+    "A(B=", // Invalid character in the default encoding
   })
   public void testInvalidBase64(String base64) {
     assertFalse(Base64Util.isValidBase64(base64));

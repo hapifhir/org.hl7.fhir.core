@@ -35,6 +35,10 @@ public class UrlUtilTest {
   @ValueSource(strings = {
     "",
     "data:text/plain", // Actual data is missing
+    "data:application/octet-stream;base64", // Actual data is missing
+    "data:application/octet-stream;base64,A==", // Improperly padded base64 data
+    "data:application/octet-stream;base64,A(B=", // Invalid character in the default encoding
+    "data:application/octet-stream;base64AAAA", // Missing comma in data URL
   })
   public void testInvalidUrl(String url) {
     assertNotNull(UrlUtil.checkValidUrl(url, context));
