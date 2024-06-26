@@ -33,14 +33,12 @@ package org.hl7.fhir.validation.instance;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -57,7 +55,6 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.Decimal;
@@ -229,18 +226,7 @@ import org.hl7.fhir.validation.instance.type.StructureMapValidator;
 import org.hl7.fhir.validation.instance.type.StructureMapValidator.VariableDefn;
 import org.hl7.fhir.validation.instance.type.StructureMapValidator.VariableSet;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator;
-import org.hl7.fhir.validation.instance.utils.CanonicalResourceLookupResult;
-import org.hl7.fhir.validation.instance.utils.CanonicalTypeSorter;
-import org.hl7.fhir.validation.instance.utils.ChildIterator;
-import org.hl7.fhir.validation.instance.utils.ElementInfo;
-import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator;
-import org.hl7.fhir.validation.instance.utils.FHIRPathExpressionFixer;
-import org.hl7.fhir.validation.instance.utils.IndexedElement;
-import org.hl7.fhir.validation.instance.utils.NodeStack;
-import org.hl7.fhir.validation.instance.utils.ResolvedReference;
-import org.hl7.fhir.validation.instance.utils.ResourceValidationTracker;
-import org.hl7.fhir.validation.instance.utils.StructureDefinitionSorterByUrl;
-import org.hl7.fhir.validation.instance.utils.ValidationContext;
+import org.hl7.fhir.validation.instance.utils.*;
 import org.w3c.dom.Document;
 
 /**
@@ -2848,12 +2834,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (type.equals("base64Binary")) {
       String encoded = e.primitiveValue();
       if (isNotBlank(encoded)) {
-        boolean bok = isValidBase64(encoded);
+        boolean bok = Base64Util.isValidBase64(encoded);
         if (!bok) {
           String value = encoded.length() < 100 ? encoded : "(snip)";
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_VALID, value) && ok;
         } else {
-          boolean wsok = !base64HasWhitespace(encoded);
+          boolean wsok = !Base64Util.base64HasWhitespace(encoded);
           if (VersionUtilities.isR5VerOrLater(this.context.getVersion())) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR) && ok;            
           } else {
@@ -2861,7 +2847,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
         }
         if (bok && context.hasExtension(ToolingExtensions.EXT_MAX_SIZE)) {
-          int size = countBase64DecodedBytes(encoded);
+          int size = Base64Util.countBase64DecodedBytes(encoded);
           long def = Long.parseLong(ToolingExtensions.readStringExtension(context, ToolingExtensions.EXT_MAX_SIZE));
           ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, e.line(), e.col(), path, size <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_TOO_LONG, size, def) && ok;
         }
@@ -3280,70 +3266,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return false;
   }
 
-  /**
-   * Technically this is not bulletproof as some invalid base64 won't be caught,
-   * but I think it's good enough. The original code used Java8 Base64 decoder
-   * but I've replaced it with a regex for 2 reasons:
-   * 1. This code will run on any version of Java
-   * 2. This code doesn't actually decode, which is much easier on memory use for big payloads
-   */
-  private boolean isValidBase64(String theEncoded) {
-    if (theEncoded == null) {
-      return false;
-    }
-    int charCount = 0;
-    boolean ok = true;
-    for (int i = 0; i < theEncoded.length(); i++) {
-      char nextChar = theEncoded.charAt(i);
-      if (Utilities.isWhitespace(nextChar)) {
-        continue;
-      }
-      if (Character.isLetterOrDigit(nextChar)) {
-        charCount++;
-      }
-      if (nextChar == '/' || nextChar == '=' || nextChar == '+') {
-        charCount++;
-      }
-    }
-
-    if (charCount > 0 && charCount % 4 != 0) {
-      ok = false;
-    }
-    return ok;
-  }
-
-  private boolean base64HasWhitespace(String theEncoded) {
-    if (theEncoded == null) {
-      return false;
-    }
-    for (int i = 0; i < theEncoded.length(); i++) {
-      char nextChar = theEncoded.charAt(i);
-      if (Utilities.isWhitespace(nextChar)) {
-        return true;
-      }
-    }
-    return false;
-
-  }
-
-
-  private int countBase64DecodedBytes(String theEncoded) {
-    Base64InputStream inputStream = new Base64InputStream(new ByteArrayInputStream(theEncoded.getBytes(StandardCharsets.UTF_8)));
-    try {
-      try {
-        for (int counter = 0; ; counter++) {
-          if (inputStream.read() == -1) {
-            return counter;
-          }
-        }
-      } finally {
-          inputStream.close();
-      }
-    } catch (IOException e) {
-      throw new IllegalStateException(e); // should not happen
-    }
-  }
-
   private boolean isDefinitionURL(String url) {
     return Utilities.existsInList(url,
         
@@ -3498,66 +3420,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (XhtmlNode node : list) {
       if (node.getNodeType() == NodeType.Element) {
         if ("a".equals(node.getName())) {
-          String msg = checkValidUrl(node.getAttribute("href"));
+          String msg = UrlUtil.checkValidUrl(node.getAttribute("href"), context);
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, msg == null, I18nConstants.XHTML_URL_INVALID, node.getAttribute("href"), msg) && ok;
         } else if ("img".equals(node.getName())) {
-          String msg = checkValidUrl(node.getAttribute("src"));
+          String msg = UrlUtil.checkValidUrl(node.getAttribute("src"), context);
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, msg == null, I18nConstants.XHTML_URL_INVALID, node.getAttribute("src"), msg) && ok;
         }
         ok = checkUrls(errors, e, path, node.getChildNodes()) && ok;
       }
     }
     return ok;
-  }
-
-  private String checkValidUrl(String value) {
-    if (value == null) {
-      return null;
-    }
-    if (Utilities.noString(value)) {
-      return context.formatMessage(I18nConstants.XHTML_URL_EMPTY);
-    }
-
-    if (value.startsWith("data:")) {
-      String[] p = value.substring(5).split("\\,");
-      if (p.length < 2) {
-        return context.formatMessage(I18nConstants.XHTML_URL_DATA_NO_DATA, value);        
-      } else if (p.length > 2) {
-        return context.formatMessage(I18nConstants.XHTML_URL_DATA_DATA_INVALID_COMMA, value);                
-      } else if (!p[0].endsWith(";base64") || !isValidBase64(p[1])) {
-        return context.formatMessage(I18nConstants.XHTML_URL_DATA_DATA_INVALID, value);                        
-      } else {
-        if (p[0].startsWith(" ")) {
-          p[0] = Utilities.trimWS(p[0]); 
-        }
-        String mMsg = checkValidMimeType(p[0].substring(0, p[0].lastIndexOf(";")));
-        if (mMsg != null) {
-          return context.formatMessage(I18nConstants.XHTML_URL_DATA_MIMETYPE, value, mMsg);                  
-        }
-      }
-      return null;
-    } else {
-      Set<Character> invalidChars = new HashSet<>();
-      int c = 0;
-      for (char ch : value.toCharArray()) {
-        if (!(Character.isDigit(ch) || Character.isAlphabetic(ch) || Utilities.existsInList(ch, ';', '?', ':', '@', '&', '=', '+', '$', '.', ',', '/', '%', '-', '_', '~', '#', '[', ']', '!', '\'', '(', ')', '*', '|' ))) {
-          c++;
-          invalidChars.add(ch);
-        }
-      }
-      if (invalidChars.isEmpty()) {
-        return null;
-      } else {
-        return context.formatMessagePlural(c, I18nConstants.XHTML_URL_INVALID_CHARS, invalidChars.toString());
-      }
-    }
-  }
-
-  private String checkValidMimeType(String mt) {
-    if (!mt.matches("^(\\w+|\\*)\\/(\\w+|\\*)((;\\s*(\\w+)=\\s*(\\S+))?)$")) {
-      return "Mime type invalid";
-    }
-    return null;
   }
 
   private boolean checkInnerNS(List<ValidationMessage> errors, Element e, String path, List<XhtmlNode> list) {
@@ -3826,9 +3698,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       String b64 = element.getChildValue("data");
       // Note: If the value isn't valid, we're not adding an error here, as the test to the
       // child Base64Binary will catch it and we don't want to log it twice
-      boolean bok = isValidBase64(b64);
+      boolean bok = Base64Util.isValidBase64(b64);
       if (bok && element.hasChild("size", false)) {
-        size = countBase64DecodedBytes(b64);
+        size = Base64Util.countBase64DecodedBytes(b64);
         String sz = element.getChildValue("size");
         ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, Long.toString(size).equals(sz), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT, sz, size) && ok;
       }
