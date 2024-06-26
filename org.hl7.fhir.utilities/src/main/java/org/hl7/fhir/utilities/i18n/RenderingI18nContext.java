@@ -911,6 +911,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String PROF_DRIV_SUMM_NONE = "PROF_DRIV_SUMM_NONE";
   public static final String PROF_DRIV_SUMM = "PROF_DRIV_SUMM";
   public static final String DOCUMENT_SUMMARY = "DOCUMENT_SUMMARY";
+  public static final String DATA_REND_ATT_URL = "DATA_REND_ATT_URL";
+  public static final String DATA_REND_ATT_DATA = "DATA_REND_ATT_DATA";
   
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
