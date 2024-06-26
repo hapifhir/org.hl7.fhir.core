@@ -245,18 +245,23 @@ public abstract class ResourceRenderer extends DataRenderer {
       actual = type;
     }
     if (actual != null && actual.hasPrimitiveValue()) {
-      ResourceWithReference rr = resolveReference(actual);
-      if (rr == null) {
-        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : actual.primitiveValue();
-        return "->"+disp;
+      System.out.println("displayReference: "+actual);
+      if ("#".equals(actual.primitiveValue())) {
+        return "this resource";
       } else {
-        String disp;
-        try {
-          disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
-        } catch (IOException e) {
-          disp = e.getMessage();
+        ResourceWithReference rr = resolveReference(actual);
+        if (rr == null) {
+          String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : actual.primitiveValue();
+          return "->"+disp;
+        } else {
+          String disp;
+          try {
+            disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
+          } catch (IOException e) {
+            disp = e.getMessage();
+          }
+          return "->"+disp;
         }
-        return "->"+disp;
       }
     } else if (display != null) {
       return "->"+display;
