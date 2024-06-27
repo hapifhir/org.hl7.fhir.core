@@ -685,10 +685,10 @@ public class PatientRenderer extends ResourceRenderer {
   private boolean hasRenderablePhoto(ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
     if (r.has("photo")) {
       List<ResourceWrapper> a = r.children("photo");
-      for (ResourceWrapper v : a) {
-        Attachment att = (Attachment) v.getBase();
-        if (att.hasContentType() && att.getContentType().startsWith("image/") &&
-            att.getData() != null && (!context.isInlineGraphics() || (att.getData().length > 0 && att.getData().length < MAX_IMAGE_LENGTH))) {
+      for (ResourceWrapper att : a) {
+        if (att.has("contentType") && att.primitiveValue("contentType").startsWith("image/") &&
+            att.has("data") && (!context.isInlineGraphics() || (att.primitiveValue("data").length() > 0 && 
+                att.primitiveValue("data").length() < MAX_IMAGE_LENGTH))) {
           return true;
         } 
       }
