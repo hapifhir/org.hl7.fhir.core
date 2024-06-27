@@ -3019,7 +3019,7 @@ public class FHIRPathEngine {
     } else if (l.hasType("date") && r.hasType("Quantity")) {
       DateType dl = l instanceof DateType ? (DateType) l : new DateType(l.primitiveValue()); 
       result.add(dateAdd(dl, (Quantity) r, true, expr));
-    } else if ((l.isDateTime() || l.hasType("dateTime") || l.hasType("instant)) && r.hasType("Quantity")) {
+    } else if ((l.isDateTime() || l.hasType("dateTime") || l.hasType("instant")) && r.hasType("Quantity")) {
       DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue()); 
       result.add(dateAdd(dl, (Quantity) r, true, expr));
     } else {
