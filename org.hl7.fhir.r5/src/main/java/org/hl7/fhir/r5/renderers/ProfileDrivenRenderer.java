@@ -169,8 +169,8 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (ew.fhirType().equals("ElementDefinition")) {
       x.tx("todo-bundle");
     } else if (!renderDataType(status, parent, x, ew)) {
-      if (Utilities.existsInList(ew.fhirType(), "Attachment", "Narrative", "Meta", "ProductShelfLife", "RelatedArtifact")) {
-        throw new NotImplementedException("type "+ew.fhirType()+" not handled. This may be due to unresolved inter-version compatibility issues");
+      if (!Utilities.existsInList(ew.fhirType(), "Narrative", "Meta", "ProductShelfLife", "RelatedArtifact")) {
+        throw new NotImplementedException("type "+ew.fhirType()+" not handled by the rendering framework");
       }
     }    
   }

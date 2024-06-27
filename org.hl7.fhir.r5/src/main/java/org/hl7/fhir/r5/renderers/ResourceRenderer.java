@@ -341,6 +341,9 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (rr == null) {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : actual.primitiveValue();
         x.ah(context.prefixLocalHref(actual.primitiveValue())).tx(disp);
+      } else if (rr.getResource() == null) {
+        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : "??";
+        x.ah(context.prefixLocalHref(rr.getWebPath())).tx(disp);
       } else {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(disp);
