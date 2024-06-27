@@ -464,5 +464,15 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return false;
   }
 
+  public IWorkerContext getWorker() {
+    return context;     
+  }
+
+  @Override
+  public String getCanonicalForDefaultContext() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }
 
