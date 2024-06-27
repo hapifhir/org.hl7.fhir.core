@@ -195,7 +195,7 @@ public class ResourceWrapperNative extends ResourceWrapper {
 
   public Resource getResourceNative() {
     ResourceWrapper focus = getResourceWrapper();
-    return (Resource) ((ResourceWrapperNative) focus).element;
+    return focus == null ? null : (Resource) ((ResourceWrapperNative) focus).element;
   }
 
   public boolean hasFormatComment() {
