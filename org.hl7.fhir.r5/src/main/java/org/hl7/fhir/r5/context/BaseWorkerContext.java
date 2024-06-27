@@ -383,7 +383,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
       String url = r.getUrl();
       if (!allowLoadingDuplicates && hasResourceVersion(r.getType(), url, r.getVersion()) && !packageInfo.isHTO()) {
-        // spcial workaround for known problems with existing packages
+        // special workaround for known problems with existing packages
         if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
           return;
         }

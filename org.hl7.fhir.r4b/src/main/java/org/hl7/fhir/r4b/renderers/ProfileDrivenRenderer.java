@@ -83,6 +83,13 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Element;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class ProfileDrivenRenderer extends ResourceRenderer {
 
   private Set<String> containedIds = new HashSet<>();

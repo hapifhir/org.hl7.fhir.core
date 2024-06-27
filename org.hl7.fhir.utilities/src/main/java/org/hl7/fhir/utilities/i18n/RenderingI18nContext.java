@@ -44,6 +44,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String BUNDLE_HEADER_ENTRY = "BUNDLE_HEADER_ENTRY";
   public static final String BUNDLE_HEADER_ENTRY_URL = "BUNDLE_HEADER_ENTRY_URL";
   public static final String BUNDLE_HEADER_ROOT = "BUNDLE_HEADER_ROOT";
+  public static final String BUNDLE_HEADER_DOCUMENT_CONTENTS = "BUNDLE_HEADER_DOCUMENT_CONTENTS";
   public static final String BUNDLE_IF_MATCH = "BUNDLE_IF_MATCH";
   public static final String BUNDLE_IF_MOD = "BUNDLE_IF_MOD";
   public static final String BUNDLE_IF_NONE = "BUNDLE_IF_NONE";
@@ -99,6 +100,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CAPABILITY_OTH_RES_ENB = "CAPABILITY_OTH_RES_ENB";
   public static final String GENERAL_PAR = "GENERAL_PAR";
   public static final String GENERAL_PARS = "GENERAL_PARS";
+  public static final String PARS_SUMMARY_SIZE = "PARS_SUMMARY_SIZE";
+  public static final String PARS_SUMMARY_LIST = "PARS_SUMMARY_LIST";
   public static final String CAPABILITY_PATCH_INT = "CAPABILITY_PATCH_INT";
   public static final String GENERAL_PROF = "GENERAL_PROF";
   public static final String CAPABILITY_PROF_CONF = "CAPABILITY_PROF_CONF";
@@ -267,6 +270,12 @@ public class RenderingI18nContext extends I18nBase {
   public static final String GENERAL_REQUEST = "GENERAL_REQUEST";
   public static final String DIAG_REP_REND_UNABLE = "DIAG_REP_REND_UNABLE";
   public static final String DIAG_REP_REND_WHEN = "DIAG_REP_REND_WHEN";
+  public static final String DIAG_REP_UNSPECIFIED_CODE = "DIAG_REP_UNSPECIFIED_CODE";
+  public static final String DIAG_REP_UNSPECIFIED_SUBJECT = "DIAG_REP_UNSPECIFIED_SUBJECT";
+  public static final String DIAG_REP_SUMMARY = "DIAG_REP_SUMMARY";
+  public static final String LIST_UNSPECIFIED_CODE = "LIST_UNSPECIFIED_CODE";
+  public static final String LIST_UNSPECIFIED_SUBJECT = "LIST_UNSPECIFIED_SUBJECT";
+  public static final String LIST_SUMMARY = "LIST_SUMMARY";
   public static final String EXAMPLE_SCEN_STEP_SCEN = "EXAMPLE_SCEN_STEP_SCEN";
   public static final String EX_SCEN_ALT = "EX_SCEN_ALT";
   public static final String EX_SCEN_BEL = "EX_SCEN_BEL";
@@ -332,6 +341,9 @@ public class RenderingI18nContext extends I18nBase {
   public static final String OP_OUT_OK = "OP_OUT_OK";
   public static final String OP_OUT_SEV = "OP_OUT_SEV";
   public static final String OP_OUT_SRC = "OP_OUT_SRC";
+  public static final String OP_OUT_SUMM_NOHINT = "OP_OUT_SUMM_NOHINT";
+  public static final String OP_OUT_SUMM = "OP_OUT_SUMM";
+  public static final String OP_OUT_SUMM_ALL_OK = "OP_OUT_SUMM_ALL_OK";
   public static final String PAT_ACTIVE = "PAT_ACTIVE";
   public static final String PAT_ACTIVE_HINT = "PAT_ACTIVE_HINT";
   public static final String PAT_ALT_NAME = "PAT_ALT_NAME";
@@ -374,6 +386,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String PROF_DRIV_EXCP = "PROF_DRIV_EXCP";
   public static final String PROF_DRIV_FEXCP = "PROF_DRIV_FEXCP";
   public static final String PROF_DRIV_GEN_NARR = "PROF_DRIV_GEN_NARR";
+  public static final String PROF_DRIV_GEN_NARR_TECH = "PROF_DRIV_GEN_NARR_TECH";
   public static final String PROV_ACT = "PROV_ACT";
   public static final String PROV_AGE = "PROV_AGE";
   public static final String PROV_BEHALF = "PROV_BEHALF";
@@ -454,6 +467,9 @@ public class RenderingI18nContext extends I18nBase {
   public static final String QUEST_UNKNOWN_MODE = "QUEST_UNKNOWN_MODE";
   public static final String GENERAL_URL = "GENERAL_URL";
   public static final String QUEST_VALUE = "QUEST_VALUE";
+  public static final String QUEST_UNSPECIFIED_QUESTIONNAIRE = "QUEST_UNSPECIFIED_QUESTIONNAIRE";
+  public static final String QUEST_UNSPECIFIED_SUBJECT = "QUEST_UNSPECIFIED_SUBJECT";
+  public static final String QUEST_SUMMARY = "QUEST_SUMMARY";    
   public static final String REND_ADDED = "REND_ADDED";
   public static final String REND_CHANGED = "REND_CHANGED";
   public static final String REND_REMOVED = "REND_REMOVED";
@@ -890,7 +906,14 @@ public class RenderingI18nContext extends I18nBase {
   public static final String GENERAL_CODE = "GENERAL_CODE";
   public static final String GENERAL_DESC = "GENERAL_DESC";
   public static final String STRUC_DEF_TYPE_PARAMETER = "STRUC_DEF_TYPE_PARAMETER";
-
+  public static final String BUNDLE_SUMMARY = "BUNDLE_SUMMARY";
+  public static final String PROF_DRIV_SUMM_PROP = "PROF_DRIV_SUMM_PROP";
+  public static final String PROF_DRIV_SUMM_NONE = "PROF_DRIV_SUMM_NONE";
+  public static final String PROF_DRIV_SUMM = "PROF_DRIV_SUMM";
+  public static final String DOCUMENT_SUMMARY = "DOCUMENT_SUMMARY";
+  public static final String DATA_REND_ATT_URL = "DATA_REND_ATT_URL";
+  public static final String DATA_REND_ATT_DATA = "DATA_REND_ATT_DATA";
+  
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
   }

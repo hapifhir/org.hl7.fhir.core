@@ -9,20 +9,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
-import org.hl7.fhir.r5.model.Enumerations.SearchComparator;
-import org.hl7.fhir.r5.model.Enumerations.SearchModifierCode;
-import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
+import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.SearchParameter;
-import org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent;
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupComponent;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupInputComponent;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleComponent;
@@ -33,27 +35,40 @@ import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterCo
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapTransform;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
-import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
-import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
-import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.xhtml.XhtmlFluent;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class StructureMapRenderer extends TerminologyRenderer {
 
+  public StructureMapRenderer(RenderingContext context) { 
+    super(context); 
+  } 
+ 
+  @Override
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    if (r.isDirect()) {
+      renderResourceTechDetails(r, x);
+      genSummaryTable(status, x, (StructureMap) r.getBase());
+      renderMap(status, x.pre("fml"), (StructureMap) r.getBase());      
+    } else {
+      throw new Error("StructureMapRenderer only renders native resources directly");
+    }
+  }
+  
+  
+  @Override
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
+  }
+
+  
+  
   private static final String COLOR_COMMENT = "green";
   private static final String COLOR_METADATA = "#cc00cc";
   private static final String COLOR_CONST = "blue";
@@ -62,24 +77,8 @@ public class StructureMapRenderer extends TerminologyRenderer {
   private static final boolean MULTIPLE_TARGETS_ONELINE = true;
   private static final String COLOR_SPECIAL = "#b36b00";
 
-  public StructureMapRenderer(RenderingContext context) {
-    super(context);
-  }
-
-  public StructureMapRenderer(RenderingContext context, ResourceContext rcontext) {
-    super(context, rcontext);
-  }
-  
-  public boolean render(XhtmlNode x, Resource dr) throws IOException, FHIRException, EOperationOutcome {
-    return render(x, (StructureMap) dr);
-  }
-
-  public boolean render(XhtmlNode x, StructureMap map) throws IOException, FHIRException, EOperationOutcome {
-    renderMap(x.pre("fml"), map);
-    return false;
-  }
-
-  public void renderMap(XhtmlNode x, StructureMap map) {
+  public void renderMap(RenderingStatus status, XhtmlNode x, StructureMap map) {
+    
     x.tx("\r\n");
     if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
       renderMetadata(x, "url", map.getUrlElement());
@@ -155,7 +154,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
         x.color(COLOR_SYNTAX).tx(" = \"");
         CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, cg.getSource());
         if (cs != null && cs.hasWebPath()) {
-          x.ah(cs.getWebPath(), cs.present()).tx(cg.getSource());
+          x.ah(context.prefixLocalHref(cs.getWebPath()), cs.present()).tx(cg.getSource());
         } else {
           x.tx(cg.getSource());
         }
@@ -169,7 +168,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
         x.color(COLOR_SYNTAX).tx(" = \"");
         CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, cg.getTarget());
         if (cs != null && cs.hasWebPath()) {
-          x.ah(cs.getWebPath(), cs.present()).tx(cg.getTarget());
+          x.ah(context.prefixLocalHref(cs.getWebPath()), cs.present()).tx(cg.getTarget());
         } else {
           x.tx(""+cg.getTarget());
         }
@@ -257,7 +256,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.color(COLOR_SYNTAX).tx(" \"");
       StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, s.getUrl());
       if (sd != null && sd.hasWebPath()) {
-        x.ah(sd.getWebPath(), sd.present()).tx(s.getUrl());
+        x.ah(context.prefixLocalHref(sd.getWebPath()), sd.present()).tx(s.getUrl());
       } else {
         x.tx(s.getUrl());
       }
@@ -282,7 +281,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.color(COLOR_SYNTAX).tx(" \"");
       StructureMap m = context.getContext().fetchResource(StructureMap.class, s.getValue());
       if (m != null) {
-        x.ah(m.getWebPath(), m.present()).tx(s.getValue());
+        x.ah(context.prefixLocalHref(m.getWebPath()), m.present()).tx(s.getValue());
       } else {
         x.tx(s.getValue());
       }
@@ -322,7 +321,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.b().tx(" extends ");
       String ref = resolveRuleReference(g.getExtendsElement());
       if (ref != null) {
-        x.ah(ref).tx(g.getExtends()); 
+        x.ah(context.prefixLocalHref(ref)).tx(g.getExtends()); 
       } else {
         x.tx(g.getExtends());
       }
@@ -412,7 +411,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
             x.color(COLOR_SYNTAX).tx(", ");
           String ref = resolveRuleReference(rd.getNameElement());
           if (ref != null) {
-            x.ah(ref).tx(rd.getName());
+            x.ah(context.prefixLocalHref(ref)).tx(rd.getName());
           } else {
             x.tx(rd.getName());
           }
