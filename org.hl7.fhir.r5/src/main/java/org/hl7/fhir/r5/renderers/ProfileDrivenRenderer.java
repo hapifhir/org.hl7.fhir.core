@@ -157,7 +157,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return null;
   }
 
-  private void renderLeaf(RenderingStatus status, ResourceWrapper res, ResourceWrapper ew, ElementDefinition defn, XhtmlNode parent, XhtmlNode x, boolean title, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
+  private void renderLeaf(RenderingStatus status, ResourceWrapper res, ResourceWrapper ew, StructureDefinition sd, ElementDefinition defn, XhtmlNode parent, XhtmlNode x, boolean title, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
     if (ew == null)
       return;
 
@@ -169,8 +169,16 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (ew.fhirType().equals("ElementDefinition")) {
       x.tx("todo-bundle");
     } else if (!renderDataType(status, parent, x, ew)) {
-      if (!Utilities.existsInList(ew.fhirType(), "Narrative", "Meta", "ProductShelfLife", "RelatedArtifact")) {
-        throw new NotImplementedException("type "+ew.fhirType()+" not handled by the rendering framework");
+      // well, we have a cell (x) to render this thing, whatever it is
+      // it's not a data type for which we have a built rendering, so we're going to get a list of it's renderable datatype properties, and render them in a list
+      XhtmlNode ul = x.ul();
+      SourcedChildDefinitions childDefs = context.getProfileUtilities().getChildMap(sd, defn);
+      for (ResourceWrapper child : ew.children()) {
+//        ElementDefinition childDefn = getElementDefinition(childDefs.getList(), child.name());
+        if (child != null && !"Extension".equals(child.fhirType()) && canRenderDataType(child.fhirType())) {
+          XhtmlNode li = ul.li();
+          li.tx(context.formatMessage(RenderingContext.GENERAL_DATA_DISPLAY_PROPERTY, child.name(), displayDataType(child)));          
+        }
       }
     }    
   }
@@ -272,7 +280,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if (children.isEmpty()) {
       StructureDefinition sdt = context.getWorker().fetchTypeDefinition(e.fhirType());
       if (sdt != null && (sdt.getKind() == StructureDefinitionKind.COMPLEXTYPE || sdt.getKind() == StructureDefinitionKind.PRIMITIVETYPE)) {
-        renderLeaf(status, res, e, defn, x, x, false, showCodeDetails, readDisplayHints(defn), path, indent);
+        renderLeaf(status, res, e, profile, defn, x, x, false, showCodeDetails, readDisplayHints(defn), path, indent);
       } else {
         // we don't have anything to render?
       }
@@ -334,7 +342,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
              if (renderAsList(child) && p.getValues().size() > 1) {
                XhtmlNode list = x.ul();
                for (ResourceWrapper v : p.getValues())
-                 renderLeaf(status, res, v, child, x, list.li(), false, showCodeDetails, displayHints, path, indent);
+                 renderLeaf(status, res, v, profile, child, x, list.li(), false, showCodeDetails, displayHints, path, indent);
              } else {
                boolean first = true;
                for (ResourceWrapper v : p.getValues()) {
@@ -343,7 +351,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                  } else {
                    para.tx(", ");
                  }
-                 renderLeaf(status, res, v, child, x, para, false, showCodeDetails, displayHints, path, indent);
+                 renderLeaf(status, res, v, profile, child, x, para, false, showCodeDetails, displayHints, path, indent);
                }
              }
            }
@@ -359,7 +367,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             if (v != null) {
               tr = tbl.tr();
               tr.td().style("display: none").tx("*"); // work around problem with empty table rows
-              add = addColumnValues(status, res, tr, grandChildren, v, showCodeDetails, displayHints, path, indent) || add;
+              add = addColumnValues(status, res, tr, profile, grandChildren, v, showCodeDetails, displayHints, path, indent) || add;
             }
           }
           if (add) {
@@ -375,7 +383,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                 XhtmlNode para = x.para();
                 para.b().addText(labelforExtension(p.getName()));
                 para.tx(": ");
-                renderLeaf(status, res, vp, child, x, para, false, showCodeDetails, displayHints, path, indent);
+                renderLeaf(status, res, vp, profile, child, x, para, false, showCodeDetails, displayHints, path, indent);
               } else if (!ev.isEmpty()) {
                 XhtmlNode bq = x.addTag("blockquote");                
                 bq.para().b().addText(labelforExtension(p.getName()));
@@ -492,7 +500,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return b;
   }
 
-  private boolean addColumnValues(RenderingStatus status, ResourceWrapper res, XhtmlNode tr, List<ElementDefinition> grandChildren, ResourceWrapper v, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
+  private boolean addColumnValues(RenderingStatus status, ResourceWrapper res, XhtmlNode tr, StructureDefinition profile, List<ElementDefinition> grandChildren, ResourceWrapper v, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
     boolean b = false;
     for (ElementDefinition e : grandChildren) {
       List<ResourceWrapper> p = v.children(e.getPath().substring(e.getPath().lastIndexOf(".")+1));
@@ -504,7 +512,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         for (ResourceWrapper vv : p) {
           b = true;
           td.sep(", ");
-          renderLeaf(status, res, vv, e, td, td, false, showCodeDetails, displayHints, path, indent);
+          renderLeaf(status, res, vv, profile, e, td, td, false, showCodeDetails, displayHints, path, indent);
         }
       }
     }

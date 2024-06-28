@@ -729,6 +729,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
       x.tx(context.formatPhrase(RenderingContext.DATA_REND_NO_DISP, b.fhirType()) + " ");       
     } 
   } 
+  
+  public boolean canRenderDataType(String type) {
+    return context.getContextUtilities().isPrimitiveType(type) ||  Utilities.existsInList(type, "Annotation", "Coding", "CodeableConcept",  "Identifier", "HumanName", "Address",
+          "Expression",  "Money", "ContactPoint",  "Quantity",  "Range",  "Period", "Timing", "SampledData",  "Reference", "UsageContext",  "ContactDetail",  "Ratio",  "Attachment",  "CodeableReference");
+  }
 
   public boolean renderDataType(RenderingStatus status, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException {
     return renderDataType(status, null, x, type);
