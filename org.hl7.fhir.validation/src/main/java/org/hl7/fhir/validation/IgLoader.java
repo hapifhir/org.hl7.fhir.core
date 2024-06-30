@@ -208,6 +208,8 @@ public class IgLoader implements IValidationEngineLoader {
       res.setFocus(t.getValue());
       if (t.getKey().endsWith(".json"))
         res.setCntType(Manager.FhirFormat.JSON);
+      else if (t.getKey().endsWith(".ndjson"))
+        res.setCntType(Manager.FhirFormat.NDJSON);
       else if (t.getKey().endsWith(".xml"))
         res.setCntType(Manager.FhirFormat.XML);
       else if (t.getKey().endsWith(".ttl"))
