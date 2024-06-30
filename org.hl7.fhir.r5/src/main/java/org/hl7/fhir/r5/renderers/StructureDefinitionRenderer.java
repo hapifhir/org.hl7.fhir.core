@@ -112,7 +112,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict"), false, GEN_MODE_DIFF, "", r); 
     } else { 
       x.getChildNodes().add(generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,  
-        context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context, "", r)); 
+        context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r)); 
     } 
     status.setExtensions(true); 
   }
@@ -322,6 +322,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private List<String> keyRows = new ArrayList<>(); 
   private Map<String, Map<String, ElementDefinition>> sdMapCache = new HashMap<>(); 
   private IMarkdownProcessor hostMd; 
+  private Map<String, Integer> anchors = new HashMap<>();
  
    
   public Map<String, Map<String, ElementDefinition>> getSdMapCache() { 
@@ -492,8 +493,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     //    return null; 
   } 
  
-  public XhtmlNode generateGrid(String defFile, StructureDefinition profile, String imageFolder, boolean inlineGraphics, String profileBaseFileName, String corePath, String imagePath, Set<String> outputTracker) throws IOException, FHIRException { 
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true); 
+  public XhtmlNode generateGrid(String defFile, StructureDefinition profile, String imageFolder, boolean inlineGraphics, String profileBaseFileName, String corePath, String imagePath, Set<String> outputTracker) throws IOException, FHIRException {
+    anchors.clear();
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, "g"); 
     TableModel model = gen.initGridTable(corePath, profile.getId()); 
     List<ElementDefinition> list = profile.getSnapshot().getElement(); 
     List<StructureDefinition> profiles = new ArrayList<StructureDefinition>(); 
@@ -532,10 +534,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   public XhtmlNode generateTable(RenderingStatus status, String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, 
       boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res) throws IOException, FHIRException { 
     assert(diff != snapshot);// check it's ok to get rid of one of these 
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, anchorPrefix);
+    anchors.clear();
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
  
-    gen.setUniqueLocalPrefix(context.getUniqueLocalPrefix());
-    
     List<ElementDefinition> list; 
     if (diff) 
       list = supplementMissingDiffElements(profile); 
@@ -710,9 +711,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     //      return; 
  
     if (!onlyInformationIsMapping(all, element)) { 
-      Row row = gen.new Row(); 
-      row.setId(element.getPath()); 
-      row.setAnchor(element.getPath()); 
+      Row row = gen.new Row();
+      // in deeply sliced things, there can be duplicate paths that are not usefully differentiated by id, and anyway, we want path
+      String anchor = element.getPath();
+      anchor = makeAnchorUnique(anchor);
+      row.setId(anchor); 
+      row.setAnchor(anchor); 
       row.setColor(context.getProfileUtilities().getRowColor(element, isConstraintMode)); 
       if (element.hasSlicing()) 
         row.setLineColor(1); 
@@ -830,9 +834,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } else { 
         if (slicingRow != originalRow && !children.isEmpty()) { 
           // we've entered a slice; we're going to create a holder row for the slice children 
-          Row hrow = gen.new Row(); 
-          hrow.setId(element.getPath()); 
-          hrow.setAnchor(element.getPath()); 
+          Row hrow = gen.new Row();
+          String anchorE = makeAnchorUnique(element.getPath());
+          hrow.setId(anchorE); 
+          hrow.setAnchor(anchorE); 
           hrow.setColor(context.getProfileUtilities().getRowColor(element, isConstraintMode)); 
           hrow.setLineColor(1); 
           hrow.setIcon("icon_element.gif", context.formatPhrase(RenderingContext.TEXT_ICON_ELEMENT)); 
@@ -857,8 +862,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (typesRow != null && !children.isEmpty()) { 
           // we've entered a typing slice; we're going to create a holder row for the all types children 
           Row hrow = gen.new Row(); 
-          hrow.setId(element.getPath()); 
-          hrow.setAnchor(element.getPath()); 
+          String anchorE = element.getPath();
+          anchorE = makeAnchorUnique(anchorE);
+          hrow.setId(anchorE); 
+          hrow.setAnchor(anchorE); 
           hrow.setColor(context.getProfileUtilities().getRowColor(element, isConstraintMode)); 
           hrow.setLineColor(1); 
           hrow.setIcon("icon_element.gif", context.formatPhrase(RenderingContext.TEXT_ICON_ELEMENT)); 
@@ -890,8 +897,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               // ok, we're a slice 
               if (slicer == null || !slicer.getId().equals(child.getPath())) { 
                 parent = gen.new Row(); 
-                parent.setId(child.getPath()); 
-                parent.setAnchor(child.getPath()); 
+                String anchorE = child.getPath();
+                anchorE = makeAnchorUnique(anchorE);
+                parent.setId(anchorE); 
+                parent.setAnchor(anchorE); 
                 parent.setColor(context.getProfileUtilities().getRowColor(child, isConstraintMode)); 
                 parent.setLineColor(1); 
                 parent.setIcon("icon_slice.png", context.formatPhrase(RenderingContext.TEXT_ICON_SLICE)); 
@@ -934,6 +943,17 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
     } 
     return slicingRow; 
+  }
+
+  private String makeAnchorUnique(String anchor) {
+    if (anchors.containsKey(anchor)) {
+      int c = anchors.get(anchor)+1;
+      anchors.put(anchor, c);
+      anchor = anchor+"."+c;
+    } else {
+      anchors.put(anchor, 1);
+    }
+    return anchor;
   } 
  
   private boolean isTypeSlice(ElementDefinition child) { 
@@ -2107,7 +2127,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (!onlyInformationIsMapping(all, element)) { 
       Row row = gen.new Row(); 
       row.setId(s); 
-      row.setAnchor(element.getPath()); 
+      String anchor = element.getPath();
+      anchor = makeAnchorUnique(anchor);
+      row.setAnchor(anchor); 
       row.setColor(context.getProfileUtilities().getRowColor(element, isConstraintMode)); 
       if (element.hasSlicing()) 
         row.setLineColor(1); 
@@ -3034,8 +3056,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
  
-  public XhtmlNode generateSpanningTable(StructureDefinition profile, String imageFolder, boolean onlyConstraints, String constraintPrefix, Set<String> outputTracker) throws IOException, FHIRException { 
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, false, true, "", "");
+  public XhtmlNode generateSpanningTable(StructureDefinition profile, String imageFolder, boolean onlyConstraints, String constraintPrefix, Set<String> outputTracker, String anchorPrefix) throws IOException, FHIRException { 
+    anchors.clear();
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, false, true, "", anchorPrefix);
     TableModel model = initSpanningTable(gen, "", false, profile.getId()); 
     Set<String> processed = new HashSet<String>(); 
     SpanEntry span = buildSpanningTable("(focus)", "", profile, processed, onlyConstraints, constraintPrefix); 
@@ -3139,6 +3162,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   public XhtmlNode generateExtensionTable(RenderingStatus status, String defFile, StructureDefinition ed, String imageFolder, boolean inlineGraphics, boolean full, String corePath, String imagePath, Set<String> outputTracker, RenderingContext rc, String defPath, String anchorPrefix, ResourceWrapper res) throws IOException, FHIRException {
+    anchors.clear();
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defPath, anchorPrefix);
     TableModel model = gen.initNormalTable(corePath, false, true, ed.getId()+(full ? "f" : "n"), true, TableGenerationMode.XHTML); 
  

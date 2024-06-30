@@ -1252,7 +1252,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
   }
 
   public XhtmlNode renderStructure(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(session.getI18n(), Utilities.path("[tmp]", "compare"), false, true);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(session.getI18n(), Utilities.path("[tmp]", "compare"), false, true, "cmp");
     TableModel model = gen.initComparisonTable(corePath, id);
     genElementComp(null /* come back to this later */, null /* come back to this later */, gen, model.getRows(), comp.combined, corePath, prefix, null, true);
     return gen.generate(model, prefix, 0, null);
@@ -1260,13 +1260,13 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
 
   public XhtmlNode renderUnion(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {    
     StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
-    return sdr.generateTable(new RenderingStatus(), corePath, comp.union, false, prefix, false, id, true, corePath, prefix, false, true, null, false, sdr.getContext(), "u", null);
+    return sdr.generateTable(new RenderingStatus(), corePath, comp.union, false, prefix, false, id, true, corePath, prefix, false, true, null, false, sdr.getContext().withUniqueLocalPrefix("u"), "u", null);
   }
       
 
   public XhtmlNode renderIntersection(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {
     StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
-    return sdr.generateTable(new RenderingStatus(), corePath, comp.intersection, false, prefix, false, id, true, corePath, prefix, false, true, null, false, sdr.getContext(), "i", null);
+    return sdr.generateTable(new RenderingStatus(), corePath, comp.intersection, false, prefix, false, id, true, corePath, prefix, false, true, null, false, sdr.getContext().withUniqueLocalPrefix("i"), "i", null);
   }
 
   private void genElementComp(String defPath, String anchorPrefix, HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<ElementDefinitionNode> combined, String corePath, String prefix, Row slicingRow, boolean root) throws IOException {
