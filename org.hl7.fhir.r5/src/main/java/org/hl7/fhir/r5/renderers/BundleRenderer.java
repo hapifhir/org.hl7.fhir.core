@@ -61,16 +61,15 @@ public class BundleRenderer extends ResourceRenderer {
         i++;
         if (i >= start) {
           if (be.has("fullUrl")) {
-            root.an(context.prefixAnchor(makeInternalBundleLink(be.primitiveValue("fullUrl"))));
+            root.an(context.prefixAnchor(makeInternalBundleLink(b, be.primitiveValue("fullUrl"))));
           }
           if (be.has("resource")) {
-            if (be.child("resource").has("id")) {
-              root.an(context.prefixAnchor(be.child("resource").fhirType() + "_" + be.child("resource").primitiveValue("id")));
-              root.an(context.prefixAnchor("hc"+be.child("resource").fhirType() + "_" + be.child("resource").primitiveValue("id")));
-            } else {
-              String id = makeIdFromBundleEntry(be.primitiveValue("fullUrl"));
-              root.an(context.prefixAnchor(be.child("resource").fhirType() + "_" + id));
-              root.an(context.prefixAnchor("hc"+be.child("resource").fhirType() + "_" + id));
+            String id = be.child("resource").has("id") ? be.child("resource").primitiveValue("id") : makeIdFromBundleEntry(be.primitiveValue("fullUrl"));
+            String anchor = be.child("resource").fhirType() + "_" + id;
+            if (id != null && !context.hasAnchor(anchor)) {
+              context.addAnchor(anchor);
+              root.an(context.prefixAnchor(anchor));
+              root.an(context.prefixAnchor("hc"+anchor));
             }
           }
           root.hr();
@@ -237,31 +236,31 @@ public class BundleRenderer extends ResourceRenderer {
     return !b.getEntry().isEmpty();
   }
 
-  private List<XhtmlNode> checkInternalLinks(Bundle b, List<XhtmlNode> childNodes) {
-    scanNodesForInternalLinks(b, childNodes);
-    return childNodes;
-  }
-
-  private void scanNodesForInternalLinks(Bundle b, List<XhtmlNode> nodes) {
-    for (XhtmlNode n : nodes) {
-      if ("a".equals(n.getName()) && n.hasAttribute("href")) {
-        scanInternalLink(b, n);
-      }
-      scanNodesForInternalLinks(b, n.getChildNodes());
-    }
-  }
-
-  private void scanInternalLink(Bundle b, XhtmlNode n) {
-    boolean fix = false;
-    for (BundleEntryComponent be : b.getEntry()) {
-      if (be.hasFullUrl() && be.getFullUrl().equals(n.getAttribute("href"))) {
-        fix = true;
-      }
-    }
-    if (fix) {
-      n.setAttribute("href", "#"+makeInternalBundleLink(n.getAttribute("href")));
-    }
-  }
+//  private List<XhtmlNode> checkInternalLinks(Bundle b, List<XhtmlNode> childNodes) {
+//    scanNodesForInternalLinks(b, childNodes);
+//    return childNodes;
+//  }
+//
+//  private void scanNodesForInternalLinks(Bundle b, List<XhtmlNode> nodes) {
+//    for (XhtmlNode n : nodes) {
+//      if ("a".equals(n.getName()) && n.hasAttribute("href")) {
+//        scanInternalLink(b, n);
+//      }
+//      scanNodesForInternalLinks(b, n.getChildNodes());
+//    }
+//  }
+//
+//  private void scanInternalLink(Bundle b, XhtmlNode n) {
+//    boolean fix = false;
+//    for (BundleEntryComponent be : b.getEntry()) {
+//      if (be.hasFullUrl() && be.getFullUrl().equals(n.getAttribute("href"))) {
+//        fix = true;
+//      }
+//    }
+//    if (fix) {
+//      n.setAttribute("href", "#"+makeInternalBundleLink(b, n.getAttribute("href")));
+//    }
+//  }
 
   private void renderSearch(XhtmlNode root, ResourceWrapper search) {
     StringBuilder b = new StringBuilder();

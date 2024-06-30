@@ -592,7 +592,7 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
 
   public XhtmlNode renderMetadata(CanonicalResourceComparison<? extends CanonicalResource> comparison, String id, String prefix) throws FHIRException, IOException {
     // columns: code, display (left|right), properties (left|right)
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), Utilities.path("[tmp]", "compare"), false);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), Utilities.path("[tmp]", "compare"), false, "c");
     TableModel model = gen.new TableModel(id, true);
     model.setAlternating(true);
     model.getTitles().add(gen.new Title(null, null, "Name", "Property Name", null, 100));
