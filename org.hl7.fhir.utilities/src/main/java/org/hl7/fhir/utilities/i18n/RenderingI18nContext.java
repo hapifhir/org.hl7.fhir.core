@@ -913,6 +913,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DOCUMENT_SUMMARY = "DOCUMENT_SUMMARY";
   public static final String DATA_REND_ATT_URL = "DATA_REND_ATT_URL";
   public static final String DATA_REND_ATT_DATA = "DATA_REND_ATT_DATA";
+  public static final String GENERAL_DATA_DISPLAY_PROPERTY = "GENERAL_DATA_DISPLAY_PROPERTY";
   
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
