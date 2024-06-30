@@ -569,7 +569,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
         if (cs != null && cs.hasSupplements()) {
           String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getUrl());
-          return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path, msg, OpIssueCode.VSProcessing, null));        
+          return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path+".system", msg, OpIssueCode.InvalidData, null));        
         }
         if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
           warningMessage = "Resolved system "+system+(cs.hasVersion() ? " (v"+cs.getVersion()+")" : "")+", but the definition ";
