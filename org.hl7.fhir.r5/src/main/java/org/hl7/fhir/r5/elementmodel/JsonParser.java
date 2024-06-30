@@ -134,6 +134,10 @@ public class JsonParser extends ParserBase {
 
   @Override
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
+    return parse(inStream, 0);
+  }
+  
+  public List<ValidatedFragment> parse(InputStream inStream, int line) throws IOException, FHIRException {
 //    long start = System.currentTimeMillis();
     byte[] content = TextFile.streamToBytes(inStream);
     ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "json", content, false);
@@ -146,12 +150,12 @@ public class JsonParser extends ParserBase {
     
     if (policy == ValidationPolicy.EVERYTHING) {
       try {
-        obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true); 
+        obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true, line); 
       } catch (Exception e) {
-        logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, -1, -1,context.formatMessage(I18nConstants.DOCUMENT), IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_, e.getMessage()), IssueSeverity.FATAL);
+        logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, -1, -1, null, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_, e.getMessage()), IssueSeverity.FATAL);
       }
     } else {
-      obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true); 
+      obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true, line); 
     }
     
     if (obj != null) {
