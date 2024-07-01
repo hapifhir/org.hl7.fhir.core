@@ -792,8 +792,21 @@ public abstract class ResourceRenderer extends DataRenderer {
      }
    }
 
-   public static String makeInternalBundleLink(String fullUrl) {
-     return fullUrl.replace(":", "-");
+   public static String makeInternalBundleLink(ResourceWrapper bundle, String fullUrl) {
+     // are we in a bundle in a bundle? Then the link is scoped
+     boolean inBundle = false;
+     ResourceWrapper rw = bundle.parent();
+     while (rw != null) {
+       if (rw.fhirType().equals("Bundle")) {
+         inBundle = true;
+       }
+       rw = rw.parent();
+      }
+     if (inBundle) {
+       return bundle.getScopedId()+"/"+fullUrl.replace(":", "-");
+     } else {
+       return fullUrl.replace(":", "-");
+     }
    }
 
   public boolean canRender(Resource resource) {
