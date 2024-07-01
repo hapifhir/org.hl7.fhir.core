@@ -273,6 +273,7 @@ public class RenderingContext extends RenderingI18nContext {
   private int base64Limit = 1024;
   private boolean shortPatientForm;
   private String uniqueLocalPrefix;
+  private Set<String> anchors = new HashSet<>();
   
   /**
    * 
@@ -1004,4 +1005,11 @@ public class RenderingContext extends RenderingI18nContext {
     return self;
   }
   
+  public boolean hasAnchor(String anchor) {
+    return anchors.contains(anchor);
+  }
+  
+  public void addAnchor(String anchor) {
+    anchors.add(anchor);
+  }
 }
