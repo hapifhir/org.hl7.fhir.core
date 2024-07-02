@@ -2,7 +2,6 @@ package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,9 +10,8 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
@@ -31,23 +29,39 @@ import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
 public class CapabilityStatementRenderer extends ResourceRenderer {
+
+  public CapabilityStatementRenderer(RenderingContext context) { 
+    super(context); 
+  } 
+ 
+  @Override
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    if (r.isDirect()) {
+      renderResourceTechDetails(r, x);
+      render(status, x, (CapabilityStatement) r.getBase(), r);      
+    } else {
+      throw new Error("CapabilityStatementRenderer only renders native resources directly");
+    }
+  }
   
+  @Override
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
+  }
+
   private static final String EXPECTATION = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation";
   private static final String COMBINED = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-search-parameter-combination";
   private static final String SP_BASE = "http://hl7.org/fhir/searchparameter/";
@@ -266,20 +280,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
   }
 
-  //Constructors
-  public CapabilityStatementRenderer(RenderingContext context) {
-    super(context);
-  }
-
-  public CapabilityStatementRenderer(RenderingContext context, ResourceContext rcontext) {
-    super(context, rcontext);
-  }
-  
-  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
-    return render(x, (CapabilityStatement) dr);
-  }
-
-  public boolean render(XhtmlNode x, CapabilityStatement conf) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(RenderingStatus status, XhtmlNode x, CapabilityStatement conf, ResourceWrapper res) throws FHIRFormatError, DefinitionException, IOException {
+    status.setExtensions(true);
     boolean igRenderingMode = (context.getRules() == GenerationRules.IG_PUBLISHER);
     FHIRVersion currentVersion = conf.getFhirVersion();
     String versionPathComponent = getVersionPathComponent(currentVersion.getDefinition());
@@ -298,7 +300,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_FHIR_VER, currentVersion.toCode()) + " ");
     addSupportedFormats(uList, conf);
     
-    uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_PUB_ON, displayDateTime(conf.getDateElement()) + " "));
+    uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_PUB_ON, displayDateTime(wrapWC(res, conf.getDateElement())) + " "));
     uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_PUB_BY, conf.getPublisherElement().asStringValue()) + " ");
 
 
@@ -307,7 +309,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     block.addTag("p").addText(context.formatPhrase(RenderingContext.CAPABILTY_ALLOW_CAP));
 
 
-    addSupportedCSs(x, conf);
+    addSupportedCSs(status, x, conf, res);
     addSupportedIGs(x, conf);
 
     int restNum = conf.getRest().size();
@@ -338,7 +340,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
           x.h(nextLevel,"resourcesCap" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.CAPABILITY_RES_PRO));
           x.h(nextLevel+1,"resourcesSummary" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.GENERAL_SUMM));
           addSummaryIntro(x);
-          addSummaryTable(x, rest, hasVRead, hasPatch, hasDelete, hasHistory, hasUpdates, count);
+          addSummaryTable(status, res, x, rest, hasVRead, hasPatch, hasDelete, hasHistory, hasUpdates, count);
           x.addTag("hr");
           //Third time for individual resources
           int resCount = 1;
@@ -355,7 +357,6 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       addWarningPanel(x,"⹋⹋ - this mark indicates that there are more than one expectation extensions present");
     }
 
-    return true;
   }
 
   private String getVersionPathComponent(String definition) {
@@ -373,12 +374,6 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   public String display(CapabilityStatement cs) {
     return cs.present();
   }
-
-  @Override
-  public String display(Resource r) throws UnsupportedEncodingException, IOException {
-    return ((CapabilityStatement) r).present();
-  }
-
 
   private boolean hasOp(CapabilityStatementRestResourceComponent r, TypeRestfulInteraction on) {
     for (ResourceInteractionComponent op : r.getInteraction()) {
@@ -424,19 +419,14 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     return null;
   }
 
-  private void addSupportedCSs(XhtmlNode x, CapabilityStatement cap) {
+  private void addSupportedCSs(RenderingStatus status, XhtmlNode x, CapabilityStatement cap, ResourceWrapper res) throws UnsupportedEncodingException, IOException {
     if (cap.hasInstantiates()) {
       XhtmlNode p = x.para();
       p.tx(cap.getInstantiates().size() > 1 ? "This CapabilityStatement instantiates these CapabilityStatements" : "This CapabilityStatement instantiates the CapabilityStatement");
       boolean first = true;
       for (CanonicalType ct : cap.getInstantiates()) {
-        CapabilityStatement cs = context.getContext().fetchResource(CapabilityStatement.class, ct.getValue(), cap);
         if (first) {first = false;} else {p.tx(", ");};
-        if (cs == null) {
-          p.code().tx(ct.getValue());
-        } else {
-          p.ah(cs.getWebPath()).tx(cs.present());
-        }
+        renderCanonical(status, res, p, CapabilityStatement.class, ct);
       }
     }
     if (cap.hasImports()) {
@@ -444,13 +434,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       p.tx(cap.getImports().size() > 1 ? "This CapabilityStatement imports these CapabilityStatements" : "This CapabilityStatement imports the CapabilityStatement");
       boolean first = true;
       for (CanonicalType ct : cap.getImports()) {
-        CapabilityStatement cs = context.getContext().fetchResource(CapabilityStatement.class, ct.getValue(), cap);
         if (first) {first = false;} else {p.tx(", ");};
-        if (cs == null) {
-          p.code().tx(ct.getValue());
-        } else {
-          p.ah(cs.getWebPath()).tx(cs.present());
-        }
+        renderCanonical(status, res, p, CapabilityStatement.class, ct);
       }      
     }
   }
@@ -737,7 +722,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     uList.li().addText(context.formatPhrase(RenderingContext.CAPABILITY_RES_OPER));
   }
 
-  private void addSummaryTable(XhtmlNode x, CapabilityStatement.CapabilityStatementRestComponent rest, boolean hasVRead, boolean hasPatch, boolean hasDelete, boolean hasHistory, boolean hasUpdates, int count) throws IOException {
+  private void addSummaryTable(RenderingStatus status, ResourceWrapper res, XhtmlNode x, CapabilityStatement.CapabilityStatementRestComponent rest, boolean hasVRead, boolean hasPatch, boolean hasDelete, boolean hasHistory, boolean hasUpdates, int count) throws IOException {
     XhtmlNode t = x.div().attribute("class","table-responsive").table("table table-condensed table-hover");
     XhtmlNode tr = t.addTag("thead").tr();
     tr.th().b().tx(context.formatPhrase(RenderingContext.CAPABILITY_RES_TYP));
@@ -785,12 +770,12 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         if (hasSupProf) {
           profCell.br();
           profCell.addTag("em").addText(context.formatPhrase(RenderingContext.CAPABILITY_ADD_SUPP_PROF));
-          renderSupportedProfiles(profCell, r);
+          renderSupportedProfiles(status, res, profCell, r);
         }
       }
       else {    //Case of only supported profiles
         profCell.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_PROFS));
-        renderSupportedProfiles(profCell, r);
+        renderSupportedProfiles(status, res, profCell, r);
       }
       //Show capabilities
       tr.td().addText(showOp(r, TypeRestfulInteraction.READ));
@@ -836,16 +821,11 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     return paramNames;
   }
 
-  private void renderSupportedProfiles(XhtmlNode profCell, CapabilityStatementRestResourceComponent r) throws IOException {
+  private void renderSupportedProfiles(RenderingStatus status, ResourceWrapper res, XhtmlNode profCell, CapabilityStatementRestResourceComponent r) throws IOException {
     for (CanonicalType sp: r.getSupportedProfile()) { 
       profCell.br();
       profCell.nbsp().nbsp();
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, sp.getValue());
-      if (sd != null) {
-        profCell.ah(sd.getWebPath()).addText(sd.present());
-      } else {
-        profCell.ah(sp.getValue()).addText(sp.getValue());        
-      }
+      renderCanonical(status, res, profCell, StructureDefinition.class, sp);
     }
     if (r.hasExtension(ToolingExtensions.EXT_PROFILE_MAPPING)) {
       profCell.br();
@@ -1449,16 +1429,6 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
   private void addLead(XhtmlNode node, String text) {
     node.addTag("span").attribute("class", "lead").addText(text);
-  }
-
-  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    if (r.has("title")) {
-      return r.children("title").get(0).getBase().primitiveValue();
-    }
-    if (r.has("name")) {
-      return r.children("name").get(0).getBase().primitiveValue();
-    }
-    return "??";
   }
 
   private void addResourceLink(XhtmlNode node, String name, String canonicalUri) {

@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -55,6 +57,19 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     Assertions.assertEquals("explicit",fp.evaluateToString(target, "extension[1].value"));
     Assertions.assertEquals("2147483647",fp.evaluateToString(target, "extension[2].value"));
     Assertions.assertEquals("2147483647",fp.evaluateToString(target, "extension[3].value"));
+  }
+  
+  @Test
+  public void testDateOpVariables() throws IOException, FHIRException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    String fileMap = TestingUtilities.loadTestResource("r5", "structure-mapping", "qr2patfordates.map");
+    Element source = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "structure-mapping", "qrext.json"), FhirFormat.JSON);
+    StructureMap structureMap = scu.parse(fileMap, "qr2patfordates");
+    Element target = Manager.build(context, scu.getTargetType(structureMap));
+    scu.transform(null, source, structureMap, target);
+    FHIRPathEngine fp = new FHIRPathEngine(context);
+    assertEquals("2023-10-26", fp.evaluateToString(target, "birthDate"));
+    assertEquals("2023-09-20T13:19:13.502Z", fp.evaluateToString(target, "deceased"));
   }
 
   private void assertSerializeDeserialize(StructureMap structureMap) {

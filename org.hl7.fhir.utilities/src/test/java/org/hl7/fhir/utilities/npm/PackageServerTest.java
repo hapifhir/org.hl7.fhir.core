@@ -1,7 +1,6 @@
 package org.hl7.fhir.utilities.npm;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.StringStartsWith.startsWith;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -149,7 +148,7 @@ public class PackageServerTest {
   private static void assertBasicAuthorization(RecordedRequest packageRequest) {
     String authorizationHeader = packageRequest.getHeader("Authorization");
 
-    assertThat(authorizationHeader, startsWith("Basic"));
+    assertThat(authorizationHeader).startsWith("Basic");
     byte[] data = Base64.getDecoder().decode(authorizationHeader.substring(6));
     String authorizationValue = new String(data, StandardCharsets.UTF_8);
     String[] authorizationColumns = authorizationValue.split(":");
@@ -161,7 +160,7 @@ public class PackageServerTest {
   private static void assertTokenAuthorization(RecordedRequest packageRequest) {
     String authorizationHeader = packageRequest.getHeader("Authorization");
 
-    assertThat(authorizationHeader, startsWith("Bearer"));
+    assertThat(authorizationHeader).startsWith("Bearer");
     String token = authorizationHeader.substring(7);
 
     assertEquals(MockPackageServer.DUMMY_TOKEN, token);

@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.utils;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
@@ -74,6 +75,20 @@ public class PackageHackerR5 {
          if (ed.getPath().equals("Observation.component.value[x]") && ed.hasBinding() && "http://hl7.org/fhir/ValueSet/ucum-vitals-common|4.0.1".equals(ed.getBinding().getValueSet())) {
            ed.getBinding().setStrength(BindingStrength.EXTENSIBLE);
          }
+       }
+     }
+   }
+   // work around a r4 version of extension pack issue
+   if (packageInfo.getId().equals("hl7.fhir.uv.extensions.r4") && r.getType().equals("StructureDefinition")) {
+     StructureDefinition sd = (StructureDefinition) r.getResource();
+     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+       if (ed.getType().removeIf(tr -> Utilities.existsInList(tr.getCode(), "integer64", "CodeableReference", "RatioRange", "Availability", "ExtendedContactDetail"))) {
+         sd.setUserData("fixed-by-loader", true);
+       }
+     }
+     for (ElementDefinition ed : sd.getDifferential().getElement()) {
+       if (ed.getType().removeIf(tr -> Utilities.existsInList(tr.getCode(), "integer64", "CodeableReference", "RatioRange", "Availability", "ExtendedContactDetail"))) {
+         sd.setUserData("fixed-by-loader", true);
        }
      }
    }

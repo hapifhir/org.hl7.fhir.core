@@ -273,6 +273,8 @@ public class ToolingExtensions {
   public static final String EXT_APPLICABLE_VERSION_VALUE = "http://hl7.org/fhir/StructureDefinition/version-specific-value";
   public static final String EXT_IG_URL = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-resource-uri";
   public static final String EXT_VS_CS_SUPPL_NEEDED = "http://hl7.org/fhir/StructureDefinition/valueset-supplement";
+  public static final String EXT_TYPE_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/type-parameter";
+  public static final String EXT_ALTERNATE_CANONICAL = "http://hl7.org/fhir/StructureDefinition/alternate-canonical";
   
   // specific extension helpers
 

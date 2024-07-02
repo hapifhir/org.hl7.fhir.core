@@ -106,7 +106,7 @@ msgstr ""
 
 # BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON
 #: BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON
-msgid "The {1} resource did not math the profile {2} because: {3}"
+msgid "The {1} resource did not match the profile {2} because: {3}"
 msgstr ""
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
@@ -270,8 +270,8 @@ msgstr "No se han podido determinar tipos por la cadena de búsqueda, asi que lo
 
 # Bad_file_path_error
 #: Bad_file_path_error
-msgid "\n********************\n* The file name you passed in, ''{0}'', doesn''t exist on the local filesystem.\n* Please verify that this is valid file location.\n********************\n\n"
-msgstr "\n********************\n* El nombre del fichero especificado, ''{0}'', no existe en el sistema de archivos local.\n* Por favor verifique que sea una ubicación válida.\n********************\n\n"
+msgid "** Error: The file name you passed in, ''{0}'', doesn''t exist on the local filesystem. Please verify that this is valid file location **"
+msgstr "!!\n********************\n* El nombre del fichero especificado, ''{0}'', no existe en el sistema de archivos local.\n* Por favor verifique que sea una ubicación válida.\n********************\n\n"
 
 # Base__Derived_profiles_have_different_types____vs___
 #: Base__Derived_profiles_have_different_types____vs___
@@ -898,7 +898,7 @@ msgstr "El discriminador ({0}) está basado en la existencia de un elemento, per
 # Discriminator__is_based_on_type_but_slice__in__has_multiple_types
 #: Discriminator__is_based_on_type_but_slice__in__has_multiple_types
 msgctxt "Discriminator__is_based_on_type_but_slice__in__has_multiple_types"
-msgid ""
+msgid "-- no content: do not translate --"
 msgid_plural "Discriminator ({1}) is based on type, but slice {2} in {3} has {0} types: {4}"
 msgstr[0] ""
 msgstr[1] "El discriminador ({1}) está basado en tipos, pero la partición {2} en {3} tiene {0} tipos: {4}"
@@ -1363,7 +1363,7 @@ msgstr "Imposible resolver el discriminador{0} en {2} encontrado en las definici
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
-msgid ""
+msgid "-- no content: do not translate --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
 msgstr[1] "Error en el discriminador en {1}: no tiene hijos, {0} perfiles de tipo"
@@ -1372,7 +1372,7 @@ msgstr[2] "Error en el discriminador en {1}: no tiene hijos, {0} perfiles de tip
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid ""
+msgid "-- no content: do not translate --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
 msgstr[1] "Error en el discriminador en {1}: no tiene hijos , {0} tipos"
@@ -1396,7 +1396,7 @@ msgstr "Uso ilegal de ofType() en el discriminador - Type no tiene codigo en {0}
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid ""
+msgid "-- no content: do not translate --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] "Uso Ilegal de resolve() en el discriminador - {0} tipos posibles en {1} (puede ser uno solo)"
@@ -1420,7 +1420,7 @@ msgstr "Uso ilegal de ofType() en el discriminador - no hay tipo en el elemento 
 # FHIRPATH_FOCUS
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
-msgid ""
+msgid "-- no content: do not translate --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "Error evaluando la expresión FHIRPath: el foco para {0} puede tener solo un valor, pero tiene {0} valores"
@@ -1439,7 +1439,7 @@ msgstr ""
 # FHIRPATH_LEFT_VALUE
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid ""
+msgid "-- no content: do not translate --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "Error evaluando la expresión FHIRPath: el operando a la izquierda de {1} puede tener solo 1 valor pero tiene {0} valores"
@@ -1523,7 +1523,7 @@ msgstr "Problema con el uso de resolve() - el perfil {0} en {1} no pudo ser resu
 # FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid ""
+msgid "-- no content: do not translate --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] "Uso Ilegal de resolve() en el discriminador - {0} perfiles destino posibles de tipo en {1} (solo puede ser uno)"
@@ -1532,7 +1532,7 @@ msgstr[2] "Uso Ilegal de resolve() en el discriminador - {0} perfiles destino po
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid ""
+msgid "-- no content: do not translate --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "Error evaluando la expresión FHIRPath: el operando a la derecha de {1} puede tener solo 1 valor pero tiene {0} valores"
@@ -1622,6 +1622,61 @@ msgstr "Esperados {0} pero encontrados {1} elementos suffix"
 #: Found__items_for__resolving_discriminator__from_
 msgid "Found {0} items for {1} resolving discriminator {2} from {3}"
 msgstr "Se han encontrado {0} items para {1} resolviendo el discriminator {2} de {3}"
+
+# IG_DEPENDENCY_CLASH_CANONICAL
+#: IG_DEPENDENCY_CLASH_CANONICAL
+msgid "The packageId {0} points to the canonical {1} which is inconsistent with the stated canonical of {2}"
+msgstr ""
+
+# IG_DEPENDENCY_CLASH_PACKAGEID
+#: IG_DEPENDENCY_CLASH_PACKAGEID
+msgid "The canonical URL {0} points to the package {1} which is inconsistent with the stated packageId of {2}"
+msgstr ""
+
+# IG_DEPENDENCY_DIRECT
+#: IG_DEPENDENCY_DIRECT
+msgid "The URL should refer directly to the ImplementationGuide resource (e.g. include ''/ImplementationGuide/'')"
+msgstr ""
+
+# IG_DEPENDENCY_EXCEPTION
+#: IG_DEPENDENCY_EXCEPTION
+msgid "Exception checking package version consistency: {0}"
+msgstr ""
+
+# IG_DEPENDENCY_INVALID_PACKAGEID
+#: IG_DEPENDENCY_INVALID_PACKAGEID
+msgid "The packageId {0} is not valid"
+msgstr ""
+
+# IG_DEPENDENCY_INVALID_PACKAGE_VERSION
+#: IG_DEPENDENCY_INVALID_PACKAGE_VERSION
+msgid "The version {0} is not a valid NPM package version"
+msgstr ""
+
+# IG_DEPENDENCY_NO_PACKAGE
+#: IG_DEPENDENCY_NO_PACKAGE
+msgid "No NPM package id could be determined so the version consistency can't be checked"
+msgstr ""
+
+# IG_DEPENDENCY_NO_VERSION
+#: IG_DEPENDENCY_NO_VERSION
+msgid "No version was specified for the package so the version consistency can't be checked"
+msgstr ""
+
+# IG_DEPENDENCY_PACKAGE_UNKNOWN
+#: IG_DEPENDENCY_PACKAGE_UNKNOWN
+msgid "The package {0} could not be found so the version consistency can't be checked"
+msgstr ""
+
+# IG_DEPENDENCY_VERSION_ERROR
+#: IG_DEPENDENCY_VERSION_ERROR
+msgid "The ImplementationGuide is based on FHIR version {0} but package {1} is based on FHIR version {2}. Use the package {3} instead"
+msgstr ""
+
+# IG_DEPENDENCY_VERSION_WARNING
+#: IG_DEPENDENCY_VERSION_WARNING
+msgid "The ImplementationGuide is based on FHIR version {0} but package {1} is based on FHIR version {2}. In general, this version mismatch should be avoided - some tools will try to make this work with variable degrees of success, but others will not even try"
+msgstr ""
 
 # ILLEGAL_COMMENT_TYPE
 #: ILLEGAL_COMMENT_TYPE
@@ -2116,7 +2171,7 @@ msgstr ""
 # MULTIPLE_LOGICAL_MODELS
 #: MULTIPLE_LOGICAL_MODELS
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid ""
+msgid "-- no content: do not translate --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
 msgstr[1] "{0} Modelos Lógicos encontrados en los perfiles provistos, asi que es imposible analizar el modelo lógico(puede ser solo uno, se encontraron {1})"
@@ -2141,6 +2196,11 @@ msgstr "Etiqueta de Seguridad Duplicada {0}"
 #: MustSupport_VAL_MustSupport
 msgid "The element {0} is not marked as ''mustSupport'' in the profile {1}. Consider not using the element, or marking the element as must-Support in the profile"
 msgstr "El elemento {0} no está marcado como ''mustSupport'' en el perfil {1}. Considere no usar el elemento, o marcar el elemento como must-Support en el perfil"
+
+# NDJSON_EMPTY_LINE_WARNING
+#: NDJSON_EMPTY_LINE_WARNING
+msgid "The NDJSON source contains an empty line. This may not be accepted by some processors"
+msgstr ""
 
 # NO_VALID_DISPLAY_FOUND
 #: NO_VALID_DISPLAY_FOUND
@@ -2369,7 +2429,7 @@ msgstr "Los discriminadores basados en perfiles deben tener un tipo con un perfi
 # Profile_based_discriminators_must_have_only_one_type__in_profile
 #: Profile_based_discriminators_must_have_only_one_type__in_profile
 msgctxt "Profile_based_discriminators_must_have_only_one_type__in_profile"
-msgid ""
+msgid "-- no content: do not translate --"
 msgid_plural "Profile based discriminators must have only one type ({1} in profile {2}) but found {0} types"
 msgstr[0] ""
 msgstr[1] "Los discriminadores basados en perfiles deben tener un solo tipo ({1} en el perfil {2}) pero se han encontrado {0} tipos"
@@ -2598,7 +2658,7 @@ msgstr "Solo un item con respuesta se permite para items que tengan este linkId"
 # Questionnaire_QR_Item_OnlyOneI
 #: Questionnaire_QR_Item_OnlyOneI
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid ""
+msgid "-- no content: do not translate --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] ""
 msgstr[1] "Solo una respuesta permitida para el linkID {1} pero se encontraron {0} items"
@@ -3075,6 +3135,36 @@ msgstr "!!El tipo {0} solo puede ser definido si la categoria es 'logical' no {1
 msgid "The type namespace {0} SHOULD match the url namespace {1} for the definition of the type"
 msgstr "El espacio de nombres para el tipo {0} DEBERIA coincidir con el espacio de nombres de la url {1} para la definición del tipo"
 
+# SD_TYPE_PARAMETER_ABSTRACT_WARNING
+#: SD_TYPE_PARAMETER_ABSTRACT_WARNING
+msgid "The type ''{0}'' at {3} refers to the abstract type ''{1}'' but the context is not an abstract type - this is usually an error"
+msgstr ""
+
+# SD_TYPE_PARAMETER_INVALID
+#: SD_TYPE_PARAMETER_INVALID
+msgid "The type definition ''{2}'' has a type parameter ''{3}'', which is not consistent with it''s ancestor type definition ''{0}'' which has the type parameter ''{1}''"
+msgstr ""
+
+# SD_TYPE_PARAMETER_INVALID_REF
+#: SD_TYPE_PARAMETER_INVALID_REF
+msgid "The type ''{0}'' is a reference to ''{1}'' which has a type parameter ''{2}'' with a base type of {3} but the type parameter provided is ''{4}'' which is not the right type"
+msgstr ""
+
+# SD_TYPE_PARAMETER_MISSING
+#: SD_TYPE_PARAMETER_MISSING
+msgid "The type definition ''{2}'' does not declare a type parameter, but it is derived from the type definition ''{0}'' which has the type parameter ''{1}''"
+msgstr ""
+
+# SD_TYPE_PARAMETER_UNKNOWN
+#: SD_TYPE_PARAMETER_UNKNOWN
+msgid "The type definition ''{0}'' has the type parameter ''{1}'' but it is not a known type so derivation consistency cannot be checked"
+msgstr ""
+
+# SD_TYPE_PARAM_NOT_SPECIFIED
+#: SD_TYPE_PARAM_NOT_SPECIFIED
+msgid "The type ''{0}'' at {3} is a reference to ''{1}'' which needs a type parameter ''{2}'' but a type parameter is not provided for ''{2}''"
+msgstr ""
+
 # SD_VALUE_COMPLEX_FIXED
 #: SD_VALUE_COMPLEX_FIXED
 msgid "For the complex type {0}, consider using a pattern rather than a fixed value to avoid over-constraining the instance"
@@ -3422,7 +3512,7 @@ msgstr "El snapshot generado tiene una cantidad de elementos distinta {1} que el
 
 # SNAPSHOT_IS_EMPTY
 #: SNAPSHOT_IS_EMPTY
-msgid "The snapshot for the profile ''{0}'' is empty. This is usually due to a processing logged elsewhere"
+msgid "The snapshot for the profile ''{0}'' is empty. This is usually due to a processing error logged elsewhere"
 msgstr ""
 
 # STATUS_CODE_HINT

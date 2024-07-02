@@ -135,7 +135,7 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
 
   private void addStructureDefinitionMetadata(Sheet sheet, StructureDefinition sd) {
     for (Coding k : sd.getKeyword()) {
-      addMetadataRow(sheet, "Keyword", dr.display(k));
+      addMetadataRow(sheet, "Keyword", dr.displayDataType(k));
     }
     addMetadataRow(sheet, "FHIR Version", sd.getFhirVersionElement().asStringValue());
     addMetadataRow(sheet, "Kind", sd.getKindElement().asStringValue());

@@ -4,32 +4,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.profile.BindingResolution;
-import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ActorDefinition;
-import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
-import org.hl7.fhir.r5.renderers.ObligationsRenderer.ObligationDetail;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.utils.PublicationHacker;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
@@ -38,11 +27,11 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlNodeList;
 
-public class ObligationsRenderer {
+public class ObligationsRenderer extends Renderer {
   public static class ObligationDetail {
-    private String code;
+    private List<String> codes = new ArrayList<>();
     private List<String> elementIds = new ArrayList<>();
-    private String actor;
+    private List<CanonicalType> actors = new ArrayList<>();
     private String doco;
     private String docoShort;
     private String filter;
@@ -57,10 +46,11 @@ public class ObligationsRenderer {
     private int count = 1;
     
     public ObligationDetail(Extension ext) {
-      this.code =  ext.getExtensionString("code");
-      this.actor =  ext.getExtensionString("actor");
-      if (this.actor == null) {
-        this.actor =  ext.getExtensionString("actorId");
+      for (Extension e: ext.getExtensionsByUrl("code")) {
+        codes.add(e.getValueStringType().toString());
+      }
+      for (Extension e: ext.getExtensionsByUrl("actor")) {
+        actors.add(e.getValueCanonicalType());
       }
       this.doco =  ext.getExtensionString("documentation");
       this.docoShort =  ext.getExtensionString("shortDoco");
@@ -80,7 +70,7 @@ public class ObligationsRenderer {
     
     private String getKey() {
       // Todo: Consider extending this with content from usageContext if purpose isn't sufficiently differentiating
-      return code + Integer.toString(count);
+      return String.join(",", codes) + Integer.toString(count);
     }
     
     private void incrementCount() {
@@ -96,8 +86,11 @@ public class ObligationsRenderer {
     public String getDoco(boolean full) {
       return full ? doco : docoShort;
     }
-    public String getCode() {
-      return code;
+    public String getCodes() {
+      return String.join(",", codes);
+    }
+    public List<String> getCodeList() {
+      return new ArrayList<String>(codes);
     }
     public boolean unchanged() {
       if (!isUnchanged)
@@ -105,9 +98,9 @@ public class ObligationsRenderer {
       if (compare==null)
         return true;
       isUnchanged = true;
-      isUnchanged = isUnchanged && ((code==null && compare.code==null) || code.equals(compare.code));
+      isUnchanged = isUnchanged && ((codes.isEmpty() && compare.codes.isEmpty()) || codes.equals(compare.codes));
       isUnchanged = elementIds.equals(compare.elementIds);
-      isUnchanged = isUnchanged && ((actor==null && compare.actor==null) || actor.equals(compare.actor));
+      isUnchanged = isUnchanged && ((actors.isEmpty() && compare.actors.isEmpty()) || actors.equals(compare.actors));
       isUnchanged = isUnchanged && ((doco==null && compare.doco==null) || doco.equals(compare.doco));
       isUnchanged = isUnchanged && ((docoShort==null && compare.docoShort==null) || docoShort.equals(compare.docoShort));
       isUnchanged = isUnchanged && ((filter==null && compare.filter==null) || filter.equals(compare.filter));
@@ -136,12 +129,16 @@ public class ObligationsRenderer {
       return usage;
     }
 
-    public boolean hasActor() {
-      return actor != null;
+    public boolean hasActors() {
+      return !actors.isEmpty();
     }
 
     public boolean hasActor(String id) {
-      return id.equals(actor);
+      for (CanonicalType actor: actors) {
+        if (actor.getValue().equals(id))
+          return true;
+      }
+      return false;
     }
   }
 
@@ -157,6 +154,7 @@ public class ObligationsRenderer {
   private CodeResolver cr;
 
   public ObligationsRenderer(String corePath, StructureDefinition profile, String path, RenderingContext context, IMarkdownProcessor md, CodeResolver cr) {
+    super(context);
     this.corePath = corePath;
     this.profile = profile;
     this.path = path;
@@ -276,24 +274,24 @@ public class ObligationsRenderer {
     return abr;
   }
 
-  public String render() throws IOException {
+  public String render(RenderingStatus status, ResourceWrapper res, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws IOException {
     if (obligations.isEmpty()) {
       return "";
     } else {
       XhtmlNode tbl = new XhtmlNode(NodeType.Element, "table");
       tbl.attribute("class", "grid");
-      renderTable(tbl.getChildNodes(), true);
+      renderTable(status, res, tbl.getChildNodes(), true, defPath, anchorPrefix, inScopeElements);
       return new XhtmlComposer(false).compose(tbl);
     }
   }
 
-  public void renderTable(HierarchicalTableGenerator gen, Cell c) throws FHIRFormatError, DefinitionException, IOException {
+  public void renderTable(RenderingStatus status, ResourceWrapper res, HierarchicalTableGenerator gen, Cell c, List<ElementDefinition> inScopeElements) throws FHIRFormatError, DefinitionException, IOException {
     if (obligations.isEmpty()) {
       return;
     } else {
       Piece piece = gen.new Piece("table").attr("class", "grid");
       c.getPieces().add(piece);
-      renderTable(piece.getChildren(), false);
+      renderTable(status, res, piece.getChildren(), false, gen.getDefPath(), gen.getUniqueLocalPrefix(), inScopeElements);
     }
   }
 
@@ -313,10 +311,21 @@ public class ObligationsRenderer {
   }
 
   private void renderObligationLI(XhtmlNodeList children, ObligationDetail ob) throws IOException {
-    renderCode(children, ob.getCode());
-    if (ob.hasFilter() || ob.hasUsage()) {
+    renderCodes(children, ob.getCodeList());
+    if (ob.hasFilter() || ob.hasUsage() || !ob.elementIds.isEmpty()) {
       children.tx(" (");
       boolean ffirst = !ob.hasFilter();
+      boolean firstEid = true;
+
+      for (String eid: ob.elementIds) {
+        if (firstEid) {
+          children.span().i().tx("Elements: ");
+          firstEid = false;
+        } else
+          children.tx(", ");
+        String trimmedElement = eid.substring(eid.indexOf(".")+ 1);
+        children.tx(trimmedElement);
+      }
       if (ob.hasFilter()) {
         children.span(null, ob.getFilterDesc()).code().tx(ob.getFilter());
       }
@@ -327,7 +336,7 @@ public class ObligationsRenderer {
           children.tx("=");
         }
         CodeResolution ccr = this.cr.resolveCode(uc.getValueCodeableConcept());
-        children.ah(ccr.getLink(), ccr.getHint()).tx(ccr.getDisplay());
+        children.ah(context.prefixLocalHref(ccr.getLink()), ccr.getHint()).tx(ccr.getDisplay());
       }
       children.tx(")");
     }
@@ -337,37 +346,42 @@ public class ObligationsRenderer {
   }
 
 
-  public void renderTable(List<XhtmlNode> children, boolean fullDoco) throws FHIRFormatError, DefinitionException, IOException {
+  public void renderTable(RenderingStatus status, ResourceWrapper res, List<XhtmlNode> children, boolean fullDoco, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements) throws FHIRFormatError, DefinitionException, IOException {
     boolean doco = false;
     boolean usage = false;
     boolean actor = false;
     boolean filter = false;
     boolean elementId = false;
     for (ObligationDetail binding : obligations) {
-      actor = actor || binding.actor!=null  || (binding.compare!=null && binding.compare.actor !=null);
+      actor = actor || !binding.actors.isEmpty()  || (binding.compare!=null && !binding.compare.actors.isEmpty());
       doco = doco || binding.getDoco(fullDoco)!=null  || (binding.compare!=null && binding.compare.getDoco(fullDoco)!=null);
       usage = usage || !binding.usage.isEmpty() || (binding.compare!=null && !binding.compare.usage.isEmpty());
       filter = filter || binding.filter != null || (binding.compare!=null && binding.compare.filter!=null);
       elementId = elementId || !binding.elementIds.isEmpty()  || (binding.compare!=null && !binding.compare.elementIds.isEmpty());
     }
 
+    List<String> inScopePaths = new ArrayList<>();
+    for (ElementDefinition e: inScopeElements) {
+      inScopePaths.add(e.getPath());
+    }
+
     XhtmlNode tr = new XhtmlNode(NodeType.Element, "tr");
     children.add(tr);
     tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_OBLIG));
     if (actor) {
-      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.OBLIG_ACT));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.OBLIG_ACT));
     }
     if (elementId) {
-      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.OBLIG_ELE));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.OBLIG_ELE));
     }
     if (usage) {
-      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.GENERAL_USAGE));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_USAGE));
     }
     if (doco) {
-      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION));
     }
     if (filter) {
-      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.GENERAL_FILTER));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_FILTER));
     }
     for (ObligationDetail ob : obligations) {
       tr =  new XhtmlNode(NodeType.Element, "tr");
@@ -379,43 +393,58 @@ public class ObligationsRenderer {
       children.add(tr);
 
       XhtmlNode code = tr.td().style("font-size: 11px");
-      if (ob.compare!=null && ob.code.equals(ob.compare.code))
+      if (ob.compare!=null && ob.getCodes().equals(ob.compare.getCodes()))
         code.style("font-color: darkgray");
-      renderCode(code.getChildNodes(), ob.code);
-      if (ob.compare!=null && ob.compare.code != null && !ob.code.equals(ob.compare.code)) {
+        renderCodes(code.getChildNodes(), ob.getCodeList());
+      if (ob.compare!=null && !ob.compare.getCodeList().isEmpty() && !ob.getCodes().equals(ob.compare.getCodes())) {
         code.br();
         code = code.span(STYLE_UNCHANGED, null);
-        renderCode(code.getChildNodes(), ob.compare.code);
+        renderCodes(code.getChildNodes(), ob.compare.getCodeList());
       }
-      if (actor) {
 
-        ActorDefinition ad = context.getContext().fetchResource(ActorDefinition.class, ob.actor);
-        ActorDefinition compAd = null;
-        if (ob.compare!=null  && ob.compare.actor!=null) {
-          compAd = context.getContext().fetchResource(ActorDefinition.class, ob.compare.actor);
+      XhtmlNode actorId = tr.td().style("font-size: 11px");
+      if (!ob.actors.isEmpty() || ob.compare.actors.isEmpty()) {
+        boolean firstActor = true;
+        for (CanonicalType anActor : ob.actors) {
+          ActorDefinition ad = context.getContext().fetchResource(ActorDefinition.class, anActor.getCanonical());
+          boolean existingActor = ob.compare != null && ob.compare.actors.contains(anActor);
+
+          if (!firstActor) {
+            actorId.br();
+            firstActor = false;
+          }
+
+          if (!existingActor)
+            actorId.style(STYLE_UNCHANGED);
+          if (ad == null) {
+            actorId.addText(anActor.getCanonical());
+          } else {
+            actorId.ah(ad.getWebPath()).tx(ad.getTitle());
+          }
         }
 
-        XhtmlNode actorId = tr.td().style("font-size: 11px");
-        if (ob.compare!=null && ob.actor.equals(ob.compare.actor))
-          actorId.style(STYLE_UNCHANGED);
-        if (ad != null && ad.hasWebPath()) {
-          actorId.ah(ad.getWebPath(), ob.actor).tx(ad.present());
-        } else if (ad != null) {
-          actorId.span(null, ob.actor).tx(ad.present());
-        }
-
-        if (ob.compare!=null && ob.compare.actor!=null && !ob.actor.equals(ob.compare.actor)) {
-          actorId.br();
-          actorId = actorId.span(STYLE_REMOVED, null);
-          if (compAd != null) {
-            if (compAd.hasWebPath()) {
-              actorId.ah(compAd.getWebPath(), ob.compare.actor).tx(compAd.present());
-            } else {
-              actorId.span(null, ob.compare.actor).tx(compAd.present());
+        if (ob.compare != null) {
+          for (CanonicalType compActor : ob.compare.actors) {
+            if (!ob.actors.contains(compActor)) {
+              ActorDefinition compAd = context.getContext().fetchResource(ActorDefinition.class, compActor.toString());
+              if (!firstActor) {
+                actorId.br();
+                firstActor = true;
+              }
+              actorId = actorId.span(STYLE_REMOVED, null);
+              if (compAd == null) {
+                actorId.ah(context.prefixLocalHref(compActor.toString()), compActor.toString()).tx(compActor.toString());
+              } else if (compAd.hasWebPath()) {
+                actorId.ah(context.prefixLocalHref(compAd.getWebPath()), compActor.toString()).tx(compAd.present());
+              } else {
+                actorId.span(null, compActor.toString()).tx(compAd.present());
+              }
             }
           }
         }
       }
+
+
       if (elementId) {
         XhtmlNode elementIds = tr.td().style("font-size: 11px");
         if (ob.compare!=null && ob.elementIds.equals(ob.compare.elementIds))
@@ -424,9 +453,14 @@ public class ObligationsRenderer {
           elementIds.sep(", ");
           ElementDefinition ed = profile.getSnapshot().getElementById(eid);
           if (ed != null) {
-            elementIds.ah("#"+eid).tx(ed.getName());
-          } else {
-            elementIds.code().tx(eid);
+            boolean inScope = inScopePaths.contains(ed.getPath());
+            String name = eid.substring(eid.indexOf(".") + 1);
+            if (ed != null && inScope) {
+              String link = defPath + "#" + anchorPrefix + eid;
+              elementIds.ah(context.prefixLocalHref(link)).tx(name);
+            } else {
+              elementIds.code().tx(name);
+            }
           }
         }
 
@@ -445,7 +479,7 @@ public class ObligationsRenderer {
           XhtmlNode td = tr.td();
           for (UsageContext u : ob.usage) {
             if (first) first = false; else td.tx(", ");
-            new DataRenderer(context).render(td, u);
+            new DataRenderer(context).renderDataType(status, td, wrapWC(res, u));
           }
         } else {
           tr.td();          
@@ -491,10 +525,10 @@ public class ObligationsRenderer {
     return newS + "<br/><span style=\"" + STYLE_REMOVED + "\">" + oldS + "</span>";
   }
 
-  private void renderCode(XhtmlNodeList children, String codeExpr) {
-    if (codeExpr != null) {
+  private void renderCodes(XhtmlNodeList children, List<String> codes) {
+
+    if (!codes.isEmpty()) {
       boolean first = true;
-      String[] codes = codeExpr.split("\\+");
       for (String code : codes) {
         if (first) first = false; else children.tx(" & ");
         int i = code.indexOf(":");
@@ -507,7 +541,7 @@ public class ObligationsRenderer {
         CodeResolution cr = this.cr.resolveCode("http://hl7.org/fhir/tools/CodeSystem/obligation", code);
         code = code.replace("will-", "").replace("can-", "");
         if (cr.getLink() != null) {
-          children.ah(cr.getLink(), cr.getHint()).tx(code);          
+          children.ah(context.prefixLocalHref(cr.getLink()), cr.getHint()).tx(code);
         } else {
           children.span(null, cr.getHint()).tx(code);
         }

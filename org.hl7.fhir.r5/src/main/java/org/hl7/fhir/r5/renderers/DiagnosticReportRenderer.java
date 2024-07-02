@@ -1,201 +1,174 @@
 package org.hl7.fhir.r5.renderers; 
- 
-import java.io.IOException; 
-import java.io.UnsupportedEncodingException; 
-import java.util.ArrayList; 
-import java.util.List; 
- 
-import org.hl7.fhir.exceptions.DefinitionException; 
-import org.hl7.fhir.exceptions.FHIRException; 
-import org.hl7.fhir.exceptions.FHIRFormatError; 
-import org.hl7.fhir.r5.model.Base; 
-import org.hl7.fhir.r5.model.DataType; 
-import org.hl7.fhir.r5.model.DiagnosticReport; 
-import org.hl7.fhir.r5.model.Resource; 
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper; 
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper; 
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper; 
-import org.hl7.fhir.r5.renderers.utils.DirectWrappers; 
-import org.hl7.fhir.r5.renderers.utils.RenderingContext; 
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext; 
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference; 
-import org.hl7.fhir.r5.utils.EOperationOutcome; 
-import org.hl7.fhir.utilities.Utilities; 
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
- 
+
 public class DiagnosticReportRenderer extends ResourceRenderer { 
- 
+
   public class ObservationNode { 
     private String ref; 
-    private ResourceWithReference obs; 
+    private ResourceWithReference resolution;
     private List<ObservationNode> contained; 
   } 
- 
- 
+
   public DiagnosticReportRenderer(RenderingContext context) { 
     super(context); 
   } 
- 
-  public DiagnosticReportRenderer(RenderingContext context, ResourceContext rcontext) { 
-    super(context, rcontext); 
-  } 
-   
-  public boolean render(XhtmlNode x, Resource dr) throws IOException, FHIRException, EOperationOutcome { 
-    return render(x, (DiagnosticReport) dr); 
-  } 
- 
-  public boolean render(XhtmlNode x, ResourceWrapper dr) throws IOException, FHIRException, EOperationOutcome { 
+
+  @Override
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper dr) throws IOException, FHIRException, EOperationOutcome {
+    renderDiagnosticReport(status, x, dr);
+  }
+
+  public void renderDiagnosticReport(RenderingStatus status, XhtmlNode x, ResourceWrapper dr) throws IOException, FHIRException, EOperationOutcome {
+   renderResourceTechDetails(dr, x);
+    
     XhtmlNode h2 = x.h2(); 
-    render(h2, getProperty(dr, "code").value()); 
+    renderDataType(status, h2, dr.child("code")); 
     h2.tx(" "); 
-    PropertyWrapper pw = getProperty(dr, "category"); 
-    if (valued(pw)) { 
+    List<ResourceWrapper> cats = dr.children("category"); 
+    if (!cats.isEmpty()) { 
       h2.tx("("); 
       boolean first = true; 
-      for (BaseWrapper b : pw.getValues()) { 
+      for (ResourceWrapper b : cats) { 
         if (first) first = false; else h2.tx(", "); 
-        render(h2, b); 
+        renderDataType(status, h2, b); 
       } 
       h2.tx(") "); 
     } 
     XhtmlNode tbl = x.table("grid"); 
     XhtmlNode tr; 
     if (dr.has("subject")) { 
-       tr = tbl.tr(); 
-       tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_SUBJ)); 
-       populateSubjectSummary(tr.td(), getProperty(dr, "subject").value()); 
+      tr = tbl.tr(); 
+      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_SUBJ)); 
+      populateSubjectSummary(status, tr.td(), dr.child("subject")); 
     } 
-     
-    DataType eff = null; 
-    DataType iss = null; 
-     
+
+    ResourceWrapper eff = null;
+    ResourceWrapper iss = null;
     if (dr.has("effective[x]")) { 
       tr = tbl.tr(); 
-      tr.td().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_WHEN)); 
-      eff = (DataType) getProperty(dr, "effective[x]").value().getBase(); 
-      render(tr.td(), eff); 
+      tr.td().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_WHEN));
+      eff = dr.child("effective[x]");
+      renderDataType(status, tr.td(), eff); 
     } 
     if (dr.has("issued")) { 
       tr = tbl.tr(); 
       tr.td().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_REP)); 
-      eff = (DataType) getProperty(dr, "issued").value().getBase(); 
-      render(tr.td(), getProperty(dr, "issued").value()); 
+      iss = dr.child("issued");
+      renderDataType(status, tr.td(), iss); 
     } 
- 
-    pw = getProperty(dr, "perfomer"); 
-    if (valued(pw)) { 
-      tr = tbl.tr(); 
-      tr.td().tx(Utilities.pluralize((context.formatPhrase(RenderingContext.DIAG_REP_REND_PER)), pw.getValues().size())); 
-      XhtmlNode tdr = tr.td(); 
-      for (BaseWrapper v : pw.getValues()) { 
-        tdr.tx(" "); 
-        render(tdr, v); 
-      } 
-    } 
-    pw = getProperty(dr, "identifier"); 
-    if (valued(pw)) { 
-      tr = tbl.tr(); 
-      tr.td().tx(Utilities.pluralize((context.formatPhrase(RenderingContext.DIAG_REP_REND_IDENTIFIER)), pw.getValues().size())+":"); 
-      XhtmlNode tdr = tr.td(); 
-      for (BaseWrapper v : pw.getValues()) { 
-        tdr.tx(" "); 
-        render(tdr, v); 
-      } 
-    } 
-    pw = getProperty(dr, "request"); 
-    if (valued(pw)) { 
-      tr = tbl.tr(); 
-      tr.td().tx(Utilities.pluralize((context.formatPhrase(RenderingContext.GENERAL_REQUEST)), pw.getValues().size())+":"); 
-      XhtmlNode tdr = tr.td(); 
-      for (BaseWrapper v : pw.getValues()) { 
-        tdr.tx(" "); 
-        render(tdr, v); 
-      } 
-      tdr.br(); 
-    } 
- 
-     
+
+    addTableRow(status, tbl, dr, RenderingContext.DIAG_REP_REND_PER, "performer");
+    addTableRow(status, tbl, dr, RenderingContext.DIAG_REP_REND_IDENTIFIER, "identifier");
+    addTableRow(status, tbl, dr, RenderingContext.GENERAL_REQUEST, "request"); 
+
     x.para().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_REPDET)); 
- 
-    pw = getProperty(dr, "result"); 
-    if (valued(pw)) { 
-      List<ObservationNode> observations = fetchObservations(pw.getValues(), dr); 
-      buildObservationsTable(x, observations, eff, iss); 
+
+    List<ResourceWrapper> items = dr.children("result"); 
+    if (!items.isEmpty()) { 
+      List<ObservationNode> observations = fetchObservations(items); 
+      buildObservationsTable(status, x, observations, eff, iss); 
     } 
- 
-    pw = getProperty(dr, "conclusion"); 
-    if (valued(pw)) { 
-      if (pw.fhirType().equals("markdown")) {         
-        render(x, pw.value());         
+
+    if (dr.has("conclusion")) { 
+      ResourceWrapper conc = dr.child("conclusion");
+      if (conc.fhirType().equals("markdown")) {         
+        renderDataType(status, x, conc);         
       } else { 
-        render(x.para(), pw.value()); 
+        renderDataType(status, x.para(), conc); 
       } 
     } 
- 
-    pw = getProperty(dr, "conclusionCode"); 
-    if (!valued(pw)) { 
-      pw = getProperty(dr, "codedDiagnosis");     
-    } 
-    if (valued(pw)) { 
-      XhtmlNode p = x.para(); 
-      p.b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_CODECON)); 
-      XhtmlNode ul = x.ul(); 
-      for (BaseWrapper v : pw.getValues()) { 
-        render(ul.li(), v); 
+
+    if (dr.hasMN("conclusionCode", "codedDiagnosis")) {
+      x.para().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_CODECON));
+      addListRows(status, x.ul(), dr, RenderingContext.DIAG_REP_REND_CODECON, "conclusionCode", "codedDiagnosis"); 
+    }
+    
+    for (ResourceWrapper cont : dr.children("contained")) {
+      x.hr();
+      RendererFactory.factory(cont, context.forContained()).buildNarrative(status, x, cont);
+    }
+  } 
+
+  private void addTableRow(RenderingStatus status, XhtmlNode tbl, ResourceWrapper dr, String constName, String... names) throws FHIRFormatError, DefinitionException, IOException {
+    List<ResourceWrapper> items = dr.childrenMN(names); 
+    if (!items.isEmpty()) { 
+      XhtmlNode tr = tbl.tr(); 
+      tr.td().tx(Utilities.pluralize(context.formatPhrase(constName), items.size())); 
+      XhtmlNode tdr = tr.td(); 
+      for (ResourceWrapper v : items) { 
+        tdr.tx(" "); 
+        renderDataType(status, tdr, v); 
       } 
     } 
-    return false; 
+  }
+
+  private void addListRows(RenderingStatus status, XhtmlNode ul, ResourceWrapper dr, String constName, String... names) throws FHIRFormatError, DefinitionException, IOException {
+    List<ResourceWrapper> items = dr.childrenMN(names); 
+    if (!items.isEmpty()) { 
+      for (ResourceWrapper v : items) { 
+        XhtmlNode li = ul.li(); 
+        renderDataType(status, li, v); 
+      } 
+    } 
+  }
+
+  public void describeDiagnosticReport(XhtmlNode x, ResourceWrapper dr) { 
+    x.tx(displayDiagnosticReport(dr)); 
   } 
- 
-  public boolean render(XhtmlNode x, DiagnosticReport dr) throws IOException, FHIRException, EOperationOutcome { 
-    render(x, new DirectWrappers.ResourceWrapperDirect(this.context, dr)); 
- 
-    return true; 
+
+  public String displayDiagnosticReport(ResourceWrapper dr) {
+    ResourceWrapper c = dr.child("code");
+    String cd = c == null ? context.formatPhrase(RenderingContext.DIAG_REP_UNSPECIFIED_CODE) : displayCodeableConcept(c);
+    ResourceWrapper s = dr.child("subject");
+    String sd = s == null ? context.formatPhrase(RenderingContext.DIAG_REP_UNSPECIFIED_SUBJECT) : displayReference(s);
+    return context.formatPhrase(RenderingContext.DIAG_REP_SUMMARY, cd, sd);
   } 
- 
-  public void describe(XhtmlNode x, DiagnosticReport dr) { 
-    x.tx(display(dr)); 
-  } 
- 
-  public String display(DiagnosticReport dr) { 
-    return display(dr.getCode()); 
-  } 
- 
+
   @Override 
-  public String display(Resource r) throws UnsupportedEncodingException, IOException { 
-    return display((DiagnosticReport) r); 
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException { 
+    return displayDiagnosticReport(r); 
   } 
- 
-  @Override 
-  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException { 
-    return "Not done yet"; 
-  } 
- 
-  private void populateSubjectSummary(XhtmlNode container, BaseWrapper subject) throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome { 
-    ResourceWrapper r = fetchResource(subject); 
+
+
+  private void populateSubjectSummary(RenderingStatus status, XhtmlNode container, ResourceWrapper subject) throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome { 
+    ResourceWithReference r = resolveReference(subject); 
     if (r == null) 
       container.tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_UNABLE)); 
-    else if (r.getName().equals("Patient")) 
-      generatePatientSummary(container, r); 
+    else if (r.getResource().fhirType().equals("Patient")) 
+      generatePatientSummary(container, r.getResource()); 
     else 
       container.tx(context.formatPhrase(RenderingContext.GENERAL_TODO)); 
   } 
- 
+
   private void generatePatientSummary(XhtmlNode c, ResourceWrapper r) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome { 
     new PatientRenderer(context).describe(c, r); 
   } 
-   
-  private List<ObservationNode> fetchObservations(List<BaseWrapper> list, ResourceWrapper rw) throws UnsupportedEncodingException, FHIRException, IOException { 
+
+  private List<ObservationNode> fetchObservations(List<ResourceWrapper> list) throws UnsupportedEncodingException, FHIRException, IOException { 
     List<ObservationNode> res = new ArrayList<ObservationNode>(); 
-    for (BaseWrapper b : list) { 
+    for (ResourceWrapper b : list) { 
       if (b.has("reference")) { 
         ObservationNode obs = new ObservationNode(); 
-        obs.ref = b.get("reference").primitiveValue(); 
-        obs.obs = resolveReference(rw, obs.ref); 
-        if (obs.obs != null && obs.obs.getResource() != null) { 
-          PropertyWrapper t = getProperty(obs.obs.getResource(), "contained"); 
-          if (t != null && t.hasValues()) { 
-            obs.contained = fetchObservations(t.getValues(), rw); 
+        obs.ref = b.primitiveValue("reference"); 
+        obs.resolution = resolveReference(b.child("reference")); 
+        if (obs.resolution != null && obs.resolution.getResource() != null) { 
+          List<ResourceWrapper> t = obs.resolution.getResource().children("contained"); 
+          if (!t.isEmpty()) { 
+            obs.contained = fetchObservations(t); 
           } 
         } 
         res.add(obs); 
@@ -203,8 +176,8 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     } 
     return res; 
   } 
- 
-  private void buildObservationsTable(XhtmlNode root, List<ObservationNode> observations, DataType eff, DataType iss) throws UnsupportedEncodingException, FHIRException, IOException { 
+
+  private void buildObservationsTable(RenderingStatus status, XhtmlNode root, List<ObservationNode> observations, ResourceWrapper eff, ResourceWrapper iss) throws UnsupportedEncodingException, FHIRException, IOException { 
     XhtmlNode tbl = root.table("grid"); 
     boolean refRange = scanObsForRefRange(observations); 
     boolean flags = scanObsForFlags(observations);  
@@ -236,253 +209,213 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       tr.td().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_REP)); 
     } 
     for (ObservationNode o : observations) { 
-      addObservationToTable(tbl, o, 0, Integer.toString(cs), refRange, flags, note, effectiveTime, issued, eff, iss); 
+      addObservationToTable(status, tbl, o, 0, Integer.toString(cs), refRange, flags, note, effectiveTime, issued, eff, iss); 
     } 
   } 
- 
+
   private boolean scanObsForRefRange(List<ObservationNode> observations) { 
-    for (ObservationNode o : observations) { 
-      if (o.obs != null && o.obs.getResource() != null) { 
-        PropertyWrapper pw = getProperty(o.obs.getResource(), "referenceRange"); 
-        if (valued(pw)) { 
-          return true; 
-        }         
-      } 
-      if (o.contained != null) { 
-        if (scanObsForRefRange(o.contained)) { 
+    for (ObservationNode o : observations) {  
+      if (o.resolution != null) {
+        ResourceWrapper obs = o.resolution.getResource();
+        if (obs != null && obs.has("referenceRange")) { 
           return true; 
         } 
-      } 
+        if (o.contained != null) { 
+          if (scanObsForRefRange(o.contained)) { 
+            return true; 
+          } 
+        } 
+      }
     }       
     return false; 
   } 
- 
+
   private boolean scanObsForNote(List<ObservationNode> observations) { 
     for (ObservationNode o : observations) { 
-      if (o.obs != null && o.obs.getResource() != null) { 
-        PropertyWrapper pw = getProperty(o.obs.getResource(), "note"); 
-        if (valued(pw)) { 
-          return true; 
-        }         
-      } 
-      if (o.contained != null) { 
-        if (scanObsForNote(o.contained)) { 
+      if (o.resolution != null) {
+        ResourceWrapper obs = o.resolution.getResource();
+        if (obs != null && obs.has("note")) { 
           return true; 
         } 
-      } 
-    }       
-    return false; 
-  } 
- 
-  private boolean scanObsForIssued(List<ObservationNode> observations, DataType iss) throws UnsupportedEncodingException, FHIRException, IOException { 
-    for (ObservationNode o : observations) { 
-      if (o.obs != null && o.obs.getResource() != null) { 
-        PropertyWrapper pw = getProperty(o.obs.getResource(), "issued"); 
-        if (valued(pw)) { 
-          if (!Base.compareDeep(pw.value().getBase(), iss, true)) { 
+        if (o.contained != null) { 
+          if (scanObsForNote(o.contained)) { 
             return true; 
           } 
-        }         
-      } 
-      if (o.contained != null) { 
-        if (scanObsForIssued(o.contained, iss)) { 
-          return true; 
         } 
-      } 
+      }
     }       
     return false; 
   } 
- 
-  private boolean scanObsForEffective(List<ObservationNode> observations, DataType eff) throws UnsupportedEncodingException, FHIRException, IOException { 
+
+  private boolean scanObsForIssued(List<ObservationNode> observations, ResourceWrapper iss) throws UnsupportedEncodingException, FHIRException, IOException { 
     for (ObservationNode o : observations) { 
-      if (o.obs != null && o.obs.getResource() != null) { 
-        PropertyWrapper pw = getProperty(o.obs.getResource(), "effective[x]"); 
-        if (valued(pw)) { 
-          if (!Base.compareDeep(pw.value().getBase(), eff, true)) { 
+      if (o.resolution != null) {
+        ResourceWrapper obs = o.resolution.getResource();
+        if (obs != null && obs.has("issued") && (iss == null || !iss.matches(obs.child("issued")))) { 
+          return true; 
+        } 
+        if (o.contained != null) { 
+          if (scanObsForIssued(o.contained, iss)) { 
             return true; 
           } 
-        }         
-      } 
-      if (o.contained != null) { 
-        if (scanObsForEffective(o.contained, eff)) { 
-          return true; 
         } 
-      } 
+      }
     }       
     return false; 
   } 
- 
+
+  private boolean scanObsForEffective(List<ObservationNode> observations, ResourceWrapper eff) throws UnsupportedEncodingException, FHIRException, IOException { 
+    for (ObservationNode o : observations) { 
+      if (o.resolution != null) {
+        ResourceWrapper obs = o.resolution.getResource();
+        if (obs != null && obs.has("effective[x]") && (eff == null || !eff.matches(obs.child("effective[x]")))) { 
+          return true; 
+        } 
+        if (o.contained != null) { 
+          if (scanObsForEffective(o.contained, eff)) { 
+            return true; 
+          } 
+        } 
+      }
+    }       
+    return false; 
+  } 
+
   private boolean scanObsForFlags(List<ObservationNode> observations) throws UnsupportedEncodingException, FHIRException, IOException { 
     for (ObservationNode o : observations) { 
-      if (o.obs != null && o.obs.getResource() != null) { 
-        PropertyWrapper pw = getProperty(o.obs.getResource(), "interpretation"); 
-        if (valued(pw)) { 
+      if (o.resolution != null) {
+        ResourceWrapper obs = o.resolution.getResource();
+        if (obs != null && (obs.has("interpretation") || obs.has("status"))) { 
           return true; 
         } 
-        pw = getProperty(o.obs.getResource(), "status"); 
-        if (valued(pw)) { 
-          if (!pw.value().getBase().primitiveValue().equals("final")) { 
+        if (o.contained != null) { 
+          if (scanObsForFlags(o.contained)) { 
             return true; 
           } 
         } 
-         
-      } 
-      if (o.contained != null) { 
-        if (scanObsForFlags(o.contained)) { 
-          return true; 
-        } 
-      } 
+      }
     }       
     return false; 
   } 
- 
-  private void addObservationToTable(XhtmlNode tbl, ObservationNode o, int i, String cs, boolean refRange, boolean flags, boolean note, boolean effectiveTime, boolean issued, DataType eff, DataType iss) throws UnsupportedEncodingException, FHIRException, IOException { 
+
+  private void addObservationToTable(RenderingStatus status, XhtmlNode tbl, ObservationNode o, int i, String cs, boolean refRange, boolean flags, boolean note, boolean effectiveTime, boolean issued, ResourceWrapper eff, ResourceWrapper iss) throws UnsupportedEncodingException, FHIRException, IOException { 
     XhtmlNode tr = tbl.tr(); 
-    if (o.obs != null && o.obs.getReference()  == null) { 
+    if (o.resolution == null) { 
       XhtmlNode td = tr.td().colspan(cs); 
-      td.i().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_NOTRES)); 
+      td.i().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_NOTRES, o.ref)); 
     } else { 
-      if (o.obs != null && o.obs.getResource() != null) { 
-        addObservationToTable(tr, o.obs.getResource(), i, o.obs.getReference(), refRange, flags, note, effectiveTime, issued, eff, iss); 
+      if (o.resolution.getResource() != null) { 
+        addObservationToTable(status, tr, o.resolution.getResource(), i, o.resolution.getWebPath(), refRange, flags, note, effectiveTime, issued, eff, iss); 
       } else { 
         XhtmlNode td = tr.td().colspan(cs); 
         td.i().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_OBS)); 
       } 
       if (o.contained != null) { 
         for (ObservationNode c : o.contained) { 
-          addObservationToTable(tbl, c, i+1, cs, refRange, flags, note, effectiveTime, issued, eff, iss); 
+          addObservationToTable(status, tbl, c, i+1, cs, refRange, flags, note, effectiveTime, issued, eff, iss); 
         } 
       } 
     }  
   } 
- 
-  private void addObservationToTable(XhtmlNode tr, ResourceWrapper obs, int i, String ref, boolean refRange, boolean flags, boolean note, boolean effectiveTime, boolean issued, DataType eff, DataType iss) throws UnsupportedEncodingException, FHIRException, IOException { 
- 
+
+  private void addObservationToTable(RenderingStatus status, XhtmlNode tr, ResourceWrapper obs, int i, String ref, boolean refRange, boolean flags, boolean note, boolean effectiveTime, boolean issued, ResourceWrapper eff, ResourceWrapper iss) throws UnsupportedEncodingException, FHIRException, IOException { 
+
     // code (+bodysite) 
     XhtmlNode td = tr.td(); 
-    PropertyWrapper pw = getProperty(obs, "code"); 
-    if (valued(pw)) { 
-      render(td.ah(ref), pw.value()); 
+    if (obs.has("code")) { 
+      renderDataType(status, td.ah(context.prefixLocalHref(ref)), obs.child("code")); 
     } 
-    pw = getProperty(obs, "bodySite"); 
-    if (valued(pw)) { 
+    if (obs.has("bodySite")) { 
       td.tx(" ("); 
-      render(td, pw.value()); 
+      renderDataType(status, td, obs.child("bodySite")); 
       td.tx(")"); 
     } 
- 
+
     // value / dataAbsentReason (in red) 
     td = tr.td(); 
-    pw = getProperty(obs, "value[x]"); 
-    if (valued(pw)) { 
-      render(td, pw.value()); 
-    } else { 
-      pw = getProperty(obs, "dataAbsentReason"); 
-      if (valued(pw)) { 
-        XhtmlNode span = td.span("color: maroon", "Error"); 
-        span.tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_ERR) + " "); 
-        render(span.b(), pw.value()); 
-      } 
+    if (obs.has("value[x]")) { 
+      renderDataType(status, td, obs.child("value[x]")); 
+    } else if (obs.has("dataAbsentReason")) { 
+      XhtmlNode span = td.span("color: maroon", "Error"); 
+      span.tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_ERR) + " "); 
+      renderDataType(status, span.b(), obs.child("dataAbsentReason")); 
     } 
+
     if (refRange) { 
       // reference range 
       td = tr.td(); 
-      pw = getProperty(obs, "referenceRange"); 
-      if (valued(pw)) { 
+      List<ResourceWrapper> items = obs.children("referenceRange"); 
+      if (!items.isEmpty()) { 
         boolean first = true; 
-        for (BaseWrapper v : pw.getValues()) { 
+        for (ResourceWrapper v : items) { 
           if (first) first = false; else td.br(); 
-          PropertyWrapper pwr = getProperty(v, "type");  
-          if (valued(pwr)) { 
-            render(td, pwr.value()); 
+          ResourceWrapper pwr = v.child("type");  
+          if (pwr != null) { 
+            renderDataType(status, td, pwr); 
             td.tx(": "); 
           } 
-          PropertyWrapper pwt = getProperty(v, "text");  
-          if (valued(pwt)) { 
-            render(td, pwt.value()); 
+          ResourceWrapper pwt = v.child("text");  
+          if (pwt != null) { 
+            renderDataType(status, td, pwt); 
           } else { 
-            PropertyWrapper pwl = getProperty(v, "low");  
-            PropertyWrapper pwh = getProperty(v, "high");  
-            if (valued(pwl) && valued(pwh)) { 
-              render(td, pwl.value()); 
+            ResourceWrapper pwl = v.child("low");  
+            ResourceWrapper pwh = v.child("high");  
+            if (pwl != null && pwh != null) { 
+              renderDataType(status, td, pwl); 
               td.tx(" - "); 
-              render(td, pwh.value()); 
-            } else if (valued(pwl)) { 
+              renderDataType(status, td, pwh); 
+            } else if (pwl != null) { 
               td.tx(">"); 
-              render(td, pwl.value()); 
-            } else if (valued(pwh)) { 
+              renderDataType(status, td, pwl); 
+            } else if (pwh != null) { 
               td.tx("<"); 
-              render(td, pwh.value()); 
+              renderDataType(status, td, pwh); 
             } else { 
               td.tx("??"); 
             } 
           } 
-          pwr = getProperty(v, "appliesTo");  
-          PropertyWrapper pwrA = getProperty(v, "age");  
-          if (valued(pwr) || valued(pwrA)) { 
+          List<ResourceWrapper> pwrF = v.children("appliesTo");  
+          ResourceWrapper pwrA = v.child("age");  
+          if (!pwrF.isEmpty() || pwrA != null) { 
             boolean firstA = true; 
             td.tx(" "+ (context.formatPhrase(RenderingContext.DIAG_REP_REND_FOR)) + " "); 
-            if (valued(pwr)) { 
-              for (BaseWrapper va : pwr.getValues()) { 
+            if (!pwrF.isEmpty()) { 
+              for (ResourceWrapper va : pwrF) { 
                 if (firstA) firstA = false; else td.tx(", "); 
-                render(td, va); 
+                renderDataType(status, td, va); 
               } 
             } 
-            if (valued(pwrA)) { 
+            if (pwrA != null) { 
               if (firstA) firstA = false; else td.tx(", "); 
               td.tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_AGE) + " "); 
-              render(td, pwrA.value()); 
+              renderDataType(status, td, pwrA); 
             } 
           } 
         }         
       }       
     } 
-    if (flags) { 
-      // flags (status other than F, interpretation, ) 
-      td = tr.td(); 
-      boolean first = true; 
-      pw = getProperty(obs, "status"); 
-      if (valued(pw)) { 
-        if (!pw.value().getBase().primitiveValue().equals("final")) { 
-          if (first) first = false; else td.br(); 
-          render(td, pw.value()); 
-        } 
+
+    addCellToTable(flags, status, tr, obs, null, "status", "interpretation");
+    addCellToTable(note, status, tr, obs, null, "note");
+    addCellToTable(effectiveTime, status, tr, obs, eff, "effective[x]");
+    addCellToTable(issued, status, tr, obs, iss, "issued");
+
+  }
+
+  private void addCellToTable(boolean included, RenderingStatus status, XhtmlNode tr, ResourceWrapper obs, ResourceWrapper diff, String... names) throws FHIRFormatError, DefinitionException, IOException {
+    if (included) { 
+      XhtmlNode td = tr.td(); 
+      List<ResourceWrapper> list = obs.childrenMN(names);
+      if (!list.isEmpty()) { 
+        boolean first = true;
+        for (ResourceWrapper b : list) {
+          if (diff == null || !diff.matches(b)) {
+            if (first) first = false; else td.tx(", ");
+            renderDataType(status, td, b);
+          }
+        }
       } 
-      pw = getProperty(obs, "interpretation"); 
-      if (valued(pw)) { 
-        for (BaseWrapper v : pw.getValues()) { 
-          if (first) first = false; else td.br(); 
-          render(td, v); 
-        } 
-      } 
-    } 
- 
-    if (note) { 
-      td = tr.td(); 
-      pw = getProperty(obs, "note"); 
-      if (valued(pw)) { 
-        render(td, pw.value()); 
-      } 
-    } 
-    if (effectiveTime) { 
-      // effective if different to DR 
-      td = tr.td(); 
-      pw = getProperty(obs, "effective[x]"); 
-      if (valued(pw)) { 
-        if (!Base.compareDeep(pw.value().getBase(), eff, true)) { 
-          render(td, pw.value()); 
-        } 
-      } 
-    } 
-    if (issued) { 
-      // issued if different to DR 
-      td = tr.td(); 
-      pw = getProperty(obs, "issued"); 
-      if (valued(pw)) { 
-        if (!Base.compareDeep(pw.value().getBase(), eff, true)) { 
-          render(td, pw.value()); 
-        } 
-      } 
-    } 
+    }
   } 
+
 } 

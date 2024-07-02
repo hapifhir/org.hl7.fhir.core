@@ -453,5 +453,26 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return false;
   }
 
+  public boolean isDomainResource(String typeName) {
+    StructureDefinition sd = context.fetchTypeDefinition(typeName);
+    while (sd != null) {
+      if ("DomainResource".equals(sd.getType())) {
+        return true;
+      }
+      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());  
+    }
+    return false;
+  }
+
+  public IWorkerContext getWorker() {
+    return context;     
+  }
+
+  @Override
+  public String getCanonicalForDefaultContext() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }
 

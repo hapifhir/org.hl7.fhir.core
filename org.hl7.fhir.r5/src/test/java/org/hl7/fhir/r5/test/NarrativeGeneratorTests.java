@@ -14,8 +14,10 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.renderers.DataRenderer;
+import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
@@ -36,8 +38,9 @@ public class NarrativeGeneratorTests {
   private static RenderingContext rc;
 
   @BeforeAll
-  public static void setUp() throws FHIRException {
+  public static void setUp() throws FHIRException, IOException {
     rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    rc.setDestDir(Utilities.path("[tmp]"));
   }
 
   @Test
@@ -48,7 +51,7 @@ public class NarrativeGeneratorTests {
   private void process(InputStream stream) throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
     XmlParser p = new XmlParser();
     DomainResource r = (DomainResource) p.parse(stream);
-    RendererFactory.factory(r, rc).render(r);
+    RendererFactory.factory(r, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), r));
     FileOutputStream s = ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "gen.xml"));
     new XmlParser().compose(s, r, true);
     s.close();
@@ -71,11 +74,11 @@ public class NarrativeGeneratorTests {
     rc.setMode(mode);
     
     DateTimeType dt = new DateTimeType(src);
-    String actual = new DataRenderer(rc).display(dt);
+    String actual = new DataRenderer(rc).displayDataType(ResourceWrapper.forType(rc.getContextUtilities(), dt));
     
     Assert.assertTrue("Actual = "+actual+", expected one of "+Utilities.toString(expected), Utilities.existsInList(actual, expected));
     XhtmlNode node = new XhtmlNode(NodeType.Element, "p");
-    new DataRenderer(rc).render(node, dt);
+    new DataRenderer(rc).renderDataType(new RenderingStatus(), node, ResourceWrapper.forType(rc.getContextUtilities(), dt));
     actual = new XhtmlComposer(true, false).compose(node); 
     Assert.assertTrue(actual.startsWith("<p>"));
     Assert.assertTrue(actual.endsWith("</p>"));

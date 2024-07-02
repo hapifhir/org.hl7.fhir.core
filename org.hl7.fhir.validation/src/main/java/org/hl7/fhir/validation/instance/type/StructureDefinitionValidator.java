@@ -14,6 +14,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -87,6 +88,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
       if (warning(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), base != null, I18nConstants.UNABLE_TO_FIND_BASE__FOR_, sd.getBaseDefinition(), "StructureDefinition, so can't check the differential")) {
         if (rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasDerivation(), I18nConstants.SD_MUST_HAVE_DERIVATION, sd.getUrl())) {
+          checkTypeParameters(errors, stack, base, sd);
           boolean bok = base.getAbstract() || sd.hasKind() && sd.getKind() == base.getKind();
           ok = rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), bok, I18nConstants.SD_CONSTRAINED_KIND_NO_MATCH, sd.getKind().toCode(), base.getKind().toCode(), base.getType(), base.getUrl()) && ok;
           if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
@@ -193,6 +195,27 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
 
+  private boolean checkTypeParameters(List<ValidationMessage> errors, NodeStack stack, StructureDefinition base, StructureDefinition derived) {
+    String bt = ToolingExtensions.readStringExtension(base, ToolingExtensions.EXT_TYPE_PARAMETER);
+    if (bt == null) {
+      return true;
+    } else {
+      if (rule(errors, "2024-05-29", IssueType.INVALID, stack.getLiteralPath(), derived.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER), I18nConstants.SD_TYPE_PARAMETER_MISSING, base.getVersionedUrl(), bt, derived.getVersionedUrl())) {
+        String dt = ToolingExtensions.readStringExtension(derived, ToolingExtensions.EXT_TYPE_PARAMETER);
+        StructureDefinition bsd = context.fetchTypeDefinition(bt);
+        StructureDefinition dsd = context.fetchTypeDefinition(dt);
+        if (rule(errors, "2024-05-29", IssueType.INVALID, stack.getLiteralPath(), bsd != null, I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, base.getVersionedUrl(), bt) && 
+            rule(errors, "2024-05-29", IssueType.INVALID, stack.getLiteralPath(), dsd != null, I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, derived.getVersionedUrl(), dt)) {
+          StructureDefinition t = dsd;
+          while (t != bsd && t != null) {
+            t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
+          }
+          return rule(errors, "2024-05-29", IssueType.INVALID, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_INVALID, base.getVersionedUrl(), bt, derived.getVersionedUrl(), dt);
+        }
+      }
+      return false;
+    }
+  }
 
   private String getFixedValue(Element src) {
     Element diff = src.getNamedChild("differential", false);
@@ -465,7 +488,8 @@ public class StructureDefinitionValidator extends BaseValidator {
         typeCodes.add(tc);
         Set<String> tcharacteristics = new HashSet<>();
         StructureDefinition tsd = context.fetchTypeDefinition(tc);
-        if (tsd != null) { 
+        if (tsd != null) {
+          checkTypeParameters(errors, stack, type, tc, tsd, path, sd);
           characteristicsValid = true;
           if (tsd.hasExtension(ToolingExtensions.EXT_TYPE_CHARACTERISTICS)) {        
             for (Extension ext : tsd.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_CHARACTERISTICS)) {
@@ -562,6 +586,54 @@ public class StructureDefinitionValidator extends BaseValidator {
     for (Element invariant : constraints) {
       ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path", false), rootPath, profileUrl, profileType, snapshot, base) && ok;
       cc++;
+    }    
+    return ok;
+  }
+
+  private boolean checkTypeParameters(List<ValidationMessage> errors, NodeStack stack, Element typeE, String tc, StructureDefinition tsd, String path, StructureDefinition sd) {
+    boolean ok = true;
+    if (tsd.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+      List<Element> extensions = typeE.getChildrenByName("extension");
+      for (Extension ext : tsd.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+        String name = ext.getExtensionString("name");
+        String type = ext.getExtensionString("type");
+        StructureDefinition psd = context.fetchTypeDefinition(type);
+        if (psd != null && name != null) {
+          boolean found = false;
+          for (Element e : extensions) {
+            if (ToolingExtensions.EXT_TYPE_PARAMETER.equals(e.getNamedChildValue("url"))) {
+              String ename = e.getExtensionValue("name").primitiveValue();
+              if (name.equals(ename)) {
+                found = true;
+                String etype = e.getExtensionValue("type").primitiveValue();
+                for (Extension ex : sd.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+                  String tn = ex.getExtensionString("name");
+                  if (tn != null && tn.equals(etype)) {
+                    etype = ex.getExtensionString("type");
+                    break;
+                  }
+                }
+                StructureDefinition esd = context.fetchTypeDefinition(etype);
+                if (rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), esd != null, I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, tc, etype)) {
+                  StructureDefinition t = esd;
+                  while (t != null && t != psd) {
+                    t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
+                  }
+                  ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_INVALID_REF, tc, etype, tsd.getVersionedUrl(), name, type) & ok;
+                  if (t != null) {
+                    if (!sd.getAbstract() && esd.getAbstract()) {
+                      warning(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_ABSTRACT_WARNING, tc, etype, tsd.getVersionedUrl(), name, type);
+                    }
+                  }
+                } else {
+                  ok = false;
+                }
+              }              
+            }
+          }
+          ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), found, I18nConstants.SD_TYPE_PARAM_NOT_SPECIFIED, tc, tsd.getVersionedUrl(), name, path) && ok;
+        }
+      }
     }    
     return ok;
   }

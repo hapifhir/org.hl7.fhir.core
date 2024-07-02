@@ -1,7 +1,6 @@
 package org.hl7.fhir.utilities.i18n;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -67,11 +66,11 @@ class I18nBaseTest {
 
     //Answer value must be of the type {1}
     String resultOne = testClass.formatMessagePlural(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
-    assertThat(resultOne, containsString("be of the type"));
+    assertThat(resultOne).contains("be of the type");
 
     //Answer value must be one of the {0} types {1}
     String resultMany = testClass.formatMessagePlural(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
-    assertThat(resultMany, containsString("one of the 3 types "));
+    assertThat(resultMany).contains("one of the 3 types ");
 
   }
 
@@ -83,11 +82,11 @@ class I18nBaseTest {
     testClass.setLocale(Locale.GERMAN);
     //Answer value muss vom Typ {0} sein.
     String resultOne = testClass.formatMessagePlural(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
-    assertThat(resultOne, containsString("muss vom Typ"));
+    assertThat(resultOne).contains("muss vom Typ");
 
     //Answer value muss einer der Typen {1} sein
     String resultMany = testClass.formatMessagePlural(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
-    assertThat(resultMany, containsString("einer der Typen "));
+    assertThat(resultMany).contains("einer der Typen ");
 
   }
 
@@ -108,6 +107,20 @@ class I18nBaseTest {
     //Ensure the umlaut is displayed correctly. If not right, will show: Ã¼, not ü
     assertEquals("Documents oder Messages müssen mindestens einen Eintrag enthalten", result);
   }
+
+  @Test
+  @DisplayName("Test double single quotes behaviour.")
+  void testDoubleSingleQuotes() {
+    I18nTestClass testClass = new I18nTestClass();
+    testClass.setLocale(Locale.US);
+    String actualMessageA = testClass.formatMessage(I18nConstants.VALUESET_EXAMPLE_SYSTEM_HINT, "Mazooma");
+    assertEquals("Example System 'Mazooma' specified, so Concepts and Filters can't be checked", actualMessageA);
+
+    String actualMessageB = testClass.formatMessage(I18nConstants.VALUESET_NO_SYSTEM_WARNING);
+    System.out.println(actualMessageB);
+    assertEquals("No System specified, so Concepts and Filters can't be checked", actualMessageB);
+  }
+
 
   @Test
   @DisplayName("Test German localization file contains no umlauts.")
