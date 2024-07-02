@@ -11,6 +11,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
@@ -95,7 +96,7 @@ public class FHIRPathTests {
 
     @Override
     public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
-      return TestingUtilities.getSharedWorkerContext().fetchResource(ValueSet.class, url);
+      return context.fetchResource(ValueSet.class, url);
     }
 
     @Override
@@ -106,18 +107,20 @@ public class FHIRPathTests {
 
   private static FHIRPathEngine fp;
   private final Map<String, Base> resources = new HashMap<String, Base>();
+  private static SimpleWorkerContext context;
 
   @BeforeAll
   public static void setUp() throws FileNotFoundException, FHIRException, IOException {
-    if (!TestingUtilities.getSharedWorkerContext().hasPackage("hl7.cda.us.ccda", null)) {
+    context = new SimpleWorkerContext((SimpleWorkerContext) TestingUtilities.getSharedWorkerContext());
+    if (!context.hasPackage("hl7.cda.us.ccda", null)) {
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pcm.loadPackage("hl7.cda.uv.core", "2.0.0");
-      TestingUtilities.getSharedWorkerContext().loadFromPackage(npm, null);
+      context.loadFromPackage(npm, null);
       npm = pcm.loadPackage("hl7.cda.us.ccda", "current");
-      TestingUtilities.getSharedWorkerContext().loadFromPackage(npm, null);
+      context.loadFromPackage(npm, null);
     }
     if (fp == null) {
-      fp = new FHIRPathEngine(TestingUtilities.getSharedWorkerContext());
+      fp = new FHIRPathEngine(context);
     }
   }
 

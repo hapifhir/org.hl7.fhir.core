@@ -16,6 +16,8 @@ import java.util.Set;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.DirectoryVisitor;
+import org.hl7.fhir.utilities.filesystem.DirectoryVisitor.IDirectoryVisitorImplementation;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 /**
@@ -94,14 +96,14 @@ public class POGenerator {
       generate(source, "rendering-phrases.properties",  "rendering-phrases-es.po",    "rendering-phrases_es.properties", 3);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-ja.po",    "rendering-phrases_ja.properties", 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-nl.po",    "rendering-phrases_nl.properties", 2);
-      generate(source, "rendering-phrases.properties",  "rendering-phrases-pt-BR.po", "rendering-phrases_pt-BR.properties", 2);
+      generate(source, "rendering-phrases.properties",  "rendering-phrases-pt_BR.po", "rendering-phrases_pt-BR.properties", 2);
 
       generate(source, "Messages.properties", "validator-messages-en.po",    null, 2);
       generate(source, "Messages.properties", "validator-messages-de.po",    "Messages_de.properties", 2);
       generate(source, "Messages.properties", "validator-messages-es.po",    "Messages_es.properties", 3);
       generate(source, "Messages.properties", "validator-messages-ja.po",    "Messages_ja.properties", 2);
       generate(source, "Messages.properties", "validator-messages-nl.po",    "Messages_nl.properties", 2);
-      generate(source, "Messages.properties", "validator-messages-pt-BR.po", "Messages_pt-BR.properties", 2);
+      generate(source, "Messages.properties", "validator-messages-pt_BR.po", "Messages_pt-BR.properties", 2);
 
       System.out.println("Finished");
     } 
@@ -123,9 +125,9 @@ public class POGenerator {
       }
       cd.defined = found;
     }
-    scanJavaSource(new File(core), consts, "RenderingI18nContext", "RenderingContext");
-    scanJavaSource(new File(igpub), consts, "RenderingI18nContext", "RenderingContext");
-    scanPascalSource(new File(pascal), props);
+    scanJavaSource(core, consts, "RenderingI18nContext", "RenderingContext");
+    scanJavaSource(igpub, consts, "RenderingI18nContext", "RenderingContext");
+    scanPascalSource(pascal, props);
     
     Set<String> pns = new HashSet<>();
     for (PropertyValue p : props) {
@@ -137,6 +139,9 @@ public class POGenerator {
         pns.add(p.getName());
       } else {
         System.out.println("Error: PV "+p.getName()+ " duplicated");
+      }
+      if (p.getValue().contains("\\n")) {
+        System.out.println("Error: PV "+p.getName()+ " has a \\n");
       }
     }
     
@@ -167,9 +172,9 @@ public class POGenerator {
       cd.defined = found;
     }
 
-    scanJavaSource(new File(core), consts, "I18nConstants");
-    scanJavaSource(new File(igpub), consts, "I18nConstants");
-    scanPascalSource(new File(pascal), props);
+    scanJavaSource(core, consts, "I18nConstants");
+    scanJavaSource(igpub, consts, "I18nConstants");
+    scanPascalSource(pascal, props);
 
     pns = new HashSet<>();
     for (PropertyValue p : props) {
@@ -181,7 +186,11 @@ public class POGenerator {
         pns.add(p.getName());
       } else {
         System.out.println("Error: PV "+p.getName()+ " duplicated");
+      }      
+      if (p.getValue().contains("\\n")) {
+        System.out.println("Error: PV "+p.getName()+ " has a \\n");
       }
+
     }
     
     for (ConstantDefinition cd : consts) {
@@ -205,72 +214,85 @@ public class POGenerator {
     return ok;
   }
 
-  private boolean scanJavaSource(File file, List<ConstantDefinition> consts, String... names) throws FileNotFoundException, IOException {
-    if (file.isDirectory()) {
-      boolean found = true;
-      for (File f : file.listFiles()) {
-        if (!Utilities.existsInList(f.getName(), "model", "formats")) {
-          found = scanJavaSource(f, consts, names) && found;
-        }
-      }
-      return false;
-    } else {
-      String ext = file.getName().substring(file.getName().lastIndexOf(".")+1);
-      if ("java".equals(ext)) {
-        String source = TextFile.fileToString(file);
-        for (ConstantDefinition cd : consts) {
-          if (!cd.used) {
-            boolean found = false;
-            for (String n : names) {
-              if (source.contains(n+"."+cd.name+",")) {
-                found = true;
-              } 
-              if (source.contains(n+"."+cd.name+")")) {
-                found = true;
-              } 
-              if (source.contains(n+"."+cd.name+" :")) {
-                found = true;
-              } 
-              if (source.contains(n+"."+cd.name+";")) {
-                found = true;
-              } 
-            } 
-            if (found) {
-              cd.used = true;
-            }
-          }
-        }
-        return true;
-      } else {
-        return false;
-      }
+  private class JavaScanner implements IDirectoryVisitorImplementation {
+    List<ConstantDefinition> consts;
+    List<String> names;
+    
+    @Override
+    public boolean enterDirectory(File f) throws IOException {
+      return !Utilities.existsInList(f.getName(), "model", "formats");
     }
-  }
 
-
-  private void scanPascalSource(File file, List<PropertyValue> defs) throws FileNotFoundException, IOException {
-    if (file.isDirectory()) {
-      for (File f : file.listFiles()) {
-        scanPascalSource(f, defs);
-      }
-    } else {
-      String ext = file.getName().substring(file.getName().lastIndexOf(".")+1);
-      if ("pas".equals(ext)) {
-        String source = TextFile.fileToString(file);
-        for (PropertyValue pv : defs) {
-          if (!pv.used) {
-            boolean found = false;
-            String pn = pv.getBaseName();
-            if (source.contains("'"+pn+"'")) {
+    @Override
+    public boolean visitFile(File file) throws IOException {
+      String source = TextFile.fileToString(file);
+      for (ConstantDefinition cd : consts) {
+        if (!cd.used) {
+          boolean found = false;
+          for (String n : names) {
+            if (source.contains(n+"."+cd.name+",")) {
               found = true;
             } 
-            if (found) {
-              pv.used = true;
-            }
+            if (source.contains(n+"."+cd.name+")")) {
+              found = true;
+            } 
+            if (source.contains(n+"."+cd.name+" :")) {
+              found = true;
+            } 
+            if (source.contains(n+"."+cd.name+";")) {
+              found = true;
+            } 
+          } 
+          if (found) {
+            cd.used = true;
+          }
+        }  
+      }
+      return true;
+    }
+  }
+  
+  private void scanJavaSource(String path, List<ConstantDefinition> consts, String... names) throws FileNotFoundException, IOException {
+    JavaScanner scanner = new JavaScanner();
+    scanner.consts = consts;
+    scanner.names = new ArrayList<String>();
+    for (String s : names) {
+      scanner.names.add(s);
+    }
+    DirectoryVisitor.visitDirectory(scanner, path, "java");
+  }
+
+  private class PascalScanner implements IDirectoryVisitorImplementation {
+    private List<PropertyValue> defs;
+    
+    @Override
+    public boolean enterDirectory(File directory) throws IOException {
+      return true;
+    }
+
+    @Override
+    public boolean visitFile(File file) throws IOException {
+      String source = TextFile.fileToString(file);
+      for (PropertyValue pv : defs) {
+        if (!pv.used) {
+          boolean found = false;
+          String pn = pv.getBaseName();
+          if (source.contains("'"+pn+"'")) {
+            found = true;
+          } 
+          if (found) {
+            pv.used = true;
           }
         }
       }
+      return true;
     }
+  }
+  
+  private void scanPascalSource(String path, List<PropertyValue> defs) throws FileNotFoundException, IOException {
+    PascalScanner scanner = new PascalScanner();
+    scanner.defs = defs;
+    DirectoryVisitor.visitDirectory(scanner, path, "pas");
   }
 
   
@@ -347,7 +369,11 @@ public class POGenerator {
       }
     }
     savePOFile(Utilities.path(source, "source", dest), objects, count, false);
-    savePOFile(Utilities.path(source, "source", "transifex", dest), objects, count, true);
+    if (tgt == null) {
+      savePOFile(Utilities.path(source, "source", "transifex", dest), objects, count, true);
+    } else {
+      savePOFile(Utilities.path(source, "source", "transifex", "translations", dest), objects, count, true);
+    }
     if (tgt != null) {
       savePropFile(Utilities.path(source, tgt), objects);
     }
@@ -374,15 +400,17 @@ public class POGenerator {
     b.append("\r\n");
     for (POObject o : objects) {
       // for POEdit
-      b.append("# "+o.comment+"\r\n");
-      b.append("#: "+o.id+"\r\n");
-      if (!tfxMode && o.oldMsgId != null) {
-        b.append("#| "+o.oldMsgId+"\r\n");        
+      if (o.oldMsgId != null) {
+        b.append("# "+o.comment+" (!!when last translated was: "+o.oldMsgId+")\r\n");        
+      } else {
+        b.append("# "+o.comment+"\r\n");
       }
+      b.append("#: "+o.id+"\r\n");
       if (o.duplicate) {
         b.append("msgctxt \""+o.id+"\"\r\n");        
       } 
-      b.append("msgid \""+wrapQuotes(o.msgid)+"\"\r\n");
+      String m = tfxMode && Utilities.noString(o.msgid) ? "-- no content: do not translate --" : o.msgid; 
+      b.append("msgid \""+wrapQuotes(m)+"\"\r\n");
       if (o.msgidPlural != null) {
         b.append("msgid_plural \""+wrapQuotes(o.msgidPlural)+"\"\r\n"); 
         while (o.msgstr.size() < count) {
@@ -425,7 +453,7 @@ public class POGenerator {
           }
         }
       } else {
-        // we don't care; nothing to do 
+        o.oldMsgId = null;
       }
     } else if (mode == 1) {
       if (!value.equals(o.msgid)) {
@@ -438,7 +466,7 @@ public class POGenerator {
           o.msgstr.set(0, "!!"+o.msgstr.get(0));
         }
       } else {
-        // we don't care; nothing to do 
+        o.oldMsgId = null;
       }
     } else if (mode == 2) {
       if (!value.equals(o.msgidPlural)) {
@@ -451,7 +479,7 @@ public class POGenerator {
           o.msgstr.set(1, "!!"+o.msgstr.get(1));
         }
       } else {
-        // we don't care; nothing to do 
+        o.oldMsgId = null;
       }
     }
   }
@@ -483,10 +511,20 @@ public class POGenerator {
           list.add(obj);
         }
         obj.comment = line.substring(1).trim();
+        if (obj.comment.contains("!!when")) {
+          obj.oldMsgId = obj.comment.substring(obj.comment.indexOf("!!when"));
+          obj.comment = obj.comment.substring(0, obj.comment.indexOf("!!when")-1);
+          obj.oldMsgId = obj.oldMsgId.substring(obj.oldMsgId.indexOf(": ")+2).trim();
+          obj.oldMsgId = obj.oldMsgId.substring(0, obj.oldMsgId.length()-1);
+        }
       } else if (obj == null) {
         prefixes.add(line);  
       } else if (line.startsWith("#|")) {
+        // retired use of #| because it caused problems with the tools
         obj.oldMsgId = line.substring(2).trim();
+        if (obj.oldMsgId.startsWith("msgid ")) {
+          obj.oldMsgId = trimQuotes(obj.oldMsgId.substring(6));
+        }
       } else if (line.startsWith("msgid ")) {
         obj.msgid = trimQuotes(line.substring(5).trim());
         if (obj.msgid.endsWith("("+obj.id+")")) {
@@ -503,7 +541,7 @@ public class POGenerator {
         int i = s.indexOf("]");
         int c = Integer.valueOf(s.substring(0, i));
         s = trimQuotes(s.substring(i+1).trim());
-        if (s.startsWith("!!")) {
+        while (s.startsWith("!!")) {
           s = s.substring(2);
         }
         if (c != obj.msgstr.size()) {
@@ -519,6 +557,7 @@ public class POGenerator {
   }
 
   private String trimQuotes(String s) {
+    s = s.trim();
     if (s.startsWith("\"")) {
       s = s.substring(1);
     }

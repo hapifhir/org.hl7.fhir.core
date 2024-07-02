@@ -42,11 +42,12 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.validation.cli.utils.Common;
+import org.hl7.fhir.validation.instance.BasePolicyAdvisorForFullValidation;
 
 import javax.annotation.Nonnull;
 
 
-public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IWorkerContextManager.ICanonicalResourceLocator {
+public class StandAloneValidatorFetcher extends BasePolicyAdvisorForFullValidation implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IWorkerContextManager.ICanonicalResourceLocator {
 
   List<String> mappingsUris = new ArrayList<>();
   private FilesystemPackageCacheManager pcm;
@@ -57,7 +58,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   private Map<String, NpmPackage> pidMap = new HashMap<>();
 
   public StandAloneValidatorFetcher(FilesystemPackageCacheManager pcm, IWorkerContext context, IPackageInstaller installer) {
-    super();
+    super(ReferenceValidationPolicy.IGNORE);
     this.pcm = pcm;
     this.context = context;
     this.installer = installer;
@@ -73,32 +74,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
                                                       Object appContext,
                                                       String path,
                                                       String url) {
-    return ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS;
-  }
-
-  @Override
-  public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator,
-      Object appContext,
-      StructureDefinition structure,
-      ElementDefinition element,
-      String containerType,
-      String containerId,
-      Element.SpecialElement containingResourceType,
-      String path,
-      String url) {
-    return ContainedReferenceValidationPolicy.CHECK_VALID;
-  }
-
-  @Override
-  public EnumSet<ResourceValidationAction> policyForResource(IResourceValidator validator, Object appContext,
-      StructureDefinition type, String path) {
-    return EnumSet.allOf(ResourceValidationAction.class);
-  }
-
-  @Override
-  public EnumSet<ElementValidationAction> policyForElement(IResourceValidator validator, Object appContext,
-      StructureDefinition structure, ElementDefinition element, String path) {
-    return EnumSet.allOf(ElementValidationAction.class);
+    return ReferenceValidationPolicy.IGNORE;
   }
   
   @Override
@@ -314,19 +290,6 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
       resolveURL((IResourceValidator) validator, null, null, url, null, false);
     } catch (Exception e) {
     }
-  }
-
-  @Override
-  public EnumSet<CodedContentValidationAction> policyForCodedContent(IResourceValidator validator,
-      Object appContext,
-      String stackPath,
-      ElementDefinition definition,
-      StructureDefinition structure,
-      BindingKind kind,
-      AdditionalBindingPurpose purpose,
-      ValueSet valueSet,
-      List<String> systems) {
-    return EnumSet.allOf(CodedContentValidationAction.class);
   }
 
   @Override

@@ -4,33 +4,41 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.CompartmentDefinition;
 import org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent;
-import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 public class CompartmentDefinitionRenderer extends ResourceRenderer {
 
-  public CompartmentDefinitionRenderer(RenderingContext context) {
-    super(context);
+  public CompartmentDefinitionRenderer(RenderingContext context) { 
+    super(context); 
+  } 
+ 
+  @Override
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    if (r.isDirect()) {
+      renderResourceTechDetails(r, x);
+      genSummaryTable(status, x, (CompartmentDefinition) r.getBase());
+      render(status, x, (CompartmentDefinition) r.getBase());      
+    } else {
+      throw new Error("CompartmentDefinitionRenderer only renders native resources directly");
+    }
   }
 
-  public CompartmentDefinitionRenderer(RenderingContext context, ResourceContext rcontext) {
-    super(context, rcontext);
-  }
-  
-  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
-    return render(x, (CompartmentDefinition) dr);
+  @Override
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
   }
 
-  public boolean render(XhtmlNode x, CompartmentDefinition cpd) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(RenderingStatus status, XhtmlNode x, CompartmentDefinition cpd) throws FHIRFormatError, DefinitionException, IOException {
     StringBuilder in = new StringBuilder();
     StringBuilder out = new StringBuilder();
     for (CompartmentDefinitionResourceComponent cc: cpd.getResource()) {
@@ -56,7 +64,6 @@ public class CompartmentDefinitionRenderer extends ResourceRenderer {
         out.toString()+
         "</ul></div>\r\n");
     x.getChildNodes().addAll(xn.getChildNodes());
-    return true;
   }
 
   public void describe(XhtmlNode x, CompartmentDefinition cd) {
@@ -65,21 +72,6 @@ public class CompartmentDefinitionRenderer extends ResourceRenderer {
 
   public String display(CompartmentDefinition cd) {
     return cd.present();
-  }
-
-  @Override
-  public String display(Resource r) throws UnsupportedEncodingException, IOException {
-    return ((CompartmentDefinition) r).present();
-  }
-
-  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    if (r.has("title")) {
-      return r.children("title").get(0).getBase().primitiveValue();
-    }
-    if (r.has("name")) {
-      return r.children("name").get(0).getBase().primitiveValue();
-    }
-    return "??";
   }
 
 }

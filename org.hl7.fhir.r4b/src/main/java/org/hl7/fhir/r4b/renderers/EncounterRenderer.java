@@ -9,6 +9,13 @@ import org.hl7.fhir.r4b.renderers.utils.RenderingContext;
 import org.hl7.fhir.r4b.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class EncounterRenderer extends ResourceRenderer {
 
   public EncounterRenderer(RenderingContext context) {

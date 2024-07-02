@@ -40,6 +40,13 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class QuestionnaireRenderer extends TerminologyRenderer {
   public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-Questionnaire.item.type";
 

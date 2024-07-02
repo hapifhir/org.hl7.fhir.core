@@ -51,12 +51,12 @@ public class JsonLexer {
   private boolean isUnquoted;
   private String sourceName;
 
-  public JsonLexer(String source, boolean allowComments, boolean allowUnquotedStrings) throws IOException {
+  public JsonLexer(String source, boolean allowComments, boolean allowUnquotedStrings, int line) throws IOException {
     this.source = source;
     this.allowComments = allowComments;
     this.allowUnquotedStrings = allowUnquotedStrings;
     cursor = -1;
-    location = new JsonLocationData(1, 1);  
+    location = new JsonLocationData(line+1, 1);  
     start();
   }
 

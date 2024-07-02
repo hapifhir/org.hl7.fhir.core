@@ -2735,7 +2735,7 @@ public class FHIRPathEngine {
     if (right.size() > 1) {
       throw makeExceptionPlural(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE, "+");
     }
-    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) {
+    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || left.get(0).hasType("date", "dateTime", "instant") || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "+", right.get(0).fhirType());
     }
 
@@ -2748,8 +2748,15 @@ public class FHIRPathEngine {
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) + Integer.parseInt(r.primitiveValue())));
     } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) { 
       result.add(new DecimalType(new BigDecimal(l.primitiveValue()).add(new BigDecimal(r.primitiveValue()))));
-    } else if (l.isDateTime() && r.hasType("Quantity")) {
-      result.add(dateAdd((BaseDateTimeType) l, (Quantity) r, false, expr));
+    } else if ((l.isDateTime() || l.hasType("date")) && r.hasType("Quantity")) {
+      if (l.hasType("date")) {
+        BaseDateTimeType dt = l instanceof BaseDateTimeType ? (BaseDateTimeType) l : TypeConvertor.castToDateTime(l);
+        Quantity qty = r instanceof Quantity ? (Quantity) r : TypeConvertor.castToQuantity(r);
+        result.add(dateAdd(dt, qty, false, expr));
+      } else {
+        DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue());
+        result.add(dateAdd(dl, (Quantity) r, false, expr));
+      }
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "+", left.get(0).fhirType(), right.get(0).fhirType());
     }
@@ -2994,7 +3001,7 @@ public class FHIRPathEngine {
     if (right.size() > 1) {
       throw makeExceptionPlural(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE, "-");
     }
-    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) {
+    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || left.get(0).hasType("date", "dateTime") || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "-", right.get(0).fhirType());
     }
 
@@ -3012,8 +3019,15 @@ public class FHIRPathEngine {
         Quantity qty = (Quantity) r;
         result.add(qty.copy().setValue(qty.getValue().abs()));
       }
-    } else if (l.isDateTime() && r.hasType("Quantity")) {
-      result.add(dateAdd((BaseDateTimeType) l, (Quantity) r, true, expr));
+    } else if ((l.isDateTime() || l.hasType("date", "dateTime", "instant")) && r.hasType("Quantity")) {
+      if (l.hasType("date")) {
+        BaseDateTimeType dt = l instanceof BaseDateTimeType ? (BaseDateTimeType) l : TypeConvertor.castToDateTime(l);
+        Quantity qty = r instanceof Quantity ? (Quantity) r : TypeConvertor.castToQuantity(r);
+        result.add(dateAdd(dt, qty, true, expr));
+      } else {
+        DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue());
+        result.add(dateAdd(dl, (Quantity) r, true, expr));
+      }
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "-", left.get(0).fhirType(), right.get(0).fhirType());
     }

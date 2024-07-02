@@ -21,6 +21,13 @@ import org.hl7.fhir.r4b.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class CapabilityStatementRenderer extends ResourceRenderer {
 
   public CapabilityStatementRenderer(RenderingContext context) {

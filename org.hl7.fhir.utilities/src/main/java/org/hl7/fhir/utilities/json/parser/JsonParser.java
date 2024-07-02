@@ -52,6 +52,15 @@ import org.hl7.fhir.utilities.json.parser.JsonLexer.TokenType;
  */
 public class JsonParser {
 
+  protected JsonParser() {
+    super();
+  }
+
+  protected JsonParser(int line) {
+    super();
+    this.line = line;
+  }
+
   public static JsonObject parseObject(InputStream stream) throws IOException, JsonException {
     return new JsonParser().parseJsonObject(TextFile.streamToString(stream), false, false);
   }
@@ -105,6 +114,10 @@ public class JsonParser {
 
   public static JsonObject parseObject(String source, boolean isJson5, boolean allowDuplicates) throws IOException, JsonException {
     return new JsonParser().parseJsonObject(source, isJson5, allowDuplicates);
+  }
+  
+  public static JsonObject parseObject(String source, boolean isJson5, boolean allowDuplicates, int line) throws IOException, JsonException {
+    return new JsonParser(line).parseJsonObject(source, isJson5, allowDuplicates);
   }
   
   // ================================================================
@@ -221,6 +234,7 @@ public class JsonParser {
   private boolean itemUnquoted;
   private boolean valueUnquoted;
   private String sourceName;
+  private int line = 0;
 
   private JsonObject parseJsonObject(String source, boolean isJson5, boolean allowDuplicates) throws IOException, JsonException {
     this.allowDuplicates = allowDuplicates;
@@ -231,7 +245,7 @@ public class JsonParser {
   }
 
   private JsonObject parseSource(String source) throws IOException, JsonException {
-    lexer = new JsonLexer(source, allowComments, allowUnquotedStrings);
+    lexer = new JsonLexer(source, allowComments, allowUnquotedStrings, line);
     lexer.setSourceName(sourceName);
     JsonObject result = new JsonObject();
     lexer.takeComments(result);
@@ -249,8 +263,14 @@ public class JsonParser {
     if (lexer.getType() != TokenType.Close) {
       parseProperty();
       readObject("$", result, true);
+      result.setEnd(endProperty != null ? endProperty.copy() : lexer.getLocation().copy());
+    } else {
+      result.setEnd(endProperty != null ? endProperty.copy() : lexer.getLocation().copy());
+      lexer.next();
     }
-    result.setEnd(endProperty != null ? endProperty.copy() : lexer.getLocation().copy());
+    if (lexer.getType() != TokenType.Eof) {
+      throw lexer.error("Unexpected content at end of JSON: "+lexer.getType().toString());
+    }
     return result;
   }
   
@@ -263,7 +283,7 @@ public class JsonParser {
   }
   
   private JsonElement parseSourceElement(String source) throws IOException, JsonException {
-    lexer = new JsonLexer(source, allowComments, allowUnquotedStrings);
+    lexer = new JsonLexer(source, allowComments, allowUnquotedStrings, line);
     switch (lexer.getType()) {
     case Boolean:
       JsonBoolean bool = new JsonBoolean(lexer.getValue().equals("true"));

@@ -1,7 +1,6 @@
 package org.hl7.fhir.utilities;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
@@ -29,7 +28,7 @@ public class FileFormatTest {
     if (Charset.defaultCharset().equals(StandardCharsets.UTF_8)) {
       assertEquals(0, allWrittenLines.length());
     } else {
-      assertThat(allWrittenLines, containsString("WARNING"));
+      assertThat(allWrittenLines).contains("WARNING");
     }
   }
 }

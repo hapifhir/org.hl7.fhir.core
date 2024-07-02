@@ -439,33 +439,37 @@ public class TerminologyClientManager {
   }
 
   public SourcedValueSet findValueSetOnServer(String canonical) {
-    if (IGNORE_TX_REGISTRY || getMasterClient() == null || !useEcosystem) {
+    if (IGNORE_TX_REGISTRY || getMasterClient() == null) {
       return null;
     }
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+Utilities.URLEncode(canonical));
-    if (usage != null) {
-      request = request + "&usage="+usage;
-    }
     String server = null;
     try {
-      JsonObject json = JsonParser.parseObjectFromUrl(request);
-      for (JsonObject item : json.getJsonObjects("authoritative")) {
-        if (server == null) {
-          server = item.asString("url");
+      if (!useEcosystem) {
+        server = getMasterClient().getAddress();
+      } else {
+        if (usage != null) {
+          request = request + "&usage="+usage;
         }
-      }
-      for (JsonObject item : json.getJsonObjects("candidates")) {
-        if (server == null) {
-          server = item.asString("url");
+        JsonObject json = JsonParser.parseObjectFromUrl(request);
+        for (JsonObject item : json.getJsonObjects("authoritative")) {
+          if (server == null) {
+            server = item.asString("url");
+          }
         }
-      }
-      if (server == null) {
-        return null;
-      }
-      if (server.contains("://tx.fhir.org")) {
-        try {
-          server = server.replace("tx.fhir.org", new URL(getMasterClient().getAddress()).getHost());
-        } catch (MalformedURLException e) {
+        for (JsonObject item : json.getJsonObjects("candidates")) {
+          if (server == null) {
+            server = item.asString("url");
+          }
+        }
+        if (server == null) {
+          return null;
+        }
+        if (server.contains("://tx.fhir.org")) {
+          try {
+            server = server.replace("tx.fhir.org", new URL(getMasterClient().getAddress()).getHost());
+          } catch (MalformedURLException e) {
+          }
         }
       }
       TerminologyClientContext client = serverMap.get(server);
