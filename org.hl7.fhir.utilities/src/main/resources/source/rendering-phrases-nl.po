@@ -43,7 +43,7 @@ msgstr "een of meer herhalingen"
 #: ADD_BIND_CURR_BIND
 msgctxt "ADD_BIND_CURR_BIND"
 msgid "Current"
-msgstr "!!Huidige binding"
+msgstr "Huidig"
 
 # ADD_BIND_DESIG_SYS
 #: ADD_BIND_DESIG_SYS
@@ -59,7 +59,7 @@ msgstr "Een verplichte binding, voor gebruik wanneer de bindingsterkte ''uitbrei
 #: ADD_BIND_EX_BIND
 msgctxt "ADD_BIND_EX_BIND"
 msgid "Extensible"
-msgstr "!!Uitbreidbare binding"
+msgstr "Uitbreidbaar"
 
 # ADD_BIND_GIVEN_CONT
 #: ADD_BIND_GIVEN_CONT
@@ -85,7 +85,7 @@ msgstr "Nieuwe registraties zijn verplicht deze waardelijst te gebruiken, maar b
 #: ADD_BIND_PREF_BIND
 msgctxt "ADD_BIND_PREF_BIND"
 msgid "Preferred"
-msgstr "!!Voorkeursbinding"
+msgstr "Voorkeur"
 
 # ADD_BIND_RECOM_VALUE_SET
 #: ADD_BIND_RECOM_VALUE_SET
@@ -96,7 +96,7 @@ msgstr "Dit is de aanbevolen waardelijst (documentatie dient uit te leggen waaro
 #: ADD_BIND_REQ_BIND
 msgctxt "ADD_BIND_REQ_BIND"
 msgid "Required"
-msgstr "!!Verplichte binding"
+msgstr "Verplicht"
 
 # ADD_BIND_UI
 #: ADD_BIND_UI
@@ -137,7 +137,7 @@ msgstr "ETag = {0}"
 # BUNDLE_HEADER_DOCUMENT_CONTENTS
 #: BUNDLE_HEADER_DOCUMENT_CONTENTS
 msgid "Additional Resources Included in Document"
-msgstr ""
+msgstr "Additionele resources geïncludeerd in document"
 
 # BUNDLE_HEADER_ENTRY
 #: BUNDLE_HEADER_ENTRY
@@ -222,7 +222,7 @@ msgstr "Score = {0}"
 # BUNDLE_SUMMARY
 #: BUNDLE_SUMMARY
 msgid "{0} Bundle, {1} Entries"
-msgstr ""
+msgstr "{0} Bundle, {1} Entries"
 
 # BUND_REND_INVALID_DOC
 #: BUND_REND_INVALID_DOC
@@ -627,7 +627,7 @@ msgstr "features"
 # CODE_SYS_FOR_OID
 #: CODE_SYS_FOR_OID
 msgid "{0} (for OID based terminology systems)"
-msgstr "!!voor OID-gebaseerde terminologiesystemen"
+msgstr "{0} (voor oid-gebaseerde terminologiesystemen)"
 
 # CODE_SYS_FRAGMENT
 #: CODE_SYS_FRAGMENT
@@ -662,7 +662,7 @@ msgstr "Deze CodeSystem resource is een supplement voor"
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
 msgid "{0} is the value set for all codes in this code system"
-msgstr "!!is de waardelijst voor alle codes in dit codesysteem"
+msgstr "{0} is de waardelijst voor alle codes in dit codesysteem"
 
 # CODE_SYS_UNDEF_HIER
 #: CODE_SYS_UNDEF_HIER
@@ -788,17 +788,17 @@ msgstr "bij de lunch"
 #: DATA_REND_ATT_DATA
 msgctxt "DATA_REND_ATT_DATA"
 msgid "{0}: {1}"
-msgstr ""
+msgstr "{0}: {1}"
 
 # DATA_REND_ATT_URL
 #: DATA_REND_ATT_URL
 msgid "{0} @ {1}"
-msgstr ""
+msgstr "{0} @ {1}"
 
 # DATA_REND_BASE64
 #: DATA_REND_BASE64
 msgid "(base64 data - {0} base64 chars)"
-msgstr "!!(base64 data - {0}  bytes)"
+msgstr "(base64 data - {0} base64 tekens)"
 
 # DATA_REND_BFBKFST
 #: DATA_REND_BFBKFST
@@ -1088,7 +1088,7 @@ msgstr "Identifier"
 # DIAG_REP_REND_NOTRES
 #: DIAG_REP_REND_NOTRES
 msgid "The observation ''{0}'' could not be resolved"
-msgstr "!!Deze Observation is niet gevonden"
+msgstr "Deze Observation ''{0}'' is niet gevonden"
 
 # DIAG_REP_REND_OBS
 #: DIAG_REP_REND_OBS
@@ -1128,23 +1128,23 @@ msgstr "Wanneer voor"
 # DIAG_REP_SUMMARY
 #: DIAG_REP_SUMMARY
 msgid "Diagnostic Report for ''{0}'' for ''{1}''"
-msgstr ""
+msgstr "Diagnostisch rapport voor ''{0}'' voor ''{1}''"
 
 # DIAG_REP_UNSPECIFIED_CODE
 #: DIAG_REP_UNSPECIFIED_CODE
 msgid "Unspecified Report Type"
-msgstr ""
+msgstr "Ongespecificeerd rapporttype"
 
 # DIAG_REP_UNSPECIFIED_SUBJECT
 #: DIAG_REP_UNSPECIFIED_SUBJECT
 msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr ""
+msgstr "Ongespecificeerd subject"
 
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
 msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
-msgstr ""
+msgstr "<param name=\"status\"/> Document van <param name=\"date\"/> door <param name=\"author\"/> voor <param name=\"subject\"/> <if test=\"has-encounter = true\"> in contactmoment <param name=\"encounter\"/></if>"
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
@@ -1224,7 +1224,7 @@ msgstr "Stap"
 # EX_SCEN_TIME
 #: EX_SCEN_TIME
 msgid "... time passes ..."
-msgstr "... tijd verstrijkt ...\n"
+msgstr "... tijd verstrijkt ..."
 
 # EX_SCEN_UN
 #: EX_SCEN_UN
@@ -1320,7 +1320,7 @@ msgstr "Criteria"
 #: GENERAL_DATA_DISPLAY_PROPERTY
 msgctxt "GENERAL_DATA_DISPLAY_PROPERTY"
 msgid "{0}: {1}"
-msgstr ""
+msgstr "{0}: {1}"
 
 # GENERAL_DEFINING_URL
 #: GENERAL_DEFINING_URL
@@ -1682,18 +1682,18 @@ msgstr "Subject:"
 # LIST_SUMMARY
 #: LIST_SUMMARY
 msgid "List for ''{0}'' for ''{1}''"
-msgstr ""
+msgstr "List voor ''{0}'' voor ''{1}''"
 
 # LIST_UNSPECIFIED_CODE
 #: LIST_UNSPECIFIED_CODE
 msgid "Unspecified List Type"
-msgstr ""
+msgstr "Ongespecificeerd lijsttype"
 
 # LIST_UNSPECIFIED_SUBJECT
 #: LIST_UNSPECIFIED_SUBJECT
 msgctxt "LIST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr ""
+msgstr "Ongespecificeerd subject"
 
 # MAP_DEFAULT_COMMENT
 #: MAP_DEFAULT_COMMENT
@@ -1778,27 +1778,27 @@ msgstr "Bron"
 # OP_OUT_SUMM
 #: OP_OUT_SUMM
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s), {2} Hint(s))"
-msgstr ""
+msgstr "OperationOutcome ({0} fout(en), {1} waarschuwing(en), {2} hint(s))"
 
 # OP_OUT_SUMM_ALL_OK
 #: OP_OUT_SUMM_ALL_OK
 msgid "OperationOutcome (ALL OK)"
-msgstr ""
+msgstr "OperationOutcome (ALLES OKÉ)"
 
 # OP_OUT_SUMM_NOHINT
 #: OP_OUT_SUMM_NOHINT
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s))"
-msgstr ""
+msgstr "OperationOutcome ({0} fout(en), {1} waarschuwing(en))"
 
 # PARS_SUMMARY_LIST
 #: PARS_SUMMARY_LIST
 msgid "Parameters: {0}"
-msgstr ""
+msgstr "Parameters: {0}"
 
 # PARS_SUMMARY_SIZE
 #: PARS_SUMMARY_SIZE
 msgid "Parameters ({0} parameters)"
-msgstr ""
+msgstr "Parameters ({0} parameters)"
 
 # PAT_ACTIVE
 #: PAT_ACTIVE
@@ -2014,23 +2014,23 @@ msgstr "Kan definitie niet vinden voor {0}"
 # PROF_DRIV_GEN_NARR
 #: PROF_DRIV_GEN_NARR
 msgid "{0} {1}"
-msgstr "!!Gegenereerde narrative: {0} {1}"
+msgstr "{0} {1}"
 
 # PROF_DRIV_GEN_NARR_TECH
 #: PROF_DRIV_GEN_NARR_TECH
 msgid "Generated Narrative: {0} {1}"
-msgstr ""
+msgstr "Gegenereerde narrative: {0} {1}"
 
 # PROF_DRIV_SUMM
 #: PROF_DRIV_SUMM
 msgctxt "PROF_DRIV_SUMM"
 msgid "{0}: {1}"
-msgstr ""
+msgstr "{0}: {1}"
 
 # PROF_DRIV_SUMM_PROP
 #: PROF_DRIV_SUMM_PROP
 msgid "{0} = {1}"
-msgstr ""
+msgstr "{0} = {1}"
 
 # PROV_ACT
 #: PROV_ACT
@@ -2355,7 +2355,7 @@ msgstr "Subject type"
 # QUEST_SUMMARY
 #: QUEST_SUMMARY
 msgid "Response to Questionnaire ''{0}'' about ''{1}''"
-msgstr ""
+msgstr "Antwoord op vragenlijst ''{0}'' over ''{1}''"
 
 # QUEST_TEXT
 #: QUEST_TEXT
@@ -2370,7 +2370,7 @@ msgstr "Tekst voor het item"
 # QUEST_TIMES
 #: QUEST_TIMES
 msgid "Minimum and Maximum # of times the item can appear in the instance"
-msgstr "Minimum en maximum aantal keren dat het item kan voorkomen in de instance"
+msgstr "Minimum en maximum # keren dat het item kan voorkomen in de instance"
 
 # QUEST_TRUE
 #: QUEST_TRUE
@@ -2400,13 +2400,13 @@ msgstr "Onbekende vragenlijstantwoorden weergavemodus"
 # QUEST_UNSPECIFIED_QUESTIONNAIRE
 #: QUEST_UNSPECIFIED_QUESTIONNAIRE
 msgid "Unspecified Questionnaire"
-msgstr ""
+msgstr "Ongespecificeerde vragenlijst"
 
 # QUEST_UNSPECIFIED_SUBJECT
 #: QUEST_UNSPECIFIED_SUBJECT
 msgctxt "QUEST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr ""
+msgstr "Ongespecificeerd subject"
 
 # QUEST_VALUE
 #: QUEST_VALUE
@@ -2527,12 +2527,12 @@ msgstr "Fout bij weergave: {0}"
 # RES_REND_INFO_SOURCE
 #: RES_REND_INFO_SOURCE
 msgid "Information Source: <param name=\"source\"/>"
-msgstr "!!Informatiebron:"
+msgstr "Informatiebron: <param name=\"source\"/>"
 
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
 msgid "Language: {0}"
-msgstr "!!(Taal"
+msgstr "Taal: {0}"
 
 # RES_REND_RET
 #: RES_REND_RET
@@ -2547,7 +2547,7 @@ msgstr "Zie op deze pagina:"
 # RES_REND_SPEC_RULES
 #: RES_REND_SPEC_RULES
 msgid "Special rules apply: {0}!"
-msgstr "!!Speciale regels van toepassing:"
+msgstr "Speciale regels van toepassing: {0}!"
 
 # RES_REND_TAG
 #: RES_REND_TAG
@@ -2562,12 +2562,12 @@ msgstr "Onbekend"
 # RES_REND_UPDATED
 #: RES_REND_UPDATED
 msgid "Last updated: {0}"
-msgstr "!!Updated"
+msgstr "Laatste update: {0}"
 
 # RES_REND_VER
 #: RES_REND_VER
 msgid "version: {0}"
-msgstr "!!(versie"
+msgstr "versie: {0}"
 
 # SD_COMP_HEAD_CARD_L
 #: SD_COMP_HEAD_CARD_L
@@ -2661,8 +2661,8 @@ msgstr "Documentatie voor dit formaat"
 
 # SD_GRID_HEAD_CARD_DESC
 #: SD_GRID_HEAD_CARD_DESC
-msgstr "Minimum en maximum # keren dat het element kan voorkomen in de instance. Superscripts geven additionele constraints op weergave"
 msgid "Minimum and Maximum # of times the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
+msgstr "Minimum en maximum # keren dat het element kan voorkomen in de instance. Superscripts geven additionele constraints op weergave"
 
 # SD_GRID_HEAD_DESC
 #: SD_GRID_HEAD_DESC
@@ -3629,7 +3629,7 @@ msgstr "Dit profiel bouwt op"
 # STRUC_DEF_PROF_COMP
 #: STRUC_DEF_PROF_COMP
 msgid "This profile compiles with the profile"
-msgstr "!!Dit profiel compileert met het profiel"
+msgstr "Dit profiel compileert met het profiel"
 
 # STRUC_DEF_PROF_REQ
 #: STRUC_DEF_PROF_REQ
@@ -3774,7 +3774,7 @@ msgstr "Slice {0}"
 # STRUC_DEF_SNOMED
 #: STRUC_DEF_SNOMED
 msgid "SNOMED-CT"
-msgstr "!!SNOMED CT code"
+msgstr "SNOMED CT"
 
 # STRUC_DEF_SNOMED_CODE
 #: STRUC_DEF_SNOMED_CODE
@@ -3844,12 +3844,12 @@ msgstr "Dit type kan worden gekoppeld aan een waardelijst met de {0}"
 # STRUC_DEF_TYPE_PARAMETER
 #: STRUC_DEF_TYPE_PARAMETER
 msgid "Type Parameter"
-msgstr ""
+msgstr "Type parameter"
 
 # STRUC_DEF_TYPE_SET
 #: STRUC_DEF_TYPE_SET
 msgid "This type can be bound to a value set using the"
-msgstr "!!Dit type kan worden gekoppeld aan een waardelijst met de \""
+msgstr "Dit type kan worden gekoppeld aan een waardelijst met de"
 
 # STRUC_DEF_TYPE_SPEC
 #: STRUC_DEF_TYPE_SPEC
@@ -3960,7 +3960,7 @@ msgstr "Xml-elementnaam"
 # STRUC_DEF_XML_FORM
 #: STRUC_DEF_XML_FORM
 msgid "XML Format"
-msgstr ""
+msgstr "Xml-formaat"
 
 # STRUC_DEF_XML_NAME
 #: STRUC_DEF_XML_NAME
