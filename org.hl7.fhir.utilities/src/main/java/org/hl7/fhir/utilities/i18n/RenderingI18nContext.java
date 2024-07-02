@@ -36,11 +36,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String ADD_BIND_VALID_EXT = "ADD_BIND_VALID_EXT";
   public static final String ADD_BIND_VALID_REQ = "ADD_BIND_VALID_REQ";
   public static final String ADD_BIND_VALUE_COMP = "ADD_BIND_VALUE_COMP";
-  public static final String BUNDLE_DOCUMENT_CONTENT = "BUNDLE_DOCUMENT_CONTENT";
   public static final String BUNDLE_ETAG = "BUNDLE_ETAG";
-  public static final String BUNDLE_HEADER_DOC_ENTRY_RD = "BUNDLE_HEADER_DOC_ENTRY_RD";
-  public static final String BUNDLE_HEADER_DOC_ENTRY_U = "BUNDLE_HEADER_DOC_ENTRY_U";
-  public static final String BUNDLE_HEADER_DOC_ENTRY_URD = "BUNDLE_HEADER_DOC_ENTRY_URD";
   public static final String BUNDLE_HEADER_ENTRY = "BUNDLE_HEADER_ENTRY";
   public static final String BUNDLE_HEADER_ENTRY_URL = "BUNDLE_HEADER_ENTRY_URL";
   public static final String BUNDLE_HEADER_ROOT = "BUNDLE_HEADER_ROOT";
@@ -55,11 +51,9 @@ public class RenderingI18nContext extends I18nBase {
   public static final String BUNDLE_RESOURCE = "BUNDLE_RESOURCE";
   public static final String BUNDLE_RESPONSE = "BUNDLE_RESPONSE";
   public static final String BUNDLE_REV_EXCP = "BUNDLE_REV_EXCP";
-  public static final String BUNDLE_REV_INV_DOC = "BUNDLE_REV_INV_DOC";
   public static final String BUNDLE_SEARCH = "BUNDLE_SEARCH";
   public static final String BUNDLE_SEARCH_MODE = "BUNDLE_SEARCH_MODE"; 
   public static final String BUNDLE_SEARCH_SCORE = "BUNDLE_SEARCH_SCORE";
-  public static final String BUND_REND_GEN_NARR = "BUND_REND_GEN_NARR";
   public static final String BUND_REND_INVALID_DOC = "BUND_REND_INVALID_DOC";
   public static final String CANON_REND_COMMITTEE = "CANON_REND_COMMITTEE";
   public static final String GENERAL_COPYRIGHT = "GENERAL_COPYRIGHT";
@@ -446,11 +440,9 @@ public class RenderingI18nContext extends I18nBase {
   public static final String QUEST_PUB = "QUEST_PUB";
   public static final String QUEST_QUEST = "QUEST_QUEST";
   public static final String QUEST_QUESTION = "QUEST_QUESTION";
-  public static final String QUEST_QUESTIONNAIRE = "QUEST_QUESTIONNAIRE";
   public static final String QUEST_READONLY = "QUEST_READONLY";
   public static final String QUEST_READ_ONLY = "QUEST_READ_ONLY";
   public static final String QUEST_REP = "QUEST_REP";
-  public static final String QUEST_RESP = "QUEST_RESP";
   public static final String QUEST_RESP_ROOT = "QUEST_RESP_ROOT";
   public static final String QUEST_REV_DATE = "QUEST_REV_DATE";
   public static final String QUEST_ROOT = "QUEST_ROOT";
@@ -493,7 +485,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String RES_REND_DESC = "RES_REND_DESC";
   public static final String RES_REND_DRAFT = "RES_REND_DRAFT";
   public static final String RES_REND_ERROR = "RES_REND_ERROR";
-  public static final String RES_REND_GEN_SUM = "RES_REND_GEN_SUM";
   public static final String RES_REND_INFO_SOURCE = "RES_REND_INFO_SOURCE";
   public static final String RES_REND_LANGUAGE = "RES_REND_LANGUAGE";
   public static final String GENERAL_RESOURCE = "GENERAL_RESOURCE";
