@@ -486,7 +486,7 @@ public class POGenerator {
 
   private POObject findObject(List<POObject> objects, String name) {
     for (POObject t : objects) {
-      if (t.id.equals(name)) {
+      if (t.id != null && t.id.equals(name)) {
         return t;
       }
     }
