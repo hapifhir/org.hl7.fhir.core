@@ -2183,6 +2183,11 @@ msgstr ""
 msgid "The element {0} is not marked as ''mustSupport'' in the profile {1}. Consider not using the element, or marking the element as must-Support in the profile"
 msgstr ""
 
+# NDJSON_EMPTY_LINE_WARNING
+#: NDJSON_EMPTY_LINE_WARNING
+msgid "The NDJSON source contains an empty line. This may not be accepted by some processors"
+msgstr ""
+
 # NO_VALID_DISPLAY_FOUND
 #: NO_VALID_DISPLAY_FOUND
 msgid "No valid Display Names found for {1}#{2} in the language {4}"

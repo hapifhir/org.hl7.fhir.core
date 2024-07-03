@@ -687,7 +687,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   private OperationOutcomeIssueComponent findMatchingIssue(OperationOutcome oo, OperationOutcomeIssueComponent iss) {
     for (OperationOutcomeIssueComponent t : oo.getIssue()) {
-      if (t.getExpression().get(0).getValue().equals(iss.getExpression().get(0).getValue()) &&
+      if (
+          (t.hasExpression() && iss.hasExpression() && t.getExpression().get(0).getValue().equals(iss.getExpression().get(0).getValue())
+               || (!t.hasExpression() && !iss.hasExpression())) &&
           t.getCode() == iss.getCode() && t.getSeverity() == iss.getSeverity() && 
           (t.hasDiagnostics() ? t.getDiagnostics().equals(iss.getDiagnostics()) : !iss.hasDiagnostics()) && 
           (t.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER) != null ? t.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER).equals(iss.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER)) : iss.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER) == null) && 
