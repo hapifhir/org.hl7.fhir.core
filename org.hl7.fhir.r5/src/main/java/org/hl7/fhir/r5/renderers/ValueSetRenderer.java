@@ -1025,7 +1025,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     x.br();
     x.tx(s);
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true, "exp");
     TableModel model = gen.new TableModel("exp.h="+index, context.getRules() == GenerationRules.IG_PUBLISHER);    
     model.setAlternating(true);
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_CODE), context.formatPhrase(RenderingContext.VALUE_SET_CODE_ITEM), null, 0));

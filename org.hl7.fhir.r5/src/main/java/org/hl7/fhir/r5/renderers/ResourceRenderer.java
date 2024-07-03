@@ -341,6 +341,9 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (rr == null) {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : actual.primitiveValue();
         x.ah(context.prefixLocalHref(actual.primitiveValue())).tx(disp);
+      } else if (rr.getResource() == null) {
+        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : "??";
+        x.ah(context.prefixLocalHref(rr.getWebPath())).tx(disp);
       } else {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(disp);
@@ -789,8 +792,21 @@ public abstract class ResourceRenderer extends DataRenderer {
      }
    }
 
-   public static String makeInternalBundleLink(String fullUrl) {
-     return fullUrl.replace(":", "-");
+   public static String makeInternalBundleLink(ResourceWrapper bundle, String fullUrl) {
+     // are we in a bundle in a bundle? Then the link is scoped
+     boolean inBundle = false;
+     ResourceWrapper rw = bundle.parent();
+     while (rw != null) {
+       if (rw.fhirType().equals("Bundle")) {
+         inBundle = true;
+       }
+       rw = rw.parent();
+      }
+     if (inBundle) {
+       return bundle.getScopedId()+"/"+fullUrl.replace(":", "-");
+     } else {
+       return fullUrl.replace(":", "-");
+     }
    }
 
   public boolean canRender(Resource resource) {

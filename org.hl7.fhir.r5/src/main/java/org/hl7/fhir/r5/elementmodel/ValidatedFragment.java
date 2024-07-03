@@ -27,6 +27,7 @@ public class ValidatedFragment {
   @Getter
   private final boolean isDerivedContent;
   public final static String FOCUS_NAME = "focus";
+  public final static String ITEM_NAME = "item";
 
   @Getter
   private List<ValidationMessage> errors = new ArrayList<>();

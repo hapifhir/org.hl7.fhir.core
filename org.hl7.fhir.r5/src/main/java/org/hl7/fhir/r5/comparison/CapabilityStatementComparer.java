@@ -743,7 +743,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
   
   // 6 columns: path | left value | left doco | right value | right doco | comments
   public XhtmlNode renderStatements(CapabilityStatementComparison comparison, String id, String prefix) throws FHIRException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), Utilities.path("[tmp]", "compare"), false);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), Utilities.path("[tmp]", "compare"), false, "c");
     TableModel model = gen.new TableModel(id, true);
     model.setAlternating(true);
     model.getTitles().add(gen.new Title(null, null, "Type", "The type of item", null, 100));
