@@ -32,13 +32,6 @@ public interface SessionCache {
   boolean sessionExists(String sessionId);
 
   /**
-   * Removes the {@link ValidationEngine} associated with the passed in session id.
-   * @param sessionId The {@link String} session id.
-   * @return The {@link ValidationEngine} instance that was removed.
-   */
-  ValidationEngine removeSession(String sessionId);
-
-  /**
    * Returns the stored {@link ValidationEngine} associated with the passed in session id, if one such instance exists.
    * @param sessionId The {@link String} session id.
    * @return The {@link ValidationEngine} associated with the passed in id, or null if none exists.

@@ -97,11 +97,6 @@ public class PassiveExpiringSessionCache implements SessionCache {
     return cachedSessions.containsKey(sessionId);
   }
 
-  @Override
-  public ValidationEngine removeSession(String sessionId) {
-    return cachedSessions.remove(sessionId);
-  }
-
   /**
    * Returns the stored {@link ValidationEngine} associated with the passed in session id, if one such instance exists.
    * @param sessionId The {@link String} session id.
