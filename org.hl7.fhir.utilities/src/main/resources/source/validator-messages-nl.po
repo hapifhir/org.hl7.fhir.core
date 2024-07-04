@@ -426,8 +426,9 @@ msgid "The code system is a fragment/example, but the number of concepts ({0}) e
 msgstr "Het codesysteem is een fragment/voorbeeld maar het aantal concepten ({0}) is hoger dan het aangegeven totaal ({1})"
 
 # CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO
+#: CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO
 msgid "The code system has no content, but the exceeds the stated total number is 0 concepts - check that this isn''t a complete code system that has no concepts, or update/remove the stated count"
-msgstr "Het codesysteem heeft geen content maar heeft meer aangegeven totaal van 0 concepten - controleer of dit een compleet codesysteem is zonder concepten, of update het aangegeven totaal"
+msgstr ""
 
 # CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED
 #: CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED
@@ -615,8 +616,9 @@ msgid "Code systems published by HL7 SHALL conform to the ShareableCodeSystem pr
 msgstr "Door HL7 gepubliceerde codesystemen MOETEN zich houden aan het ShareableCodeSystem profiel, wat zegt dat het element CodeSystem.{0} aanwezig moet zijn, maar deze ontbreekt"
 
 # CODESYSTEM_SUPP_NO_DISPLAY
+#: CODESYSTEM_SUPP_NO_DISPLAY
 msgid "This display (''{0}'') differs from that defined by the base code system (''{1}''). Both displays claim to be the ''primary designation'' for the same language (''{2}''), and the correct interpretation of this is undefined"
-msgstr "Deze weergave (''{0}'') verschilt van die in het onderliggende codesysteem (''{1}''). Beide weergaven claimen de \"primaire weergave\" voor dezelfde taal (''{2}'') te zijn en de correcte interpretatie hiervan is niet gedefinieerd"
+msgstr ""
 
 # CODESYSTEM_THO_CHECK
 #: CODESYSTEM_THO_CHECK
@@ -4442,1071 +4444,1070 @@ msgstr "Kan system {0} eigenschapfilter met op = {1} niet verwerken"
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}''"
 msgstr "De System URI kon niet worden bepaald voor de code ''{0}'' in de waardelijst ''{1}''"
 
-# UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT
-#: UNABLE_TO_INFER_CODESYSTEM
+# UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE
 #: UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT
 msgid "Unable to resolve the content reference {0} on element {1} (path = {2}) in this context"
 msgstr "Kan de contentreferentie {0} op element {1} (pad = {2}) niet vinden in deze context"
 
-# UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE
+# UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED
 #: UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE
 msgid "The code system {1} referred to from value set {0} has a grammar, and the code might be valid in it"
 msgstr "Het codesysteem {1} waar naar wordt verwezen vanuit waardelijst {0} heeft een grammatica en de code zou hierin geldig kunen zijn"
 
-# UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED
+# UNICODE_BIDI_CONTROLS_CHARS_MATCH
 #: UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED
 msgid "The Unicode sequence has bi-di control characters which are not allowed in this context: {0}"
 msgstr "De Unicode sequence heeft bidirectionele stuurtekens welke niet zijn toegestaan in deze context: {0}"
 
-# UNICODE_BIDI_CONTROLS_CHARS_MATCH
+# UNICODE_XML_BAD_CHARS
 #: UNICODE_BIDI_CONTROLS_CHARS_MATCH
 msgid "The Unicode sequence has unterminated bi-di control characters (see CVE-2021-42574): {0}"
 msgstr "De Unicode sequence heeft niet-beëindigde bidirectionele stuurtekens (zie CVE-2021-42574): {0}"
 
-# UNICODE_XML_BAD_CHARS
+# UNKNOWN_CODESYSTEM
 #: UNICODE_XML_BAD_CHARS
 msgid "This content includes the character {1} (hex value). This character is illegal in the XML version of FHIR, and there is generally no valid use for such characters"
 msgid_plural "This content includes the characters {1} (hex values). These characters are illegal in the XML version of FHIR, and there is generally no valid use for such characters"
 msgstr[0] "Deze content bevat het teken {1} (hex-waarde). Dit is een ongeldig teken in de xml-versie van FHIR en er is in het algemeen geen geldig gebruik van zulke tekens"
 msgstr[1] "Deze content bevat de tekens {1} (hex-waarden). Dit zijn een ongeldig tekens in de xml-versie van FHIR en is in het algemeen geen geldig gebruik van zulke tekens"
 
-# UNKNOWN_CODESYSTEM
+# UNKNOWN_CODESYSTEM_VERSION
 #: UNKNOWN_CODESYSTEM
 msgid "A definition for CodeSystem ''{0}'' could not be found, so the code cannot be validated"
 msgstr "De definitie voor CodeSystem ''{0}'' is niet gevonden, dus kan de code niet worden gevalideerd"
 
-# UNKNOWN_CODESYSTEM_VERSION
+# UNKNOWN_CODE_IN_FRAGMENT
 #: UNKNOWN_CODESYSTEM_VERSION
 msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. Valid versions: {2}"
 msgstr "De definitie voor CodeSystem {0} versie {1} is niet gevonden,  dus kan de code niet worden gevalideerd. Geldige versies: {2}"
 
-# UNKNOWN_CODE_IN_FRAGMENT
+# UNRECOGNISED_PROPERTY_TYPE
 #: UNKNOWN_CODE_IN_FRAGMENT
 msgid "Unknown Code ''{0}'' in the system ''{1}'' version ''{2}'' - note that the code system is labeled as a fragment, so the code may be valid in some other fragment"
 msgstr "Onbekende code ‘’{0}’’ in system ‘’{1}’’ versie ‘’{2}’’ - merk op dat het codesysteem is gemarkeerd als fragment, waardoor deze mogelijk geldig is in een ander fragment"
 
-# UNRECOGNISED_PROPERTY_TYPE
+# UNRECOGNISED_PROPERTY_TYPE_WRONG
 #: UNRECOGNISED_PROPERTY_TYPE
 msgid "Invalid JSON type {0} for the element {1}; valid types = {2}"
 msgstr "Ongeldig JSON type {0} voor het element {1}; geldige typen = {2}"
 
-# UNRECOGNISED_PROPERTY_TYPE_WRONG
+# UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE
 #: UNRECOGNISED_PROPERTY_TYPE_WRONG
 msgid "Invalid type {2} for the element {1}; valid types = {3}, JSON type = {0}"
 msgstr "Ongeldig type {2} voor het element {1}; geldige typen = {3}, JSON type = {0}"
 
-# UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE
+# UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE
 #: UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE
 msgid "Unsupported: no properties with values found on type {2} for pattern for discriminator ({0}) for slice {1}"
 msgstr "Niet-ondersteund: geen eigenschappen met waarden gevonden op type {2} voor patroon voor discriminator ({0}) voor slice {1}"
 
-# UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE
+# Unable_to_connect_to_terminology_server
 #: UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE
 msgid "Unsupported property {3} on type {2} for pattern for discriminator ({0}) for slice {1}"
 msgstr "Niet-ondersteunde property {3} op type {2} voor patroon voor discriminator ({0}) voor slice {1}"
 
-# Unable_to_connect_to_terminology_server
+# Unable_to_connect_to_terminology_server_Use_parameter_tx_na_tun_run_without_using_terminology_services_to_validate_LOINC_SNOMED_ICDX_etc_Error__
 #: Unable_to_connect_to_terminology_server
 msgid "Unable to connect to terminology server at {1}. Error = {0}"
 msgstr "Kan niet verbinden met terminologieserver op {1}. Fout = {0}"
 
-# Unable_to_connect_to_terminology_server_Use_parameter_tx_na_tun_run_without_using_terminology_services_to_validate_LOINC_SNOMED_ICDX_etc_Error__
+# Unable_to_find__resolving_discriminator__from_
 #: Unable_to_connect_to_terminology_server_Use_parameter_tx_na_tun_run_without_using_terminology_services_to_validate_LOINC_SNOMED_ICDX_etc_Error__
 msgid "Unable to connect to terminology server at {1}. Use parameter ''-tx n/a'' to run without using terminology services to validate LOINC, SNOMED, ICD-X etc. Error = {0}"
 msgstr "Kan niet verbinden met terminologieserver op {1}. Gebruik parameter ''-tx n/a'' om te starten zonder terminologieservices voor validatie van LOINC, SNOMED, ICD-X etc. Fout = {0}"
 
-# Unable_to_find__resolving_discriminator__from_
+# Unable_to_find_base__for_
 #: Unable_to_find__resolving_discriminator__from_
 msgid "Unable to find {0} resolving discriminator {1} from {2}"
 msgstr "Kan {0} niet vinden bij controle van discriminator {1} van {2}"
 
-# Unable_to_find_base__for_
+# Unable_to_find_base_definition_for_logical_model__from_
 #: Unable_to_find_base__for_
 msgid "Unable to find base {0} for {1}"
 msgstr "Kan basis {0} voor {1} niet vinden"
 
-# Unable_to_find_base_definition_for_logical_model__from_
+# Unable_to_find_element_
 #: Unable_to_find_base_definition_for_logical_model__from_
 msgid "Unable to find base definition for logical model: {0} from {1}"
 msgstr "Kan geen basisdefinitie vinden voor logical model: {0} van {1}"
 
-# Unable_to_find_element_
+# Unable_to_find_element__in_
 #: Unable_to_find_element_
 msgid "Unable to find element {0}"
 msgstr "Kan element {0} niet vinden"
 
-# Unable_to_find_element__in_
+# Unable_to_find_element_with_id_
 #: Unable_to_find_element__in_
 msgid "Unable to find element {0} in {1}"
 msgstr "Kan element {0} niet vinden in {1}"
 
-# Unable_to_find_element_with_id_
+# Unable_to_find_profile__at_
 #: Unable_to_find_element_with_id_
 msgid "Unable to find element with id ''{0}''"
 msgstr "Kan element met id ''{0}'' niet vinden"
 
-# Unable_to_find_profile__at_
+# Unable_to_find_resourceType_property
 #: Unable_to_find_profile__at_
 msgid "Unable to find profile ''{0}'' at {1}"
 msgstr "Kan profiel ''{0}'' niet vinden in {1}"
 
-# Unable_to_find_resourceType_property
+# Unable_to_find_resource__at__resolving_discriminator__from_
 #: Unable_to_find_resourceType_property
 msgid "Unable to find resourceType property"
 msgstr "Kan resourceType property niet vinden"
 
-# Unable_to_find_resource__at__resolving_discriminator__from_
+# Unable_to_handle_system__concept_filter_with_op__
 #: Unable_to_find_resource__at__resolving_discriminator__from_
 msgid "Unable to find resource {0} at {1} resolving discriminator {2} from {3}"
 msgstr "Kan resource {0} niet vinden in {1} bij controle van discriminator {2} van {3}"
 
-# Unable_to_handle_system__concept_filter_with_op__
+# Unable_to_handle_system__filter_with_property__
 #: Unable_to_handle_system__concept_filter_with_op__
 msgid "Unable to handle system {0} concept filter with op = {1}"
 msgstr "Kan system {0} concept filter met op = {1} niet verwerken"
 
-# Unable_to_handle_system__filter_with_property__
+# Unable_to_locate_the_profile__in_order_to_validate_against_it
 #: Unable_to_handle_system__filter_with_property__
 msgid "Unable to handle system {0} filter with property = {1}, op = {2}"
 msgstr "Kan system {0} filter met property = {1} niet verwerken, op = {2}"
 
-# Unable_to_locate_the_profile__in_order_to_validate_against_it
+# Unable_to_process_request_for_resource_for___
 #: Unable_to_locate_the_profile__in_order_to_validate_against_it
 msgid "Unable to locate the profile ''{0}'' in order to validate against it"
 msgstr "Kan profiel ''{0}'' niet vinden om tegen te valideren"
 
-# Unable_to_process_request_for_resource_for___
+# Unable_to_resolve_
 #: Unable_to_process_request_for_resource_for___
 msgid "Unable to process request for resource for {0} / {1}"
 msgstr "Kan verzoek voor resource voor {0} / {1} niet verwerken"
 
-# Unable_to_resolve_
+# Unable_to_resolve_actual_type_
 #: Unable_to_resolve_
 msgid "Unable to resolve the reference {0}"
 msgstr "Kan {0} niet vinden"
 
-# Unable_to_resolve_actual_type_
+# Unable_to_resolve_element__in_profile_
 #: Unable_to_resolve_actual_type_
 msgid "Unable to resolve actual type {0}"
 msgstr "Kan werkelijke type niet vinden {0}"
 
-# Unable_to_resolve_element__in_profile_
+# Unable_to_resolve_name_reference__at_path_
 #: Unable_to_resolve_element__in_profile_
 msgid "Unable to resolve element {0} in profile {1}"
 msgstr "Kan element {0} niet vinden in profiel {1}"
 
-# Unable_to_resolve_name_reference__at_path_
+# Unable_to_resolve_profile__in_element_
 #: Unable_to_resolve_name_reference__at_path_
 msgid "Unable to resolve name reference {0} at path {1}"
 msgstr "Kan naamverwijzing {0} niet vinden op pad {1}"
 
-# Unable_to_resolve_profile__in_element_
+# Unable_to_resolve_reference_to_
 #: Unable_to_resolve_profile__in_element_
 msgid "Unable to resolve profile {0} in element {1}"
 msgstr "Kan profiel {0} niet vinden in element {1}"
 
-# Unable_to_resolve_reference_to_
+# Unable_to_resolve_slice_matching__no_fixed_value_or_required_value_set
 #: Unable_to_resolve_reference_to_
 msgid "Unable to resolve reference to {0}"
 msgstr "Kan reference naar {0} niet vinden"
 
-# Unable_to_resolve_slice_matching__no_fixed_value_or_required_value_set
+# Unable_to_resolve_slice_matching__slice_matching_by_value_set_not_done
 #: Unable_to_resolve_slice_matching__no_fixed_value_or_required_value_set
 msgid "Unable to resolve slice matching - no fixed value or required value set"
 msgstr "Kan slices niet koppelen aan definitie - geen vaste waarde of verplichte waardelijst"
 
-# Unable_to_resolve_slice_matching__slice_matching_by_value_set_not_done
+# Unable_to_resolve_system__no_value_set
 #: Unable_to_resolve_slice_matching__slice_matching_by_value_set_not_done
 msgid "Unable to resolve slice matching - slice matching by value set not done"
 msgstr "Kan slices niet koppelen aan definitie - slice op basis van waardelijst niet gedaan"
 
-# Unable_to_resolve_system__no_value_set
+# Unable_to_resolve_system__value_set_expansion_has_multiple_systems
 #: Unable_to_resolve_system__no_value_set
 msgid "Unable to resolve system - no value set"
 msgstr "Kan system niet vinden - geen waardelijst"
 
-# Unable_to_resolve_system__value_set_expansion_has_multiple_systems
+# Unable_to_resolve_system__value_set_has_imports
 #: Unable_to_resolve_system__value_set_expansion_has_multiple_systems
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set expansion has multiple systems"
 msgstr "De system uri kan niet worden bepaald voor de code ''{0}'' in de waardelijst ''{1}'': waardelijst-expansie heeft meerdere systemen"
 
-# Unable_to_resolve_system__value_set_has_imports
+# Unable_to_resolve_system__value_set_has_include_with_filter
 #: Unable_to_resolve_system__value_set_has_imports
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set has imports"
 msgstr "Kan system uri niet bepalen voor de code ''{0}'' in de ValueSet ''{1}'': waardelijst heeft imports"
 
-# Unable_to_resolve_system__value_set_has_include_with_filter
+# Unable_to_resolve_system__value_set_has_include_with_no_system
 #: Unable_to_resolve_system__value_set_has_include_with_filter
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': include #{2} has a filter on system {3}: {4}"
 msgstr "Kan system uri niet bepalen voor de code ''{0}'' in de ValueSet ''{1}'': include #{2} heeft een filter op system {3}: {4}"
 
-# Unable_to_resolve_system__value_set_has_include_with_no_system
+# Unable_to_resolve_system__value_set_has_include_with_unknown_system
 #: Unable_to_resolve_system__value_set_has_include_with_no_system
 msgid "Unable to resolve system - value set {0} include #{1} has no system"
 msgstr "Kan system niet vinden - waardelijst {0} include #{1} heeft geen system"
 
-# Unable_to_resolve_system__value_set_has_include_with_unknown_system
+# Unable_to_resolve_system__value_set_has_multiple_matches
 #: Unable_to_resolve_system__value_set_has_include_with_unknown_system
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': include #{2} has system {3} which could not be found, and the server returned error {4}"
 msgstr "Kan system uri niet bepalen voor de code ''{0}'' in de ValueSet ''{1}'': include #{2} heeft system {3} dat niet is gevonden en de server gaf foutmelding {4}"
 
-# Unable_to_resolve_system__value_set_has_multiple_matches
+# Unable_to_resolve_system__value_set_has_no_includes_or_expansion
 #: Unable_to_resolve_system__value_set_has_multiple_matches
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set expansion has multiple matches: {2}"
 msgstr "Kan system uri niet bepalen voor de code ''{0}'' in de ValueSet ''{1}'': waardelijst-expansie heeft meerde matches: {2}"
 
-# Unable_to_resolve_system__value_set_has_no_includes_or_expansion
+# Unable_to_resolve_value_Set_
 #: Unable_to_resolve_system__value_set_has_no_includes_or_expansion
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}'': value set has no includes or expansion"
 msgstr "Kan system uri niet bepalen voor de code ''{0}'' in de ValueSet ''{1}'': waardelijst heeft geen inclusies of expansie"
 
-# Unable_to_resolve_value_Set_
+# Unable_to_validate_code_without_using_server
 #: Unable_to_resolve_value_Set_
 msgid "A definition for the value Set ''{0}'' could not be found"
 msgstr "De definitie voor de waardelijst ''{0}'' is niet gevonden"
 
-# Unable_to_validate_code_without_using_server
+# Undefined_attribute__on__for_type__properties__
 #: Unable_to_validate_code_without_using_server
 msgid "Unable to validate code without using server because: {0}"
 msgstr "Kan code niet valideren zonder een server, omdat: {0}"
 
-# Undefined_attribute__on__for_type__properties__
+# Undefined_element_
 #: Undefined_attribute__on__for_type__properties__
 msgid "Undefined attribute ''@{0}'' on {1} for type {2}"
 msgstr "Ongedefinieerd attribuut ''@{0}'' op {1} voor type {2}"
 
-# Undefined_element_
+# Unexpected_condition_in_differential_typeslicetypelistsize__10_and_implicit_slice_name_does_not_contain_a_valid_type__at_
 #: Undefined_element_
 msgid "Undefined element ''{0}'' at {1}"
 msgstr "Ongedefinieerd element ''{0}'' op ''{1}''"
 
-# Unexpected_condition_in_differential_typeslicetypelistsize__10_and_implicit_slice_name_does_not_contain_a_valid_type__at_
+# Unexpected_condition_in_differential_typeslicetypelistsize__1_at_
 #: Unexpected_condition_in_differential_typeslicetypelistsize__10_and_implicit_slice_name_does_not_contain_a_valid_type__at_
 msgid "Unexpected condition in differential: implicit slice name does not contain a valid type (''{0}''?) at {1}/{2}"
 msgstr "Onverwachte conditie in differential: impliciete slicenaam bevat geen geldig type (''{0}''?) bij {1}/{2}"
 
-# Unexpected_condition_in_differential_typeslicetypelistsize__1_at_
+# Unexpected_datatype_for_rdfstype
 #: Unexpected_condition_in_differential_typeslicetypelistsize__1_at_
 msgid "Unexpected condition in differential: invalid type at {0}/{1}"
 msgstr "Onverwachte situatie in differential: ongeldig type bij {0}/{1}"
 
-# Unexpected_datatype_for_rdfstype
+# Unhandled_situation_resource_is_profiled_to_more_than_one_option__cannot_sort_profile
 #: Unexpected_datatype_for_rdfstype
 msgid "Unexpected datatype for rdfs:type"
 msgstr "Onverwacht datatype voor rdfs:type"
 
-# Unhandled_situation_resource_is_profiled_to_more_than_one_option__cannot_sort_profile
+# Unknown_Code_in
 #: Unhandled_situation_resource_is_profiled_to_more_than_one_option__cannot_sort_profile
 msgid "Unhandled situation: resource is profiled to more than one option - cannot sort profile"
 msgstr "Niet-ondersteunde situatie: resource heeft profiel voor meerdere opties - kan profiel niet sorteren"
 
-# Unknown_Code_in
+# Unknown_Code_in_Version
 #: Unknown_Code_in
 msgid "Unknown code ''{0}'' in the CodeSystem ''{1}''"
 msgstr "Onbekende code ''{0}'' in het CodeSystem ''{1}''"
 
-# Unknown_Code_in_Version
+# Unknown_Data_format_
 #: Unknown_Code_in_Version
 msgid "Unknown code ''{0}'' in the CodeSystem ''{1}'' version ''{2}''"
 msgstr "Onbekende code ''{0}'' in het CodeSystem ''{1}'' versie ''{2}''"
 
-# Unknown_Data_format_
+# Unknown_Date_format_
 #: Unknown_Data_format_
 msgid "Unknown Data format ''{0}''"
 msgstr "Onbekend Data formaat ''{0}''"
 
-# Unknown_Date_format_
+# Unknown_resource_type_missing_rdfstype
 #: Unknown_Date_format_
 msgid "Unknown Date format ''{0}''"
 msgstr "Onbekend Date formaat ''{0}''"
 
-# Unknown_resource_type_missing_rdfstype
+# Unknown_type__at_
 #: Unknown_resource_type_missing_rdfstype
 msgid "Unknown resource type (missing rdfs:type)"
 msgstr "Onbekend resourcetype (rdfs:type ontbreekt)"
 
-# Unknown_type__at_
+# Unrecognised_extension_context_
 #: Unknown_type__at_
 msgid "Unknown type {0} at {1}"
 msgstr "Onbekend type {0} in {1}"
 
-# Unrecognised_extension_context_
+# Unrecognised_predicate_
 #: Unrecognised_extension_context_
 msgid "Unrecognized extension context {0}"
 msgstr "Niet-herkende extensiecontext {0}"
 
-# Unrecognised_predicate_
+# Unrecognised_property_
 #: Unrecognised_predicate_
 msgid "Unrecognized predicate ''{0}''"
 msgstr "Niet-herkend predicaat ''{0}''"
 
-# Unrecognised_property_
+# Unsupported_CodeableConcept_pattern__extensions_are_not_allowed__for_discriminator_for_slice_
 #: Unrecognised_property_
 msgid "Unrecognized property ''{0}''"
 msgstr "Niet-herkende eigenschap ''{0}''"
 
-# Unsupported_CodeableConcept_pattern__extensions_are_not_allowed__for_discriminator_for_slice_
+# Unsupported_CodeableConcept_pattern__must_have_at_least_one_coding__for_discriminator_for_slice_
 #: Unsupported_CodeableConcept_pattern__extensions_are_not_allowed__for_discriminator_for_slice_
 msgid "Unsupported CodeableConcept pattern - extensions are not allowed - for discriminator ({0}) for slice {1}"
 msgstr "Niet-ondersteund CodeableConcept patroon - extensies niet toegestaan - voor discriminator ({0}) voor slice {1}"
 
-# Unsupported_CodeableConcept_pattern__must_have_at_least_one_coding__for_discriminator_for_slice_
+# Unsupported_CodeableConcept_pattern__using_text__for_discriminator_for_slice_
 #: Unsupported_CodeableConcept_pattern__must_have_at_least_one_coding__for_discriminator_for_slice_
 msgid "Unsupported CodeableConcept pattern - must have at least one coding - for discriminator ({0}) for slice {1}"
 msgstr "Niet-ondersteund CodeableConcept patroon - teminste een coding verplicht - voor discriminator ({0}) voor slice {1}"
 
-# Unsupported_CodeableConcept_pattern__using_text__for_discriminator_for_slice_
+# Unsupported_Identifier_pattern__extensions_are_not_allowed__for_discriminator_for_slice_
 #: Unsupported_CodeableConcept_pattern__using_text__for_discriminator_for_slice_
 msgid "Unsupported CodeableConcept pattern - using text - for discriminator ({0}) for slice {1}"
 msgstr "Niet-ondersteund CodeableConcept patroon - gebruik van text - voor discriminator ({0}) voor slice {1}"
 
-# Unsupported_Identifier_pattern__extensions_are_not_allowed__for_discriminator_for_slice_
+# Unsupported_fixed_pattern_type_for_discriminator_for_slice__
 #: Unsupported_Identifier_pattern__extensions_are_not_allowed__for_discriminator_for_slice_
 msgid "Unsupported Identifier pattern - extensions are not allowed - for discriminator ({0}) for slice {1}"
 msgstr "Niet-ondersteund Identifier patroon - extensies niet toegestaan - voor discriminator ({0}) voor slice {1}"
 
-# Unsupported_fixed_pattern_type_for_discriminator_for_slice__
+# Unsupported_fixed_value_type_for_discriminator_for_slice__
 #: Unsupported_fixed_pattern_type_for_discriminator_for_slice__
 msgid "Unsupported fixed pattern type for discriminator ({0}) for slice {1}: {2}"
 msgstr "Niet-ondersteund vast patroontype voor discriminator ({0}) voor slice {1}: {2}"
 
-# Unsupported_fixed_value_type_for_discriminator_for_slice__
+# Unsupported_version_R1
 #: Unsupported_fixed_value_type_for_discriminator_for_slice__
 msgid "Unsupported fixed value type for discriminator ({0}) for slice {1}: {2}"
 msgstr "Niet-ondersteund type vaste waarde voor discriminator ({0}) voor slice {1}: {2}"
 
-# Unsupported_version_R1
+# Unsupported_version_R2
 #: Unsupported_version_R1
 msgid "Unsupported version R1"
 msgstr "Niet-ondersteunde versie R1"
 
-# Unsupported_version_R2
+# Unsupported_version_R2B
 #: Unsupported_version_R2
 msgid "Unsupported version R2"
 msgstr "Niet-ondersteunde versie R2"
 
-# Unsupported_version_R2B
+# Unxpected_internal_condition__no_source_on_diff_element
 #: Unsupported_version_R2B
 msgid "Unsupported version R2B"
 msgstr "Niet-ondersteunde versie R2B"
 
-# Unxpected_internal_condition__no_source_on_diff_element
+# VALIDATION_HL7_PUBLISHER_MISMATCH
 #: Unxpected_internal_condition__no_source_on_diff_element
 msgid "Unexpected internal condition - no source on diff element"
 msgstr "Onverwachte interne conditie - geen bron op diff element"
 
-# VALIDATION_HL7_PUBLISHER_MISMATCH
+# VALIDATION_HL7_PUBLISHER_MISMATCH2
 #: VALIDATION_HL7_PUBLISHER_MISMATCH
 msgid "The nominated WG ''{0}'' means that the publisher should be ''{1}'' but ''{2}'' was found"
 msgstr "De genoemde WG ''{0}'' betekent dat de publicerende partij ''{1}'' moet zijn maar gevonden is ''{2}''"
 
-# VALIDATION_HL7_PUBLISHER_MISMATCH2
+# VALIDATION_HL7_PUBLISHER_MISSING
 #: VALIDATION_HL7_PUBLISHER_MISMATCH2
 msgid "The nominated WG ''{0}'' means that the publisher should be either ''{1}''or ''{2}'' but ''{3}'' was found"
 msgstr "De genoemde WG ''{0}'' betekent dat de publisher ''{1}'' of ''{2}'' moet zijn maar gevonden is ''{3}''"
 
-# VALIDATION_HL7_PUBLISHER_MISSING
+# VALIDATION_HL7_WG_NEEDED
 #: VALIDATION_HL7_PUBLISHER_MISSING
 msgid "When HL7 is publishing a resource, the publisher must be provided, and for WG ''{0}'' it should be ''{1}''"
 msgstr "Als HL7 een resource publiceert, moet er een publisher zijn en de WG ''{0}'' zou ''{1}'' moeten zijn"
 
-# VALIDATION_HL7_WG_NEEDED
+# VALIDATION_HL7_WG_UNKNOWN
 #: VALIDATION_HL7_WG_NEEDED
 msgid "When HL7 is publishing a resource, the owning committee must be stated using the {0} extension"
 msgstr "Als HL7 een resource publiceert, moet het beherende commité zijn benoemd via de extensie {0}"
 
-# VALIDATION_HL7_WG_UNKNOWN
+# VALIDATION_HL7_WG_URL
 #: VALIDATION_HL7_WG_UNKNOWN
 msgid "The nominated WG ''{0}'' is unknown"
 msgstr "De genoemde WG ''{0}''is onbekend"
 
-# VALIDATION_HL7_WG_URL
+# VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN
 #: VALIDATION_HL7_WG_URL
 msgid "The nominated WG ''{0}'' means that the contact url should be ''{1}'' but it was not found"
 msgstr "De genoemde WG ''{0}'' betekent dat de contact url ''{1}'' moet zijn, maar deze is niet gevonden"
 
-# VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN
+# VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT
 #: VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN
 msgid "Global Profile reference ''{0}'' from IG {1} could not be resolved, so has not been checked"
 msgstr "Global profiel reference ''{0}'' van IG {1} is niet gevonden, dus deze is niet gecontroleerd"
 
-# VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT
+# VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED
 #: VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT
 msgid "Invalid constraint in profile {0} at path {1} - cannot constrain to type {2} from base types {3}"
 msgstr "Ongeldige inperking in profiel {0} bij pad {1} - kan type {2} niet inperken ten opzichte van basistypen {3}"
 
-# VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED
+# VALIDATION_VAL_PROFILE_MINIMUM_MAGIC
 #: VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED
 msgid "Profile {1} identifies {2} as a dependency (using the extension http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies), but this profile could not be found"
 msgstr "Profiel {1} identificeert {2} als afhankelijkheid (met de extensie http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies), maar dit profiel is niet gevonden"
 
-# VALIDATION_VAL_PROFILE_MINIMUM_MAGIC
+# VALIDATION_VAL_PROFILE_OTHER_VERSION
 #: VALIDATION_VAL_PROFILE_MINIMUM_MAGIC
 msgid "{0}: magic LOINC code {1} required, but not found (from {2}). Note that other Observation codes are allowed in addition to this required magic code"
 msgstr "{0}: magische LOINC-code {1} vereist maar niet gevonden (in {2}). Merk op dat andere Observation codes toegestaan zijn, naast deze verplichte magische code"
 
-# VALIDATION_VAL_PROFILE_OTHER_VERSION
+# VALIDATION_VAL_PROFILE_SIGNPOST
 #: VALIDATION_VAL_PROFILE_OTHER_VERSION
 msgid "Profile is for a different version of FHIR ({0}) so has been ignored"
 msgstr "Profiel is voor een andere versie van FHIR ({0}) dus wordt genegeerd"
 
-# VALIDATION_VAL_PROFILE_SIGNPOST
+# VALIDATION_VAL_PROFILE_SIGNPOST_BASE
 #: VALIDATION_VAL_PROFILE_SIGNPOST
 msgid "Validate resource against profile {0}"
 msgstr "Valideer resource tegen profile {0}"
 
-# VALIDATION_VAL_PROFILE_SIGNPOST_BASE
+# VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM
 #: VALIDATION_VAL_PROFILE_SIGNPOST_BASE
 msgid "Validate resource against profile"
 msgstr "Valideer resource tegen profiel"
 
-# VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM
+# VALIDATION_VAL_PROFILE_SIGNPOST_DEP
 #: VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM
 msgid "Validate resource against profile {0} - provided as bundle param"
 msgstr "Valideer resource tegen profiel {0} - via bundle param"
 
-# VALIDATION_VAL_PROFILE_SIGNPOST_DEP
+# VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL
 #: VALIDATION_VAL_PROFILE_SIGNPOST_DEP
 msgid "Validate resource against profile {0} (per http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies in {1})"
 msgstr "Valideer resource tegen profiel {0} (via http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies in {1})"
 
-# VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL
+# VALIDATION_VAL_PROFILE_SIGNPOST_META
 #: VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL
 msgid "Validate resource against profile {0} - a global profile in {1}"
 msgstr "Valideer resource tegen profiel {0} - een algemeen profiel in {1}"
 
-# VALIDATION_VAL_PROFILE_SIGNPOST_META
+# VALIDATION_VAL_PROFILE_SIGNPOST_OBS
 #: VALIDATION_VAL_PROFILE_SIGNPOST_META
 msgid "Validate resource against profile {0} (per meta)"
 msgstr "Valideer resource tegen profiel {0} - zoals in meta"
 
-# VALIDATION_VAL_PROFILE_SIGNPOST_OBS
+# VALIDATION_VAL_PROFILE_THIS_VERSION_OK
 #: VALIDATION_VAL_PROFILE_SIGNPOST_OBS
 msgid "Validate Observation against the {1} profile ({0}) which is required by the FHIR specification because the {2} code {3} was found"
 msgstr "Valideer Observation tegen het {1} profiel ({0}) welke verplicht is door de FHIR-specificaties omdat de {2} code {3} is gevonden"
 
-# VALIDATION_VAL_PROFILE_THIS_VERSION_OK
+# VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER
 #: VALIDATION_VAL_PROFILE_THIS_VERSION_OK
 msgid "Profile for this version of FHIR - all OK"
 msgstr "Profiel voor deze versie van FHIR - alles in orde"
 
-# VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER
+# VALIDATION_VAL_PROFILE_UNKNOWN_ERROR
 #: VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER
 msgid "Profile is for this version of FHIR, but is an invalid type {0}"
 msgstr "Profiel is voor deze versie van FHIR, maar heeft een onjuist type {0}"
 
-# VALIDATION_VAL_PROFILE_UNKNOWN_ERROR
+# VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK
 #: VALIDATION_VAL_PROFILE_UNKNOWN_ERROR
 msgid "Profile reference ''{0}'' has not been checked because it could not be found, and fetching it resulted in the error {1}"
 msgstr "Profiel-referentie ''{0}'' is niet gecontroleerd omdat deze niet is gevonden en ophalen ervan resulteerde in een fout {1}"
 
-# VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK
+# VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY
 #: VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK
 msgid "Profile reference ''{0}'' has not been checked because it could not be found, and the host {1} cannot be found"
 msgstr "Profiel-referentie ''{0}'' is niet gecontroleerd omdat deze niet is gevonden en de host {1} niet kon worden gevonden"
 
-# VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY
+# VALIDATION_VAL_STATUS_INCONSISTENT
 #: VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY
 msgid "Profile reference ''{0}'' has not been checked because it could not be found, and the validator is set to not fetch unknown profiles"
 msgstr "Profiel-referentie ''{0}'' is niet gecontroleerd omdat deze niet is gevonden en de validator ingesteld is om onbekende profielen niet op te zoeken"
 
-# VALIDATION_VAL_STATUS_INCONSISTENT
+# VALIDATION_VAL_STATUS_INCONSISTENT_HINT
 #: VALIDATION_VAL_STATUS_INCONSISTENT
 msgid "The resource status ''{0}'' and the standards status ''{1}'' are not consistent"
 msgstr "De resourcestatus ''{0}'' en de standaardstatus ''{1}'' zijn niet consistent"
 
-# VALIDATION_VAL_STATUS_INCONSISTENT_HINT
+# VALUESET_BAD_FILTER_OP
 #: VALIDATION_VAL_STATUS_INCONSISTENT_HINT
 msgid "The resource status ''{0}'' and the standards status ''{1}'' may not be consistent and should be reviewed"
 msgstr "De resourcestatus ''{0}'' en de standaardstatus ''{1}'' mogen niet inconsistent zijn en moeten worden gereviewed"
 
-# VALUESET_BAD_FILTER_OP
+# VALUESET_BAD_FILTER_VALUE_BOOLEAN
 #: VALUESET_BAD_FILTER_OP
 msgid "The operation ''{0}'' is not allowed for property ''{1}'' in system ''{3}''. Allowed ops: {2}"
 msgstr "De operation ''{0}'' is niet toegestaan voor eigenschap ''{1}'' in system ''{3}''. Toegestane op's: {2}"
 
-# VALUESET_BAD_FILTER_VALUE_BOOLEAN
+# VALUESET_BAD_FILTER_VALUE_CODE
 #: VALUESET_BAD_FILTER_VALUE_BOOLEAN
 msgid "The value for a filter based on property ''{0}'' must be either ''true'' or ''false'', not ''{1}''"
 msgstr "De waarde voor een filter gebaseerd op eigenschap ''{0}'' moet ''true'' of ''false'' zijn, niet ''{1}''"
 
-# VALUESET_BAD_FILTER_VALUE_CODE
+# VALUESET_BAD_FILTER_VALUE_CODED
 #: VALUESET_BAD_FILTER_VALUE_CODE
 msgid "The value for a filter based on property ''{0}'' must be a valid code, not ''{1}''"
 msgstr "De waarde voor een filter gebaseerd op eigenschap ''{0}'' moet een geldigecode zijn, niet ''{1}''"
 
-# VALUESET_BAD_FILTER_VALUE_CODED
+# VALUESET_BAD_FILTER_VALUE_CODED_INVALID
 #: VALUESET_BAD_FILTER_VALUE_CODED
 msgid "The value for a filter based on property ''{0}'' must be in the format system(|version)#code, not ''{1}''"
 msgstr "De waarde voor een filter gebaseerd op eigenschap ''{0}'' moet in het formaat system(|version)#code zijn, niet ''{1}''"
 
-# VALUESET_BAD_FILTER_VALUE_CODED_INVALID
+# VALUESET_BAD_FILTER_VALUE_DATETIME
 #: VALUESET_BAD_FILTER_VALUE_CODED_INVALID
 msgid "The value for a filter based on property ''{0}'' is ''{1}'' which is not a valid code ({2})"
 msgstr "De waarde voor een filter gebaseerd op eigenschap ''{0}'' is ''{1}'' wat geen geldige code is ({2})"
 
-# VALUESET_BAD_FILTER_VALUE_DATETIME
+# VALUESET_BAD_FILTER_VALUE_DECIMAL
 #: VALUESET_BAD_FILTER_VALUE_DATETIME
 msgid "The value for a filter based on property ''{0}'' must be a valid date(/time), not ''{1}''"
 msgstr "De waarde voor een filter gebaseerd op eigenschap ''{0}'' moet een geldige datum(/tijd) zijn, niet ''{1}''"
 
-# VALUESET_BAD_FILTER_VALUE_DECIMAL
+# VALUESET_BAD_FILTER_VALUE_HAS_COMMA
 #: VALUESET_BAD_FILTER_VALUE_DECIMAL
 msgid "The value for a filter based on property ''{0}'' must be a decimal value, not ''{1}''"
 msgstr "De waarde voor een filter gebaseerd op eigenschap ''{0}'' moet een decimaal zijn, niet ''{1}''"
 
-# VALUESET_BAD_FILTER_VALUE_HAS_COMMA
+# VALUESET_BAD_FILTER_VALUE_INTEGER
 #: VALUESET_BAD_FILTER_VALUE_HAS_COMMA
 msgid "The filter value has a comma, but the operation is different to ''in'' and ''not-in'', so the comma will be interpreted as part of the {0} value"
 msgstr "De filterwaarde heeft een komma maar de operation is anders dan ''in'' en ''not-in'', dus de komma zal worden geïnterpreteerd als deel van de {0} waarde"
 
-# VALUESET_BAD_FILTER_VALUE_INTEGER
+# VALUESET_BAD_FILTER_VALUE_VALID_CODE
 #: VALUESET_BAD_FILTER_VALUE_INTEGER
 msgid "The value for a filter based on property ''{0}'' must be integer value, not ''{1}''"
 msgstr "De waarde voor een filter gebaseerd op eigenschap ''{0}'' moet een integer zijn, niet ''{1}''"
 
-# VALUESET_BAD_FILTER_VALUE_VALID_CODE
+# VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE
 #: VALUESET_BAD_FILTER_VALUE_VALID_CODE
 msgid "The value for a filter based on property ''{0}'' must be a valid code from the system ''{2}'', and ''{1}'' is not ({3})"
 msgstr "De waarde voor een filter gebaseerd op eigenschap ''{0}'' moet een geldige code van system ''{2}'' en ''{1}'' is niet ''{3}''"
 
-# VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE
+# VALUESET_BAD_FILTER_VALUE_VALID_REGEX
 #: VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE
 msgid "The value for a filter based on property ''{0}'' must be a valid code from the system ''{2}'', and ''{1}'' is not ({3}). Note that this is change from the past; terminology servers are expected to still continue to support this filter"
 msgstr "De waarde voor een filter gebaseerd op eigenschap ''{0}'' moet een geldige code van system ''{2}'' en ''{1}'' is niet ''{3}''. Merk op dat dit voorheen anders was; van terminologieservers wordt verwacht dat ze dit filter blijven ondersteunen"
 
-# VALUESET_BAD_FILTER_VALUE_VALID_REGEX
+# VALUESET_BAD_PROPERTY_NO_REGEX
 #: VALUESET_BAD_FILTER_VALUE_VALID_REGEX
 msgid "The value for a filter based on property ''{0}'' should be a valid regex, not ''{1}'' (err = ''{2}'')"
 msgstr "De waarde voor een filter gebaseerd op eigenschap ''{0}'' moet een geldige regex zijn, niet ''{1}'' (fout = ''{2}'')"
 
-# VALUESET_BAD_PROPERTY_NO_REGEX
+# VALUESET_CIRCULAR_REFERENCE
 #: VALUESET_BAD_PROPERTY_NO_REGEX
 msgid "Cannot apply a regex filter to the property ''{0}'' (usually regex filters are applied to the codes, or a named property of the code system)"
 msgstr "Kan geen regex filter op eigenschap ''{0}'' toepassen (regex filters werken meestal op codes, of een benoemde eigenschap van het codesysteem)"
 
-# VALUESET_CIRCULAR_REFERENCE
+# VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED
 #: VALUESET_CIRCULAR_REFERENCE
 msgid "Found a circularity pointing to {0} processing ValueSet with pathway {1}"
 msgstr "Recursieve verwijzing {0} gevonden bij verwerking van ValueSet met pathway {1}"
 
-# VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED
+# VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
 #: VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED
 msgid "This include has some concepts with displays and some without - check that this is what is intended"
 msgstr "Deze inclusie heeft diverse concepten met weergaven en sommige zonder - controleer of dit de intentie was"
 
-# VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
+# VALUESET_EXAMPLE_SYSTEM_ERROR
 #: VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
 msgid "This SNOMED-CT based include has some concepts with semantic tags (FSN terms) and some without (preferred terms) - check that this is what is intended  (examples for FSN: {0} and examples for no FSN: {1})"
 msgstr "Deze SNOMED CT-gebaseerde inclusie heeft diverse concepten met semantische markeringen (FSN termen) en sommige zonder (voorkeurstermen) - controleer of dit de intentie was (voorbeelden voor FSN: {0} en voorbeelden zonder FSN: {1})"
 
-# VALUESET_EXAMPLE_SYSTEM_ERROR
+# VALUESET_EXAMPLE_SYSTEM_HINT
 #: VALUESET_EXAMPLE_SYSTEM_ERROR
 msgid "Example System ''{0}'' specified, which is illegal. Concepts and Filters can''t be checked"
 msgstr "Voorbeeld systeem ''{0}'' gespecificeerd, wat niet geldig is. Concepten en filters kunnen niet worden gecheckt"
 
-# VALUESET_EXAMPLE_SYSTEM_HINT
+# VALUESET_IMPORT_UNION_INTERSECTION
 #: VALUESET_EXAMPLE_SYSTEM_HINT
 msgid "Example System ''{0}'' specified, so Concepts and Filters can''t be checked"
 msgstr "Voorbeeld systeem ''{0}'' gespecificeerd, dus concepten en filters kunnen niet worden gecheckt"
 
-# VALUESET_IMPORT_UNION_INTERSECTION
+# VALUESET_INCLUDE_CSVER_CONTENT
 #: VALUESET_IMPORT_UNION_INTERSECTION
 msgid "This value set has a single include with multiple imported value sets. Per issue https://jira.hl7.org/browse/FHIR-25179, there has been confusion in the past whether these value sets are unioned or intersectioned. If this value set is contained in a package published prior to March 31 2022, it will be treated as a union, otherwise it will be treated as an intersection. If want a union, split the value set imports across multiple includes"
 msgstr "Deze waardelijst heeft een enkele include met meerdere geimporteerde waardelijsten. Per issue https://jira.hl7.org/browse/FHIR-25179, is er onduidelijkheid geweest over of deze waardelijsten samen moeten worden genomen of juist de doorsnede hiervan. Als deze waardelijst stond in een package van voor 31 maart 2022, dan wordt deze als bundeling, anders als doorsnede. Als je een bundeling wilt, verdeel dan de waardelijst imports over meerdere includes"
 
-# VALUESET_INCLUDE_CSVER_CONTENT
+# VALUESET_INCLUDE_CSVER_MULTI_FOUND
 #: VALUESET_INCLUDE_CSVER_CONTENT
 msgid "The value set references CodeSystem ''{0}'' version ''{2}'' which has status ''{1}''"
 msgstr "De waardelijst verwijst naar CodeSystem ''{0}'' versie ''{2}'' met status ''{1}''"
 
-# VALUESET_INCLUDE_CSVER_MULTI_FOUND
+# VALUESET_INCLUDE_CSVER_NOT_FOUND
 #: VALUESET_INCLUDE_CSVER_MULTI_FOUND
 msgid "Multiple matching contained code systems found for system ''{0}'' version ''{1}''"
 msgstr "Meerdere overeenkomstige contained codesystemen gevonden voor system ''{0}'' versie ''{1}''"
 
-# VALUESET_INCLUDE_CSVER_NOT_FOUND
+# VALUESET_INCLUDE_CSVER_SUPPLEMENT
 #: VALUESET_INCLUDE_CSVER_NOT_FOUND
 msgid "No matching contained code system found for system ''{0}'' version ''{1}''"
 msgstr "Geen overeenkomstige contained codesystemen gevonden voor system ''{0}'' versie ''{1}''"
 
-# VALUESET_INCLUDE_CSVER_SUPPLEMENT
+# VALUESET_INCLUDE_CS_CONTENT
 #: VALUESET_INCLUDE_CSVER_SUPPLEMENT
 msgid "The value set references CodeSystem ''{0}'' version ''{2}'' which is a supplement. It must reference the underlying CodeSystem ''{1}'' and use the http://hl7.org/fhir/StructureDefinition/valueset-supplement extension for the supplement"
 msgstr "De waardelijst verwijst naar codesystem ''{0}'' versie ''{2}'' wat een supplement is. Het moet verwijzen naar het onderliggende codesysteem ''{1}'' en de extensie http://hl7.org/fhir/StructureDefinition/valueset-supplement gebruiken voor het supplement"
 
-# VALUESET_INCLUDE_CS_CONTENT
+# VALUESET_INCLUDE_CS_MULTI_FOUND
 #: VALUESET_INCLUDE_CS_CONTENT
 msgid "The value set references CodeSystem ''{0}'' which has status ''{1}''"
 msgstr "De waardelijst verwijst naar codesysteem ''{0}'' met status ''{1}''"
 
-# VALUESET_INCLUDE_CS_MULTI_FOUND
+# VALUESET_INCLUDE_CS_NOT_CS
 #: VALUESET_INCLUDE_CS_MULTI_FOUND
 msgid "Multiple matching contained code systems found for system ''{0}''"
 msgstr "Meerdere overeenkomstige contained codesystemen gevonden voor system ''{0}''"
 
-# VALUESET_INCLUDE_CS_NOT_CS
+# VALUESET_INCLUDE_CS_NOT_FOUND
 #: VALUESET_INCLUDE_CS_NOT_CS
 msgid "The include system ''{0}'' is a reference to a contained resource, but the contained resource with that id is not a CodeSystem, it''s a {1}"
 msgstr "De inclusie voor system ''{0}'' is een verwijzing naar een contained resourced, maar de contained resource met dat id is geen CodeSystem, maar een {1}"
 
-# VALUESET_INCLUDE_CS_NOT_FOUND
+# VALUESET_INCLUDE_CS_SUPPLEMENT
 #: VALUESET_INCLUDE_CS_NOT_FOUND
 msgid "No matching contained code system found for system ''{0}''"
 msgstr "Geen overeenkomstig contained codesysteem gevonden voor system ''{0}''"
 
-# VALUESET_INCLUDE_CS_SUPPLEMENT
+# VALUESET_INCLUDE_INVALID_CONCEPT_CODE
 #: VALUESET_INCLUDE_CS_SUPPLEMENT
 msgid "The value set references CodeSystem ''{0}'' which is a supplement. It must reference the underlying CodeSystem ''{1}'' and use the http://hl7.org/fhir/StructureDefinition/valueset-supplement extension for the supplement"
 msgstr "De waardelijst verwijst naar CodeSystem ''{0}'' wat een supplement is. Het moet verwijzen naar het onderliggende codesysteem ''{1}'' en de extensie http://hl7.org/fhir/StructureDefinition/valueset-supplement gebruiken voor het supplement"
 
-# VALUESET_INCLUDE_INVALID_CONCEPT_CODE
+# VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER
 #: VALUESET_INCLUDE_INVALID_CONCEPT_CODE
 msgid "The code ''{1}'' is not valid in the system {0} ({2})"
 msgstr "De code ''{1}'' is niet geldig in het systeem {0} ({2})"
 
-# VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER
+# VALUESET_INCLUDE_SYSTEM_ABSOLUTE
 #: VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER
 msgid "The code ''{2}'' is not valid in the system {0} version {1} ({2})"
 msgstr "De code ''{2}'' is niet geldig in het systeem {0} versie {1} ({2})"
 
-# VALUESET_INCLUDE_SYSTEM_ABSOLUTE
+# VALUESET_INCLUDE_SYSTEM_ABSOLUTE_FRAG
 #: VALUESET_INCLUDE_SYSTEM_ABSOLUTE
 msgid "URI values in ValueSet.compose.include.system must be absolute"
 msgstr "Uri-waarden in ValueSet.compose.include.system moeten absoluut zijn"
 
-# VALUESET_INCLUDE_SYSTEM_ABSOLUTE_FRAG
+# VALUESET_INC_TOO_MANY_CODES
 #: VALUESET_INCLUDE_SYSTEM_ABSOLUTE_FRAG
 msgid "URI values in ValueSet.compose.include.system must be absolute. To reference a contained code system, use the full CodeSystem URL and reference it using the http://hl7.org/fhir/StructureDefinition/valueset-system extension"
 msgstr "Uri-waarden in ValueSet.compose.include.system moeten absoluut zijn. Om te verwijzen naar een contained codesysteem, gebruik je de volledige CodeSystem url en via de http://hl7.org/fhir/StructureDefinition/valueset-system extension"
 
-# VALUESET_INC_TOO_MANY_CODES
+# VALUESET_NO_SYSTEM_WARNING
 #: VALUESET_INC_TOO_MANY_CODES
 msgid "The value set include has too many codes to validate ({0}), so each individual code has not been checked"
 msgstr "De waardelijst-inclusie heeft teveel codes om te valideren ({0}), dus niet elke individuele code is gecontroleerd"
 
-# VALUESET_NO_SYSTEM_WARNING
+# VALUESET_REFERENCE_INVALID_TYPE
 #: VALUESET_NO_SYSTEM_WARNING
 msgid "No System specified, so Concepts and Filters can''t be checked"
 msgstr "Geen System gespecificeerd, dus Concepten en Filters kunnen niet worden gecontroleerd"
 
-# VALUESET_REFERENCE_INVALID_TYPE
+# VALUESET_REFERENCE_UNKNOWN
 #: VALUESET_REFERENCE_INVALID_TYPE
 msgid "The value set import {0} points to a resource of type {1} which is not valid"
 msgstr "De waardelijst-import {0} wijst naar een resource van type {1} wat niet geldig is"
 
-# VALUESET_REFERENCE_UNKNOWN
+# VALUESET_SHAREABLE_EXTRA_MISSING
 #: VALUESET_REFERENCE_UNKNOWN
 msgid "The value set import {0} could not be found so cannot be checked"
 msgstr "De waardelijst-import {0} is niet gevonden dus kan niet worden gecontroleerd"
 
-# VALUESET_SHAREABLE_EXTRA_MISSING
+# VALUESET_SHAREABLE_EXTRA_MISSING_HL7
 #: VALUESET_SHAREABLE_EXTRA_MISSING
 msgid "Published value sets SHOULD conform to the ShareableValueSet profile, which says that the element ValueSet.{0} should be present, but it is not"
 msgstr "Gepubliceerde waardelijsten ZOUDEN zich MOETEN houden aan het ShareableValueSet profiel, wat zegt dat het element ValueSet.{0} aanwezig zou moeten zijn, maar het ontbreekt"
 
-# VALUESET_SHAREABLE_EXTRA_MISSING_HL7
+# VALUESET_SHAREABLE_MISSING
 #: VALUESET_SHAREABLE_EXTRA_MISSING_HL7
 msgid "Value sets published by HL7 SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} should be present, but it is not"
 msgstr "Door HL7 gepubliceerde waardelijsten MOETEN zich houden aan het ShareableValueSet profiel, wat zegt dat het element ValueSet.{0} aanwezig zou moeten zijn, maar het ontbreekt"
 
-# VALUESET_SHAREABLE_MISSING
+# VALUESET_SHAREABLE_MISSING_HL7
 #: VALUESET_SHAREABLE_MISSING
 msgid "Published value sets SHOULD conform to the ShareableValueSet profile, which says that the element ValueSet.{0} is mandatory, but it is not present"
 msgstr "Gepubliceerde waardelijsten ZOUDEN zich MOETEN houden aan het ShareableValueSet profiel, wat zegt dat het element ValueSet.{0} aanwezig moet zijn, maar het ontbreekt"
 
-# VALUESET_SHAREABLE_MISSING_HL7
+# VALUESET_SUPPLEMENT_MISSING
 #: VALUESET_SHAREABLE_MISSING_HL7
 msgid "Value sets published by HL7 SHALL conform to the ShareableValueSet profile, which says that the element ValueSet.{0} is mandatory, but it is not present"
 msgstr "Door HL7 gepubliceerde waardelijsten MOETEN zich houden aan het ShareableValueSet profiel, wat zegt dat het element ValueSet.{0} aanwezig moet zijn, maar het ontbreekt"
 
-# VALUESET_SUPPLEMENT_MISSING
+# VALUESET_TOO_COSTLY
 #: VALUESET_SUPPLEMENT_MISSING
 msgid "Required supplement not found: {1}"
 msgid_plural "Required supplements not found: {1}"
 msgstr[0] "Verplicht supplement niet gevonden: {1}"
 msgstr[1] "Verplichte supplementen niet gevonden: {1}"
 
-# VALUESET_TOO_COSTLY
+# VALUESET_TOO_COSTLY_COUNT
 #: VALUESET_TOO_COSTLY
 msgid "The value set ''{0}'' expansion has too many codes to display ({1})"
 msgstr "De expansie van waardelijst ''{0}'' heeft teveel codes om weer te geven ({1})"
 
-# VALUESET_TOO_COSTLY_COUNT
+# VALUESET_TOO_COSTLY_TIME
 #: VALUESET_TOO_COSTLY_COUNT
 msgid "The value set ''{0}'' expansion has {2} codes, which is too many to display ({1})"
 msgstr "De waardelijst ''{0}'' expansie heeft {2} codes, wat er teveel zijn om weer te geven ({1})"
 
-# VALUESET_TOO_COSTLY_TIME
+# VALUESET_UNC_SYSTEM_WARNING
 #: VALUESET_TOO_COSTLY_TIME
 msgid "The value set ''{0}'' expansion took too long to process (>{1}sec)"
 msgstr "De waardelijst ''{0}'' expansie duurde te lang om te verwerken (>{1}sec)"
 
-# VALUESET_UNC_SYSTEM_WARNING
+# VALUESET_UNC_SYSTEM_WARNING_VER
 #: VALUESET_UNC_SYSTEM_WARNING
 msgid "Unknown System ''{0}'' specified, so Concepts and Filters can''t be checked (Details: {1})"
 msgstr "Onbekend system ''{0}'' gespecificeerd, dus Concepten en Filters kunnen niet worden gecontroleerd (Details: {1})"
 
-# VALUESET_UNC_SYSTEM_WARNING_VER
+# VALUESET_UNKNOWN_FILTER_PROPERTY
 #: VALUESET_UNC_SYSTEM_WARNING_VER
 msgid "Unknown System/Version ''{0}'' specified, so Concepts and Filters can''t be checked (Details: {1})"
 msgstr "Onbekend systeem/versie ''{0}'' gespecificeerd, dus Concepten en Filters kunnen niet worden gecontroleerd (Details: {1})"
 
-# VALUESET_UNKNOWN_FILTER_PROPERTY
+# VALUESET_UNKNOWN_FILTER_PROPERTY_NO_CS
 #: VALUESET_UNKNOWN_FILTER_PROPERTY
 msgid "The property ''{0}'' is not known for the system ''{1}'', so may not be understood by the terminology ecosystem. Known properties for this system: {2}"
 msgstr "De eigenschap ''{0}'' is niet bekend voor system ''{1}'', dus wordt mogelijk niet begrepen door het terminologie-ecosysteem. Bekende eigenschappen voor dit systeem: {2}"
 
-# VALUESET_UNKNOWN_FILTER_PROPERTY_NO_CS
+# Validation_BUNDLE_Message
 #: VALUESET_UNKNOWN_FILTER_PROPERTY_NO_CS
 msgid "No definition can be found for the system {1}, and the property ''{0}'' is not a generally known property, so the property might not be valid, or understood by the terminology ecosystem. In case it''s useful, the list of generally known properties for all systems is {2}"
 msgstr "Er is geen definitie gevonden voor het systeem {1} en de eigenschap ''{0}'' is geen algemeen bekende eigenschap, dus mogelijk is de eigenschap niet geldig en/of wordt deze niet begrepen door het terminologie-ecosysteem. Misschien nuttig: de lijst met algemeen bekende eigenschappen voor alle systemen is {2}"
 
-# Validation_BUNDLE_Message
+# Validation_VAL_Content_Unknown
 #: Validation_BUNDLE_Message
 msgid "The first entry in a message must be a MessageHeader"
 msgstr "De eerste entry in een message moet een MessageHeader"
 
-# Validation_VAL_Content_Unknown
+# Validation_VAL_NoType
 #: Validation_VAL_Content_Unknown
 msgid "Unrecognized Content {0}"
 msgstr "Niet-herkende content {0}"
 
-# Validation_VAL_NoType
+# Validation_VAL_Profile_MatchMultiple
 #: Validation_VAL_NoType
 msgid "Unknown type {0}"
 msgstr "Onbekend type {0}"
 
-# Validation_VAL_Profile_MatchMultiple
+# Validation_VAL_Profile_Maximum
 #: Validation_VAL_Profile_MatchMultiple
 msgid "Profile {0}, Element matches more than one slice - {1}, {2}"
 msgstr "Profiel {0}, element komt overeen met meer dan een slice - {1}, {2}"
 
-# Validation_VAL_Profile_Maximum
+# Validation_VAL_Profile_Minimum
 #: Validation_VAL_Profile_Maximum
 msgid "{3}: max allowed = {7}, but found {0} (from {1})"
 msgid_plural "{3}: max allowed = {7}, but found {0} (from {1})"
 msgstr[0] "{3}: max toegestaan = {7}, maar gevonden {0} (uit {1})"
 msgstr[1] "{3}: max toegestaan = {7}, maar gevonden {0} (uit {1})"
 
-# Validation_VAL_Profile_Minimum
+# Validation_VAL_Profile_Minimum_SLICE
 #: Validation_VAL_Profile_Minimum
 msgid "{3}: minimum required = {7}, but only found {0} (from {1})"
 msgid_plural "{3}: minimum required = {7}, but only found {0} (from {1})"
 msgstr[0] "{3}: minimum vereist = {7}, maar gevonden {0} (uit {1})"
 msgstr[1] "{3}: minimum vereist = {7}, maar gevonden {0} (uit {1})"
 
-# Validation_VAL_Profile_Minimum_SLICE
+# Validation_VAL_Profile_MultipleMatches
 #: Validation_VAL_Profile_Minimum_SLICE
 msgid "Slice ''{3}'': a matching slice is required, but not found (from {1}). Note that other slices are allowed in addition to this required slice"
 msgid_plural "Slice ''{3}'': minimum required = {0}, but only found {7} (from {1})"
 msgstr[0] "Slice ''{3}'': een matching slice is verplicht, maar niet gevonden (van {1}). Merk op dat andere slices zijn toegestaan naast de verplichte slice"
 msgstr[1] "Slice ''{3}'': minimum vereist = {0}, maar slechts {7} gevonden (van {1})"
 
-# Validation_VAL_Profile_MultipleMatches
+# Validation_VAL_Profile_NoCheckMax
 #: Validation_VAL_Profile_MultipleMatches
 msgid "Found multiple matching profiles among {0} choice: {1}"
 msgid_plural "Found multiple matching profiles among {0} choices: {1}"
 msgstr[0] "Meerdere overeenkomende profielen gevonden in {0} keuze: {1}"
 msgstr[1] "Meerdere overeenkomende profielen gevonden in {0} keuzes: {1}"
 
-# Validation_VAL_Profile_NoCheckMax
+# Validation_VAL_Profile_NoCheckMin
 #: Validation_VAL_Profile_NoCheckMax
 msgid "{3}: Found {0} match, but unable to check max allowed ({2}) due to lack of slicing validation (from {1})"
 msgid_plural "{3}: Found {0} matches, but unable to check max allowed ({2}) due to lack of slicing validation (from {1})"
 msgstr[0] "{3}: {0} matches gevonden, maar kan max toegestaan niet controleren ({2}) vanwege missende slicing-validatie (uit {1})"
 msgstr[1] "{3}: {0} matches gevonden, maar kan max toegestaan niet controleren ({2}) vanwege missende slicing-validatie (uit {1})"
 
-# Validation_VAL_Profile_NoCheckMin
+# Validation_VAL_Profile_NoDefinition
 #: Validation_VAL_Profile_NoCheckMin
 msgid "{3}: Found {0} match, but unable to check minimum required ({2}) due to lack of slicing validation (from {1})"
 msgid_plural "{3}: Found {0} matches, but unable to check minimum required ({2}) due to lack of slicing validation (from {1})"
 msgstr[0] "{3}: {0} matches gevonden, maar kan min toegestaan niet controleren ({2}) vanwege missende slicing-validatie (uit {1})"
 msgstr[1] "{3}: {0} matches gevonden, maar kan min toegestaan niet controleren ({2}) vanwege missende slicing-validatie (uit {1})"
 
-# Validation_VAL_Profile_NoDefinition
+# Validation_VAL_Profile_NoMatch
 #: Validation_VAL_Profile_NoDefinition
 msgid "No definition found for resource type ''{0}''"
 msgstr "Geen definitie gevonden voor resourcetype ''{0}''"
 
-# Validation_VAL_Profile_NoMatch
+# Validation_VAL_Profile_NoSnapshot
 #: Validation_VAL_Profile_NoMatch
 msgid "Unable to find a match for the specified profile among choices: {0}"
 msgstr "Kan geen overeenkomstig profiel vinden in de opties: {0}"
 
-# Validation_VAL_Profile_NoSnapshot
+# Validation_VAL_Profile_NoType
 #: Validation_VAL_Profile_NoSnapshot
 msgid "StructureDefinition {0} has no snapshot - validation is against the snapshot, so it must be provided"
 msgstr "StructureDefinition {0} heeft geen snapshot - validatie is tegen de snapshot, dus deze is verplicht"
 
-# Validation_VAL_Profile_NoType
+# Validation_VAL_Profile_NotAllowed
 #: Validation_VAL_Profile_NoType
 msgid "The type of element {0} is not known - it could not be determined from the information available. Valid types at this point are {1}"
 msgstr "Het type van element {0} is onbekend - het kon niet worden bepaald uit de beschikbare informatie. Geldige typen op dit punt zijn {1}"
 
-# Validation_VAL_Profile_NotAllowed
+# Validation_VAL_Profile_NotSlice
 #: Validation_VAL_Profile_NotAllowed
 msgid "This element is not allowed by the profile {0}"
 msgstr "Dit element is niet geldig volgens het profiel {0}"
 
-# Validation_VAL_Profile_NotSlice
+# Validation_VAL_Profile_OutOfOrder
 #: Validation_VAL_Profile_NotSlice
 msgid "This element does not match any known slice {0} and slicing is CLOSED: {1}"
 msgstr "Dit element komt niet overeen met enige bekende slice {0} en slicing is GESLOTEN: {1}"
 
-# Validation_VAL_Profile_OutOfOrder
+# Validation_VAL_Profile_SliceOrder
 #: Validation_VAL_Profile_OutOfOrder
 msgid "As specified by profile {0}, Element ''{1}'' is out of order (found after {2})"
 msgstr "Volgens het profiel {0}, staat element ''{1}'' niet op de juiste plaats (gevonden na {2})"
 
-# Validation_VAL_Profile_SliceOrder
+# Validation_VAL_Profile_Unknown
 #: Validation_VAL_Profile_SliceOrder
 msgid "As specified by profile {0}, Element ''{1}'' is out of order in ordered slice"
 msgstr "Volgens het profiel {0}, staat element ''{1}'' niet op de juiste plaats in de slices (volgorde is specifiek)"
 
-# Validation_VAL_Profile_Unknown
+# Validation_VAL_Profile_WrongType
 #: Validation_VAL_Profile_Unknown
 msgid "Profile reference ''{0}'' has not been checked because it could not be found"
 msgstr "Profiel-referentie ''{0}'' is niet gecontroleerd omdat deze niet is gevonden"
 
-# Validation_VAL_Profile_WrongType
+# Validation_VAL_Profile_WrongType2
 #: Validation_VAL_Profile_WrongType
 msgid "Specified profile type was ''{0}'' in profile ''{2}'', but found type ''{1}''"
 msgstr "Gespecificeerde profieltype was ''{0}'' in profiel ''{2}'', maar gevonden type ''{1}''"
 
-# Validation_VAL_Profile_WrongType2
+# Validation_VAL_Unknown_Profile
 #: Validation_VAL_Profile_WrongType2
 msgid "Type mismatch processing profile {0} at path {1}: The element type is {4}, but the profile {3} is for a different type {2}"
 msgstr "Type komt niet overeen bij verwerken van profiel {0} bij pad {1}: Het elementtype is {4}, maar het profiel {3} is voor een ander type {2}"
 
-# Validation_VAL_Unknown_Profile
+# Version_mismatch_The_context_has_version__loaded_and_the_new_content_being_loaded_is_version_
 #: Validation_VAL_Unknown_Profile
 msgid "Unknown profile {0}"
 msgstr "Onbekend profiel {0}"
 
-# Version_mismatch_The_context_has_version__loaded_and_the_new_content_being_loaded_is_version_
+# Wrong_namespace__expected_
 #: Version_mismatch_The_context_has_version__loaded_and_the_new_content_being_loaded_is_version_
 msgid "Version mismatch. The context has version {0} loaded, and the new content being loaded is version {1}"
 msgstr "Versies komen niet overeen. De context heeft versie {0} geladen en de nieuwe content die wordt geladen heeft versie {1}"
 
-# Wrong_namespace__expected_
+# Wrong_type_for_resource
 #: Wrong_namespace__expected_
 msgid "Wrong namespace - expected ''{0}''"
 msgstr "Verkeerde namespace - verwacht ''{0}''"
 
-# Wrong_type_for_resource
+# XHTML_IDREF_NOT_FOUND
 #: Wrong_type_for_resource
 msgid "Wrong type for resource"
 msgstr "Verkeerd type voor resource"
 
-# XHTML_IDREF_NOT_FOUND
+# XHTML_IDREF_NOT_MULTIPLE_MATCHES
 #: XHTML_IDREF_NOT_FOUND
 msgid "The target of the HTML idref attribute ''{0}'' was not found in the resource"
 msgstr "Het doel van HTML idref attribuut ''{0}'' is niet gevonden in de resource"
 
-# XHTML_IDREF_NOT_MULTIPLE_MATCHES
+# XHTML_URL_DATA_DATA_INVALID
 #: XHTML_IDREF_NOT_MULTIPLE_MATCHES
 msgid "Multiple matching targets for the HTML idref attribute ''{0}'' were found in the resource"
 msgstr "Er zijn meerdere matches gevonden voor het HTML idref attribuut ''{0}'' in de resource"
 
-# XHTML_URL_DATA_DATA_INVALID
+# XHTML_URL_DATA_DATA_INVALID_COMMA
 #: XHTML_URL_DATA_DATA_INVALID
 msgid "The data should be valid base64 content for a data: URL: {0}"
 msgstr "De data moet geldige base64 content zijn voor een data: URL: {0}"
 
-# XHTML_URL_DATA_DATA_INVALID_COMMA
+# XHTML_URL_DATA_MIMETYPE
 #: XHTML_URL_DATA_DATA_INVALID_COMMA
 msgid "Comma found in data portion of data URL: {0}"
 msgstr "Komma gevonden in data deel van data URL: {0}"
 
-# XHTML_URL_DATA_MIMETYPE
+# XHTML_URL_DATA_NO_DATA
 #: XHTML_URL_DATA_MIMETYPE
 msgid "The mimetype portion of the data: URL is not valid ({1}) in URL: {0}"
 msgstr "Het mimetype-deel van de data: URL is ongeldig ({1}) in URL: {0}"
 
-# XHTML_URL_DATA_NO_DATA
+# XHTML_URL_EMPTY
 #: XHTML_URL_DATA_NO_DATA
 msgid "No data found in data: URL"
 msgstr "Geen data gevonden in data: URL"
 
-# XHTML_URL_EMPTY
+# XHTML_URL_INVALID
 #: XHTML_URL_EMPTY
 msgid "URL is empty"
 msgstr "URL is leeg"
 
-# XHTML_URL_INVALID
+# XHTML_URL_INVALID_CHARS
 #: XHTML_URL_INVALID
 msgid "The URL is not valid because ''({1})'': {0}"
 msgstr "De URL is ongeldig vanwege ''({1})'' : {0}"
 
-# XHTML_URL_INVALID_CHARS
+# XHTML_XHTML_Attribute_Illegal
 #: XHTML_URL_INVALID_CHARS
 msgid "URL contains Invalid Character ({1})"
 msgid_plural "URL contains {0} Invalid Characters ({1})"
 msgstr[0] "URL bevat een ongeldig teken ({1})"
 msgstr[1] "URL bevat {0} ongeldige tekens ({1})"
 
-# XHTML_XHTML_Attribute_Illegal
+# XHTML_XHTML_DOCTYPE_ILLEGAL
 #: XHTML_XHTML_Attribute_Illegal
 msgid "Invalid attribute name in the XHTML (''{0}'' on ''{1}'')"
 msgstr "Ongeldig attribuut in de XHTML (''{0}'' op ''{1}'')"
 
-# XHTML_XHTML_DOCTYPE_ILLEGAL
+# XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA
 #: XHTML_XHTML_DOCTYPE_ILLEGAL
 msgid "Malformed XHTML: Found a DocType declaration, and these are not allowed (XXE security vulnerability protection)"
 msgstr "Misvormde XHTML: DocType declaratie gevonden en deze zijn niet toegestaan (bescherming tegen XXE veiligheidsrisico)"
 
-# XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA
+# XHTML_XHTML_Element_Illegal
 #: XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA
 msgid "Invalid element name inside a paragraph in the XHTML (''{0}'')"
 msgstr "Ongeldige elementnaam binnen een paragraph in de XHTML (''{0}'')"
 
-# XHTML_XHTML_Element_Illegal
+# XHTML_XHTML_Entity_Illegal
 #: XHTML_XHTML_Element_Illegal
 msgid "Invalid element name in the XHTML (''{0}'')"
 msgstr "Ongeldig element in de XHTML (''{0}'')"
 
-# XHTML_XHTML_Entity_Illegal
+# XHTML_XHTML_Image_Reference_Illegal
 #: XHTML_XHTML_Entity_Illegal
 msgid "Invalid entity in the XHTML (''{0}'')"
 msgstr "Ongeldige entity in de XHTML (''{0}'')"
 
-# XHTML_XHTML_Image_Reference_Illegal
+# XHTML_XHTML_NS_InValid
 #: XHTML_XHTML_Image_Reference_Illegal
 msgid "Invalid Image Reference in the XHTML (''{0}'')"
 msgstr "Ongeldige afbeeldingreferentie in de XHTML (''{0}'')"
 
-# XHTML_XHTML_NS_InValid
+# XHTML_XHTML_Name_Invalid
 #: XHTML_XHTML_NS_InValid
 msgid "Wrong namespace on the XHTML (''{0}'', should be ''{1}'')"
 msgstr "Verkeerde namespace op de XHTML (''{0}'', moet zijn ''{1}'')"
 
-# XHTML_XHTML_Name_Invalid
+# XSI_TYPE_UNNECESSARY
 #: XHTML_XHTML_Name_Invalid
 msgid "Wrong name on the XHTML (''{0}'') - must start with div"
 msgstr "Verkeerde naam in de XHTML (''{0}'') - moet beginnen met div"
 
-# XSI_TYPE_UNNECESSARY
+# XSI_TYPE_WRONG
 #: XSI_TYPE_UNNECESSARY
 msgid "xsi:type is unnecessary at this point"
 msgstr "xsi:type is niet nodig op dit punt"
 
-# XSI_TYPE_WRONG
+# _DT_Fixed_Wrong
 #: XSI_TYPE_WRONG
 msgid "The xsi:type value ''{0}'' is wrong (should be ''{1}''). Note that xsi:type is unnecessary at this point"
 msgstr "De xsi:type waarde ''{0}'' is verkeerd (moet zijn ''{1}''). Merk op dat xsi:type niet nodig is op dit punt"
 
-# _DT_Fixed_Wrong
+# _has_children__and_multiple_types__in_profile_
 #: _DT_Fixed_Wrong
 msgid "Value is ''{0}'' but must be ''{1}''{2}"
 msgstr "Waarde is ''{0}'' maar moet zijn ''{1}''{2}"
 
-# _has_children__and_multiple_types__in_profile_
+# _has_children__for_type__in_profile__but_cant_find_type
 #: _has_children__and_multiple_types__in_profile_
 msgid "{0} has children ({1}) and multiple types ({2}) in profile {3}"
 msgstr "{0} heeft onderliggende elementen ({1}) en meerdere typen ({2}) in profiel {3}"
 
-# _has_children__for_type__in_profile__but_cant_find_type
+# _has_no_children__and_no_types_in_profile_
 #: _has_children__for_type__in_profile__but_cant_find_type
 msgid "{0} has children ({1}) for type {2} in profile {3}, but can''t find type"
 msgstr "{0} heeft onderliggende elementen ({1}) voor type {2} in profiel {3}, maar kan type niet vinden"
 
-# _has_no_children__and_no_types_in_profile_
+# defined_in_the_profile
 #: _has_no_children__and_no_types_in_profile_
 msgid "{0} has no children ({1}) and no types in profile {2}"
 msgstr "{0} heeft geen onderliggende elementen ({1}) en geen typen in profiel {2}"
 
-# defined_in_the_profile
+# documentmsg
 #: defined_in_the_profile
 msgid "Defined in the profile"
 msgstr "Gedefinieerd in het profiel"
 
-# documentmsg
+# element__null_
 #: documentmsg
 msgid "(document)"
 msgstr "(document)"
 
-# element__null_
+# element_id__null__on_
 #: element__null_
 msgid "Element = null: {0}"
 msgstr "Element = null: {0}"
 
-# element_id__null__on_
+# error_writing_number__to_JSON
 #: element_id__null__on_
 msgid "Element id = null: {0} on {1}"
 msgstr "Element id = null: {0} op {1}"
 
-# error_writing_number__to_JSON
+# getSliceList_should_only_be_called_when_the_element_has_slicing
 #: error_writing_number__to_JSON
 msgid "Error writing number ''{0}'' to JSON"
 msgstr "Fout bij schrijven van getal ''{0}'' in JSON"
 
-# getSliceList_should_only_be_called_when_the_element_has_slicing
+# needs_a_snapshot
 #: getSliceList_should_only_be_called_when_the_element_has_slicing
 msgid "getSliceList should only be called when the element has slicing"
 msgstr "getSliceList moet alleen worden aangeroepen als het element slicing heeft"
 
-# needs_a_snapshot
+# no_base_profile_provided
 #: needs_a_snapshot
 msgid "Needs a snapshot"
 msgstr "Heeft snapshot nodig"
 
-# no_base_profile_provided
+# no_derived_structure_provided
 #: no_base_profile_provided
 msgid "No base profile provided"
 msgstr "Geen basisprofiel gevonden"
 
-# no_derived_structure_provided
+# no_url_in_expand_value_set
 #: no_derived_structure_provided
 msgid "No derived structure provided"
 msgstr "Geen afgeleide structuur gevonden"
 
-# no_url_in_expand_value_set
+# no_url_in_expand_value_set_2
 #: no_url_in_expand_value_set
 msgid "No url in expand value set"
 msgstr "Geen url in expand waardelijst"
 
-# no_url_in_expand_value_set_2
+# no_value_set
 #: no_url_in_expand_value_set_2
 msgid "No url in expand value set 2"
 msgstr "Geen url in expansie waardelijst 2"
 
-# no_value_set
+# not_done_yet_cant_fetch_
 #: no_value_set
 msgid "ValueSet has no url property"
 msgstr "Waardelijst heeft geen url property"
 
-# not_done_yet_cant_fetch_
+# not_the_right_kind_of_structure_to_generate_schematrons_for
 #: not_done_yet_cant_fetch_
 msgid "Not done yet: can''t fetch {0}"
 msgstr "Nog niet gedaan: kan niet {0} ophalen"
 
-# not_the_right_kind_of_structure_to_generate_schematrons_for
+# null_min
 #: not_the_right_kind_of_structure_to_generate_schematrons_for
 msgid "Not the right kind of structure to generate schematrons for"
 msgstr "Niet de juiste structuur om schematrons voor te genereren"
 
-# null_min
+# reference_to__cannot_be_resolved
 #: null_min
 msgid "Null min"
 msgstr "Null min"
 
-# reference_to__cannot_be_resolved
+# type_on_first_differential_element
 #: reference_to__cannot_be_resolved
 msgid "reference to {0} cannot be resolved"
 msgstr "reference naar {0} kan niet worden gevonden"
 
-# type_on_first_differential_element
+# type_on_first_snapshot_element_for__in__from_
 #: type_on_first_differential_element
 msgid "Type on first differential element!"
 msgstr "Type op eerste differential-element!"
 
-# type_on_first_snapshot_element_for__in__from_
+# xml_attr_value_invalid
 #: type_on_first_snapshot_element_for__in__from_
 msgid "Type on first snapshot element for {0} in {1} from {2}"
 msgstr "Type op eerste snapshot-element voor {0} in {1} van {2}"
 
-# xml_attr_value_invalid
+# xml_encoding_invalid
 #: xml_attr_value_invalid
 msgid "The XML Attribute {0} has an invalid character"
 msgstr "Het XML attribuut {0} bevat een onjuist teken"
@@ -5515,3 +5516,4 @@ msgstr "Het XML attribuut {0} bevat een onjuist teken"
 #: xml_encoding_invalid
 msgid "The XML encoding is invalid (must be UTF-8)"
 msgstr "De XML encoding is onjuist (moet UTF-8 zijn)"
+
