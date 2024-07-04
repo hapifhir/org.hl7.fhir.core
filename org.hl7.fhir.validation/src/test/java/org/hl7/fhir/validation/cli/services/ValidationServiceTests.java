@@ -38,14 +38,13 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
-import org.hl7.fhir.validation.cli.model.ValidationResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
-class ValidationServiceTest  {
+class ValidationServiceTests {
 
   final String DUMMY_SOURCE = "dummySource";
   final String DUMMY_SOURCE1 = "dummySource1";
@@ -60,22 +59,25 @@ class ValidationServiceTest  {
   void validationSessionTest() throws Exception {
     TestingUtilities.injectCorePackageLoader();
     SessionCache sessionCache = Mockito.spy(new PassiveExpiringSessionCache());
-    ValidationService myService = new ValidationService(sessionCache);
+    ValidationService myService = Mockito.spy(new ValidationService(sessionCache));
 
     List<FileInfo> filesToValidate = getFilesToValidate();
 
-    ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"))).setFilesToValidate(filesToValidate);
+    ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService")).setSv("4.0.1")).setFilesToValidate(filesToValidate);
     // Validation run 1...nothing cached yet
     myService.validateSources(request);
     verify(sessionCache, Mockito.times(1)).cacheSession(ArgumentMatchers.any(ValidationEngine.class));
-
+    verify(sessionCache, Mockito.times(1)).cleanUp();
+    verify(myService, Mockito.times(1)).buildValidationEngine(any(), any(), any());
     Set<String> sessionIds = sessionCache.getSessionIds();
     if (sessionIds.stream().findFirst().isPresent()) {
       // Verify that after 1 run there is only one entry within the cache
       Assertions.assertEquals(1, sessionIds.size());
-      myService.validateSources(request);
-      // Verify that the cache has been called on once with the id created in the first run
-      verify(sessionCache, Mockito.times(1)).fetchSessionValidatorEngine(sessionIds.stream().findFirst().get());
+      myService.validateSources(request.setSessionId(sessionIds.stream().findFirst().get()));
+      // Verify that the cache has been called on twice with the id created in the first run
+      verify(sessionCache, Mockito.times(2)).fetchSessionValidatorEngine(sessionIds.stream().findFirst().get());
+      verify(sessionCache, Mockito.times(1)).cleanUp();
+      verify(myService, Mockito.times(1)).buildValidationEngine(any(), any(), any());
     } else {
       // If no sessions exist within the cache after a run, we auto-fail.
       fail();
@@ -95,7 +97,7 @@ class ValidationServiceTest  {
 
     {
       final List<FileInfo> filesToValidate = getFilesToValidate();
-      final ValidationRequest request = new ValidationRequest().setCliContext(new CliContext()).setFilesToValidate(filesToValidate);
+      final ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setSv("4.0.1")).setFilesToValidate(filesToValidate);
       myService.validateSources(request);
 
       verify(myService, Mockito.times(0)).getBaseEngine("myDummyKey");

@@ -489,7 +489,7 @@ public class ValidationService {
       if (sessionId != null) {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
-
+      sessionCache.cleanUp();
       ValidationEngine validationEngine = getValidationEngineFromCliContext(cliContext, definitions, tt);
       sessionId = sessionCache.cacheSession(validationEngine);
       System.out.println("Cached new session. Cache size = " + sessionCache.getSessionIds().size());
