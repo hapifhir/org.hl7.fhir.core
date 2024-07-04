@@ -3,7 +3,6 @@ package org.hl7.fhir.validation.cli.services;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 
 import org.apache.commons.collections4.map.PassiveExpiringMap;
 import org.hl7.fhir.validation.ValidationEngine;
