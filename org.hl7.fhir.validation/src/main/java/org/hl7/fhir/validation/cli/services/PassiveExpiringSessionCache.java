@@ -118,6 +118,11 @@ public class PassiveExpiringSessionCache implements SessionCache {
     return cachedSessions.keySet();
   }
 
+  @Override
+  public void cleanUp() {
+    removeExpiredSessions();
+  }
+
   /**
    * Session ids generated internally are UUID {@link String}.
    * @return A new {@link String} session id.
