@@ -78,6 +78,9 @@ public class ValidationService {
   private final Map<String, ValidationEngine> baseEngines = new ConcurrentHashMap<>();
 
   public void putBaseEngine(String key, CliContext cliContext) throws IOException, URISyntaxException {
+    if (cliContext.getSv() == null) {
+      throw new IllegalArgumentException("Cannot create a base engine without an explicit version");
+    }
     String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
 
     ValidationEngine baseEngine = buildValidationEngine(cliContext, definitions, new TimeTracker());
@@ -105,11 +108,8 @@ public class ValidationService {
 
   public ValidationResponse validateSources(ValidationRequest request) throws Exception {
 
-
-    String definitions = VersionUtilities.packageForVersion(request.getCliContext().getSv()) + "#" + VersionUtilities.getCurrentVersion(request.getCliContext().getSv());
-
     TimeTracker timeTracker = new TimeTracker();
-    String sessionId = initializeValidator(request.getCliContext(), definitions, timeTracker, request.sessionId);
+    String sessionId = initializeValidator(request.getCliContext(), null, timeTracker, request.sessionId);
     ValidationEngine validator = sessionCache.fetchSessionValidatorEngine(sessionId);
 
     if (request.getCliContext().getProfiles().size() > 0) {
@@ -196,7 +196,7 @@ public class ValidationService {
     return outcome;
   }
 
-  public VersionSourceInformation scanForVersions(CliContext cliContext) throws Exception {
+  public VersionSourceInformation scanForVersions(CliContext cliContext) throws IOException {
     VersionSourceInformation versions = new VersionSourceInformation();
     IgLoader igLoader = new IgLoader(
       new FilesystemPackageCacheManager.Builder().build(),
@@ -490,7 +490,13 @@ public class ValidationService {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
       sessionCache.cleanUp();
-      ValidationEngine validationEngine = getValidationEngineFromCliContext(cliContext, definitions, tt);
+      if (cliContext.getSv() == null) {
+        String sv = determineVersion(cliContext);
+        cliContext.setSv(sv);
+      }
+      final String engineDefinitions = definitions != null ? definitions : VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
+
+      ValidationEngine validationEngine = getValidationEngineFromCliContext(cliContext, engineDefinitions, tt);
       sessionId = sessionCache.cacheSession(validationEngine);
       System.out.println("Cached new session. Cache size = " + sessionCache.getSessionIds().size());
 
@@ -512,11 +518,10 @@ public class ValidationService {
       validationEngine.setLanguage(cliContext.getLang());
       validationEngine.setLocale(cliContext.getLocale());
     } else {
-      System.out.println("Building new validator engine from CliContext");
-      if (cliContext.getSv() == null) {
-        String sv = determineVersion(cliContext);
-        cliContext.setSv(sv);
+      if (definitions == null) {
+        throw new IllegalArgumentException("Cannot create a validator engine (definitions == null)");
       }
+      System.out.println("Building new validator engine from CliContext");
       validationEngine  = buildValidationEngine(cliContext, definitions, tt);
     }
     return validationEngine;
@@ -603,7 +608,7 @@ public class ValidationService {
     System.out.println("  Package Summary: "+ validationEngine.getContext().loadedPackageSummary());
   }
 
-  public String determineVersion(CliContext cliContext) throws Exception {
+  public String determineVersion(CliContext cliContext) throws IOException {
     if (cliContext.getMode() != EngineMode.VALIDATION && cliContext.getMode() != EngineMode.INSTALL) {
       return "5.0";
     }
@@ -622,7 +627,7 @@ public class ValidationService {
       System.out.println("-> use version " + versions.version());
       return versions.version();
     }
-    throw new Exception("-> Multiple versions found. Specify a particular version using the -version parameter");
+    throw new IllegalArgumentException("-> Multiple versions found. Specify a particular version using the -version parameter");
   }
 
   public void generateSpreadsheet(CliContext cliContext, ValidationEngine validator) throws Exception {

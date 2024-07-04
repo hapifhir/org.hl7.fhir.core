@@ -846,7 +846,7 @@ public class CliContext {
   @Override
   public String toString() {
     return "CliContext{" +
-      " baseEngine=" + baseEngine +
+      "baseEngine=" + baseEngine +
       ", doNative=" + doNative +
       ", extensions=" + extensions +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +

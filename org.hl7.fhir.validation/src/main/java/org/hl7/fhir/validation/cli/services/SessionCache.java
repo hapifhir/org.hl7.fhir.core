@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli.services;
 
 import java.util.Set;
-import java.util.function.Supplier;
 
 import org.hl7.fhir.validation.ValidationEngine;
 
