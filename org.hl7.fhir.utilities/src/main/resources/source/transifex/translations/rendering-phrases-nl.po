@@ -37,13 +37,13 @@ msgstr "Een of meer"
 # ADD_BIND_ANY_REP
 #: ADD_BIND_ANY_REP
 msgid "any repeat"
-msgstr "een of meer herhaling"
+msgstr "een of meer herhalingen"
 
 # ADD_BIND_CURR_BIND
 #: ADD_BIND_CURR_BIND
 msgctxt "ADD_BIND_CURR_BIND"
 msgid "Current"
-msgstr "!!Huidige binding"
+msgstr "Huidig"
 
 # ADD_BIND_DESIG_SYS
 #: ADD_BIND_DESIG_SYS
@@ -53,13 +53,13 @@ msgstr "Deze waardelijst is een goede startset met codes bij het ontwerpen van j
 # ADD_BIND_EXT_PREF
 #: ADD_BIND_EXT_PREF
 msgid "A required binding, for use when the binding strength is ''extensible'' or ''preferred''"
-msgstr "!!Een verplichte binding, voor gebruik wanneer de bindingsterkte 'uitbreidbaar' of 'voorkeur' is"
+msgstr "Een verplichte binding, voor gebruik wanneer de bindingsterkte ''uitbreidbaar'' of ''voorkeur'' is"
 
 # ADD_BIND_EX_BIND
 #: ADD_BIND_EX_BIND
 msgctxt "ADD_BIND_EX_BIND"
 msgid "Extensible"
-msgstr "!!Uitbreidbare binding"
+msgstr "Uitbreidbaar"
 
 # ADD_BIND_GIVEN_CONT
 #: ADD_BIND_GIVEN_CONT
@@ -85,7 +85,7 @@ msgstr "Nieuwe registraties zijn verplicht deze waardelijst te gebruiken, maar b
 #: ADD_BIND_PREF_BIND
 msgctxt "ADD_BIND_PREF_BIND"
 msgid "Preferred"
-msgstr "!!Voorkeursbinding"
+msgstr "Voorkeur"
 
 # ADD_BIND_RECOM_VALUE_SET
 #: ADD_BIND_RECOM_VALUE_SET
@@ -96,7 +96,7 @@ msgstr "Dit is de aanbevolen waardelijst (documentatie dient uit te leggen waaro
 #: ADD_BIND_REQ_BIND
 msgctxt "ADD_BIND_REQ_BIND"
 msgid "Required"
-msgstr "!!Verplichte binding"
+msgstr "Verplicht"
 
 # ADD_BIND_UI
 #: ADD_BIND_UI
@@ -137,7 +137,7 @@ msgstr "ETag = {0}"
 # BUNDLE_HEADER_DOCUMENT_CONTENTS
 #: BUNDLE_HEADER_DOCUMENT_CONTENTS
 msgid "Additional Resources Included in Document"
-msgstr ""
+msgstr "Additionele resources geïncludeerd in document"
 
 # BUNDLE_HEADER_ENTRY
 #: BUNDLE_HEADER_ENTRY
@@ -147,7 +147,7 @@ msgstr "Entry {0}"
 # BUNDLE_HEADER_ENTRY_URL
 #: BUNDLE_HEADER_ENTRY_URL
 msgid "Entry {0} - fullUrl = {1}"
-msgstr "Entry {0} - Full URL = {1}"
+msgstr "Entry {0} - fullUrl = {1}"
 
 # BUNDLE_HEADER_ROOT
 #: BUNDLE_HEADER_ROOT
@@ -222,12 +222,12 @@ msgstr "Score = {0}"
 # BUNDLE_SUMMARY
 #: BUNDLE_SUMMARY
 msgid "{0} Bundle, {1} Entries"
-msgstr ""
+msgstr "{0} Bundle, {1} Entries"
 
 # BUND_REND_INVALID_DOC
 #: BUND_REND_INVALID_DOC
 msgid "Invalid document ''{0}'' - first entry is not a Composition ({0})"
-msgstr "!!!!Ongeldig document ''{0}'' - eerste entry is geen Composition ({0})"
+msgstr "Ongeldig document ''{0}'' - eerste entry is geen Composition ({0})"
 
 # CANON_REND_COMMITTEE
 #: CANON_REND_COMMITTEE
@@ -237,7 +237,7 @@ msgstr "Werkgroep"
 # CANON_REND_JSON
 #: CANON_REND_JSON
 msgid "JSON"
-msgstr "JSON"
+msgstr "Json"
 
 # CANON_REND_MATURITY
 #: CANON_REND_MATURITY
@@ -457,7 +457,7 @@ msgstr "GET set resources van het type (zoek interactie)"
 # CAPABILITY_SEARCH_PAR
 #: CAPABILITY_SEARCH_PAR
 msgid "The required, recommended, and some optional search parameters (if any)."
-msgstr "De verplichte, aanbevolen en bepaalde optionele parameters (indien aanwezig)"
+msgstr "De verplichte, aanbevolen en bepaalde optionele parameters (indien aanwezig)."
 
 # CAPABILITY_SEARCH_PARS
 #: CAPABILITY_SEARCH_PARS
@@ -497,7 +497,7 @@ msgstr "Ondersteunde formaten:"
 # CAPABILITY_SUPP_PATCH_FORM
 #: CAPABILITY_SUPP_PATCH_FORM
 msgid "Supported Patch Formats:"
-msgstr "Ondersteunde patch formaten:"
+msgstr "Ondersteunde patchformaten:"
 
 # CAPABILITY_SUPP_PROFS
 #: CAPABILITY_SUPP_PROFS
@@ -532,7 +532,7 @@ msgstr "GET vorige versies van resources (vread interactie)"
 # CAPABILTY_ALLOW_CAP
 #: CAPABILTY_ALLOW_CAP
 msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
-msgstr "!!!!!!Elke FHIR functie is 'toegestaan' door het systeem tenzij epxliciet gemarkeerd als \"MOET NIET\". Er zijn mogelijk een paar dingen gemarkeerd als MAG in de implementatiegids om hun mogelijke relevantie voor de usecase te benadrukken."
+msgstr "Elke FHIR functie is ''toegestaan'' door het systeem tenzij epxliciet gemarkeerd als ''MOET NIET''. Er zijn mogelijk een paar dingen gemarkeerd als MAG in de implementatiegids om hun mogelijke relevantie voor de usecase te benadrukken."
 
 # CAPABILTY_SHALL_SUPP
 #: CAPABILTY_SHALL_SUPP
@@ -547,12 +547,12 @@ msgstr "Concepten"
 # CODESYSTEM_CONTENT_COMPLETE
 #: CODESYSTEM_CONTENT_COMPLETE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "!!msgid \"Dit <param name \"cased\"/> codesysteem <param name=\"cs\"/> definieert de volgende code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> definieert de volgende code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
 
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
-msgstr ""
+msgstr "Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> definieert de volgende code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>die alleen als voorbeeld dienen</b>:"
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
@@ -592,7 +592,7 @@ msgstr "Dit codesysteem definieert de volgende eigenschappen voor zijn concepten
 # CODE_SYS_CODE_NOT_HERE
 #: CODE_SYS_CODE_NOT_HERE
 msgid "This CodeSystem is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr ""
+msgstr "Dit CodeSystem wordt hier niet gebruikt; het wordt mogelijk elders gebruikt (bijv. specificaties en/of implementaties die deze content gebruiken)"
 
 # CODE_SYS_COMPLETE
 #: CODE_SYS_COMPLETE
@@ -617,7 +617,7 @@ msgstr "weergavenamen en eigenschappen"
 # CODE_SYS_EXAMPLE
 #: CODE_SYS_EXAMPLE
 msgid "A few representative concepts are included in the code system resource"
-msgstr "De CodeSystem resource bevat een aantal van de concepten"
+msgstr "De CodeSystem resource bevat een aantal, voor het codesysteem representatieve, concepten"
 
 # CODE_SYS_FEAT
 #: CODE_SYS_FEAT
@@ -627,12 +627,12 @@ msgstr "features"
 # CODE_SYS_FOR_OID
 #: CODE_SYS_FOR_OID
 msgid "{0} (for OID based terminology systems)"
-msgstr "!!voor OID-gebaseerde terminologiesystemen"
+msgstr "{0} (voor oid-gebaseerde terminologiesystemen)"
 
 # CODE_SYS_FRAGMENT
 #: CODE_SYS_FRAGMENT
 msgid "A subset of the code system concepts are included in the code system resource"
-msgstr "De CodeSystem resource bevat een subset van de concepten"
+msgstr "De CodeSystem resource bevat een subset van de door het codesysteem gedefinieerde concepten"
 
 # CODE_SYS_IN_A_HIERARCHY
 #: CODE_SYS_IN_A_HIERARCHY
@@ -662,12 +662,12 @@ msgstr "Deze CodeSystem resource is een supplement voor"
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
 msgid "{0} is the value set for all codes in this code system"
-msgstr "!!is de waardelijst voor alle codes in dit codesysteem"
+msgstr "{0} is de waardelijst voor alle codes in dit codesysteem"
 
 # CODE_SYS_UNDEF_HIER
 #: CODE_SYS_UNDEF_HIER
 msgid "in an undefined hierarchy"
-msgstr "!!in een ongedefinieerde hiërarchie"
+msgstr "in een ongedefinieerde hiërarchie"
 
 # CODE_SYS_UNKN_MODE
 #: CODE_SYS_UNKN_MODE
@@ -677,12 +677,12 @@ msgstr "Onbekende CodeSystemContentMode modus"
 # CONC_MAP_CODES
 #: CONC_MAP_CODES
 msgid "Codes"
-msgstr ""
+msgstr "Codes"
 
 # CONC_MAP_CODE_SYS_UNSPEC
 #: CONC_MAP_CODE_SYS_UNSPEC
 msgid "unspecified code system"
-msgstr ""
+msgstr "ongespecificeerd codesysteem"
 
 # CONC_MAP_FRM
 #: CONC_MAP_FRM
@@ -788,17 +788,17 @@ msgstr "bij de lunch"
 #: DATA_REND_ATT_DATA
 msgctxt "DATA_REND_ATT_DATA"
 msgid "{0}: {1}"
-msgstr ""
+msgstr "{0}: {1}"
 
 # DATA_REND_ATT_URL
 #: DATA_REND_ATT_URL
 msgid "{0} @ {1}"
-msgstr ""
+msgstr "{0} @ {1}"
 
 # DATA_REND_BASE64
 #: DATA_REND_BASE64
 msgid "(base64 data - {0} base64 chars)"
-msgstr "!!(base64 data - {0}  bytes)"
+msgstr "(base64 data - {0} base64 tekens)"
 
 # DATA_REND_BFBKFST
 #: DATA_REND_BFBKFST
@@ -833,7 +833,7 @@ msgstr "Door"
 # DATA_REND_CODES
 #: DATA_REND_CODES
 msgid "Codes:"
-msgstr ""
+msgstr "Codes:"
 
 # DATA_REND_COND
 #: DATA_REND_COND
@@ -858,7 +858,7 @@ msgstr "(Details: {0} code"
 # DATA_REND_DETAILS_STATED
 #: DATA_REND_DETAILS_STATED
 msgid "(Details: {0} code {1} {2} {3} '', stated as '' {4} {5}"
-msgstr "!!(Details: {0} code {1} {2} {3} ', genoemd als ' {4} {5}"
+msgstr "(Details: {0} code {1} {2} {3} '', genoemd als '' {4} {5}"
 
 # DATA_REND_DICOM
 #: DATA_REND_DICOM
@@ -938,7 +938,7 @@ msgstr "bij de maaltijd"
 # DATA_REND_MKDWN_LNK
 #: DATA_REND_MKDWN_LNK
 msgid "Unable to resolve markdown link"
-msgstr "Kan markdown link niet volgen"
+msgstr "Kan markdown-link niet volgen"
 
 # DATA_REND_NOT_STAT
 #: DATA_REND_NOT_STAT
@@ -1013,7 +1013,7 @@ msgstr "Bezig met starten van {0}"
 # DATA_REND_THESE_CODES
 #: DATA_REND_THESE_CODES
 msgid "One of these codes:"
-msgstr "een van deze codes:"
+msgstr "Een van deze codes:"
 
 # DATA_REND_TIMING
 #: DATA_REND_TIMING
@@ -1033,7 +1033,7 @@ msgstr "onbekend"
 # DATA_REND_UNRD_EX
 #: DATA_REND_UNRD_EX
 msgid "WARNING: Unrenderable Modifier Extension!"
-msgstr "WAARSCHUWING: Kan modifier extensie niet weergaven!"
+msgstr "WAARSCHUWING: Kan modifier-extensie niet weergeven!"
 
 # DATA_REND_UNTIL
 #: DATA_REND_UNTIL
@@ -1053,7 +1053,7 @@ msgstr "gebruik:"
 # DATA_REND_VALUESET
 #: DATA_REND_VALUESET
 msgid "In ValueSet"
-msgstr "In waardelijst"
+msgstr "In ValueSet"
 
 # DATA_REND_VERSION
 #: DATA_REND_VERSION
@@ -1068,7 +1068,7 @@ msgstr "Leeftijd"
 # DIAG_REP_REND_CODECON
 #: DIAG_REP_REND_CODECON
 msgid "Coded Conclusions:"
-msgstr ""
+msgstr "Gecodeerde conclusies:"
 
 # DIAG_REP_REND_ERR
 #: DIAG_REP_REND_ERR
@@ -1088,7 +1088,7 @@ msgstr "Identifier"
 # DIAG_REP_REND_NOTRES
 #: DIAG_REP_REND_NOTRES
 msgid "The observation ''{0}'' could not be resolved"
-msgstr "!!Deze Observation is niet gevonden"
+msgstr "Deze Observation ''{0}'' is niet gevonden"
 
 # DIAG_REP_REND_OBS
 #: DIAG_REP_REND_OBS
@@ -1118,7 +1118,7 @@ msgstr "Rapportdetails"
 # DIAG_REP_REND_UNABLE
 #: DIAG_REP_REND_UNABLE
 msgid "Unable to get Patient Details"
-msgstr "Kan geen Patient details ophalen"
+msgstr "Kan geen Patient-details ophalen"
 
 # DIAG_REP_REND_WHEN
 #: DIAG_REP_REND_WHEN
@@ -1128,28 +1128,28 @@ msgstr "Wanneer voor"
 # DIAG_REP_SUMMARY
 #: DIAG_REP_SUMMARY
 msgid "Diagnostic Report for ''{0}'' for ''{1}''"
-msgstr ""
+msgstr "Diagnostisch rapport voor ''{0}'' voor ''{1}''"
 
 # DIAG_REP_UNSPECIFIED_CODE
 #: DIAG_REP_UNSPECIFIED_CODE
 msgid "Unspecified Report Type"
-msgstr ""
+msgstr "Ongespecificeerd rapporttype"
 
 # DIAG_REP_UNSPECIFIED_SUBJECT
 #: DIAG_REP_UNSPECIFIED_SUBJECT
 msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr ""
+msgstr "Ongespecificeerd subject"
 
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
 msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
-msgstr ""
+msgstr "<param name=\"status\"/> Document van <param name=\"date\"/> door <param name=\"author\"/> voor <param name=\"subject\"/> <if test=\"has-encounter = true\"> in contactmoment <param name=\"encounter\"/></if>"
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
 msgid "Step {0}  - See scenario {1}"
-msgstr "!!Stap {0}  - Zie scenario\n {1}"
+msgstr "Stap {0}  - Zie scenario {1}"
 
 # EX_SCEN_ALT
 #: EX_SCEN_ALT
@@ -1214,7 +1214,7 @@ msgstr "Antwoord"
 # EX_SCEN_SEE
 #: EX_SCEN_SEE
 msgid "See subprocess"
-msgstr "Zie subprocess"
+msgstr "Zie subproces"
 
 # EX_SCEN_STEP
 #: EX_SCEN_STEP
@@ -1224,7 +1224,7 @@ msgstr "Stap"
 # EX_SCEN_TIME
 #: EX_SCEN_TIME
 msgid "... time passes ..."
-msgstr "!!... tijd schrijdt voort ...\n"
+msgstr "... tijd verstrijkt ..."
 
 # EX_SCEN_UN
 #: EX_SCEN_UN
@@ -1244,7 +1244,7 @@ msgstr "Kan gerefereerde instance {0} niet vinden"
 # GENERAL_ADD_LANG
 #: GENERAL_ADD_LANG
 msgid "Additional Language Displays"
-msgstr ""
+msgstr "Additionele taalweergaven"
 
 # GENERAL_BINDING
 #: GENERAL_BINDING
@@ -1254,7 +1254,7 @@ msgstr "Binding"
 # GENERAL_BIND_MIN_ALLOW
 #: GENERAL_BIND_MIN_ALLOW
 msgid "The minimum allowable value set - any conformant system SHALL support all these codes"
-msgstr ""
+msgstr "De minimum-toegestane-waardelijst- een conformerend systeem MOET al deze codes ondersteunen"
 
 # GENERAL_CARD
 #: GENERAL_CARD
@@ -1274,295 +1274,295 @@ msgstr "Code"
 # GENERAL_COMMENT
 #: GENERAL_COMMENT
 msgid "Comment"
-msgstr ""
+msgstr "Opmerking"
 
 # GENERAL_COMMENTS
 #: GENERAL_COMMENTS
 msgid "Comments"
-msgstr ""
+msgstr "Opmerkingen"
 
 # GENERAL_COMPARATORS
 #: GENERAL_COMPARATORS
 msgid "Comparators"
-msgstr ""
+msgstr "Comparators"
 
 # GENERAL_COMPONENT
 #: GENERAL_COMPONENT
 msgid "Component"
-msgstr ""
+msgstr "Component"
 
 # GENERAL_CONFORMANCE
 #: GENERAL_CONFORMANCE
 msgid "Conformance"
-msgstr ""
+msgstr "Conformance"
 
 # GENERAL_CONTACT
 #: GENERAL_CONTACT
 msgid "Contact:"
-msgstr ""
+msgstr "Contact:"
 
 # GENERAL_CONTENT
 #: GENERAL_CONTENT
 msgid "Content"
-msgstr ""
+msgstr "Content"
 
 # GENERAL_COPYRIGHT
 #: GENERAL_COPYRIGHT
 msgid "Copyright"
-msgstr ""
+msgstr "Copyright"
 
 # GENERAL_CRIT
 #: GENERAL_CRIT
 msgid "Criteria"
-msgstr ""
+msgstr "Criteria"
 
 # GENERAL_DATA_DISPLAY_PROPERTY
 #: GENERAL_DATA_DISPLAY_PROPERTY
 msgctxt "GENERAL_DATA_DISPLAY_PROPERTY"
 msgid "{0}: {1}"
-msgstr ""
+msgstr "{0}: {1}"
 
 # GENERAL_DEFINING_URL
 #: GENERAL_DEFINING_URL
 msgid "Defining URL"
-msgstr ""
+msgstr "Definiërende url"
 
 # GENERAL_DEFINITION
 #: GENERAL_DEFINITION
 msgid "Definition"
-msgstr ""
+msgstr "Definitie"
 
 # GENERAL_DEFINITION_COLON
 #: GENERAL_DEFINITION_COLON
 msgid "Definition:"
-msgstr ""
+msgstr "Definities:"
 
 # GENERAL_DESC
 #: GENERAL_DESC
 msgid "Description"
-msgstr ""
+msgstr "Omschrijving"
 
 # GENERAL_DESC_CONST
 #: GENERAL_DESC_CONST
 msgid "Description & Constraints"
-msgstr ""
+msgstr "Omschrijving & constraints"
 
 # GENERAL_DETAILS
 #: GENERAL_DETAILS
 msgid "Details"
-msgstr ""
+msgstr "Details"
 
 # GENERAL_DOCUMENTATION
 #: GENERAL_DOCUMENTATION
 msgid "Documentation"
-msgstr ""
+msgstr "Documentatie"
 
 # GENERAL_EXAMPLE
 #: GENERAL_EXAMPLE
 msgid "Example"
-msgstr ""
+msgstr "Voorbeeld"
 
 # GENERAL_EXPER
 #: GENERAL_EXPER
 msgid "Experimental"
-msgstr ""
+msgstr "Experimenteel"
 
 # GENERAL_FILTER
 #: GENERAL_FILTER
 msgid "Filter"
-msgstr ""
+msgstr "Filter"
 
 # GENERAL_FLAGS
 #: GENERAL_FLAGS
 msgid "Flags"
-msgstr ""
+msgstr "Markeringen"
 
 # GENERAL_LOCATION
 #: GENERAL_LOCATION
 msgid "Location"
-msgstr ""
+msgstr "Locatie"
 
 # GENERAL_LOGICAL_NAME
 #: GENERAL_LOGICAL_NAME
 msgid "The logical name of the element"
-msgstr ""
+msgstr "De logische naam van het element"
 
 # GENERAL_MAX_LENGTH
 #: GENERAL_MAX_LENGTH
 msgid "Max Length:"
-msgstr ""
+msgstr "Max lengte:"
 
 # GENERAL_MODIFIERS
 #: GENERAL_MODIFIERS
 msgid "Modifiers"
-msgstr ""
+msgstr "Modifiers"
 
 # GENERAL_NAME
 #: GENERAL_NAME
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
 # GENERAL_NOTE
 #: GENERAL_NOTE
 msgid "Note"
-msgstr ""
+msgstr "Notitie"
 
 # GENERAL_OBLIG
 #: GENERAL_OBLIG
 msgid "Obligations"
-msgstr ""
+msgstr "Verplichtingen"
 
 # GENERAL_OID
 #: GENERAL_OID
 msgid "OID"
-msgstr ""
+msgstr "Oid"
 
 # GENERAL_PAR
 #: GENERAL_PAR
 msgid "Parameter"
-msgstr ""
+msgstr "Parameter"
 
 # GENERAL_PARS
 #: GENERAL_PARS
 msgid "Parameters"
-msgstr ""
+msgstr "Parameters"
 
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
 msgctxt "GENERAL_PREFERRED"
 msgid "Preferred"
-msgstr ""
+msgstr "Voorkeur"
 
 # GENERAL_PROF
 #: GENERAL_PROF
 msgid "Profile"
-msgstr ""
+msgstr "Profiel"
 
 # GENERAL_PROPS
 #: GENERAL_PROPS
 msgid "Properties"
-msgstr ""
+msgstr "Eigenschappen"
 
 # GENERAL_PURPOSE
 #: GENERAL_PURPOSE
 msgid "Purpose"
-msgstr ""
+msgstr "Doel"
 
 # GENERAL_REFS
 #: GENERAL_REFS
 msgid "References:"
-msgstr ""
+msgstr "Verwijzingen:"
 
 # GENERAL_REMOVED_SINCE
 #: GENERAL_REMOVED_SINCE
 msgid "This content has been removed since {0}"
-msgstr ""
+msgstr "Deze content is verwijderd sinds {0}"
 
 # GENERAL_REQUEST
 #: GENERAL_REQUEST
 msgid "Request"
-msgstr ""
+msgstr "Verzoek"
 
 # GENERAL_REQUIRED
 #: GENERAL_REQUIRED
 msgctxt "GENERAL_REQUIRED"
 msgid "Required"
-msgstr ""
+msgstr "Verplicht"
 
 # GENERAL_RESOURCE
 #: GENERAL_RESOURCE
 msgid "Resource"
-msgstr ""
+msgstr "Resource"
 
 # GENERAL_SECURITY_LABEL
 #: GENERAL_SECURITY_LABEL
 msgid "Security Label"
-msgstr ""
+msgstr "Veiligheidslabel"
 
 # GENERAL_SRC
 #: GENERAL_SRC
 msgid "Source:"
-msgstr ""
+msgstr "Bron:"
 
 # GENERAL_STARTER
 #: GENERAL_STARTER
 msgid "Starter"
-msgstr ""
+msgstr "Starter"
 
 # GENERAL_STATUS
 #: GENERAL_STATUS
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 # GENERAL_SUBJ
 #: GENERAL_SUBJ
 msgid "Subject"
-msgstr ""
+msgstr "Subject"
 
 # GENERAL_SUMM
 #: GENERAL_SUMM
 msgid "Summary"
-msgstr ""
+msgstr "Samenvatting"
 
 # GENERAL_TITLE
 #: GENERAL_TITLE
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 # GENERAL_TODO
 #: GENERAL_TODO
 msgid "Not done yet"
-msgstr ""
+msgstr "Nog niet gedaan"
 
 # GENERAL_TYPE
 #: GENERAL_TYPE
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 # GENERAL_UCUM
 #: GENERAL_UCUM
 msgid "UCUM"
-msgstr ""
+msgstr "UCUM"
 
 # GENERAL_URI
 #: GENERAL_URI
 msgid "URI"
-msgstr ""
+msgstr "Uri"
 
 # GENERAL_URL
 #: GENERAL_URL
 msgid "URL"
-msgstr ""
+msgstr "Url"
 
 # GENERAL_USAGE
 #: GENERAL_USAGE
 msgid "Usage"
-msgstr ""
+msgstr "Gebruik"
 
 # GENERAL_VALUE
 #: GENERAL_VALUE
 msgid "Value"
-msgstr ""
+msgstr "Waarde"
 
 # GENERAL_VALUESET
 #: GENERAL_VALUESET
 msgid "Value Set"
-msgstr ""
+msgstr "Waardelijst"
 
 # GENERAL_VER
 #: GENERAL_VER
 msgid "Version"
-msgstr ""
+msgstr "Versie"
 
 # GENERAL_VER_LOW
 #: GENERAL_VER_LOW
 msgid "version"
-msgstr ""
+msgstr "versie"
 
 # GENERAL_XML
 #: GENERAL_XML
 msgid "XML"
-msgstr ""
+msgstr "Xml"
 
 # IMP_GUIDE_URL
 #: IMP_GUIDE_URL
@@ -1627,7 +1627,7 @@ msgstr ", grootte = {0}"
 # LIST_REND_CODE
 #: LIST_REND_CODE
 msgid "Code: {0}"
-msgstr ""
+msgstr "Code: {0}"
 
 # LIST_REND_DAT
 #: LIST_REND_DAT
@@ -1682,18 +1682,18 @@ msgstr "Subject:"
 # LIST_SUMMARY
 #: LIST_SUMMARY
 msgid "List for ''{0}'' for ''{1}''"
-msgstr ""
+msgstr "List voor ''{0}'' voor ''{1}''"
 
 # LIST_UNSPECIFIED_CODE
 #: LIST_UNSPECIFIED_CODE
 msgid "Unspecified List Type"
-msgstr ""
+msgstr "Ongespecificeerd lijsttype"
 
 # LIST_UNSPECIFIED_SUBJECT
 #: LIST_UNSPECIFIED_SUBJECT
 msgctxt "LIST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr ""
+msgstr "Ongespecificeerd subject"
 
 # MAP_DEFAULT_COMMENT
 #: MAP_DEFAULT_COMMENT
@@ -1778,27 +1778,27 @@ msgstr "Bron"
 # OP_OUT_SUMM
 #: OP_OUT_SUMM
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s), {2} Hint(s))"
-msgstr ""
+msgstr "OperationOutcome ({0} fout(en), {1} waarschuwing(en), {2} hint(s))"
 
 # OP_OUT_SUMM_ALL_OK
 #: OP_OUT_SUMM_ALL_OK
 msgid "OperationOutcome (ALL OK)"
-msgstr ""
+msgstr "OperationOutcome (ALLES OKÉ)"
 
 # OP_OUT_SUMM_NOHINT
 #: OP_OUT_SUMM_NOHINT
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s))"
-msgstr ""
+msgstr "OperationOutcome ({0} fout(en), {1} waarschuwing(en))"
 
 # PARS_SUMMARY_LIST
 #: PARS_SUMMARY_LIST
 msgid "Parameters: {0}"
-msgstr ""
+msgstr "Parameters: {0}"
 
 # PARS_SUMMARY_SIZE
 #: PARS_SUMMARY_SIZE
 msgid "Parameters ({0} parameters)"
-msgstr ""
+msgstr "Parameters ({0} parameters)"
 
 # PAT_ACTIVE
 #: PAT_ACTIVE
@@ -1873,13 +1873,13 @@ msgstr[1] "Talen:"
 #: PAT_LANG_HINT
 msgid "Language spoken"
 msgid_plural "Languages spoken"
-msgstr[0] "Spreektalen"
+msgstr[0] "Spreektaal"
 msgstr[1] "Spreektalen"
 
 # PAT_LANG_PREFERRED
 #: PAT_LANG_PREFERRED
 msgid "(preferred)"
-msgstr "(voorkeur0"
+msgstr "(voorkeur)"
 
 # PAT_LINKS
 #: PAT_LINKS
@@ -1971,15 +1971,15 @@ msgstr "Organisatie:"
 #: PAT_OTHER_ID
 msgid "Other Id:"
 msgid_plural "Other Ids:"
-msgstr[0] "Andere id's:"
-msgstr[1] "Andere id's:"
+msgstr[0] "Ander id:"
+msgstr[1] "Andere id''s:"
 
 # PAT_OTHER_ID_HINT
 #: PAT_OTHER_ID_HINT
 msgid "Other Id (see the one above)"
 msgid_plural "Other Ids (see the one above)"
-msgstr[0] "Andere id's (zie hierboven)"
-msgstr[1] "Andere id's (zie hierboven)"
+msgstr[0] "Ander id (zie hierboven)"
+msgstr[1] "Andere id''s (zie hierboven)"
 
 # PAT_PERIOD
 #: PAT_PERIOD
@@ -2014,23 +2014,23 @@ msgstr "Kan definitie niet vinden voor {0}"
 # PROF_DRIV_GEN_NARR
 #: PROF_DRIV_GEN_NARR
 msgid "{0} {1}"
-msgstr "!!Gegenereerde narrative: {0} {1}"
+msgstr "{0} {1}"
 
 # PROF_DRIV_GEN_NARR_TECH
 #: PROF_DRIV_GEN_NARR_TECH
 msgid "Generated Narrative: {0} {1}"
-msgstr ""
+msgstr "Gegenereerde narrative: {0} {1}"
 
 # PROF_DRIV_SUMM
 #: PROF_DRIV_SUMM
 msgctxt "PROF_DRIV_SUMM"
 msgid "{0}: {1}"
-msgstr ""
+msgstr "{0}: {1}"
 
 # PROF_DRIV_SUMM_PROP
 #: PROF_DRIV_SUMM_PROP
 msgid "{0} = {1}"
-msgstr ""
+msgstr "{0} = {1}"
 
 # PROV_ACT
 #: PROV_ACT
@@ -2355,7 +2355,7 @@ msgstr "Subject type"
 # QUEST_SUMMARY
 #: QUEST_SUMMARY
 msgid "Response to Questionnaire ''{0}'' about ''{1}''"
-msgstr ""
+msgstr "Antwoord op vragenlijst ''{0}'' over ''{1}''"
 
 # QUEST_TEXT
 #: QUEST_TEXT
@@ -2370,7 +2370,7 @@ msgstr "Tekst voor het item"
 # QUEST_TIMES
 #: QUEST_TIMES
 msgid "Minimum and Maximum # of times the item can appear in the instance"
-msgstr "Minimum en maximum aantal keren dat het item kan voorkomen in de instance"
+msgstr "Minimum en maximum # keren dat het item kan voorkomen in de instance"
 
 # QUEST_TRUE
 #: QUEST_TRUE
@@ -2400,13 +2400,13 @@ msgstr "Onbekende vragenlijstantwoorden weergavemodus"
 # QUEST_UNSPECIFIED_QUESTIONNAIRE
 #: QUEST_UNSPECIFIED_QUESTIONNAIRE
 msgid "Unspecified Questionnaire"
-msgstr ""
+msgstr "Ongespecificeerde vragenlijst"
 
 # QUEST_UNSPECIFIED_SUBJECT
 #: QUEST_UNSPECIFIED_SUBJECT
 msgctxt "QUEST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr ""
+msgstr "Ongespecificeerd subject"
 
 # QUEST_VALUE
 #: QUEST_VALUE
@@ -2431,7 +2431,7 @@ msgstr "Verwijderd:"
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS
 msgid "This row of content has been changed since {0} (was ''{1}'')"
-msgstr "!!!!De rij met content is gewijzigd op {0} (was ''{1}'')"
+msgstr "De rij met content is gewijzigd sinds {0} (was ''{1}'')"
 
 # REND_ROW_SINCE
 #: REND_ROW_SINCE
@@ -2451,12 +2451,12 @@ msgstr "Deze content is gewijzigd op {0}"
 # REND_SINCE_CHANGED_WAS
 #: REND_SINCE_CHANGED_WAS
 msgid "This content has been changed since {0} (was ''{1}'')"
-msgstr "!!!!Deze content is gewijzigd op {0} (was ''{1}'')"
+msgstr "Deze content is gewijzigd sinds {0} (was ''{1}'')"
 
 # REND_STANDARDS
 #: REND_STANDARDS
 msgid "Standards Status = {0}"
-msgstr "Standaard status = {0}\""
+msgstr "Standaard status = {0}"
 
 # REQ_ACTOR
 #: REQ_ACTOR
@@ -2471,12 +2471,12 @@ msgstr "Deze requirements zijn afgeleid van"
 # REQ_DERIVED
 #: REQ_DERIVED
 msgid "Derived From:"
-msgstr "Afgeleid van"
+msgstr "Afgeleid van:"
 
 # REQ_FOLLOWING_ACTOR
 #: REQ_FOLLOWING_ACTOR
 msgid "These requirements apply to the following actors:"
-msgstr "Deze requirements zijn van toepassing op de volgende actors:"
+msgstr "Deze requirements zijn van toepassing op de volgende actoren:"
 
 # REQ_FOLLOWING_REQ
 #: REQ_FOLLOWING_REQ
@@ -2507,7 +2507,7 @@ msgstr "Actief"
 # RES_REND_COND_REF
 #: RES_REND_COND_REF
 msgid "Conditional Reference:"
-msgstr "Conditionele reference"
+msgstr "Conditionele reference:"
 
 # RES_REND_DESC
 #: RES_REND_DESC
@@ -2527,12 +2527,12 @@ msgstr "Fout bij weergave: {0}"
 # RES_REND_INFO_SOURCE
 #: RES_REND_INFO_SOURCE
 msgid "Information Source: <param name=\"source\"/>"
-msgstr "!!Informatiebron:"
+msgstr "Informatiebron: <param name=\"source\"/>"
 
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
 msgid "Language: {0}"
-msgstr "!!(Taal"
+msgstr "Taal: {0}"
 
 # RES_REND_RET
 #: RES_REND_RET
@@ -2547,7 +2547,7 @@ msgstr "Zie op deze pagina:"
 # RES_REND_SPEC_RULES
 #: RES_REND_SPEC_RULES
 msgid "Special rules apply: {0}!"
-msgstr "!!Speciale regels van toepassing:"
+msgstr "Speciale regels van toepassing: {0}!"
 
 # RES_REND_TAG
 #: RES_REND_TAG
@@ -2562,12 +2562,12 @@ msgstr "Onbekend"
 # RES_REND_UPDATED
 #: RES_REND_UPDATED
 msgid "Last updated: {0}"
-msgstr "!!Updated"
+msgstr "Laatste update: {0}"
 
 # RES_REND_VER
 #: RES_REND_VER
 msgid "version: {0}"
-msgstr "!!(versie"
+msgstr "versie: {0}"
 
 # SD_COMP_HEAD_CARD_L
 #: SD_COMP_HEAD_CARD_L
@@ -2577,7 +2577,7 @@ msgstr "L Kard."
 # SD_COMP_HEAD_CARD_L_DESC
 #: SD_COMP_HEAD_CARD_L_DESC
 msgid "Minimum and Maximum # of times the element can appear in the instance - Left Structure"
-msgstr "!!Minimum en maximum aantal keren dat het element kan voorkomen in de instance - Linker structuur"
+msgstr "Minimum en maximum # keren dat het element kan voorkomen in de instance - Linker structuur"
 
 # SD_COMP_HEAD_CARD_R
 #: SD_COMP_HEAD_CARD_R
@@ -2587,7 +2587,7 @@ msgstr "R Kard."
 # SD_COMP_HEAD_CARD_R_DESC
 #: SD_COMP_HEAD_CARD_R_DESC
 msgid "Minimum and Maximum # of times the element can appear in the instance - Right Structure"
-msgstr "!!Minimum en maximum aantal keren dat het element kan voorkomen in de instance - Rechter structuur"
+msgstr "Minimum en maximum # keren dat het element kan voorkomen in de instance - Rechter structuur"
 
 # SD_COMP_HEAD_COMP_DESC
 #: SD_COMP_HEAD_COMP_DESC
@@ -2662,7 +2662,7 @@ msgstr "Documentatie voor dit formaat"
 # SD_GRID_HEAD_CARD_DESC
 #: SD_GRID_HEAD_CARD_DESC
 msgid "Minimum and Maximum # of times the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
-msgstr ""
+msgstr "Minimum en maximum # keren dat het element kan voorkomen in de instance. Superscripts geven additionele constraints op weergave"
 
 # SD_GRID_HEAD_DESC
 #: SD_GRID_HEAD_DESC
@@ -2688,7 +2688,7 @@ msgstr "Referentie naar het type van het element"
 #: SD_HEAD_CARD_DESC
 msgctxt "SD_HEAD_CARD_DESC"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
-msgstr ""
+msgstr "Minimum en maximum # keren dat het element kan voorkomen in de instance"
 
 # SD_HEAD_DESC_DESC
 #: SD_HEAD_DESC_DESC
@@ -2708,7 +2708,7 @@ msgstr "Legenda voor dit formaat"
 # SD_SLICING_INFO
 #: SD_SLICING_INFO
 msgid "{0}, {1} by {2}"
-msgstr "0}, {1} op {2}"
+msgstr "{0}, {1} op {2}"
 
 # SD_SUMMARY_FIXED
 #: SD_SUMMARY_FIXED
@@ -2805,7 +2805,7 @@ msgstr "multipleAnd: De parameter kan herhalen ten behoeve van meerdere waarden 
 # SEARCH_PAR_MULTIPLE_AND_SERVER
 #: SEARCH_PAR_MULTIPLE_AND_SERVER
 msgid "multipleAnd: It''s up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
-msgstr "!!!!!!multipleAnd: Het is aan de server of de parameter kan herhalen ten behoeven van meerdere waarden die alle waar moeten zijn"
+msgstr "multipleAnd: Het is aan de server of de parameter kan herhalen ten behoeve van meerdere waarden die alle waar moeten zijn"
 
 # SEARCH_PAR_MULTIPLE_OR_MULTIPLE
 #: SEARCH_PAR_MULTIPLE_OR_MULTIPLE
@@ -2815,12 +2815,12 @@ msgstr "multipleOr: De parameter kan meerdere waarden bevatten (gescheiden door 
 # SEARCH_PAR_MULTIPLE_OR_ONE
 #: SEARCH_PAR_MULTIPLE_OR_ONE
 msgid "multipleOr: The parameter may only have one value (no comma separators)"
-msgstr "De parameter mag slechts één waarde bevatten (geen komma's als scheider)"
+msgstr "multipleOr: De parameter mag slechts één waarde bevatten (geen komma''s als scheider)"
 
 # SEARCH_PAR_MULTIPLE_OR_SERVER
 #: SEARCH_PAR_MULTIPLE_OR_SERVER
 msgid "multipleOr: It''s up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
-msgstr "!!!!!!multipleOr: Het is aan de server of de parameter meerdere waarden kan bevatten (gescheiden door komma) waarvan tenminste één waar moet zijn"
+msgstr "multipleOr: Het is aan de server of de parameter meerdere waarden kan bevatten (gescheiden door komma) waarvan tenminste één waar moet zijn"
 
 # SEARCH_PAR_NONE
 #: SEARCH_PAR_NONE
@@ -2855,671 +2855,671 @@ msgstr "Verplichtingen van toepassing op de actor {0}"
 # STRUC_DEF_AFFECT_CONSTRAINTS
 #: STRUC_DEF_AFFECT_CONSTRAINTS
 msgid "This element has or is affected by constraints ("
-msgstr ""
+msgstr "Dit element heeft of wordt geraakt door constraints ("
 
 # STRUC_DEF_ALLOWED
 #: STRUC_DEF_ALLOWED
 msgid "Allowed Units"
-msgstr ""
+msgstr "Toegestane eenheden"
 
 # STRUC_DEF_ALL_ACTORS
 #: STRUC_DEF_ALL_ACTORS
 msgid "All Actors"
-msgstr ""
+msgstr "Alle actoren"
 
 # STRUC_DEF_ALL_MAP_KEY
 #: STRUC_DEF_ALL_MAP_KEY
 msgid "All Mappings are Empty"
-msgstr ""
+msgstr "Alle mappings zijn leeg"
 
 # STRUC_DEF_ALL_SLICES
 #: STRUC_DEF_ALL_SLICES
 msgid ":All Slices"
-msgstr ""
+msgstr ":Alle slices"
 
 # STRUC_DEF_ALL_TYPES
 #: STRUC_DEF_ALL_TYPES
 msgid "All Types"
-msgstr ""
+msgstr "Alle typen"
 
 # STRUC_DEF_ALT_NAME
 #: STRUC_DEF_ALT_NAME
 msgid "Alternate Names"
-msgstr ""
+msgstr "Alternatieve namen"
 
 # STRUC_DEF_AND
 #: STRUC_DEF_AND
 msgctxt "STRUC_DEF_AND"
 msgid "and"
-msgstr ""
+msgstr "en"
 
 # STRUC_DEF_APPROP_CON
 #: STRUC_DEF_APPROP_CON
 msgid "Concepts must come from this value set if appropriate concept is in this value set"
-msgstr ""
+msgstr "Concepten moeten uit deze waardelijst komen als er een relevant concept in de waardelijst staat"
 
 # STRUC_DEF_AS_SHOWN
 #: STRUC_DEF_AS_SHOWN
 msgid "As shown"
-msgstr ""
+msgstr "Zoals getoond"
 
 # STRUC_DEF_BECAUSE
 #: STRUC_DEF_BECAUSE
 msgid "because"
-msgstr ""
+msgstr "omdat"
 
 # STRUC_DEF_BINDINGS
 #: STRUC_DEF_BINDINGS
 msgid "Binding:"
-msgstr ""
+msgstr "Binding:"
 
 # STRUC_DEF_BINDING_STYLE
 #: STRUC_DEF_BINDING_STYLE
 msgid "binding style"
-msgstr ""
+msgstr "binding-stijl"
 
 # STRUC_DEF_BLACK
 #: STRUC_DEF_BLACK
 msgid "black"
-msgstr ""
+msgstr "zwart"
 
 # STRUC_DEF_BUSINESS_ID
 #: STRUC_DEF_BUSINESS_ID
 msgid "This is a business identifier, not a resource identifier (see"
-msgstr ""
+msgstr "Dit is een business-identifier, geen resource-identifier (zie"
 
 # STRUC_DEF_BUSINESS_VERID
 #: STRUC_DEF_BUSINESS_VERID
 msgid "This is a business version Id, not a resource version Id (see"
-msgstr ""
+msgstr "Dit is een business-versieidentifier, geen resource-versieidentifier (zie"
 
 # STRUC_DEF_CAND
 #: STRUC_DEF_CAND
 msgid "Candidate"
-msgstr ""
+msgstr "Kandidaat"
 
 # STRUC_DEF_CAND_SUB
 #: STRUC_DEF_CAND_SUB
 msgid "This value set is a candidate to substitute for the overall conformance value set in some situations; usually these are defined in the documentation"
-msgstr ""
+msgstr "Deze waardelijst is in sommige situaties een kandidaat ter vervanging voor de overkoepelende conformance-waardelijst; deze worden meestal gedefnieerd in de documentatie"
 
 # STRUC_DEF_CANNOT_TARGET
 #: STRUC_DEF_CANNOT_TARGET
 msgid "Instances of this logical model cannot be the target of a Reference"
-msgstr ""
+msgstr "Instances van dit logisch model kunnen geen doel zijn van een Reference"
 
 # STRUC_DEF_CANT_FIND
 #: STRUC_DEF_CANT_FIND
 msgid "getElementByName: can''t find {0} in {1} from {2}"
-msgstr ""
+msgstr "getElementByName: kan {0} niet vinden in {1} van {2}"
 
 # STRUC_DEF_CAN_TARGET
 #: STRUC_DEF_CAN_TARGET
 msgid "Instances of this logical model can be the target of a Reference"
-msgstr ""
+msgstr "Instances van dit logisch model kunnen doel zijn van een Reference"
 
 # STRUC_DEF_CAP
 #: STRUC_DEF_CAP
 msgid "CAP Code"
-msgstr ""
+msgstr "CAP code"
 
 # STRUC_DEF_CDA
 #: STRUC_DEF_CDA
 msgid "This property is represented as CDA Text in the XML."
-msgstr ""
+msgstr "Deze eigenschap wordt gerepresenteerd als CDA Text in de XML."
 
 # STRUC_DEF_CHILD
 #: STRUC_DEF_CHILD
 msgid "Child"
-msgstr ""
+msgstr "Kind"
 
 # STRUC_DEF_CHOICE
 #: STRUC_DEF_CHOICE
 msgid "(Choice of one)"
-msgstr ""
+msgstr "(Keuze uit één)"
 
 # STRUC_DEF_CHOICE_DATA_TYPE
 #: STRUC_DEF_CHOICE_DATA_TYPE
 msgid "Choice of Data Types"
-msgstr ""
+msgstr "Keuze uit datatypen"
 
 # STRUC_DEF_CHOICE_GRP
 #: STRUC_DEF_CHOICE_GRP
 msgid "Choice Group"
-msgstr ""
+msgstr "Keuze groep"
 
 # STRUC_DEF_CHOICE_OF
 #: STRUC_DEF_CHOICE_OF
 msgid "Choice of:"
-msgstr ""
+msgstr "Keuze uit:"
 
 # STRUC_DEF_CLOSED
 #: STRUC_DEF_CLOSED
 msgid "Closed"
-msgstr ""
+msgstr "Gesloten"
 
 # STRUC_DEF_COMMENT
 #: STRUC_DEF_COMMENT
 msgid "Comments:"
-msgstr ""
+msgstr "Opmerkingen:"
 
 # STRUC_DEF_COMPLEX
 #: STRUC_DEF_COMPLEX
 msgid "Complex"
-msgstr ""
+msgstr "Complex"
 
 # STRUC_DEF_COMPLEXBRACK
 #: STRUC_DEF_COMPLEXBRACK
 msgid "(complex)"
-msgstr ""
+msgstr "(complex)"
 
 # STRUC_DEF_COMP_DOC
 #: STRUC_DEF_COMP_DOC
 msgid "This value set is a component of the base value set. Usually this is called out so that documentation can be written about a portion of the value set"
-msgstr ""
+msgstr "Deze waardelijst is een component van de basiswaardelijst. Dit wordt meestal benoemd zodat documentatie kan worden geschreven over een deel van de waardelijst"
 
 # STRUC_DEF_COMP_EX
 #: STRUC_DEF_COMP_EX
 msgid "(Complex Extension)"
-msgstr ""
+msgstr "(Complexe extensie)"
 
 # STRUC_DEF_COMP_PROF
 #: STRUC_DEF_COMP_PROF
 msgid "Complies with Profile"
-msgstr ""
+msgstr "Is conform profiel"
 
 # STRUC_DEF_CONC_SET
 #: STRUC_DEF_CONC_SET
 msgid "Concepts must come from this value set"
-msgstr ""
+msgstr "Concepten moeten uit deze waardelijst komen"
 
 # STRUC_DEF_CONSTRAINING
 #: STRUC_DEF_CONSTRAINING
 msgid "Slice Constraining"
-msgstr ""
+msgstr "Slice constraining"
 
 # STRUC_DEF_CONSTRAINTS
 #: STRUC_DEF_CONSTRAINTS
 msgid "Constraints"
-msgstr ""
+msgstr "Constrains"
 
 # STRUC_DEF_CONTROL
 #: STRUC_DEF_CONTROL
 msgid "Control"
-msgstr ""
+msgstr "Control"
 
 # STRUC_DEF_CONT_RULE
 #: STRUC_DEF_CONT_RULE
 msgid "Content/Rules for all slices"
-msgstr ""
+msgstr "Content/regels voor alle slices"
 
 # STRUC_DEF_CONT_TYPE
 #: STRUC_DEF_CONT_TYPE
 msgid "Content/Rules for all Types"
-msgstr ""
+msgstr "Content/regels voor alle types"
 
 # STRUC_DEF_COPY_URL
 #: STRUC_DEF_COPY_URL
 msgid "Click to Copy URL"
-msgstr ""
+msgstr "Klik om url te kopiëren"
 
 # STRUC_DEF_CURR
 #: STRUC_DEF_CURR
 msgctxt "STRUC_DEF_CURR"
 msgid "Current"
-msgstr ""
+msgstr "Huidig"
 
 # STRUC_DEF_CURR_RULE
 #: STRUC_DEF_CURR_RULE
 msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
-msgstr ""
+msgstr "Nieuwe vastleggingen moeten deze waardelijst gebruiken, maar oudere zouden andere codes kunnen bevatten. De definitie van ''nieuwe vastlegging'' is moeilijk, aangezien systemen vaak nieuwe vastleggingen maken gebaseerd op bestaande gegevens. ''Huidige'' bindings worden meestal vereist door een externe autoriteit die duidelijke regels hierover opstelt"
 
 # STRUC_DEF_DATE
 #: STRUC_DEF_DATE
 msgid "Date Format: {0}"
-msgstr ""
+msgstr "Datumformaat: {0}"
 
 # STRUC_DEF_DATE_FORM
 #: STRUC_DEF_DATE_FORM
 msgid "Date Format"
-msgstr ""
+msgstr "Datumformaat"
 
 # STRUC_DEF_DEFAULT_TYPE
 #: STRUC_DEF_DEFAULT_TYPE
 msgid "Default Type"
-msgstr ""
+msgstr "Standaardtype"
 
 # STRUC_DEF_DEFAULT_VALUE
 #: STRUC_DEF_DEFAULT_VALUE
 msgid "Default Value"
-msgstr ""
+msgstr "Standaardwaarde"
 
 # STRUC_DEF_DEF_CODES
 #: STRUC_DEF_DEF_CODES
 msgid "Definitional Codes"
-msgstr ""
+msgstr "Definiërende codes"
 
 # STRUC_DEF_DERIVED_PROFILE
 #: STRUC_DEF_DERIVED_PROFILE
 msgid "In this IG, the following structures are derived from this profile:"
-msgstr ""
+msgstr "In deze IG zijn de volgende structuren afgeleid van dit profiel:"
 
 # STRUC_DEF_DESCRIM
 #: STRUC_DEF_DESCRIM
 msgid ", and can be differentiated using the following discriminators:"
-msgstr ""
+msgstr ", en kunnen worden gedifferentieerd met de volgende discriminators:"
 
 # STRUC_DEF_DESC_PROF
 #: STRUC_DEF_DESC_PROF
 msgid "Description of the profile"
-msgstr ""
+msgstr "Omschrijving van het profiel"
 
 # STRUC_DEF_DISCUSSION
 #: STRUC_DEF_DISCUSSION
 msgid "discussion"
-msgstr ""
+msgstr "discussie"
 
 # STRUC_DEF_ELE
 #: STRUC_DEF_ELE
 msgid "This primitive element must have a value"
-msgstr ""
+msgstr "Dit primitieve element moet een waarde hebben"
 
 # STRUC_DEF_ELEMENT
 #: STRUC_DEF_ELEMENT
 msgid "element"
-msgstr ""
+msgstr "element"
 
 # STRUC_DEF_ELEMENTS
 #: STRUC_DEF_ELEMENTS
 msgid "Elements defined in Ancestors:"
-msgstr ""
+msgstr "Elementen gedefinieerd in ancestors:"
 
 # STRUC_DEF_ELE_AFFECTED
 #: STRUC_DEF_ELE_AFFECTED
 msgid "This element has or is affected by constraints ( {0} {1}"
-msgstr ""
+msgstr "Dit element heeft of wordt geraakt door constraints ( {0} {1}"
 
 # STRUC_DEF_ELE_INCLUDED
 #: STRUC_DEF_ELE_INCLUDED
 msgid "This element is included in summaries"
-msgstr ""
+msgstr "Dit element komt mee in samenvattingen"
 
 # STRUC_DEF_ELE_MUST_SUPP
 #: STRUC_DEF_ELE_MUST_SUPP
 msgid "This element must be supported"
-msgstr ""
+msgstr "Dit element moet worden ondersteund"
 
 # STRUC_DEF_ELE_READ
 #: STRUC_DEF_ELE_READ
 msgid "When this element is read"
-msgstr ""
+msgstr "Wanneer dit element worden gelezen"
 
 # STRUC_DEF_ERROR
 #: STRUC_DEF_ERROR
 msgid "Unknown structure mode"
-msgstr ""
+msgstr "Onbekende structuurmodus"
 
 # STRUC_DEF_ERR_DESC
 #: STRUC_DEF_ERR_DESC
 msgid "Error describing concept- not done yet (no codings, no text)"
-msgstr ""
+msgstr "Fout bij beschrijven concept- nog niet gedaan (geen coding, geen text)"
 
 # STRUC_DEF_EXAM
 #: STRUC_DEF_EXAM
 msgid "example"
-msgstr ""
+msgstr "voorbeeld"
 
 # STRUC_DEF_EXT
 #: STRUC_DEF_EXT
 msgctxt "STRUC_DEF_EXT"
 msgid "Extensible"
-msgstr ""
+msgstr "Uitbreidbaar"
 
 # STRUC_DEF_EXTENSIBLE
 #: STRUC_DEF_EXTENSIBLE
 msgid "extensible"
-msgstr ""
+msgstr "uitbreidbaar"
 
 # STRUC_DEF_EXTENSIONS
 #: STRUC_DEF_EXTENSIONS
 msgid "Extensions"
-msgstr ""
+msgstr "Extensies"
 
 # STRUC_DEF_EXT_JSON
 #: STRUC_DEF_EXT_JSON
 msgid "This element can be extended by named JSON elements"
-msgstr ""
+msgstr "Dit element kan worden uitgebreid door benoemde json-elementen"
 
 # STRUC_DEF_EXT_STYLE
 #: STRUC_DEF_EXT_STYLE
 msgid "Extension Style"
-msgstr ""
+msgstr "Extensie-stijl"
 
 # STRUC_DEF_EX_CODE
 #: STRUC_DEF_EX_CODE
 msgid "For example codes, see"
-msgstr ""
+msgstr "Voor voorbeeldcodes, zie"
 
 # STRUC_DEF_EX_DESC
 #: STRUC_DEF_EX_DESC
 msgid "Instances are not expected or even encouraged to draw from the specified value set. The value set merely provides examples of the types of concepts intended to be included."
-msgstr ""
+msgstr "Van instances wordt niet verwacht of zelfs maar aangemoedigd om waarden uit de specificeerde waardelijst te halen. De waardelijst bevat slechts voorbeelden van het soort concepten dat in instances hoort."
 
 # STRUC_DEF_EX_TYPE
 #: STRUC_DEF_EX_TYPE
 msgid "(Extension Type:"
-msgstr ""
+msgstr "(Extensie type:"
 
 # STRUC_DEF_EX_URL
 #: STRUC_DEF_EX_URL
 msgid "Extension URL = {0}"
-msgstr ""
+msgstr "Extensiie url= {0}"
 
 # STRUC_DEF_FHIR
 #: STRUC_DEF_FHIR
 msgid "Base FHIR {0}"
-msgstr ""
+msgstr "Basis FHIR {0}"
 
 # STRUC_DEF_FHIR_EXCEP
 #: STRUC_DEF_FHIR_EXCEP
 msgid "Unable to retrieve StructureDefinition with URL {0}"
-msgstr ""
+msgstr "Kan StructureDefinition met url {0} niet ophalen"
 
 # STRUC_DEF_FII
 #: STRUC_DEF_FII
 msgid "Formal Invariant Identifier"
-msgstr ""
+msgstr "Formele invariant identifier"
 
 # STRUC_DEF_FIXED
 #: STRUC_DEF_FIXED
 msgid "Fixed Value"
-msgstr ""
+msgstr "Vast waarde"
 
 # STRUC_DEF_FIXED_VALUE
 #: STRUC_DEF_FIXED_VALUE
 msgid "Fixed Value:"
-msgstr ""
+msgstr "Vaste value:"
 
 # STRUC_DEF_FOR_CODE
 #: STRUC_DEF_FOR_CODE
 msgid "For codes, see"
-msgstr ""
+msgstr "Voor codes, zie"
 
 # STRUC_DEF_FURTHER_INFO
 #: STRUC_DEF_FURTHER_INFO
 msgid "for further information about how to use [x]"
-msgstr ""
+msgstr "voor verdere informatie over how [x] te gebruiken"
 
 # STRUC_DEF_GRADE
 #: STRUC_DEF_GRADE
 msgid "Grade"
-msgstr ""
+msgstr "Grade"
 
 # STRUC_DEF_ID
 #: STRUC_DEF_ID
 msgid "Id"
-msgstr ""
+msgstr "Id"
 
 # STRUC_DEF_ID_EXPECT
 #: STRUC_DEF_ID_EXPECT
 msgid "ID Expectation"
-msgstr ""
+msgstr "Id verwachting"
 
 # STRUC_DEF_ID_IS
 #: STRUC_DEF_ID_IS
 msgid "Id may or not be present (this is the default for elements but not resources)"
-msgstr ""
+msgstr "Id is mogelijk aanwezig (dit is de standaard voor elementen maar niet voor resources)"
 
 # STRUC_DEF_ID_MAY
 #: STRUC_DEF_ID_MAY
 msgid "Id is required to be present (this is the default for resources but not elements)"
-msgstr ""
+msgstr "Id moet verplicht aanwezig zijn (dit is de standaard voor elementen maar niet voor resources)"
 
 # STRUC_DEF_ID_NOT_ALLOW
 #: STRUC_DEF_ID_NOT_ALLOW
 msgid "An id is not allowed in this context"
-msgstr ""
+msgstr "Id is niet toegestaan in deze context"
 
 # STRUC_DEF_IF
 #: STRUC_DEF_IF
 msgid "If"
-msgstr ""
+msgstr "Als"
 
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
 msgid "Impose Profile"
-msgstr ""
+msgstr "Pas profiel toe"
 
 # STRUC_DEF_INFERRED_JSON
 #: STRUC_DEF_INFERRED_JSON
 msgid "The type of this element is inferred from the JSON type in the instance"
-msgstr ""
+msgstr "Het type van dit element is afleidbaar van het json-type in de instance"
 
 # STRUC_DEF_INVAR
 #: STRUC_DEF_INVAR
 msgid "Invariants"
-msgstr ""
+msgstr "Invariants"
 
 # STRUC_DEF_INVARIANT
 #: STRUC_DEF_INVARIANT
 msgid "This element is affected by the following invariants:"
-msgstr ""
+msgstr "Dit element wordt geraakt door de volgende invariants:"
 
 # STRUC_DEF_JSON_ARRAY
 #: STRUC_DEF_JSON_ARRAY
 msgid "JSON: This element may be present as a JSON Array even when there are no items in the instance"
-msgstr ""
+msgstr "Json: Dit element is mogelijk aanwezig als json-array, zelfs als er geen items in de instance staan"
 
 # STRUC_DEF_JSON_CAN_NAME
 #: STRUC_DEF_JSON_CAN_NAME
 msgid "This type can appear in JSON with the property name"
-msgstr ""
+msgstr "Dit type kan voorkomen in json met eigenschapnaam"
 
 # STRUC_DEF_JSON_CHILD
 #: STRUC_DEF_JSON_CHILD
 msgid "child"
-msgstr ""
+msgstr "kind"
 
 # STRUC_DEF_JSON_EXT
 #: STRUC_DEF_JSON_EXT
 msgid "(in elements using named extensions)"
-msgstr ""
+msgstr "(in elementen met benoemde extensies)"
 
 # STRUC_DEF_JSON_FORM
 #: STRUC_DEF_JSON_FORM
 msgid "JSON Format"
-msgstr ""
+msgstr "Json-formaat"
 
 # STRUC_DEF_JSON_IF
 #: STRUC_DEF_JSON_IF
 msgid "JSON: If"
-msgstr ""
+msgstr "Json: IF"
 
 # STRUC_DEF_JSON_INFERRED
 #: STRUC_DEF_JSON_INFERRED
 msgid "JSON: The type of this element is inferred from the JSON type in the instance"
-msgstr ""
+msgstr "Json: Het type van dit element wordt afgeleid van het json-type in de instance"
 
 # STRUC_DEF_JSON_IS
 #: STRUC_DEF_JSON_IS
 msgid "This element is present as a JSON Array even when there are no items in the instance"
-msgstr ""
+msgstr "Dit element is aanwezig als een json-array zelfs als er geen items in de instance staan"
 
 # STRUC_DEF_JSON_MAY
 #: STRUC_DEF_JSON_MAY
 msgid "This element may be present as a JSON Array even when there are no items in the instance"
-msgstr ""
+msgstr "Dit element is mogelijk aanwezig als een json-array zelfs als er geen items in de instance staan"
 
 # STRUC_DEF_JSON_MAY_PRESENT
 #: STRUC_DEF_JSON_MAY_PRESENT
 msgid "The JSON Array for this property may be present even when there are no items in the instance (e.g. may be present as an empty array)"
-msgstr ""
+msgstr "De json-array voor deze eigenschap is mogelijk aanwezig zelfs als er geen items in de instance staan (als een lege array)"
 
 # STRUC_DEF_JSON_NAME
 #: STRUC_DEF_JSON_NAME
 msgid "JSON Property Name"
-msgstr ""
+msgstr "JSON eigenschapnaam"
 
 # STRUC_DEF_JSON_NOT_PRESENT
 #: STRUC_DEF_JSON_NOT_PRESENT
 msgid "The JSON Array for this property is not present when there are no items in the instance (e.g. never as an empty array)"
-msgstr ""
+msgstr "De json-array voor deze eigenschap is niet aanwezig als er geen items in de instance staan (komt niet voor als lege array)"
 
 # STRUC_DEF_JSON_NULL
 #: STRUC_DEF_JSON_NULL
 msgid "JSON: This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
-msgstr ""
+msgstr "Json: Dit object kan worden gerepresenteerd als null in de json-structuur (wat telt als ''aanwezig'' voor kardinaliteit)"
 
 # STRUC_DEF_JSON_PRESENT
 #: STRUC_DEF_JSON_PRESENT
 msgid "The JSON Array for this property is present even when there are no items in the instance (e.g. as an empty array)"
-msgstr ""
+msgstr "De json-array voor deze eigenschap is aanwezig zelfs als er geen items in de instance staan (als een lege array)"
 
 # STRUC_DEF_JSON_PROPERTY_NAME
 #: STRUC_DEF_JSON_PROPERTY_NAME
 msgid "This property appears in JSON with the property name"
-msgstr ""
+msgstr "Deze eigenschap staat in json met eigenschapnaam"
 
 # STRUC_DEF_JSON_SINGLE
 #: STRUC_DEF_JSON_SINGLE
 msgid "This repeating object is represented as a single JSON object with named properties. The name of the property (key) is the value of the"
-msgstr ""
+msgstr "Dit herhalende object wordt gepresenteerd als één json-object met benoemde eigenschappen. De naam van de eigenschap (sleutel) is de waarde van de"
 
 # STRUC_DEF_JSON_TYPE
 #: STRUC_DEF_JSON_TYPE
 msgid "JSON Property Name for Type"
-msgstr ""
+msgstr "Json-eigenschapnaam voor type"
 
 # STRUC_DEF_LABEL
 #: STRUC_DEF_LABEL
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
 # STRUC_DEF_LEAST_FOLLOW
 #: STRUC_DEF_LEAST_FOLLOW
 msgid "At least the following"
-msgstr ""
+msgstr "Tenminste de volgende"
 
 # STRUC_DEF_LOGICAL
 #: STRUC_DEF_LOGICAL
 msgid "Logical Model"
-msgstr ""
+msgstr "Logisch model"
 
 # STRUC_DEF_LOGICAL_CONT
 #: STRUC_DEF_LOGICAL_CONT
 msgid "Logical Container"
-msgstr ""
+msgstr "Logische container"
 
 # STRUC_DEF_LOINC
 #: STRUC_DEF_LOINC
 msgid "LOINC Code"
-msgstr ""
+msgstr "LOINC-code"
 
 # STRUC_DEF_LOINC_CODE
 #: STRUC_DEF_LOINC_CODE
 msgid "LOINC code"
-msgstr ""
+msgstr "LOINC-code"
 
 # STRUC_DEF_MAX
 #: STRUC_DEF_MAX
 msgid "Maximum"
-msgstr ""
+msgstr "Maximum"
 
 # STRUC_DEF_MAX_MIN
 #: STRUC_DEF_MAX_MIN
 msgctxt "STRUC_DEF_MAX_MIN"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
-msgstr ""
+msgstr "Minimum en maximum # keren dat het element in een instance kan voorkomen"
 
 # STRUC_DEF_MAX_VALUE
 #: STRUC_DEF_MAX_VALUE
 msgid "Max Value"
-msgstr ""
+msgstr "Max waarde"
 
 # STRUC_DEF_MEAN_MISS
 #: STRUC_DEF_MEAN_MISS
 msgid "Meaning if Missing"
-msgstr ""
+msgstr "Betekenis als ontbreekt"
 
 # STRUC_DEF_MIN
 #: STRUC_DEF_MIN
 msgid "Minimum"
-msgstr ""
+msgstr "Minimum"
 
 # STRUC_DEF_MIN_VALUE
 #: STRUC_DEF_MIN_VALUE
 msgid "Min Value"
-msgstr ""
+msgstr "Min value"
 
 # STRUC_DEF_MISSING_LINK
 #: STRUC_DEF_MISSING_LINK
 msgid "missing link"
-msgstr ""
+msgstr "ontbrekende link"
 
 # STRUC_DEF_MOD
 #: STRUC_DEF_MOD
 msgid "This element is a modifier element"
-msgstr ""
+msgstr "Dit element is een modifier element"
 
 # STRUC_DEF_MODIF
 #: STRUC_DEF_MODIF
 msgid "Modifier"
-msgstr ""
+msgstr "Modifier"
 
 # STRUC_DEF_MODIFIER
 #: STRUC_DEF_MODIFIER
 msgid "Is Modifier"
-msgstr ""
+msgstr "Is modifier"
 
 # STRUC_DEF_MUST_SUPPORT
 #: STRUC_DEF_MUST_SUPPORT
 msgid "Must Support"
-msgstr ""
+msgstr "Moet ondersteunen"
 
 # STRUC_DEF_MUST_SUPPORT_TYPES
 #: STRUC_DEF_MUST_SUPPORT_TYPES
 msgid "Must Support Types"
-msgstr ""
+msgstr "Moet ondersteunen types"
 
 # STRUC_DEF_NAMESPACE
 #: STRUC_DEF_NAMESPACE
 msgid "In the XML format, this property has the namespace"
-msgstr ""
+msgstr "In het xml-formaat, heeft deze eigenschap de namespace"
 
 # STRUC_DEF_NOTE_X
 #: STRUC_DEF_NOTE_X
 msgid "[x] Note"
-msgstr ""
+msgstr "[x] Note"
 
 # STRUC_DEF_NOT_MARK
 #: STRUC_DEF_NOT_MARK
 msgid "Instances of this logical model are not marked to be the target of a Reference"
-msgstr ""
+msgstr "Instances van dit logish model zijn niet gemarkeerd om doel van een Reference te zijn"
 
 # STRUC_DEF_NO_DESCRIM
 #: STRUC_DEF_NO_DESCRIM
 msgid ", and defines no disciminators to differentiate the slices"
-msgstr ""
+msgstr ", en definieert geen discriminators om slices te onderscheiden"
 
 # STRUC_DEF_NO_MAPPINGS
 #: STRUC_DEF_NO_MAPPINGS
 msgid "No Mappings"
-msgstr ""
+msgstr "Geen mappings"
 
 # STRUC_DEF_NO_MUST_SUPPORT
 #: STRUC_DEF_NO_MUST_SUPPORT
 msgid "No must-support rules about the choice of types/profiles"
-msgstr ""
+msgstr "Geen moet-ondersteunen-regels over de keuze uit types/profielen"
 
 # STRUC_DEF_NO_SUMMARY
 #: STRUC_DEF_NO_SUMMARY
 msgid "No Summary, as this profile has no differential"
-msgstr ""
+msgstr "Geen samenvatting"
 
 # STRUC_DEF_NULL_JSON
 #: STRUC_DEF_NULL_JSON
 msgid "This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
-msgstr ""
+msgstr "Dit object kan worden gerepresenteerd als null in de json-structuur (wat telt als ''aanwezig'' voor kardinaliteit)"
 
 # STRUC_DEF_OBLIG
 #: STRUC_DEF_OBLIG
@@ -3579,7 +3579,7 @@ msgstr "Pad(en)"
 # STRUC_DEF_PATT_VALUE
 #: STRUC_DEF_PATT_VALUE
 msgid "Pattern Value"
-msgstr ""
+msgstr "Patternwaarde"
 
 # STRUC_DEF_PREFERRED
 #: STRUC_DEF_PREFERRED
@@ -3629,7 +3629,7 @@ msgstr "Dit profiel bouwt op"
 # STRUC_DEF_PROF_COMP
 #: STRUC_DEF_PROF_COMP
 msgid "This profile compiles with the profile"
-msgstr "!!Dit profiel compileert met het profiel"
+msgstr "Dit profiel compileert met het profiel"
 
 # STRUC_DEF_PROF_REQ
 #: STRUC_DEF_PROF_REQ
@@ -3664,12 +3664,12 @@ msgstr "In deze IG, verwijzen de volgende structuren naar dit profiel:"
 # STRUC_DEF_REND_UNABLE_RES
 #: STRUC_DEF_REND_UNABLE_RES
 msgid "Unable to resolve StructureDefinition {0} resolving content reference {1}"
-msgstr "Kan StructureDefinition {0} niet vinden die verwijst naar contentverwijzing {0}"
+msgstr "Kan StructureDefinition {0} niet vinden die verwijst naar contentverwijzing {1}"
 
 # STRUC_DEF_REPEAT
 #: STRUC_DEF_REPEAT
 msgid "This is a repeating choice group that does not appear directly in the instance"
-msgstr "Dit is een herhalende keuzegroep die niet direct in de stance voorkomt"
+msgstr "Dit is een herhalende keuzegroep die niet direct in de instance voorkomt"
 
 # STRUC_DEF_REPEAT_ELE
 #: STRUC_DEF_REPEAT_ELE
@@ -3694,7 +3694,7 @@ msgstr "Requirements"
 # STRUC_DEF_REQ_BIND
 #: STRUC_DEF_REQ_BIND
 msgid "A required binding for additional codes, for us when the binding strength is ''extensible'' or ''preferred''"
-msgstr "!!Een verplichte binding voor additionele codes, voor ons wanneer de bindingsterkte 'uitbreidbaar' of 'voorkeur' is"
+msgstr "Een verplichte binding voor additionele codes, voor ons wanneer de bindingsterkte ''uitbreidbaar'' of ''voorkeur'' is"
 
 # STRUC_DEF_REQ_PATT
 #: STRUC_DEF_REQ_PATT
@@ -3739,7 +3739,7 @@ msgstr "De codes ZOUDEN MOETEN komen uit"
 # STRUC_DEF_SINGLE_JSON_OBJECTS
 #: STRUC_DEF_SINGLE_JSON_OBJECTS
 msgid "JSON: Represented as a single JSON Object with named properties using the value of the {0} child as the key"
-msgstr "JSON: Weergegeven als één JSON-object met gelabelde eigenschappen met de waarde van het {0} kind als de sleutel"
+msgstr "Json: Weergegeven als één json-object met gelabelde eigenschappen met de waarde van het {0} kind als de sleutel"
 
 # STRUC_DEF_SLIC
 #: STRUC_DEF_SLIC
@@ -3774,12 +3774,12 @@ msgstr "Slice {0}"
 # STRUC_DEF_SNOMED
 #: STRUC_DEF_SNOMED
 msgid "SNOMED-CT"
-msgstr "!!SNOMED CT code"
+msgstr "SNOMED CT"
 
 # STRUC_DEF_SNOMED_CODE
 #: STRUC_DEF_SNOMED_CODE
 msgid "SNOMED-CT Code"
-msgstr ""
+msgstr "SNOMED CT code"
 
 # STRUC_DEF_STAND_STAT
 #: STRUC_DEF_STAND_STAT
@@ -3844,12 +3844,12 @@ msgstr "Dit type kan worden gekoppeld aan een waardelijst met de {0}"
 # STRUC_DEF_TYPE_PARAMETER
 #: STRUC_DEF_TYPE_PARAMETER
 msgid "Type Parameter"
-msgstr ""
+msgstr "Type parameter"
 
 # STRUC_DEF_TYPE_SET
 #: STRUC_DEF_TYPE_SET
 msgid "This type can be bound to a value set using the"
-msgstr "!!Dit type kan worden gekoppeld aan een waardelijst met de \""
+msgstr "Dit type kan worden gekoppeld aan een waardelijst met de"
 
 # STRUC_DEF_TYPE_SPEC
 #: STRUC_DEF_TYPE_SPEC
@@ -3870,678 +3870,678 @@ msgstr "UI"
 # STRUC_DEF_UI_CONT
 #: STRUC_DEF_UI_CONT
 msgid "This value set is provided for user look up in a given context. Typically, these valuesets only include a subset of codes relevant for input in a context"
-msgstr ""
+msgstr "Deze waardelijst dient voor opzoeken door gebruikers in een bepaalde context. Deze waardelijsten bevatten typisch een subset van codes die relevant zijn voor input in een context"
 
 # STRUC_DEF_UNADORNED
 #: STRUC_DEF_UNADORNED
 msgid "In the XML format, this property is represented as unadorned text."
-msgstr ""
+msgstr "In xml wordt deze eigenschap gerepresenteerd als niet-opgemaakte tekst."
 
 # STRUC_DEF_UNDEF_ACT
 #: STRUC_DEF_UNDEF_ACT
 msgid "Obligations that apply to the undefined actor {0}"
-msgstr ""
+msgstr "Verplichtingen van toepassing op de ongedefinieerde actor {0}"
 
 # STRUC_DEF_UNKNOWN_APPROACH
 #: STRUC_DEF_UNKNOWN_APPROACH
 msgid "Instances of this type are validated using an unknown approach: {0}"
-msgstr ""
+msgstr "Instances van dit type worden gevalideerd met een onbekende methode: {0}"
 
 # STRUC_DEF_UNKNOWN_REF
 #: STRUC_DEF_UNKNOWN_REF
 msgid "Unknown reference to {0}"
-msgstr ""
+msgstr "Onbekende referentie naar {0}"
 
 # STRUC_DEF_UNORDERED
 #: STRUC_DEF_UNORDERED
 msgid "Unordered"
-msgstr ""
+msgstr "Ongeordend"
 
 # STRUC_DEF_UNSPECIFIED
 #: STRUC_DEF_UNSPECIFIED
 msgid "Unspecified"
-msgstr ""
+msgstr "Ongespecificeerd"
 
 # STRUC_DEF_URLS
 #: STRUC_DEF_URLS
 msgid "URL:"
-msgstr ""
+msgstr "Url:"
 
 # STRUC_DEF_VALID
 #: STRUC_DEF_VALID
 msgid "Validation"
-msgstr ""
+msgstr "Validatie"
 
 # STRUC_DEF_VALUESET
 #: STRUC_DEF_VALUESET
 msgid "ValueSet"
-msgstr ""
+msgstr "ValueSet"
 
 # STRUC_DEF_VALUESET_CODE
 #: STRUC_DEF_VALUESET_CODE
 msgid "ValueSet / Code"
-msgstr ""
+msgstr "ValueSet / code"
 
 # STRUC_DEF_VALUE_ALT
 #: STRUC_DEF_VALUE_ALT
 msgid "Value Alternatives"
-msgstr ""
+msgstr "Alternatieve waarden"
 
 # STRUC_DEF_VALUE_REQ
 #: STRUC_DEF_VALUE_REQ
 msgid "Value Required"
-msgstr ""
+msgstr "Waarde verplicht"
 
 # STRUC_DEF_WHAT
 #: STRUC_DEF_WHAT
 msgid "What goes here"
-msgstr ""
+msgstr "Wat hier hoort"
 
 # STRUC_DEF_XHTML
 #: STRUC_DEF_XHTML
 msgid "This property is represented as XHTML Text in the XML."
-msgstr ""
+msgstr "Deze eigenschap wordt gerepresenteerd als xhtml tekst in de xml."
 
 # STRUC_DEF_XML_ACTUAL
 #: STRUC_DEF_XML_ACTUAL
 msgid "In the XML format, this property has the actual name"
-msgstr ""
+msgstr "In xml heeft deze eigenschap de werkelijke naam"
 
 # STRUC_DEF_XML_ATTRIBUTE
 #: STRUC_DEF_XML_ATTRIBUTE
 msgid "In the XML format, this property is represented as an attribute."
-msgstr ""
+msgstr "In xml wordt dit attribuut gerepresenteerd als attribuut."
 
 # STRUC_DEF_XML_ELE
 #: STRUC_DEF_XML_ELE
 msgid "XML Element Name"
-msgstr ""
+msgstr "Xml-elementnaam"
 
 # STRUC_DEF_XML_FORM
 #: STRUC_DEF_XML_FORM
 msgid "XML Format"
-msgstr ""
+msgstr "Xml-formaat"
 
 # STRUC_DEF_XML_NAME
 #: STRUC_DEF_XML_NAME
 msgid "XML Namespace"
-msgstr ""
+msgstr "Xml-namespace"
 
 # STRUC_DEF_XSI
 #: STRUC_DEF_XSI
 msgid "The type of this property is determined using the"
-msgstr ""
+msgstr "Het type van deze eigenschap wordt bepaald met de"
 
 # SUB_TOPIC_CREATE
 #: SUB_TOPIC_CREATE
 msgid "* create result = {0}"
-msgstr ""
+msgstr "* maak resultaat = {0}"
 
 # SUB_TOPIC_DELETE
 #: SUB_TOPIC_DELETE
 msgid "* delete result = {0}"
-msgstr ""
+msgstr "* verwijder resultaat = {0}"
 
 # SUB_TOPIC_EVENT
 #: SUB_TOPIC_EVENT
 msgid "Event"
-msgstr ""
+msgstr "Event"
 
 # SUB_TOPIC_FHIR_PATH
 #: SUB_TOPIC_FHIR_PATH
 msgid "FHIR Path"
-msgstr ""
+msgstr "FHIR Path"
 
 # SUB_TOPIC_FILT_DEF
 #: SUB_TOPIC_FILT_DEF
 msgid "Filter Definition"
-msgstr ""
+msgstr "Filterdefinitie"
 
 # SUB_TOPIC_FILT_PAR
 #: SUB_TOPIC_FILT_PAR
 msgid "Filter Parameter"
-msgstr ""
+msgstr "Filterparameter"
 
 # SUB_TOPIC_INCL
 #: SUB_TOPIC_INCL
 msgid "Includes"
-msgstr ""
+msgstr "Inclusies"
 
 # SUB_TOPIC_INT
 #: SUB_TOPIC_INT
 msgid "Interactions"
-msgstr ""
+msgstr "Interacties"
 
 # SUB_TOPIC_PREV
 #: SUB_TOPIC_PREV
 msgid "* previous = {0}"
-msgstr ""
+msgstr "* vorige = {0}"
 
 # SUB_TOPIC_REQ
 #: SUB_TOPIC_REQ
 msgid "* require both = {0}"
-msgstr ""
+msgstr "* vereis beide = {0}"
 
 # SUB_TOPIC_RES_TRIG
 #: SUB_TOPIC_RES_TRIG
 msgid "Resource Triggers"
-msgstr ""
+msgstr "Resource triggers"
 
 # SUB_TOPIC_REV_INCL
 #: SUB_TOPIC_REV_INCL
 msgid "Reverse Includes"
-msgstr ""
+msgstr "Omgekeerde inclusies"
 
 # TERMINOLOGY_LVL
 #: TERMINOLOGY_LVL
 msgid "Lvl"
-msgstr ""
+msgstr "Lvl"
 
 # TERM_REND_COPY
 #: TERM_REND_COPY
 msgid "Copy {0} Format to clipboard"
-msgstr ""
+msgstr "Kopieer {0} formaat naar klembord"
 
 # TEST_PLAN_ASS
 #: TEST_PLAN_ASS
 msgid "Assertion"
-msgstr ""
+msgstr "Assertion"
 
 # TEST_PLAN_ASSERTION
 #: TEST_PLAN_ASSERTION
 msgid "Assertion {0}"
-msgstr ""
+msgstr "Assertion {0}"
 
 # TEST_PLAN_CASE
 #: TEST_PLAN_CASE
 msgid "Test Case"
-msgstr ""
+msgstr "Testgeval"
 
 # TEST_PLAN_CASE_SEQ
 #: TEST_PLAN_CASE_SEQ
 msgid "Test Case - Sequence {0}"
-msgstr ""
+msgstr "Testgeval - Sequentie {0}"
 
 # TEST_PLAN_CATEGORY
 #: TEST_PLAN_CATEGORY
 msgid "Category:"
-msgstr ""
+msgstr "Categorie:"
 
 # TEST_PLAN_DATA
 #: TEST_PLAN_DATA
 msgid "Test Data"
-msgstr ""
+msgstr "Testgegevens"
 
 # TEST_PLAN_DEP
 #: TEST_PLAN_DEP
 msgid "Test Plan Dependency:"
-msgstr ""
+msgstr "Testplan afhankelijkheid:"
 
 # TEST_PLAN_DEPEN
 #: TEST_PLAN_DEPEN
 msgid "Test Plan Dependencies:"
-msgstr ""
+msgstr "Testplan afhankelijkheden:"
 
 # TEST_PLAN_DESC
 #: TEST_PLAN_DESC
 msgid "Dependency - no description"
-msgstr ""
+msgstr "Afhankelijkheid - geen omschrijving"
 
 # TEST_PLAN_LANG
 #: TEST_PLAN_LANG
 msgid "Language"
-msgstr ""
+msgstr "Taal"
 
 # TEST_PLAN_RESULT
 #: TEST_PLAN_RESULT
 msgid "Result"
-msgstr ""
+msgstr "Resultaat"
 
 # TEST_PLAN_RUN
 #: TEST_PLAN_RUN
 msgid "Test Run"
-msgstr ""
+msgstr "Testrun"
 
 # TEST_PLAN_SCOPE
 #: TEST_PLAN_SCOPE
 msgid "Test Plan Scope:"
-msgstr ""
+msgstr "Testplan scope:"
 
 # TEST_PLAN_SCOPES
 #: TEST_PLAN_SCOPES
 msgid "Test Plan Scopes:"
-msgstr ""
+msgstr "Testplan scopes:"
 
 # TEST_PLAN_SOURCE
 #: TEST_PLAN_SOURCE
 msgid "Source[x]"
-msgstr ""
+msgstr "Source[x]"
 
 # TEST_PLAN_TEST_DATA
 #: TEST_PLAN_TEST_DATA
 msgid "Test Data {0}"
-msgstr ""
+msgstr "Testgegevens {0}"
 
 # TEST_PLAN_TEST_RUN
 #: TEST_PLAN_TEST_RUN
 msgid "Test Run {0}"
-msgstr ""
+msgstr "Testrun {0}"
 
 # TEXT_ICON_CHOICE
 #: TEXT_ICON_CHOICE
 msgid "Choice of Types"
-msgstr ""
+msgstr "Keuze uit types"
 
 # TEXT_ICON_DATATYPE
 #: TEXT_ICON_DATATYPE
 msgid "Data Type"
-msgstr ""
+msgstr "Datatype"
 
 # TEXT_ICON_ELEMENT
 #: TEXT_ICON_ELEMENT
 msgid "Element"
-msgstr ""
+msgstr "Element"
 
 # TEXT_ICON_EXTENSION_COMPLEX
 #: TEXT_ICON_EXTENSION_COMPLEX
 msgid "Complex Extension"
-msgstr ""
+msgstr "Complexe extensie"
 
 # TEXT_ICON_EXTENSION_SIMPLE
 #: TEXT_ICON_EXTENSION_SIMPLE
 msgid "Simple Extension"
-msgstr ""
+msgstr "Eenvoudige extensie"
 
 # TEXT_ICON_KEY
 #: TEXT_ICON_KEY
 msgid "JSON Key Value"
-msgstr ""
+msgstr "Json-sleutelwaarde"
 
 # TEXT_ICON_OBJECT_BOX
 #: TEXT_ICON_OBJECT_BOX
 msgid "Object"
-msgstr ""
+msgstr "Object"
 
 # TEXT_ICON_PRIMITIVE
 #: TEXT_ICON_PRIMITIVE
 msgid "Primitive Data Type"
-msgstr ""
+msgstr "Primitief datatype"
 
 # TEXT_ICON_REFERENCE
 #: TEXT_ICON_REFERENCE
 msgid "Reference to another Resource"
-msgstr ""
+msgstr "Verwijzing naar andere resource"
 
 # TEXT_ICON_REUSE
 #: TEXT_ICON_REUSE
 msgid "Reference to another Element"
-msgstr ""
+msgstr "Verwijzing naar ander element"
 
 # TEXT_ICON_SLICE
 #: TEXT_ICON_SLICE
 msgid "Slice Definition"
-msgstr ""
+msgstr "Slice-definitie"
 
 # TEXT_ICON_SLICE_ITEM
 #: TEXT_ICON_SLICE_ITEM
 msgid "Slice Item"
-msgstr ""
+msgstr "Slice-item"
 
 # TX_DISPLAY
 #: TX_DISPLAY
 msgid "Display"
-msgstr ""
+msgstr "Weergave"
 
 # VALUE_SET_ADD_DESIG
 #: VALUE_SET_ADD_DESIG
 msgid "Additional Designations and Language Displays"
-msgstr ""
+msgstr "Additionele benamingen en taalweergaven"
 
 # VALUE_SET_ALL_CODE
 #: VALUE_SET_ALL_CODE
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"
-msgstr ""
+msgstr "Deze inclusie specificeert een hiërarchie voor wanneer waardelijsten worden gegenereerd voor in een gebruikersinterface. De expansie bevat alle codes en ook deze structuur:"
 
 # VALUE_SET_ALL_CODES_DEF
 #: VALUE_SET_ALL_CODES_DEF
 msgid "all codes defined in"
-msgstr ""
+msgstr "alle codes gedefinieerd in"
 
 # VALUE_SET_AND
 #: VALUE_SET_AND
 msgctxt "VALUE_SET_AND"
 msgid "and"
-msgstr ""
+msgstr "en"
 
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
 msgid "Australian"
-msgstr ""
+msgstr "Australisch"
 
 # VALUE_SET_CODES_FROM
 #: VALUE_SET_CODES_FROM
 msgid "codes from"
-msgstr ""
+msgstr "codes uit"
 
 # VALUE_SET_CODE_ITEM
 #: VALUE_SET_CODE_ITEM
 msgid "The code for the item"
-msgstr ""
+msgstr "De code voor het item"
 
 # VALUE_SET_CODE_SELEC
 #: VALUE_SET_CODE_SELEC
 msgid "This value set cannot be fully expanded, but a selection ({0} codes) of the whole set of codes is shown here."
-msgstr ""
+msgstr "Deze waardelijst kan niet volledig worden opgeleverd, maar een selectie ({0} codes) van de hele set codes staat hier."
 
 # VALUE_SET_COMMA
 #: VALUE_SET_COMMA
 msgid ","
-msgstr ""
+msgstr ","
 
 # VALUE_SET_CONT
 #: VALUE_SET_CONT
 msgid "Value Set Contents"
-msgstr ""
+msgstr "Waardelijst inhoud"
 
 # VALUE_SET_CONTAINS
 #: VALUE_SET_CONTAINS
 msgid "This value set contains {0} concepts"
-msgstr ""
+msgstr "Deze waardelijst bevat {0} concepten"
 
 # VALUE_SET_CONTAINS_AT_LEAST
 #: VALUE_SET_CONTAINS_AT_LEAST
 msgid "This value set contains at least {0} concepts"
-msgstr ""
+msgstr "Deze waardelijst bevat tenminste {0} concepten"
 
 # VALUE_SET_CONT_STRUC
 #: VALUE_SET_CONT_STRUC
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:"
-msgstr ""
+msgstr "Deze inclusie specificeert een hiërarchie voor wanneer waardelijsten worden gemaakt voor een gebruikersinterface. De expansie bevat deze structuur:"
 
 # VALUE_SET_DANISH
 #: VALUE_SET_DANISH
 msgid "Danish"
-msgstr ""
+msgstr "Deens"
 
 # VALUE_SET_DESCENDENTOF
 #: VALUE_SET_DESCENDENTOF
 msgid "descends from"
-msgstr ""
+msgstr "komt van"
 
 # VALUE_SET_DESIG
 #: VALUE_SET_DESIG
 msgid "Additional Designations"
-msgstr ""
+msgstr "Additionele benamingen"
 
 # VALUE_SET_DISPLAY_ITEM
 #: VALUE_SET_DISPLAY_ITEM
 msgid "The display for the item"
-msgstr ""
+msgstr "De weergave voor het item"
 
 # VALUE_SET_DOESNT_EXIST
 #: VALUE_SET_DOESNT_EXIST
 msgid "doesn''t exist"
-msgstr ""
+msgstr "bestaat niet"
 
 # VALUE_SET_DUTCH
 #: VALUE_SET_DUTCH
 msgid "Dutch"
-msgstr ""
+msgstr "Nederlands"
 
 # VALUE_SET_EQUAL
 #: VALUE_SET_EQUAL
 msgid "="
-msgstr ""
+msgstr "="
 
 # VALUE_SET_ERROR
 #: VALUE_SET_ERROR
 msgid "Error Expanding ValueSet: {0}"
-msgstr ""
+msgstr "Fout in expansie waardelijst: {0}"
 
 # VALUE_SET_EXCL
 #: VALUE_SET_EXCL
 msgid "Exclude"
-msgstr ""
+msgstr "Exclusie"
 
 # VALUE_SET_EXCLUDED_FROM
 #: VALUE_SET_EXCLUDED_FROM
 msgid "Excluded from"
-msgstr ""
+msgstr "Geëxcludeerd van"
 
 # VALUE_SET_EXISTS
 #: VALUE_SET_EXISTS
 msgid "exists"
-msgstr ""
+msgstr "bestaat"
 
 # VALUE_SET_EXP
 #: VALUE_SET_EXP
 msgid "Expansion based on example code system"
-msgstr ""
+msgstr "Expansie gebaseerd op voorbeeldcodesysteem"
 
 # VALUE_SET_EXPANSION
 #: VALUE_SET_EXPANSION
 msgid "Expansion based on"
-msgstr ""
+msgstr "Expansie gebaseerd op"
 
 # VALUE_SET_EXPANSIONS
 #: VALUE_SET_EXPANSIONS
 msgid "Expansion based on:"
-msgstr ""
+msgstr "Expansie gebaseerd op:"
 
 # VALUE_SET_EXP_FRAG
 #: VALUE_SET_EXP_FRAG
 msgid "Expansion based on code system fragment"
-msgstr ""
+msgstr "Expansie gebaseerd op codesysteemfragment"
 
 # VALUE_SET_GENERALIZES
 #: VALUE_SET_GENERALIZES
 msgid "generalizes"
-msgstr ""
+msgstr "generaliseert"
 
 # VALUE_SET_HAS
 #: VALUE_SET_HAS
 msgid "This value set has {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
-msgstr ""
+msgstr "Deze waardelijst bevat {0} codes. Om de publicatiegrootte beheersbaar te houden, wordt alleen een selectie ({1} codes) van de hele set codes getoond."
 
 # VALUE_SET_HAS_AT_LEAST
 #: VALUE_SET_HAS_AT_LEAST
 msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
-msgstr ""
+msgstr "Deze waardelijst bevat tenminste {0} codes. Om de publicatiegrootte beheersbaar te houden, wordt alleen een selectie ({1} codes) van de hele set codes getoond."
 
 # VALUE_SET_IMPORT
 #: VALUE_SET_IMPORT
 msgid "Import all the codes that are contained in"
 msgid_plural "Import all the codes that are contained in the intersection of"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Importeer alle codes die staan in"
+msgstr[1] "Importeer alle codes die in de intersectie staan van"
 
 # VALUE_SET_IN
 #: VALUE_SET_IN
 msgid "in"
-msgstr ""
+msgstr "in"
 
 # VALUE_SET_INACT
 #: VALUE_SET_INACT
 msgid "inactive"
-msgstr ""
+msgstr "inactief"
 
 # VALUE_SET_INACTIVE
 #: VALUE_SET_INACTIVE
 msgid "Inactive"
-msgstr ""
+msgstr "Inactief"
 
 # VALUE_SET_INC
 #: VALUE_SET_INC
 msgid "Include"
-msgstr ""
+msgstr "Inclusie"
 
 # VALUE_SET_INCLUDED_INTO
 #: VALUE_SET_INCLUDED_INTO
 msgid "Included into"
-msgstr ""
+msgstr "Geïncludeerd in"
 
 # VALUE_SET_INT
 #: VALUE_SET_INT
 msgid "International"
-msgstr ""
+msgstr "Internationaal"
 
 # VALUE_SET_ISA
 #: VALUE_SET_ISA
 msgid "is-a"
-msgstr ""
+msgstr "is-a"
 
 # VALUE_SET_ISNOTA
 #: VALUE_SET_ISNOTA
 msgid "is-not-a"
-msgstr ""
+msgstr "is-not-a"
 
 # VALUE_SET_LEVEL
 #: VALUE_SET_LEVEL
 msgid "Level"
-msgstr ""
+msgstr "Level"
 
 # VALUE_SET_LOINCV
 #: VALUE_SET_LOINCV
 msgid "Loinc v"
-msgstr ""
+msgstr "Loinc v"
 
 # VALUE_SET_NOTE
 #: VALUE_SET_NOTE
 msgid "Note: {0}"
-msgstr ""
+msgstr "Note: {0}"
 
 # VALUE_SET_NOTIN
 #: VALUE_SET_NOTIN
 msgid "not in"
-msgstr ""
+msgstr "niet in"
 
 # VALUE_SET_NOT_DEF
 #: VALUE_SET_NOT_DEF
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined"
-msgstr ""
+msgstr "Deze inclusie specificeert een hiërarchie voor wanneer waardelijsten worden gemaakt voor een gebruikersinterface, maar de regels zijn niet voldoende gedefinieerd"
 
 # VALUE_SET_NOT_FOUND
 #: VALUE_SET_NOT_FOUND
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:"
-msgstr ""
+msgstr "Deze inclusie specificeert een hiërarchie voor wanneer waardelijsten worden gemaakt voor een gebruikersinterface. De expansie bevat deze structuur en eventuele codes buiten de structuur:"
 
 # VALUE_SET_NO_VER
 #: VALUE_SET_NO_VER
 msgid "(no version)"
-msgstr ""
+msgstr "(geen versie)"
 
 # VALUE_SET_NO_VERSION
 #: VALUE_SET_NO_VERSION
 msgid "(no version) ("
-msgstr ""
+msgstr "(geen versie) ("
 
 # VALUE_SET_NULL
 #: VALUE_SET_NULL
 msgid "null"
-msgstr ""
+msgstr "null"
 
 # VALUE_SET_NULLS
 #: VALUE_SET_NULLS
 msgid "?ngen-13?"
-msgstr ""
+msgstr "?ngen-13?"
 
 # VALUE_SET_NUMBER_CONCEPTS
 #: VALUE_SET_NUMBER_CONCEPTS
 msgid "This value set expansion contains {0} concepts."
-msgstr ""
+msgstr "Deze waardelijst-expansie bevat {0} concepten."
 
 # VALUE_SET_REGEX
 #: VALUE_SET_REGEX
 msgid "matches (by regex)"
-msgstr ""
+msgstr "matches (op regex)"
 
 # VALUE_SET_RULES_EXC
 #: VALUE_SET_RULES_EXC
 msgid "This value set excludes codes based on the following rules:"
-msgstr ""
+msgstr "Deze waardelijst excludeert codes gebaseerd op de volgende regels:"
 
 # VALUE_SET_RULES_INC
 #: VALUE_SET_RULES_INC
 msgid "This value set includes codes based on the following rules:"
-msgstr ""
+msgstr "Deze waardelijst includeert codes gebaseerd op de volgende regels:"
 
 # VALUE_SET_SEL
 #: VALUE_SET_SEL
 msgid "This value set has >1000 codes in it. In order to keep the publication size manageable, only a selection (1000 codes) of the whole set of codes is shown"
-msgstr ""
+msgstr "Deze waardelijst bevat meer dan >1000 codes. Om de publicatiegrootte beheersbaar te houden, wordt alleen een selectie (1000 codes) van de hele set codes getoond"
 
 # VALUE_SET_SNOMED
 #: VALUE_SET_SNOMED
 msgid "SNOMED CT {0} edition"
-msgstr ""
+msgstr "SNOMED CT {0} editie"
 
 # VALUE_SET_SNOMED_ADD
 #: VALUE_SET_SNOMED_ADD
 msgid "SNOMED CT {0} edition {1}"
-msgstr ""
+msgstr "SNOMED CT {0} editie {1}"
 
 # VALUE_SET_SPAN
 #: VALUE_SET_SPAN
 msgid "Spanish"
-msgstr ""
+msgstr "Spaans"
 
 # VALUE_SET_SPEC_NAME
 #: VALUE_SET_SPEC_NAME
 msgid "Fully specified name"
-msgstr ""
+msgstr "Volledig gespecificeerde naam"
 
 # VALUE_SET_SWEDISH
 #: VALUE_SET_SWEDISH
 msgid "Swedish"
-msgstr ""
+msgstr "Zweeds"
 
 # VALUE_SET_SYNONYM
 #: VALUE_SET_SYNONYM
 msgid "Synonym"
-msgstr ""
+msgstr "Synoniem"
 
 # VALUE_SET_SYSTEM
 #: VALUE_SET_SYSTEM
 msgid "System"
-msgstr ""
+msgstr "Systeem"
 
 # VALUE_SET_THESE_CODES_DEF
 #: VALUE_SET_THESE_CODES_DEF
 msgid "these codes as defined in"
-msgstr ""
+msgstr "deze codes zoals gedefinieerd in"
 
 # VALUE_SET_TOO_COSTLY
 #: VALUE_SET_TOO_COSTLY
 msgid "This value set cannot be expanded because the terminology server(s) deemed it too costly to do so"
-msgstr ""
+msgstr "Deze waardelijst kan niet worden geëxpandeerd omdat de terminologieserver(s) dit te kostbaar achtten"
 
 # VALUE_SET_UK
 #: VALUE_SET_UK
 msgid "United Kingdom"
-msgstr ""
+msgstr "Verenigd Koninkrijk"
 
 # VALUE_SET_US
 #: VALUE_SET_US
 msgid "United States"
-msgstr ""
+msgstr "Verenigde Staten"
 
 # VALUE_SET_USED_ELSEWHERE
 #: VALUE_SET_USED_ELSEWHERE
 msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr ""
+msgstr "Deze waardelijst wordt hier niet gebruikt; mogelijk wordt deze elders gebruikt (bijv. specificaties en/of implementaties die deze content gebruiken)"
 
 # VALUE_SET_WHERE
 #: VALUE_SET_WHERE
 msgid "where"
-msgstr ""
+msgstr "waar"
 
 # VALUE_SET_WHERE_CODES
 #: VALUE_SET_WHERE_CODES
 msgid ", where the codes are contained in"
-msgstr ""
+msgstr ". waar de codes staan in"
 
 # VS_ABSTRACT_CODE_HINT
 #: VS_ABSTRACT_CODE_HINT
 msgid "This code is not selectable (''Abstract'')"
-msgstr ""
+msgstr "Deze code is niet selecteerbaar (''Abstract'')"
 
