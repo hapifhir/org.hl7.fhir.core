@@ -509,7 +509,6 @@ public class ValidationService {
   private ValidationEngine getValidationEngineFromCliContext(CliContext cliContext, String definitions, TimeTracker tt) throws Exception {
     ValidationEngine validationEngine;
     if (cliContext.getBaseEngine() != null && hasBaseEngineForKey(cliContext.getBaseEngine())) {
-      System.out.println("Building new validator engine from base engine: " + cliContext.getBaseEngine());
       validationEngine = new ValidationEngine(getBaseEngine(cliContext.getBaseEngine()));
       /* As a service, it wouldn't be efficient to have a base validation engine
        * for every language. So we just use the baseEngine and set the language
@@ -521,7 +520,6 @@ public class ValidationService {
       if (definitions == null) {
         throw new IllegalArgumentException("Cannot create a validator engine (definitions == null)");
       }
-      System.out.println("Building new validator engine from CliContext");
       validationEngine  = buildValidationEngine(cliContext, definitions, tt);
     }
     return validationEngine;
