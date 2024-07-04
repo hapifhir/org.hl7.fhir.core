@@ -43,5 +43,10 @@ public interface SessionCache {
    * @return {@link Set} of session ids.
    */
   Set<String> getSessionIds();
-    
+
+  /**
+   * Performs any pending maintenance operations needed by the cache.
+   * */
+  public void cleanUp();
+
 }
