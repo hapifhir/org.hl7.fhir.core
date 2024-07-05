@@ -4,33 +4,41 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Library;
-import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.UrlType;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ActorDefinitionRenderer extends ResourceRenderer {
 
-  public ActorDefinitionRenderer(RenderingContext context) {
-    super(context);
-  }
 
-  public ActorDefinitionRenderer(RenderingContext context, ResourceContext rcontext) {
-    super(context, rcontext);
+  public ActorDefinitionRenderer(RenderingContext context) { 
+    super(context); 
+  } 
+ 
+  @Override
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    if (r.isDirect()) {
+      renderResourceTechDetails(r, x);
+      genSummaryTable(status, x, (ActorDefinition) r.getBase());
+      render(status, x, (ActorDefinition) r.getBase(), r);      
+    } else {
+      throw new Error("ActorDefinitionRenderer only renders native resources directly");
+    }
   }
   
-  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
-    return render(x, (ActorDefinition) dr);
+  @Override
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
   }
 
-
-  public boolean render(XhtmlNode x, ActorDefinition acd) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(RenderingStatus status, XhtmlNode x, ActorDefinition acd, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();
     tr.td().b().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_ACT, acd.getName())  + " ");
@@ -44,18 +52,13 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
       boolean first = true;
       for (UrlType t : acd.getReference()) {
         if (first) first = false; else x.br();
-        render(td, t);
+        renderUri(status, td, wrapWC(r, t));
       }      
     }
     if (acd.hasCapabilities()) {
       tbl.tr().td().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_CAP));
       td = tr.td().colspan("2");
-      CapabilityStatement cs = context.getWorker().fetchResource(CapabilityStatement.class, acd.getCapabilities(), acd);
-      if (cs != null) {
-        td.ah(cs.getWebPath()).tx(cs.present());
-      } else {
-        render(td, acd.getCapabilitiesElement());
-      }      
+      renderCanonical(status, r, td, CapabilityStatement.class, acd.getCapabilitiesElement());      
     }
     if (acd.hasDerivedFrom()) {
       tbl.tr().td().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_DER));
@@ -63,15 +66,9 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
       boolean first = true;
       for (UrlType t : acd.getReference()) {
         if (first) first = false; else x.br();
-        ActorDefinition df = context.getWorker().fetchResource(ActorDefinition.class, t.getValue(), acd);
-        if (df != null) {
-          td.ah(df.getWebPath()).tx(df.present());
-        } else {
-          render(td, t);
-        }      
+        renderUri(status, r, td, t);
       }      
     }
-    return false;
   }
   
   public void describe(XhtmlNode x, Library lib) {
@@ -80,19 +77,6 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
 
   public String display(Library lib) {
     return lib.present();
-  }
-
-  @Override
-  public String display(Resource r) throws UnsupportedEncodingException, IOException {
-    return ((Library) r).present();
-  }
-
-  @Override
-  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    if (r.has("title")) {
-      return r.children("title").get(0).getBase().primitiveValue();
-    }
-    return "??";
   }
   
 }

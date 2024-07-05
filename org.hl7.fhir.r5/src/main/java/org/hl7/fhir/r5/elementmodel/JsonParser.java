@@ -87,6 +87,7 @@ public class JsonParser extends ParserBase {
   private boolean allowComments;
 
   private Element baseElement;
+  private boolean markedXhtml;
 
   public JsonParser(IWorkerContext context, ProfileUtilities utilities) {
     super(context, utilities);
@@ -133,6 +134,10 @@ public class JsonParser extends ParserBase {
 
   @Override
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
+    return parse(inStream, 0);
+  }
+  
+  public List<ValidatedFragment> parse(InputStream inStream, int line) throws IOException, FHIRException {
 //    long start = System.currentTimeMillis();
     byte[] content = TextFile.streamToBytes(inStream);
     ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "json", content, false);
@@ -145,12 +150,12 @@ public class JsonParser extends ParserBase {
     
     if (policy == ValidationPolicy.EVERYTHING) {
       try {
-        obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true); 
+        obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true, line); 
       } catch (Exception e) {
-        logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, -1, -1,context.formatMessage(I18nConstants.DOCUMENT), IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_, e.getMessage()), IssueSeverity.FATAL);
+        logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, -1, -1, null, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_, e.getMessage()), IssueSeverity.FATAL);
       }
     } else {
-      obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true); 
+      obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true, line); 
     }
     
     if (obj != null) {
@@ -766,6 +771,7 @@ public class JsonParser extends ParserBase {
       e.populatePaths(null);
     }
 
+    markedXhtml = false;
     OutputStreamWriter osw = new OutputStreamWriter(stream, "UTF-8");
     if (style == OutputStyle.CANONICAL) {
       json = new JsonCreatorCanonical(osw);
@@ -858,6 +864,7 @@ public class JsonParser extends ParserBase {
     }
     if (complex) {
       openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
+      int i = 0;
       for (Element item : list) {
         if (item.hasChildren()) {
           open(null,null);
@@ -875,8 +882,10 @@ public class JsonParser extends ParserBase {
             compose(path+"."+name+"[]", item, done, child);
           }
           close();
-        } else
+        } else {
           json.nullValue();
+        }
+        i++;
       }
       closeArray();
     }
@@ -909,8 +918,9 @@ public class JsonParser extends ParserBase {
       if (element.hasValue())
         primitiveValue(name, element);
       name = "_"+name;
-      if (element.getType().equals("xhtml"))
+      if (!markedXhtml && element.getType().equals("xhtml"))
         json.anchor("end-xhtml");
+        markedXhtml = true;
     }
     if (element.hasChildren()) {
       open(name, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()));

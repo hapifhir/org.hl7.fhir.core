@@ -47,7 +47,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 public class Manager {
 
   //TODO use EnumMap
-  public enum FhirFormat { XML, JSON, TURTLE, TEXT, VBAR, SHC, SHL, FML; 
+  public enum FhirFormat { XML, JSON, TURTLE, TEXT, VBAR, SHC, SHL, FML, NDJSON; 
     // SHC = smart health cards, including as text versions of QR codes
     // SHL = smart health links, also a text version of the QR code
     
@@ -69,6 +69,8 @@ public class Manager {
           return "shl";
         case FML:
           return "fml";
+        case NDJSON:
+          return "ndjson";
       }
       return null;
     }
@@ -91,6 +93,8 @@ public class Manager {
           return SHL;
         case "fml":
           return FML;
+        case "ndjson":
+          return NDJSON;
       }
       return null;
     }
@@ -127,6 +131,7 @@ public class Manager {
     }
     switch (format) {
     case JSON : return new JsonParser(context);
+    case NDJSON : return new NDJsonParser(context);
     case XML : return new XmlParser(context);
     case TURTLE : return new TurtleParser(context);
     case VBAR : return new VerticalBarParser(context);

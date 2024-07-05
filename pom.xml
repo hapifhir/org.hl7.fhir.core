@@ -14,14 +14,14 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.3.12-SNAPSHOT</version>
+    <version>6.3.16-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <commons_compress_version>1.26.0</commons_compress_version>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.5.11</validator_test_case_version>
+        <validator_test_case_version>1.5.14</validator_test_case_version>
         <jackson_version>2.17.0</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
@@ -314,6 +314,12 @@
                 <artifactId>logback-core</artifactId>
                 <version>1.2.13</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>3.22.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -398,14 +404,14 @@
                         <goals>
                             <goal>checkstyle</goal>
                         </goals>
-                        <configuration>
-                            <failsOnError>true</failsOnError>
-                            <suppressionsLocation>${project.basedir}/checkstyle_suppressions.xml</suppressionsLocation>
-                            <enableRulesSummary>true</enableRulesSummary>
-                            <enableSeveritySummary>true</enableSeveritySummary>
-                            <consoleOutput>true</consoleOutput>
-                            <configLocation>${checkstyle_config_location}/checkstyle.xml</configLocation>
-                        </configuration>
+                <configuration>
+                    <failsOnError>true</failsOnError>
+                    <suppressionsLocation>${project.basedir}/checkstyle_suppressions.xml</suppressionsLocation>
+                    <enableRulesSummary>true</enableRulesSummary>
+                    <enableSeveritySummary>true</enableSeveritySummary>
+                    <consoleOutput>true</consoleOutput>
+                    <configLocation>${checkstyle_config_location}/checkstyle.xml</configLocation>
+                </configuration>
                     </execution>
                 </executions>
             </plugin>

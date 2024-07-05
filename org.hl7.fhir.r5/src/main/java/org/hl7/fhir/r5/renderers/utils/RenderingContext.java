@@ -16,6 +16,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
@@ -99,7 +100,7 @@ public class RenderingContext extends RenderingI18nContext {
     END_USER,
     
     /**
-     * The user wants to see the resource, but a technical view so they can see what's going on with the content
+     * The user wants to see the resource, but a technical view so they can see what's going on with the content - this includes content like the meta header
      */
     TECHNICAL
   }
@@ -225,6 +226,7 @@ public class RenderingContext extends RenderingI18nContext {
   private ITypeParser parser;
 
   // i18n related fields
+  private boolean secondaryLang; // true if this is not the primary language for the resource
   private MultiLanguagePolicy multiLanguagePolicy = MultiLanguagePolicy.NONE;
   private Set<String> allowedLanguages = new HashSet<>(); 
   private ZoneId timeZoneId;
@@ -237,7 +239,7 @@ public class RenderingContext extends RenderingI18nContext {
   private int headerLevelContext;
   private boolean canonicalUrlsAsLinks;
   private boolean pretty;
-  private boolean header;
+  private boolean showSummaryTable; // for canonical resources
   private boolean contained;
 
   private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R5);
@@ -245,6 +247,7 @@ public class RenderingContext extends RenderingI18nContext {
   private List<String> codeSystemPropList = new ArrayList<>();
 
   private ProfileUtilities profileUtilitiesR;
+  private ContextUtilities contextUtilities;
   private String definitionsTarget;
   private String destDir;
   private boolean inlineGraphics;
@@ -255,7 +258,6 @@ public class RenderingContext extends RenderingI18nContext {
   private StructureDefinitionRendererMode structureMode = StructureDefinitionRendererMode.SUMMARY;
   private FixedValueFormat fixedFormat = FixedValueFormat.JSON;
   
-  private boolean addGeneratedNarrativeHeader = true;
   private boolean showComments = false;
 
   private FhirPublication targetVersion;
@@ -268,6 +270,10 @@ public class RenderingContext extends RenderingI18nContext {
   private Map<String, String> namedLinks = new HashMap<>();
   private boolean addName = false;
   private Map<String, String> typeMap = new HashMap<>(); // type aliases that can be resolved in Markdown type links (mainly for cross-version usage)
+  private int base64Limit = 1024;
+  private boolean shortPatientForm;
+  private String uniqueLocalPrefix;
+  private Set<String> anchors = new HashSet<>();
   
   /**
    * 
@@ -308,13 +314,13 @@ public class RenderingContext extends RenderingI18nContext {
     res.codeSystemPropList.addAll(codeSystemPropList);
 
     res.profileUtilitiesR = profileUtilitiesR;
+    res.contextUtilities = contextUtilities;
     res.definitionsTarget = definitionsTarget;
     res.destDir = destDir;
-    res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
     res.scenarioMode = scenarioMode;
     res.questionnaireMode = questionnaireMode;
     res.structureMode = structureMode;
-    res.header = header;
+    res.showSummaryTable = showSummaryTable;
     res.links.putAll(links);
     res.inlineGraphics = inlineGraphics;
     res.timeZoneId = timeZoneId;
@@ -506,12 +512,12 @@ public class RenderingContext extends RenderingI18nContext {
     return this;
   }
 
-  public boolean isHeader() {
-    return header;
+  public boolean isShowSummaryTable() {
+    return showSummaryTable;
   }
 
-  public RenderingContext setHeader(boolean header) {
-    this.header = header;
+  public RenderingContext setShowSummaryTable(boolean header) {
+    this.showSummaryTable = header;
     return this;
   }
 
@@ -556,15 +562,6 @@ public class RenderingContext extends RenderingI18nContext {
     this.localPrefix = localPrefix;
     return this;
   }
-
-  public boolean isAddGeneratedNarrativeHeader() {
-    return addGeneratedNarrativeHeader;
-  }
-
-  public RenderingContext setAddGeneratedNarrativeHeader(boolean addGeneratedNarrativeHeader) {
-    this.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
-    return this;
-   }
 
   public FhirPublication getTargetVersion() {
     return targetVersion;
@@ -797,6 +794,24 @@ public class RenderingContext extends RenderingI18nContext {
     return t.asStringValue();
   }
 
+  public String getTranslated(ResourceWrapper t) {
+    if (t == null) {
+      return null;
+    }
+    if (locale != null) {
+      for (ResourceWrapper e : t.extensions(ToolingExtensions.EXT_TRANSLATION)) {
+        String l = e.extensionString("lang");
+        if (l != null && l.equals(locale.toString())) {
+          String v = e.extensionString("content");
+          if (v != null) {
+            return v;
+          }
+        }
+      }
+    }
+    return t.primitiveValue();
+  }
+
   public StringType getTranslatedElement(PrimitiveType<?> t) {
     if (locale != null) {
       StringType v = ToolingExtensions.getLanguageTranslationElement(t, locale.toString());
@@ -843,6 +858,21 @@ public class RenderingContext extends RenderingI18nContext {
     }
   }
 
+  public String getTranslatedCode(String code, String codeSystem) {
+
+    if (locale != null) {
+      try {
+        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toString()).withVersionFlexible(true), codeSystem, null, code, null);
+        if (t.isOk() && t.getDisplay() != null) {
+          return t.getDisplay();
+        }
+      } catch (Exception ex) {
+        // nothing
+      }
+    }
+    return code;
+  }
+  
   public String getTranslatedCode(Enumeration<?> e, String codeSystem) {
     if (locale != null) {
       String v = ToolingExtensions.getLanguageTranslation(e, locale.toString());
@@ -912,5 +942,74 @@ public class RenderingContext extends RenderingI18nContext {
     setLocale(new Locale(locale));
     return this;
   }
+
+  public ContextUtilities getContextUtilities() {
+    if (contextUtilities == null) {
+      contextUtilities = new ContextUtilities(worker);
+    }
+    return contextUtilities;
+  }
+
+  public int getBase64Limit() {
+    return base64Limit;
+  }
+
+  public void setBase64Limit(int base64Limit) {
+    this.base64Limit = base64Limit;
+  }
+
+  public boolean isShortPatientForm() {
+    return shortPatientForm;
+  }
+
+  public void setShortPatientForm(boolean shortPatientForm) {
+    this.shortPatientForm = shortPatientForm;
+  }
+
+  public boolean isSecondaryLang() {
+    return secondaryLang;
+  }
+
+  public void setSecondaryLang(boolean secondaryLang) {
+    this.secondaryLang = secondaryLang;
+  }
+
+  public String prefixAnchor(String anchor) {
+    return uniqueLocalPrefix == null ? anchor : uniqueLocalPrefix+"-" + anchor;
+  }
+
+  public String prefixLocalHref(String url) {
+    if (url == null || uniqueLocalPrefix == null || !url.startsWith("#")) {
+      return url;
+    }
+    return "#"+uniqueLocalPrefix+"-"+url.substring(1);
+  }
+
+  public String getUniqueLocalPrefix() {
+    return uniqueLocalPrefix;
+  }
+
+  public void setUniqueLocalPrefix(String uniqueLocalPrefix) {
+    this.uniqueLocalPrefix = uniqueLocalPrefix;
+  }
+
+  public RenderingContext withUniqueLocalPrefix(String uniqueLocalPrefix) {
+    RenderingContext self = this.copy();
+    self.uniqueLocalPrefix = uniqueLocalPrefix;
+    return self;
+  }
+
+  public RenderingContext forContained() {
+    RenderingContext self = this.copy();
+    self.contained = true;
+    return self;
+  }
   
+  public boolean hasAnchor(String anchor) {
+    return anchors.contains(anchor);
+  }
+  
+  public void addAnchor(String anchor) {
+    anchors.add(anchor);
+  }
 }

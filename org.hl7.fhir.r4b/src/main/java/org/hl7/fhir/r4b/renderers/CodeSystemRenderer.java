@@ -29,6 +29,13 @@ import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class CodeSystemRenderer extends TerminologyRenderer {
 
   public CodeSystemRenderer(RenderingContext context) {
