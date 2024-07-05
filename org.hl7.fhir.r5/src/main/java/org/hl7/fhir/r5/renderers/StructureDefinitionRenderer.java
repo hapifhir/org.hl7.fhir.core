@@ -779,7 +779,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         row.setOpacity("0.5"); 
       } 
       UnusedTracker used = new UnusedTracker(); 
-      String ref = defPath == null ? null : defPath + anchorPrefix + element.getId(); 
+      String ref = defPath == null ? null : defPath + element.getId(); 
       String sName = tail(element.getPath()); 
       if (element.hasSliceName()) {  
         sName = sName +":"+element.getSliceName(); 

@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Fix broken link to definitions in profiles
