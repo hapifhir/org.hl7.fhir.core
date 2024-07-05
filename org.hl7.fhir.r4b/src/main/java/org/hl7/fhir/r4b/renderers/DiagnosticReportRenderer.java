@@ -24,6 +24,13 @@ import org.hl7.fhir.r4b.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class DiagnosticReportRenderer extends ResourceRenderer {
 
   public class ObservationNode {

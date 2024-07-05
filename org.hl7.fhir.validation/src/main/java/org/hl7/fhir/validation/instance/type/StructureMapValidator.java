@@ -559,7 +559,6 @@ public class StructureMapValidator extends BaseValidator {
   private boolean validateRule(List<ValidationMessage> errors, Element src, Element group, Element rule, NodeStack stack, VariableSet variables) {
     String name = rule.getChildValue("name");
     boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, rule.line(), rule.col(), stack.getLiteralPath(), idIsValid(name), I18nConstants.SM_NAME_INVALID, name);
-    
     RuleInformation ruleInfo = new RuleInformation();
     // process the sources
     VariableSet lvars = variables.copy();
@@ -691,7 +690,61 @@ public class StructureMapValidator extends BaseValidator {
   private boolean validateRuleTarget(List<ValidationMessage> errors, Element src, Element group, Element rule, Element target, NodeStack stack, VariableSet variables, RuleInformation ruleInfo) {
     String context = target.getChildValue("context");
     if (context == null) {
-      return true;
+      // this would be something like 
+      // RNDSEntry -> create('Composition') as IPSComposition
+
+      boolean ok = true;
+
+      VariableDefn vn = null;
+      String variable = target.getChildValue("variable");
+      if (variable != null) {
+        if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), idIsValid(variable), I18nConstants.SM_NAME_INVALID, variable)) {
+          vn = variables.add(variable, "target"); // may overwrite
+        } else {
+          ok = false;
+        }
+      }
+      String transform = target.getChildValue("transform");
+      List<Element> params = target.getChildren("parameter");
+      String type = null;
+      switch (transform) {
+      case "create":
+        if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() < 2, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, "create", "0", "1", params.size())) {
+          if (params.size() == 1) {
+            type = params.get(0).getChildValue("value");
+            // type can be a url, a native type, or an alias 
+            if (!Utilities.isAbsoluteUrl(type)) {
+              type = resolveType(type, "target", src);
+              if (!Utilities.isAbsoluteUrl(type)) {
+                StructureDefinition sdt = this.context.fetchTypeDefinition(type);
+                if (sdt != null) {
+                  type = sdt.getType();
+                }
+              }
+            }
+            warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(),type != null, I18nConstants.SM_TARGET_TRANSFORM_TYPE_UNPROCESSIBLE, "create");
+          } else {
+            // maybe can guess? maybe not ... type = 
+          }
+        } else {
+          ok = false;
+        }
+        break;
+        
+      case "uuid" :
+        ok = rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 0, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform) && ok;
+        type = "string";
+        break; 
+      default:
+        rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_NOT_CHECKED, transform);
+        ok = false;
+      }
+
+      if (vn != null && type != null) {
+        StructureDefinition sdt = this.context.fetchTypeDefinition(type);
+        vn.setType(ruleInfo.getMaxCount(), sdt, sdt.getSnapshot().getElementFirstRep(), null); // may overwrite
+      }
+      return ok;
     }
     boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), idIsValid(context), I18nConstants.SM_NAME_INVALID, context) &&
         rule(errors, "2023-03-01", IssueType.UNKNOWN, target.line(), target.col(), stack.getLiteralPath(), variables.hasVariable(context, TARGET), I18nConstants.SM_TARGET_CONTEXT_UNKNOWN, context);
@@ -805,7 +858,7 @@ public class StructureMapValidator extends BaseValidator {
               case "append" :
                 ok = rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() > 0, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform) && ok;
                 for (int i = 0; i  < params.size(); i++) {
-                  ok = checkParamExistsOrPrimitive(errors, params.get(1).getNamedChild("value", false), "cc", "parameter "+i, target, variables, stack, ok, false);
+                  ok = checkParamExistsOrPrimitive(errors, params.get(i).getNamedChild("value", false), "cc", "parameter "+i, target, variables, stack, ok, false);
                 }
                 break;                
               case "uuid" :

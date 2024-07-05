@@ -618,7 +618,6 @@ public class HierarchicalTableGenerator {
   private String dest;
   private boolean makeTargets;
   private String defPath = "";
-  private String anchorPrefix = "";
 
   /**
    * There are circumstances where the table has to present in the absence of a stable supporting infrastructure.
@@ -630,10 +629,17 @@ public class HierarchicalTableGenerator {
   
   private TableGenerationMode mode;
   private RenderingI18nContext i18n;
+  private String uniqueLocalPrefix;
 
   public HierarchicalTableGenerator(RenderingI18nContext i18n) {
     super();
     this.i18n = i18n;
+  }
+
+  public HierarchicalTableGenerator(RenderingI18nContext i18n, String uniqueLocalPrefix) {
+    super();
+    this.i18n = i18n;
+    this.uniqueLocalPrefix = uniqueLocalPrefix;
   }
 
   public HierarchicalTableGenerator(RenderingI18nContext i18n, String dest, boolean inlineGraphics) {
@@ -645,29 +651,34 @@ public class HierarchicalTableGenerator {
     checkSetup();
   }
 
-  public String getDefPath() {
-    return defPath;
+  public HierarchicalTableGenerator(RenderingI18nContext i18n, String dest, boolean inlineGraphics, String uniqueLocalPrefix) {
+    super();
+    this.i18n = i18n;
+    this.dest = dest;
+    this.inLineGraphics = inlineGraphics;
+    this.makeTargets = true;
+    this.uniqueLocalPrefix = uniqueLocalPrefix;
+    checkSetup();
   }
 
-  public String getAnchorPrefix() {
-    return anchorPrefix;
-  }
-
-  private void checkSetup() {
-    if (dest == null) {
-      throw new Error("what");
-    }
-    
-  }
-
-  public HierarchicalTableGenerator(RenderingI18nContext i18n, String dest, boolean inlineGraphics, boolean makeTargets, String defPath, String anchorPrefix) {
+  public HierarchicalTableGenerator(RenderingI18nContext i18n, String dest, boolean inlineGraphics, boolean makeTargets, String defPath, String uniqueLocalPrefix) {
     super();
     this.i18n = i18n;
     this.dest = dest;
     this.inLineGraphics = inlineGraphics;
     this.makeTargets = makeTargets;
     this.defPath = defPath;
-    this.anchorPrefix = anchorPrefix;
+    this.uniqueLocalPrefix = uniqueLocalPrefix;
+    checkSetup();
+  }
+
+  public HierarchicalTableGenerator(RenderingI18nContext i18n, String dest, boolean inlineGraphics, boolean makeTargets, String uniqueLocalPrefix) {
+    super();
+    this.i18n = i18n;
+    this.dest = dest;
+    this.inLineGraphics = inlineGraphics;
+    this.makeTargets = makeTargets;
+    this.uniqueLocalPrefix = uniqueLocalPrefix;
     checkSetup();
   }
 
@@ -678,6 +689,16 @@ public class HierarchicalTableGenerator {
     this.inLineGraphics = inlineGraphics;
     this.makeTargets = makeTargets;
     checkSetup();
+  }
+
+  private void checkSetup() {
+    if (dest == null) {
+      throw new Error("what");
+    }
+  }
+
+  public String getDefPath() {
+    return defPath;
   }
 
   public TableModel initNormalTable(String prefix, boolean isLogical, boolean alternating, String id, boolean isActive, TableGenerationMode mode) throws IOException {
@@ -904,7 +925,7 @@ public class HierarchicalTableGenerator {
         }
       } else if (!Utilities.noString(p.getReference())) {
         XhtmlNode a = addStyle(tc.addTag("a"), p);
-        a.setAttribute("href", p.getReference());
+        a.setAttribute("href", prefixLocalHref(p.getReference()));
         if (mode == TableGenerationMode.XHTML && suppressExternals) {
           a.setAttribute("no-external", "true");
         }
@@ -944,8 +965,9 @@ public class HierarchicalTableGenerator {
         }
       }
     }
-    if (makeTargets && !Utilities.noString(anchor))
-      tc.addTag("a").setAttribute("name", nmTokenize(anchor)).addText(" ");
+    if (makeTargets && !Utilities.noString(anchor)) {
+      tc.addTag("a").setAttribute("name", prefixAnchor(nmTokenize(anchor))).addText(" ");
+    }
     return tc;
   }
 
@@ -1132,4 +1154,28 @@ public class HierarchicalTableGenerator {
       r.getCells().add(new Cell());
     }
   }
+  
+
+  public String getUniqueLocalPrefix() {
+    return uniqueLocalPrefix;
+  }
+
+  public void setUniqueLocalPrefix(String uniqueLocalPrefix) {
+    if (Utilities.noString(uniqueLocalPrefix)) {
+      throw new Error("what?");
+    }
+    this.uniqueLocalPrefix = uniqueLocalPrefix;
+  }
+
+  public String prefixAnchor(String anchor) {
+    return uniqueLocalPrefix == null ? anchor : uniqueLocalPrefix+"-" + anchor;
+  }
+
+  public String prefixLocalHref(String url) {
+    if (url == null || uniqueLocalPrefix == null || !url.startsWith("#")) {
+      return url;
+    }
+    return "#"+uniqueLocalPrefix+"-"+url.substring(1);
+  }
+  
 }

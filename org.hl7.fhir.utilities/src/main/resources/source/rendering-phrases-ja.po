@@ -41,7 +41,8 @@ msgstr ""
 
 # ADD_BIND_CURR_BIND
 #: ADD_BIND_CURR_BIND
-msgid "Current Binding"
+msgctxt "ADD_BIND_CURR_BIND"
+msgid "Current"
 msgstr ""
 
 # ADD_BIND_DESIG_SYS
@@ -56,7 +57,8 @@ msgstr ""
 
 # ADD_BIND_EX_BIND
 #: ADD_BIND_EX_BIND
-msgid "Extensible Binding"
+msgctxt "ADD_BIND_EX_BIND"
+msgid "Extensible"
 msgstr ""
 
 # ADD_BIND_GIVEN_CONT
@@ -81,7 +83,8 @@ msgstr ""
 
 # ADD_BIND_PREF_BIND
 #: ADD_BIND_PREF_BIND
-msgid "Preferred Binding"
+msgctxt "ADD_BIND_PREF_BIND"
+msgid "Preferred"
 msgstr ""
 
 # ADD_BIND_RECOM_VALUE_SET
@@ -91,7 +94,8 @@ msgstr ""
 
 # ADD_BIND_REQ_BIND
 #: ADD_BIND_REQ_BIND
-msgid "Required Binding"
+msgctxt "ADD_BIND_REQ_BIND"
+msgid "Required"
 msgstr ""
 
 # ADD_BIND_UI
@@ -125,30 +129,15 @@ msgstr ""
 msgid "This value set is a component of the base value set"
 msgstr ""
 
-# BUNDLE_DOCUMENT_CONTENT
-#: BUNDLE_DOCUMENT_CONTENT
-msgid "Additional Document Content"
-msgstr "追加のドキュメント内容"
-
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
 msgid "ETag = {0}"
 msgstr "ETag = {0}"
 
-# BUNDLE_HEADER_DOC_ENTRY_RD
-#: BUNDLE_HEADER_DOC_ENTRY_RD
-msgid "{0}. {2}/{3}"
-msgstr "{0}. {2}/{3}"
-
-# BUNDLE_HEADER_DOC_ENTRY_U
-#: BUNDLE_HEADER_DOC_ENTRY_U
-msgid "{0}. {1}"
-msgstr "{0}. {1}"
-
-# BUNDLE_HEADER_DOC_ENTRY_URD
-#: BUNDLE_HEADER_DOC_ENTRY_URD
-msgid "{0}. {1} ({2}/{3})"
-msgstr "{0}. {1} ({2}/{3})"
+# BUNDLE_HEADER_DOCUMENT_CONTENTS
+#: BUNDLE_HEADER_DOCUMENT_CONTENTS
+msgid "Additional Resources Included in Document"
+msgstr ""
 
 # BUNDLE_HEADER_ENTRY
 #: BUNDLE_HEADER_ENTRY
@@ -215,11 +204,6 @@ msgstr "Response:"
 msgid "Exception generating narrative: {0}"
 msgstr ""
 
-# BUNDLE_REV_INV_DOC
-#: BUNDLE_REV_INV_DOC
-msgid "Invalid document - first entry is not a Composition"
-msgstr ""
-
 # BUNDLE_SEARCH
 #: BUNDLE_SEARCH
 msgid "Search:"
@@ -235,9 +219,9 @@ msgstr "Mode = {0}"
 msgid "Score = {0}"
 msgstr "Score = {0}"
 
-# BUND_REND_GEN_NARR
-#: BUND_REND_GEN_NARR
-msgid "generating narrative"
+# BUNDLE_SUMMARY
+#: BUNDLE_SUMMARY
+msgid "{0} Bundle, {1} Entries"
 msgstr ""
 
 # BUND_REND_INVALID_DOC
@@ -547,7 +531,7 @@ msgstr ""
 
 # CAPABILTY_ALLOW_CAP
 #: CAPABILTY_ALLOW_CAP
-msgid "Any FHIR capability may be 'allowed' by the system unless explicitly marked as 'SHALL NOT'. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
+msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
 msgstr ""
 
 # CAPABILTY_SHALL_SUPP
@@ -642,7 +626,7 @@ msgstr ""
 
 # CODE_SYS_FOR_OID
 #: CODE_SYS_FOR_OID
-msgid "for OID based terminology systems"
+msgid "{0} (for OID based terminology systems)"
 msgstr ""
 
 # CODE_SYS_FRAGMENT
@@ -677,7 +661,7 @@ msgstr ""
 
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
-msgid "is the value set for all codes in this code system"
+msgid "{0} is the value set for all codes in this code system"
 msgstr ""
 
 # CODE_SYS_UNDEF_HIER
@@ -800,9 +784,20 @@ msgstr ""
 msgid "at lunch"
 msgstr ""
 
+# DATA_REND_ATT_DATA
+#: DATA_REND_ATT_DATA
+msgctxt "DATA_REND_ATT_DATA"
+msgid "{0}: {1}"
+msgstr ""
+
+# DATA_REND_ATT_URL
+#: DATA_REND_ATT_URL
+msgid "{0} @ {1}"
+msgstr ""
+
 # DATA_REND_BASE64
 #: DATA_REND_BASE64
-msgid "(base64 data - {0}  bytes)"
+msgid "(base64 data - {0} base64 chars)"
 msgstr ""
 
 # DATA_REND_BFBKFST
@@ -1092,7 +1087,7 @@ msgstr ""
 
 # DIAG_REP_REND_NOTRES
 #: DIAG_REP_REND_NOTRES
-msgid "This Observation could not be resolved"
+msgid "The observation ''{0}'' could not be resolved"
 msgstr ""
 
 # DIAG_REP_REND_OBS
@@ -1128,6 +1123,27 @@ msgstr ""
 # DIAG_REP_REND_WHEN
 #: DIAG_REP_REND_WHEN
 msgid "When For"
+msgstr ""
+
+# DIAG_REP_SUMMARY
+#: DIAG_REP_SUMMARY
+msgid "Diagnostic Report for ''{0}'' for ''{1}''"
+msgstr ""
+
+# DIAG_REP_UNSPECIFIED_CODE
+#: DIAG_REP_UNSPECIFIED_CODE
+msgid "Unspecified Report Type"
+msgstr ""
+
+# DIAG_REP_UNSPECIFIED_SUBJECT
+#: DIAG_REP_UNSPECIFIED_SUBJECT
+msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
+msgid "Unspecified Subject"
+msgstr ""
+
+# DOCUMENT_SUMMARY
+#: DOCUMENT_SUMMARY
+msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
 msgstr ""
 
 # EXAMPLE_SCEN_STEP_SCEN
@@ -1300,6 +1316,12 @@ msgstr ""
 msgid "Criteria"
 msgstr ""
 
+# GENERAL_DATA_DISPLAY_PROPERTY
+#: GENERAL_DATA_DISPLAY_PROPERTY
+msgctxt "GENERAL_DATA_DISPLAY_PROPERTY"
+msgid "{0}: {1}"
+msgstr ""
+
 # GENERAL_DEFINING_URL
 #: GENERAL_DEFINING_URL
 msgid "Defining URL"
@@ -1407,6 +1429,7 @@ msgstr ""
 
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
+msgctxt "GENERAL_PREFERRED"
 msgid "Preferred"
 msgstr ""
 
@@ -1442,6 +1465,7 @@ msgstr ""
 
 # GENERAL_REQUIRED
 #: GENERAL_REQUIRED
+msgctxt "GENERAL_REQUIRED"
 msgid "Required"
 msgstr ""
 
@@ -1655,6 +1679,22 @@ msgstr ""
 msgid "Subject:"
 msgstr ""
 
+# LIST_SUMMARY
+#: LIST_SUMMARY
+msgid "List for ''{0}'' for ''{1}''"
+msgstr ""
+
+# LIST_UNSPECIFIED_CODE
+#: LIST_UNSPECIFIED_CODE
+msgid "Unspecified List Type"
+msgstr ""
+
+# LIST_UNSPECIFIED_SUBJECT
+#: LIST_UNSPECIFIED_SUBJECT
+msgctxt "LIST_UNSPECIFIED_SUBJECT"
+msgid "Unspecified Subject"
+msgstr ""
+
 # MAP_DEFAULT_COMMENT
 #: MAP_DEFAULT_COMMENT
 msgid "This element was not defined prior to R5"
@@ -1733,6 +1773,31 @@ msgstr ""
 # OP_OUT_SRC
 #: OP_OUT_SRC
 msgid "Source"
+msgstr ""
+
+# OP_OUT_SUMM
+#: OP_OUT_SUMM
+msgid "OperationOutcome ({0} Error(s), {1} Warning(s), {2} Hint(s))"
+msgstr ""
+
+# OP_OUT_SUMM_ALL_OK
+#: OP_OUT_SUMM_ALL_OK
+msgid "OperationOutcome (ALL OK)"
+msgstr ""
+
+# OP_OUT_SUMM_NOHINT
+#: OP_OUT_SUMM_NOHINT
+msgid "OperationOutcome ({0} Error(s), {1} Warning(s))"
+msgstr ""
+
+# PARS_SUMMARY_LIST
+#: PARS_SUMMARY_LIST
+msgid "Parameters: {0}"
+msgstr ""
+
+# PARS_SUMMARY_SIZE
+#: PARS_SUMMARY_SIZE
+msgid "Parameters ({0} parameters)"
 msgstr ""
 
 # PAT_ACTIVE
@@ -1948,7 +2013,23 @@ msgstr ""
 
 # PROF_DRIV_GEN_NARR
 #: PROF_DRIV_GEN_NARR
+msgid "{0} {1}"
+msgstr ""
+
+# PROF_DRIV_GEN_NARR_TECH
+#: PROF_DRIV_GEN_NARR_TECH
 msgid "Generated Narrative: {0} {1}"
+msgstr ""
+
+# PROF_DRIV_SUMM
+#: PROF_DRIV_SUMM
+msgctxt "PROF_DRIV_SUMM"
+msgid "{0}: {1}"
+msgstr ""
+
+# PROF_DRIV_SUMM_PROP
+#: PROF_DRIV_SUMM_PROP
+msgid "{0} = {1}"
 msgstr ""
 
 # PROV_ACT
@@ -2226,11 +2307,6 @@ msgstr ""
 msgid "Questionnaire:"
 msgstr ""
 
-# QUEST_QUESTIONNAIRE
-#: QUEST_QUESTIONNAIRE
-msgid "Questionnaire {0}"
-msgstr ""
-
 # QUEST_READONLY
 #: QUEST_READONLY
 msgid "Is Read Only"
@@ -2244,11 +2320,6 @@ msgstr ""
 # QUEST_REP
 #: QUEST_REP
 msgid "Repeats"
-msgstr ""
-
-# QUEST_RESP
-#: QUEST_RESP
-msgid "QuestionnaireResponse"
 msgstr ""
 
 # QUEST_RESP_ROOT
@@ -2279,6 +2350,11 @@ msgstr ""
 # QUEST_SUB_TYPE
 #: QUEST_SUB_TYPE
 msgid "Subject Type"
+msgstr ""
+
+# QUEST_SUMMARY
+#: QUEST_SUMMARY
+msgid "Response to Questionnaire ''{0}'' about ''{1}''"
 msgstr ""
 
 # QUEST_TEXT
@@ -2319,6 +2395,17 @@ msgstr ""
 # QUEST_UNKNOWN_MODE
 #: QUEST_UNKNOWN_MODE
 msgid "Unknown QuestionnaireResponse Renderer Mode"
+msgstr ""
+
+# QUEST_UNSPECIFIED_QUESTIONNAIRE
+#: QUEST_UNSPECIFIED_QUESTIONNAIRE
+msgid "Unspecified Questionnaire"
+msgstr ""
+
+# QUEST_UNSPECIFIED_SUBJECT
+#: QUEST_UNSPECIFIED_SUBJECT
+msgctxt "QUEST_UNSPECIFIED_SUBJECT"
+msgid "Unspecified Subject"
 msgstr ""
 
 # QUEST_VALUE
@@ -2437,19 +2524,14 @@ msgstr ""
 msgid "Error rendering: {0}"
 msgstr ""
 
-# RES_REND_GEN_SUM
-#: RES_REND_GEN_SUM
-msgid ". Generated Summary:"
-msgstr ""
-
 # RES_REND_INFO_SOURCE
 #: RES_REND_INFO_SOURCE
-msgid "Information Source:"
+msgid "Information Source: <param name=\"source\"/>"
 msgstr ""
 
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
-msgid "(Language"
+msgid "Language: {0}"
 msgstr ""
 
 # RES_REND_RET
@@ -2464,7 +2546,7 @@ msgstr ""
 
 # RES_REND_SPEC_RULES
 #: RES_REND_SPEC_RULES
-msgid "Special rules apply:"
+msgid "Special rules apply: {0}!"
 msgstr ""
 
 # RES_REND_TAG
@@ -2479,12 +2561,12 @@ msgstr ""
 
 # RES_REND_UPDATED
 #: RES_REND_UPDATED
-msgid "Updated"
+msgid "Last updated: {0}"
 msgstr ""
 
 # RES_REND_VER
 #: RES_REND_VER
-msgid "(version"
+msgid "version: {0}"
 msgstr ""
 
 # SD_COMP_HEAD_CARD_L
@@ -2579,7 +2661,7 @@ msgstr ""
 
 # SD_GRID_HEAD_CARD_DESC
 #: SD_GRID_HEAD_CARD_DESC
-msgid "Minimum and Maximum # of times the the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
+msgid "Minimum and Maximum # of times the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
 msgstr ""
 
 # SD_GRID_HEAD_DESC
@@ -2604,7 +2686,8 @@ msgstr ""
 
 # SD_HEAD_CARD_DESC
 #: SD_HEAD_CARD_DESC
-msgid "Minimum and Maximum # of times the the element can appear in the instance"
+msgctxt "SD_HEAD_CARD_DESC"
+msgid "Minimum and Maximum # of times the element can appear in the instance"
 msgstr ""
 
 # SD_HEAD_DESC_DESC
@@ -2721,7 +2804,7 @@ msgstr ""
 
 # SEARCH_PAR_MULTIPLE_AND_SERVER
 #: SEARCH_PAR_MULTIPLE_AND_SERVER
-msgid "multipleAnd: It's up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
+msgid "multipleAnd: It''s up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
 msgstr ""
 
 # SEARCH_PAR_MULTIPLE_OR_MULTIPLE
@@ -2736,7 +2819,7 @@ msgstr ""
 
 # SEARCH_PAR_MULTIPLE_OR_SERVER
 #: SEARCH_PAR_MULTIPLE_OR_SERVER
-msgid "multipleOr: It's up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
+msgid "multipleOr: It''s up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
 msgstr ""
 
 # SEARCH_PAR_NONE
@@ -2982,6 +3065,7 @@ msgstr ""
 
 # STRUC_DEF_CURR
 #: STRUC_DEF_CURR
+msgctxt "STRUC_DEF_CURR"
 msgid "Current"
 msgstr ""
 
@@ -3087,6 +3171,7 @@ msgstr ""
 
 # STRUC_DEF_EXT
 #: STRUC_DEF_EXT
+msgctxt "STRUC_DEF_EXT"
 msgid "Extensible"
 msgstr ""
 
@@ -3342,6 +3427,7 @@ msgstr ""
 
 # STRUC_DEF_MAX_MIN
 #: STRUC_DEF_MAX_MIN
+msgctxt "STRUC_DEF_MAX_MIN"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
 msgstr ""
 
@@ -3988,12 +4074,12 @@ msgstr ""
 
 # TEST_PLAN_DEP
 #: TEST_PLAN_DEP
-msgid "Test Plant Dependency:"
+msgid "Test Plan Dependency:"
 msgstr ""
 
 # TEST_PLAN_DEPEN
 #: TEST_PLAN_DEPEN
-msgid "Test Plant Dependencies:"
+msgid "Test Plan Dependencies:"
 msgstr ""
 
 # TEST_PLAN_DESC
@@ -4018,12 +4104,12 @@ msgstr ""
 
 # TEST_PLAN_SCOPE
 #: TEST_PLAN_SCOPE
-msgid "Test Plant Scope:"
+msgid "Test Plan Scope:"
 msgstr ""
 
 # TEST_PLAN_SCOPES
 #: TEST_PLAN_SCOPES
-msgid "Test Plant Scopes:"
+msgid "Test Plan Scopes:"
 msgstr ""
 
 # TEST_PLAN_SOURCE
@@ -4144,7 +4230,7 @@ msgstr ""
 
 # VALUE_SET_CODE_SELEC
 #: VALUE_SET_CODE_SELEC
-msgid "This value set cannot be fully expanded, but a selection ( {0} codes) of the whole set of codes is shown here."
+msgid "This value set cannot be fully expanded, but a selection ({0} codes) of the whole set of codes is shown here."
 msgstr ""
 
 # VALUE_SET_COMMA
