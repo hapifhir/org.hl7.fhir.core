@@ -146,13 +146,6 @@ jobs:
               sourceFolder: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}_target/'
               contents: '**'
               targetFolder: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}/target/'
-          # Copy source files to a single directory so PublishCodeCoverageResults can access them with a single path
-          - task: CopyFiles@2
-            condition: always()
-            inputs:
-              sourceFolder: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}/src/main/java/'
-              contents: '**'
-              targetFolder: '$(Agent.TempDirectory)/jacoco_src/'
       - task: Maven@3
         inputs:
           mavenPomFile: 'pom.xml'
@@ -167,7 +160,7 @@ jobs:
         displayName: 'Publish JaCoCo test results'
         inputs:
           summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
-          pathToSources: '$(Agent.TempDirectory)/jacoco_src/'
+          pathToSources: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.convertors/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.utilities/src/main/java/'
 
 
       - bash: |
