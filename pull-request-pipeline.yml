@@ -161,7 +161,7 @@ jobs:
         inputs:
           reports: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
           targetdir: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
-          sourcedirs: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.convertors/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.utilities/src/main/java/'
+          sourcedirs: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.utilities/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.dstu2/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.dstu2016may/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.dstu3/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.r4/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.r4b/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.r5/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.convertors/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/src/main/java/'
           publishCodeCoverageResults: true
 
       - bash: |
