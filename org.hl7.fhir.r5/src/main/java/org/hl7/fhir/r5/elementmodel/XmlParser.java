@@ -889,13 +889,15 @@ public class XmlParser extends ParserBase {
           xml.attribute(child.getProperty().getXmlNamespace(),child.getProperty().getXmlName(), av);
         }
       }
-      if (linkResolver != null)
-        xml.link(linkResolver.resolveProperty(element.getProperty()));
-      if (!xml.namespaceDefined(element.getProperty().getXmlNamespace())) {
-        String abbrev = makeNamespaceAbbrev(element.getProperty(), xml);
-        xml.namespace(element.getProperty().getXmlNamespace(), abbrev);
+      if (!element.getProperty().getDefinition().hasExtension(ToolingExtensions.EXT_ID_CHOICE_GROUP)) {
+        if (linkResolver != null)
+          xml.link(linkResolver.resolveProperty(element.getProperty()));
+        if (!xml.namespaceDefined(element.getProperty().getXmlNamespace())) {
+          String abbrev = makeNamespaceAbbrev(element.getProperty(), xml);
+          xml.namespace(element.getProperty().getXmlNamespace(), abbrev);
+        }
+        xml.enter(element.getProperty().getXmlNamespace(), elementName);
       }
-      xml.enter(element.getProperty().getXmlNamespace(), elementName);
 
       if (!root && element.getSpecial() != null) {
         if (linkResolver != null)
@@ -919,9 +921,11 @@ public class XmlParser extends ParserBase {
           }
         }
       }
-      if (!root && element.getSpecial() != null)
-        xml.exit(element.getProperty().getXmlNamespace(),element.getType());
-      xml.exit(element.getProperty().getXmlNamespace(),elementName);
+      if (!element.getProperty().getDefinition().hasExtension(ToolingExtensions.EXT_ID_CHOICE_GROUP)) {
+        if (!root && element.getSpecial() != null)
+          xml.exit(element.getProperty().getXmlNamespace(),element.getType());
+        xml.exit(element.getProperty().getXmlNamespace(),elementName);
+      }
     }
   }
 
