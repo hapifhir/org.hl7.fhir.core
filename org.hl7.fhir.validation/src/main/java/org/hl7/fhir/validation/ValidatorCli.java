@@ -105,7 +105,7 @@ public class ValidatorCli {
   public static final String JAVA_DISABLED_PROXY_SCHEMES = "jdk.http.auth.proxying.disabledSchemes";
   public static final String JAVA_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
 
-  private static ValidationService validationService = new ValidationService();
+  private final static ValidationService validationService = new ValidationService();
 
   protected ValidationService myValidationService;
 
@@ -408,8 +408,4 @@ public class ValidatorCli {
     return validationEngine;
   }
 
-  protected void validateScan(CliContext cliContext, ValidationEngine validator) throws Exception {
-    Scanner validationScanner = new Scanner(validator.getContext(), validator.getValidator(null), validator.getIgLoader(), validator.getFhirPathEngine());
-    validationScanner.validateScan(cliContext.getOutput(), cliContext.getSources());
-  }
 }
