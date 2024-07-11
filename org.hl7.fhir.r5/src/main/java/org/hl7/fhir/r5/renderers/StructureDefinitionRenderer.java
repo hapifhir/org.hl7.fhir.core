@@ -2779,7 +2779,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } else { 
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(t); 
           if (sd == null) { 
-            System.out.println("Unable to find "+t); 
+            if (DEBUG) {
+              System.out.println("Unable to find "+t);
+            }
             sd = context.getWorker().fetchTypeDefinition(t); 
           } else if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) { 
             used = true; 

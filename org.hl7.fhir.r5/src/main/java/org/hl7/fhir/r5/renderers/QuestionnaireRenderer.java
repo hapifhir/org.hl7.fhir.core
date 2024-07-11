@@ -362,7 +362,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.QUEST_OPTIONS)+" "), null)); 
       if (context.getDefinitionsTarget() == null) { 
         // if we don't have a definitions target, we'll add them below.  
-        defn.getPieces().add(gen.new Piece("#opt-item."+i.primitiveValue("linkId"), Integer.toString(i.children("answerOption").size())+" "+Utilities.pluralize("option", i.children("answerOption").size()), null)); 
+        defn.getPieces().add(gen.new Piece("#"+context.prefixAnchor("opt-item."+i.primitiveValue("linkId")), Integer.toString(i.children("answerOption").size())+" "+Utilities.pluralize("option", i.children("answerOption").size()), null)); 
       } else { 
         defn.getPieces().add(gen.new Piece(context.getDefinitionsTarget()+"#item."+i.primitiveValue("linkId"), Integer.toString(i.children("answerOption").size())+" "+Utilities.pluralize("option", i.children("answerOption").size()), null)); 
       } 

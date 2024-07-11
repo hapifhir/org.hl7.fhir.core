@@ -343,6 +343,24 @@ public class Element extends Base implements NamedItem {
     }
   }
 
+  public void setChildValue(String name, Base value) {
+    if (children == null)
+      children = new NamedItemList<Element>();
+    for (Element child : children) {
+      if (name.equals(child.getName())) {
+        if (!child.isPrimitive())
+          throw new Error("Cannot set a value of a non-primitive type ("+name+" on "+this.getName()+")");
+        child.setValue(value.primitiveValue());
+      }
+    }
+
+    try {
+      setProperty(name.hashCode(), name, value);
+    } catch (FHIRException e) {
+      throw new Error(e);
+    }
+  }
+
   public List<Element> getChildren(String name) {
     List<Element> res = new ArrayList<Element>(); 
     if (children.size() > 20) {
@@ -478,6 +496,11 @@ public class Element extends Base implements NamedItem {
           children.add(i, ne);
           childForValue = ne;
           break;
+        } else if (p.getName().endsWith("[x]") && name.startsWith(p.getName().replace("[x]", ""))) {
+          Element ne = new Element(p.getName(), p).setFormat(format);
+          children.add(i, ne);
+          childForValue = ne;
+          break;
         }
       }
     
@@ -485,7 +508,7 @@ public class Element extends Base implements NamedItem {
       throw new Error("Cannot set property "+name+" on "+this.name);
     else if (value.isPrimitive()) {
       if (childForValue.property.getName().endsWith("[x]"))
-        childForValue.name = name+Utilities.capitalize(value.fhirType());
+        childForValue.name = childForValue.name.replace("[x]", "")+Utilities.capitalize(value.fhirType());
       childForValue.setValue(value.primitiveValue());
     } else {
       Element ve = (Element) value;
@@ -693,6 +716,7 @@ public class Element extends Base implements NamedItem {
   public Element getNamedChild(String name) {
     return getNamedChild(name, true);
   }
+  
   public Element getNamedChild(String name, boolean exception) {
     if (children == null)
       return null;
@@ -1163,7 +1187,9 @@ public class Element extends Base implements NamedItem {
   }
 
   public void removeChild(String name) {
-    children.removeIf(n -> name.equals(n.getName()));
+    if (children.removeIf(n -> name.equals(n.getName()))) {
+      children.clearMap();
+    }
   }
 
   public boolean isProhibited() {
