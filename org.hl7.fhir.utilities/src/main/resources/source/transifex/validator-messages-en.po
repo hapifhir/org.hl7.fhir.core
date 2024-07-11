@@ -898,7 +898,7 @@ msgctxt "Discriminator__is_based_on_type_but_slice__in__has_multiple_types"
 msgid "-- no content: do not translate --"
 msgid_plural "Discriminator ({1}) is based on type, but slice {2} in {3} has {0} types: {4}"
 msgstr[0] "-- no content: do not translate --"
-msgstr[1] ""
+msgstr[1] "Something here"
 
 # Discriminator__is_based_on_type_but_slice__in__has_no_types
 #: Discriminator__is_based_on_type_but_slice__in__has_no_types
