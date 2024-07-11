@@ -113,8 +113,8 @@ msgstr ""
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
 msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references (must be ``{3}``)"
 msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references (one of ``{3}``)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "??"
+msgstr[1] "??"
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
@@ -909,8 +909,8 @@ msgstr "discriminator ({0}) はタイプに基づいていますが、{2} のス
 #: Display_Name_WS_for__should_be_one_of__instead_of
 msgid "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid display is {3} (for the language(s) ''{5}'')"
 msgid_plural "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid display is one of {0} choices: {3} (for the language(s) ''{5}'')"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "??"
+msgstr[1] "??"
 
 # Display_Name_for__should_be_one_of__instead_of
 #: Display_Name_for__should_be_one_of__instead_of
@@ -2648,7 +2648,7 @@ msgctxt "Questionnaire_QR_Item_OnlyOneI"
 msgid "-- no content: do not translate --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] "LinkId {1} を持つ回答アイテムは1つだけ許可されます - {0} 個のアイテムが見つかりました"
-msgstr[1] ""
+msgstr[1] "??"
 
 # Questionnaire_QR_Item_Order
 #: Questionnaire_QR_Item_Order
@@ -5206,8 +5206,8 @@ msgstr[1] "{3}: 最小必要値 = {7}、見つかった値 = {0} (from {1})"
 #: Validation_VAL_Profile_Minimum_SLICE
 msgid "Slice ''{3}'': a matching slice is required, but not found (from {1}). Note that other slices are allowed in addition to this required slice"
 msgid_plural "Slice ''{3}'': minimum required = {0}, but only found {7} (from {1})"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "??"
+msgstr[1] "??"
 
 # Validation_VAL_Profile_MultipleMatches
 #: Validation_VAL_Profile_MultipleMatches
