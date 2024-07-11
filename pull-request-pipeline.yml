@@ -77,6 +77,14 @@ parameters:
       jdks:
         - 1.11
         - 1.17
+  - name: sourceDirectories
+    displayName: Source directories for test coverage reporting
+    type: string
+    default: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.utilities/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.dstu2/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.dstu2016may/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.dstu3/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.r4/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.r4b/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.r5/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.convertors/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/src/main/java/'
+  - name: verboseCoverage
+    displayName: Enable Verbose Coverage Reporting
+    type: boolean
+    default: false
 
 variables:
   - group: CODECOV_GROUP
@@ -156,15 +164,26 @@ jobs:
           jdkArchitectureOption: 'x64'
           goals: 'jacoco:report-aggregate'
 
+
       - task: PublishCodeCoverageResults@2
-        displayName: 'Publish JaCoCo test results'
+        displayName: 'Publish test coverage for Azure'
+        condition: eq(parameters.verboseCoverage, false)
         inputs:
           summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
-          pathToSources: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.convertors/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.utilities/src/main/java/'
+          pathToSources: ${{ parameters.sourceDirectories }}
+
+      - task: reportgenerator@5
+        displayName: 'Publish verbose test coverage for Azure'
+        condition: eq(parameters.verboseCoverage, true)
+        inputs:
+          reports: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
+          targetdir: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
+          sourcedirs: ${{ parameters.sourceDirectories }}
+          publishCodeCoverageResults: true
 
 
       - bash: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
           ./codecov -t $(CODECOV_TOKEN) -R $(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/
-        displayName: 'codecov'
+        displayName: 'Upload test results to codecov'
