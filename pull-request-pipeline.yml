@@ -167,14 +167,14 @@ jobs:
 
       - task: PublishCodeCoverageResults@2
         displayName: 'Publish test coverage for Azure'
-        condition: eq(parameters.verboseCoverage, false)
+        condition: ${{ eq(parameters.verboseCoverage, false) }}
         inputs:
           summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
           pathToSources: ${{ parameters.sourceDirectories }}
 
       - task: reportgenerator@5
         displayName: 'Publish verbose test coverage for Azure'
-        condition: eq(parameters.verboseCoverage, true)
+        condition: ${{ eq(parameters.verboseCoverage, true) }}
         inputs:
           reports: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
           targetdir: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
