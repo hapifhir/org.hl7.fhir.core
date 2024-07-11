@@ -898,9 +898,9 @@ msgstr "El discriminador ({0}) está basado en la existencia de un elemento, per
 # Discriminator__is_based_on_type_but_slice__in__has_multiple_types
 #: Discriminator__is_based_on_type_but_slice__in__has_multiple_types
 msgctxt "Discriminator__is_based_on_type_but_slice__in__has_multiple_types"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #23 --"
 msgid_plural "Discriminator ({1}) is based on type, but slice {2} in {3} has {0} types: {4}"
-msgstr[0] "-- no content: do not translate --"
+msgstr[0] ""
 msgstr[1] "El discriminador ({1}) está basado en tipos, pero la partición {2} en {3} tiene {0} tipos: {4}"
 msgstr[2] "El discriminador ({1}) está basado en tipos, pero la partición {2} en {3} tiene {0} tipos: {4}"
 
@@ -1363,18 +1363,18 @@ msgstr "Imposible resolver el discriminador{0} en {2} encontrado en las definici
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #24 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
-msgstr[0] "-- no content: do not translate --"
+msgstr[0] ""
 msgstr[1] "Error en el discriminador en {1}: no tiene hijos, {0} perfiles de tipo"
 msgstr[2] "Error en el discriminador en {1}: no tiene hijos, {0} perfiles de tipo"
 
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #25 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
-msgstr[0] "-- no content: do not translate --"
+msgstr[0] ""
 msgstr[1] "Error en el discriminador en {1}: no tiene hijos , {0} tipos"
 msgstr[2] "Error en el discriminador en {1}: no tiene hijos , {0} tipos"
 
@@ -1396,9 +1396,9 @@ msgstr "Uso ilegal de ofType() en el discriminador - Type no tiene codigo en {0}
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #26 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
-msgstr[0] "-- no content: do not translate --"
+msgstr[0] ""
 msgstr[1] "Uso Ilegal de resolve() en el discriminador - {0} tipos posibles en {1} (puede ser uno solo)"
 msgstr[2] "Uso Ilegal de resolve() en el discriminador - {0} tipos posibles en {1} (puede ser uno solo)"
 
@@ -1420,9 +1420,9 @@ msgstr "Uso ilegal de ofType() en el discriminador - no hay tipo en el elemento 
 # FHIRPATH_FOCUS
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #27 --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
-msgstr[0] "-- no content: do not translate --"
+msgstr[0] ""
 msgstr[1] "Error evaluando la expresión FHIRPath: el foco para {0} puede tener solo un valor, pero tiene {0} valores"
 msgstr[2] "Error evaluando la expresión FHIRPath: el foco para {0} puede tener solo un valor, pero tiene {0} valores"
 
@@ -1439,9 +1439,9 @@ msgstr ""
 # FHIRPATH_LEFT_VALUE
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #28 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
-msgstr[0] "-- no content: do not translate --"
+msgstr[0] ""
 msgstr[1] "Error evaluando la expresión FHIRPath: el operando a la izquierda de {1} puede tener solo 1 valor pero tiene {0} valores"
 msgstr[2] "Error evaluando la expresión FHIRPath: el operando a la izquierda de {1} puede tener solo 1 valor pero tiene {0} valores"
 
@@ -1523,18 +1523,18 @@ msgstr "Problema con el uso de resolve() - el perfil {0} en {1} no pudo ser resu
 # FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #29 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
-msgstr[0] "-- no content: do not translate --"
+msgstr[0] ""
 msgstr[1] "Uso Ilegal de resolve() en el discriminador - {0} perfiles destino posibles de tipo en {1} (solo puede ser uno)"
 msgstr[2] "Uso Ilegal de resolve() en el discriminador - {0} perfiles destino posibles de tipo en {1} (solo puede ser uno)"
 
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #30 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
-msgstr[0] "-- no content: do not translate --"
+msgstr[0] ""
 msgstr[1] "Error evaluando la expresión FHIRPath: el operando a la derecha de {1} puede tener solo 1 valor pero tiene {0} valores"
 msgstr[2] "Error evaluando la expresión FHIRPath: el operando a la derecha de {1} puede tener solo 1 valor pero tiene {0} valores"
 
@@ -2176,9 +2176,9 @@ msgstr ""
 # MULTIPLE_LOGICAL_MODELS
 #: MULTIPLE_LOGICAL_MODELS
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #31 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
-msgstr[0] "-- no content: do not translate --"
+msgstr[0] ""
 msgstr[1] "{0} Modelos Lógicos encontrados en los perfiles provistos, asi que es imposible analizar el modelo lógico(puede ser solo uno, se encontraron {1})"
 msgstr[2] "{0} Modelos Lógicos encontrados en los perfiles provistos, asi que es imposible analizar el modelo lógico(puede ser solo uno, se encontraron {1})"
 
@@ -2434,9 +2434,9 @@ msgstr "Los discriminadores basados en perfiles deben tener un tipo con un perfi
 # Profile_based_discriminators_must_have_only_one_type__in_profile
 #: Profile_based_discriminators_must_have_only_one_type__in_profile
 msgctxt "Profile_based_discriminators_must_have_only_one_type__in_profile"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #32 --"
 msgid_plural "Profile based discriminators must have only one type ({1} in profile {2}) but found {0} types"
-msgstr[0] "-- no content: do not translate --"
+msgstr[0] ""
 msgstr[1] "Los discriminadores basados en perfiles deben tener un solo tipo ({1} en el perfil {2}) pero se han encontrado {0} tipos"
 msgstr[2] "Los discriminadores basados en perfiles deben tener un solo tipo ({1} en el perfil {2}) pero se han encontrado {0} tipos"
 
@@ -2663,9 +2663,9 @@ msgstr "Solo un item con respuesta se permite para items que tengan este linkId"
 # Questionnaire_QR_Item_OnlyOneI
 #: Questionnaire_QR_Item_OnlyOneI
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #33 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
-msgstr[0] "-- no content: do not translate --"
+msgstr[0] ""
 msgstr[1] "Solo una respuesta permitida para el linkID {1} pero se encontraron {0} items"
 msgstr[2] "Solo una respuesta permitida para el linkID {1} pero se encontraron {0} items"
 
