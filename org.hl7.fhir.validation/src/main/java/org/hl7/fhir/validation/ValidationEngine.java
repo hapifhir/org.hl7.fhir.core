@@ -353,12 +353,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       txVersion = null;
       timeTracker = null;
       canRunWithoutTerminologyServer = false;
-      useEcosystem = true;
+      useEcosystem = USE_ECOSYSTEM_DEFAULT;
       loggingService = new SystemOutLoggingService();
     }
 
     /**
-     * @deprecated This method will be made private in a future release, and should not be used outside of this class.
+     * @deprecated This method will be removed in a future release, and should not be used outside of this class.
      * Use {@link #ValidationEngineBuilder()} instead.
      */
     @Deprecated
@@ -381,7 +381,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       this.timeTracker = timeTracker;
       this.canRunWithoutTerminologyServer = canRunWithoutTerminologyServer;
       this.loggingService = loggingService;
-      this.useEcosystem = USE_ECOSYSTEM_DEFAULT;
+      this.useEcosystem = useEcosystem;
       this.THO = THO;
     }
 
