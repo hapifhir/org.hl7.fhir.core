@@ -23,9 +23,6 @@ public interface SessionCache {
    */
   String cacheSession(String sessionId, ValidationEngine validationEngine);
 
-
-
-
   /**
    * Checks if the passed in {@link String} id exists in the set of stored session id.
    * @param sessionId The {@link String} id to search for.
@@ -45,5 +42,10 @@ public interface SessionCache {
    * @return {@link Set} of session ids.
    */
   Set<String> getSessionIds();
-    
+
+  /**
+   * Performs any pending maintenance operations needed by the cache.
+   * */
+  public void cleanUp();
+
 }

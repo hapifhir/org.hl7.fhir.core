@@ -895,7 +895,7 @@ msgstr "discriminator ({0}) は要素の存在に基づいていますが、ス�
 # Discriminator__is_based_on_type_but_slice__in__has_multiple_types
 #: Discriminator__is_based_on_type_but_slice__in__has_multiple_types
 msgctxt "Discriminator__is_based_on_type_but_slice__in__has_multiple_types"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #34 --"
 msgid_plural "Discriminator ({1}) is based on type, but slice {2} in {3} has {0} types: {4}"
 msgstr[0] ""
 msgstr[1] "discriminator ({1}) はタイプに基づいていますが、{3} のスライス {2} には {0} のタイプがあります: {4}"
@@ -1357,7 +1357,7 @@ msgstr "定義内でdiscriminator {0} を {2} 上で見つけたが、extension 
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #35 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
 msgstr[1] "識別子のエラー {1}: 子がなく、{0} タイプのプロファイル"
@@ -1365,7 +1365,7 @@ msgstr[1] "識別子のエラー {1}: 子がなく、{0} タイプのプロフ�
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #36 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
 msgstr[1] "識別子のエラー {1}: 子がなく、{0} タイプ"
@@ -1388,7 +1388,7 @@ msgstr "discriminatorでのofType()の使用が無効 - タイプにコードが
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #37 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] "discriminatorでのresolve()の使用が無効 - {0} 可能なタイプが {1} に複数存在します (一つだけでなければならない)"
@@ -1411,7 +1411,7 @@ msgstr "discriminatorでのofType()の使用が無効 - 要素 {0} にタイプ�
 # FHIRPATH_FOCUS
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #38 --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "FHIRPath式の評価エラー: {0}のフォーカスは1つの値を持つことができますが、{0}の値があります"
@@ -1429,7 +1429,7 @@ msgstr ""
 # FHIRPATH_LEFT_VALUE
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #39 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "FHIRPath式の評価エラー: {1}への左オペランドは1つの値しか持つことができませんが、{0}の値があります"
@@ -1512,7 +1512,7 @@ msgstr "resolve()の使用に問題 - {1}上のプロファイル{0}を解決で
 # FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #40 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] "discriminatorでのresolve()の使用が無効 - {1}に{0}の可能なターゲットタイププロファイルが複数存在します (一つだけでなければならない)"
@@ -1520,7 +1520,7 @@ msgstr[1] "discriminatorでのresolve()の使用が無効 - {1}に{0}の可能�
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #41 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "FHIRPath式の評価エラー: {1}への右オペランドは1つの値しか持つことができませんが、{0}の値があります"
@@ -1663,6 +1663,11 @@ msgstr ""
 # IG_DEPENDENCY_VERSION_WARNING
 #: IG_DEPENDENCY_VERSION_WARNING
 msgid "The ImplementationGuide is based on FHIR version {0} but package {1} is based on FHIR version {2}. In general, this version mismatch should be avoided - some tools will try to make this work with variable degrees of success, but others will not even try"
+msgstr ""
+
+# IG_NO_VERSION
+#: IG_NO_VERSION
+msgid "No fhir version was specified for the IG so the version consistency can't be checked"
 msgstr ""
 
 # ILLEGAL_COMMENT_TYPE
@@ -2158,7 +2163,7 @@ msgstr ""
 # MULTIPLE_LOGICAL_MODELS
 #: MULTIPLE_LOGICAL_MODELS
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #42 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
 msgstr[1] "提供されたプロファイルに {0} 個の論理モデルが見つかったため、論理モデルを解析できません（一つだけでなければならず、{1}個見つかりました）"
@@ -2412,7 +2417,7 @@ msgstr "プロファイルベースのディスクリミネータはプロファ
 # Profile_based_discriminators_must_have_only_one_type__in_profile
 #: Profile_based_discriminators_must_have_only_one_type__in_profile
 msgctxt "Profile_based_discriminators_must_have_only_one_type__in_profile"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #43 --"
 msgid_plural "Profile based discriminators must have only one type ({1} in profile {2}) but found {0} types"
 msgstr[0] ""
 msgstr[1] "プロファイルベースのディスクリミネータは一つのタイプしか持つことができません（プロファイル {2} の {1}）ですが、{0} のタイプが見つかりました"
@@ -2640,7 +2645,7 @@ msgstr "このLinkIdを持つ回答アイテムは1つだけ許可されます"
 # Questionnaire_QR_Item_OnlyOneI
 #: Questionnaire_QR_Item_OnlyOneI
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #44 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] "LinkId {1} を持つ回答アイテムは1つだけ許可されます - {0} 個のアイテムが見つかりました"
 msgstr[1] ""
