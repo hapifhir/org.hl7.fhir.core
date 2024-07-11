@@ -897,7 +897,7 @@ msgstr ""
 msgctxt "Discriminator__is_based_on_type_but_slice__in__has_multiple_types"
 msgid "-- no content: do not translate --"
 msgid_plural "Discriminator ({1}) is based on type, but slice {2} in {3} has {0} types: {4}"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] ""
 
 # Discriminator__is_based_on_type_but_slice__in__has_no_types
@@ -1359,7 +1359,7 @@ msgstr ""
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
 msgid "-- no content: do not translate --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] ""
 
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
@@ -1367,7 +1367,7 @@ msgstr[1] ""
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
 msgid "-- no content: do not translate --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] ""
 
 # FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED
@@ -1390,7 +1390,7 @@ msgstr ""
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
 msgid "-- no content: do not translate --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] ""
 
 # FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
@@ -1413,7 +1413,7 @@ msgstr ""
 msgctxt "FHIRPATH_FOCUS"
 msgid "-- no content: do not translate --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] ""
 
 # FHIRPATH_HO_HOST_SERVICES
@@ -1431,7 +1431,7 @@ msgstr ""
 msgctxt "FHIRPATH_LEFT_VALUE"
 msgid "-- no content: do not translate --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] ""
 
 # FHIRPATH_LEFT_VALUE_WRONG_TYPE
@@ -1514,7 +1514,7 @@ msgstr ""
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
 msgid "-- no content: do not translate --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] ""
 
 # FHIRPATH_RIGHT_VALUE
@@ -1522,7 +1522,7 @@ msgstr[1] ""
 msgctxt "FHIRPATH_RIGHT_VALUE"
 msgid "-- no content: do not translate --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] ""
 
 # FHIRPATH_RIGHT_VALUE_WRONG_TYPE
@@ -1663,6 +1663,11 @@ msgstr ""
 # IG_DEPENDENCY_VERSION_WARNING
 #: IG_DEPENDENCY_VERSION_WARNING
 msgid "The ImplementationGuide is based on FHIR version {0} but package {1} is based on FHIR version {2}. In general, this version mismatch should be avoided - some tools will try to make this work with variable degrees of success, but others will not even try"
+msgstr ""
+
+# IG_NO_VERSION
+#: IG_NO_VERSION
+msgid "No fhir version was specified for the IG so the version consistency can't be checked"
 msgstr ""
 
 # ILLEGAL_COMMENT_TYPE
@@ -2160,7 +2165,7 @@ msgstr ""
 msgctxt "MULTIPLE_LOGICAL_MODELS"
 msgid "-- no content: do not translate --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] ""
 
 # Measure_MR_M_None
@@ -2414,7 +2419,7 @@ msgstr ""
 msgctxt "Profile_based_discriminators_must_have_only_one_type__in_profile"
 msgid "-- no content: do not translate --"
 msgid_plural "Profile based discriminators must have only one type ({1} in profile {2}) but found {0} types"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] ""
 
 # QUESTIONNAIRE_QR_ITEM_BADOPTION_CS
@@ -2642,7 +2647,7 @@ msgstr ""
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
 msgid "-- no content: do not translate --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] ""
 
 # Questionnaire_QR_Item_Order

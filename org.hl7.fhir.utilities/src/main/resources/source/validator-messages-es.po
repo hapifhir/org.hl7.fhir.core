@@ -1678,6 +1678,11 @@ msgstr ""
 msgid "The ImplementationGuide is based on FHIR version {0} but package {1} is based on FHIR version {2}. In general, this version mismatch should be avoided - some tools will try to make this work with variable degrees of success, but others will not even try"
 msgstr ""
 
+# IG_NO_VERSION
+#: IG_NO_VERSION
+msgid "No fhir version was specified for the IG so the version consistency can't be checked"
+msgstr ""
+
 # ILLEGAL_COMMENT_TYPE
 #: ILLEGAL_COMMENT_TYPE
 msgid "The fhir_comments property must be an array of strings"

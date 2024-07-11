@@ -897,7 +897,7 @@ msgstr "Discriminator ({0}) is gebaseerd op elementaanwezigheid, maar slice {1} 
 msgctxt "Discriminator__is_based_on_type_but_slice__in__has_multiple_types"
 msgid "-- no content: do not translate --"
 msgid_plural "Discriminator ({1}) is based on type, but slice {2} in {3} has {0} types: {4}"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] "Discriminator ({1}) is gebaseerd op type, maar slice {2} in {3} heeft {0} typen: {4}"
 
 # Discriminator__is_based_on_type_but_slice__in__has_no_types
@@ -1359,7 +1359,7 @@ msgstr "Kan discriminator {0} op {2} niet vinden, gevonden in de definities omda
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
 msgid "-- no content: do not translate --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] "Fout in discriminator bij {1}: geen onderliggende elementen, {0} typeprofielen"
 
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
@@ -1367,7 +1367,7 @@ msgstr[1] "Fout in discriminator bij {1}: geen onderliggende elementen, {0} type
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
 msgid "-- no content: do not translate --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] "Fout in discriminator bij {1}: geen onderliggende elementen, {0} typen"
 
 # FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED
@@ -1390,7 +1390,7 @@ msgstr "Onjuist gebruik van ofType() in discriminator - Type heeft geen code op 
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
 msgid "-- no content: do not translate --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] "onjuist gebruik van resolve() in discriminator - {0} mogelijke typen op {1} (kan er maar een zijn)"
 
 # FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
@@ -1413,7 +1413,7 @@ msgstr "Onjuist gebruik van ofType() in discriminator - geen type op element {0}
 msgctxt "FHIRPATH_FOCUS"
 msgid "-- no content: do not translate --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] "Fout bij evalueren FHIRPath expressie: focus voor {0} kan maar een warde hebben, maar heeft {0} waarden"
 
 # FHIRPATH_HO_HOST_SERVICES
@@ -1431,7 +1431,7 @@ msgstr "Het type {0} is ongeldig"
 msgctxt "FHIRPATH_LEFT_VALUE"
 msgid "-- no content: do not translate --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] "Fout bij evalueren FHIRPath expressie: linker operandus van {1} kan maar 1 waarde hebben, maar heeft {0} waarden"
 
 # FHIRPATH_LEFT_VALUE_WRONG_TYPE
@@ -1514,7 +1514,7 @@ msgstr "Probleem met gebruik van resolve() - profiel {0} op {1} is niet gevonden
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
 msgid "-- no content: do not translate --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] "Onjuist gebruik van resolve() in discriminator - {0} mogelijke doeltypen op {1} (kan er maar één zijn)"
 
 # FHIRPATH_RIGHT_VALUE
@@ -1522,7 +1522,7 @@ msgstr[1] "Onjuist gebruik van resolve() in discriminator - {0} mogelijke doelty
 msgctxt "FHIRPATH_RIGHT_VALUE"
 msgid "-- no content: do not translate --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] "Fout bij evalueren FHIRPath-expressie: rechter operandus van {1} kan maar 1 waarde hebben, maar heeft {0} waarden"
 
 # FHIRPATH_RIGHT_VALUE_WRONG_TYPE
@@ -1664,6 +1664,11 @@ msgstr "De ImplementationGuide is gebaseerd op FHIR-versie {0} maar package {1} 
 #: IG_DEPENDENCY_VERSION_WARNING
 msgid "The ImplementationGuide is based on FHIR version {0} but package {1} is based on FHIR version {2}. In general, this version mismatch should be avoided - some tools will try to make this work with variable degrees of success, but others will not even try"
 msgstr "De ImplementationGuide is gebaseerd op FHIR-versie {0} maar package {1} is gebaseerd op FHIR-versie {2}. In het algemeen zouden versie-mismatches moeten worden voorkomen - sommige tools zullen dit met wisselend succes proberen op te lossen, maar andere zullen het niet eens proberen"
+
+# IG_NO_VERSION
+#: IG_NO_VERSION
+msgid "No fhir version was specified for the IG so the version consistency can't be checked"
+msgstr ""
 
 # ILLEGAL_COMMENT_TYPE
 #: ILLEGAL_COMMENT_TYPE
@@ -2160,7 +2165,7 @@ msgstr "Referentie naar teruggetrokken {2} {0} van {1}"
 msgctxt "MULTIPLE_LOGICAL_MODELS"
 msgid "-- no content: do not translate --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] "{0} logische modellen gevonden in de aangegeven profielen, dus niet in staat logisch model te verwerken (kan er maar een zijn, gevonden {1})"
 
 # Measure_MR_M_None
@@ -2414,7 +2419,7 @@ msgstr "Profiel-gebaseerde discriminators moeten een type hebben met een profiel
 msgctxt "Profile_based_discriminators_must_have_only_one_type__in_profile"
 msgid "-- no content: do not translate --"
 msgid_plural "Profile based discriminators must have only one type ({1} in profile {2}) but found {0} types"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] "Profiel-gebaseerde discriminators moeten slechts een type bevatten ({1} in profile {2}). Gevonden {0} typen"
 
 # QUESTIONNAIRE_QR_ITEM_BADOPTION_CS
@@ -2642,7 +2647,7 @@ msgstr "Er is slechts een antwoorditem toegestaan bij dit linkId"
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
 msgid "-- no content: do not translate --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
-msgstr[0] ""
+msgstr[0] "-- no content: do not translate --"
 msgstr[1] "Er is slechts een item toegestaan bij dit linkId {1} - gevonden {0} items"
 
 # Questionnaire_QR_Item_Order
