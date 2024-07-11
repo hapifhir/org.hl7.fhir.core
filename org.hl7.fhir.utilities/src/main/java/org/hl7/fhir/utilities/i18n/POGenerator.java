@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -411,9 +410,6 @@ public class POGenerator {
       if (o.duplicate) {
         b.append("msgctxt \""+o.id+"\"\r\n");        
       } 
-      if (tfxMode && Utilities.noString(o.msgid)) {
-        DebugUtilities.breakpoint();
-      }
       String m = tfxMode && Utilities.noString(o.msgid) ? "-- no content: do not translate #"+(++noTrans )+" --" : o.msgid; 
       b.append("msgid \""+wrapQuotes(m)+"\"\r\n");
       if (o.msgidPlural != null) {
