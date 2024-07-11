@@ -113,8 +113,8 @@ msgstr ""
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
 msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references (must be ``{3}``)"
 msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references (one of ``{3}``)"
-msgstr[0] "??"
-msgstr[1] "??"
+msgstr[0] ""
+msgstr[1] ""
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
@@ -909,8 +909,8 @@ msgstr "Der Diskriminator ({0}) basiert auf dem Typ, aber das Slice {1} in {2} h
 #: Display_Name_WS_for__should_be_one_of__instead_of
 msgid "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid display is {3} (for the language(s) ''{5}'')"
 msgid_plural "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid display is one of {0} choices: {3} (for the language(s) ''{5}'')"
-msgstr[0] "??"
-msgstr[1] "??"
+msgstr[0] ""
+msgstr[1] ""
 
 # Display_Name_for__should_be_one_of__instead_of
 #: Display_Name_for__should_be_one_of__instead_of
@@ -1360,7 +1360,7 @@ msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
 msgid "-- no content: do not translate --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] "-- no content: do not translate --"
-msgstr[1] "??"
+msgstr[1] ""
 
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
@@ -1368,7 +1368,7 @@ msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
 msgid "-- no content: do not translate --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] "-- no content: do not translate --"
-msgstr[1] "??"
+msgstr[1] ""
 
 # FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED
 #: FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED
@@ -1391,7 +1391,7 @@ msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
 msgid "-- no content: do not translate --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] "-- no content: do not translate --"
-msgstr[1] "??"
+msgstr[1] ""
 
 # FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
@@ -1414,7 +1414,7 @@ msgctxt "FHIRPATH_FOCUS"
 msgid "-- no content: do not translate --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
 msgstr[0] "-- no content: do not translate --"
-msgstr[1] "??"
+msgstr[1] ""
 
 # FHIRPATH_HO_HOST_SERVICES
 #: FHIRPATH_HO_HOST_SERVICES
@@ -1432,7 +1432,7 @@ msgctxt "FHIRPATH_LEFT_VALUE"
 msgid "-- no content: do not translate --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] "-- no content: do not translate --"
-msgstr[1] "??"
+msgstr[1] ""
 
 # FHIRPATH_LEFT_VALUE_WRONG_TYPE
 #: FHIRPATH_LEFT_VALUE_WRONG_TYPE
@@ -1515,7 +1515,7 @@ msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
 msgid "-- no content: do not translate --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] "-- no content: do not translate --"
-msgstr[1] "??"
+msgstr[1] ""
 
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
@@ -1523,7 +1523,7 @@ msgctxt "FHIRPATH_RIGHT_VALUE"
 msgid "-- no content: do not translate --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] "-- no content: do not translate --"
-msgstr[1] "??"
+msgstr[1] ""
 
 # FHIRPATH_RIGHT_VALUE_WRONG_TYPE
 #: FHIRPATH_RIGHT_VALUE_WRONG_TYPE
@@ -2166,7 +2166,7 @@ msgctxt "MULTIPLE_LOGICAL_MODELS"
 msgid "-- no content: do not translate --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] "-- no content: do not translate --"
-msgstr[1] "??"
+msgstr[1] ""
 
 # Measure_MR_M_None
 #: Measure_MR_M_None
@@ -2346,8 +2346,8 @@ msgstr ""
 #: PRIMITIVE_VALUE_ALTERNATIVES_MESSAGE
 msgid "The element definition ``{0}`` in the profile ''{1}'' requires that if a value is not present, the extension ''{2}'' must be present"
 msgid_plural "The element definition ``{0}`` in the profile ''{1}'' requires that if a value is not present, one of the extensions ''{2}'' must be present"
-msgstr[0] "??"
-msgstr[1] "??"
+msgstr[0] ""
+msgstr[1] ""
 
 # Parser_Type__not_supported
 #: Parser_Type__not_supported
@@ -2941,8 +2941,8 @@ msgstr "Profil {0} ist f\u00fcr den Typ {1}, der kein {4} ist (was erforderlich 
 #: SD_ED_TYPE_PROFILE_WRONG_TYPE
 msgid "The type {0} is not in the list of allowed type {1} in the profile {2}"
 msgid_plural "The type {0} is not in the list of allowed types {1} in the profile {2}"
-msgstr[0] "??"
-msgstr[1] "??"
+msgstr[0] ""
+msgstr[1] ""
 
 # SD_ELEMENT_FIXED_WRONG_TYPE
 #: SD_ELEMENT_FIXED_WRONG_TYPE
@@ -4473,8 +4473,8 @@ msgstr "!!Die Unicode-Sequenz hat unterminierte bi-di Steuerzeichen (siehe CVE-2
 #: UNICODE_XML_BAD_CHARS
 msgid "This content includes the character {1} (hex value). This character is illegal in the XML version of FHIR, and there is generally no valid use for such characters"
 msgid_plural "This content includes the characters {1} (hex values). These characters are illegal in the XML version of FHIR, and there is generally no valid use for such characters"
-msgstr[0] "??"
-msgstr[1] "??"
+msgstr[0] ""
+msgstr[1] ""
 
 # UNKNOWN_CODESYSTEM
 #: UNKNOWN_CODESYSTEM
@@ -5130,8 +5130,8 @@ msgstr "!!!!Das ShareableValueSet-Profil sagt, dass das {0}-Element obligatorisc
 #: VALUESET_SUPPLEMENT_MISSING
 msgid "Required supplement not found: {1}"
 msgid_plural "Required supplements not found: {1}"
-msgstr[0] "??"
-msgstr[1] "??"
+msgstr[0] ""
+msgstr[1] ""
 
 # VALUESET_TOO_COSTLY
 #: VALUESET_TOO_COSTLY
@@ -5206,8 +5206,8 @@ msgstr[1] "{3}: mindestens erforderlich = {7}, aber nur gefunden {0}"
 #: Validation_VAL_Profile_Minimum_SLICE
 msgid "Slice ''{3}'': a matching slice is required, but not found (from {1}). Note that other slices are allowed in addition to this required slice"
 msgid_plural "Slice ''{3}'': minimum required = {0}, but only found {7} (from {1})"
-msgstr[0] "??"
-msgstr[1] "??"
+msgstr[0] ""
+msgstr[1] ""
 
 # Validation_VAL_Profile_MultipleMatches
 #: Validation_VAL_Profile_MultipleMatches
