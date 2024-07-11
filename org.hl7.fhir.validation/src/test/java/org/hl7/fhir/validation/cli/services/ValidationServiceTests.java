@@ -44,7 +44,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
-class ValidationServiceTest  {
+class ValidationServiceTests {
 
   final String DUMMY_SOURCE = "dummySource";
   final String DUMMY_SOURCE1 = "dummySource1";
@@ -54,32 +54,72 @@ class ValidationServiceTest  {
 
   final String DUMMY_SV = "1.2.3";
 
+  @DisplayName("Test validation session persists in session cache")
   @Test
-  void validateSources() throws Exception {
+  void validationSessionTest() throws Exception {
     TestingUtilities.injectCorePackageLoader();
     SessionCache sessionCache = Mockito.spy(new PassiveExpiringSessionCache());
-    ValidationService myService = new ValidationService(sessionCache);
+    ValidationService myService = Mockito.spy(new ValidationService(sessionCache));
 
-    String resource = IOUtils.toString(getFileFromResourceAsStream("detected_issues.json"), StandardCharsets.UTF_8);
-    List<FileInfo> filesToValidate = new ArrayList<>();
-    filesToValidate.add(new FileInfo().setFileName("test_resource.json").setFileContent(resource).setFileType(Manager.FhirFormat.JSON.getExtension()));
+    List<FileInfo> filesToValidate = getFilesToValidate();
 
     ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"))).setFilesToValidate(filesToValidate);
     // Validation run 1...nothing cached yet
     myService.validateSources(request);
     verify(sessionCache, Mockito.times(1)).cacheSession(ArgumentMatchers.any(ValidationEngine.class));
-
+    verify(sessionCache, Mockito.times(1)).cleanUp();
+    verify(myService, Mockito.times(1)).buildValidationEngine(any(), any(), any());
     Set<String> sessionIds = sessionCache.getSessionIds();
     if (sessionIds.stream().findFirst().isPresent()) {
       // Verify that after 1 run there is only one entry within the cache
       Assertions.assertEquals(1, sessionIds.size());
-      myService.validateSources(request);
-      // Verify that the cache has been called on once with the id created in the first run
-      verify(sessionCache, Mockito.times(1)).fetchSessionValidatorEngine(sessionIds.stream().findFirst().get());
+      myService.validateSources(request.setSessionId(sessionIds.stream().findFirst().get()));
+      // Verify that the cache has been called on twice with the id created in the first run
+      verify(sessionCache, Mockito.times(2)).fetchSessionValidatorEngine(sessionIds.stream().findFirst().get());
+      verify(sessionCache, Mockito.times(1)).cleanUp();
+      verify(myService, Mockito.times(1)).buildValidationEngine(any(), any(), any());
     } else {
       // If no sessions exist within the cache after a run, we auto-fail.
       fail();
     }
+  }
+
+  @DisplayName("Test validation session will inherit a base validation engine")
+  @Test
+  void validationSessionBaseEngineTest() throws Exception {
+    TestingUtilities.injectCorePackageLoader();
+
+    ValidationService myService = Mockito.spy(new ValidationService());
+
+    CliContext baseContext = new CliContext().setBaseEngine("myDummyKey").setSv("4.0.1").setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"));
+    myService.putBaseEngine("myDummyKey", baseContext);
+    verify(myService, Mockito.times(1)).buildValidationEngine(any(), any(), any());
+
+    {
+      final List<FileInfo> filesToValidate = getFilesToValidate();
+      final ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setSv("4.0.1")).setFilesToValidate(filesToValidate);
+      myService.validateSources(request);
+
+      verify(myService, Mockito.times(0)).getBaseEngine("myDummyKey");
+      verify(myService, Mockito.times(2)).buildValidationEngine(any(), any(), any());
+    }
+
+    {
+      final List<FileInfo> filesToValidate = getFilesToValidate();
+      final ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setBaseEngine("myDummyKey")).setFilesToValidate(filesToValidate);
+      myService.validateSources(request);
+
+      verify(myService, Mockito.times(1)).getBaseEngine("myDummyKey");
+      verify(myService, Mockito.times(2)).buildValidationEngine(any(), any(), any());
+    }
+  }
+
+  private List<FileInfo> getFilesToValidate() throws IOException {
+    List<FileInfo> filesToValidate = new ArrayList<>();
+    String resource = IOUtils.toString(getFileFromResourceAsStream("detected_issues.json"), StandardCharsets.UTF_8);
+
+    filesToValidate.add(new FileInfo().setFileName("test_resource.json").setFileContent(resource).setFileType(Manager.FhirFormat.JSON.getExtension()));
+  return filesToValidate;
   }
 
   private InputStream getFileFromResourceAsStream(String fileName) {
