@@ -1168,11 +1168,11 @@ public class HierarchicalTableGenerator {
   }
 
   public String prefixAnchor(String anchor) {
-    return uniqueLocalPrefix == null ? anchor : uniqueLocalPrefix+"-" + anchor;
+    return Utilities.noString(uniqueLocalPrefix) ? anchor : uniqueLocalPrefix+"-" + anchor;
   }
 
   public String prefixLocalHref(String url) {
-    if (url == null || uniqueLocalPrefix == null || !url.startsWith("#")) {
+    if (url == null || Utilities.noString(uniqueLocalPrefix) || !url.startsWith("#")) {
       return url;
     }
     return "#"+uniqueLocalPrefix+"-"+url.substring(1);

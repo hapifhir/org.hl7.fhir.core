@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseXhtml;
@@ -1127,4 +1128,15 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     default: return 0;
     } 
   }
+
+
+  public void stripAnchorsByName(Set<String> anchors) {
+    if (hasChildren()) {
+      childNodes.removeIf(n -> "a".equals(n.getName()) && anchors.contains(n.getAttribute("name")));
+      for (XhtmlNode c : childNodes) {
+        c.stripAnchorsByName(anchors);
+      }
+    }
+  }
+  
 }

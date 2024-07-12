@@ -59,18 +59,24 @@ public class ImplementationGuideValidator extends BaseValidator {
 
   public boolean validateImplementationGuide(ValidationContext valContext, List<ValidationMessage> errors, Element ig, NodeStack stack) {
     boolean ok = true;
-    String fver = ig.getNamedChildValue("fhirVersion");
-
+    List<Element> el = ig.getChildren("fhirVersion");
+    List<String> fvl = new ArrayList<String>();
+    for (Element e : el) {
+      String fver = e.primitiveValue();
+      fvl.add(fver);
+    }
+    warning(errors, "2024-06-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), !fvl.isEmpty(), I18nConstants.IG_NO_VERSION);
     List<Element> dependencies = ig.getChildrenByName("dependsOn");
     int i = 0;
     for (Element dependency : dependencies) {
-      ok = checkDependency(errors, ig, stack.push(dependency, i, null, null), dependency, fver) && ok;
+      ok = checkDependency(errors, ig, stack.push(dependency, i, null, null), dependency, fvl) && ok;
       i++;
     }
+
     return ok;
   }
 
-  private boolean checkDependency(List<ValidationMessage> errors, Element ig, NodeStack stack, Element dependency, String fver) {
+  private boolean checkDependency(List<ValidationMessage> errors, Element ig, NodeStack stack, Element dependency, List<String> fvl) {
     boolean ok = true;
     String url = dependency.getNamedChildValue("url");
     String packageId = dependency.getNamedChildValue("packageId");
@@ -95,13 +101,15 @@ public class ImplementationGuideValidator extends BaseValidator {
         ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), (packageId+"#"+version).matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX), I18nConstants.IG_DEPENDENCY_INVALID_PACKAGE_VERSION, version) && ok;               
         NpmPackage npm = pcm.loadPackage(packageId, version);
         if (warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), npm != null, I18nConstants.IG_DEPENDENCY_PACKAGE_UNKNOWN, packageId+"#"+version)) {
-          String pver = npm.fhirVersion();
-          if (!VersionUtilities.versionsMatch(pver, fver)) {
-            if ("hl7.fhir.uv.extensions".equals(packageId)) {
-              ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_ERROR, fver, packageId+"#"+version, pver, 
-                  "hl7.fhir.uv.extensions."+VersionUtilities.getNameForVersion(fver).toLowerCase()) && ok;                           
-            } else {
-              warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_WARNING, fver, packageId+"#"+version, pver);
+          if (fvl.isEmpty()) {
+            String pver = npm.fhirVersion();
+            if (!VersionUtilities.versionsMatch(pver, fvl)) {
+              if ("hl7.fhir.uv.extensions".equals(packageId)) {
+                ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_ERROR, CommaSeparatedStringBuilder.join(",", fvl), packageId+"#"+version, pver, 
+                    "hl7.fhir.uv.extensions."+VersionUtilities.getNameForVersion(fvl.get(0)).toLowerCase()) && ok;                           
+              } else {
+                warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_WARNING, CommaSeparatedStringBuilder.join(",", fvl), packageId+"#"+version, pver);
+              }
             }
           }
         }
