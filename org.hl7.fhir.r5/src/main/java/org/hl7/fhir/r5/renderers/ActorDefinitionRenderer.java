@@ -24,13 +24,9 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
  
   @Override
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    if (r.isDirect()) {
-      renderResourceTechDetails(r, x);
-      genSummaryTable(status, x, (ActorDefinition) r.getBase());
-      render(status, x, (ActorDefinition) r.getBase(), r);      
-    } else {
-      throw new Error("ActorDefinitionRenderer only renders native resources directly");
-    }
+    renderResourceTechDetails(r, x);
+    genSummaryTable(status, x, r);
+    render(status, x, r);      
   }
   
   @Override
@@ -38,35 +34,35 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
     return canonicalTitle(r);
   }
 
-  public void render(RenderingStatus status, XhtmlNode x, ActorDefinition acd, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(RenderingStatus status, XhtmlNode x, ResourceWrapper acd) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();
-    tr.td().b().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_ACT, acd.getName())  + " ");
-    tr.td().tx(acd.getTitle());
-    tr.td().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_TYP, acd.getType().toCode()) + " ");
+    tr.td().b().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_ACT, context.getTranslated(acd.child("name")))  + " ");
+    tr.td().tx(context.getTranslated(acd.child("title")));
+    tr.td().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_TYP, acd.primitiveValue("type")) + " ");
     XhtmlNode td = tbl.tr().td().colspan("3");
-    addMarkdown(td, acd.getDocumentation());
-    if (acd.hasReference()) {
+    addMarkdown(td, context.getTranslated(acd.child("documentation")));
+    if (acd.has("reference")) {
       tbl.tr().td().tx(context.formatPhrase(RenderingContext.GENERAL_REFS));
       td = tr.td().colspan("2");
       boolean first = true;
-      for (UrlType t : acd.getReference()) {
+      for (ResourceWrapper t : acd.children("reference")) {
         if (first) first = false; else x.br();
-        renderUri(status, td, wrapWC(r, t));
+        renderUri(status, td, t);
       }      
     }
-    if (acd.hasCapabilities()) {
+    if (acd.has("capabilities")) {
       tbl.tr().td().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_CAP));
       td = tr.td().colspan("2");
-      renderCanonical(status, r, td, CapabilityStatement.class, acd.getCapabilitiesElement());      
+      renderCanonical(status, td, acd.child("capabilities"));      
     }
-    if (acd.hasDerivedFrom()) {
+    if (acd.has("derivedFrom")) {
       tbl.tr().td().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_DER));
       td = tr.td().colspan("2");
       boolean first = true;
-      for (UrlType t : acd.getReference()) {
+      for (ResourceWrapper t : acd.children("reference")) {
         if (first) first = false; else x.br();
-        renderUri(status, r, td, t);
+        renderUri(status, td, t);
       }      
     }
   }
