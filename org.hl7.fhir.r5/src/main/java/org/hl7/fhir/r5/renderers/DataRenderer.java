@@ -828,7 +828,6 @@ public class DataRenderer extends Renderer implements CodeResolver {
         x.tx(context.formatPhrase(RenderingContext.DATA_REND_BASE64, length));
       } else {
         x.code(type.primitiveValue());
-        
       }
       break;
     default:

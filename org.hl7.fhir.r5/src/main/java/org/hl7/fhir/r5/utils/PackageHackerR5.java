@@ -78,6 +78,16 @@ public class PackageHackerR5 {
        }
      }
    }
+   // work around an r2b issue
+   if (packageInfo.getId().equals("hl7.fhir.r2b.core") && r.getType().equals("StructureDefinition")) {
+     StructureDefinition sd = (StructureDefinition) r.getResource();
+     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+       if (ed.getPath().equals(sd.getType()+".id")) {
+         ed.getBase().setMax("1");
+       }
+     }
+   }
+   
    // work around a r4 version of extension pack issue
    if (packageInfo.getId().equals("hl7.fhir.uv.extensions.r4") && r.getType().equals("StructureDefinition")) {
      StructureDefinition sd = (StructureDefinition) r.getResource();
