@@ -4564,7 +4564,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return true;
   }
 
-  private ResolvedReference localResolve(String ref, NodeStack stack, List<ValidationMessage> errors, String path, Element rootResource, Element groupingResource, Element source, BooleanHolder bh) {
+  public ResolvedReference localResolve(String ref, NodeStack stack, List<ValidationMessage> errors, String path, Element rootResource, Element groupingResource, Element source, BooleanHolder bh) {
     if (ref.startsWith("#")) {
       // work back through the parent list, tracking the stack as we go 
       // really, there should only be one level for this (contained resources cannot contain
