@@ -342,6 +342,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     @With
     private boolean THO = true;
 
+    private static final boolean USE_ECOSYSTEM_DEFAULT = true;
 
     public ValidationEngineBuilder() {
       terminologyCachePath = null;
@@ -352,10 +353,24 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       txVersion = null;
       timeTracker = null;
       canRunWithoutTerminologyServer = false;
-      useEcosystem = true;
+      useEcosystem = USE_ECOSYSTEM_DEFAULT;
       loggingService = new SystemOutLoggingService();
     }
 
+    /**
+     * @deprecated This method will be removed in a future release, and should not be used outside of this class.
+     * Use {@link #ValidationEngineBuilder()} instead.
+     */
+    @Deprecated
+    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, boolean THO) {
+      this(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, USE_ECOSYSTEM_DEFAULT, timeTracker, canRunWithoutTerminologyServer, loggingService, THO);
+    }
+
+    /**
+     * @deprecated This method will be made private in a future release, and should not be used outside of this class.
+     * Use {@link #ValidationEngineBuilder()} instead.
+     */
+    @Deprecated
     public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, boolean THO) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
@@ -366,7 +381,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       this.timeTracker = timeTracker;
       this.canRunWithoutTerminologyServer = canRunWithoutTerminologyServer;
       this.loggingService = loggingService;
-      this.useEcosystem = true;
+      this.useEcosystem = useEcosystem;
       this.THO = THO;
     }
 
