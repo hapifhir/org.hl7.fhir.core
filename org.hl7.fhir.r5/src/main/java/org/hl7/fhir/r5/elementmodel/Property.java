@@ -280,7 +280,7 @@ public class Property {
 	}
 
   public boolean isList() {
-    return !"1".equals(definition.getMax());
+    return !"1".equals(definition.getBase().hasMax() ? definition.getBase().getMax() : definition.getMax());
   }
 
   public boolean isBaseList() {
