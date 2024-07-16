@@ -316,7 +316,7 @@ public class IgLoader implements IValidationEngineLoader {
 
   public void scanForIgVersion(String src,
                                boolean recursive,
-                               VersionSourceInformation versions) throws Exception {
+                               VersionSourceInformation versions) throws IOException {
     Map<String, ByteProvider> source = loadIgSourceForVersion(src, recursive, true, versions);
     if (source != null) {
       if (source.containsKey("version.info")) {

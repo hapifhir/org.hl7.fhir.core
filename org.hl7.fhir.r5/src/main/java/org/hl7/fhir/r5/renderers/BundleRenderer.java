@@ -69,7 +69,11 @@ public class BundleRenderer extends ResourceRenderer {
             if (id != null && !context.hasAnchor(anchor)) {
               context.addAnchor(anchor);
               root.an(context.prefixAnchor(anchor));
-              root.an(context.prefixAnchor("hc"+anchor));
+            }
+            anchor = "hc"+anchor;
+            if (id != null && !context.hasAnchor(anchor)) {
+              context.addAnchor(anchor);
+              root.an(context.prefixAnchor(anchor));
             }
           }
           root.hr();
@@ -100,8 +104,10 @@ public class BundleRenderer extends ResourceRenderer {
                 xn = new XhtmlNode();
                 xn.para().b().tx(context.formatPhrase(RenderingContext.BUNDLE_REV_EXCP, e.getMessage()) + " ");
               }
+            } else {
+              xn.stripAnchorsByName(context.getAnchors());
             }
-            root.blockquote().para().addChildren(xn);
+            root.blockquote().addChildren(xn);
           }
           if (be.has("request")) {
             renderRequest(x, be.child("request"));

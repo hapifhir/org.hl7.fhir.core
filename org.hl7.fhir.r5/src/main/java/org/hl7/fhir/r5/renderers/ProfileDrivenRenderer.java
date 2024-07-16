@@ -52,8 +52,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         generateByProfile(status, r, sd, r, sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), context.isTechnicalMode(), 0);
       }
     } catch (Exception e) {
-      System.out.println(context.formatPhrase(RenderingContext.PROF_DRIV_ERR_GEN_NARR) +r.fhirType()+"/"+r.getId()+": "+e.getMessage());
-      e.printStackTrace();
+      if (DEBUG) {
+        System.out.println(context.formatPhrase(RenderingContext.PROF_DRIV_ERR_GEN_NARR) +r.fhirType()+"/"+r.getId()+": "+e.getMessage());
+        e.printStackTrace();
+      }
       x.para().b().style("color: maroon").tx(context.formatPhrase(RenderingContext.PROF_DRIV_EXCP, e.getMessage())+" ");
     }
   }
