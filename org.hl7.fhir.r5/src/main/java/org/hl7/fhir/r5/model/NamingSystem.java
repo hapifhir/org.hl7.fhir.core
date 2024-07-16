@@ -312,6 +312,8 @@ public class NamingSystem extends MetadataResource {
         throw new FHIRException("Unknown NamingSystemType code '"+codeString+"'");
         }
     public String toCode(NamingSystemType code) {
+      if (code == NamingSystemType.NULL)
+        return null;
       if (code == NamingSystemType.CODESYSTEM)
         return "codesystem";
       if (code == NamingSystemType.IDENTIFIER)
