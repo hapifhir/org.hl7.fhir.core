@@ -1012,4 +1012,8 @@ public class RenderingContext extends RenderingI18nContext {
   public void addAnchor(String anchor) {
     anchors.add(anchor);
   }
+
+  public Set<String> getAnchors() {
+    return anchors;
+  }
 }

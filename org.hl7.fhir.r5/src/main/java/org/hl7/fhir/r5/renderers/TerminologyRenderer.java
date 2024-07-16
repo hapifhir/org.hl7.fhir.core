@@ -31,7 +31,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public abstract class TerminologyRenderer extends ResourceRenderer {
   
-  private static final boolean DEBUG = false;
 
 
   public TerminologyRenderer(RenderingContext context) {

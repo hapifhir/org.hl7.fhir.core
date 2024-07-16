@@ -828,7 +828,6 @@ public class DataRenderer extends Renderer implements CodeResolver {
         x.tx(context.formatPhrase(RenderingContext.DATA_REND_BASE64, length));
       } else {
         x.code(type.primitiveValue());
-        
       }
       break;
     default:
@@ -1830,7 +1829,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       x.addText(q.child("high").primitiveValue("value").toString()); 
     else 
       x.tx("?"); 
-    if (q.child("low").has("unit")) 
+    if (q.has("low") && q.child("low").has("unit")) 
       x.tx(" "+q.child("low").child("unit")); 
   } 
 
@@ -2071,7 +2070,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
   private boolean renderExpression(CommaSeparatedStringBuilder c, ResourceWrapper p) { 
     ResourceWrapper exp = p.extensionValue("http://hl7.org/fhir/StructureDefinition/cqf-expression"); 
-    if (exp == null) { 
+    if (exp == null || !exp.has("value")) { 
       return false; 
     } 
     c.append(exp.child("value").primitiveValue("expression")); 

@@ -137,4 +137,7 @@ public class NamedItemList<T extends org.hl7.fhir.utilities.NamedItemList.NamedI
     Collections.sort(list, sorter);
   }
 
+  public void clearMap() {
+    map = null;
+  }
 }

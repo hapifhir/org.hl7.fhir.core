@@ -564,6 +564,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public Map<String, NamingSystem> getNSUrlMap() {
     if (systemUrlMap == null) {
       systemUrlMap = new HashMap<>();
+      try {
       List<NamingSystem> nsl = systems.getList();
       for (NamingSystem ns : nsl) {
         for (NamingSystemUniqueIdComponent uid : ns.getUniqueId()) {
@@ -571,6 +572,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             systemUrlMap.put(uid.getValue(), ns) ;
           }
         }        
+      }
+      } catch (Exception e) {
+        if (!nsFailHasFailed) {
+          e.printStackTrace();
+          nsFailHasFailed  = true;
+        }
       }
     }
     return systemUrlMap;
@@ -2530,6 +2537,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected IWorkerContextManager.IPackageLoadingTracker packageTracker;
   private boolean forPublication;
   private boolean cachingAllowed = true;
+  private static boolean nsFailHasFailed;
 
   public Resource fetchResourceById(String type, String uri, FhirPublication fhirVersion) {
     return fetchResourceById(type, uri);

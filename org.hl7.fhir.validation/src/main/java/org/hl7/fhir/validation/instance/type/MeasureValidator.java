@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.DataRenderer;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -32,7 +33,10 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.BaseValidator.BooleanHolder;
+import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
+import org.hl7.fhir.validation.instance.utils.ResolvedReference;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 import org.w3c.dom.Document;
 
@@ -493,19 +497,93 @@ public class MeasureValidator extends BaseValidator {
   
   private boolean validateMeasureReportGroupPopulation(ValidationContext hostContext, MeasureContext m, MeasureGroupPopulationComponent mgp, List<ValidationMessage> errors, Element mrgp, NodeStack ns, boolean inProgress) {
     boolean ok = true;
-    List<Element> sr = mrgp.getChildrenByName("subjectResults");
+    List<Element> srl = mrgp.getChildrenByName("subjectResults");
     if ("subject-list".equals(m.reportType())) {
       try {
-        int c = Integer.parseInt(mrgp.getChildValue("count"));
-        ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrgp.line(), mrgp.col(), ns.getLiteralPath(), c == sr.size(), I18nConstants.MEASURE_MR_GRP_POP_COUNT_MISMATCH, c, sr.size()) && ok;
+        int subCount = 0;
+        CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("; ");
+        for (Element sr : srl) {
+          subCount = addToSubjectCount(subCount, hostContext, sr, m, ns, b);
+        }
+        if (mrgp.hasChild("count")) {
+          int c = Integer.parseInt(mrgp.getChildValue("count"));
+          if (subCount > -1) {
+            ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrgp.line(), mrgp.col(), ns.getLiteralPath(), c == subCount, I18nConstants.MEASURE_MR_GRP_POP_COUNT_MISMATCH, c, subCount) && ok;
+          } else {
+            hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrgp.line(), mrgp.col(), ns.getLiteralPath(), false, I18nConstants.MEASURE_MR_GRP_POP_COUNT_CANT_CHECK, c, b.toString());          
+          }
+        }
       } catch (Exception e) {
         // nothing; that'll be because count is not valid, and that's a different error or its missing and we don't care
       }
     } else {
-      ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrgp.line(), mrgp.col(), ns.getLiteralPath(), sr.size() == 0, I18nConstants.MEASURE_MR_GRP_POP_NO_SUBJECTS) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrgp.line(), mrgp.col(), ns.getLiteralPath(), srl.size() == 0, I18nConstants.MEASURE_MR_GRP_POP_NO_SUBJECTS) && ok;
       warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrgp.line(), mrgp.col(), ns.getLiteralPath(), mrgp.hasChild("count", false), I18nConstants.MEASURE_MR_GRP_POP_NO_COUNT);      
     }
-    return ok;
+      return ok;
+  }
+
+  private int addToSubjectCount(int subCount, ValidationContext valContext, Element sr, MeasureContext m, NodeStack ns, CommaSeparatedStringBuilder b) throws FHIRException, IOException {
+    if (subCount < 0) {
+      return -1;
+    }
+
+    String ref = sr.getNamedChildValue("reference");
+    if (ref == null) {
+      b.append(context.formatMessage(I18nConstants.MEASURE_MR_GRP_POP_COUNT_NO_REF));
+      return -1;
+    }
+    BooleanHolder bh = new BooleanHolder();
+    ResolvedReference rr = ((InstanceValidator) parent).localResolve(ref, ns, new ArrayList<>(), ns.getLiteralPath(), valContext.getRootResource(), valContext.getGroupingResource(), sr, bh);
+    Element tgt;
+    if (rr != null) {
+      tgt = rr.getResource();
+    } else {
+      tgt = fetcher.fetch(((InstanceValidator) parent), valContext.getAppContext(), ref);
+    }
+    if (tgt == null) {
+      // we couldn't resolve it, but we'll draw our own conclusion from the literal URL if we can. 
+      String[] parts = ref.split("\\/");
+      if (parts.length == 2 && context.getResourceNamesAsSet().contains(parts[0])) {
+        switch (parts[0]) {
+        case "Patient":
+        case "Practitioner":
+        case "Person":
+        case "PractitionerRole":
+        case "RelatedPerson":
+          return subCount + 1;
+        case "List": 
+          b.append(context.formatMessage(I18nConstants.MEASURE_MR_GRP_POP_COUNT_UNRESOLVED, "List", ref));
+          return -1; // for now
+        case "Group":
+          b.append(context.formatMessage(I18nConstants.MEASURE_MR_GRP_POP_COUNT_UNRESOLVED, "Group", ref));
+          return -1; // for now
+        default: 
+          b.append(context.formatMessage(I18nConstants.MEASURE_MR_GRP_POP_COUNT_UNRESOLVED, parts[0], ref));
+          return -1;
+        }
+      } else {
+        // add information / hint?
+        b.append(context.formatMessage(I18nConstants.MEASURE_MR_GRP_POP_COUNT_NO_REF_RES, ref));
+        return -1;
+      }
+    }
+    switch (tgt.fhirType()) {
+    case "Patient":
+    case "Practitioner":
+    case "Person":
+    case "PractitionerRole":
+    case "RelatedPerson":
+      return subCount + 1;
+    case "List": 
+      return subCount + tgt.getChildren("entry").size();
+    case "Group":
+      b.append(context.formatMessage(I18nConstants.MEASURE_MR_GRP_POP_COUNT_REF_UNPROCESSIBLE, "Group", ref));
+      return -1; // for now
+    default: 
+      b.append(context.formatMessage(I18nConstants.MEASURE_MR_GRP_POP_COUNT_REF_UNPROCESSIBLE, tgt.fhirType(), ref));
+      return -1;
+    }
   }
 
   private boolean validateMeasureReportGroupStratifiers(ValidationContext hostContext, MeasureContext m, MeasureGroupComponent mg, List<ValidationMessage> errors, Element mrg, NodeStack stack, boolean inProgress) {
