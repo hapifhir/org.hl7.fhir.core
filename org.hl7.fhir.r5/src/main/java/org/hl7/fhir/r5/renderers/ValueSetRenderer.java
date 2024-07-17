@@ -809,7 +809,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
     XhtmlNode td = tr.td();
 
     String tgt = makeAnchor(c.getSystem(), c.getCode());
-    td.an(res.getScopedId()+"-"+context.prefixAnchor(tgt));
+    String pfx = res.getScopedId();
+    td.an((context.prefixAnchor(pfx == null ? "" : pfx+"-")+tgt));
 
     if (doLevel) {
       td.addText(Integer.toString(i));
