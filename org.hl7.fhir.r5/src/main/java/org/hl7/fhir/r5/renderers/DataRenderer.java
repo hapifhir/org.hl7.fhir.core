@@ -278,10 +278,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
     String s = codeSystem+'-'+code; 
     StringBuilder b = new StringBuilder(); 
     for (char c : s.toCharArray()) { 
-      if (Character.isAlphabetic(c) || Character.isDigit(c) || c == '.') 
-        b.append(c); 
-      else 
-        b.append('-'); 
+      if (Utilities.isValidHtmlAnchorChar(c)) {
+        b.append(c);
+      } else {
+        b.append("|"+Integer.toHexString(c)); // not % to save double coding confusing users
+      }
     } 
     return b.toString(); 
   } 
