@@ -347,6 +347,8 @@ public class NamingSystem extends MetadataResource {
     }
 
     public String toCode(NamingSystemIdentifierType code) {
+      if (code == NamingSystemIdentifierType.NULL)
+        return null;
       if (code == NamingSystemIdentifierType.OID)
         return "oid";
       if (code == NamingSystemIdentifierType.UUID)
