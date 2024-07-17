@@ -1,12 +1,11 @@
 ## Validator Changes
 
-* work around THO 6.0.0 problem (hack, to be reversed later)
-* Improve MeasureReport validation for checking subject count
-* Fix for R2B Resource.id cardinality problem
-* Fix for validator using wrong property for list determination when parsing json
+* No Changes
 
 ## Other code changes
 
-* no changes
+* Naming System fix for THO
+* Fix issue with rendering OperationOutcomes that don't have 'detail'
+* Fix problem with value set anchor generation when rendering
 
 
