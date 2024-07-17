@@ -88,8 +88,9 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
             d = true; 
           td.addText(s.primitiveValue()); 
         } 
-        tr.td().addText(getTranslatedCode(i.child("code"))); 
-        tr.td().addText(i.child("details").primitiveValue("text")); 
+        tr.td().addText(getTranslatedCode(i.child("code")));
+        if (i.has("details"))
+          tr.td().addText(i.child("details").primitiveValue("text"));
         smartAddText(tr.td(), i.primitiveValue("diagnostics")); 
         if (hasSource) { 
           ResourceWrapper ext = i.extension(ToolingExtensions.EXT_ISSUE_SOURCE); 
