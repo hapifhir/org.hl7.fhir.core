@@ -176,15 +176,18 @@ public class NamingSystem extends DomainResource {
       throw new FHIRException("Unknown NamingSystemType code '" + codeString + "'");
     }
 
-    public String toCode(NamingSystemType code) {
-      if (code == NamingSystemType.CODESYSTEM)
+    public String toCode(NamingSystemType code)
+   {
+       if (code == NamingSystemType.NULL)
+           return null;
+       if (code == NamingSystemType.CODESYSTEM)
         return "codesystem";
       if (code == NamingSystemType.IDENTIFIER)
         return "identifier";
       if (code == NamingSystemType.ROOT)
         return "root";
       return "?";
-    }
+   }
   }
 
   public enum NamingSystemIdentifierType {
@@ -328,8 +331,11 @@ public class NamingSystem extends DomainResource {
       throw new FHIRException("Unknown NamingSystemIdentifierType code '" + codeString + "'");
     }
 
-    public String toCode(NamingSystemIdentifierType code) {
-      if (code == NamingSystemIdentifierType.OID)
+    public String toCode(NamingSystemIdentifierType code)
+   {
+       if (code == NamingSystemIdentifierType.NULL)
+           return null;
+       if (code == NamingSystemIdentifierType.OID)
         return "oid";
       if (code == NamingSystemIdentifierType.UUID)
         return "uuid";
@@ -338,7 +344,7 @@ public class NamingSystem extends DomainResource {
       if (code == NamingSystemIdentifierType.OTHER)
         return "other";
       return "?";
-    }
+   }
   }
 
   @Block()

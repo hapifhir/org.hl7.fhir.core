@@ -351,8 +351,11 @@ public class DiagnosticOrder extends DomainResource {
       throw new FHIRException("Unknown DiagnosticOrderStatus code '" + codeString + "'");
     }
 
-    public String toCode(DiagnosticOrderStatus code) {
-      if (code == DiagnosticOrderStatus.PROPOSED)
+    public String toCode(DiagnosticOrderStatus code)
+   {
+       if (code == DiagnosticOrderStatus.NULL)
+           return null;
+       if (code == DiagnosticOrderStatus.PROPOSED)
         return "proposed";
       if (code == DiagnosticOrderStatus.DRAFT)
         return "draft";
@@ -379,7 +382,7 @@ public class DiagnosticOrder extends DomainResource {
       if (code == DiagnosticOrderStatus.FAILED)
         return "failed";
       return "?";
-    }
+   }
   }
 
   public enum DiagnosticOrderPriority {
@@ -520,8 +523,11 @@ public class DiagnosticOrder extends DomainResource {
       throw new FHIRException("Unknown DiagnosticOrderPriority code '" + codeString + "'");
     }
 
-    public String toCode(DiagnosticOrderPriority code) {
-      if (code == DiagnosticOrderPriority.ROUTINE)
+    public String toCode(DiagnosticOrderPriority code)
+   {
+       if (code == DiagnosticOrderPriority.NULL)
+           return null;
+       if (code == DiagnosticOrderPriority.ROUTINE)
         return "routine";
       if (code == DiagnosticOrderPriority.URGENT)
         return "urgent";
@@ -530,7 +536,7 @@ public class DiagnosticOrder extends DomainResource {
       if (code == DiagnosticOrderPriority.ASAP)
         return "asap";
       return "?";
-    }
+   }
   }
 
   @Block()

@@ -188,8 +188,11 @@ public class Enumerations {
       throw new FHIRException("Unknown AdministrativeGender code '" + codeString + "'");
     }
 
-    public String toCode(AdministrativeGender code) {
-      if (code == AdministrativeGender.MALE)
+    public String toCode(AdministrativeGender code)
+   {
+       if (code == AdministrativeGender.NULL)
+           return null;
+       if (code == AdministrativeGender.MALE)
         return "male";
       if (code == AdministrativeGender.FEMALE)
         return "female";
@@ -198,7 +201,7 @@ public class Enumerations {
       if (code == AdministrativeGender.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
   }
 
   public enum AgeUnits {
@@ -375,8 +378,11 @@ public class Enumerations {
       throw new FHIRException("Unknown AgeUnits code '" + codeString + "'");
     }
 
-    public String toCode(AgeUnits code) {
-      if (code == AgeUnits.MIN)
+    public String toCode(AgeUnits code)
+   {
+       if (code == AgeUnits.NULL)
+           return null;
+       if (code == AgeUnits.MIN)
         return "min";
       if (code == AgeUnits.H)
         return "h";
@@ -389,7 +395,7 @@ public class Enumerations {
       if (code == AgeUnits.A)
         return "a";
       return "?";
-    }
+   }
   }
 
   public enum BindingStrength {
@@ -539,8 +545,11 @@ public class Enumerations {
       throw new FHIRException("Unknown BindingStrength code '" + codeString + "'");
     }
 
-    public String toCode(BindingStrength code) {
-      if (code == BindingStrength.REQUIRED)
+    public String toCode(BindingStrength code)
+   {
+       if (code == BindingStrength.NULL)
+           return null;
+       if (code == BindingStrength.REQUIRED)
         return "required";
       if (code == BindingStrength.EXTENSIBLE)
         return "extensible";
@@ -549,7 +558,7 @@ public class Enumerations {
       if (code == BindingStrength.EXAMPLE)
         return "example";
       return "?";
-    }
+   }
   }
 
   public enum ConceptMapEquivalence {
@@ -795,8 +804,11 @@ public class Enumerations {
       throw new FHIRException("Unknown ConceptMapEquivalence code '" + codeString + "'");
     }
 
-    public String toCode(ConceptMapEquivalence code) {
-      if (code == ConceptMapEquivalence.EQUIVALENT)
+    public String toCode(ConceptMapEquivalence code)
+   {
+       if (code == ConceptMapEquivalence.NULL)
+           return null;
+       if (code == ConceptMapEquivalence.EQUIVALENT)
         return "equivalent";
       if (code == ConceptMapEquivalence.EQUAL)
         return "equal";
@@ -815,7 +827,7 @@ public class Enumerations {
       if (code == ConceptMapEquivalence.DISJOINT)
         return "disjoint";
       return "?";
-    }
+   }
   }
 
   public enum ConformanceResourceStatus {
@@ -938,15 +950,18 @@ public class Enumerations {
       throw new FHIRException("Unknown ConformanceResourceStatus code '" + codeString + "'");
     }
 
-    public String toCode(ConformanceResourceStatus code) {
-      if (code == ConformanceResourceStatus.DRAFT)
+    public String toCode(ConformanceResourceStatus code)
+   {
+       if (code == ConformanceResourceStatus.NULL)
+           return null;
+       if (code == ConformanceResourceStatus.DRAFT)
         return "draft";
       if (code == ConformanceResourceStatus.ACTIVE)
         return "active";
       if (code == ConformanceResourceStatus.RETIRED)
         return "retired";
       return "?";
-    }
+   }
   }
 
   public enum DataAbsentReason {
@@ -1180,8 +1195,11 @@ public class Enumerations {
       throw new FHIRException("Unknown DataAbsentReason code '" + codeString + "'");
     }
 
-    public String toCode(DataAbsentReason code) {
-      if (code == DataAbsentReason.UNKNOWN)
+    public String toCode(DataAbsentReason code)
+   {
+       if (code == DataAbsentReason.NULL)
+           return null;
+       if (code == DataAbsentReason.UNKNOWN)
         return "unknown";
       if (code == DataAbsentReason.ASKED)
         return "asked";
@@ -1200,7 +1218,7 @@ public class Enumerations {
       if (code == DataAbsentReason.NAN)
         return "NaN";
       return "?";
-    }
+   }
   }
 
   public enum DataType {
@@ -2128,8 +2146,11 @@ public class Enumerations {
       throw new FHIRException("Unknown DataType code '" + codeString + "'");
     }
 
-    public String toCode(DataType code) {
-      if (code == DataType.ADDRESS)
+    public String toCode(DataType code)
+   {
+       if (code == DataType.NULL)
+           return null;
+       if (code == DataType.ADDRESS)
         return "Address";
       if (code == DataType.AGE)
         return "Age";
@@ -2222,7 +2243,7 @@ public class Enumerations {
       if (code == DataType.XHTML)
         return "xhtml";
       return "?";
-    }
+   }
   }
 
   public enum DocumentReferenceStatus {
@@ -2345,15 +2366,18 @@ public class Enumerations {
       throw new FHIRException("Unknown DocumentReferenceStatus code '" + codeString + "'");
     }
 
-    public String toCode(DocumentReferenceStatus code) {
-      if (code == DocumentReferenceStatus.CURRENT)
+    public String toCode(DocumentReferenceStatus code)
+   {
+       if (code == DocumentReferenceStatus.NULL)
+           return null;
+       if (code == DocumentReferenceStatus.CURRENT)
         return "current";
       if (code == DocumentReferenceStatus.SUPERSEDED)
         return "superseded";
       if (code == DocumentReferenceStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
   }
 
   public enum FHIRDefinedType {
@@ -5194,8 +5218,11 @@ public class Enumerations {
       throw new FHIRException("Unknown FHIRDefinedType code '" + codeString + "'");
     }
 
-    public String toCode(FHIRDefinedType code) {
-      if (code == FHIRDefinedType.ADDRESS)
+    public String toCode(FHIRDefinedType code)
+   {
+       if (code == FHIRDefinedType.NULL)
+           return null;
+       if (code == FHIRDefinedType.ADDRESS)
         return "Address";
       if (code == FHIRDefinedType.AGE)
         return "Age";
@@ -5480,7 +5507,7 @@ public class Enumerations {
       if (code == FHIRDefinedType.VISIONPRESCRIPTION)
         return "VisionPrescription";
       return "?";
-    }
+   }
   }
 
   public enum MessageEvent {
@@ -5737,8 +5764,11 @@ public class Enumerations {
       throw new FHIRException("Unknown MessageEvent code '" + codeString + "'");
     }
 
-    public String toCode(MessageEvent code) {
-      if (code == MessageEvent.MEDICATIONADMINISTRATIONCOMPLETE)
+    public String toCode(MessageEvent code)
+   {
+       if (code == MessageEvent.NULL)
+           return null;
+       if (code == MessageEvent.MEDICATIONADMINISTRATIONCOMPLETE)
         return "MedicationAdministration-Complete";
       if (code == MessageEvent.MEDICATIONADMINISTRATIONNULLIFICATION)
         return "MedicationAdministration-Nullification";
@@ -5759,7 +5789,7 @@ public class Enumerations {
       if (code == MessageEvent.VALUESETEXPAND)
         return "valueset-expand";
       return "?";
-    }
+   }
   }
 
   public enum NoteType {
@@ -5882,15 +5912,18 @@ public class Enumerations {
       throw new FHIRException("Unknown NoteType code '" + codeString + "'");
     }
 
-    public String toCode(NoteType code) {
-      if (code == NoteType.DISPLAY)
+    public String toCode(NoteType code)
+   {
+       if (code == NoteType.NULL)
+           return null;
+       if (code == NoteType.DISPLAY)
         return "display";
       if (code == NoteType.PRINT)
         return "print";
       if (code == NoteType.PRINTOPER)
         return "printoper";
       return "?";
-    }
+   }
   }
 
   public enum RemittanceOutcome {
@@ -5995,13 +6028,16 @@ public class Enumerations {
       throw new FHIRException("Unknown RemittanceOutcome code '" + codeString + "'");
     }
 
-    public String toCode(RemittanceOutcome code) {
-      if (code == RemittanceOutcome.COMPLETE)
+    public String toCode(RemittanceOutcome code)
+   {
+       if (code == RemittanceOutcome.NULL)
+           return null;
+       if (code == RemittanceOutcome.COMPLETE)
         return "complete";
       if (code == RemittanceOutcome.ERROR)
         return "error";
       return "?";
-    }
+   }
   }
 
   public enum ResourceType {
@@ -7983,8 +8019,11 @@ public class Enumerations {
       throw new FHIRException("Unknown ResourceType code '" + codeString + "'");
     }
 
-    public String toCode(ResourceType code) {
-      if (code == ResourceType.ACCOUNT)
+    public String toCode(ResourceType code)
+   {
+       if (code == ResourceType.NULL)
+           return null;
+       if (code == ResourceType.ACCOUNT)
         return "Account";
       if (code == ResourceType.ALLERGYINTOLERANCE)
         return "AllergyIntolerance";
@@ -8177,7 +8216,7 @@ public class Enumerations {
       if (code == ResourceType.VISIONPRESCRIPTION)
         return "VisionPrescription";
       return "?";
-    }
+   }
   }
 
   public enum SearchParamType {
@@ -8397,8 +8436,11 @@ public class Enumerations {
       throw new FHIRException("Unknown SearchParamType code '" + codeString + "'");
     }
 
-    public String toCode(SearchParamType code) {
-      if (code == SearchParamType.NUMBER)
+    public String toCode(SearchParamType code)
+   {
+       if (code == SearchParamType.NULL)
+           return null;
+       if (code == SearchParamType.NUMBER)
         return "number";
       if (code == SearchParamType.DATE)
         return "date";
@@ -8415,7 +8457,7 @@ public class Enumerations {
       if (code == SearchParamType.URI)
         return "uri";
       return "?";
-    }
+   }
   }
 
   public enum SpecialValues {
@@ -8593,8 +8635,11 @@ public class Enumerations {
       throw new FHIRException("Unknown SpecialValues code '" + codeString + "'");
     }
 
-    public String toCode(SpecialValues code) {
-      if (code == SpecialValues.TRUE)
+    public String toCode(SpecialValues code)
+   {
+       if (code == SpecialValues.NULL)
+           return null;
+       if (code == SpecialValues.TRUE)
         return "true";
       if (code == SpecialValues.FALSE)
         return "false";
@@ -8607,7 +8652,7 @@ public class Enumerations {
       if (code == SpecialValues.NILKNOWN)
         return "nil-known";
       return "?";
-    }
+   }
   }
 
 }
