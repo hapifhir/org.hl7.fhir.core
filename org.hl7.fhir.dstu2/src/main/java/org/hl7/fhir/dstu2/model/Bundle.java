@@ -287,8 +287,6 @@ public class Bundle extends Resource implements IBaseBundle {
     }
 
     public String toCode(BundleType code) {
-      if (code == null)
-        return null;
       if (code == BundleType.DOCUMENT)
         return "document";
       if (code == BundleType.MESSAGE)
@@ -434,8 +432,6 @@ public class Bundle extends Resource implements IBaseBundle {
     }
 
     public String toCode(SearchEntryMode code) {
-      if (code == null)
-        return null;
       if (code == SearchEntryMode.MATCH)
         return "match";
       if (code == SearchEntryMode.INCLUDE)
@@ -585,8 +581,6 @@ public class Bundle extends Resource implements IBaseBundle {
     }
 
     public String toCode(HTTPVerb code) {
-      if (code == null)
-        return null;
       if (code == HTTPVerb.GET)
         return "GET";
       if (code == HTTPVerb.POST)

@@ -249,8 +249,6 @@ public class Observation extends DomainResource {
     }
 
     public String toCode(ObservationStatus code) {
-      if (code == null)
-        return null;
       if (code == ObservationStatus.REGISTERED)
         return "registered";
       if (code == ObservationStatus.PRELIMINARY)
@@ -454,8 +452,6 @@ public class Observation extends DomainResource {
     }
 
     public String toCode(ObservationRelationshipType code) {
-      if (code == null)
-        return null;
       if (code == ObservationRelationshipType.HASMEMBER)
         return "has-member";
       if (code == ObservationRelationshipType.DERIVEDFROM)

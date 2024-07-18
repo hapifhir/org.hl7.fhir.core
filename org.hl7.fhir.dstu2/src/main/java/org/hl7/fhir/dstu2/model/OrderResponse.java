@@ -279,8 +279,6 @@ public class OrderResponse extends DomainResource {
     }
 
     public String toCode(OrderStatus code) {
-      if (code == null)
-        return null;
       if (code == OrderStatus.PENDING)
         return "pending";
       if (code == OrderStatus.REVIEW)

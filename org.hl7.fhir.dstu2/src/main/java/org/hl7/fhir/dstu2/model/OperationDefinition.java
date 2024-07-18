@@ -157,8 +157,6 @@ public class OperationDefinition extends DomainResource {
     }
 
     public String toCode(OperationKind code) {
-      if (code == null)
-        return null;
       if (code == OperationKind.OPERATION)
         return "operation";
       if (code == OperationKind.QUERY)
@@ -270,8 +268,6 @@ public class OperationDefinition extends DomainResource {
     }
 
     public String toCode(OperationParameterUse code) {
-      if (code == null)
-        return null;
       if (code == OperationParameterUse.IN)
         return "in";
       if (code == OperationParameterUse.OUT)

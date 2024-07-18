@@ -173,8 +173,6 @@ public class Location extends DomainResource {
     }
 
     public String toCode(LocationStatus code) {
-      if (code == null)
-        return null;
       if (code == LocationStatus.ACTIVE)
         return "active";
       if (code == LocationStatus.SUSPENDED)
@@ -291,8 +289,6 @@ public class Location extends DomainResource {
     }
 
     public String toCode(LocationMode code) {
-      if (code == null)
-        return null;
       if (code == LocationMode.INSTANCE)
         return "instance";
       if (code == LocationMode.KIND)

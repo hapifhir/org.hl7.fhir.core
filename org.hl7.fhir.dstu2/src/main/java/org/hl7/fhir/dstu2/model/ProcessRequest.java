@@ -189,8 +189,6 @@ public class ProcessRequest extends DomainResource {
     }
 
     public String toCode(ActionList code) {
-      if (code == null)
-        return null;
       if (code == ActionList.CANCEL)
         return "cancel";
       if (code == ActionList.POLL)

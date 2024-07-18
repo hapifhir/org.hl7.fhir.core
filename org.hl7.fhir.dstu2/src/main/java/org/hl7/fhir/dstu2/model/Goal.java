@@ -284,8 +284,6 @@ public class Goal extends DomainResource {
     }
 
     public String toCode(GoalStatus code) {
-      if (code == null)
-        return null;
       if (code == GoalStatus.PROPOSED)
         return "proposed";
       if (code == GoalStatus.PLANNED)

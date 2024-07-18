@@ -190,8 +190,6 @@ public class Person extends DomainResource {
     }
 
     public String toCode(IdentityAssuranceLevel code) {
-      if (code == null)
-        return null;
       if (code == IdentityAssuranceLevel.LEVEL1)
         return "level1";
       if (code == IdentityAssuranceLevel.LEVEL2)

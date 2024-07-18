@@ -136,8 +136,6 @@ public class ElementDefinition extends Type implements ICompositeType {
     }
 
     public String toCode(PropertyRepresentation code) {
-      if (code == null)
-        return null;
       if (code == PropertyRepresentation.XMLATTR)
         return "xmlAttr";
       return "?";
@@ -268,8 +266,6 @@ public class ElementDefinition extends Type implements ICompositeType {
     }
 
     public String toCode(SlicingRules code) {
-      if (code == null)
-        return null;
       if (code == SlicingRules.CLOSED)
         return "closed";
       if (code == SlicingRules.OPEN)
@@ -403,8 +399,6 @@ public class ElementDefinition extends Type implements ICompositeType {
     }
 
     public String toCode(AggregationMode code) {
-      if (code == null)
-        return null;
       if (code == AggregationMode.CONTAINED)
         return "contained";
       if (code == AggregationMode.REFERENCED)
@@ -519,8 +513,6 @@ public class ElementDefinition extends Type implements ICompositeType {
     }
 
     public String toCode(ConstraintSeverity code) {
-      if (code == null)
-        return null;
       if (code == ConstraintSeverity.ERROR)
         return "error";
       if (code == ConstraintSeverity.WARNING)

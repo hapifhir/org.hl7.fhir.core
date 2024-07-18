@@ -215,8 +215,6 @@ public class SearchParameter extends DomainResource {
     }
 
     public String toCode(XPathUsageType code) {
-      if (code == null)
-        return null;
       if (code == XPathUsageType.NORMAL)
         return "normal";
       if (code == XPathUsageType.PHONETIC)

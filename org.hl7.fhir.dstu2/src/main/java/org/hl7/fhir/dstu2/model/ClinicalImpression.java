@@ -177,8 +177,6 @@ public class ClinicalImpression extends DomainResource {
     }
 
     public String toCode(ClinicalImpressionStatus code) {
-      if (code == null)
-        return null;
       if (code == ClinicalImpressionStatus.INPROGRESS)
         return "in-progress";
       if (code == ClinicalImpressionStatus.COMPLETED)

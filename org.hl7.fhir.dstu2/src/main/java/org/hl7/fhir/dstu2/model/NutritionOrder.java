@@ -264,8 +264,6 @@ public class NutritionOrder extends DomainResource {
     }
 
     public String toCode(NutritionOrderStatus code) {
-      if (code == null)
-        return null;
       if (code == NutritionOrderStatus.PROPOSED)
         return "proposed";
       if (code == NutritionOrderStatus.DRAFT)

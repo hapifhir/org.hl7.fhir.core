@@ -210,8 +210,6 @@ public class ContactPoint extends Type implements ICompositeType {
     }
 
     public String toCode(ContactPointSystem code) {
-      if (code == null)
-        return null;
       if (code == ContactPointSystem.PHONE)
         return "phone";
       if (code == ContactPointSystem.FAX)
@@ -390,8 +388,6 @@ public class ContactPoint extends Type implements ICompositeType {
     }
 
     public String toCode(ContactPointUse code) {
-      if (code == null)
-        return null;
       if (code == ContactPointUse.HOME)
         return "home";
       if (code == ContactPointUse.WORK)

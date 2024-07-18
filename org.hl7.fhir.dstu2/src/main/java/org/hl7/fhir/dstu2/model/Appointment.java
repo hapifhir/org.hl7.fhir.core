@@ -248,8 +248,6 @@ public class Appointment extends DomainResource {
     }
 
     public String toCode(AppointmentStatus code) {
-      if (code == null)
-        return null;
       if (code == AppointmentStatus.PROPOSED)
         return "proposed";
       if (code == AppointmentStatus.PENDING)
@@ -391,8 +389,6 @@ public class Appointment extends DomainResource {
     }
 
     public String toCode(ParticipantRequired code) {
-      if (code == null)
-        return null;
       if (code == ParticipantRequired.REQUIRED)
         return "required";
       if (code == ParticipantRequired.OPTIONAL)
@@ -546,8 +542,6 @@ public class Appointment extends DomainResource {
     }
 
     public String toCode(ParticipationStatus code) {
-      if (code == null)
-        return null;
       if (code == ParticipationStatus.ACCEPTED)
         return "accepted";
       if (code == ParticipationStatus.DECLINED)

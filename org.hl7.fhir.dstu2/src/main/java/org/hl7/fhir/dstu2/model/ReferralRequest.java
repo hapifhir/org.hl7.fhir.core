@@ -244,8 +244,6 @@ public class ReferralRequest extends DomainResource {
     }
 
     public String toCode(ReferralStatus code) {
-      if (code == null)
-        return null;
       if (code == ReferralStatus.DRAFT)
         return "draft";
       if (code == ReferralStatus.REQUESTED)

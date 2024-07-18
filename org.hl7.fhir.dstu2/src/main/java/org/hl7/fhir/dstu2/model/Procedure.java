@@ -188,8 +188,6 @@ public class Procedure extends DomainResource {
     }
 
     public String toCode(ProcedureStatus code) {
-      if (code == null)
-        return null;
       if (code == ProcedureStatus.INPROGRESS)
         return "in-progress";
       if (code == ProcedureStatus.ABORTED)

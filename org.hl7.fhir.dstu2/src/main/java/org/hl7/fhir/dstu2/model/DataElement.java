@@ -239,8 +239,6 @@ public class DataElement extends DomainResource {
     }
 
     public String toCode(DataElementStringency code) {
-      if (code == null)
-        return null;
       if (code == DataElementStringency.COMPARABLE)
         return "comparable";
       if (code == DataElementStringency.FULLYSPECIFIED)

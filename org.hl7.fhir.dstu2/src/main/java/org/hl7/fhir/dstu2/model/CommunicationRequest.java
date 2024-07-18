@@ -300,8 +300,6 @@ public class CommunicationRequest extends DomainResource {
     }
 
     public String toCode(CommunicationRequestStatus code) {
-      if (code == null)
-        return null;
       if (code == CommunicationRequestStatus.PROPOSED)
         return "proposed";
       if (code == CommunicationRequestStatus.PLANNED)

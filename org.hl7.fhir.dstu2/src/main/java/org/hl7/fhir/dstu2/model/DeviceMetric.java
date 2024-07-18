@@ -170,8 +170,6 @@ public class DeviceMetric extends DomainResource {
     }
 
     public String toCode(DeviceMetricOperationalStatus code) {
-      if (code == null)
-        return null;
       if (code == DeviceMetricOperationalStatus.ON)
         return "on";
       if (code == DeviceMetricOperationalStatus.OFF)
@@ -393,8 +391,6 @@ public class DeviceMetric extends DomainResource {
     }
 
     public String toCode(DeviceMetricColor code) {
-      if (code == null)
-        return null;
       if (code == DeviceMetricColor.BLACK)
         return "black";
       if (code == DeviceMetricColor.RED)
@@ -555,8 +551,6 @@ public class DeviceMetric extends DomainResource {
     }
 
     public String toCode(DeviceMetricCategory code) {
-      if (code == null)
-        return null;
       if (code == DeviceMetricCategory.MEASUREMENT)
         return "measurement";
       if (code == DeviceMetricCategory.SETTING)
@@ -708,8 +702,6 @@ public class DeviceMetric extends DomainResource {
     }
 
     public String toCode(DeviceMetricCalibrationType code) {
-      if (code == null)
-        return null;
       if (code == DeviceMetricCalibrationType.UNSPECIFIED)
         return "unspecified";
       if (code == DeviceMetricCalibrationType.OFFSET)
@@ -861,8 +853,6 @@ public class DeviceMetric extends DomainResource {
     }
 
     public String toCode(DeviceMetricCalibrationState code) {
-      if (code == null)
-        return null;
       if (code == DeviceMetricCalibrationState.NOTCALIBRATED)
         return "not-calibrated";
       if (code == DeviceMetricCalibrationState.CALIBRATIONREQUIRED)

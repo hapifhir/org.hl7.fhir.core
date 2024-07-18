@@ -174,8 +174,6 @@ public class Device extends DomainResource {
     }
 
     public String toCode(DeviceStatus code) {
-      if (code == null)
-        return null;
       if (code == DeviceStatus.AVAILABLE)
         return "available";
       if (code == DeviceStatus.NOTAVAILABLE)

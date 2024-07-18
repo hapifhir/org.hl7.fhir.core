@@ -235,8 +235,6 @@ public class EpisodeOfCare extends DomainResource {
     }
 
     public String toCode(EpisodeOfCareStatus code) {
-      if (code == null)
-        return null;
       if (code == EpisodeOfCareStatus.PLANNED)
         return "planned";
       if (code == EpisodeOfCareStatus.WAITLIST)

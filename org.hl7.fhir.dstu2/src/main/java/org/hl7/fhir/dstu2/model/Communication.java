@@ -209,8 +209,6 @@ public class Communication extends DomainResource {
     }
 
     public String toCode(CommunicationStatus code) {
-      if (code == null)
-        return null;
       if (code == CommunicationStatus.INPROGRESS)
         return "in-progress";
       if (code == CommunicationStatus.COMPLETED)

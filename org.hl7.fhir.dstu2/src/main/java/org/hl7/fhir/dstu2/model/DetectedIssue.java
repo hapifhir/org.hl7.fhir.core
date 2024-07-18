@@ -176,8 +176,6 @@ public class DetectedIssue extends DomainResource {
     }
 
     public String toCode(DetectedIssueSeverity code) {
-      if (code == null)
-        return null;
       if (code == DetectedIssueSeverity.HIGH)
         return "high";
       if (code == DetectedIssueSeverity.MODERATE)

@@ -241,8 +241,6 @@ public class HealthcareService extends DomainResource {
     }
 
     public String toCode(DaysOfWeek code) {
-      if (code == null)
-        return null;
       if (code == DaysOfWeek.MON)
         return "mon";
       if (code == DaysOfWeek.TUE)

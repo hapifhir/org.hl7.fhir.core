@@ -211,8 +211,6 @@ public class MedicationAdministration extends DomainResource {
     }
 
     public String toCode(MedicationAdministrationStatus code) {
-      if (code == null)
-        return null;
       if (code == MedicationAdministrationStatus.INPROGRESS)
         return "in-progress";
       if (code == MedicationAdministrationStatus.ONHOLD)

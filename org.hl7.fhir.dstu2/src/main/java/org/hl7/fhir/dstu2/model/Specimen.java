@@ -190,8 +190,6 @@ public class Specimen extends DomainResource {
     }
 
     public String toCode(SpecimenStatus code) {
-      if (code == null)
-        return null;
       if (code == SpecimenStatus.AVAILABLE)
         return "available";
       if (code == SpecimenStatus.UNAVAILABLE)

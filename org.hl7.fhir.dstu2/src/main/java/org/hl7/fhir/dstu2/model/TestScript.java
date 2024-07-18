@@ -155,8 +155,6 @@ public class TestScript extends DomainResource {
     }
 
     public String toCode(ContentType code) {
-      if (code == null)
-        return null;
       if (code == ContentType.XML)
         return "xml";
       if (code == ContentType.JSON)
@@ -268,8 +266,6 @@ public class TestScript extends DomainResource {
     }
 
     public String toCode(AssertionDirectionType code) {
-      if (code == null)
-        return null;
       if (code == AssertionDirectionType.RESPONSE)
         return "response";
       if (code == AssertionDirectionType.REQUEST)
@@ -525,8 +521,6 @@ public class TestScript extends DomainResource {
     }
 
     public String toCode(AssertionOperatorType code) {
-      if (code == null)
-        return null;
       if (code == AssertionOperatorType.EQUALS)
         return "equals";
       if (code == AssertionOperatorType.NOTEQUALS)
@@ -834,8 +828,6 @@ public class TestScript extends DomainResource {
     }
 
     public String toCode(AssertionResponseTypes code) {
-      if (code == null)
-        return null;
       if (code == AssertionResponseTypes.OKAY)
         return "okay";
       if (code == AssertionResponseTypes.CREATED)

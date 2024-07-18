@@ -211,8 +211,6 @@ public class CarePlan extends DomainResource {
     }
 
     public String toCode(CarePlanStatus code) {
-      if (code == null)
-        return null;
       if (code == CarePlanStatus.PROPOSED)
         return "proposed";
       if (code == CarePlanStatus.DRAFT)
@@ -349,8 +347,6 @@ public class CarePlan extends DomainResource {
     }
 
     public String toCode(CarePlanRelationship code) {
-      if (code == null)
-        return null;
       if (code == CarePlanRelationship.INCLUDES)
         return "includes";
       if (code == CarePlanRelationship.REPLACES)
@@ -538,8 +534,6 @@ public class CarePlan extends DomainResource {
     }
 
     public String toCode(CarePlanActivityStatus code) {
-      if (code == null)
-        return null;
       if (code == CarePlanActivityStatus.NOTSTARTED)
         return "not-started";
       if (code == CarePlanActivityStatus.SCHEDULED)

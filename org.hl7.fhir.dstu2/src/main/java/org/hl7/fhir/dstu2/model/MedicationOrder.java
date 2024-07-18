@@ -232,8 +232,6 @@ public class MedicationOrder extends DomainResource {
     }
 
     public String toCode(MedicationOrderStatus code) {
-      if (code == null)
-        return null;
       if (code == MedicationOrderStatus.ACTIVE)
         return "active";
       if (code == MedicationOrderStatus.ONHOLD)

@@ -201,8 +201,6 @@ public class Composition extends DomainResource {
     }
 
     public String toCode(CompositionStatus code) {
-      if (code == null)
-        return null;
       if (code == CompositionStatus.PRELIMINARY)
         return "preliminary";
       if (code == CompositionStatus.FINAL)
@@ -356,8 +354,6 @@ public class Composition extends DomainResource {
     }
 
     public String toCode(CompositionAttestationMode code) {
-      if (code == null)
-        return null;
       if (code == CompositionAttestationMode.PERSONAL)
         return "personal";
       if (code == CompositionAttestationMode.PROFESSIONAL)

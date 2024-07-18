@@ -167,8 +167,6 @@ public class Flag extends DomainResource {
     }
 
     public String toCode(FlagStatus code) {
-      if (code == null)
-        return null;
       if (code == FlagStatus.ACTIVE)
         return "active";
       if (code == FlagStatus.INACTIVE)

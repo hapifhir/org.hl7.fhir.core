@@ -181,8 +181,6 @@ public class Patient extends DomainResource {
     }
 
     public String toCode(LinkType code) {
-      if (code == null)
-        return null;
       if (code == LinkType.REPLACE)
         return "replace";
       if (code == LinkType.REFER)

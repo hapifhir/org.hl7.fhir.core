@@ -231,8 +231,6 @@ public class ValueSet extends DomainResource {
     }
 
     public String toCode(FilterOperator code) {
-      if (code == null)
-        return null;
       if (code == FilterOperator.EQUAL)
         return "=";
       if (code == FilterOperator.ISA)

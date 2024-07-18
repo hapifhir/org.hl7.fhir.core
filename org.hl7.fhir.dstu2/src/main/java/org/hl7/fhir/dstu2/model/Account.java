@@ -151,8 +151,6 @@ public class Account extends DomainResource {
     }
 
     public String toCode(AccountStatus code) {
-      if (code == null)
-        return null;
       if (code == AccountStatus.ACTIVE)
         return "active";
       if (code == AccountStatus.INACTIVE)

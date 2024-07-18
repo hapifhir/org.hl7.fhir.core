@@ -187,8 +187,6 @@ public class Identifier extends Type implements ICompositeType {
     }
 
     public String toCode(IdentifierUse code) {
-      if (code == null)
-        return null;
       if (code == IdentifierUse.USUAL)
         return "usual";
       if (code == IdentifierUse.OFFICIAL)

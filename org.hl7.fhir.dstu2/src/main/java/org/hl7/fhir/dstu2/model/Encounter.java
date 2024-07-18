@@ -226,8 +226,6 @@ public class Encounter extends DomainResource {
     }
 
     public String toCode(EncounterState code) {
-      if (code == null)
-        return null;
       if (code == EncounterState.PLANNED)
         return "planned";
       if (code == EncounterState.ARRIVED)
@@ -479,8 +477,6 @@ public class Encounter extends DomainResource {
     }
 
     public String toCode(EncounterClass code) {
-      if (code == null)
-        return null;
       if (code == EncounterClass.INPATIENT)
         return "inpatient";
       if (code == EncounterClass.OUTPATIENT)
@@ -649,8 +645,6 @@ public class Encounter extends DomainResource {
     }
 
     public String toCode(EncounterLocationStatus code) {
-      if (code == null)
-        return null;
       if (code == EncounterLocationStatus.PLANNED)
         return "planned";
       if (code == EncounterLocationStatus.ACTIVE)

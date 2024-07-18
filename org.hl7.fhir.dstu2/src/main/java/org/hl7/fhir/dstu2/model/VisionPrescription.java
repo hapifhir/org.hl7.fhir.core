@@ -155,8 +155,6 @@ public class VisionPrescription extends DomainResource {
     }
 
     public String toCode(VisionEyes code) {
-      if (code == null)
-        return null;
       if (code == VisionEyes.RIGHT)
         return "right";
       if (code == VisionEyes.LEFT)
@@ -304,8 +302,6 @@ public class VisionPrescription extends DomainResource {
     }
 
     public String toCode(VisionBase code) {
-      if (code == null)
-        return null;
       if (code == VisionBase.UP)
         return "up";
       if (code == VisionBase.DOWN)
