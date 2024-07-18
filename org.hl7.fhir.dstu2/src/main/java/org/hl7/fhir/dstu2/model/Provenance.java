@@ -203,6 +203,8 @@ public class Provenance extends DomainResource {
     }
 
     public String toCode(ProvenanceEntityRole code) {
+      if (code == null)
+        return null;
       if (code == ProvenanceEntityRole.DERIVATION)
         return "derivation";
       if (code == ProvenanceEntityRole.REVISION)

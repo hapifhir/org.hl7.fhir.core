@@ -188,6 +188,8 @@ public class Narrative extends BaseNarrative implements INarrative {
     }
 
     public String toCode(NarrativeStatus code) {
+      if (code == null)
+        return null;
       if (code == NarrativeStatus.GENERATED)
         return "generated";
       if (code == NarrativeStatus.EXTENSIONS)

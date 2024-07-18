@@ -210,6 +210,8 @@ public class Claim extends DomainResource {
     }
 
     public String toCode(ClaimType code) {
+      if (code == null)
+        return null;
       if (code == ClaimType.INSTITUTIONAL)
         return "institutional";
       if (code == ClaimType.ORAL)
@@ -365,6 +367,8 @@ public class Claim extends DomainResource {
     }
 
     public String toCode(Use code) {
+      if (code == null)
+        return null;
       if (code == Use.COMPLETE)
         return "complete";
       if (code == Use.PROPOSED)

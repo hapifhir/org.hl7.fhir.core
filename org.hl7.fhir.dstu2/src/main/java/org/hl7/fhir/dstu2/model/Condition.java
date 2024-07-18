@@ -232,6 +232,8 @@ public class Condition extends DomainResource {
     }
 
     public String toCode(ConditionVerificationStatus code) {
+      if (code == null)
+        return null;
       if (code == ConditionVerificationStatus.PROVISIONAL)
         return "provisional";
       if (code == ConditionVerificationStatus.DIFFERENTIAL)

@@ -188,6 +188,8 @@ public class Quantity extends Type implements ICompositeType {
     }
 
     public String toCode(QuantityComparator code) {
+      if (code == null)
+        return null;
       if (code == QuantityComparator.LESS_THAN)
         return "<";
       if (code == QuantityComparator.LESS_OR_EQUAL)

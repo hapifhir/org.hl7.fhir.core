@@ -249,6 +249,8 @@ public class AllergyIntolerance extends DomainResource {
     }
 
     public String toCode(AllergyIntoleranceStatus code) {
+      if (code == null)
+        return null;
       if (code == AllergyIntoleranceStatus.ACTIVE)
         return "active";
       if (code == AllergyIntoleranceStatus.UNCONFIRMED)
@@ -395,6 +397,8 @@ public class AllergyIntolerance extends DomainResource {
     }
 
     public String toCode(AllergyIntoleranceCriticality code) {
+      if (code == null)
+        return null;
       if (code == AllergyIntoleranceCriticality.CRITL)
         return "CRITL";
       if (code == AllergyIntoleranceCriticality.CRITH)
@@ -514,6 +518,8 @@ public class AllergyIntolerance extends DomainResource {
     }
 
     public String toCode(AllergyIntoleranceType code) {
+      if (code == null)
+        return null;
       if (code == AllergyIntoleranceType.ALLERGY)
         return "allergy";
       if (code == AllergyIntoleranceType.INTOLERANCE)
@@ -661,6 +667,8 @@ public class AllergyIntolerance extends DomainResource {
     }
 
     public String toCode(AllergyIntoleranceCategory code) {
+      if (code == null)
+        return null;
       if (code == AllergyIntoleranceCategory.FOOD)
         return "food";
       if (code == AllergyIntoleranceCategory.MEDICATION)
@@ -798,6 +806,8 @@ public class AllergyIntolerance extends DomainResource {
     }
 
     public String toCode(AllergyIntoleranceCertainty code) {
+      if (code == null)
+        return null;
       if (code == AllergyIntoleranceCertainty.UNLIKELY)
         return "unlikely";
       if (code == AllergyIntoleranceCertainty.LIKELY)
@@ -929,6 +939,8 @@ public class AllergyIntolerance extends DomainResource {
     }
 
     public String toCode(AllergyIntoleranceSeverity code) {
+      if (code == null)
+        return null;
       if (code == AllergyIntoleranceSeverity.MILD)
         return "mild";
       if (code == AllergyIntoleranceSeverity.MODERATE)

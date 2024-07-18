@@ -175,6 +175,8 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     public String toCode(QuestionnaireResponseStatus code) {
+      if (code == null)
+        return null;
       if (code == QuestionnaireResponseStatus.INPROGRESS)
         return "in-progress";
       if (code == QuestionnaireResponseStatus.COMPLETED)

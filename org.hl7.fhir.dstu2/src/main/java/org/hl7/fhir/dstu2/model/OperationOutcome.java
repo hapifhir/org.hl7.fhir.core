@@ -190,6 +190,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
     }
 
     public String toCode(IssueSeverity code) {
+      if (code == null)
+        return null;
       if (code == IssueSeverity.FATAL)
         return "fatal";
       if (code == IssueSeverity.ERROR)
@@ -811,6 +813,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
     }
 
     public String toCode(IssueType code) {
+      if (code == null)
+        return null;
       if (code == IssueType.INVALID)
         return "invalid";
       if (code == IssueType.STRUCTURE)

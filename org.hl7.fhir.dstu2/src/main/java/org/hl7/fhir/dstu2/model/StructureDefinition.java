@@ -177,6 +177,8 @@ public class StructureDefinition extends DomainResource {
     }
 
     public String toCode(StructureDefinitionKind code) {
+      if (code == null)
+        return null;
       if (code == StructureDefinitionKind.DATATYPE)
         return "datatype";
       if (code == StructureDefinitionKind.RESOURCE)
@@ -332,6 +334,8 @@ public class StructureDefinition extends DomainResource {
     }
 
     public String toCode(ExtensionContext code) {
+      if (code == null)
+        return null;
       if (code == ExtensionContext.RESOURCE)
         return "resource";
       if (code == ExtensionContext.DATATYPE)

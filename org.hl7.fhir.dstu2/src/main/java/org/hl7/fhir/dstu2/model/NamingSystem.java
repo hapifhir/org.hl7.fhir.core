@@ -177,6 +177,8 @@ public class NamingSystem extends DomainResource {
     }
 
     public String toCode(NamingSystemType code) {
+      if (code == null)
+        return null;
       if (code == NamingSystemType.CODESYSTEM)
         return "codesystem";
       if (code == NamingSystemType.IDENTIFIER)
@@ -329,6 +331,8 @@ public class NamingSystem extends DomainResource {
     }
 
     public String toCode(NamingSystemIdentifierType code) {
+      if (code == null)
+        return null;
       if (code == NamingSystemIdentifierType.OID)
         return "oid";
       if (code == NamingSystemIdentifierType.UUID)

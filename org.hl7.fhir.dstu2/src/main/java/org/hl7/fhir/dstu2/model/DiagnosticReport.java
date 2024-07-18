@@ -253,6 +253,8 @@ public class DiagnosticReport extends DomainResource {
     }
 
     public String toCode(DiagnosticReportStatus code) {
+      if (code == null)
+        return null;
       if (code == DiagnosticReportStatus.REGISTERED)
         return "registered";
       if (code == DiagnosticReportStatus.PARTIAL)

@@ -169,6 +169,8 @@ public class Media extends DomainResource {
     }
 
     public String toCode(DigitalMediaType code) {
+      if (code == null)
+        return null;
       if (code == DigitalMediaType.PHOTO)
         return "photo";
       if (code == DigitalMediaType.VIDEO)

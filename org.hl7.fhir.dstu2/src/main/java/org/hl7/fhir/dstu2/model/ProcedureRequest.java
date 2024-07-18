@@ -297,6 +297,8 @@ public class ProcedureRequest extends DomainResource {
     }
 
     public String toCode(ProcedureRequestStatus code) {
+      if (code == null)
+        return null;
       if (code == ProcedureRequestStatus.PROPOSED)
         return "proposed";
       if (code == ProcedureRequestStatus.DRAFT)
@@ -460,6 +462,8 @@ public class ProcedureRequest extends DomainResource {
     }
 
     public String toCode(ProcedureRequestPriority code) {
+      if (code == null)
+        return null;
       if (code == ProcedureRequestPriority.ROUTINE)
         return "routine";
       if (code == ProcedureRequestPriority.URGENT)

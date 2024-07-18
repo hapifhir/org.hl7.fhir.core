@@ -315,6 +315,8 @@ public class DeviceComponent extends DomainResource {
     }
 
     public String toCode(MeasmntPrinciple code) {
+      if (code == null)
+        return null;
       if (code == MeasmntPrinciple.OTHER)
         return "other";
       if (code == MeasmntPrinciple.CHEMICAL)

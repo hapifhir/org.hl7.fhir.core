@@ -181,6 +181,8 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(ConformanceStatementKind code) {
+      if (code == null)
+        return null;
       if (code == ConformanceStatementKind.INSTANCE)
         return "instance";
       if (code == ConformanceStatementKind.CAPABILITY)
@@ -330,6 +332,8 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(UnknownContentCode code) {
+      if (code == null)
+        return null;
       if (code == UnknownContentCode.NO)
         return "no";
       if (code == UnknownContentCode.EXTENSIONS)
@@ -445,6 +449,8 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(RestfulConformanceMode code) {
+      if (code == null)
+        return null;
       if (code == RestfulConformanceMode.CLIENT)
         return "client";
       if (code == RestfulConformanceMode.SERVER)
@@ -682,6 +688,8 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(TypeRestfulInteraction code) {
+      if (code == null)
+        return null;
       if (code == TypeRestfulInteraction.READ)
         return "read";
       if (code == TypeRestfulInteraction.VREAD)
@@ -826,6 +834,8 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(ResourceVersionPolicy code) {
+      if (code == null)
+        return null;
       if (code == ResourceVersionPolicy.NOVERSION)
         return "no-version";
       if (code == ResourceVersionPolicy.VERSIONED)
@@ -958,6 +968,8 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(ConditionalDeleteStatus code) {
+      if (code == null)
+        return null;
       if (code == ConditionalDeleteStatus.NOTSUPPORTED)
         return "not-supported";
       if (code == ConditionalDeleteStatus.SINGLE)
@@ -1226,6 +1238,8 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(SearchModifierCode code) {
+      if (code == null)
+        return null;
       if (code == SearchModifierCode.MISSING)
         return "missing";
       if (code == SearchModifierCode.EXACT)
@@ -1371,6 +1385,8 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(SystemRestfulInteraction code) {
+      if (code == null)
+        return null;
       if (code == SystemRestfulInteraction.TRANSACTION)
         return "transaction";
       if (code == SystemRestfulInteraction.SEARCHSYSTEM)
@@ -1520,6 +1536,8 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(TransactionMode code) {
+      if (code == null)
+        return null;
       if (code == TransactionMode.NOTSUPPORTED)
         return "not-supported";
       if (code == TransactionMode.BATCH)
@@ -1657,6 +1675,8 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(MessageSignificanceCategory code) {
+      if (code == null)
+        return null;
       if (code == MessageSignificanceCategory.CONSEQUENCE)
         return "Consequence";
       if (code == MessageSignificanceCategory.CURRENCY)
@@ -1770,6 +1790,8 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(ConformanceEventMode code) {
+      if (code == null)
+        return null;
       if (code == ConformanceEventMode.SENDER)
         return "sender";
       if (code == ConformanceEventMode.RECEIVER)
@@ -1881,6 +1903,8 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(DocumentMode code) {
+      if (code == null)
+        return null;
       if (code == DocumentMode.PRODUCER)
         return "producer";
       if (code == DocumentMode.CONSUMER)

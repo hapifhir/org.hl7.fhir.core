@@ -172,6 +172,8 @@ public class Questionnaire extends DomainResource {
     }
 
     public String toCode(QuestionnaireStatus code) {
+      if (code == null)
+        return null;
       if (code == QuestionnaireStatus.DRAFT)
         return "draft";
       if (code == QuestionnaireStatus.PUBLISHED)
@@ -521,6 +523,8 @@ public class Questionnaire extends DomainResource {
     }
 
     public String toCode(AnswerFormat code) {
+      if (code == null)
+        return null;
       if (code == AnswerFormat.BOOLEAN)
         return "boolean";
       if (code == AnswerFormat.DECIMAL)

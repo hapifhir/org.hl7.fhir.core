@@ -226,6 +226,8 @@ public class Group extends DomainResource {
     }
 
     public String toCode(GroupType code) {
+      if (code == null)
+        return null;
       if (code == GroupType.PERSON)
         return "person";
       if (code == GroupType.ANIMAL)

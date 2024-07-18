@@ -250,6 +250,8 @@ public class HumanName extends Type implements ICompositeType {
     }
 
     public String toCode(NameUse code) {
+      if (code == null)
+        return null;
       if (code == NameUse.USUAL)
         return "usual";
       if (code == NameUse.OFFICIAL)

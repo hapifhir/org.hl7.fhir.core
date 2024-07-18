@@ -177,6 +177,8 @@ public class MessageHeader extends DomainResource {
     }
 
     public String toCode(ResponseType code) {
+      if (code == null)
+        return null;
       if (code == ResponseType.OK)
         return "ok";
       if (code == ResponseType.TRANSIENTERROR)

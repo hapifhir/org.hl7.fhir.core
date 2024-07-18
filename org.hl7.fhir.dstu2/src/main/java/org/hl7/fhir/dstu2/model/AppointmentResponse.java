@@ -225,6 +225,8 @@ public class AppointmentResponse extends DomainResource {
     }
 
     public String toCode(ParticipantStatus code) {
+      if (code == null)
+        return null;
       if (code == ParticipantStatus.ACCEPTED)
         return "accepted";
       if (code == ParticipantStatus.DECLINED)

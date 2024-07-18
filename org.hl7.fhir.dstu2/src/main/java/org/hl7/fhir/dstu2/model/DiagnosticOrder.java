@@ -352,6 +352,8 @@ public class DiagnosticOrder extends DomainResource {
     }
 
     public String toCode(DiagnosticOrderStatus code) {
+      if (code == null)
+        return null;
       if (code == DiagnosticOrderStatus.PROPOSED)
         return "proposed";
       if (code == DiagnosticOrderStatus.DRAFT)
@@ -521,6 +523,8 @@ public class DiagnosticOrder extends DomainResource {
     }
 
     public String toCode(DiagnosticOrderPriority code) {
+      if (code == null)
+        return null;
       if (code == DiagnosticOrderPriority.ROUTINE)
         return "routine";
       if (code == DiagnosticOrderPriority.URGENT)

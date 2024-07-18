@@ -191,6 +191,8 @@ public class DocumentReference extends DomainResource {
     }
 
     public String toCode(DocumentRelationshipType code) {
+      if (code == null)
+        return null;
       if (code == DocumentRelationshipType.REPLACES)
         return "replaces";
       if (code == DocumentRelationshipType.TRANSFORMS)

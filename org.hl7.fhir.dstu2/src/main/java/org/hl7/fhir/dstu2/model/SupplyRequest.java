@@ -189,6 +189,8 @@ public class SupplyRequest extends DomainResource {
     }
 
     public String toCode(SupplyRequestStatus code) {
+      if (code == null)
+        return null;
       if (code == SupplyRequestStatus.REQUESTED)
         return "requested";
       if (code == SupplyRequestStatus.COMPLETED)

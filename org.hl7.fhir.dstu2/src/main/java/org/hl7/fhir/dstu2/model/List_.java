@@ -170,6 +170,8 @@ public class List_ extends DomainResource {
     }
 
     public String toCode(ListStatus code) {
+      if (code == null)
+        return null;
       if (code == ListStatus.CURRENT)
         return "current";
       if (code == ListStatus.RETIRED)
@@ -302,6 +304,8 @@ public class List_ extends DomainResource {
     }
 
     public String toCode(ListMode code) {
+      if (code == null)
+        return null;
       if (code == ListMode.WORKING)
         return "working";
       if (code == ListMode.SNAPSHOT)

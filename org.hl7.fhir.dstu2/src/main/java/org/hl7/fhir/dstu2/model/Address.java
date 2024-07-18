@@ -189,6 +189,8 @@ public class Address extends Type implements ICompositeType {
     }
 
     public String toCode(AddressUse code) {
+      if (code == null)
+        return null;
       if (code == AddressUse.HOME)
         return "home";
       if (code == AddressUse.WORK)
@@ -322,6 +324,8 @@ public class Address extends Type implements ICompositeType {
     }
 
     public String toCode(AddressType code) {
+      if (code == null)
+        return null;
       if (code == AddressType.POSTAL)
         return "postal";
       if (code == AddressType.PHYSICAL)

@@ -193,6 +193,8 @@ public class Subscription extends DomainResource {
     }
 
     public String toCode(SubscriptionStatus code) {
+      if (code == null)
+        return null;
       if (code == SubscriptionStatus.REQUESTED)
         return "requested";
       if (code == SubscriptionStatus.ACTIVE)
@@ -369,6 +371,8 @@ public class Subscription extends DomainResource {
     }
 
     public String toCode(SubscriptionChannelType code) {
+      if (code == null)
+        return null;
       if (code == SubscriptionChannelType.RESTHOOK)
         return "rest-hook";
       if (code == SubscriptionChannelType.WEBSOCKET)

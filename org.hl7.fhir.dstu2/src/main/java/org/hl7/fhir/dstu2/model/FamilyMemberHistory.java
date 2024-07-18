@@ -192,6 +192,8 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public String toCode(FamilyHistoryStatus code) {
+      if (code == null)
+        return null;
       if (code == FamilyHistoryStatus.PARTIAL)
         return "partial";
       if (code == FamilyHistoryStatus.COMPLETED)

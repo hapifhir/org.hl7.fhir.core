@@ -192,6 +192,8 @@ public class ImagingStudy extends DomainResource {
     }
 
     public String toCode(InstanceAvailability code) {
+      if (code == null)
+        return null;
       if (code == InstanceAvailability.ONLINE)
         return "ONLINE";
       if (code == InstanceAvailability.OFFLINE)

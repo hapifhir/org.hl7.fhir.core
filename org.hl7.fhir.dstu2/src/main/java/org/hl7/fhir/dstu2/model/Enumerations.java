@@ -189,6 +189,8 @@ public class Enumerations {
     }
 
     public String toCode(AdministrativeGender code) {
+      if (code == null)
+        return null;
       if (code == AdministrativeGender.MALE)
         return "male";
       if (code == AdministrativeGender.FEMALE)
@@ -376,6 +378,8 @@ public class Enumerations {
     }
 
     public String toCode(AgeUnits code) {
+      if (code == null)
+        return null;
       if (code == AgeUnits.MIN)
         return "min";
       if (code == AgeUnits.H)
@@ -540,6 +544,8 @@ public class Enumerations {
     }
 
     public String toCode(BindingStrength code) {
+      if (code == null)
+        return null;
       if (code == BindingStrength.REQUIRED)
         return "required";
       if (code == BindingStrength.EXTENSIBLE)
@@ -796,6 +802,8 @@ public class Enumerations {
     }
 
     public String toCode(ConceptMapEquivalence code) {
+      if (code == null)
+        return null;
       if (code == ConceptMapEquivalence.EQUIVALENT)
         return "equivalent";
       if (code == ConceptMapEquivalence.EQUAL)
@@ -939,6 +947,8 @@ public class Enumerations {
     }
 
     public String toCode(ConformanceResourceStatus code) {
+      if (code == null)
+        return null;
       if (code == ConformanceResourceStatus.DRAFT)
         return "draft";
       if (code == ConformanceResourceStatus.ACTIVE)
@@ -1181,6 +1191,8 @@ public class Enumerations {
     }
 
     public String toCode(DataAbsentReason code) {
+      if (code == null)
+        return null;
       if (code == DataAbsentReason.UNKNOWN)
         return "unknown";
       if (code == DataAbsentReason.ASKED)
@@ -2129,6 +2141,8 @@ public class Enumerations {
     }
 
     public String toCode(DataType code) {
+      if (code == null)
+        return null;
       if (code == DataType.ADDRESS)
         return "Address";
       if (code == DataType.AGE)
@@ -2346,6 +2360,8 @@ public class Enumerations {
     }
 
     public String toCode(DocumentReferenceStatus code) {
+      if (code == null)
+        return null;
       if (code == DocumentReferenceStatus.CURRENT)
         return "current";
       if (code == DocumentReferenceStatus.SUPERSEDED)
@@ -5195,6 +5211,8 @@ public class Enumerations {
     }
 
     public String toCode(FHIRDefinedType code) {
+      if (code == null)
+        return null;
       if (code == FHIRDefinedType.ADDRESS)
         return "Address";
       if (code == FHIRDefinedType.AGE)
@@ -5738,6 +5756,8 @@ public class Enumerations {
     }
 
     public String toCode(MessageEvent code) {
+      if (code == null)
+        return null;
       if (code == MessageEvent.MEDICATIONADMINISTRATIONCOMPLETE)
         return "MedicationAdministration-Complete";
       if (code == MessageEvent.MEDICATIONADMINISTRATIONNULLIFICATION)
@@ -5883,6 +5903,8 @@ public class Enumerations {
     }
 
     public String toCode(NoteType code) {
+      if (code == null)
+        return null;
       if (code == NoteType.DISPLAY)
         return "display";
       if (code == NoteType.PRINT)
@@ -5996,6 +6018,8 @@ public class Enumerations {
     }
 
     public String toCode(RemittanceOutcome code) {
+      if (code == null)
+        return null;
       if (code == RemittanceOutcome.COMPLETE)
         return "complete";
       if (code == RemittanceOutcome.ERROR)
@@ -7984,6 +8008,8 @@ public class Enumerations {
     }
 
     public String toCode(ResourceType code) {
+      if (code == null)
+        return null;
       if (code == ResourceType.ACCOUNT)
         return "Account";
       if (code == ResourceType.ALLERGYINTOLERANCE)
@@ -8398,6 +8424,8 @@ public class Enumerations {
     }
 
     public String toCode(SearchParamType code) {
+      if (code == null)
+        return null;
       if (code == SearchParamType.NUMBER)
         return "number";
       if (code == SearchParamType.DATE)
@@ -8594,6 +8622,8 @@ public class Enumerations {
     }
 
     public String toCode(SpecialValues code) {
+      if (code == null)
+        return null;
       if (code == SpecialValues.TRUE)
         return "true";
       if (code == SpecialValues.FALSE)

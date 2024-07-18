@@ -156,6 +156,8 @@ public class ImplementationGuide extends DomainResource {
     }
 
     public String toCode(GuideDependencyType code) {
+      if (code == null)
+        return null;
       if (code == GuideDependencyType.REFERENCE)
         return "reference";
       if (code == GuideDependencyType.INCLUSION)
@@ -343,6 +345,8 @@ public class ImplementationGuide extends DomainResource {
     }
 
     public String toCode(GuideResourcePurpose code) {
+      if (code == null)
+        return null;
       if (code == GuideResourcePurpose.EXAMPLE)
         return "example";
       if (code == GuideResourcePurpose.TERMINOLOGY)
@@ -573,6 +577,8 @@ public class ImplementationGuide extends DomainResource {
     }
 
     public String toCode(GuidePageKind code) {
+      if (code == null)
+        return null;
       if (code == GuidePageKind.PAGE)
         return "page";
       if (code == GuidePageKind.EXAMPLE)

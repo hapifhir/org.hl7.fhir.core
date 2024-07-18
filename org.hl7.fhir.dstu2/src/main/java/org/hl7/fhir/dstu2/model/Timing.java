@@ -246,6 +246,8 @@ public class Timing extends Type implements ICompositeType {
     }
 
     public String toCode(UnitsOfTime code) {
+      if (code == null)
+        return null;
       if (code == UnitsOfTime.S)
         return "s";
       if (code == UnitsOfTime.MIN)
@@ -583,6 +585,8 @@ public class Timing extends Type implements ICompositeType {
     }
 
     public String toCode(EventTiming code) {
+      if (code == null)
+        return null;
       if (code == EventTiming.HS)
         return "HS";
       if (code == EventTiming.WAKE)

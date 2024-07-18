@@ -297,6 +297,8 @@ public class DeviceUseRequest extends DomainResource {
     }
 
     public String toCode(DeviceUseRequestStatus code) {
+      if (code == null)
+        return null;
       if (code == DeviceUseRequestStatus.PROPOSED)
         return "proposed";
       if (code == DeviceUseRequestStatus.PLANNED)
@@ -460,6 +462,8 @@ public class DeviceUseRequest extends DomainResource {
     }
 
     public String toCode(DeviceUseRequestPriority code) {
+      if (code == null)
+        return null;
       if (code == DeviceUseRequestPriority.ROUTINE)
         return "routine";
       if (code == DeviceUseRequestPriority.URGENT)

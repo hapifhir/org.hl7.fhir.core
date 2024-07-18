@@ -209,6 +209,8 @@ public class AuditEvent extends DomainResource {
     }
 
     public String toCode(AuditEventAction code) {
+      if (code == null)
+        return null;
       if (code == AuditEventAction.C)
         return "C";
       if (code == AuditEventAction.R)
@@ -365,6 +367,8 @@ public class AuditEvent extends DomainResource {
     }
 
     public String toCode(AuditEventOutcome code) {
+      if (code == null)
+        return null;
       if (code == AuditEventOutcome._0)
         return "0";
       if (code == AuditEventOutcome._4)
@@ -497,7 +501,7 @@ public class AuditEvent extends DomainResource {
   }
 
   public static class AuditEventParticipantNetworkTypeEnumFactory
-      implements EnumFactory<AuditEventParticipantNetworkType> {
+    implements EnumFactory<AuditEventParticipantNetworkType> {
     public AuditEventParticipantNetworkType fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
         if (codeString == null || "".equals(codeString))
@@ -535,6 +539,8 @@ public class AuditEvent extends DomainResource {
     }
 
     public String toCode(AuditEventParticipantNetworkType code) {
+      if (code == null)
+        return null;
       if (code == AuditEventParticipantNetworkType._1)
         return "1";
       if (code == AuditEventParticipantNetworkType._2)

@@ -209,6 +209,8 @@ public class MedicationStatement extends DomainResource {
     }
 
     public String toCode(MedicationStatementStatus code) {
+      if (code == null)
+        return null;
       if (code == MedicationStatementStatus.ACTIVE)
         return "active";
       if (code == MedicationStatementStatus.COMPLETED)

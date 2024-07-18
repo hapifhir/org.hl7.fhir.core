@@ -189,6 +189,8 @@ public class Slot extends DomainResource {
     }
 
     public String toCode(SlotStatus code) {
+      if (code == null)
+        return null;
       if (code == SlotStatus.BUSY)
         return "busy";
       if (code == SlotStatus.FREE)

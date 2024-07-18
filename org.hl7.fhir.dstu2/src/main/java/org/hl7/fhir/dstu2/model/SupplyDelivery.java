@@ -167,6 +167,8 @@ public class SupplyDelivery extends DomainResource {
     }
 
     public String toCode(SupplyDeliveryStatus code) {
+      if (code == null)
+        return null;
       if (code == SupplyDeliveryStatus.INPROGRESS)
         return "in-progress";
       if (code == SupplyDeliveryStatus.COMPLETED)
