@@ -248,8 +248,11 @@ public class AllergyIntolerance extends DomainResource {
       throw new FHIRException("Unknown AllergyIntoleranceStatus code '" + codeString + "'");
     }
 
-    public String toCode(AllergyIntoleranceStatus code) {
-      if (code == AllergyIntoleranceStatus.ACTIVE)
+    public String toCode(AllergyIntoleranceStatus code)
+   {
+       if (code == AllergyIntoleranceStatus.NULL)
+           return null;
+       if (code == AllergyIntoleranceStatus.ACTIVE)
         return "active";
       if (code == AllergyIntoleranceStatus.UNCONFIRMED)
         return "unconfirmed";
@@ -264,7 +267,7 @@ public class AllergyIntolerance extends DomainResource {
       if (code == AllergyIntoleranceStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
   }
 
   public enum AllergyIntoleranceCriticality {
@@ -394,15 +397,18 @@ public class AllergyIntolerance extends DomainResource {
       throw new FHIRException("Unknown AllergyIntoleranceCriticality code '" + codeString + "'");
     }
 
-    public String toCode(AllergyIntoleranceCriticality code) {
-      if (code == AllergyIntoleranceCriticality.CRITL)
+    public String toCode(AllergyIntoleranceCriticality code)
+   {
+       if (code == AllergyIntoleranceCriticality.NULL)
+           return null;
+       if (code == AllergyIntoleranceCriticality.CRITL)
         return "CRITL";
       if (code == AllergyIntoleranceCriticality.CRITH)
         return "CRITH";
       if (code == AllergyIntoleranceCriticality.CRITU)
         return "CRITU";
       return "?";
-    }
+   }
   }
 
   public enum AllergyIntoleranceType {
@@ -513,13 +519,16 @@ public class AllergyIntolerance extends DomainResource {
       throw new FHIRException("Unknown AllergyIntoleranceType code '" + codeString + "'");
     }
 
-    public String toCode(AllergyIntoleranceType code) {
-      if (code == AllergyIntoleranceType.ALLERGY)
+    public String toCode(AllergyIntoleranceType code)
+   {
+       if (code == AllergyIntoleranceType.NULL)
+           return null;
+       if (code == AllergyIntoleranceType.ALLERGY)
         return "allergy";
       if (code == AllergyIntoleranceType.INTOLERANCE)
         return "intolerance";
       return "?";
-    }
+   }
   }
 
   public enum AllergyIntoleranceCategory {
@@ -660,8 +669,11 @@ public class AllergyIntolerance extends DomainResource {
       throw new FHIRException("Unknown AllergyIntoleranceCategory code '" + codeString + "'");
     }
 
-    public String toCode(AllergyIntoleranceCategory code) {
-      if (code == AllergyIntoleranceCategory.FOOD)
+    public String toCode(AllergyIntoleranceCategory code)
+   {
+       if (code == AllergyIntoleranceCategory.NULL)
+           return null;
+       if (code == AllergyIntoleranceCategory.FOOD)
         return "food";
       if (code == AllergyIntoleranceCategory.MEDICATION)
         return "medication";
@@ -670,7 +682,7 @@ public class AllergyIntolerance extends DomainResource {
       if (code == AllergyIntoleranceCategory.OTHER)
         return "other";
       return "?";
-    }
+   }
   }
 
   public enum AllergyIntoleranceCertainty {
@@ -797,15 +809,18 @@ public class AllergyIntolerance extends DomainResource {
       throw new FHIRException("Unknown AllergyIntoleranceCertainty code '" + codeString + "'");
     }
 
-    public String toCode(AllergyIntoleranceCertainty code) {
-      if (code == AllergyIntoleranceCertainty.UNLIKELY)
+    public String toCode(AllergyIntoleranceCertainty code)
+   {
+       if (code == AllergyIntoleranceCertainty.NULL)
+           return null;
+       if (code == AllergyIntoleranceCertainty.UNLIKELY)
         return "unlikely";
       if (code == AllergyIntoleranceCertainty.LIKELY)
         return "likely";
       if (code == AllergyIntoleranceCertainty.CONFIRMED)
         return "confirmed";
       return "?";
-    }
+   }
   }
 
   public enum AllergyIntoleranceSeverity {
@@ -928,15 +943,18 @@ public class AllergyIntolerance extends DomainResource {
       throw new FHIRException("Unknown AllergyIntoleranceSeverity code '" + codeString + "'");
     }
 
-    public String toCode(AllergyIntoleranceSeverity code) {
-      if (code == AllergyIntoleranceSeverity.MILD)
+    public String toCode(AllergyIntoleranceSeverity code)
+   {
+       if (code == AllergyIntoleranceSeverity.NULL)
+           return null;
+       if (code == AllergyIntoleranceSeverity.MILD)
         return "mild";
       if (code == AllergyIntoleranceSeverity.MODERATE)
         return "moderate";
       if (code == AllergyIntoleranceSeverity.SEVERE)
         return "severe";
       return "?";
-    }
+   }
   }
 
   @Block()

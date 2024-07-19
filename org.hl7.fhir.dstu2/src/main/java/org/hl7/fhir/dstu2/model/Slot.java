@@ -188,8 +188,11 @@ public class Slot extends DomainResource {
       throw new FHIRException("Unknown SlotStatus code '" + codeString + "'");
     }
 
-    public String toCode(SlotStatus code) {
-      if (code == SlotStatus.BUSY)
+    public String toCode(SlotStatus code)
+   {
+       if (code == SlotStatus.NULL)
+           return null;
+       if (code == SlotStatus.BUSY)
         return "busy";
       if (code == SlotStatus.FREE)
         return "free";
@@ -198,7 +201,7 @@ public class Slot extends DomainResource {
       if (code == SlotStatus.BUSYTENTATIVE)
         return "busy-tentative";
       return "?";
-    }
+   }
   }
 
   /**

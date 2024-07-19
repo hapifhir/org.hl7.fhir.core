@@ -188,8 +188,11 @@ public class SupplyRequest extends DomainResource {
       throw new FHIRException("Unknown SupplyRequestStatus code '" + codeString + "'");
     }
 
-    public String toCode(SupplyRequestStatus code) {
-      if (code == SupplyRequestStatus.REQUESTED)
+    public String toCode(SupplyRequestStatus code)
+   {
+       if (code == SupplyRequestStatus.NULL)
+           return null;
+       if (code == SupplyRequestStatus.REQUESTED)
         return "requested";
       if (code == SupplyRequestStatus.COMPLETED)
         return "completed";
@@ -198,7 +201,7 @@ public class SupplyRequest extends DomainResource {
       if (code == SupplyRequestStatus.CANCELLED)
         return "cancelled";
       return "?";
-    }
+   }
   }
 
   @Block()

@@ -189,8 +189,11 @@ public class Person extends DomainResource {
       throw new FHIRException("Unknown IdentityAssuranceLevel code '" + codeString + "'");
     }
 
-    public String toCode(IdentityAssuranceLevel code) {
-      if (code == IdentityAssuranceLevel.LEVEL1)
+    public String toCode(IdentityAssuranceLevel code)
+   {
+       if (code == IdentityAssuranceLevel.NULL)
+           return null;
+       if (code == IdentityAssuranceLevel.LEVEL1)
         return "level1";
       if (code == IdentityAssuranceLevel.LEVEL2)
         return "level2";
@@ -199,7 +202,7 @@ public class Person extends DomainResource {
       if (code == IdentityAssuranceLevel.LEVEL4)
         return "level4";
       return "?";
-    }
+   }
   }
 
   @Block()
