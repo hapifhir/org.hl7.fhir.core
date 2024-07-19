@@ -44,10 +44,12 @@ public class AssetAvailabilityEnumFactory implements EnumFactory<AssetAvailabili
   }
 
   public String toCode(AssetAvailability code) {
-    if (code == AssetAvailability.LEASE)
+       if (code == AssetAvailability.NULL)
+           return null;
+       if (code == AssetAvailability.LEASE)
       return "lease";
     return "?";
-  }
+   }
 
   public String toSystem(AssetAvailability code) {
     return code.getSystem();

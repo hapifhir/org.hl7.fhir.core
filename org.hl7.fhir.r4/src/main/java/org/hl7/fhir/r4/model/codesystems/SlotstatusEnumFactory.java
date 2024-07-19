@@ -52,7 +52,9 @@ public class SlotstatusEnumFactory implements EnumFactory<Slotstatus> {
   }
 
   public String toCode(Slotstatus code) {
-    if (code == Slotstatus.BUSY)
+       if (code == Slotstatus.NULL)
+           return null;
+       if (code == Slotstatus.BUSY)
       return "busy";
     if (code == Slotstatus.FREE)
       return "free";
@@ -63,7 +65,7 @@ public class SlotstatusEnumFactory implements EnumFactory<Slotstatus> {
     if (code == Slotstatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(Slotstatus code) {
     return code.getSystem();

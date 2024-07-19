@@ -78,7 +78,9 @@ public class V3CalendarCycleEnumFactory implements EnumFactory<V3CalendarCycle> 
   }
 
   public String toCode(V3CalendarCycle code) {
-    if (code == V3CalendarCycle._CALENDARCYCLEONELETTER)
+       if (code == V3CalendarCycle.NULL)
+           return null;
+       if (code == V3CalendarCycle._CALENDARCYCLEONELETTER)
       return "_CalendarCycleOneLetter";
     if (code == V3CalendarCycle.CW)
       return "CW";
@@ -115,7 +117,7 @@ public class V3CalendarCycleEnumFactory implements EnumFactory<V3CalendarCycle> 
     if (code == V3CalendarCycle.WM)
       return "WM";
     return "?";
-  }
+   }
 
   public String toSystem(V3CalendarCycle code) {
     return code.getSystem();

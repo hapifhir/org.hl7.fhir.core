@@ -50,7 +50,9 @@ public class V3Hl7PublishingSectionEnumFactory implements EnumFactory<V3Hl7Publi
   }
 
   public String toCode(V3Hl7PublishingSection code) {
-    if (code == V3Hl7PublishingSection.AM)
+       if (code == V3Hl7PublishingSection.NULL)
+           return null;
+       if (code == V3Hl7PublishingSection.AM)
       return "AM";
     if (code == V3Hl7PublishingSection.HM)
       return "HM";
@@ -59,7 +61,7 @@ public class V3Hl7PublishingSectionEnumFactory implements EnumFactory<V3Hl7Publi
     if (code == V3Hl7PublishingSection.UU)
       return "UU";
     return "?";
-  }
+   }
 
   public String toSystem(V3Hl7PublishingSection code) {
     return code.getSystem();

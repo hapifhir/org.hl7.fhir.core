@@ -56,7 +56,9 @@ public class TaskCodeEnumFactory implements EnumFactory<TaskCode> {
   }
 
   public String toCode(TaskCode code) {
-    if (code == TaskCode.APPROVE)
+       if (code == TaskCode.NULL)
+           return null;
+       if (code == TaskCode.APPROVE)
       return "approve";
     if (code == TaskCode.FULFILL)
       return "fulfill";
@@ -71,7 +73,7 @@ public class TaskCodeEnumFactory implements EnumFactory<TaskCode> {
     if (code == TaskCode.RESUME)
       return "resume";
     return "?";
-  }
+   }
 
   public String toSystem(TaskCode code) {
     return code.getSystem();

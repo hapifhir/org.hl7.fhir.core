@@ -156,7 +156,9 @@ public class V3ObservationInterpretationEnumFactory implements EnumFactory<V3Obs
   }
 
   public String toCode(V3ObservationInterpretation code) {
-    if (code == V3ObservationInterpretation._GENETICOBSERVATIONINTERPRETATION)
+       if (code == V3ObservationInterpretation.NULL)
+           return null;
+       if (code == V3ObservationInterpretation._GENETICOBSERVATIONINTERPRETATION)
       return "_GeneticObservationInterpretation";
     if (code == V3ObservationInterpretation.CAR)
       return "CAR";
@@ -271,7 +273,7 @@ public class V3ObservationInterpretationEnumFactory implements EnumFactory<V3Obs
     if (code == V3ObservationInterpretation.WR)
       return "WR";
     return "?";
-  }
+   }
 
   public String toSystem(V3ObservationInterpretation code) {
     return code.getSystem();

@@ -42,8 +42,10 @@ public class MessageEventsEnumFactory implements EnumFactory<MessageEvents> {
   }
 
   public String toCode(MessageEvents code) {
-    return "?";
-  }
+       if (code == MessageEvents.NULL)
+           return null;
+       return "?";
+   }
 
   public String toSystem(MessageEvents code) {
     return code.getSystem();

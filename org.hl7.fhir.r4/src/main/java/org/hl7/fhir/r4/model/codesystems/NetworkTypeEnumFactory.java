@@ -52,7 +52,9 @@ public class NetworkTypeEnumFactory implements EnumFactory<NetworkType> {
   }
 
   public String toCode(NetworkType code) {
-    if (code == NetworkType._1)
+       if (code == NetworkType.NULL)
+           return null;
+       if (code == NetworkType._1)
       return "1";
     if (code == NetworkType._2)
       return "2";
@@ -63,7 +65,7 @@ public class NetworkTypeEnumFactory implements EnumFactory<NetworkType> {
     if (code == NetworkType._5)
       return "5";
     return "?";
-  }
+   }
 
   public String toSystem(NetworkType code) {
     return code.getSystem();

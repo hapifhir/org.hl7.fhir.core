@@ -106,7 +106,9 @@ public class AppointmentCancellationReasonEnumFactory implements EnumFactory<App
   }
 
   public String toCode(AppointmentCancellationReason code) {
-    if (code == AppointmentCancellationReason.PAT)
+       if (code == AppointmentCancellationReason.NULL)
+           return null;
+       if (code == AppointmentCancellationReason.PAT)
       return "pat";
     if (code == AppointmentCancellationReason.PATCRS)
       return "pat-crs";
@@ -171,7 +173,7 @@ public class AppointmentCancellationReasonEnumFactory implements EnumFactory<App
     if (code == AppointmentCancellationReason.OTHWEATH)
       return "oth-weath";
     return "?";
-  }
+   }
 
   public String toSystem(AppointmentCancellationReason code) {
     return code.getSystem();

@@ -179,14 +179,16 @@ public class Linkage extends DomainResource {
     }
 
     public String toCode(LinkageType code) {
-      if (code == LinkageType.SOURCE)
+       if (code == LinkageType.NULL)
+           return null;
+       if (code == LinkageType.SOURCE)
         return "source";
       if (code == LinkageType.ALTERNATE)
         return "alternate";
       if (code == LinkageType.HISTORICAL)
         return "historical";
       return "?";
-    }
+   }
 
     public String toSystem(LinkageType code) {
       return code.getSystem();

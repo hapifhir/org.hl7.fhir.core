@@ -54,7 +54,9 @@ public class InvoicePriceComponentTypeEnumFactory implements EnumFactory<Invoice
   }
 
   public String toCode(InvoicePriceComponentType code) {
-    if (code == InvoicePriceComponentType.BASE)
+       if (code == InvoicePriceComponentType.NULL)
+           return null;
+       if (code == InvoicePriceComponentType.BASE)
       return "base";
     if (code == InvoicePriceComponentType.SURCHARGE)
       return "surcharge";
@@ -67,7 +69,7 @@ public class InvoicePriceComponentTypeEnumFactory implements EnumFactory<Invoice
     if (code == InvoicePriceComponentType.INFORMATIONAL)
       return "informational";
     return "?";
-  }
+   }
 
   public String toSystem(InvoicePriceComponentType code) {
     return code.getSystem();

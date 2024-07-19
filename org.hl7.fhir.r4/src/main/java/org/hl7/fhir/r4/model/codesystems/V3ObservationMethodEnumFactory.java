@@ -650,7 +650,9 @@ public class V3ObservationMethodEnumFactory implements EnumFactory<V3Observation
   }
 
   public String toCode(V3ObservationMethod code) {
-    if (code == V3ObservationMethod._DECISIONOBSERVATIONMETHOD)
+       if (code == V3ObservationMethod.NULL)
+           return null;
+       if (code == V3ObservationMethod._DECISIONOBSERVATIONMETHOD)
       return "_DecisionObservationMethod";
     if (code == V3ObservationMethod.ALGM)
       return "ALGM";
@@ -1259,7 +1261,7 @@ public class V3ObservationMethodEnumFactory implements EnumFactory<V3Observation
     if (code == V3ObservationMethod._0127)
       return "0127";
     return "?";
-  }
+   }
 
   public String toSystem(V3ObservationMethod code) {
     return code.getSystem();

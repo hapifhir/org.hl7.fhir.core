@@ -217,7 +217,9 @@ public class StructureDefinition extends MetadataResource {
     }
 
     public String toCode(StructureDefinitionKind code) {
-      if (code == StructureDefinitionKind.PRIMITIVETYPE)
+       if (code == StructureDefinitionKind.NULL)
+           return null;
+       if (code == StructureDefinitionKind.PRIMITIVETYPE)
         return "primitive-type";
       if (code == StructureDefinitionKind.COMPLEXTYPE)
         return "complex-type";
@@ -226,7 +228,7 @@ public class StructureDefinition extends MetadataResource {
       if (code == StructureDefinitionKind.LOGICAL)
         return "logical";
       return "?";
-    }
+   }
 
     public String toSystem(StructureDefinitionKind code) {
       return code.getSystem();
@@ -364,14 +366,16 @@ public class StructureDefinition extends MetadataResource {
     }
 
     public String toCode(ExtensionContextType code) {
-      if (code == ExtensionContextType.FHIRPATH)
+       if (code == ExtensionContextType.NULL)
+           return null;
+       if (code == ExtensionContextType.FHIRPATH)
         return "fhirpath";
       if (code == ExtensionContextType.ELEMENT)
         return "element";
       if (code == ExtensionContextType.EXTENSION)
         return "extension";
       return "?";
-    }
+   }
 
     public String toSystem(ExtensionContextType code) {
       return code.getSystem();
@@ -487,12 +491,14 @@ public class StructureDefinition extends MetadataResource {
     }
 
     public String toCode(TypeDerivationRule code) {
-      if (code == TypeDerivationRule.SPECIALIZATION)
+       if (code == TypeDerivationRule.NULL)
+           return null;
+       if (code == TypeDerivationRule.SPECIALIZATION)
         return "specialization";
       if (code == TypeDerivationRule.CONSTRAINT)
         return "constraint";
       return "?";
-    }
+   }
 
     public String toSystem(TypeDerivationRule code) {
       return code.getSystem();

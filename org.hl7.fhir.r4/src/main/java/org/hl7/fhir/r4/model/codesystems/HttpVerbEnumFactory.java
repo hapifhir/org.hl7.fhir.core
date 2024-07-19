@@ -54,7 +54,9 @@ public class HttpVerbEnumFactory implements EnumFactory<HttpVerb> {
   }
 
   public String toCode(HttpVerb code) {
-    if (code == HttpVerb.GET)
+       if (code == HttpVerb.NULL)
+           return null;
+       if (code == HttpVerb.GET)
       return "GET";
     if (code == HttpVerb.HEAD)
       return "HEAD";
@@ -67,7 +69,7 @@ public class HttpVerbEnumFactory implements EnumFactory<HttpVerb> {
     if (code == HttpVerb.PATCH)
       return "PATCH";
     return "?";
-  }
+   }
 
   public String toSystem(HttpVerb code) {
     return code.getSystem();

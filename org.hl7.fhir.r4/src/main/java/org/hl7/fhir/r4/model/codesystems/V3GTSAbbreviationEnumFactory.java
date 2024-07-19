@@ -130,7 +130,9 @@ public class V3GTSAbbreviationEnumFactory implements EnumFactory<V3GTSAbbreviati
   }
 
   public String toCode(V3GTSAbbreviation code) {
-    if (code == V3GTSAbbreviation.AM)
+       if (code == V3GTSAbbreviation.NULL)
+           return null;
+       if (code == V3GTSAbbreviation.AM)
       return "AM";
     if (code == V3GTSAbbreviation.BED)
       return "BED";
@@ -219,7 +221,7 @@ public class V3GTSAbbreviationEnumFactory implements EnumFactory<V3GTSAbbreviati
     if (code == V3GTSAbbreviation.WK)
       return "WK";
     return "?";
-  }
+   }
 
   public String toSystem(V3GTSAbbreviation code) {
     return code.getSystem();

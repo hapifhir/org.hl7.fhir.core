@@ -54,7 +54,9 @@ public class RiskEstimateTypeEnumFactory implements EnumFactory<RiskEstimateType
   }
 
   public String toCode(RiskEstimateType code) {
-    if (code == RiskEstimateType.PROPORTION)
+       if (code == RiskEstimateType.NULL)
+           return null;
+       if (code == RiskEstimateType.PROPORTION)
       return "proportion";
     if (code == RiskEstimateType.DERIVEDPROPORTION)
       return "derivedProportion";
@@ -67,7 +69,7 @@ public class RiskEstimateTypeEnumFactory implements EnumFactory<RiskEstimateType
     if (code == RiskEstimateType.DESCRIPTIVE)
       return "descriptive";
     return "?";
-  }
+   }
 
   public String toSystem(RiskEstimateType code) {
     return code.getSystem();

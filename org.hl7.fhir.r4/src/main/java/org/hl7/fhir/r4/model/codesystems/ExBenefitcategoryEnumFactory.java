@@ -98,7 +98,9 @@ public class ExBenefitcategoryEnumFactory implements EnumFactory<ExBenefitcatego
   }
 
   public String toCode(ExBenefitcategory code) {
-    if (code == ExBenefitcategory._1)
+       if (code == ExBenefitcategory.NULL)
+           return null;
+       if (code == ExBenefitcategory._1)
       return "1";
     if (code == ExBenefitcategory._2)
       return "2";
@@ -155,7 +157,7 @@ public class ExBenefitcategoryEnumFactory implements EnumFactory<ExBenefitcatego
     if (code == ExBenefitcategory.F6)
       return "F6";
     return "?";
-  }
+   }
 
   public String toSystem(ExBenefitcategory code) {
     return code.getSystem();

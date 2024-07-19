@@ -52,7 +52,9 @@ public class CareTeamStatusEnumFactory implements EnumFactory<CareTeamStatus> {
   }
 
   public String toCode(CareTeamStatus code) {
-    if (code == CareTeamStatus.PROPOSED)
+       if (code == CareTeamStatus.NULL)
+           return null;
+       if (code == CareTeamStatus.PROPOSED)
       return "proposed";
     if (code == CareTeamStatus.ACTIVE)
       return "active";
@@ -63,7 +65,7 @@ public class CareTeamStatusEnumFactory implements EnumFactory<CareTeamStatus> {
     if (code == CareTeamStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(CareTeamStatus code) {
     return code.getSystem();

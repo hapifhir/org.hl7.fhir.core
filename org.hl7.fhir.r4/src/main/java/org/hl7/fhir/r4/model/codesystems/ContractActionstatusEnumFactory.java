@@ -44,10 +44,12 @@ public class ContractActionstatusEnumFactory implements EnumFactory<ContractActi
   }
 
   public String toCode(ContractActionstatus code) {
-    if (code == ContractActionstatus.COMPLETE)
+       if (code == ContractActionstatus.NULL)
+           return null;
+       if (code == ContractActionstatus.COMPLETE)
       return "complete";
     return "?";
-  }
+   }
 
   public String toSystem(ContractActionstatus code) {
     return code.getSystem();

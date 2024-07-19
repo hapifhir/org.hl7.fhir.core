@@ -50,7 +50,9 @@ public class ConditionalReadStatusEnumFactory implements EnumFactory<Conditional
   }
 
   public String toCode(ConditionalReadStatus code) {
-    if (code == ConditionalReadStatus.NOTSUPPORTED)
+       if (code == ConditionalReadStatus.NULL)
+           return null;
+       if (code == ConditionalReadStatus.NOTSUPPORTED)
       return "not-supported";
     if (code == ConditionalReadStatus.MODIFIEDSINCE)
       return "modified-since";
@@ -59,7 +61,7 @@ public class ConditionalReadStatusEnumFactory implements EnumFactory<Conditional
     if (code == ConditionalReadStatus.FULLSUPPORT)
       return "full-support";
     return "?";
-  }
+   }
 
   public String toSystem(ConditionalReadStatus code) {
     return code.getSystem();

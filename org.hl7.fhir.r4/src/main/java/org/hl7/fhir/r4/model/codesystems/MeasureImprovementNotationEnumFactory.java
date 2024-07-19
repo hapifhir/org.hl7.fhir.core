@@ -46,12 +46,14 @@ public class MeasureImprovementNotationEnumFactory implements EnumFactory<Measur
   }
 
   public String toCode(MeasureImprovementNotation code) {
-    if (code == MeasureImprovementNotation.INCREASE)
+       if (code == MeasureImprovementNotation.NULL)
+           return null;
+       if (code == MeasureImprovementNotation.INCREASE)
       return "increase";
     if (code == MeasureImprovementNotation.DECREASE)
       return "decrease";
     return "?";
-  }
+   }
 
   public String toSystem(MeasureImprovementNotation code) {
     return code.getSystem();

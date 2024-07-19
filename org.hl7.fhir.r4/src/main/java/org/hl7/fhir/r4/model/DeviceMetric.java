@@ -194,7 +194,9 @@ public class DeviceMetric extends DomainResource {
     }
 
     public String toCode(DeviceMetricOperationalStatus code) {
-      if (code == DeviceMetricOperationalStatus.ON)
+       if (code == DeviceMetricOperationalStatus.NULL)
+           return null;
+       if (code == DeviceMetricOperationalStatus.ON)
         return "on";
       if (code == DeviceMetricOperationalStatus.OFF)
         return "off";
@@ -203,7 +205,7 @@ public class DeviceMetric extends DomainResource {
       if (code == DeviceMetricOperationalStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(DeviceMetricOperationalStatus code) {
       return code.getSystem();
@@ -426,7 +428,9 @@ public class DeviceMetric extends DomainResource {
     }
 
     public String toCode(DeviceMetricColor code) {
-      if (code == DeviceMetricColor.BLACK)
+       if (code == DeviceMetricColor.NULL)
+           return null;
+       if (code == DeviceMetricColor.BLACK)
         return "black";
       if (code == DeviceMetricColor.RED)
         return "red";
@@ -443,7 +447,7 @@ public class DeviceMetric extends DomainResource {
       if (code == DeviceMetricColor.WHITE)
         return "white";
       return "?";
-    }
+   }
 
     public String toSystem(DeviceMetricColor code) {
       return code.getSystem();
@@ -595,7 +599,9 @@ public class DeviceMetric extends DomainResource {
     }
 
     public String toCode(DeviceMetricCategory code) {
-      if (code == DeviceMetricCategory.MEASUREMENT)
+       if (code == DeviceMetricCategory.NULL)
+           return null;
+       if (code == DeviceMetricCategory.MEASUREMENT)
         return "measurement";
       if (code == DeviceMetricCategory.SETTING)
         return "setting";
@@ -604,7 +610,7 @@ public class DeviceMetric extends DomainResource {
       if (code == DeviceMetricCategory.UNSPECIFIED)
         return "unspecified";
       return "?";
-    }
+   }
 
     public String toSystem(DeviceMetricCategory code) {
       return code.getSystem();
@@ -755,7 +761,9 @@ public class DeviceMetric extends DomainResource {
     }
 
     public String toCode(DeviceMetricCalibrationType code) {
-      if (code == DeviceMetricCalibrationType.UNSPECIFIED)
+       if (code == DeviceMetricCalibrationType.NULL)
+           return null;
+       if (code == DeviceMetricCalibrationType.UNSPECIFIED)
         return "unspecified";
       if (code == DeviceMetricCalibrationType.OFFSET)
         return "offset";
@@ -764,7 +772,7 @@ public class DeviceMetric extends DomainResource {
       if (code == DeviceMetricCalibrationType.TWOPOINT)
         return "two-point";
       return "?";
-    }
+   }
 
     public String toSystem(DeviceMetricCalibrationType code) {
       return code.getSystem();
@@ -916,7 +924,9 @@ public class DeviceMetric extends DomainResource {
     }
 
     public String toCode(DeviceMetricCalibrationState code) {
-      if (code == DeviceMetricCalibrationState.NOTCALIBRATED)
+       if (code == DeviceMetricCalibrationState.NULL)
+           return null;
+       if (code == DeviceMetricCalibrationState.NOTCALIBRATED)
         return "not-calibrated";
       if (code == DeviceMetricCalibrationState.CALIBRATIONREQUIRED)
         return "calibration-required";
@@ -925,7 +935,7 @@ public class DeviceMetric extends DomainResource {
       if (code == DeviceMetricCalibrationState.UNSPECIFIED)
         return "unspecified";
       return "?";
-    }
+   }
 
     public String toSystem(DeviceMetricCalibrationState code) {
       return code.getSystem();

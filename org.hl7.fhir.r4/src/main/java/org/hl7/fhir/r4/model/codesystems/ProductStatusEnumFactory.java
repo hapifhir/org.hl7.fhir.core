@@ -46,12 +46,14 @@ public class ProductStatusEnumFactory implements EnumFactory<ProductStatus> {
   }
 
   public String toCode(ProductStatus code) {
-    if (code == ProductStatus.AVAILABLE)
+       if (code == ProductStatus.NULL)
+           return null;
+       if (code == ProductStatus.AVAILABLE)
       return "available";
     if (code == ProductStatus.UNAVAILABLE)
       return "unavailable";
     return "?";
-  }
+   }
 
   public String toSystem(ProductStatus code) {
     return code.getSystem();

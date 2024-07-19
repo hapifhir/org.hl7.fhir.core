@@ -52,7 +52,9 @@ public class ProvenanceEntityRoleEnumFactory implements EnumFactory<ProvenanceEn
   }
 
   public String toCode(ProvenanceEntityRole code) {
-    if (code == ProvenanceEntityRole.DERIVATION)
+       if (code == ProvenanceEntityRole.NULL)
+           return null;
+       if (code == ProvenanceEntityRole.DERIVATION)
       return "derivation";
     if (code == ProvenanceEntityRole.REVISION)
       return "revision";
@@ -63,7 +65,7 @@ public class ProvenanceEntityRoleEnumFactory implements EnumFactory<ProvenanceEn
     if (code == ProvenanceEntityRole.REMOVAL)
       return "removal";
     return "?";
-  }
+   }
 
   public String toSystem(ProvenanceEntityRole code) {
     return code.getSystem();
