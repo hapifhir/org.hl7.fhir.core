@@ -148,14 +148,16 @@ public class Media extends DomainResource {
         throw new FHIRException("Unknown DigitalMediaType code '"+codeString+"'");
         }
     public String toCode(DigitalMediaType code) {
-      if (code == DigitalMediaType.PHOTO)
+       if (code == DigitalMediaType.NULL)
+           return null;
+       if (code == DigitalMediaType.PHOTO)
         return "photo";
       if (code == DigitalMediaType.VIDEO)
         return "video";
       if (code == DigitalMediaType.AUDIO)
         return "audio";
       return "?";
-      }
+   }
     public String toSystem(DigitalMediaType code) {
       return code.getSystem();
       }

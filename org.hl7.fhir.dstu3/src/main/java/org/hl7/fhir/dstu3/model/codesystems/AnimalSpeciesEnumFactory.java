@@ -52,14 +52,16 @@ public class AnimalSpeciesEnumFactory implements EnumFactory<AnimalSpecies> {
   }
 
   public String toCode(AnimalSpecies code) {
-    if (code == AnimalSpecies.CANISLF)
+       if (code == AnimalSpecies.NULL)
+           return null;
+       if (code == AnimalSpecies.CANISLF)
       return "canislf";
     if (code == AnimalSpecies.OVISA)
       return "ovisa";
     if (code == AnimalSpecies.SERINUSCD)
       return "serinuscd";
     return "?";
-  }
+   }
 
     public String toSystem(AnimalSpecies code) {
       return code.getSystem();

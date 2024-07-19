@@ -54,7 +54,9 @@ public class V3ActRelationshipJoinEnumFactory implements EnumFactory<V3ActRelati
   }
 
   public String toCode(V3ActRelationshipJoin code) {
-    if (code == V3ActRelationshipJoin.D)
+       if (code == V3ActRelationshipJoin.NULL)
+           return null;
+       if (code == V3ActRelationshipJoin.D)
       return "D";
     if (code == V3ActRelationshipJoin.K)
       return "K";
@@ -63,7 +65,7 @@ public class V3ActRelationshipJoinEnumFactory implements EnumFactory<V3ActRelati
     if (code == V3ActRelationshipJoin.X)
       return "X";
     return "?";
-  }
+   }
 
     public String toSystem(V3ActRelationshipJoin code) {
       return code.getSystem();

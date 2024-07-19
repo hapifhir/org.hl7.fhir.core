@@ -50,12 +50,14 @@ public class V3IntegrityCheckAlgorithmEnumFactory implements EnumFactory<V3Integ
   }
 
   public String toCode(V3IntegrityCheckAlgorithm code) {
-    if (code == V3IntegrityCheckAlgorithm.SHA1)
+       if (code == V3IntegrityCheckAlgorithm.NULL)
+           return null;
+       if (code == V3IntegrityCheckAlgorithm.SHA1)
       return "SHA-1";
     if (code == V3IntegrityCheckAlgorithm.SHA256)
       return "SHA-256";
     return "?";
-  }
+   }
 
     public String toSystem(V3IntegrityCheckAlgorithm code) {
       return code.getSystem();

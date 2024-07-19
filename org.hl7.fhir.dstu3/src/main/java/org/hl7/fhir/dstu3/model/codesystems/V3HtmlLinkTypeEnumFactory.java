@@ -76,7 +76,9 @@ public class V3HtmlLinkTypeEnumFactory implements EnumFactory<V3HtmlLinkType> {
   }
 
   public String toCode(V3HtmlLinkType code) {
-    if (code == V3HtmlLinkType.ALTERNATE)
+       if (code == V3HtmlLinkType.NULL)
+           return null;
+       if (code == V3HtmlLinkType.ALTERNATE)
       return "alternate";
     if (code == V3HtmlLinkType.APPENDIX)
       return "appendix";
@@ -107,7 +109,7 @@ public class V3HtmlLinkTypeEnumFactory implements EnumFactory<V3HtmlLinkType> {
     if (code == V3HtmlLinkType.SUBSECTION)
       return "subsection";
     return "?";
-  }
+   }
 
     public String toSystem(V3HtmlLinkType code) {
       return code.getSystem();

@@ -50,12 +50,14 @@ public class PaymentStatusEnumFactory implements EnumFactory<PaymentStatus> {
   }
 
   public String toCode(PaymentStatus code) {
-    if (code == PaymentStatus.PAID)
+       if (code == PaymentStatus.NULL)
+           return null;
+       if (code == PaymentStatus.PAID)
       return "paid";
     if (code == PaymentStatus.CLEARED)
       return "cleared";
     return "?";
-  }
+   }
 
     public String toSystem(PaymentStatus code) {
       return code.getSystem();

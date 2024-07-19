@@ -52,14 +52,16 @@ public class ResourceSlicingRulesEnumFactory implements EnumFactory<ResourceSlic
   }
 
   public String toCode(ResourceSlicingRules code) {
-    if (code == ResourceSlicingRules.CLOSED)
+       if (code == ResourceSlicingRules.NULL)
+           return null;
+       if (code == ResourceSlicingRules.CLOSED)
       return "closed";
     if (code == ResourceSlicingRules.OPEN)
       return "open";
     if (code == ResourceSlicingRules.OPENATEND)
       return "openAtEnd";
     return "?";
-  }
+   }
 
     public String toSystem(ResourceSlicingRules code) {
       return code.getSystem();

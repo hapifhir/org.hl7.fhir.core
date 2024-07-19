@@ -206,7 +206,9 @@ public class CarePlan extends DomainResource {
         throw new FHIRException("Unknown CarePlanStatus code '"+codeString+"'");
         }
     public String toCode(CarePlanStatus code) {
-      if (code == CarePlanStatus.DRAFT)
+       if (code == CarePlanStatus.NULL)
+           return null;
+       if (code == CarePlanStatus.DRAFT)
         return "draft";
       if (code == CarePlanStatus.ACTIVE)
         return "active";
@@ -221,7 +223,7 @@ public class CarePlan extends DomainResource {
       if (code == CarePlanStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(CarePlanStatus code) {
       return code.getSystem();
       }
@@ -342,7 +344,9 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         throw new FHIRException("Unknown CarePlanIntent code '"+codeString+"'");
         }
     public String toCode(CarePlanIntent code) {
-      if (code == CarePlanIntent.PROPOSAL)
+       if (code == CarePlanIntent.NULL)
+           return null;
+       if (code == CarePlanIntent.PROPOSAL)
         return "proposal";
       if (code == CarePlanIntent.PLAN)
         return "plan";
@@ -351,7 +355,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       if (code == CarePlanIntent.OPTION)
         return "option";
       return "?";
-      }
+   }
     public String toSystem(CarePlanIntent code) {
       return code.getSystem();
       }
@@ -512,7 +516,9 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         throw new FHIRException("Unknown CarePlanActivityStatus code '"+codeString+"'");
         }
     public String toCode(CarePlanActivityStatus code) {
-      if (code == CarePlanActivityStatus.NOTSTARTED)
+       if (code == CarePlanActivityStatus.NULL)
+           return null;
+       if (code == CarePlanActivityStatus.NOTSTARTED)
         return "not-started";
       if (code == CarePlanActivityStatus.SCHEDULED)
         return "scheduled";
@@ -527,7 +533,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       if (code == CarePlanActivityStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(CarePlanActivityStatus code) {
       return code.getSystem();
       }

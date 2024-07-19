@@ -56,7 +56,9 @@ public class V3EntityStatusEnumFactory implements EnumFactory<V3EntityStatus> {
   }
 
   public String toCode(V3EntityStatus code) {
-    if (code == V3EntityStatus.NORMAL)
+       if (code == V3EntityStatus.NULL)
+           return null;
+       if (code == V3EntityStatus.NORMAL)
       return "normal";
     if (code == V3EntityStatus.ACTIVE)
       return "active";
@@ -67,7 +69,7 @@ public class V3EntityStatusEnumFactory implements EnumFactory<V3EntityStatus> {
     if (code == V3EntityStatus.NULLIFIED)
       return "nullified";
     return "?";
-  }
+   }
 
     public String toSystem(V3EntityStatus code) {
       return code.getSystem();

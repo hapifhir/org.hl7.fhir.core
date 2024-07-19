@@ -184,7 +184,9 @@ public class SearchParameter extends MetadataResource {
         throw new FHIRException("Unknown XPathUsageType code '"+codeString+"'");
         }
     public String toCode(XPathUsageType code) {
-      if (code == XPathUsageType.NORMAL)
+       if (code == XPathUsageType.NULL)
+           return null;
+       if (code == XPathUsageType.NORMAL)
         return "normal";
       if (code == XPathUsageType.PHONETIC)
         return "phonetic";
@@ -195,7 +197,7 @@ public class SearchParameter extends MetadataResource {
       if (code == XPathUsageType.OTHER)
         return "other";
       return "?";
-      }
+   }
     public String toSystem(XPathUsageType code) {
       return code.getSystem();
       }
@@ -384,7 +386,9 @@ public class SearchParameter extends MetadataResource {
         throw new FHIRException("Unknown SearchComparator code '"+codeString+"'");
         }
     public String toCode(SearchComparator code) {
-      if (code == SearchComparator.EQ)
+       if (code == SearchComparator.NULL)
+           return null;
+       if (code == SearchComparator.EQ)
         return "eq";
       if (code == SearchComparator.NE)
         return "ne";
@@ -403,7 +407,7 @@ public class SearchParameter extends MetadataResource {
       if (code == SearchComparator.AP)
         return "ap";
       return "?";
-      }
+   }
     public String toSystem(SearchComparator code) {
       return code.getSystem();
       }
@@ -606,7 +610,9 @@ public class SearchParameter extends MetadataResource {
         throw new FHIRException("Unknown SearchModifierCode code '"+codeString+"'");
         }
     public String toCode(SearchModifierCode code) {
-      if (code == SearchModifierCode.MISSING)
+       if (code == SearchModifierCode.NULL)
+           return null;
+       if (code == SearchModifierCode.MISSING)
         return "missing";
       if (code == SearchModifierCode.EXACT)
         return "exact";
@@ -627,7 +633,7 @@ public class SearchParameter extends MetadataResource {
       if (code == SearchModifierCode.TYPE)
         return "type";
       return "?";
-      }
+   }
     public String toSystem(SearchModifierCode code) {
       return code.getSystem();
       }

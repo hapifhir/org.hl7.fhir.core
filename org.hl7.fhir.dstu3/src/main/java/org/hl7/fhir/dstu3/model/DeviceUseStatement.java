@@ -190,7 +190,9 @@ public class DeviceUseStatement extends DomainResource {
         throw new FHIRException("Unknown DeviceUseStatementStatus code '"+codeString+"'");
         }
     public String toCode(DeviceUseStatementStatus code) {
-      if (code == DeviceUseStatementStatus.ACTIVE)
+       if (code == DeviceUseStatementStatus.NULL)
+           return null;
+       if (code == DeviceUseStatementStatus.ACTIVE)
         return "active";
       if (code == DeviceUseStatementStatus.COMPLETED)
         return "completed";
@@ -203,7 +205,7 @@ public class DeviceUseStatement extends DomainResource {
       if (code == DeviceUseStatementStatus.ONHOLD)
         return "on-hold";
       return "?";
-      }
+   }
     public String toSystem(DeviceUseStatementStatus code) {
       return code.getSystem();
       }

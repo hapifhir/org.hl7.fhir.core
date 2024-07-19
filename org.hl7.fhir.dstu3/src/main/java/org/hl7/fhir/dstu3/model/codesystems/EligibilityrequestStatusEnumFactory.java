@@ -54,7 +54,9 @@ public class EligibilityrequestStatusEnumFactory implements EnumFactory<Eligibil
   }
 
   public String toCode(EligibilityrequestStatus code) {
-    if (code == EligibilityrequestStatus.ACTIVE)
+       if (code == EligibilityrequestStatus.NULL)
+           return null;
+       if (code == EligibilityrequestStatus.ACTIVE)
       return "active";
     if (code == EligibilityrequestStatus.CANCELLED)
       return "cancelled";
@@ -63,7 +65,7 @@ public class EligibilityrequestStatusEnumFactory implements EnumFactory<Eligibil
     if (code == EligibilityrequestStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(EligibilityrequestStatus code) {
       return code.getSystem();

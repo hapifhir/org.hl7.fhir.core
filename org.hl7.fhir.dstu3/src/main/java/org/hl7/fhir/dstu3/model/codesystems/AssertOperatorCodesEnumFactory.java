@@ -68,7 +68,9 @@ public class AssertOperatorCodesEnumFactory implements EnumFactory<AssertOperato
   }
 
   public String toCode(AssertOperatorCodes code) {
-    if (code == AssertOperatorCodes.EQUALS)
+       if (code == AssertOperatorCodes.NULL)
+           return null;
+       if (code == AssertOperatorCodes.EQUALS)
       return "equals";
     if (code == AssertOperatorCodes.NOTEQUALS)
       return "notEquals";
@@ -91,7 +93,7 @@ public class AssertOperatorCodesEnumFactory implements EnumFactory<AssertOperato
     if (code == AssertOperatorCodes.EVAL)
       return "eval";
     return "?";
-  }
+   }
 
     public String toSystem(AssertOperatorCodes code) {
       return code.getSystem();

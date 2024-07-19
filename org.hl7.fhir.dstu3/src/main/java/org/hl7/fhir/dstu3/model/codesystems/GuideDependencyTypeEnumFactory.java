@@ -50,12 +50,14 @@ public class GuideDependencyTypeEnumFactory implements EnumFactory<GuideDependen
   }
 
   public String toCode(GuideDependencyType code) {
-    if (code == GuideDependencyType.REFERENCE)
+       if (code == GuideDependencyType.NULL)
+           return null;
+       if (code == GuideDependencyType.REFERENCE)
       return "reference";
     if (code == GuideDependencyType.INCLUSION)
       return "inclusion";
     return "?";
-  }
+   }
 
     public String toSystem(GuideDependencyType code) {
       return code.getSystem();

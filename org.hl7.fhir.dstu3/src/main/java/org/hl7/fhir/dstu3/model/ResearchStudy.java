@@ -191,7 +191,9 @@ public class ResearchStudy extends DomainResource {
         throw new FHIRException("Unknown ResearchStudyStatus code '"+codeString+"'");
         }
     public String toCode(ResearchStudyStatus code) {
-      if (code == ResearchStudyStatus.DRAFT)
+       if (code == ResearchStudyStatus.NULL)
+           return null;
+       if (code == ResearchStudyStatus.DRAFT)
         return "draft";
       if (code == ResearchStudyStatus.INPROGRESS)
         return "in-progress";
@@ -204,7 +206,7 @@ public class ResearchStudy extends DomainResource {
       if (code == ResearchStudyStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(ResearchStudyStatus code) {
       return code.getSystem();
       }

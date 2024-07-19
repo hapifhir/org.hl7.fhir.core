@@ -70,7 +70,9 @@ public class TaskStatusEnumFactory implements EnumFactory<TaskStatus> {
   }
 
   public String toCode(TaskStatus code) {
-    if (code == TaskStatus.DRAFT)
+       if (code == TaskStatus.NULL)
+           return null;
+       if (code == TaskStatus.DRAFT)
       return "draft";
     if (code == TaskStatus.REQUESTED)
       return "requested";
@@ -95,7 +97,7 @@ public class TaskStatusEnumFactory implements EnumFactory<TaskStatus> {
     if (code == TaskStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(TaskStatus code) {
       return code.getSystem();

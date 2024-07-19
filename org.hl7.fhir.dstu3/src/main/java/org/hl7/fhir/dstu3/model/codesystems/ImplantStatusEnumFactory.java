@@ -54,7 +54,9 @@ public class ImplantStatusEnumFactory implements EnumFactory<ImplantStatus> {
   }
 
   public String toCode(ImplantStatus code) {
-    if (code == ImplantStatus.FUNCTIONAL)
+       if (code == ImplantStatus.NULL)
+           return null;
+       if (code == ImplantStatus.FUNCTIONAL)
       return "functional";
     if (code == ImplantStatus.NONFUNCTIONAL)
       return "non-functional";
@@ -63,7 +65,7 @@ public class ImplantStatusEnumFactory implements EnumFactory<ImplantStatus> {
     if (code == ImplantStatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
     public String toSystem(ImplantStatus code) {
       return code.getSystem();

@@ -56,7 +56,9 @@ public class V3EntityDeterminerEnumFactory implements EnumFactory<V3EntityDeterm
   }
 
   public String toCode(V3EntityDeterminer code) {
-    if (code == V3EntityDeterminer.INSTANCE)
+       if (code == V3EntityDeterminer.NULL)
+           return null;
+       if (code == V3EntityDeterminer.INSTANCE)
       return "INSTANCE";
     if (code == V3EntityDeterminer.GROUP)
       return "GROUP";
@@ -67,7 +69,7 @@ public class V3EntityDeterminerEnumFactory implements EnumFactory<V3EntityDeterm
     if (code == V3EntityDeterminer.QUANTIFIEDKIND)
       return "QUANTIFIED_KIND";
     return "?";
-  }
+   }
 
     public String toSystem(V3EntityDeterminer code) {
       return code.getSystem();

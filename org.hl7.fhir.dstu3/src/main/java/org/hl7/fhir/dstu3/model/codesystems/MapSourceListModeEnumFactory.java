@@ -56,7 +56,9 @@ public class MapSourceListModeEnumFactory implements EnumFactory<MapSourceListMo
   }
 
   public String toCode(MapSourceListMode code) {
-    if (code == MapSourceListMode.FIRST)
+       if (code == MapSourceListMode.NULL)
+           return null;
+       if (code == MapSourceListMode.FIRST)
       return "first";
     if (code == MapSourceListMode.NOTFIRST)
       return "not_first";
@@ -67,7 +69,7 @@ public class MapSourceListModeEnumFactory implements EnumFactory<MapSourceListMo
     if (code == MapSourceListMode.ONLYONE)
       return "only_one";
     return "?";
-  }
+   }
 
     public String toSystem(MapSourceListMode code) {
       return code.getSystem();

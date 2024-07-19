@@ -52,14 +52,16 @@ public class TaskStageEnumFactory implements EnumFactory<TaskStage> {
   }
 
   public String toCode(TaskStage code) {
-    if (code == TaskStage.PROPOSAL)
+       if (code == TaskStage.NULL)
+           return null;
+       if (code == TaskStage.PROPOSAL)
       return "proposal";
     if (code == TaskStage.PLANNED)
       return "planned";
     if (code == TaskStage.ACTIONABLE)
       return "actionable";
     return "?";
-  }
+   }
 
     public String toSystem(TaskStage code) {
       return code.getSystem();

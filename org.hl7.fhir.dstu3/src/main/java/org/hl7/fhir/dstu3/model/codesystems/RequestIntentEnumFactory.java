@@ -62,7 +62,9 @@ public class RequestIntentEnumFactory implements EnumFactory<RequestIntent> {
   }
 
   public String toCode(RequestIntent code) {
-    if (code == RequestIntent.PROPOSAL)
+       if (code == RequestIntent.NULL)
+           return null;
+       if (code == RequestIntent.PROPOSAL)
       return "proposal";
     if (code == RequestIntent.PLAN)
       return "plan";
@@ -79,7 +81,7 @@ public class RequestIntentEnumFactory implements EnumFactory<RequestIntent> {
     if (code == RequestIntent.OPTION)
       return "option";
     return "?";
-  }
+   }
 
     public String toSystem(RequestIntent code) {
       return code.getSystem();

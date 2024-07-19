@@ -54,7 +54,9 @@ public class V3ActInvoiceElementModifierEnumFactory implements EnumFactory<V3Act
   }
 
   public String toCode(V3ActInvoiceElementModifier code) {
-    if (code == V3ActInvoiceElementModifier.EFORM)
+       if (code == V3ActInvoiceElementModifier.NULL)
+           return null;
+       if (code == V3ActInvoiceElementModifier.EFORM)
       return "EFORM";
     if (code == V3ActInvoiceElementModifier.FAX)
       return "FAX";
@@ -63,7 +65,7 @@ public class V3ActInvoiceElementModifierEnumFactory implements EnumFactory<V3Act
     if (code == V3ActInvoiceElementModifier.PAPER)
       return "PAPER";
     return "?";
-  }
+   }
 
     public String toSystem(V3ActInvoiceElementModifier code) {
       return code.getSystem();

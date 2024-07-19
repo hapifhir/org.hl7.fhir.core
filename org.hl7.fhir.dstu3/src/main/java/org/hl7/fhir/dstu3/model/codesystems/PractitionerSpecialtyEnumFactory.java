@@ -56,7 +56,9 @@ public class PractitionerSpecialtyEnumFactory implements EnumFactory<Practitione
   }
 
   public String toCode(PractitionerSpecialty code) {
-    if (code == PractitionerSpecialty.CARDIO)
+       if (code == PractitionerSpecialty.NULL)
+           return null;
+       if (code == PractitionerSpecialty.CARDIO)
       return "cardio";
     if (code == PractitionerSpecialty.DENT)
       return "dent";
@@ -67,7 +69,7 @@ public class PractitionerSpecialtyEnumFactory implements EnumFactory<Practitione
     if (code == PractitionerSpecialty.SYSARCH)
       return "sysarch";
     return "?";
-  }
+   }
 
     public String toSystem(PractitionerSpecialty code) {
       return code.getSystem();

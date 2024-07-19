@@ -141,12 +141,14 @@ public class ImplementationGuide extends MetadataResource {
         throw new FHIRException("Unknown GuideDependencyType code '"+codeString+"'");
         }
     public String toCode(GuideDependencyType code) {
-      if (code == GuideDependencyType.REFERENCE)
+       if (code == GuideDependencyType.NULL)
+           return null;
+       if (code == GuideDependencyType.REFERENCE)
         return "reference";
       if (code == GuideDependencyType.INCLUSION)
         return "inclusion";
       return "?";
-      }
+   }
     public String toSystem(GuideDependencyType code) {
       return code.getSystem();
       }
@@ -321,7 +323,9 @@ public class ImplementationGuide extends MetadataResource {
         throw new FHIRException("Unknown GuidePageKind code '"+codeString+"'");
         }
     public String toCode(GuidePageKind code) {
-      if (code == GuidePageKind.PAGE)
+       if (code == GuidePageKind.NULL)
+           return null;
+       if (code == GuidePageKind.PAGE)
         return "page";
       if (code == GuidePageKind.EXAMPLE)
         return "example";
@@ -338,7 +342,7 @@ public class ImplementationGuide extends MetadataResource {
       if (code == GuidePageKind.RESOURCE)
         return "resource";
       return "?";
-      }
+   }
     public String toSystem(GuidePageKind code) {
       return code.getSystem();
       }

@@ -102,7 +102,9 @@ public class BenefitSubcategoryEnumFactory implements EnumFactory<BenefitSubcate
   }
 
   public String toCode(BenefitSubcategory code) {
-    if (code == BenefitSubcategory._1)
+       if (code == BenefitSubcategory.NULL)
+           return null;
+       if (code == BenefitSubcategory._1)
       return "1";
     if (code == BenefitSubcategory._2)
       return "2";
@@ -159,7 +161,7 @@ public class BenefitSubcategoryEnumFactory implements EnumFactory<BenefitSubcate
     if (code == BenefitSubcategory.F6)
       return "F6";
     return "?";
-  }
+   }
 
     public String toSystem(BenefitSubcategory code) {
       return code.getSystem();

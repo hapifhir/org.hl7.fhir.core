@@ -56,7 +56,9 @@ public class CatalogItemRelationTypeEnumFactory implements EnumFactory<CatalogIt
   }
 
   public String toCode(CatalogItemRelationType code) {
-    if (code == CatalogItemRelationType.PKGCONTAINS)
+       if (code == CatalogItemRelationType.NULL)
+           return null;
+       if (code == CatalogItemRelationType.PKGCONTAINS)
       return "pkg-contains";
     if (code == CatalogItemRelationType.PKGISCONTAINEDIN)
       return "pkg-is-contained-in";
@@ -67,7 +69,7 @@ public class CatalogItemRelationTypeEnumFactory implements EnumFactory<CatalogIt
     if (code == CatalogItemRelationType.REQUIRES)
       return "requires";
     return "?";
-  }
+   }
 
     public String toSystem(CatalogItemRelationType code) {
       return code.getSystem();

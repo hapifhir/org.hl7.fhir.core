@@ -54,7 +54,9 @@ public class PaymentnoticeStatusEnumFactory implements EnumFactory<Paymentnotice
   }
 
   public String toCode(PaymentnoticeStatus code) {
-    if (code == PaymentnoticeStatus.ACTIVE)
+       if (code == PaymentnoticeStatus.NULL)
+           return null;
+       if (code == PaymentnoticeStatus.ACTIVE)
       return "active";
     if (code == PaymentnoticeStatus.CANCELLED)
       return "cancelled";
@@ -63,7 +65,7 @@ public class PaymentnoticeStatusEnumFactory implements EnumFactory<Paymentnotice
     if (code == PaymentnoticeStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(PaymentnoticeStatus code) {
       return code.getSystem();

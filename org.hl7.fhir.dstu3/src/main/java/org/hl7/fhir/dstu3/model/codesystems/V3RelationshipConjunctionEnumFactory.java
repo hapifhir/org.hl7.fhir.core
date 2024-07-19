@@ -52,14 +52,16 @@ public class V3RelationshipConjunctionEnumFactory implements EnumFactory<V3Relat
   }
 
   public String toCode(V3RelationshipConjunction code) {
-    if (code == V3RelationshipConjunction.AND)
+       if (code == V3RelationshipConjunction.NULL)
+           return null;
+       if (code == V3RelationshipConjunction.AND)
       return "AND";
     if (code == V3RelationshipConjunction.OR)
       return "OR";
     if (code == V3RelationshipConjunction.XOR)
       return "XOR";
     return "?";
-  }
+   }
 
     public String toSystem(V3RelationshipConjunction code) {
       return code.getSystem();

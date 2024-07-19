@@ -50,12 +50,14 @@ public class ClassificationOrContextEnumFactory implements EnumFactory<Classific
   }
 
   public String toCode(ClassificationOrContext code) {
-    if (code == ClassificationOrContext.CLASSIFICATION)
+       if (code == ClassificationOrContext.NULL)
+           return null;
+       if (code == ClassificationOrContext.CLASSIFICATION)
       return "classification";
     if (code == ClassificationOrContext.CONTEXT)
       return "context";
     return "?";
-  }
+   }
 
     public String toSystem(ClassificationOrContext code) {
       return code.getSystem();
