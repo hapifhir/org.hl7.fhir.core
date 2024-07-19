@@ -272,7 +272,9 @@ public class EvidenceReport extends DomainResource {
     }
 
     public String toCode(ReportRelationshipType code) {
-      if (code == ReportRelationshipType.REPLACES)
+       if (code == ReportRelationshipType.NULL)
+           return null;
+       if (code == ReportRelationshipType.REPLACES)
         return "replaces";
       if (code == ReportRelationshipType.AMENDS)
         return "amends";
@@ -289,7 +291,7 @@ public class EvidenceReport extends DomainResource {
       if (code == ReportRelationshipType.TRANSFORMEDWITH)
         return "transformedWith";
       return "?";
-    }
+   }
 
     public String toSystem(ReportRelationshipType code) {
       return code.getSystem();

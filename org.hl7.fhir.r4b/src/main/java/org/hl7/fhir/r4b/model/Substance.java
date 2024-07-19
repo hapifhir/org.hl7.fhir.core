@@ -178,14 +178,16 @@ public class Substance extends DomainResource {
     }
 
     public String toCode(FHIRSubstanceStatus code) {
-      if (code == FHIRSubstanceStatus.ACTIVE)
+       if (code == FHIRSubstanceStatus.NULL)
+           return null;
+       if (code == FHIRSubstanceStatus.ACTIVE)
         return "active";
       if (code == FHIRSubstanceStatus.INACTIVE)
         return "inactive";
       if (code == FHIRSubstanceStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(FHIRSubstanceStatus code) {
       return code.getSystem();

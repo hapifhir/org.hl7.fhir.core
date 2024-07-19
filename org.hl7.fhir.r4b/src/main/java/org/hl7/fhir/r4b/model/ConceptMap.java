@@ -322,7 +322,9 @@ public class ConceptMap extends CanonicalResource {
     }
 
     public String toCode(ConceptMapEquivalence code) {
-      if (code == ConceptMapEquivalence.RELATEDTO)
+       if (code == ConceptMapEquivalence.NULL)
+           return null;
+       if (code == ConceptMapEquivalence.RELATEDTO)
         return "relatedto";
       if (code == ConceptMapEquivalence.EQUIVALENT)
         return "equivalent";
@@ -343,7 +345,7 @@ public class ConceptMap extends CanonicalResource {
       if (code == ConceptMapEquivalence.DISJOINT)
         return "disjoint";
       return "?";
-    }
+   }
 
     public String toSystem(ConceptMapEquivalence code) {
       return code.getSystem();
@@ -476,14 +478,16 @@ public class ConceptMap extends CanonicalResource {
     }
 
     public String toCode(ConceptMapGroupUnmappedMode code) {
-      if (code == ConceptMapGroupUnmappedMode.PROVIDED)
+       if (code == ConceptMapGroupUnmappedMode.NULL)
+           return null;
+       if (code == ConceptMapGroupUnmappedMode.PROVIDED)
         return "provided";
       if (code == ConceptMapGroupUnmappedMode.FIXED)
         return "fixed";
       if (code == ConceptMapGroupUnmappedMode.OTHERMAP)
         return "other-map";
       return "?";
-    }
+   }
 
     public String toSystem(ConceptMapGroupUnmappedMode code) {
       return code.getSystem();

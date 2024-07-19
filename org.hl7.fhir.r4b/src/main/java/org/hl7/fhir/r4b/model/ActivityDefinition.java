@@ -400,7 +400,9 @@ public class ActivityDefinition extends CanonicalResource {
     }
 
     public String toCode(RequestResourceType code) {
-      if (code == RequestResourceType.APPOINTMENT)
+       if (code == RequestResourceType.NULL)
+           return null;
+       if (code == RequestResourceType.APPOINTMENT)
         return "Appointment";
       if (code == RequestResourceType.APPOINTMENTRESPONSE)
         return "AppointmentResponse";
@@ -431,7 +433,7 @@ public class ActivityDefinition extends CanonicalResource {
       if (code == RequestResourceType.VISIONPRESCRIPTION)
         return "VisionPrescription";
       return "?";
-    }
+   }
 
     public String toSystem(RequestResourceType code) {
       return code.getSystem();
