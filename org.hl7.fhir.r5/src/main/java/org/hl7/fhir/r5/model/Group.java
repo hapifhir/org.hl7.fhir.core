@@ -138,12 +138,14 @@ public class Group extends DomainResource {
         throw new FHIRException("Unknown GroupMembershipBasis code '"+codeString+"'");
         }
     public String toCode(GroupMembershipBasis code) {
-      if (code == GroupMembershipBasis.DEFINITIONAL)
+       if (code == GroupMembershipBasis.NULL)
+           return null;
+       if (code == GroupMembershipBasis.DEFINITIONAL)
         return "definitional";
       if (code == GroupMembershipBasis.ENUMERATED)
         return "enumerated";
       return "?";
-      }
+   }
     public String toSystem(GroupMembershipBasis code) {
       return code.getSystem();
       }
@@ -346,7 +348,9 @@ public class Group extends DomainResource {
         throw new FHIRException("Unknown GroupType code '"+codeString+"'");
         }
     public String toCode(GroupType code) {
-      if (code == GroupType.PERSON)
+       if (code == GroupType.NULL)
+           return null;
+       if (code == GroupType.PERSON)
         return "person";
       if (code == GroupType.ANIMAL)
         return "animal";
@@ -367,7 +371,7 @@ public class Group extends DomainResource {
       if (code == GroupType.SPECIMEN)
         return "specimen";
       return "?";
-      }
+   }
     public String toSystem(GroupType code) {
       return code.getSystem();
       }

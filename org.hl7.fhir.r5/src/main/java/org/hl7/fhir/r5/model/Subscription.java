@@ -152,14 +152,16 @@ public class Subscription extends DomainResource {
         throw new FHIRException("Unknown SubscriptionPayloadContent code '"+codeString+"'");
         }
     public String toCode(SubscriptionPayloadContent code) {
-      if (code == SubscriptionPayloadContent.EMPTY)
+       if (code == SubscriptionPayloadContent.NULL)
+           return null;
+       if (code == SubscriptionPayloadContent.EMPTY)
         return "empty";
       if (code == SubscriptionPayloadContent.IDONLY)
         return "id-only";
       if (code == SubscriptionPayloadContent.FULLRESOURCE)
         return "full-resource";
       return "?";
-      }
+   }
     public String toSystem(SubscriptionPayloadContent code) {
       return code.getSystem();
       }

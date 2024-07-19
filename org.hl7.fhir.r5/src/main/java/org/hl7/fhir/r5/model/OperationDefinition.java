@@ -138,12 +138,14 @@ public class OperationDefinition extends CanonicalResource {
         throw new FHIRException("Unknown OperationKind code '"+codeString+"'");
         }
     public String toCode(OperationKind code) {
-      if (code == OperationKind.OPERATION)
+       if (code == OperationKind.NULL)
+           return null;
+       if (code == OperationKind.OPERATION)
         return "operation";
       if (code == OperationKind.QUERY)
         return "query";
       return "?";
-      }
+   }
     public String toSystem(OperationKind code) {
       return code.getSystem();
       }
@@ -248,14 +250,16 @@ public class OperationDefinition extends CanonicalResource {
         throw new FHIRException("Unknown OperationParameterScope code '"+codeString+"'");
         }
     public String toCode(OperationParameterScope code) {
-      if (code == OperationParameterScope.INSTANCE)
+       if (code == OperationParameterScope.NULL)
+           return null;
+       if (code == OperationParameterScope.INSTANCE)
         return "instance";
       if (code == OperationParameterScope.TYPE)
         return "type";
       if (code == OperationParameterScope.SYSTEM)
         return "system";
       return "?";
-      }
+   }
     public String toSystem(OperationParameterScope code) {
       return code.getSystem();
       }

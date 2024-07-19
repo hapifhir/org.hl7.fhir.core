@@ -180,7 +180,9 @@ public class Endpoint extends DomainResource {
         throw new FHIRException("Unknown EndpointStatus code '"+codeString+"'");
         }
     public String toCode(EndpointStatus code) {
-      if (code == EndpointStatus.ACTIVE)
+       if (code == EndpointStatus.NULL)
+           return null;
+       if (code == EndpointStatus.ACTIVE)
         return "active";
       if (code == EndpointStatus.SUSPENDED)
         return "suspended";
@@ -191,7 +193,7 @@ public class Endpoint extends DomainResource {
       if (code == EndpointStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(EndpointStatus code) {
       return code.getSystem();
       }

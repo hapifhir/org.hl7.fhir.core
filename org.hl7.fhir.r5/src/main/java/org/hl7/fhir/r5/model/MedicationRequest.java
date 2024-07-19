@@ -222,7 +222,9 @@ public class MedicationRequest extends DomainResource {
         throw new FHIRException("Unknown MedicationRequestIntent code '"+codeString+"'");
         }
     public String toCode(MedicationRequestIntent code) {
-      if (code == MedicationRequestIntent.PROPOSAL)
+       if (code == MedicationRequestIntent.NULL)
+           return null;
+       if (code == MedicationRequestIntent.PROPOSAL)
         return "proposal";
       if (code == MedicationRequestIntent.PLAN)
         return "plan";
@@ -239,7 +241,7 @@ public class MedicationRequest extends DomainResource {
       if (code == MedicationRequestIntent.OPTION)
         return "option";
       return "?";
-      }
+   }
     public String toSystem(MedicationRequestIntent code) {
       return code.getSystem();
       }
@@ -428,7 +430,9 @@ public class MedicationRequest extends DomainResource {
         throw new FHIRException("Unknown MedicationrequestStatus code '"+codeString+"'");
         }
     public String toCode(MedicationrequestStatus code) {
-      if (code == MedicationrequestStatus.ACTIVE)
+       if (code == MedicationrequestStatus.NULL)
+           return null;
+       if (code == MedicationrequestStatus.ACTIVE)
         return "active";
       if (code == MedicationrequestStatus.ONHOLD)
         return "on-hold";
@@ -447,7 +451,7 @@ public class MedicationRequest extends DomainResource {
       if (code == MedicationrequestStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(MedicationrequestStatus code) {
       return code.getSystem();
       }

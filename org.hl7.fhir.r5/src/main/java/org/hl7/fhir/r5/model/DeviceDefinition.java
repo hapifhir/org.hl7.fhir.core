@@ -152,14 +152,16 @@ public class DeviceDefinition extends DomainResource {
         throw new FHIRException("Unknown DeviceCorrectiveActionScope code '"+codeString+"'");
         }
     public String toCode(DeviceCorrectiveActionScope code) {
-      if (code == DeviceCorrectiveActionScope.MODEL)
+       if (code == DeviceCorrectiveActionScope.NULL)
+           return null;
+       if (code == DeviceCorrectiveActionScope.MODEL)
         return "model";
       if (code == DeviceCorrectiveActionScope.LOTNUMBERS)
         return "lot-numbers";
       if (code == DeviceCorrectiveActionScope.SERIALNUMBERS)
         return "serial-numbers";
       return "?";
-      }
+   }
     public String toSystem(DeviceCorrectiveActionScope code) {
       return code.getSystem();
       }
@@ -264,14 +266,16 @@ public class DeviceDefinition extends DomainResource {
         throw new FHIRException("Unknown DeviceDefinitionRegulatoryIdentifierType code '"+codeString+"'");
         }
     public String toCode(DeviceDefinitionRegulatoryIdentifierType code) {
-      if (code == DeviceDefinitionRegulatoryIdentifierType.BASIC)
+       if (code == DeviceDefinitionRegulatoryIdentifierType.NULL)
+           return null;
+       if (code == DeviceDefinitionRegulatoryIdentifierType.BASIC)
         return "basic";
       if (code == DeviceDefinitionRegulatoryIdentifierType.MASTER)
         return "master";
       if (code == DeviceDefinitionRegulatoryIdentifierType.LICENSE)
         return "license";
       return "?";
-      }
+   }
     public String toSystem(DeviceDefinitionRegulatoryIdentifierType code) {
       return code.getSystem();
       }
@@ -418,7 +422,9 @@ public class DeviceDefinition extends DomainResource {
         throw new FHIRException("Unknown DeviceProductionIdentifierInUDI code '"+codeString+"'");
         }
     public String toCode(DeviceProductionIdentifierInUDI code) {
-      if (code == DeviceProductionIdentifierInUDI.LOTNUMBER)
+       if (code == DeviceProductionIdentifierInUDI.NULL)
+           return null;
+       if (code == DeviceProductionIdentifierInUDI.LOTNUMBER)
         return "lot-number";
       if (code == DeviceProductionIdentifierInUDI.MANUFACTUREDDATE)
         return "manufactured-date";
@@ -431,7 +437,7 @@ public class DeviceDefinition extends DomainResource {
       if (code == DeviceProductionIdentifierInUDI.SOFTWAREVERSION)
         return "software-version";
       return "?";
-      }
+   }
     public String toSystem(DeviceProductionIdentifierInUDI code) {
       return code.getSystem();
       }
