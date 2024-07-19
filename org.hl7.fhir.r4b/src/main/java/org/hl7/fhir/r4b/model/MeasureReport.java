@@ -180,14 +180,16 @@ public class MeasureReport extends DomainResource {
     }
 
     public String toCode(MeasureReportStatus code) {
-      if (code == MeasureReportStatus.COMPLETE)
+       if (code == MeasureReportStatus.NULL)
+           return null;
+       if (code == MeasureReportStatus.COMPLETE)
         return "complete";
       if (code == MeasureReportStatus.PENDING)
         return "pending";
       if (code == MeasureReportStatus.ERROR)
         return "error";
       return "?";
-    }
+   }
 
     public String toSystem(MeasureReportStatus code) {
       return code.getSystem();
@@ -341,7 +343,9 @@ public class MeasureReport extends DomainResource {
     }
 
     public String toCode(MeasureReportType code) {
-      if (code == MeasureReportType.INDIVIDUAL)
+       if (code == MeasureReportType.NULL)
+           return null;
+       if (code == MeasureReportType.INDIVIDUAL)
         return "individual";
       if (code == MeasureReportType.SUBJECTLIST)
         return "subject-list";
@@ -350,7 +354,7 @@ public class MeasureReport extends DomainResource {
       if (code == MeasureReportType.DATACOLLECTION)
         return "data-collection";
       return "?";
-    }
+   }
 
     public String toSystem(MeasureReportType code) {
       return code.getSystem();

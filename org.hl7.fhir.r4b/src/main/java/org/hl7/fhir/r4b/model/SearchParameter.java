@@ -292,7 +292,9 @@ public class SearchParameter extends CanonicalResource {
     }
 
     public String toCode(SearchComparator code) {
-      if (code == SearchComparator.EQ)
+       if (code == SearchComparator.NULL)
+           return null;
+       if (code == SearchComparator.EQ)
         return "eq";
       if (code == SearchComparator.NE)
         return "ne";
@@ -311,7 +313,7 @@ public class SearchParameter extends CanonicalResource {
       if (code == SearchComparator.AP)
         return "ap";
       return "?";
-    }
+   }
 
     public String toSystem(SearchComparator code) {
       return code.getSystem();
@@ -620,7 +622,9 @@ public class SearchParameter extends CanonicalResource {
     }
 
     public String toCode(SearchModifierCode code) {
-      if (code == SearchModifierCode.MISSING)
+       if (code == SearchModifierCode.NULL)
+           return null;
+       if (code == SearchModifierCode.MISSING)
         return "missing";
       if (code == SearchModifierCode.EXACT)
         return "exact";
@@ -645,7 +649,7 @@ public class SearchParameter extends CanonicalResource {
       if (code == SearchModifierCode.OFTYPE)
         return "ofType";
       return "?";
-    }
+   }
 
     public String toSystem(SearchModifierCode code) {
       return code.getSystem();
@@ -818,7 +822,9 @@ public class SearchParameter extends CanonicalResource {
     }
 
     public String toCode(XPathUsageType code) {
-      if (code == XPathUsageType.NORMAL)
+       if (code == XPathUsageType.NULL)
+           return null;
+       if (code == XPathUsageType.NORMAL)
         return "normal";
       if (code == XPathUsageType.PHONETIC)
         return "phonetic";
@@ -829,7 +835,7 @@ public class SearchParameter extends CanonicalResource {
       if (code == XPathUsageType.OTHER)
         return "other";
       return "?";
-    }
+   }
 
     public String toSystem(XPathUsageType code) {
       return code.getSystem();

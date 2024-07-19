@@ -201,7 +201,9 @@ public class NamingSystem extends CanonicalResource {
     }
 
     public String toCode(NamingSystemIdentifierType code) {
-      if (code == NamingSystemIdentifierType.OID)
+       if (code == NamingSystemIdentifierType.NULL)
+           return null;
+       if (code == NamingSystemIdentifierType.OID)
         return "oid";
       if (code == NamingSystemIdentifierType.UUID)
         return "uuid";
@@ -210,7 +212,7 @@ public class NamingSystem extends CanonicalResource {
       if (code == NamingSystemIdentifierType.OTHER)
         return "other";
       return "?";
-    }
+   }
 
     public String toSystem(NamingSystemIdentifierType code) {
       return code.getSystem();
@@ -346,14 +348,16 @@ public class NamingSystem extends CanonicalResource {
     }
 
     public String toCode(NamingSystemType code) {
-      if (code == NamingSystemType.CODESYSTEM)
+       if (code == NamingSystemType.NULL)
+           return null;
+       if (code == NamingSystemType.CODESYSTEM)
         return "codesystem";
       if (code == NamingSystemType.IDENTIFIER)
         return "identifier";
       if (code == NamingSystemType.ROOT)
         return "root";
       return "?";
-    }
+   }
 
     public String toSystem(NamingSystemType code) {
       return code.getSystem();
