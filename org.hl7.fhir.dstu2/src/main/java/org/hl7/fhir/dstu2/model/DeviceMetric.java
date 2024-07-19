@@ -169,15 +169,18 @@ public class DeviceMetric extends DomainResource {
       throw new FHIRException("Unknown DeviceMetricOperationalStatus code '" + codeString + "'");
     }
 
-    public String toCode(DeviceMetricOperationalStatus code) {
-      if (code == DeviceMetricOperationalStatus.ON)
+    public String toCode(DeviceMetricOperationalStatus code)
+   {
+       if (code == DeviceMetricOperationalStatus.NULL)
+           return null;
+       if (code == DeviceMetricOperationalStatus.ON)
         return "on";
       if (code == DeviceMetricOperationalStatus.OFF)
         return "off";
       if (code == DeviceMetricOperationalStatus.STANDBY)
         return "standby";
       return "?";
-    }
+   }
   }
 
   public enum DeviceMetricColor {
@@ -390,8 +393,11 @@ public class DeviceMetric extends DomainResource {
       throw new FHIRException("Unknown DeviceMetricColor code '" + codeString + "'");
     }
 
-    public String toCode(DeviceMetricColor code) {
-      if (code == DeviceMetricColor.BLACK)
+    public String toCode(DeviceMetricColor code)
+   {
+       if (code == DeviceMetricColor.NULL)
+           return null;
+       if (code == DeviceMetricColor.BLACK)
         return "black";
       if (code == DeviceMetricColor.RED)
         return "red";
@@ -408,7 +414,7 @@ public class DeviceMetric extends DomainResource {
       if (code == DeviceMetricColor.WHITE)
         return "white";
       return "?";
-    }
+   }
   }
 
   public enum DeviceMetricCategory {
@@ -550,8 +556,11 @@ public class DeviceMetric extends DomainResource {
       throw new FHIRException("Unknown DeviceMetricCategory code '" + codeString + "'");
     }
 
-    public String toCode(DeviceMetricCategory code) {
-      if (code == DeviceMetricCategory.MEASUREMENT)
+    public String toCode(DeviceMetricCategory code)
+   {
+       if (code == DeviceMetricCategory.NULL)
+           return null;
+       if (code == DeviceMetricCategory.MEASUREMENT)
         return "measurement";
       if (code == DeviceMetricCategory.SETTING)
         return "setting";
@@ -560,7 +569,7 @@ public class DeviceMetric extends DomainResource {
       if (code == DeviceMetricCategory.UNSPECIFIED)
         return "unspecified";
       return "?";
-    }
+   }
   }
 
   public enum DeviceMetricCalibrationType {
@@ -701,8 +710,11 @@ public class DeviceMetric extends DomainResource {
       throw new FHIRException("Unknown DeviceMetricCalibrationType code '" + codeString + "'");
     }
 
-    public String toCode(DeviceMetricCalibrationType code) {
-      if (code == DeviceMetricCalibrationType.UNSPECIFIED)
+    public String toCode(DeviceMetricCalibrationType code)
+   {
+       if (code == DeviceMetricCalibrationType.NULL)
+           return null;
+       if (code == DeviceMetricCalibrationType.UNSPECIFIED)
         return "unspecified";
       if (code == DeviceMetricCalibrationType.OFFSET)
         return "offset";
@@ -711,7 +723,7 @@ public class DeviceMetric extends DomainResource {
       if (code == DeviceMetricCalibrationType.TWOPOINT)
         return "two-point";
       return "?";
-    }
+   }
   }
 
   public enum DeviceMetricCalibrationState {
@@ -852,8 +864,11 @@ public class DeviceMetric extends DomainResource {
       throw new FHIRException("Unknown DeviceMetricCalibrationState code '" + codeString + "'");
     }
 
-    public String toCode(DeviceMetricCalibrationState code) {
-      if (code == DeviceMetricCalibrationState.NOTCALIBRATED)
+    public String toCode(DeviceMetricCalibrationState code)
+   {
+       if (code == DeviceMetricCalibrationState.NULL)
+           return null;
+       if (code == DeviceMetricCalibrationState.NOTCALIBRATED)
         return "not-calibrated";
       if (code == DeviceMetricCalibrationState.CALIBRATIONREQUIRED)
         return "calibration-required";
@@ -862,7 +877,7 @@ public class DeviceMetric extends DomainResource {
       if (code == DeviceMetricCalibrationState.UNSPECIFIED)
         return "unspecified";
       return "?";
-    }
+   }
   }
 
   @Block()

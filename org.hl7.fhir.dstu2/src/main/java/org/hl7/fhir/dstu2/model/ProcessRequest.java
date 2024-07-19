@@ -188,8 +188,11 @@ public class ProcessRequest extends DomainResource {
       throw new FHIRException("Unknown ActionList code '" + codeString + "'");
     }
 
-    public String toCode(ActionList code) {
-      if (code == ActionList.CANCEL)
+    public String toCode(ActionList code)
+   {
+       if (code == ActionList.NULL)
+           return null;
+       if (code == ActionList.CANCEL)
         return "cancel";
       if (code == ActionList.POLL)
         return "poll";
@@ -198,7 +201,7 @@ public class ProcessRequest extends DomainResource {
       if (code == ActionList.STATUS)
         return "status";
       return "?";
-    }
+   }
   }
 
   @Block()

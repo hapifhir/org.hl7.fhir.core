@@ -210,8 +210,11 @@ public class CarePlan extends DomainResource {
       throw new FHIRException("Unknown CarePlanStatus code '" + codeString + "'");
     }
 
-    public String toCode(CarePlanStatus code) {
-      if (code == CarePlanStatus.PROPOSED)
+    public String toCode(CarePlanStatus code)
+   {
+       if (code == CarePlanStatus.NULL)
+           return null;
+       if (code == CarePlanStatus.PROPOSED)
         return "proposed";
       if (code == CarePlanStatus.DRAFT)
         return "draft";
@@ -222,7 +225,7 @@ public class CarePlan extends DomainResource {
       if (code == CarePlanStatus.CANCELLED)
         return "cancelled";
       return "?";
-    }
+   }
   }
 
   public enum CarePlanRelationship {
@@ -346,15 +349,18 @@ public class CarePlan extends DomainResource {
       throw new FHIRException("Unknown CarePlanRelationship code '" + codeString + "'");
     }
 
-    public String toCode(CarePlanRelationship code) {
-      if (code == CarePlanRelationship.INCLUDES)
+    public String toCode(CarePlanRelationship code)
+   {
+       if (code == CarePlanRelationship.NULL)
+           return null;
+       if (code == CarePlanRelationship.INCLUDES)
         return "includes";
       if (code == CarePlanRelationship.REPLACES)
         return "replaces";
       if (code == CarePlanRelationship.FULFILLS)
         return "fulfills";
       return "?";
-    }
+   }
   }
 
   public enum CarePlanActivityStatus {
@@ -533,8 +539,11 @@ public class CarePlan extends DomainResource {
       throw new FHIRException("Unknown CarePlanActivityStatus code '" + codeString + "'");
     }
 
-    public String toCode(CarePlanActivityStatus code) {
-      if (code == CarePlanActivityStatus.NOTSTARTED)
+    public String toCode(CarePlanActivityStatus code)
+   {
+       if (code == CarePlanActivityStatus.NULL)
+           return null;
+       if (code == CarePlanActivityStatus.NOTSTARTED)
         return "not-started";
       if (code == CarePlanActivityStatus.SCHEDULED)
         return "scheduled";
@@ -547,7 +556,7 @@ public class CarePlan extends DomainResource {
       if (code == CarePlanActivityStatus.CANCELLED)
         return "cancelled";
       return "?";
-    }
+   }
   }
 
   @Block()

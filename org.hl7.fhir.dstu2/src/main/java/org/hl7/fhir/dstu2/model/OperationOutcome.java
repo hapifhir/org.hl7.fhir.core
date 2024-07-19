@@ -189,8 +189,11 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
       throw new FHIRException("Unknown IssueSeverity code '" + codeString + "'");
     }
 
-    public String toCode(IssueSeverity code) {
-      if (code == IssueSeverity.FATAL)
+    public String toCode(IssueSeverity code)
+   {
+       if (code == IssueSeverity.NULL)
+           return null;
+       if (code == IssueSeverity.FATAL)
         return "fatal";
       if (code == IssueSeverity.ERROR)
         return "error";
@@ -199,7 +202,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
       if (code == IssueSeverity.INFORMATION)
         return "information";
       return "?";
-    }
+   }
   }
 
   public enum IssueType {
@@ -810,8 +813,11 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
       throw new FHIRException("Unknown IssueType code '" + codeString + "'");
     }
 
-    public String toCode(IssueType code) {
-      if (code == IssueType.INVALID)
+    public String toCode(IssueType code)
+   {
+       if (code == IssueType.NULL)
+           return null;
+       if (code == IssueType.INVALID)
         return "invalid";
       if (code == IssueType.STRUCTURE)
         return "structure";
@@ -870,7 +876,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
       if (code == IssueType.INFORMATIONAL)
         return "informational";
       return "?";
-    }
+   }
   }
 
   @Block()

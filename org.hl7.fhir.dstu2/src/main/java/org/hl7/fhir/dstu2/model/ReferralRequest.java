@@ -243,8 +243,11 @@ public class ReferralRequest extends DomainResource {
       throw new FHIRException("Unknown ReferralStatus code '" + codeString + "'");
     }
 
-    public String toCode(ReferralStatus code) {
-      if (code == ReferralStatus.DRAFT)
+    public String toCode(ReferralStatus code)
+   {
+       if (code == ReferralStatus.NULL)
+           return null;
+       if (code == ReferralStatus.DRAFT)
         return "draft";
       if (code == ReferralStatus.REQUESTED)
         return "requested";
@@ -259,7 +262,7 @@ public class ReferralRequest extends DomainResource {
       if (code == ReferralStatus.COMPLETED)
         return "completed";
       return "?";
-    }
+   }
   }
 
   /**

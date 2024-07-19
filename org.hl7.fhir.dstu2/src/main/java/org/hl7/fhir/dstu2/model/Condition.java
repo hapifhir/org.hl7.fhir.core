@@ -231,8 +231,11 @@ public class Condition extends DomainResource {
       throw new FHIRException("Unknown ConditionVerificationStatus code '" + codeString + "'");
     }
 
-    public String toCode(ConditionVerificationStatus code) {
-      if (code == ConditionVerificationStatus.PROVISIONAL)
+    public String toCode(ConditionVerificationStatus code)
+   {
+       if (code == ConditionVerificationStatus.NULL)
+           return null;
+       if (code == ConditionVerificationStatus.PROVISIONAL)
         return "provisional";
       if (code == ConditionVerificationStatus.DIFFERENTIAL)
         return "differential";
@@ -245,7 +248,7 @@ public class Condition extends DomainResource {
       if (code == ConditionVerificationStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
   }
 
   @Block()
