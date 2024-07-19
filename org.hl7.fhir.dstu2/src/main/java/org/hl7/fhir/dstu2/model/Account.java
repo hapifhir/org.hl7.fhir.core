@@ -150,13 +150,16 @@ public class Account extends DomainResource {
       throw new FHIRException("Unknown AccountStatus code '" + codeString + "'");
     }
 
-    public String toCode(AccountStatus code) {
-      if (code == AccountStatus.ACTIVE)
+    public String toCode(AccountStatus code)
+   {
+       if (code == AccountStatus.NULL)
+           return null;
+       if (code == AccountStatus.ACTIVE)
         return "active";
       if (code == AccountStatus.INACTIVE)
         return "inactive";
       return "?";
-    }
+   }
   }
 
   /**

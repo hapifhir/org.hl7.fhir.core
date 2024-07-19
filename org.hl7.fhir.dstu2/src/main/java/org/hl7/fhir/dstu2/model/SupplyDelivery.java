@@ -166,15 +166,18 @@ public class SupplyDelivery extends DomainResource {
       throw new FHIRException("Unknown SupplyDeliveryStatus code '" + codeString + "'");
     }
 
-    public String toCode(SupplyDeliveryStatus code) {
-      if (code == SupplyDeliveryStatus.INPROGRESS)
+    public String toCode(SupplyDeliveryStatus code)
+   {
+       if (code == SupplyDeliveryStatus.NULL)
+           return null;
+       if (code == SupplyDeliveryStatus.INPROGRESS)
         return "in-progress";
       if (code == SupplyDeliveryStatus.COMPLETED)
         return "completed";
       if (code == SupplyDeliveryStatus.ABANDONED)
         return "abandoned";
       return "?";
-    }
+   }
   }
 
   /**

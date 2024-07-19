@@ -225,8 +225,11 @@ public class Group extends DomainResource {
       throw new FHIRException("Unknown GroupType code '" + codeString + "'");
     }
 
-    public String toCode(GroupType code) {
-      if (code == GroupType.PERSON)
+    public String toCode(GroupType code)
+   {
+       if (code == GroupType.NULL)
+           return null;
+       if (code == GroupType.PERSON)
         return "person";
       if (code == GroupType.ANIMAL)
         return "animal";
@@ -239,7 +242,7 @@ public class Group extends DomainResource {
       if (code == GroupType.SUBSTANCE)
         return "substance";
       return "?";
-    }
+   }
   }
 
   @Block()
