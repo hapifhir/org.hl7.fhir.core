@@ -60,7 +60,9 @@ public class GoalAchievementEnumFactory implements EnumFactory<GoalAchievement> 
   }
 
   public String toCode(GoalAchievement code) {
-    if (code == GoalAchievement.INPROGRESS)
+       if (code == GoalAchievement.NULL)
+           return null;
+       if (code == GoalAchievement.INPROGRESS)
       return "in-progress";
     if (code == GoalAchievement.IMPROVING)
       return "improving";
@@ -79,7 +81,7 @@ public class GoalAchievementEnumFactory implements EnumFactory<GoalAchievement> 
     if (code == GoalAchievement.NOTATTAINABLE)
       return "not-attainable";
     return "?";
-  }
+   }
 
   public String toSystem(GoalAchievement code) {
     return code.getSystem();

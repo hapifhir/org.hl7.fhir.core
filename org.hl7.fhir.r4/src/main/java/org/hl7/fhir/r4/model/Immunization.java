@@ -177,14 +177,16 @@ public class Immunization extends DomainResource {
     }
 
     public String toCode(ImmunizationStatus code) {
-      if (code == ImmunizationStatus.COMPLETED)
+       if (code == ImmunizationStatus.NULL)
+           return null;
+       if (code == ImmunizationStatus.COMPLETED)
         return "completed";
       if (code == ImmunizationStatus.ENTEREDINERROR)
         return "entered-in-error";
       if (code == ImmunizationStatus.NOTDONE)
         return "not-done";
       return "?";
-    }
+   }
 
     public String toSystem(ImmunizationStatus code) {
       return code.getSystem();

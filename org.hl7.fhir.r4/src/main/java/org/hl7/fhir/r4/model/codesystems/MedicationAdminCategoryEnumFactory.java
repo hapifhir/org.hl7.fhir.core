@@ -48,14 +48,16 @@ public class MedicationAdminCategoryEnumFactory implements EnumFactory<Medicatio
   }
 
   public String toCode(MedicationAdminCategory code) {
-    if (code == MedicationAdminCategory.INPATIENT)
+       if (code == MedicationAdminCategory.NULL)
+           return null;
+       if (code == MedicationAdminCategory.INPATIENT)
       return "inpatient";
     if (code == MedicationAdminCategory.OUTPATIENT)
       return "outpatient";
     if (code == MedicationAdminCategory.COMMUNITY)
       return "community";
     return "?";
-  }
+   }
 
   public String toSystem(MedicationAdminCategory code) {
     return code.getSystem();

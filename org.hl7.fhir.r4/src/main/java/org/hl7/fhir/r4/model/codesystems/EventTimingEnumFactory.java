@@ -66,7 +66,9 @@ public class EventTimingEnumFactory implements EnumFactory<EventTiming> {
   }
 
   public String toCode(EventTiming code) {
-    if (code == EventTiming.MORN)
+       if (code == EventTiming.NULL)
+           return null;
+       if (code == EventTiming.MORN)
       return "MORN";
     if (code == EventTiming.MORN_EARLY)
       return "MORN.early";
@@ -91,7 +93,7 @@ public class EventTimingEnumFactory implements EnumFactory<EventTiming> {
     if (code == EventTiming.PHS)
       return "PHS";
     return "?";
-  }
+   }
 
   public String toSystem(EventTiming code) {
     return code.getSystem();

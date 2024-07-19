@@ -46,12 +46,14 @@ public class ImmunizationFundingSourceEnumFactory implements EnumFactory<Immuniz
   }
 
   public String toCode(ImmunizationFundingSource code) {
-    if (code == ImmunizationFundingSource.PRIVATE)
+       if (code == ImmunizationFundingSource.NULL)
+           return null;
+       if (code == ImmunizationFundingSource.PRIVATE)
       return "private";
     if (code == ImmunizationFundingSource.PUBLIC)
       return "public";
     return "?";
-  }
+   }
 
   public String toSystem(ImmunizationFundingSource code) {
     return code.getSystem();

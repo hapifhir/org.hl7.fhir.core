@@ -46,12 +46,14 @@ public class AssertDirectionCodesEnumFactory implements EnumFactory<AssertDirect
   }
 
   public String toCode(AssertDirectionCodes code) {
-    if (code == AssertDirectionCodes.RESPONSE)
+       if (code == AssertDirectionCodes.NULL)
+           return null;
+       if (code == AssertDirectionCodes.RESPONSE)
       return "response";
     if (code == AssertDirectionCodes.REQUEST)
       return "request";
     return "?";
-  }
+   }
 
   public String toSystem(AssertDirectionCodes code) {
     return code.getSystem();

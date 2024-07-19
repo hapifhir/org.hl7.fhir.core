@@ -42,8 +42,10 @@ public class V3PolicyHolderRoleEnumFactory implements EnumFactory<V3PolicyHolder
   }
 
   public String toCode(V3PolicyHolderRole code) {
-    return "?";
-  }
+       if (code == V3PolicyHolderRole.NULL)
+           return null;
+       return "?";
+   }
 
   public String toSystem(V3PolicyHolderRole code) {
     return code.getSystem();

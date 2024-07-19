@@ -46,12 +46,14 @@ public class DoseRateTypeEnumFactory implements EnumFactory<DoseRateType> {
   }
 
   public String toCode(DoseRateType code) {
-    if (code == DoseRateType.CALCULATED)
+       if (code == DoseRateType.NULL)
+           return null;
+       if (code == DoseRateType.CALCULATED)
       return "calculated";
     if (code == DoseRateType.ORDERED)
       return "ordered";
     return "?";
-  }
+   }
 
   public String toSystem(DoseRateType code) {
     return code.getSystem();

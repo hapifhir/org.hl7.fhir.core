@@ -46,12 +46,14 @@ public class ClaimExceptionEnumFactory implements EnumFactory<ClaimException> {
   }
 
   public String toCode(ClaimException code) {
-    if (code == ClaimException.STUDENT)
+       if (code == ClaimException.NULL)
+           return null;
+       if (code == ClaimException.STUDENT)
       return "student";
     if (code == ClaimException.DISABLED)
       return "disabled";
     return "?";
-  }
+   }
 
   public String toSystem(ClaimException code) {
     return code.getSystem();

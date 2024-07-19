@@ -46,12 +46,14 @@ public class RelatedClaimRelationshipEnumFactory implements EnumFactory<RelatedC
   }
 
   public String toCode(RelatedClaimRelationship code) {
-    if (code == RelatedClaimRelationship.PRIOR)
+       if (code == RelatedClaimRelationship.NULL)
+           return null;
+       if (code == RelatedClaimRelationship.PRIOR)
       return "prior";
     if (code == RelatedClaimRelationship.ASSOCIATED)
       return "associated";
     return "?";
-  }
+   }
 
   public String toSystem(RelatedClaimRelationship code) {
     return code.getSystem();

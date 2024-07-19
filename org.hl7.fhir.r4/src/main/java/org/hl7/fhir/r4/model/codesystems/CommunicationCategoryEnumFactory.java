@@ -50,7 +50,9 @@ public class CommunicationCategoryEnumFactory implements EnumFactory<Communicati
   }
 
   public String toCode(CommunicationCategory code) {
-    if (code == CommunicationCategory.ALERT)
+       if (code == CommunicationCategory.NULL)
+           return null;
+       if (code == CommunicationCategory.ALERT)
       return "alert";
     if (code == CommunicationCategory.NOTIFICATION)
       return "notification";
@@ -59,7 +61,7 @@ public class CommunicationCategoryEnumFactory implements EnumFactory<Communicati
     if (code == CommunicationCategory.INSTRUCTION)
       return "instruction";
     return "?";
-  }
+   }
 
   public String toSystem(CommunicationCategory code) {
     return code.getSystem();

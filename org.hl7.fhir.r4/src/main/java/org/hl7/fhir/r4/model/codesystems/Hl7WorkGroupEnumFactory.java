@@ -90,7 +90,9 @@ public class Hl7WorkGroupEnumFactory implements EnumFactory<Hl7WorkGroup> {
   }
 
   public String toCode(Hl7WorkGroup code) {
-    if (code == Hl7WorkGroup.CBCC)
+       if (code == Hl7WorkGroup.NULL)
+           return null;
+       if (code == Hl7WorkGroup.CBCC)
       return "cbcc";
     if (code == Hl7WorkGroup.CDS)
       return "cds";
@@ -139,7 +141,7 @@ public class Hl7WorkGroupEnumFactory implements EnumFactory<Hl7WorkGroup> {
     if (code == Hl7WorkGroup.AID)
       return "aid";
     return "?";
-  }
+   }
 
   public String toSystem(Hl7WorkGroup code) {
     return code.getSystem();

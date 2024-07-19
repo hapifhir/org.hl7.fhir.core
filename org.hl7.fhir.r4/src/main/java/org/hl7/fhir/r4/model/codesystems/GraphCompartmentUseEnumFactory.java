@@ -46,12 +46,14 @@ public class GraphCompartmentUseEnumFactory implements EnumFactory<GraphCompartm
   }
 
   public String toCode(GraphCompartmentUse code) {
-    if (code == GraphCompartmentUse.CONDITION)
+       if (code == GraphCompartmentUse.NULL)
+           return null;
+       if (code == GraphCompartmentUse.CONDITION)
       return "condition";
     if (code == GraphCompartmentUse.REQUIREMENT)
       return "requirement";
     return "?";
-  }
+   }
 
   public String toSystem(GraphCompartmentUse code) {
     return code.getSystem();

@@ -56,7 +56,9 @@ public class QuestionnaireEnableOperatorEnumFactory implements EnumFactory<Quest
   }
 
   public String toCode(QuestionnaireEnableOperator code) {
-    if (code == QuestionnaireEnableOperator.EXISTS)
+       if (code == QuestionnaireEnableOperator.NULL)
+           return null;
+       if (code == QuestionnaireEnableOperator.EXISTS)
       return "exists";
     if (code == QuestionnaireEnableOperator.EQUAL)
       return "=";
@@ -71,7 +73,7 @@ public class QuestionnaireEnableOperatorEnumFactory implements EnumFactory<Quest
     if (code == QuestionnaireEnableOperator.LESS_OR_EQUAL)
       return "<=";
     return "?";
-  }
+   }
 
   public String toSystem(QuestionnaireEnableOperator code) {
     return code.getSystem();

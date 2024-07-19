@@ -60,7 +60,9 @@ public class MedicationdispenseStatusEnumFactory implements EnumFactory<Medicati
   }
 
   public String toCode(MedicationdispenseStatus code) {
-    if (code == MedicationdispenseStatus.PREPARATION)
+       if (code == MedicationdispenseStatus.NULL)
+           return null;
+       if (code == MedicationdispenseStatus.PREPARATION)
       return "preparation";
     if (code == MedicationdispenseStatus.INPROGRESS)
       return "in-progress";
@@ -79,7 +81,7 @@ public class MedicationdispenseStatusEnumFactory implements EnumFactory<Medicati
     if (code == MedicationdispenseStatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
   public String toSystem(MedicationdispenseStatus code) {
     return code.getSystem();

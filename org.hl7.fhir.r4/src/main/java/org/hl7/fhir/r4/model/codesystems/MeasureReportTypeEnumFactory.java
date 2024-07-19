@@ -50,7 +50,9 @@ public class MeasureReportTypeEnumFactory implements EnumFactory<MeasureReportTy
   }
 
   public String toCode(MeasureReportType code) {
-    if (code == MeasureReportType.INDIVIDUAL)
+       if (code == MeasureReportType.NULL)
+           return null;
+       if (code == MeasureReportType.INDIVIDUAL)
       return "individual";
     if (code == MeasureReportType.SUBJECTLIST)
       return "subject-list";
@@ -59,7 +61,7 @@ public class MeasureReportTypeEnumFactory implements EnumFactory<MeasureReportTy
     if (code == MeasureReportType.DATACOLLECTION)
       return "data-collection";
     return "?";
-  }
+   }
 
   public String toSystem(MeasureReportType code) {
     return code.getSystem();

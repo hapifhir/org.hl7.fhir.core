@@ -46,12 +46,14 @@ public class ExPaymenttypeEnumFactory implements EnumFactory<ExPaymenttype> {
   }
 
   public String toCode(ExPaymenttype code) {
-    if (code == ExPaymenttype.COMPLETE)
+       if (code == ExPaymenttype.NULL)
+           return null;
+       if (code == ExPaymenttype.COMPLETE)
       return "complete";
     if (code == ExPaymenttype.PARTIAL)
       return "partial";
     return "?";
-  }
+   }
 
   public String toSystem(ExPaymenttype code) {
     return code.getSystem();

@@ -50,7 +50,9 @@ public class DeviceDefinitionStatusEnumFactory implements EnumFactory<DeviceDefi
   }
 
   public String toCode(DeviceDefinitionStatus code) {
-    if (code == DeviceDefinitionStatus.ACTIVE)
+       if (code == DeviceDefinitionStatus.NULL)
+           return null;
+       if (code == DeviceDefinitionStatus.ACTIVE)
       return "active";
     if (code == DeviceDefinitionStatus.INACTIVE)
       return "inactive";
@@ -59,7 +61,7 @@ public class DeviceDefinitionStatusEnumFactory implements EnumFactory<DeviceDefi
     if (code == DeviceDefinitionStatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
   public String toSystem(DeviceDefinitionStatus code) {
     return code.getSystem();

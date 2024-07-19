@@ -56,7 +56,9 @@ public class V3Hl7CMETAttributionEnumFactory implements EnumFactory<V3Hl7CMETAtt
   }
 
   public String toCode(V3Hl7CMETAttribution code) {
-    if (code == V3Hl7CMETAttribution.CONTACT)
+       if (code == V3Hl7CMETAttribution.NULL)
+           return null;
+       if (code == V3Hl7CMETAttribution.CONTACT)
       return "contact";
     if (code == V3Hl7CMETAttribution.IDENTIFIED)
       return "identified";
@@ -71,7 +73,7 @@ public class V3Hl7CMETAttributionEnumFactory implements EnumFactory<V3Hl7CMETAtt
     if (code == V3Hl7CMETAttribution.UNIVERSAL)
       return "universal";
     return "?";
-  }
+   }
 
   public String toSystem(V3Hl7CMETAttribution code) {
     return code.getSystem();

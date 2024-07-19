@@ -62,7 +62,9 @@ public class ProvenanceAgentTypeEnumFactory implements EnumFactory<ProvenanceAge
   }
 
   public String toCode(ProvenanceAgentType code) {
-    if (code == ProvenanceAgentType.ENTERER)
+       if (code == ProvenanceAgentType.NULL)
+           return null;
+       if (code == ProvenanceAgentType.ENTERER)
       return "enterer";
     if (code == ProvenanceAgentType.PERFORMER)
       return "performer";
@@ -83,7 +85,7 @@ public class ProvenanceAgentTypeEnumFactory implements EnumFactory<ProvenanceAge
     if (code == ProvenanceAgentType.COMPOSER)
       return "composer";
     return "?";
-  }
+   }
 
   public String toSystem(ProvenanceAgentType code) {
     return code.getSystem();

@@ -48,14 +48,16 @@ public class ProcessPriorityEnumFactory implements EnumFactory<ProcessPriority> 
   }
 
   public String toCode(ProcessPriority code) {
-    if (code == ProcessPriority.STAT)
+       if (code == ProcessPriority.NULL)
+           return null;
+       if (code == ProcessPriority.STAT)
       return "stat";
     if (code == ProcessPriority.NORMAL)
       return "normal";
     if (code == ProcessPriority.DEFERRED)
       return "deferred";
     return "?";
-  }
+   }
 
   public String toSystem(ProcessPriority code) {
     return code.getSystem();

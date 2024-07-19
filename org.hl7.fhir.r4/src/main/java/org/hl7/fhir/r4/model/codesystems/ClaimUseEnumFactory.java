@@ -48,14 +48,16 @@ public class ClaimUseEnumFactory implements EnumFactory<ClaimUse> {
   }
 
   public String toCode(ClaimUse code) {
-    if (code == ClaimUse.CLAIM)
+       if (code == ClaimUse.NULL)
+           return null;
+       if (code == ClaimUse.CLAIM)
       return "claim";
     if (code == ClaimUse.PREAUTHORIZATION)
       return "preauthorization";
     if (code == ClaimUse.PREDETERMINATION)
       return "predetermination";
     return "?";
-  }
+   }
 
   public String toSystem(ClaimUse code) {
     return code.getSystem();

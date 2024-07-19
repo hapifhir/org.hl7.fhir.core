@@ -44,10 +44,12 @@ public class ContractAssetscopeEnumFactory implements EnumFactory<ContractAssets
   }
 
   public String toCode(ContractAssetscope code) {
-    if (code == ContractAssetscope.THING)
+       if (code == ContractAssetscope.NULL)
+           return null;
+       if (code == ContractAssetscope.THING)
       return "thing";
     return "?";
-  }
+   }
 
   public String toSystem(ContractAssetscope code) {
     return code.getSystem();

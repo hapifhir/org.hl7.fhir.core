@@ -52,7 +52,9 @@ public class GoalCategoryEnumFactory implements EnumFactory<GoalCategory> {
   }
 
   public String toCode(GoalCategory code) {
-    if (code == GoalCategory.DIETARY)
+       if (code == GoalCategory.NULL)
+           return null;
+       if (code == GoalCategory.DIETARY)
       return "dietary";
     if (code == GoalCategory.SAFETY)
       return "safety";
@@ -63,7 +65,7 @@ public class GoalCategoryEnumFactory implements EnumFactory<GoalCategory> {
     if (code == GoalCategory.PHYSIOTHERAPY)
       return "physiotherapy";
     return "?";
-  }
+   }
 
   public String toSystem(GoalCategory code) {
     return code.getSystem();

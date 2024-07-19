@@ -50,7 +50,9 @@ public class ReasonMedicationNotGivenCodesEnumFactory implements EnumFactory<Rea
   }
 
   public String toCode(ReasonMedicationNotGivenCodes code) {
-    if (code == ReasonMedicationNotGivenCodes.A)
+       if (code == ReasonMedicationNotGivenCodes.NULL)
+           return null;
+       if (code == ReasonMedicationNotGivenCodes.A)
       return "a";
     if (code == ReasonMedicationNotGivenCodes.B)
       return "b";
@@ -59,7 +61,7 @@ public class ReasonMedicationNotGivenCodesEnumFactory implements EnumFactory<Rea
     if (code == ReasonMedicationNotGivenCodes.D)
       return "d";
     return "?";
-  }
+   }
 
   public String toSystem(ReasonMedicationNotGivenCodes code) {
     return code.getSystem();

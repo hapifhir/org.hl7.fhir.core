@@ -110,7 +110,9 @@ public class EventResourceTypesEnumFactory implements EnumFactory<EventResourceT
   }
 
   public String toCode(EventResourceTypes code) {
-    if (code == EventResourceTypes.CHARGEITEM)
+       if (code == EventResourceTypes.NULL)
+           return null;
+       if (code == EventResourceTypes.CHARGEITEM)
       return "ChargeItem";
     if (code == EventResourceTypes.CLAIMRESPONSE)
       return "ClaimResponse";
@@ -179,7 +181,7 @@ public class EventResourceTypesEnumFactory implements EnumFactory<EventResourceT
     if (code == EventResourceTypes.TASK)
       return "Task";
     return "?";
-  }
+   }
 
   public String toSystem(EventResourceTypes code) {
     return code.getSystem();

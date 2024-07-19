@@ -48,14 +48,16 @@ public class MessageSignificanceCategoryEnumFactory implements EnumFactory<Messa
   }
 
   public String toCode(MessageSignificanceCategory code) {
-    if (code == MessageSignificanceCategory.CONSEQUENCE)
+       if (code == MessageSignificanceCategory.NULL)
+           return null;
+       if (code == MessageSignificanceCategory.CONSEQUENCE)
       return "consequence";
     if (code == MessageSignificanceCategory.CURRENCY)
       return "currency";
     if (code == MessageSignificanceCategory.NOTIFICATION)
       return "notification";
     return "?";
-  }
+   }
 
   public String toSystem(MessageSignificanceCategory code) {
     return code.getSystem();

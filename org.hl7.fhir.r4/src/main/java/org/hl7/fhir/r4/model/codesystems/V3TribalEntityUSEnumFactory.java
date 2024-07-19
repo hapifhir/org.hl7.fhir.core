@@ -1178,7 +1178,9 @@ public class V3TribalEntityUSEnumFactory implements EnumFactory<V3TribalEntityUS
   }
 
   public String toCode(V3TribalEntityUS code) {
-    if (code == V3TribalEntityUS._NATIVEENTITYALASKA)
+       if (code == V3TribalEntityUS.NULL)
+           return null;
+       if (code == V3TribalEntityUS._NATIVEENTITYALASKA)
       return "_NativeEntityAlaska";
     if (code == V3TribalEntityUS._338)
       return "338";
@@ -2315,7 +2317,7 @@ public class V3TribalEntityUSEnumFactory implements EnumFactory<V3TribalEntityUS
     if (code == V3TribalEntityUS._99)
       return "99";
     return "?";
-  }
+   }
 
   public String toSystem(V3TribalEntityUS code) {
     return code.getSystem();

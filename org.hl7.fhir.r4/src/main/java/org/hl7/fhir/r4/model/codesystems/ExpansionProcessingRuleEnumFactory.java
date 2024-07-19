@@ -48,14 +48,16 @@ public class ExpansionProcessingRuleEnumFactory implements EnumFactory<Expansion
   }
 
   public String toCode(ExpansionProcessingRule code) {
-    if (code == ExpansionProcessingRule.ALLCODES)
+       if (code == ExpansionProcessingRule.NULL)
+           return null;
+       if (code == ExpansionProcessingRule.ALLCODES)
       return "all-codes";
     if (code == ExpansionProcessingRule.UNGROUPED)
       return "ungrouped";
     if (code == ExpansionProcessingRule.GROUPSONLY)
       return "groups-only";
     return "?";
-  }
+   }
 
   public String toSystem(ExpansionProcessingRule code) {
     return code.getSystem();

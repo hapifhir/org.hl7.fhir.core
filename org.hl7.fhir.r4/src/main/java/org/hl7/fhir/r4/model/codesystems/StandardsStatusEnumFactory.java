@@ -54,7 +54,9 @@ public class StandardsStatusEnumFactory implements EnumFactory<StandardsStatus> 
   }
 
   public String toCode(StandardsStatus code) {
-    if (code == StandardsStatus.DRAFT)
+       if (code == StandardsStatus.NULL)
+           return null;
+       if (code == StandardsStatus.DRAFT)
       return "draft";
     if (code == StandardsStatus.NORMATIVE)
       return "normative";
@@ -67,7 +69,7 @@ public class StandardsStatusEnumFactory implements EnumFactory<StandardsStatus> 
     if (code == StandardsStatus.EXTERNAL)
       return "external";
     return "?";
-  }
+   }
 
   public String toSystem(StandardsStatus code) {
     return code.getSystem();
