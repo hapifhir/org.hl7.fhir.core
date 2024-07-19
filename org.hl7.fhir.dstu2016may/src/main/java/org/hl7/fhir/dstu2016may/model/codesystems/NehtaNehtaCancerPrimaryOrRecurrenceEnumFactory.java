@@ -49,14 +49,16 @@ public class NehtaNehtaCancerPrimaryOrRecurrenceEnumFactory
   }
 
   public String toCode(NehtaNehtaCancerPrimaryOrRecurrence code) {
-    if (code == NehtaNehtaCancerPrimaryOrRecurrence.NEWPRIMARY)
+       if (code == NehtaNehtaCancerPrimaryOrRecurrence.NULL)
+           return null;
+       if (code == NehtaNehtaCancerPrimaryOrRecurrence.NEWPRIMARY)
       return "new_primary";
     if (code == NehtaNehtaCancerPrimaryOrRecurrence.LOCALRECURRENCE)
       return "local_recurrence";
     if (code == NehtaNehtaCancerPrimaryOrRecurrence.DISTANTMETASTASES)
       return "distant_metastases";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaCancerPrimaryOrRecurrence code) {
     return code.getSystem();

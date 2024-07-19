@@ -50,7 +50,9 @@ public class MissingToothReasonEnumFactory implements EnumFactory<MissingToothRe
   }
 
   public String toCode(MissingToothReason code) {
-    if (code == MissingToothReason.E)
+       if (code == MissingToothReason.NULL)
+           return null;
+       if (code == MissingToothReason.E)
       return "E";
     if (code == MissingToothReason.C)
       return "C";
@@ -59,7 +61,7 @@ public class MissingToothReasonEnumFactory implements EnumFactory<MissingToothRe
     if (code == MissingToothReason.O)
       return "O";
     return "?";
-  }
+   }
 
   public String toSystem(MissingToothReason code) {
     return code.getSystem();

@@ -46,12 +46,14 @@ public class CardinalityBehaviorEnumFactory implements EnumFactory<CardinalityBe
   }
 
   public String toCode(CardinalityBehavior code) {
-    if (code == CardinalityBehavior.SINGLE)
+       if (code == CardinalityBehavior.NULL)
+           return null;
+       if (code == CardinalityBehavior.SINGLE)
       return "single";
     if (code == CardinalityBehavior.MULTIPLE)
       return "multiple";
     return "?";
-  }
+   }
 
   public String toSystem(CardinalityBehavior code) {
     return code.getSystem();

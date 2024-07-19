@@ -316,7 +316,9 @@ public class DeviceComponent extends DomainResource {
     }
 
     public String toCode(MeasmntPrinciple code) {
-      if (code == MeasmntPrinciple.OTHER)
+       if (code == MeasmntPrinciple.NULL)
+           return null;
+       if (code == MeasmntPrinciple.OTHER)
         return "other";
       if (code == MeasmntPrinciple.CHEMICAL)
         return "chemical";
@@ -339,7 +341,7 @@ public class DeviceComponent extends DomainResource {
       if (code == MeasmntPrinciple.MANUAL)
         return "manual";
       return "?";
-    }
+   }
 
     public String toSystem(MeasmntPrinciple code) {
       return code.getSystem();

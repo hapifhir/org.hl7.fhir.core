@@ -46,12 +46,14 @@ public class V3LocalRemoteControlStateEnumFactory implements EnumFactory<V3Local
   }
 
   public String toCode(V3LocalRemoteControlState code) {
-    if (code == V3LocalRemoteControlState.L)
+       if (code == V3LocalRemoteControlState.NULL)
+           return null;
+       if (code == V3LocalRemoteControlState.L)
       return "L";
     if (code == V3LocalRemoteControlState.R)
       return "R";
     return "?";
-  }
+   }
 
   public String toSystem(V3LocalRemoteControlState code) {
     return code.getSystem();

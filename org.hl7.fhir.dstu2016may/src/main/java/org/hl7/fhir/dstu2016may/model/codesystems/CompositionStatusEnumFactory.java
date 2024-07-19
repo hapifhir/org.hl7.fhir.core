@@ -50,7 +50,9 @@ public class CompositionStatusEnumFactory implements EnumFactory<CompositionStat
   }
 
   public String toCode(CompositionStatus code) {
-    if (code == CompositionStatus.PRELIMINARY)
+       if (code == CompositionStatus.NULL)
+           return null;
+       if (code == CompositionStatus.PRELIMINARY)
       return "preliminary";
     if (code == CompositionStatus.FINAL)
       return "final";
@@ -59,7 +61,7 @@ public class CompositionStatusEnumFactory implements EnumFactory<CompositionStat
     if (code == CompositionStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(CompositionStatus code) {
     return code.getSystem();

@@ -48,14 +48,16 @@ public class V3SequencingEnumFactory implements EnumFactory<V3Sequencing> {
   }
 
   public String toCode(V3Sequencing code) {
-    if (code == V3Sequencing.A)
+       if (code == V3Sequencing.NULL)
+           return null;
+       if (code == V3Sequencing.A)
       return "A";
     if (code == V3Sequencing.D)
       return "D";
     if (code == V3Sequencing.N)
       return "N";
     return "?";
-  }
+   }
 
   public String toSystem(V3Sequencing code) {
     return code.getSystem();

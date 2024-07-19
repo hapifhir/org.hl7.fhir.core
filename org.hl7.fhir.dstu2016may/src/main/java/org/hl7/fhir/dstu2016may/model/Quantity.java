@@ -189,7 +189,9 @@ public class Quantity extends Type implements ICompositeType {
     }
 
     public String toCode(QuantityComparator code) {
-      if (code == QuantityComparator.LESS_THAN)
+       if (code == QuantityComparator.NULL)
+           return null;
+       if (code == QuantityComparator.LESS_THAN)
         return "<";
       if (code == QuantityComparator.LESS_OR_EQUAL)
         return "<=";
@@ -198,7 +200,7 @@ public class Quantity extends Type implements ICompositeType {
       if (code == QuantityComparator.GREATER_THAN)
         return ">";
       return "?";
-    }
+   }
 
     public String toSystem(QuantityComparator code) {
       return code.getSystem();

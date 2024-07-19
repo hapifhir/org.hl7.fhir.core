@@ -44,10 +44,12 @@ public class NehtaNehtaReceivedNotreceivedEnumFactory implements EnumFactory<Neh
   }
 
   public String toCode(NehtaNehtaReceivedNotreceived code) {
-    if (code == NehtaNehtaReceivedNotreceived.NOTRECEIVED)
+       if (code == NehtaNehtaReceivedNotreceived.NULL)
+           return null;
+       if (code == NehtaNehtaReceivedNotreceived.NOTRECEIVED)
       return "not_received";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaReceivedNotreceived code) {
     return code.getSystem();

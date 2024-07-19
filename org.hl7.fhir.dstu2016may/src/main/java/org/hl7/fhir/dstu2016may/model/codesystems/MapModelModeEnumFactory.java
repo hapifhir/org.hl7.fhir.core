@@ -50,7 +50,9 @@ public class MapModelModeEnumFactory implements EnumFactory<MapModelMode> {
   }
 
   public String toCode(MapModelMode code) {
-    if (code == MapModelMode.SOURCE)
+       if (code == MapModelMode.NULL)
+           return null;
+       if (code == MapModelMode.SOURCE)
       return "source";
     if (code == MapModelMode.QUERIED)
       return "queried";
@@ -59,7 +61,7 @@ public class MapModelModeEnumFactory implements EnumFactory<MapModelMode> {
     if (code == MapModelMode.PRODUCED)
       return "produced";
     return "?";
-  }
+   }
 
   public String toSystem(MapModelMode code) {
     return code.getSystem();

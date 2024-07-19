@@ -50,7 +50,9 @@ public class ProfileDestinationTypesEnumFactory implements EnumFactory<ProfileDe
   }
 
   public String toCode(ProfileDestinationTypes code) {
-    if (code == ProfileDestinationTypes.FHIRDSTU2SERVER)
+       if (code == ProfileDestinationTypes.NULL)
+           return null;
+       if (code == ProfileDestinationTypes.FHIRDSTU2SERVER)
       return "FHIR-DSTU2-Server";
     if (code == ProfileDestinationTypes.FHIRDSTU2SDCFORMMANAGER)
       return "FHIR-DSTU2-SDC-FormManager";
@@ -59,7 +61,7 @@ public class ProfileDestinationTypesEnumFactory implements EnumFactory<ProfileDe
     if (code == ProfileDestinationTypes.FHIRDSTU2SDCFORMPROCESSOR)
       return "FHIR-DSTU2-SDC-FormProcessor";
     return "?";
-  }
+   }
 
   public String toSystem(ProfileDestinationTypes code) {
     return code.getSystem();

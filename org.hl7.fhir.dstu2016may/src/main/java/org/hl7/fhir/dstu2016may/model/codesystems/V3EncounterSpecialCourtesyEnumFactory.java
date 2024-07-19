@@ -52,7 +52,9 @@ public class V3EncounterSpecialCourtesyEnumFactory implements EnumFactory<V3Enco
   }
 
   public String toCode(V3EncounterSpecialCourtesy code) {
-    if (code == V3EncounterSpecialCourtesy.EXT)
+       if (code == V3EncounterSpecialCourtesy.NULL)
+           return null;
+       if (code == V3EncounterSpecialCourtesy.EXT)
       return "EXT";
     if (code == V3EncounterSpecialCourtesy.NRM)
       return "NRM";
@@ -63,7 +65,7 @@ public class V3EncounterSpecialCourtesyEnumFactory implements EnumFactory<V3Enco
     if (code == V3EncounterSpecialCourtesy.VIP)
       return "VIP";
     return "?";
-  }
+   }
 
   public String toSystem(V3EncounterSpecialCourtesy code) {
     return code.getSystem();

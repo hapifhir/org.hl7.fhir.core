@@ -56,7 +56,9 @@ public class CdsRuleTriggerTypeEnumFactory implements EnumFactory<CdsRuleTrigger
   }
 
   public String toCode(CdsRuleTriggerType code) {
-    if (code == CdsRuleTriggerType.NAMEDEVENT)
+       if (code == CdsRuleTriggerType.NULL)
+           return null;
+       if (code == CdsRuleTriggerType.NAMEDEVENT)
       return "named-event";
     if (code == CdsRuleTriggerType.PERIODIC)
       return "periodic";
@@ -71,7 +73,7 @@ public class CdsRuleTriggerTypeEnumFactory implements EnumFactory<CdsRuleTrigger
     if (code == CdsRuleTriggerType.DATAACCESSENDED)
       return "data-access-ended";
     return "?";
-  }
+   }
 
   public String toSystem(CdsRuleTriggerType code) {
     return code.getSystem();

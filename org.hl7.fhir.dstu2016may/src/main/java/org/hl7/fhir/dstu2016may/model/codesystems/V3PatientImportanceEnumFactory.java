@@ -60,7 +60,9 @@ public class V3PatientImportanceEnumFactory implements EnumFactory<V3PatientImpo
   }
 
   public String toCode(V3PatientImportance code) {
-    if (code == V3PatientImportance.BM)
+       if (code == V3PatientImportance.NULL)
+           return null;
+       if (code == V3PatientImportance.BM)
       return "BM";
     if (code == V3PatientImportance.DFM)
       return "DFM";
@@ -79,7 +81,7 @@ public class V3PatientImportanceEnumFactory implements EnumFactory<V3PatientImpo
     if (code == V3PatientImportance.VIP)
       return "VIP";
     return "?";
-  }
+   }
 
   public String toSystem(V3PatientImportance code) {
     return code.getSystem();

@@ -54,7 +54,9 @@ public class QicorePatientMilitaryServiceEnumFactory implements EnumFactory<Qico
   }
 
   public String toCode(QicorePatientMilitaryService code) {
-    if (code == QicorePatientMilitaryService.NOTINDICATED)
+       if (code == QicorePatientMilitaryService.NULL)
+           return null;
+       if (code == QicorePatientMilitaryService.NOTINDICATED)
       return "not-indicated";
     if (code == QicorePatientMilitaryService.NOMILITARYSERVICE)
       return "no-military-service";
@@ -67,7 +69,7 @@ public class QicorePatientMilitaryServiceEnumFactory implements EnumFactory<Qico
     if (code == QicorePatientMilitaryService.INACTIVERESERVE)
       return "inactive-reserve";
     return "?";
-  }
+   }
 
   public String toSystem(QicorePatientMilitaryService code) {
     return code.getSystem();

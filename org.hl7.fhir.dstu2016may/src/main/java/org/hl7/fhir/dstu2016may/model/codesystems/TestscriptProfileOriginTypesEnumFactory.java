@@ -46,12 +46,14 @@ public class TestscriptProfileOriginTypesEnumFactory implements EnumFactory<Test
   }
 
   public String toCode(TestscriptProfileOriginTypes code) {
-    if (code == TestscriptProfileOriginTypes.FHIRCLIENT)
+       if (code == TestscriptProfileOriginTypes.NULL)
+           return null;
+       if (code == TestscriptProfileOriginTypes.FHIRCLIENT)
       return "FHIR-Client";
     if (code == TestscriptProfileOriginTypes.FHIRSDCFORMFILLER)
       return "FHIR-SDC-FormFiller";
     return "?";
-  }
+   }
 
   public String toSystem(TestscriptProfileOriginTypes code) {
     return code.getSystem();

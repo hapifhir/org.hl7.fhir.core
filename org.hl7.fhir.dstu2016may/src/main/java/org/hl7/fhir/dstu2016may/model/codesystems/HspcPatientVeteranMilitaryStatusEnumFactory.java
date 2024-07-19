@@ -62,7 +62,9 @@ public class HspcPatientVeteranMilitaryStatusEnumFactory implements EnumFactory<
   }
 
   public String toCode(HspcPatientVeteranMilitaryStatus code) {
-    if (code == HspcPatientVeteranMilitaryStatus._8CA8CC2BBAA04CB68863418173C125D1)
+       if (code == HspcPatientVeteranMilitaryStatus.NULL)
+           return null;
+       if (code == HspcPatientVeteranMilitaryStatus._8CA8CC2BBAA04CB68863418173C125D1)
       return "8ca8cc2b-baa0-4cb6-8863-418173c125d1";
     if (code == HspcPatientVeteranMilitaryStatus._4EB9A0A1333448DF084DCEF37C9AC0D3)
       return "4eb9a0a1-3334-48df-084d-cef37c9ac0d3";
@@ -83,7 +85,7 @@ public class HspcPatientVeteranMilitaryStatusEnumFactory implements EnumFactory<
     if (code == HspcPatientVeteranMilitaryStatus._75F4440AEC3747FEB26D39C09C204676)
       return "75f4440a-ec37-47fe-b26d-39c09c204676";
     return "?";
-  }
+   }
 
   public String toSystem(HspcPatientVeteranMilitaryStatus code) {
     return code.getSystem();

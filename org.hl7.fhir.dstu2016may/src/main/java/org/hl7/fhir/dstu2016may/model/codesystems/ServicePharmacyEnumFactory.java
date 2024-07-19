@@ -46,12 +46,14 @@ public class ServicePharmacyEnumFactory implements EnumFactory<ServicePharmacy> 
   }
 
   public String toCode(ServicePharmacy code) {
-    if (code == ServicePharmacy.SMOKECESS)
+       if (code == ServicePharmacy.NULL)
+           return null;
+       if (code == ServicePharmacy.SMOKECESS)
       return "smokecess";
     if (code == ServicePharmacy.FLUSHOT)
       return "flushot";
     return "?";
-  }
+   }
 
   public String toSystem(ServicePharmacy code) {
     return code.getSystem();

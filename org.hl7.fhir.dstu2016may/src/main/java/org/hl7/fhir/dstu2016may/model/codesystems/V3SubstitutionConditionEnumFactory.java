@@ -52,7 +52,9 @@ public class V3SubstitutionConditionEnumFactory implements EnumFactory<V3Substit
   }
 
   public String toCode(V3SubstitutionCondition code) {
-    if (code == V3SubstitutionCondition._CONDITIONAL)
+       if (code == V3SubstitutionCondition.NULL)
+           return null;
+       if (code == V3SubstitutionCondition._CONDITIONAL)
       return "_Conditional";
     if (code == V3SubstitutionCondition.CONFIRM)
       return "CONFIRM";
@@ -63,7 +65,7 @@ public class V3SubstitutionConditionEnumFactory implements EnumFactory<V3Substit
     if (code == V3SubstitutionCondition.UNCOND)
       return "UNCOND";
     return "?";
-  }
+   }
 
   public String toSystem(V3SubstitutionCondition code) {
     return code.getSystem();

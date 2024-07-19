@@ -196,7 +196,9 @@ public class StructureMap extends DomainResource {
     }
 
     public String toCode(StructureMapModelMode code) {
-      if (code == StructureMapModelMode.SOURCE)
+       if (code == StructureMapModelMode.NULL)
+           return null;
+       if (code == StructureMapModelMode.SOURCE)
         return "source";
       if (code == StructureMapModelMode.QUERIED)
         return "queried";
@@ -205,7 +207,7 @@ public class StructureMap extends DomainResource {
       if (code == StructureMapModelMode.PRODUCED)
         return "produced";
       return "?";
-    }
+   }
 
     public String toSystem(StructureMapModelMode code) {
       return code.getSystem();
@@ -315,12 +317,14 @@ public class StructureMap extends DomainResource {
     }
 
     public String toCode(StructureMapInputMode code) {
-      if (code == StructureMapInputMode.SOURCE)
+       if (code == StructureMapInputMode.NULL)
+           return null;
+       if (code == StructureMapInputMode.SOURCE)
         return "source";
       if (code == StructureMapInputMode.TARGET)
         return "target";
       return "?";
-    }
+   }
 
     public String toSystem(StructureMapInputMode code) {
       return code.getSystem();
@@ -430,12 +434,14 @@ public class StructureMap extends DomainResource {
     }
 
     public String toCode(StructureMapContextType code) {
-      if (code == StructureMapContextType.TYPE)
+       if (code == StructureMapContextType.NULL)
+           return null;
+       if (code == StructureMapContextType.TYPE)
         return "type";
       if (code == StructureMapContextType.VARIABLE)
         return "variable";
       return "?";
-    }
+   }
 
     public String toSystem(StructureMapContextType code) {
       return code.getSystem();
@@ -568,14 +574,16 @@ public class StructureMap extends DomainResource {
     }
 
     public String toCode(StructureMapListMode code) {
-      if (code == StructureMapListMode.FIRST)
+       if (code == StructureMapListMode.NULL)
+           return null;
+       if (code == StructureMapListMode.FIRST)
         return "first";
       if (code == StructureMapListMode.SHARE)
         return "share";
       if (code == StructureMapListMode.LAST)
         return "last";
       return "?";
-    }
+   }
 
     public String toSystem(StructureMapListMode code) {
       return code.getSystem();
@@ -870,7 +878,9 @@ public class StructureMap extends DomainResource {
     }
 
     public String toCode(StructureMapTransform code) {
-      if (code == StructureMapTransform.CREATE)
+       if (code == StructureMapTransform.NULL)
+           return null;
+       if (code == StructureMapTransform.CREATE)
         return "create";
       if (code == StructureMapTransform.COPY)
         return "copy";
@@ -895,7 +905,7 @@ public class StructureMap extends DomainResource {
       if (code == StructureMapTransform.EVALUATE)
         return "evaluate";
       return "?";
-    }
+   }
 
     public String toSystem(StructureMapTransform code) {
       return code.getSystem();

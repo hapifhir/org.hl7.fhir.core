@@ -48,14 +48,16 @@ public class HspcAllergyIntoleranceStatusEnumFactory implements EnumFactory<Hspc
   }
 
   public String toCode(HspcAllergyIntoleranceStatus code) {
-    if (code == HspcAllergyIntoleranceStatus._1797)
+       if (code == HspcAllergyIntoleranceStatus.NULL)
+           return null;
+       if (code == HspcAllergyIntoleranceStatus._1797)
       return "1797";
     if (code == HspcAllergyIntoleranceStatus._69074)
       return "69074";
     if (code == HspcAllergyIntoleranceStatus._31119)
       return "31119";
     return "?";
-  }
+   }
 
   public String toSystem(HspcAllergyIntoleranceStatus code) {
     return code.getSystem();

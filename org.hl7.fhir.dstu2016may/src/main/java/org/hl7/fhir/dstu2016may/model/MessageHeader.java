@@ -178,14 +178,16 @@ public class MessageHeader extends DomainResource {
     }
 
     public String toCode(ResponseType code) {
-      if (code == ResponseType.OK)
+       if (code == ResponseType.NULL)
+           return null;
+       if (code == ResponseType.OK)
         return "ok";
       if (code == ResponseType.TRANSIENTERROR)
         return "transient-error";
       if (code == ResponseType.FATALERROR)
         return "fatal-error";
       return "?";
-    }
+   }
 
     public String toSystem(ResponseType code) {
       return code.getSystem();

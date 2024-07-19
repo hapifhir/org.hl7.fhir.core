@@ -50,7 +50,9 @@ public class V3EntityNamePartTypeR2EnumFactory implements EnumFactory<V3EntityNa
   }
 
   public String toCode(V3EntityNamePartTypeR2 code) {
-    if (code == V3EntityNamePartTypeR2.DEL)
+       if (code == V3EntityNamePartTypeR2.NULL)
+           return null;
+       if (code == V3EntityNamePartTypeR2.DEL)
       return "DEL";
     if (code == V3EntityNamePartTypeR2.FAM)
       return "FAM";
@@ -59,7 +61,7 @@ public class V3EntityNamePartTypeR2EnumFactory implements EnumFactory<V3EntityNa
     if (code == V3EntityNamePartTypeR2.TITLE)
       return "TITLE";
     return "?";
-  }
+   }
 
   public String toSystem(V3EntityNamePartTypeR2 code) {
     return code.getSystem();

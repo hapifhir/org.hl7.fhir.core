@@ -190,7 +190,9 @@ public class ProcessRequest extends DomainResource {
     }
 
     public String toCode(ActionList code) {
-      if (code == ActionList.CANCEL)
+       if (code == ActionList.NULL)
+           return null;
+       if (code == ActionList.CANCEL)
         return "cancel";
       if (code == ActionList.POLL)
         return "poll";
@@ -199,7 +201,7 @@ public class ProcessRequest extends DomainResource {
       if (code == ActionList.STATUS)
         return "status";
       return "?";
-    }
+   }
 
     public String toSystem(ActionList code) {
       return code.getSystem();

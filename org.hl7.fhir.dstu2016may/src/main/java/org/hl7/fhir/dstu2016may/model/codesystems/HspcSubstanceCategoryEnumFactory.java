@@ -44,10 +44,12 @@ public class HspcSubstanceCategoryEnumFactory implements EnumFactory<HspcSubstan
   }
 
   public String toCode(HspcSubstanceCategory code) {
-    if (code == HspcSubstanceCategory._527731710)
+       if (code == HspcSubstanceCategory.NULL)
+           return null;
+       if (code == HspcSubstanceCategory._527731710)
       return "527731710";
     return "?";
-  }
+   }
 
   public String toSystem(HspcSubstanceCategory code) {
     return code.getSystem();

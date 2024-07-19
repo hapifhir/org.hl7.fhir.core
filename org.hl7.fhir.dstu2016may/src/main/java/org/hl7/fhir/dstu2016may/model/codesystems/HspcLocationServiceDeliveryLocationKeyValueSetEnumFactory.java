@@ -46,10 +46,12 @@ public class HspcLocationServiceDeliveryLocationKeyValueSetEnumFactory
   }
 
   public String toCode(HspcLocationServiceDeliveryLocationKeyValueSet code) {
-    if (code == HspcLocationServiceDeliveryLocationKeyValueSet._119)
+       if (code == HspcLocationServiceDeliveryLocationKeyValueSet.NULL)
+           return null;
+       if (code == HspcLocationServiceDeliveryLocationKeyValueSet._119)
       return "119";
     return "?";
-  }
+   }
 
   public String toSystem(HspcLocationServiceDeliveryLocationKeyValueSet code) {
     return code.getSystem();

@@ -46,12 +46,14 @@ public class MeasureDataUsageEnumFactory implements EnumFactory<MeasureDataUsage
   }
 
   public String toCode(MeasureDataUsage code) {
-    if (code == MeasureDataUsage.SUPPLEMENTALDATA)
+       if (code == MeasureDataUsage.NULL)
+           return null;
+       if (code == MeasureDataUsage.SUPPLEMENTALDATA)
       return "supplemental-data";
     if (code == MeasureDataUsage.RISKADJUSTMENTFACTOR)
       return "risk-adjustment-factor";
     return "?";
-  }
+   }
 
   public String toSystem(MeasureDataUsage code) {
     return code.getSystem();

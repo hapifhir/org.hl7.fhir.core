@@ -48,14 +48,16 @@ public class LinkTypeEnumFactory implements EnumFactory<LinkType> {
   }
 
   public String toCode(LinkType code) {
-    if (code == LinkType.REPLACE)
+       if (code == LinkType.NULL)
+           return null;
+       if (code == LinkType.REPLACE)
       return "replace";
     if (code == LinkType.REFER)
       return "refer";
     if (code == LinkType.SEEALSO)
       return "seealso";
     return "?";
-  }
+   }
 
   public String toSystem(LinkType code) {
     return code.getSystem();
