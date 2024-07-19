@@ -54,7 +54,9 @@ public class V3Hl7V3ConformanceEnumFactory implements EnumFactory<V3Hl7V3Conform
   }
 
   public String toCode(V3Hl7V3Conformance code) {
-    if (code == V3Hl7V3Conformance.I)
+       if (code == V3Hl7V3Conformance.NULL)
+           return null;
+       if (code == V3Hl7V3Conformance.I)
       return "I";
     if (code == V3Hl7V3Conformance.NP)
       return "NP";
@@ -67,7 +69,7 @@ public class V3Hl7V3ConformanceEnumFactory implements EnumFactory<V3Hl7V3Conform
     if (code == V3Hl7V3Conformance.U)
       return "U";
     return "?";
-  }
+   }
 
   public String toSystem(V3Hl7V3Conformance code) {
     return code.getSystem();

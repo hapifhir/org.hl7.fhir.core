@@ -46,12 +46,14 @@ public class ActionRelationshipTypeEnumFactory implements EnumFactory<ActionRela
   }
 
   public String toCode(ActionRelationshipType code) {
-    if (code == ActionRelationshipType.BEFORE)
+       if (code == ActionRelationshipType.NULL)
+           return null;
+       if (code == ActionRelationshipType.BEFORE)
       return "before";
     if (code == ActionRelationshipType.AFTER)
       return "after";
     return "?";
-  }
+   }
 
   public String toSystem(ActionRelationshipType code) {
     return code.getSystem();

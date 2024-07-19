@@ -50,7 +50,9 @@ public class CdsRuleActionTypeEnumFactory implements EnumFactory<CdsRuleActionTy
   }
 
   public String toCode(CdsRuleActionType code) {
-    if (code == CdsRuleActionType.CREATE)
+       if (code == CdsRuleActionType.NULL)
+           return null;
+       if (code == CdsRuleActionType.CREATE)
       return "create";
     if (code == CdsRuleActionType.UPDATE)
       return "update";
@@ -59,7 +61,7 @@ public class CdsRuleActionTypeEnumFactory implements EnumFactory<CdsRuleActionTy
     if (code == CdsRuleActionType.FIREEVENT)
       return "fire-event";
     return "?";
-  }
+   }
 
   public String toSystem(CdsRuleActionType code) {
     return code.getSystem();

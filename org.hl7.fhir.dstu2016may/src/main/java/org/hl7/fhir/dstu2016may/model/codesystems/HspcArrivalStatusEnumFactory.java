@@ -46,12 +46,14 @@ public class HspcArrivalStatusEnumFactory implements EnumFactory<HspcArrivalStat
   }
 
   public String toCode(HspcArrivalStatus code) {
-    if (code == HspcArrivalStatus._2000000339)
+       if (code == HspcArrivalStatus.NULL)
+           return null;
+       if (code == HspcArrivalStatus._2000000339)
       return "2000000339";
     if (code == HspcArrivalStatus._51084650)
       return "51084650";
     return "?";
-  }
+   }
 
   public String toSystem(HspcArrivalStatus code) {
     return code.getSystem();

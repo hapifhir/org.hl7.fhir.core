@@ -53,7 +53,9 @@ public class HspcObservationHeightMeasMethodDeviceEnumFactory
   }
 
   public String toCode(HspcObservationHeightMeasMethodDevice code) {
-    if (code == HspcObservationHeightMeasMethodDevice._2057)
+       if (code == HspcObservationHeightMeasMethodDevice.NULL)
+           return null;
+       if (code == HspcObservationHeightMeasMethodDevice._2057)
       return "2057";
     if (code == HspcObservationHeightMeasMethodDevice._2058)
       return "2058";
@@ -64,7 +66,7 @@ public class HspcObservationHeightMeasMethodDeviceEnumFactory
     if (code == HspcObservationHeightMeasMethodDevice._521363688)
       return "521363688";
     return "?";
-  }
+   }
 
   public String toSystem(HspcObservationHeightMeasMethodDevice code) {
     return code.getSystem();

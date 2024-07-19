@@ -46,12 +46,14 @@ public class NehtaNehtaProstateRadTumourTypeEnumFactory implements EnumFactory<N
   }
 
   public String toCode(NehtaNehtaProstateRadTumourType code) {
-    if (code == NehtaNehtaProstateRadTumourType.ACINARVARIANT)
+       if (code == NehtaNehtaProstateRadTumourType.NULL)
+           return null;
+       if (code == NehtaNehtaProstateRadTumourType.ACINARVARIANT)
       return "acinar_variant";
     if (code == NehtaNehtaProstateRadTumourType.PROSTATICDUCTALADENOCARCINOMA)
       return "prostatic_ductal_adenocarcinoma";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaProstateRadTumourType code) {
     return code.getSystem();

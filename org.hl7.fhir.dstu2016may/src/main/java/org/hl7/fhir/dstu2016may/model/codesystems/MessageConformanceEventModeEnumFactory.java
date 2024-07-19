@@ -46,12 +46,14 @@ public class MessageConformanceEventModeEnumFactory implements EnumFactory<Messa
   }
 
   public String toCode(MessageConformanceEventMode code) {
-    if (code == MessageConformanceEventMode.SENDER)
+       if (code == MessageConformanceEventMode.NULL)
+           return null;
+       if (code == MessageConformanceEventMode.SENDER)
       return "sender";
     if (code == MessageConformanceEventMode.RECEIVER)
       return "receiver";
     return "?";
-  }
+   }
 
   public String toSystem(MessageConformanceEventMode code) {
     return code.getSystem();

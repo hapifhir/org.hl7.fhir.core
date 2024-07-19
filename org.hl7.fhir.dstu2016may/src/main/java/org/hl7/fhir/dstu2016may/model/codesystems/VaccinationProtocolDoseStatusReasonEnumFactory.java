@@ -53,7 +53,9 @@ public class VaccinationProtocolDoseStatusReasonEnumFactory
   }
 
   public String toCode(VaccinationProtocolDoseStatusReason code) {
-    if (code == VaccinationProtocolDoseStatusReason.ADVSTORAGE)
+       if (code == VaccinationProtocolDoseStatusReason.NULL)
+           return null;
+       if (code == VaccinationProtocolDoseStatusReason.ADVSTORAGE)
       return "advstorage";
     if (code == VaccinationProtocolDoseStatusReason.COLDCHBRK)
       return "coldchbrk";
@@ -64,7 +66,7 @@ public class VaccinationProtocolDoseStatusReasonEnumFactory
     if (code == VaccinationProtocolDoseStatusReason.PRODRECALL)
       return "prodrecall";
     return "?";
-  }
+   }
 
   public String toSystem(VaccinationProtocolDoseStatusReason code) {
     return code.getSystem();

@@ -46,12 +46,14 @@ public class NehtaNehtaCrcPeritoneumInvasionEnumFactory implements EnumFactory<N
   }
 
   public String toCode(NehtaNehtaCrcPeritoneumInvasion code) {
-    if (code == NehtaNehtaCrcPeritoneumInvasion.TUMOURINVADESTOPERITONEALSURFACE)
+       if (code == NehtaNehtaCrcPeritoneumInvasion.NULL)
+           return null;
+       if (code == NehtaNehtaCrcPeritoneumInvasion.TUMOURINVADESTOPERITONEALSURFACE)
       return "tumour_invades_to_peritoneal_surface";
     if (code == NehtaNehtaCrcPeritoneumInvasion.TUMOURFORMEDNODULE_S_DISCRETEFROMTUMOURMASSALONGTHESEROSALSURFACE)
       return "tumour_formed_nodule(s)_discrete_from_tumour_mass_along_the_serosal_surface";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaCrcPeritoneumInvasion code) {
     return code.getSystem();

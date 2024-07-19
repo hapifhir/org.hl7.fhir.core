@@ -58,7 +58,9 @@ public class BenefitTypeEnumFactory implements EnumFactory<BenefitType> {
   }
 
   public String toCode(BenefitType code) {
-    if (code == BenefitType.DEDUCTABLE)
+       if (code == BenefitType.NULL)
+           return null;
+       if (code == BenefitType.DEDUCTABLE)
       return "deductable";
     if (code == BenefitType.VISIT)
       return "visit";
@@ -75,7 +77,7 @@ public class BenefitTypeEnumFactory implements EnumFactory<BenefitType> {
     if (code == BenefitType.PHARMACYDISPENSE)
       return "pharmacy-dispense";
     return "?";
-  }
+   }
 
   public String toSystem(BenefitType code) {
     return code.getSystem();

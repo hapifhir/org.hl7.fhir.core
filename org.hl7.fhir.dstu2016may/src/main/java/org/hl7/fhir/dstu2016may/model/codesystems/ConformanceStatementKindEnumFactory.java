@@ -48,14 +48,16 @@ public class ConformanceStatementKindEnumFactory implements EnumFactory<Conforma
   }
 
   public String toCode(ConformanceStatementKind code) {
-    if (code == ConformanceStatementKind.INSTANCE)
+       if (code == ConformanceStatementKind.NULL)
+           return null;
+       if (code == ConformanceStatementKind.INSTANCE)
       return "instance";
     if (code == ConformanceStatementKind.CAPABILITY)
       return "capability";
     if (code == ConformanceStatementKind.REQUIREMENTS)
       return "requirements";
     return "?";
-  }
+   }
 
   public String toSystem(ConformanceStatementKind code) {
     return code.getSystem();

@@ -48,14 +48,16 @@ public class HspcLocationConditionEnumFactory implements EnumFactory<HspcLocatio
   }
 
   public String toCode(HspcLocationCondition code) {
-    if (code == HspcLocationCondition._182845)
+       if (code == HspcLocationCondition.NULL)
+           return null;
+       if (code == HspcLocationCondition._182845)
       return "182845";
     if (code == HspcLocationCondition._528112801)
       return "528112801";
     if (code == HspcLocationCondition._182843)
       return "182843";
     return "?";
-  }
+   }
 
   public String toSystem(HspcLocationCondition code) {
     return code.getSystem();

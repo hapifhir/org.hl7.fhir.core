@@ -46,12 +46,14 @@ public class QicoreObservationVerificationEnumFactory implements EnumFactory<Qic
   }
 
   public String toCode(QicoreObservationVerification code) {
-    if (code == QicoreObservationVerification._1)
+       if (code == QicoreObservationVerification.NULL)
+           return null;
+       if (code == QicoreObservationVerification._1)
       return "1";
     if (code == QicoreObservationVerification._2)
       return "2";
     return "?";
-  }
+   }
 
   public String toSystem(QicoreObservationVerification code) {
     return code.getSystem();

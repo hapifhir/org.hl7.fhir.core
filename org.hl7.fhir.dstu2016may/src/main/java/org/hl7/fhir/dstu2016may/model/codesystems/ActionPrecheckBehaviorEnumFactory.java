@@ -46,12 +46,14 @@ public class ActionPrecheckBehaviorEnumFactory implements EnumFactory<ActionPrec
   }
 
   public String toCode(ActionPrecheckBehavior code) {
-    if (code == ActionPrecheckBehavior.YES)
+       if (code == ActionPrecheckBehavior.NULL)
+           return null;
+       if (code == ActionPrecheckBehavior.YES)
       return "yes";
     if (code == ActionPrecheckBehavior.NO)
       return "no";
     return "?";
-  }
+   }
 
   public String toSystem(ActionPrecheckBehavior code) {
     return code.getSystem();

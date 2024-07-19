@@ -62,7 +62,9 @@ public class QicoreAdverseeventCategoryEnumFactory implements EnumFactory<Qicore
   }
 
   public String toCode(QicoreAdverseeventCategory code) {
-    if (code == QicoreAdverseeventCategory.BLOOD)
+       if (code == QicoreAdverseeventCategory.NULL)
+           return null;
+       if (code == QicoreAdverseeventCategory.BLOOD)
       return "blood";
     if (code == QicoreAdverseeventCategory.DEVICE)
       return "device";
@@ -83,7 +85,7 @@ public class QicoreAdverseeventCategoryEnumFactory implements EnumFactory<Qicore
     if (code == QicoreAdverseeventCategory.OTHER)
       return "other";
     return "?";
-  }
+   }
 
   public String toSystem(QicoreAdverseeventCategory code) {
     return code.getSystem();

@@ -50,7 +50,9 @@ public class UslabDoEventEnumFactory implements EnumFactory<UslabDoEvent> {
   }
 
   public String toCode(UslabDoEvent code) {
-    if (code == UslabDoEvent.NEWREQUEST)
+       if (code == UslabDoEvent.NULL)
+           return null;
+       if (code == UslabDoEvent.NEWREQUEST)
       return "new-request";
     if (code == UslabDoEvent.ADDONREQUEST)
       return "add-on-request";
@@ -59,7 +61,7 @@ public class UslabDoEventEnumFactory implements EnumFactory<UslabDoEvent> {
     if (code == UslabDoEvent.LABCANCEL)
       return "lab-cancel";
     return "?";
-  }
+   }
 
   public String toSystem(UslabDoEvent code) {
     return code.getSystem();

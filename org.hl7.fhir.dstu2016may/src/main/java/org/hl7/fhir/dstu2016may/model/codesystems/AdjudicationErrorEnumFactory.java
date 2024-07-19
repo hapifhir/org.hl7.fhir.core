@@ -46,12 +46,14 @@ public class AdjudicationErrorEnumFactory implements EnumFactory<AdjudicationErr
   }
 
   public String toCode(AdjudicationError code) {
-    if (code == AdjudicationError.A001)
+       if (code == AdjudicationError.NULL)
+           return null;
+       if (code == AdjudicationError.A001)
       return "a001";
     if (code == AdjudicationError.A002)
       return "a002";
     return "?";
-  }
+   }
 
   public String toSystem(AdjudicationError code) {
     return code.getSystem();

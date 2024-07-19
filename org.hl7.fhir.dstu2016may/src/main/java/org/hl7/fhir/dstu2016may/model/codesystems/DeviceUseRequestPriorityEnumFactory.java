@@ -50,7 +50,9 @@ public class DeviceUseRequestPriorityEnumFactory implements EnumFactory<DeviceUs
   }
 
   public String toCode(DeviceUseRequestPriority code) {
-    if (code == DeviceUseRequestPriority.ROUTINE)
+       if (code == DeviceUseRequestPriority.NULL)
+           return null;
+       if (code == DeviceUseRequestPriority.ROUTINE)
       return "routine";
     if (code == DeviceUseRequestPriority.URGENT)
       return "urgent";
@@ -59,7 +61,7 @@ public class DeviceUseRequestPriorityEnumFactory implements EnumFactory<DeviceUs
     if (code == DeviceUseRequestPriority.ASAP)
       return "asap";
     return "?";
-  }
+   }
 
   public String toSystem(DeviceUseRequestPriority code) {
     return code.getSystem();
