@@ -315,7 +315,9 @@ public class Appointment extends DomainResource {
     }
 
     public String toCode(AppointmentStatus code) {
-      if (code == AppointmentStatus.PROPOSED)
+       if (code == AppointmentStatus.NULL)
+           return null;
+       if (code == AppointmentStatus.PROPOSED)
         return "proposed";
       if (code == AppointmentStatus.PENDING)
         return "pending";
@@ -336,7 +338,7 @@ public class Appointment extends DomainResource {
       if (code == AppointmentStatus.WAITLIST)
         return "waitlist";
       return "?";
-    }
+   }
 
     public String toSystem(AppointmentStatus code) {
       return code.getSystem();
@@ -471,14 +473,16 @@ public class Appointment extends DomainResource {
     }
 
     public String toCode(ParticipantRequired code) {
-      if (code == ParticipantRequired.REQUIRED)
+       if (code == ParticipantRequired.NULL)
+           return null;
+       if (code == ParticipantRequired.REQUIRED)
         return "required";
       if (code == ParticipantRequired.OPTIONAL)
         return "optional";
       if (code == ParticipantRequired.INFORMATIONONLY)
         return "information-only";
       return "?";
-    }
+   }
 
     public String toSystem(ParticipantRequired code) {
       return code.getSystem();
@@ -633,7 +637,9 @@ public class Appointment extends DomainResource {
     }
 
     public String toCode(ParticipationStatus code) {
-      if (code == ParticipationStatus.ACCEPTED)
+       if (code == ParticipationStatus.NULL)
+           return null;
+       if (code == ParticipationStatus.ACCEPTED)
         return "accepted";
       if (code == ParticipationStatus.DECLINED)
         return "declined";
@@ -642,7 +648,7 @@ public class Appointment extends DomainResource {
       if (code == ParticipationStatus.NEEDSACTION)
         return "needs-action";
       return "?";
-    }
+   }
 
     public String toSystem(ParticipationStatus code) {
       return code.getSystem();

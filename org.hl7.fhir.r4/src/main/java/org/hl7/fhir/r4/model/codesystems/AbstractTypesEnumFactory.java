@@ -46,12 +46,14 @@ public class AbstractTypesEnumFactory implements EnumFactory<AbstractTypes> {
   }
 
   public String toCode(AbstractTypes code) {
-    if (code == AbstractTypes.TYPE)
+       if (code == AbstractTypes.NULL)
+           return null;
+       if (code == AbstractTypes.TYPE)
       return "Type";
     if (code == AbstractTypes.ANY)
       return "Any";
     return "?";
-  }
+   }
 
   public String toSystem(AbstractTypes code) {
     return code.getSystem();

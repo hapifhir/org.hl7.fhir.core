@@ -98,7 +98,9 @@ public class V3ActMoodEnumFactory implements EnumFactory<V3ActMood> {
   }
 
   public String toCode(V3ActMood code) {
-    if (code == V3ActMood._ACTMOODCOMPLETIONTRACK)
+       if (code == V3ActMood.NULL)
+           return null;
+       if (code == V3ActMood._ACTMOODCOMPLETIONTRACK)
       return "_ActMoodCompletionTrack";
     if (code == V3ActMood._ACTMOODPOTENTIAL)
       return "_ActMoodPotential";
@@ -155,7 +157,7 @@ public class V3ActMoodEnumFactory implements EnumFactory<V3ActMood> {
     if (code == V3ActMood.OPT)
       return "OPT";
     return "?";
-  }
+   }
 
   public String toSystem(V3ActMood code) {
     return code.getSystem();

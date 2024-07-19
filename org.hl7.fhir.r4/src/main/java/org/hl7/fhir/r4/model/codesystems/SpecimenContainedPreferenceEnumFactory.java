@@ -46,12 +46,14 @@ public class SpecimenContainedPreferenceEnumFactory implements EnumFactory<Speci
   }
 
   public String toCode(SpecimenContainedPreference code) {
-    if (code == SpecimenContainedPreference.PREFERRED)
+       if (code == SpecimenContainedPreference.NULL)
+           return null;
+       if (code == SpecimenContainedPreference.PREFERRED)
       return "preferred";
     if (code == SpecimenContainedPreference.ALTERNATE)
       return "alternate";
     return "?";
-  }
+   }
 
   public String toSystem(SpecimenContainedPreference code) {
     return code.getSystem();

@@ -185,14 +185,16 @@ public class ConceptMap extends MetadataResource {
     }
 
     public String toCode(ConceptMapGroupUnmappedMode code) {
-      if (code == ConceptMapGroupUnmappedMode.PROVIDED)
+       if (code == ConceptMapGroupUnmappedMode.NULL)
+           return null;
+       if (code == ConceptMapGroupUnmappedMode.PROVIDED)
         return "provided";
       if (code == ConceptMapGroupUnmappedMode.FIXED)
         return "fixed";
       if (code == ConceptMapGroupUnmappedMode.OTHERMAP)
         return "other-map";
       return "?";
-    }
+   }
 
     public String toSystem(ConceptMapGroupUnmappedMode code) {
       return code.getSystem();

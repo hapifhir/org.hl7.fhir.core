@@ -50,7 +50,9 @@ public class EvidenceQualityEnumFactory implements EnumFactory<EvidenceQuality> 
   }
 
   public String toCode(EvidenceQuality code) {
-    if (code == EvidenceQuality.HIGH)
+       if (code == EvidenceQuality.NULL)
+           return null;
+       if (code == EvidenceQuality.HIGH)
       return "high";
     if (code == EvidenceQuality.MODERATE)
       return "moderate";
@@ -59,7 +61,7 @@ public class EvidenceQualityEnumFactory implements EnumFactory<EvidenceQuality> 
     if (code == EvidenceQuality.VERYLOW)
       return "very-low";
     return "?";
-  }
+   }
 
   public String toSystem(EvidenceQuality code) {
     return code.getSystem();

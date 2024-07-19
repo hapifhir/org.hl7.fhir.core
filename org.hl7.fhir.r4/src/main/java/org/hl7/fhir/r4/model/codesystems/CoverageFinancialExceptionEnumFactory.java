@@ -46,12 +46,14 @@ public class CoverageFinancialExceptionEnumFactory implements EnumFactory<Covera
   }
 
   public String toCode(CoverageFinancialException code) {
-    if (code == CoverageFinancialException.RETIRED)
+       if (code == CoverageFinancialException.NULL)
+           return null;
+       if (code == CoverageFinancialException.RETIRED)
       return "retired";
     if (code == CoverageFinancialException.FOSTER)
       return "foster";
     return "?";
-  }
+   }
 
   public String toSystem(CoverageFinancialException code) {
     return code.getSystem();

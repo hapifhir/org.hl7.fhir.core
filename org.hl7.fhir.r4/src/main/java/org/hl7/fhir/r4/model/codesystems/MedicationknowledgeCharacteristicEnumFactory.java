@@ -56,7 +56,9 @@ public class MedicationknowledgeCharacteristicEnumFactory implements EnumFactory
   }
 
   public String toCode(MedicationknowledgeCharacteristic code) {
-    if (code == MedicationknowledgeCharacteristic.IMPRINTCD)
+       if (code == MedicationknowledgeCharacteristic.NULL)
+           return null;
+       if (code == MedicationknowledgeCharacteristic.IMPRINTCD)
       return "imprintcd";
     if (code == MedicationknowledgeCharacteristic.SIZE)
       return "size";
@@ -71,7 +73,7 @@ public class MedicationknowledgeCharacteristicEnumFactory implements EnumFactory
     if (code == MedicationknowledgeCharacteristic.LOGO)
       return "logo";
     return "?";
-  }
+   }
 
   public String toSystem(MedicationknowledgeCharacteristic code) {
     return code.getSystem();

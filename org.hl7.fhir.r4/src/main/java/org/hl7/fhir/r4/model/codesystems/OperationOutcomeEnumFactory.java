@@ -142,7 +142,9 @@ public class OperationOutcomeEnumFactory implements EnumFactory<OperationOutcome
   }
 
   public String toCode(OperationOutcome code) {
-    if (code == OperationOutcome.DELETEMULTIPLEMATCHES)
+       if (code == OperationOutcome.NULL)
+           return null;
+       if (code == OperationOutcome.DELETEMULTIPLEMATCHES)
       return "DELETE_MULTIPLE_MATCHES";
     if (code == OperationOutcome.MSGAUTHREQUIRED)
       return "MSG_AUTH_REQUIRED";
@@ -243,7 +245,7 @@ public class OperationOutcomeEnumFactory implements EnumFactory<OperationOutcome
     if (code == OperationOutcome.UPDATEMULTIPLEMATCHES)
       return "UPDATE_MULTIPLE_MATCHES";
     return "?";
-  }
+   }
 
   public String toSystem(OperationOutcome code) {
     return code.getSystem();

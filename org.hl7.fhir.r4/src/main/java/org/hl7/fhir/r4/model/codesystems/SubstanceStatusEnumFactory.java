@@ -48,14 +48,16 @@ public class SubstanceStatusEnumFactory implements EnumFactory<SubstanceStatus> 
   }
 
   public String toCode(SubstanceStatus code) {
-    if (code == SubstanceStatus.ACTIVE)
+       if (code == SubstanceStatus.NULL)
+           return null;
+       if (code == SubstanceStatus.ACTIVE)
       return "active";
     if (code == SubstanceStatus.INACTIVE)
       return "inactive";
     if (code == SubstanceStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(SubstanceStatus code) {
     return code.getSystem();

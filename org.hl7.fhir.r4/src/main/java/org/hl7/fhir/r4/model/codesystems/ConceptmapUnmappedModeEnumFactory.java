@@ -48,14 +48,16 @@ public class ConceptmapUnmappedModeEnumFactory implements EnumFactory<Conceptmap
   }
 
   public String toCode(ConceptmapUnmappedMode code) {
-    if (code == ConceptmapUnmappedMode.PROVIDED)
+       if (code == ConceptmapUnmappedMode.NULL)
+           return null;
+       if (code == ConceptmapUnmappedMode.PROVIDED)
       return "provided";
     if (code == ConceptmapUnmappedMode.FIXED)
       return "fixed";
     if (code == ConceptmapUnmappedMode.OTHERMAP)
       return "other-map";
     return "?";
-  }
+   }
 
   public String toSystem(ConceptmapUnmappedMode code) {
     return code.getSystem();

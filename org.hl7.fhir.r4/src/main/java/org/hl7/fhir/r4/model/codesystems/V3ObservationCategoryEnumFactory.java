@@ -58,7 +58,9 @@ public class V3ObservationCategoryEnumFactory implements EnumFactory<V3Observati
   }
 
   public String toCode(V3ObservationCategory code) {
-    if (code == V3ObservationCategory.EXAM)
+       if (code == V3ObservationCategory.NULL)
+           return null;
+       if (code == V3ObservationCategory.EXAM)
       return "exam";
     if (code == V3ObservationCategory.IMAGING)
       return "imaging";
@@ -75,7 +77,7 @@ public class V3ObservationCategoryEnumFactory implements EnumFactory<V3Observati
     if (code == V3ObservationCategory.VITALSIGNS)
       return "vital-signs";
     return "?";
-  }
+   }
 
   public String toSystem(V3ObservationCategory code) {
     return code.getSystem();

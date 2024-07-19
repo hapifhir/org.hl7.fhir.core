@@ -50,7 +50,9 @@ public class ResourceTypeLinkEnumFactory implements EnumFactory<ResourceTypeLink
   }
 
   public String toCode(ResourceTypeLink code) {
-    if (code == ResourceTypeLink.ORGANIZATION)
+       if (code == ResourceTypeLink.NULL)
+           return null;
+       if (code == ResourceTypeLink.ORGANIZATION)
       return "organization";
     if (code == ResourceTypeLink.PATIENT)
       return "patient";
@@ -59,7 +61,7 @@ public class ResourceTypeLinkEnumFactory implements EnumFactory<ResourceTypeLink
     if (code == ResourceTypeLink.RELATEDPERSON)
       return "relatedperson";
     return "?";
-  }
+   }
 
   public String toSystem(ResourceTypeLink code) {
     return code.getSystem();

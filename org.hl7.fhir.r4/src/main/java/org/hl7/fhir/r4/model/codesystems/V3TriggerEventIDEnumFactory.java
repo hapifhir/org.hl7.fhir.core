@@ -64,7 +64,9 @@ public class V3TriggerEventIDEnumFactory implements EnumFactory<V3TriggerEventID
   }
 
   public String toCode(V3TriggerEventID code) {
-    if (code == V3TriggerEventID.POLBTE004000UV)
+       if (code == V3TriggerEventID.NULL)
+           return null;
+       if (code == V3TriggerEventID.POLBTE004000UV)
       return "POLB_TE004000UV";
     if (code == V3TriggerEventID.POLBTE004001UV)
       return "POLB_TE004001UV";
@@ -87,7 +89,7 @@ public class V3TriggerEventIDEnumFactory implements EnumFactory<V3TriggerEventID
     if (code == V3TriggerEventID.POLBTE004500UV)
       return "POLB_TE004500UV";
     return "?";
-  }
+   }
 
   public String toSystem(V3TriggerEventID code) {
     return code.getSystem();

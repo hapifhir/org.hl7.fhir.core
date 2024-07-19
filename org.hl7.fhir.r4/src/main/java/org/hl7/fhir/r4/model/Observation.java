@@ -283,7 +283,9 @@ public class Observation extends DomainResource {
     }
 
     public String toCode(ObservationStatus code) {
-      if (code == ObservationStatus.REGISTERED)
+       if (code == ObservationStatus.NULL)
+           return null;
+       if (code == ObservationStatus.REGISTERED)
         return "registered";
       if (code == ObservationStatus.PRELIMINARY)
         return "preliminary";
@@ -300,7 +302,7 @@ public class Observation extends DomainResource {
       if (code == ObservationStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(ObservationStatus code) {
       return code.getSystem();

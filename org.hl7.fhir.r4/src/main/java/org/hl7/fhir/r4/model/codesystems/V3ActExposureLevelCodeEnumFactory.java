@@ -50,7 +50,9 @@ public class V3ActExposureLevelCodeEnumFactory implements EnumFactory<V3ActExpos
   }
 
   public String toCode(V3ActExposureLevelCode code) {
-    if (code == V3ActExposureLevelCode._ACTEXPOSURELEVELCODE)
+       if (code == V3ActExposureLevelCode.NULL)
+           return null;
+       if (code == V3ActExposureLevelCode._ACTEXPOSURELEVELCODE)
       return "_ActExposureLevelCode";
     if (code == V3ActExposureLevelCode.HIGH)
       return "HIGH";
@@ -59,7 +61,7 @@ public class V3ActExposureLevelCodeEnumFactory implements EnumFactory<V3ActExpos
     if (code == V3ActExposureLevelCode.MEDIUM)
       return "MEDIUM";
     return "?";
-  }
+   }
 
   public String toSystem(V3ActExposureLevelCode code) {
     return code.getSystem();

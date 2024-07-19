@@ -44,10 +44,12 @@ public class ContractAssetcontextEnumFactory implements EnumFactory<ContractAsse
   }
 
   public String toCode(ContractAssetcontext code) {
-    if (code == ContractAssetcontext.CUSTODIAN)
+       if (code == ContractAssetcontext.NULL)
+           return null;
+       if (code == ContractAssetcontext.CUSTODIAN)
       return "custodian";
     return "?";
-  }
+   }
 
   public String toSystem(ContractAssetcontext code) {
     return code.getSystem();

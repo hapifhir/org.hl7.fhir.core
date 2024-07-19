@@ -92,7 +92,9 @@ public class V3HL7StandardVersionCodeEnumFactory implements EnumFactory<V3HL7Sta
   }
 
   public String toCode(V3HL7StandardVersionCode code) {
-    if (code == V3HL7StandardVersionCode.BALLOT2008JAN)
+       if (code == V3HL7StandardVersionCode.NULL)
+           return null;
+       if (code == V3HL7StandardVersionCode.BALLOT2008JAN)
       return "Ballot2008Jan";
     if (code == V3HL7StandardVersionCode.BALLOT2008MAY)
       return "Ballot2008May";
@@ -143,7 +145,7 @@ public class V3HL7StandardVersionCodeEnumFactory implements EnumFactory<V3HL7Sta
     if (code == V3HL7StandardVersionCode.V32007N)
       return "V3-2007N";
     return "?";
-  }
+   }
 
   public String toSystem(V3HL7StandardVersionCode code) {
     return code.getSystem();

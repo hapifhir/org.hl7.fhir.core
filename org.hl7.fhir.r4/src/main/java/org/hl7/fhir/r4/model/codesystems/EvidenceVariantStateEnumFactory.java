@@ -48,14 +48,16 @@ public class EvidenceVariantStateEnumFactory implements EnumFactory<EvidenceVari
   }
 
   public String toCode(EvidenceVariantState code) {
-    if (code == EvidenceVariantState.LOWRISK)
+       if (code == EvidenceVariantState.NULL)
+           return null;
+       if (code == EvidenceVariantState.LOWRISK)
       return "low-risk";
     if (code == EvidenceVariantState.MEDIUMRISK)
       return "medium-risk";
     if (code == EvidenceVariantState.HIGHRISK)
       return "high-risk";
     return "?";
-  }
+   }
 
   public String toSystem(EvidenceVariantState code) {
     return code.getSystem();

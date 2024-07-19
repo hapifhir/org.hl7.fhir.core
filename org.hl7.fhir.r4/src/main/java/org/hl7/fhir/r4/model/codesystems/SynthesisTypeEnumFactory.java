@@ -54,7 +54,9 @@ public class SynthesisTypeEnumFactory implements EnumFactory<SynthesisType> {
   }
 
   public String toCode(SynthesisType code) {
-    if (code == SynthesisType.STDMA)
+       if (code == SynthesisType.NULL)
+           return null;
+       if (code == SynthesisType.STDMA)
       return "std-MA";
     if (code == SynthesisType.IPDMA)
       return "IPD-MA";
@@ -67,7 +69,7 @@ public class SynthesisTypeEnumFactory implements EnumFactory<SynthesisType> {
     if (code == SynthesisType.CLASSIFICATION)
       return "classification";
     return "?";
-  }
+   }
 
   public String toSystem(SynthesisType code) {
     return code.getSystem();

@@ -46,12 +46,14 @@ public class MapContextTypeEnumFactory implements EnumFactory<MapContextType> {
   }
 
   public String toCode(MapContextType code) {
-    if (code == MapContextType.TYPE)
+       if (code == MapContextType.NULL)
+           return null;
+       if (code == MapContextType.TYPE)
       return "type";
     if (code == MapContextType.VARIABLE)
       return "variable";
     return "?";
-  }
+   }
 
   public String toSystem(MapContextType code) {
     return code.getSystem();

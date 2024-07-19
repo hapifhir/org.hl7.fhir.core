@@ -48,14 +48,16 @@ public class ProductStorageScaleEnumFactory implements EnumFactory<ProductStorag
   }
 
   public String toCode(ProductStorageScale code) {
-    if (code == ProductStorageScale.FARENHEIT)
+       if (code == ProductStorageScale.NULL)
+           return null;
+       if (code == ProductStorageScale.FARENHEIT)
       return "farenheit";
     if (code == ProductStorageScale.CELSIUS)
       return "celsius";
     if (code == ProductStorageScale.KELVIN)
       return "kelvin";
     return "?";
-  }
+   }
 
   public String toSystem(ProductStorageScale code) {
     return code.getSystem();

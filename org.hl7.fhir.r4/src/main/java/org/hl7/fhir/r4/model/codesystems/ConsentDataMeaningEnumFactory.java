@@ -50,7 +50,9 @@ public class ConsentDataMeaningEnumFactory implements EnumFactory<ConsentDataMea
   }
 
   public String toCode(ConsentDataMeaning code) {
-    if (code == ConsentDataMeaning.INSTANCE)
+       if (code == ConsentDataMeaning.NULL)
+           return null;
+       if (code == ConsentDataMeaning.INSTANCE)
       return "instance";
     if (code == ConsentDataMeaning.RELATED)
       return "related";
@@ -59,7 +61,7 @@ public class ConsentDataMeaningEnumFactory implements EnumFactory<ConsentDataMea
     if (code == ConsentDataMeaning.AUTHOREDBY)
       return "authoredby";
     return "?";
-  }
+   }
 
   public String toSystem(ConsentDataMeaning code) {
     return code.getSystem();

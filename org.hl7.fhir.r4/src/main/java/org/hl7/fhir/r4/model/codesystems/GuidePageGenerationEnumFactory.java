@@ -50,7 +50,9 @@ public class GuidePageGenerationEnumFactory implements EnumFactory<GuidePageGene
   }
 
   public String toCode(GuidePageGeneration code) {
-    if (code == GuidePageGeneration.HTML)
+       if (code == GuidePageGeneration.NULL)
+           return null;
+       if (code == GuidePageGeneration.HTML)
       return "html";
     if (code == GuidePageGeneration.MARKDOWN)
       return "markdown";
@@ -59,7 +61,7 @@ public class GuidePageGenerationEnumFactory implements EnumFactory<GuidePageGene
     if (code == GuidePageGeneration.GENERATED)
       return "generated";
     return "?";
-  }
+   }
 
   public String toSystem(GuidePageGeneration code) {
     return code.getSystem();

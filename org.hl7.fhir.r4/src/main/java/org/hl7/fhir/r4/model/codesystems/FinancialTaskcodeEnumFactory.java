@@ -52,7 +52,9 @@ public class FinancialTaskcodeEnumFactory implements EnumFactory<FinancialTaskco
   }
 
   public String toCode(FinancialTaskcode code) {
-    if (code == FinancialTaskcode.CANCEL)
+       if (code == FinancialTaskcode.NULL)
+           return null;
+       if (code == FinancialTaskcode.CANCEL)
       return "cancel";
     if (code == FinancialTaskcode.POLL)
       return "poll";
@@ -63,7 +65,7 @@ public class FinancialTaskcodeEnumFactory implements EnumFactory<FinancialTaskco
     if (code == FinancialTaskcode.STATUS)
       return "status";
     return "?";
-  }
+   }
 
   public String toSystem(FinancialTaskcode code) {
     return code.getSystem();

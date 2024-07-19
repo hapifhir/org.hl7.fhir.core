@@ -58,7 +58,9 @@ public class AdverseEventSeriousnessEnumFactory implements EnumFactory<AdverseEv
   }
 
   public String toCode(AdverseEventSeriousness code) {
-    if (code == AdverseEventSeriousness.NONSERIOUS)
+       if (code == AdverseEventSeriousness.NULL)
+           return null;
+       if (code == AdverseEventSeriousness.NONSERIOUS)
       return "Non-serious";
     if (code == AdverseEventSeriousness.SERIOUS)
       return "Serious";
@@ -75,7 +77,7 @@ public class AdverseEventSeriousnessEnumFactory implements EnumFactory<AdverseEv
     if (code == AdverseEventSeriousness.SERIOUSREQUIRESPREVENTIMPAIRMENT)
       return "SeriousRequiresPreventImpairment";
     return "?";
-  }
+   }
 
   public String toSystem(AdverseEventSeriousness code) {
     return code.getSystem();

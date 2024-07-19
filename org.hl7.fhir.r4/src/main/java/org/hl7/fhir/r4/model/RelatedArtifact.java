@@ -276,7 +276,9 @@ public class RelatedArtifact extends Type implements ICompositeType {
     }
 
     public String toCode(RelatedArtifactType code) {
-      if (code == RelatedArtifactType.DOCUMENTATION)
+       if (code == RelatedArtifactType.NULL)
+           return null;
+       if (code == RelatedArtifactType.DOCUMENTATION)
         return "documentation";
       if (code == RelatedArtifactType.JUSTIFICATION)
         return "justification";
@@ -293,7 +295,7 @@ public class RelatedArtifact extends Type implements ICompositeType {
       if (code == RelatedArtifactType.COMPOSEDOF)
         return "composed-of";
       return "?";
-    }
+   }
 
     public String toSystem(RelatedArtifactType code) {
       return code.getSystem();

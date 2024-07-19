@@ -52,7 +52,9 @@ public class V3TableRulesEnumFactory implements EnumFactory<V3TableRules> {
   }
 
   public String toCode(V3TableRules code) {
-    if (code == V3TableRules.ALL)
+       if (code == V3TableRules.NULL)
+           return null;
+       if (code == V3TableRules.ALL)
       return "all";
     if (code == V3TableRules.COLS)
       return "cols";
@@ -63,7 +65,7 @@ public class V3TableRulesEnumFactory implements EnumFactory<V3TableRules> {
     if (code == V3TableRules.ROWS)
       return "rows";
     return "?";
-  }
+   }
 
   public String toSystem(V3TableRules code) {
     return code.getSystem();
