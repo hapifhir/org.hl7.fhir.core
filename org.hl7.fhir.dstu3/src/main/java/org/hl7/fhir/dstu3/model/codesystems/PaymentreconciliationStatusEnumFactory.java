@@ -54,7 +54,9 @@ public class PaymentreconciliationStatusEnumFactory implements EnumFactory<Payme
   }
 
   public String toCode(PaymentreconciliationStatus code) {
-    if (code == PaymentreconciliationStatus.ACTIVE)
+       if (code == PaymentreconciliationStatus.NULL)
+           return null;
+       if (code == PaymentreconciliationStatus.ACTIVE)
       return "active";
     if (code == PaymentreconciliationStatus.CANCELLED)
       return "cancelled";
@@ -63,7 +65,7 @@ public class PaymentreconciliationStatusEnumFactory implements EnumFactory<Payme
     if (code == PaymentreconciliationStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(PaymentreconciliationStatus code) {
       return code.getSystem();

@@ -50,12 +50,14 @@ public class RestfulCapabilityModeEnumFactory implements EnumFactory<RestfulCapa
   }
 
   public String toCode(RestfulCapabilityMode code) {
-    if (code == RestfulCapabilityMode.CLIENT)
+       if (code == RestfulCapabilityMode.NULL)
+           return null;
+       if (code == RestfulCapabilityMode.CLIENT)
       return "client";
     if (code == RestfulCapabilityMode.SERVER)
       return "server";
     return "?";
-  }
+   }
 
     public String toSystem(RestfulCapabilityMode code) {
       return code.getSystem();

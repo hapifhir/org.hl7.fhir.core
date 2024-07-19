@@ -56,7 +56,9 @@ public class ImmunizationRecommendationDateCriterionEnumFactory implements EnumF
   }
 
   public String toCode(ImmunizationRecommendationDateCriterion code) {
-    if (code == ImmunizationRecommendationDateCriterion.DUE)
+       if (code == ImmunizationRecommendationDateCriterion.NULL)
+           return null;
+       if (code == ImmunizationRecommendationDateCriterion.DUE)
       return "due";
     if (code == ImmunizationRecommendationDateCriterion.RECOMMENDED)
       return "recommended";
@@ -67,7 +69,7 @@ public class ImmunizationRecommendationDateCriterionEnumFactory implements EnumF
     if (code == ImmunizationRecommendationDateCriterion.LATEST)
       return "latest";
     return "?";
-  }
+   }
 
     public String toSystem(ImmunizationRecommendationDateCriterion code) {
       return code.getSystem();

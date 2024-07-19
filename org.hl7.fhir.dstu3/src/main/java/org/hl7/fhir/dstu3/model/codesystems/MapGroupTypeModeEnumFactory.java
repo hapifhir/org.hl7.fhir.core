@@ -52,14 +52,16 @@ public class MapGroupTypeModeEnumFactory implements EnumFactory<MapGroupTypeMode
   }
 
   public String toCode(MapGroupTypeMode code) {
-    if (code == MapGroupTypeMode.NONE)
+       if (code == MapGroupTypeMode.NULL)
+           return null;
+       if (code == MapGroupTypeMode.NONE)
       return "none";
     if (code == MapGroupTypeMode.TYPES)
       return "types";
     if (code == MapGroupTypeMode.TYPEANDTYPES)
       return "type-and-types";
     return "?";
-  }
+   }
 
     public String toSystem(MapGroupTypeMode code) {
       return code.getSystem();

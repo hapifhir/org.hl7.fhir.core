@@ -210,7 +210,9 @@ public class V3ReligiousAffiliationEnumFactory implements EnumFactory<V3Religiou
   }
 
   public String toCode(V3ReligiousAffiliation code) {
-    if (code == V3ReligiousAffiliation._1001)
+       if (code == V3ReligiousAffiliation.NULL)
+           return null;
+       if (code == V3ReligiousAffiliation._1001)
       return "1001";
     if (code == V3ReligiousAffiliation._1002)
       return "1002";
@@ -375,7 +377,7 @@ public class V3ReligiousAffiliationEnumFactory implements EnumFactory<V3Religiou
     if (code == V3ReligiousAffiliation._1082)
       return "1082";
     return "?";
-  }
+   }
 
     public String toSystem(V3ReligiousAffiliation code) {
       return code.getSystem();

@@ -294,7 +294,9 @@ public class V3SpecimenTypeEnumFactory implements EnumFactory<V3SpecimenType> {
   }
 
   public String toCode(V3SpecimenType code) {
-    if (code == V3SpecimenType._SPECIMENENTITYTYPE)
+       if (code == V3SpecimenType.NULL)
+           return null;
+       if (code == V3SpecimenType._SPECIMENENTITYTYPE)
       return "_SpecimenEntityType";
     if (code == V3SpecimenType.ABS)
       return "ABS";
@@ -543,7 +545,7 @@ public class V3SpecimenTypeEnumFactory implements EnumFactory<V3SpecimenType> {
     if (code == V3SpecimenType.WNDE)
       return "WNDE";
     return "?";
-  }
+   }
 
     public String toSystem(V3SpecimenType code) {
       return code.getSystem();

@@ -50,12 +50,14 @@ public class ServiceProductEnumFactory implements EnumFactory<ServiceProduct> {
   }
 
   public String toCode(ServiceProduct code) {
-    if (code == ServiceProduct.EXAM)
+       if (code == ServiceProduct.NULL)
+           return null;
+       if (code == ServiceProduct.EXAM)
       return "exam";
     if (code == ServiceProduct.FLUSHOT)
       return "flushot";
     return "?";
-  }
+   }
 
     public String toSystem(ServiceProduct code) {
       return code.getSystem();

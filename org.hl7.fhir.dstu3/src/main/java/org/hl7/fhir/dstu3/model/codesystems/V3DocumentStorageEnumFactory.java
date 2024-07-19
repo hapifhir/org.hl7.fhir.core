@@ -54,7 +54,9 @@ public class V3DocumentStorageEnumFactory implements EnumFactory<V3DocumentStora
   }
 
   public String toCode(V3DocumentStorage code) {
-    if (code == V3DocumentStorage.AC)
+       if (code == V3DocumentStorage.NULL)
+           return null;
+       if (code == V3DocumentStorage.AC)
       return "AC";
     if (code == V3DocumentStorage.AA)
       return "AA";
@@ -63,7 +65,7 @@ public class V3DocumentStorageEnumFactory implements EnumFactory<V3DocumentStora
     if (code == V3DocumentStorage.PU)
       return "PU";
     return "?";
-  }
+   }
 
     public String toSystem(V3DocumentStorage code) {
       return code.getSystem();

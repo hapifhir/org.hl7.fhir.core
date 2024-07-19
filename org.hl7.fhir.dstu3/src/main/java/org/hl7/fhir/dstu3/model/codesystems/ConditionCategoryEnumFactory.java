@@ -50,12 +50,14 @@ public class ConditionCategoryEnumFactory implements EnumFactory<ConditionCatego
   }
 
   public String toCode(ConditionCategory code) {
-    if (code == ConditionCategory.PROBLEMLISTITEM)
+       if (code == ConditionCategory.NULL)
+           return null;
+       if (code == ConditionCategory.PROBLEMLISTITEM)
       return "problem-list-item";
     if (code == ConditionCategory.ENCOUNTERDIAGNOSIS)
       return "encounter-diagnosis";
     return "?";
-  }
+   }
 
     public String toSystem(ConditionCategory code) {
       return code.getSystem();

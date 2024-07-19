@@ -52,14 +52,16 @@ public class PaymentTypeEnumFactory implements EnumFactory<PaymentType> {
   }
 
   public String toCode(PaymentType code) {
-    if (code == PaymentType.PAYMENT)
+       if (code == PaymentType.NULL)
+           return null;
+       if (code == PaymentType.PAYMENT)
       return "payment";
     if (code == PaymentType.ADJUSTMENT)
       return "adjustment";
     if (code == PaymentType.ADVANCE)
       return "advance";
     return "?";
-  }
+   }
 
     public String toSystem(PaymentType code) {
       return code.getSystem();

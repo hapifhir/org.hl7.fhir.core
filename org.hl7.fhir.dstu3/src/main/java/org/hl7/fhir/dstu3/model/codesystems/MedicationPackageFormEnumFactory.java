@@ -62,7 +62,9 @@ public class MedicationPackageFormEnumFactory implements EnumFactory<MedicationP
   }
 
   public String toCode(MedicationPackageForm code) {
-    if (code == MedicationPackageForm.AMPOULE)
+       if (code == MedicationPackageForm.NULL)
+           return null;
+       if (code == MedicationPackageForm.AMPOULE)
       return "ampoule";
     if (code == MedicationPackageForm.BOTTLE)
       return "bottle";
@@ -79,7 +81,7 @@ public class MedicationPackageFormEnumFactory implements EnumFactory<MedicationP
     if (code == MedicationPackageForm.VIAL)
       return "vial";
     return "?";
-  }
+   }
 
     public String toSystem(MedicationPackageForm code) {
       return code.getSystem();

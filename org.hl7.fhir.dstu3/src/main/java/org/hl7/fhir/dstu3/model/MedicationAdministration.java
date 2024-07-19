@@ -193,7 +193,9 @@ public class MedicationAdministration extends DomainResource {
         throw new FHIRException("Unknown MedicationAdministrationStatus code '"+codeString+"'");
         }
     public String toCode(MedicationAdministrationStatus code) {
-      if (code == MedicationAdministrationStatus.INPROGRESS)
+       if (code == MedicationAdministrationStatus.NULL)
+           return null;
+       if (code == MedicationAdministrationStatus.INPROGRESS)
         return "in-progress";
       if (code == MedicationAdministrationStatus.ONHOLD)
         return "on-hold";
@@ -206,7 +208,7 @@ public class MedicationAdministration extends DomainResource {
       if (code == MedicationAdministrationStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(MedicationAdministrationStatus code) {
       return code.getSystem();
       }

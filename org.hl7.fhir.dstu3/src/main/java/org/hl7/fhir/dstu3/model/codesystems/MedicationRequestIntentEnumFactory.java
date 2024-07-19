@@ -54,7 +54,9 @@ public class MedicationRequestIntentEnumFactory implements EnumFactory<Medicatio
   }
 
   public String toCode(MedicationRequestIntent code) {
-    if (code == MedicationRequestIntent.PROPOSAL)
+       if (code == MedicationRequestIntent.NULL)
+           return null;
+       if (code == MedicationRequestIntent.PROPOSAL)
       return "proposal";
     if (code == MedicationRequestIntent.PLAN)
       return "plan";
@@ -63,7 +65,7 @@ public class MedicationRequestIntentEnumFactory implements EnumFactory<Medicatio
     if (code == MedicationRequestIntent.INSTANCEORDER)
       return "instance-order";
     return "?";
-  }
+   }
 
     public String toSystem(MedicationRequestIntent code) {
       return code.getSystem();

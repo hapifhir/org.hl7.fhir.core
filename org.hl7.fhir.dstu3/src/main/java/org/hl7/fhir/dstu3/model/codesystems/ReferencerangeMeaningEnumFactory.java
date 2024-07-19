@@ -72,7 +72,9 @@ public class ReferencerangeMeaningEnumFactory implements EnumFactory<Referencera
   }
 
   public String toCode(ReferencerangeMeaning code) {
-    if (code == ReferencerangeMeaning.TYPE)
+       if (code == ReferencerangeMeaning.NULL)
+           return null;
+       if (code == ReferencerangeMeaning.TYPE)
       return "type";
     if (code == ReferencerangeMeaning.NORMAL)
       return "normal";
@@ -99,7 +101,7 @@ public class ReferencerangeMeaningEnumFactory implements EnumFactory<Referencera
     if (code == ReferencerangeMeaning.POSTMEOPAUSAL)
       return "postmeopausal";
     return "?";
-  }
+   }
 
     public String toSystem(ReferencerangeMeaning code) {
       return code.getSystem();

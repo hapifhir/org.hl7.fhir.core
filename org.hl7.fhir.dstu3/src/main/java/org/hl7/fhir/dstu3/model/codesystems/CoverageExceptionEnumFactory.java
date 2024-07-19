@@ -50,12 +50,14 @@ public class CoverageExceptionEnumFactory implements EnumFactory<CoverageExcepti
   }
 
   public String toCode(CoverageException code) {
-    if (code == CoverageException.STUDENT)
+       if (code == CoverageException.NULL)
+           return null;
+       if (code == CoverageException.STUDENT)
       return "student";
     if (code == CoverageException.DISABLED)
       return "disabled";
     return "?";
-  }
+   }
 
     public String toSystem(CoverageException code) {
       return code.getSystem();

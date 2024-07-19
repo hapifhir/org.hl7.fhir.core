@@ -56,7 +56,9 @@ public class SearchXpathUsageEnumFactory implements EnumFactory<SearchXpathUsage
   }
 
   public String toCode(SearchXpathUsage code) {
-    if (code == SearchXpathUsage.NORMAL)
+       if (code == SearchXpathUsage.NULL)
+           return null;
+       if (code == SearchXpathUsage.NORMAL)
       return "normal";
     if (code == SearchXpathUsage.PHONETIC)
       return "phonetic";
@@ -67,7 +69,7 @@ public class SearchXpathUsageEnumFactory implements EnumFactory<SearchXpathUsage
     if (code == SearchXpathUsage.OTHER)
       return "other";
     return "?";
-  }
+   }
 
     public String toSystem(SearchXpathUsage code) {
       return code.getSystem();

@@ -1238,7 +1238,9 @@ public class ServiceTypeEnumFactory implements EnumFactory<ServiceType> {
   }
 
   public String toCode(ServiceType code) {
-    if (code == ServiceType._1)
+       if (code == ServiceType.NULL)
+           return null;
+       if (code == ServiceType._1)
       return "1";
     if (code == ServiceType._2)
       return "2";
@@ -2431,7 +2433,7 @@ public class ServiceTypeEnumFactory implements EnumFactory<ServiceType> {
     if (code == ServiceType._629)
       return "629";
     return "?";
-  }
+   }
 
     public String toSystem(ServiceType code) {
       return code.getSystem();

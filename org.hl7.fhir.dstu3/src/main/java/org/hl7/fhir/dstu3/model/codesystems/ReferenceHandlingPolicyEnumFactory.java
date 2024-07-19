@@ -56,7 +56,9 @@ public class ReferenceHandlingPolicyEnumFactory implements EnumFactory<Reference
   }
 
   public String toCode(ReferenceHandlingPolicy code) {
-    if (code == ReferenceHandlingPolicy.LITERAL)
+       if (code == ReferenceHandlingPolicy.NULL)
+           return null;
+       if (code == ReferenceHandlingPolicy.LITERAL)
       return "literal";
     if (code == ReferenceHandlingPolicy.LOGICAL)
       return "logical";
@@ -67,7 +69,7 @@ public class ReferenceHandlingPolicyEnumFactory implements EnumFactory<Reference
     if (code == ReferenceHandlingPolicy.LOCAL)
       return "local";
     return "?";
-  }
+   }
 
     public String toSystem(ReferenceHandlingPolicy code) {
       return code.getSystem();

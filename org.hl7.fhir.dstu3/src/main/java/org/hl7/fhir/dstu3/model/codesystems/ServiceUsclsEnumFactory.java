@@ -86,7 +86,9 @@ public class ServiceUsclsEnumFactory implements EnumFactory<ServiceUscls> {
   }
 
   public String toCode(ServiceUscls code) {
-    if (code == ServiceUscls._1101)
+       if (code == ServiceUscls.NULL)
+           return null;
+       if (code == ServiceUscls._1101)
       return "1101";
     if (code == ServiceUscls._1102)
       return "1102";
@@ -127,7 +129,7 @@ public class ServiceUsclsEnumFactory implements EnumFactory<ServiceUscls> {
     if (code == ServiceUscls._99555)
       return "99555";
     return "?";
-  }
+   }
 
     public String toSystem(ServiceUscls code) {
       return code.getSystem();

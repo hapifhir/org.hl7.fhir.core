@@ -52,14 +52,16 @@ public class MessageTransportEnumFactory implements EnumFactory<MessageTransport
   }
 
   public String toCode(MessageTransport code) {
-    if (code == MessageTransport.HTTP)
+       if (code == MessageTransport.NULL)
+           return null;
+       if (code == MessageTransport.HTTP)
       return "http";
     if (code == MessageTransport.FTP)
       return "ftp";
     if (code == MessageTransport.MLLP)
       return "mllp";
     return "?";
-  }
+   }
 
     public String toSystem(MessageTransport code) {
       return code.getSystem();

@@ -163,7 +163,9 @@ public class EligibilityRequest extends DomainResource {
         throw new FHIRException("Unknown EligibilityRequestStatus code '"+codeString+"'");
         }
     public String toCode(EligibilityRequestStatus code) {
-      if (code == EligibilityRequestStatus.ACTIVE)
+       if (code == EligibilityRequestStatus.NULL)
+           return null;
+       if (code == EligibilityRequestStatus.ACTIVE)
         return "active";
       if (code == EligibilityRequestStatus.CANCELLED)
         return "cancelled";
@@ -172,7 +174,7 @@ public class EligibilityRequest extends DomainResource {
       if (code == EligibilityRequestStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(EligibilityRequestStatus code) {
       return code.getSystem();
       }

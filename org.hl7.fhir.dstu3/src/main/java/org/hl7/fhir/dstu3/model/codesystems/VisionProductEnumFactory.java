@@ -50,12 +50,14 @@ public class VisionProductEnumFactory implements EnumFactory<VisionProduct> {
   }
 
   public String toCode(VisionProduct code) {
-    if (code == VisionProduct.LENS)
+       if (code == VisionProduct.NULL)
+           return null;
+       if (code == VisionProduct.LENS)
       return "lens";
     if (code == VisionProduct.CONTACT)
       return "contact";
     return "?";
-  }
+   }
 
     public String toSystem(VisionProduct code) {
       return code.getSystem();
