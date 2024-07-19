@@ -50,12 +50,14 @@ public class EventCapabilityModeEnumFactory implements EnumFactory<EventCapabili
   }
 
   public String toCode(EventCapabilityMode code) {
-    if (code == EventCapabilityMode.SENDER)
+       if (code == EventCapabilityMode.NULL)
+           return null;
+       if (code == EventCapabilityMode.SENDER)
       return "sender";
     if (code == EventCapabilityMode.RECEIVER)
       return "receiver";
     return "?";
-  }
+   }
 
     public String toSystem(EventCapabilityMode code) {
       return code.getSystem();

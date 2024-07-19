@@ -50,12 +50,14 @@ public class PaymentAdjustmentReasonEnumFactory implements EnumFactory<PaymentAd
   }
 
   public String toCode(PaymentAdjustmentReason code) {
-    if (code == PaymentAdjustmentReason.A001)
+       if (code == PaymentAdjustmentReason.NULL)
+           return null;
+       if (code == PaymentAdjustmentReason.A001)
       return "a001";
     if (code == PaymentAdjustmentReason.A002)
       return "a002";
     return "?";
-  }
+   }
 
     public String toSystem(PaymentAdjustmentReason code) {
       return code.getSystem();

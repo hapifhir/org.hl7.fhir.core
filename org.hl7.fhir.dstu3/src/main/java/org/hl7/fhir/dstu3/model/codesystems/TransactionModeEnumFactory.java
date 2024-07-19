@@ -54,7 +54,9 @@ public class TransactionModeEnumFactory implements EnumFactory<TransactionMode> 
   }
 
   public String toCode(TransactionMode code) {
-    if (code == TransactionMode.NOTSUPPORTED)
+       if (code == TransactionMode.NULL)
+           return null;
+       if (code == TransactionMode.NOTSUPPORTED)
       return "not-supported";
     if (code == TransactionMode.BATCH)
       return "batch";
@@ -63,7 +65,7 @@ public class TransactionModeEnumFactory implements EnumFactory<TransactionMode> 
     if (code == TransactionMode.BOTH)
       return "both";
     return "?";
-  }
+   }
 
     public String toSystem(TransactionMode code) {
       return code.getSystem();

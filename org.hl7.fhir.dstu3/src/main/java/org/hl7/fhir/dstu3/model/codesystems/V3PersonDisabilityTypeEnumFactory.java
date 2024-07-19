@@ -66,7 +66,9 @@ public class V3PersonDisabilityTypeEnumFactory implements EnumFactory<V3PersonDi
   }
 
   public String toCode(V3PersonDisabilityType code) {
-    if (code == V3PersonDisabilityType._1)
+       if (code == V3PersonDisabilityType.NULL)
+           return null;
+       if (code == V3PersonDisabilityType._1)
       return "1";
     if (code == V3PersonDisabilityType._2)
       return "2";
@@ -87,7 +89,7 @@ public class V3PersonDisabilityTypeEnumFactory implements EnumFactory<V3PersonDi
     if (code == V3PersonDisabilityType.WK)
       return "WK";
     return "?";
-  }
+   }
 
     public String toSystem(V3PersonDisabilityType code) {
       return code.getSystem();

@@ -54,7 +54,9 @@ public class UnknownContentCodeEnumFactory implements EnumFactory<UnknownContent
   }
 
   public String toCode(UnknownContentCode code) {
-    if (code == UnknownContentCode.NO)
+       if (code == UnknownContentCode.NULL)
+           return null;
+       if (code == UnknownContentCode.NO)
       return "no";
     if (code == UnknownContentCode.EXTENSIONS)
       return "extensions";
@@ -63,7 +65,7 @@ public class UnknownContentCodeEnumFactory implements EnumFactory<UnknownContent
     if (code == UnknownContentCode.BOTH)
       return "both";
     return "?";
-  }
+   }
 
     public String toSystem(UnknownContentCode code) {
       return code.getSystem();

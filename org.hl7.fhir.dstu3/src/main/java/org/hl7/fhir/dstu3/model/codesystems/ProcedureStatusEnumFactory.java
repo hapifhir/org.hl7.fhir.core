@@ -60,7 +60,9 @@ public class ProcedureStatusEnumFactory implements EnumFactory<ProcedureStatus> 
   }
 
   public String toCode(ProcedureStatus code) {
-    if (code == ProcedureStatus.PREPARATION)
+       if (code == ProcedureStatus.NULL)
+           return null;
+       if (code == ProcedureStatus.PREPARATION)
       return "preparation";
     if (code == ProcedureStatus.INPROGRESS)
       return "in-progress";
@@ -75,7 +77,7 @@ public class ProcedureStatusEnumFactory implements EnumFactory<ProcedureStatus> 
     if (code == ProcedureStatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
     public String toSystem(ProcedureStatus code) {
       return code.getSystem();

@@ -62,7 +62,9 @@ public class MedicationRequestStatusEnumFactory implements EnumFactory<Medicatio
   }
 
   public String toCode(MedicationRequestStatus code) {
-    if (code == MedicationRequestStatus.ACTIVE)
+       if (code == MedicationRequestStatus.NULL)
+           return null;
+       if (code == MedicationRequestStatus.ACTIVE)
       return "active";
     if (code == MedicationRequestStatus.ONHOLD)
       return "on-hold";
@@ -79,7 +81,7 @@ public class MedicationRequestStatusEnumFactory implements EnumFactory<Medicatio
     if (code == MedicationRequestStatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
     public String toSystem(MedicationRequestStatus code) {
       return code.getSystem();

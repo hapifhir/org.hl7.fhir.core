@@ -132,12 +132,14 @@ public class ParameterDefinition extends Type implements ICompositeType {
         throw new FHIRException("Unknown ParameterUse code '"+codeString+"'");
         }
     public String toCode(ParameterUse code) {
-      if (code == ParameterUse.IN)
+       if (code == ParameterUse.NULL)
+           return null;
+       if (code == ParameterUse.IN)
         return "in";
       if (code == ParameterUse.OUT)
         return "out";
       return "?";
-      }
+   }
     public String toSystem(ParameterUse code) {
       return code.getSystem();
       }

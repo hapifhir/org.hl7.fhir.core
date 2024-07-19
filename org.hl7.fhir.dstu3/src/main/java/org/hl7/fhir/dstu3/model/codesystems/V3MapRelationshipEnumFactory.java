@@ -52,14 +52,16 @@ public class V3MapRelationshipEnumFactory implements EnumFactory<V3MapRelationsh
   }
 
   public String toCode(V3MapRelationship code) {
-    if (code == V3MapRelationship.BT)
+       if (code == V3MapRelationship.NULL)
+           return null;
+       if (code == V3MapRelationship.BT)
       return "BT";
     if (code == V3MapRelationship.E)
       return "E";
     if (code == V3MapRelationship.NT)
       return "NT";
     return "?";
-  }
+   }
 
     public String toSystem(V3MapRelationship code) {
       return code.getSystem();

@@ -56,7 +56,9 @@ public class ContactPointUseEnumFactory implements EnumFactory<ContactPointUse> 
   }
 
   public String toCode(ContactPointUse code) {
-    if (code == ContactPointUse.HOME)
+       if (code == ContactPointUse.NULL)
+           return null;
+       if (code == ContactPointUse.HOME)
       return "home";
     if (code == ContactPointUse.WORK)
       return "work";
@@ -67,7 +69,7 @@ public class ContactPointUseEnumFactory implements EnumFactory<ContactPointUse> 
     if (code == ContactPointUse.MOBILE)
       return "mobile";
     return "?";
-  }
+   }
 
     public String toSystem(ContactPointUse code) {
       return code.getSystem();

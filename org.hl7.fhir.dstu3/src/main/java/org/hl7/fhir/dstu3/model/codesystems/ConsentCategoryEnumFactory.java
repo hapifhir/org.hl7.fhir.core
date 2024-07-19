@@ -100,7 +100,9 @@ public class ConsentCategoryEnumFactory implements EnumFactory<ConsentCategory> 
   }
 
   public String toCode(ConsentCategory code) {
-    if (code == ConsentCategory._42CFR2)
+       if (code == ConsentCategory.NULL)
+           return null;
+       if (code == ConsentCategory._42CFR2)
       return "42-CFR-2";
     if (code == ConsentCategory.ACD)
       return "ACD";
@@ -155,7 +157,7 @@ public class ConsentCategoryEnumFactory implements EnumFactory<ConsentCategory> 
     if (code == ConsentCategory.VA214142)
       return "VA-21-4142";
     return "?";
-  }
+   }
 
     public String toSystem(ConsentCategory code) {
       return code.getSystem();

@@ -50,12 +50,14 @@ public class V3QueryRequestLimitEnumFactory implements EnumFactory<V3QueryReques
   }
 
   public String toCode(V3QueryRequestLimit code) {
-    if (code == V3QueryRequestLimit._QUERYREQUESTLIMIT)
+       if (code == V3QueryRequestLimit.NULL)
+           return null;
+       if (code == V3QueryRequestLimit._QUERYREQUESTLIMIT)
       return "_QueryRequestLimit";
     if (code == V3QueryRequestLimit.RD)
       return "RD";
     return "?";
-  }
+   }
 
     public String toSystem(V3QueryRequestLimit code) {
       return code.getSystem();

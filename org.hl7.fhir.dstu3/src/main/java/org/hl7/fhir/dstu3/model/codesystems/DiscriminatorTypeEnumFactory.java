@@ -56,7 +56,9 @@ public class DiscriminatorTypeEnumFactory implements EnumFactory<DiscriminatorTy
   }
 
   public String toCode(DiscriminatorType code) {
-    if (code == DiscriminatorType.VALUE)
+       if (code == DiscriminatorType.NULL)
+           return null;
+       if (code == DiscriminatorType.VALUE)
       return "value";
     if (code == DiscriminatorType.EXISTS)
       return "exists";
@@ -67,7 +69,7 @@ public class DiscriminatorTypeEnumFactory implements EnumFactory<DiscriminatorTy
     if (code == DiscriminatorType.PROFILE)
       return "profile";
     return "?";
-  }
+   }
 
     public String toSystem(DiscriminatorType code) {
       return code.getSystem();

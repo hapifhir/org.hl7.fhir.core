@@ -56,7 +56,9 @@ public class V3TelecommunicationCapabilitiesEnumFactory implements EnumFactory<V
   }
 
   public String toCode(V3TelecommunicationCapabilities code) {
-    if (code == V3TelecommunicationCapabilities.DATA)
+       if (code == V3TelecommunicationCapabilities.NULL)
+           return null;
+       if (code == V3TelecommunicationCapabilities.DATA)
       return "data";
     if (code == V3TelecommunicationCapabilities.FAX)
       return "fax";
@@ -67,7 +69,7 @@ public class V3TelecommunicationCapabilitiesEnumFactory implements EnumFactory<V
     if (code == V3TelecommunicationCapabilities.VOICE)
       return "voice";
     return "?";
-  }
+   }
 
     public String toSystem(V3TelecommunicationCapabilities code) {
       return code.getSystem();

@@ -122,7 +122,9 @@ public class ServiceCategoryEnumFactory implements EnumFactory<ServiceCategory> 
   }
 
   public String toCode(ServiceCategory code) {
-    if (code == ServiceCategory._1)
+       if (code == ServiceCategory.NULL)
+           return null;
+       if (code == ServiceCategory._1)
       return "1";
     if (code == ServiceCategory._2)
       return "2";
@@ -199,7 +201,7 @@ public class ServiceCategoryEnumFactory implements EnumFactory<ServiceCategory> 
     if (code == ServiceCategory._33)
       return "33";
     return "?";
-  }
+   }
 
     public String toSystem(ServiceCategory code) {
       return code.getSystem();

@@ -52,14 +52,16 @@ public class AddressTypeEnumFactory implements EnumFactory<AddressType> {
   }
 
   public String toCode(AddressType code) {
-    if (code == AddressType.POSTAL)
+       if (code == AddressType.NULL)
+           return null;
+       if (code == AddressType.POSTAL)
       return "postal";
     if (code == AddressType.PHYSICAL)
       return "physical";
     if (code == AddressType.BOTH)
       return "both";
     return "?";
-  }
+   }
 
     public String toSystem(AddressType code) {
       return code.getSystem();
