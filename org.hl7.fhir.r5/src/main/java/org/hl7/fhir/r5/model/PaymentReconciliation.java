@@ -152,14 +152,16 @@ public class PaymentReconciliation extends DomainResource {
         throw new FHIRException("Unknown NoteType code '"+codeString+"'");
         }
     public String toCode(NoteType code) {
-      if (code == NoteType.DISPLAY)
+       if (code == NoteType.NULL)
+           return null;
+       if (code == NoteType.DISPLAY)
         return "display";
       if (code == NoteType.PRINT)
         return "print";
       if (code == NoteType.PRINTOPER)
         return "printoper";
       return "?";
-      }
+   }
     public String toSystem(NoteType code) {
       return code.getSystem();
       }
@@ -278,7 +280,9 @@ public class PaymentReconciliation extends DomainResource {
         throw new FHIRException("Unknown PaymentOutcome code '"+codeString+"'");
         }
     public String toCode(PaymentOutcome code) {
-      if (code == PaymentOutcome.QUEUED)
+       if (code == PaymentOutcome.NULL)
+           return null;
+       if (code == PaymentOutcome.QUEUED)
         return "queued";
       if (code == PaymentOutcome.COMPLETE)
         return "complete";
@@ -287,7 +291,7 @@ public class PaymentReconciliation extends DomainResource {
       if (code == PaymentOutcome.PARTIAL)
         return "partial";
       return "?";
-      }
+   }
     public String toSystem(PaymentOutcome code) {
       return code.getSystem();
       }

@@ -166,7 +166,9 @@ public class CoverageEligibilityRequest extends DomainResource {
         throw new FHIRException("Unknown EligibilityRequestPurpose code '"+codeString+"'");
         }
     public String toCode(EligibilityRequestPurpose code) {
-      if (code == EligibilityRequestPurpose.AUTHREQUIREMENTS)
+       if (code == EligibilityRequestPurpose.NULL)
+           return null;
+       if (code == EligibilityRequestPurpose.AUTHREQUIREMENTS)
         return "auth-requirements";
       if (code == EligibilityRequestPurpose.BENEFITS)
         return "benefits";
@@ -175,7 +177,7 @@ public class CoverageEligibilityRequest extends DomainResource {
       if (code == EligibilityRequestPurpose.VALIDATION)
         return "validation";
       return "?";
-      }
+   }
     public String toSystem(EligibilityRequestPurpose code) {
       return code.getSystem();
       }

@@ -208,7 +208,9 @@ public class MedicationAdministration extends DomainResource {
         throw new FHIRException("Unknown MedicationAdministrationStatusCodes code '"+codeString+"'");
         }
     public String toCode(MedicationAdministrationStatusCodes code) {
-      if (code == MedicationAdministrationStatusCodes.INPROGRESS)
+       if (code == MedicationAdministrationStatusCodes.NULL)
+           return null;
+       if (code == MedicationAdministrationStatusCodes.INPROGRESS)
         return "in-progress";
       if (code == MedicationAdministrationStatusCodes.NOTDONE)
         return "not-done";
@@ -223,7 +225,7 @@ public class MedicationAdministration extends DomainResource {
       if (code == MedicationAdministrationStatusCodes.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(MedicationAdministrationStatusCodes code) {
       return code.getSystem();
       }
@@ -453,7 +455,9 @@ public class MedicationAdministration extends DomainResource {
     @Block()
     public static class MedicationAdministrationDosageComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.The dosage instructions should reflect the dosage of the medication that was administered.
+         * Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.
+
+The dosage instructions should reflect the dosage of the medication that was administered.
          */
         @Child(name = "text", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Free text dosage instructions e.g. SIG", formalDefinition="Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.\r\rThe dosage instructions should reflect the dosage of the medication that was administered." )
@@ -507,7 +511,9 @@ public class MedicationAdministration extends DomainResource {
       }
 
         /**
-         * @return {@link #text} (Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.The dosage instructions should reflect the dosage of the medication that was administered.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         * @return {@link #text} (Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.
+
+The dosage instructions should reflect the dosage of the medication that was administered.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
          */
         public StringType getTextElement() { 
           if (this.text == null)
@@ -527,7 +533,9 @@ public class MedicationAdministration extends DomainResource {
         }
 
         /**
-         * @param value {@link #text} (Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.The dosage instructions should reflect the dosage of the medication that was administered.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         * @param value {@link #text} (Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.
+
+The dosage instructions should reflect the dosage of the medication that was administered.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
          */
         public MedicationAdministrationDosageComponent setTextElement(StringType value) { 
           this.text = value;
@@ -535,14 +543,18 @@ public class MedicationAdministration extends DomainResource {
         }
 
         /**
-         * @return Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.The dosage instructions should reflect the dosage of the medication that was administered.
+         * @return Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.
+
+The dosage instructions should reflect the dosage of the medication that was administered.
          */
         public String getText() { 
           return this.text == null ? null : this.text.getValue();
         }
 
         /**
-         * @param value Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.The dosage instructions should reflect the dosage of the medication that was administered.
+         * @param value Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.
+
+The dosage instructions should reflect the dosage of the medication that was administered.
          */
         public MedicationAdministrationDosageComponent setText(String value) { 
           if (Utilities.noString(value))

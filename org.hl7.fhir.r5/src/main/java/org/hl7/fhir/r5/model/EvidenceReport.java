@@ -222,7 +222,9 @@ public class EvidenceReport extends MetadataResource {
         throw new FHIRException("Unknown ReportRelationshipType code '"+codeString+"'");
         }
     public String toCode(ReportRelationshipType code) {
-      if (code == ReportRelationshipType.REPLACES)
+       if (code == ReportRelationshipType.NULL)
+           return null;
+       if (code == ReportRelationshipType.REPLACES)
         return "replaces";
       if (code == ReportRelationshipType.AMENDS)
         return "amends";
@@ -239,7 +241,7 @@ public class EvidenceReport extends MetadataResource {
       if (code == ReportRelationshipType.TRANSFORMEDWITH)
         return "transformedWith";
       return "?";
-      }
+   }
     public String toSystem(ReportRelationshipType code) {
       return code.getSystem();
       }

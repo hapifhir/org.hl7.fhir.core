@@ -642,7 +642,9 @@ public class Citation extends MetadataResource {
         throw new FHIRException("Unknown RelatedArtifactTypeExpanded code '"+codeString+"'");
         }
     public String toCode(RelatedArtifactTypeExpanded code) {
-      if (code == RelatedArtifactTypeExpanded.DOCUMENTATION)
+       if (code == RelatedArtifactTypeExpanded.NULL)
+           return null;
+       if (code == RelatedArtifactTypeExpanded.DOCUMENTATION)
         return "documentation";
       if (code == RelatedArtifactTypeExpanded.JUSTIFICATION)
         return "justification";
@@ -719,7 +721,7 @@ public class Citation extends MetadataResource {
       if (code == RelatedArtifactTypeExpanded.REPRINTOF)
         return "reprint-of";
       return "?";
-      }
+   }
     public String toSystem(RelatedArtifactTypeExpanded code) {
       return code.getSystem();
       }
