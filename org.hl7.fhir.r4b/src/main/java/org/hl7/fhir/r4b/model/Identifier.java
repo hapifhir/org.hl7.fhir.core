@@ -220,7 +220,9 @@ public class Identifier extends DataType implements ICompositeType {
     }
 
     public String toCode(IdentifierUse code) {
-      if (code == IdentifierUse.USUAL)
+       if (code == IdentifierUse.NULL)
+           return null;
+       if (code == IdentifierUse.USUAL)
         return "usual";
       if (code == IdentifierUse.OFFICIAL)
         return "official";
@@ -231,7 +233,7 @@ public class Identifier extends DataType implements ICompositeType {
       if (code == IdentifierUse.OLD)
         return "old";
       return "?";
-    }
+   }
 
     public String toSystem(IdentifierUse code) {
       return code.getSystem();

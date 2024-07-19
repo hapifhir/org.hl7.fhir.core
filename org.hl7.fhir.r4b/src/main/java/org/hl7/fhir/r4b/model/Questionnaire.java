@@ -163,12 +163,14 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public String toCode(EnableWhenBehavior code) {
-      if (code == EnableWhenBehavior.ALL)
+       if (code == EnableWhenBehavior.NULL)
+           return null;
+       if (code == EnableWhenBehavior.ALL)
         return "all";
       if (code == EnableWhenBehavior.ANY)
         return "any";
       return "?";
-    }
+   }
 
     public String toSystem(EnableWhenBehavior code) {
       return code.getSystem();
@@ -380,7 +382,9 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public String toCode(QuestionnaireItemOperator code) {
-      if (code == QuestionnaireItemOperator.EXISTS)
+       if (code == QuestionnaireItemOperator.NULL)
+           return null;
+       if (code == QuestionnaireItemOperator.EXISTS)
         return "exists";
       if (code == QuestionnaireItemOperator.EQUAL)
         return "=";
@@ -395,7 +399,7 @@ public class Questionnaire extends CanonicalResource {
       if (code == QuestionnaireItemOperator.LESS_OR_EQUAL)
         return "<=";
       return "?";
-    }
+   }
 
     public String toSystem(QuestionnaireItemOperator code) {
       return code.getSystem();
@@ -794,7 +798,9 @@ public class Questionnaire extends CanonicalResource {
     }
 
     public String toCode(QuestionnaireItemType code) {
-      if (code == QuestionnaireItemType.GROUP)
+       if (code == QuestionnaireItemType.NULL)
+           return null;
+       if (code == QuestionnaireItemType.GROUP)
         return "group";
       if (code == QuestionnaireItemType.DISPLAY)
         return "display";
@@ -829,7 +835,7 @@ public class Questionnaire extends CanonicalResource {
       if (code == QuestionnaireItemType.QUANTITY)
         return "quantity";
       return "?";
-    }
+   }
 
     public String toSystem(QuestionnaireItemType code) {
       return code.getSystem();

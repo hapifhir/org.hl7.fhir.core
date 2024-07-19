@@ -270,7 +270,9 @@ public class MedicationAdministration extends DomainResource {
     }
 
     public String toCode(MedicationAdministrationStatusCodes code) {
-      if (code == MedicationAdministrationStatusCodes.INPROGRESS)
+       if (code == MedicationAdministrationStatusCodes.NULL)
+           return null;
+       if (code == MedicationAdministrationStatusCodes.INPROGRESS)
         return "in-progress";
       if (code == MedicationAdministrationStatusCodes.NOTDONE)
         return "not-done";
@@ -285,7 +287,7 @@ public class MedicationAdministration extends DomainResource {
       if (code == MedicationAdministrationStatusCodes.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(MedicationAdministrationStatusCodes code) {
       return code.getSystem();

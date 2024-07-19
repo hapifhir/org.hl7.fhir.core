@@ -195,7 +195,9 @@ public class Contributor extends DataType implements ICompositeType {
     }
 
     public String toCode(ContributorType code) {
-      if (code == ContributorType.AUTHOR)
+       if (code == ContributorType.NULL)
+           return null;
+       if (code == ContributorType.AUTHOR)
         return "author";
       if (code == ContributorType.EDITOR)
         return "editor";
@@ -204,7 +206,7 @@ public class Contributor extends DataType implements ICompositeType {
       if (code == ContributorType.ENDORSER)
         return "endorser";
       return "?";
-    }
+   }
 
     public String toSystem(ContributorType code) {
       return code.getSystem();
