@@ -182,14 +182,16 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(ConformanceStatementKind code) {
-      if (code == ConformanceStatementKind.INSTANCE)
+       if (code == ConformanceStatementKind.NULL)
+           return null;
+       if (code == ConformanceStatementKind.INSTANCE)
         return "instance";
       if (code == ConformanceStatementKind.CAPABILITY)
         return "capability";
       if (code == ConformanceStatementKind.REQUIREMENTS)
         return "requirements";
       return "?";
-    }
+   }
 
     public String toSystem(ConformanceStatementKind code) {
       return code.getSystem();
@@ -335,7 +337,9 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(UnknownContentCode code) {
-      if (code == UnknownContentCode.NO)
+       if (code == UnknownContentCode.NULL)
+           return null;
+       if (code == UnknownContentCode.NO)
         return "no";
       if (code == UnknownContentCode.EXTENSIONS)
         return "extensions";
@@ -344,7 +348,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
       if (code == UnknownContentCode.BOTH)
         return "both";
       return "?";
-    }
+   }
 
     public String toSystem(UnknownContentCode code) {
       return code.getSystem();
@@ -454,12 +458,14 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(RestfulConformanceMode code) {
-      if (code == RestfulConformanceMode.CLIENT)
+       if (code == RestfulConformanceMode.NULL)
+           return null;
+       if (code == RestfulConformanceMode.CLIENT)
         return "client";
       if (code == RestfulConformanceMode.SERVER)
         return "server";
       return "?";
-    }
+   }
 
     public String toSystem(RestfulConformanceMode code) {
       return code.getSystem();
@@ -677,7 +683,9 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(TypeRestfulInteraction code) {
-      if (code == TypeRestfulInteraction.READ)
+       if (code == TypeRestfulInteraction.NULL)
+           return null;
+       if (code == TypeRestfulInteraction.READ)
         return "read";
       if (code == TypeRestfulInteraction.VREAD)
         return "vread";
@@ -694,7 +702,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
       if (code == TypeRestfulInteraction.SEARCHTYPE)
         return "search-type";
       return "?";
-    }
+   }
 
     public String toSystem(TypeRestfulInteraction code) {
       return code.getSystem();
@@ -823,14 +831,16 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(ResourceVersionPolicy code) {
-      if (code == ResourceVersionPolicy.NOVERSION)
+       if (code == ResourceVersionPolicy.NULL)
+           return null;
+       if (code == ResourceVersionPolicy.NOVERSION)
         return "no-version";
       if (code == ResourceVersionPolicy.VERSIONED)
         return "versioned";
       if (code == ResourceVersionPolicy.VERSIONEDUPDATE)
         return "versioned-update";
       return "?";
-    }
+   }
 
     public String toSystem(ResourceVersionPolicy code) {
       return code.getSystem();
@@ -959,14 +969,16 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(ConditionalDeleteStatus code) {
-      if (code == ConditionalDeleteStatus.NOTSUPPORTED)
+       if (code == ConditionalDeleteStatus.NULL)
+           return null;
+       if (code == ConditionalDeleteStatus.NOTSUPPORTED)
         return "not-supported";
       if (code == ConditionalDeleteStatus.SINGLE)
         return "single";
       if (code == ConditionalDeleteStatus.MULTIPLE)
         return "multiple";
       return "?";
-    }
+   }
 
     public String toSystem(ConditionalDeleteStatus code) {
       return code.getSystem();
@@ -1231,7 +1243,9 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(SearchModifierCode code) {
-      if (code == SearchModifierCode.MISSING)
+       if (code == SearchModifierCode.NULL)
+           return null;
+       if (code == SearchModifierCode.MISSING)
         return "missing";
       if (code == SearchModifierCode.EXACT)
         return "exact";
@@ -1252,7 +1266,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
       if (code == SearchModifierCode.TYPE)
         return "type";
       return "?";
-    }
+   }
 
     public String toSystem(SearchModifierCode code) {
       return code.getSystem();
@@ -1380,14 +1394,16 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(SystemRestfulInteraction code) {
-      if (code == SystemRestfulInteraction.TRANSACTION)
+       if (code == SystemRestfulInteraction.NULL)
+           return null;
+       if (code == SystemRestfulInteraction.TRANSACTION)
         return "transaction";
       if (code == SystemRestfulInteraction.SEARCHSYSTEM)
         return "search-system";
       if (code == SystemRestfulInteraction.HISTORYSYSTEM)
         return "history-system";
       return "?";
-    }
+   }
 
     public String toSystem(SystemRestfulInteraction code) {
       return code.getSystem();
@@ -1533,7 +1549,9 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(TransactionMode code) {
-      if (code == TransactionMode.NOTSUPPORTED)
+       if (code == TransactionMode.NULL)
+           return null;
+       if (code == TransactionMode.NOTSUPPORTED)
         return "not-supported";
       if (code == TransactionMode.BATCH)
         return "batch";
@@ -1542,7 +1560,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
       if (code == TransactionMode.BOTH)
         return "both";
       return "?";
-    }
+   }
 
     public String toSystem(TransactionMode code) {
       return code.getSystem();
@@ -1674,14 +1692,16 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(MessageSignificanceCategory code) {
-      if (code == MessageSignificanceCategory.CONSEQUENCE)
+       if (code == MessageSignificanceCategory.NULL)
+           return null;
+       if (code == MessageSignificanceCategory.CONSEQUENCE)
         return "Consequence";
       if (code == MessageSignificanceCategory.CURRENCY)
         return "Currency";
       if (code == MessageSignificanceCategory.NOTIFICATION)
         return "Notification";
       return "?";
-    }
+   }
 
     public String toSystem(MessageSignificanceCategory code) {
       return code.getSystem();
@@ -1791,12 +1811,14 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(ConformanceEventMode code) {
-      if (code == ConformanceEventMode.SENDER)
+       if (code == ConformanceEventMode.NULL)
+           return null;
+       if (code == ConformanceEventMode.SENDER)
         return "sender";
       if (code == ConformanceEventMode.RECEIVER)
         return "receiver";
       return "?";
-    }
+   }
 
     public String toSystem(ConformanceEventMode code) {
       return code.getSystem();
@@ -1906,12 +1928,14 @@ public class Conformance extends DomainResource implements IBaseConformance {
     }
 
     public String toCode(DocumentMode code) {
-      if (code == DocumentMode.PRODUCER)
+       if (code == DocumentMode.NULL)
+           return null;
+       if (code == DocumentMode.PRODUCER)
         return "producer";
       if (code == DocumentMode.CONSUMER)
         return "consumer";
       return "?";
-    }
+   }
 
     public String toSystem(DocumentMode code) {
       return code.getSystem();

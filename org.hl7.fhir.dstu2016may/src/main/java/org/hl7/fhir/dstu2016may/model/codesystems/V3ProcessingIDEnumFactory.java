@@ -48,14 +48,16 @@ public class V3ProcessingIDEnumFactory implements EnumFactory<V3ProcessingID> {
   }
 
   public String toCode(V3ProcessingID code) {
-    if (code == V3ProcessingID.D)
+       if (code == V3ProcessingID.NULL)
+           return null;
+       if (code == V3ProcessingID.D)
       return "D";
     if (code == V3ProcessingID.P)
       return "P";
     if (code == V3ProcessingID.T)
       return "T";
     return "?";
-  }
+   }
 
   public String toSystem(V3ProcessingID code) {
     return code.getSystem();

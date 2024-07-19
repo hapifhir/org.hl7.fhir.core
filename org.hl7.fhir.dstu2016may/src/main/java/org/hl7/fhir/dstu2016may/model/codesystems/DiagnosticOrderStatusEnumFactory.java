@@ -70,7 +70,9 @@ public class DiagnosticOrderStatusEnumFactory implements EnumFactory<DiagnosticO
   }
 
   public String toCode(DiagnosticOrderStatus code) {
-    if (code == DiagnosticOrderStatus.PROPOSED)
+       if (code == DiagnosticOrderStatus.NULL)
+           return null;
+       if (code == DiagnosticOrderStatus.PROPOSED)
       return "proposed";
     if (code == DiagnosticOrderStatus.DRAFT)
       return "draft";
@@ -99,7 +101,7 @@ public class DiagnosticOrderStatusEnumFactory implements EnumFactory<DiagnosticO
     if (code == DiagnosticOrderStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(DiagnosticOrderStatus code) {
     return code.getSystem();

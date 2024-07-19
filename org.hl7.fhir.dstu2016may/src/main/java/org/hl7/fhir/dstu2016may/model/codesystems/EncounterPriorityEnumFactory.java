@@ -52,7 +52,9 @@ public class EncounterPriorityEnumFactory implements EnumFactory<EncounterPriori
   }
 
   public String toCode(EncounterPriority code) {
-    if (code == EncounterPriority.IMM)
+       if (code == EncounterPriority.NULL)
+           return null;
+       if (code == EncounterPriority.IMM)
       return "imm";
     if (code == EncounterPriority.EMG)
       return "emg";
@@ -63,7 +65,7 @@ public class EncounterPriorityEnumFactory implements EnumFactory<EncounterPriori
     if (code == EncounterPriority.NOURG)
       return "no-urg";
     return "?";
-  }
+   }
 
   public String toSystem(EncounterPriority code) {
     return code.getSystem();

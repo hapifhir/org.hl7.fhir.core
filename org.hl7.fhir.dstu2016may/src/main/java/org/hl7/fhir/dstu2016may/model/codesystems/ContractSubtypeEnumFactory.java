@@ -46,12 +46,14 @@ public class ContractSubtypeEnumFactory implements EnumFactory<ContractSubtype> 
   }
 
   public String toCode(ContractSubtype code) {
-    if (code == ContractSubtype.DISCLOSURECA)
+       if (code == ContractSubtype.NULL)
+           return null;
+       if (code == ContractSubtype.DISCLOSURECA)
       return "disclosure-CA";
     if (code == ContractSubtype.DISCLOSUREUS)
       return "disclosure-US";
     return "?";
-  }
+   }
 
   public String toSystem(ContractSubtype code) {
     return code.getSystem();

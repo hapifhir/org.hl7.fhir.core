@@ -60,7 +60,9 @@ public class QicoreAppropriatenessScoreEnumFactory implements EnumFactory<Qicore
   }
 
   public String toCode(QicoreAppropriatenessScore code) {
-    if (code == QicoreAppropriatenessScore.EXTREMELYINAPPROPRIATE)
+       if (code == QicoreAppropriatenessScore.NULL)
+           return null;
+       if (code == QicoreAppropriatenessScore.EXTREMELYINAPPROPRIATE)
       return "extremely-inappropriate";
     if (code == QicoreAppropriatenessScore.INAPPROPRIATE)
       return "inappropriate";
@@ -79,7 +81,7 @@ public class QicoreAppropriatenessScoreEnumFactory implements EnumFactory<Qicore
     if (code == QicoreAppropriatenessScore.EXTREMELYAPPROPRIATE)
       return "extremely-appropriate";
     return "?";
-  }
+   }
 
   public String toSystem(QicoreAppropriatenessScore code) {
     return code.getSystem();

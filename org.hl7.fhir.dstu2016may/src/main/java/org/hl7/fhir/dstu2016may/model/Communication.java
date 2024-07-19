@@ -210,7 +210,9 @@ public class Communication extends DomainResource {
     }
 
     public String toCode(CommunicationStatus code) {
-      if (code == CommunicationStatus.INPROGRESS)
+       if (code == CommunicationStatus.NULL)
+           return null;
+       if (code == CommunicationStatus.INPROGRESS)
         return "in-progress";
       if (code == CommunicationStatus.COMPLETED)
         return "completed";
@@ -221,7 +223,7 @@ public class Communication extends DomainResource {
       if (code == CommunicationStatus.FAILED)
         return "failed";
       return "?";
-    }
+   }
 
     public String toSystem(CommunicationStatus code) {
       return code.getSystem();

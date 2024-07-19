@@ -60,7 +60,9 @@ public class V3TableFrameEnumFactory implements EnumFactory<V3TableFrame> {
   }
 
   public String toCode(V3TableFrame code) {
-    if (code == V3TableFrame.ABOVE)
+       if (code == V3TableFrame.NULL)
+           return null;
+       if (code == V3TableFrame.ABOVE)
       return "above";
     if (code == V3TableFrame.BELOW)
       return "below";
@@ -79,7 +81,7 @@ public class V3TableFrameEnumFactory implements EnumFactory<V3TableFrame> {
     if (code == V3TableFrame.VSIDES)
       return "vsides";
     return "?";
-  }
+   }
 
   public String toSystem(V3TableFrame code) {
     return code.getSystem();

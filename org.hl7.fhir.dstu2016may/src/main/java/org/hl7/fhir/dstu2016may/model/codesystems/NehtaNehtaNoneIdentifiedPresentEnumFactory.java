@@ -44,10 +44,12 @@ public class NehtaNehtaNoneIdentifiedPresentEnumFactory implements EnumFactory<N
   }
 
   public String toCode(NehtaNehtaNoneIdentifiedPresent code) {
-    if (code == NehtaNehtaNoneIdentifiedPresent.NONEIDENTIFIED)
+       if (code == NehtaNehtaNoneIdentifiedPresent.NULL)
+           return null;
+       if (code == NehtaNehtaNoneIdentifiedPresent.NONEIDENTIFIED)
       return "none_identified";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaNoneIdentifiedPresent code) {
     return code.getSystem();

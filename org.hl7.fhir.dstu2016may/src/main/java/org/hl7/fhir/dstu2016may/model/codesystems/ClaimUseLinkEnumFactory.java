@@ -50,7 +50,9 @@ public class ClaimUseLinkEnumFactory implements EnumFactory<ClaimUseLink> {
   }
 
   public String toCode(ClaimUseLink code) {
-    if (code == ClaimUseLink.COMPLETE)
+       if (code == ClaimUseLink.NULL)
+           return null;
+       if (code == ClaimUseLink.COMPLETE)
       return "complete";
     if (code == ClaimUseLink.PROPOSED)
       return "proposed";
@@ -59,7 +61,7 @@ public class ClaimUseLinkEnumFactory implements EnumFactory<ClaimUseLink> {
     if (code == ClaimUseLink.OTHER)
       return "other";
     return "?";
-  }
+   }
 
   public String toSystem(ClaimUseLink code) {
     return code.getSystem();

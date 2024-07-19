@@ -190,7 +190,9 @@ public class Slot extends DomainResource {
     }
 
     public String toCode(SlotStatus code) {
-      if (code == SlotStatus.BUSY)
+       if (code == SlotStatus.NULL)
+           return null;
+       if (code == SlotStatus.BUSY)
         return "busy";
       if (code == SlotStatus.FREE)
         return "free";
@@ -199,7 +201,7 @@ public class Slot extends DomainResource {
       if (code == SlotStatus.BUSYTENTATIVE)
         return "busy-tentative";
       return "?";
-    }
+   }
 
     public String toSystem(SlotStatus code) {
       return code.getSystem();

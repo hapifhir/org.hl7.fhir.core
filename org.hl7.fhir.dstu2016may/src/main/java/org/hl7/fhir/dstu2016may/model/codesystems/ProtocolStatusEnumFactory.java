@@ -54,7 +54,9 @@ public class ProtocolStatusEnumFactory implements EnumFactory<ProtocolStatus> {
   }
 
   public String toCode(ProtocolStatus code) {
-    if (code == ProtocolStatus.DRAFT)
+       if (code == ProtocolStatus.NULL)
+           return null;
+       if (code == ProtocolStatus.DRAFT)
       return "draft";
     if (code == ProtocolStatus.TESTING)
       return "testing";
@@ -67,7 +69,7 @@ public class ProtocolStatusEnumFactory implements EnumFactory<ProtocolStatus> {
     if (code == ProtocolStatus.SUPERSEDED)
       return "superseded";
     return "?";
-  }
+   }
 
   public String toSystem(ProtocolStatus code) {
     return code.getSystem();

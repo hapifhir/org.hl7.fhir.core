@@ -48,14 +48,16 @@ public class QicoreDiagnosticorderPreconditionEnumFactory implements EnumFactory
   }
 
   public String toCode(QicoreDiagnosticorderPrecondition code) {
-    if (code == QicoreDiagnosticorderPrecondition._1)
+       if (code == QicoreDiagnosticorderPrecondition.NULL)
+           return null;
+       if (code == QicoreDiagnosticorderPrecondition._1)
       return "1";
     if (code == QicoreDiagnosticorderPrecondition._2)
       return "2";
     if (code == QicoreDiagnosticorderPrecondition._3)
       return "3";
     return "?";
-  }
+   }
 
   public String toSystem(QicoreDiagnosticorderPrecondition code) {
     return code.getSystem();

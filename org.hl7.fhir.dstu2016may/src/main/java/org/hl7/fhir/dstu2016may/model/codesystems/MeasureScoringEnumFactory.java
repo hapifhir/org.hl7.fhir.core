@@ -50,7 +50,9 @@ public class MeasureScoringEnumFactory implements EnumFactory<MeasureScoring> {
   }
 
   public String toCode(MeasureScoring code) {
-    if (code == MeasureScoring.PROPORTION)
+       if (code == MeasureScoring.NULL)
+           return null;
+       if (code == MeasureScoring.PROPORTION)
       return "proportion";
     if (code == MeasureScoring.RATIO)
       return "ratio";
@@ -59,7 +61,7 @@ public class MeasureScoringEnumFactory implements EnumFactory<MeasureScoring> {
     if (code == MeasureScoring.COHORT)
       return "cohort";
     return "?";
-  }
+   }
 
   public String toSystem(MeasureScoring code) {
     return code.getSystem();

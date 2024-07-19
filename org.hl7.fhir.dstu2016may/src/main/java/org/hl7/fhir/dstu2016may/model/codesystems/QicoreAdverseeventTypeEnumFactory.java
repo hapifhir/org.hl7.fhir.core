@@ -48,14 +48,16 @@ public class QicoreAdverseeventTypeEnumFactory implements EnumFactory<QicoreAdve
   }
 
   public String toCode(QicoreAdverseeventType code) {
-    if (code == QicoreAdverseeventType.INCIDENT)
+       if (code == QicoreAdverseeventType.NULL)
+           return null;
+       if (code == QicoreAdverseeventType.INCIDENT)
       return "incident";
     if (code == QicoreAdverseeventType.NEARMISS)
       return "near-miss";
     if (code == QicoreAdverseeventType.UNSAFE)
       return "unsafe";
     return "?";
-  }
+   }
 
   public String toSystem(QicoreAdverseeventType code) {
     return code.getSystem();

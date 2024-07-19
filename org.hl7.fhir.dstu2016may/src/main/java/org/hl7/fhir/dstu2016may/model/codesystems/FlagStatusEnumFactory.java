@@ -48,14 +48,16 @@ public class FlagStatusEnumFactory implements EnumFactory<FlagStatus> {
   }
 
   public String toCode(FlagStatus code) {
-    if (code == FlagStatus.ACTIVE)
+       if (code == FlagStatus.NULL)
+           return null;
+       if (code == FlagStatus.ACTIVE)
       return "active";
     if (code == FlagStatus.INACTIVE)
       return "inactive";
     if (code == FlagStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(FlagStatus code) {
     return code.getSystem();

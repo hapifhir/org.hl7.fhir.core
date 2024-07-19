@@ -46,12 +46,14 @@ public class RestfulConformanceModeEnumFactory implements EnumFactory<RestfulCon
   }
 
   public String toCode(RestfulConformanceMode code) {
-    if (code == RestfulConformanceMode.CLIENT)
+       if (code == RestfulConformanceMode.NULL)
+           return null;
+       if (code == RestfulConformanceMode.CLIENT)
       return "client";
     if (code == RestfulConformanceMode.SERVER)
       return "server";
     return "?";
-  }
+   }
 
   public String toSystem(RestfulConformanceMode code) {
     return code.getSystem();

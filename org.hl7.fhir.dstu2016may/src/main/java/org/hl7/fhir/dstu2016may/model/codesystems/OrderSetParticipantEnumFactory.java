@@ -50,7 +50,9 @@ public class OrderSetParticipantEnumFactory implements EnumFactory<OrderSetParti
   }
 
   public String toCode(OrderSetParticipant code) {
-    if (code == OrderSetParticipant.PATIENT)
+       if (code == OrderSetParticipant.NULL)
+           return null;
+       if (code == OrderSetParticipant.PATIENT)
       return "patient";
     if (code == OrderSetParticipant.PERSON)
       return "person";
@@ -59,7 +61,7 @@ public class OrderSetParticipantEnumFactory implements EnumFactory<OrderSetParti
     if (code == OrderSetParticipant.RELATEDPERSON)
       return "related-person";
     return "?";
-  }
+   }
 
   public String toSystem(OrderSetParticipant code) {
     return code.getSystem();

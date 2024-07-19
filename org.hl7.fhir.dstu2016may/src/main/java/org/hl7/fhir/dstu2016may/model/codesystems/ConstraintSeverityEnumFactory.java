@@ -46,12 +46,14 @@ public class ConstraintSeverityEnumFactory implements EnumFactory<ConstraintSeve
   }
 
   public String toCode(ConstraintSeverity code) {
-    if (code == ConstraintSeverity.ERROR)
+       if (code == ConstraintSeverity.NULL)
+           return null;
+       if (code == ConstraintSeverity.ERROR)
       return "error";
     if (code == ConstraintSeverity.WARNING)
       return "warning";
     return "?";
-  }
+   }
 
   public String toSystem(ConstraintSeverity code) {
     return code.getSystem();

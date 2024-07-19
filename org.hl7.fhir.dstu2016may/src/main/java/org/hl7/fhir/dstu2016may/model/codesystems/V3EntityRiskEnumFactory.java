@@ -64,7 +64,9 @@ public class V3EntityRiskEnumFactory implements EnumFactory<V3EntityRisk> {
   }
 
   public String toCode(V3EntityRisk code) {
-    if (code == V3EntityRisk.AGG)
+       if (code == V3EntityRisk.NULL)
+           return null;
+       if (code == V3EntityRisk.AGG)
       return "AGG";
     if (code == V3EntityRisk.BIO)
       return "BIO";
@@ -87,7 +89,7 @@ public class V3EntityRiskEnumFactory implements EnumFactory<V3EntityRisk> {
     if (code == V3EntityRisk.RAD)
       return "RAD";
     return "?";
-  }
+   }
 
   public String toSystem(V3EntityRisk code) {
     return code.getSystem();

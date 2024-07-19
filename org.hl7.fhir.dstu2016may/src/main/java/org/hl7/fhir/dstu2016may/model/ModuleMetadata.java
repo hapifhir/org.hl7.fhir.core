@@ -210,7 +210,9 @@ public class ModuleMetadata extends Type implements ICompositeType {
     }
 
     public String toCode(ModuleMetadataType code) {
-      if (code == ModuleMetadataType.MODULE)
+       if (code == ModuleMetadataType.NULL)
+           return null;
+       if (code == ModuleMetadataType.MODULE)
         return "module";
       if (code == ModuleMetadataType.LIBRARY)
         return "library";
@@ -221,7 +223,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
       if (code == ModuleMetadataType.ORDERSET)
         return "order-set";
       return "?";
-    }
+   }
 
     public String toSystem(ModuleMetadataType code) {
       return code.getSystem();
@@ -350,14 +352,16 @@ public class ModuleMetadata extends Type implements ICompositeType {
     }
 
     public String toCode(ModuleMetadataStatus code) {
-      if (code == ModuleMetadataStatus.DRAFT)
+       if (code == ModuleMetadataStatus.NULL)
+           return null;
+       if (code == ModuleMetadataStatus.DRAFT)
         return "draft";
       if (code == ModuleMetadataStatus.ACTIVE)
         return "active";
       if (code == ModuleMetadataStatus.INACTIVE)
         return "inactive";
       return "?";
-    }
+   }
 
     public String toSystem(ModuleMetadataStatus code) {
       return code.getSystem();
@@ -503,7 +507,9 @@ public class ModuleMetadata extends Type implements ICompositeType {
     }
 
     public String toCode(ModuleMetadataContributorType code) {
-      if (code == ModuleMetadataContributorType.AUTHOR)
+       if (code == ModuleMetadataContributorType.NULL)
+           return null;
+       if (code == ModuleMetadataContributorType.AUTHOR)
         return "author";
       if (code == ModuleMetadataContributorType.EDITOR)
         return "editor";
@@ -512,7 +518,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
       if (code == ModuleMetadataContributorType.ENDORSER)
         return "endorser";
       return "?";
-    }
+   }
 
     public String toSystem(ModuleMetadataContributorType code) {
       return code.getSystem();
@@ -706,7 +712,9 @@ public class ModuleMetadata extends Type implements ICompositeType {
     }
 
     public String toCode(ModuleMetadataResourceType code) {
-      if (code == ModuleMetadataResourceType.DOCUMENTATION)
+       if (code == ModuleMetadataResourceType.NULL)
+           return null;
+       if (code == ModuleMetadataResourceType.DOCUMENTATION)
         return "documentation";
       if (code == ModuleMetadataResourceType.JUSTIFICATION)
         return "justification";
@@ -719,7 +727,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
       if (code == ModuleMetadataResourceType.DERIVEDFROM)
         return "derived-from";
       return "?";
-    }
+   }
 
     public String toSystem(ModuleMetadataResourceType code) {
       return code.getSystem();
