@@ -192,8 +192,11 @@ public class Subscription extends DomainResource {
       throw new FHIRException("Unknown SubscriptionStatus code '" + codeString + "'");
     }
 
-    public String toCode(SubscriptionStatus code) {
-      if (code == SubscriptionStatus.REQUESTED)
+    public String toCode(SubscriptionStatus code)
+   {
+       if (code == SubscriptionStatus.NULL)
+           return null;
+       if (code == SubscriptionStatus.REQUESTED)
         return "requested";
       if (code == SubscriptionStatus.ACTIVE)
         return "active";
@@ -202,7 +205,7 @@ public class Subscription extends DomainResource {
       if (code == SubscriptionStatus.OFF)
         return "off";
       return "?";
-    }
+   }
   }
 
   public enum SubscriptionChannelType {
@@ -368,8 +371,11 @@ public class Subscription extends DomainResource {
       throw new FHIRException("Unknown SubscriptionChannelType code '" + codeString + "'");
     }
 
-    public String toCode(SubscriptionChannelType code) {
-      if (code == SubscriptionChannelType.RESTHOOK)
+    public String toCode(SubscriptionChannelType code)
+   {
+       if (code == SubscriptionChannelType.NULL)
+           return null;
+       if (code == SubscriptionChannelType.RESTHOOK)
         return "rest-hook";
       if (code == SubscriptionChannelType.WEBSOCKET)
         return "websocket";
@@ -380,7 +386,7 @@ public class Subscription extends DomainResource {
       if (code == SubscriptionChannelType.MESSAGE)
         return "message";
       return "?";
-    }
+   }
   }
 
   @Block()

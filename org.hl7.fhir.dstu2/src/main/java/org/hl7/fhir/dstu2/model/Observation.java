@@ -248,8 +248,11 @@ public class Observation extends DomainResource {
       throw new FHIRException("Unknown ObservationStatus code '" + codeString + "'");
     }
 
-    public String toCode(ObservationStatus code) {
-      if (code == ObservationStatus.REGISTERED)
+    public String toCode(ObservationStatus code)
+   {
+       if (code == ObservationStatus.NULL)
+           return null;
+       if (code == ObservationStatus.REGISTERED)
         return "registered";
       if (code == ObservationStatus.PRELIMINARY)
         return "preliminary";
@@ -264,7 +267,7 @@ public class Observation extends DomainResource {
       if (code == ObservationStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
   }
 
   public enum ObservationRelationshipType {
@@ -451,8 +454,11 @@ public class Observation extends DomainResource {
       throw new FHIRException("Unknown ObservationRelationshipType code '" + codeString + "'");
     }
 
-    public String toCode(ObservationRelationshipType code) {
-      if (code == ObservationRelationshipType.HASMEMBER)
+    public String toCode(ObservationRelationshipType code)
+   {
+       if (code == ObservationRelationshipType.NULL)
+           return null;
+       if (code == ObservationRelationshipType.HASMEMBER)
         return "has-member";
       if (code == ObservationRelationshipType.DERIVEDFROM)
         return "derived-from";
@@ -465,7 +471,7 @@ public class Observation extends DomainResource {
       if (code == ObservationRelationshipType.INTERFEREDBY)
         return "interfered-by";
       return "?";
-    }
+   }
   }
 
   @Block()

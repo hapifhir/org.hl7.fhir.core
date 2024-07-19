@@ -180,15 +180,18 @@ public class Conformance extends DomainResource implements IBaseConformance {
       throw new FHIRException("Unknown ConformanceStatementKind code '" + codeString + "'");
     }
 
-    public String toCode(ConformanceStatementKind code) {
-      if (code == ConformanceStatementKind.INSTANCE)
+    public String toCode(ConformanceStatementKind code)
+   {
+       if (code == ConformanceStatementKind.NULL)
+           return null;
+       if (code == ConformanceStatementKind.INSTANCE)
         return "instance";
       if (code == ConformanceStatementKind.CAPABILITY)
         return "capability";
       if (code == ConformanceStatementKind.REQUIREMENTS)
         return "requirements";
       return "?";
-    }
+   }
   }
 
   public enum UnknownContentCode {
@@ -329,8 +332,11 @@ public class Conformance extends DomainResource implements IBaseConformance {
       throw new FHIRException("Unknown UnknownContentCode code '" + codeString + "'");
     }
 
-    public String toCode(UnknownContentCode code) {
-      if (code == UnknownContentCode.NO)
+    public String toCode(UnknownContentCode code)
+   {
+       if (code == UnknownContentCode.NULL)
+           return null;
+       if (code == UnknownContentCode.NO)
         return "no";
       if (code == UnknownContentCode.EXTENSIONS)
         return "extensions";
@@ -339,7 +345,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
       if (code == UnknownContentCode.BOTH)
         return "both";
       return "?";
-    }
+   }
   }
 
   public enum RestfulConformanceMode {
@@ -444,13 +450,16 @@ public class Conformance extends DomainResource implements IBaseConformance {
       throw new FHIRException("Unknown RestfulConformanceMode code '" + codeString + "'");
     }
 
-    public String toCode(RestfulConformanceMode code) {
-      if (code == RestfulConformanceMode.CLIENT)
+    public String toCode(RestfulConformanceMode code)
+   {
+       if (code == RestfulConformanceMode.NULL)
+           return null;
+       if (code == RestfulConformanceMode.CLIENT)
         return "client";
       if (code == RestfulConformanceMode.SERVER)
         return "server";
       return "?";
-    }
+   }
   }
 
   public enum TypeRestfulInteraction {
@@ -681,8 +690,11 @@ public class Conformance extends DomainResource implements IBaseConformance {
       throw new FHIRException("Unknown TypeRestfulInteraction code '" + codeString + "'");
     }
 
-    public String toCode(TypeRestfulInteraction code) {
-      if (code == TypeRestfulInteraction.READ)
+    public String toCode(TypeRestfulInteraction code)
+   {
+       if (code == TypeRestfulInteraction.NULL)
+           return null;
+       if (code == TypeRestfulInteraction.READ)
         return "read";
       if (code == TypeRestfulInteraction.VREAD)
         return "vread";
@@ -701,7 +713,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
       if (code == TypeRestfulInteraction.SEARCHTYPE)
         return "search-type";
       return "?";
-    }
+   }
   }
 
   public enum ResourceVersionPolicy {
@@ -825,15 +837,18 @@ public class Conformance extends DomainResource implements IBaseConformance {
       throw new FHIRException("Unknown ResourceVersionPolicy code '" + codeString + "'");
     }
 
-    public String toCode(ResourceVersionPolicy code) {
-      if (code == ResourceVersionPolicy.NOVERSION)
+    public String toCode(ResourceVersionPolicy code)
+   {
+       if (code == ResourceVersionPolicy.NULL)
+           return null;
+       if (code == ResourceVersionPolicy.NOVERSION)
         return "no-version";
       if (code == ResourceVersionPolicy.VERSIONED)
         return "versioned";
       if (code == ResourceVersionPolicy.VERSIONEDUPDATE)
         return "versioned-update";
       return "?";
-    }
+   }
   }
 
   public enum ConditionalDeleteStatus {
@@ -957,15 +972,18 @@ public class Conformance extends DomainResource implements IBaseConformance {
       throw new FHIRException("Unknown ConditionalDeleteStatus code '" + codeString + "'");
     }
 
-    public String toCode(ConditionalDeleteStatus code) {
-      if (code == ConditionalDeleteStatus.NOTSUPPORTED)
+    public String toCode(ConditionalDeleteStatus code)
+   {
+       if (code == ConditionalDeleteStatus.NULL)
+           return null;
+       if (code == ConditionalDeleteStatus.NOTSUPPORTED)
         return "not-supported";
       if (code == ConditionalDeleteStatus.SINGLE)
         return "single";
       if (code == ConditionalDeleteStatus.MULTIPLE)
         return "multiple";
       return "?";
-    }
+   }
   }
 
   public enum SearchModifierCode {
@@ -1225,8 +1243,11 @@ public class Conformance extends DomainResource implements IBaseConformance {
       throw new FHIRException("Unknown SearchModifierCode code '" + codeString + "'");
     }
 
-    public String toCode(SearchModifierCode code) {
-      if (code == SearchModifierCode.MISSING)
+    public String toCode(SearchModifierCode code)
+   {
+       if (code == SearchModifierCode.NULL)
+           return null;
+       if (code == SearchModifierCode.MISSING)
         return "missing";
       if (code == SearchModifierCode.EXACT)
         return "exact";
@@ -1247,7 +1268,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
       if (code == SearchModifierCode.TYPE)
         return "type";
       return "?";
-    }
+   }
   }
 
   public enum SystemRestfulInteraction {
@@ -1370,15 +1391,18 @@ public class Conformance extends DomainResource implements IBaseConformance {
       throw new FHIRException("Unknown SystemRestfulInteraction code '" + codeString + "'");
     }
 
-    public String toCode(SystemRestfulInteraction code) {
-      if (code == SystemRestfulInteraction.TRANSACTION)
+    public String toCode(SystemRestfulInteraction code)
+   {
+       if (code == SystemRestfulInteraction.NULL)
+           return null;
+       if (code == SystemRestfulInteraction.TRANSACTION)
         return "transaction";
       if (code == SystemRestfulInteraction.SEARCHSYSTEM)
         return "search-system";
       if (code == SystemRestfulInteraction.HISTORYSYSTEM)
         return "history-system";
       return "?";
-    }
+   }
   }
 
   public enum TransactionMode {
@@ -1519,8 +1543,11 @@ public class Conformance extends DomainResource implements IBaseConformance {
       throw new FHIRException("Unknown TransactionMode code '" + codeString + "'");
     }
 
-    public String toCode(TransactionMode code) {
-      if (code == TransactionMode.NOTSUPPORTED)
+    public String toCode(TransactionMode code)
+   {
+       if (code == TransactionMode.NULL)
+           return null;
+       if (code == TransactionMode.NOTSUPPORTED)
         return "not-supported";
       if (code == TransactionMode.BATCH)
         return "batch";
@@ -1529,7 +1556,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
       if (code == TransactionMode.BOTH)
         return "both";
       return "?";
-    }
+   }
   }
 
   public enum MessageSignificanceCategory {
@@ -1656,15 +1683,18 @@ public class Conformance extends DomainResource implements IBaseConformance {
       throw new FHIRException("Unknown MessageSignificanceCategory code '" + codeString + "'");
     }
 
-    public String toCode(MessageSignificanceCategory code) {
-      if (code == MessageSignificanceCategory.CONSEQUENCE)
+    public String toCode(MessageSignificanceCategory code)
+   {
+       if (code == MessageSignificanceCategory.NULL)
+           return null;
+       if (code == MessageSignificanceCategory.CONSEQUENCE)
         return "Consequence";
       if (code == MessageSignificanceCategory.CURRENCY)
         return "Currency";
       if (code == MessageSignificanceCategory.NOTIFICATION)
         return "Notification";
       return "?";
-    }
+   }
   }
 
   public enum ConformanceEventMode {
@@ -1769,13 +1799,16 @@ public class Conformance extends DomainResource implements IBaseConformance {
       throw new FHIRException("Unknown ConformanceEventMode code '" + codeString + "'");
     }
 
-    public String toCode(ConformanceEventMode code) {
-      if (code == ConformanceEventMode.SENDER)
+    public String toCode(ConformanceEventMode code)
+   {
+       if (code == ConformanceEventMode.NULL)
+           return null;
+       if (code == ConformanceEventMode.SENDER)
         return "sender";
       if (code == ConformanceEventMode.RECEIVER)
         return "receiver";
       return "?";
-    }
+   }
   }
 
   public enum DocumentMode {
@@ -1880,13 +1913,16 @@ public class Conformance extends DomainResource implements IBaseConformance {
       throw new FHIRException("Unknown DocumentMode code '" + codeString + "'");
     }
 
-    public String toCode(DocumentMode code) {
-      if (code == DocumentMode.PRODUCER)
+    public String toCode(DocumentMode code)
+   {
+       if (code == DocumentMode.NULL)
+           return null;
+       if (code == DocumentMode.PRODUCER)
         return "producer";
       if (code == DocumentMode.CONSUMER)
         return "consumer";
       return "?";
-    }
+   }
   }
 
   @Block()

@@ -176,15 +176,18 @@ public class MessageHeader extends DomainResource {
       throw new FHIRException("Unknown ResponseType code '" + codeString + "'");
     }
 
-    public String toCode(ResponseType code) {
-      if (code == ResponseType.OK)
+    public String toCode(ResponseType code)
+   {
+       if (code == ResponseType.NULL)
+           return null;
+       if (code == ResponseType.OK)
         return "ok";
       if (code == ResponseType.TRANSIENTERROR)
         return "transient-error";
       if (code == ResponseType.FATALERROR)
         return "fatal-error";
       return "?";
-    }
+   }
   }
 
   @Block()
