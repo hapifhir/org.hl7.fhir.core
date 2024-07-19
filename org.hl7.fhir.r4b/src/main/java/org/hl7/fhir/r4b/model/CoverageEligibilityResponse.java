@@ -201,7 +201,9 @@ public class CoverageEligibilityResponse extends DomainResource {
     }
 
     public String toCode(EligibilityResponsePurpose code) {
-      if (code == EligibilityResponsePurpose.AUTHREQUIREMENTS)
+       if (code == EligibilityResponsePurpose.NULL)
+           return null;
+       if (code == EligibilityResponsePurpose.AUTHREQUIREMENTS)
         return "auth-requirements";
       if (code == EligibilityResponsePurpose.BENEFITS)
         return "benefits";
@@ -210,7 +212,7 @@ public class CoverageEligibilityResponse extends DomainResource {
       if (code == EligibilityResponsePurpose.VALIDATION)
         return "validation";
       return "?";
-    }
+   }
 
     public String toSystem(EligibilityResponsePurpose code) {
       return code.getSystem();

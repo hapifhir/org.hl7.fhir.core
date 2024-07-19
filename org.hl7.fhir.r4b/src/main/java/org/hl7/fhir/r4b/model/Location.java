@@ -166,12 +166,14 @@ public class Location extends DomainResource {
     }
 
     public String toCode(LocationMode code) {
-      if (code == LocationMode.INSTANCE)
+       if (code == LocationMode.NULL)
+           return null;
+       if (code == LocationMode.INSTANCE)
         return "instance";
       if (code == LocationMode.KIND)
         return "kind";
       return "?";
-    }
+   }
 
     public String toSystem(LocationMode code) {
       return code.getSystem();
@@ -304,14 +306,16 @@ public class Location extends DomainResource {
     }
 
     public String toCode(LocationStatus code) {
-      if (code == LocationStatus.ACTIVE)
+       if (code == LocationStatus.NULL)
+           return null;
+       if (code == LocationStatus.ACTIVE)
         return "active";
       if (code == LocationStatus.SUSPENDED)
         return "suspended";
       if (code == LocationStatus.INACTIVE)
         return "inactive";
       return "?";
-    }
+   }
 
     public String toSystem(LocationStatus code) {
       return code.getSystem();

@@ -199,7 +199,9 @@ public class GraphDefinition extends CanonicalResource {
     }
 
     public String toCode(GraphCompartmentRule code) {
-      if (code == GraphCompartmentRule.IDENTICAL)
+       if (code == GraphCompartmentRule.NULL)
+           return null;
+       if (code == GraphCompartmentRule.IDENTICAL)
         return "identical";
       if (code == GraphCompartmentRule.MATCHING)
         return "matching";
@@ -208,7 +210,7 @@ public class GraphDefinition extends CanonicalResource {
       if (code == GraphCompartmentRule.CUSTOM)
         return "custom";
       return "?";
-    }
+   }
 
     public String toSystem(GraphCompartmentRule code) {
       return code.getSystem();
@@ -324,12 +326,14 @@ public class GraphDefinition extends CanonicalResource {
     }
 
     public String toCode(GraphCompartmentUse code) {
-      if (code == GraphCompartmentUse.CONDITION)
+       if (code == GraphCompartmentUse.NULL)
+           return null;
+       if (code == GraphCompartmentUse.CONDITION)
         return "condition";
       if (code == GraphCompartmentUse.REQUIREMENT)
         return "requirement";
       return "?";
-    }
+   }
 
     public String toSystem(GraphCompartmentUse code) {
       return code.getSystem();

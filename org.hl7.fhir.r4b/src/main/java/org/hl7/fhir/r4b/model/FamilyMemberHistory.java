@@ -199,7 +199,9 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public String toCode(FamilyHistoryStatus code) {
-      if (code == FamilyHistoryStatus.PARTIAL)
+       if (code == FamilyHistoryStatus.NULL)
+           return null;
+       if (code == FamilyHistoryStatus.PARTIAL)
         return "partial";
       if (code == FamilyHistoryStatus.COMPLETED)
         return "completed";
@@ -208,7 +210,7 @@ public class FamilyMemberHistory extends DomainResource {
       if (code == FamilyHistoryStatus.HEALTHUNKNOWN)
         return "health-unknown";
       return "?";
-    }
+   }
 
     public String toSystem(FamilyHistoryStatus code) {
       return code.getSystem();
