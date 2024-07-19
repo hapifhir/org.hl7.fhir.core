@@ -211,8 +211,11 @@ public class MedicationDispense extends DomainResource {
       throw new FHIRException("Unknown MedicationDispenseStatus code '" + codeString + "'");
     }
 
-    public String toCode(MedicationDispenseStatus code) {
-      if (code == MedicationDispenseStatus.INPROGRESS)
+    public String toCode(MedicationDispenseStatus code)
+   {
+       if (code == MedicationDispenseStatus.NULL)
+           return null;
+       if (code == MedicationDispenseStatus.INPROGRESS)
         return "in-progress";
       if (code == MedicationDispenseStatus.ONHOLD)
         return "on-hold";
@@ -223,7 +226,7 @@ public class MedicationDispense extends DomainResource {
       if (code == MedicationDispenseStatus.STOPPED)
         return "stopped";
       return "?";
-    }
+   }
   }
 
   @Block()

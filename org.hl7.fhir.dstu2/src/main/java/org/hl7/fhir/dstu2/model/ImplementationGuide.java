@@ -155,13 +155,16 @@ public class ImplementationGuide extends DomainResource {
       throw new FHIRException("Unknown GuideDependencyType code '" + codeString + "'");
     }
 
-    public String toCode(GuideDependencyType code) {
-      if (code == GuideDependencyType.REFERENCE)
+    public String toCode(GuideDependencyType code)
+   {
+       if (code == GuideDependencyType.NULL)
+           return null;
+       if (code == GuideDependencyType.REFERENCE)
         return "reference";
       if (code == GuideDependencyType.INCLUSION)
         return "inclusion";
       return "?";
-    }
+   }
   }
 
   public enum GuideResourcePurpose {
@@ -342,8 +345,11 @@ public class ImplementationGuide extends DomainResource {
       throw new FHIRException("Unknown GuideResourcePurpose code '" + codeString + "'");
     }
 
-    public String toCode(GuideResourcePurpose code) {
-      if (code == GuideResourcePurpose.EXAMPLE)
+    public String toCode(GuideResourcePurpose code)
+   {
+       if (code == GuideResourcePurpose.NULL)
+           return null;
+       if (code == GuideResourcePurpose.EXAMPLE)
         return "example";
       if (code == GuideResourcePurpose.TERMINOLOGY)
         return "terminology";
@@ -356,7 +362,7 @@ public class ImplementationGuide extends DomainResource {
       if (code == GuideResourcePurpose.LOGICAL)
         return "logical";
       return "?";
-    }
+   }
   }
 
   public enum GuidePageKind {
@@ -572,8 +578,11 @@ public class ImplementationGuide extends DomainResource {
       throw new FHIRException("Unknown GuidePageKind code '" + codeString + "'");
     }
 
-    public String toCode(GuidePageKind code) {
-      if (code == GuidePageKind.PAGE)
+    public String toCode(GuidePageKind code)
+   {
+       if (code == GuidePageKind.NULL)
+           return null;
+       if (code == GuidePageKind.PAGE)
         return "page";
       if (code == GuidePageKind.EXAMPLE)
         return "example";
@@ -590,7 +599,7 @@ public class ImplementationGuide extends DomainResource {
       if (code == GuidePageKind.RESOURCE)
         return "resource";
       return "?";
-    }
+   }
   }
 
   @Block()

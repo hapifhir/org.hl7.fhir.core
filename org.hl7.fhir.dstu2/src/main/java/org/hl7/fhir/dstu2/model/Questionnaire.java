@@ -171,15 +171,18 @@ public class Questionnaire extends DomainResource {
       throw new FHIRException("Unknown QuestionnaireStatus code '" + codeString + "'");
     }
 
-    public String toCode(QuestionnaireStatus code) {
-      if (code == QuestionnaireStatus.DRAFT)
+    public String toCode(QuestionnaireStatus code)
+   {
+       if (code == QuestionnaireStatus.NULL)
+           return null;
+       if (code == QuestionnaireStatus.DRAFT)
         return "draft";
       if (code == QuestionnaireStatus.PUBLISHED)
         return "published";
       if (code == QuestionnaireStatus.RETIRED)
         return "retired";
       return "?";
-    }
+   }
   }
 
   public enum AnswerFormat {
@@ -520,8 +523,11 @@ public class Questionnaire extends DomainResource {
       throw new FHIRException("Unknown AnswerFormat code '" + codeString + "'");
     }
 
-    public String toCode(AnswerFormat code) {
-      if (code == AnswerFormat.BOOLEAN)
+    public String toCode(AnswerFormat code)
+   {
+       if (code == AnswerFormat.NULL)
+           return null;
+       if (code == AnswerFormat.BOOLEAN)
         return "boolean";
       if (code == AnswerFormat.DECIMAL)
         return "decimal";
@@ -552,7 +558,7 @@ public class Questionnaire extends DomainResource {
       if (code == AnswerFormat.QUANTITY)
         return "quantity";
       return "?";
-    }
+   }
   }
 
   @Block()
