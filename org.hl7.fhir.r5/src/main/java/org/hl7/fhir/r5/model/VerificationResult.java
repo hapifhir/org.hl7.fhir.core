@@ -208,7 +208,9 @@ public class VerificationResult extends DomainResource {
         throw new FHIRException("Unknown VerificationResultStatus code '"+codeString+"'");
         }
     public String toCode(VerificationResultStatus code) {
-      if (code == VerificationResultStatus.ATTESTED)
+       if (code == VerificationResultStatus.NULL)
+           return null;
+       if (code == VerificationResultStatus.ATTESTED)
         return "attested";
       if (code == VerificationResultStatus.VALIDATED)
         return "validated";
@@ -223,7 +225,7 @@ public class VerificationResult extends DomainResource {
       if (code == VerificationResultStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(VerificationResultStatus code) {
       return code.getSystem();
       }

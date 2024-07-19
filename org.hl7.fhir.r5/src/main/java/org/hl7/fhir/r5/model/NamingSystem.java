@@ -194,7 +194,9 @@ public class NamingSystem extends MetadataResource {
         throw new FHIRException("Unknown NamingSystemIdentifierType code '"+codeString+"'");
         }
     public String toCode(NamingSystemIdentifierType code) {
-      if (code == NamingSystemIdentifierType.OID)
+       if (code == NamingSystemIdentifierType.NULL)
+           return null;
+       if (code == NamingSystemIdentifierType.OID)
         return "oid";
       if (code == NamingSystemIdentifierType.UUID)
         return "uuid";
@@ -207,7 +209,7 @@ public class NamingSystem extends MetadataResource {
       if (code == NamingSystemIdentifierType.OTHER)
         return "other";
       return "?";
-      }
+   }
     public String toSystem(NamingSystemIdentifierType code) {
       return code.getSystem();
       }
@@ -312,7 +314,9 @@ public class NamingSystem extends MetadataResource {
         throw new FHIRException("Unknown NamingSystemType code '"+codeString+"'");
         }
     public String toCode(NamingSystemType code) {
-      if (code == NamingSystemType.NULL)
+       if (code == NamingSystemType.NULL)
+           return null;
+       if (code == NamingSystemType.NULL)
         return null;
       if (code == NamingSystemType.CODESYSTEM)
         return "codesystem";
@@ -321,7 +325,7 @@ public class NamingSystem extends MetadataResource {
       if (code == NamingSystemType.ROOT)
         return "root";
       return "?";
-      }
+   }
     public String toSystem(NamingSystemType code) {
       return code.getSystem();
       }
