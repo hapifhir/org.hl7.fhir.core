@@ -180,15 +180,18 @@ public class Patient extends DomainResource {
       throw new FHIRException("Unknown LinkType code '" + codeString + "'");
     }
 
-    public String toCode(LinkType code) {
-      if (code == LinkType.REPLACE)
+    public String toCode(LinkType code)
+   {
+       if (code == LinkType.NULL)
+           return null;
+       if (code == LinkType.REPLACE)
         return "replace";
       if (code == LinkType.REFER)
         return "refer";
       if (code == LinkType.SEEALSO)
         return "seealso";
       return "?";
-    }
+   }
   }
 
   @Block()

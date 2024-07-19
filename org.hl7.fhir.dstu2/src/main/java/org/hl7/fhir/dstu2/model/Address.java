@@ -188,8 +188,11 @@ public class Address extends Type implements ICompositeType {
       throw new FHIRException("Unknown AddressUse code '" + codeString + "'");
     }
 
-    public String toCode(AddressUse code) {
-      if (code == AddressUse.HOME)
+    public String toCode(AddressUse code)
+   {
+       if (code == AddressUse.NULL)
+           return null;
+       if (code == AddressUse.HOME)
         return "home";
       if (code == AddressUse.WORK)
         return "work";
@@ -198,7 +201,7 @@ public class Address extends Type implements ICompositeType {
       if (code == AddressUse.OLD)
         return "old";
       return "?";
-    }
+   }
   }
 
   public enum AddressType {
@@ -321,15 +324,18 @@ public class Address extends Type implements ICompositeType {
       throw new FHIRException("Unknown AddressType code '" + codeString + "'");
     }
 
-    public String toCode(AddressType code) {
-      if (code == AddressType.POSTAL)
+    public String toCode(AddressType code)
+   {
+       if (code == AddressType.NULL)
+           return null;
+       if (code == AddressType.POSTAL)
         return "postal";
       if (code == AddressType.PHYSICAL)
         return "physical";
       if (code == AddressType.BOTH)
         return "both";
       return "?";
-    }
+   }
   }
 
   /**

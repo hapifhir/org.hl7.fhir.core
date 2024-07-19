@@ -278,8 +278,11 @@ public class OrderResponse extends DomainResource {
       throw new FHIRException("Unknown OrderStatus code '" + codeString + "'");
     }
 
-    public String toCode(OrderStatus code) {
-      if (code == OrderStatus.PENDING)
+    public String toCode(OrderStatus code)
+   {
+       if (code == OrderStatus.NULL)
+           return null;
+       if (code == OrderStatus.PENDING)
         return "pending";
       if (code == OrderStatus.REVIEW)
         return "review";
@@ -298,7 +301,7 @@ public class OrderResponse extends DomainResource {
       if (code == OrderStatus.COMPLETED)
         return "completed";
       return "?";
-    }
+   }
   }
 
   /**

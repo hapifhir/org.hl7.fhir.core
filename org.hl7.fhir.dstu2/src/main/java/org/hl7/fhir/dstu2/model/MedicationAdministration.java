@@ -210,8 +210,11 @@ public class MedicationAdministration extends DomainResource {
       throw new FHIRException("Unknown MedicationAdministrationStatus code '" + codeString + "'");
     }
 
-    public String toCode(MedicationAdministrationStatus code) {
-      if (code == MedicationAdministrationStatus.INPROGRESS)
+    public String toCode(MedicationAdministrationStatus code)
+   {
+       if (code == MedicationAdministrationStatus.NULL)
+           return null;
+       if (code == MedicationAdministrationStatus.INPROGRESS)
         return "in-progress";
       if (code == MedicationAdministrationStatus.ONHOLD)
         return "on-hold";
@@ -222,7 +225,7 @@ public class MedicationAdministration extends DomainResource {
       if (code == MedicationAdministrationStatus.STOPPED)
         return "stopped";
       return "?";
-    }
+   }
   }
 
   @Block()
