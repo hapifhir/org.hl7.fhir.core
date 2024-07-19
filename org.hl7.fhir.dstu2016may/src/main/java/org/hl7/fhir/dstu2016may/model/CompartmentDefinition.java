@@ -209,7 +209,9 @@ public class CompartmentDefinition extends DomainResource {
     }
 
     public String toCode(CompartmentType code) {
-      if (code == CompartmentType.PATIENT)
+       if (code == CompartmentType.NULL)
+           return null;
+       if (code == CompartmentType.PATIENT)
         return "Patient";
       if (code == CompartmentType.ENCOUNTER)
         return "Encounter";
@@ -220,7 +222,7 @@ public class CompartmentDefinition extends DomainResource {
       if (code == CompartmentType.DEVICE)
         return "Device";
       return "?";
-    }
+   }
 
     public String toSystem(CompartmentType code) {
       return code.getSystem();

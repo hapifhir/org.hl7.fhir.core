@@ -60,7 +60,9 @@ public class EncounterClassEnumFactory implements EnumFactory<EncounterClass> {
   }
 
   public String toCode(EncounterClass code) {
-    if (code == EncounterClass.INPATIENT)
+       if (code == EncounterClass.NULL)
+           return null;
+       if (code == EncounterClass.INPATIENT)
       return "inpatient";
     if (code == EncounterClass.OUTPATIENT)
       return "outpatient";
@@ -79,7 +81,7 @@ public class EncounterClassEnumFactory implements EnumFactory<EncounterClass> {
     if (code == EncounterClass.OTHER)
       return "other";
     return "?";
-  }
+   }
 
   public String toSystem(EncounterClass code) {
     return code.getSystem();

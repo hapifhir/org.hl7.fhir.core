@@ -48,14 +48,16 @@ public class StructureDefinitionKindEnumFactory implements EnumFactory<Structure
   }
 
   public String toCode(StructureDefinitionKind code) {
-    if (code == StructureDefinitionKind.DATATYPE)
+       if (code == StructureDefinitionKind.NULL)
+           return null;
+       if (code == StructureDefinitionKind.DATATYPE)
       return "datatype";
     if (code == StructureDefinitionKind.RESOURCE)
       return "resource";
     if (code == StructureDefinitionKind.LOGICAL)
       return "logical";
     return "?";
-  }
+   }
 
   public String toSystem(StructureDefinitionKind code) {
     return code.getSystem();

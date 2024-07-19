@@ -72,7 +72,9 @@ public class HspcOrganizationOrganizationtypeEnumFactory implements EnumFactory<
   }
 
   public String toCode(HspcOrganizationOrganizationtype code) {
-    if (code == HspcOrganizationOrganizationtype._526758010)
+       if (code == HspcOrganizationOrganizationtype.NULL)
+           return null;
+       if (code == HspcOrganizationOrganizationtype._526758010)
       return "526758010";
     if (code == HspcOrganizationOrganizationtype._526758011)
       return "526758011";
@@ -103,7 +105,7 @@ public class HspcOrganizationOrganizationtypeEnumFactory implements EnumFactory<
     if (code == HspcOrganizationOrganizationtype._526758024)
       return "526758024";
     return "?";
-  }
+   }
 
   public String toSystem(HspcOrganizationOrganizationtype code) {
     return code.getSystem();

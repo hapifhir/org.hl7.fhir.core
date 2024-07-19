@@ -52,7 +52,9 @@ public class ContactPointSystemEnumFactory implements EnumFactory<ContactPointSy
   }
 
   public String toCode(ContactPointSystem code) {
-    if (code == ContactPointSystem.PHONE)
+       if (code == ContactPointSystem.NULL)
+           return null;
+       if (code == ContactPointSystem.PHONE)
       return "phone";
     if (code == ContactPointSystem.FAX)
       return "fax";
@@ -63,7 +65,7 @@ public class ContactPointSystemEnumFactory implements EnumFactory<ContactPointSy
     if (code == ContactPointSystem.OTHER)
       return "other";
     return "?";
-  }
+   }
 
   public String toSystem(ContactPointSystem code) {
     return code.getSystem();

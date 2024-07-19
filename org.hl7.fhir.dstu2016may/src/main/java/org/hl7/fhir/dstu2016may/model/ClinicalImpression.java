@@ -178,14 +178,16 @@ public class ClinicalImpression extends DomainResource {
     }
 
     public String toCode(ClinicalImpressionStatus code) {
-      if (code == ClinicalImpressionStatus.INPROGRESS)
+       if (code == ClinicalImpressionStatus.NULL)
+           return null;
+       if (code == ClinicalImpressionStatus.INPROGRESS)
         return "in-progress";
       if (code == ClinicalImpressionStatus.COMPLETED)
         return "completed";
       if (code == ClinicalImpressionStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(ClinicalImpressionStatus code) {
       return code.getSystem();

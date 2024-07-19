@@ -62,7 +62,9 @@ public class DeviceUseRequestStatusEnumFactory implements EnumFactory<DeviceUseR
   }
 
   public String toCode(DeviceUseRequestStatus code) {
-    if (code == DeviceUseRequestStatus.PROPOSED)
+       if (code == DeviceUseRequestStatus.NULL)
+           return null;
+       if (code == DeviceUseRequestStatus.PROPOSED)
       return "proposed";
     if (code == DeviceUseRequestStatus.PLANNED)
       return "planned";
@@ -83,7 +85,7 @@ public class DeviceUseRequestStatusEnumFactory implements EnumFactory<DeviceUseR
     if (code == DeviceUseRequestStatus.ABORTED)
       return "aborted";
     return "?";
-  }
+   }
 
   public String toSystem(DeviceUseRequestStatus code) {
     return code.getSystem();

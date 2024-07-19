@@ -50,7 +50,9 @@ public class ConditionCategoryEnumFactory implements EnumFactory<ConditionCatego
   }
 
   public String toCode(ConditionCategory code) {
-    if (code == ConditionCategory.COMPLAINT)
+       if (code == ConditionCategory.NULL)
+           return null;
+       if (code == ConditionCategory.COMPLAINT)
       return "complaint";
     if (code == ConditionCategory.SYMPTOM)
       return "symptom";
@@ -59,7 +61,7 @@ public class ConditionCategoryEnumFactory implements EnumFactory<ConditionCatego
     if (code == ConditionCategory.DIAGNOSIS)
       return "diagnosis";
     return "?";
-  }
+   }
 
   public String toSystem(ConditionCategory code) {
     return code.getSystem();

@@ -50,7 +50,9 @@ public class HspcBodytempmethoddeviceEnumFactory implements EnumFactory<HspcBody
   }
 
   public String toCode(HspcBodytempmethoddevice code) {
-    if (code == HspcBodytempmethoddevice._30277)
+       if (code == HspcBodytempmethoddevice.NULL)
+           return null;
+       if (code == HspcBodytempmethoddevice._30277)
       return "30277";
     if (code == HspcBodytempmethoddevice._30522)
       return "30522";
@@ -59,7 +61,7 @@ public class HspcBodytempmethoddeviceEnumFactory implements EnumFactory<HspcBody
     if (code == HspcBodytempmethoddevice._84301)
       return "84301";
     return "?";
-  }
+   }
 
   public String toSystem(HspcBodytempmethoddevice code) {
     return code.getSystem();

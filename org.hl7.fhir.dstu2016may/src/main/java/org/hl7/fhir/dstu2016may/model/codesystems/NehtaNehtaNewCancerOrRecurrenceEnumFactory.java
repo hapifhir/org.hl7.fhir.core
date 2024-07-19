@@ -50,7 +50,9 @@ public class NehtaNehtaNewCancerOrRecurrenceEnumFactory implements EnumFactory<N
   }
 
   public String toCode(NehtaNehtaNewCancerOrRecurrence code) {
-    if (code == NehtaNehtaNewCancerOrRecurrence.NEWPRIMARY)
+       if (code == NehtaNehtaNewCancerOrRecurrence.NULL)
+           return null;
+       if (code == NehtaNehtaNewCancerOrRecurrence.NEWPRIMARY)
       return "new-primary";
     if (code == NehtaNehtaNewCancerOrRecurrence.REGIONALRECURRENCE)
       return "regional_recurrence";
@@ -59,7 +61,7 @@ public class NehtaNehtaNewCancerOrRecurrenceEnumFactory implements EnumFactory<N
     if (code == NehtaNehtaNewCancerOrRecurrence.INDETERMINATE)
       return "indeterminate";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaNewCancerOrRecurrence code) {
     return code.getSystem();

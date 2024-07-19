@@ -52,7 +52,9 @@ public class ClaimTypeLinkEnumFactory implements EnumFactory<ClaimTypeLink> {
   }
 
   public String toCode(ClaimTypeLink code) {
-    if (code == ClaimTypeLink.INSTITUTIONAL)
+       if (code == ClaimTypeLink.NULL)
+           return null;
+       if (code == ClaimTypeLink.INSTITUTIONAL)
       return "institutional";
     if (code == ClaimTypeLink.ORAL)
       return "oral";
@@ -63,7 +65,7 @@ public class ClaimTypeLinkEnumFactory implements EnumFactory<ClaimTypeLink> {
     if (code == ClaimTypeLink.VISION)
       return "vision";
     return "?";
-  }
+   }
 
   public String toSystem(ClaimTypeLink code) {
     return code.getSystem();

@@ -54,7 +54,9 @@ public class ObservationRelationshiptypesEnumFactory implements EnumFactory<Obse
   }
 
   public String toCode(ObservationRelationshiptypes code) {
-    if (code == ObservationRelationshiptypes.HASMEMBER)
+       if (code == ObservationRelationshiptypes.NULL)
+           return null;
+       if (code == ObservationRelationshiptypes.HASMEMBER)
       return "has-member";
     if (code == ObservationRelationshiptypes.DERIVEDFROM)
       return "derived-from";
@@ -67,7 +69,7 @@ public class ObservationRelationshiptypesEnumFactory implements EnumFactory<Obse
     if (code == ObservationRelationshiptypes.INTERFEREDBY)
       return "interfered-by";
     return "?";
-  }
+   }
 
   public String toSystem(ObservationRelationshiptypes code) {
     return code.getSystem();

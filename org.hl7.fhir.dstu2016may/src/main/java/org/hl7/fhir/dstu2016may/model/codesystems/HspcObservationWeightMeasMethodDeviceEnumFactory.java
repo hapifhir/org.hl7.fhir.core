@@ -61,7 +61,9 @@ public class HspcObservationWeightMeasMethodDeviceEnumFactory
   }
 
   public String toCode(HspcObservationWeightMeasMethodDevice code) {
-    if (code == HspcObservationWeightMeasMethodDevice._1964)
+       if (code == HspcObservationWeightMeasMethodDevice.NULL)
+           return null;
+       if (code == HspcObservationWeightMeasMethodDevice._1964)
       return "1964";
     if (code == HspcObservationWeightMeasMethodDevice._2007)
       return "2007";
@@ -80,7 +82,7 @@ public class HspcObservationWeightMeasMethodDeviceEnumFactory
     if (code == HspcObservationWeightMeasMethodDevice._521443011)
       return "521443011";
     return "?";
-  }
+   }
 
   public String toSystem(HspcObservationWeightMeasMethodDevice code) {
     return code.getSystem();

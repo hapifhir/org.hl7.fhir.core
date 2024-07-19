@@ -46,12 +46,14 @@ public class AdjudicationReasonEnumFactory implements EnumFactory<AdjudicationRe
   }
 
   public String toCode(AdjudicationReason code) {
-    if (code == AdjudicationReason.AR001)
+       if (code == AdjudicationReason.NULL)
+           return null;
+       if (code == AdjudicationReason.AR001)
       return "ar001";
     if (code == AdjudicationReason.AR002)
       return "ar002";
     return "?";
-  }
+   }
 
   public String toSystem(AdjudicationReason code) {
     return code.getSystem();

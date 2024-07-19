@@ -52,7 +52,9 @@ public class ActionBehaviorTypeEnumFactory implements EnumFactory<ActionBehavior
   }
 
   public String toCode(ActionBehaviorType code) {
-    if (code == ActionBehaviorType.GROUPING)
+       if (code == ActionBehaviorType.NULL)
+           return null;
+       if (code == ActionBehaviorType.GROUPING)
       return "grouping";
     if (code == ActionBehaviorType.SELECTION)
       return "selection";
@@ -63,7 +65,7 @@ public class ActionBehaviorTypeEnumFactory implements EnumFactory<ActionBehavior
     if (code == ActionBehaviorType.CARDINALITY)
       return "cardinality";
     return "?";
-  }
+   }
 
   public String toSystem(ActionBehaviorType code) {
     return code.getSystem();

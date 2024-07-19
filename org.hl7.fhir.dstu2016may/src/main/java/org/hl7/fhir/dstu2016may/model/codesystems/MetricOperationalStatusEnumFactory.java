@@ -48,14 +48,16 @@ public class MetricOperationalStatusEnumFactory implements EnumFactory<MetricOpe
   }
 
   public String toCode(MetricOperationalStatus code) {
-    if (code == MetricOperationalStatus.ON)
+       if (code == MetricOperationalStatus.NULL)
+           return null;
+       if (code == MetricOperationalStatus.ON)
       return "on";
     if (code == MetricOperationalStatus.OFF)
       return "off";
     if (code == MetricOperationalStatus.STANDBY)
       return "standby";
     return "?";
-  }
+   }
 
   public String toSystem(MetricOperationalStatus code) {
     return code.getSystem();

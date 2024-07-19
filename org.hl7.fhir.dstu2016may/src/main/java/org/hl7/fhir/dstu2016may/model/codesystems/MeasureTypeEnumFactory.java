@@ -46,12 +46,14 @@ public class MeasureTypeEnumFactory implements EnumFactory<MeasureType> {
   }
 
   public String toCode(MeasureType code) {
-    if (code == MeasureType.PROCESS)
+       if (code == MeasureType.NULL)
+           return null;
+       if (code == MeasureType.PROCESS)
       return "process";
     if (code == MeasureType.OUTCOME)
       return "outcome";
     return "?";
-  }
+   }
 
   public String toSystem(MeasureType code) {
     return code.getSystem();

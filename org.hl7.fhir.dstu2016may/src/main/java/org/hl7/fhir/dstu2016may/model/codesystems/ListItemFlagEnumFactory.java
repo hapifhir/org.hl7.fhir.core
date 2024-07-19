@@ -54,7 +54,9 @@ public class ListItemFlagEnumFactory implements EnumFactory<ListItemFlag> {
   }
 
   public String toCode(ListItemFlag code) {
-    if (code == ListItemFlag._01)
+       if (code == ListItemFlag.NULL)
+           return null;
+       if (code == ListItemFlag._01)
       return "01";
     if (code == ListItemFlag._02)
       return "02";
@@ -67,7 +69,7 @@ public class ListItemFlagEnumFactory implements EnumFactory<ListItemFlag> {
     if (code == ListItemFlag._06)
       return "06";
     return "?";
-  }
+   }
 
   public String toSystem(ListItemFlag code) {
     return code.getSystem();
