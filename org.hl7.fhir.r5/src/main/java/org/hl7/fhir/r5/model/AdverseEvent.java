@@ -138,12 +138,14 @@ public class AdverseEvent extends DomainResource {
         throw new FHIRException("Unknown AdverseEventActuality code '"+codeString+"'");
         }
     public String toCode(AdverseEventActuality code) {
-      if (code == AdverseEventActuality.ACTUAL)
+       if (code == AdverseEventActuality.NULL)
+           return null;
+       if (code == AdverseEventActuality.ACTUAL)
         return "actual";
       if (code == AdverseEventActuality.POTENTIAL)
         return "potential";
       return "?";
-      }
+   }
     public String toSystem(AdverseEventActuality code) {
       return code.getSystem();
       }
@@ -262,7 +264,9 @@ public class AdverseEvent extends DomainResource {
         throw new FHIRException("Unknown AdverseEventStatus code '"+codeString+"'");
         }
     public String toCode(AdverseEventStatus code) {
-      if (code == AdverseEventStatus.INPROGRESS)
+       if (code == AdverseEventStatus.NULL)
+           return null;
+       if (code == AdverseEventStatus.INPROGRESS)
         return "in-progress";
       if (code == AdverseEventStatus.COMPLETED)
         return "completed";
@@ -271,7 +275,7 @@ public class AdverseEvent extends DomainResource {
       if (code == AdverseEventStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(AdverseEventStatus code) {
       return code.getSystem();
       }

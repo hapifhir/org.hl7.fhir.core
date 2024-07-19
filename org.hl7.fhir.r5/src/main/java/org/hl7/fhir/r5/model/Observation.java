@@ -152,14 +152,16 @@ public class Observation extends DomainResource {
         throw new FHIRException("Unknown TriggeredBytype code '"+codeString+"'");
         }
     public String toCode(TriggeredBytype code) {
-      if (code == TriggeredBytype.REFLEX)
+       if (code == TriggeredBytype.NULL)
+           return null;
+       if (code == TriggeredBytype.REFLEX)
         return "reflex";
       if (code == TriggeredBytype.REPEAT)
         return "repeat";
       if (code == TriggeredBytype.RERUN)
         return "re-run";
       return "?";
-      }
+   }
     public String toSystem(TriggeredBytype code) {
       return code.getSystem();
       }

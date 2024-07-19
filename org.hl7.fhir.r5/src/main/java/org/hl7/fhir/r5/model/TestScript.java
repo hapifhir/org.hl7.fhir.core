@@ -138,12 +138,14 @@ public class TestScript extends CanonicalResource {
         throw new FHIRException("Unknown AssertionDirectionType code '"+codeString+"'");
         }
     public String toCode(AssertionDirectionType code) {
-      if (code == AssertionDirectionType.RESPONSE)
+       if (code == AssertionDirectionType.NULL)
+           return null;
+       if (code == AssertionDirectionType.RESPONSE)
         return "response";
       if (code == AssertionDirectionType.REQUEST)
         return "request";
       return "?";
-      }
+   }
     public String toSystem(AssertionDirectionType code) {
       return code.getSystem();
       }
@@ -262,7 +264,9 @@ public class TestScript extends CanonicalResource {
         throw new FHIRException("Unknown AssertionManualCompletionType code '"+codeString+"'");
         }
     public String toCode(AssertionManualCompletionType code) {
-      if (code == AssertionManualCompletionType.FAIL)
+       if (code == AssertionManualCompletionType.NULL)
+           return null;
+       if (code == AssertionManualCompletionType.FAIL)
         return "fail";
       if (code == AssertionManualCompletionType.PASS)
         return "pass";
@@ -271,7 +275,7 @@ public class TestScript extends CanonicalResource {
       if (code == AssertionManualCompletionType.STOP)
         return "stop";
       return "?";
-      }
+   }
     public String toSystem(AssertionManualCompletionType code) {
       return code.getSystem();
       }
@@ -502,7 +506,9 @@ public class TestScript extends CanonicalResource {
         throw new FHIRException("Unknown AssertionOperatorType code '"+codeString+"'");
         }
     public String toCode(AssertionOperatorType code) {
-      if (code == AssertionOperatorType.EQUALS)
+       if (code == AssertionOperatorType.NULL)
+           return null;
+       if (code == AssertionOperatorType.EQUALS)
         return "equals";
       if (code == AssertionOperatorType.NOTEQUALS)
         return "notEquals";
@@ -527,7 +533,7 @@ public class TestScript extends CanonicalResource {
       if (code == AssertionOperatorType.MANUALEVAL)
         return "manualEval";
       return "?";
-      }
+   }
     public String toSystem(AssertionOperatorType code) {
       return code.getSystem();
       }
@@ -1206,7 +1212,9 @@ public class TestScript extends CanonicalResource {
         throw new FHIRException("Unknown AssertionResponseTypes code '"+codeString+"'");
         }
     public String toCode(AssertionResponseTypes code) {
-      if (code == AssertionResponseTypes.CONTINUE)
+       if (code == AssertionResponseTypes.NULL)
+           return null;
+       if (code == AssertionResponseTypes.CONTINUE)
         return "continue";
       if (code == AssertionResponseTypes.SWITCHINGPROTOCOLS)
         return "switchingProtocols";
@@ -1295,7 +1303,7 @@ public class TestScript extends CanonicalResource {
       if (code == AssertionResponseTypes.HTTPVERSIONNOTSUPPORTED)
         return "httpVersionNotSupported";
       return "?";
-      }
+   }
     public String toSystem(AssertionResponseTypes code) {
       return code.getSystem();
       }
@@ -1456,7 +1464,9 @@ public class TestScript extends CanonicalResource {
         throw new FHIRException("Unknown TestScriptRequestMethodCode code '"+codeString+"'");
         }
     public String toCode(TestScriptRequestMethodCode code) {
-      if (code == TestScriptRequestMethodCode.DELETE)
+       if (code == TestScriptRequestMethodCode.NULL)
+           return null;
+       if (code == TestScriptRequestMethodCode.DELETE)
         return "delete";
       if (code == TestScriptRequestMethodCode.GET)
         return "get";
@@ -1471,7 +1481,7 @@ public class TestScript extends CanonicalResource {
       if (code == TestScriptRequestMethodCode.HEAD)
         return "head";
       return "?";
-      }
+   }
     public String toSystem(TestScriptRequestMethodCode code) {
       return code.getSystem();
       }

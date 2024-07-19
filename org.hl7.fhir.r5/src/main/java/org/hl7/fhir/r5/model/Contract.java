@@ -321,7 +321,9 @@ public class Contract extends DomainResource {
         throw new FHIRException("Unknown ContractResourcePublicationStatusCodes code '"+codeString+"'");
         }
     public String toCode(ContractResourcePublicationStatusCodes code) {
-      if (code == ContractResourcePublicationStatusCodes.AMENDED)
+       if (code == ContractResourcePublicationStatusCodes.NULL)
+           return null;
+       if (code == ContractResourcePublicationStatusCodes.AMENDED)
         return "amended";
       if (code == ContractResourcePublicationStatusCodes.APPENDED)
         return "appended";
@@ -352,7 +354,7 @@ public class Contract extends DomainResource {
       if (code == ContractResourcePublicationStatusCodes.TERMINATED)
         return "terminated";
       return "?";
-      }
+   }
     public String toSystem(ContractResourcePublicationStatusCodes code) {
       return code.getSystem();
       }
@@ -625,7 +627,9 @@ public class Contract extends DomainResource {
         throw new FHIRException("Unknown ContractResourceStatusCodes code '"+codeString+"'");
         }
     public String toCode(ContractResourceStatusCodes code) {
-      if (code == ContractResourceStatusCodes.AMENDED)
+       if (code == ContractResourceStatusCodes.NULL)
+           return null;
+       if (code == ContractResourceStatusCodes.AMENDED)
         return "amended";
       if (code == ContractResourceStatusCodes.APPENDED)
         return "appended";
@@ -656,7 +660,7 @@ public class Contract extends DomainResource {
       if (code == ContractResourceStatusCodes.TERMINATED)
         return "terminated";
       return "?";
-      }
+   }
     public String toSystem(ContractResourceStatusCodes code) {
       return code.getSystem();
       }
