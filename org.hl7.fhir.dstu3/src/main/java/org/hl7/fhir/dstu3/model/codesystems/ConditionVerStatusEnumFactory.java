@@ -58,7 +58,9 @@ public class ConditionVerStatusEnumFactory implements EnumFactory<ConditionVerSt
   }
 
   public String toCode(ConditionVerStatus code) {
-    if (code == ConditionVerStatus.PROVISIONAL)
+       if (code == ConditionVerStatus.NULL)
+           return null;
+       if (code == ConditionVerStatus.PROVISIONAL)
       return "provisional";
     if (code == ConditionVerStatus.DIFFERENTIAL)
       return "differential";
@@ -71,7 +73,7 @@ public class ConditionVerStatusEnumFactory implements EnumFactory<ConditionVerSt
     if (code == ConditionVerStatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
     public String toSystem(ConditionVerStatus code) {
       return code.getSystem();

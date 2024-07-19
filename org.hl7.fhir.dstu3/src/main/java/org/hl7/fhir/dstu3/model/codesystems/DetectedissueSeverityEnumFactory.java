@@ -52,14 +52,16 @@ public class DetectedissueSeverityEnumFactory implements EnumFactory<Detectediss
   }
 
   public String toCode(DetectedissueSeverity code) {
-    if (code == DetectedissueSeverity.HIGH)
+       if (code == DetectedissueSeverity.NULL)
+           return null;
+       if (code == DetectedissueSeverity.HIGH)
       return "high";
     if (code == DetectedissueSeverity.MODERATE)
       return "moderate";
     if (code == DetectedissueSeverity.LOW)
       return "low";
     return "?";
-  }
+   }
 
     public String toSystem(DetectedissueSeverity code) {
       return code.getSystem();

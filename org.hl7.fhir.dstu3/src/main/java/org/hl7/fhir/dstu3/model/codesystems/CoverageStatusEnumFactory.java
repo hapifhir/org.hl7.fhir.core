@@ -54,7 +54,9 @@ public class CoverageStatusEnumFactory implements EnumFactory<CoverageStatus> {
   }
 
   public String toCode(CoverageStatus code) {
-    if (code == CoverageStatus.ACTIVE)
+       if (code == CoverageStatus.NULL)
+           return null;
+       if (code == CoverageStatus.ACTIVE)
       return "active";
     if (code == CoverageStatus.CANCELLED)
       return "cancelled";
@@ -63,7 +65,7 @@ public class CoverageStatusEnumFactory implements EnumFactory<CoverageStatus> {
     if (code == CoverageStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(CoverageStatus code) {
       return code.getSystem();

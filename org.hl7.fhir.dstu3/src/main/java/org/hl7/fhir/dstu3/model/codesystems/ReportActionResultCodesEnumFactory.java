@@ -56,7 +56,9 @@ public class ReportActionResultCodesEnumFactory implements EnumFactory<ReportAct
   }
 
   public String toCode(ReportActionResultCodes code) {
-    if (code == ReportActionResultCodes.PASS)
+       if (code == ReportActionResultCodes.NULL)
+           return null;
+       if (code == ReportActionResultCodes.PASS)
       return "pass";
     if (code == ReportActionResultCodes.SKIP)
       return "skip";
@@ -67,7 +69,7 @@ public class ReportActionResultCodesEnumFactory implements EnumFactory<ReportAct
     if (code == ReportActionResultCodes.ERROR)
       return "error";
     return "?";
-  }
+   }
 
     public String toSystem(ReportActionResultCodes code) {
       return code.getSystem();

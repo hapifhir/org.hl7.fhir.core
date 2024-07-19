@@ -206,7 +206,9 @@ public class Communication extends DomainResource {
         throw new FHIRException("Unknown CommunicationStatus code '"+codeString+"'");
         }
     public String toCode(CommunicationStatus code) {
-      if (code == CommunicationStatus.PREPARATION)
+       if (code == CommunicationStatus.NULL)
+           return null;
+       if (code == CommunicationStatus.PREPARATION)
         return "preparation";
       if (code == CommunicationStatus.INPROGRESS)
         return "in-progress";
@@ -221,7 +223,7 @@ public class Communication extends DomainResource {
       if (code == CommunicationStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(CommunicationStatus code) {
       return code.getSystem();
       }

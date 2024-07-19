@@ -173,7 +173,9 @@ public class StructureMap extends MetadataResource {
         throw new FHIRException("Unknown StructureMapModelMode code '"+codeString+"'");
         }
     public String toCode(StructureMapModelMode code) {
-      if (code == StructureMapModelMode.SOURCE)
+       if (code == StructureMapModelMode.NULL)
+           return null;
+       if (code == StructureMapModelMode.SOURCE)
         return "source";
       if (code == StructureMapModelMode.QUERIED)
         return "queried";
@@ -182,7 +184,7 @@ public class StructureMap extends MetadataResource {
       if (code == StructureMapModelMode.PRODUCED)
         return "produced";
       return "?";
-      }
+   }
     public String toSystem(StructureMapModelMode code) {
       return code.getSystem();
       }
@@ -287,14 +289,16 @@ public class StructureMap extends MetadataResource {
         throw new FHIRException("Unknown StructureMapGroupTypeMode code '"+codeString+"'");
         }
     public String toCode(StructureMapGroupTypeMode code) {
-      if (code == StructureMapGroupTypeMode.NONE)
+       if (code == StructureMapGroupTypeMode.NULL)
+           return null;
+       if (code == StructureMapGroupTypeMode.NONE)
         return "none";
       if (code == StructureMapGroupTypeMode.TYPES)
         return "types";
       if (code == StructureMapGroupTypeMode.TYPEANDTYPES)
         return "type-and-types";
       return "?";
-      }
+   }
     public String toSystem(StructureMapGroupTypeMode code) {
       return code.getSystem();
       }
@@ -385,12 +389,14 @@ public class StructureMap extends MetadataResource {
         throw new FHIRException("Unknown StructureMapInputMode code '"+codeString+"'");
         }
     public String toCode(StructureMapInputMode code) {
-      if (code == StructureMapInputMode.SOURCE)
+       if (code == StructureMapInputMode.NULL)
+           return null;
+       if (code == StructureMapInputMode.SOURCE)
         return "source";
       if (code == StructureMapInputMode.TARGET)
         return "target";
       return "?";
-      }
+   }
     public String toSystem(StructureMapInputMode code) {
       return code.getSystem();
       }
@@ -523,7 +529,9 @@ public class StructureMap extends MetadataResource {
         throw new FHIRException("Unknown StructureMapSourceListMode code '"+codeString+"'");
         }
     public String toCode(StructureMapSourceListMode code) {
-      if (code == StructureMapSourceListMode.FIRST)
+       if (code == StructureMapSourceListMode.NULL)
+           return null;
+       if (code == StructureMapSourceListMode.FIRST)
         return "first";
       if (code == StructureMapSourceListMode.NOTFIRST)
         return "not_first";
@@ -534,7 +542,7 @@ public class StructureMap extends MetadataResource {
       if (code == StructureMapSourceListMode.ONLYONE)
         return "only_one";
       return "?";
-      }
+   }
     public String toSystem(StructureMapSourceListMode code) {
       return code.getSystem();
       }
@@ -625,12 +633,14 @@ public class StructureMap extends MetadataResource {
         throw new FHIRException("Unknown StructureMapContextType code '"+codeString+"'");
         }
     public String toCode(StructureMapContextType code) {
-      if (code == StructureMapContextType.TYPE)
+       if (code == StructureMapContextType.NULL)
+           return null;
+       if (code == StructureMapContextType.TYPE)
         return "type";
       if (code == StructureMapContextType.VARIABLE)
         return "variable";
       return "?";
-      }
+   }
     public String toSystem(StructureMapContextType code) {
       return code.getSystem();
       }
@@ -749,7 +759,9 @@ public class StructureMap extends MetadataResource {
         throw new FHIRException("Unknown StructureMapTargetListMode code '"+codeString+"'");
         }
     public String toCode(StructureMapTargetListMode code) {
-      if (code == StructureMapTargetListMode.FIRST)
+       if (code == StructureMapTargetListMode.NULL)
+           return null;
+       if (code == StructureMapTargetListMode.FIRST)
         return "first";
       if (code == StructureMapTargetListMode.SHARE)
         return "share";
@@ -758,7 +770,7 @@ public class StructureMap extends MetadataResource {
       if (code == StructureMapTargetListMode.COLLATE)
         return "collate";
       return "?";
-      }
+   }
     public String toSystem(StructureMapTargetListMode code) {
       return code.getSystem();
       }
@@ -1059,7 +1071,9 @@ public class StructureMap extends MetadataResource {
         throw new FHIRException("Unknown StructureMapTransform code '"+codeString+"'");
         }
     public String toCode(StructureMapTransform code) {
-      if (code == StructureMapTransform.CREATE)
+       if (code == StructureMapTransform.NULL)
+           return null;
+       if (code == StructureMapTransform.CREATE)
         return "create";
       if (code == StructureMapTransform.COPY)
         return "copy";
@@ -1094,7 +1108,7 @@ public class StructureMap extends MetadataResource {
       if (code == StructureMapTransform.CP)
         return "cp";
       return "?";
-      }
+   }
     public String toSystem(StructureMapTransform code) {
       return code.getSystem();
       }

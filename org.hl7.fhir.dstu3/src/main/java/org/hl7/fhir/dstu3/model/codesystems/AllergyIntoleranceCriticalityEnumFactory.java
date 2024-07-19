@@ -52,14 +52,16 @@ public class AllergyIntoleranceCriticalityEnumFactory implements EnumFactory<All
   }
 
   public String toCode(AllergyIntoleranceCriticality code) {
-    if (code == AllergyIntoleranceCriticality.LOW)
+       if (code == AllergyIntoleranceCriticality.NULL)
+           return null;
+       if (code == AllergyIntoleranceCriticality.LOW)
       return "low";
     if (code == AllergyIntoleranceCriticality.HIGH)
       return "high";
     if (code == AllergyIntoleranceCriticality.UNABLETOASSESS)
       return "unable-to-assess";
     return "?";
-  }
+   }
 
     public String toSystem(AllergyIntoleranceCriticality code) {
       return code.getSystem();

@@ -50,12 +50,14 @@ public class ClaimSubtypeEnumFactory implements EnumFactory<ClaimSubtype> {
   }
 
   public String toCode(ClaimSubtype code) {
-    if (code == ClaimSubtype.ORTHO)
+       if (code == ClaimSubtype.NULL)
+           return null;
+       if (code == ClaimSubtype.ORTHO)
       return "ortho";
     if (code == ClaimSubtype.EMERGENCY)
       return "emergency";
     return "?";
-  }
+   }
 
     public String toSystem(ClaimSubtype code) {
       return code.getSystem();

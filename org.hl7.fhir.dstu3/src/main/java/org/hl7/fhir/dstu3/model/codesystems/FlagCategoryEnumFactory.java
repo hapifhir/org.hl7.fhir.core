@@ -56,7 +56,9 @@ public class FlagCategoryEnumFactory implements EnumFactory<FlagCategory> {
   }
 
   public String toCode(FlagCategory code) {
-    if (code == FlagCategory.DIET)
+       if (code == FlagCategory.NULL)
+           return null;
+       if (code == FlagCategory.DIET)
       return "diet";
     if (code == FlagCategory.DRUG)
       return "drug";
@@ -67,7 +69,7 @@ public class FlagCategoryEnumFactory implements EnumFactory<FlagCategory> {
     if (code == FlagCategory.CONTACT)
       return "contact";
     return "?";
-  }
+   }
 
     public String toSystem(FlagCategory code) {
       return code.getSystem();

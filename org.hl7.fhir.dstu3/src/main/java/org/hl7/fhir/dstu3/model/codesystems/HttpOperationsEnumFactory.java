@@ -58,7 +58,9 @@ public class HttpOperationsEnumFactory implements EnumFactory<HttpOperations> {
   }
 
   public String toCode(HttpOperations code) {
-    if (code == HttpOperations.DELETE)
+       if (code == HttpOperations.NULL)
+           return null;
+       if (code == HttpOperations.DELETE)
       return "delete";
     if (code == HttpOperations.GET)
       return "get";
@@ -71,7 +73,7 @@ public class HttpOperationsEnumFactory implements EnumFactory<HttpOperations> {
     if (code == HttpOperations.PUT)
       return "put";
     return "?";
-  }
+   }
 
     public String toSystem(HttpOperations code) {
       return code.getSystem();

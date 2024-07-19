@@ -52,14 +52,16 @@ public class CatalogUpdateModeEnumFactory implements EnumFactory<CatalogUpdateMo
   }
 
   public String toCode(CatalogUpdateMode code) {
-    if (code == CatalogUpdateMode.UPDATE)
+       if (code == CatalogUpdateMode.NULL)
+           return null;
+       if (code == CatalogUpdateMode.UPDATE)
       return "update";
     if (code == CatalogUpdateMode.REPLACE)
       return "replace";
     if (code == CatalogUpdateMode.UPSERT)
       return "upsert";
     return "?";
-  }
+   }
 
     public String toSystem(CatalogUpdateMode code) {
       return code.getSystem();

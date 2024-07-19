@@ -106,7 +106,9 @@ public class V3AddressPartTypeEnumFactory implements EnumFactory<V3AddressPartTy
   }
 
   public String toCode(V3AddressPartType code) {
-    if (code == V3AddressPartType.ADL)
+       if (code == V3AddressPartType.NULL)
+           return null;
+       if (code == V3AddressPartType.ADL)
       return "ADL";
     if (code == V3AddressPartType.AL)
       return "AL";
@@ -167,7 +169,7 @@ public class V3AddressPartTypeEnumFactory implements EnumFactory<V3AddressPartTy
     if (code == V3AddressPartType.ZIP)
       return "ZIP";
     return "?";
-  }
+   }
 
     public String toSystem(V3AddressPartType code) {
       return code.getSystem();

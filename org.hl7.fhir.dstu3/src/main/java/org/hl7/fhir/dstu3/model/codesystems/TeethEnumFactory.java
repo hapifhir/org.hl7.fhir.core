@@ -110,7 +110,9 @@ public class TeethEnumFactory implements EnumFactory<Teeth> {
   }
 
   public String toCode(Teeth code) {
-    if (code == Teeth._11)
+       if (code == Teeth.NULL)
+           return null;
+       if (code == Teeth._11)
       return "11";
     if (code == Teeth._12)
       return "12";
@@ -175,7 +177,7 @@ public class TeethEnumFactory implements EnumFactory<Teeth> {
     if (code == Teeth._48)
       return "48";
     return "?";
-  }
+   }
 
     public String toSystem(Teeth code) {
       return code.getSystem();

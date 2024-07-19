@@ -94,7 +94,9 @@ public class ObjectRoleEnumFactory implements EnumFactory<ObjectRole> {
   }
 
   public String toCode(ObjectRole code) {
-    if (code == ObjectRole._1)
+       if (code == ObjectRole.NULL)
+           return null;
+       if (code == ObjectRole._1)
       return "1";
     if (code == ObjectRole._2)
       return "2";
@@ -143,7 +145,7 @@ public class ObjectRoleEnumFactory implements EnumFactory<ObjectRole> {
     if (code == ObjectRole._24)
       return "24";
     return "?";
-  }
+   }
 
     public String toSystem(ObjectRole code) {
       return code.getSystem();

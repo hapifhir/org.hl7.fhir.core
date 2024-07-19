@@ -50,12 +50,14 @@ public class SupplydeliveryTypeEnumFactory implements EnumFactory<Supplydelivery
   }
 
   public String toCode(SupplydeliveryType code) {
-    if (code == SupplydeliveryType.MEDICATION)
+       if (code == SupplydeliveryType.NULL)
+           return null;
+       if (code == SupplydeliveryType.MEDICATION)
       return "medication";
     if (code == SupplydeliveryType.DEVICE)
       return "device";
     return "?";
-  }
+   }
 
     public String toSystem(SupplydeliveryType code) {
       return code.getSystem();
