@@ -56,7 +56,9 @@ public class DiagnosisRoleEnumFactory implements EnumFactory<DiagnosisRole> {
   }
 
   public String toCode(DiagnosisRole code) {
-    if (code == DiagnosisRole.AD)
+       if (code == DiagnosisRole.NULL)
+           return null;
+       if (code == DiagnosisRole.AD)
       return "AD";
     if (code == DiagnosisRole.DD)
       return "DD";
@@ -71,7 +73,7 @@ public class DiagnosisRoleEnumFactory implements EnumFactory<DiagnosisRole> {
     if (code == DiagnosisRole.BILLING)
       return "billing";
     return "?";
-  }
+   }
 
   public String toSystem(DiagnosisRole code) {
     return code.getSystem();

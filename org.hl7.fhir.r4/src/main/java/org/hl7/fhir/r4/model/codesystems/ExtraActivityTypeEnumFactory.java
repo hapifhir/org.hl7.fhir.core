@@ -48,14 +48,16 @@ public class ExtraActivityTypeEnumFactory implements EnumFactory<ExtraActivityTy
   }
 
   public String toCode(ExtraActivityType code) {
-    if (code == ExtraActivityType.AGGREGATE)
+       if (code == ExtraActivityType.NULL)
+           return null;
+       if (code == ExtraActivityType.AGGREGATE)
       return "aggregate";
     if (code == ExtraActivityType.COMPOSE)
       return "compose";
     if (code == ExtraActivityType.LABEL)
       return "label";
     return "?";
-  }
+   }
 
   public String toSystem(ExtraActivityType code) {
     return code.getSystem();

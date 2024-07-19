@@ -48,14 +48,16 @@ public class ActionConditionKindEnumFactory implements EnumFactory<ActionConditi
   }
 
   public String toCode(ActionConditionKind code) {
-    if (code == ActionConditionKind.APPLICABILITY)
+       if (code == ActionConditionKind.NULL)
+           return null;
+       if (code == ActionConditionKind.APPLICABILITY)
       return "applicability";
     if (code == ActionConditionKind.START)
       return "start";
     if (code == ActionConditionKind.STOP)
       return "stop";
     return "?";
-  }
+   }
 
   public String toSystem(ActionConditionKind code) {
     return code.getSystem();

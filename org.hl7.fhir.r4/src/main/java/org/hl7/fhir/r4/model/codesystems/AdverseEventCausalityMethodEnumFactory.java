@@ -48,14 +48,16 @@ public class AdverseEventCausalityMethodEnumFactory implements EnumFactory<Adver
   }
 
   public String toCode(AdverseEventCausalityMethod code) {
-    if (code == AdverseEventCausalityMethod.PROBABILITYSCALE)
+       if (code == AdverseEventCausalityMethod.NULL)
+           return null;
+       if (code == AdverseEventCausalityMethod.PROBABILITYSCALE)
       return "ProbabilityScale";
     if (code == AdverseEventCausalityMethod.BAYESIAN)
       return "Bayesian";
     if (code == AdverseEventCausalityMethod.CHECKLIST)
       return "Checklist";
     return "?";
-  }
+   }
 
   public String toSystem(AdverseEventCausalityMethod code) {
     return code.getSystem();

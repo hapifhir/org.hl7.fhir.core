@@ -48,14 +48,16 @@ public class ReferenceVersionRulesEnumFactory implements EnumFactory<ReferenceVe
   }
 
   public String toCode(ReferenceVersionRules code) {
-    if (code == ReferenceVersionRules.EITHER)
+       if (code == ReferenceVersionRules.NULL)
+           return null;
+       if (code == ReferenceVersionRules.EITHER)
       return "either";
     if (code == ReferenceVersionRules.INDEPENDENT)
       return "independent";
     if (code == ReferenceVersionRules.SPECIFIC)
       return "specific";
     return "?";
-  }
+   }
 
   public String toSystem(ReferenceVersionRules code) {
     return code.getSystem();

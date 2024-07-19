@@ -184,14 +184,16 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     public String toCode(EvidenceVariableType code) {
-      if (code == EvidenceVariableType.DICHOTOMOUS)
+       if (code == EvidenceVariableType.NULL)
+           return null;
+       if (code == EvidenceVariableType.DICHOTOMOUS)
         return "dichotomous";
       if (code == EvidenceVariableType.CONTINUOUS)
         return "continuous";
       if (code == EvidenceVariableType.DESCRIPTIVE)
         return "descriptive";
       return "?";
-    }
+   }
 
     public String toSystem(EvidenceVariableType code) {
       return code.getSystem();
@@ -378,7 +380,9 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     public String toCode(GroupMeasure code) {
-      if (code == GroupMeasure.MEAN)
+       if (code == GroupMeasure.NULL)
+           return null;
+       if (code == GroupMeasure.MEAN)
         return "mean";
       if (code == GroupMeasure.MEDIAN)
         return "median";
@@ -391,7 +395,7 @@ public class EvidenceVariable extends MetadataResource {
       if (code == GroupMeasure.MEDIANOFMEDIAN)
         return "median-of-median";
       return "?";
-    }
+   }
 
     public String toSystem(GroupMeasure code) {
       return code.getSystem();

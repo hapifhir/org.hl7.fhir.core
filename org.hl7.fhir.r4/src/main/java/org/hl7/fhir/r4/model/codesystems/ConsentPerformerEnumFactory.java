@@ -52,7 +52,9 @@ public class ConsentPerformerEnumFactory implements EnumFactory<ConsentPerformer
   }
 
   public String toCode(ConsentPerformer code) {
-    if (code == ConsentPerformer.CONSENTER)
+       if (code == ConsentPerformer.NULL)
+           return null;
+       if (code == ConsentPerformer.CONSENTER)
       return "consenter";
     if (code == ConsentPerformer.GRANTEE)
       return "grantee";
@@ -63,7 +65,7 @@ public class ConsentPerformerEnumFactory implements EnumFactory<ConsentPerformer
     if (code == ConsentPerformer.DELEGATOR)
       return "delegator";
     return "?";
-  }
+   }
 
   public String toSystem(ConsentPerformer code) {
     return code.getSystem();

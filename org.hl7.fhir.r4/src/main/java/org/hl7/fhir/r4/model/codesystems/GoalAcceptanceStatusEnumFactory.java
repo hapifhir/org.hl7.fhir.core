@@ -48,14 +48,16 @@ public class GoalAcceptanceStatusEnumFactory implements EnumFactory<GoalAcceptan
   }
 
   public String toCode(GoalAcceptanceStatus code) {
-    if (code == GoalAcceptanceStatus.AGREE)
+       if (code == GoalAcceptanceStatus.NULL)
+           return null;
+       if (code == GoalAcceptanceStatus.AGREE)
       return "agree";
     if (code == GoalAcceptanceStatus.DISAGREE)
       return "disagree";
     if (code == GoalAcceptanceStatus.PENDING)
       return "pending";
     return "?";
-  }
+   }
 
   public String toSystem(GoalAcceptanceStatus code) {
     return code.getSystem();

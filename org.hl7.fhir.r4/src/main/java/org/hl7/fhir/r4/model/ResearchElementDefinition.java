@@ -187,14 +187,16 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public String toCode(ResearchElementType code) {
-      if (code == ResearchElementType.POPULATION)
+       if (code == ResearchElementType.NULL)
+           return null;
+       if (code == ResearchElementType.POPULATION)
         return "population";
       if (code == ResearchElementType.EXPOSURE)
         return "exposure";
       if (code == ResearchElementType.OUTCOME)
         return "outcome";
       return "?";
-    }
+   }
 
     public String toSystem(ResearchElementType code) {
       return code.getSystem();
@@ -327,14 +329,16 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public String toCode(VariableType code) {
-      if (code == VariableType.DICHOTOMOUS)
+       if (code == VariableType.NULL)
+           return null;
+       if (code == VariableType.DICHOTOMOUS)
         return "dichotomous";
       if (code == VariableType.CONTINUOUS)
         return "continuous";
       if (code == VariableType.DESCRIPTIVE)
         return "descriptive";
       return "?";
-    }
+   }
 
     public String toSystem(VariableType code) {
       return code.getSystem();
@@ -521,7 +525,9 @@ public class ResearchElementDefinition extends MetadataResource {
     }
 
     public String toCode(GroupMeasure code) {
-      if (code == GroupMeasure.MEAN)
+       if (code == GroupMeasure.NULL)
+           return null;
+       if (code == GroupMeasure.MEAN)
         return "mean";
       if (code == GroupMeasure.MEDIAN)
         return "median";
@@ -534,7 +540,7 @@ public class ResearchElementDefinition extends MetadataResource {
       if (code == GroupMeasure.MEDIANOFMEDIAN)
         return "median-of-median";
       return "?";
-    }
+   }
 
     public String toSystem(GroupMeasure code) {
       return code.getSystem();

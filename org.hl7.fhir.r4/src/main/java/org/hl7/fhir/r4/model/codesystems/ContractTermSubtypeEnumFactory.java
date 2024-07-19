@@ -48,14 +48,16 @@ public class ContractTermSubtypeEnumFactory implements EnumFactory<ContractTermS
   }
 
   public String toCode(ContractTermSubtype code) {
-    if (code == ContractTermSubtype.CONDITION)
+       if (code == ContractTermSubtype.NULL)
+           return null;
+       if (code == ContractTermSubtype.CONDITION)
       return "condition";
     if (code == ContractTermSubtype.WARRANTY)
       return "warranty";
     if (code == ContractTermSubtype.INNOMINATE)
       return "innominate";
     return "?";
-  }
+   }
 
   public String toSystem(ContractTermSubtype code) {
     return code.getSystem();

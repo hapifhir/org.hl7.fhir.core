@@ -192,7 +192,9 @@ public class EnrollmentRequest extends DomainResource {
     }
 
     public String toCode(EnrollmentRequestStatus code) {
-      if (code == EnrollmentRequestStatus.ACTIVE)
+       if (code == EnrollmentRequestStatus.NULL)
+           return null;
+       if (code == EnrollmentRequestStatus.ACTIVE)
         return "active";
       if (code == EnrollmentRequestStatus.CANCELLED)
         return "cancelled";
@@ -201,7 +203,7 @@ public class EnrollmentRequest extends DomainResource {
       if (code == EnrollmentRequestStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(EnrollmentRequestStatus code) {
       return code.getSystem();

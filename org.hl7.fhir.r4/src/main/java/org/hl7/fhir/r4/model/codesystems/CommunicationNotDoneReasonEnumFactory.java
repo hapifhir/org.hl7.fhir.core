@@ -54,7 +54,9 @@ public class CommunicationNotDoneReasonEnumFactory implements EnumFactory<Commun
   }
 
   public String toCode(CommunicationNotDoneReason code) {
-    if (code == CommunicationNotDoneReason.UNKNOWN)
+       if (code == CommunicationNotDoneReason.NULL)
+           return null;
+       if (code == CommunicationNotDoneReason.UNKNOWN)
       return "unknown";
     if (code == CommunicationNotDoneReason.SYSTEMERROR)
       return "system-error";
@@ -67,7 +69,7 @@ public class CommunicationNotDoneReasonEnumFactory implements EnumFactory<Commun
     if (code == CommunicationNotDoneReason.PATIENTOBJECTION)
       return "patient-objection";
     return "?";
-  }
+   }
 
   public String toSystem(CommunicationNotDoneReason code) {
     return code.getSystem();

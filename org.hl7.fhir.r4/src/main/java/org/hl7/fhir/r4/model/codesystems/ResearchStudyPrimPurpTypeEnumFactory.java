@@ -58,7 +58,9 @@ public class ResearchStudyPrimPurpTypeEnumFactory implements EnumFactory<Researc
   }
 
   public String toCode(ResearchStudyPrimPurpType code) {
-    if (code == ResearchStudyPrimPurpType.TREATMENT)
+       if (code == ResearchStudyPrimPurpType.NULL)
+           return null;
+       if (code == ResearchStudyPrimPurpType.TREATMENT)
       return "treatment";
     if (code == ResearchStudyPrimPurpType.PREVENTION)
       return "prevention";
@@ -75,7 +77,7 @@ public class ResearchStudyPrimPurpTypeEnumFactory implements EnumFactory<Researc
     if (code == ResearchStudyPrimPurpType.DEVICEFEASIBILITY)
       return "device-feasibility";
     return "?";
-  }
+   }
 
   public String toSystem(ResearchStudyPrimPurpType code) {
     return code.getSystem();

@@ -44,10 +44,12 @@ public class ContractScopeEnumFactory implements EnumFactory<ContractScope> {
   }
 
   public String toCode(ContractScope code) {
-    if (code == ContractScope.POLICY)
+       if (code == ContractScope.NULL)
+           return null;
+       if (code == ContractScope.POLICY)
       return "policy";
     return "?";
-  }
+   }
 
   public String toSystem(ContractScope code) {
     return code.getSystem();

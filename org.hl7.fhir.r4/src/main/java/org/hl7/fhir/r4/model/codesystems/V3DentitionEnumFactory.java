@@ -650,7 +650,9 @@ public class V3DentitionEnumFactory implements EnumFactory<V3Dentition> {
   }
 
   public String toCode(V3Dentition code) {
-    if (code == V3Dentition.ARTIFICIALDENTITION)
+       if (code == V3Dentition.NULL)
+           return null;
+       if (code == V3Dentition.ARTIFICIALDENTITION)
       return "ArtificialDentition";
     if (code == V3Dentition.TID10A)
       return "TID10a";
@@ -1259,7 +1261,7 @@ public class V3DentitionEnumFactory implements EnumFactory<V3Dentition> {
     if (code == V3Dentition.TIDTS)
       return "TIDTs";
     return "?";
-  }
+   }
 
   public String toSystem(V3Dentition code) {
     return code.getSystem();

@@ -60,7 +60,9 @@ public class ConsentCategoryEnumFactory implements EnumFactory<ConsentCategory> 
   }
 
   public String toCode(ConsentCategory code) {
-    if (code == ConsentCategory.ACD)
+       if (code == ConsentCategory.NULL)
+           return null;
+       if (code == ConsentCategory.ACD)
       return "acd";
     if (code == ConsentCategory.DNR)
       return "dnr";
@@ -79,7 +81,7 @@ public class ConsentCategoryEnumFactory implements EnumFactory<ConsentCategory> 
     if (code == ConsentCategory.RSREID)
       return "rsreid";
     return "?";
-  }
+   }
 
   public String toSystem(ConsentCategory code) {
     return code.getSystem();

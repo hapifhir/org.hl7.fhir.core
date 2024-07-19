@@ -216,7 +216,9 @@ public class CodeSystem extends MetadataResource {
     }
 
     public String toCode(CodeSystemHierarchyMeaning code) {
-      if (code == CodeSystemHierarchyMeaning.GROUPEDBY)
+       if (code == CodeSystemHierarchyMeaning.NULL)
+           return null;
+       if (code == CodeSystemHierarchyMeaning.GROUPEDBY)
         return "grouped-by";
       if (code == CodeSystemHierarchyMeaning.ISA)
         return "is-a";
@@ -225,7 +227,7 @@ public class CodeSystem extends MetadataResource {
       if (code == CodeSystemHierarchyMeaning.CLASSIFIEDWITH)
         return "classified-with";
       return "?";
-    }
+   }
 
     public String toSystem(CodeSystemHierarchyMeaning code) {
       return code.getSystem();
@@ -403,7 +405,9 @@ public class CodeSystem extends MetadataResource {
     }
 
     public String toCode(CodeSystemContentMode code) {
-      if (code == CodeSystemContentMode.NOTPRESENT)
+       if (code == CodeSystemContentMode.NULL)
+           return null;
+       if (code == CodeSystemContentMode.NOTPRESENT)
         return "not-present";
       if (code == CodeSystemContentMode.EXAMPLE)
         return "example";
@@ -414,7 +418,7 @@ public class CodeSystem extends MetadataResource {
       if (code == CodeSystemContentMode.SUPPLEMENT)
         return "supplement";
       return "?";
-    }
+   }
 
     public String toSystem(CodeSystemContentMode code) {
       return code.getSystem();
@@ -667,7 +671,9 @@ public class CodeSystem extends MetadataResource {
     }
 
     public String toCode(FilterOperator code) {
-      if (code == FilterOperator.EQUAL)
+       if (code == FilterOperator.NULL)
+           return null;
+       if (code == FilterOperator.EQUAL)
         return "=";
       if (code == FilterOperator.ISA)
         return "is-a";
@@ -686,7 +692,7 @@ public class CodeSystem extends MetadataResource {
       if (code == FilterOperator.EXISTS)
         return "exists";
       return "?";
-    }
+   }
 
     public String toSystem(FilterOperator code) {
       return code.getSystem();
@@ -894,7 +900,9 @@ public class CodeSystem extends MetadataResource {
     }
 
     public String toCode(PropertyType code) {
-      if (code == PropertyType.CODE)
+       if (code == PropertyType.NULL)
+           return null;
+       if (code == PropertyType.CODE)
         return "code";
       if (code == PropertyType.CODING)
         return "Coding";
@@ -909,7 +917,7 @@ public class CodeSystem extends MetadataResource {
       if (code == PropertyType.DECIMAL)
         return "decimal";
       return "?";
-    }
+   }
 
     public String toSystem(PropertyType code) {
       return code.getSystem();

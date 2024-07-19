@@ -1884,7 +1884,9 @@ public class V3RaceEnumFactory implements EnumFactory<V3Race> {
   }
 
   public String toCode(V3Race code) {
-    if (code == V3Race._10025)
+       if (code == V3Race.NULL)
+           return null;
+       if (code == V3Race._10025)
       return "1002-5";
     if (code == V3Race._10041)
       return "1004-1";
@@ -3727,7 +3729,7 @@ public class V3RaceEnumFactory implements EnumFactory<V3Race> {
     if (code == V3Race._21311)
       return "2131-1";
     return "?";
-  }
+   }
 
   public String toSystem(V3Race code) {
     return code.getSystem();
