@@ -48,10 +48,12 @@ public class QuestionMaxOccursEnumFactory implements EnumFactory<QuestionMaxOccu
   }
 
   public String toCode(QuestionMaxOccurs code) {
-    if (code == QuestionMaxOccurs.ASTERISK)
+       if (code == QuestionMaxOccurs.NULL)
+           return null;
+       if (code == QuestionMaxOccurs.ASTERISK)
       return "*";
     return "?";
-  }
+   }
 
     public String toSystem(QuestionMaxOccurs code) {
       return code.getSystem();

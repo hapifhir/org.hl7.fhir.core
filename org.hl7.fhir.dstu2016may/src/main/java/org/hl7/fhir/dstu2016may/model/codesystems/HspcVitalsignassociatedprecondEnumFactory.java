@@ -50,7 +50,9 @@ public class HspcVitalsignassociatedprecondEnumFactory implements EnumFactory<Hs
   }
 
   public String toCode(HspcVitalsignassociatedprecond code) {
-    if (code == HspcVitalsignassociatedprecond._1942)
+       if (code == HspcVitalsignassociatedprecond.NULL)
+           return null;
+       if (code == HspcVitalsignassociatedprecond._1942)
       return "1942";
     if (code == HspcVitalsignassociatedprecond._1966)
       return "1966";
@@ -59,7 +61,7 @@ public class HspcVitalsignassociatedprecondEnumFactory implements EnumFactory<Hs
     if (code == HspcVitalsignassociatedprecond._219101)
       return "219101";
     return "?";
-  }
+   }
 
   public String toSystem(HspcVitalsignassociatedprecond code) {
     return code.getSystem();

@@ -50,7 +50,9 @@ public class ContractDataMeaningEnumFactory implements EnumFactory<ContractDataM
   }
 
   public String toCode(ContractDataMeaning code) {
-    if (code == ContractDataMeaning.INSTANCE)
+       if (code == ContractDataMeaning.NULL)
+           return null;
+       if (code == ContractDataMeaning.INSTANCE)
       return "instance";
     if (code == ContractDataMeaning.RELATED)
       return "related";
@@ -59,7 +61,7 @@ public class ContractDataMeaningEnumFactory implements EnumFactory<ContractDataM
     if (code == ContractDataMeaning.AUTHOREDBY)
       return "authoredby";
     return "?";
-  }
+   }
 
   public String toSystem(ContractDataMeaning code) {
     return code.getSystem();

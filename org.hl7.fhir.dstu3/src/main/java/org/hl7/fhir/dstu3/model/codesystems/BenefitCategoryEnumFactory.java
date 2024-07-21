@@ -54,7 +54,9 @@ public class BenefitCategoryEnumFactory implements EnumFactory<BenefitCategory> 
   }
 
   public String toCode(BenefitCategory code) {
-    if (code == BenefitCategory.ORAL)
+       if (code == BenefitCategory.NULL)
+           return null;
+       if (code == BenefitCategory.ORAL)
       return "oral";
     if (code == BenefitCategory.VISION)
       return "vision";
@@ -63,7 +65,7 @@ public class BenefitCategoryEnumFactory implements EnumFactory<BenefitCategory> 
     if (code == BenefitCategory.PHARMACY)
       return "pharmacy";
     return "?";
-  }
+   }
 
     public String toSystem(BenefitCategory code) {
       return code.getSystem();

@@ -50,7 +50,9 @@ public class LibraryTypeEnumFactory implements EnumFactory<LibraryType> {
   }
 
   public String toCode(LibraryType code) {
-    if (code == LibraryType.LOGICLIBRARY)
+       if (code == LibraryType.NULL)
+           return null;
+       if (code == LibraryType.LOGICLIBRARY)
       return "logic-library";
     if (code == LibraryType.MODELDEFINITION)
       return "model-definition";
@@ -59,7 +61,7 @@ public class LibraryTypeEnumFactory implements EnumFactory<LibraryType> {
     if (code == LibraryType.MODULEDEFINITION)
       return "module-definition";
     return "?";
-  }
+   }
 
   public String toSystem(LibraryType code) {
     return code.getSystem();

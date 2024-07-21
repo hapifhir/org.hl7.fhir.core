@@ -98,7 +98,9 @@ public class V3AcknowledgementDetailCodeEnumFactory implements EnumFactory<V3Ack
   }
 
   public String toCode(V3AcknowledgementDetailCode code) {
-    if (code == V3AcknowledgementDetailCode._ACKNOWLEDGEMENTDETAILNOTSUPPORTEDCODE)
+       if (code == V3AcknowledgementDetailCode.NULL)
+           return null;
+       if (code == V3AcknowledgementDetailCode._ACKNOWLEDGEMENTDETAILNOTSUPPORTEDCODE)
       return "_AcknowledgementDetailNotSupportedCode";
     if (code == V3AcknowledgementDetailCode.NS200)
       return "NS200";
@@ -155,7 +157,7 @@ public class V3AcknowledgementDetailCodeEnumFactory implements EnumFactory<V3Ack
     if (code == V3AcknowledgementDetailCode.SYN113)
       return "SYN113";
     return "?";
-  }
+   }
 
   public String toSystem(V3AcknowledgementDetailCode code) {
     return code.getSystem();

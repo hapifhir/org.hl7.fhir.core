@@ -61,7 +61,9 @@ public class VerificationresultPrimarySourceTypeEnumFactory
   }
 
   public String toCode(VerificationresultPrimarySourceType code) {
-    if (code == VerificationresultPrimarySourceType.LICBOARD)
+       if (code == VerificationresultPrimarySourceType.NULL)
+           return null;
+       if (code == VerificationresultPrimarySourceType.LICBOARD)
       return "lic-board";
     if (code == VerificationresultPrimarySourceType.PRIM)
       return "prim";
@@ -80,7 +82,7 @@ public class VerificationresultPrimarySourceTypeEnumFactory
     if (code == VerificationresultPrimarySourceType.AUTHSOURCE)
       return "auth-source";
     return "?";
-  }
+   }
 
   public String toSystem(VerificationresultPrimarySourceType code) {
     return code.getSystem();

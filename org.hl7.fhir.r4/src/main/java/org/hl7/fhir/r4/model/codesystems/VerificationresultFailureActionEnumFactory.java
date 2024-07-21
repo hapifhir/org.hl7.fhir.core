@@ -50,7 +50,9 @@ public class VerificationresultFailureActionEnumFactory implements EnumFactory<V
   }
 
   public String toCode(VerificationresultFailureAction code) {
-    if (code == VerificationresultFailureAction.FATAL)
+       if (code == VerificationresultFailureAction.NULL)
+           return null;
+       if (code == VerificationresultFailureAction.FATAL)
       return "fatal";
     if (code == VerificationresultFailureAction.WARN)
       return "warn";
@@ -59,7 +61,7 @@ public class VerificationresultFailureActionEnumFactory implements EnumFactory<V
     if (code == VerificationresultFailureAction.NONE)
       return "none";
     return "?";
-  }
+   }
 
   public String toSystem(VerificationresultFailureAction code) {
     return code.getSystem();

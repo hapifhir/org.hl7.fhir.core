@@ -2694,7 +2694,9 @@ public class AnzscoOccupationsEnumFactory implements EnumFactory<AnzscoOccupatio
   }
 
   public String toCode(AnzscoOccupations code) {
-    if (code == AnzscoOccupations._100000)
+       if (code == AnzscoOccupations.NULL)
+           return null;
+       if (code == AnzscoOccupations._100000)
       return "100000";
     if (code == AnzscoOccupations._111000)
       return "111000";
@@ -5347,7 +5349,7 @@ public class AnzscoOccupationsEnumFactory implements EnumFactory<AnzscoOccupatio
     if (code == AnzscoOccupations._899999)
       return "899999";
     return "?";
-  }
+   }
 
   public String toSystem(AnzscoOccupations code) {
     return code.getSystem();

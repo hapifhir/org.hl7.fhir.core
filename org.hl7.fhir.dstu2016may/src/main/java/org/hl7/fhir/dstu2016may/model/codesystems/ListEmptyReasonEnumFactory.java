@@ -54,7 +54,9 @@ public class ListEmptyReasonEnumFactory implements EnumFactory<ListEmptyReason> 
   }
 
   public String toCode(ListEmptyReason code) {
-    if (code == ListEmptyReason.NILKNOWN)
+       if (code == ListEmptyReason.NULL)
+           return null;
+       if (code == ListEmptyReason.NILKNOWN)
       return "nilknown";
     if (code == ListEmptyReason.NOTASKED)
       return "notasked";
@@ -67,7 +69,7 @@ public class ListEmptyReasonEnumFactory implements EnumFactory<ListEmptyReason> 
     if (code == ListEmptyReason.CLOSED)
       return "closed";
     return "?";
-  }
+   }
 
   public String toSystem(ListEmptyReason code) {
     return code.getSystem();

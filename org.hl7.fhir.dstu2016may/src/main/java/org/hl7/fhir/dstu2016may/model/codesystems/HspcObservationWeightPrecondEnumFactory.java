@@ -68,7 +68,9 @@ public class HspcObservationWeightPrecondEnumFactory implements EnumFactory<Hspc
   }
 
   public String toCode(HspcObservationWeightPrecond code) {
-    if (code == HspcObservationWeightPrecond._84123)
+       if (code == HspcObservationWeightPrecond.NULL)
+           return null;
+       if (code == HspcObservationWeightPrecond._84123)
       return "84123";
     if (code == HspcObservationWeightPrecond._84124)
       return "84124";
@@ -95,7 +97,7 @@ public class HspcObservationWeightPrecondEnumFactory implements EnumFactory<Hspc
     if (code == HspcObservationWeightPrecond._84137)
       return "84137";
     return "?";
-  }
+   }
 
   public String toSystem(HspcObservationWeightPrecond code) {
     return code.getSystem();

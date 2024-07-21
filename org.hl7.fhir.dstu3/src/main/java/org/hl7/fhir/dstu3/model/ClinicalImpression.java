@@ -152,14 +152,16 @@ public class ClinicalImpression extends DomainResource {
         throw new FHIRException("Unknown ClinicalImpressionStatus code '"+codeString+"'");
         }
     public String toCode(ClinicalImpressionStatus code) {
-      if (code == ClinicalImpressionStatus.DRAFT)
+       if (code == ClinicalImpressionStatus.NULL)
+           return null;
+       if (code == ClinicalImpressionStatus.DRAFT)
         return "draft";
       if (code == ClinicalImpressionStatus.COMPLETED)
         return "completed";
       if (code == ClinicalImpressionStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(ClinicalImpressionStatus code) {
       return code.getSystem();
       }

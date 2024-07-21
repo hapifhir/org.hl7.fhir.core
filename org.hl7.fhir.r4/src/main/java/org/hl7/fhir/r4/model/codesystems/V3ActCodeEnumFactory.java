@@ -2274,7 +2274,9 @@ public class V3ActCodeEnumFactory implements EnumFactory<V3ActCode> {
   }
 
   public String toCode(V3ActCode code) {
-    if (code == V3ActCode._ACTACCOUNTCODE)
+       if (code == V3ActCode.NULL)
+           return null;
+       if (code == V3ActCode._ACTACCOUNTCODE)
       return "_ActAccountCode";
     if (code == V3ActCode.ACCTRECEIVABLE)
       return "ACCTRECEIVABLE";
@@ -4507,7 +4509,7 @@ public class V3ActCodeEnumFactory implements EnumFactory<V3ActCode> {
     if (code == V3ActCode.STORE)
       return "STORE";
     return "?";
-  }
+   }
 
   public String toSystem(V3ActCode code) {
     return code.getSystem();

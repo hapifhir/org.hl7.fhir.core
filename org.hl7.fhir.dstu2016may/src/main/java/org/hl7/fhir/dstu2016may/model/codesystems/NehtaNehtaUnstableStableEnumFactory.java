@@ -48,14 +48,16 @@ public class NehtaNehtaUnstableStableEnumFactory implements EnumFactory<NehtaNeh
   }
 
   public String toCode(NehtaNehtaUnstableStable code) {
-    if (code == NehtaNehtaUnstableStable.UNSTABLE)
+       if (code == NehtaNehtaUnstableStable.NULL)
+           return null;
+       if (code == NehtaNehtaUnstableStable.UNSTABLE)
       return "unstable";
     if (code == NehtaNehtaUnstableStable.STABLE)
       return "stable";
     if (code == NehtaNehtaUnstableStable.NOTTESTED)
       return "not_tested";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaUnstableStable code) {
     return code.getSystem();

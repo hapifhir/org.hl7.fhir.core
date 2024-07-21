@@ -165,12 +165,14 @@ public class AllergyIntolerance extends DomainResource {
     }
 
     public String toCode(AllergyIntoleranceType code) {
-      if (code == AllergyIntoleranceType.ALLERGY)
+       if (code == AllergyIntoleranceType.NULL)
+           return null;
+       if (code == AllergyIntoleranceType.ALLERGY)
         return "allergy";
       if (code == AllergyIntoleranceType.INTOLERANCE)
         return "intolerance";
       return "?";
-    }
+   }
 
     public String toSystem(AllergyIntoleranceType code) {
       return code.getSystem();
@@ -328,7 +330,9 @@ public class AllergyIntolerance extends DomainResource {
     }
 
     public String toCode(AllergyIntoleranceCategory code) {
-      if (code == AllergyIntoleranceCategory.FOOD)
+       if (code == AllergyIntoleranceCategory.NULL)
+           return null;
+       if (code == AllergyIntoleranceCategory.FOOD)
         return "food";
       if (code == AllergyIntoleranceCategory.MEDICATION)
         return "medication";
@@ -337,7 +341,7 @@ public class AllergyIntolerance extends DomainResource {
       if (code == AllergyIntoleranceCategory.BIOLOGIC)
         return "biologic";
       return "?";
-    }
+   }
 
     public String toSystem(AllergyIntoleranceCategory code) {
       return code.getSystem();
@@ -472,14 +476,16 @@ public class AllergyIntolerance extends DomainResource {
     }
 
     public String toCode(AllergyIntoleranceCriticality code) {
-      if (code == AllergyIntoleranceCriticality.LOW)
+       if (code == AllergyIntoleranceCriticality.NULL)
+           return null;
+       if (code == AllergyIntoleranceCriticality.LOW)
         return "low";
       if (code == AllergyIntoleranceCriticality.HIGH)
         return "high";
       if (code == AllergyIntoleranceCriticality.UNABLETOASSESS)
         return "unable-to-assess";
       return "?";
-    }
+   }
 
     public String toSystem(AllergyIntoleranceCriticality code) {
       return code.getSystem();
@@ -612,14 +618,16 @@ public class AllergyIntolerance extends DomainResource {
     }
 
     public String toCode(AllergyIntoleranceSeverity code) {
-      if (code == AllergyIntoleranceSeverity.MILD)
+       if (code == AllergyIntoleranceSeverity.NULL)
+           return null;
+       if (code == AllergyIntoleranceSeverity.MILD)
         return "mild";
       if (code == AllergyIntoleranceSeverity.MODERATE)
         return "moderate";
       if (code == AllergyIntoleranceSeverity.SEVERE)
         return "severe";
       return "?";
-    }
+   }
 
     public String toSystem(AllergyIntoleranceSeverity code) {
       return code.getSystem();

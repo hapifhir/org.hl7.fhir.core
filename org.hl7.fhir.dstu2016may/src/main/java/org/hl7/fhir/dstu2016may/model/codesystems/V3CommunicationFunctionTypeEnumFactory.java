@@ -48,14 +48,16 @@ public class V3CommunicationFunctionTypeEnumFactory implements EnumFactory<V3Com
   }
 
   public String toCode(V3CommunicationFunctionType code) {
-    if (code == V3CommunicationFunctionType.RCV)
+       if (code == V3CommunicationFunctionType.NULL)
+           return null;
+       if (code == V3CommunicationFunctionType.RCV)
       return "RCV";
     if (code == V3CommunicationFunctionType.RSP)
       return "RSP";
     if (code == V3CommunicationFunctionType.SND)
       return "SND";
     return "?";
-  }
+   }
 
   public String toSystem(V3CommunicationFunctionType code) {
     return code.getSystem();

@@ -76,7 +76,9 @@ public class V3NullFlavorEnumFactory implements EnumFactory<V3NullFlavor> {
   }
 
   public String toCode(V3NullFlavor code) {
-    if (code == V3NullFlavor.NI)
+       if (code == V3NullFlavor.NULL)
+           return null;
+       if (code == V3NullFlavor.NI)
       return "NI";
     if (code == V3NullFlavor.INV)
       return "INV";
@@ -111,7 +113,7 @@ public class V3NullFlavorEnumFactory implements EnumFactory<V3NullFlavor> {
     if (code == V3NullFlavor.NP)
       return "NP";
     return "?";
-  }
+   }
 
   public String toSystem(V3NullFlavor code) {
     return code.getSystem();

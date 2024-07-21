@@ -259,7 +259,9 @@ public class EpisodeOfCare extends DomainResource {
     }
 
     public String toCode(EpisodeOfCareStatus code) {
-      if (code == EpisodeOfCareStatus.PLANNED)
+       if (code == EpisodeOfCareStatus.NULL)
+           return null;
+       if (code == EpisodeOfCareStatus.PLANNED)
         return "planned";
       if (code == EpisodeOfCareStatus.WAITLIST)
         return "waitlist";
@@ -274,7 +276,7 @@ public class EpisodeOfCare extends DomainResource {
       if (code == EpisodeOfCareStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(EpisodeOfCareStatus code) {
       return code.getSystem();

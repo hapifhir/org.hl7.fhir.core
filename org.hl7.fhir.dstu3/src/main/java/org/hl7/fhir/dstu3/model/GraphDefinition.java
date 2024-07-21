@@ -183,7 +183,9 @@ public class GraphDefinition extends MetadataResource {
         throw new FHIRException("Unknown CompartmentCode code '"+codeString+"'");
         }
     public String toCode(CompartmentCode code) {
-      if (code == CompartmentCode.PATIENT)
+       if (code == CompartmentCode.NULL)
+           return null;
+       if (code == CompartmentCode.PATIENT)
         return "Patient";
       if (code == CompartmentCode.ENCOUNTER)
         return "Encounter";
@@ -194,7 +196,7 @@ public class GraphDefinition extends MetadataResource {
       if (code == CompartmentCode.DEVICE)
         return "Device";
       return "?";
-      }
+   }
     public String toSystem(CompartmentCode code) {
       return code.getSystem();
       }
@@ -313,7 +315,9 @@ public class GraphDefinition extends MetadataResource {
         throw new FHIRException("Unknown GraphCompartmentRule code '"+codeString+"'");
         }
     public String toCode(GraphCompartmentRule code) {
-      if (code == GraphCompartmentRule.IDENTICAL)
+       if (code == GraphCompartmentRule.NULL)
+           return null;
+       if (code == GraphCompartmentRule.IDENTICAL)
         return "identical";
       if (code == GraphCompartmentRule.MATCHING)
         return "matching";
@@ -322,7 +326,7 @@ public class GraphDefinition extends MetadataResource {
       if (code == GraphCompartmentRule.CUSTOM)
         return "custom";
       return "?";
-      }
+   }
     public String toSystem(GraphCompartmentRule code) {
       return code.getSystem();
       }

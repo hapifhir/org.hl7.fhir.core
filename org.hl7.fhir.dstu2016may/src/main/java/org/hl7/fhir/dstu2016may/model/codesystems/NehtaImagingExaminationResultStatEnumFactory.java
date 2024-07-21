@@ -52,7 +52,9 @@ public class NehtaImagingExaminationResultStatEnumFactory implements EnumFactory
   }
 
   public String toCode(NehtaImagingExaminationResultStat code) {
-    if (code == NehtaImagingExaminationResultStat._1)
+       if (code == NehtaImagingExaminationResultStat.NULL)
+           return null;
+       if (code == NehtaImagingExaminationResultStat._1)
       return "1";
     if (code == NehtaImagingExaminationResultStat._2)
       return "2";
@@ -63,7 +65,7 @@ public class NehtaImagingExaminationResultStatEnumFactory implements EnumFactory
     if (code == NehtaImagingExaminationResultStat._5)
       return "5";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaImagingExaminationResultStat code) {
     return code.getSystem();

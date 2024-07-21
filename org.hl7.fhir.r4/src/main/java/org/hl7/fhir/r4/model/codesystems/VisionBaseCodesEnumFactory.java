@@ -50,7 +50,9 @@ public class VisionBaseCodesEnumFactory implements EnumFactory<VisionBaseCodes> 
   }
 
   public String toCode(VisionBaseCodes code) {
-    if (code == VisionBaseCodes.UP)
+       if (code == VisionBaseCodes.NULL)
+           return null;
+       if (code == VisionBaseCodes.UP)
       return "up";
     if (code == VisionBaseCodes.DOWN)
       return "down";
@@ -59,7 +61,7 @@ public class VisionBaseCodesEnumFactory implements EnumFactory<VisionBaseCodes> 
     if (code == VisionBaseCodes.OUT)
       return "out";
     return "?";
-  }
+   }
 
   public String toSystem(VisionBaseCodes code) {
     return code.getSystem();

@@ -58,7 +58,9 @@ public class ObservationCategoryEnumFactory implements EnumFactory<ObservationCa
   }
 
   public String toCode(ObservationCategory code) {
-    if (code == ObservationCategory.SOCIALHISTORY)
+       if (code == ObservationCategory.NULL)
+           return null;
+       if (code == ObservationCategory.SOCIALHISTORY)
       return "social-history";
     if (code == ObservationCategory.VITALSIGNS)
       return "vital-signs";
@@ -75,7 +77,7 @@ public class ObservationCategoryEnumFactory implements EnumFactory<ObservationCa
     if (code == ObservationCategory.THERAPY)
       return "therapy";
     return "?";
-  }
+   }
 
   public String toSystem(ObservationCategory code) {
     return code.getSystem();

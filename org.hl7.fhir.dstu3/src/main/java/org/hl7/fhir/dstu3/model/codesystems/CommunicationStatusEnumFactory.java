@@ -56,7 +56,9 @@ public class CommunicationStatusEnumFactory implements EnumFactory<Communication
   }
 
   public String toCode(CommunicationStatus code) {
-    if (code == CommunicationStatus.INPROGRESS)
+       if (code == CommunicationStatus.NULL)
+           return null;
+       if (code == CommunicationStatus.INPROGRESS)
       return "in-progress";
     if (code == CommunicationStatus.COMPLETED)
       return "completed";
@@ -67,7 +69,7 @@ public class CommunicationStatusEnumFactory implements EnumFactory<Communication
     if (code == CommunicationStatus.FAILED)
       return "failed";
     return "?";
-  }
+   }
 
     public String toSystem(CommunicationStatus code) {
       return code.getSystem();

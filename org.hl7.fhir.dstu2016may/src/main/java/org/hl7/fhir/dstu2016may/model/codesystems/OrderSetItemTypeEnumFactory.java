@@ -50,7 +50,9 @@ public class OrderSetItemTypeEnumFactory implements EnumFactory<OrderSetItemType
   }
 
   public String toCode(OrderSetItemType code) {
-    if (code == OrderSetItemType.CREATE)
+       if (code == OrderSetItemType.NULL)
+           return null;
+       if (code == OrderSetItemType.CREATE)
       return "create";
     if (code == OrderSetItemType.UPDATE)
       return "update";
@@ -59,7 +61,7 @@ public class OrderSetItemTypeEnumFactory implements EnumFactory<OrderSetItemType
     if (code == OrderSetItemType.FIREEVENT)
       return "fire-event";
     return "?";
-  }
+   }
 
   public String toSystem(OrderSetItemType code) {
     return code.getSystem();

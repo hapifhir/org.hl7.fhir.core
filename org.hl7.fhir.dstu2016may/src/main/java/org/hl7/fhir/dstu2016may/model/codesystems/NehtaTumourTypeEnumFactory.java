@@ -46,12 +46,14 @@ public class NehtaTumourTypeEnumFactory implements EnumFactory<NehtaTumourType> 
   }
 
   public String toCode(NehtaTumourType code) {
-    if (code == NehtaTumourType.EPITHELIALTUMOURS)
+       if (code == NehtaTumourType.NULL)
+           return null;
+       if (code == NehtaTumourType.EPITHELIALTUMOURS)
       return "epithelial-tumours";
     if (code == NehtaTumourType.MESENCHYMALTUMOURS)
       return "mesenchymal-tumours";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaTumourType code) {
     return code.getSystem();

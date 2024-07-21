@@ -54,7 +54,9 @@ public class V3LanguageAbilityProficiencyEnumFactory implements EnumFactory<V3La
   }
 
   public String toCode(V3LanguageAbilityProficiency code) {
-    if (code == V3LanguageAbilityProficiency.E)
+       if (code == V3LanguageAbilityProficiency.NULL)
+           return null;
+       if (code == V3LanguageAbilityProficiency.E)
       return "E";
     if (code == V3LanguageAbilityProficiency.F)
       return "F";
@@ -63,7 +65,7 @@ public class V3LanguageAbilityProficiencyEnumFactory implements EnumFactory<V3La
     if (code == V3LanguageAbilityProficiency.P)
       return "P";
     return "?";
-  }
+   }
 
     public String toSystem(V3LanguageAbilityProficiency code) {
       return code.getSystem();

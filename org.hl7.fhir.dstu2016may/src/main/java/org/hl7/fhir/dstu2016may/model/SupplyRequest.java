@@ -190,7 +190,9 @@ public class SupplyRequest extends DomainResource {
     }
 
     public String toCode(SupplyRequestStatus code) {
-      if (code == SupplyRequestStatus.REQUESTED)
+       if (code == SupplyRequestStatus.NULL)
+           return null;
+       if (code == SupplyRequestStatus.REQUESTED)
         return "requested";
       if (code == SupplyRequestStatus.COMPLETED)
         return "completed";
@@ -199,7 +201,7 @@ public class SupplyRequest extends DomainResource {
       if (code == SupplyRequestStatus.CANCELLED)
         return "cancelled";
       return "?";
-    }
+   }
 
     public String toSystem(SupplyRequestStatus code) {
       return code.getSystem();

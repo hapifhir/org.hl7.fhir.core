@@ -50,7 +50,9 @@ public class AuditEntityTypeEnumFactory implements EnumFactory<AuditEntityType> 
   }
 
   public String toCode(AuditEntityType code) {
-    if (code == AuditEntityType._1)
+       if (code == AuditEntityType.NULL)
+           return null;
+       if (code == AuditEntityType._1)
       return "1";
     if (code == AuditEntityType._2)
       return "2";
@@ -59,7 +61,7 @@ public class AuditEntityTypeEnumFactory implements EnumFactory<AuditEntityType> 
     if (code == AuditEntityType._4)
       return "4";
     return "?";
-  }
+   }
 
   public String toSystem(AuditEntityType code) {
     return code.getSystem();

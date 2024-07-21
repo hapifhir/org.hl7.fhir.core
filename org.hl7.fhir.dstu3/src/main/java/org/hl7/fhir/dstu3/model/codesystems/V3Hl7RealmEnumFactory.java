@@ -136,7 +136,9 @@ public class V3Hl7RealmEnumFactory implements EnumFactory<V3Hl7Realm> {
   }
 
   public String toCode(V3Hl7Realm code) {
-    if (code == V3Hl7Realm.BINDINGREALMS)
+       if (code == V3Hl7Realm.NULL)
+           return null;
+       if (code == V3Hl7Realm.BINDINGREALMS)
       return "BindingRealms";
     if (code == V3Hl7Realm.AFFILIATEREALMS)
       return "AffiliateRealms";
@@ -227,7 +229,7 @@ public class V3Hl7RealmEnumFactory implements EnumFactory<V3Hl7Realm> {
     if (code == V3Hl7Realm.ZZ)
       return "ZZ";
     return "?";
-  }
+   }
 
     public String toSystem(V3Hl7Realm code) {
       return code.getSystem();

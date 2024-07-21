@@ -46,12 +46,14 @@ public class NehtaNehtaDysplasiaEnumFactory implements EnumFactory<NehtaNehtaDys
   }
 
   public String toCode(NehtaNehtaDysplasia code) {
-    if (code == NehtaNehtaDysplasia.WITHDYSPLASIA)
+       if (code == NehtaNehtaDysplasia.NULL)
+           return null;
+       if (code == NehtaNehtaDysplasia.WITHDYSPLASIA)
       return "with_dysplasia";
     if (code == NehtaNehtaDysplasia.WITHOUTDYSPLASIA)
       return "without_dysplasia";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaDysplasia code) {
     return code.getSystem();

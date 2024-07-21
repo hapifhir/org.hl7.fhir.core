@@ -46,12 +46,14 @@ public class V3Hl7ITSTypeEnumFactory implements EnumFactory<V3Hl7ITSType> {
   }
 
   public String toCode(V3Hl7ITSType code) {
-    if (code == V3Hl7ITSType.UML)
+       if (code == V3Hl7ITSType.NULL)
+           return null;
+       if (code == V3Hl7ITSType.UML)
       return "UML";
     if (code == V3Hl7ITSType.XML)
       return "XML";
     return "?";
-  }
+   }
 
   public String toSystem(V3Hl7ITSType code) {
     return code.getSystem();

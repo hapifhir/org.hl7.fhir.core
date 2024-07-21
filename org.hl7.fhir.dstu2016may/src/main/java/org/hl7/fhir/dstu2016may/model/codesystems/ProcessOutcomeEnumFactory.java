@@ -48,14 +48,16 @@ public class ProcessOutcomeEnumFactory implements EnumFactory<ProcessOutcome> {
   }
 
   public String toCode(ProcessOutcome code) {
-    if (code == ProcessOutcome.COMPLETE)
+       if (code == ProcessOutcome.NULL)
+           return null;
+       if (code == ProcessOutcome.COMPLETE)
       return "complete";
     if (code == ProcessOutcome.PENDED)
       return "pended";
     if (code == ProcessOutcome.ERROR)
       return "error";
     return "?";
-  }
+   }
 
   public String toSystem(ProcessOutcome code) {
     return code.getSystem();

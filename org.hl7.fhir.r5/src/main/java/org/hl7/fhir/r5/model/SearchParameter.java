@@ -152,14 +152,16 @@ public class SearchParameter extends CanonicalResource {
         throw new FHIRException("Unknown SearchProcessingModeType code '"+codeString+"'");
         }
     public String toCode(SearchProcessingModeType code) {
-      if (code == SearchProcessingModeType.NORMAL)
+       if (code == SearchProcessingModeType.NULL)
+           return null;
+       if (code == SearchProcessingModeType.NORMAL)
         return "normal";
       if (code == SearchProcessingModeType.PHONETIC)
         return "phonetic";
       if (code == SearchProcessingModeType.OTHER)
         return "other";
       return "?";
-      }
+   }
     public String toSystem(SearchProcessingModeType code) {
       return code.getSystem();
       }

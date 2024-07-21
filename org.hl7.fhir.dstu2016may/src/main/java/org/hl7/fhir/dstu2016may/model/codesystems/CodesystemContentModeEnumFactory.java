@@ -50,7 +50,9 @@ public class CodesystemContentModeEnumFactory implements EnumFactory<CodesystemC
   }
 
   public String toCode(CodesystemContentMode code) {
-    if (code == CodesystemContentMode.NOTPRESENT)
+       if (code == CodesystemContentMode.NULL)
+           return null;
+       if (code == CodesystemContentMode.NOTPRESENT)
       return "not-present";
     if (code == CodesystemContentMode.EXAMPLAR)
       return "examplar";
@@ -59,7 +61,7 @@ public class CodesystemContentModeEnumFactory implements EnumFactory<CodesystemC
     if (code == CodesystemContentMode.COMPLETE)
       return "complete";
     return "?";
-  }
+   }
 
   public String toSystem(CodesystemContentMode code) {
     return code.getSystem();

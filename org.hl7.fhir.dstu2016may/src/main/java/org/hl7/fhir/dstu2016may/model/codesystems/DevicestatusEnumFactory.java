@@ -48,14 +48,16 @@ public class DevicestatusEnumFactory implements EnumFactory<Devicestatus> {
   }
 
   public String toCode(Devicestatus code) {
-    if (code == Devicestatus.AVAILABLE)
+       if (code == Devicestatus.NULL)
+           return null;
+       if (code == Devicestatus.AVAILABLE)
       return "available";
     if (code == Devicestatus.NOTAVAILABLE)
       return "not-available";
     if (code == Devicestatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(Devicestatus code) {
     return code.getSystem();

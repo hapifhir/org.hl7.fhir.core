@@ -46,12 +46,14 @@ public class RelationTypeEnumFactory implements EnumFactory<RelationType> {
   }
 
   public String toCode(RelationType code) {
-    if (code == RelationType.TRIGGERS)
+       if (code == RelationType.NULL)
+           return null;
+       if (code == RelationType.TRIGGERS)
       return "triggers";
     if (code == RelationType.ISREPLACEDBY)
       return "is-replaced-by";
     return "?";
-  }
+   }
 
   public String toSystem(RelationType code) {
     return code.getSystem();

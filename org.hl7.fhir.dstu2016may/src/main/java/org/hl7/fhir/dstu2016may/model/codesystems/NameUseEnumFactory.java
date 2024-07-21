@@ -56,7 +56,9 @@ public class NameUseEnumFactory implements EnumFactory<NameUse> {
   }
 
   public String toCode(NameUse code) {
-    if (code == NameUse.USUAL)
+       if (code == NameUse.NULL)
+           return null;
+       if (code == NameUse.USUAL)
       return "usual";
     if (code == NameUse.OFFICIAL)
       return "official";
@@ -71,7 +73,7 @@ public class NameUseEnumFactory implements EnumFactory<NameUse> {
     if (code == NameUse.MAIDEN)
       return "maiden";
     return "?";
-  }
+   }
 
   public String toSystem(NameUse code) {
     return code.getSystem();

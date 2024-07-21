@@ -44,10 +44,12 @@ public class ContractDecisionModeEnumFactory implements EnumFactory<ContractDeci
   }
 
   public String toCode(ContractDecisionMode code) {
-    if (code == ContractDecisionMode.POLICY)
+       if (code == ContractDecisionMode.NULL)
+           return null;
+       if (code == ContractDecisionMode.POLICY)
       return "policy";
     return "?";
-  }
+   }
 
   public String toSystem(ContractDecisionMode code) {
     return code.getSystem();

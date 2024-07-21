@@ -56,7 +56,9 @@ public class RequestStatusEnumFactory implements EnumFactory<RequestStatus> {
   }
 
   public String toCode(RequestStatus code) {
-    if (code == RequestStatus.DRAFT)
+       if (code == RequestStatus.NULL)
+           return null;
+       if (code == RequestStatus.DRAFT)
       return "draft";
     if (code == RequestStatus.ACTIVE)
       return "active";
@@ -71,7 +73,7 @@ public class RequestStatusEnumFactory implements EnumFactory<RequestStatus> {
     if (code == RequestStatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
   public String toSystem(RequestStatus code) {
     return code.getSystem();

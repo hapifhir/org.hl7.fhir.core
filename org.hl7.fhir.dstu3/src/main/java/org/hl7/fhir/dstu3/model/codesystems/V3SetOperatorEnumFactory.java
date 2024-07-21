@@ -58,7 +58,9 @@ public class V3SetOperatorEnumFactory implements EnumFactory<V3SetOperator> {
   }
 
   public String toCode(V3SetOperator code) {
-    if (code == V3SetOperator._VALUESETOPERATOR)
+       if (code == V3SetOperator.NULL)
+           return null;
+       if (code == V3SetOperator._VALUESETOPERATOR)
       return "_ValueSetOperator";
     if (code == V3SetOperator.E)
       return "E";
@@ -71,7 +73,7 @@ public class V3SetOperatorEnumFactory implements EnumFactory<V3SetOperator> {
     if (code == V3SetOperator.P)
       return "P";
     return "?";
-  }
+   }
 
     public String toSystem(V3SetOperator code) {
       return code.getSystem();

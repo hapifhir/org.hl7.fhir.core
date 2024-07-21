@@ -58,7 +58,9 @@ public class V3LanguageAbilityModeEnumFactory implements EnumFactory<V3LanguageA
   }
 
   public String toCode(V3LanguageAbilityMode code) {
-    if (code == V3LanguageAbilityMode.ESGN)
+       if (code == V3LanguageAbilityMode.NULL)
+           return null;
+       if (code == V3LanguageAbilityMode.ESGN)
       return "ESGN";
     if (code == V3LanguageAbilityMode.ESP)
       return "ESP";
@@ -71,7 +73,7 @@ public class V3LanguageAbilityModeEnumFactory implements EnumFactory<V3LanguageA
     if (code == V3LanguageAbilityMode.RWR)
       return "RWR";
     return "?";
-  }
+   }
 
     public String toSystem(V3LanguageAbilityMode code) {
       return code.getSystem();

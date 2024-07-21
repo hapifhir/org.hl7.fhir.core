@@ -50,12 +50,14 @@ public class ContractActorroleEnumFactory implements EnumFactory<ContractActorro
   }
 
   public String toCode(ContractActorrole code) {
-    if (code == ContractActorrole.PRACTITIONER)
+       if (code == ContractActorrole.NULL)
+           return null;
+       if (code == ContractActorrole.PRACTITIONER)
       return "practitioner";
     if (code == ContractActorrole.PATIENT)
       return "patient";
     return "?";
-  }
+   }
 
     public String toSystem(ContractActorrole code) {
       return code.getSystem();

@@ -52,14 +52,16 @@ public class FundsreserveEnumFactory implements EnumFactory<Fundsreserve> {
   }
 
   public String toCode(Fundsreserve code) {
-    if (code == Fundsreserve.PATIENT)
+       if (code == Fundsreserve.NULL)
+           return null;
+       if (code == Fundsreserve.PATIENT)
       return "patient";
     if (code == Fundsreserve.PROVIDER)
       return "provider";
     if (code == Fundsreserve.NONE)
       return "none";
     return "?";
-  }
+   }
 
     public String toSystem(Fundsreserve code) {
       return code.getSystem();

@@ -54,7 +54,9 @@ public class GroupMeasureEnumFactory implements EnumFactory<GroupMeasure> {
   }
 
   public String toCode(GroupMeasure code) {
-    if (code == GroupMeasure.MEAN)
+       if (code == GroupMeasure.NULL)
+           return null;
+       if (code == GroupMeasure.MEAN)
       return "mean";
     if (code == GroupMeasure.MEDIAN)
       return "median";
@@ -67,7 +69,7 @@ public class GroupMeasureEnumFactory implements EnumFactory<GroupMeasure> {
     if (code == GroupMeasure.MEDIANOFMEDIAN)
       return "median-of-median";
     return "?";
-  }
+   }
 
   public String toSystem(GroupMeasure code) {
     return code.getSystem();

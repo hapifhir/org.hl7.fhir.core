@@ -104,7 +104,9 @@ public class IssueTypeEnumFactory implements EnumFactory<IssueType> {
   }
 
   public String toCode(IssueType code) {
-    if (code == IssueType.INVALID)
+       if (code == IssueType.NULL)
+           return null;
+       if (code == IssueType.INVALID)
       return "invalid";
     if (code == IssueType.STRUCTURE)
       return "structure";
@@ -163,7 +165,7 @@ public class IssueTypeEnumFactory implements EnumFactory<IssueType> {
     if (code == IssueType.INFORMATIONAL)
       return "informational";
     return "?";
-  }
+   }
 
     public String toSystem(IssueType code) {
       return code.getSystem();

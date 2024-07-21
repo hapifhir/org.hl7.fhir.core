@@ -48,14 +48,16 @@ public class MedicationStatusEnumFactory implements EnumFactory<MedicationStatus
   }
 
   public String toCode(MedicationStatus code) {
-    if (code == MedicationStatus.ACTIVE)
+       if (code == MedicationStatus.NULL)
+           return null;
+       if (code == MedicationStatus.ACTIVE)
       return "active";
     if (code == MedicationStatus.INACTIVE)
       return "inactive";
     if (code == MedicationStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(MedicationStatus code) {
     return code.getSystem();

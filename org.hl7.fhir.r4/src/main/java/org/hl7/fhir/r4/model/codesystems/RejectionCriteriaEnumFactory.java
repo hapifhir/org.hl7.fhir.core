@@ -52,7 +52,9 @@ public class RejectionCriteriaEnumFactory implements EnumFactory<RejectionCriter
   }
 
   public String toCode(RejectionCriteria code) {
-    if (code == RejectionCriteria.HEMOLIZED)
+       if (code == RejectionCriteria.NULL)
+           return null;
+       if (code == RejectionCriteria.HEMOLIZED)
       return "hemolized";
     if (code == RejectionCriteria.INSUFFICIENT)
       return "insufficient";
@@ -63,7 +65,7 @@ public class RejectionCriteriaEnumFactory implements EnumFactory<RejectionCriter
     if (code == RejectionCriteria.WRONGTEMPERATURE)
       return "wrong-temperature";
     return "?";
-  }
+   }
 
   public String toSystem(RejectionCriteria code) {
     return code.getSystem();

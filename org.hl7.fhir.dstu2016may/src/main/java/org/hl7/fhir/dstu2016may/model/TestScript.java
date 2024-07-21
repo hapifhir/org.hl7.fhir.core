@@ -156,12 +156,14 @@ public class TestScript extends DomainResource {
     }
 
     public String toCode(ContentType code) {
-      if (code == ContentType.XML)
+       if (code == ContentType.NULL)
+           return null;
+       if (code == ContentType.XML)
         return "xml";
       if (code == ContentType.JSON)
         return "json";
       return "?";
-    }
+   }
 
     public String toSystem(ContentType code) {
       return code.getSystem();
@@ -271,12 +273,14 @@ public class TestScript extends DomainResource {
     }
 
     public String toCode(AssertionDirectionType code) {
-      if (code == AssertionDirectionType.RESPONSE)
+       if (code == AssertionDirectionType.NULL)
+           return null;
+       if (code == AssertionDirectionType.RESPONSE)
         return "response";
       if (code == AssertionDirectionType.REQUEST)
         return "request";
       return "?";
-    }
+   }
 
     public String toSystem(AssertionDirectionType code) {
       return code.getSystem();
@@ -530,7 +534,9 @@ public class TestScript extends DomainResource {
     }
 
     public String toCode(AssertionOperatorType code) {
-      if (code == AssertionOperatorType.EQUALS)
+       if (code == AssertionOperatorType.NULL)
+           return null;
+       if (code == AssertionOperatorType.EQUALS)
         return "equals";
       if (code == AssertionOperatorType.NOTEQUALS)
         return "notEquals";
@@ -551,7 +557,7 @@ public class TestScript extends DomainResource {
       if (code == AssertionOperatorType.NOTCONTAINS)
         return "notContains";
       return "?";
-    }
+   }
 
     public String toSystem(AssertionOperatorType code) {
       return code.getSystem();
@@ -841,7 +847,9 @@ public class TestScript extends DomainResource {
     }
 
     public String toCode(AssertionResponseTypes code) {
-      if (code == AssertionResponseTypes.OKAY)
+       if (code == AssertionResponseTypes.NULL)
+           return null;
+       if (code == AssertionResponseTypes.OKAY)
         return "okay";
       if (code == AssertionResponseTypes.CREATED)
         return "created";
@@ -866,7 +874,7 @@ public class TestScript extends DomainResource {
       if (code == AssertionResponseTypes.UNPROCESSABLE)
         return "unprocessable";
       return "?";
-    }
+   }
 
     public String toSystem(AssertionResponseTypes code) {
       return code.getSystem();

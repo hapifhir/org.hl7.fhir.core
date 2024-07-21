@@ -553,7 +553,9 @@ public class V3AmericanIndianAlaskaNativeLanguagesEnumFactory
   }
 
   public String toCode(V3AmericanIndianAlaskaNativeLanguages code) {
-    if (code == V3AmericanIndianAlaskaNativeLanguages._ALGIC)
+       if (code == V3AmericanIndianAlaskaNativeLanguages.NULL)
+           return null;
+       if (code == V3AmericanIndianAlaskaNativeLanguages._ALGIC)
       return "_Algic";
     if (code == V3AmericanIndianAlaskaNativeLanguages._ALGONQUIAN)
       return "_Algonquian";
@@ -1064,7 +1066,7 @@ public class V3AmericanIndianAlaskaNativeLanguagesEnumFactory
     if (code == V3AmericanIndianAlaskaNativeLanguages.XZUN)
       return "x-ZUN";
     return "?";
-  }
+   }
 
   public String toSystem(V3AmericanIndianAlaskaNativeLanguages code) {
     return code.getSystem();

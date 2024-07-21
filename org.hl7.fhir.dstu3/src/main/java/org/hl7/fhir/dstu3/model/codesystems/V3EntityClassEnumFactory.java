@@ -100,7 +100,9 @@ public class V3EntityClassEnumFactory implements EnumFactory<V3EntityClass> {
   }
 
   public String toCode(V3EntityClass code) {
-    if (code == V3EntityClass.ENT)
+       if (code == V3EntityClass.NULL)
+           return null;
+       if (code == V3EntityClass.ENT)
       return "ENT";
     if (code == V3EntityClass.HCE)
       return "HCE";
@@ -155,7 +157,7 @@ public class V3EntityClassEnumFactory implements EnumFactory<V3EntityClass> {
     if (code == V3EntityClass.RGRP)
       return "RGRP";
     return "?";
-  }
+   }
 
     public String toSystem(V3EntityClass code) {
       return code.getSystem();

@@ -52,7 +52,9 @@ public class CarePlanStatusEnumFactory implements EnumFactory<CarePlanStatus> {
   }
 
   public String toCode(CarePlanStatus code) {
-    if (code == CarePlanStatus.PROPOSED)
+       if (code == CarePlanStatus.NULL)
+           return null;
+       if (code == CarePlanStatus.PROPOSED)
       return "proposed";
     if (code == CarePlanStatus.DRAFT)
       return "draft";
@@ -63,7 +65,7 @@ public class CarePlanStatusEnumFactory implements EnumFactory<CarePlanStatus> {
     if (code == CarePlanStatus.CANCELLED)
       return "cancelled";
     return "?";
-  }
+   }
 
   public String toSystem(CarePlanStatus code) {
     return code.getSystem();

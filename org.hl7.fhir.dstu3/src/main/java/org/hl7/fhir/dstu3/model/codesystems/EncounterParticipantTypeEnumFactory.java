@@ -50,12 +50,14 @@ public class EncounterParticipantTypeEnumFactory implements EnumFactory<Encounte
   }
 
   public String toCode(EncounterParticipantType code) {
-    if (code == EncounterParticipantType.TRANSLATOR)
+       if (code == EncounterParticipantType.NULL)
+           return null;
+       if (code == EncounterParticipantType.TRANSLATOR)
       return "translator";
     if (code == EncounterParticipantType.EMERGENCY)
       return "emergency";
     return "?";
-  }
+   }
 
     public String toSystem(EncounterParticipantType code) {
       return code.getSystem();

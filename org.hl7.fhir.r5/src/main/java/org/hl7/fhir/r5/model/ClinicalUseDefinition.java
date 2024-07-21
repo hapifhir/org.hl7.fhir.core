@@ -180,7 +180,9 @@ public class ClinicalUseDefinition extends DomainResource {
         throw new FHIRException("Unknown ClinicalUseDefinitionType code '"+codeString+"'");
         }
     public String toCode(ClinicalUseDefinitionType code) {
-      if (code == ClinicalUseDefinitionType.INDICATION)
+       if (code == ClinicalUseDefinitionType.NULL)
+           return null;
+       if (code == ClinicalUseDefinitionType.INDICATION)
         return "indication";
       if (code == ClinicalUseDefinitionType.CONTRAINDICATION)
         return "contraindication";
@@ -191,7 +193,7 @@ public class ClinicalUseDefinition extends DomainResource {
       if (code == ClinicalUseDefinitionType.WARNING)
         return "warning";
       return "?";
-      }
+   }
     public String toSystem(ClinicalUseDefinitionType code) {
       return code.getSystem();
       }

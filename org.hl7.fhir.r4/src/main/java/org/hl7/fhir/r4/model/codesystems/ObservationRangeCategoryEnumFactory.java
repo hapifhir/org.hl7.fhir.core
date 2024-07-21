@@ -48,14 +48,16 @@ public class ObservationRangeCategoryEnumFactory implements EnumFactory<Observat
   }
 
   public String toCode(ObservationRangeCategory code) {
-    if (code == ObservationRangeCategory.REFERENCE)
+       if (code == ObservationRangeCategory.NULL)
+           return null;
+       if (code == ObservationRangeCategory.REFERENCE)
       return "reference";
     if (code == ObservationRangeCategory.CRITICAL)
       return "critical";
     if (code == ObservationRangeCategory.ABSOLUTE)
       return "absolute";
     return "?";
-  }
+   }
 
   public String toSystem(ObservationRangeCategory code) {
     return code.getSystem();

@@ -52,14 +52,16 @@ public class V3ParticipationSignatureEnumFactory implements EnumFactory<V3Partic
   }
 
   public String toCode(V3ParticipationSignature code) {
-    if (code == V3ParticipationSignature.I)
+       if (code == V3ParticipationSignature.NULL)
+           return null;
+       if (code == V3ParticipationSignature.I)
       return "I";
     if (code == V3ParticipationSignature.S)
       return "S";
     if (code == V3ParticipationSignature.X)
       return "X";
     return "?";
-  }
+   }
 
     public String toSystem(V3ParticipationSignature code) {
       return code.getSystem();

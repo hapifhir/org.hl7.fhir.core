@@ -64,7 +64,9 @@ public class CoverageClassEnumFactory implements EnumFactory<CoverageClass> {
   }
 
   public String toCode(CoverageClass code) {
-    if (code == CoverageClass.GROUP)
+       if (code == CoverageClass.NULL)
+           return null;
+       if (code == CoverageClass.GROUP)
       return "group";
     if (code == CoverageClass.SUBGROUP)
       return "subgroup";
@@ -87,7 +89,7 @@ public class CoverageClassEnumFactory implements EnumFactory<CoverageClass> {
     if (code == CoverageClass.RXGROUP)
       return "rxgroup";
     return "?";
-  }
+   }
 
   public String toSystem(CoverageClass code) {
     return code.getSystem();

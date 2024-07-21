@@ -178,7 +178,9 @@ public class Condition extends DomainResource {
         throw new FHIRException("Unknown ConditionClinicalStatus code '"+codeString+"'");
         }
     public String toCode(ConditionClinicalStatus code) {
-      if (code == ConditionClinicalStatus.ACTIVE)
+       if (code == ConditionClinicalStatus.NULL)
+           return null;
+       if (code == ConditionClinicalStatus.ACTIVE)
         return "active";
       if (code == ConditionClinicalStatus.RECURRENCE)
         return "recurrence";
@@ -189,7 +191,7 @@ public class Condition extends DomainResource {
       if (code == ConditionClinicalStatus.RESOLVED)
         return "resolved";
       return "?";
-      }
+   }
     public String toSystem(ConditionClinicalStatus code) {
       return code.getSystem();
       }
@@ -336,7 +338,9 @@ public class Condition extends DomainResource {
         throw new FHIRException("Unknown ConditionVerificationStatus code '"+codeString+"'");
         }
     public String toCode(ConditionVerificationStatus code) {
-      if (code == ConditionVerificationStatus.PROVISIONAL)
+       if (code == ConditionVerificationStatus.NULL)
+           return null;
+       if (code == ConditionVerificationStatus.PROVISIONAL)
         return "provisional";
       if (code == ConditionVerificationStatus.DIFFERENTIAL)
         return "differential";
@@ -349,7 +353,7 @@ public class Condition extends DomainResource {
       if (code == ConditionVerificationStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(ConditionVerificationStatus code) {
       return code.getSystem();
       }

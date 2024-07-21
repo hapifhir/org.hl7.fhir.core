@@ -46,12 +46,14 @@ public class V3ContainerSeparatorEnumFactory implements EnumFactory<V3ContainerS
   }
 
   public String toCode(V3ContainerSeparator code) {
-    if (code == V3ContainerSeparator.GEL)
+       if (code == V3ContainerSeparator.NULL)
+           return null;
+       if (code == V3ContainerSeparator.GEL)
       return "GEL";
     if (code == V3ContainerSeparator.NONE)
       return "NONE";
     return "?";
-  }
+   }
 
   public String toSystem(V3ContainerSeparator code) {
     return code.getSystem();

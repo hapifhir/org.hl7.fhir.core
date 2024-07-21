@@ -50,7 +50,9 @@ public class CdsRuleParticipantEnumFactory implements EnumFactory<CdsRulePartici
   }
 
   public String toCode(CdsRuleParticipant code) {
-    if (code == CdsRuleParticipant.PATIENT)
+       if (code == CdsRuleParticipant.NULL)
+           return null;
+       if (code == CdsRuleParticipant.PATIENT)
       return "patient";
     if (code == CdsRuleParticipant.PERSON)
       return "person";
@@ -59,7 +61,7 @@ public class CdsRuleParticipantEnumFactory implements EnumFactory<CdsRulePartici
     if (code == CdsRuleParticipant.RELATEDPERSON)
       return "related-person";
     return "?";
-  }
+   }
 
   public String toSystem(CdsRuleParticipant code) {
     return code.getSystem();

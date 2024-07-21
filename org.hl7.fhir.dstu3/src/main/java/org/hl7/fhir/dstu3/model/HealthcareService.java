@@ -206,7 +206,9 @@ public class HealthcareService extends DomainResource {
         throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
         }
     public String toCode(DaysOfWeek code) {
-      if (code == DaysOfWeek.MON)
+       if (code == DaysOfWeek.NULL)
+           return null;
+       if (code == DaysOfWeek.MON)
         return "mon";
       if (code == DaysOfWeek.TUE)
         return "tue";
@@ -221,7 +223,7 @@ public class HealthcareService extends DomainResource {
       if (code == DaysOfWeek.SUN)
         return "sun";
       return "?";
-      }
+   }
     public String toSystem(DaysOfWeek code) {
       return code.getSystem();
       }

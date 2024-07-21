@@ -52,7 +52,9 @@ public class HspcPractitionerPrivilegeEnumFactory implements EnumFactory<HspcPra
   }
 
   public String toCode(HspcPractitionerPrivilege code) {
-    if (code == HspcPractitionerPrivilege.E631014153084062A1760A03197FB489)
+       if (code == HspcPractitionerPrivilege.NULL)
+           return null;
+       if (code == HspcPractitionerPrivilege.E631014153084062A1760A03197FB489)
       return "e6310141-5308-4062-a176-0a03197fb489";
     if (code == HspcPractitionerPrivilege._0A9A9B654F9F42FAADE80D2592BDE220)
       return "0a9a9b65-4f9f-42fa-ade8-0d2592bde220";
@@ -63,7 +65,7 @@ public class HspcPractitionerPrivilegeEnumFactory implements EnumFactory<HspcPra
     if (code == HspcPractitionerPrivilege._45FC874FD78743F2A2AA5954446B163D)
       return "45fc874f-d787-43f2-a2aa-5954446b163d";
     return "?";
-  }
+   }
 
   public String toSystem(HspcPractitionerPrivilege code) {
     return code.getSystem();

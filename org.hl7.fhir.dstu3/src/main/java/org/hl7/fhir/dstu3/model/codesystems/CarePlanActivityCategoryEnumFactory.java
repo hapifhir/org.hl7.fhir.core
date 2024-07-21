@@ -60,7 +60,9 @@ public class CarePlanActivityCategoryEnumFactory implements EnumFactory<CarePlan
   }
 
   public String toCode(CarePlanActivityCategory code) {
-    if (code == CarePlanActivityCategory.DIET)
+       if (code == CarePlanActivityCategory.NULL)
+           return null;
+       if (code == CarePlanActivityCategory.DIET)
       return "diet";
     if (code == CarePlanActivityCategory.DRUG)
       return "drug";
@@ -75,7 +77,7 @@ public class CarePlanActivityCategoryEnumFactory implements EnumFactory<CarePlan
     if (code == CarePlanActivityCategory.OTHER)
       return "other";
     return "?";
-  }
+   }
 
     public String toSystem(CarePlanActivityCategory code) {
       return code.getSystem();

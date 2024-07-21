@@ -48,14 +48,16 @@ public class ExtensionContextTypeEnumFactory implements EnumFactory<ExtensionCon
   }
 
   public String toCode(ExtensionContextType code) {
-    if (code == ExtensionContextType.FHIRPATH)
+       if (code == ExtensionContextType.NULL)
+           return null;
+       if (code == ExtensionContextType.FHIRPATH)
       return "fhirpath";
     if (code == ExtensionContextType.ELEMENT)
       return "element";
     if (code == ExtensionContextType.EXTENSION)
       return "extension";
     return "?";
-  }
+   }
 
   public String toSystem(ExtensionContextType code) {
     return code.getSystem();

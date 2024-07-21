@@ -50,12 +50,14 @@ public class SupplyrequestKindEnumFactory implements EnumFactory<SupplyrequestKi
   }
 
   public String toCode(SupplyrequestKind code) {
-    if (code == SupplyrequestKind.CENTRAL)
+       if (code == SupplyrequestKind.NULL)
+           return null;
+       if (code == SupplyrequestKind.CENTRAL)
       return "central";
     if (code == SupplyrequestKind.NONSTOCK)
       return "nonstock";
     return "?";
-  }
+   }
 
     public String toSystem(SupplyrequestKind code) {
       return code.getSystem();

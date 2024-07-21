@@ -48,14 +48,16 @@ public class DeviceActionEnumFactory implements EnumFactory<DeviceAction> {
   }
 
   public String toCode(DeviceAction code) {
-    if (code == DeviceAction.IMPLANTED)
+       if (code == DeviceAction.NULL)
+           return null;
+       if (code == DeviceAction.IMPLANTED)
       return "implanted";
     if (code == DeviceAction.EXPLANTED)
       return "explanted";
     if (code == DeviceAction.MANIPULATED)
       return "manipulated";
     return "?";
-  }
+   }
 
   public String toSystem(DeviceAction code) {
     return code.getSystem();

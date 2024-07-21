@@ -56,7 +56,9 @@ public class V3TableCellHorizontalAlignEnumFactory implements EnumFactory<V3Tabl
   }
 
   public String toCode(V3TableCellHorizontalAlign code) {
-    if (code == V3TableCellHorizontalAlign.CENTER)
+       if (code == V3TableCellHorizontalAlign.NULL)
+           return null;
+       if (code == V3TableCellHorizontalAlign.CENTER)
       return "center";
     if (code == V3TableCellHorizontalAlign.CHAR)
       return "char";
@@ -67,7 +69,7 @@ public class V3TableCellHorizontalAlignEnumFactory implements EnumFactory<V3Tabl
     if (code == V3TableCellHorizontalAlign.RIGHT)
       return "right";
     return "?";
-  }
+   }
 
     public String toSystem(V3TableCellHorizontalAlign code) {
       return code.getSystem();
