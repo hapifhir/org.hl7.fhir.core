@@ -52,7 +52,9 @@ public class RiskProbabilityEnumFactory implements EnumFactory<RiskProbability> 
   }
 
   public String toCode(RiskProbability code) {
-    if (code == RiskProbability.NEGLIGIBLE)
+       if (code == RiskProbability.NULL)
+           return null;
+       if (code == RiskProbability.NEGLIGIBLE)
       return "negligible";
     if (code == RiskProbability.LOW)
       return "low";
@@ -63,7 +65,7 @@ public class RiskProbabilityEnumFactory implements EnumFactory<RiskProbability> 
     if (code == RiskProbability.CERTAIN)
       return "certain";
     return "?";
-  }
+   }
 
   public String toSystem(RiskProbability code) {
     return code.getSystem();

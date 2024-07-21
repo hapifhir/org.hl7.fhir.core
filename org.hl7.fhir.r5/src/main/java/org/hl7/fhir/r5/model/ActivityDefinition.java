@@ -348,7 +348,9 @@ public class ActivityDefinition extends MetadataResource {
         throw new FHIRException("Unknown RequestResourceTypes code '"+codeString+"'");
         }
     public String toCode(RequestResourceTypes code) {
-      if (code == RequestResourceTypes.APPOINTMENT)
+       if (code == RequestResourceTypes.NULL)
+           return null;
+       if (code == RequestResourceTypes.APPOINTMENT)
         return "Appointment";
       if (code == RequestResourceTypes.APPOINTMENTRESPONSE)
         return "AppointmentResponse";
@@ -383,7 +385,7 @@ public class ActivityDefinition extends MetadataResource {
       if (code == RequestResourceTypes.VISIONPRESCRIPTION)
         return "VisionPrescription";
       return "?";
-      }
+   }
     public String toSystem(RequestResourceTypes code) {
       return code.getSystem();
       }

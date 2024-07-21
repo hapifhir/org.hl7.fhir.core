@@ -189,7 +189,9 @@ public class Procedure extends DomainResource {
     }
 
     public String toCode(ProcedureStatus code) {
-      if (code == ProcedureStatus.INPROGRESS)
+       if (code == ProcedureStatus.NULL)
+           return null;
+       if (code == ProcedureStatus.INPROGRESS)
         return "in-progress";
       if (code == ProcedureStatus.ABORTED)
         return "aborted";
@@ -198,7 +200,7 @@ public class Procedure extends DomainResource {
       if (code == ProcedureStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(ProcedureStatus code) {
       return code.getSystem();

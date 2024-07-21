@@ -48,14 +48,16 @@ public class ParticipantrequiredEnumFactory implements EnumFactory<Participantre
   }
 
   public String toCode(Participantrequired code) {
-    if (code == Participantrequired.REQUIRED)
+       if (code == Participantrequired.NULL)
+           return null;
+       if (code == Participantrequired.REQUIRED)
       return "required";
     if (code == Participantrequired.OPTIONAL)
       return "optional";
     if (code == Participantrequired.INFORMATIONONLY)
       return "information-only";
     return "?";
-  }
+   }
 
   public String toSystem(Participantrequired code) {
     return code.getSystem();

@@ -52,7 +52,9 @@ public class QuestionnaireAnswersStatusEnumFactory implements EnumFactory<Questi
   }
 
   public String toCode(QuestionnaireAnswersStatus code) {
-    if (code == QuestionnaireAnswersStatus.INPROGRESS)
+       if (code == QuestionnaireAnswersStatus.NULL)
+           return null;
+       if (code == QuestionnaireAnswersStatus.INPROGRESS)
       return "in-progress";
     if (code == QuestionnaireAnswersStatus.COMPLETED)
       return "completed";
@@ -63,7 +65,7 @@ public class QuestionnaireAnswersStatusEnumFactory implements EnumFactory<Questi
     if (code == QuestionnaireAnswersStatus.STOPPED)
       return "stopped";
     return "?";
-  }
+   }
 
   public String toSystem(QuestionnaireAnswersStatus code) {
     return code.getSystem();

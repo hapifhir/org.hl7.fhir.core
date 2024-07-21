@@ -165,7 +165,9 @@ public class Composition extends DomainResource {
         throw new FHIRException("Unknown CompositionStatus code '"+codeString+"'");
         }
     public String toCode(CompositionStatus code) {
-      if (code == CompositionStatus.PRELIMINARY)
+       if (code == CompositionStatus.NULL)
+           return null;
+       if (code == CompositionStatus.PRELIMINARY)
         return "preliminary";
       if (code == CompositionStatus.FINAL)
         return "final";
@@ -174,7 +176,7 @@ public class Composition extends DomainResource {
       if (code == CompositionStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(CompositionStatus code) {
       return code.getSystem();
       }
@@ -321,7 +323,9 @@ public class Composition extends DomainResource {
         throw new FHIRException("Unknown DocumentConfidentiality code '"+codeString+"'");
         }
     public String toCode(DocumentConfidentiality code) {
-      if (code == DocumentConfidentiality.U)
+       if (code == DocumentConfidentiality.NULL)
+           return null;
+       if (code == DocumentConfidentiality.U)
         return "U";
       if (code == DocumentConfidentiality.L)
         return "L";
@@ -334,7 +338,7 @@ public class Composition extends DomainResource {
       if (code == DocumentConfidentiality.V)
         return "V";
       return "?";
-      }
+   }
     public String toSystem(DocumentConfidentiality code) {
       return code.getSystem();
       }
@@ -453,7 +457,9 @@ public class Composition extends DomainResource {
         throw new FHIRException("Unknown CompositionAttestationMode code '"+codeString+"'");
         }
     public String toCode(CompositionAttestationMode code) {
-      if (code == CompositionAttestationMode.PERSONAL)
+       if (code == CompositionAttestationMode.NULL)
+           return null;
+       if (code == CompositionAttestationMode.PERSONAL)
         return "personal";
       if (code == CompositionAttestationMode.PROFESSIONAL)
         return "professional";
@@ -462,7 +468,7 @@ public class Composition extends DomainResource {
       if (code == CompositionAttestationMode.OFFICIAL)
         return "official";
       return "?";
-      }
+   }
     public String toSystem(CompositionAttestationMode code) {
       return code.getSystem();
       }
@@ -581,7 +587,9 @@ public class Composition extends DomainResource {
         throw new FHIRException("Unknown DocumentRelationshipType code '"+codeString+"'");
         }
     public String toCode(DocumentRelationshipType code) {
-      if (code == DocumentRelationshipType.REPLACES)
+       if (code == DocumentRelationshipType.NULL)
+           return null;
+       if (code == DocumentRelationshipType.REPLACES)
         return "replaces";
       if (code == DocumentRelationshipType.TRANSFORMS)
         return "transforms";
@@ -590,7 +598,7 @@ public class Composition extends DomainResource {
       if (code == DocumentRelationshipType.APPENDS)
         return "appends";
       return "?";
-      }
+   }
     public String toSystem(DocumentRelationshipType code) {
       return code.getSystem();
       }
@@ -695,14 +703,16 @@ public class Composition extends DomainResource {
         throw new FHIRException("Unknown SectionMode code '"+codeString+"'");
         }
     public String toCode(SectionMode code) {
-      if (code == SectionMode.WORKING)
+       if (code == SectionMode.NULL)
+           return null;
+       if (code == SectionMode.WORKING)
         return "working";
       if (code == SectionMode.SNAPSHOT)
         return "snapshot";
       if (code == SectionMode.CHANGES)
         return "changes";
       return "?";
-      }
+   }
     public String toSystem(SectionMode code) {
       return code.getSystem();
       }

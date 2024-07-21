@@ -46,12 +46,14 @@ public class OperationKindEnumFactory implements EnumFactory<OperationKind> {
   }
 
   public String toCode(OperationKind code) {
-    if (code == OperationKind.OPERATION)
+       if (code == OperationKind.NULL)
+           return null;
+       if (code == OperationKind.OPERATION)
       return "operation";
     if (code == OperationKind.QUERY)
       return "query";
     return "?";
-  }
+   }
 
   public String toSystem(OperationKind code) {
     return code.getSystem();

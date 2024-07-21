@@ -58,7 +58,9 @@ public class V3TargetAwarenessEnumFactory implements EnumFactory<V3TargetAwarene
   }
 
   public String toCode(V3TargetAwareness code) {
-    if (code == V3TargetAwareness.D)
+       if (code == V3TargetAwareness.NULL)
+           return null;
+       if (code == V3TargetAwareness.D)
       return "D";
     if (code == V3TargetAwareness.F)
       return "F";
@@ -71,7 +73,7 @@ public class V3TargetAwarenessEnumFactory implements EnumFactory<V3TargetAwarene
     if (code == V3TargetAwareness.U)
       return "U";
     return "?";
-  }
+   }
 
     public String toSystem(V3TargetAwareness code) {
       return code.getSystem();

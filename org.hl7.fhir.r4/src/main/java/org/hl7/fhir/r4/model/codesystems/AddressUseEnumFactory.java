@@ -52,7 +52,9 @@ public class AddressUseEnumFactory implements EnumFactory<AddressUse> {
   }
 
   public String toCode(AddressUse code) {
-    if (code == AddressUse.HOME)
+       if (code == AddressUse.NULL)
+           return null;
+       if (code == AddressUse.HOME)
       return "home";
     if (code == AddressUse.WORK)
       return "work";
@@ -63,7 +65,7 @@ public class AddressUseEnumFactory implements EnumFactory<AddressUse> {
     if (code == AddressUse.BILLING)
       return "billing";
     return "?";
-  }
+   }
 
   public String toSystem(AddressUse code) {
     return code.getSystem();

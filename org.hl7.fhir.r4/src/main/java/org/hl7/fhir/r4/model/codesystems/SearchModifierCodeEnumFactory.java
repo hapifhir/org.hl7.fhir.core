@@ -66,7 +66,9 @@ public class SearchModifierCodeEnumFactory implements EnumFactory<SearchModifier
   }
 
   public String toCode(SearchModifierCode code) {
-    if (code == SearchModifierCode.MISSING)
+       if (code == SearchModifierCode.NULL)
+           return null;
+       if (code == SearchModifierCode.MISSING)
       return "missing";
     if (code == SearchModifierCode.EXACT)
       return "exact";
@@ -91,7 +93,7 @@ public class SearchModifierCodeEnumFactory implements EnumFactory<SearchModifier
     if (code == SearchModifierCode.OFTYPE)
       return "ofType";
     return "?";
-  }
+   }
 
   public String toSystem(SearchModifierCode code) {
     return code.getSystem();

@@ -48,14 +48,16 @@ public class ModuleMetadataStatusEnumFactory implements EnumFactory<ModuleMetada
   }
 
   public String toCode(ModuleMetadataStatus code) {
-    if (code == ModuleMetadataStatus.DRAFT)
+       if (code == ModuleMetadataStatus.NULL)
+           return null;
+       if (code == ModuleMetadataStatus.DRAFT)
       return "draft";
     if (code == ModuleMetadataStatus.ACTIVE)
       return "active";
     if (code == ModuleMetadataStatus.INACTIVE)
       return "inactive";
     return "?";
-  }
+   }
 
   public String toSystem(ModuleMetadataStatus code) {
     return code.getSystem();

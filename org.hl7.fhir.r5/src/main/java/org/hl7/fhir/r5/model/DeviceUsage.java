@@ -208,7 +208,9 @@ public class DeviceUsage extends DomainResource {
         throw new FHIRException("Unknown DeviceUsageStatus code '"+codeString+"'");
         }
     public String toCode(DeviceUsageStatus code) {
-      if (code == DeviceUsageStatus.ACTIVE)
+       if (code == DeviceUsageStatus.NULL)
+           return null;
+       if (code == DeviceUsageStatus.ACTIVE)
         return "active";
       if (code == DeviceUsageStatus.COMPLETED)
         return "completed";
@@ -223,7 +225,7 @@ public class DeviceUsage extends DomainResource {
       if (code == DeviceUsageStatus.ONHOLD)
         return "on-hold";
       return "?";
-      }
+   }
     public String toSystem(DeviceUsageStatus code) {
       return code.getSystem();
       }

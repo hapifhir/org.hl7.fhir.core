@@ -140,7 +140,9 @@ public class V3ParticipationFunctionEnumFactory implements EnumFactory<V3Partici
   }
 
   public String toCode(V3ParticipationFunction code) {
-    if (code == V3ParticipationFunction._AUTHORIZEDPARTICIPATIONFUNCTION)
+       if (code == V3ParticipationFunction.NULL)
+           return null;
+       if (code == V3ParticipationFunction._AUTHORIZEDPARTICIPATIONFUNCTION)
       return "_AuthorizedParticipationFunction";
     if (code == V3ParticipationFunction._AUTHORIZEDRECEIVERPARTICIPATIONFUNCTION)
       return "_AuthorizedReceiverParticipationFunction";
@@ -239,7 +241,7 @@ public class V3ParticipationFunctionEnumFactory implements EnumFactory<V3Partici
     if (code == V3ParticipationFunction.TASST)
       return "TASST";
     return "?";
-  }
+   }
 
   public String toSystem(V3ParticipationFunction code) {
     return code.getSystem();

@@ -60,7 +60,9 @@ public class EncounterDietEnumFactory implements EnumFactory<EncounterDiet> {
   }
 
   public String toCode(EncounterDiet code) {
-    if (code == EncounterDiet.VEGETARIAN)
+       if (code == EncounterDiet.NULL)
+           return null;
+       if (code == EncounterDiet.VEGETARIAN)
       return "vegetarian";
     if (code == EncounterDiet.DAIRYFREE)
       return "dairy-free";
@@ -75,7 +77,7 @@ public class EncounterDietEnumFactory implements EnumFactory<EncounterDiet> {
     if (code == EncounterDiet.KOSHER)
       return "kosher";
     return "?";
-  }
+   }
 
     public String toSystem(EncounterDiet code) {
       return code.getSystem();

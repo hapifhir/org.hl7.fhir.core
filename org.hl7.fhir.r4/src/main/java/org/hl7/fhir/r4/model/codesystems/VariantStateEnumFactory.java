@@ -48,14 +48,16 @@ public class VariantStateEnumFactory implements EnumFactory<VariantState> {
   }
 
   public String toCode(VariantState code) {
-    if (code == VariantState.POSITIVE)
+       if (code == VariantState.NULL)
+           return null;
+       if (code == VariantState.POSITIVE)
       return "positive";
     if (code == VariantState.NEGATIVE)
       return "negative";
     if (code == VariantState.ABSENT)
       return "absent";
     return "?";
-  }
+   }
 
   public String toSystem(VariantState code) {
     return code.getSystem();

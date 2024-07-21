@@ -50,7 +50,9 @@ public class DiagnosticOrderPriorityEnumFactory implements EnumFactory<Diagnosti
   }
 
   public String toCode(DiagnosticOrderPriority code) {
-    if (code == DiagnosticOrderPriority.ROUTINE)
+       if (code == DiagnosticOrderPriority.NULL)
+           return null;
+       if (code == DiagnosticOrderPriority.ROUTINE)
       return "routine";
     if (code == DiagnosticOrderPriority.URGENT)
       return "urgent";
@@ -59,7 +61,7 @@ public class DiagnosticOrderPriorityEnumFactory implements EnumFactory<Diagnosti
     if (code == DiagnosticOrderPriority.ASAP)
       return "asap";
     return "?";
-  }
+   }
 
   public String toSystem(DiagnosticOrderPriority code) {
     return code.getSystem();

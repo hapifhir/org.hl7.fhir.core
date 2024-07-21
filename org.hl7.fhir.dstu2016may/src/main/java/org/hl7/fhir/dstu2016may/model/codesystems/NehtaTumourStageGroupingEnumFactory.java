@@ -62,7 +62,9 @@ public class NehtaTumourStageGroupingEnumFactory implements EnumFactory<NehtaTum
   }
 
   public String toCode(NehtaTumourStageGrouping code) {
-    if (code == NehtaTumourStageGrouping._0)
+       if (code == NehtaTumourStageGrouping.NULL)
+           return null;
+       if (code == NehtaTumourStageGrouping._0)
       return "0";
     if (code == NehtaTumourStageGrouping.I)
       return "i";
@@ -83,7 +85,7 @@ public class NehtaTumourStageGroupingEnumFactory implements EnumFactory<NehtaTum
     if (code == NehtaTumourStageGrouping.IVB)
       return "ivb";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaTumourStageGrouping code) {
     return code.getSystem();

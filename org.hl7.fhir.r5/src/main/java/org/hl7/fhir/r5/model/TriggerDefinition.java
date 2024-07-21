@@ -220,7 +220,9 @@ public class TriggerDefinition extends DataType implements ICompositeType {
         throw new FHIRException("Unknown TriggerType code '"+codeString+"'");
         }
     public String toCode(TriggerType code) {
-      if (code == TriggerType.NAMEDEVENT)
+       if (code == TriggerType.NULL)
+           return null;
+       if (code == TriggerType.NAMEDEVENT)
         return "named-event";
       if (code == TriggerType.PERIODIC)
         return "periodic";
@@ -237,7 +239,7 @@ public class TriggerDefinition extends DataType implements ICompositeType {
       if (code == TriggerType.DATAACCESSENDED)
         return "data-access-ended";
       return "?";
-      }
+   }
     public String toSystem(TriggerType code) {
       return code.getSystem();
       }

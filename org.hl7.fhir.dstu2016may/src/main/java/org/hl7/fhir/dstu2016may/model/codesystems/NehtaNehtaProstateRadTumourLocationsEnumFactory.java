@@ -45,10 +45,12 @@ public class NehtaNehtaProstateRadTumourLocationsEnumFactory
   }
 
   public String toCode(NehtaNehtaProstateRadTumourLocations code) {
-    if (code == NehtaNehtaProstateRadTumourLocations.OTHER)
+       if (code == NehtaNehtaProstateRadTumourLocations.NULL)
+           return null;
+       if (code == NehtaNehtaProstateRadTumourLocations.OTHER)
       return "other";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaProstateRadTumourLocations code) {
     return code.getSystem();

@@ -66,7 +66,9 @@ public class DataAbsentReasonEnumFactory implements EnumFactory<DataAbsentReason
   }
 
   public String toCode(DataAbsentReason code) {
-    if (code == DataAbsentReason.UNKNOWN)
+       if (code == DataAbsentReason.NULL)
+           return null;
+       if (code == DataAbsentReason.UNKNOWN)
       return "unknown";
     if (code == DataAbsentReason.ASKED)
       return "asked";
@@ -87,7 +89,7 @@ public class DataAbsentReasonEnumFactory implements EnumFactory<DataAbsentReason
     if (code == DataAbsentReason.NOTPERFORMED)
       return "not-performed";
     return "?";
-  }
+   }
 
     public String toSystem(DataAbsentReason code) {
       return code.getSystem();

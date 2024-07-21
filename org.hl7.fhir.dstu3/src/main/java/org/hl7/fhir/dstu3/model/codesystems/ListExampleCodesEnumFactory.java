@@ -64,7 +64,9 @@ public class ListExampleCodesEnumFactory implements EnumFactory<ListExampleCodes
   }
 
   public String toCode(ListExampleCodes code) {
-    if (code == ListExampleCodes.ALERTS)
+       if (code == ListExampleCodes.NULL)
+           return null;
+       if (code == ListExampleCodes.ALERTS)
       return "alerts";
     if (code == ListExampleCodes.ADVERSERXNS)
       return "adverserxns";
@@ -83,7 +85,7 @@ public class ListExampleCodesEnumFactory implements EnumFactory<ListExampleCodes
     if (code == ListExampleCodes.PLANS)
       return "plans";
     return "?";
-  }
+   }
 
     public String toSystem(ListExampleCodes code) {
       return code.getSystem();

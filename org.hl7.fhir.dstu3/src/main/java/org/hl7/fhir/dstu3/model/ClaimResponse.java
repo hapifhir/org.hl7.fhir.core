@@ -164,7 +164,9 @@ public class ClaimResponse extends DomainResource {
         throw new FHIRException("Unknown ClaimResponseStatus code '"+codeString+"'");
         }
     public String toCode(ClaimResponseStatus code) {
-      if (code == ClaimResponseStatus.ACTIVE)
+       if (code == ClaimResponseStatus.NULL)
+           return null;
+       if (code == ClaimResponseStatus.ACTIVE)
         return "active";
       if (code == ClaimResponseStatus.CANCELLED)
         return "cancelled";
@@ -173,7 +175,7 @@ public class ClaimResponse extends DomainResource {
       if (code == ClaimResponseStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(ClaimResponseStatus code) {
       return code.getSystem();
       }

@@ -178,14 +178,16 @@ public class ListResource extends DomainResource {
     }
 
     public String toCode(ListStatus code) {
-      if (code == ListStatus.CURRENT)
+       if (code == ListStatus.NULL)
+           return null;
+       if (code == ListStatus.CURRENT)
         return "current";
       if (code == ListStatus.RETIRED)
         return "retired";
       if (code == ListStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(ListStatus code) {
       return code.getSystem();

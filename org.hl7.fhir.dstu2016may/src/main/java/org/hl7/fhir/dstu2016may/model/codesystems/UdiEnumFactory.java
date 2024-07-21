@@ -44,10 +44,12 @@ public class UdiEnumFactory implements EnumFactory<Udi> {
   }
 
   public String toCode(Udi code) {
-    if (code == Udi.GUDID)
+       if (code == Udi.NULL)
+           return null;
+       if (code == Udi.GUDID)
       return "gudid";
     return "?";
-  }
+   }
 
   public String toSystem(Udi code) {
     return code.getSystem();

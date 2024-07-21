@@ -235,7 +235,9 @@ public class NutritionOrder extends DomainResource {
         throw new FHIRException("Unknown NutritionOrderStatus code '"+codeString+"'");
         }
     public String toCode(NutritionOrderStatus code) {
-      if (code == NutritionOrderStatus.PROPOSED)
+       if (code == NutritionOrderStatus.NULL)
+           return null;
+       if (code == NutritionOrderStatus.PROPOSED)
         return "proposed";
       if (code == NutritionOrderStatus.DRAFT)
         return "draft";
@@ -254,7 +256,7 @@ public class NutritionOrder extends DomainResource {
       if (code == NutritionOrderStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(NutritionOrderStatus code) {
       return code.getSystem();
       }

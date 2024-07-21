@@ -76,7 +76,9 @@ public class ObjectLifecycleEnumFactory implements EnumFactory<ObjectLifecycle> 
   }
 
   public String toCode(ObjectLifecycle code) {
-    if (code == ObjectLifecycle._1)
+       if (code == ObjectLifecycle.NULL)
+           return null;
+       if (code == ObjectLifecycle._1)
       return "1";
     if (code == ObjectLifecycle._2)
       return "2";
@@ -107,7 +109,7 @@ public class ObjectLifecycleEnumFactory implements EnumFactory<ObjectLifecycle> 
     if (code == ObjectLifecycle._15)
       return "15";
     return "?";
-  }
+   }
 
     public String toSystem(ObjectLifecycle code) {
       return code.getSystem();

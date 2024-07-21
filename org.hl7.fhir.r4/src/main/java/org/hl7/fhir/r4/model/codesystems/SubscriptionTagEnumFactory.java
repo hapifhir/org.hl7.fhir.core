@@ -46,12 +46,14 @@ public class SubscriptionTagEnumFactory implements EnumFactory<SubscriptionTag> 
   }
 
   public String toCode(SubscriptionTag code) {
-    if (code == SubscriptionTag.QUEUED)
+       if (code == SubscriptionTag.NULL)
+           return null;
+       if (code == SubscriptionTag.QUEUED)
       return "queued";
     if (code == SubscriptionTag.DELIVERED)
       return "delivered";
     return "?";
-  }
+   }
 
   public String toSystem(SubscriptionTag code) {
     return code.getSystem();

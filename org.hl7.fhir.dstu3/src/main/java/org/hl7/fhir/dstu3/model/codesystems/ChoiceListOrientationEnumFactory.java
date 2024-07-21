@@ -50,12 +50,14 @@ public class ChoiceListOrientationEnumFactory implements EnumFactory<ChoiceListO
   }
 
   public String toCode(ChoiceListOrientation code) {
-    if (code == ChoiceListOrientation.HORIZONTAL)
+       if (code == ChoiceListOrientation.NULL)
+           return null;
+       if (code == ChoiceListOrientation.HORIZONTAL)
       return "horizontal";
     if (code == ChoiceListOrientation.VERTICAL)
       return "vertical";
     return "?";
-  }
+   }
 
     public String toSystem(ChoiceListOrientation code) {
       return code.getSystem();

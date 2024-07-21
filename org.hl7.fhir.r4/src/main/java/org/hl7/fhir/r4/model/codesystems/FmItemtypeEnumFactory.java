@@ -48,14 +48,16 @@ public class FmItemtypeEnumFactory implements EnumFactory<FmItemtype> {
   }
 
   public String toCode(FmItemtype code) {
-    if (code == FmItemtype.GROUP)
+       if (code == FmItemtype.NULL)
+           return null;
+       if (code == FmItemtype.GROUP)
       return "group";
     if (code == FmItemtype.PRODUCT)
       return "product";
     if (code == FmItemtype.SERVICE)
       return "service";
     return "?";
-  }
+   }
 
   public String toSystem(FmItemtype code) {
     return code.getSystem();

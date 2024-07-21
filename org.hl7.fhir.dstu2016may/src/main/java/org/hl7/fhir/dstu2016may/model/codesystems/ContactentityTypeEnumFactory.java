@@ -54,7 +54,9 @@ public class ContactentityTypeEnumFactory implements EnumFactory<ContactentityTy
   }
 
   public String toCode(ContactentityType code) {
-    if (code == ContactentityType.BILL)
+       if (code == ContactentityType.NULL)
+           return null;
+       if (code == ContactentityType.BILL)
       return "BILL";
     if (code == ContactentityType.ADMIN)
       return "ADMIN";
@@ -67,7 +69,7 @@ public class ContactentityTypeEnumFactory implements EnumFactory<ContactentityTy
     if (code == ContactentityType.PRESS)
       return "PRESS";
     return "?";
-  }
+   }
 
   public String toSystem(ContactentityType code) {
     return code.getSystem();

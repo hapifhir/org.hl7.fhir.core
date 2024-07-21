@@ -58,7 +58,9 @@ public class ModuleMetadataFocusTypeEnumFactory implements EnumFactory<ModuleMet
   }
 
   public String toCode(ModuleMetadataFocusType code) {
-    if (code == ModuleMetadataFocusType.PATIENTGENDER)
+       if (code == ModuleMetadataFocusType.NULL)
+           return null;
+       if (code == ModuleMetadataFocusType.PATIENTGENDER)
       return "patient-gender";
     if (code == ModuleMetadataFocusType.PATIENTAGEGROUP)
       return "patient-age-group";
@@ -75,7 +77,7 @@ public class ModuleMetadataFocusTypeEnumFactory implements EnumFactory<ModuleMet
     if (code == ModuleMetadataFocusType.JURISDICTION)
       return "jurisdiction";
     return "?";
-  }
+   }
 
   public String toSystem(ModuleMetadataFocusType code) {
     return code.getSystem();

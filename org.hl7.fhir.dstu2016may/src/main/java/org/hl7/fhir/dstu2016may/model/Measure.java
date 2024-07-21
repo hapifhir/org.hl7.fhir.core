@@ -188,7 +188,9 @@ public class Measure extends DomainResource {
     }
 
     public String toCode(MeasureScoring code) {
-      if (code == MeasureScoring.PROPORTION)
+       if (code == MeasureScoring.NULL)
+           return null;
+       if (code == MeasureScoring.PROPORTION)
         return "proportion";
       if (code == MeasureScoring.RATIO)
         return "ratio";
@@ -197,7 +199,7 @@ public class Measure extends DomainResource {
       if (code == MeasureScoring.COHORT)
         return "cohort";
       return "?";
-    }
+   }
 
     public String toSystem(MeasureScoring code) {
       return code.getSystem();
@@ -307,12 +309,14 @@ public class Measure extends DomainResource {
     }
 
     public String toCode(MeasureType code) {
-      if (code == MeasureType.PROCESS)
+       if (code == MeasureType.NULL)
+           return null;
+       if (code == MeasureType.PROCESS)
         return "process";
       if (code == MeasureType.OUTCOME)
         return "outcome";
       return "?";
-    }
+   }
 
     public String toSystem(MeasureType code) {
       return code.getSystem();
@@ -548,7 +552,9 @@ public class Measure extends DomainResource {
     }
 
     public String toCode(MeasurePopulationType code) {
-      if (code == MeasurePopulationType.INITIALPOPULATION)
+       if (code == MeasurePopulationType.NULL)
+           return null;
+       if (code == MeasurePopulationType.INITIALPOPULATION)
         return "initial-population";
       if (code == MeasurePopulationType.NUMERATOR)
         return "numerator";
@@ -567,7 +573,7 @@ public class Measure extends DomainResource {
       if (code == MeasurePopulationType.MEASURESCORE)
         return "measure-score";
       return "?";
-    }
+   }
 
     public String toSystem(MeasurePopulationType code) {
       return code.getSystem();
@@ -679,12 +685,14 @@ public class Measure extends DomainResource {
     }
 
     public String toCode(MeasureDataUsage code) {
-      if (code == MeasureDataUsage.SUPPLEMENTALDATA)
+       if (code == MeasureDataUsage.NULL)
+           return null;
+       if (code == MeasureDataUsage.SUPPLEMENTALDATA)
         return "supplemental-data";
       if (code == MeasureDataUsage.RISKADJUSTMENTFACTOR)
         return "risk-adjustment-factor";
       return "?";
-    }
+   }
 
     public String toSystem(MeasureDataUsage code) {
       return code.getSystem();

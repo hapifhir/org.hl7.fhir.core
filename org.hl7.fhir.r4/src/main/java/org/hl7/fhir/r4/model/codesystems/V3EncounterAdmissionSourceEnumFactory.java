@@ -48,14 +48,16 @@ public class V3EncounterAdmissionSourceEnumFactory implements EnumFactory<V3Enco
   }
 
   public String toCode(V3EncounterAdmissionSource code) {
-    if (code == V3EncounterAdmissionSource.E)
+       if (code == V3EncounterAdmissionSource.NULL)
+           return null;
+       if (code == V3EncounterAdmissionSource.E)
       return "E";
     if (code == V3EncounterAdmissionSource.LD)
       return "LD";
     if (code == V3EncounterAdmissionSource.NB)
       return "NB";
     return "?";
-  }
+   }
 
   public String toSystem(V3EncounterAdmissionSource code) {
     return code.getSystem();

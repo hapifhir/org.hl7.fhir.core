@@ -74,7 +74,9 @@ public class V3ActRelationshipSubsetEnumFactory implements EnumFactory<V3ActRela
   }
 
   public String toCode(V3ActRelationshipSubset code) {
-    if (code == V3ActRelationshipSubset._PARTICIPATIONSUBSET)
+       if (code == V3ActRelationshipSubset.NULL)
+           return null;
+       if (code == V3ActRelationshipSubset._PARTICIPATIONSUBSET)
       return "_ParticipationSubset";
     if (code == V3ActRelationshipSubset.FUTURE)
       return "FUTURE";
@@ -103,7 +105,7 @@ public class V3ActRelationshipSubsetEnumFactory implements EnumFactory<V3ActRela
     if (code == V3ActRelationshipSubset.MIN)
       return "MIN";
     return "?";
-  }
+   }
 
     public String toSystem(V3ActRelationshipSubset code) {
       return code.getSystem();

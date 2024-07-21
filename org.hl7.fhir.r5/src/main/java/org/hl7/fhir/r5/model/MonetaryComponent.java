@@ -193,7 +193,9 @@ public class MonetaryComponent extends DataType implements ICompositeType {
         throw new FHIRException("Unknown PriceComponentType code '"+codeString+"'");
         }
     public String toCode(PriceComponentType code) {
-      if (code == PriceComponentType.BASE)
+       if (code == PriceComponentType.NULL)
+           return null;
+       if (code == PriceComponentType.BASE)
         return "base";
       if (code == PriceComponentType.SURCHARGE)
         return "surcharge";
@@ -206,7 +208,7 @@ public class MonetaryComponent extends DataType implements ICompositeType {
       if (code == PriceComponentType.INFORMATIONAL)
         return "informational";
       return "?";
-      }
+   }
     public String toSystem(PriceComponentType code) {
       return code.getSystem();
       }

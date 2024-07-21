@@ -54,7 +54,9 @@ public class SelectionBehaviorEnumFactory implements EnumFactory<SelectionBehavi
   }
 
   public String toCode(SelectionBehavior code) {
-    if (code == SelectionBehavior.ANY)
+       if (code == SelectionBehavior.NULL)
+           return null;
+       if (code == SelectionBehavior.ANY)
       return "any";
     if (code == SelectionBehavior.ALL)
       return "all";
@@ -67,7 +69,7 @@ public class SelectionBehaviorEnumFactory implements EnumFactory<SelectionBehavi
     if (code == SelectionBehavior.ONEORMORE)
       return "one-or-more";
     return "?";
-  }
+   }
 
   public String toSystem(SelectionBehavior code) {
     return code.getSystem();

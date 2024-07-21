@@ -194,7 +194,9 @@ public class CodeSystem extends DomainResource {
     }
 
     public String toCode(CodeSystemContentMode code) {
-      if (code == CodeSystemContentMode.NOTPRESENT)
+       if (code == CodeSystemContentMode.NULL)
+           return null;
+       if (code == CodeSystemContentMode.NOTPRESENT)
         return "not-present";
       if (code == CodeSystemContentMode.EXAMPLAR)
         return "examplar";
@@ -203,7 +205,7 @@ public class CodeSystem extends DomainResource {
       if (code == CodeSystemContentMode.COMPLETE)
         return "complete";
       return "?";
-    }
+   }
 
     public String toSystem(CodeSystemContentMode code) {
       return code.getSystem();
@@ -388,7 +390,9 @@ public class CodeSystem extends DomainResource {
     }
 
     public String toCode(PropertyType code) {
-      if (code == PropertyType.CODE)
+       if (code == PropertyType.NULL)
+           return null;
+       if (code == PropertyType.CODE)
         return "code";
       if (code == PropertyType.CODING)
         return "Coding";
@@ -401,7 +405,7 @@ public class CodeSystem extends DomainResource {
       if (code == PropertyType.DATETIME)
         return "dateTime";
       return "?";
-    }
+   }
 
     public String toSystem(PropertyType code) {
       return code.getSystem();

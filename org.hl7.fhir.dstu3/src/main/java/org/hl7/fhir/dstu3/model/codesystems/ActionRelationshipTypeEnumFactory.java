@@ -64,7 +64,9 @@ public class ActionRelationshipTypeEnumFactory implements EnumFactory<ActionRela
   }
 
   public String toCode(ActionRelationshipType code) {
-    if (code == ActionRelationshipType.BEFORESTART)
+       if (code == ActionRelationshipType.NULL)
+           return null;
+       if (code == ActionRelationshipType.BEFORESTART)
       return "before-start";
     if (code == ActionRelationshipType.BEFORE)
       return "before";
@@ -83,7 +85,7 @@ public class ActionRelationshipTypeEnumFactory implements EnumFactory<ActionRela
     if (code == ActionRelationshipType.AFTEREND)
       return "after-end";
     return "?";
-  }
+   }
 
     public String toSystem(ActionRelationshipType code) {
       return code.getSystem();

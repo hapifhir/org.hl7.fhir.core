@@ -50,7 +50,9 @@ public class MedicationdispenseCategoryEnumFactory implements EnumFactory<Medica
   }
 
   public String toCode(MedicationdispenseCategory code) {
-    if (code == MedicationdispenseCategory.INPATIENT)
+       if (code == MedicationdispenseCategory.NULL)
+           return null;
+       if (code == MedicationdispenseCategory.INPATIENT)
       return "inpatient";
     if (code == MedicationdispenseCategory.OUTPATIENT)
       return "outpatient";
@@ -59,7 +61,7 @@ public class MedicationdispenseCategoryEnumFactory implements EnumFactory<Medica
     if (code == MedicationdispenseCategory.DISCHARGE)
       return "discharge";
     return "?";
-  }
+   }
 
   public String toSystem(MedicationdispenseCategory code) {
     return code.getSystem();

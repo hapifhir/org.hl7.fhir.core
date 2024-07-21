@@ -45,10 +45,12 @@ public class NehtaNehtaInvolvedNotinvolvedIndeterminateEnumFactory
   }
 
   public String toCode(NehtaNehtaInvolvedNotinvolvedIndeterminate code) {
-    if (code == NehtaNehtaInvolvedNotinvolvedIndeterminate.NOTINVOLVED)
+       if (code == NehtaNehtaInvolvedNotinvolvedIndeterminate.NULL)
+           return null;
+       if (code == NehtaNehtaInvolvedNotinvolvedIndeterminate.NOTINVOLVED)
       return "not_involved";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaInvolvedNotinvolvedIndeterminate code) {
     return code.getSystem();

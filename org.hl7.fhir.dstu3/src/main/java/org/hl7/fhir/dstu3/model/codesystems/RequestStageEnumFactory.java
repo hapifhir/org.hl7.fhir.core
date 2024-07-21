@@ -56,7 +56,9 @@ public class RequestStageEnumFactory implements EnumFactory<RequestStage> {
   }
 
   public String toCode(RequestStage code) {
-    if (code == RequestStage.PROPOSAL)
+       if (code == RequestStage.NULL)
+           return null;
+       if (code == RequestStage.PROPOSAL)
       return "proposal";
     if (code == RequestStage.PLAN)
       return "plan";
@@ -67,7 +69,7 @@ public class RequestStageEnumFactory implements EnumFactory<RequestStage> {
     if (code == RequestStage.REFLEXORDER)
       return "reflex-order";
     return "?";
-  }
+   }
 
     public String toSystem(RequestStage code) {
       return code.getSystem();

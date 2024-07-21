@@ -152,14 +152,16 @@ public class Device extends DomainResource {
         throw new FHIRException("Unknown FHIRDeviceStatus code '"+codeString+"'");
         }
     public String toCode(FHIRDeviceStatus code) {
-      if (code == FHIRDeviceStatus.ACTIVE)
+       if (code == FHIRDeviceStatus.NULL)
+           return null;
+       if (code == FHIRDeviceStatus.ACTIVE)
         return "active";
       if (code == FHIRDeviceStatus.INACTIVE)
         return "inactive";
       if (code == FHIRDeviceStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(FHIRDeviceStatus code) {
       return code.getSystem();
       }
@@ -320,7 +322,9 @@ public class Device extends DomainResource {
         throw new FHIRException("Unknown UDIEntryType code '"+codeString+"'");
         }
     public String toCode(UDIEntryType code) {
-      if (code == UDIEntryType.BARCODE)
+       if (code == UDIEntryType.NULL)
+           return null;
+       if (code == UDIEntryType.BARCODE)
         return "barcode";
       if (code == UDIEntryType.RFID)
         return "rfid";
@@ -335,7 +339,7 @@ public class Device extends DomainResource {
       if (code == UDIEntryType.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(UDIEntryType code) {
       return code.getSystem();
       }

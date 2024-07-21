@@ -277,7 +277,9 @@ public class Task extends DomainResource {
         throw new FHIRException("Unknown TaskStatus code '"+codeString+"'");
         }
     public String toCode(TaskStatus code) {
-      if (code == TaskStatus.DRAFT)
+       if (code == TaskStatus.NULL)
+           return null;
+       if (code == TaskStatus.DRAFT)
         return "draft";
       if (code == TaskStatus.REQUESTED)
         return "requested";
@@ -302,7 +304,7 @@ public class Task extends DomainResource {
       if (code == TaskStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(TaskStatus code) {
       return code.getSystem();
       }
@@ -479,7 +481,9 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         throw new FHIRException("Unknown TaskIntent code '"+codeString+"'");
         }
     public String toCode(TaskIntent code) {
-      if (code == TaskIntent.PROPOSAL)
+       if (code == TaskIntent.NULL)
+           return null;
+       if (code == TaskIntent.PROPOSAL)
         return "proposal";
       if (code == TaskIntent.PLAN)
         return "plan";
@@ -496,7 +500,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       if (code == TaskIntent.OPTION)
         return "option";
       return "?";
-      }
+   }
     public String toSystem(TaskIntent code) {
       return code.getSystem();
       }
@@ -615,7 +619,9 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         throw new FHIRException("Unknown TaskPriority code '"+codeString+"'");
         }
     public String toCode(TaskPriority code) {
-      if (code == TaskPriority.ROUTINE)
+       if (code == TaskPriority.NULL)
+           return null;
+       if (code == TaskPriority.ROUTINE)
         return "routine";
       if (code == TaskPriority.URGENT)
         return "urgent";
@@ -624,7 +630,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       if (code == TaskPriority.STAT)
         return "stat";
       return "?";
-      }
+   }
     public String toSystem(TaskPriority code) {
       return code.getSystem();
       }

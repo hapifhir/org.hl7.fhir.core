@@ -52,14 +52,16 @@ public class ReactionEventSeverityEnumFactory implements EnumFactory<ReactionEve
   }
 
   public String toCode(ReactionEventSeverity code) {
-    if (code == ReactionEventSeverity.MILD)
+       if (code == ReactionEventSeverity.NULL)
+           return null;
+       if (code == ReactionEventSeverity.MILD)
       return "mild";
     if (code == ReactionEventSeverity.MODERATE)
       return "moderate";
     if (code == ReactionEventSeverity.SEVERE)
       return "severe";
     return "?";
-  }
+   }
 
     public String toSystem(ReactionEventSeverity code) {
       return code.getSystem();

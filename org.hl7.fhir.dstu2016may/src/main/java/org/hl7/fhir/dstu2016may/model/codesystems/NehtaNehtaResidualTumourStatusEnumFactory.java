@@ -48,14 +48,16 @@ public class NehtaNehtaResidualTumourStatusEnumFactory implements EnumFactory<Ne
   }
 
   public String toCode(NehtaNehtaResidualTumourStatus code) {
-    if (code == NehtaNehtaResidualTumourStatus.R0)
+       if (code == NehtaNehtaResidualTumourStatus.NULL)
+           return null;
+       if (code == NehtaNehtaResidualTumourStatus.R0)
       return "r0";
     if (code == NehtaNehtaResidualTumourStatus.R1)
       return "r1";
     if (code == NehtaNehtaResidualTumourStatus.R2)
       return "r2";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaResidualTumourStatus code) {
     return code.getSystem();

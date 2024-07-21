@@ -50,7 +50,9 @@ public class ModuleMetadataContributorEnumFactory implements EnumFactory<ModuleM
   }
 
   public String toCode(ModuleMetadataContributor code) {
-    if (code == ModuleMetadataContributor.AUTHOR)
+       if (code == ModuleMetadataContributor.NULL)
+           return null;
+       if (code == ModuleMetadataContributor.AUTHOR)
       return "author";
     if (code == ModuleMetadataContributor.EDITOR)
       return "editor";
@@ -59,7 +61,7 @@ public class ModuleMetadataContributorEnumFactory implements EnumFactory<ModuleM
     if (code == ModuleMetadataContributor.ENDORSER)
       return "endorser";
     return "?";
-  }
+   }
 
   public String toSystem(ModuleMetadataContributor code) {
     return code.getSystem();

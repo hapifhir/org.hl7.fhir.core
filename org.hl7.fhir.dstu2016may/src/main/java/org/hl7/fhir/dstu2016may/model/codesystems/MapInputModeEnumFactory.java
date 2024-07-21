@@ -46,12 +46,14 @@ public class MapInputModeEnumFactory implements EnumFactory<MapInputMode> {
   }
 
   public String toCode(MapInputMode code) {
-    if (code == MapInputMode.SOURCE)
+       if (code == MapInputMode.NULL)
+           return null;
+       if (code == MapInputMode.SOURCE)
       return "source";
     if (code == MapInputMode.TARGET)
       return "target";
     return "?";
-  }
+   }
 
   public String toSystem(MapInputMode code) {
     return code.getSystem();

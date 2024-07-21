@@ -72,7 +72,9 @@ public class V3EntityNameUseEnumFactory implements EnumFactory<V3EntityNameUse> 
   }
 
   public String toCode(V3EntityNameUse code) {
-    if (code == V3EntityNameUse._NAMEREPRESENTATIONUSE)
+       if (code == V3EntityNameUse.NULL)
+           return null;
+       if (code == V3EntityNameUse._NAMEREPRESENTATIONUSE)
       return "_NameRepresentationUse";
     if (code == V3EntityNameUse.ABC)
       return "ABC";
@@ -103,7 +105,7 @@ public class V3EntityNameUseEnumFactory implements EnumFactory<V3EntityNameUse> 
     if (code == V3EntityNameUse.SNDX)
       return "SNDX";
     return "?";
-  }
+   }
 
   public String toSystem(V3EntityNameUse code) {
     return code.getSystem();

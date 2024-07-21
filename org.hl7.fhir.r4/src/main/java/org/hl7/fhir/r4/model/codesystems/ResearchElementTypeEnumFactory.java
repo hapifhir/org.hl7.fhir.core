@@ -48,14 +48,16 @@ public class ResearchElementTypeEnumFactory implements EnumFactory<ResearchEleme
   }
 
   public String toCode(ResearchElementType code) {
-    if (code == ResearchElementType.POPULATION)
+       if (code == ResearchElementType.NULL)
+           return null;
+       if (code == ResearchElementType.POPULATION)
       return "population";
     if (code == ResearchElementType.EXPOSURE)
       return "exposure";
     if (code == ResearchElementType.OUTCOME)
       return "outcome";
     return "?";
-  }
+   }
 
   public String toSystem(ResearchElementType code) {
     return code.getSystem();

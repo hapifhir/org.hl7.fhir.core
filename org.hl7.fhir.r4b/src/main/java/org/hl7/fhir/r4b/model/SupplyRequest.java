@@ -259,7 +259,9 @@ public class SupplyRequest extends DomainResource {
     }
 
     public String toCode(SupplyRequestStatus code) {
-      if (code == SupplyRequestStatus.DRAFT)
+       if (code == SupplyRequestStatus.NULL)
+           return null;
+       if (code == SupplyRequestStatus.DRAFT)
         return "draft";
       if (code == SupplyRequestStatus.ACTIVE)
         return "active";
@@ -274,7 +276,7 @@ public class SupplyRequest extends DomainResource {
       if (code == SupplyRequestStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(SupplyRequestStatus code) {
       return code.getSystem();

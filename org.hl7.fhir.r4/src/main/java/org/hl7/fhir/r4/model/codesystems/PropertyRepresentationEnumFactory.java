@@ -52,7 +52,9 @@ public class PropertyRepresentationEnumFactory implements EnumFactory<PropertyRe
   }
 
   public String toCode(PropertyRepresentation code) {
-    if (code == PropertyRepresentation.XMLATTR)
+       if (code == PropertyRepresentation.NULL)
+           return null;
+       if (code == PropertyRepresentation.XMLATTR)
       return "xmlAttr";
     if (code == PropertyRepresentation.XMLTEXT)
       return "xmlText";
@@ -63,7 +65,7 @@ public class PropertyRepresentationEnumFactory implements EnumFactory<PropertyRe
     if (code == PropertyRepresentation.XHTML)
       return "xhtml";
     return "?";
-  }
+   }
 
   public String toSystem(PropertyRepresentation code) {
     return code.getSystem();

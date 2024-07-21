@@ -48,14 +48,16 @@ public class NehtaNehtaPerforationTypeEnumFactory implements EnumFactory<NehtaNe
   }
 
   public String toCode(NehtaNehtaPerforationType code) {
-    if (code == NehtaNehtaPerforationType.THROUGHTUMOURPRIORTOSURGERY)
+       if (code == NehtaNehtaPerforationType.NULL)
+           return null;
+       if (code == NehtaNehtaPerforationType.THROUGHTUMOURPRIORTOSURGERY)
       return "through_tumour_prior_to_surgery";
     if (code == NehtaNehtaPerforationType.THROUGHTUMOURDURINGSURGERYMOBILISATION)
       return "through_tumour_during_surgery_mobilisation";
     if (code == NehtaNehtaPerforationType.AWAYFROMTUMOUR)
       return "away_from_tumour";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaPerforationType code) {
     return code.getSystem();

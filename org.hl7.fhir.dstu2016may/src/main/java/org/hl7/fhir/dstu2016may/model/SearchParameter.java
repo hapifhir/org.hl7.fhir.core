@@ -216,7 +216,9 @@ public class SearchParameter extends DomainResource {
     }
 
     public String toCode(XPathUsageType code) {
-      if (code == XPathUsageType.NORMAL)
+       if (code == XPathUsageType.NULL)
+           return null;
+       if (code == XPathUsageType.NORMAL)
         return "normal";
       if (code == XPathUsageType.PHONETIC)
         return "phonetic";
@@ -227,7 +229,7 @@ public class SearchParameter extends DomainResource {
       if (code == XPathUsageType.OTHER)
         return "other";
       return "?";
-    }
+   }
 
     public String toSystem(XPathUsageType code) {
       return code.getSystem();

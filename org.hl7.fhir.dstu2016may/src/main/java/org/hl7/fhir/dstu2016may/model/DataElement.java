@@ -240,7 +240,9 @@ public class DataElement extends DomainResource {
     }
 
     public String toCode(DataElementStringency code) {
-      if (code == DataElementStringency.COMPARABLE)
+       if (code == DataElementStringency.NULL)
+           return null;
+       if (code == DataElementStringency.COMPARABLE)
         return "comparable";
       if (code == DataElementStringency.FULLYSPECIFIED)
         return "fully-specified";
@@ -253,7 +255,7 @@ public class DataElement extends DomainResource {
       if (code == DataElementStringency.FLEXIBLE)
         return "flexible";
       return "?";
-    }
+   }
 
     public String toSystem(DataElementStringency code) {
       return code.getSystem();

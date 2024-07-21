@@ -56,7 +56,9 @@ public class V3EntityNamePartTypeEnumFactory implements EnumFactory<V3EntityName
   }
 
   public String toCode(V3EntityNamePartType code) {
-    if (code == V3EntityNamePartType.DEL)
+       if (code == V3EntityNamePartType.NULL)
+           return null;
+       if (code == V3EntityNamePartType.DEL)
       return "DEL";
     if (code == V3EntityNamePartType.FAM)
       return "FAM";
@@ -67,7 +69,7 @@ public class V3EntityNamePartTypeEnumFactory implements EnumFactory<V3EntityName
     if (code == V3EntityNamePartType.SFX)
       return "SFX";
     return "?";
-  }
+   }
 
     public String toSystem(V3EntityNamePartType code) {
       return code.getSystem();

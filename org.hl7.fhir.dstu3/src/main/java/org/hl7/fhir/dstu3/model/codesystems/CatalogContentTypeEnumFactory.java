@@ -56,7 +56,9 @@ public class CatalogContentTypeEnumFactory implements EnumFactory<CatalogContent
   }
 
   public String toCode(CatalogContentType code) {
-    if (code == CatalogContentType.SINGLESUBMISSION)
+       if (code == CatalogContentType.NULL)
+           return null;
+       if (code == CatalogContentType.SINGLESUBMISSION)
       return "single-submission";
     if (code == CatalogContentType.RESUBMISSION)
       return "resubmission";
@@ -67,7 +69,7 @@ public class CatalogContentTypeEnumFactory implements EnumFactory<CatalogContent
     if (code == CatalogContentType.CATALOGRESPONSE)
       return "catalog-response";
     return "?";
-  }
+   }
 
     public String toSystem(CatalogContentType code) {
       return code.getSystem();

@@ -58,7 +58,9 @@ public class BenefitSubcategoryEnumFactory implements EnumFactory<BenefitSubcate
   }
 
   public String toCode(BenefitSubcategory code) {
-    if (code == BenefitSubcategory.ORALBASIC)
+       if (code == BenefitSubcategory.NULL)
+           return null;
+       if (code == BenefitSubcategory.ORALBASIC)
       return "oral-basic";
     if (code == BenefitSubcategory.ORALMAJOR)
       return "oral-major";
@@ -75,7 +77,7 @@ public class BenefitSubcategoryEnumFactory implements EnumFactory<BenefitSubcate
     if (code == BenefitSubcategory.PHARMACYDISPENSE)
       return "pharmacy-dispense";
     return "?";
-  }
+   }
 
   public String toSystem(BenefitSubcategory code) {
     return code.getSystem();

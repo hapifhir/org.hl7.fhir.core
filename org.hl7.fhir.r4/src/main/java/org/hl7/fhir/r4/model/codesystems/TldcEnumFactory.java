@@ -58,7 +58,9 @@ public class TldcEnumFactory implements EnumFactory<Tldc> {
   }
 
   public String toCode(Tldc code) {
-    if (code == Tldc.DRAFT)
+       if (code == Tldc.NULL)
+           return null;
+       if (code == Tldc.DRAFT)
       return "draft";
     if (code == Tldc.PENDING)
       return "pending";
@@ -75,7 +77,7 @@ public class TldcEnumFactory implements EnumFactory<Tldc> {
     if (code == Tldc.TERMINATED)
       return "terminated";
     return "?";
-  }
+   }
 
   public String toSystem(Tldc code) {
     return code.getSystem();

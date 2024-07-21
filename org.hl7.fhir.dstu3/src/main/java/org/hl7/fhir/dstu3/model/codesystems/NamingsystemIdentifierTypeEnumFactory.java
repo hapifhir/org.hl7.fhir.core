@@ -54,7 +54,9 @@ public class NamingsystemIdentifierTypeEnumFactory implements EnumFactory<Naming
   }
 
   public String toCode(NamingsystemIdentifierType code) {
-    if (code == NamingsystemIdentifierType.OID)
+       if (code == NamingsystemIdentifierType.NULL)
+           return null;
+       if (code == NamingsystemIdentifierType.OID)
       return "oid";
     if (code == NamingsystemIdentifierType.UUID)
       return "uuid";
@@ -63,7 +65,7 @@ public class NamingsystemIdentifierTypeEnumFactory implements EnumFactory<Naming
     if (code == NamingsystemIdentifierType.OTHER)
       return "other";
     return "?";
-  }
+   }
 
     public String toSystem(NamingsystemIdentifierType code) {
       return code.getSystem();

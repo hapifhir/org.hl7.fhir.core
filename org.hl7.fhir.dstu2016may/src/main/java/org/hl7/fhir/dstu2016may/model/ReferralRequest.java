@@ -210,7 +210,9 @@ public class ReferralRequest extends DomainResource {
     }
 
     public String toCode(ReferralStatus code) {
-      if (code == ReferralStatus.DRAFT)
+       if (code == ReferralStatus.NULL)
+           return null;
+       if (code == ReferralStatus.DRAFT)
         return "draft";
       if (code == ReferralStatus.ACTIVE)
         return "active";
@@ -221,7 +223,7 @@ public class ReferralRequest extends DomainResource {
       if (code == ReferralStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(ReferralStatus code) {
       return code.getSystem();
@@ -352,14 +354,16 @@ public class ReferralRequest extends DomainResource {
     }
 
     public String toCode(ReferralCategory code) {
-      if (code == ReferralCategory.PROPOSAL)
+       if (code == ReferralCategory.NULL)
+           return null;
+       if (code == ReferralCategory.PROPOSAL)
         return "proposal";
       if (code == ReferralCategory.PLAN)
         return "plan";
       if (code == ReferralCategory.REQUEST)
         return "request";
       return "?";
-    }
+   }
 
     public String toSystem(ReferralCategory code) {
       return code.getSystem();

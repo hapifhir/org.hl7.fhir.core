@@ -58,7 +58,9 @@ public class CertaintySubcomponentTypeEnumFactory implements EnumFactory<Certain
   }
 
   public String toCode(CertaintySubcomponentType code) {
-    if (code == CertaintySubcomponentType.RISKOFBIAS)
+       if (code == CertaintySubcomponentType.NULL)
+           return null;
+       if (code == CertaintySubcomponentType.RISKOFBIAS)
       return "RiskOfBias";
     if (code == CertaintySubcomponentType.INCONSISTENCY)
       return "Inconsistency";
@@ -75,7 +77,7 @@ public class CertaintySubcomponentTypeEnumFactory implements EnumFactory<Certain
     if (code == CertaintySubcomponentType.LARGEEFFECT)
       return "LargeEffect";
     return "?";
-  }
+   }
 
   public String toSystem(CertaintySubcomponentType code) {
     return code.getSystem();

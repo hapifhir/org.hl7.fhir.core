@@ -138,12 +138,14 @@ public class SubscriptionTopic extends CanonicalResource {
         throw new FHIRException("Unknown CriteriaNotExistsBehavior code '"+codeString+"'");
         }
     public String toCode(CriteriaNotExistsBehavior code) {
-      if (code == CriteriaNotExistsBehavior.TESTPASSES)
+       if (code == CriteriaNotExistsBehavior.NULL)
+           return null;
+       if (code == CriteriaNotExistsBehavior.TESTPASSES)
         return "test-passes";
       if (code == CriteriaNotExistsBehavior.TESTFAILS)
         return "test-fails";
       return "?";
-      }
+   }
     public String toSystem(CriteriaNotExistsBehavior code) {
       return code.getSystem();
       }
@@ -248,14 +250,16 @@ public class SubscriptionTopic extends CanonicalResource {
         throw new FHIRException("Unknown InteractionTrigger code '"+codeString+"'");
         }
     public String toCode(InteractionTrigger code) {
-      if (code == InteractionTrigger.CREATE)
+       if (code == InteractionTrigger.NULL)
+           return null;
+       if (code == InteractionTrigger.CREATE)
         return "create";
       if (code == InteractionTrigger.UPDATE)
         return "update";
       if (code == InteractionTrigger.DELETE)
         return "delete";
       return "?";
-      }
+   }
     public String toSystem(InteractionTrigger code) {
       return code.getSystem();
       }

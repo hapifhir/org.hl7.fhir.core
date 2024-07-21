@@ -154,12 +154,14 @@ public class ActionDefinition extends Type implements ICompositeType {
     }
 
     public String toCode(ActionRelationshipType code) {
-      if (code == ActionRelationshipType.BEFORE)
+       if (code == ActionRelationshipType.NULL)
+           return null;
+       if (code == ActionRelationshipType.BEFORE)
         return "before";
       if (code == ActionRelationshipType.AFTER)
         return "after";
       return "?";
-    }
+   }
 
     public String toSystem(ActionRelationshipType code) {
       return code.getSystem();
@@ -269,12 +271,14 @@ public class ActionDefinition extends Type implements ICompositeType {
     }
 
     public String toCode(ActionRelationshipAnchor code) {
-      if (code == ActionRelationshipAnchor.START)
+       if (code == ActionRelationshipAnchor.NULL)
+           return null;
+       if (code == ActionRelationshipAnchor.START)
         return "start";
       if (code == ActionRelationshipAnchor.END)
         return "end";
       return "?";
-    }
+   }
 
     public String toSystem(ActionRelationshipAnchor code) {
       return code.getSystem();
@@ -402,14 +406,16 @@ public class ActionDefinition extends Type implements ICompositeType {
     }
 
     public String toCode(ParticipantType code) {
-      if (code == ParticipantType.PATIENT)
+       if (code == ParticipantType.NULL)
+           return null;
+       if (code == ParticipantType.PATIENT)
         return "patient";
       if (code == ParticipantType.PRACTITIONER)
         return "practitioner";
       if (code == ParticipantType.RELATEDPERSON)
         return "related-person";
       return "?";
-    }
+   }
 
     public String toSystem(ParticipantType code) {
       return code.getSystem();
@@ -555,7 +561,9 @@ public class ActionDefinition extends Type implements ICompositeType {
     }
 
     public String toCode(ActionType code) {
-      if (code == ActionType.CREATE)
+       if (code == ActionType.NULL)
+           return null;
+       if (code == ActionType.CREATE)
         return "create";
       if (code == ActionType.UPDATE)
         return "update";
@@ -564,7 +572,7 @@ public class ActionDefinition extends Type implements ICompositeType {
       if (code == ActionType.FIREEVENT)
         return "fire-event";
       return "?";
-    }
+   }
 
     public String toSystem(ActionType code) {
       return code.getSystem();

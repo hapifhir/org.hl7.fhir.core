@@ -197,7 +197,9 @@ public class VisionPrescription extends DomainResource {
     }
 
     public String toCode(VisionStatus code) {
-      if (code == VisionStatus.ACTIVE)
+       if (code == VisionStatus.NULL)
+           return null;
+       if (code == VisionStatus.ACTIVE)
         return "active";
       if (code == VisionStatus.CANCELLED)
         return "cancelled";
@@ -206,7 +208,7 @@ public class VisionPrescription extends DomainResource {
       if (code == VisionStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(VisionStatus code) {
       return code.getSystem();
@@ -321,12 +323,14 @@ public class VisionPrescription extends DomainResource {
     }
 
     public String toCode(VisionEyes code) {
-      if (code == VisionEyes.RIGHT)
+       if (code == VisionEyes.NULL)
+           return null;
+       if (code == VisionEyes.RIGHT)
         return "right";
       if (code == VisionEyes.LEFT)
         return "left";
       return "?";
-    }
+   }
 
     public String toSystem(VisionEyes code) {
       return code.getSystem();
@@ -477,7 +481,9 @@ public class VisionPrescription extends DomainResource {
     }
 
     public String toCode(VisionBase code) {
-      if (code == VisionBase.UP)
+       if (code == VisionBase.NULL)
+           return null;
+       if (code == VisionBase.UP)
         return "up";
       if (code == VisionBase.DOWN)
         return "down";
@@ -486,7 +492,7 @@ public class VisionPrescription extends DomainResource {
       if (code == VisionBase.OUT)
         return "out";
       return "?";
-    }
+   }
 
     public String toSystem(VisionBase code) {
       return code.getSystem();

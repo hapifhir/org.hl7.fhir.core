@@ -1782,7 +1782,9 @@ The primary difference between a medication statement and a medication administr
         throw new FHIRException("Unknown ActivityDefinitionKind code '"+codeString+"'");
         }
     public String toCode(ActivityDefinitionKind code) {
-      if (code == ActivityDefinitionKind.ACCOUNT)
+       if (code == ActivityDefinitionKind.NULL)
+           return null;
+       if (code == ActivityDefinitionKind.ACCOUNT)
         return "Account";
       if (code == ActivityDefinitionKind.ACTIVITYDEFINITION)
         return "ActivityDefinition";
@@ -2021,7 +2023,7 @@ The primary difference between a medication statement and a medication administr
       if (code == ActivityDefinitionKind.VISIONPRESCRIPTION)
         return "VisionPrescription";
       return "?";
-      }
+   }
     public String toSystem(ActivityDefinitionKind code) {
       return code.getSystem();
       }
@@ -2126,14 +2128,16 @@ The primary difference between a medication statement and a medication administr
         throw new FHIRException("Unknown ActivityParticipantType code '"+codeString+"'");
         }
     public String toCode(ActivityParticipantType code) {
-      if (code == ActivityParticipantType.PATIENT)
+       if (code == ActivityParticipantType.NULL)
+           return null;
+       if (code == ActivityParticipantType.PATIENT)
         return "patient";
       if (code == ActivityParticipantType.PRACTITIONER)
         return "practitioner";
       if (code == ActivityParticipantType.RELATEDPERSON)
         return "related-person";
       return "?";
-      }
+   }
     public String toSystem(ActivityParticipantType code) {
       return code.getSystem();
       }

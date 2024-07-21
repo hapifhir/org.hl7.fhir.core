@@ -52,7 +52,9 @@ public class InvoiceStatusEnumFactory implements EnumFactory<InvoiceStatus> {
   }
 
   public String toCode(InvoiceStatus code) {
-    if (code == InvoiceStatus.DRAFT)
+       if (code == InvoiceStatus.NULL)
+           return null;
+       if (code == InvoiceStatus.DRAFT)
       return "draft";
     if (code == InvoiceStatus.ISSUED)
       return "issued";
@@ -63,7 +65,7 @@ public class InvoiceStatusEnumFactory implements EnumFactory<InvoiceStatus> {
     if (code == InvoiceStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(InvoiceStatus code) {
     return code.getSystem();

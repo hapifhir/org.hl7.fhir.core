@@ -173,14 +173,16 @@ public class Questionnaire extends DomainResource {
     }
 
     public String toCode(QuestionnaireStatus code) {
-      if (code == QuestionnaireStatus.DRAFT)
+       if (code == QuestionnaireStatus.NULL)
+           return null;
+       if (code == QuestionnaireStatus.DRAFT)
         return "draft";
       if (code == QuestionnaireStatus.PUBLISHED)
         return "published";
       if (code == QuestionnaireStatus.RETIRED)
         return "retired";
       return "?";
-    }
+   }
 
     public String toSystem(QuestionnaireStatus code) {
       return code.getSystem();
@@ -584,7 +586,9 @@ public class Questionnaire extends DomainResource {
     }
 
     public String toCode(QuestionnaireItemType code) {
-      if (code == QuestionnaireItemType.GROUP)
+       if (code == QuestionnaireItemType.NULL)
+           return null;
+       if (code == QuestionnaireItemType.GROUP)
         return "group";
       if (code == QuestionnaireItemType.DISPLAY)
         return "display";
@@ -621,7 +625,7 @@ public class Questionnaire extends DomainResource {
       if (code == QuestionnaireItemType.QUANTITY)
         return "quantity";
       return "?";
-    }
+   }
 
     public String toSystem(QuestionnaireItemType code) {
       return code.getSystem();
