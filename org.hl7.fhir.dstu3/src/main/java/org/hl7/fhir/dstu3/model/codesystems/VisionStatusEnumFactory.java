@@ -54,7 +54,9 @@ public class VisionStatusEnumFactory implements EnumFactory<VisionStatus> {
   }
 
   public String toCode(VisionStatus code) {
-    if (code == VisionStatus.ACTIVE)
+       if (code == VisionStatus.NULL)
+           return null;
+       if (code == VisionStatus.ACTIVE)
       return "active";
     if (code == VisionStatus.CANCELLED)
       return "cancelled";
@@ -63,7 +65,7 @@ public class VisionStatusEnumFactory implements EnumFactory<VisionStatus> {
     if (code == VisionStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(VisionStatus code) {
       return code.getSystem();

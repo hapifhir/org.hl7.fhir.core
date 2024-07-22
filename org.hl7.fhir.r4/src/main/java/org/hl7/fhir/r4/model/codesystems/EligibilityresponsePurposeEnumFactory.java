@@ -50,7 +50,9 @@ public class EligibilityresponsePurposeEnumFactory implements EnumFactory<Eligib
   }
 
   public String toCode(EligibilityresponsePurpose code) {
-    if (code == EligibilityresponsePurpose.AUTHREQUIREMENTS)
+       if (code == EligibilityresponsePurpose.NULL)
+           return null;
+       if (code == EligibilityresponsePurpose.AUTHREQUIREMENTS)
       return "auth-requirements";
     if (code == EligibilityresponsePurpose.BENEFITS)
       return "benefits";
@@ -59,7 +61,7 @@ public class EligibilityresponsePurposeEnumFactory implements EnumFactory<Eligib
     if (code == EligibilityresponsePurpose.VALIDATION)
       return "validation";
     return "?";
-  }
+   }
 
   public String toSystem(EligibilityresponsePurpose code) {
     return code.getSystem();

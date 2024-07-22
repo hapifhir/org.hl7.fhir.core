@@ -230,7 +230,9 @@ public class DeviceDefinition extends DomainResource {
     }
 
     public String toCode(DeviceNameType code) {
-      if (code == DeviceNameType.UDILABELNAME)
+       if (code == DeviceNameType.NULL)
+           return null;
+       if (code == DeviceNameType.UDILABELNAME)
         return "udi-label-name";
       if (code == DeviceNameType.USERFRIENDLYNAME)
         return "user-friendly-name";
@@ -243,7 +245,7 @@ public class DeviceDefinition extends DomainResource {
       if (code == DeviceNameType.OTHER)
         return "other";
       return "?";
-    }
+   }
 
     public String toSystem(DeviceNameType code) {
       return code.getSystem();

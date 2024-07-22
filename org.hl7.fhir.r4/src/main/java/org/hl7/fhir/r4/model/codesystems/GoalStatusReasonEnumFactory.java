@@ -60,7 +60,9 @@ public class GoalStatusReasonEnumFactory implements EnumFactory<GoalStatusReason
   }
 
   public String toCode(GoalStatusReason code) {
-    if (code == GoalStatusReason.SURGERY)
+       if (code == GoalStatusReason.NULL)
+           return null;
+       if (code == GoalStatusReason.SURGERY)
       return "surgery";
     if (code == GoalStatusReason.LIFEEVENT)
       return "life-event";
@@ -79,7 +81,7 @@ public class GoalStatusReasonEnumFactory implements EnumFactory<GoalStatusReason
     if (code == GoalStatusReason.LACKOFSOCIALSUPPORT)
       return "lack-of-social-support";
     return "?";
-  }
+   }
 
   public String toSystem(GoalStatusReason code) {
     return code.getSystem();

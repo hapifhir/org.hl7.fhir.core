@@ -48,14 +48,16 @@ public class NehtaNehtaMutatedWildtypeEnumFactory implements EnumFactory<NehtaNe
   }
 
   public String toCode(NehtaNehtaMutatedWildtype code) {
-    if (code == NehtaNehtaMutatedWildtype.MUTATED)
+       if (code == NehtaNehtaMutatedWildtype.NULL)
+           return null;
+       if (code == NehtaNehtaMutatedWildtype.MUTATED)
       return "mutated";
     if (code == NehtaNehtaMutatedWildtype.WILDTYPE)
       return "wild_type";
     if (code == NehtaNehtaMutatedWildtype.NOTTESTED)
       return "not_tested";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaMutatedWildtype code) {
     return code.getSystem();

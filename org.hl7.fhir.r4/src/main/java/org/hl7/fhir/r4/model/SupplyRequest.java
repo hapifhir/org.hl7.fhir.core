@@ -256,7 +256,9 @@ public class SupplyRequest extends DomainResource {
     }
 
     public String toCode(SupplyRequestStatus code) {
-      if (code == SupplyRequestStatus.DRAFT)
+       if (code == SupplyRequestStatus.NULL)
+           return null;
+       if (code == SupplyRequestStatus.DRAFT)
         return "draft";
       if (code == SupplyRequestStatus.ACTIVE)
         return "active";
@@ -271,7 +273,7 @@ public class SupplyRequest extends DomainResource {
       if (code == SupplyRequestStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(SupplyRequestStatus code) {
       return code.getSystem();
@@ -424,7 +426,9 @@ public class SupplyRequest extends DomainResource {
     }
 
     public String toCode(RequestPriority code) {
-      if (code == RequestPriority.ROUTINE)
+       if (code == RequestPriority.NULL)
+           return null;
+       if (code == RequestPriority.ROUTINE)
         return "routine";
       if (code == RequestPriority.URGENT)
         return "urgent";
@@ -433,7 +437,7 @@ public class SupplyRequest extends DomainResource {
       if (code == RequestPriority.STAT)
         return "stat";
       return "?";
-    }
+   }
 
     public String toSystem(RequestPriority code) {
       return code.getSystem();

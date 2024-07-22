@@ -52,7 +52,9 @@ public class CodesystemAltcodeKindEnumFactory implements EnumFactory<CodesystemA
   }
 
   public String toCode(CodesystemAltcodeKind code) {
-    if (code == CodesystemAltcodeKind.ALTERNATE)
+       if (code == CodesystemAltcodeKind.NULL)
+           return null;
+       if (code == CodesystemAltcodeKind.ALTERNATE)
       return "alternate";
     if (code == CodesystemAltcodeKind.DEPRECATED)
       return "deprecated";
@@ -63,7 +65,7 @@ public class CodesystemAltcodeKindEnumFactory implements EnumFactory<CodesystemA
     if (code == CodesystemAltcodeKind.EXPRESSION)
       return "expression";
     return "?";
-  }
+   }
 
   public String toSystem(CodesystemAltcodeKind code) {
     return code.getSystem();

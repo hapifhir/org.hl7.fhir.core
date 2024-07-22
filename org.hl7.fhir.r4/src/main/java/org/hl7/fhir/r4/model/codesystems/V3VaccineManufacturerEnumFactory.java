@@ -122,7 +122,9 @@ public class V3VaccineManufacturerEnumFactory implements EnumFactory<V3VaccineMa
   }
 
   public String toCode(V3VaccineManufacturer code) {
-    if (code == V3VaccineManufacturer.AB)
+       if (code == V3VaccineManufacturer.NULL)
+           return null;
+       if (code == V3VaccineManufacturer.AB)
       return "AB";
     if (code == V3VaccineManufacturer.AD)
       return "AD";
@@ -203,7 +205,7 @@ public class V3VaccineManufacturerEnumFactory implements EnumFactory<V3VaccineMa
     if (code == V3VaccineManufacturer.WAL)
       return "WAL";
     return "?";
-  }
+   }
 
   public String toSystem(V3VaccineManufacturer code) {
     return code.getSystem();

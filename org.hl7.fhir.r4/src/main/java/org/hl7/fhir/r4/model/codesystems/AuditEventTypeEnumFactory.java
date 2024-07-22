@@ -44,10 +44,12 @@ public class AuditEventTypeEnumFactory implements EnumFactory<AuditEventType> {
   }
 
   public String toCode(AuditEventType code) {
-    if (code == AuditEventType.REST)
+       if (code == AuditEventType.NULL)
+           return null;
+       if (code == AuditEventType.REST)
       return "rest";
     return "?";
-  }
+   }
 
   public String toSystem(AuditEventType code) {
     return code.getSystem();

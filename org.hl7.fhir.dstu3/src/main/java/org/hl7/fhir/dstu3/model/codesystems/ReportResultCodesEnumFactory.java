@@ -52,14 +52,16 @@ public class ReportResultCodesEnumFactory implements EnumFactory<ReportResultCod
   }
 
   public String toCode(ReportResultCodes code) {
-    if (code == ReportResultCodes.PASS)
+       if (code == ReportResultCodes.NULL)
+           return null;
+       if (code == ReportResultCodes.PASS)
       return "pass";
     if (code == ReportResultCodes.FAIL)
       return "fail";
     if (code == ReportResultCodes.PENDING)
       return "pending";
     return "?";
-  }
+   }
 
     public String toSystem(ReportResultCodes code) {
       return code.getSystem();

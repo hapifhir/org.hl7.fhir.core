@@ -52,14 +52,16 @@ public class RemittanceOutcomeEnumFactory implements EnumFactory<RemittanceOutco
   }
 
   public String toCode(RemittanceOutcome code) {
-    if (code == RemittanceOutcome.COMPLETE)
+       if (code == RemittanceOutcome.NULL)
+           return null;
+       if (code == RemittanceOutcome.COMPLETE)
       return "complete";
     if (code == RemittanceOutcome.ERROR)
       return "error";
     if (code == RemittanceOutcome.PARTIAL)
       return "partial";
     return "?";
-  }
+   }
 
     public String toSystem(RemittanceOutcome code) {
       return code.getSystem();

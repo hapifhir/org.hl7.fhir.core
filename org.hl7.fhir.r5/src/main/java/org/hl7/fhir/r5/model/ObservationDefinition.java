@@ -264,7 +264,9 @@ public class ObservationDefinition extends DomainResource {
         throw new FHIRException("Unknown ObservationDataType code '"+codeString+"'");
         }
     public String toCode(ObservationDataType code) {
-      if (code == ObservationDataType.QUANTITY)
+       if (code == ObservationDataType.NULL)
+           return null;
+       if (code == ObservationDataType.QUANTITY)
         return "Quantity";
       if (code == ObservationDataType.CODEABLECONCEPT)
         return "CodeableConcept";
@@ -287,7 +289,7 @@ public class ObservationDefinition extends DomainResource {
       if (code == ObservationDataType.PERIOD)
         return "Period";
       return "?";
-      }
+   }
     public String toSystem(ObservationDataType code) {
       return code.getSystem();
       }
@@ -392,14 +394,16 @@ public class ObservationDefinition extends DomainResource {
         throw new FHIRException("Unknown ObservationRangeCategory code '"+codeString+"'");
         }
     public String toCode(ObservationRangeCategory code) {
-      if (code == ObservationRangeCategory.REFERENCE)
+       if (code == ObservationRangeCategory.NULL)
+           return null;
+       if (code == ObservationRangeCategory.REFERENCE)
         return "reference";
       if (code == ObservationRangeCategory.CRITICAL)
         return "critical";
       if (code == ObservationRangeCategory.ABSOLUTE)
         return "absolute";
       return "?";
-      }
+   }
     public String toSystem(ObservationRangeCategory code) {
       return code.getSystem();
       }

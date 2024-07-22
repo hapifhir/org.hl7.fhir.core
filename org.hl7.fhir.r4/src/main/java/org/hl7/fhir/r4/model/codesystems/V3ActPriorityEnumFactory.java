@@ -72,7 +72,9 @@ public class V3ActPriorityEnumFactory implements EnumFactory<V3ActPriority> {
   }
 
   public String toCode(V3ActPriority code) {
-    if (code == V3ActPriority.A)
+       if (code == V3ActPriority.NULL)
+           return null;
+       if (code == V3ActPriority.A)
       return "A";
     if (code == V3ActPriority.CR)
       return "CR";
@@ -103,7 +105,7 @@ public class V3ActPriorityEnumFactory implements EnumFactory<V3ActPriority> {
     if (code == V3ActPriority.UR)
       return "UR";
     return "?";
-  }
+   }
 
   public String toSystem(V3ActPriority code) {
     return code.getSystem();

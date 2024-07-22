@@ -45,10 +45,12 @@ public class NehtaNehtaProstateRadMarginPositivityEnumFactory
   }
 
   public String toCode(NehtaNehtaProstateRadMarginPositivity code) {
-    if (code == NehtaNehtaProstateRadMarginPositivity.INTRAPROSTATIC)
+       if (code == NehtaNehtaProstateRadMarginPositivity.NULL)
+           return null;
+       if (code == NehtaNehtaProstateRadMarginPositivity.INTRAPROSTATIC)
       return "intraprostatic";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaProstateRadMarginPositivity code) {
     return code.getSystem();

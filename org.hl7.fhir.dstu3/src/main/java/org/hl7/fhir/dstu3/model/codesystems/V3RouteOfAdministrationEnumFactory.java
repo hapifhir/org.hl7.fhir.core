@@ -818,7 +818,9 @@ public class V3RouteOfAdministrationEnumFactory implements EnumFactory<V3RouteOf
   }
 
   public String toCode(V3RouteOfAdministration code) {
-    if (code == V3RouteOfAdministration._ROUTEBYMETHOD)
+       if (code == V3RouteOfAdministration.NULL)
+           return null;
+       if (code == V3RouteOfAdministration._ROUTEBYMETHOD)
       return "_RouteByMethod";
     if (code == V3RouteOfAdministration.SOAK)
       return "SOAK";
@@ -1591,7 +1593,7 @@ public class V3RouteOfAdministrationEnumFactory implements EnumFactory<V3RouteOf
     if (code == V3RouteOfAdministration._VITREOUSHUMOURROUTE)
       return "_VitreousHumourRoute";
     return "?";
-  }
+   }
 
     public String toSystem(V3RouteOfAdministration code) {
       return code.getSystem();

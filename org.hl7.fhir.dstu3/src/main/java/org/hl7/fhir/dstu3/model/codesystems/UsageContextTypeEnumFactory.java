@@ -62,7 +62,9 @@ public class UsageContextTypeEnumFactory implements EnumFactory<UsageContextType
   }
 
   public String toCode(UsageContextType code) {
-    if (code == UsageContextType.GENDER)
+       if (code == UsageContextType.NULL)
+           return null;
+       if (code == UsageContextType.GENDER)
       return "gender";
     if (code == UsageContextType.AGE)
       return "age";
@@ -79,7 +81,7 @@ public class UsageContextTypeEnumFactory implements EnumFactory<UsageContextType
     if (code == UsageContextType.SPECIES)
       return "species";
     return "?";
-  }
+   }
 
     public String toSystem(UsageContextType code) {
       return code.getSystem();

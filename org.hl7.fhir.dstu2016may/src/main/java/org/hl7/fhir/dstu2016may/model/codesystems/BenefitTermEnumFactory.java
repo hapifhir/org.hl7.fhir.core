@@ -46,12 +46,14 @@ public class BenefitTermEnumFactory implements EnumFactory<BenefitTerm> {
   }
 
   public String toCode(BenefitTerm code) {
-    if (code == BenefitTerm.ANNUAL)
+       if (code == BenefitTerm.NULL)
+           return null;
+       if (code == BenefitTerm.ANNUAL)
       return "annual";
     if (code == BenefitTerm.LIFETIME)
       return "lifetime";
     return "?";
-  }
+   }
 
   public String toSystem(BenefitTerm code) {
     return code.getSystem();

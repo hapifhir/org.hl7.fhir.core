@@ -66,7 +66,9 @@ public class ExDiagnosistypeEnumFactory implements EnumFactory<ExDiagnosistype> 
   }
 
   public String toCode(ExDiagnosistype code) {
-    if (code == ExDiagnosistype.ADMITTING)
+       if (code == ExDiagnosistype.NULL)
+           return null;
+       if (code == ExDiagnosistype.ADMITTING)
       return "admitting";
     if (code == ExDiagnosistype.CLINICAL)
       return "clinical";
@@ -91,7 +93,7 @@ public class ExDiagnosistypeEnumFactory implements EnumFactory<ExDiagnosistype> 
     if (code == ExDiagnosistype.SELF)
       return "self";
     return "?";
-  }
+   }
 
   public String toSystem(ExDiagnosistype code) {
     return code.getSystem();

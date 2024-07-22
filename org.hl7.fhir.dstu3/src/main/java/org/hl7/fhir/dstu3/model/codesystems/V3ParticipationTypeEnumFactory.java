@@ -168,7 +168,9 @@ public class V3ParticipationTypeEnumFactory implements EnumFactory<V3Participati
   }
 
   public String toCode(V3ParticipationType code) {
-    if (code == V3ParticipationType.PART)
+       if (code == V3ParticipationType.NULL)
+           return null;
+       if (code == V3ParticipationType.PART)
       return "PART";
     if (code == V3ParticipationType._PARTICIPATIONANCILLARY)
       return "_ParticipationAncillary";
@@ -291,7 +293,7 @@ public class V3ParticipationTypeEnumFactory implements EnumFactory<V3Participati
     if (code == V3ParticipationType.LA)
       return "LA";
     return "?";
-  }
+   }
 
     public String toSystem(V3ParticipationType code) {
       return code.getSystem();

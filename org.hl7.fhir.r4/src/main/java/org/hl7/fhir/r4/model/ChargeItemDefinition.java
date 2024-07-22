@@ -253,7 +253,9 @@ public class ChargeItemDefinition extends MetadataResource {
     }
 
     public String toCode(ChargeItemDefinitionPriceComponentType code) {
-      if (code == ChargeItemDefinitionPriceComponentType.BASE)
+       if (code == ChargeItemDefinitionPriceComponentType.NULL)
+           return null;
+       if (code == ChargeItemDefinitionPriceComponentType.BASE)
         return "base";
       if (code == ChargeItemDefinitionPriceComponentType.SURCHARGE)
         return "surcharge";
@@ -266,7 +268,7 @@ public class ChargeItemDefinition extends MetadataResource {
       if (code == ChargeItemDefinitionPriceComponentType.INFORMATIONAL)
         return "informational";
       return "?";
-    }
+   }
 
     public String toSystem(ChargeItemDefinitionPriceComponentType code) {
       return code.getSystem();

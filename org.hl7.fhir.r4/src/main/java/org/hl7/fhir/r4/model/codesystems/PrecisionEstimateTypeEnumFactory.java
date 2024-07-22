@@ -50,7 +50,9 @@ public class PrecisionEstimateTypeEnumFactory implements EnumFactory<PrecisionEs
   }
 
   public String toCode(PrecisionEstimateType code) {
-    if (code == PrecisionEstimateType.CI)
+       if (code == PrecisionEstimateType.NULL)
+           return null;
+       if (code == PrecisionEstimateType.CI)
       return "CI";
     if (code == PrecisionEstimateType.IQR)
       return "IQR";
@@ -59,7 +61,7 @@ public class PrecisionEstimateTypeEnumFactory implements EnumFactory<PrecisionEs
     if (code == PrecisionEstimateType.SE)
       return "SE";
     return "?";
-  }
+   }
 
   public String toSystem(PrecisionEstimateType code) {
     return code.getSystem();

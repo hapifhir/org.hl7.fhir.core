@@ -44,10 +44,12 @@ public class HspcDeltaFlagNumericNomEnumFactory implements EnumFactory<HspcDelta
   }
 
   public String toCode(HspcDeltaFlagNumericNom code) {
-    if (code == HspcDeltaFlagNumericNom.UNCHANGED)
+       if (code == HspcDeltaFlagNumericNom.NULL)
+           return null;
+       if (code == HspcDeltaFlagNumericNom.UNCHANGED)
       return "unchanged";
     return "?";
-  }
+   }
 
   public String toSystem(HspcDeltaFlagNumericNom code) {
     return code.getSystem();

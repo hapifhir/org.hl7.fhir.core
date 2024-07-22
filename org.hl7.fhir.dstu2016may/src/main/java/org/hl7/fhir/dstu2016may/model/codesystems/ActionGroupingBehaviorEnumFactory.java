@@ -48,14 +48,16 @@ public class ActionGroupingBehaviorEnumFactory implements EnumFactory<ActionGrou
   }
 
   public String toCode(ActionGroupingBehavior code) {
-    if (code == ActionGroupingBehavior.VISUALGROUP)
+       if (code == ActionGroupingBehavior.NULL)
+           return null;
+       if (code == ActionGroupingBehavior.VISUALGROUP)
       return "visual-group";
     if (code == ActionGroupingBehavior.LOGICALGROUP)
       return "logical-group";
     if (code == ActionGroupingBehavior.SENTENCEGROUP)
       return "sentence-group";
     return "?";
-  }
+   }
 
   public String toSystem(ActionGroupingBehavior code) {
     return code.getSystem();

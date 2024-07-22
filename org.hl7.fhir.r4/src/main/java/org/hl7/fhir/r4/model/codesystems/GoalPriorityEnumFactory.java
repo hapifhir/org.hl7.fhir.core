@@ -48,14 +48,16 @@ public class GoalPriorityEnumFactory implements EnumFactory<GoalPriority> {
   }
 
   public String toCode(GoalPriority code) {
-    if (code == GoalPriority.HIGHPRIORITY)
+       if (code == GoalPriority.NULL)
+           return null;
+       if (code == GoalPriority.HIGHPRIORITY)
       return "high-priority";
     if (code == GoalPriority.MEDIUMPRIORITY)
       return "medium-priority";
     if (code == GoalPriority.LOWPRIORITY)
       return "low-priority";
     return "?";
-  }
+   }
 
   public String toSystem(GoalPriority code) {
     return code.getSystem();

@@ -262,7 +262,9 @@ public class HumanName extends DataType implements ICompositeType {
     }
 
     public String toCode(NameUse code) {
-      if (code == NameUse.USUAL)
+       if (code == NameUse.NULL)
+           return null;
+       if (code == NameUse.USUAL)
         return "usual";
       if (code == NameUse.OFFICIAL)
         return "official";
@@ -277,7 +279,7 @@ public class HumanName extends DataType implements ICompositeType {
       if (code == NameUse.MAIDEN)
         return "maiden";
       return "?";
-    }
+   }
 
     public String toSystem(NameUse code) {
       return code.getSystem();

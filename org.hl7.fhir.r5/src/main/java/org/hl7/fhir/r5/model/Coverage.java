@@ -152,14 +152,16 @@ public class Coverage extends DomainResource {
         throw new FHIRException("Unknown Kind code '"+codeString+"'");
         }
     public String toCode(Kind code) {
-      if (code == Kind.INSURANCE)
+       if (code == Kind.NULL)
+           return null;
+       if (code == Kind.INSURANCE)
         return "insurance";
       if (code == Kind.SELFPAY)
         return "self-pay";
       if (code == Kind.OTHER)
         return "other";
       return "?";
-      }
+   }
     public String toSystem(Kind code) {
       return code.getSystem();
       }

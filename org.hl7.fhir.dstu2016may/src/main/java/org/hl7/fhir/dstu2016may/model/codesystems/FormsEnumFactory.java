@@ -46,12 +46,14 @@ public class FormsEnumFactory implements EnumFactory<Forms> {
   }
 
   public String toCode(Forms code) {
-    if (code == Forms._1)
+       if (code == Forms.NULL)
+           return null;
+       if (code == Forms._1)
       return "1";
     if (code == Forms._2)
       return "2";
     return "?";
-  }
+   }
 
   public String toSystem(Forms code) {
     return code.getSystem();

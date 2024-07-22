@@ -58,7 +58,9 @@ public class V3ManagedParticipationStatusEnumFactory implements EnumFactory<V3Ma
   }
 
   public String toCode(V3ManagedParticipationStatus code) {
-    if (code == V3ManagedParticipationStatus.NORMAL)
+       if (code == V3ManagedParticipationStatus.NULL)
+           return null;
+       if (code == V3ManagedParticipationStatus.NORMAL)
       return "normal";
     if (code == V3ManagedParticipationStatus.ACTIVE)
       return "active";
@@ -71,7 +73,7 @@ public class V3ManagedParticipationStatusEnumFactory implements EnumFactory<V3Ma
     if (code == V3ManagedParticipationStatus.NULLIFIED)
       return "nullified";
     return "?";
-  }
+   }
 
     public String toSystem(V3ManagedParticipationStatus code) {
       return code.getSystem();

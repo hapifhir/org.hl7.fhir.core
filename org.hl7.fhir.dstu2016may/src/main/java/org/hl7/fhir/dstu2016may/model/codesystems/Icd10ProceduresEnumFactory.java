@@ -48,14 +48,16 @@ public class Icd10ProceduresEnumFactory implements EnumFactory<Icd10Procedures> 
   }
 
   public String toCode(Icd10Procedures code) {
-    if (code == Icd10Procedures._123001)
+       if (code == Icd10Procedures.NULL)
+           return null;
+       if (code == Icd10Procedures._123001)
       return "123001";
     if (code == Icd10Procedures._123002)
       return "123002";
     if (code == Icd10Procedures._123003)
       return "123003";
     return "?";
-  }
+   }
 
   public String toSystem(Icd10Procedures code) {
     return code.getSystem();

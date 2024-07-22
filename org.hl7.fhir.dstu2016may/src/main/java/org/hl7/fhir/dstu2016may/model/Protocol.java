@@ -228,7 +228,9 @@ public class Protocol extends DomainResource {
     }
 
     public String toCode(ProtocolStatus code) {
-      if (code == ProtocolStatus.DRAFT)
+       if (code == ProtocolStatus.NULL)
+           return null;
+       if (code == ProtocolStatus.DRAFT)
         return "draft";
       if (code == ProtocolStatus.TESTING)
         return "testing";
@@ -241,7 +243,7 @@ public class Protocol extends DomainResource {
       if (code == ProtocolStatus.SUPERSEDED)
         return "superseded";
       return "?";
-    }
+   }
 
     public String toSystem(ProtocolStatus code) {
       return code.getSystem();
@@ -391,7 +393,9 @@ public class Protocol extends DomainResource {
     }
 
     public String toCode(ProtocolType code) {
-      if (code == ProtocolType.CONDITION)
+       if (code == ProtocolType.NULL)
+           return null;
+       if (code == ProtocolType.CONDITION)
         return "condition";
       if (code == ProtocolType.DEVICE)
         return "device";
@@ -400,7 +404,7 @@ public class Protocol extends DomainResource {
       if (code == ProtocolType.STUDY)
         return "study";
       return "?";
-    }
+   }
 
     public String toSystem(ProtocolType code) {
       return code.getSystem();
@@ -603,7 +607,9 @@ public class Protocol extends DomainResource {
     }
 
     public String toCode(ActivityDefinitionCategory code) {
-      if (code == ActivityDefinitionCategory.DIET)
+       if (code == ActivityDefinitionCategory.NULL)
+           return null;
+       if (code == ActivityDefinitionCategory.DIET)
         return "diet";
       if (code == ActivityDefinitionCategory.DRUG)
         return "drug";
@@ -618,7 +624,7 @@ public class Protocol extends DomainResource {
       if (code == ActivityDefinitionCategory.OTHER)
         return "other";
       return "?";
-    }
+   }
 
     public String toSystem(ActivityDefinitionCategory code) {
       return code.getSystem();

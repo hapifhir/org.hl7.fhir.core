@@ -52,7 +52,9 @@ public class IdentifierTypeEnumFactory implements EnumFactory<IdentifierType> {
   }
 
   public String toCode(IdentifierType code) {
-    if (code == IdentifierType.UDI)
+       if (code == IdentifierType.NULL)
+           return null;
+       if (code == IdentifierType.UDI)
       return "UDI";
     if (code == IdentifierType.SNO)
       return "SNO";
@@ -63,7 +65,7 @@ public class IdentifierTypeEnumFactory implements EnumFactory<IdentifierType> {
     if (code == IdentifierType.FILL)
       return "FILL";
     return "?";
-  }
+   }
 
   public String toSystem(IdentifierType code) {
     return code.getSystem();

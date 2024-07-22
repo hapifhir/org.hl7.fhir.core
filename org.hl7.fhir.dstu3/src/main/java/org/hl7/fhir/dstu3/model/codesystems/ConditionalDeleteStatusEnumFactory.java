@@ -52,14 +52,16 @@ public class ConditionalDeleteStatusEnumFactory implements EnumFactory<Condition
   }
 
   public String toCode(ConditionalDeleteStatus code) {
-    if (code == ConditionalDeleteStatus.NOTSUPPORTED)
+       if (code == ConditionalDeleteStatus.NULL)
+           return null;
+       if (code == ConditionalDeleteStatus.NOTSUPPORTED)
       return "not-supported";
     if (code == ConditionalDeleteStatus.SINGLE)
       return "single";
     if (code == ConditionalDeleteStatus.MULTIPLE)
       return "multiple";
     return "?";
-  }
+   }
 
     public String toSystem(ConditionalDeleteStatus code) {
       return code.getSystem();

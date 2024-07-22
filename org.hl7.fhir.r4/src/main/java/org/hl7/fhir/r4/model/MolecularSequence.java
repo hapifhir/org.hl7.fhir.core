@@ -177,14 +177,16 @@ public class MolecularSequence extends DomainResource {
     }
 
     public String toCode(SequenceType code) {
-      if (code == SequenceType.AA)
+       if (code == SequenceType.NULL)
+           return null;
+       if (code == SequenceType.AA)
         return "aa";
       if (code == SequenceType.DNA)
         return "dna";
       if (code == SequenceType.RNA)
         return "rna";
       return "?";
-    }
+   }
 
     public String toSystem(SequenceType code) {
       return code.getSystem();
@@ -299,12 +301,14 @@ public class MolecularSequence extends DomainResource {
     }
 
     public String toCode(OrientationType code) {
-      if (code == OrientationType.SENSE)
+       if (code == OrientationType.NULL)
+           return null;
+       if (code == OrientationType.SENSE)
         return "sense";
       if (code == OrientationType.ANTISENSE)
         return "antisense";
       return "?";
-    }
+   }
 
     public String toSystem(OrientationType code) {
       return code.getSystem();
@@ -419,12 +423,14 @@ public class MolecularSequence extends DomainResource {
     }
 
     public String toCode(StrandType code) {
-      if (code == StrandType.WATSON)
+       if (code == StrandType.NULL)
+           return null;
+       if (code == StrandType.WATSON)
         return "watson";
       if (code == StrandType.CRICK)
         return "crick";
       return "?";
-    }
+   }
 
     public String toSystem(StrandType code) {
       return code.getSystem();
@@ -557,14 +563,16 @@ public class MolecularSequence extends DomainResource {
     }
 
     public String toCode(QualityType code) {
-      if (code == QualityType.INDEL)
+       if (code == QualityType.NULL)
+           return null;
+       if (code == QualityType.INDEL)
         return "indel";
       if (code == QualityType.SNP)
         return "snp";
       if (code == QualityType.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(QualityType code) {
       return code.getSystem();
@@ -737,7 +745,9 @@ public class MolecularSequence extends DomainResource {
     }
 
     public String toCode(RepositoryType code) {
-      if (code == RepositoryType.DIRECTLINK)
+       if (code == RepositoryType.NULL)
+           return null;
+       if (code == RepositoryType.DIRECTLINK)
         return "directlink";
       if (code == RepositoryType.OPENAPI)
         return "openapi";
@@ -748,7 +758,7 @@ public class MolecularSequence extends DomainResource {
       if (code == RepositoryType.OTHER)
         return "other";
       return "?";
-    }
+   }
 
     public String toSystem(RepositoryType code) {
       return code.getSystem();

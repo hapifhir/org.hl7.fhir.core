@@ -50,12 +50,14 @@ public class ImmunizationRecommendationStatusEnumFactory implements EnumFactory<
   }
 
   public String toCode(ImmunizationRecommendationStatus code) {
-    if (code == ImmunizationRecommendationStatus.DUE)
+       if (code == ImmunizationRecommendationStatus.NULL)
+           return null;
+       if (code == ImmunizationRecommendationStatus.DUE)
       return "due";
     if (code == ImmunizationRecommendationStatus.OVERDUE)
       return "overdue";
     return "?";
-  }
+   }
 
     public String toSystem(ImmunizationRecommendationStatus code) {
       return code.getSystem();

@@ -50,7 +50,9 @@ public class V3AcknowledgementConditionEnumFactory implements EnumFactory<V3Ackn
   }
 
   public String toCode(V3AcknowledgementCondition code) {
-    if (code == V3AcknowledgementCondition.AL)
+       if (code == V3AcknowledgementCondition.NULL)
+           return null;
+       if (code == V3AcknowledgementCondition.AL)
       return "AL";
     if (code == V3AcknowledgementCondition.ER)
       return "ER";
@@ -59,7 +61,7 @@ public class V3AcknowledgementConditionEnumFactory implements EnumFactory<V3Ackn
     if (code == V3AcknowledgementCondition.SU)
       return "SU";
     return "?";
-  }
+   }
 
   public String toSystem(V3AcknowledgementCondition code) {
     return code.getSystem();

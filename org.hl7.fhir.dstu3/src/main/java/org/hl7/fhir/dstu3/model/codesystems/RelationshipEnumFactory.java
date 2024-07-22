@@ -56,7 +56,9 @@ public class RelationshipEnumFactory implements EnumFactory<Relationship> {
   }
 
   public String toCode(Relationship code) {
-    if (code == Relationship._1)
+       if (code == Relationship.NULL)
+           return null;
+       if (code == Relationship._1)
       return "1";
     if (code == Relationship._2)
       return "2";
@@ -67,7 +69,7 @@ public class RelationshipEnumFactory implements EnumFactory<Relationship> {
     if (code == Relationship._5)
       return "5";
     return "?";
-  }
+   }
 
     public String toSystem(Relationship code) {
       return code.getSystem();

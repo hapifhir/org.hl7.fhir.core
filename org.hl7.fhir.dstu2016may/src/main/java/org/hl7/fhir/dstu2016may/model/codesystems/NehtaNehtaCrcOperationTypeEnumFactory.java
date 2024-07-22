@@ -44,10 +44,12 @@ public class NehtaNehtaCrcOperationTypeEnumFactory implements EnumFactory<NehtaN
   }
 
   public String toCode(NehtaNehtaCrcOperationType code) {
-    if (code == NehtaNehtaCrcOperationType.OTHERPROCEDURES)
+       if (code == NehtaNehtaCrcOperationType.NULL)
+           return null;
+       if (code == NehtaNehtaCrcOperationType.OTHERPROCEDURES)
       return "other_procedures";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaCrcOperationType code) {
     return code.getSystem();

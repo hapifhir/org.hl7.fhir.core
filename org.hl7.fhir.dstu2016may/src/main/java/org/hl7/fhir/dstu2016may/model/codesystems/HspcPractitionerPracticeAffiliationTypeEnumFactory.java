@@ -45,10 +45,12 @@ public class HspcPractitionerPracticeAffiliationTypeEnumFactory
   }
 
   public String toCode(HspcPractitionerPracticeAffiliationType code) {
-    if (code == HspcPractitionerPracticeAffiliationType._5B595190ACEB48DEB0D68950A8829183)
+       if (code == HspcPractitionerPracticeAffiliationType.NULL)
+           return null;
+       if (code == HspcPractitionerPracticeAffiliationType._5B595190ACEB48DEB0D68950A8829183)
       return "5b595190-aceb-48de-b0d6-8950a8829183";
     return "?";
-  }
+   }
 
   public String toSystem(HspcPractitionerPracticeAffiliationType code) {
     return code.getSystem();

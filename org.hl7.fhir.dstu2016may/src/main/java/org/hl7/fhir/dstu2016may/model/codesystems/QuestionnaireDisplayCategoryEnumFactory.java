@@ -46,12 +46,14 @@ public class QuestionnaireDisplayCategoryEnumFactory implements EnumFactory<Ques
   }
 
   public String toCode(QuestionnaireDisplayCategory code) {
-    if (code == QuestionnaireDisplayCategory.INSTRUCTIONS)
+       if (code == QuestionnaireDisplayCategory.NULL)
+           return null;
+       if (code == QuestionnaireDisplayCategory.INSTRUCTIONS)
       return "instructions";
     if (code == QuestionnaireDisplayCategory.SECURITY)
       return "security";
     return "?";
-  }
+   }
 
   public String toSystem(QuestionnaireDisplayCategory code) {
     return code.getSystem();

@@ -195,7 +195,9 @@ public class EnrollmentResponse extends DomainResource {
     }
 
     public String toCode(EnrollmentResponseStatus code) {
-      if (code == EnrollmentResponseStatus.ACTIVE)
+       if (code == EnrollmentResponseStatus.NULL)
+           return null;
+       if (code == EnrollmentResponseStatus.ACTIVE)
         return "active";
       if (code == EnrollmentResponseStatus.CANCELLED)
         return "cancelled";
@@ -204,7 +206,7 @@ public class EnrollmentResponse extends DomainResource {
       if (code == EnrollmentResponseStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(EnrollmentResponseStatus code) {
       return code.getSystem();

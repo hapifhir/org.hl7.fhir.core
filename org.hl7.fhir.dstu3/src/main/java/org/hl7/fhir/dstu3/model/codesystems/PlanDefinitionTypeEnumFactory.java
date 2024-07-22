@@ -52,14 +52,16 @@ public class PlanDefinitionTypeEnumFactory implements EnumFactory<PlanDefinition
   }
 
   public String toCode(PlanDefinitionType code) {
-    if (code == PlanDefinitionType.ORDERSET)
+       if (code == PlanDefinitionType.NULL)
+           return null;
+       if (code == PlanDefinitionType.ORDERSET)
       return "order-set";
     if (code == PlanDefinitionType.PROTOCOL)
       return "protocol";
     if (code == PlanDefinitionType.ECARULE)
       return "eca-rule";
     return "?";
-  }
+   }
 
     public String toSystem(PlanDefinitionType code) {
       return code.getSystem();

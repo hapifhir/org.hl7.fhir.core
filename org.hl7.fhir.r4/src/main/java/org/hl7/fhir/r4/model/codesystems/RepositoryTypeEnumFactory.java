@@ -52,7 +52,9 @@ public class RepositoryTypeEnumFactory implements EnumFactory<RepositoryType> {
   }
 
   public String toCode(RepositoryType code) {
-    if (code == RepositoryType.DIRECTLINK)
+       if (code == RepositoryType.NULL)
+           return null;
+       if (code == RepositoryType.DIRECTLINK)
       return "directlink";
     if (code == RepositoryType.OPENAPI)
       return "openapi";
@@ -63,7 +65,7 @@ public class RepositoryTypeEnumFactory implements EnumFactory<RepositoryType> {
     if (code == RepositoryType.OTHER)
       return "other";
     return "?";
-  }
+   }
 
   public String toSystem(RepositoryType code) {
     return code.getSystem();

@@ -62,7 +62,9 @@ public class MetricColorEnumFactory implements EnumFactory<MetricColor> {
   }
 
   public String toCode(MetricColor code) {
-    if (code == MetricColor.BLACK)
+       if (code == MetricColor.NULL)
+           return null;
+       if (code == MetricColor.BLACK)
       return "black";
     if (code == MetricColor.RED)
       return "red";
@@ -79,7 +81,7 @@ public class MetricColorEnumFactory implements EnumFactory<MetricColor> {
     if (code == MetricColor.WHITE)
       return "white";
     return "?";
-  }
+   }
 
     public String toSystem(MetricColor code) {
       return code.getSystem();

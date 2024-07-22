@@ -52,14 +52,16 @@ public class MedicationStatementNottakenEnumFactory implements EnumFactory<Medic
   }
 
   public String toCode(MedicationStatementNottaken code) {
-    if (code == MedicationStatementNottaken.Y)
+       if (code == MedicationStatementNottaken.NULL)
+           return null;
+       if (code == MedicationStatementNottaken.Y)
       return "y";
     if (code == MedicationStatementNottaken.N)
       return "n";
     if (code == MedicationStatementNottaken.UNK)
       return "unk";
     return "?";
-  }
+   }
 
     public String toSystem(MedicationStatementNottaken code) {
       return code.getSystem();

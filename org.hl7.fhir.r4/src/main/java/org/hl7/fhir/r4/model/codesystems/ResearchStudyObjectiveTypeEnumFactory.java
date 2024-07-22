@@ -48,14 +48,16 @@ public class ResearchStudyObjectiveTypeEnumFactory implements EnumFactory<Resear
   }
 
   public String toCode(ResearchStudyObjectiveType code) {
-    if (code == ResearchStudyObjectiveType.PRIMARY)
+       if (code == ResearchStudyObjectiveType.NULL)
+           return null;
+       if (code == ResearchStudyObjectiveType.PRIMARY)
       return "primary";
     if (code == ResearchStudyObjectiveType.SECONDARY)
       return "secondary";
     if (code == ResearchStudyObjectiveType.EXPLORATORY)
       return "exploratory";
     return "?";
-  }
+   }
 
   public String toSystem(ResearchStudyObjectiveType code) {
     return code.getSystem();

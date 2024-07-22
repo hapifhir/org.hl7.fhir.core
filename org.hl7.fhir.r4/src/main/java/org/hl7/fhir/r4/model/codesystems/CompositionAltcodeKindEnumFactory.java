@@ -52,7 +52,9 @@ public class CompositionAltcodeKindEnumFactory implements EnumFactory<Compositio
   }
 
   public String toCode(CompositionAltcodeKind code) {
-    if (code == CompositionAltcodeKind.ALTERNATE)
+       if (code == CompositionAltcodeKind.NULL)
+           return null;
+       if (code == CompositionAltcodeKind.ALTERNATE)
       return "alternate";
     if (code == CompositionAltcodeKind.DEPRECATED)
       return "deprecated";
@@ -63,7 +65,7 @@ public class CompositionAltcodeKindEnumFactory implements EnumFactory<Compositio
     if (code == CompositionAltcodeKind.EXPRESSION)
       return "expression";
     return "?";
-  }
+   }
 
   public String toSystem(CompositionAltcodeKind code) {
     return code.getSystem();

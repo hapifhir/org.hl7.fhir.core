@@ -132,7 +132,9 @@ public class V3EthnicityEnumFactory implements EnumFactory<V3Ethnicity> {
   }
 
   public String toCode(V3Ethnicity code) {
-    if (code == V3Ethnicity._21352)
+       if (code == V3Ethnicity.NULL)
+           return null;
+       if (code == V3Ethnicity._21352)
       return "2135-2";
     if (code == V3Ethnicity._21378)
       return "2137-8";
@@ -219,7 +221,7 @@ public class V3EthnicityEnumFactory implements EnumFactory<V3Ethnicity> {
     if (code == V3Ethnicity._21865)
       return "2186-5";
     return "?";
-  }
+   }
 
     public String toSystem(V3Ethnicity code) {
       return code.getSystem();

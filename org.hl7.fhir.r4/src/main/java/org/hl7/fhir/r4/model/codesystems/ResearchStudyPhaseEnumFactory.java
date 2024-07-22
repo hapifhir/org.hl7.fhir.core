@@ -58,7 +58,9 @@ public class ResearchStudyPhaseEnumFactory implements EnumFactory<ResearchStudyP
   }
 
   public String toCode(ResearchStudyPhase code) {
-    if (code == ResearchStudyPhase.NA)
+       if (code == ResearchStudyPhase.NULL)
+           return null;
+       if (code == ResearchStudyPhase.NA)
       return "n-a";
     if (code == ResearchStudyPhase.EARLYPHASE1)
       return "early-phase-1";
@@ -75,7 +77,7 @@ public class ResearchStudyPhaseEnumFactory implements EnumFactory<ResearchStudyP
     if (code == ResearchStudyPhase.PHASE4)
       return "phase-4";
     return "?";
-  }
+   }
 
   public String toSystem(ResearchStudyPhase code) {
     return code.getSystem();

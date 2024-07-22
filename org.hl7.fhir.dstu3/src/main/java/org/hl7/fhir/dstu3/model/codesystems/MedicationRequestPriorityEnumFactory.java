@@ -54,7 +54,9 @@ public class MedicationRequestPriorityEnumFactory implements EnumFactory<Medicat
   }
 
   public String toCode(MedicationRequestPriority code) {
-    if (code == MedicationRequestPriority.ROUTINE)
+       if (code == MedicationRequestPriority.NULL)
+           return null;
+       if (code == MedicationRequestPriority.ROUTINE)
       return "routine";
     if (code == MedicationRequestPriority.URGENT)
       return "urgent";
@@ -63,7 +65,7 @@ public class MedicationRequestPriorityEnumFactory implements EnumFactory<Medicat
     if (code == MedicationRequestPriority.ASAP)
       return "asap";
     return "?";
-  }
+   }
 
     public String toSystem(MedicationRequestPriority code) {
       return code.getSystem();

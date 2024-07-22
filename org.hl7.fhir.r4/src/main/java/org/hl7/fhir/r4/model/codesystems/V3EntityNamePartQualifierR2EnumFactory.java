@@ -96,7 +96,9 @@ public class V3EntityNamePartQualifierR2EnumFactory implements EnumFactory<V3Ent
   }
 
   public String toCode(V3EntityNamePartQualifierR2 code) {
-    if (code == V3EntityNamePartQualifierR2.AD)
+       if (code == V3EntityNamePartQualifierR2.NULL)
+           return null;
+       if (code == V3EntityNamePartQualifierR2.AD)
       return "AD";
     if (code == V3EntityNamePartQualifierR2.SP)
       return "SP";
@@ -151,7 +153,7 @@ public class V3EntityNamePartQualifierR2EnumFactory implements EnumFactory<V3Ent
     if (code == V3EntityNamePartQualifierR2.PR)
       return "PR";
     return "?";
-  }
+   }
 
   public String toSystem(V3EntityNamePartQualifierR2 code) {
     return code.getSystem();

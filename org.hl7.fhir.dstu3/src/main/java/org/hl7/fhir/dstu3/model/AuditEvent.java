@@ -178,7 +178,9 @@ public class AuditEvent extends DomainResource {
         throw new FHIRException("Unknown AuditEventAction code '"+codeString+"'");
         }
     public String toCode(AuditEventAction code) {
-      if (code == AuditEventAction.C)
+       if (code == AuditEventAction.NULL)
+           return null;
+       if (code == AuditEventAction.C)
         return "C";
       if (code == AuditEventAction.R)
         return "R";
@@ -189,7 +191,7 @@ public class AuditEvent extends DomainResource {
       if (code == AuditEventAction.E)
         return "E";
       return "?";
-      }
+   }
     public String toSystem(AuditEventAction code) {
       return code.getSystem();
       }
@@ -308,7 +310,9 @@ public class AuditEvent extends DomainResource {
         throw new FHIRException("Unknown AuditEventOutcome code '"+codeString+"'");
         }
     public String toCode(AuditEventOutcome code) {
-      if (code == AuditEventOutcome._0)
+       if (code == AuditEventOutcome.NULL)
+           return null;
+       if (code == AuditEventOutcome._0)
         return "0";
       if (code == AuditEventOutcome._4)
         return "4";
@@ -317,7 +321,7 @@ public class AuditEvent extends DomainResource {
       if (code == AuditEventOutcome._12)
         return "12";
       return "?";
-      }
+   }
     public String toSystem(AuditEventOutcome code) {
       return code.getSystem();
       }
@@ -450,7 +454,9 @@ public class AuditEvent extends DomainResource {
         throw new FHIRException("Unknown AuditEventAgentNetworkType code '"+codeString+"'");
         }
     public String toCode(AuditEventAgentNetworkType code) {
-      if (code == AuditEventAgentNetworkType._1)
+       if (code == AuditEventAgentNetworkType.NULL)
+           return null;
+       if (code == AuditEventAgentNetworkType._1)
         return "1";
       if (code == AuditEventAgentNetworkType._2)
         return "2";
@@ -461,7 +467,7 @@ public class AuditEvent extends DomainResource {
       if (code == AuditEventAgentNetworkType._5)
         return "5";
       return "?";
-      }
+   }
     public String toSystem(AuditEventAgentNetworkType code) {
       return code.getSystem();
       }

@@ -54,7 +54,9 @@ public class OralProsthodonticMaterialEnumFactory implements EnumFactory<OralPro
   }
 
   public String toCode(OralProsthodonticMaterial code) {
-    if (code == OralProsthodonticMaterial._1)
+       if (code == OralProsthodonticMaterial.NULL)
+           return null;
+       if (code == OralProsthodonticMaterial._1)
       return "1";
     if (code == OralProsthodonticMaterial._2)
       return "2";
@@ -63,7 +65,7 @@ public class OralProsthodonticMaterialEnumFactory implements EnumFactory<OralPro
     if (code == OralProsthodonticMaterial._4)
       return "4";
     return "?";
-  }
+   }
 
     public String toSystem(OralProsthodonticMaterial code) {
       return code.getSystem();

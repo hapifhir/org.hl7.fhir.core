@@ -60,7 +60,9 @@ public class GoalStatusEnumFactory implements EnumFactory<GoalStatus> {
   }
 
   public String toCode(GoalStatus code) {
-    if (code == GoalStatus.PROPOSED)
+       if (code == GoalStatus.NULL)
+           return null;
+       if (code == GoalStatus.PROPOSED)
       return "proposed";
     if (code == GoalStatus.PLANNED)
       return "planned";
@@ -79,7 +81,7 @@ public class GoalStatusEnumFactory implements EnumFactory<GoalStatus> {
     if (code == GoalStatus.CANCELLED)
       return "cancelled";
     return "?";
-  }
+   }
 
   public String toSystem(GoalStatus code) {
     return code.getSystem();

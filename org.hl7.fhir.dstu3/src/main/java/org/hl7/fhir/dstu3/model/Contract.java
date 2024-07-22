@@ -322,7 +322,9 @@ public class Contract extends DomainResource {
         throw new FHIRException("Unknown ContractStatus code '"+codeString+"'");
         }
     public String toCode(ContractStatus code) {
-      if (code == ContractStatus.AMENDED)
+       if (code == ContractStatus.NULL)
+           return null;
+       if (code == ContractStatus.AMENDED)
         return "amended";
       if (code == ContractStatus.APPENDED)
         return "appended";
@@ -353,7 +355,7 @@ public class Contract extends DomainResource {
       if (code == ContractStatus.TERMINATED)
         return "terminated";
       return "?";
-      }
+   }
     public String toSystem(ContractStatus code) {
       return code.getSystem();
       }

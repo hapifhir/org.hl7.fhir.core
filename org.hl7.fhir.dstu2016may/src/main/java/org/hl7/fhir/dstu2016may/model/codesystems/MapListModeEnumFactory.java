@@ -48,14 +48,16 @@ public class MapListModeEnumFactory implements EnumFactory<MapListMode> {
   }
 
   public String toCode(MapListMode code) {
-    if (code == MapListMode.FIRST)
+       if (code == MapListMode.NULL)
+           return null;
+       if (code == MapListMode.FIRST)
       return "first";
     if (code == MapListMode.SHARE)
       return "share";
     if (code == MapListMode.LAST)
       return "last";
     return "?";
-  }
+   }
 
   public String toSystem(MapListMode code) {
     return code.getSystem();

@@ -50,14 +50,16 @@ public class NehtaNehtaCrcRelAnteriorPeritonealReflectionEnumFactory
   }
 
   public String toCode(NehtaNehtaCrcRelAnteriorPeritonealReflection code) {
-    if (code == NehtaNehtaCrcRelAnteriorPeritonealReflection.ENTIRELYABOVE)
+       if (code == NehtaNehtaCrcRelAnteriorPeritonealReflection.NULL)
+           return null;
+       if (code == NehtaNehtaCrcRelAnteriorPeritonealReflection.ENTIRELYABOVE)
       return "entirely_above";
     if (code == NehtaNehtaCrcRelAnteriorPeritonealReflection.ASTRIDE)
       return "astride";
     if (code == NehtaNehtaCrcRelAnteriorPeritonealReflection.ENTIRELYBELOW)
       return "entirely_below";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaCrcRelAnteriorPeritonealReflection code) {
     return code.getSystem();

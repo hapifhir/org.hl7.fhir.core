@@ -172,12 +172,14 @@ public class EffectEvidenceSynthesis extends MetadataResource {
     }
 
     public String toCode(ExposureState code) {
-      if (code == ExposureState.EXPOSURE)
+       if (code == ExposureState.NULL)
+           return null;
+       if (code == ExposureState.EXPOSURE)
         return "exposure";
       if (code == ExposureState.EXPOSUREALTERNATIVE)
         return "exposure-alternative";
       return "?";
-    }
+   }
 
     public String toSystem(ExposureState code) {
       return code.getSystem();

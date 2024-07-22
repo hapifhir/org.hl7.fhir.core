@@ -166,7 +166,9 @@ public class Requirements extends CanonicalResource {
         throw new FHIRException("Unknown ConformanceExpectation code '"+codeString+"'");
         }
     public String toCode(ConformanceExpectation code) {
-      if (code == ConformanceExpectation.SHALL)
+       if (code == ConformanceExpectation.NULL)
+           return null;
+       if (code == ConformanceExpectation.SHALL)
         return "SHALL";
       if (code == ConformanceExpectation.SHOULD)
         return "SHOULD";
@@ -175,7 +177,7 @@ public class Requirements extends CanonicalResource {
       if (code == ConformanceExpectation.SHOULDNOT)
         return "SHOULD-NOT";
       return "?";
-      }
+   }
     public String toSystem(ConformanceExpectation code) {
       return code.getSystem();
       }

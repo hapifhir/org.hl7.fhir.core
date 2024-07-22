@@ -52,14 +52,16 @@ public class NamingsystemTypeEnumFactory implements EnumFactory<NamingsystemType
   }
 
   public String toCode(NamingsystemType code) {
-    if (code == NamingsystemType.CODESYSTEM)
+       if (code == NamingsystemType.NULL)
+           return null;
+       if (code == NamingsystemType.CODESYSTEM)
       return "codesystem";
     if (code == NamingsystemType.IDENTIFIER)
       return "identifier";
     if (code == NamingsystemType.ROOT)
       return "root";
     return "?";
-  }
+   }
 
     public String toSystem(NamingsystemType code) {
       return code.getSystem();

@@ -54,7 +54,9 @@ public class CatalogEntryStatusEnumFactory implements EnumFactory<CatalogEntrySt
   }
 
   public String toCode(CatalogEntryStatus code) {
-    if (code == CatalogEntryStatus.APPROVED)
+       if (code == CatalogEntryStatus.NULL)
+           return null;
+       if (code == CatalogEntryStatus.APPROVED)
       return "approved";
     if (code == CatalogEntryStatus.PENDING)
       return "pending";
@@ -63,7 +65,7 @@ public class CatalogEntryStatusEnumFactory implements EnumFactory<CatalogEntrySt
     if (code == CatalogEntryStatus.OFFICIAL)
       return "official";
     return "?";
-  }
+   }
 
     public String toSystem(CatalogEntryStatus code) {
       return code.getSystem();

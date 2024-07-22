@@ -58,7 +58,9 @@ public class V3AcknowledgementTypeEnumFactory implements EnumFactory<V3Acknowled
   }
 
   public String toCode(V3AcknowledgementType code) {
-    if (code == V3AcknowledgementType.AA)
+       if (code == V3AcknowledgementType.NULL)
+           return null;
+       if (code == V3AcknowledgementType.AA)
       return "AA";
     if (code == V3AcknowledgementType.AE)
       return "AE";
@@ -71,7 +73,7 @@ public class V3AcknowledgementTypeEnumFactory implements EnumFactory<V3Acknowled
     if (code == V3AcknowledgementType.CR)
       return "CR";
     return "?";
-  }
+   }
 
     public String toSystem(V3AcknowledgementType code) {
       return code.getSystem();

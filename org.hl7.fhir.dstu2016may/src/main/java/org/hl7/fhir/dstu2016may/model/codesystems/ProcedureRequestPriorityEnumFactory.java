@@ -50,7 +50,9 @@ public class ProcedureRequestPriorityEnumFactory implements EnumFactory<Procedur
   }
 
   public String toCode(ProcedureRequestPriority code) {
-    if (code == ProcedureRequestPriority.ROUTINE)
+       if (code == ProcedureRequestPriority.NULL)
+           return null;
+       if (code == ProcedureRequestPriority.ROUTINE)
       return "routine";
     if (code == ProcedureRequestPriority.URGENT)
       return "urgent";
@@ -59,7 +61,7 @@ public class ProcedureRequestPriorityEnumFactory implements EnumFactory<Procedur
     if (code == ProcedureRequestPriority.ASAP)
       return "asap";
     return "?";
-  }
+   }
 
   public String toSystem(ProcedureRequestPriority code) {
     return code.getSystem();

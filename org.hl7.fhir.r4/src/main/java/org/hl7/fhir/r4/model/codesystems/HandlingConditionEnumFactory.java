@@ -48,14 +48,16 @@ public class HandlingConditionEnumFactory implements EnumFactory<HandlingConditi
   }
 
   public String toCode(HandlingCondition code) {
-    if (code == HandlingCondition.ROOM)
+       if (code == HandlingCondition.NULL)
+           return null;
+       if (code == HandlingCondition.ROOM)
       return "room";
     if (code == HandlingCondition.REFRIGERATED)
       return "refrigerated";
     if (code == HandlingCondition.FROZEN)
       return "frozen";
     return "?";
-  }
+   }
 
   public String toSystem(HandlingCondition code) {
     return code.getSystem();

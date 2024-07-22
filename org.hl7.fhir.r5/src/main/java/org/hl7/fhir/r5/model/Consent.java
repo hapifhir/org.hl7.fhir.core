@@ -194,7 +194,9 @@ public class Consent extends DomainResource {
         throw new FHIRException("Unknown ConsentState code '"+codeString+"'");
         }
     public String toCode(ConsentState code) {
-      if (code == ConsentState.DRAFT)
+       if (code == ConsentState.NULL)
+           return null;
+       if (code == ConsentState.DRAFT)
         return "draft";
       if (code == ConsentState.ACTIVE)
         return "active";
@@ -207,7 +209,7 @@ public class Consent extends DomainResource {
       if (code == ConsentState.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(ConsentState code) {
       return code.getSystem();
       }

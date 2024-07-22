@@ -138,12 +138,14 @@ public class Specimen extends DomainResource {
         throw new FHIRException("Unknown SpecimenCombined code '"+codeString+"'");
         }
     public String toCode(SpecimenCombined code) {
-      if (code == SpecimenCombined.GROUPED)
+       if (code == SpecimenCombined.NULL)
+           return null;
+       if (code == SpecimenCombined.GROUPED)
         return "grouped";
       if (code == SpecimenCombined.POOLED)
         return "pooled";
       return "?";
-      }
+   }
     public String toSystem(SpecimenCombined code) {
       return code.getSystem();
       }
@@ -262,7 +264,9 @@ public class Specimen extends DomainResource {
         throw new FHIRException("Unknown SpecimenStatus code '"+codeString+"'");
         }
     public String toCode(SpecimenStatus code) {
-      if (code == SpecimenStatus.AVAILABLE)
+       if (code == SpecimenStatus.NULL)
+           return null;
+       if (code == SpecimenStatus.AVAILABLE)
         return "available";
       if (code == SpecimenStatus.UNAVAILABLE)
         return "unavailable";
@@ -271,7 +275,7 @@ public class Specimen extends DomainResource {
       if (code == SpecimenStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(SpecimenStatus code) {
       return code.getSystem();
       }

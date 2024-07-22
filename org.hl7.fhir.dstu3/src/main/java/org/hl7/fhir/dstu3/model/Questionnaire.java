@@ -354,7 +354,9 @@ There is an extension 'http://hl7.org/fhir/StructureDefinition/questionnaire-uni
         throw new FHIRException("Unknown QuestionnaireItemType code '"+codeString+"'");
         }
     public String toCode(QuestionnaireItemType code) {
-      if (code == QuestionnaireItemType.GROUP)
+       if (code == QuestionnaireItemType.NULL)
+           return null;
+       if (code == QuestionnaireItemType.GROUP)
         return "group";
       if (code == QuestionnaireItemType.DISPLAY)
         return "display";
@@ -389,7 +391,7 @@ There is an extension 'http://hl7.org/fhir/StructureDefinition/questionnaire-uni
       if (code == QuestionnaireItemType.QUANTITY)
         return "quantity";
       return "?";
-      }
+   }
     public String toSystem(QuestionnaireItemType code) {
       return code.getSystem();
       }

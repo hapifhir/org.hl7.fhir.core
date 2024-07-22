@@ -54,7 +54,9 @@ public class UdiEntryTypeEnumFactory implements EnumFactory<UdiEntryType> {
   }
 
   public String toCode(UdiEntryType code) {
-    if (code == UdiEntryType.BARCODE)
+       if (code == UdiEntryType.NULL)
+           return null;
+       if (code == UdiEntryType.BARCODE)
       return "barcode";
     if (code == UdiEntryType.RFID)
       return "rfid";
@@ -67,7 +69,7 @@ public class UdiEntryTypeEnumFactory implements EnumFactory<UdiEntryType> {
     if (code == UdiEntryType.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
   public String toSystem(UdiEntryType code) {
     return code.getSystem();

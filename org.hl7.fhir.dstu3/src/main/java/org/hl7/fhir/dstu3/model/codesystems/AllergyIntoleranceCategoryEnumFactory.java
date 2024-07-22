@@ -54,7 +54,9 @@ public class AllergyIntoleranceCategoryEnumFactory implements EnumFactory<Allerg
   }
 
   public String toCode(AllergyIntoleranceCategory code) {
-    if (code == AllergyIntoleranceCategory.FOOD)
+       if (code == AllergyIntoleranceCategory.NULL)
+           return null;
+       if (code == AllergyIntoleranceCategory.FOOD)
       return "food";
     if (code == AllergyIntoleranceCategory.MEDICATION)
       return "medication";
@@ -63,7 +65,7 @@ public class AllergyIntoleranceCategoryEnumFactory implements EnumFactory<Allerg
     if (code == AllergyIntoleranceCategory.BIOLOGIC)
       return "biologic";
     return "?";
-  }
+   }
 
     public String toSystem(AllergyIntoleranceCategory code) {
       return code.getSystem();

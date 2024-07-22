@@ -142,7 +142,9 @@ public class ContractSignerTypeEnumFactory implements EnumFactory<ContractSigner
   }
 
   public String toCode(ContractSignerType code) {
-    if (code == ContractSignerType.AMENDER)
+       if (code == ContractSignerType.NULL)
+           return null;
+       if (code == ContractSignerType.AMENDER)
       return "AMENDER";
     if (code == ContractSignerType.AUTHN)
       return "AUTHN";
@@ -239,7 +241,7 @@ public class ContractSignerTypeEnumFactory implements EnumFactory<ContractSigner
     if (code == ContractSignerType.WIT)
       return "WIT";
     return "?";
-  }
+   }
 
     public String toSystem(ContractSignerType code) {
       return code.getSystem();

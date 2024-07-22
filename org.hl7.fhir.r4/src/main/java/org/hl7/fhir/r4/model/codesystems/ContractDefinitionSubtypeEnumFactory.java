@@ -44,10 +44,12 @@ public class ContractDefinitionSubtypeEnumFactory implements EnumFactory<Contrac
   }
 
   public String toCode(ContractDefinitionSubtype code) {
-    if (code == ContractDefinitionSubtype.TEMP)
+       if (code == ContractDefinitionSubtype.NULL)
+           return null;
+       if (code == ContractDefinitionSubtype.TEMP)
       return "temp";
     return "?";
-  }
+   }
 
   public String toSystem(ContractDefinitionSubtype code) {
     return code.getSystem();

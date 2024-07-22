@@ -58,7 +58,9 @@ public class ProcedureProgressStatusCodesEnumFactory implements EnumFactory<Proc
   }
 
   public String toCode(ProcedureProgressStatusCodes code) {
-    if (code == ProcedureProgressStatusCodes.INOPERATINGROOM)
+       if (code == ProcedureProgressStatusCodes.NULL)
+           return null;
+       if (code == ProcedureProgressStatusCodes.INOPERATINGROOM)
       return "in-operating-room";
     if (code == ProcedureProgressStatusCodes.PREPARED)
       return "prepared";
@@ -71,7 +73,7 @@ public class ProcedureProgressStatusCodesEnumFactory implements EnumFactory<Proc
     if (code == ProcedureProgressStatusCodes.INRECOVERYROOM)
       return "in-recovery-room";
     return "?";
-  }
+   }
 
     public String toSystem(ProcedureProgressStatusCodes code) {
       return code.getSystem();

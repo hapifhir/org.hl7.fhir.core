@@ -180,7 +180,9 @@ public class AppointmentResponse extends DomainResource {
         throw new FHIRException("Unknown AppointmentResponseStatus code '"+codeString+"'");
         }
     public String toCode(AppointmentResponseStatus code) {
-      if (code == AppointmentResponseStatus.ACCEPTED)
+       if (code == AppointmentResponseStatus.NULL)
+           return null;
+       if (code == AppointmentResponseStatus.ACCEPTED)
         return "accepted";
       if (code == AppointmentResponseStatus.DECLINED)
         return "declined";
@@ -191,7 +193,7 @@ public class AppointmentResponse extends DomainResource {
       if (code == AppointmentResponseStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(AppointmentResponseStatus code) {
       return code.getSystem();
       }

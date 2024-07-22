@@ -54,7 +54,9 @@ public class ExPayeeResourceTypeEnumFactory implements EnumFactory<ExPayeeResour
   }
 
   public String toCode(ExPayeeResourceType code) {
-    if (code == ExPayeeResourceType.ORGANIZATION)
+       if (code == ExPayeeResourceType.NULL)
+           return null;
+       if (code == ExPayeeResourceType.ORGANIZATION)
       return "organization";
     if (code == ExPayeeResourceType.PATIENT)
       return "patient";
@@ -63,7 +65,7 @@ public class ExPayeeResourceTypeEnumFactory implements EnumFactory<ExPayeeResour
     if (code == ExPayeeResourceType.RELATEDPERSON)
       return "relatedperson";
     return "?";
-  }
+   }
 
     public String toSystem(ExPayeeResourceType code) {
       return code.getSystem();

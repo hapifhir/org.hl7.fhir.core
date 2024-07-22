@@ -44,10 +44,12 @@ public class HspcAllergyIntoleranceTypeEnumFactory implements EnumFactory<HspcAl
   }
 
   public String toCode(HspcAllergyIntoleranceType code) {
-    if (code == HspcAllergyIntoleranceType._521059339)
+       if (code == HspcAllergyIntoleranceType.NULL)
+           return null;
+       if (code == HspcAllergyIntoleranceType._521059339)
       return "521059339";
     return "?";
-  }
+   }
 
   public String toSystem(HspcAllergyIntoleranceType code) {
     return code.getSystem();
