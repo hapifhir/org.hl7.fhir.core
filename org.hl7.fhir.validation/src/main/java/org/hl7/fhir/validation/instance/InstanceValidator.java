@@ -5570,6 +5570,31 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
+  private static void addMessagesReplaceExistingIfMoreSevere(List<ValidationMessage> errors, List<ValidationMessage> newErrors) {
+    for (ValidationMessage newError : newErrors) {
+      int index = indexOfMatchingMessageAndLocation(errors, newError);
+      if (index == -1) {
+        errors.add(newError);
+      } else {
+        ValidationMessage existingError = errors.get(index);
+        if (newError.getLevel().ordinal() < existingError.getLevel().ordinal()) {
+          errors.set(index, newError);
+        }
+      }
+    }
+  }
+
+  private static int indexOfMatchingMessageAndLocation(List<ValidationMessage> messages, ValidationMessage message) {
+    for (int i = 0; i < messages.size(); i++) {
+      ValidationMessage iMessage = messages.get(i);
+      if (message.getMessage() != null && message.getMessage().equals(iMessage.getMessage())
+        && message.getLocation() != null && message.getLocation().equals(iMessage.getLocation())) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   public boolean startInner(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode, boolean fromContained) {    
     // the first piece of business is to see if we've validated this resource against this profile before.
     // if we have (*or if we still are*), then we'll just return our existing errors
@@ -5591,11 +5616,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       trackUsage(defn, valContext, element);
       ok = validateElement(valContext, localErrors, defn, defn.getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false, true, null, pct, mode) && ok;
       resTracker.storeOutcomes(defn, localErrors);
-      for (ValidationMessage vm : localErrors) {
-        if (!errors.contains(vm)) {
-          errors.add(vm);
-        }
-      }
+      addMessagesReplaceExistingIfMoreSevere(errors, localErrors);
     } else {
       ok = false;
     }
