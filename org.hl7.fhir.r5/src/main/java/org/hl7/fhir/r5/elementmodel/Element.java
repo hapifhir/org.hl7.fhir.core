@@ -561,7 +561,6 @@ public class Element extends Base implements NamedItem {
         } else {
           Element ne = new Element(child).setFormat(format);
           children.add(ne);
-          numberChildren();
           return ne;
         }
       }
