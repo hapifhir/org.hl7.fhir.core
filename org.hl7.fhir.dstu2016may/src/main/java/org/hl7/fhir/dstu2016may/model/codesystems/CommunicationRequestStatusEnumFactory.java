@@ -62,7 +62,9 @@ public class CommunicationRequestStatusEnumFactory implements EnumFactory<Commun
   }
 
   public String toCode(CommunicationRequestStatus code) {
-    if (code == CommunicationRequestStatus.PROPOSED)
+       if (code == CommunicationRequestStatus.NULL)
+           return null;
+       if (code == CommunicationRequestStatus.PROPOSED)
       return "proposed";
     if (code == CommunicationRequestStatus.PLANNED)
       return "planned";
@@ -83,7 +85,7 @@ public class CommunicationRequestStatusEnumFactory implements EnumFactory<Commun
     if (code == CommunicationRequestStatus.FAILED)
       return "failed";
     return "?";
-  }
+   }
 
   public String toSystem(CommunicationRequestStatus code) {
     return code.getSystem();

@@ -76,7 +76,9 @@ public class V3ParticipationModeEnumFactory implements EnumFactory<V3Participati
   }
 
   public String toCode(V3ParticipationMode code) {
-    if (code == V3ParticipationMode.ELECTRONIC)
+       if (code == V3ParticipationMode.NULL)
+           return null;
+       if (code == V3ParticipationMode.ELECTRONIC)
       return "ELECTRONIC";
     if (code == V3ParticipationMode.PHYSICAL)
       return "PHYSICAL";
@@ -107,7 +109,7 @@ public class V3ParticipationModeEnumFactory implements EnumFactory<V3Participati
     if (code == V3ParticipationMode.TYPEWRIT)
       return "TYPEWRIT";
     return "?";
-  }
+   }
 
     public String toSystem(V3ParticipationMode code) {
       return code.getSystem();

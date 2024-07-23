@@ -48,14 +48,16 @@ public class DocumentReferenceStatusEnumFactory implements EnumFactory<DocumentR
   }
 
   public String toCode(DocumentReferenceStatus code) {
-    if (code == DocumentReferenceStatus.CURRENT)
+       if (code == DocumentReferenceStatus.NULL)
+           return null;
+       if (code == DocumentReferenceStatus.CURRENT)
       return "current";
     if (code == DocumentReferenceStatus.SUPERSEDED)
       return "superseded";
     if (code == DocumentReferenceStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(DocumentReferenceStatus code) {
     return code.getSystem();

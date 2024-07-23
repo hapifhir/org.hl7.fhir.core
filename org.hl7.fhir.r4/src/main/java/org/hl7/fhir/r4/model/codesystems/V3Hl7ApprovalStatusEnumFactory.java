@@ -82,7 +82,9 @@ public class V3Hl7ApprovalStatusEnumFactory implements EnumFactory<V3Hl7Approval
   }
 
   public String toCode(V3Hl7ApprovalStatus code) {
-    if (code == V3Hl7ApprovalStatus.AFFD)
+       if (code == V3Hl7ApprovalStatus.NULL)
+           return null;
+       if (code == V3Hl7ApprovalStatus.AFFD)
       return "affd";
     if (code == V3Hl7ApprovalStatus.AFFI)
       return "affi";
@@ -123,7 +125,7 @@ public class V3Hl7ApprovalStatusEnumFactory implements EnumFactory<V3Hl7Approval
     if (code == V3Hl7ApprovalStatus.WD)
       return "wd";
     return "?";
-  }
+   }
 
   public String toSystem(V3Hl7ApprovalStatus code) {
     return code.getSystem();

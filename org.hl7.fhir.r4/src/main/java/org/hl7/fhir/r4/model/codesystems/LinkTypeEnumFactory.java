@@ -50,7 +50,9 @@ public class LinkTypeEnumFactory implements EnumFactory<LinkType> {
   }
 
   public String toCode(LinkType code) {
-    if (code == LinkType.REPLACEDBY)
+       if (code == LinkType.NULL)
+           return null;
+       if (code == LinkType.REPLACEDBY)
       return "replaced-by";
     if (code == LinkType.REPLACES)
       return "replaces";
@@ -59,7 +61,7 @@ public class LinkTypeEnumFactory implements EnumFactory<LinkType> {
     if (code == LinkType.SEEALSO)
       return "seealso";
     return "?";
-  }
+   }
 
   public String toSystem(LinkType code) {
     return code.getSystem();

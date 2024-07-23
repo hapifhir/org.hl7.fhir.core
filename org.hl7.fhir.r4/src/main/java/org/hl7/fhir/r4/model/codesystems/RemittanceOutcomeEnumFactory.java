@@ -50,7 +50,9 @@ public class RemittanceOutcomeEnumFactory implements EnumFactory<RemittanceOutco
   }
 
   public String toCode(RemittanceOutcome code) {
-    if (code == RemittanceOutcome.QUEUED)
+       if (code == RemittanceOutcome.NULL)
+           return null;
+       if (code == RemittanceOutcome.QUEUED)
       return "queued";
     if (code == RemittanceOutcome.COMPLETE)
       return "complete";
@@ -59,7 +61,7 @@ public class RemittanceOutcomeEnumFactory implements EnumFactory<RemittanceOutco
     if (code == RemittanceOutcome.PARTIAL)
       return "partial";
     return "?";
-  }
+   }
 
   public String toSystem(RemittanceOutcome code) {
     return code.getSystem();

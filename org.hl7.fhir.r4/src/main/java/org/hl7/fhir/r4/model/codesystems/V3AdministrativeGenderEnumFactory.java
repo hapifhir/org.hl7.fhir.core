@@ -48,14 +48,16 @@ public class V3AdministrativeGenderEnumFactory implements EnumFactory<V3Administ
   }
 
   public String toCode(V3AdministrativeGender code) {
-    if (code == V3AdministrativeGender.F)
+       if (code == V3AdministrativeGender.NULL)
+           return null;
+       if (code == V3AdministrativeGender.F)
       return "F";
     if (code == V3AdministrativeGender.M)
       return "M";
     if (code == V3AdministrativeGender.UN)
       return "UN";
     return "?";
-  }
+   }
 
   public String toSystem(V3AdministrativeGender code) {
     return code.getSystem();

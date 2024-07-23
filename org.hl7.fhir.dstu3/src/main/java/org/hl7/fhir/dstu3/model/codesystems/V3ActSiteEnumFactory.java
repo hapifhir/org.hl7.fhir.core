@@ -154,7 +154,9 @@ public class V3ActSiteEnumFactory implements EnumFactory<V3ActSite> {
   }
 
   public String toCode(V3ActSite code) {
-    if (code == V3ActSite._HUMANACTSITE)
+       if (code == V3ActSite.NULL)
+           return null;
+       if (code == V3ActSite._HUMANACTSITE)
       return "_HumanActSite";
     if (code == V3ActSite._HUMANSUBSTANCEADMINISTRATIONSITE)
       return "_HumanSubstanceAdministrationSite";
@@ -263,7 +265,7 @@ public class V3ActSiteEnumFactory implements EnumFactory<V3ActSite> {
     if (code == V3ActSite.RVL)
       return "RVL";
     return "?";
-  }
+   }
 
     public String toSystem(V3ActSite code) {
       return code.getSystem();

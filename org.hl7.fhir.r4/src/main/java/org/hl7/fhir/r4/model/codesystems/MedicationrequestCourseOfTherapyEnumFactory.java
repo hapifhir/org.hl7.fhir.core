@@ -48,14 +48,16 @@ public class MedicationrequestCourseOfTherapyEnumFactory implements EnumFactory<
   }
 
   public String toCode(MedicationrequestCourseOfTherapy code) {
-    if (code == MedicationrequestCourseOfTherapy.CONTINUOUS)
+       if (code == MedicationrequestCourseOfTherapy.NULL)
+           return null;
+       if (code == MedicationrequestCourseOfTherapy.CONTINUOUS)
       return "continuous";
     if (code == MedicationrequestCourseOfTherapy.ACUTE)
       return "acute";
     if (code == MedicationrequestCourseOfTherapy.SEASONAL)
       return "seasonal";
     return "?";
-  }
+   }
 
   public String toSystem(MedicationrequestCourseOfTherapy code) {
     return code.getSystem();

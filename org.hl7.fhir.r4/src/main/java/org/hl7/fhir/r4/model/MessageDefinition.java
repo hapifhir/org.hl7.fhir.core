@@ -188,14 +188,16 @@ public class MessageDefinition extends MetadataResource {
     }
 
     public String toCode(MessageSignificanceCategory code) {
-      if (code == MessageSignificanceCategory.CONSEQUENCE)
+       if (code == MessageSignificanceCategory.NULL)
+           return null;
+       if (code == MessageSignificanceCategory.CONSEQUENCE)
         return "consequence";
       if (code == MessageSignificanceCategory.CURRENCY)
         return "currency";
       if (code == MessageSignificanceCategory.NOTIFICATION)
         return "notification";
       return "?";
-    }
+   }
 
     public String toSystem(MessageSignificanceCategory code) {
       return code.getSystem();
@@ -346,7 +348,9 @@ public class MessageDefinition extends MetadataResource {
     }
 
     public String toCode(MessageheaderResponseRequest code) {
-      if (code == MessageheaderResponseRequest.ALWAYS)
+       if (code == MessageheaderResponseRequest.NULL)
+           return null;
+       if (code == MessageheaderResponseRequest.ALWAYS)
         return "always";
       if (code == MessageheaderResponseRequest.ONERROR)
         return "on-error";
@@ -355,7 +359,7 @@ public class MessageDefinition extends MetadataResource {
       if (code == MessageheaderResponseRequest.ONSUCCESS)
         return "on-success";
       return "?";
-    }
+   }
 
     public String toSystem(MessageheaderResponseRequest code) {
       return code.getSystem();

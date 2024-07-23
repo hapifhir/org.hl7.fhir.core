@@ -56,7 +56,9 @@ public class DiagnosticReportStatusEnumFactory implements EnumFactory<Diagnostic
   }
 
   public String toCode(DiagnosticReportStatus code) {
-    if (code == DiagnosticReportStatus.REGISTERED)
+       if (code == DiagnosticReportStatus.NULL)
+           return null;
+       if (code == DiagnosticReportStatus.REGISTERED)
       return "registered";
     if (code == DiagnosticReportStatus.PARTIAL)
       return "partial";
@@ -71,7 +73,7 @@ public class DiagnosticReportStatusEnumFactory implements EnumFactory<Diagnostic
     if (code == DiagnosticReportStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(DiagnosticReportStatus code) {
     return code.getSystem();

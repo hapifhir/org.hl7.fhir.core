@@ -48,14 +48,16 @@ public class CdshooksIndicatorEnumFactory implements EnumFactory<CdshooksIndicat
   }
 
   public String toCode(CdshooksIndicator code) {
-    if (code == CdshooksIndicator.INFO)
+       if (code == CdshooksIndicator.NULL)
+           return null;
+       if (code == CdshooksIndicator.INFO)
       return "info";
     if (code == CdshooksIndicator.WARNING)
       return "warning";
     if (code == CdshooksIndicator.CRITICAL)
       return "critical";
     return "?";
-  }
+   }
 
   public String toSystem(CdshooksIndicator code) {
     return code.getSystem();

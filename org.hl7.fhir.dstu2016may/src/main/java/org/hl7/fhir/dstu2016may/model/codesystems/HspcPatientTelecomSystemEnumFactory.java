@@ -48,14 +48,16 @@ public class HspcPatientTelecomSystemEnumFactory implements EnumFactory<HspcPati
   }
 
   public String toCode(HspcPatientTelecomSystem code) {
-    if (code == HspcPatientTelecomSystem.FAX)
+       if (code == HspcPatientTelecomSystem.NULL)
+           return null;
+       if (code == HspcPatientTelecomSystem.FAX)
       return "fax";
     if (code == HspcPatientTelecomSystem.EMAIL)
       return "email";
     if (code == HspcPatientTelecomSystem.PHONE)
       return "phone";
     return "?";
-  }
+   }
 
   public String toSystem(HspcPatientTelecomSystem code) {
     return code.getSystem();

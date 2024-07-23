@@ -84,7 +84,9 @@ public class FHIRVersionEnumFactory implements EnumFactory<FHIRVersion> {
   }
 
   public String toCode(FHIRVersion code) {
-    if (code == FHIRVersion._0_01)
+       if (code == FHIRVersion.NULL)
+           return null;
+       if (code == FHIRVersion._0_01)
       return "0.01";
     if (code == FHIRVersion._0_05)
       return "0.05";
@@ -127,7 +129,7 @@ public class FHIRVersionEnumFactory implements EnumFactory<FHIRVersion> {
     if (code == FHIRVersion._4_0_0)
       return "4.0.0";
     return "?";
-  }
+   }
 
   public String toSystem(FHIRVersion code) {
     return code.getSystem();

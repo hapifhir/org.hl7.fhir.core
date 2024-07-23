@@ -64,7 +64,9 @@ public class V3EducationLevelEnumFactory implements EnumFactory<V3EducationLevel
   }
 
   public String toCode(V3EducationLevel code) {
-    if (code == V3EducationLevel.ASSOC)
+       if (code == V3EducationLevel.NULL)
+           return null;
+       if (code == V3EducationLevel.ASSOC)
       return "ASSOC";
     if (code == V3EducationLevel.BD)
       return "BD";
@@ -83,7 +85,7 @@ public class V3EducationLevelEnumFactory implements EnumFactory<V3EducationLevel
     if (code == V3EducationLevel.SEC)
       return "SEC";
     return "?";
-  }
+   }
 
     public String toSystem(V3EducationLevel code) {
       return code.getSystem();

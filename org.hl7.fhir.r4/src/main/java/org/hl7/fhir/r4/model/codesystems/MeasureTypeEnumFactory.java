@@ -52,7 +52,9 @@ public class MeasureTypeEnumFactory implements EnumFactory<MeasureType> {
   }
 
   public String toCode(MeasureType code) {
-    if (code == MeasureType.PROCESS)
+       if (code == MeasureType.NULL)
+           return null;
+       if (code == MeasureType.PROCESS)
       return "process";
     if (code == MeasureType.OUTCOME)
       return "outcome";
@@ -63,7 +65,7 @@ public class MeasureTypeEnumFactory implements EnumFactory<MeasureType> {
     if (code == MeasureType.COMPOSITE)
       return "composite";
     return "?";
-  }
+   }
 
   public String toSystem(MeasureType code) {
     return code.getSystem();

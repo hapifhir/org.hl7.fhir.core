@@ -48,14 +48,16 @@ public class DefinitionTopicEnumFactory implements EnumFactory<DefinitionTopic> 
   }
 
   public String toCode(DefinitionTopic code) {
-    if (code == DefinitionTopic.TREATMENT)
+       if (code == DefinitionTopic.NULL)
+           return null;
+       if (code == DefinitionTopic.TREATMENT)
       return "treatment";
     if (code == DefinitionTopic.EDUCATION)
       return "education";
     if (code == DefinitionTopic.ASSESSMENT)
       return "assessment";
     return "?";
-  }
+   }
 
   public String toSystem(DefinitionTopic code) {
     return code.getSystem();

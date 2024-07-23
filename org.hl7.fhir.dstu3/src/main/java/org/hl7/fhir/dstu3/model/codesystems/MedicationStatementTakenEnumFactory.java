@@ -54,7 +54,9 @@ public class MedicationStatementTakenEnumFactory implements EnumFactory<Medicati
   }
 
   public String toCode(MedicationStatementTaken code) {
-    if (code == MedicationStatementTaken.Y)
+       if (code == MedicationStatementTaken.NULL)
+           return null;
+       if (code == MedicationStatementTaken.Y)
       return "y";
     if (code == MedicationStatementTaken.N)
       return "n";
@@ -63,7 +65,7 @@ public class MedicationStatementTakenEnumFactory implements EnumFactory<Medicati
     if (code == MedicationStatementTaken.NA)
       return "na";
     return "?";
-  }
+   }
 
     public String toSystem(MedicationStatementTaken code) {
       return code.getSystem();

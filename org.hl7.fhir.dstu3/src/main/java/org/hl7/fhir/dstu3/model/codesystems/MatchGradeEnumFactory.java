@@ -54,7 +54,9 @@ public class MatchGradeEnumFactory implements EnumFactory<MatchGrade> {
   }
 
   public String toCode(MatchGrade code) {
-    if (code == MatchGrade.CERTAIN)
+       if (code == MatchGrade.NULL)
+           return null;
+       if (code == MatchGrade.CERTAIN)
       return "certain";
     if (code == MatchGrade.PROBABLE)
       return "probable";
@@ -63,7 +65,7 @@ public class MatchGradeEnumFactory implements EnumFactory<MatchGrade> {
     if (code == MatchGrade.CERTAINLYNOT)
       return "certainly-not";
     return "?";
-  }
+   }
 
     public String toSystem(MatchGrade code) {
       return code.getSystem();

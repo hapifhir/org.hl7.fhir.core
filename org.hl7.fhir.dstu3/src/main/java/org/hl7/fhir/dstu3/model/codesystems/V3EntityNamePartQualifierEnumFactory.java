@@ -104,7 +104,9 @@ public class V3EntityNamePartQualifierEnumFactory implements EnumFactory<V3Entit
   }
 
   public String toCode(V3EntityNamePartQualifier code) {
-    if (code == V3EntityNamePartQualifier._ORGANIZATIONNAMEPARTQUALIFIER)
+       if (code == V3EntityNamePartQualifier.NULL)
+           return null;
+       if (code == V3EntityNamePartQualifier._ORGANIZATIONNAMEPARTQUALIFIER)
       return "_OrganizationNamePartQualifier";
     if (code == V3EntityNamePartQualifier.AC)
       return "AC";
@@ -163,7 +165,7 @@ public class V3EntityNamePartQualifierEnumFactory implements EnumFactory<V3Entit
     if (code == V3EntityNamePartQualifier._PERSONNAMEPARTMISCQUALIFIER)
       return "_PersonNamePartMiscQualifier";
     return "?";
-  }
+   }
 
     public String toSystem(V3EntityNamePartQualifier code) {
       return code.getSystem();

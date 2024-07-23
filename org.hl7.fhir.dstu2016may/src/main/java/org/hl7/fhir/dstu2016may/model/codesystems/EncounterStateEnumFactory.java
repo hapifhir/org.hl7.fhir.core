@@ -54,7 +54,9 @@ public class EncounterStateEnumFactory implements EnumFactory<EncounterState> {
   }
 
   public String toCode(EncounterState code) {
-    if (code == EncounterState.PLANNED)
+       if (code == EncounterState.NULL)
+           return null;
+       if (code == EncounterState.PLANNED)
       return "planned";
     if (code == EncounterState.ARRIVED)
       return "arrived";
@@ -67,7 +69,7 @@ public class EncounterStateEnumFactory implements EnumFactory<EncounterState> {
     if (code == EncounterState.CANCELLED)
       return "cancelled";
     return "?";
-  }
+   }
 
   public String toSystem(EncounterState code) {
     return code.getSystem();

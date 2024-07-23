@@ -52,7 +52,9 @@ public class ResourceSecurityCategoryEnumFactory implements EnumFactory<Resource
   }
 
   public String toCode(ResourceSecurityCategory code) {
-    if (code == ResourceSecurityCategory.ANONYMOUS)
+       if (code == ResourceSecurityCategory.NULL)
+           return null;
+       if (code == ResourceSecurityCategory.ANONYMOUS)
       return "anonymous";
     if (code == ResourceSecurityCategory.BUSINESS)
       return "business";
@@ -63,7 +65,7 @@ public class ResourceSecurityCategoryEnumFactory implements EnumFactory<Resource
     if (code == ResourceSecurityCategory.NOTCLASSIFIED)
       return "not-classified";
     return "?";
-  }
+   }
 
   public String toSystem(ResourceSecurityCategory code) {
     return code.getSystem();

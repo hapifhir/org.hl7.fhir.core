@@ -44,10 +44,12 @@ public class ContractAssetsubtypeEnumFactory implements EnumFactory<ContractAsse
   }
 
   public String toCode(ContractAssetsubtype code) {
-    if (code == ContractAssetsubtype.PARTICIPATION)
+       if (code == ContractAssetsubtype.NULL)
+           return null;
+       if (code == ContractAssetsubtype.PARTICIPATION)
       return "participation";
     return "?";
-  }
+   }
 
   public String toSystem(ContractAssetsubtype code) {
     return code.getSystem();

@@ -50,7 +50,9 @@ public class DWebTypeEnumFactory implements EnumFactory<DWebType> {
   }
 
   public String toCode(DWebType code) {
-    if (code == DWebType.WADORS)
+       if (code == DWebType.NULL)
+           return null;
+       if (code == DWebType.WADORS)
       return "WADO-RS";
     if (code == DWebType.WADOURI)
       return "WADO-URI";
@@ -59,7 +61,7 @@ public class DWebTypeEnumFactory implements EnumFactory<DWebType> {
     if (code == DWebType.WADOWS)
       return "WADO-WS";
     return "?";
-  }
+   }
 
   public String toSystem(DWebType code) {
     return code.getSystem();

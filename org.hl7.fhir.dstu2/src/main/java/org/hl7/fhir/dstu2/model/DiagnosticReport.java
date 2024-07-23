@@ -252,8 +252,11 @@ public class DiagnosticReport extends DomainResource {
       throw new FHIRException("Unknown DiagnosticReportStatus code '" + codeString + "'");
     }
 
-    public String toCode(DiagnosticReportStatus code) {
-      if (code == DiagnosticReportStatus.REGISTERED)
+    public String toCode(DiagnosticReportStatus code)
+   {
+       if (code == DiagnosticReportStatus.NULL)
+           return null;
+       if (code == DiagnosticReportStatus.REGISTERED)
         return "registered";
       if (code == DiagnosticReportStatus.PARTIAL)
         return "partial";
@@ -268,7 +271,7 @@ public class DiagnosticReport extends DomainResource {
       if (code == DiagnosticReportStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
   }
 
   @Block()

@@ -66,7 +66,9 @@ public class V3SubstanceAdminSubstitutionEnumFactory implements EnumFactory<V3Su
   }
 
   public String toCode(V3SubstanceAdminSubstitution code) {
-    if (code == V3SubstanceAdminSubstitution._ACTSUBSTANCEADMINSUBSTITUTIONCODE)
+       if (code == V3SubstanceAdminSubstitution.NULL)
+           return null;
+       if (code == V3SubstanceAdminSubstitution._ACTSUBSTANCEADMINSUBSTITUTIONCODE)
       return "_ActSubstanceAdminSubstitutionCode";
     if (code == V3SubstanceAdminSubstitution.E)
       return "E";
@@ -87,7 +89,7 @@ public class V3SubstanceAdminSubstitutionEnumFactory implements EnumFactory<V3Su
     if (code == V3SubstanceAdminSubstitution.N)
       return "N";
     return "?";
-  }
+   }
 
     public String toSystem(V3SubstanceAdminSubstitution code) {
       return code.getSystem();

@@ -50,7 +50,9 @@ public class AdministrativeGenderEnumFactory implements EnumFactory<Administrati
   }
 
   public String toCode(AdministrativeGender code) {
-    if (code == AdministrativeGender.MALE)
+       if (code == AdministrativeGender.NULL)
+           return null;
+       if (code == AdministrativeGender.MALE)
       return "male";
     if (code == AdministrativeGender.FEMALE)
       return "female";
@@ -59,7 +61,7 @@ public class AdministrativeGenderEnumFactory implements EnumFactory<Administrati
     if (code == AdministrativeGender.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
   public String toSystem(AdministrativeGender code) {
     return code.getSystem();

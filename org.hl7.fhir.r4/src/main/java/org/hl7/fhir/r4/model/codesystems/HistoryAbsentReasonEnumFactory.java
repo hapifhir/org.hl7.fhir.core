@@ -50,7 +50,9 @@ public class HistoryAbsentReasonEnumFactory implements EnumFactory<HistoryAbsent
   }
 
   public String toCode(HistoryAbsentReason code) {
-    if (code == HistoryAbsentReason.SUBJECTUNKNOWN)
+       if (code == HistoryAbsentReason.NULL)
+           return null;
+       if (code == HistoryAbsentReason.SUBJECTUNKNOWN)
       return "subject-unknown";
     if (code == HistoryAbsentReason.WITHHELD)
       return "withheld";
@@ -59,7 +61,7 @@ public class HistoryAbsentReasonEnumFactory implements EnumFactory<HistoryAbsent
     if (code == HistoryAbsentReason.DEFERRED)
       return "deferred";
     return "?";
-  }
+   }
 
   public String toSystem(HistoryAbsentReason code) {
     return code.getSystem();

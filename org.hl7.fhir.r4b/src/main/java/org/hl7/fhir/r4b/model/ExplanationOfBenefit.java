@@ -199,7 +199,9 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public String toCode(ExplanationOfBenefitStatus code) {
-      if (code == ExplanationOfBenefitStatus.ACTIVE)
+       if (code == ExplanationOfBenefitStatus.NULL)
+           return null;
+       if (code == ExplanationOfBenefitStatus.ACTIVE)
         return "active";
       if (code == ExplanationOfBenefitStatus.CANCELLED)
         return "cancelled";
@@ -208,7 +210,7 @@ public class ExplanationOfBenefit extends DomainResource {
       if (code == ExplanationOfBenefitStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(ExplanationOfBenefitStatus code) {
       return code.getSystem();

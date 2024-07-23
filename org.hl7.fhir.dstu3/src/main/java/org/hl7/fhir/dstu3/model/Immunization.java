@@ -136,12 +136,14 @@ public class Immunization extends DomainResource {
         throw new FHIRException("Unknown ImmunizationStatus code '"+codeString+"'");
         }
     public String toCode(ImmunizationStatus code) {
-      if (code == ImmunizationStatus.COMPLETED)
+       if (code == ImmunizationStatus.NULL)
+           return null;
+       if (code == ImmunizationStatus.COMPLETED)
         return "completed";
       if (code == ImmunizationStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(ImmunizationStatus code) {
       return code.getSystem();
       }

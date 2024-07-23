@@ -86,7 +86,9 @@ public class FeedingDeviceEnumFactory implements EnumFactory<FeedingDevice> {
   }
 
   public String toCode(FeedingDevice code) {
-    if (code == FeedingDevice.STANDARDNIPPLE)
+       if (code == FeedingDevice.NULL)
+           return null;
+       if (code == FeedingDevice.STANDARDNIPPLE)
       return "standard-nipple";
     if (code == FeedingDevice.PREEMIENIPPLE)
       return "preemie-nipple";
@@ -131,7 +133,7 @@ public class FeedingDeviceEnumFactory implements EnumFactory<FeedingDevice> {
     if (code == FeedingDevice.ROCKERKNIFE)
       return "rocker-knife";
     return "?";
-  }
+   }
 
   public String toSystem(FeedingDevice code) {
     return code.getSystem();

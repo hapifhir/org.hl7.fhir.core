@@ -56,7 +56,9 @@ public class CompartmentTypeEnumFactory implements EnumFactory<CompartmentType> 
   }
 
   public String toCode(CompartmentType code) {
-    if (code == CompartmentType.PATIENT)
+       if (code == CompartmentType.NULL)
+           return null;
+       if (code == CompartmentType.PATIENT)
       return "Patient";
     if (code == CompartmentType.ENCOUNTER)
       return "Encounter";
@@ -67,7 +69,7 @@ public class CompartmentTypeEnumFactory implements EnumFactory<CompartmentType> 
     if (code == CompartmentType.DEVICE)
       return "Device";
     return "?";
-  }
+   }
 
     public String toSystem(CompartmentType code) {
       return code.getSystem();

@@ -52,14 +52,16 @@ public class ResourceAggregationModeEnumFactory implements EnumFactory<ResourceA
   }
 
   public String toCode(ResourceAggregationMode code) {
-    if (code == ResourceAggregationMode.CONTAINED)
+       if (code == ResourceAggregationMode.NULL)
+           return null;
+       if (code == ResourceAggregationMode.CONTAINED)
       return "contained";
     if (code == ResourceAggregationMode.REFERENCED)
       return "referenced";
     if (code == ResourceAggregationMode.BUNDLED)
       return "bundled";
     return "?";
-  }
+   }
 
     public String toSystem(ResourceAggregationMode code) {
       return code.getSystem();

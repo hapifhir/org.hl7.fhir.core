@@ -58,7 +58,9 @@ public class SearchParamTypeEnumFactory implements EnumFactory<SearchParamType> 
   }
 
   public String toCode(SearchParamType code) {
-    if (code == SearchParamType.NUMBER)
+       if (code == SearchParamType.NULL)
+           return null;
+       if (code == SearchParamType.NUMBER)
       return "number";
     if (code == SearchParamType.DATE)
       return "date";
@@ -75,7 +77,7 @@ public class SearchParamTypeEnumFactory implements EnumFactory<SearchParamType> 
     if (code == SearchParamType.URI)
       return "uri";
     return "?";
-  }
+   }
 
   public String toSystem(SearchParamType code) {
     return code.getSystem();

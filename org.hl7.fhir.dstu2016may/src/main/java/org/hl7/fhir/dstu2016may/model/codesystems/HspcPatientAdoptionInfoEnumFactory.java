@@ -46,12 +46,14 @@ public class HspcPatientAdoptionInfoEnumFactory implements EnumFactory<HspcPatie
   }
 
   public String toCode(HspcPatientAdoptionInfo code) {
-    if (code == HspcPatientAdoptionInfo._526742432)
+       if (code == HspcPatientAdoptionInfo.NULL)
+           return null;
+       if (code == HspcPatientAdoptionInfo._526742432)
       return "526742432";
     if (code == HspcPatientAdoptionInfo._526742433)
       return "526742433";
     return "?";
-  }
+   }
 
   public String toSystem(HspcPatientAdoptionInfo code) {
     return code.getSystem();

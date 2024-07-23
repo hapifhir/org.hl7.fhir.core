@@ -192,7 +192,9 @@ public class PaymentNotice extends DomainResource {
     }
 
     public String toCode(PaymentNoticeStatus code) {
-      if (code == PaymentNoticeStatus.ACTIVE)
+       if (code == PaymentNoticeStatus.NULL)
+           return null;
+       if (code == PaymentNoticeStatus.ACTIVE)
         return "active";
       if (code == PaymentNoticeStatus.CANCELLED)
         return "cancelled";
@@ -201,7 +203,7 @@ public class PaymentNotice extends DomainResource {
       if (code == PaymentNoticeStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(PaymentNoticeStatus code) {
       return code.getSystem();

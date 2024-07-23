@@ -54,7 +54,9 @@ public class ActionTypeEnumFactory implements EnumFactory<ActionType> {
   }
 
   public String toCode(ActionType code) {
-    if (code == ActionType.CREATE)
+       if (code == ActionType.NULL)
+           return null;
+       if (code == ActionType.CREATE)
       return "create";
     if (code == ActionType.UPDATE)
       return "update";
@@ -63,7 +65,7 @@ public class ActionTypeEnumFactory implements EnumFactory<ActionType> {
     if (code == ActionType.FIREEVENT)
       return "fire-event";
     return "?";
-  }
+   }
 
     public String toSystem(ActionType code) {
       return code.getSystem();

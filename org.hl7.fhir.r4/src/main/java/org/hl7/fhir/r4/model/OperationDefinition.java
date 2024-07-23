@@ -169,12 +169,14 @@ public class OperationDefinition extends MetadataResource {
     }
 
     public String toCode(OperationKind code) {
-      if (code == OperationKind.OPERATION)
+       if (code == OperationKind.NULL)
+           return null;
+       if (code == OperationKind.OPERATION)
         return "operation";
       if (code == OperationKind.QUERY)
         return "query";
       return "?";
-    }
+   }
 
     public String toSystem(OperationKind code) {
       return code.getSystem();
@@ -289,12 +291,14 @@ public class OperationDefinition extends MetadataResource {
     }
 
     public String toCode(OperationParameterUse code) {
-      if (code == OperationParameterUse.IN)
+       if (code == OperationParameterUse.NULL)
+           return null;
+       if (code == OperationParameterUse.IN)
         return "in";
       if (code == OperationParameterUse.OUT)
         return "out";
       return "?";
-    }
+   }
 
     public String toSystem(OperationParameterUse code) {
       return code.getSystem();

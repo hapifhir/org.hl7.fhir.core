@@ -56,7 +56,9 @@ public class NehtaServiceBookingStatusValuesEnumFactory implements EnumFactory<N
   }
 
   public String toCode(NehtaServiceBookingStatusValues code) {
-    if (code == NehtaServiceBookingStatusValues.APT)
+       if (code == NehtaServiceBookingStatusValues.NULL)
+           return null;
+       if (code == NehtaServiceBookingStatusValues.APT)
       return "APT";
     if (code == NehtaServiceBookingStatusValues.ARQ)
       return "ARQ";
@@ -71,7 +73,7 @@ public class NehtaServiceBookingStatusValuesEnumFactory implements EnumFactory<N
     if (code == NehtaServiceBookingStatusValues.RQO)
       return "RQO";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaServiceBookingStatusValues code) {
     return code.getSystem();

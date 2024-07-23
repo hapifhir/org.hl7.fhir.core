@@ -66,7 +66,9 @@ public class AssertResponseCodeTypesEnumFactory implements EnumFactory<AssertRes
   }
 
   public String toCode(AssertResponseCodeTypes code) {
-    if (code == AssertResponseCodeTypes.OKAY)
+       if (code == AssertResponseCodeTypes.NULL)
+           return null;
+       if (code == AssertResponseCodeTypes.OKAY)
       return "okay";
     if (code == AssertResponseCodeTypes.CREATED)
       return "created";
@@ -91,7 +93,7 @@ public class AssertResponseCodeTypesEnumFactory implements EnumFactory<AssertRes
     if (code == AssertResponseCodeTypes.UNPROCESSABLE)
       return "unprocessable";
     return "?";
-  }
+   }
 
   public String toSystem(AssertResponseCodeTypes code) {
     return code.getSystem();

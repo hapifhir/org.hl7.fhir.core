@@ -46,12 +46,14 @@ public class V3QueryPriorityEnumFactory implements EnumFactory<V3QueryPriority> 
   }
 
   public String toCode(V3QueryPriority code) {
-    if (code == V3QueryPriority.D)
+       if (code == V3QueryPriority.NULL)
+           return null;
+       if (code == V3QueryPriority.D)
       return "D";
     if (code == V3QueryPriority.I)
       return "I";
     return "?";
-  }
+   }
 
   public String toSystem(V3QueryPriority code) {
     return code.getSystem();

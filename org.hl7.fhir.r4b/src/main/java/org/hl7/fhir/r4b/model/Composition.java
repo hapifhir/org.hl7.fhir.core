@@ -206,7 +206,9 @@ public class Composition extends DomainResource {
     }
 
     public String toCode(CompositionAttestationMode code) {
-      if (code == CompositionAttestationMode.PERSONAL)
+       if (code == CompositionAttestationMode.NULL)
+           return null;
+       if (code == CompositionAttestationMode.PERSONAL)
         return "personal";
       if (code == CompositionAttestationMode.PROFESSIONAL)
         return "professional";
@@ -215,7 +217,7 @@ public class Composition extends DomainResource {
       if (code == CompositionAttestationMode.OFFICIAL)
         return "official";
       return "?";
-    }
+   }
 
     public String toSystem(CompositionAttestationMode code) {
       return code.getSystem();

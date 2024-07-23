@@ -46,12 +46,14 @@ public class ImmunizationProgramEligibilityEnumFactory implements EnumFactory<Im
   }
 
   public String toCode(ImmunizationProgramEligibility code) {
-    if (code == ImmunizationProgramEligibility.INELIGIBLE)
+       if (code == ImmunizationProgramEligibility.NULL)
+           return null;
+       if (code == ImmunizationProgramEligibility.INELIGIBLE)
       return "ineligible";
     if (code == ImmunizationProgramEligibility.UNINSURED)
       return "uninsured";
     return "?";
-  }
+   }
 
   public String toSystem(ImmunizationProgramEligibility code) {
     return code.getSystem();

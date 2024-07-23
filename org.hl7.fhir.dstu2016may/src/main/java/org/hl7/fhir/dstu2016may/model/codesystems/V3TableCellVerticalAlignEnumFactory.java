@@ -50,7 +50,9 @@ public class V3TableCellVerticalAlignEnumFactory implements EnumFactory<V3TableC
   }
 
   public String toCode(V3TableCellVerticalAlign code) {
-    if (code == V3TableCellVerticalAlign.BASELINE)
+       if (code == V3TableCellVerticalAlign.NULL)
+           return null;
+       if (code == V3TableCellVerticalAlign.BASELINE)
       return "baseline";
     if (code == V3TableCellVerticalAlign.BOTTOM)
       return "bottom";
@@ -59,7 +61,7 @@ public class V3TableCellVerticalAlignEnumFactory implements EnumFactory<V3TableC
     if (code == V3TableCellVerticalAlign.TOP)
       return "top";
     return "?";
-  }
+   }
 
   public String toSystem(V3TableCellVerticalAlign code) {
     return code.getSystem();

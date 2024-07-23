@@ -80,7 +80,9 @@ public class V3AddressUseEnumFactory implements EnumFactory<V3AddressUse> {
   }
 
   public String toCode(V3AddressUse code) {
-    if (code == V3AddressUse._GENERALADDRESSUSE)
+       if (code == V3AddressUse.NULL)
+           return null;
+       if (code == V3AddressUse._GENERALADDRESSUSE)
       return "_GeneralAddressUse";
     if (code == V3AddressUse.BAD)
       return "BAD";
@@ -119,7 +121,7 @@ public class V3AddressUseEnumFactory implements EnumFactory<V3AddressUse> {
     if (code == V3AddressUse.PG)
       return "PG";
     return "?";
-  }
+   }
 
   public String toSystem(V3AddressUse code) {
     return code.getSystem();

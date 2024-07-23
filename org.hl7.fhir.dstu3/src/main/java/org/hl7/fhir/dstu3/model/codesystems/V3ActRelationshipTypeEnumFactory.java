@@ -320,7 +320,9 @@ public class V3ActRelationshipTypeEnumFactory implements EnumFactory<V3ActRelati
   }
 
   public String toCode(V3ActRelationshipType code) {
-    if (code == V3ActRelationshipType.ART)
+       if (code == V3ActRelationshipType.NULL)
+           return null;
+       if (code == V3ActRelationshipType.ART)
       return "ART";
     if (code == V3ActRelationshipType._ACTCLASSTEMPORALLYPERTAINS)
       return "_ActClassTemporallyPertains";
@@ -595,7 +597,7 @@ public class V3ActRelationshipTypeEnumFactory implements EnumFactory<V3ActRelati
     if (code == V3ActRelationshipType.SUGG)
       return "SUGG";
     return "?";
-  }
+   }
 
     public String toSystem(V3ActRelationshipType code) {
       return code.getSystem();

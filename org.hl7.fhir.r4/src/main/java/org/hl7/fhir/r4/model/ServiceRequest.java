@@ -257,7 +257,9 @@ public class ServiceRequest extends DomainResource {
     }
 
     public String toCode(ServiceRequestStatus code) {
-      if (code == ServiceRequestStatus.DRAFT)
+       if (code == ServiceRequestStatus.NULL)
+           return null;
+       if (code == ServiceRequestStatus.DRAFT)
         return "draft";
       if (code == ServiceRequestStatus.ACTIVE)
         return "active";
@@ -272,7 +274,7 @@ public class ServiceRequest extends DomainResource {
       if (code == ServiceRequestStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(ServiceRequestStatus code) {
       return code.getSystem();
@@ -526,7 +528,9 @@ public class ServiceRequest extends DomainResource {
     }
 
     public String toCode(ServiceRequestIntent code) {
-      if (code == ServiceRequestIntent.PROPOSAL)
+       if (code == ServiceRequestIntent.NULL)
+           return null;
+       if (code == ServiceRequestIntent.PROPOSAL)
         return "proposal";
       if (code == ServiceRequestIntent.PLAN)
         return "plan";
@@ -545,7 +549,7 @@ public class ServiceRequest extends DomainResource {
       if (code == ServiceRequestIntent.OPTION)
         return "option";
       return "?";
-    }
+   }
 
     public String toSystem(ServiceRequestIntent code) {
       return code.getSystem();
@@ -698,7 +702,9 @@ public class ServiceRequest extends DomainResource {
     }
 
     public String toCode(ServiceRequestPriority code) {
-      if (code == ServiceRequestPriority.ROUTINE)
+       if (code == ServiceRequestPriority.NULL)
+           return null;
+       if (code == ServiceRequestPriority.ROUTINE)
         return "routine";
       if (code == ServiceRequestPriority.URGENT)
         return "urgent";
@@ -707,7 +713,7 @@ public class ServiceRequest extends DomainResource {
       if (code == ServiceRequestPriority.STAT)
         return "stat";
       return "?";
-    }
+   }
 
     public String toSystem(ServiceRequestPriority code) {
       return code.getSystem();

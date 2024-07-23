@@ -48,14 +48,16 @@ public class ResponseCodeEnumFactory implements EnumFactory<ResponseCode> {
   }
 
   public String toCode(ResponseCode code) {
-    if (code == ResponseCode.OK)
+       if (code == ResponseCode.NULL)
+           return null;
+       if (code == ResponseCode.OK)
       return "ok";
     if (code == ResponseCode.TRANSIENTERROR)
       return "transient-error";
     if (code == ResponseCode.FATALERROR)
       return "fatal-error";
     return "?";
-  }
+   }
 
   public String toSystem(ResponseCode code) {
     return code.getSystem();

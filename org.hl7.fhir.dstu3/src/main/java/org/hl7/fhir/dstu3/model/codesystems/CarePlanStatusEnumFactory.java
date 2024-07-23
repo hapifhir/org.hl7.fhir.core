@@ -60,7 +60,9 @@ public class CarePlanStatusEnumFactory implements EnumFactory<CarePlanStatus> {
   }
 
   public String toCode(CarePlanStatus code) {
-    if (code == CarePlanStatus.DRAFT)
+       if (code == CarePlanStatus.NULL)
+           return null;
+       if (code == CarePlanStatus.DRAFT)
       return "draft";
     if (code == CarePlanStatus.ACTIVE)
       return "active";
@@ -75,7 +77,7 @@ public class CarePlanStatusEnumFactory implements EnumFactory<CarePlanStatus> {
     if (code == CarePlanStatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
     public String toSystem(CarePlanStatus code) {
       return code.getSystem();

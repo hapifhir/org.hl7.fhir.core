@@ -54,7 +54,9 @@ public class SpecialValuesEnumFactory implements EnumFactory<SpecialValues> {
   }
 
   public String toCode(SpecialValues code) {
-    if (code == SpecialValues.TRUE)
+       if (code == SpecialValues.NULL)
+           return null;
+       if (code == SpecialValues.TRUE)
       return "true";
     if (code == SpecialValues.FALSE)
       return "false";
@@ -67,7 +69,7 @@ public class SpecialValuesEnumFactory implements EnumFactory<SpecialValues> {
     if (code == SpecialValues.NILKNOWN)
       return "nil-known";
     return "?";
-  }
+   }
 
   public String toSystem(SpecialValues code) {
     return code.getSystem();

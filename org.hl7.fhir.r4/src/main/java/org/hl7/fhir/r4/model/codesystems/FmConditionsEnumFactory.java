@@ -44,10 +44,12 @@ public class FmConditionsEnumFactory implements EnumFactory<FmConditions> {
   }
 
   public String toCode(FmConditions code) {
-    if (code == FmConditions._123987)
+       if (code == FmConditions.NULL)
+           return null;
+       if (code == FmConditions._123987)
       return "123987";
     return "?";
-  }
+   }
 
   public String toSystem(FmConditions code) {
     return code.getSystem();

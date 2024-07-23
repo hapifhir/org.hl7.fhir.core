@@ -56,7 +56,9 @@ public class LOINC480194AnswerlistEnumFactory implements EnumFactory<LOINC480194
   }
 
   public String toCode(LOINC480194Answerlist code) {
-    if (code == LOINC480194Answerlist.LA96581)
+       if (code == LOINC480194Answerlist.NULL)
+           return null;
+       if (code == LOINC480194Answerlist.LA96581)
       return "LA9658-1";
     if (code == LOINC480194Answerlist.LA66923)
       return "LA6692-3";
@@ -71,7 +73,7 @@ public class LOINC480194AnswerlistEnumFactory implements EnumFactory<LOINC480194
     if (code == LOINC480194Answerlist.LA66907)
       return "LA6690-7";
     return "?";
-  }
+   }
 
   public String toSystem(LOINC480194Answerlist code) {
     return code.getSystem();

@@ -80,7 +80,9 @@ public class ServicePlaceEnumFactory implements EnumFactory<ServicePlace> {
   }
 
   public String toCode(ServicePlace code) {
-    if (code == ServicePlace._01)
+       if (code == ServicePlace.NULL)
+           return null;
+       if (code == ServicePlace._01)
       return "01";
     if (code == ServicePlace._03)
       return "03";
@@ -115,7 +117,7 @@ public class ServicePlaceEnumFactory implements EnumFactory<ServicePlace> {
     if (code == ServicePlace._41)
       return "41";
     return "?";
-  }
+   }
 
     public String toSystem(ServicePlace code) {
       return code.getSystem();

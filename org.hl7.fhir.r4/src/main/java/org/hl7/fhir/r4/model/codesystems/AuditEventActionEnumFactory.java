@@ -52,7 +52,9 @@ public class AuditEventActionEnumFactory implements EnumFactory<AuditEventAction
   }
 
   public String toCode(AuditEventAction code) {
-    if (code == AuditEventAction.C)
+       if (code == AuditEventAction.NULL)
+           return null;
+       if (code == AuditEventAction.C)
       return "C";
     if (code == AuditEventAction.R)
       return "R";
@@ -63,7 +65,7 @@ public class AuditEventActionEnumFactory implements EnumFactory<AuditEventAction
     if (code == AuditEventAction.E)
       return "E";
     return "?";
-  }
+   }
 
   public String toSystem(AuditEventAction code) {
     return code.getSystem();

@@ -300,7 +300,9 @@ public class Task extends DomainResource {
     }
 
     public String toCode(TaskIntent code) {
-      if (code == TaskIntent.UNKNOWN)
+       if (code == TaskIntent.NULL)
+           return null;
+       if (code == TaskIntent.UNKNOWN)
         return "unknown";
       if (code == TaskIntent.PROPOSAL)
         return "proposal";
@@ -319,7 +321,7 @@ public class Task extends DomainResource {
       if (code == TaskIntent.OPTION)
         return "option";
       return "?";
-    }
+   }
 
     public String toSystem(TaskIntent code) {
       return code.getSystem();
@@ -620,7 +622,9 @@ public class Task extends DomainResource {
     }
 
     public String toCode(TaskStatus code) {
-      if (code == TaskStatus.DRAFT)
+       if (code == TaskStatus.NULL)
+           return null;
+       if (code == TaskStatus.DRAFT)
         return "draft";
       if (code == TaskStatus.REQUESTED)
         return "requested";
@@ -645,7 +649,7 @@ public class Task extends DomainResource {
       if (code == TaskStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(TaskStatus code) {
       return code.getSystem();

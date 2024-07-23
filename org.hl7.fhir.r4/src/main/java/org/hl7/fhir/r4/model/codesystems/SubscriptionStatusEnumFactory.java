@@ -50,7 +50,9 @@ public class SubscriptionStatusEnumFactory implements EnumFactory<SubscriptionSt
   }
 
   public String toCode(SubscriptionStatus code) {
-    if (code == SubscriptionStatus.REQUESTED)
+       if (code == SubscriptionStatus.NULL)
+           return null;
+       if (code == SubscriptionStatus.REQUESTED)
       return "requested";
     if (code == SubscriptionStatus.ACTIVE)
       return "active";
@@ -59,7 +61,7 @@ public class SubscriptionStatusEnumFactory implements EnumFactory<SubscriptionSt
     if (code == SubscriptionStatus.OFF)
       return "off";
     return "?";
-  }
+   }
 
   public String toSystem(SubscriptionStatus code) {
     return code.getSystem();

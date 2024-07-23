@@ -70,7 +70,9 @@ public class W3cProvenanceActivityTypeEnumFactory implements EnumFactory<W3cProv
   }
 
   public String toCode(W3cProvenanceActivityType code) {
-    if (code == W3cProvenanceActivityType.GENERATION)
+       if (code == W3cProvenanceActivityType.NULL)
+           return null;
+       if (code == W3cProvenanceActivityType.GENERATION)
       return "Generation";
     if (code == W3cProvenanceActivityType.USAGE)
       return "Usage";
@@ -95,7 +97,7 @@ public class W3cProvenanceActivityTypeEnumFactory implements EnumFactory<W3cProv
     if (code == W3cProvenanceActivityType.COLLECTION)
       return "Collection";
     return "?";
-  }
+   }
 
     public String toSystem(W3cProvenanceActivityType code) {
       return code.getSystem();

@@ -364,7 +364,9 @@ public class V3OrderableDrugFormEnumFactory implements EnumFactory<V3OrderableDr
   }
 
   public String toCode(V3OrderableDrugForm code) {
-    if (code == V3OrderableDrugForm._ADMINISTRABLEDRUGFORM)
+       if (code == V3OrderableDrugForm.NULL)
+           return null;
+       if (code == V3OrderableDrugForm._ADMINISTRABLEDRUGFORM)
       return "_AdministrableDrugForm";
     if (code == V3OrderableDrugForm.APPFUL)
       return "APPFUL";
@@ -687,7 +689,7 @@ public class V3OrderableDrugFormEnumFactory implements EnumFactory<V3OrderableDr
     if (code == V3OrderableDrugForm.WAFER)
       return "WAFER";
     return "?";
-  }
+   }
 
   public String toSystem(V3OrderableDrugForm code) {
     return code.getSystem();

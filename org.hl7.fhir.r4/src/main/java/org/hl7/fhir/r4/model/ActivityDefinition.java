@@ -407,7 +407,9 @@ public class ActivityDefinition extends MetadataResource {
     }
 
     public String toCode(ActivityDefinitionKind code) {
-      if (code == ActivityDefinitionKind.APPOINTMENT)
+       if (code == ActivityDefinitionKind.NULL)
+           return null;
+       if (code == ActivityDefinitionKind.APPOINTMENT)
         return "Appointment";
       if (code == ActivityDefinitionKind.APPOINTMENTRESPONSE)
         return "AppointmentResponse";
@@ -438,7 +440,7 @@ public class ActivityDefinition extends MetadataResource {
       if (code == ActivityDefinitionKind.VISIONPRESCRIPTION)
         return "VisionPrescription";
       return "?";
-    }
+   }
 
     public String toSystem(ActivityDefinitionKind code) {
       return code.getSystem();
@@ -692,7 +694,9 @@ public class ActivityDefinition extends MetadataResource {
     }
 
     public String toCode(RequestIntent code) {
-      if (code == RequestIntent.PROPOSAL)
+       if (code == RequestIntent.NULL)
+           return null;
+       if (code == RequestIntent.PROPOSAL)
         return "proposal";
       if (code == RequestIntent.PLAN)
         return "plan";
@@ -711,7 +715,7 @@ public class ActivityDefinition extends MetadataResource {
       if (code == RequestIntent.OPTION)
         return "option";
       return "?";
-    }
+   }
 
     public String toSystem(RequestIntent code) {
       return code.getSystem();
@@ -864,7 +868,9 @@ public class ActivityDefinition extends MetadataResource {
     }
 
     public String toCode(RequestPriority code) {
-      if (code == RequestPriority.ROUTINE)
+       if (code == RequestPriority.NULL)
+           return null;
+       if (code == RequestPriority.ROUTINE)
         return "routine";
       if (code == RequestPriority.URGENT)
         return "urgent";
@@ -873,7 +879,7 @@ public class ActivityDefinition extends MetadataResource {
       if (code == RequestPriority.STAT)
         return "stat";
       return "?";
-    }
+   }
 
     public String toSystem(RequestPriority code) {
       return code.getSystem();
@@ -1024,7 +1030,9 @@ public class ActivityDefinition extends MetadataResource {
     }
 
     public String toCode(ActivityParticipantType code) {
-      if (code == ActivityParticipantType.PATIENT)
+       if (code == ActivityParticipantType.NULL)
+           return null;
+       if (code == ActivityParticipantType.PATIENT)
         return "patient";
       if (code == ActivityParticipantType.PRACTITIONER)
         return "practitioner";
@@ -1033,7 +1041,7 @@ public class ActivityDefinition extends MetadataResource {
       if (code == ActivityParticipantType.DEVICE)
         return "device";
       return "?";
-    }
+   }
 
     public String toSystem(ActivityParticipantType code) {
       return code.getSystem();

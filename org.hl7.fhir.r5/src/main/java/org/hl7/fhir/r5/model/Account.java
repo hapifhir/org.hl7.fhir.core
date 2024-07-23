@@ -180,7 +180,9 @@ public class Account extends DomainResource {
         throw new FHIRException("Unknown AccountStatus code '"+codeString+"'");
         }
     public String toCode(AccountStatus code) {
-      if (code == AccountStatus.ACTIVE)
+       if (code == AccountStatus.NULL)
+           return null;
+       if (code == AccountStatus.ACTIVE)
         return "active";
       if (code == AccountStatus.INACTIVE)
         return "inactive";
@@ -191,7 +193,7 @@ public class Account extends DomainResource {
       if (code == AccountStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(AccountStatus code) {
       return code.getSystem();
       }
@@ -2507,7 +2509,9 @@ A coverage may only be responsible for specific types of charges, and the sequen
     protected CodeableConcept currency;
 
     /**
-     * The calculated account balances - these are calculated and processed by the finance system.The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.
+     * The calculated account balances - these are calculated and processed by the finance system.
+
+The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.
      */
     @Child(name = "balance", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Calculated account balance(s)", formalDefinition="The calculated account balances - these are calculated and processed by the finance system.\r\rThe balances with a `term` that is not current are usually generated/updated by an invoicing or similar process." )
@@ -3172,7 +3176,9 @@ A coverage may only be responsible for specific types of charges, and the sequen
     }
 
     /**
-     * @return {@link #balance} (The calculated account balances - these are calculated and processed by the finance system.The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.)
+     * @return {@link #balance} (The calculated account balances - these are calculated and processed by the finance system.
+
+The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.)
      */
     public List<AccountBalanceComponent> getBalance() { 
       if (this.balance == null)

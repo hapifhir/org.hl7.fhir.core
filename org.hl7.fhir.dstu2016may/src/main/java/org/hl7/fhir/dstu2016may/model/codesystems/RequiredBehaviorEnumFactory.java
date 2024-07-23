@@ -48,14 +48,16 @@ public class RequiredBehaviorEnumFactory implements EnumFactory<RequiredBehavior
   }
 
   public String toCode(RequiredBehavior code) {
-    if (code == RequiredBehavior.MUST)
+       if (code == RequiredBehavior.NULL)
+           return null;
+       if (code == RequiredBehavior.MUST)
       return "must";
     if (code == RequiredBehavior.COULD)
       return "could";
     if (code == RequiredBehavior.MUSTUNLESSDOCUMENTED)
       return "must-unless-documented";
     return "?";
-  }
+   }
 
   public String toSystem(RequiredBehavior code) {
     return code.getSystem();

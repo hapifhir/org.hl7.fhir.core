@@ -54,7 +54,9 @@ public class AdverseEventCausalityAssessEnumFactory implements EnumFactory<Adver
   }
 
   public String toCode(AdverseEventCausalityAssess code) {
-    if (code == AdverseEventCausalityAssess.CERTAIN)
+       if (code == AdverseEventCausalityAssess.NULL)
+           return null;
+       if (code == AdverseEventCausalityAssess.CERTAIN)
       return "Certain";
     if (code == AdverseEventCausalityAssess.PROBABLYLIKELY)
       return "Probably-Likely";
@@ -67,7 +69,7 @@ public class AdverseEventCausalityAssessEnumFactory implements EnumFactory<Adver
     if (code == AdverseEventCausalityAssess.UNASSESSABLEUNCLASSIFIABLE)
       return "Unassessable-Unclassifiable";
     return "?";
-  }
+   }
 
   public String toSystem(AdverseEventCausalityAssess code) {
     return code.getSystem();

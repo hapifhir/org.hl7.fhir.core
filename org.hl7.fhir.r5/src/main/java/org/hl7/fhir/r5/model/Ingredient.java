@@ -152,14 +152,16 @@ public class Ingredient extends DomainResource {
         throw new FHIRException("Unknown IngredientManufacturerRole code '"+codeString+"'");
         }
     public String toCode(IngredientManufacturerRole code) {
-      if (code == IngredientManufacturerRole.ALLOWED)
+       if (code == IngredientManufacturerRole.NULL)
+           return null;
+       if (code == IngredientManufacturerRole.ALLOWED)
         return "allowed";
       if (code == IngredientManufacturerRole.POSSIBLE)
         return "possible";
       if (code == IngredientManufacturerRole.ACTUAL)
         return "actual";
       return "?";
-      }
+   }
     public String toSystem(IngredientManufacturerRole code) {
       return code.getSystem();
       }

@@ -64,7 +64,9 @@ public class HspcAddressUseEnumFactory implements EnumFactory<HspcAddressUse> {
   }
 
   public String toCode(HspcAddressUse code) {
-    if (code == HspcAddressUse.BAD)
+       if (code == HspcAddressUse.NULL)
+           return null;
+       if (code == HspcAddressUse.BAD)
       return "BAD";
     if (code == HspcAddressUse.PHYS)
       return "PHYS";
@@ -87,7 +89,7 @@ public class HspcAddressUseEnumFactory implements EnumFactory<HspcAddressUse> {
     if (code == HspcAddressUse.CONF)
       return "CONF";
     return "?";
-  }
+   }
 
   public String toSystem(HspcAddressUse code) {
     return code.getSystem();

@@ -184,14 +184,16 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     public String toCode(ConditionalDeleteStatus code) {
-      if (code == ConditionalDeleteStatus.NOTSUPPORTED)
+       if (code == ConditionalDeleteStatus.NULL)
+           return null;
+       if (code == ConditionalDeleteStatus.NOTSUPPORTED)
         return "not-supported";
       if (code == ConditionalDeleteStatus.SINGLE)
         return "single";
       if (code == ConditionalDeleteStatus.MULTIPLE)
         return "multiple";
       return "?";
-    }
+   }
 
     public String toSystem(ConditionalDeleteStatus code) {
       return code.getSystem();
@@ -344,7 +346,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     public String toCode(ConditionalReadStatus code) {
-      if (code == ConditionalReadStatus.NOTSUPPORTED)
+       if (code == ConditionalReadStatus.NULL)
+           return null;
+       if (code == ConditionalReadStatus.NOTSUPPORTED)
         return "not-supported";
       if (code == ConditionalReadStatus.MODIFIEDSINCE)
         return "modified-since";
@@ -353,7 +357,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       if (code == ConditionalReadStatus.FULLSUPPORT)
         return "full-support";
       return "?";
-    }
+   }
 
     public String toSystem(ConditionalReadStatus code) {
       return code.getSystem();
@@ -468,12 +472,14 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     public String toCode(DocumentMode code) {
-      if (code == DocumentMode.PRODUCER)
+       if (code == DocumentMode.NULL)
+           return null;
+       if (code == DocumentMode.PRODUCER)
         return "producer";
       if (code == DocumentMode.CONSUMER)
         return "consumer";
       return "?";
-    }
+   }
 
     public String toSystem(DocumentMode code) {
       return code.getSystem();
@@ -588,12 +594,14 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     public String toCode(EventCapabilityMode code) {
-      if (code == EventCapabilityMode.SENDER)
+       if (code == EventCapabilityMode.NULL)
+           return null;
+       if (code == EventCapabilityMode.SENDER)
         return "sender";
       if (code == EventCapabilityMode.RECEIVER)
         return "receiver";
       return "?";
-    }
+   }
 
     public String toSystem(EventCapabilityMode code) {
       return code.getSystem();
@@ -768,7 +776,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     public String toCode(ReferenceHandlingPolicy code) {
-      if (code == ReferenceHandlingPolicy.LITERAL)
+       if (code == ReferenceHandlingPolicy.NULL)
+           return null;
+       if (code == ReferenceHandlingPolicy.LITERAL)
         return "literal";
       if (code == ReferenceHandlingPolicy.LOGICAL)
         return "logical";
@@ -779,7 +789,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       if (code == ReferenceHandlingPolicy.LOCAL)
         return "local";
       return "?";
-    }
+   }
 
     public String toSystem(ReferenceHandlingPolicy code) {
       return code.getSystem();
@@ -913,14 +923,16 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     public String toCode(ResourceVersionPolicy code) {
-      if (code == ResourceVersionPolicy.NOVERSION)
+       if (code == ResourceVersionPolicy.NULL)
+           return null;
+       if (code == ResourceVersionPolicy.NOVERSION)
         return "no-version";
       if (code == ResourceVersionPolicy.VERSIONED)
         return "versioned";
       if (code == ResourceVersionPolicy.VERSIONEDUPDATE)
         return "versioned-update";
       return "?";
-    }
+   }
 
     public String toSystem(ResourceVersionPolicy code) {
       return code.getSystem();
@@ -1035,12 +1047,14 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     public String toCode(RestfulCapabilityMode code) {
-      if (code == RestfulCapabilityMode.CLIENT)
+       if (code == RestfulCapabilityMode.NULL)
+           return null;
+       if (code == RestfulCapabilityMode.CLIENT)
         return "client";
       if (code == RestfulCapabilityMode.SERVER)
         return "server";
       return "?";
-    }
+   }
 
     public String toSystem(RestfulCapabilityMode code) {
       return code.getSystem();
@@ -1191,7 +1205,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     public String toCode(SystemRestfulInteraction code) {
-      if (code == SystemRestfulInteraction.TRANSACTION)
+       if (code == SystemRestfulInteraction.NULL)
+           return null;
+       if (code == SystemRestfulInteraction.TRANSACTION)
         return "transaction";
       if (code == SystemRestfulInteraction.BATCH)
         return "batch";
@@ -1200,7 +1216,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       if (code == SystemRestfulInteraction.HISTORYSYSTEM)
         return "history-system";
       return "?";
-    }
+   }
 
     public String toSystem(SystemRestfulInteraction code) {
       return code.getSystem();
@@ -1441,7 +1457,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     }
 
     public String toCode(TypeRestfulInteraction code) {
-      if (code == TypeRestfulInteraction.READ)
+       if (code == TypeRestfulInteraction.NULL)
+           return null;
+       if (code == TypeRestfulInteraction.READ)
         return "read";
       if (code == TypeRestfulInteraction.VREAD)
         return "vread";
@@ -1460,7 +1478,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       if (code == TypeRestfulInteraction.SEARCHTYPE)
         return "search-type";
       return "?";
-    }
+   }
 
     public String toSystem(TypeRestfulInteraction code) {
       return code.getSystem();

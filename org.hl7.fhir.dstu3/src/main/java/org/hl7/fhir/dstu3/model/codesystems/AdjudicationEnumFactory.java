@@ -60,7 +60,9 @@ public class AdjudicationEnumFactory implements EnumFactory<Adjudication> {
   }
 
   public String toCode(Adjudication code) {
-    if (code == Adjudication.TOTAL)
+       if (code == Adjudication.NULL)
+           return null;
+       if (code == Adjudication.TOTAL)
       return "total";
     if (code == Adjudication.COPAY)
       return "copay";
@@ -75,7 +77,7 @@ public class AdjudicationEnumFactory implements EnumFactory<Adjudication> {
     if (code == Adjudication.BENEFIT)
       return "benefit";
     return "?";
-  }
+   }
 
     public String toSystem(Adjudication code) {
       return code.getSystem();
