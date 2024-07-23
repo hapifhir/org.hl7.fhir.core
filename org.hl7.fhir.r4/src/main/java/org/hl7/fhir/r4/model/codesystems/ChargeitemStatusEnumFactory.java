@@ -56,7 +56,9 @@ public class ChargeitemStatusEnumFactory implements EnumFactory<ChargeitemStatus
   }
 
   public String toCode(ChargeitemStatus code) {
-    if (code == ChargeitemStatus.PLANNED)
+       if (code == ChargeitemStatus.NULL)
+           return null;
+       if (code == ChargeitemStatus.PLANNED)
       return "planned";
     if (code == ChargeitemStatus.BILLABLE)
       return "billable";
@@ -71,7 +73,7 @@ public class ChargeitemStatusEnumFactory implements EnumFactory<ChargeitemStatus
     if (code == ChargeitemStatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
   public String toSystem(ChargeitemStatus code) {
     return code.getSystem();

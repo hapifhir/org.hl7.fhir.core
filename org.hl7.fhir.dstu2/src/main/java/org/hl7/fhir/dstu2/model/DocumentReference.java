@@ -190,8 +190,11 @@ public class DocumentReference extends DomainResource {
       throw new FHIRException("Unknown DocumentRelationshipType code '" + codeString + "'");
     }
 
-    public String toCode(DocumentRelationshipType code) {
-      if (code == DocumentRelationshipType.REPLACES)
+    public String toCode(DocumentRelationshipType code)
+   {
+       if (code == DocumentRelationshipType.NULL)
+           return null;
+       if (code == DocumentRelationshipType.REPLACES)
         return "replaces";
       if (code == DocumentRelationshipType.TRANSFORMS)
         return "transforms";
@@ -200,7 +203,7 @@ public class DocumentReference extends DomainResource {
       if (code == DocumentRelationshipType.APPENDS)
         return "appends";
       return "?";
-    }
+   }
   }
 
   @Block()

@@ -164,7 +164,9 @@ public class ProcessResponse extends DomainResource {
         throw new FHIRException("Unknown ProcessResponseStatus code '"+codeString+"'");
         }
     public String toCode(ProcessResponseStatus code) {
-      if (code == ProcessResponseStatus.ACTIVE)
+       if (code == ProcessResponseStatus.NULL)
+           return null;
+       if (code == ProcessResponseStatus.ACTIVE)
         return "active";
       if (code == ProcessResponseStatus.CANCELLED)
         return "cancelled";
@@ -173,7 +175,7 @@ public class ProcessResponse extends DomainResource {
       if (code == ProcessResponseStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(ProcessResponseStatus code) {
       return code.getSystem();
       }

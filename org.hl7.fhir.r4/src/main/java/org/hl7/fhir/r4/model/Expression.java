@@ -174,14 +174,16 @@ public class Expression extends Type implements ICompositeType {
     }
 
     public String toCode(ExpressionLanguage code) {
-      if (code == ExpressionLanguage.TEXT_CQL)
+       if (code == ExpressionLanguage.NULL)
+           return null;
+       if (code == ExpressionLanguage.TEXT_CQL)
         return "text/cql";
       if (code == ExpressionLanguage.TEXT_FHIRPATH)
         return "text/fhirpath";
       if (code == ExpressionLanguage.APPLICATION_XFHIRQUERY)
         return "application/x-fhir-query";
       return "?";
-    }
+   }
 
     public String toSystem(ExpressionLanguage code) {
       return code.getSystem();

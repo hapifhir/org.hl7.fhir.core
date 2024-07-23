@@ -734,7 +734,9 @@ public class SpdxLicenseEnumFactory implements EnumFactory<SpdxLicense> {
   }
 
   public String toCode(SpdxLicense code) {
-    if (code == SpdxLicense.NOTOPENSOURCE)
+       if (code == SpdxLicense.NULL)
+           return null;
+       if (code == SpdxLicense.NOTOPENSOURCE)
       return "not-open-source";
     if (code == SpdxLicense._0BSD)
       return "0BSD";
@@ -1427,7 +1429,7 @@ public class SpdxLicenseEnumFactory implements EnumFactory<SpdxLicense> {
     if (code == SpdxLicense.ZPL2_1)
       return "ZPL-2.1";
     return "?";
-  }
+   }
 
   public String toSystem(SpdxLicense code) {
     return code.getSystem();

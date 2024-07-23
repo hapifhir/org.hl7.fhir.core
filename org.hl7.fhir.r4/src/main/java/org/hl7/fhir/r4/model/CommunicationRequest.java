@@ -259,7 +259,9 @@ public class CommunicationRequest extends DomainResource {
     }
 
     public String toCode(CommunicationRequestStatus code) {
-      if (code == CommunicationRequestStatus.DRAFT)
+       if (code == CommunicationRequestStatus.NULL)
+           return null;
+       if (code == CommunicationRequestStatus.DRAFT)
         return "draft";
       if (code == CommunicationRequestStatus.ACTIVE)
         return "active";
@@ -274,7 +276,7 @@ public class CommunicationRequest extends DomainResource {
       if (code == CommunicationRequestStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(CommunicationRequestStatus code) {
       return code.getSystem();
@@ -427,7 +429,9 @@ public class CommunicationRequest extends DomainResource {
     }
 
     public String toCode(CommunicationPriority code) {
-      if (code == CommunicationPriority.ROUTINE)
+       if (code == CommunicationPriority.NULL)
+           return null;
+       if (code == CommunicationPriority.ROUTINE)
         return "routine";
       if (code == CommunicationPriority.URGENT)
         return "urgent";
@@ -436,7 +440,7 @@ public class CommunicationRequest extends DomainResource {
       if (code == CommunicationPriority.STAT)
         return "stat";
       return "?";
-    }
+   }
 
     public String toSystem(CommunicationPriority code) {
       return code.getSystem();

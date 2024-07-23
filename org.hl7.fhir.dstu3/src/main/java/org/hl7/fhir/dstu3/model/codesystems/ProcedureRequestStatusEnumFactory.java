@@ -66,7 +66,9 @@ public class ProcedureRequestStatusEnumFactory implements EnumFactory<ProcedureR
   }
 
   public String toCode(ProcedureRequestStatus code) {
-    if (code == ProcedureRequestStatus.PROPOSED)
+       if (code == ProcedureRequestStatus.NULL)
+           return null;
+       if (code == ProcedureRequestStatus.PROPOSED)
       return "proposed";
     if (code == ProcedureRequestStatus.DRAFT)
       return "draft";
@@ -87,7 +89,7 @@ public class ProcedureRequestStatusEnumFactory implements EnumFactory<ProcedureR
     if (code == ProcedureRequestStatus.ABORTED)
       return "aborted";
     return "?";
-  }
+   }
 
     public String toSystem(ProcedureRequestStatus code) {
       return code.getSystem();

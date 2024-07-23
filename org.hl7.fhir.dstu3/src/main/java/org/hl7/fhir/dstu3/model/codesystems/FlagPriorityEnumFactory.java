@@ -54,7 +54,9 @@ public class FlagPriorityEnumFactory implements EnumFactory<FlagPriority> {
   }
 
   public String toCode(FlagPriority code) {
-    if (code == FlagPriority.PN)
+       if (code == FlagPriority.NULL)
+           return null;
+       if (code == FlagPriority.PN)
       return "PN";
     if (code == FlagPriority.PL)
       return "PL";
@@ -63,7 +65,7 @@ public class FlagPriorityEnumFactory implements EnumFactory<FlagPriority> {
     if (code == FlagPriority.PH)
       return "PH";
     return "?";
-  }
+   }
 
     public String toSystem(FlagPriority code) {
       return code.getSystem();

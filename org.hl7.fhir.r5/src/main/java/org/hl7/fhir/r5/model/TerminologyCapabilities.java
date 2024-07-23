@@ -152,14 +152,16 @@ public class TerminologyCapabilities extends CanonicalResource {
         throw new FHIRException("Unknown CodeSearchSupport code '"+codeString+"'");
         }
     public String toCode(CodeSearchSupport code) {
-      if (code == CodeSearchSupport.INCOMPOSE)
+       if (code == CodeSearchSupport.NULL)
+           return null;
+       if (code == CodeSearchSupport.INCOMPOSE)
         return "in-compose";
       if (code == CodeSearchSupport.INEXPANSION)
         return "in-expansion";
       if (code == CodeSearchSupport.INCOMPOSEOREXPANSION)
         return "in-compose-or-expansion";
       return "?";
-      }
+   }
     public String toSystem(CodeSearchSupport code) {
       return code.getSystem();
       }

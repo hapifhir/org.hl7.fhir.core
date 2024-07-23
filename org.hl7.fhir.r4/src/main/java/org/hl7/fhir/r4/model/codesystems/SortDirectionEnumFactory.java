@@ -46,12 +46,14 @@ public class SortDirectionEnumFactory implements EnumFactory<SortDirection> {
   }
 
   public String toCode(SortDirection code) {
-    if (code == SortDirection.ASCENDING)
+       if (code == SortDirection.NULL)
+           return null;
+       if (code == SortDirection.ASCENDING)
       return "ascending";
     if (code == SortDirection.DESCENDING)
       return "descending";
     return "?";
-  }
+   }
 
   public String toSystem(SortDirection code) {
     return code.getSystem();

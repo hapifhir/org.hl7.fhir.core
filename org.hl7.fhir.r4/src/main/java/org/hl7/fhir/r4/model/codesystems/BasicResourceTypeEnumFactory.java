@@ -74,7 +74,9 @@ public class BasicResourceTypeEnumFactory implements EnumFactory<BasicResourceTy
   }
 
   public String toCode(BasicResourceType code) {
-    if (code == BasicResourceType.CONSENT)
+       if (code == BasicResourceType.NULL)
+           return null;
+       if (code == BasicResourceType.CONSENT)
       return "consent";
     if (code == BasicResourceType.REFERRAL)
       return "referral";
@@ -107,7 +109,7 @@ public class BasicResourceTypeEnumFactory implements EnumFactory<BasicResourceTy
     if (code == BasicResourceType.PROTOCOL)
       return "protocol";
     return "?";
-  }
+   }
 
   public String toSystem(BasicResourceType code) {
     return code.getSystem();

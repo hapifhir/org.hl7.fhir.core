@@ -48,14 +48,16 @@ public class ActivityDefinitionCategoryEnumFactory implements EnumFactory<Activi
   }
 
   public String toCode(ActivityDefinitionCategory code) {
-    if (code == ActivityDefinitionCategory.TREATMENT)
+       if (code == ActivityDefinitionCategory.NULL)
+           return null;
+       if (code == ActivityDefinitionCategory.TREATMENT)
       return "treatment";
     if (code == ActivityDefinitionCategory.EDUCATION)
       return "education";
     if (code == ActivityDefinitionCategory.ASSESSMENT)
       return "assessment";
     return "?";
-  }
+   }
 
   public String toSystem(ActivityDefinitionCategory code) {
     return code.getSystem();

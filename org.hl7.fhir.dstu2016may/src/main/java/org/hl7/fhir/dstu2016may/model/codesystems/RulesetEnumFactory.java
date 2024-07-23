@@ -54,7 +54,9 @@ public class RulesetEnumFactory implements EnumFactory<Ruleset> {
   }
 
   public String toCode(Ruleset code) {
-    if (code == Ruleset.X124010)
+       if (code == Ruleset.NULL)
+           return null;
+       if (code == Ruleset.X124010)
       return "x12-4010";
     if (code == Ruleset.X125010)
       return "x12-5010";
@@ -67,7 +69,7 @@ public class RulesetEnumFactory implements EnumFactory<Ruleset> {
     if (code == Ruleset.CPHA3)
       return "cpha-3";
     return "?";
-  }
+   }
 
   public String toSystem(Ruleset code) {
     return code.getSystem();

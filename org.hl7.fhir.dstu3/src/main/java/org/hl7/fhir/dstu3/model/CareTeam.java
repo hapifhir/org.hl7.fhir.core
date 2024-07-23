@@ -177,7 +177,9 @@ public class CareTeam extends DomainResource {
         throw new FHIRException("Unknown CareTeamStatus code '"+codeString+"'");
         }
     public String toCode(CareTeamStatus code) {
-      if (code == CareTeamStatus.PROPOSED)
+       if (code == CareTeamStatus.NULL)
+           return null;
+       if (code == CareTeamStatus.PROPOSED)
         return "proposed";
       if (code == CareTeamStatus.ACTIVE)
         return "active";
@@ -188,7 +190,7 @@ public class CareTeam extends DomainResource {
       if (code == CareTeamStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(CareTeamStatus code) {
       return code.getSystem();
       }

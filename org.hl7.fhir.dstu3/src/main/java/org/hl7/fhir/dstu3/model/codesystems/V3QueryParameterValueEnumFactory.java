@@ -78,7 +78,9 @@ public class V3QueryParameterValueEnumFactory implements EnumFactory<V3QueryPara
   }
 
   public String toCode(V3QueryParameterValue code) {
-    if (code == V3QueryParameterValue._DISPENSEQUERYFILTERCODE)
+       if (code == V3QueryParameterValue.NULL)
+           return null;
+       if (code == V3QueryParameterValue._DISPENSEQUERYFILTERCODE)
       return "_DispenseQueryFilterCode";
     if (code == V3QueryParameterValue.ALLDISP)
       return "ALLDISP";
@@ -111,7 +113,7 @@ public class V3QueryParameterValueEnumFactory implements EnumFactory<V3QueryPara
     if (code == V3QueryParameterValue.ISSFU)
       return "ISSFU";
     return "?";
-  }
+   }
 
     public String toSystem(V3QueryParameterValue code) {
       return code.getSystem();

@@ -171,14 +171,16 @@ public class Task extends DomainResource {
     }
 
     public String toCode(TaskPriority code) {
-      if (code == TaskPriority.LOW)
+       if (code == TaskPriority.NULL)
+           return null;
+       if (code == TaskPriority.LOW)
         return "low";
       if (code == TaskPriority.NORMAL)
         return "normal";
       if (code == TaskPriority.HIGH)
         return "high";
       return "?";
-    }
+   }
 
     public String toSystem(TaskPriority code) {
       return code.getSystem();
@@ -437,7 +439,9 @@ public class Task extends DomainResource {
     }
 
     public String toCode(TaskStatus code) {
-      if (code == TaskStatus.DRAFT)
+       if (code == TaskStatus.NULL)
+           return null;
+       if (code == TaskStatus.DRAFT)
         return "draft";
       if (code == TaskStatus.REQUESTED)
         return "requested";
@@ -458,7 +462,7 @@ public class Task extends DomainResource {
       if (code == TaskStatus.COMPLETED)
         return "completed";
       return "?";
-    }
+   }
 
     public String toSystem(TaskStatus code) {
       return code.getSystem();

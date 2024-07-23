@@ -54,7 +54,9 @@ public class DefinitionResourceTypesEnumFactory implements EnumFactory<Definitio
   }
 
   public String toCode(DefinitionResourceTypes code) {
-    if (code == DefinitionResourceTypes.ACTIVITYDEFINITION)
+       if (code == DefinitionResourceTypes.NULL)
+           return null;
+       if (code == DefinitionResourceTypes.ACTIVITYDEFINITION)
       return "ActivityDefinition";
     if (code == DefinitionResourceTypes.EVENTDEFINITION)
       return "EventDefinition";
@@ -67,7 +69,7 @@ public class DefinitionResourceTypesEnumFactory implements EnumFactory<Definitio
     if (code == DefinitionResourceTypes.QUESTIONNAIRE)
       return "Questionnaire";
     return "?";
-  }
+   }
 
   public String toSystem(DefinitionResourceTypes code) {
     return code.getSystem();

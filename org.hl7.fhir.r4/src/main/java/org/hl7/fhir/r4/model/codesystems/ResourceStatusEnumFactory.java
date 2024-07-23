@@ -104,7 +104,9 @@ public class ResourceStatusEnumFactory implements EnumFactory<ResourceStatus> {
   }
 
   public String toCode(ResourceStatus code) {
-    if (code == ResourceStatus.ERROR)
+       if (code == ResourceStatus.NULL)
+           return null;
+       if (code == ResourceStatus.ERROR)
       return "error";
     if (code == ResourceStatus.PROPOSED)
       return "proposed";
@@ -167,7 +169,7 @@ public class ResourceStatusEnumFactory implements EnumFactory<ResourceStatus> {
     if (code == ResourceStatus.HWDISCON)
       return "hw-discon";
     return "?";
-  }
+   }
 
   public String toSystem(ResourceStatus code) {
     return code.getSystem();

@@ -54,7 +54,9 @@ public class ContractContentDerivativeEnumFactory implements EnumFactory<Contrac
   }
 
   public String toCode(ContractContentDerivative code) {
-    if (code == ContractContentDerivative.REGISTRATION)
+       if (code == ContractContentDerivative.NULL)
+           return null;
+       if (code == ContractContentDerivative.REGISTRATION)
       return "registration";
     if (code == ContractContentDerivative.RETRIEVAL)
       return "retrieval";
@@ -63,7 +65,7 @@ public class ContractContentDerivativeEnumFactory implements EnumFactory<Contrac
     if (code == ContractContentDerivative.SHAREABLE)
       return "shareable";
     return "?";
-  }
+   }
 
     public String toSystem(ContractContentDerivative code) {
       return code.getSystem();

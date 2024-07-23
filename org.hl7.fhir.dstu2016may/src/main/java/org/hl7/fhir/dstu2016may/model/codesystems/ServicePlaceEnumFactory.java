@@ -46,12 +46,14 @@ public class ServicePlaceEnumFactory implements EnumFactory<ServicePlace> {
   }
 
   public String toCode(ServicePlace code) {
-    if (code == ServicePlace.EMERGENCY)
+       if (code == ServicePlace.NULL)
+           return null;
+       if (code == ServicePlace.EMERGENCY)
       return "emergency";
     if (code == ServicePlace.CLINIC)
       return "clinic";
     return "?";
-  }
+   }
 
   public String toSystem(ServicePlace code) {
     return code.getSystem();

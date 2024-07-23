@@ -264,7 +264,9 @@ public class ChargeItem extends DomainResource {
     }
 
     public String toCode(ChargeItemStatus code) {
-      if (code == ChargeItemStatus.PLANNED)
+       if (code == ChargeItemStatus.NULL)
+           return null;
+       if (code == ChargeItemStatus.PLANNED)
         return "planned";
       if (code == ChargeItemStatus.BILLABLE)
         return "billable";
@@ -279,7 +281,7 @@ public class ChargeItem extends DomainResource {
       if (code == ChargeItemStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(ChargeItemStatus code) {
       return code.getSystem();

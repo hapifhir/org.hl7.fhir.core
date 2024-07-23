@@ -46,12 +46,14 @@ public class OrientationTypeEnumFactory implements EnumFactory<OrientationType> 
   }
 
   public String toCode(OrientationType code) {
-    if (code == OrientationType.SENSE)
+       if (code == OrientationType.NULL)
+           return null;
+       if (code == OrientationType.SENSE)
       return "sense";
     if (code == OrientationType.ANTISENSE)
       return "antisense";
     return "?";
-  }
+   }
 
   public String toSystem(OrientationType code) {
     return code.getSystem();

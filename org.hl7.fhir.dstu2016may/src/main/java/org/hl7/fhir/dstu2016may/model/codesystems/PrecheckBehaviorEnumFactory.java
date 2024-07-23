@@ -46,12 +46,14 @@ public class PrecheckBehaviorEnumFactory implements EnumFactory<PrecheckBehavior
   }
 
   public String toCode(PrecheckBehavior code) {
-    if (code == PrecheckBehavior.YES)
+       if (code == PrecheckBehavior.NULL)
+           return null;
+       if (code == PrecheckBehavior.YES)
       return "yes";
     if (code == PrecheckBehavior.NO)
       return "no";
     return "?";
-  }
+   }
 
   public String toSystem(PrecheckBehavior code) {
     return code.getSystem();

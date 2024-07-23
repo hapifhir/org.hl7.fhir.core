@@ -84,7 +84,9 @@ public class V3StyleTypeEnumFactory implements EnumFactory<V3StyleType> {
   }
 
   public String toCode(V3StyleType code) {
-    if (code == V3StyleType._FONTSTYLE)
+       if (code == V3StyleType.NULL)
+           return null;
+       if (code == V3StyleType._FONTSTYLE)
       return "_FontStyle";
     if (code == V3StyleType.BOLD)
       return "bold";
@@ -127,7 +129,7 @@ public class V3StyleTypeEnumFactory implements EnumFactory<V3StyleType> {
     if (code == V3StyleType.TOPRULE)
       return "Toprule";
     return "?";
-  }
+   }
 
   public String toSystem(V3StyleType code) {
     return code.getSystem();

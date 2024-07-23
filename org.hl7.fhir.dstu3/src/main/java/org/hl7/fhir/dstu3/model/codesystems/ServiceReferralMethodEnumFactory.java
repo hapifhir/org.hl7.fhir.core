@@ -56,7 +56,9 @@ public class ServiceReferralMethodEnumFactory implements EnumFactory<ServiceRefe
   }
 
   public String toCode(ServiceReferralMethod code) {
-    if (code == ServiceReferralMethod.FAX)
+       if (code == ServiceReferralMethod.NULL)
+           return null;
+       if (code == ServiceReferralMethod.FAX)
       return "fax";
     if (code == ServiceReferralMethod.PHONE)
       return "phone";
@@ -67,7 +69,7 @@ public class ServiceReferralMethodEnumFactory implements EnumFactory<ServiceRefe
     if (code == ServiceReferralMethod.MAIL)
       return "mail";
     return "?";
-  }
+   }
 
     public String toSystem(ServiceReferralMethod code) {
       return code.getSystem();

@@ -234,8 +234,11 @@ public class EpisodeOfCare extends DomainResource {
       throw new FHIRException("Unknown EpisodeOfCareStatus code '" + codeString + "'");
     }
 
-    public String toCode(EpisodeOfCareStatus code) {
-      if (code == EpisodeOfCareStatus.PLANNED)
+    public String toCode(EpisodeOfCareStatus code)
+   {
+       if (code == EpisodeOfCareStatus.NULL)
+           return null;
+       if (code == EpisodeOfCareStatus.PLANNED)
         return "planned";
       if (code == EpisodeOfCareStatus.WAITLIST)
         return "waitlist";
@@ -248,7 +251,7 @@ public class EpisodeOfCare extends DomainResource {
       if (code == EpisodeOfCareStatus.CANCELLED)
         return "cancelled";
       return "?";
-    }
+   }
   }
 
   @Block()

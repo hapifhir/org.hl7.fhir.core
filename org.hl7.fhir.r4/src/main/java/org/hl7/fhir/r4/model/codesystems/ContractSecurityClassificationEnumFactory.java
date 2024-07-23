@@ -44,10 +44,12 @@ public class ContractSecurityClassificationEnumFactory implements EnumFactory<Co
   }
 
   public String toCode(ContractSecurityClassification code) {
-    if (code == ContractSecurityClassification.POLICY)
+       if (code == ContractSecurityClassification.NULL)
+           return null;
+       if (code == ContractSecurityClassification.POLICY)
       return "policy";
     return "?";
-  }
+   }
 
   public String toSystem(ContractSecurityClassification code) {
     return code.getSystem();

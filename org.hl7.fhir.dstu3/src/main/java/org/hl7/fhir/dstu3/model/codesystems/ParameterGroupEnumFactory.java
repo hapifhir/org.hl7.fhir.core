@@ -64,7 +64,9 @@ public class ParameterGroupEnumFactory implements EnumFactory<ParameterGroup> {
   }
 
   public String toCode(ParameterGroup code) {
-    if (code == ParameterGroup.HAEMODYNAMIC)
+       if (code == ParameterGroup.NULL)
+           return null;
+       if (code == ParameterGroup.HAEMODYNAMIC)
       return "haemodynamic";
     if (code == ParameterGroup.ECG)
       return "ecg";
@@ -83,7 +85,7 @@ public class ParameterGroupEnumFactory implements EnumFactory<ParameterGroup> {
     if (code == ParameterGroup.MISCELLANEOUS)
       return "miscellaneous";
     return "?";
-  }
+   }
 
     public String toSystem(ParameterGroup code) {
       return code.getSystem();

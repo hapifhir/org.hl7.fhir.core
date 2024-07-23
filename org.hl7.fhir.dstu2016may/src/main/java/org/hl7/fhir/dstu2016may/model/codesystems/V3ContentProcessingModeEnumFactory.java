@@ -46,12 +46,14 @@ public class V3ContentProcessingModeEnumFactory implements EnumFactory<V3Content
   }
 
   public String toCode(V3ContentProcessingMode code) {
-    if (code == V3ContentProcessingMode.SEQL)
+       if (code == V3ContentProcessingMode.NULL)
+           return null;
+       if (code == V3ContentProcessingMode.SEQL)
       return "SEQL";
     if (code == V3ContentProcessingMode.UNOR)
       return "UNOR";
     return "?";
-  }
+   }
 
   public String toSystem(V3ContentProcessingMode code) {
     return code.getSystem();

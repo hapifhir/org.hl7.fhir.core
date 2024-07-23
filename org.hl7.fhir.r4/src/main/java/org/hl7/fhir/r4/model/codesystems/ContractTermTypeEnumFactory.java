@@ -46,12 +46,14 @@ public class ContractTermTypeEnumFactory implements EnumFactory<ContractTermType
   }
 
   public String toCode(ContractTermType code) {
-    if (code == ContractTermType.STATUTORY)
+       if (code == ContractTermType.NULL)
+           return null;
+       if (code == ContractTermType.STATUTORY)
       return "statutory";
     if (code == ContractTermType.SUBJECTTO)
       return "subject-to";
     return "?";
-  }
+   }
 
   public String toSystem(ContractTermType code) {
     return code.getSystem();

@@ -235,7 +235,9 @@ public class Bundle extends Resource implements IBaseBundle {
         throw new FHIRException("Unknown BundleType code '"+codeString+"'");
         }
     public String toCode(BundleType code) {
-      if (code == BundleType.DOCUMENT)
+       if (code == BundleType.NULL)
+           return null;
+       if (code == BundleType.DOCUMENT)
         return "document";
       if (code == BundleType.MESSAGE)
         return "message";
@@ -254,7 +256,7 @@ public class Bundle extends Resource implements IBaseBundle {
       if (code == BundleType.COLLECTION)
         return "collection";
       return "?";
-      }
+   }
     public String toSystem(BundleType code) {
       return code.getSystem();
       }
@@ -359,14 +361,16 @@ public class Bundle extends Resource implements IBaseBundle {
         throw new FHIRException("Unknown SearchEntryMode code '"+codeString+"'");
         }
     public String toCode(SearchEntryMode code) {
-      if (code == SearchEntryMode.MATCH)
+       if (code == SearchEntryMode.NULL)
+           return null;
+       if (code == SearchEntryMode.MATCH)
         return "match";
       if (code == SearchEntryMode.INCLUDE)
         return "include";
       if (code == SearchEntryMode.OUTCOME)
         return "outcome";
       return "?";
-      }
+   }
     public String toSystem(SearchEntryMode code) {
       return code.getSystem();
       }
@@ -485,7 +489,9 @@ public class Bundle extends Resource implements IBaseBundle {
         throw new FHIRException("Unknown HTTPVerb code '"+codeString+"'");
         }
     public String toCode(HTTPVerb code) {
-      if (code == HTTPVerb.GET)
+       if (code == HTTPVerb.NULL)
+           return null;
+       if (code == HTTPVerb.GET)
         return "GET";
       if (code == HTTPVerb.POST)
         return "POST";
@@ -494,7 +500,7 @@ public class Bundle extends Resource implements IBaseBundle {
       if (code == HTTPVerb.DELETE)
         return "DELETE";
       return "?";
-      }
+   }
     public String toSystem(HTTPVerb code) {
       return code.getSystem();
       }

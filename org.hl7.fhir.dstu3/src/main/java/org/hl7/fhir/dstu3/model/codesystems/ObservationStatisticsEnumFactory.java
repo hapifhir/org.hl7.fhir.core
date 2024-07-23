@@ -88,7 +88,9 @@ public class ObservationStatisticsEnumFactory implements EnumFactory<Observation
   }
 
   public String toCode(ObservationStatistics code) {
-    if (code == ObservationStatistics.AVERAGE)
+       if (code == ObservationStatistics.NULL)
+           return null;
+       if (code == ObservationStatistics.AVERAGE)
       return "average";
     if (code == ObservationStatistics.MAXIMUM)
       return "maximum";
@@ -131,7 +133,7 @@ public class ObservationStatisticsEnumFactory implements EnumFactory<Observation
     if (code == ObservationStatistics.REGRESSION)
       return "regression";
     return "?";
-  }
+   }
 
     public String toSystem(ObservationStatistics code) {
       return code.getSystem();

@@ -285,7 +285,9 @@ public class DetectedIssue extends DomainResource {
     }
 
     public String toCode(DetectedIssueStatus code) {
-      if (code == DetectedIssueStatus.REGISTERED)
+       if (code == DetectedIssueStatus.NULL)
+           return null;
+       if (code == DetectedIssueStatus.REGISTERED)
         return "registered";
       if (code == DetectedIssueStatus.PRELIMINARY)
         return "preliminary";
@@ -302,7 +304,7 @@ public class DetectedIssue extends DomainResource {
       if (code == DetectedIssueStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(DetectedIssueStatus code) {
       return code.getSystem();
@@ -438,14 +440,16 @@ public class DetectedIssue extends DomainResource {
     }
 
     public String toCode(DetectedIssueSeverity code) {
-      if (code == DetectedIssueSeverity.HIGH)
+       if (code == DetectedIssueSeverity.NULL)
+           return null;
+       if (code == DetectedIssueSeverity.HIGH)
         return "high";
       if (code == DetectedIssueSeverity.MODERATE)
         return "moderate";
       if (code == DetectedIssueSeverity.LOW)
         return "low";
       return "?";
-    }
+   }
 
     public String toSystem(DetectedIssueSeverity code) {
       return code.getSystem();

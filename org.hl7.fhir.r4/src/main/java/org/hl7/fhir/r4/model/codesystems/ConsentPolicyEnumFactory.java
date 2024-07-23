@@ -94,7 +94,9 @@ public class ConsentPolicyEnumFactory implements EnumFactory<ConsentPolicy> {
   }
 
   public String toCode(ConsentPolicy code) {
-    if (code == ConsentPolicy.CRIC)
+       if (code == ConsentPolicy.NULL)
+           return null;
+       if (code == ConsentPolicy.CRIC)
       return "cric";
     if (code == ConsentPolicy.ILLINOISMINORPROCEDURE)
       return "illinois-minor-procedure";
@@ -147,7 +149,7 @@ public class ConsentPolicyEnumFactory implements EnumFactory<ConsentPolicy> {
     if (code == ConsentPolicy.GA4GH)
       return "ga4gh";
     return "?";
-  }
+   }
 
   public String toSystem(ConsentPolicy code) {
     return code.getSystem();

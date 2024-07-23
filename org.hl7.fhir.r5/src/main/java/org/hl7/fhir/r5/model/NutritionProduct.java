@@ -152,14 +152,16 @@ public class NutritionProduct extends DomainResource {
         throw new FHIRException("Unknown NutritionProductStatus code '"+codeString+"'");
         }
     public String toCode(NutritionProductStatus code) {
-      if (code == NutritionProductStatus.ACTIVE)
+       if (code == NutritionProductStatus.NULL)
+           return null;
+       if (code == NutritionProductStatus.ACTIVE)
         return "active";
       if (code == NutritionProductStatus.INACTIVE)
         return "inactive";
       if (code == NutritionProductStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(NutritionProductStatus code) {
       return code.getSystem();
       }

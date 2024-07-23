@@ -52,14 +52,16 @@ public class ExOnsettypeEnumFactory implements EnumFactory<ExOnsettype> {
   }
 
   public String toCode(ExOnsettype code) {
-    if (code == ExOnsettype.LXM)
+       if (code == ExOnsettype.NULL)
+           return null;
+       if (code == ExOnsettype.LXM)
       return "lxm";
     if (code == ExOnsettype.SYM)
       return "sym";
     if (code == ExOnsettype.LMN)
       return "lmn";
     return "?";
-  }
+   }
 
     public String toSystem(ExOnsettype code) {
       return code.getSystem();

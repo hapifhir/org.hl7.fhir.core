@@ -54,7 +54,9 @@ public class ModuleMetadataResourceTypeEnumFactory implements EnumFactory<Module
   }
 
   public String toCode(ModuleMetadataResourceType code) {
-    if (code == ModuleMetadataResourceType.DOCUMENTATION)
+       if (code == ModuleMetadataResourceType.NULL)
+           return null;
+       if (code == ModuleMetadataResourceType.DOCUMENTATION)
       return "documentation";
     if (code == ModuleMetadataResourceType.JUSTIFICATION)
       return "justification";
@@ -67,7 +69,7 @@ public class ModuleMetadataResourceTypeEnumFactory implements EnumFactory<Module
     if (code == ModuleMetadataResourceType.DERIVEDFROM)
       return "derived-from";
     return "?";
-  }
+   }
 
   public String toSystem(ModuleMetadataResourceType code) {
     return code.getSystem();

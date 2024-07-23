@@ -52,14 +52,16 @@ public class AllergyClinicalStatusEnumFactory implements EnumFactory<AllergyClin
   }
 
   public String toCode(AllergyClinicalStatus code) {
-    if (code == AllergyClinicalStatus.ACTIVE)
+       if (code == AllergyClinicalStatus.NULL)
+           return null;
+       if (code == AllergyClinicalStatus.ACTIVE)
       return "active";
     if (code == AllergyClinicalStatus.INACTIVE)
       return "inactive";
     if (code == AllergyClinicalStatus.RESOLVED)
       return "resolved";
     return "?";
-  }
+   }
 
     public String toSystem(AllergyClinicalStatus code) {
       return code.getSystem();

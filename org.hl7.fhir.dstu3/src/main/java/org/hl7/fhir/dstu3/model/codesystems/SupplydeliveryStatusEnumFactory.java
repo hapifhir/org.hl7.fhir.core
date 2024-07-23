@@ -54,7 +54,9 @@ public class SupplydeliveryStatusEnumFactory implements EnumFactory<Supplydelive
   }
 
   public String toCode(SupplydeliveryStatus code) {
-    if (code == SupplydeliveryStatus.INPROGRESS)
+       if (code == SupplydeliveryStatus.NULL)
+           return null;
+       if (code == SupplydeliveryStatus.INPROGRESS)
       return "in-progress";
     if (code == SupplydeliveryStatus.COMPLETED)
       return "completed";
@@ -63,7 +65,7 @@ public class SupplydeliveryStatusEnumFactory implements EnumFactory<Supplydelive
     if (code == SupplydeliveryStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(SupplydeliveryStatus code) {
       return code.getSystem();

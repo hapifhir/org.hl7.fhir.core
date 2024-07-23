@@ -82,7 +82,9 @@ public class V3EntityHandlingEnumFactory implements EnumFactory<V3EntityHandling
   }
 
   public String toCode(V3EntityHandling code) {
-    if (code == V3EntityHandling.AMB)
+       if (code == V3EntityHandling.NULL)
+           return null;
+       if (code == V3EntityHandling.AMB)
       return "AMB";
     if (code == V3EntityHandling.C37)
       return "C37";
@@ -119,7 +121,7 @@ public class V3EntityHandlingEnumFactory implements EnumFactory<V3EntityHandling
     if (code == V3EntityHandling.UPR)
       return "UPR";
     return "?";
-  }
+   }
 
     public String toSystem(V3EntityHandling code) {
       return code.getSystem();

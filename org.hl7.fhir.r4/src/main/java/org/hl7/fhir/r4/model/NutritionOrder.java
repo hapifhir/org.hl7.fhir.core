@@ -259,7 +259,9 @@ public class NutritionOrder extends DomainResource {
     }
 
     public String toCode(NutritionOrderStatus code) {
-      if (code == NutritionOrderStatus.DRAFT)
+       if (code == NutritionOrderStatus.NULL)
+           return null;
+       if (code == NutritionOrderStatus.DRAFT)
         return "draft";
       if (code == NutritionOrderStatus.ACTIVE)
         return "active";
@@ -274,7 +276,7 @@ public class NutritionOrder extends DomainResource {
       if (code == NutritionOrderStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(NutritionOrderStatus code) {
       return code.getSystem();
@@ -528,7 +530,9 @@ public class NutritionOrder extends DomainResource {
     }
 
     public String toCode(NutritiionOrderIntent code) {
-      if (code == NutritiionOrderIntent.PROPOSAL)
+       if (code == NutritiionOrderIntent.NULL)
+           return null;
+       if (code == NutritiionOrderIntent.PROPOSAL)
         return "proposal";
       if (code == NutritiionOrderIntent.PLAN)
         return "plan";
@@ -547,7 +551,7 @@ public class NutritionOrder extends DomainResource {
       if (code == NutritiionOrderIntent.OPTION)
         return "option";
       return "?";
-    }
+   }
 
     public String toSystem(NutritiionOrderIntent code) {
       return code.getSystem();

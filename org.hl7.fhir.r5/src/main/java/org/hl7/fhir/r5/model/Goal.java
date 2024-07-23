@@ -236,7 +236,9 @@ public class Goal extends DomainResource {
         throw new FHIRException("Unknown GoalLifecycleStatus code '"+codeString+"'");
         }
     public String toCode(GoalLifecycleStatus code) {
-      if (code == GoalLifecycleStatus.PROPOSED)
+       if (code == GoalLifecycleStatus.NULL)
+           return null;
+       if (code == GoalLifecycleStatus.PROPOSED)
         return "proposed";
       if (code == GoalLifecycleStatus.PLANNED)
         return "planned";
@@ -255,7 +257,7 @@ public class Goal extends DomainResource {
       if (code == GoalLifecycleStatus.REJECTED)
         return "rejected";
       return "?";
-      }
+   }
     public String toSystem(GoalLifecycleStatus code) {
       return code.getSystem();
       }

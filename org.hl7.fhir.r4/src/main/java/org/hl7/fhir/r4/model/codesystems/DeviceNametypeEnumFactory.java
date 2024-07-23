@@ -54,7 +54,9 @@ public class DeviceNametypeEnumFactory implements EnumFactory<DeviceNametype> {
   }
 
   public String toCode(DeviceNametype code) {
-    if (code == DeviceNametype.UDILABELNAME)
+       if (code == DeviceNametype.NULL)
+           return null;
+       if (code == DeviceNametype.UDILABELNAME)
       return "udi-label-name";
     if (code == DeviceNametype.USERFRIENDLYNAME)
       return "user-friendly-name";
@@ -67,7 +69,7 @@ public class DeviceNametypeEnumFactory implements EnumFactory<DeviceNametype> {
     if (code == DeviceNametype.OTHER)
       return "other";
     return "?";
-  }
+   }
 
   public String toSystem(DeviceNametype code) {
     return code.getSystem();

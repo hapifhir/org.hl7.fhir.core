@@ -44,10 +44,12 @@ public class NehtaNehtaInvolvedNotinvolvedNaEnumFactory implements EnumFactory<N
   }
 
   public String toCode(NehtaNehtaInvolvedNotinvolvedNa code) {
-    if (code == NehtaNehtaInvolvedNotinvolvedNa.NOTINVOLVED)
+       if (code == NehtaNehtaInvolvedNotinvolvedNa.NULL)
+           return null;
+       if (code == NehtaNehtaInvolvedNotinvolvedNa.NOTINVOLVED)
       return "not_involved";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaInvolvedNotinvolvedNa code) {
     return code.getSystem();

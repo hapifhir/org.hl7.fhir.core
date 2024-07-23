@@ -59,7 +59,9 @@ public class CoverageeligibilityresponseExAuthSupportEnumFactory
   }
 
   public String toCode(CoverageeligibilityresponseExAuthSupport code) {
-    if (code == CoverageeligibilityresponseExAuthSupport.LABORDER)
+       if (code == CoverageeligibilityresponseExAuthSupport.NULL)
+           return null;
+       if (code == CoverageeligibilityresponseExAuthSupport.LABORDER)
       return "laborder";
     if (code == CoverageeligibilityresponseExAuthSupport.LABREPORT)
       return "labreport";
@@ -76,7 +78,7 @@ public class CoverageeligibilityresponseExAuthSupportEnumFactory
     if (code == CoverageeligibilityresponseExAuthSupport.PICTURE)
       return "picture";
     return "?";
-  }
+   }
 
   public String toSystem(CoverageeligibilityresponseExAuthSupport code) {
     return code.getSystem();

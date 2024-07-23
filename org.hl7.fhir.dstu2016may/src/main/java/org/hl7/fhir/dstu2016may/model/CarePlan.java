@@ -212,7 +212,9 @@ public class CarePlan extends DomainResource {
     }
 
     public String toCode(CarePlanStatus code) {
-      if (code == CarePlanStatus.PROPOSED)
+       if (code == CarePlanStatus.NULL)
+           return null;
+       if (code == CarePlanStatus.PROPOSED)
         return "proposed";
       if (code == CarePlanStatus.DRAFT)
         return "draft";
@@ -223,7 +225,7 @@ public class CarePlan extends DomainResource {
       if (code == CarePlanStatus.CANCELLED)
         return "cancelled";
       return "?";
-    }
+   }
 
     public String toSystem(CarePlanStatus code) {
       return code.getSystem();
@@ -352,14 +354,16 @@ public class CarePlan extends DomainResource {
     }
 
     public String toCode(CarePlanRelationship code) {
-      if (code == CarePlanRelationship.INCLUDES)
+       if (code == CarePlanRelationship.NULL)
+           return null;
+       if (code == CarePlanRelationship.INCLUDES)
         return "includes";
       if (code == CarePlanRelationship.REPLACES)
         return "replaces";
       if (code == CarePlanRelationship.FULFILLS)
         return "fulfills";
       return "?";
-    }
+   }
 
     public String toSystem(CarePlanRelationship code) {
       return code.getSystem();
@@ -543,7 +547,9 @@ public class CarePlan extends DomainResource {
     }
 
     public String toCode(CarePlanActivityStatus code) {
-      if (code == CarePlanActivityStatus.NOTSTARTED)
+       if (code == CarePlanActivityStatus.NULL)
+           return null;
+       if (code == CarePlanActivityStatus.NOTSTARTED)
         return "not-started";
       if (code == CarePlanActivityStatus.SCHEDULED)
         return "scheduled";
@@ -556,7 +562,7 @@ public class CarePlan extends DomainResource {
       if (code == CarePlanActivityStatus.CANCELLED)
         return "cancelled";
       return "?";
-    }
+   }
 
     public String toSystem(CarePlanActivityStatus code) {
       return code.getSystem();

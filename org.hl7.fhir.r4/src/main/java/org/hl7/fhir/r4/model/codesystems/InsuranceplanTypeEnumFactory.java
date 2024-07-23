@@ -62,7 +62,9 @@ public class InsuranceplanTypeEnumFactory implements EnumFactory<InsuranceplanTy
   }
 
   public String toCode(InsuranceplanType code) {
-    if (code == InsuranceplanType.MEDICAL)
+       if (code == InsuranceplanType.NULL)
+           return null;
+       if (code == InsuranceplanType.MEDICAL)
       return "medical";
     if (code == InsuranceplanType.DENTAL)
       return "dental";
@@ -83,7 +85,7 @@ public class InsuranceplanTypeEnumFactory implements EnumFactory<InsuranceplanTy
     if (code == InsuranceplanType.HOME)
       return "home";
     return "?";
-  }
+   }
 
   public String toSystem(InsuranceplanType code) {
     return code.getSystem();

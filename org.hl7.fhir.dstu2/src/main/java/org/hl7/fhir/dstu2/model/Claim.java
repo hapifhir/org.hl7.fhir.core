@@ -209,8 +209,11 @@ public class Claim extends DomainResource {
       throw new FHIRException("Unknown ClaimType code '" + codeString + "'");
     }
 
-    public String toCode(ClaimType code) {
-      if (code == ClaimType.INSTITUTIONAL)
+    public String toCode(ClaimType code)
+   {
+       if (code == ClaimType.NULL)
+           return null;
+       if (code == ClaimType.INSTITUTIONAL)
         return "institutional";
       if (code == ClaimType.ORAL)
         return "oral";
@@ -221,7 +224,7 @@ public class Claim extends DomainResource {
       if (code == ClaimType.VISION)
         return "vision";
       return "?";
-    }
+   }
   }
 
   public enum Use {
@@ -364,8 +367,11 @@ public class Claim extends DomainResource {
       throw new FHIRException("Unknown Use code '" + codeString + "'");
     }
 
-    public String toCode(Use code) {
-      if (code == Use.COMPLETE)
+    public String toCode(Use code)
+   {
+       if (code == Use.NULL)
+           return null;
+       if (code == Use.COMPLETE)
         return "complete";
       if (code == Use.PROPOSED)
         return "proposed";
@@ -374,7 +380,7 @@ public class Claim extends DomainResource {
       if (code == Use.OTHER)
         return "other";
       return "?";
-    }
+   }
   }
 
   @Block()

@@ -46,12 +46,14 @@ public class ActionCardinalityBehaviorEnumFactory implements EnumFactory<ActionC
   }
 
   public String toCode(ActionCardinalityBehavior code) {
-    if (code == ActionCardinalityBehavior.SINGLE)
+       if (code == ActionCardinalityBehavior.NULL)
+           return null;
+       if (code == ActionCardinalityBehavior.SINGLE)
       return "single";
     if (code == ActionCardinalityBehavior.MULTIPLE)
       return "multiple";
     return "?";
-  }
+   }
 
   public String toSystem(ActionCardinalityBehavior code) {
     return code.getSystem();

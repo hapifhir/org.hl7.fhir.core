@@ -50,7 +50,9 @@ public class MessageheaderResponseRequestEnumFactory implements EnumFactory<Mess
   }
 
   public String toCode(MessageheaderResponseRequest code) {
-    if (code == MessageheaderResponseRequest.ALWAYS)
+       if (code == MessageheaderResponseRequest.NULL)
+           return null;
+       if (code == MessageheaderResponseRequest.ALWAYS)
       return "always";
     if (code == MessageheaderResponseRequest.ONERROR)
       return "on-error";
@@ -59,7 +61,7 @@ public class MessageheaderResponseRequestEnumFactory implements EnumFactory<Mess
     if (code == MessageheaderResponseRequest.ONSUCCESS)
       return "on-success";
     return "?";
-  }
+   }
 
   public String toSystem(MessageheaderResponseRequest code) {
     return code.getSystem();

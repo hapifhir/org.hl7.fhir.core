@@ -194,7 +194,9 @@ public class Permission extends DomainResource {
         throw new FHIRException("Unknown PermissionRuleCombining code '"+codeString+"'");
         }
     public String toCode(PermissionRuleCombining code) {
-      if (code == PermissionRuleCombining.DENYOVERRIDES)
+       if (code == PermissionRuleCombining.NULL)
+           return null;
+       if (code == PermissionRuleCombining.DENYOVERRIDES)
         return "deny-overrides";
       if (code == PermissionRuleCombining.PERMITOVERRIDES)
         return "permit-overrides";
@@ -207,7 +209,7 @@ public class Permission extends DomainResource {
       if (code == PermissionRuleCombining.PERMITUNLESSDENY)
         return "permit-unless-deny";
       return "?";
-      }
+   }
     public String toSystem(PermissionRuleCombining code) {
       return code.getSystem();
       }
@@ -326,7 +328,9 @@ public class Permission extends DomainResource {
         throw new FHIRException("Unknown PermissionStatus code '"+codeString+"'");
         }
     public String toCode(PermissionStatus code) {
-      if (code == PermissionStatus.ACTIVE)
+       if (code == PermissionStatus.NULL)
+           return null;
+       if (code == PermissionStatus.ACTIVE)
         return "active";
       if (code == PermissionStatus.ENTEREDINERROR)
         return "entered-in-error";
@@ -335,7 +339,7 @@ public class Permission extends DomainResource {
       if (code == PermissionStatus.REJECTED)
         return "rejected";
       return "?";
-      }
+   }
     public String toSystem(PermissionStatus code) {
       return code.getSystem();
       }

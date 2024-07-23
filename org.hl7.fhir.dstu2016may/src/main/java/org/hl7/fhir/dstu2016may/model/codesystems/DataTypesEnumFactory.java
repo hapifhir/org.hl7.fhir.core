@@ -144,7 +144,9 @@ public class DataTypesEnumFactory implements EnumFactory<DataTypes> {
   }
 
   public String toCode(DataTypes code) {
-    if (code == DataTypes.ACTIONDEFINITION)
+       if (code == DataTypes.NULL)
+           return null;
+       if (code == DataTypes.ACTIONDEFINITION)
       return "ActionDefinition";
     if (code == DataTypes.ADDRESS)
       return "Address";
@@ -247,7 +249,7 @@ public class DataTypesEnumFactory implements EnumFactory<DataTypes> {
     if (code == DataTypes.XHTML)
       return "xhtml";
     return "?";
-  }
+   }
 
   public String toSystem(DataTypes code) {
     return code.getSystem();

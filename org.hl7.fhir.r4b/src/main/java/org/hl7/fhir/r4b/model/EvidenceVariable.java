@@ -161,12 +161,14 @@ public class EvidenceVariable extends DomainResource {
     }
 
     public String toCode(CharacteristicCombination code) {
-      if (code == CharacteristicCombination.INTERSECTION)
+       if (code == CharacteristicCombination.NULL)
+           return null;
+       if (code == CharacteristicCombination.INTERSECTION)
         return "intersection";
       if (code == CharacteristicCombination.UNION)
         return "union";
       return "?";
-    }
+   }
 
     public String toSystem(CharacteristicCombination code) {
       return code.getSystem();

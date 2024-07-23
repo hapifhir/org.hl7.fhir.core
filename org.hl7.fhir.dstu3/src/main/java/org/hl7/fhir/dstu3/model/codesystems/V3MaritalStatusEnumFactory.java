@@ -66,7 +66,9 @@ public class V3MaritalStatusEnumFactory implements EnumFactory<V3MaritalStatus> 
   }
 
   public String toCode(V3MaritalStatus code) {
-    if (code == V3MaritalStatus.A)
+       if (code == V3MaritalStatus.NULL)
+           return null;
+       if (code == V3MaritalStatus.A)
       return "A";
     if (code == V3MaritalStatus.D)
       return "D";
@@ -87,7 +89,7 @@ public class V3MaritalStatusEnumFactory implements EnumFactory<V3MaritalStatus> 
     if (code == V3MaritalStatus.W)
       return "W";
     return "?";
-  }
+   }
 
     public String toSystem(V3MaritalStatus code) {
       return code.getSystem();

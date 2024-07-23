@@ -154,13 +154,16 @@ public class TestScript extends DomainResource {
       throw new FHIRException("Unknown ContentType code '" + codeString + "'");
     }
 
-    public String toCode(ContentType code) {
-      if (code == ContentType.XML)
+    public String toCode(ContentType code)
+   {
+       if (code == ContentType.NULL)
+           return null;
+       if (code == ContentType.XML)
         return "xml";
       if (code == ContentType.JSON)
         return "json";
       return "?";
-    }
+   }
   }
 
   public enum AssertionDirectionType {
@@ -265,13 +268,16 @@ public class TestScript extends DomainResource {
       throw new FHIRException("Unknown AssertionDirectionType code '" + codeString + "'");
     }
 
-    public String toCode(AssertionDirectionType code) {
-      if (code == AssertionDirectionType.RESPONSE)
+    public String toCode(AssertionDirectionType code)
+   {
+       if (code == AssertionDirectionType.NULL)
+           return null;
+       if (code == AssertionDirectionType.RESPONSE)
         return "response";
       if (code == AssertionDirectionType.REQUEST)
         return "request";
       return "?";
-    }
+   }
   }
 
   public enum AssertionOperatorType {
@@ -520,8 +526,11 @@ public class TestScript extends DomainResource {
       throw new FHIRException("Unknown AssertionOperatorType code '" + codeString + "'");
     }
 
-    public String toCode(AssertionOperatorType code) {
-      if (code == AssertionOperatorType.EQUALS)
+    public String toCode(AssertionOperatorType code)
+   {
+       if (code == AssertionOperatorType.NULL)
+           return null;
+       if (code == AssertionOperatorType.EQUALS)
         return "equals";
       if (code == AssertionOperatorType.NOTEQUALS)
         return "notEquals";
@@ -542,7 +551,7 @@ public class TestScript extends DomainResource {
       if (code == AssertionOperatorType.NOTCONTAINS)
         return "notContains";
       return "?";
-    }
+   }
   }
 
   public enum AssertionResponseTypes {
@@ -827,8 +836,11 @@ public class TestScript extends DomainResource {
       throw new FHIRException("Unknown AssertionResponseTypes code '" + codeString + "'");
     }
 
-    public String toCode(AssertionResponseTypes code) {
-      if (code == AssertionResponseTypes.OKAY)
+    public String toCode(AssertionResponseTypes code)
+   {
+       if (code == AssertionResponseTypes.NULL)
+           return null;
+       if (code == AssertionResponseTypes.OKAY)
         return "okay";
       if (code == AssertionResponseTypes.CREATED)
         return "created";
@@ -853,7 +865,7 @@ public class TestScript extends DomainResource {
       if (code == AssertionResponseTypes.UNPROCESSABLE)
         return "unprocessable";
       return "?";
-    }
+   }
   }
 
   @Block()

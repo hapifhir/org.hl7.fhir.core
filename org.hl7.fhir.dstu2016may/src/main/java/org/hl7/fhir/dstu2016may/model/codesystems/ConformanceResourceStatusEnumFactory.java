@@ -48,14 +48,16 @@ public class ConformanceResourceStatusEnumFactory implements EnumFactory<Conform
   }
 
   public String toCode(ConformanceResourceStatus code) {
-    if (code == ConformanceResourceStatus.DRAFT)
+       if (code == ConformanceResourceStatus.NULL)
+           return null;
+       if (code == ConformanceResourceStatus.DRAFT)
       return "draft";
     if (code == ConformanceResourceStatus.ACTIVE)
       return "active";
     if (code == ConformanceResourceStatus.RETIRED)
       return "retired";
     return "?";
-  }
+   }
 
   public String toSystem(ConformanceResourceStatus code) {
     return code.getSystem();

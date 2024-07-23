@@ -46,12 +46,14 @@ public class HspcClinicalAssertStatusEnumFactory implements EnumFactory<HspcClin
   }
 
   public String toCode(HspcClinicalAssertStatus code) {
-    if (code == HspcClinicalAssertStatus._1797)
+       if (code == HspcClinicalAssertStatus.NULL)
+           return null;
+       if (code == HspcClinicalAssertStatus._1797)
       return "1797";
     if (code == HspcClinicalAssertStatus._69074)
       return "69074";
     return "?";
-  }
+   }
 
   public String toSystem(HspcClinicalAssertStatus code) {
     return code.getSystem();

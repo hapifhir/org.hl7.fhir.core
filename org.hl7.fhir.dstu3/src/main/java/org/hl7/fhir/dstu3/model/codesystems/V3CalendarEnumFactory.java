@@ -48,10 +48,12 @@ public class V3CalendarEnumFactory implements EnumFactory<V3Calendar> {
   }
 
   public String toCode(V3Calendar code) {
-    if (code == V3Calendar.GREG)
+       if (code == V3Calendar.NULL)
+           return null;
+       if (code == V3Calendar.GREG)
       return "GREG";
     return "?";
-  }
+   }
 
     public String toSystem(V3Calendar code) {
       return code.getSystem();

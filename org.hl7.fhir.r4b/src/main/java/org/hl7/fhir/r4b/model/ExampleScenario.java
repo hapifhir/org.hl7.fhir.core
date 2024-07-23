@@ -160,12 +160,14 @@ public class ExampleScenario extends CanonicalResource {
     }
 
     public String toCode(ExampleScenarioActorType code) {
-      if (code == ExampleScenarioActorType.PERSON)
+       if (code == ExampleScenarioActorType.NULL)
+           return null;
+       if (code == ExampleScenarioActorType.PERSON)
         return "person";
       if (code == ExampleScenarioActorType.ENTITY)
         return "entity";
       return "?";
-    }
+   }
 
     public String toSystem(ExampleScenarioActorType code) {
       return code.getSystem();

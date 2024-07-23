@@ -155,14 +155,16 @@ public class PlanDefinition extends MetadataResource {
         throw new FHIRException("Unknown ActionConditionKind code '"+codeString+"'");
         }
     public String toCode(ActionConditionKind code) {
-      if (code == ActionConditionKind.APPLICABILITY)
+       if (code == ActionConditionKind.NULL)
+           return null;
+       if (code == ActionConditionKind.APPLICABILITY)
         return "applicability";
       if (code == ActionConditionKind.START)
         return "start";
       if (code == ActionConditionKind.STOP)
         return "stop";
       return "?";
-      }
+   }
     public String toSystem(ActionConditionKind code) {
       return code.getSystem();
       }
@@ -351,7 +353,9 @@ public class PlanDefinition extends MetadataResource {
         throw new FHIRException("Unknown ActionRelationshipType code '"+codeString+"'");
         }
     public String toCode(ActionRelationshipType code) {
-      if (code == ActionRelationshipType.BEFORESTART)
+       if (code == ActionRelationshipType.NULL)
+           return null;
+       if (code == ActionRelationshipType.BEFORESTART)
         return "before-start";
       if (code == ActionRelationshipType.BEFORE)
         return "before";
@@ -370,7 +374,7 @@ public class PlanDefinition extends MetadataResource {
       if (code == ActionRelationshipType.AFTEREND)
         return "after-end";
       return "?";
-      }
+   }
     public String toSystem(ActionRelationshipType code) {
       return code.getSystem();
       }
@@ -475,14 +479,16 @@ public class PlanDefinition extends MetadataResource {
         throw new FHIRException("Unknown ActionParticipantType code '"+codeString+"'");
         }
     public String toCode(ActionParticipantType code) {
-      if (code == ActionParticipantType.PATIENT)
+       if (code == ActionParticipantType.NULL)
+           return null;
+       if (code == ActionParticipantType.PATIENT)
         return "patient";
       if (code == ActionParticipantType.PRACTITIONER)
         return "practitioner";
       if (code == ActionParticipantType.RELATEDPERSON)
         return "related-person";
       return "?";
-      }
+   }
     public String toSystem(ActionParticipantType code) {
       return code.getSystem();
       }
@@ -587,14 +593,16 @@ public class PlanDefinition extends MetadataResource {
         throw new FHIRException("Unknown ActionGroupingBehavior code '"+codeString+"'");
         }
     public String toCode(ActionGroupingBehavior code) {
-      if (code == ActionGroupingBehavior.VISUALGROUP)
+       if (code == ActionGroupingBehavior.NULL)
+           return null;
+       if (code == ActionGroupingBehavior.VISUALGROUP)
         return "visual-group";
       if (code == ActionGroupingBehavior.LOGICALGROUP)
         return "logical-group";
       if (code == ActionGroupingBehavior.SENTENCEGROUP)
         return "sentence-group";
       return "?";
-      }
+   }
     public String toSystem(ActionGroupingBehavior code) {
       return code.getSystem();
       }
@@ -741,7 +749,9 @@ public class PlanDefinition extends MetadataResource {
         throw new FHIRException("Unknown ActionSelectionBehavior code '"+codeString+"'");
         }
     public String toCode(ActionSelectionBehavior code) {
-      if (code == ActionSelectionBehavior.ANY)
+       if (code == ActionSelectionBehavior.NULL)
+           return null;
+       if (code == ActionSelectionBehavior.ANY)
         return "any";
       if (code == ActionSelectionBehavior.ALL)
         return "all";
@@ -754,7 +764,7 @@ public class PlanDefinition extends MetadataResource {
       if (code == ActionSelectionBehavior.ONEORMORE)
         return "one-or-more";
       return "?";
-      }
+   }
     public String toSystem(ActionSelectionBehavior code) {
       return code.getSystem();
       }
@@ -859,14 +869,16 @@ public class PlanDefinition extends MetadataResource {
         throw new FHIRException("Unknown ActionRequiredBehavior code '"+codeString+"'");
         }
     public String toCode(ActionRequiredBehavior code) {
-      if (code == ActionRequiredBehavior.MUST)
+       if (code == ActionRequiredBehavior.NULL)
+           return null;
+       if (code == ActionRequiredBehavior.MUST)
         return "must";
       if (code == ActionRequiredBehavior.COULD)
         return "could";
       if (code == ActionRequiredBehavior.MUSTUNLESSDOCUMENTED)
         return "must-unless-documented";
       return "?";
-      }
+   }
     public String toSystem(ActionRequiredBehavior code) {
       return code.getSystem();
       }
@@ -957,12 +969,14 @@ public class PlanDefinition extends MetadataResource {
         throw new FHIRException("Unknown ActionPrecheckBehavior code '"+codeString+"'");
         }
     public String toCode(ActionPrecheckBehavior code) {
-      if (code == ActionPrecheckBehavior.YES)
+       if (code == ActionPrecheckBehavior.NULL)
+           return null;
+       if (code == ActionPrecheckBehavior.YES)
         return "yes";
       if (code == ActionPrecheckBehavior.NO)
         return "no";
       return "?";
-      }
+   }
     public String toSystem(ActionPrecheckBehavior code) {
       return code.getSystem();
       }
@@ -1053,12 +1067,14 @@ public class PlanDefinition extends MetadataResource {
         throw new FHIRException("Unknown ActionCardinalityBehavior code '"+codeString+"'");
         }
     public String toCode(ActionCardinalityBehavior code) {
-      if (code == ActionCardinalityBehavior.SINGLE)
+       if (code == ActionCardinalityBehavior.NULL)
+           return null;
+       if (code == ActionCardinalityBehavior.SINGLE)
         return "single";
       if (code == ActionCardinalityBehavior.MULTIPLE)
         return "multiple";
       return "?";
-      }
+   }
     public String toSystem(ActionCardinalityBehavior code) {
       return code.getSystem();
       }

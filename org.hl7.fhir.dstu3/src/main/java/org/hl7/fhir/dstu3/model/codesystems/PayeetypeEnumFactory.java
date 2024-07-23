@@ -52,14 +52,16 @@ public class PayeetypeEnumFactory implements EnumFactory<Payeetype> {
   }
 
   public String toCode(Payeetype code) {
-    if (code == Payeetype.SUBSCRIBER)
+       if (code == Payeetype.NULL)
+           return null;
+       if (code == Payeetype.SUBSCRIBER)
       return "subscriber";
     if (code == Payeetype.PROVIDER)
       return "provider";
     if (code == Payeetype.OTHER)
       return "other";
     return "?";
-  }
+   }
 
     public String toSystem(Payeetype code) {
       return code.getSystem();

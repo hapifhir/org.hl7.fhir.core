@@ -45,10 +45,12 @@ public class NehtaNehtaResponseToNeoadjuvantTherapyEnumFactory
   }
 
   public String toCode(NehtaNehtaResponseToNeoadjuvantTherapy code) {
-    if (code == NehtaNehtaResponseToNeoadjuvantTherapy.NOPRIORTREATMENT)
+       if (code == NehtaNehtaResponseToNeoadjuvantTherapy.NULL)
+           return null;
+       if (code == NehtaNehtaResponseToNeoadjuvantTherapy.NOPRIORTREATMENT)
       return "no_prior_treatment";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaResponseToNeoadjuvantTherapy code) {
     return code.getSystem();

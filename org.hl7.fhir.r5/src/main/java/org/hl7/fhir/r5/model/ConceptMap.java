@@ -180,7 +180,9 @@ public class ConceptMap extends MetadataResource {
         throw new FHIRException("Unknown ConceptMapAttributeType code '"+codeString+"'");
         }
     public String toCode(ConceptMapAttributeType code) {
-      if (code == ConceptMapAttributeType.CODE)
+       if (code == ConceptMapAttributeType.NULL)
+           return null;
+       if (code == ConceptMapAttributeType.CODE)
         return "code";
       if (code == ConceptMapAttributeType.CODING)
         return "Coding";
@@ -191,7 +193,7 @@ public class ConceptMap extends MetadataResource {
       if (code == ConceptMapAttributeType.QUANTITY)
         return "Quantity";
       return "?";
-      }
+   }
     public String toSystem(ConceptMapAttributeType code) {
       return code.getSystem();
       }
@@ -296,14 +298,16 @@ public class ConceptMap extends MetadataResource {
         throw new FHIRException("Unknown ConceptMapGroupUnmappedMode code '"+codeString+"'");
         }
     public String toCode(ConceptMapGroupUnmappedMode code) {
-      if (code == ConceptMapGroupUnmappedMode.USESOURCECODE)
+       if (code == ConceptMapGroupUnmappedMode.NULL)
+           return null;
+       if (code == ConceptMapGroupUnmappedMode.USESOURCECODE)
         return "use-source-code";
       if (code == ConceptMapGroupUnmappedMode.FIXED)
         return "fixed";
       if (code == ConceptMapGroupUnmappedMode.OTHERMAP)
         return "other-map";
       return "?";
-      }
+   }
     public String toSystem(ConceptMapGroupUnmappedMode code) {
       return code.getSystem();
       }
@@ -464,7 +468,9 @@ public class ConceptMap extends MetadataResource {
         throw new FHIRException("Unknown ConceptMapPropertyType code '"+codeString+"'");
         }
     public String toCode(ConceptMapPropertyType code) {
-      if (code == ConceptMapPropertyType.CODING)
+       if (code == ConceptMapPropertyType.NULL)
+           return null;
+       if (code == ConceptMapPropertyType.CODING)
         return "Coding";
       if (code == ConceptMapPropertyType.STRING)
         return "string";
@@ -479,7 +485,7 @@ public class ConceptMap extends MetadataResource {
       if (code == ConceptMapPropertyType.CODE)
         return "code";
       return "?";
-      }
+   }
     public String toSystem(ConceptMapPropertyType code) {
       return code.getSystem();
       }

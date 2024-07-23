@@ -60,7 +60,9 @@ public class V3ProbabilityDistributionTypeEnumFactory implements EnumFactory<V3P
   }
 
   public String toCode(V3ProbabilityDistributionType code) {
-    if (code == V3ProbabilityDistributionType.B)
+       if (code == V3ProbabilityDistributionType.NULL)
+           return null;
+       if (code == V3ProbabilityDistributionType.B)
       return "B";
     if (code == V3ProbabilityDistributionType.E)
       return "E";
@@ -79,7 +81,7 @@ public class V3ProbabilityDistributionTypeEnumFactory implements EnumFactory<V3P
     if (code == V3ProbabilityDistributionType.X2)
       return "X2";
     return "?";
-  }
+   }
 
   public String toSystem(V3ProbabilityDistributionType code) {
     return code.getSystem();

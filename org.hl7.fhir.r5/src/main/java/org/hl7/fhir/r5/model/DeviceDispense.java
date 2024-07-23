@@ -236,7 +236,9 @@ public class DeviceDispense extends DomainResource {
         throw new FHIRException("Unknown DeviceDispenseStatusCodes code '"+codeString+"'");
         }
     public String toCode(DeviceDispenseStatusCodes code) {
-      if (code == DeviceDispenseStatusCodes.PREPARATION)
+       if (code == DeviceDispenseStatusCodes.NULL)
+           return null;
+       if (code == DeviceDispenseStatusCodes.PREPARATION)
         return "preparation";
       if (code == DeviceDispenseStatusCodes.INPROGRESS)
         return "in-progress";
@@ -255,7 +257,7 @@ public class DeviceDispense extends DomainResource {
       if (code == DeviceDispenseStatusCodes.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(DeviceDispenseStatusCodes code) {
       return code.getSystem();
       }

@@ -50,7 +50,9 @@ public class ClaimCareteamroleEnumFactory implements EnumFactory<ClaimCareteamro
   }
 
   public String toCode(ClaimCareteamrole code) {
-    if (code == ClaimCareteamrole.PRIMARY)
+       if (code == ClaimCareteamrole.NULL)
+           return null;
+       if (code == ClaimCareteamrole.PRIMARY)
       return "primary";
     if (code == ClaimCareteamrole.ASSIST)
       return "assist";
@@ -59,7 +61,7 @@ public class ClaimCareteamroleEnumFactory implements EnumFactory<ClaimCareteamro
     if (code == ClaimCareteamrole.OTHER)
       return "other";
     return "?";
-  }
+   }
 
   public String toSystem(ClaimCareteamrole code) {
     return code.getSystem();

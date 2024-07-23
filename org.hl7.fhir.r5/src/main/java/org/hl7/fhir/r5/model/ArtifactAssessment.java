@@ -180,7 +180,9 @@ public class ArtifactAssessment extends DomainResource {
         throw new FHIRException("Unknown ArtifactAssessmentDisposition code '"+codeString+"'");
         }
     public String toCode(ArtifactAssessmentDisposition code) {
-      if (code == ArtifactAssessmentDisposition.UNRESOLVED)
+       if (code == ArtifactAssessmentDisposition.NULL)
+           return null;
+       if (code == ArtifactAssessmentDisposition.UNRESOLVED)
         return "unresolved";
       if (code == ArtifactAssessmentDisposition.NOTPERSUASIVE)
         return "not-persuasive";
@@ -191,7 +193,7 @@ public class ArtifactAssessment extends DomainResource {
       if (code == ArtifactAssessmentDisposition.NOTPERSUASIVEWITHMODIFICATION)
         return "not-persuasive-with-modification";
       return "?";
-      }
+   }
     public String toSystem(ArtifactAssessmentDisposition code) {
       return code.getSystem();
       }
@@ -338,7 +340,9 @@ public class ArtifactAssessment extends DomainResource {
         throw new FHIRException("Unknown ArtifactAssessmentInformationType code '"+codeString+"'");
         }
     public String toCode(ArtifactAssessmentInformationType code) {
-      if (code == ArtifactAssessmentInformationType.COMMENT)
+       if (code == ArtifactAssessmentInformationType.NULL)
+           return null;
+       if (code == ArtifactAssessmentInformationType.COMMENT)
         return "comment";
       if (code == ArtifactAssessmentInformationType.CLASSIFIER)
         return "classifier";
@@ -351,7 +355,7 @@ public class ArtifactAssessment extends DomainResource {
       if (code == ArtifactAssessmentInformationType.CHANGEREQUEST)
         return "change-request";
       return "?";
-      }
+   }
     public String toSystem(ArtifactAssessmentInformationType code) {
       return code.getSystem();
       }
@@ -554,7 +558,9 @@ public class ArtifactAssessment extends DomainResource {
         throw new FHIRException("Unknown ArtifactAssessmentWorkflowStatus code '"+codeString+"'");
         }
     public String toCode(ArtifactAssessmentWorkflowStatus code) {
-      if (code == ArtifactAssessmentWorkflowStatus.SUBMITTED)
+       if (code == ArtifactAssessmentWorkflowStatus.NULL)
+           return null;
+       if (code == ArtifactAssessmentWorkflowStatus.SUBMITTED)
         return "submitted";
       if (code == ArtifactAssessmentWorkflowStatus.TRIAGED)
         return "triaged";
@@ -575,7 +581,7 @@ public class ArtifactAssessment extends DomainResource {
       if (code == ArtifactAssessmentWorkflowStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(ArtifactAssessmentWorkflowStatus code) {
       return code.getSystem();
       }

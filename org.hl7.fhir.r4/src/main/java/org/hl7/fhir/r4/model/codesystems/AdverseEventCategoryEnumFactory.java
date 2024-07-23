@@ -70,7 +70,9 @@ public class AdverseEventCategoryEnumFactory implements EnumFactory<AdverseEvent
   }
 
   public String toCode(AdverseEventCategory code) {
-    if (code == AdverseEventCategory.PRODUCTPROBLEM)
+       if (code == AdverseEventCategory.NULL)
+           return null;
+       if (code == AdverseEventCategory.PRODUCTPROBLEM)
       return "product-problem";
     if (code == AdverseEventCategory.PRODUCTQUALITY)
       return "product-quality";
@@ -99,7 +101,7 @@ public class AdverseEventCategoryEnumFactory implements EnumFactory<AdverseEvent
     if (code == AdverseEventCategory.UNSAFEPHYSICALENVIRONMENT)
       return "unsafe-physical-environment";
     return "?";
-  }
+   }
 
   public String toSystem(AdverseEventCategory code) {
     return code.getSystem();

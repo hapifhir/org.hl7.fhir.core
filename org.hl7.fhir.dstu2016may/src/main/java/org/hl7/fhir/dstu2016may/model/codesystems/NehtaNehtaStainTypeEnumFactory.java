@@ -48,14 +48,16 @@ public class NehtaNehtaStainTypeEnumFactory implements EnumFactory<NehtaNehtaSta
   }
 
   public String toCode(NehtaNehtaStainType code) {
-    if (code == NehtaNehtaStainType.NOTTESTED)
+       if (code == NehtaNehtaStainType.NULL)
+           return null;
+       if (code == NehtaNehtaStainType.NOTTESTED)
       return "not_tested";
     if (code == NehtaNehtaStainType.NORMALSTAINING)
       return "normal_staining";
     if (code == NehtaNehtaStainType.LOSSOFSTAINING)
       return "loss_of_staining";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaStainType code) {
     return code.getSystem();

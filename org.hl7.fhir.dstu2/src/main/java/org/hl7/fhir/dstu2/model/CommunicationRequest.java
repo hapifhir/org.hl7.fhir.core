@@ -299,8 +299,11 @@ public class CommunicationRequest extends DomainResource {
       throw new FHIRException("Unknown CommunicationRequestStatus code '" + codeString + "'");
     }
 
-    public String toCode(CommunicationRequestStatus code) {
-      if (code == CommunicationRequestStatus.PROPOSED)
+    public String toCode(CommunicationRequestStatus code)
+   {
+       if (code == CommunicationRequestStatus.NULL)
+           return null;
+       if (code == CommunicationRequestStatus.PROPOSED)
         return "proposed";
       if (code == CommunicationRequestStatus.PLANNED)
         return "planned";
@@ -321,7 +324,7 @@ public class CommunicationRequest extends DomainResource {
       if (code == CommunicationRequestStatus.FAILED)
         return "failed";
       return "?";
-    }
+   }
   }
 
   @Block()

@@ -230,8 +230,11 @@ public class ValueSet extends DomainResource {
       throw new FHIRException("Unknown FilterOperator code '" + codeString + "'");
     }
 
-    public String toCode(FilterOperator code) {
-      if (code == FilterOperator.EQUAL)
+    public String toCode(FilterOperator code)
+   {
+       if (code == FilterOperator.NULL)
+           return null;
+       if (code == FilterOperator.EQUAL)
         return "=";
       if (code == FilterOperator.ISA)
         return "is-a";
@@ -244,7 +247,7 @@ public class ValueSet extends DomainResource {
       if (code == FilterOperator.NOTIN)
         return "not-in";
       return "?";
-    }
+   }
   }
 
   @Block()

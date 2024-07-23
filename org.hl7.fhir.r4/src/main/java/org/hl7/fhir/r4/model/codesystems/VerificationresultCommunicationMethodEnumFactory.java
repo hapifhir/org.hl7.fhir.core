@@ -51,7 +51,9 @@ public class VerificationresultCommunicationMethodEnumFactory
   }
 
   public String toCode(VerificationresultCommunicationMethod code) {
-    if (code == VerificationresultCommunicationMethod.MANUAL)
+       if (code == VerificationresultCommunicationMethod.NULL)
+           return null;
+       if (code == VerificationresultCommunicationMethod.MANUAL)
       return "manual";
     if (code == VerificationresultCommunicationMethod.PORTAL)
       return "portal";
@@ -60,7 +62,7 @@ public class VerificationresultCommunicationMethodEnumFactory
     if (code == VerificationresultCommunicationMethod.PUSH)
       return "push";
     return "?";
-  }
+   }
 
   public String toSystem(VerificationresultCommunicationMethod code) {
     return code.getSystem();
