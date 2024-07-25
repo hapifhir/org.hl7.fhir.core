@@ -46,12 +46,14 @@ public class OccurrenceCodesEnumFactory implements EnumFactory<OccurrenceCodes> 
   }
 
   public String toCode(OccurrenceCodes code) {
-    if (code == OccurrenceCodes._1001)
+       if (code == OccurrenceCodes.NULL)
+           return null;
+       if (code == OccurrenceCodes._1001)
       return "1001";
     if (code == OccurrenceCodes._1002)
       return "1002";
     return "?";
-  }
+   }
 
   public String toSystem(OccurrenceCodes code) {
     return code.getSystem();

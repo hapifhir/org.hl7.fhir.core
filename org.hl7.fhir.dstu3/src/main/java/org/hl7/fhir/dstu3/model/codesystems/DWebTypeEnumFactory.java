@@ -52,14 +52,16 @@ public class DWebTypeEnumFactory implements EnumFactory<DWebType> {
   }
 
   public String toCode(DWebType code) {
-    if (code == DWebType.WADORS)
+       if (code == DWebType.NULL)
+           return null;
+       if (code == DWebType.WADORS)
       return "WADO-RS";
     if (code == DWebType.WADOURI)
       return "WADO-URI";
     if (code == DWebType.IID)
       return "IID";
     return "?";
-  }
+   }
 
     public String toSystem(DWebType code) {
       return code.getSystem();

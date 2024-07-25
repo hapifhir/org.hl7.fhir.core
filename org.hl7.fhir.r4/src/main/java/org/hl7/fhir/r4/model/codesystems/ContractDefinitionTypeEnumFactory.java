@@ -44,10 +44,12 @@ public class ContractDefinitionTypeEnumFactory implements EnumFactory<ContractDe
   }
 
   public String toCode(ContractDefinitionType code) {
-    if (code == ContractDefinitionType.TEMP)
+       if (code == ContractDefinitionType.NULL)
+           return null;
+       if (code == ContractDefinitionType.TEMP)
       return "temp";
     return "?";
-  }
+   }
 
   public String toSystem(ContractDefinitionType code) {
     return code.getSystem();

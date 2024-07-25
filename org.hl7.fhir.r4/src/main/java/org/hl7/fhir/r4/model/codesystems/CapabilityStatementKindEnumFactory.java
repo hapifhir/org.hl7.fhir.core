@@ -48,14 +48,16 @@ public class CapabilityStatementKindEnumFactory implements EnumFactory<Capabilit
   }
 
   public String toCode(CapabilityStatementKind code) {
-    if (code == CapabilityStatementKind.INSTANCE)
+       if (code == CapabilityStatementKind.NULL)
+           return null;
+       if (code == CapabilityStatementKind.INSTANCE)
       return "instance";
     if (code == CapabilityStatementKind.CAPABILITY)
       return "capability";
     if (code == CapabilityStatementKind.REQUIREMENTS)
       return "requirements";
     return "?";
-  }
+   }
 
   public String toSystem(CapabilityStatementKind code) {
     return code.getSystem();

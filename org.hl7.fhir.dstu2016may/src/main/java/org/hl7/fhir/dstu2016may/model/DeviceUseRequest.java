@@ -298,7 +298,9 @@ public class DeviceUseRequest extends DomainResource {
     }
 
     public String toCode(DeviceUseRequestStatus code) {
-      if (code == DeviceUseRequestStatus.PROPOSED)
+       if (code == DeviceUseRequestStatus.NULL)
+           return null;
+       if (code == DeviceUseRequestStatus.PROPOSED)
         return "proposed";
       if (code == DeviceUseRequestStatus.PLANNED)
         return "planned";
@@ -319,7 +321,7 @@ public class DeviceUseRequest extends DomainResource {
       if (code == DeviceUseRequestStatus.ABORTED)
         return "aborted";
       return "?";
-    }
+   }
 
     public String toSystem(DeviceUseRequestStatus code) {
       return code.getSystem();
@@ -465,7 +467,9 @@ public class DeviceUseRequest extends DomainResource {
     }
 
     public String toCode(DeviceUseRequestPriority code) {
-      if (code == DeviceUseRequestPriority.ROUTINE)
+       if (code == DeviceUseRequestPriority.NULL)
+           return null;
+       if (code == DeviceUseRequestPriority.ROUTINE)
         return "routine";
       if (code == DeviceUseRequestPriority.URGENT)
         return "urgent";
@@ -474,7 +478,7 @@ public class DeviceUseRequest extends DomainResource {
       if (code == DeviceUseRequestPriority.ASAP)
         return "asap";
       return "?";
-    }
+   }
 
     public String toSystem(DeviceUseRequestPriority code) {
       return code.getSystem();

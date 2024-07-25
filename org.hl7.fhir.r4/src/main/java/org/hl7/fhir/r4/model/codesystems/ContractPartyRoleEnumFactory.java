@@ -44,10 +44,12 @@ public class ContractPartyRoleEnumFactory implements EnumFactory<ContractPartyRo
   }
 
   public String toCode(ContractPartyRole code) {
-    if (code == ContractPartyRole.FLUNKY)
+       if (code == ContractPartyRole.NULL)
+           return null;
+       if (code == ContractPartyRole.FLUNKY)
       return "flunky";
     return "?";
-  }
+   }
 
   public String toSystem(ContractPartyRole code) {
     return code.getSystem();

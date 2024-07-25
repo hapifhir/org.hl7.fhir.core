@@ -50,7 +50,9 @@ public class ResearchStudyReasonStoppedEnumFactory implements EnumFactory<Resear
   }
 
   public String toCode(ResearchStudyReasonStopped code) {
-    if (code == ResearchStudyReasonStopped.ACCRUALGOALMET)
+       if (code == ResearchStudyReasonStopped.NULL)
+           return null;
+       if (code == ResearchStudyReasonStopped.ACCRUALGOALMET)
       return "accrual-goal-met";
     if (code == ResearchStudyReasonStopped.CLOSEDDUETOTOXICITY)
       return "closed-due-to-toxicity";
@@ -59,7 +61,7 @@ public class ResearchStudyReasonStoppedEnumFactory implements EnumFactory<Resear
     if (code == ResearchStudyReasonStopped.TEMPORARILYCLOSEDPERSTUDYDESIGN)
       return "temporarily-closed-per-study-design";
     return "?";
-  }
+   }
 
   public String toSystem(ResearchStudyReasonStopped code) {
     return code.getSystem();

@@ -46,12 +46,14 @@ public class VisionEyeCodesEnumFactory implements EnumFactory<VisionEyeCodes> {
   }
 
   public String toCode(VisionEyeCodes code) {
-    if (code == VisionEyeCodes.RIGHT)
+       if (code == VisionEyeCodes.NULL)
+           return null;
+       if (code == VisionEyeCodes.RIGHT)
       return "right";
     if (code == VisionEyeCodes.LEFT)
       return "left";
     return "?";
-  }
+   }
 
   public String toSystem(VisionEyeCodes code) {
     return code.getSystem();

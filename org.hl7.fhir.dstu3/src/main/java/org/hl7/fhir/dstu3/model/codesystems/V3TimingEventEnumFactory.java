@@ -82,7 +82,9 @@ public class V3TimingEventEnumFactory implements EnumFactory<V3TimingEvent> {
   }
 
   public String toCode(V3TimingEvent code) {
-    if (code == V3TimingEvent.AC)
+       if (code == V3TimingEvent.NULL)
+           return null;
+       if (code == V3TimingEvent.AC)
       return "AC";
     if (code == V3TimingEvent.ACD)
       return "ACD";
@@ -119,7 +121,7 @@ public class V3TimingEventEnumFactory implements EnumFactory<V3TimingEvent> {
     if (code == V3TimingEvent.WAKE)
       return "WAKE";
     return "?";
-  }
+   }
 
     public String toSystem(V3TimingEvent code) {
       return code.getSystem();

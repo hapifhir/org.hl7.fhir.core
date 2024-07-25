@@ -52,7 +52,9 @@ public class ClaimModifiersEnumFactory implements EnumFactory<ClaimModifiers> {
   }
 
   public String toCode(ClaimModifiers code) {
-    if (code == ClaimModifiers.A)
+       if (code == ClaimModifiers.NULL)
+           return null;
+       if (code == ClaimModifiers.A)
       return "A";
     if (code == ClaimModifiers.B)
       return "B";
@@ -63,7 +65,7 @@ public class ClaimModifiersEnumFactory implements EnumFactory<ClaimModifiers> {
     if (code == ClaimModifiers.X)
       return "X";
     return "?";
-  }
+   }
 
   public String toSystem(ClaimModifiers code) {
     return code.getSystem();

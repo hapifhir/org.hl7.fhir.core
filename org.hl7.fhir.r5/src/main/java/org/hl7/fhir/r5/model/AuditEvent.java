@@ -180,7 +180,9 @@ public class AuditEvent extends DomainResource {
         throw new FHIRException("Unknown AuditEventAction code '"+codeString+"'");
         }
     public String toCode(AuditEventAction code) {
-      if (code == AuditEventAction.C)
+       if (code == AuditEventAction.NULL)
+           return null;
+       if (code == AuditEventAction.C)
         return "C";
       if (code == AuditEventAction.R)
         return "R";
@@ -191,7 +193,7 @@ public class AuditEvent extends DomainResource {
       if (code == AuditEventAction.E)
         return "E";
       return "?";
-      }
+   }
     public String toSystem(AuditEventAction code) {
       return code.getSystem();
       }
@@ -366,7 +368,9 @@ public class AuditEvent extends DomainResource {
         throw new FHIRException("Unknown AuditEventSeverity code '"+codeString+"'");
         }
     public String toCode(AuditEventSeverity code) {
-      if (code == AuditEventSeverity.EMERGENCY)
+       if (code == AuditEventSeverity.NULL)
+           return null;
+       if (code == AuditEventSeverity.EMERGENCY)
         return "emergency";
       if (code == AuditEventSeverity.ALERT)
         return "alert";
@@ -383,7 +387,7 @@ public class AuditEvent extends DomainResource {
       if (code == AuditEventSeverity.DEBUG)
         return "debug";
       return "?";
-      }
+   }
     public String toSystem(AuditEventSeverity code) {
       return code.getSystem();
       }

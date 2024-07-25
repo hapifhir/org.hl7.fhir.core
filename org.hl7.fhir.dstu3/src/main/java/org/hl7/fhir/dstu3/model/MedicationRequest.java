@@ -221,7 +221,9 @@ public class MedicationRequest extends DomainResource {
         throw new FHIRException("Unknown MedicationRequestStatus code '"+codeString+"'");
         }
     public String toCode(MedicationRequestStatus code) {
-      if (code == MedicationRequestStatus.ACTIVE)
+       if (code == MedicationRequestStatus.NULL)
+           return null;
+       if (code == MedicationRequestStatus.ACTIVE)
         return "active";
       if (code == MedicationRequestStatus.ONHOLD)
         return "on-hold";
@@ -238,7 +240,7 @@ public class MedicationRequest extends DomainResource {
       if (code == MedicationRequestStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(MedicationRequestStatus code) {
       return code.getSystem();
       }
@@ -357,7 +359,9 @@ public class MedicationRequest extends DomainResource {
         throw new FHIRException("Unknown MedicationRequestIntent code '"+codeString+"'");
         }
     public String toCode(MedicationRequestIntent code) {
-      if (code == MedicationRequestIntent.PROPOSAL)
+       if (code == MedicationRequestIntent.NULL)
+           return null;
+       if (code == MedicationRequestIntent.PROPOSAL)
         return "proposal";
       if (code == MedicationRequestIntent.PLAN)
         return "plan";
@@ -366,7 +370,7 @@ public class MedicationRequest extends DomainResource {
       if (code == MedicationRequestIntent.INSTANCEORDER)
         return "instance-order";
       return "?";
-      }
+   }
     public String toSystem(MedicationRequestIntent code) {
       return code.getSystem();
       }
@@ -485,7 +489,9 @@ public class MedicationRequest extends DomainResource {
         throw new FHIRException("Unknown MedicationRequestPriority code '"+codeString+"'");
         }
     public String toCode(MedicationRequestPriority code) {
-      if (code == MedicationRequestPriority.ROUTINE)
+       if (code == MedicationRequestPriority.NULL)
+           return null;
+       if (code == MedicationRequestPriority.ROUTINE)
         return "routine";
       if (code == MedicationRequestPriority.URGENT)
         return "urgent";
@@ -494,7 +500,7 @@ public class MedicationRequest extends DomainResource {
       if (code == MedicationRequestPriority.ASAP)
         return "asap";
       return "?";
-      }
+   }
     public String toSystem(MedicationRequestPriority code) {
       return code.getSystem();
       }

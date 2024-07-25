@@ -54,7 +54,9 @@ public class ClaimresponseStatusEnumFactory implements EnumFactory<Claimresponse
   }
 
   public String toCode(ClaimresponseStatus code) {
-    if (code == ClaimresponseStatus.ACTIVE)
+       if (code == ClaimresponseStatus.NULL)
+           return null;
+       if (code == ClaimresponseStatus.ACTIVE)
       return "active";
     if (code == ClaimresponseStatus.CANCELLED)
       return "cancelled";
@@ -63,7 +65,7 @@ public class ClaimresponseStatusEnumFactory implements EnumFactory<Claimresponse
     if (code == ClaimresponseStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(ClaimresponseStatus code) {
       return code.getSystem();

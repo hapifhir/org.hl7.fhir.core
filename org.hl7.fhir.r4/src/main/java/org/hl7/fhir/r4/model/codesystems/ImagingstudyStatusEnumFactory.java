@@ -52,7 +52,9 @@ public class ImagingstudyStatusEnumFactory implements EnumFactory<ImagingstudySt
   }
 
   public String toCode(ImagingstudyStatus code) {
-    if (code == ImagingstudyStatus.REGISTERED)
+       if (code == ImagingstudyStatus.NULL)
+           return null;
+       if (code == ImagingstudyStatus.REGISTERED)
       return "registered";
     if (code == ImagingstudyStatus.AVAILABLE)
       return "available";
@@ -63,7 +65,7 @@ public class ImagingstudyStatusEnumFactory implements EnumFactory<ImagingstudySt
     if (code == ImagingstudyStatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
   public String toSystem(ImagingstudyStatus code) {
     return code.getSystem();

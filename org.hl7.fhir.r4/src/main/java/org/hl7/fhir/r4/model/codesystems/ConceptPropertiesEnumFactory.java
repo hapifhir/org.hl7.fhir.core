@@ -52,7 +52,9 @@ public class ConceptPropertiesEnumFactory implements EnumFactory<ConceptProperti
   }
 
   public String toCode(ConceptProperties code) {
-    if (code == ConceptProperties.INACTIVE)
+       if (code == ConceptProperties.NULL)
+           return null;
+       if (code == ConceptProperties.INACTIVE)
       return "inactive";
     if (code == ConceptProperties.DEPRECATED)
       return "deprecated";
@@ -63,7 +65,7 @@ public class ConceptPropertiesEnumFactory implements EnumFactory<ConceptProperti
     if (code == ConceptProperties.CHILD)
       return "child";
     return "?";
-  }
+   }
 
   public String toSystem(ConceptProperties code) {
     return code.getSystem();

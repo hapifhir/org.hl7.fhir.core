@@ -284,7 +284,9 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
   }
 
   public String toCode(ResourceTypes code) {
-    if (code == ResourceTypes.ACCOUNT)
+       if (code == ResourceTypes.NULL)
+           return null;
+       if (code == ResourceTypes.ACCOUNT)
       return "Account";
     if (code == ResourceTypes.ACTIVITYDEFINITION)
       return "ActivityDefinition";
@@ -523,7 +525,7 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
     if (code == ResourceTypes.VISIONPRESCRIPTION)
       return "VisionPrescription";
     return "?";
-  }
+   }
 
     public String toSystem(ResourceTypes code) {
       return code.getSystem();

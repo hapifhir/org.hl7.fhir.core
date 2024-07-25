@@ -52,14 +52,16 @@ public class ConditionStateEnumFactory implements EnumFactory<ConditionState> {
   }
 
   public String toCode(ConditionState code) {
-    if (code == ConditionState.ACTIVE)
+       if (code == ConditionState.NULL)
+           return null;
+       if (code == ConditionState.ACTIVE)
       return "active";
     if (code == ConditionState.INACTIVE)
       return "inactive";
     if (code == ConditionState.RESOLVED)
       return "resolved";
     return "?";
-  }
+   }
 
     public String toSystem(ConditionState code) {
       return code.getSystem();

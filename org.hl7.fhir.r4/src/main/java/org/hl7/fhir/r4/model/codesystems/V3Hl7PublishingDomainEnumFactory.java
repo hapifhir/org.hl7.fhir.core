@@ -126,7 +126,9 @@ public class V3Hl7PublishingDomainEnumFactory implements EnumFactory<V3Hl7Publis
   }
 
   public String toCode(V3Hl7PublishingDomain code) {
-    if (code == V3Hl7PublishingDomain.AB)
+       if (code == V3Hl7PublishingDomain.NULL)
+           return null;
+       if (code == V3Hl7PublishingDomain.AB)
       return "AB";
     if (code == V3Hl7PublishingDomain.AI)
       return "AI";
@@ -211,7 +213,7 @@ public class V3Hl7PublishingDomainEnumFactory implements EnumFactory<V3Hl7Publis
     if (code == V3Hl7PublishingDomain.TD)
       return "TD";
     return "?";
-  }
+   }
 
   public String toSystem(V3Hl7PublishingDomain code) {
     return code.getSystem();

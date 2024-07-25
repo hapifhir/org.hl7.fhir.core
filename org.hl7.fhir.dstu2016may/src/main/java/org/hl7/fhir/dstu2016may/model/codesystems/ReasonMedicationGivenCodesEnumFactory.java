@@ -48,14 +48,16 @@ public class ReasonMedicationGivenCodesEnumFactory implements EnumFactory<Reason
   }
 
   public String toCode(ReasonMedicationGivenCodes code) {
-    if (code == ReasonMedicationGivenCodes.A)
+       if (code == ReasonMedicationGivenCodes.NULL)
+           return null;
+       if (code == ReasonMedicationGivenCodes.A)
       return "a";
     if (code == ReasonMedicationGivenCodes.B)
       return "b";
     if (code == ReasonMedicationGivenCodes.C)
       return "c";
     return "?";
-  }
+   }
 
   public String toSystem(ReasonMedicationGivenCodes code) {
     return code.getSystem();

@@ -56,7 +56,9 @@ public class EffectEstimateTypeEnumFactory implements EnumFactory<EffectEstimate
   }
 
   public String toCode(EffectEstimateType code) {
-    if (code == EffectEstimateType.RELATIVERR)
+       if (code == EffectEstimateType.NULL)
+           return null;
+       if (code == EffectEstimateType.RELATIVERR)
       return "relative-RR";
     if (code == EffectEstimateType.RELATIVEOR)
       return "relative-OR";
@@ -71,7 +73,7 @@ public class EffectEstimateTypeEnumFactory implements EnumFactory<EffectEstimate
     if (code == EffectEstimateType.ABSOLUTEMEDIANDIFF)
       return "absolute-MedianDiff";
     return "?";
-  }
+   }
 
   public String toSystem(EffectEstimateType code) {
     return code.getSystem();

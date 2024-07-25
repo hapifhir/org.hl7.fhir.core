@@ -164,7 +164,9 @@ public class PaymentReconciliation extends DomainResource {
         throw new FHIRException("Unknown PaymentReconciliationStatus code '"+codeString+"'");
         }
     public String toCode(PaymentReconciliationStatus code) {
-      if (code == PaymentReconciliationStatus.ACTIVE)
+       if (code == PaymentReconciliationStatus.NULL)
+           return null;
+       if (code == PaymentReconciliationStatus.ACTIVE)
         return "active";
       if (code == PaymentReconciliationStatus.CANCELLED)
         return "cancelled";
@@ -173,7 +175,7 @@ public class PaymentReconciliation extends DomainResource {
       if (code == PaymentReconciliationStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(PaymentReconciliationStatus code) {
       return code.getSystem();
       }

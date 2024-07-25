@@ -46,12 +46,14 @@ public class AllergIntolSubstanceExpRiskEnumFactory implements EnumFactory<Aller
   }
 
   public String toCode(AllergIntolSubstanceExpRisk code) {
-    if (code == AllergIntolSubstanceExpRisk.KNOWNREACTIONRISK)
+       if (code == AllergIntolSubstanceExpRisk.NULL)
+           return null;
+       if (code == AllergIntolSubstanceExpRisk.KNOWNREACTIONRISK)
       return "known-reaction-risk";
     if (code == AllergIntolSubstanceExpRisk.NOKNOWNREACTIONRISK)
       return "no-known-reaction-risk";
     return "?";
-  }
+   }
 
   public String toSystem(AllergIntolSubstanceExpRisk code) {
     return code.getSystem();

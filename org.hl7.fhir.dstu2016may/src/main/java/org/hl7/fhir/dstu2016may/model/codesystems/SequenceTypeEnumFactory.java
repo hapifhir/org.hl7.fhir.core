@@ -48,14 +48,16 @@ public class SequenceTypeEnumFactory implements EnumFactory<SequenceType> {
   }
 
   public String toCode(SequenceType code) {
-    if (code == SequenceType.AA)
+       if (code == SequenceType.NULL)
+           return null;
+       if (code == SequenceType.AA)
       return "AA";
     if (code == SequenceType.DNA)
       return "DNA";
     if (code == SequenceType.RNA)
       return "RNA";
     return "?";
-  }
+   }
 
   public String toSystem(SequenceType code) {
     return code.getSystem();

@@ -210,7 +210,9 @@ public class AuditEvent extends DomainResource {
     }
 
     public String toCode(AuditEventAction code) {
-      if (code == AuditEventAction.C)
+       if (code == AuditEventAction.NULL)
+           return null;
+       if (code == AuditEventAction.C)
         return "C";
       if (code == AuditEventAction.R)
         return "R";
@@ -221,7 +223,7 @@ public class AuditEvent extends DomainResource {
       if (code == AuditEventAction.E)
         return "E";
       return "?";
-    }
+   }
 
     public String toSystem(AuditEventAction code) {
       return code.getSystem();
@@ -370,7 +372,9 @@ public class AuditEvent extends DomainResource {
     }
 
     public String toCode(AuditEventOutcome code) {
-      if (code == AuditEventOutcome._0)
+       if (code == AuditEventOutcome.NULL)
+           return null;
+       if (code == AuditEventOutcome._0)
         return "0";
       if (code == AuditEventOutcome._4)
         return "4";
@@ -379,7 +383,7 @@ public class AuditEvent extends DomainResource {
       if (code == AuditEventOutcome._12)
         return "12";
       return "?";
-    }
+   }
 
     public String toSystem(AuditEventOutcome code) {
       return code.getSystem();
@@ -544,7 +548,9 @@ public class AuditEvent extends DomainResource {
     }
 
     public String toCode(AuditEventParticipantNetworkType code) {
-      if (code == AuditEventParticipantNetworkType._1)
+       if (code == AuditEventParticipantNetworkType.NULL)
+           return null;
+       if (code == AuditEventParticipantNetworkType._1)
         return "1";
       if (code == AuditEventParticipantNetworkType._2)
         return "2";
@@ -555,7 +561,7 @@ public class AuditEvent extends DomainResource {
       if (code == AuditEventParticipantNetworkType._5)
         return "5";
       return "?";
-    }
+   }
 
     public String toSystem(AuditEventParticipantNetworkType code) {
       return code.getSystem();

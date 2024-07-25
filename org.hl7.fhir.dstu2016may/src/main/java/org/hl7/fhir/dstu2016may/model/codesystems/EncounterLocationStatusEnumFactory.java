@@ -50,7 +50,9 @@ public class EncounterLocationStatusEnumFactory implements EnumFactory<Encounter
   }
 
   public String toCode(EncounterLocationStatus code) {
-    if (code == EncounterLocationStatus.PLANNED)
+       if (code == EncounterLocationStatus.NULL)
+           return null;
+       if (code == EncounterLocationStatus.PLANNED)
       return "planned";
     if (code == EncounterLocationStatus.ACTIVE)
       return "active";
@@ -59,7 +61,7 @@ public class EncounterLocationStatusEnumFactory implements EnumFactory<Encounter
     if (code == EncounterLocationStatus.COMPLETED)
       return "completed";
     return "?";
-  }
+   }
 
   public String toSystem(EncounterLocationStatus code) {
     return code.getSystem();

@@ -52,14 +52,16 @@ public class TaskPriorityEnumFactory implements EnumFactory<TaskPriority> {
   }
 
   public String toCode(TaskPriority code) {
-    if (code == TaskPriority.LOW)
+       if (code == TaskPriority.NULL)
+           return null;
+       if (code == TaskPriority.LOW)
       return "low";
     if (code == TaskPriority.NORMAL)
       return "normal";
     if (code == TaskPriority.HIGH)
       return "high";
     return "?";
-  }
+   }
 
     public String toSystem(TaskPriority code) {
       return code.getSystem();

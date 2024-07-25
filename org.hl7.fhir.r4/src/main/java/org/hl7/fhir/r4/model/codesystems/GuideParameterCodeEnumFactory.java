@@ -62,7 +62,9 @@ public class GuideParameterCodeEnumFactory implements EnumFactory<GuideParameter
   }
 
   public String toCode(GuideParameterCode code) {
-    if (code == GuideParameterCode.APPLY)
+       if (code == GuideParameterCode.NULL)
+           return null;
+       if (code == GuideParameterCode.APPLY)
       return "apply";
     if (code == GuideParameterCode.PATHRESOURCE)
       return "path-resource";
@@ -83,7 +85,7 @@ public class GuideParameterCodeEnumFactory implements EnumFactory<GuideParameter
     if (code == GuideParameterCode.HTMLTEMPLATE)
       return "html-template";
     return "?";
-  }
+   }
 
   public String toSystem(GuideParameterCode code) {
     return code.getSystem();

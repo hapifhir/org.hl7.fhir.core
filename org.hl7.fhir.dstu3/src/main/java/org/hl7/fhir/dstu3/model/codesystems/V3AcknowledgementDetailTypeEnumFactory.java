@@ -58,7 +58,9 @@ public class V3AcknowledgementDetailTypeEnumFactory implements EnumFactory<V3Ack
   }
 
   public String toCode(V3AcknowledgementDetailType code) {
-    if (code == V3AcknowledgementDetailType.E)
+       if (code == V3AcknowledgementDetailType.NULL)
+           return null;
+       if (code == V3AcknowledgementDetailType.E)
       return "E";
     if (code == V3AcknowledgementDetailType.I)
       return "I";
@@ -71,7 +73,7 @@ public class V3AcknowledgementDetailTypeEnumFactory implements EnumFactory<V3Ack
     if (code == V3AcknowledgementDetailType.WARN)
       return "WARN";
     return "?";
-  }
+   }
 
     public String toSystem(V3AcknowledgementDetailType code) {
       return code.getSystem();

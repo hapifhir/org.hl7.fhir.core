@@ -60,7 +60,9 @@ public class ExRevenueCenterEnumFactory implements EnumFactory<ExRevenueCenter> 
   }
 
   public String toCode(ExRevenueCenter code) {
-    if (code == ExRevenueCenter._0370)
+       if (code == ExRevenueCenter.NULL)
+           return null;
+       if (code == ExRevenueCenter._0370)
       return "0370";
     if (code == ExRevenueCenter._0420)
       return "0420";
@@ -79,7 +81,7 @@ public class ExRevenueCenterEnumFactory implements EnumFactory<ExRevenueCenter> 
     if (code == ExRevenueCenter._0010)
       return "0010";
     return "?";
-  }
+   }
 
   public String toSystem(ExRevenueCenter code) {
     return code.getSystem();

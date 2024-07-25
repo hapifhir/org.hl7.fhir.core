@@ -46,12 +46,14 @@ public class HspcAbnIntNumericNomEnumFactory implements EnumFactory<HspcAbnIntNu
   }
 
   public String toCode(HspcAbnIntNumericNom code) {
-    if (code == HspcAbnIntNumericNom.HIGHER)
+       if (code == HspcAbnIntNumericNom.NULL)
+           return null;
+       if (code == HspcAbnIntNumericNom.HIGHER)
       return "higher";
     if (code == HspcAbnIntNumericNom.LOWER)
       return "lower";
     return "?";
-  }
+   }
 
   public String toSystem(HspcAbnIntNumericNom code) {
     return code.getSystem();

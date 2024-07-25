@@ -48,14 +48,16 @@ public class HspcPatientPersonNameUseEnumFactory implements EnumFactory<HspcPati
   }
 
   public String toCode(HspcPatientPersonNameUse code) {
-    if (code == HspcPatientPersonNameUse._188)
+       if (code == HspcPatientPersonNameUse.NULL)
+           return null;
+       if (code == HspcPatientPersonNameUse._188)
       return "188";
     if (code == HspcPatientPersonNameUse._191)
       return "191";
     if (code == HspcPatientPersonNameUse._812)
       return "812";
     return "?";
-  }
+   }
 
   public String toSystem(HspcPatientPersonNameUse code) {
     return code.getSystem();

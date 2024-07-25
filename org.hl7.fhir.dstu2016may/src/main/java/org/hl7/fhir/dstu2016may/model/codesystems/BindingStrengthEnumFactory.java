@@ -50,7 +50,9 @@ public class BindingStrengthEnumFactory implements EnumFactory<BindingStrength> 
   }
 
   public String toCode(BindingStrength code) {
-    if (code == BindingStrength.REQUIRED)
+       if (code == BindingStrength.NULL)
+           return null;
+       if (code == BindingStrength.REQUIRED)
       return "required";
     if (code == BindingStrength.EXTENSIBLE)
       return "extensible";
@@ -59,7 +61,7 @@ public class BindingStrengthEnumFactory implements EnumFactory<BindingStrength> 
     if (code == BindingStrength.EXAMPLE)
       return "example";
     return "?";
-  }
+   }
 
   public String toSystem(BindingStrength code) {
     return code.getSystem();

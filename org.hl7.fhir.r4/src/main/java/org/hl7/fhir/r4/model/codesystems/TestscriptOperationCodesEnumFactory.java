@@ -132,7 +132,9 @@ public class TestscriptOperationCodesEnumFactory implements EnumFactory<Testscri
   }
 
   public String toCode(TestscriptOperationCodes code) {
-    if (code == TestscriptOperationCodes.READ)
+       if (code == TestscriptOperationCodes.NULL)
+           return null;
+       if (code == TestscriptOperationCodes.READ)
       return "read";
     if (code == TestscriptOperationCodes.VREAD)
       return "vread";
@@ -223,7 +225,7 @@ public class TestscriptOperationCodesEnumFactory implements EnumFactory<Testscri
     if (code == TestscriptOperationCodes.VALIDATECODE)
       return "validate-code";
     return "?";
-  }
+   }
 
   public String toSystem(TestscriptOperationCodes code) {
     return code.getSystem();

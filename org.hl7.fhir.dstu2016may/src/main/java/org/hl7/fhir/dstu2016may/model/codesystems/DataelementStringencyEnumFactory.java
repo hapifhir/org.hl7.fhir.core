@@ -54,7 +54,9 @@ public class DataelementStringencyEnumFactory implements EnumFactory<Dataelement
   }
 
   public String toCode(DataelementStringency code) {
-    if (code == DataelementStringency.COMPARABLE)
+       if (code == DataelementStringency.NULL)
+           return null;
+       if (code == DataelementStringency.COMPARABLE)
       return "comparable";
     if (code == DataelementStringency.FULLYSPECIFIED)
       return "fully-specified";
@@ -67,7 +69,7 @@ public class DataelementStringencyEnumFactory implements EnumFactory<Dataelement
     if (code == DataelementStringency.FLEXIBLE)
       return "flexible";
     return "?";
-  }
+   }
 
   public String toSystem(DataelementStringency code) {
     return code.getSystem();

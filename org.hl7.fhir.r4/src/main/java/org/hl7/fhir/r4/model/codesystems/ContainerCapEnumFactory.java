@@ -66,7 +66,9 @@ public class ContainerCapEnumFactory implements EnumFactory<ContainerCap> {
   }
 
   public String toCode(ContainerCap code) {
-    if (code == ContainerCap.RED)
+       if (code == ContainerCap.NULL)
+           return null;
+       if (code == ContainerCap.RED)
       return "red";
     if (code == ContainerCap.YELLOW)
       return "yellow";
@@ -91,7 +93,7 @@ public class ContainerCapEnumFactory implements EnumFactory<ContainerCap> {
     if (code == ContainerCap.PINK)
       return "pink";
     return "?";
-  }
+   }
 
   public String toSystem(ContainerCap code) {
     return code.getSystem();

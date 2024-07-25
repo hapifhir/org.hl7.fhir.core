@@ -56,7 +56,9 @@ public class SubscriberRelationshipEnumFactory implements EnumFactory<Subscriber
   }
 
   public String toCode(SubscriberRelationship code) {
-    if (code == SubscriberRelationship.CHILD)
+       if (code == SubscriberRelationship.NULL)
+           return null;
+       if (code == SubscriberRelationship.CHILD)
       return "child";
     if (code == SubscriberRelationship.PARENT)
       return "parent";
@@ -71,7 +73,7 @@ public class SubscriberRelationshipEnumFactory implements EnumFactory<Subscriber
     if (code == SubscriberRelationship.INJURED)
       return "injured";
     return "?";
-  }
+   }
 
   public String toSystem(SubscriberRelationship code) {
     return code.getSystem();

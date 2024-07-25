@@ -54,7 +54,9 @@ public class V3CompressionAlgorithmEnumFactory implements EnumFactory<V3Compress
   }
 
   public String toCode(V3CompressionAlgorithm code) {
-    if (code == V3CompressionAlgorithm.BZ)
+       if (code == V3CompressionAlgorithm.NULL)
+           return null;
+       if (code == V3CompressionAlgorithm.BZ)
       return "BZ";
     if (code == V3CompressionAlgorithm.DF)
       return "DF";
@@ -67,7 +69,7 @@ public class V3CompressionAlgorithmEnumFactory implements EnumFactory<V3Compress
     if (code == V3CompressionAlgorithm.ZL)
       return "ZL";
     return "?";
-  }
+   }
 
   public String toSystem(V3CompressionAlgorithm code) {
     return code.getSystem();

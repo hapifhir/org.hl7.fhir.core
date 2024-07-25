@@ -58,7 +58,9 @@ public class PolicyholderRelationshipEnumFactory implements EnumFactory<Policyho
   }
 
   public String toCode(PolicyholderRelationship code) {
-    if (code == PolicyholderRelationship.CHILD)
+       if (code == PolicyholderRelationship.NULL)
+           return null;
+       if (code == PolicyholderRelationship.CHILD)
       return "child";
     if (code == PolicyholderRelationship.PARENT)
       return "parent";
@@ -71,7 +73,7 @@ public class PolicyholderRelationshipEnumFactory implements EnumFactory<Policyho
     if (code == PolicyholderRelationship.SELF)
       return "self";
     return "?";
-  }
+   }
 
     public String toSystem(PolicyholderRelationship code) {
       return code.getSystem();

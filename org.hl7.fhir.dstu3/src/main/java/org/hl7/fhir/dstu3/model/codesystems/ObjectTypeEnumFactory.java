@@ -54,7 +54,9 @@ public class ObjectTypeEnumFactory implements EnumFactory<ObjectType> {
   }
 
   public String toCode(ObjectType code) {
-    if (code == ObjectType._1)
+       if (code == ObjectType.NULL)
+           return null;
+       if (code == ObjectType._1)
       return "1";
     if (code == ObjectType._2)
       return "2";
@@ -63,7 +65,7 @@ public class ObjectTypeEnumFactory implements EnumFactory<ObjectType> {
     if (code == ObjectType._4)
       return "4";
     return "?";
-  }
+   }
 
     public String toSystem(ObjectType code) {
       return code.getSystem();

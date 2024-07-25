@@ -154,14 +154,16 @@ public class MedicationStatement extends DomainResource {
         throw new FHIRException("Unknown MedicationStatementStatusCodes code '"+codeString+"'");
         }
     public String toCode(MedicationStatementStatusCodes code) {
-      if (code == MedicationStatementStatusCodes.RECORDED)
+       if (code == MedicationStatementStatusCodes.NULL)
+           return null;
+       if (code == MedicationStatementStatusCodes.RECORDED)
         return "recorded";
       if (code == MedicationStatementStatusCodes.ENTEREDINERROR)
         return "entered-in-error";
       if (code == MedicationStatementStatusCodes.DRAFT)
         return "draft";
       return "?";
-      }
+   }
     public String toSystem(MedicationStatementStatusCodes code) {
       return code.getSystem();
       }

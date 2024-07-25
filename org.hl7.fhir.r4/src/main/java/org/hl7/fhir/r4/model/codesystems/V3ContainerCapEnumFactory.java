@@ -56,7 +56,9 @@ public class V3ContainerCapEnumFactory implements EnumFactory<V3ContainerCap> {
   }
 
   public String toCode(V3ContainerCap code) {
-    if (code == V3ContainerCap._MEDICATIONCAP)
+       if (code == V3ContainerCap.NULL)
+           return null;
+       if (code == V3ContainerCap._MEDICATIONCAP)
       return "_MedicationCap";
     if (code == V3ContainerCap.CHILD)
       return "CHILD";
@@ -71,7 +73,7 @@ public class V3ContainerCapEnumFactory implements EnumFactory<V3ContainerCap> {
     if (code == V3ContainerCap.SCR)
       return "SCR";
     return "?";
-  }
+   }
 
   public String toSystem(V3ContainerCap code) {
     return code.getSystem();

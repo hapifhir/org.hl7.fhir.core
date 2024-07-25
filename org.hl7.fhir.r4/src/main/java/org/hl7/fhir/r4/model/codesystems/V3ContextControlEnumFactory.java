@@ -58,7 +58,9 @@ public class V3ContextControlEnumFactory implements EnumFactory<V3ContextControl
   }
 
   public String toCode(V3ContextControl code) {
-    if (code == V3ContextControl._CONTEXTCONTROLADDITIVE)
+       if (code == V3ContextControl.NULL)
+           return null;
+       if (code == V3ContextControl._CONTEXTCONTROLADDITIVE)
       return "_ContextControlAdditive";
     if (code == V3ContextControl.AN)
       return "AN";
@@ -75,7 +77,7 @@ public class V3ContextControlEnumFactory implements EnumFactory<V3ContextControl
     if (code == V3ContextControl._CONTEXTCONTROLPROPAGATING)
       return "_ContextControlPropagating";
     return "?";
-  }
+   }
 
   public String toSystem(V3ContextControl code) {
     return code.getSystem();

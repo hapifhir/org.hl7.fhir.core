@@ -50,7 +50,9 @@ public class ExDiagnosisOnAdmissionEnumFactory implements EnumFactory<ExDiagnosi
   }
 
   public String toCode(ExDiagnosisOnAdmission code) {
-    if (code == ExDiagnosisOnAdmission.Y)
+       if (code == ExDiagnosisOnAdmission.NULL)
+           return null;
+       if (code == ExDiagnosisOnAdmission.Y)
       return "y";
     if (code == ExDiagnosisOnAdmission.N)
       return "n";
@@ -59,7 +61,7 @@ public class ExDiagnosisOnAdmissionEnumFactory implements EnumFactory<ExDiagnosi
     if (code == ExDiagnosisOnAdmission.W)
       return "w";
     return "?";
-  }
+   }
 
   public String toSystem(ExDiagnosisOnAdmission code) {
     return code.getSystem();

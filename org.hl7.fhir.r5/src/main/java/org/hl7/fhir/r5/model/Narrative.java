@@ -167,7 +167,9 @@ public class Narrative extends BaseNarrative implements INarrative {
         throw new FHIRException("Unknown NarrativeStatus code '"+codeString+"'");
         }
     public String toCode(NarrativeStatus code) {
-      if (code == NarrativeStatus.GENERATED)
+       if (code == NarrativeStatus.NULL)
+           return null;
+       if (code == NarrativeStatus.GENERATED)
         return "generated";
       if (code == NarrativeStatus.EXTENSIONS)
         return "extensions";
@@ -176,7 +178,7 @@ public class Narrative extends BaseNarrative implements INarrative {
       if (code == NarrativeStatus.EMPTY)
         return "empty";
       return "?";
-      }
+   }
     public String toSystem(NarrativeStatus code) {
       return code.getSystem();
       }

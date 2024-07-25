@@ -60,7 +60,9 @@ public class DeviceSafetyEnumFactory implements EnumFactory<DeviceSafety> {
   }
 
   public String toCode(DeviceSafety code) {
-    if (code == DeviceSafety.CONTAINSLATEX)
+       if (code == DeviceSafety.NULL)
+           return null;
+       if (code == DeviceSafety.CONTAINSLATEX)
       return "contains-latex";
     if (code == DeviceSafety.LATEXFREE)
       return "latex-free";
@@ -75,7 +77,7 @@ public class DeviceSafetyEnumFactory implements EnumFactory<DeviceSafety> {
     if (code == DeviceSafety.MRUNKNOWN)
       return "mr-unknown";
     return "?";
-  }
+   }
 
     public String toSystem(DeviceSafety code) {
       return code.getSystem();

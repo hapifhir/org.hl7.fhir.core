@@ -50,12 +50,14 @@ public class OperationParameterUseEnumFactory implements EnumFactory<OperationPa
   }
 
   public String toCode(OperationParameterUse code) {
-    if (code == OperationParameterUse.IN)
+       if (code == OperationParameterUse.NULL)
+           return null;
+       if (code == OperationParameterUse.IN)
       return "in";
     if (code == OperationParameterUse.OUT)
       return "out";
     return "?";
-  }
+   }
 
     public String toSystem(OperationParameterUse code) {
       return code.getSystem();

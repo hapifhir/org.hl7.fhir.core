@@ -76,7 +76,9 @@ public class RestfulInteractionEnumFactory implements EnumFactory<RestfulInterac
   }
 
   public String toCode(RestfulInteraction code) {
-    if (code == RestfulInteraction.READ)
+       if (code == RestfulInteraction.NULL)
+           return null;
+       if (code == RestfulInteraction.READ)
       return "read";
     if (code == RestfulInteraction.VREAD)
       return "vread";
@@ -111,7 +113,7 @@ public class RestfulInteractionEnumFactory implements EnumFactory<RestfulInterac
     if (code == RestfulInteraction.OPERATION)
       return "operation";
     return "?";
-  }
+   }
 
   public String toSystem(RestfulInteraction code) {
     return code.getSystem();

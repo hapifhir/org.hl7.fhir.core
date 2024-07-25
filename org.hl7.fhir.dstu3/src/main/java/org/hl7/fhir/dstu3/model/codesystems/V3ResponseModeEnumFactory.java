@@ -52,14 +52,16 @@ public class V3ResponseModeEnumFactory implements EnumFactory<V3ResponseMode> {
   }
 
   public String toCode(V3ResponseMode code) {
-    if (code == V3ResponseMode.D)
+       if (code == V3ResponseMode.NULL)
+           return null;
+       if (code == V3ResponseMode.D)
       return "D";
     if (code == V3ResponseMode.I)
       return "I";
     if (code == V3ResponseMode.Q)
       return "Q";
     return "?";
-  }
+   }
 
     public String toSystem(V3ResponseMode code) {
       return code.getSystem();

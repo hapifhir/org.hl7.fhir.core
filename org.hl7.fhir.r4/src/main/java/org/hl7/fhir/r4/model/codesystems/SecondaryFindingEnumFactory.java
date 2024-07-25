@@ -46,12 +46,14 @@ public class SecondaryFindingEnumFactory implements EnumFactory<SecondaryFinding
   }
 
   public String toCode(SecondaryFinding code) {
-    if (code == SecondaryFinding.ACMGVERSION1)
+       if (code == SecondaryFinding.NULL)
+           return null;
+       if (code == SecondaryFinding.ACMGVERSION1)
       return "acmg-version1";
     if (code == SecondaryFinding.ACMGVERSION2)
       return "acmg-version2";
     return "?";
-  }
+   }
 
   public String toSystem(SecondaryFinding code) {
     return code.getSystem();

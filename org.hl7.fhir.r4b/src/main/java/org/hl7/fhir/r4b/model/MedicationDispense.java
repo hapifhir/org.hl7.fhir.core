@@ -298,7 +298,9 @@ public class MedicationDispense extends DomainResource {
     }
 
     public String toCode(MedicationDispenseStatusCodes code) {
-      if (code == MedicationDispenseStatusCodes.PREPARATION)
+       if (code == MedicationDispenseStatusCodes.NULL)
+           return null;
+       if (code == MedicationDispenseStatusCodes.PREPARATION)
         return "preparation";
       if (code == MedicationDispenseStatusCodes.INPROGRESS)
         return "in-progress";
@@ -317,7 +319,7 @@ public class MedicationDispense extends DomainResource {
       if (code == MedicationDispenseStatusCodes.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(MedicationDispenseStatusCodes code) {
       return code.getSystem();

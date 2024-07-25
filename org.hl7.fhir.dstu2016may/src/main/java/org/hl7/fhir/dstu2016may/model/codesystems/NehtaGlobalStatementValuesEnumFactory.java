@@ -48,14 +48,16 @@ public class NehtaGlobalStatementValuesEnumFactory implements EnumFactory<NehtaG
   }
 
   public String toCode(NehtaGlobalStatementValues code) {
-    if (code == NehtaGlobalStatementValues._01)
+       if (code == NehtaGlobalStatementValues.NULL)
+           return null;
+       if (code == NehtaGlobalStatementValues._01)
       return "01";
     if (code == NehtaGlobalStatementValues._02)
       return "02";
     if (code == NehtaGlobalStatementValues._03)
       return "03";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaGlobalStatementValues code) {
     return code.getSystem();

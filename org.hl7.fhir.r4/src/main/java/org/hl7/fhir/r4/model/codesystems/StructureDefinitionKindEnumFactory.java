@@ -50,7 +50,9 @@ public class StructureDefinitionKindEnumFactory implements EnumFactory<Structure
   }
 
   public String toCode(StructureDefinitionKind code) {
-    if (code == StructureDefinitionKind.PRIMITIVETYPE)
+       if (code == StructureDefinitionKind.NULL)
+           return null;
+       if (code == StructureDefinitionKind.PRIMITIVETYPE)
       return "primitive-type";
     if (code == StructureDefinitionKind.COMPLEXTYPE)
       return "complex-type";
@@ -59,7 +61,7 @@ public class StructureDefinitionKindEnumFactory implements EnumFactory<Structure
     if (code == StructureDefinitionKind.LOGICAL)
       return "logical";
     return "?";
-  }
+   }
 
   public String toSystem(StructureDefinitionKind code) {
     return code.getSystem();

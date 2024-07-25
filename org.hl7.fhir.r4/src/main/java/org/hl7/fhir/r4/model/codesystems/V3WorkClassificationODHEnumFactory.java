@@ -60,7 +60,9 @@ public class V3WorkClassificationODHEnumFactory implements EnumFactory<V3WorkCla
   }
 
   public String toCode(V3WorkClassificationODH code) {
-    if (code == V3WorkClassificationODH.PWAF)
+       if (code == V3WorkClassificationODH.NULL)
+           return null;
+       if (code == V3WorkClassificationODH.PWAF)
       return "PWAF";
     if (code == V3WorkClassificationODH.PWFG)
       return "PWFG";
@@ -79,7 +81,7 @@ public class V3WorkClassificationODHEnumFactory implements EnumFactory<V3WorkCla
     if (code == V3WorkClassificationODH.VW)
       return "VW";
     return "?";
-  }
+   }
 
   public String toSystem(V3WorkClassificationODH code) {
     return code.getSystem();

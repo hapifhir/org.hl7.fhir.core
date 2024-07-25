@@ -50,7 +50,9 @@ public class V3IdentifierScopeEnumFactory implements EnumFactory<V3IdentifierSco
   }
 
   public String toCode(V3IdentifierScope code) {
-    if (code == V3IdentifierScope.BUSN)
+       if (code == V3IdentifierScope.NULL)
+           return null;
+       if (code == V3IdentifierScope.BUSN)
       return "BUSN";
     if (code == V3IdentifierScope.OBJ)
       return "OBJ";
@@ -59,7 +61,7 @@ public class V3IdentifierScopeEnumFactory implements EnumFactory<V3IdentifierSco
     if (code == V3IdentifierScope.VW)
       return "VW";
     return "?";
-  }
+   }
 
   public String toSystem(V3IdentifierScope code) {
     return code.getSystem();

@@ -48,14 +48,16 @@ public class HspcPractitionerTelecomSystemEnumFactory implements EnumFactory<Hsp
   }
 
   public String toCode(HspcPractitionerTelecomSystem code) {
-    if (code == HspcPractitionerTelecomSystem.FAX)
+       if (code == HspcPractitionerTelecomSystem.NULL)
+           return null;
+       if (code == HspcPractitionerTelecomSystem.FAX)
       return "fax";
     if (code == HspcPractitionerTelecomSystem.EMAIL)
       return "email";
     if (code == HspcPractitionerTelecomSystem.PHONE)
       return "phone";
     return "?";
-  }
+   }
 
   public String toSystem(HspcPractitionerTelecomSystem code) {
     return code.getSystem();

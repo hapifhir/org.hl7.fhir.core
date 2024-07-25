@@ -54,7 +54,9 @@ public class EnrollmentrequestStatusEnumFactory implements EnumFactory<Enrollmen
   }
 
   public String toCode(EnrollmentrequestStatus code) {
-    if (code == EnrollmentrequestStatus.ACTIVE)
+       if (code == EnrollmentrequestStatus.NULL)
+           return null;
+       if (code == EnrollmentrequestStatus.ACTIVE)
       return "active";
     if (code == EnrollmentrequestStatus.CANCELLED)
       return "cancelled";
@@ -63,7 +65,7 @@ public class EnrollmentrequestStatusEnumFactory implements EnumFactory<Enrollmen
     if (code == EnrollmentrequestStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(EnrollmentrequestStatus code) {
       return code.getSystem();

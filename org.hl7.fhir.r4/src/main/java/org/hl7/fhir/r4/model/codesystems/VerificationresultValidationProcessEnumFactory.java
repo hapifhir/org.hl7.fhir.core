@@ -55,7 +55,9 @@ public class VerificationresultValidationProcessEnumFactory
   }
 
   public String toCode(VerificationresultValidationProcess code) {
-    if (code == VerificationresultValidationProcess.EDITCHECK)
+       if (code == VerificationresultValidationProcess.NULL)
+           return null;
+       if (code == VerificationresultValidationProcess.EDITCHECK)
       return "edit-check";
     if (code == VerificationresultValidationProcess.VALUESET)
       return "valueset";
@@ -68,7 +70,7 @@ public class VerificationresultValidationProcessEnumFactory
     if (code == VerificationresultValidationProcess.INCONTEXT)
       return "in-context";
     return "?";
-  }
+   }
 
   public String toSystem(VerificationresultValidationProcess code) {
     return code.getSystem();

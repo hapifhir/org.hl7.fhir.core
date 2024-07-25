@@ -54,7 +54,9 @@ public class ImmunizationOriginEnumFactory implements EnumFactory<ImmunizationOr
   }
 
   public String toCode(ImmunizationOrigin code) {
-    if (code == ImmunizationOrigin.PROVIDER)
+       if (code == ImmunizationOrigin.NULL)
+           return null;
+       if (code == ImmunizationOrigin.PROVIDER)
       return "provider";
     if (code == ImmunizationOrigin.RECORD)
       return "record";
@@ -63,7 +65,7 @@ public class ImmunizationOriginEnumFactory implements EnumFactory<ImmunizationOr
     if (code == ImmunizationOrigin.SCHOOL)
       return "school";
     return "?";
-  }
+   }
 
     public String toSystem(ImmunizationOrigin code) {
       return code.getSystem();

@@ -64,7 +64,9 @@ public class MeasurePopulationEnumFactory implements EnumFactory<MeasurePopulati
   }
 
   public String toCode(MeasurePopulation code) {
-    if (code == MeasurePopulation.INITIALPOPULATION)
+       if (code == MeasurePopulation.NULL)
+           return null;
+       if (code == MeasurePopulation.INITIALPOPULATION)
       return "initial-population";
     if (code == MeasurePopulation.NUMERATOR)
       return "numerator";
@@ -83,7 +85,7 @@ public class MeasurePopulationEnumFactory implements EnumFactory<MeasurePopulati
     if (code == MeasurePopulation.MEASUREOBSERVATION)
       return "measure-observation";
     return "?";
-  }
+   }
 
     public String toSystem(MeasurePopulation code) {
       return code.getSystem();
