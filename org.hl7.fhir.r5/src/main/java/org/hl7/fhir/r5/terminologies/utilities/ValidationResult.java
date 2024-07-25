@@ -355,21 +355,56 @@ public class ValidationResult {
     this.server = server;
   }
 
-  public boolean equals(Object other) {
-    if (other instanceof ValidationResult) {
-      ValidationResult otherValidationResult = (ValidationResult) other;
-      if (!Objects.equals(this.system, otherValidationResult.system)) {
-        return false;
-      }
-      if (!Objects.equals(this.version, otherValidationResult.version)) {
-        return false;
-      }
-      if (!Objects.equals(this.preferredDisplay, otherValidationResult.preferredDisplay)) {
-        return false;
-      }
-      if (!Objects.equals(this.severity, otherValidationResult.severity)) {
-        return false;
-      }
+  public boolean equals(Object otherObject) {
+    if (!(otherObject instanceof ValidationResult)) {
+      return false;
+    }
+
+    ValidationResult other = (ValidationResult) otherObject;
+    if (!Objects.equals(this.system, other.system)) {
+      return false;
+    }
+    if (!Objects.equals(this.version, other.version)) {
+      return false;
+    }
+    if (!Objects.equals(this.preferredDisplay, other.preferredDisplay)) {
+      return false;
+    }
+    if (!Objects.equals(this.severity, other.severity)) {
+      return false;
+    }
+    if (!Objects.equals(this.definition, other.definition)) {
+      return false;
+    }
+    if (!Objects.equals(this.messages, other.messages)) {
+      return false;
+    }
+    if (!Objects.equals(this.errorClass, other.errorClass)) {
+      return false;
+    }
+    if (!Objects.equals(this.txLink, other.txLink)) {
+      return false;
+    }
+    if (!Objects.equals(this.diagnostics, other.diagnostics)) {
+      return false;
+    }
+    if (!Objects.equals(this.issues, other.issues)) {
+      return false;
+    }
+    if (!Objects.equals(this.codeableConcept, other.codeableConcept)) {
+      return false;
+    }
+    if (!Objects.equals(this.unknownSystems, other.unknownSystems)) {
+      return false;
+    }
+    if (this.inactive != other.inactive) {
+      return false;
+    }
+    if (!Objects.equals(this.status, other.status)) {
+      return false;
+    }
+    if (!Objects.equals(this.server, other.server)) {
+      return false;
     }
     return true;
   }
