@@ -3868,9 +3868,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       boolean rok = (allowExamples && (ref.contains("example.org") || ref.contains("acme.com")))
         || (we != null || pol == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS);
-      if (!rok) { 
-        DebugUtilities.breakpoint();
-      } 
       ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, rok, I18nConstants.REFERENCE_REF_CANTRESOLVE, ref) && ok;
     }
 
