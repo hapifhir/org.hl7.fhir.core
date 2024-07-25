@@ -1566,7 +1566,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (cachingAllowed) {
       res = txCache.getValidation(cacheToken);
       if (res != null) {
-        return res;
+        return new ValidationResult(res);
       }
     }
     for (Coding c : code.getCoding()) {

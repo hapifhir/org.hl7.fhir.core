@@ -20,7 +20,6 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import net.sourceforge.plantuml.tim.stdlib.GetVariableValue;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
@@ -32,7 +31,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -121,7 +119,9 @@ public class BaseWorkerContextTests {
   @Mock
   TerminologyCache.CacheToken cacheToken;
 
-  ValidationResult expectedValidationResult = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyMessage", List.of());
+  ValidationResult cachedValidationResult = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyMessageForCached", List.of());
+
+  ValidationResult createdValidationResult = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyMessageForCreated", List.of());
 
   @Mock
   ValueSetExpansionOutcome expectedExpansionResult;
@@ -154,7 +154,7 @@ public class BaseWorkerContextTests {
     pInWithDependentResources.addParameter("incomplete-ok", true);
   }
 
-  public class ValueSetMatcher implements ArgumentMatcher<ValueSet> {
+  public static class ValueSetMatcher implements ArgumentMatcher<ValueSet> {
 
     private ValueSet left;
 
@@ -169,7 +169,7 @@ public class BaseWorkerContextTests {
     }
   }
 
-  public class CodingMatcher implements ArgumentMatcher<Coding> {
+  public static class CodingMatcher implements ArgumentMatcher<Coding> {
     final private Coding left;
 
     CodingMatcher(Coding left) { this.left = left; }
@@ -179,7 +179,7 @@ public class BaseWorkerContextTests {
     }
   }
 
-  public class ParametersMatcher implements ArgumentMatcher<Parameters> {
+  public static class ParametersMatcher implements ArgumentMatcher<Parameters> {
     final private Parameters left;
 
     ParametersMatcher(Parameters left) {
@@ -192,7 +192,7 @@ public class BaseWorkerContextTests {
     }
   }
 
-  public class TerminologyClientContextMatcher implements ArgumentMatcher<TerminologyClientContext> {
+  public static class TerminologyClientContextMatcher implements ArgumentMatcher<TerminologyClientContext> {
 
     final private TerminologyClientContext left;
 
@@ -324,13 +324,14 @@ public class BaseWorkerContextTests {
     Coding coding = new Coding();
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters);
-    Mockito.doReturn(expectedValidationResult).when(terminologyCache).getValidation(cacheToken);
+    Mockito.doReturn(cachedValidationResult).when(terminologyCache).getValidation(cacheToken);
 
     ValidationContextCarrier ctxt = mock(ValidationContextCarrier.class);
 
     ValidationResult actualValidationResult = context.validateCode(validationOptions, coding, valueSet, ctxt);
 
-    assertEquals(expectedValidationResult, actualValidationResult);
+    assertNotSame(cachedValidationResult, actualValidationResult);
+    assertEquals(cachedValidationResult, actualValidationResult);
 
     Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("Coding", coding);
     Mockito.verify(terminologyCache).getValidation(cacheToken);
@@ -343,21 +344,21 @@ public class BaseWorkerContextTests {
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
 
-
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters);
 
     Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), any(), any());
-    Mockito.doReturn(expectedValidationResult).when(valueSetCheckerSimple).validateCode(eq("Coding"), any(Coding.class));
+    Mockito.doReturn(createdValidationResult).when(valueSetCheckerSimple).validateCode(eq("Coding"), any(Coding.class));
 
     ValidationContextCarrier ctxt = mock(ValidationContextCarrier.class);
 
     ValidationResult actualValidationResult = context.validateCode(validationOptions, coding, valueSet, ctxt);
 
-    assertSame(expectedValidationResult, actualValidationResult);
+    assertSame(createdValidationResult, actualValidationResult);
 
     Mockito.verify(valueSetCheckerSimple).validateCode(eq("Coding"), argThat(new CodingMatcher(coding)));
     Mockito.verify(terminologyCache).getValidation(cacheToken);
-    Mockito.verify(terminologyCache).cacheValidation(cacheToken, expectedValidationResult,false);
+    Mockito.verify(terminologyCache).cacheValidation(eq(cacheToken), same(createdValidationResult),eq(false));
+
   }
 
 
@@ -372,17 +373,17 @@ public class BaseWorkerContextTests {
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
-    Mockito.doReturn(expectedValidationResult).when(context).validateOnServer(terminologyClientContext, valueSet, pIn, validationOptions);
+    Mockito.doReturn(createdValidationResult).when(context).validateOnServer(terminologyClientContext, valueSet, pIn, validationOptions);
 
     ValidationContextCarrier ctxt = mock(ValidationContextCarrier.class);
 
     ValidationResult actualValidationResult = context.validateCode(validationOptions, coding, valueSet, ctxt);
 
-    assertEquals(expectedValidationResult, actualValidationResult);
+    assertSame(createdValidationResult, actualValidationResult);
 
     Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("Coding", coding);
     Mockito.verify(terminologyCache).getValidation(cacheToken);
-    Mockito.verify(terminologyCache).cacheValidation(cacheToken, expectedValidationResult,true);
+    Mockito.verify(terminologyCache).cacheValidation(eq(cacheToken), same(createdValidationResult),eq(true));
   }
 
   @Test
@@ -391,10 +392,11 @@ public class BaseWorkerContextTests {
     ValueSet valueSet = new ValueSet();
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters);
-    Mockito.doReturn(expectedValidationResult).when(terminologyCache).getValidation(cacheToken);
+    Mockito.doReturn(cachedValidationResult).when(terminologyCache).getValidation(cacheToken);
 
     ValidationResult actualValidationResult = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
-    assertEquals(expectedValidationResult, actualValidationResult);
+    assertNotSame(cachedValidationResult, actualValidationResult);
+    assertEquals(cachedValidationResult, actualValidationResult);
 
     Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("CodeableConcept", codeableConcept);
     Mockito.verify(terminologyCache).getValidation(cacheToken);
@@ -404,7 +406,7 @@ public class BaseWorkerContextTests {
   @Test
   public void testValidateCodableConceptWithValueSetChecker() throws IOException {
     Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), any());
-    Mockito.doReturn(expectedValidationResult).when(valueSetCheckerSimple).validateCode(eq("CodeableConcept"),any(CodeableConcept.class));
+    Mockito.doReturn(createdValidationResult).when(valueSetCheckerSimple).validateCode(eq("CodeableConcept"),any(CodeableConcept.class));
 
     CodeableConcept codeableConcept = new CodeableConcept();
     ValueSet valueSet = new ValueSet();
@@ -412,10 +414,10 @@ public class BaseWorkerContextTests {
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters);
 
     ValidationResult validationResultB = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
-    assertEquals(expectedValidationResult, validationResultB);
+    assertSame(createdValidationResult, validationResultB);
 
     Mockito.verify(valueSetCheckerSimple).validateCode("CodeableConcept", codeableConcept);
-    Mockito.verify(terminologyCache).cacheValidation(cacheToken, expectedValidationResult, false);
+    Mockito.verify(terminologyCache).cacheValidation(eq(cacheToken), same(createdValidationResult), eq(false));
     Mockito.verify(context, times(0)).validateOnServer(any(), any(), any(), any());
   }
 
@@ -431,16 +433,16 @@ public class BaseWorkerContextTests {
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
-    Mockito.doReturn(expectedValidationResult).when(context).validateOnServer(terminologyClientContext, valueSet, pIn, validationOptions);
+    Mockito.doReturn(createdValidationResult).when(context).validateOnServer(terminologyClientContext, valueSet, pIn, validationOptions);
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, codeableConcept, valueSet, expParameters);
 
     ValidationResult validationResultB = context.validateCode(validationOptions, codeableConcept, valueSet);
 
-    assertEquals(expectedValidationResult, validationResultB);
+    assertSame(createdValidationResult, validationResultB);
 
     Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("CodeableConcept", codeableConcept);
-    Mockito.verify(terminologyCache).cacheValidation(cacheToken, expectedValidationResult, true);
+    Mockito.verify(terminologyCache).cacheValidation(eq(cacheToken), same(createdValidationResult), eq(true));
     Mockito.verify(context).validateOnServer(terminologyClientContext, valueSet, pIn, validationOptions);
   }
 
@@ -460,7 +462,7 @@ public class BaseWorkerContextTests {
 
     ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true, false);
 
-    assertEquals(expectedExpansionResult, actualExpansionResult);
+    assertSame(expectedExpansionResult, actualExpansionResult);
 
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
     Mockito.verify(terminologyCache, times(0)).cacheExpansion(any(), any(), anyBoolean());
@@ -482,11 +484,9 @@ public class BaseWorkerContextTests {
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
-
     Mockito.doReturn(expParameters).when(context).constructParameters(argThat(new TerminologyClientContextMatcher(terminologyClientContext)),argThat(new ValueSetMatcher(vs)), eq(true));
 
     ValueSet expectedValueSet = new ValueSet();
-
 
     Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(argThat(new ValueSetMatcher(vs)),
       argThat(new ParametersMatcher(pInWithDependentResources)));
@@ -519,7 +519,7 @@ public class BaseWorkerContextTests {
     Mockito.verify(terminologyClient, times(0)).expandValueset(any(), any());
   }
 
-  private class ValidationOptionsFhirPublicationMatcher implements ArgumentMatcher<ValidationOptions> {
+  private static class ValidationOptionsFhirPublicationMatcher implements ArgumentMatcher<ValidationOptions> {
 
     final FhirPublication fhirPublication;
 
