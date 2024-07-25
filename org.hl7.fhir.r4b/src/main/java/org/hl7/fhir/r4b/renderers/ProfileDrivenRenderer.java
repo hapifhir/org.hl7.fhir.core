@@ -239,9 +239,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       XhtmlNode div = res.getNarrative();
       if (div != null) {
         if (div.allChildrenAreText())
-          x.getChildNodes().addAll(div.getChildNodes());
+          x.addChildNodes(div.getChildNodes());
         if (div.getChildNodes().size() == 1 && div.getChildNodes().get(0).allChildrenAreText())
-          x.getChildNodes().addAll(div.getChildNodes().get(0).getChildNodes());
+          x.addChildNodes(div.getChildNodes().get(0).getChildNodes());
       }
       x.tx("Generated Summary: ");
     }
