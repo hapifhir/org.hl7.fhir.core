@@ -31,6 +31,7 @@ import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,8 +65,7 @@ public class SimpleWorkerContextTests {
   @Mock
   TerminologyCache.CacheToken cacheToken;
 
-  @Mock
-  ValidationResult expectedValidationResult;
+  ValidationResult expectedValidationResult = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyMessage", List.of());
 
   @Mock
   ValueSetExpansionOutcome expectedExpansionResult;
@@ -186,6 +186,7 @@ public class SimpleWorkerContextTests {
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
 
+
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters);
 
     Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), any(), any());
@@ -195,7 +196,7 @@ public class SimpleWorkerContextTests {
 
     ValidationResult actualValidationResult = context.validateCode(validationOptions, coding, valueSet, ctxt);
 
-    assertEquals(expectedValidationResult, actualValidationResult);
+    assertSame(expectedValidationResult, actualValidationResult);
 
     Mockito.verify(valueSetCheckerSimple).validateCode(eq("Coding"), argThat(new CodingMatcher(coding)));
     Mockito.verify(terminologyCache).getValidation(cacheToken);

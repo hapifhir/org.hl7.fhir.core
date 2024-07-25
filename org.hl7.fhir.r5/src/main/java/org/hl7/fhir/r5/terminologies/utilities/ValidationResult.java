@@ -38,12 +38,16 @@ public class ValidationResult {
     this.system = validationResult.system;
     this.version = validationResult.version;
     this.severity = validationResult.severity;
-    this.messages.addAll(validationResult.messages);
+    if (validationResult.messages != null) {
+      this.messages.addAll(validationResult.messages);
+    }
     this.errorClass = validationResult.errorClass;
     this.txLink = validationResult.txLink;
     this.diagnostics = validationResult.diagnostics;
-    for (OperationOutcomeIssueComponent issue : validationResult.issues) {
-      this.issues.add(issue.copy());
+    if (validationResult.issues != null) {
+      for (OperationOutcomeIssueComponent issue : validationResult.issues) {
+        this.issues.add(issue.copy());
+      }
     }
     this.codeableConcept = validationResult.codeableConcept == null ? null : validationResult.codeableConcept.copy();
     this.unknownSystems = validationResult.unknownSystems == null ? null : new HashSet<>(validationResult.unknownSystems);
@@ -351,4 +355,22 @@ public class ValidationResult {
     this.server = server;
   }
 
+  public boolean equals(Object other) {
+    if (other instanceof ValidationResult) {
+      ValidationResult otherValidationResult = (ValidationResult) other;
+      if (!Objects.equals(this.system, otherValidationResult.system)) {
+        return false;
+      }
+      if (!Objects.equals(this.version, otherValidationResult.version)) {
+        return false;
+      }
+      if (!Objects.equals(this.preferredDisplay, otherValidationResult.preferredDisplay)) {
+        return false;
+      }
+      if (!Objects.equals(this.severity, otherValidationResult.severity)) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
