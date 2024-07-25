@@ -149,9 +149,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
     List<Object[]> objects = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
-      if (id.contains("observation-triglyceride-good")) {
         objects.add(new Object[]{id, examples.get(id)});
-      }
     }
     return objects;
   }
