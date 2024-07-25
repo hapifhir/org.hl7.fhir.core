@@ -50,7 +50,9 @@ public class HistoryStatusEnumFactory implements EnumFactory<HistoryStatus> {
   }
 
   public String toCode(HistoryStatus code) {
-    if (code == HistoryStatus.PARTIAL)
+       if (code == HistoryStatus.NULL)
+           return null;
+       if (code == HistoryStatus.PARTIAL)
       return "partial";
     if (code == HistoryStatus.COMPLETED)
       return "completed";
@@ -59,7 +61,7 @@ public class HistoryStatusEnumFactory implements EnumFactory<HistoryStatus> {
     if (code == HistoryStatus.HEALTHUNKNOWN)
       return "health-unknown";
     return "?";
-  }
+   }
 
   public String toSystem(HistoryStatus code) {
     return code.getSystem();

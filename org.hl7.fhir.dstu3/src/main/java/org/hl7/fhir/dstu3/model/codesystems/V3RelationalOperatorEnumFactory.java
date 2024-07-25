@@ -62,7 +62,9 @@ public class V3RelationalOperatorEnumFactory implements EnumFactory<V3Relational
   }
 
   public String toCode(V3RelationalOperator code) {
-    if (code == V3RelationalOperator.CT)
+       if (code == V3RelationalOperator.NULL)
+           return null;
+       if (code == V3RelationalOperator.CT)
       return "CT";
     if (code == V3RelationalOperator.EQ)
       return "EQ";
@@ -79,7 +81,7 @@ public class V3RelationalOperatorEnumFactory implements EnumFactory<V3Relational
     if (code == V3RelationalOperator.NE)
       return "NE";
     return "?";
-  }
+   }
 
     public String toSystem(V3RelationalOperator code) {
       return code.getSystem();

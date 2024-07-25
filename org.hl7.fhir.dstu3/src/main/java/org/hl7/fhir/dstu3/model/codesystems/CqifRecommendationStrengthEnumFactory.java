@@ -50,12 +50,14 @@ public class CqifRecommendationStrengthEnumFactory implements EnumFactory<CqifRe
   }
 
   public String toCode(CqifRecommendationStrength code) {
-    if (code == CqifRecommendationStrength.STRONG)
+       if (code == CqifRecommendationStrength.NULL)
+           return null;
+       if (code == CqifRecommendationStrength.STRONG)
       return "strong";
     if (code == CqifRecommendationStrength.WEAK)
       return "weak";
     return "?";
-  }
+   }
 
     public String toSystem(CqifRecommendationStrength code) {
       return code.getSystem();

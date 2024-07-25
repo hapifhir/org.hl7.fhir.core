@@ -50,7 +50,9 @@ public class AnimalBreedsEnumFactory implements EnumFactory<AnimalBreeds> {
   }
 
   public String toCode(AnimalBreeds code) {
-    if (code == AnimalBreeds.GSD)
+       if (code == AnimalBreeds.NULL)
+           return null;
+       if (code == AnimalBreeds.GSD)
       return "gsd";
     if (code == AnimalBreeds.IRT)
       return "irt";
@@ -59,7 +61,7 @@ public class AnimalBreedsEnumFactory implements EnumFactory<AnimalBreeds> {
     if (code == AnimalBreeds.GRET)
       return "gret";
     return "?";
-  }
+   }
 
   public String toSystem(AnimalBreeds code) {
     return code.getSystem();

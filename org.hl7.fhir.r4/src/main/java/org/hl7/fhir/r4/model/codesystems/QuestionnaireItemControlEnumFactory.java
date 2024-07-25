@@ -92,7 +92,9 @@ public class QuestionnaireItemControlEnumFactory implements EnumFactory<Question
   }
 
   public String toCode(QuestionnaireItemControl code) {
-    if (code == QuestionnaireItemControl.GROUP)
+       if (code == QuestionnaireItemControl.NULL)
+           return null;
+       if (code == QuestionnaireItemControl.GROUP)
       return "group";
     if (code == QuestionnaireItemControl.LIST)
       return "list";
@@ -143,7 +145,7 @@ public class QuestionnaireItemControlEnumFactory implements EnumFactory<Question
     if (code == QuestionnaireItemControl.TEXTBOX)
       return "text-box";
     return "?";
-  }
+   }
 
   public String toSystem(QuestionnaireItemControl code) {
     return code.getSystem();

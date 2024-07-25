@@ -46,12 +46,14 @@ public class LocationModeEnumFactory implements EnumFactory<LocationMode> {
   }
 
   public String toCode(LocationMode code) {
-    if (code == LocationMode.INSTANCE)
+       if (code == LocationMode.NULL)
+           return null;
+       if (code == LocationMode.INSTANCE)
       return "instance";
     if (code == LocationMode.KIND)
       return "kind";
     return "?";
-  }
+   }
 
   public String toSystem(LocationMode code) {
     return code.getSystem();

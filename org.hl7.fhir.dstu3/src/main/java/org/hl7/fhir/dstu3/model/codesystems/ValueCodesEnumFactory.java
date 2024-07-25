@@ -50,12 +50,14 @@ public class ValueCodesEnumFactory implements EnumFactory<ValueCodes> {
   }
 
   public String toCode(ValueCodes code) {
-    if (code == ValueCodes._1001)
+       if (code == ValueCodes.NULL)
+           return null;
+       if (code == ValueCodes._1001)
       return "1001";
     if (code == ValueCodes._1002)
       return "1002";
     return "?";
-  }
+   }
 
     public String toSystem(ValueCodes code) {
       return code.getSystem();

@@ -62,7 +62,9 @@ public class EncounterAdmitSourceEnumFactory implements EnumFactory<EncounterAdm
   }
 
   public String toCode(EncounterAdmitSource code) {
-    if (code == EncounterAdmitSource.HOSPTRANS)
+       if (code == EncounterAdmitSource.NULL)
+           return null;
+       if (code == EncounterAdmitSource.HOSPTRANS)
       return "hosp-trans";
     if (code == EncounterAdmitSource.EMD)
       return "emd";
@@ -83,7 +85,7 @@ public class EncounterAdmitSourceEnumFactory implements EnumFactory<EncounterAdm
     if (code == EncounterAdmitSource.OTHER)
       return "other";
     return "?";
-  }
+   }
 
   public String toSystem(EncounterAdmitSource code) {
     return code.getSystem();

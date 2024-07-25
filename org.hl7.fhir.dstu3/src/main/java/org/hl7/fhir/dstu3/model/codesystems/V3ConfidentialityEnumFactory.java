@@ -86,7 +86,9 @@ public class V3ConfidentialityEnumFactory implements EnumFactory<V3Confidentiali
   }
 
   public String toCode(V3Confidentiality code) {
-    if (code == V3Confidentiality._CONFIDENTIALITY)
+       if (code == V3Confidentiality.NULL)
+           return null;
+       if (code == V3Confidentiality._CONFIDENTIALITY)
       return "_Confidentiality";
     if (code == V3Confidentiality.L)
       return "L";
@@ -127,7 +129,7 @@ public class V3ConfidentialityEnumFactory implements EnumFactory<V3Confidentiali
     if (code == V3Confidentiality.T)
       return "T";
     return "?";
-  }
+   }
 
     public String toSystem(V3Confidentiality code) {
       return code.getSystem();

@@ -52,7 +52,9 @@ public class V3ExposureModeEnumFactory implements EnumFactory<V3ExposureMode> {
   }
 
   public String toCode(V3ExposureMode code) {
-    if (code == V3ExposureMode._EXPOSUREMODE)
+       if (code == V3ExposureMode.NULL)
+           return null;
+       if (code == V3ExposureMode._EXPOSUREMODE)
       return "_ExposureMode";
     if (code == V3ExposureMode.AIRBORNE)
       return "AIRBORNE";
@@ -63,7 +65,7 @@ public class V3ExposureModeEnumFactory implements EnumFactory<V3ExposureMode> {
     if (code == V3ExposureMode.WATERBORNE)
       return "WATERBORNE";
     return "?";
-  }
+   }
 
   public String toSystem(V3ExposureMode code) {
     return code.getSystem();

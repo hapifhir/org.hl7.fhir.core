@@ -164,12 +164,14 @@ public class AdverseEvent extends DomainResource {
     }
 
     public String toCode(AdverseEventActuality code) {
-      if (code == AdverseEventActuality.ACTUAL)
+       if (code == AdverseEventActuality.NULL)
+           return null;
+       if (code == AdverseEventActuality.ACTUAL)
         return "actual";
       if (code == AdverseEventActuality.POTENTIAL)
         return "potential";
       return "?";
-    }
+   }
 
     public String toSystem(AdverseEventActuality code) {
       return code.getSystem();

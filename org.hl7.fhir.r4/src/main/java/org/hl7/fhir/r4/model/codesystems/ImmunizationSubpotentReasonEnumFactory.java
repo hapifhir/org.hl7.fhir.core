@@ -48,14 +48,16 @@ public class ImmunizationSubpotentReasonEnumFactory implements EnumFactory<Immun
   }
 
   public String toCode(ImmunizationSubpotentReason code) {
-    if (code == ImmunizationSubpotentReason.PARTIAL)
+       if (code == ImmunizationSubpotentReason.NULL)
+           return null;
+       if (code == ImmunizationSubpotentReason.PARTIAL)
       return "partial";
     if (code == ImmunizationSubpotentReason.COLDCHAINBREAK)
       return "coldchainbreak";
     if (code == ImmunizationSubpotentReason.RECALL)
       return "recall";
     return "?";
-  }
+   }
 
   public String toSystem(ImmunizationSubpotentReason code) {
     return code.getSystem();

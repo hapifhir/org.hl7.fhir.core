@@ -231,7 +231,9 @@ public class GuidanceResponse extends DomainResource {
     }
 
     public String toCode(GuidanceResponseStatus code) {
-      if (code == GuidanceResponseStatus.SUCCESS)
+       if (code == GuidanceResponseStatus.NULL)
+           return null;
+       if (code == GuidanceResponseStatus.SUCCESS)
         return "success";
       if (code == GuidanceResponseStatus.DATAREQUESTED)
         return "data-requested";
@@ -244,7 +246,7 @@ public class GuidanceResponse extends DomainResource {
       if (code == GuidanceResponseStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(GuidanceResponseStatus code) {
       return code.getSystem();

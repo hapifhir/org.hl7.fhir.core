@@ -52,7 +52,9 @@ public class ImmunizationRecommendationStatusEnumFactory implements EnumFactory<
   }
 
   public String toCode(ImmunizationRecommendationStatus code) {
-    if (code == ImmunizationRecommendationStatus.DUE)
+       if (code == ImmunizationRecommendationStatus.NULL)
+           return null;
+       if (code == ImmunizationRecommendationStatus.DUE)
       return "due";
     if (code == ImmunizationRecommendationStatus.OVERDUE)
       return "overdue";
@@ -63,7 +65,7 @@ public class ImmunizationRecommendationStatusEnumFactory implements EnumFactory<
     if (code == ImmunizationRecommendationStatus.COMPLETE)
       return "complete";
     return "?";
-  }
+   }
 
   public String toSystem(ImmunizationRecommendationStatus code) {
     return code.getSystem();

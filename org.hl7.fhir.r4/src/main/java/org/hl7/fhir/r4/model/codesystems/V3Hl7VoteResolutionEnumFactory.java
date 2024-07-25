@@ -68,7 +68,9 @@ public class V3Hl7VoteResolutionEnumFactory implements EnumFactory<V3Hl7VoteReso
   }
 
   public String toCode(V3Hl7VoteResolution code) {
-    if (code == V3Hl7VoteResolution.AFFIRMATIVERESOLUTION)
+       if (code == V3Hl7VoteResolution.NULL)
+           return null;
+       if (code == V3Hl7VoteResolution.AFFIRMATIVERESOLUTION)
       return "affirmativeResolution";
     if (code == V3Hl7VoteResolution.AFFDEF)
       return "affdef";
@@ -95,7 +97,7 @@ public class V3Hl7VoteResolutionEnumFactory implements EnumFactory<V3Hl7VoteReso
     if (code == V3Hl7VoteResolution.WITHDRAW)
       return "withdraw";
     return "?";
-  }
+   }
 
   public String toSystem(V3Hl7VoteResolution code) {
     return code.getSystem();

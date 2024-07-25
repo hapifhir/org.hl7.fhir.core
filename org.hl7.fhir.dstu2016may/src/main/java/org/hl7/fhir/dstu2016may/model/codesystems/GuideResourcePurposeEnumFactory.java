@@ -54,7 +54,9 @@ public class GuideResourcePurposeEnumFactory implements EnumFactory<GuideResourc
   }
 
   public String toCode(GuideResourcePurpose code) {
-    if (code == GuideResourcePurpose.EXAMPLE)
+       if (code == GuideResourcePurpose.NULL)
+           return null;
+       if (code == GuideResourcePurpose.EXAMPLE)
       return "example";
     if (code == GuideResourcePurpose.TERMINOLOGY)
       return "terminology";
@@ -67,7 +69,7 @@ public class GuideResourcePurposeEnumFactory implements EnumFactory<GuideResourc
     if (code == GuideResourcePurpose.LOGICAL)
       return "logical";
     return "?";
-  }
+   }
 
   public String toSystem(GuideResourcePurpose code) {
     return code.getSystem();

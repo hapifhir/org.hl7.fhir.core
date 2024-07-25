@@ -58,7 +58,9 @@ public class ResearchStudyStatusEnumFactory implements EnumFactory<ResearchStudy
   }
 
   public String toCode(ResearchStudyStatus code) {
-    if (code == ResearchStudyStatus.DRAFT)
+       if (code == ResearchStudyStatus.NULL)
+           return null;
+       if (code == ResearchStudyStatus.DRAFT)
       return "draft";
     if (code == ResearchStudyStatus.INPROGRESS)
       return "in-progress";
@@ -71,7 +73,7 @@ public class ResearchStudyStatusEnumFactory implements EnumFactory<ResearchStudy
     if (code == ResearchStudyStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(ResearchStudyStatus code) {
       return code.getSystem();

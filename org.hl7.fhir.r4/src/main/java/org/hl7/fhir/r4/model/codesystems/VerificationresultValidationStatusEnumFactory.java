@@ -48,14 +48,16 @@ public class VerificationresultValidationStatusEnumFactory implements EnumFactor
   }
 
   public String toCode(VerificationresultValidationStatus code) {
-    if (code == VerificationresultValidationStatus.SUCCESSFUL)
+       if (code == VerificationresultValidationStatus.NULL)
+           return null;
+       if (code == VerificationresultValidationStatus.SUCCESSFUL)
       return "successful";
     if (code == VerificationresultValidationStatus.FAILED)
       return "failed";
     if (code == VerificationresultValidationStatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
   public String toSystem(VerificationresultValidationStatus code) {
     return code.getSystem();

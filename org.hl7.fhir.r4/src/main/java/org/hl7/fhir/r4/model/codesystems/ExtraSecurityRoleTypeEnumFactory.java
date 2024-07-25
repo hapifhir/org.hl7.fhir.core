@@ -52,7 +52,9 @@ public class ExtraSecurityRoleTypeEnumFactory implements EnumFactory<ExtraSecuri
   }
 
   public String toCode(ExtraSecurityRoleType code) {
-    if (code == ExtraSecurityRoleType.AUTHSERVER)
+       if (code == ExtraSecurityRoleType.NULL)
+           return null;
+       if (code == ExtraSecurityRoleType.AUTHSERVER)
       return "authserver";
     if (code == ExtraSecurityRoleType.DATACOLLECTOR)
       return "datacollector";
@@ -63,7 +65,7 @@ public class ExtraSecurityRoleTypeEnumFactory implements EnumFactory<ExtraSecuri
     if (code == ExtraSecurityRoleType.HUMANUSER)
       return "humanuser";
     return "?";
-  }
+   }
 
   public String toSystem(ExtraSecurityRoleType code) {
     return code.getSystem();

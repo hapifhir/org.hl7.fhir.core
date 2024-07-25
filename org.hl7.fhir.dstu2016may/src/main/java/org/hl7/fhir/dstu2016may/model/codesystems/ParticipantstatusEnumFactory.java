@@ -54,7 +54,9 @@ public class ParticipantstatusEnumFactory implements EnumFactory<Participantstat
   }
 
   public String toCode(Participantstatus code) {
-    if (code == Participantstatus.ACCEPTED)
+       if (code == Participantstatus.NULL)
+           return null;
+       if (code == Participantstatus.ACCEPTED)
       return "accepted";
     if (code == Participantstatus.DECLINED)
       return "declined";
@@ -67,7 +69,7 @@ public class ParticipantstatusEnumFactory implements EnumFactory<Participantstat
     if (code == Participantstatus.NEEDSACTION)
       return "needs-action";
     return "?";
-  }
+   }
 
   public String toSystem(Participantstatus code) {
     return code.getSystem();

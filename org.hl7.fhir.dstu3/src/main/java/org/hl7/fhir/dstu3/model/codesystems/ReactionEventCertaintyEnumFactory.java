@@ -54,7 +54,9 @@ public class ReactionEventCertaintyEnumFactory implements EnumFactory<ReactionEv
   }
 
   public String toCode(ReactionEventCertainty code) {
-    if (code == ReactionEventCertainty.UNLIKELY)
+       if (code == ReactionEventCertainty.NULL)
+           return null;
+       if (code == ReactionEventCertainty.UNLIKELY)
       return "unlikely";
     if (code == ReactionEventCertainty.LIKELY)
       return "likely";
@@ -63,7 +65,7 @@ public class ReactionEventCertaintyEnumFactory implements EnumFactory<ReactionEv
     if (code == ReactionEventCertainty.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
     public String toSystem(ReactionEventCertainty code) {
       return code.getSystem();

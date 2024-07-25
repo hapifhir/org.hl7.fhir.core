@@ -335,7 +335,9 @@ public class ResearchStudy extends DomainResource {
     }
 
     public String toCode(ResearchStudyStatus code) {
-      if (code == ResearchStudyStatus.ACTIVE)
+       if (code == ResearchStudyStatus.NULL)
+           return null;
+       if (code == ResearchStudyStatus.ACTIVE)
         return "active";
       if (code == ResearchStudyStatus.ADMINISTRATIVELYCOMPLETED)
         return "administratively-completed";
@@ -358,7 +360,7 @@ public class ResearchStudy extends DomainResource {
       if (code == ResearchStudyStatus.WITHDRAWN)
         return "withdrawn";
       return "?";
-    }
+   }
 
     public String toSystem(ResearchStudyStatus code) {
       return code.getSystem();

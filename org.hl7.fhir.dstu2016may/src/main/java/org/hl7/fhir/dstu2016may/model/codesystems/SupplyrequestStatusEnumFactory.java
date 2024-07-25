@@ -50,7 +50,9 @@ public class SupplyrequestStatusEnumFactory implements EnumFactory<Supplyrequest
   }
 
   public String toCode(SupplyrequestStatus code) {
-    if (code == SupplyrequestStatus.REQUESTED)
+       if (code == SupplyrequestStatus.NULL)
+           return null;
+       if (code == SupplyrequestStatus.REQUESTED)
       return "requested";
     if (code == SupplyrequestStatus.COMPLETED)
       return "completed";
@@ -59,7 +61,7 @@ public class SupplyrequestStatusEnumFactory implements EnumFactory<Supplyrequest
     if (code == SupplyrequestStatus.CANCELLED)
       return "cancelled";
     return "?";
-  }
+   }
 
   public String toSystem(SupplyrequestStatus code) {
     return code.getSystem();

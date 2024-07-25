@@ -62,7 +62,9 @@ public class ListOrderEnumFactory implements EnumFactory<ListOrder> {
   }
 
   public String toCode(ListOrder code) {
-    if (code == ListOrder.USER)
+       if (code == ListOrder.NULL)
+           return null;
+       if (code == ListOrder.USER)
       return "user";
     if (code == ListOrder.SYSTEM)
       return "system";
@@ -79,7 +81,7 @@ public class ListOrderEnumFactory implements EnumFactory<ListOrder> {
     if (code == ListOrder.PATIENT)
       return "patient";
     return "?";
-  }
+   }
 
     public String toSystem(ListOrder code) {
       return code.getSystem();

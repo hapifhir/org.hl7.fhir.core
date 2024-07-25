@@ -54,7 +54,9 @@ public class V3PaymentTermsEnumFactory implements EnumFactory<V3PaymentTerms> {
   }
 
   public String toCode(V3PaymentTerms code) {
-    if (code == V3PaymentTerms.COD)
+       if (code == V3PaymentTerms.NULL)
+           return null;
+       if (code == V3PaymentTerms.COD)
       return "COD";
     if (code == V3PaymentTerms.N30)
       return "N30";
@@ -63,7 +65,7 @@ public class V3PaymentTermsEnumFactory implements EnumFactory<V3PaymentTerms> {
     if (code == V3PaymentTerms.N90)
       return "N90";
     return "?";
-  }
+   }
 
     public String toSystem(V3PaymentTerms code) {
       return code.getSystem();

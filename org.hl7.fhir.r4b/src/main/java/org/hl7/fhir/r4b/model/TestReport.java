@@ -215,7 +215,9 @@ public class TestReport extends DomainResource {
     }
 
     public String toCode(TestReportActionResult code) {
-      if (code == TestReportActionResult.PASS)
+       if (code == TestReportActionResult.NULL)
+           return null;
+       if (code == TestReportActionResult.PASS)
         return "pass";
       if (code == TestReportActionResult.SKIP)
         return "skip";
@@ -226,7 +228,7 @@ public class TestReport extends DomainResource {
       if (code == TestReportActionResult.ERROR)
         return "error";
       return "?";
-    }
+   }
 
     public String toSystem(TestReportActionResult code) {
       return code.getSystem();
@@ -359,14 +361,16 @@ public class TestReport extends DomainResource {
     }
 
     public String toCode(TestReportParticipantType code) {
-      if (code == TestReportParticipantType.TESTENGINE)
+       if (code == TestReportParticipantType.NULL)
+           return null;
+       if (code == TestReportParticipantType.TESTENGINE)
         return "test-engine";
       if (code == TestReportParticipantType.CLIENT)
         return "client";
       if (code == TestReportParticipantType.SERVER)
         return "server";
       return "?";
-    }
+   }
 
     public String toSystem(TestReportParticipantType code) {
       return code.getSystem();
@@ -499,14 +503,16 @@ public class TestReport extends DomainResource {
     }
 
     public String toCode(TestReportResult code) {
-      if (code == TestReportResult.PASS)
+       if (code == TestReportResult.NULL)
+           return null;
+       if (code == TestReportResult.PASS)
         return "pass";
       if (code == TestReportResult.FAIL)
         return "fail";
       if (code == TestReportResult.PENDING)
         return "pending";
       return "?";
-    }
+   }
 
     public String toSystem(TestReportResult code) {
       return code.getSystem();
@@ -675,7 +681,9 @@ public class TestReport extends DomainResource {
     }
 
     public String toCode(TestReportStatus code) {
-      if (code == TestReportStatus.COMPLETED)
+       if (code == TestReportStatus.NULL)
+           return null;
+       if (code == TestReportStatus.COMPLETED)
         return "completed";
       if (code == TestReportStatus.INPROGRESS)
         return "in-progress";
@@ -686,7 +694,7 @@ public class TestReport extends DomainResource {
       if (code == TestReportStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(TestReportStatus code) {
       return code.getSystem();

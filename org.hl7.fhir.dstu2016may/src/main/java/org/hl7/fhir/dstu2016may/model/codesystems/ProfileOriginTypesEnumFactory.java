@@ -46,12 +46,14 @@ public class ProfileOriginTypesEnumFactory implements EnumFactory<ProfileOriginT
   }
 
   public String toCode(ProfileOriginTypes code) {
-    if (code == ProfileOriginTypes.FHIRDSTU2CLIENT)
+       if (code == ProfileOriginTypes.NULL)
+           return null;
+       if (code == ProfileOriginTypes.FHIRDSTU2CLIENT)
       return "FHIR-DSTU2-Client";
     if (code == ProfileOriginTypes.FHIRDSTU2SDCFORMFILLER)
       return "FHIR-DSTU2-SDC-FormFiller";
     return "?";
-  }
+   }
 
   public String toSystem(ProfileOriginTypes code) {
     return code.getSystem();

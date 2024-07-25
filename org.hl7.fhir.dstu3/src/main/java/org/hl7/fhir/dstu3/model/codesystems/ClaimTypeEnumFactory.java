@@ -56,7 +56,9 @@ public class ClaimTypeEnumFactory implements EnumFactory<ClaimType> {
   }
 
   public String toCode(ClaimType code) {
-    if (code == ClaimType.INSTITUTIONAL)
+       if (code == ClaimType.NULL)
+           return null;
+       if (code == ClaimType.INSTITUTIONAL)
       return "institutional";
     if (code == ClaimType.ORAL)
       return "oral";
@@ -67,7 +69,7 @@ public class ClaimTypeEnumFactory implements EnumFactory<ClaimType> {
     if (code == ClaimType.VISION)
       return "vision";
     return "?";
-  }
+   }
 
     public String toSystem(ClaimType code) {
       return code.getSystem();

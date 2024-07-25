@@ -50,7 +50,9 @@ public class PublicationStatusEnumFactory implements EnumFactory<PublicationStat
   }
 
   public String toCode(PublicationStatus code) {
-    if (code == PublicationStatus.DRAFT)
+       if (code == PublicationStatus.NULL)
+           return null;
+       if (code == PublicationStatus.DRAFT)
       return "draft";
     if (code == PublicationStatus.ACTIVE)
       return "active";
@@ -59,7 +61,7 @@ public class PublicationStatusEnumFactory implements EnumFactory<PublicationStat
     if (code == PublicationStatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
   public String toSystem(PublicationStatus code) {
     return code.getSystem();

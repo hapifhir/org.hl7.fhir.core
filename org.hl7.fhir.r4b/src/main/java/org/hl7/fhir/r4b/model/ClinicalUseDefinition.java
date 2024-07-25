@@ -215,7 +215,9 @@ public class ClinicalUseDefinition extends DomainResource {
     }
 
     public String toCode(ClinicalUseIssueType code) {
-      if (code == ClinicalUseIssueType.INDICATION)
+       if (code == ClinicalUseIssueType.NULL)
+           return null;
+       if (code == ClinicalUseIssueType.INDICATION)
         return "indication";
       if (code == ClinicalUseIssueType.CONTRAINDICATION)
         return "contraindication";
@@ -226,7 +228,7 @@ public class ClinicalUseDefinition extends DomainResource {
       if (code == ClinicalUseIssueType.WARNING)
         return "warning";
       return "?";
-    }
+   }
 
     public String toSystem(ClinicalUseIssueType code) {
       return code.getSystem();

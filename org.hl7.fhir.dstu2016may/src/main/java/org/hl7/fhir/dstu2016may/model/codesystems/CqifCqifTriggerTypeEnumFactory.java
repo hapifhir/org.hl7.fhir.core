@@ -56,7 +56,9 @@ public class CqifCqifTriggerTypeEnumFactory implements EnumFactory<CqifCqifTrigg
   }
 
   public String toCode(CqifCqifTriggerType code) {
-    if (code == CqifCqifTriggerType.NAMEDEVENT)
+       if (code == CqifCqifTriggerType.NULL)
+           return null;
+       if (code == CqifCqifTriggerType.NAMEDEVENT)
       return "named-event";
     if (code == CqifCqifTriggerType.PERIODIC)
       return "periodic";
@@ -71,7 +73,7 @@ public class CqifCqifTriggerTypeEnumFactory implements EnumFactory<CqifCqifTrigg
     if (code == CqifCqifTriggerType.DATAACCESSENDED)
       return "data-access-ended";
     return "?";
-  }
+   }
 
   public String toSystem(CqifCqifTriggerType code) {
     return code.getSystem();

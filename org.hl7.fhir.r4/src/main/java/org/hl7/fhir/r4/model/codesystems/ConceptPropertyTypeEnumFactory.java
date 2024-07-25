@@ -56,7 +56,9 @@ public class ConceptPropertyTypeEnumFactory implements EnumFactory<ConceptProper
   }
 
   public String toCode(ConceptPropertyType code) {
-    if (code == ConceptPropertyType.CODE)
+       if (code == ConceptPropertyType.NULL)
+           return null;
+       if (code == ConceptPropertyType.CODE)
       return "code";
     if (code == ConceptPropertyType.CODING)
       return "Coding";
@@ -71,7 +73,7 @@ public class ConceptPropertyTypeEnumFactory implements EnumFactory<ConceptProper
     if (code == ConceptPropertyType.DECIMAL)
       return "decimal";
     return "?";
-  }
+   }
 
   public String toSystem(ConceptPropertyType code) {
     return code.getSystem();

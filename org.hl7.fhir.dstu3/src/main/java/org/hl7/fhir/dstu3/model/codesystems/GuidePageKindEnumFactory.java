@@ -62,7 +62,9 @@ public class GuidePageKindEnumFactory implements EnumFactory<GuidePageKind> {
   }
 
   public String toCode(GuidePageKind code) {
-    if (code == GuidePageKind.PAGE)
+       if (code == GuidePageKind.NULL)
+           return null;
+       if (code == GuidePageKind.PAGE)
       return "page";
     if (code == GuidePageKind.EXAMPLE)
       return "example";
@@ -79,7 +81,7 @@ public class GuidePageKindEnumFactory implements EnumFactory<GuidePageKind> {
     if (code == GuidePageKind.RESOURCE)
       return "resource";
     return "?";
-  }
+   }
 
     public String toSystem(GuidePageKind code) {
       return code.getSystem();

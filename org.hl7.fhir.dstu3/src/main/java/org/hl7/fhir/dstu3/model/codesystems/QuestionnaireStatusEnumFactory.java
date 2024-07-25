@@ -52,14 +52,16 @@ public class QuestionnaireStatusEnumFactory implements EnumFactory<Questionnaire
   }
 
   public String toCode(QuestionnaireStatus code) {
-    if (code == QuestionnaireStatus.DRAFT)
+       if (code == QuestionnaireStatus.NULL)
+           return null;
+       if (code == QuestionnaireStatus.DRAFT)
       return "draft";
     if (code == QuestionnaireStatus.PUBLISHED)
       return "published";
     if (code == QuestionnaireStatus.RETIRED)
       return "retired";
     return "?";
-  }
+   }
 
     public String toSystem(QuestionnaireStatus code) {
       return code.getSystem();

@@ -48,14 +48,16 @@ public class MedAdminPerformFunctionEnumFactory implements EnumFactory<MedAdminP
   }
 
   public String toCode(MedAdminPerformFunction code) {
-    if (code == MedAdminPerformFunction.PERFORMER)
+       if (code == MedAdminPerformFunction.NULL)
+           return null;
+       if (code == MedAdminPerformFunction.PERFORMER)
       return "performer";
     if (code == MedAdminPerformFunction.VERIFIER)
       return "verifier";
     if (code == MedAdminPerformFunction.WITNESS)
       return "witness";
     return "?";
-  }
+   }
 
   public String toSystem(MedAdminPerformFunction code) {
     return code.getSystem();

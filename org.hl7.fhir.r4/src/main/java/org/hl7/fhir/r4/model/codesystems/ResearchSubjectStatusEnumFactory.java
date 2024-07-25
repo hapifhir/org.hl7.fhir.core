@@ -68,7 +68,9 @@ public class ResearchSubjectStatusEnumFactory implements EnumFactory<ResearchSub
   }
 
   public String toCode(ResearchSubjectStatus code) {
-    if (code == ResearchSubjectStatus.CANDIDATE)
+       if (code == ResearchSubjectStatus.NULL)
+           return null;
+       if (code == ResearchSubjectStatus.CANDIDATE)
       return "candidate";
     if (code == ResearchSubjectStatus.ELIGIBLE)
       return "eligible";
@@ -95,7 +97,7 @@ public class ResearchSubjectStatusEnumFactory implements EnumFactory<ResearchSub
     if (code == ResearchSubjectStatus.WITHDRAWN)
       return "withdrawn";
     return "?";
-  }
+   }
 
   public String toSystem(ResearchSubjectStatus code) {
     return code.getSystem();

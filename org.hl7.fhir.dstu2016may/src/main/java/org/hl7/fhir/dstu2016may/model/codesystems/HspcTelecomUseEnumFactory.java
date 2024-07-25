@@ -44,10 +44,12 @@ public class HspcTelecomUseEnumFactory implements EnumFactory<HspcTelecomUse> {
   }
 
   public String toCode(HspcTelecomUse code) {
-    if (code == HspcTelecomUse.NS)
+       if (code == HspcTelecomUse.NULL)
+           return null;
+       if (code == HspcTelecomUse.NS)
       return "NS";
     return "?";
-  }
+   }
 
   public String toSystem(HspcTelecomUse code) {
     return code.getSystem();

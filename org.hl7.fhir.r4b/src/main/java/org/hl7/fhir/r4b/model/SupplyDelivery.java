@@ -198,7 +198,9 @@ public class SupplyDelivery extends DomainResource {
     }
 
     public String toCode(SupplyDeliveryStatus code) {
-      if (code == SupplyDeliveryStatus.INPROGRESS)
+       if (code == SupplyDeliveryStatus.NULL)
+           return null;
+       if (code == SupplyDeliveryStatus.INPROGRESS)
         return "in-progress";
       if (code == SupplyDeliveryStatus.COMPLETED)
         return "completed";
@@ -207,7 +209,7 @@ public class SupplyDelivery extends DomainResource {
       if (code == SupplyDeliveryStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(SupplyDeliveryStatus code) {
       return code.getSystem();

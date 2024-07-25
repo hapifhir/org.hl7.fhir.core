@@ -166,7 +166,9 @@ public class CoverageEligibilityResponse extends DomainResource {
         throw new FHIRException("Unknown EligibilityOutcome code '"+codeString+"'");
         }
     public String toCode(EligibilityOutcome code) {
-      if (code == EligibilityOutcome.QUEUED)
+       if (code == EligibilityOutcome.NULL)
+           return null;
+       if (code == EligibilityOutcome.QUEUED)
         return "queued";
       if (code == EligibilityOutcome.COMPLETE)
         return "complete";
@@ -175,7 +177,7 @@ public class CoverageEligibilityResponse extends DomainResource {
       if (code == EligibilityOutcome.PARTIAL)
         return "partial";
       return "?";
-      }
+   }
     public String toSystem(EligibilityOutcome code) {
       return code.getSystem();
       }
@@ -294,7 +296,9 @@ public class CoverageEligibilityResponse extends DomainResource {
         throw new FHIRException("Unknown EligibilityResponsePurpose code '"+codeString+"'");
         }
     public String toCode(EligibilityResponsePurpose code) {
-      if (code == EligibilityResponsePurpose.AUTHREQUIREMENTS)
+       if (code == EligibilityResponsePurpose.NULL)
+           return null;
+       if (code == EligibilityResponsePurpose.AUTHREQUIREMENTS)
         return "auth-requirements";
       if (code == EligibilityResponsePurpose.BENEFITS)
         return "benefits";
@@ -303,7 +307,7 @@ public class CoverageEligibilityResponse extends DomainResource {
       if (code == EligibilityResponsePurpose.VALIDATION)
         return "validation";
       return "?";
-      }
+   }
     public String toSystem(EligibilityResponsePurpose code) {
       return code.getSystem();
       }

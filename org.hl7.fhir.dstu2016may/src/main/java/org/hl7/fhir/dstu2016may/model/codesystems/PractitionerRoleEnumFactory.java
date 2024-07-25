@@ -54,7 +54,9 @@ public class PractitionerRoleEnumFactory implements EnumFactory<PractitionerRole
   }
 
   public String toCode(PractitionerRole code) {
-    if (code == PractitionerRole.DOCTOR)
+       if (code == PractitionerRole.NULL)
+           return null;
+       if (code == PractitionerRole.DOCTOR)
       return "doctor";
     if (code == PractitionerRole.NURSE)
       return "nurse";
@@ -67,7 +69,7 @@ public class PractitionerRoleEnumFactory implements EnumFactory<PractitionerRole
     if (code == PractitionerRole.ICT)
       return "ict";
     return "?";
-  }
+   }
 
   public String toSystem(PractitionerRole code) {
     return code.getSystem();

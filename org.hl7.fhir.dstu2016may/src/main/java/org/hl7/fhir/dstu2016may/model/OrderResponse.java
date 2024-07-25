@@ -280,7 +280,9 @@ public class OrderResponse extends DomainResource {
     }
 
     public String toCode(OrderStatus code) {
-      if (code == OrderStatus.PENDING)
+       if (code == OrderStatus.NULL)
+           return null;
+       if (code == OrderStatus.PENDING)
         return "pending";
       if (code == OrderStatus.REVIEW)
         return "review";
@@ -299,7 +301,7 @@ public class OrderResponse extends DomainResource {
       if (code == OrderStatus.COMPLETED)
         return "completed";
       return "?";
-    }
+   }
 
     public String toSystem(OrderStatus code) {
       return code.getSystem();

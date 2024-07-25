@@ -239,7 +239,9 @@ public class ValueSet extends MetadataResource {
         throw new FHIRException("Unknown FilterOperator code '"+codeString+"'");
         }
     public String toCode(FilterOperator code) {
-      if (code == FilterOperator.EQUAL)
+       if (code == FilterOperator.NULL)
+           return null;
+       if (code == FilterOperator.EQUAL)
         return "=";
       if (code == FilterOperator.ISA)
         return "is-a";
@@ -258,7 +260,7 @@ public class ValueSet extends MetadataResource {
       if (code == FilterOperator.EXISTS)
         return "exists";
       return "?";
-      }
+   }
     public String toSystem(FilterOperator code) {
       return code.getSystem();
       }

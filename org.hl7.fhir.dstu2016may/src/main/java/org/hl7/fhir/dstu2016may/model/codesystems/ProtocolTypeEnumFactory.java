@@ -50,7 +50,9 @@ public class ProtocolTypeEnumFactory implements EnumFactory<ProtocolType> {
   }
 
   public String toCode(ProtocolType code) {
-    if (code == ProtocolType.CONDITION)
+       if (code == ProtocolType.NULL)
+           return null;
+       if (code == ProtocolType.CONDITION)
       return "condition";
     if (code == ProtocolType.DEVICE)
       return "device";
@@ -59,7 +61,7 @@ public class ProtocolTypeEnumFactory implements EnumFactory<ProtocolType> {
     if (code == ProtocolType.STUDY)
       return "study";
     return "?";
-  }
+   }
 
   public String toSystem(ProtocolType code) {
     return code.getSystem();

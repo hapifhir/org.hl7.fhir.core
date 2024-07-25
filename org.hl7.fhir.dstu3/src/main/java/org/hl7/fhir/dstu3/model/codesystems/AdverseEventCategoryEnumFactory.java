@@ -50,12 +50,14 @@ public class AdverseEventCategoryEnumFactory implements EnumFactory<AdverseEvent
   }
 
   public String toCode(AdverseEventCategory code) {
-    if (code == AdverseEventCategory.AE)
+       if (code == AdverseEventCategory.NULL)
+           return null;
+       if (code == AdverseEventCategory.AE)
       return "AE";
     if (code == AdverseEventCategory.PAE)
       return "PAE";
     return "?";
-  }
+   }
 
     public String toSystem(AdverseEventCategory code) {
       return code.getSystem();

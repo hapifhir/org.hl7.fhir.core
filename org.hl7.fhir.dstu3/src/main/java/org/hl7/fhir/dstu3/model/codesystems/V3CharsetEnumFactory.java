@@ -66,7 +66,9 @@ public class V3CharsetEnumFactory implements EnumFactory<V3Charset> {
   }
 
   public String toCode(V3Charset code) {
-    if (code == V3Charset.EBCDIC)
+       if (code == V3Charset.NULL)
+           return null;
+       if (code == V3Charset.EBCDIC)
       return "EBCDIC";
     if (code == V3Charset.ISO10646UCS2)
       return "ISO-10646-UCS-2";
@@ -87,7 +89,7 @@ public class V3CharsetEnumFactory implements EnumFactory<V3Charset> {
     if (code == V3Charset.UTF8)
       return "UTF-8";
     return "?";
-  }
+   }
 
     public String toSystem(V3Charset code) {
       return code.getSystem();

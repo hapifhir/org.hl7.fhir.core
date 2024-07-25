@@ -190,14 +190,16 @@ public class TerminologyCapabilities extends MetadataResource {
     }
 
     public String toCode(CapabilityStatementKind code) {
-      if (code == CapabilityStatementKind.INSTANCE)
+       if (code == CapabilityStatementKind.NULL)
+           return null;
+       if (code == CapabilityStatementKind.INSTANCE)
         return "instance";
       if (code == CapabilityStatementKind.CAPABILITY)
         return "capability";
       if (code == CapabilityStatementKind.REQUIREMENTS)
         return "requirements";
       return "?";
-    }
+   }
 
     public String toSystem(CapabilityStatementKind code) {
       return code.getSystem();
@@ -314,12 +316,14 @@ public class TerminologyCapabilities extends MetadataResource {
     }
 
     public String toCode(CodeSearchSupport code) {
-      if (code == CodeSearchSupport.EXPLICIT)
+       if (code == CodeSearchSupport.NULL)
+           return null;
+       if (code == CodeSearchSupport.EXPLICIT)
         return "explicit";
       if (code == CodeSearchSupport.ALL)
         return "all";
       return "?";
-    }
+   }
 
     public String toSystem(CodeSearchSupport code) {
       return code.getSystem();

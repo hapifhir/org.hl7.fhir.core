@@ -166,7 +166,9 @@ public class InventoryItem extends DomainResource {
         throw new FHIRException("Unknown InventoryItemStatusCodes code '"+codeString+"'");
         }
     public String toCode(InventoryItemStatusCodes code) {
-      if (code == InventoryItemStatusCodes.ACTIVE)
+       if (code == InventoryItemStatusCodes.NULL)
+           return null;
+       if (code == InventoryItemStatusCodes.ACTIVE)
         return "active";
       if (code == InventoryItemStatusCodes.INACTIVE)
         return "inactive";
@@ -175,7 +177,7 @@ public class InventoryItem extends DomainResource {
       if (code == InventoryItemStatusCodes.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(InventoryItemStatusCodes code) {
       return code.getSystem();
       }

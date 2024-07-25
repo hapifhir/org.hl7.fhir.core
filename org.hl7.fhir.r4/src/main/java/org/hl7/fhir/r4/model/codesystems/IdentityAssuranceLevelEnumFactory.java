@@ -50,7 +50,9 @@ public class IdentityAssuranceLevelEnumFactory implements EnumFactory<IdentityAs
   }
 
   public String toCode(IdentityAssuranceLevel code) {
-    if (code == IdentityAssuranceLevel.LEVEL1)
+       if (code == IdentityAssuranceLevel.NULL)
+           return null;
+       if (code == IdentityAssuranceLevel.LEVEL1)
       return "level1";
     if (code == IdentityAssuranceLevel.LEVEL2)
       return "level2";
@@ -59,7 +61,7 @@ public class IdentityAssuranceLevelEnumFactory implements EnumFactory<IdentityAs
     if (code == IdentityAssuranceLevel.LEVEL4)
       return "level4";
     return "?";
-  }
+   }
 
   public String toSystem(IdentityAssuranceLevel code) {
     return code.getSystem();

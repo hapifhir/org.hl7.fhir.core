@@ -56,7 +56,9 @@ public class XdsRelationshipTypeEnumFactory implements EnumFactory<XdsRelationsh
   }
 
   public String toCode(XdsRelationshipType code) {
-    if (code == XdsRelationshipType.APND)
+       if (code == XdsRelationshipType.NULL)
+           return null;
+       if (code == XdsRelationshipType.APND)
       return "APND";
     if (code == XdsRelationshipType.RPLC)
       return "RPLC";
@@ -67,7 +69,7 @@ public class XdsRelationshipTypeEnumFactory implements EnumFactory<XdsRelationsh
     if (code == XdsRelationshipType.SIGNS)
       return "signs";
     return "?";
-  }
+   }
 
     public String toSystem(XdsRelationshipType code) {
       return code.getSystem();

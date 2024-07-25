@@ -48,14 +48,16 @@ public class V3HL7ContextConductionStyleEnumFactory implements EnumFactory<V3HL7
   }
 
   public String toCode(V3HL7ContextConductionStyle code) {
-    if (code == V3HL7ContextConductionStyle.C)
+       if (code == V3HL7ContextConductionStyle.NULL)
+           return null;
+       if (code == V3HL7ContextConductionStyle.C)
       return "C";
     if (code == V3HL7ContextConductionStyle.I)
       return "I";
     if (code == V3HL7ContextConductionStyle.V)
       return "V";
     return "?";
-  }
+   }
 
   public String toSystem(V3HL7ContextConductionStyle code) {
     return code.getSystem();

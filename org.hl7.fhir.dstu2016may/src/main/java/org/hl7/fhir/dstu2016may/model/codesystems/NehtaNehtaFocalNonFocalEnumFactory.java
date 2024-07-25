@@ -44,10 +44,12 @@ public class NehtaNehtaFocalNonFocalEnumFactory implements EnumFactory<NehtaNeht
   }
 
   public String toCode(NehtaNehtaFocalNonFocal code) {
-    if (code == NehtaNehtaFocalNonFocal.NONFOCAL)
+       if (code == NehtaNehtaFocalNonFocal.NULL)
+           return null;
+       if (code == NehtaNehtaFocalNonFocal.NONFOCAL)
       return "non_focal";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaFocalNonFocal code) {
     return code.getSystem();

@@ -191,7 +191,9 @@ public class Specimen extends DomainResource {
     }
 
     public String toCode(SpecimenStatus code) {
-      if (code == SpecimenStatus.AVAILABLE)
+       if (code == SpecimenStatus.NULL)
+           return null;
+       if (code == SpecimenStatus.AVAILABLE)
         return "available";
       if (code == SpecimenStatus.UNAVAILABLE)
         return "unavailable";
@@ -200,7 +202,7 @@ public class Specimen extends DomainResource {
       if (code == SpecimenStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(SpecimenStatus code) {
       return code.getSystem();

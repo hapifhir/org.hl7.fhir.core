@@ -180,7 +180,9 @@ public class CarePlan extends DomainResource {
         throw new FHIRException("Unknown CarePlanIntent code '"+codeString+"'");
         }
     public String toCode(CarePlanIntent code) {
-      if (code == CarePlanIntent.PROPOSAL)
+       if (code == CarePlanIntent.NULL)
+           return null;
+       if (code == CarePlanIntent.PROPOSAL)
         return "proposal";
       if (code == CarePlanIntent.PLAN)
         return "plan";
@@ -191,7 +193,7 @@ public class CarePlan extends DomainResource {
       if (code == CarePlanIntent.DIRECTIVE)
         return "directive";
       return "?";
-      }
+   }
     public String toSystem(CarePlanIntent code) {
       return code.getSystem();
       }

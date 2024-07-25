@@ -64,7 +64,9 @@ public class PatientContactRelationshipEnumFactory implements EnumFactory<Patien
   }
 
   public String toCode(PatientContactRelationship code) {
-    if (code == PatientContactRelationship.EMERGENCY)
+       if (code == PatientContactRelationship.NULL)
+           return null;
+       if (code == PatientContactRelationship.EMERGENCY)
       return "emergency";
     if (code == PatientContactRelationship.FAMILY)
       return "family";
@@ -87,7 +89,7 @@ public class PatientContactRelationshipEnumFactory implements EnumFactory<Patien
     if (code == PatientContactRelationship.PARENT)
       return "parent";
     return "?";
-  }
+   }
 
   public String toSystem(PatientContactRelationship code) {
     return code.getSystem();

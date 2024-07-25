@@ -50,7 +50,9 @@ public class ExDiagnosisrelatedgroupEnumFactory implements EnumFactory<ExDiagnos
   }
 
   public String toCode(ExDiagnosisrelatedgroup code) {
-    if (code == ExDiagnosisrelatedgroup._100)
+       if (code == ExDiagnosisrelatedgroup.NULL)
+           return null;
+       if (code == ExDiagnosisrelatedgroup._100)
       return "100";
     if (code == ExDiagnosisrelatedgroup._101)
       return "101";
@@ -59,7 +61,7 @@ public class ExDiagnosisrelatedgroupEnumFactory implements EnumFactory<ExDiagnos
     if (code == ExDiagnosisrelatedgroup._400)
       return "400";
     return "?";
-  }
+   }
 
   public String toSystem(ExDiagnosisrelatedgroup code) {
     return code.getSystem();

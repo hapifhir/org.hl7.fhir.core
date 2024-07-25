@@ -50,12 +50,14 @@ public class AllergyIntoleranceTypeEnumFactory implements EnumFactory<AllergyInt
   }
 
   public String toCode(AllergyIntoleranceType code) {
-    if (code == AllergyIntoleranceType.ALLERGY)
+       if (code == AllergyIntoleranceType.NULL)
+           return null;
+       if (code == AllergyIntoleranceType.ALLERGY)
       return "allergy";
     if (code == AllergyIntoleranceType.INTOLERANCE)
       return "intolerance";
     return "?";
-  }
+   }
 
     public String toSystem(AllergyIntoleranceType code) {
       return code.getSystem();

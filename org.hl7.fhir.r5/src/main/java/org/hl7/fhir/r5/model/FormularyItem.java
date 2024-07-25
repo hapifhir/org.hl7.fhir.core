@@ -152,14 +152,16 @@ public class FormularyItem extends DomainResource {
         throw new FHIRException("Unknown FormularyItemStatusCodes code '"+codeString+"'");
         }
     public String toCode(FormularyItemStatusCodes code) {
-      if (code == FormularyItemStatusCodes.ACTIVE)
+       if (code == FormularyItemStatusCodes.NULL)
+           return null;
+       if (code == FormularyItemStatusCodes.ACTIVE)
         return "active";
       if (code == FormularyItemStatusCodes.ENTEREDINERROR)
         return "entered-in-error";
       if (code == FormularyItemStatusCodes.INACTIVE)
         return "inactive";
       return "?";
-      }
+   }
     public String toSystem(FormularyItemStatusCodes code) {
       return code.getSystem();
       }

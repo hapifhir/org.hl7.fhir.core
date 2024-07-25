@@ -46,12 +46,14 @@ public class ImmunizationEvaluationDoseStatusEnumFactory implements EnumFactory<
   }
 
   public String toCode(ImmunizationEvaluationDoseStatus code) {
-    if (code == ImmunizationEvaluationDoseStatus.VALID)
+       if (code == ImmunizationEvaluationDoseStatus.NULL)
+           return null;
+       if (code == ImmunizationEvaluationDoseStatus.VALID)
       return "valid";
     if (code == ImmunizationEvaluationDoseStatus.NOTVALID)
       return "notvalid";
     return "?";
-  }
+   }
 
   public String toSystem(ImmunizationEvaluationDoseStatus code) {
     return code.getSystem();

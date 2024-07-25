@@ -45,10 +45,12 @@ public class HspcOrganizationOrganizationnameuseEnumFactory
   }
 
   public String toCode(HspcOrganizationOrganizationnameuse code) {
-    if (code == HspcOrganizationOrganizationnameuse._526758025)
+       if (code == HspcOrganizationOrganizationnameuse.NULL)
+           return null;
+       if (code == HspcOrganizationOrganizationnameuse._526758025)
       return "526758025";
     return "?";
-  }
+   }
 
   public String toSystem(HspcOrganizationOrganizationnameuse code) {
     return code.getSystem();

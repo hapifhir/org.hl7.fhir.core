@@ -612,7 +612,9 @@ public class RelatedArtifact extends DataType implements ICompositeType {
         throw new FHIRException("Unknown RelatedArtifactType code '"+codeString+"'");
         }
     public String toCode(RelatedArtifactType code) {
-      if (code == RelatedArtifactType.DOCUMENTATION)
+       if (code == RelatedArtifactType.NULL)
+           return null;
+       if (code == RelatedArtifactType.DOCUMENTATION)
         return "documentation";
       if (code == RelatedArtifactType.JUSTIFICATION)
         return "justification";
@@ -685,7 +687,7 @@ public class RelatedArtifact extends DataType implements ICompositeType {
       if (code == RelatedArtifactType.CITEAS)
         return "cite-as";
       return "?";
-      }
+   }
     public String toSystem(RelatedArtifactType code) {
       return code.getSystem();
       }

@@ -124,7 +124,9 @@ public class ToothEnumFactory implements EnumFactory<Tooth> {
   }
 
   public String toCode(Tooth code) {
-    if (code == Tooth._0)
+       if (code == Tooth.NULL)
+           return null;
+       if (code == Tooth._0)
       return "0";
     if (code == Tooth._1)
       return "1";
@@ -207,7 +209,7 @@ public class ToothEnumFactory implements EnumFactory<Tooth> {
     if (code == Tooth._48)
       return "48";
     return "?";
-  }
+   }
 
   public String toSystem(Tooth code) {
     return code.getSystem();

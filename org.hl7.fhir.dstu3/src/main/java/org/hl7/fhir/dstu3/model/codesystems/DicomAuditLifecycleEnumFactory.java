@@ -76,7 +76,9 @@ public class DicomAuditLifecycleEnumFactory implements EnumFactory<DicomAuditLif
   }
 
   public String toCode(DicomAuditLifecycle code) {
-    if (code == DicomAuditLifecycle._1)
+       if (code == DicomAuditLifecycle.NULL)
+           return null;
+       if (code == DicomAuditLifecycle._1)
       return "1";
     if (code == DicomAuditLifecycle._2)
       return "2";
@@ -107,7 +109,7 @@ public class DicomAuditLifecycleEnumFactory implements EnumFactory<DicomAuditLif
     if (code == DicomAuditLifecycle._15)
       return "15";
     return "?";
-  }
+   }
 
     public String toSystem(DicomAuditLifecycle code) {
       return code.getSystem();

@@ -48,14 +48,16 @@ public class ExpansionParameterSourceEnumFactory implements EnumFactory<Expansio
   }
 
   public String toCode(ExpansionParameterSource code) {
-    if (code == ExpansionParameterSource.INPUT)
+       if (code == ExpansionParameterSource.NULL)
+           return null;
+       if (code == ExpansionParameterSource.INPUT)
       return "input";
     if (code == ExpansionParameterSource.SERVER)
       return "server";
     if (code == ExpansionParameterSource.CODESYSTEM)
       return "codesystem";
     return "?";
-  }
+   }
 
   public String toSystem(ExpansionParameterSource code) {
     return code.getSystem();

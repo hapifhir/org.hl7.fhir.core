@@ -278,7 +278,9 @@ public class Procedure extends DomainResource {
     }
 
     public String toCode(ProcedureStatus code) {
-      if (code == ProcedureStatus.PREPARATION)
+       if (code == ProcedureStatus.NULL)
+           return null;
+       if (code == ProcedureStatus.PREPARATION)
         return "preparation";
       if (code == ProcedureStatus.INPROGRESS)
         return "in-progress";
@@ -295,7 +297,7 @@ public class Procedure extends DomainResource {
       if (code == ProcedureStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(ProcedureStatus code) {
       return code.getSystem();

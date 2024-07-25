@@ -166,7 +166,9 @@ public class ImplementationGuide extends CanonicalResource {
       throw new FHIRException("Unknown GuidePageGeneration code '"+codeString+"'");
     }
     public String toCode(GuidePageGeneration code) {
-      if (code == GuidePageGeneration.HTML)
+       if (code == GuidePageGeneration.NULL)
+           return null;
+       if (code == GuidePageGeneration.HTML)
         return "html";
       if (code == GuidePageGeneration.MARKDOWN)
         return "markdown";
@@ -175,7 +177,7 @@ public class ImplementationGuide extends CanonicalResource {
       if (code == GuidePageGeneration.GENERATED)
         return "generated";
       return "?";
-    }
+   }
     public String toSystem(GuidePageGeneration code) {
       return code.getSystem();
     }
@@ -8053,7 +8055,9 @@ public class ImplementationGuide extends CanonicalResource {
         throw new FHIRException("Unknown SPDXLicense code '"+codeString+"'");
         }
     public String toCode(SPDXLicense code) {
-      if (code == SPDXLicense._0BSD)
+       if (code == SPDXLicense.NULL)
+           return null;
+       if (code == SPDXLicense._0BSD)
         return "0BSD";
       if (code == SPDXLicense.AAL)
         return "AAL";
@@ -9170,7 +9174,7 @@ public class ImplementationGuide extends CanonicalResource {
       if (code == SPDXLicense.ZPL_2_1)
         return "ZPL-2.1";
       return "?";
-      }
+   }
     public String toSystem(SPDXLicense code) {
       return code.getSystem();
       }

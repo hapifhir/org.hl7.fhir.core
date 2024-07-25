@@ -48,14 +48,16 @@ public class MeasureReportTypeEnumFactory implements EnumFactory<MeasureReportTy
   }
 
   public String toCode(MeasureReportType code) {
-    if (code == MeasureReportType.INDIVIDUAL)
+       if (code == MeasureReportType.NULL)
+           return null;
+       if (code == MeasureReportType.INDIVIDUAL)
       return "individual";
     if (code == MeasureReportType.PATIENTLIST)
       return "patient-list";
     if (code == MeasureReportType.SUMMARY)
       return "summary";
     return "?";
-  }
+   }
 
   public String toSystem(MeasureReportType code) {
     return code.getSystem();

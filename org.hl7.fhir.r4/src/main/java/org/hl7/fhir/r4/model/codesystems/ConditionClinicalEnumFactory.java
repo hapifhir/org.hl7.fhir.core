@@ -54,7 +54,9 @@ public class ConditionClinicalEnumFactory implements EnumFactory<ConditionClinic
   }
 
   public String toCode(ConditionClinical code) {
-    if (code == ConditionClinical.ACTIVE)
+       if (code == ConditionClinical.NULL)
+           return null;
+       if (code == ConditionClinical.ACTIVE)
       return "active";
     if (code == ConditionClinical.RECURRENCE)
       return "recurrence";
@@ -67,7 +69,7 @@ public class ConditionClinicalEnumFactory implements EnumFactory<ConditionClinic
     if (code == ConditionClinical.RESOLVED)
       return "resolved";
     return "?";
-  }
+   }
 
   public String toSystem(ConditionClinical code) {
     return code.getSystem();

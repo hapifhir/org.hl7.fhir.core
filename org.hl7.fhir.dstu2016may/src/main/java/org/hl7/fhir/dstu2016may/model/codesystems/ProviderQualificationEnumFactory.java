@@ -48,14 +48,16 @@ public class ProviderQualificationEnumFactory implements EnumFactory<ProviderQua
   }
 
   public String toCode(ProviderQualification code) {
-    if (code == ProviderQualification._311405)
+       if (code == ProviderQualification.NULL)
+           return null;
+       if (code == ProviderQualification._311405)
       return "311405";
     if (code == ProviderQualification._604215)
       return "604215";
     if (code == ProviderQualification._604210)
       return "604210";
     return "?";
-  }
+   }
 
   public String toSystem(ProviderQualification code) {
     return code.getSystem();

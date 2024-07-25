@@ -46,12 +46,14 @@ public class BenefitNetworkEnumFactory implements EnumFactory<BenefitNetwork> {
   }
 
   public String toCode(BenefitNetwork code) {
-    if (code == BenefitNetwork.IN)
+       if (code == BenefitNetwork.NULL)
+           return null;
+       if (code == BenefitNetwork.IN)
       return "in";
     if (code == BenefitNetwork.OUT)
       return "out";
     return "?";
-  }
+   }
 
   public String toSystem(BenefitNetwork code) {
     return code.getSystem();

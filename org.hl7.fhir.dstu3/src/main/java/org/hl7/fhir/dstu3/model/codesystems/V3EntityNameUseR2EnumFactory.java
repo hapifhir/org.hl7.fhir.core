@@ -82,7 +82,9 @@ public class V3EntityNameUseR2EnumFactory implements EnumFactory<V3EntityNameUse
   }
 
   public String toCode(V3EntityNameUseR2 code) {
-    if (code == V3EntityNameUseR2.ASSUMED)
+       if (code == V3EntityNameUseR2.NULL)
+           return null;
+       if (code == V3EntityNameUseR2.ASSUMED)
       return "Assumed";
     if (code == V3EntityNameUseR2.A)
       return "A";
@@ -119,7 +121,7 @@ public class V3EntityNameUseR2EnumFactory implements EnumFactory<V3EntityNameUse
     if (code == V3EntityNameUseR2.T)
       return "T";
     return "?";
-  }
+   }
 
     public String toSystem(V3EntityNameUseR2 code) {
       return code.getSystem();

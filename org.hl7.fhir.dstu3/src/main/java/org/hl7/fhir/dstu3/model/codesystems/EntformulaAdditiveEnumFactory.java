@@ -56,7 +56,9 @@ public class EntformulaAdditiveEnumFactory implements EnumFactory<EntformulaAddi
   }
 
   public String toCode(EntformulaAdditive code) {
-    if (code == EntformulaAdditive.LIPID)
+       if (code == EntformulaAdditive.NULL)
+           return null;
+       if (code == EntformulaAdditive.LIPID)
       return "lipid";
     if (code == EntformulaAdditive.PROTEIN)
       return "protein";
@@ -67,7 +69,7 @@ public class EntformulaAdditiveEnumFactory implements EnumFactory<EntformulaAddi
     if (code == EntformulaAdditive.WATER)
       return "water";
     return "?";
-  }
+   }
 
     public String toSystem(EntformulaAdditive code) {
       return code.getSystem();

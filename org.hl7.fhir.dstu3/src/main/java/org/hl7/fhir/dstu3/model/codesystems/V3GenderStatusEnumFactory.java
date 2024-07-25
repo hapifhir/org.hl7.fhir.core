@@ -50,12 +50,14 @@ public class V3GenderStatusEnumFactory implements EnumFactory<V3GenderStatus> {
   }
 
   public String toCode(V3GenderStatus code) {
-    if (code == V3GenderStatus.I)
+       if (code == V3GenderStatus.NULL)
+           return null;
+       if (code == V3GenderStatus.I)
       return "I";
     if (code == V3GenderStatus.N)
       return "N";
     return "?";
-  }
+   }
 
     public String toSystem(V3GenderStatus code) {
       return code.getSystem();

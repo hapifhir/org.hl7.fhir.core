@@ -296,7 +296,9 @@ public class Bundle extends Resource implements IBaseBundle {
     }
 
     public String toCode(BundleType code) {
-      if (code == BundleType.DOCUMENT)
+       if (code == BundleType.NULL)
+           return null;
+       if (code == BundleType.DOCUMENT)
         return "document";
       if (code == BundleType.MESSAGE)
         return "message";
@@ -315,7 +317,7 @@ public class Bundle extends Resource implements IBaseBundle {
       if (code == BundleType.COLLECTION)
         return "collection";
       return "?";
-    }
+   }
 
     public String toSystem(BundleType code) {
       return code.getSystem();
@@ -502,7 +504,9 @@ public class Bundle extends Resource implements IBaseBundle {
     }
 
     public String toCode(HTTPVerb code) {
-      if (code == HTTPVerb.GET)
+       if (code == HTTPVerb.NULL)
+           return null;
+       if (code == HTTPVerb.GET)
         return "GET";
       if (code == HTTPVerb.HEAD)
         return "HEAD";
@@ -515,7 +519,7 @@ public class Bundle extends Resource implements IBaseBundle {
       if (code == HTTPVerb.PATCH)
         return "PATCH";
       return "?";
-    }
+   }
 
     public String toSystem(HTTPVerb code) {
       return code.getSystem();
@@ -650,14 +654,16 @@ public class Bundle extends Resource implements IBaseBundle {
     }
 
     public String toCode(SearchEntryMode code) {
-      if (code == SearchEntryMode.MATCH)
+       if (code == SearchEntryMode.NULL)
+           return null;
+       if (code == SearchEntryMode.MATCH)
         return "match";
       if (code == SearchEntryMode.INCLUDE)
         return "include";
       if (code == SearchEntryMode.OUTCOME)
         return "outcome";
       return "?";
-    }
+   }
 
     public String toSystem(SearchEntryMode code) {
       return code.getSystem();

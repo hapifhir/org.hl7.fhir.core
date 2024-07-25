@@ -46,12 +46,14 @@ public class CodeSearchSupportEnumFactory implements EnumFactory<CodeSearchSuppo
   }
 
   public String toCode(CodeSearchSupport code) {
-    if (code == CodeSearchSupport.EXPLICIT)
+       if (code == CodeSearchSupport.NULL)
+           return null;
+       if (code == CodeSearchSupport.EXPLICIT)
       return "explicit";
     if (code == CodeSearchSupport.ALL)
       return "all";
     return "?";
-  }
+   }
 
   public String toSystem(CodeSearchSupport code) {
     return code.getSystem();

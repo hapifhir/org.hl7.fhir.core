@@ -46,12 +46,14 @@ public class VaccinationProtocolDoseStatusEnumFactory implements EnumFactory<Vac
   }
 
   public String toCode(VaccinationProtocolDoseStatus code) {
-    if (code == VaccinationProtocolDoseStatus.COUNT)
+       if (code == VaccinationProtocolDoseStatus.NULL)
+           return null;
+       if (code == VaccinationProtocolDoseStatus.COUNT)
       return "count";
     if (code == VaccinationProtocolDoseStatus.NOCOUNT)
       return "nocount";
     return "?";
-  }
+   }
 
   public String toSystem(VaccinationProtocolDoseStatus code) {
     return code.getSystem();
