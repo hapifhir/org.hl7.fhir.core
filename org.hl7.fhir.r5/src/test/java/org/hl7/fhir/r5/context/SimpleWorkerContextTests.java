@@ -62,9 +62,6 @@ public class SimpleWorkerContextTests {
   @Mock
   ITerminologyClient terminologyClient;
 
-  @Mock
-  Parameters expParameters;
-
   public static final TerminologyCapabilities terminologyCapabilities = new TerminologyCapabilities();
   static {  terminologyCapabilities.getExpansion().setParameter(Arrays.asList());}
 
@@ -76,12 +73,9 @@ public class SimpleWorkerContextTests {
 
   @BeforeEach
   public void beforeEach() {
-
     Mockito.doReturn(DUMMY_URL).when(terminologyClient).getAddress();
     context.initTxCache(terminologyCache);
-    context.expParameters = expParameters;
     context.terminologyClientManager.setMasterClient(terminologyClient, false);
-    context.txLog = txLog;
   }
 
   @Test
