@@ -79,21 +79,21 @@ public class ResourceWrapperModel extends ResourceWrapper {
       return ElementKind.DataType;
     } else if (!child.isResource()) {
       return ElementKind.BackboneElement;
-    } else if (parent == null) {
-      return ElementKind.IndependentResource;
-    } else switch (child.getSpecial()) {
-    case BUNDLE_ENTRY:
-      return ElementKind.BundleEntry;
-    case BUNDLE_ISSUES:
-      return ElementKind.InlineResource;
-    case BUNDLE_OUTCOME:
-      return ElementKind.InlineResource;
-    case CONTAINED:
-      return ElementKind.ContainedResource;
-    case PARAMETER:
-      return ElementKind.InlineResource;
-    default:
-      return ElementKind.IndependentResource;
+    } else {
+      switch (child.getSpecial()) {
+      case BUNDLE_ENTRY:
+        return ElementKind.BundleEntry;
+      case BUNDLE_ISSUES:
+        return ElementKind.InlineResource;
+      case BUNDLE_OUTCOME:
+        return ElementKind.InlineResource;
+      case CONTAINED:
+        return ElementKind.ContainedResource;
+      case PARAMETER:
+        return ElementKind.InlineResource;
+      default:
+        return ElementKind.IndependentResource;
+      }
     }
   }
 
@@ -175,7 +175,7 @@ public class ResourceWrapperModel extends ResourceWrapper {
         xd.getChildNodes().removeIf(c -> !"div".equals(c.getName()) || !c.hasAttribute("xml:lang"));
       }
       markLanguage(x, locale);
-      xd.getChildNodes().add(x);
+      xd.addChildNode(x);
     } else {
       if (!x.hasAttribute("xmlns")) {
         x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
