@@ -1286,7 +1286,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (res != null) {
       updateUnsupportedCodeSystems(res, code, getCodeKey(code));
-      return res;
+      return new ValidationResult(res);
     }
 
     List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
