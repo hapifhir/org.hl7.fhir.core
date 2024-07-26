@@ -345,7 +345,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
           //Third time for individual resources
           int resCount = 1;
           for (CapabilityStatementRestResourceComponent r : rest.getResource()) {
-            addResourceConfigPanel(x, r, nextLevel+1, count, resCount, igRenderingMode);
+            addResourceConfigPanel(status, res, x, r, nextLevel+1, count, resCount, igRenderingMode);
             resCount++;
           }
         }
@@ -937,7 +937,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     return result;
   }
 
-  private void addResourceConfigPanel(XhtmlNode x, CapabilityStatementRestResourceComponent r, int nextLevel, int count, int resCount, boolean igRenderingMode) throws FHIRFormatError, DefinitionException, IOException {
+  private void addResourceConfigPanel(RenderingStatus status, ResourceWrapper res, XhtmlNode x, CapabilityStatementRestResourceComponent r, int nextLevel, int count, int resCount, boolean igRenderingMode) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode panel= null;
     XhtmlNode body = null;
     XhtmlNode panelHead = null;
@@ -972,7 +972,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       cell = row.div().attribute("class", "col-lg-6");
       addLead(cell,context.formatPhrase(RenderingContext.CAPABILITY_BASE_SYS));
       cell.br();
-      addResourceLink(cell, text, text);
+      renderCanonical(status, res, cell, StructureDefinition.class, r.getProfileElement());
       cell=row.div().attribute("class", "col-lg-3");
       addLead(cell, context.formatPhrase(RenderingContext.CAPABILITY_PROF_CONF));
       cell.br();
@@ -1007,7 +1007,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
           para.br();
         }
         first=false;
-        addResourceLink(para, c.asStringValue(), c.asStringValue());
+        renderCanonical(status, res, para, StructureDefinition.class, c);
         //para.ah(c.asStringValue()).addText(c.asStringValue());
       }  
     }
