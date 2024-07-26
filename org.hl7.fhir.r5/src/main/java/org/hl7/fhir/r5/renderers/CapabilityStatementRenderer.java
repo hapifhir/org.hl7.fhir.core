@@ -641,7 +641,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         item.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_THE) + " ");
       }
       else {
-        item.addTag("strong").addText(verb);
+        item.addTag("strong").addText(verb + " ");
         item.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_THE) + " ");
       }
       interaction = interactionMap.keySet().toArray()[0].toString();
@@ -675,7 +675,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       item.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPPS) + " ");
     }
     else {
-      item.addTag("strong").addText(verb);
+      item.addTag("strong").addText(verb + " ");
       item.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP) + " ");
     }
     addSeparatedListOfCodes(item, interactions, ",");
