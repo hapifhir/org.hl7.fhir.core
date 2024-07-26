@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -140,7 +141,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
   }
 
   @Override
-  public Base createType(Object appInfo, String name) throws FHIRException {
+  public Base createType(Object appInfo, String name, ProfileUtilities profileUtilities) throws FHIRException {
     return null;
   }
 
