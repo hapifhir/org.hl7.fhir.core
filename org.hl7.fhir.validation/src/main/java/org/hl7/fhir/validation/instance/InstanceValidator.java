@@ -3329,7 +3329,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         } else if (href.contains(":")) {
           String scheme = href.substring(0, href.indexOf(":"));
           if (rule(errors, "2024-07-20", IssueType.INVALID, e.line(), e.col(), path, !isActiveScheme(scheme), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF, href, xpath, Utilities.stripEoln(node.allText()).trim(), scheme)) {
-            hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, isKnownScheme(scheme), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_XHTML_UNKNOWN_HREF, href, xpath, node.allText().trim(), scheme);
+            if (rule(errors, "2024-07-20", IssueType.INVALID, e.line(), e.col(), path, isLiteralScheme(scheme), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_XHTML_LITERAL_HREF, href, xpath, Utilities.stripEoln(node.allText()).trim(), scheme)) {
+              hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, isKnownScheme(scheme), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_XHTML_UNKNOWN_HREF, href, xpath, node.allText().trim(), scheme);
+            } else {
+              ok = false;
+            }
+          } else {
+            ok = false;
           }
         } else {
           // we can't validate at this point. Come back and revisit this some time in the future
@@ -3347,6 +3353,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean isActiveScheme(String scheme) {
     return Utilities.existsInList(scheme, "javascript", "vbscript");
+  }
+
+  private boolean isLiteralScheme(String scheme) {
+    return !Utilities.existsInList(scheme, "urn", "cid");
   }
 
   private boolean isKnownScheme(String scheme) {
