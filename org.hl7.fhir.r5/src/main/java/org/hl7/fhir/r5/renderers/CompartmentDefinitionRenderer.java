@@ -63,7 +63,7 @@ public class CompartmentDefinitionRenderer extends ResourceRenderer {
         "<ul>\r\n"+
         out.toString()+
         "</ul></div>\r\n");
-    x.getChildNodes().addAll(xn.getChildNodes());
+    x.addChildNodes(xn.getChildNodes());
   }
 
   public void describe(XhtmlNode x, CompartmentDefinition cd) {
