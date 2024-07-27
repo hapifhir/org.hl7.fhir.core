@@ -734,12 +734,12 @@ public class SpecDifferenceEvaluator {
       if (cDel > 0) {
         XhtmlNode li = ul.li();
         li.tx("Remove " + Utilities.pluralize("code", cDel) + " ");
-        li.getChildNodes().addAll(liDel.getChildNodes());
+        li.addChildNodes(liDel.getChildNodes());
       }
       if (cAdd > 0) {
         XhtmlNode li = ul.li();
         li.tx("Add " + Utilities.pluralize("code", cAdd) + " ");
-        li.getChildNodes().addAll(liAdd.getChildNodes());
+        li.addChildNodes(liAdd.getChildNodes());
       }
     }
     if (rev.getStrength() == BindingStrength.EXTENSIBLE && orig.getStrength() == BindingStrength.EXTENSIBLE) {

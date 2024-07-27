@@ -921,7 +921,7 @@ public class HierarchicalTableGenerator {
           tag.setAttribute("title", p.getHint());
         addStyle(tag, p);
         if (p.hasChildren()) {
-          tag.getChildNodes().addAll(p.getChildren());
+          tag.addChildNodes(p.getChildren());
         }
       } else if (!Utilities.noString(p.getReference())) {
         XhtmlNode a = addStyle(tc.addTag("a"), p);
@@ -943,7 +943,7 @@ public class HierarchicalTableGenerator {
         }
         
         if (p.hasChildren()) {
-          tc.getChildNodes().addAll(p.getChildren());
+          tc.addChildNodes(p.getChildren());
         }
       } else { 
         if (!Utilities.noString(p.getHint())) {
@@ -957,7 +957,7 @@ public class HierarchicalTableGenerator {
           tc.addText(p.getText());
         }
         if (p.hasChildren()) {
-          tc.getChildNodes().addAll(p.getChildren());
+          tc.addChildNodes(p.getChildren());
         }
         if (p.getTagImg() != null) {
           tc.tx(" ");

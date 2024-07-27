@@ -111,7 +111,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (context.getStructureMode() == StructureDefinitionRendererMode.DATA_DICT) { 
       renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict"), false, GEN_MODE_DIFF, "", r); 
     } else { 
-      x.getChildNodes().add(generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,  
+      x.addChildNode(generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,  
         context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r)); 
     } 
     status.setExtensions(true); 
@@ -3679,7 +3679,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (x1 == null) { 
       return false; 
     } else { 
-      x.getChildNodes().addAll(x1.getChildNodes()); 
+      x.addChildNodes(x1.getChildNodes()); 
       return true; 
     } 
   } 
