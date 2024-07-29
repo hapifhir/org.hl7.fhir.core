@@ -169,7 +169,7 @@ public class ResourceWrapperR4B extends ResourceWrapper {
           r.getText().getDiv().getChildNodes().removeIf(c -> !"div".equals(c.getName()) || !c.hasAttribute("xml:lang"));
         }
         markLanguage(x, locale);
-        r.getText().getDiv().getChildNodes().add(x);
+        r.getText().getDiv().addChildNode(x);
       } else {
         if (!x.hasAttribute("xmlns"))
           x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");

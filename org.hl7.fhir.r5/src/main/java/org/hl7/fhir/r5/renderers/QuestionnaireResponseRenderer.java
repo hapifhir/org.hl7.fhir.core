@@ -86,7 +86,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       renderTreeItem(status, gen, row.getSubRows(), qr, i);
     }
     XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
-    x.getChildNodes().add(xn);
+    x.addChildNode(xn);
   }
 
   private Row addTreeRoot(HierarchicalTableGenerator gen, List<Row> rows, ResourceWrapper qr) throws IOException {
