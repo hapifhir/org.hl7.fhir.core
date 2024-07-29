@@ -52,7 +52,8 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
       }      
     }
     if (acd.has("capabilities")) {
-      tbl.tr().td().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_CAP));
+      tr = tbl.tr();
+      tr.td().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_CAP));
       td = tr.td().colspan("2");
       renderCanonical(status, td, acd.child("capabilities"));      
     }
