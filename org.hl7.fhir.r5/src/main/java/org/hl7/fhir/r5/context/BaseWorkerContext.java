@@ -1286,7 +1286,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (res != null) {
       updateUnsupportedCodeSystems(res, code, getCodeKey(code));
-      return res;
+      return new ValidationResult(res);
     }
 
     List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
@@ -1566,7 +1566,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (cachingAllowed) {
       res = txCache.getValidation(cacheToken);
       if (res != null) {
-        return res;
+        return new ValidationResult(res);
       }
     }
     for (Coding c : code.getCoding()) {

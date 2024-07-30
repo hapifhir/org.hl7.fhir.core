@@ -1038,7 +1038,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     x.br();
     x.tx("table"); 
     XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
-    x.getChildNodes().add(xn);
+    x.addChildNode(xn);
   }
 
   private void renderExpandGroup(HierarchicalTableGenerator gen, TableModel model, Extension ext, ConceptSetComponent inc, Map<String, ConceptDefinitionComponent> definitions) {
