@@ -207,6 +207,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       currentVersion = version;
     }
     vCurr = CLONE ? new ValidationEngine(currentEngine) : currentEngine;
+    if (CLONE) {
+      vCurr.setLanguage("en-US");
+      vCurr.setLocale(Locale.US);
+    }
     vCurr.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     igLoader = new IgLoader(vCurr.getPcm(), vCurr.getContext(), vCurr.getVersion(), true);
     igLoader.setDirectProvider(this);
