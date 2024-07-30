@@ -135,7 +135,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     } else {
       XhtmlNode n = r.getText().getDiv();
       n.clear();
-      n.getChildNodes().addAll(x.getChildNodes());
+      n.addChildNodes(x.getChildNodes());
     }
   }
 

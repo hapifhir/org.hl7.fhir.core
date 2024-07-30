@@ -151,7 +151,7 @@ public class DataRenderer extends Renderer {
       } catch (org.hl7.fhir.exceptions.FHIRFormatError e) {
         throw new FHIRFormatError(e.getMessage(), e);
       }
-      x.getChildNodes().addAll(m.getChildNodes());
+      x.addChildNodes(m.getChildNodes());
     }
   }
 

@@ -110,7 +110,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       renderTreeItem(status, gen, row.getSubRows(), q, i, hasFlags); 
     } 
     XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null); 
-    x.getChildNodes().add(xn); 
+    x.addChildNode(xn); 
     if (doOpts) { 
       renderOptions(q, x); 
     } 
@@ -133,40 +133,28 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
 
   public void renderItemOptions(XhtmlNode x, ResourceWrapper i) { 
     if (i.has("answerOption")) { 
-      boolean useSelect = false; 
+      assert x.getName().equals("select");
       for (ResourceWrapper opt : i.children("answerOption")) { 
-        useSelect = useSelect || "true".equals(opt.primitiveValue("initialSelected"));  
-      } 
-      x.an(context.prefixAnchor("opt-item."+i.primitiveValue("linkId"))); 
-      x.para().b().tx(context.formatPhrase(RenderingContext.QUEST_ANSW, i.primitiveValue("linkId"))+" "); 
-      XhtmlNode ul = x.ul(); 
-      for (ResourceWrapper opt : i.children("answerOption")) { 
-        XhtmlNode li = ul.li(); 
-        li.style("font-size: 11px"); 
-        if (useSelect) { 
-          if ("true".equals(opt.primitiveValue("initialSelected"))) { 
-            li.img("icon-selected.png", "icon"); 
-          } else { 
-            li.img("icon-not-selected.png", "icon");             
-          } 
-        } 
+        String value = "??";
+        String text = "??";
         ResourceWrapper v = opt.child("value");
-        if (v.isPrimitive()) { 
-          li.tx(v.primitiveValue()); 
-        } else if (v.fhirType().equals("Coding")) { 
-          String link = v.has("system") ? new ContextUtilities(context.getWorker()).getLinkForUrl(context.getLink(KnownLinkType.SPEC), v.primitiveValue("system")) : null; 
-          if (link == null) { 
-            li.tx(v.primitiveValue("system")+"#"+v.primitiveValue("code")); 
-          } else { 
-            li.ah(link).tx(displaySystem(v.primitiveValue("system"))); 
-            li.tx(": "+v.primitiveValue("code"));               
-          } 
+        if (v.isPrimitive()) {
+          value = v.primitiveValue();
+          text = v.primitiveValue();
+        } else if (v.fhirType().equals("Coding")) {
+          if (v.has("system")) {
+            value = v.primitiveValue("system")+"#"+v.primitiveValue("code");
+          } else {
+            value = v.primitiveValue("code");
+          }
           if (v.has("display")) { 
-            li.tx(" (\""+v.primitiveValue("display")+"\")");               
-          } 
-        } else { 
-          li.tx("??");             
-        } 
+            text = v.primitiveValue("display");
+          } else {
+            text = v.primitiveValue("code");
+          }
+        }
+        boolean selected = "true".equals(opt.primitiveValue("initialSelected"));
+        x.option(value, text, selected);
       } 
     } 
   } 
@@ -513,7 +501,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       } 
     } 
     XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null); 
-    x.getChildNodes().add(xn); 
+    x.addChildNode(xn); 
   } 
 
   private void renderLogicItem(RenderingStatus status, HierarchicalTableGenerator gen, List<Row> rows, ResourceWrapper q, ResourceWrapper i) throws IOException { 
