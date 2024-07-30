@@ -283,12 +283,13 @@ public class ValidationEngineTests {
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "observation401_ucum.json"), profiles);
     Assertions.assertTrue(checkOutcomes("test401USCore", op, 
       "Observation null information/informational: Validate Observation against the Body weight profile (http://hl7.org/fhir/StructureDefinition/bodyweight) which is required by the FHIR specification because the LOINC code 29463-7 was found\n"+
-      "Observation.code.coding[0].system null information/not-found: A definition for CodeSystem 'http://loinc.org' could not be found, so the code cannot be validated\n"+
       "Observation.value.ofType(Quantity) null warning/business-rule: Unable to validate code 'kg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services\n"+
       "Observation.value.ofType(Quantity).code null warning/informational: Unable to validate code without using server because: Resolved system http://unitsofmeasure.org (v3.0.1), but the definition doesn't include any codes, so the code has not been validated\n"+
 //      "Observation.code null warning/code-invalid: None of the codings provided are in the value set 'Vital Signs' (http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1), and a coding should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable) (codes = http://loinc.org#29463-7)\n"+
       "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
-      "Observation.code null warning/not-found: Unable to check whether the code is in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1' because the code system http://loinc.org was not found\n"+
+        "Observation.code.coding[0].system null warning/not-found: A definition for CodeSystem 'http://loinc.org' could not be found, so the code cannot be validated\n"+
+
+        "Observation.code null warning/not-found: Unable to check whether the code is in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1' because the code system http://loinc.org was not found\n"+
       "Observation null warning/invariant: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"));
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
   }
