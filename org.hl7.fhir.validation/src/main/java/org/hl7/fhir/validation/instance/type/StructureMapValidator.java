@@ -33,6 +33,7 @@ import org.hl7.fhir.r5.utils.structuremap.ResolvedGroup;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -742,7 +743,12 @@ public class StructureMapValidator extends BaseValidator {
 
       if (vn != null && type != null) {
         StructureDefinition sdt = this.context.fetchTypeDefinition(type);
-        vn.setType(ruleInfo.getMaxCount(), sdt, sdt.getSnapshot().getElementFirstRep(), null); // may overwrite
+        if (sdt != null) {
+          vn.setType(ruleInfo.getMaxCount(), sdt, sdt.getSnapshot().getElementFirstRep(), null); // may overwrite
+        } else {
+          ok = false;
+          rule(errors, "2023-07-30", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TYPE_UNKNOWN, type);
+        }
       }
       return ok;
     }
