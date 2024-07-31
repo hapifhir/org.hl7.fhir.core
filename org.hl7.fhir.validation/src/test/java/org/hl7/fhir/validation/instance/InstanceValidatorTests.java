@@ -23,7 +23,7 @@ class InstanceValidatorTests {
   @Test
   public void testCheckCodeOnServerNoStackLocale() throws InstanceValidator.CheckCodeOnServerException {
       NodeStack stack =mock(NodeStack.class);
-      testCheckCodeOnServer(stack, "ko_KR");
+      testCheckCodeOnServer(stack, "ko-KR");
   }
 
   @Test
