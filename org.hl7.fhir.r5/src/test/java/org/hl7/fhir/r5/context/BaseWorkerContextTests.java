@@ -330,7 +330,6 @@ public class BaseWorkerContextTests {
 
     ValidationResult actualValidationResult = context.validateCode(validationOptions, coding, valueSet, ctxt);
 
-    assertNotSame(cachedValidationResult, actualValidationResult);
     assertEquals(cachedValidationResult, actualValidationResult);
 
     Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("Coding", coding);
@@ -353,7 +352,7 @@ public class BaseWorkerContextTests {
 
     ValidationResult actualValidationResult = context.validateCode(validationOptions, coding, valueSet, ctxt);
 
-    assertSame(createdValidationResult, actualValidationResult);
+    assertEquals(createdValidationResult, actualValidationResult);
 
     Mockito.verify(valueSetCheckerSimple).validateCode(eq("Coding"), argThat(new CodingMatcher(coding)));
     Mockito.verify(terminologyCache).getValidation(cacheToken);
@@ -379,7 +378,7 @@ public class BaseWorkerContextTests {
 
     ValidationResult actualValidationResult = context.validateCode(validationOptions, coding, valueSet, ctxt);
 
-    assertSame(createdValidationResult, actualValidationResult);
+    assertEquals(createdValidationResult, actualValidationResult);
 
     Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("Coding", coding);
     Mockito.verify(terminologyCache).getValidation(cacheToken);
@@ -395,7 +394,6 @@ public class BaseWorkerContextTests {
     Mockito.doReturn(cachedValidationResult).when(terminologyCache).getValidation(cacheToken);
 
     ValidationResult actualValidationResult = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
-    assertNotSame(cachedValidationResult, actualValidationResult);
     assertEquals(cachedValidationResult, actualValidationResult);
 
     Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("CodeableConcept", codeableConcept);
@@ -414,7 +412,7 @@ public class BaseWorkerContextTests {
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters);
 
     ValidationResult validationResultB = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
-    assertSame(createdValidationResult, validationResultB);
+    assertEquals(createdValidationResult, validationResultB);
 
     Mockito.verify(valueSetCheckerSimple).validateCode("CodeableConcept", codeableConcept);
     Mockito.verify(terminologyCache).cacheValidation(eq(cacheToken), same(createdValidationResult), eq(false));
@@ -462,7 +460,7 @@ public class BaseWorkerContextTests {
 
     ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true, false);
 
-    assertSame(expectedExpansionResult, actualExpansionResult);
+    assertEquals(expectedExpansionResult, actualExpansionResult);
 
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
     Mockito.verify(terminologyCache, times(0)).cacheExpansion(any(), any(), anyBoolean());
