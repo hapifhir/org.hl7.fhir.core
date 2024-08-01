@@ -525,7 +525,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         }
       }
       if (igMays.size() > 0) {
-        x.h(3,"shouldIGs").addText(context.formatPhrase(RenderingContext.CAPABILITY_SHOULD_SUPP));
+        x.h(3,"mayIGs").addText(context.formatPhrase(RenderingContext.CAPABILITY_MAY_SUPP));
         ul = x.ul();
         for (String url : igMays) {
           addResourceLink(ul.li(), url, url);
@@ -563,7 +563,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       capExpectation = getExtValueCode(c.getExtensionByUrl(EXPECTATION));
       if (!Utilities.noString(capExpectation)) {
         lItem.addTag("strong").addText(capExpectation);
-        lItem.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP) + " ");
+        lItem.addText(context.formatPhrase(" " + RenderingContext.CAPABILITY_SUPP) + " ");
       }
       lItem.code().addText(c.getCode());
       first = false;
@@ -680,10 +680,10 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     for (Map<String,String> interactionMap : interactions) {
       item = uList.li();
       if (Utilities.noString(verb)) {
-        item.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_THE) + " ");
+        item.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPPS_THE) + " ");
       }
       else {
-        item.addTag("strong").addText(verb);
+        item.addTag("strong").addText(verb + " ");
         item.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_THE) + " ");
       }
       interaction = interactionMap.keySet().toArray()[0].toString();
@@ -718,7 +718,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     }
     else {
       item.addTag("strong").addText(verb);
-      item.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP) + " ");
+      item.addText(" " + context.formatPhrase(RenderingContext.CAPABILITY_SUPP) + " ");
     }
 
     applyInteractionsList(item, interactions);  
