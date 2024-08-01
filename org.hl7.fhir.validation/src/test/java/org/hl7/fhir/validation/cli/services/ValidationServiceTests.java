@@ -1,8 +1,7 @@
 package org.hl7.fhir.validation.cli.services;
 
 import static org.hl7.fhir.validation.tests.utilities.TestUtilities.getTerminologyCacheDirectory;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.AdditionalMatchers.and;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -25,19 +24,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.context.SystemOutLoggingService;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtil;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
+import org.hl7.fhir.validation.cli.utils.Common;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -72,7 +77,7 @@ class ValidationServiceTests {
     Set<String> sessionIds = sessionCache.getSessionIds();
     if (sessionIds.stream().findFirst().isPresent()) {
       // Verify that after 1 run there is only one entry within the cache
-      Assertions.assertEquals(1, sessionIds.size());
+      assertEquals(1, sessionIds.size());
       myService.validateSources(request.setSessionId(sessionIds.stream().findFirst().get()));
       // Verify that the cache has been called on twice with the id created in the first run
       verify(sessionCache, Mockito.times(2)).fetchSessionValidatorEngine(sessionIds.stream().findFirst().get());
@@ -313,6 +318,121 @@ class ValidationServiceTests {
     verify(mockValidationEngineBuilder).withUserAgent(eq("fhir/validator/" + VersionUtil.getVersion()));
   }
 
+
+  @Test
+  public void multithreadingTest() throws IOException {
+    ValidationService myService = new ValidationService();
+    final AtomicInteger totalSuccessful = new AtomicInteger();
+
+    final String[] packages = {
+      "hl7.fhir.us.core#3.1.1",
+      "hl7.fhir.us.core#4.0.0",
+      "hl7.fhir.us.core#5.0.1",
+      "hl7.fhir.us.core#6.1.0",
+      "hl7.fhir.us.core#7.0.0-ballot"
+    };
+
+    List<Thread> threads = new ArrayList<>();
+    int i = 0;
+    for (String currentPackage : packages) {
+      final int index = i++;
+      Thread t = new Thread(() -> {
+        try {
+          myService.initializeValidator(
+            new CliContext().setTxServer(null).setIgs(List.of(currentPackage)),
+            "hl7.fhir.r4.core",
+            new TimeTracker(),
+            null
+          );
+
+          totalSuccessful.incrementAndGet();
+          System.out.println("Thread " + index + " completed");
+        } catch (Throwable e) {
+          e.printStackTrace();
+          System.err.println("Thread " + index + " failed");
+        }
+      });
+      t.start();
+      threads.add(t);
+    }
+    threads.forEach(t -> {
+      try {
+        t.join();
+      } catch (InterruptedException e) {
+
+      }
+    });
+    assertEquals(packages.length, totalSuccessful.get());
+  }
+  @Test
+  public void multithreadingTestMinimal() throws IOException {
+
+    final AtomicInteger totalSuccessful = new AtomicInteger();
+
+    final String[] packages = {
+      "hl7.fhir.us.core#3.1.1",
+      "hl7.fhir.us.core#4.0.0",
+      "hl7.fhir.us.core#5.0.1",
+      "hl7.fhir.us.core#6.1.0",
+      "hl7.fhir.us.core#7.0.0-ballot"
+    };
+
+    String definitions = "hl7.fhir.r4.core";
+
+    List<Thread> threads = new ArrayList<>();
+
+    int i = 0;
+    for (String currentPackage : packages) {
+      final int index = i++;
+      Thread t = new Thread(() -> {
+        try {
+          List<String> igs = List.of(currentPackage);
+          CliContext cliContext = new CliContext();
+          ValidationEngine validationEngine = new ValidationEngine.ValidationEngineBuilder().withTHO(false).withVersion("4.0.1").withTimeTracker(new TimeTracker()).withUserAgent(Common.getValidatorUserAgent()).fromSource(definitions);
+
+          FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());
+          IgLoader igLoader = new IgLoader(validationEngine.getPcm(), validationEngine.getContext(), validationEngine.getVersion(), validationEngine.isDebug());
+          igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.terminology", false);
+          if (!VersionUtilities.isR5Ver(validationEngine.getContext().getVersion())) {
+            igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.fhir.uv.extensions", false);
+          }
+          //validationEngine.getContext().setLogger(new SystemOutLoggingService(false));
+          for (String src : igs) {
+            igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), src, cliContext.isRecursive());
+          }
+
+          /*
+          myService.buildValidationEngine( new CliContext().setTxServer(null).setIgs(List.of(pckage)),
+            definitions, new TimeTracker());
+*/
+          /*
+          myService.initializeValidator(
+            new CliContext().setTxServer(null).setIgs(List.of(pckage)),
+            "hl7.fhir.r4.core",
+            new TimeTracker(),
+            null
+          );*/
+
+          totalSuccessful.incrementAndGet();
+          System.out.println("Thread " + index + " completed");
+        } catch (Throwable e) {
+          e.printStackTrace();
+          System.err.println("Thread " + index + " failed");
+        }
+      });
+      t.start();
+      threads.add(t);
+    }
+    threads.forEach(t -> {
+      try {
+        t.join();
+      } catch (InterruptedException e) {
+
+      }
+    });
+    assertEquals(packages.length, totalSuccessful.get());
+  }
+
   private static ValidationService createFakeValidationService(ValidationEngine.ValidationEngineBuilder validationEngineBuilder, ValidationEngine validationEngine) {
     return new ValidationService() {
       @Override
@@ -337,4 +457,6 @@ class ValidationServiceTests {
       }
     };
   }
+
+
 }

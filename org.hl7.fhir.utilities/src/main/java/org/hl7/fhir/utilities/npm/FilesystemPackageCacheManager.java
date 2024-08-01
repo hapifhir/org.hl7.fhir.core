@@ -102,11 +102,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public static final String PACKAGE_VERSION_REGEX_OPT = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+(\\#[A-Za-z0-9\\-\\_]+(\\.[A-Za-z0-9\\-\\_]+)*)?$";
   private static final Logger ourLog = LoggerFactory.getLogger(FilesystemPackageCacheManager.class);
   private static final String CACHE_VERSION = "3"; // second version - see wiki page
-  private File cacheFolder;
+  private final File cacheFolder;
   private boolean progress = true;
-  private List<NpmPackage> temporaryPackages = new ArrayList<>();
+  private final List<NpmPackage> temporaryPackages = new ArrayList<>();
   private boolean buildLoaded = false;
-  private Map<String, String> ciList = new HashMap<String, String>();
+  private final Map<String, String> ciList = new HashMap<String, String>();
   private JsonArray buildInfo;
   private boolean suppressErrors;
   private boolean minimalMemory;
@@ -460,7 +460,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       File cf = ManagedFileAccess.file(Utilities.path(cacheFolder, f));
       if (cf.isDirectory()) {
         if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
-          return loadPackageInfo(Utilities.path(cacheFolder, f));
+          return new FilesystemPackageCacheLock(cacheFolder, f).doReadWithLock(() -> loadPackageInfo(Utilities.path(cacheFolder, f)));
         }
         if (version != null && !version.equals("current") && (version.endsWith(".x") || Utilities.charCount(version, '.') < 2) && f.contains("#")) {
           String[] parts = f.split("#");
