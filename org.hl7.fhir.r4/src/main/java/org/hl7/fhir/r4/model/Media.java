@@ -279,7 +279,9 @@ public class Media extends DomainResource {
     }
 
     public String toCode(MediaStatus code) {
-      if (code == MediaStatus.PREPARATION)
+       if (code == MediaStatus.NULL)
+           return null;
+       if (code == MediaStatus.PREPARATION)
         return "preparation";
       if (code == MediaStatus.INPROGRESS)
         return "in-progress";
@@ -296,7 +298,7 @@ public class Media extends DomainResource {
       if (code == MediaStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(MediaStatus code) {
       return code.getSystem();

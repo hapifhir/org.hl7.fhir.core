@@ -450,7 +450,9 @@ public class Contract extends DomainResource {
     }
 
     public String toCode(ContractStatus code) {
-      if (code == ContractStatus.AMENDED)
+       if (code == ContractStatus.NULL)
+           return null;
+       if (code == ContractStatus.AMENDED)
         return "amended";
       if (code == ContractStatus.APPENDED)
         return "appended";
@@ -481,7 +483,7 @@ public class Contract extends DomainResource {
       if (code == ContractStatus.TERMINATED)
         return "terminated";
       return "?";
-    }
+   }
 
     public String toSystem(ContractStatus code) {
       return code.getSystem();
@@ -885,7 +887,9 @@ public class Contract extends DomainResource {
     }
 
     public String toCode(ContractPublicationStatus code) {
-      if (code == ContractPublicationStatus.AMENDED)
+       if (code == ContractPublicationStatus.NULL)
+           return null;
+       if (code == ContractPublicationStatus.AMENDED)
         return "amended";
       if (code == ContractPublicationStatus.APPENDED)
         return "appended";
@@ -916,7 +920,7 @@ public class Contract extends DomainResource {
       if (code == ContractPublicationStatus.TERMINATED)
         return "terminated";
       return "?";
-    }
+   }
 
     public String toSystem(ContractPublicationStatus code) {
       return code.getSystem();

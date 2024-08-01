@@ -161,12 +161,14 @@ public class TestScript extends CanonicalResource {
     }
 
     public String toCode(AssertionDirectionType code) {
-      if (code == AssertionDirectionType.RESPONSE)
+       if (code == AssertionDirectionType.NULL)
+           return null;
+       if (code == AssertionDirectionType.RESPONSE)
         return "response";
       if (code == AssertionDirectionType.REQUEST)
         return "request";
       return "?";
-    }
+   }
 
     public String toSystem(AssertionDirectionType code) {
       return code.getSystem();
@@ -443,7 +445,9 @@ public class TestScript extends CanonicalResource {
     }
 
     public String toCode(AssertionOperatorType code) {
-      if (code == AssertionOperatorType.EQUALS)
+       if (code == AssertionOperatorType.NULL)
+           return null;
+       if (code == AssertionOperatorType.EQUALS)
         return "equals";
       if (code == AssertionOperatorType.NOTEQUALS)
         return "notEquals";
@@ -466,7 +470,7 @@ public class TestScript extends CanonicalResource {
       if (code == AssertionOperatorType.EVAL)
         return "eval";
       return "?";
-    }
+   }
 
     public String toSystem(AssertionOperatorType code) {
       return code.getSystem();
@@ -761,7 +765,9 @@ public class TestScript extends CanonicalResource {
     }
 
     public String toCode(AssertionResponseTypes code) {
-      if (code == AssertionResponseTypes.OKAY)
+       if (code == AssertionResponseTypes.NULL)
+           return null;
+       if (code == AssertionResponseTypes.OKAY)
         return "okay";
       if (code == AssertionResponseTypes.CREATED)
         return "created";
@@ -786,7 +792,7 @@ public class TestScript extends CanonicalResource {
       if (code == AssertionResponseTypes.UNPROCESSABLE)
         return "unprocessable";
       return "?";
-    }
+   }
 
     public String toSystem(AssertionResponseTypes code) {
       return code.getSystem();
@@ -4928,7 +4934,9 @@ public class TestScript extends CanonicalResource {
     }
 
     public String toCode(FHIRDefinedType code) {
-      if (code == FHIRDefinedType.ADDRESS)
+       if (code == FHIRDefinedType.NULL)
+           return null;
+       if (code == FHIRDefinedType.ADDRESS)
         return "Address";
       if (code == FHIRDefinedType.AGE)
         return "Age";
@@ -5345,7 +5353,7 @@ public class TestScript extends CanonicalResource {
       if (code == FHIRDefinedType.PARAMETERS)
         return "Parameters";
       return "?";
-    }
+   }
 
     public String toSystem(FHIRDefinedType code) {
       return code.getSystem();
@@ -5550,7 +5558,9 @@ public class TestScript extends CanonicalResource {
     }
 
     public String toCode(TestScriptRequestMethodCode code) {
-      if (code == TestScriptRequestMethodCode.DELETE)
+       if (code == TestScriptRequestMethodCode.NULL)
+           return null;
+       if (code == TestScriptRequestMethodCode.DELETE)
         return "delete";
       if (code == TestScriptRequestMethodCode.GET)
         return "get";
@@ -5565,7 +5575,7 @@ public class TestScript extends CanonicalResource {
       if (code == TestScriptRequestMethodCode.HEAD)
         return "head";
       return "?";
-    }
+   }
 
     public String toSystem(TestScriptRequestMethodCode code) {
       return code.getSystem();

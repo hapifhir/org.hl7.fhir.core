@@ -48,14 +48,16 @@ public class ExProgramCodeEnumFactory implements EnumFactory<ExProgramCode> {
   }
 
   public String toCode(ExProgramCode code) {
-    if (code == ExProgramCode.AS)
+       if (code == ExProgramCode.NULL)
+           return null;
+       if (code == ExProgramCode.AS)
       return "AS";
     if (code == ExProgramCode.HD)
       return "HD";
     if (code == ExProgramCode.AUSCR)
       return "AUSCR";
     return "?";
-  }
+   }
 
   public String toSystem(ExProgramCode code) {
     return code.getSystem();

@@ -54,7 +54,9 @@ public class CqifEvidenceQualityEnumFactory implements EnumFactory<CqifEvidenceQ
   }
 
   public String toCode(CqifEvidenceQuality code) {
-    if (code == CqifEvidenceQuality.HIGH)
+       if (code == CqifEvidenceQuality.NULL)
+           return null;
+       if (code == CqifEvidenceQuality.HIGH)
       return "high";
     if (code == CqifEvidenceQuality.MODERATE)
       return "moderate";
@@ -63,7 +65,7 @@ public class CqifEvidenceQualityEnumFactory implements EnumFactory<CqifEvidenceQ
     if (code == CqifEvidenceQuality.VERYLOW)
       return "very-low";
     return "?";
-  }
+   }
 
     public String toSystem(CqifEvidenceQuality code) {
       return code.getSystem();

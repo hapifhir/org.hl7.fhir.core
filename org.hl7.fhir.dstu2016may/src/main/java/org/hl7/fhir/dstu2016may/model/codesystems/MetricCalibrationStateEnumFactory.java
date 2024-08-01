@@ -50,7 +50,9 @@ public class MetricCalibrationStateEnumFactory implements EnumFactory<MetricCali
   }
 
   public String toCode(MetricCalibrationState code) {
-    if (code == MetricCalibrationState.NOTCALIBRATED)
+       if (code == MetricCalibrationState.NULL)
+           return null;
+       if (code == MetricCalibrationState.NOTCALIBRATED)
       return "not-calibrated";
     if (code == MetricCalibrationState.CALIBRATIONREQUIRED)
       return "calibration-required";
@@ -59,7 +61,7 @@ public class MetricCalibrationStateEnumFactory implements EnumFactory<MetricCali
     if (code == MetricCalibrationState.UNSPECIFIED)
       return "unspecified";
     return "?";
-  }
+   }
 
   public String toSystem(MetricCalibrationState code) {
     return code.getSystem();

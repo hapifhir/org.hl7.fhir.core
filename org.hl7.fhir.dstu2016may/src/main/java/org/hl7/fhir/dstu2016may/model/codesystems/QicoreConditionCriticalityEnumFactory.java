@@ -54,7 +54,9 @@ public class QicoreConditionCriticalityEnumFactory implements EnumFactory<Qicore
   }
 
   public String toCode(QicoreConditionCriticality code) {
-    if (code == QicoreConditionCriticality.UNSPECIFIED)
+       if (code == QicoreConditionCriticality.NULL)
+           return null;
+       if (code == QicoreConditionCriticality.UNSPECIFIED)
       return "unspecified";
     if (code == QicoreConditionCriticality.SELFRESOLVING)
       return "self-resolving";
@@ -67,7 +69,7 @@ public class QicoreConditionCriticalityEnumFactory implements EnumFactory<Qicore
     if (code == QicoreConditionCriticality.REQUIRESHOSPITALIZATION)
       return "requires-hospitalization";
     return "?";
-  }
+   }
 
   public String toSystem(QicoreConditionCriticality code) {
     return code.getSystem();

@@ -50,7 +50,9 @@ public class FmStatusEnumFactory implements EnumFactory<FmStatus> {
   }
 
   public String toCode(FmStatus code) {
-    if (code == FmStatus.ACTIVE)
+       if (code == FmStatus.NULL)
+           return null;
+       if (code == FmStatus.ACTIVE)
       return "active";
     if (code == FmStatus.CANCELLED)
       return "cancelled";
@@ -59,7 +61,7 @@ public class FmStatusEnumFactory implements EnumFactory<FmStatus> {
     if (code == FmStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(FmStatus code) {
     return code.getSystem();

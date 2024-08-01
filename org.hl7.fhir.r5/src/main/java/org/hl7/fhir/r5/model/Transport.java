@@ -236,7 +236,9 @@ public class Transport extends DomainResource {
         throw new FHIRException("Unknown TransportIntent code '"+codeString+"'");
         }
     public String toCode(TransportIntent code) {
-      if (code == TransportIntent.UNKNOWN)
+       if (code == TransportIntent.NULL)
+           return null;
+       if (code == TransportIntent.UNKNOWN)
         return "unknown";
       if (code == TransportIntent.PROPOSAL)
         return "proposal";
@@ -255,7 +257,7 @@ public class Transport extends DomainResource {
       if (code == TransportIntent.OPTION)
         return "option";
       return "?";
-      }
+   }
     public String toSystem(TransportIntent code) {
       return code.getSystem();
       }
@@ -402,7 +404,9 @@ public class Transport extends DomainResource {
         throw new FHIRException("Unknown TransportStatus code '"+codeString+"'");
         }
     public String toCode(TransportStatus code) {
-      if (code == TransportStatus.INPROGRESS)
+       if (code == TransportStatus.NULL)
+           return null;
+       if (code == TransportStatus.INPROGRESS)
         return "in-progress";
       if (code == TransportStatus.COMPLETED)
         return "completed";
@@ -415,7 +419,7 @@ public class Transport extends DomainResource {
       if (code == TransportStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(TransportStatus code) {
       return code.getSystem();
       }

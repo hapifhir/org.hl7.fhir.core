@@ -64,7 +64,9 @@ public class V3DocumentCompletionEnumFactory implements EnumFactory<V3DocumentCo
   }
 
   public String toCode(V3DocumentCompletion code) {
-    if (code == V3DocumentCompletion.AU)
+       if (code == V3DocumentCompletion.NULL)
+           return null;
+       if (code == V3DocumentCompletion.AU)
       return "AU";
     if (code == V3DocumentCompletion.DI)
       return "DI";
@@ -83,7 +85,7 @@ public class V3DocumentCompletionEnumFactory implements EnumFactory<V3DocumentCo
     if (code == V3DocumentCompletion.UC)
       return "UC";
     return "?";
-  }
+   }
 
     public String toSystem(V3DocumentCompletion code) {
       return code.getSystem();

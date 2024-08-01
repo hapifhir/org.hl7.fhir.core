@@ -64,7 +64,9 @@ public class CertaintySubcomponentRatingEnumFactory implements EnumFactory<Certa
   }
 
   public String toCode(CertaintySubcomponentRating code) {
-    if (code == CertaintySubcomponentRating.NOCHANGE)
+       if (code == CertaintySubcomponentRating.NULL)
+           return null;
+       if (code == CertaintySubcomponentRating.NOCHANGE)
       return "no-change";
     if (code == CertaintySubcomponentRating.DOWNCODE1)
       return "downcode1";
@@ -87,7 +89,7 @@ public class CertaintySubcomponentRatingEnumFactory implements EnumFactory<Certa
     if (code == CertaintySubcomponentRating.ABSENT)
       return "absent";
     return "?";
-  }
+   }
 
   public String toSystem(CertaintySubcomponentRating code) {
     return code.getSystem();

@@ -133,12 +133,14 @@ public class Enumerations {
     }
 
     public String toCode(AbstractType code) {
-      if (code == AbstractType.TYPE)
+       if (code == AbstractType.NULL)
+           return null;
+       if (code == AbstractType.TYPE)
         return "Type";
       if (code == AbstractType.ANY)
         return "Any";
       return "?";
-    }
+   }
 
     public String toSystem(AbstractType code) {
       return code.getSystem();
@@ -286,7 +288,9 @@ public class Enumerations {
     }
 
     public String toCode(AdministrativeGender code) {
-      if (code == AdministrativeGender.MALE)
+       if (code == AdministrativeGender.NULL)
+           return null;
+       if (code == AdministrativeGender.MALE)
         return "male";
       if (code == AdministrativeGender.FEMALE)
         return "female";
@@ -295,7 +299,7 @@ public class Enumerations {
       if (code == AdministrativeGender.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(AdministrativeGender code) {
       return code.getSystem();
@@ -479,7 +483,9 @@ public class Enumerations {
     }
 
     public String toCode(AgeUnits code) {
-      if (code == AgeUnits.MIN)
+       if (code == AgeUnits.NULL)
+           return null;
+       if (code == AgeUnits.MIN)
         return "min";
       if (code == AgeUnits.H)
         return "h";
@@ -492,7 +498,7 @@ public class Enumerations {
       if (code == AgeUnits.A)
         return "a";
       return "?";
-    }
+   }
 
     public String toSystem(AgeUnits code) {
       return code.getSystem();
@@ -649,7 +655,9 @@ public class Enumerations {
     }
 
     public String toCode(BindingStrength code) {
-      if (code == BindingStrength.REQUIRED)
+       if (code == BindingStrength.NULL)
+           return null;
+       if (code == BindingStrength.REQUIRED)
         return "required";
       if (code == BindingStrength.EXTENSIBLE)
         return "extensible";
@@ -658,7 +666,7 @@ public class Enumerations {
       if (code == BindingStrength.EXAMPLE)
         return "example";
       return "?";
-    }
+   }
 
     public String toSystem(BindingStrength code) {
       return code.getSystem();
@@ -930,7 +938,9 @@ public class Enumerations {
     }
 
     public String toCode(ConceptMapEquivalence code) {
-      if (code == ConceptMapEquivalence.RELATEDTO)
+       if (code == ConceptMapEquivalence.NULL)
+           return null;
+       if (code == ConceptMapEquivalence.RELATEDTO)
         return "relatedto";
       if (code == ConceptMapEquivalence.EQUIVALENT)
         return "equivalent";
@@ -951,7 +961,7 @@ public class Enumerations {
       if (code == ConceptMapEquivalence.DISJOINT)
         return "disjoint";
       return "?";
-    }
+   }
 
     public String toSystem(ConceptMapEquivalence code) {
       return code.getSystem();
@@ -1305,7 +1315,9 @@ public class Enumerations {
     }
 
     public String toCode(DataAbsentReason code) {
-      if (code == DataAbsentReason.UNKNOWN)
+       if (code == DataAbsentReason.NULL)
+           return null;
+       if (code == DataAbsentReason.UNKNOWN)
         return "unknown";
       if (code == DataAbsentReason.ASKEDUNKNOWN)
         return "asked-unknown";
@@ -1336,7 +1348,7 @@ public class Enumerations {
       if (code == DataAbsentReason.NOTPERMITTED)
         return "not-permitted";
       return "?";
-    }
+   }
 
     public String toSystem(DataAbsentReason code) {
       return code.getSystem();
@@ -2605,7 +2617,9 @@ public class Enumerations {
     }
 
     public String toCode(DataType code) {
-      if (code == DataType.ADDRESS)
+       if (code == DataType.NULL)
+           return null;
+       if (code == DataType.ADDRESS)
         return "Address";
       if (code == DataType.AGE)
         return "Age";
@@ -2732,7 +2746,7 @@ public class Enumerations {
       if (code == DataType.XHTML)
         return "xhtml";
       return "?";
-    }
+   }
 
     public String toSystem(DataType code) {
       return code.getSystem();
@@ -2926,7 +2940,9 @@ public class Enumerations {
     }
 
     public String toCode(DefinitionResourceType code) {
-      if (code == DefinitionResourceType.ACTIVITYDEFINITION)
+       if (code == DefinitionResourceType.NULL)
+           return null;
+       if (code == DefinitionResourceType.ACTIVITYDEFINITION)
         return "ActivityDefinition";
       if (code == DefinitionResourceType.EVENTDEFINITION)
         return "EventDefinition";
@@ -2939,7 +2955,7 @@ public class Enumerations {
       if (code == DefinitionResourceType.QUESTIONNAIRE)
         return "Questionnaire";
       return "?";
-    }
+   }
 
     public String toSystem(DefinitionResourceType code) {
       return code.getSystem();
@@ -3069,14 +3085,16 @@ public class Enumerations {
     }
 
     public String toCode(DocumentReferenceStatus code) {
-      if (code == DocumentReferenceStatus.CURRENT)
+       if (code == DocumentReferenceStatus.NULL)
+           return null;
+       if (code == DocumentReferenceStatus.CURRENT)
         return "current";
       if (code == DocumentReferenceStatus.SUPERSEDED)
         return "superseded";
       if (code == DocumentReferenceStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(DocumentReferenceStatus code) {
       return code.getSystem();
@@ -3773,7 +3791,9 @@ public class Enumerations {
     }
 
     public String toCode(EventResourceType code) {
-      if (code == EventResourceType.CHARGEITEM)
+       if (code == EventResourceType.NULL)
+           return null;
+       if (code == EventResourceType.CHARGEITEM)
         return "ChargeItem";
       if (code == EventResourceType.CLAIMRESPONSE)
         return "ClaimResponse";
@@ -3842,7 +3862,7 @@ public class Enumerations {
       if (code == EventResourceType.TASK)
         return "Task";
       return "?";
-    }
+   }
 
     public String toSystem(EventResourceType code) {
       return code.getSystem();
@@ -8085,7 +8105,9 @@ public class Enumerations {
     }
 
     public String toCode(FHIRAllTypes code) {
-      if (code == FHIRAllTypes.ADDRESS)
+       if (code == FHIRAllTypes.NULL)
+           return null;
+       if (code == FHIRAllTypes.ADDRESS)
         return "Address";
       if (code == FHIRAllTypes.AGE)
         return "Age";
@@ -8512,7 +8534,7 @@ public class Enumerations {
       if (code == FHIRAllTypes.ANY)
         return "Any";
       return "?";
-    }
+   }
 
     public String toSystem(FHIRAllTypes code) {
       return code.getSystem();
@@ -12719,7 +12741,9 @@ public class Enumerations {
     }
 
     public String toCode(FHIRDefinedType code) {
-      if (code == FHIRDefinedType.ADDRESS)
+       if (code == FHIRDefinedType.NULL)
+           return null;
+       if (code == FHIRDefinedType.ADDRESS)
         return "Address";
       if (code == FHIRDefinedType.AGE)
         return "Age";
@@ -13142,7 +13166,7 @@ public class Enumerations {
       if (code == FHIRDefinedType.VISIONPRESCRIPTION)
         return "VisionPrescription";
       return "?";
-    }
+   }
 
     public String toSystem(FHIRDefinedType code) {
       return code.getSystem();
@@ -14340,7 +14364,9 @@ public class Enumerations {
     }
 
     public String toCode(FHIRVersion code) {
-      if (code == FHIRVersion._0_01)
+       if (code == FHIRVersion.NULL)
+           return null;
+       if (code == FHIRVersion._0_01)
         return "0.01";
       if (code == FHIRVersion._0_05)
         return "0.05";
@@ -14455,7 +14481,7 @@ public class Enumerations {
       if (code == FHIRVersion._5_0_0DRAFTFINAL)
         return "5.0.0-draft-final";
       return "?";
-    }
+   }
 
     public String toSystem(FHIRVersion code) {
       return code.getSystem();
@@ -14696,7 +14722,9 @@ public class Enumerations {
     }
 
     public String toCode(KnowledgeResourceType code) {
-      if (code == KnowledgeResourceType.ACTIVITYDEFINITION)
+       if (code == KnowledgeResourceType.NULL)
+           return null;
+       if (code == KnowledgeResourceType.ACTIVITYDEFINITION)
         return "ActivityDefinition";
       if (code == KnowledgeResourceType.CODESYSTEM)
         return "CodeSystem";
@@ -14715,7 +14743,7 @@ public class Enumerations {
       if (code == KnowledgeResourceType.VALUESET)
         return "ValueSet";
       return "?";
-    }
+   }
 
     public String toSystem(KnowledgeResourceType code) {
       return code.getSystem();
@@ -14791,8 +14819,10 @@ public class Enumerations {
     }
 
     public String toCode(MessageEvent code) {
-      return "?";
-    }
+       if (code == MessageEvent.NULL)
+           return null;
+       return "?";
+   }
 
     public String toSystem(MessageEvent code) {
       return code.getSystem();
@@ -14922,14 +14952,16 @@ public class Enumerations {
     }
 
     public String toCode(NoteType code) {
-      if (code == NoteType.DISPLAY)
+       if (code == NoteType.NULL)
+           return null;
+       if (code == NoteType.DISPLAY)
         return "display";
       if (code == NoteType.PRINT)
         return "print";
       if (code == NoteType.PRINTOPER)
         return "printoper";
       return "?";
-    }
+   }
 
     public String toSystem(NoteType code) {
       return code.getSystem();
@@ -15081,7 +15113,9 @@ public class Enumerations {
     }
 
     public String toCode(PublicationStatus code) {
-      if (code == PublicationStatus.DRAFT)
+       if (code == PublicationStatus.NULL)
+           return null;
+       if (code == PublicationStatus.DRAFT)
         return "draft";
       if (code == PublicationStatus.ACTIVE)
         return "active";
@@ -15090,7 +15124,7 @@ public class Enumerations {
       if (code == PublicationStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(PublicationStatus code) {
       return code.getSystem();
@@ -15240,7 +15274,9 @@ public class Enumerations {
     }
 
     public String toCode(RemittanceOutcome code) {
-      if (code == RemittanceOutcome.QUEUED)
+       if (code == RemittanceOutcome.NULL)
+           return null;
+       if (code == RemittanceOutcome.QUEUED)
         return "queued";
       if (code == RemittanceOutcome.COMPLETE)
         return "complete";
@@ -15249,7 +15285,7 @@ public class Enumerations {
       if (code == RemittanceOutcome.PARTIAL)
         return "partial";
       return "?";
-    }
+   }
 
     public String toSystem(RemittanceOutcome code) {
       return code.getSystem();
@@ -15599,7 +15635,9 @@ public class Enumerations {
     }
 
     public String toCode(RequestResourceType code) {
-      if (code == RequestResourceType.APPOINTMENT)
+       if (code == RequestResourceType.NULL)
+           return null;
+       if (code == RequestResourceType.APPOINTMENT)
         return "Appointment";
       if (code == RequestResourceType.APPOINTMENTRESPONSE)
         return "AppointmentResponse";
@@ -15630,7 +15668,7 @@ public class Enumerations {
       if (code == RequestResourceType.VISIONPRESCRIPTION)
         return "VisionPrescription";
       return "?";
-    }
+   }
 
     public String toSystem(RequestResourceType code) {
       return code.getSystem();
@@ -18644,7 +18682,9 @@ public class Enumerations {
     }
 
     public String toCode(ResourceType code) {
-      if (code == ResourceType.ACCOUNT)
+       if (code == ResourceType.NULL)
+           return null;
+       if (code == ResourceType.ACCOUNT)
         return "Account";
       if (code == ResourceType.ACTIVITYDEFINITION)
         return "ActivityDefinition";
@@ -18941,7 +18981,7 @@ public class Enumerations {
       if (code == ResourceType.VISIONPRESCRIPTION)
         return "VisionPrescription";
       return "?";
-    }
+   }
 
     public String toSystem(ResourceType code) {
       return code.getSystem();
@@ -19186,7 +19226,9 @@ public class Enumerations {
     }
 
     public String toCode(SearchParamType code) {
-      if (code == SearchParamType.NUMBER)
+       if (code == SearchParamType.NULL)
+           return null;
+       if (code == SearchParamType.NUMBER)
         return "number";
       if (code == SearchParamType.DATE)
         return "date";
@@ -19205,7 +19247,7 @@ public class Enumerations {
       if (code == SearchParamType.SPECIAL)
         return "special";
       return "?";
-    }
+   }
 
     public String toSystem(SearchParamType code) {
       return code.getSystem();
@@ -19390,7 +19432,9 @@ public class Enumerations {
     }
 
     public String toCode(SpecialValues code) {
-      if (code == SpecialValues.TRUE)
+       if (code == SpecialValues.NULL)
+           return null;
+       if (code == SpecialValues.TRUE)
         return "true";
       if (code == SpecialValues.FALSE)
         return "false";
@@ -19403,7 +19447,7 @@ public class Enumerations {
       if (code == SpecialValues.NILKNOWN)
         return "nil-known";
       return "?";
-    }
+   }
 
     public String toSystem(SpecialValues code) {
       return code.getSystem();

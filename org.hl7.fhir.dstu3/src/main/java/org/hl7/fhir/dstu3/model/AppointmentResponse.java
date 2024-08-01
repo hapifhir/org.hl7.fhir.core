@@ -162,7 +162,9 @@ public class AppointmentResponse extends DomainResource {
         throw new FHIRException("Unknown ParticipantStatus code '"+codeString+"'");
         }
     public String toCode(ParticipantStatus code) {
-      if (code == ParticipantStatus.ACCEPTED)
+       if (code == ParticipantStatus.NULL)
+           return null;
+       if (code == ParticipantStatus.ACCEPTED)
         return "accepted";
       if (code == ParticipantStatus.DECLINED)
         return "declined";
@@ -171,7 +173,7 @@ public class AppointmentResponse extends DomainResource {
       if (code == ParticipantStatus.NEEDSACTION)
         return "needs-action";
       return "?";
-      }
+   }
     public String toSystem(ParticipantStatus code) {
       return code.getSystem();
       }

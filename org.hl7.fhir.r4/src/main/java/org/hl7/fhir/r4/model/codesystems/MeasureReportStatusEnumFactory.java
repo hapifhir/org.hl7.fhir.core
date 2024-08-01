@@ -48,14 +48,16 @@ public class MeasureReportStatusEnumFactory implements EnumFactory<MeasureReport
   }
 
   public String toCode(MeasureReportStatus code) {
-    if (code == MeasureReportStatus.COMPLETE)
+       if (code == MeasureReportStatus.NULL)
+           return null;
+       if (code == MeasureReportStatus.COMPLETE)
       return "complete";
     if (code == MeasureReportStatus.PENDING)
       return "pending";
     if (code == MeasureReportStatus.ERROR)
       return "error";
     return "?";
-  }
+   }
 
   public String toSystem(MeasureReportStatus code) {
     return code.getSystem();

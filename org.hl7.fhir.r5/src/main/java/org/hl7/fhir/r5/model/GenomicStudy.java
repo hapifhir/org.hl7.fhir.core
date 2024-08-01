@@ -180,7 +180,9 @@ public class GenomicStudy extends DomainResource {
         throw new FHIRException("Unknown GenomicStudyStatus code '"+codeString+"'");
         }
     public String toCode(GenomicStudyStatus code) {
-      if (code == GenomicStudyStatus.REGISTERED)
+       if (code == GenomicStudyStatus.NULL)
+           return null;
+       if (code == GenomicStudyStatus.REGISTERED)
         return "registered";
       if (code == GenomicStudyStatus.AVAILABLE)
         return "available";
@@ -191,7 +193,7 @@ public class GenomicStudy extends DomainResource {
       if (code == GenomicStudyStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(GenomicStudyStatus code) {
       return code.getSystem();
       }

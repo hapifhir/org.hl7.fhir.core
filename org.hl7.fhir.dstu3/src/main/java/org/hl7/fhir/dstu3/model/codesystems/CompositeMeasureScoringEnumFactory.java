@@ -54,7 +54,9 @@ public class CompositeMeasureScoringEnumFactory implements EnumFactory<Composite
   }
 
   public String toCode(CompositeMeasureScoring code) {
-    if (code == CompositeMeasureScoring.OPPORTUNITY)
+       if (code == CompositeMeasureScoring.NULL)
+           return null;
+       if (code == CompositeMeasureScoring.OPPORTUNITY)
       return "opportunity";
     if (code == CompositeMeasureScoring.ALLORNOTHING)
       return "all-or-nothing";
@@ -63,7 +65,7 @@ public class CompositeMeasureScoringEnumFactory implements EnumFactory<Composite
     if (code == CompositeMeasureScoring.WEIGHTED)
       return "weighted";
     return "?";
-  }
+   }
 
     public String toSystem(CompositeMeasureScoring code) {
       return code.getSystem();

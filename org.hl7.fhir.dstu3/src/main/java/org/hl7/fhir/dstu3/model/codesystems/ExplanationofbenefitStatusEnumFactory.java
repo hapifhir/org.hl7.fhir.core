@@ -54,7 +54,9 @@ public class ExplanationofbenefitStatusEnumFactory implements EnumFactory<Explan
   }
 
   public String toCode(ExplanationofbenefitStatus code) {
-    if (code == ExplanationofbenefitStatus.ACTIVE)
+       if (code == ExplanationofbenefitStatus.NULL)
+           return null;
+       if (code == ExplanationofbenefitStatus.ACTIVE)
       return "active";
     if (code == ExplanationofbenefitStatus.CANCELLED)
       return "cancelled";
@@ -63,7 +65,7 @@ public class ExplanationofbenefitStatusEnumFactory implements EnumFactory<Explan
     if (code == ExplanationofbenefitStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(ExplanationofbenefitStatus code) {
       return code.getSystem();

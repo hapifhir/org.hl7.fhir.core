@@ -50,7 +50,9 @@ public class DefinitionStatusEnumFactory implements EnumFactory<DefinitionStatus
   }
 
   public String toCode(DefinitionStatus code) {
-    if (code == DefinitionStatus.DRAFT)
+       if (code == DefinitionStatus.NULL)
+           return null;
+       if (code == DefinitionStatus.DRAFT)
       return "draft";
     if (code == DefinitionStatus.ACTIVE)
       return "active";
@@ -59,7 +61,7 @@ public class DefinitionStatusEnumFactory implements EnumFactory<DefinitionStatus
     if (code == DefinitionStatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
   public String toSystem(DefinitionStatus code) {
     return code.getSystem();

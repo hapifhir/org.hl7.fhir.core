@@ -50,7 +50,9 @@ public class AllergyintoleranceVerificationEnumFactory implements EnumFactory<Al
   }
 
   public String toCode(AllergyintoleranceVerification code) {
-    if (code == AllergyintoleranceVerification.UNCONFIRMED)
+       if (code == AllergyintoleranceVerification.NULL)
+           return null;
+       if (code == AllergyintoleranceVerification.UNCONFIRMED)
       return "unconfirmed";
     if (code == AllergyintoleranceVerification.CONFIRMED)
       return "confirmed";
@@ -59,7 +61,7 @@ public class AllergyintoleranceVerificationEnumFactory implements EnumFactory<Al
     if (code == AllergyintoleranceVerification.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(AllergyintoleranceVerification code) {
     return code.getSystem();

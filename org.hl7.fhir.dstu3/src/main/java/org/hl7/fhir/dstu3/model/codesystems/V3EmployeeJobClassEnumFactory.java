@@ -50,12 +50,14 @@ public class V3EmployeeJobClassEnumFactory implements EnumFactory<V3EmployeeJobC
   }
 
   public String toCode(V3EmployeeJobClass code) {
-    if (code == V3EmployeeJobClass.FT)
+       if (code == V3EmployeeJobClass.NULL)
+           return null;
+       if (code == V3EmployeeJobClass.FT)
       return "FT";
     if (code == V3EmployeeJobClass.PT)
       return "PT";
     return "?";
-  }
+   }
 
     public String toSystem(V3EmployeeJobClass code) {
       return code.getSystem();

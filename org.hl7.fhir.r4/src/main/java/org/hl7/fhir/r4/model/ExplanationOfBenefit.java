@@ -200,7 +200,9 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public String toCode(ExplanationOfBenefitStatus code) {
-      if (code == ExplanationOfBenefitStatus.ACTIVE)
+       if (code == ExplanationOfBenefitStatus.NULL)
+           return null;
+       if (code == ExplanationOfBenefitStatus.ACTIVE)
         return "active";
       if (code == ExplanationOfBenefitStatus.CANCELLED)
         return "cancelled";
@@ -209,7 +211,7 @@ public class ExplanationOfBenefit extends DomainResource {
       if (code == ExplanationOfBenefitStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(ExplanationOfBenefitStatus code) {
       return code.getSystem();
@@ -344,14 +346,16 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public String toCode(Use code) {
-      if (code == Use.CLAIM)
+       if (code == Use.NULL)
+           return null;
+       if (code == Use.CLAIM)
         return "claim";
       if (code == Use.PREAUTHORIZATION)
         return "preauthorization";
       if (code == Use.PREDETERMINATION)
         return "predetermination";
       return "?";
-    }
+   }
 
     public String toSystem(Use code) {
       return code.getSystem();
@@ -504,7 +508,9 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public String toCode(RemittanceOutcome code) {
-      if (code == RemittanceOutcome.QUEUED)
+       if (code == RemittanceOutcome.NULL)
+           return null;
+       if (code == RemittanceOutcome.QUEUED)
         return "queued";
       if (code == RemittanceOutcome.COMPLETE)
         return "complete";
@@ -513,7 +519,7 @@ public class ExplanationOfBenefit extends DomainResource {
       if (code == RemittanceOutcome.PARTIAL)
         return "partial";
       return "?";
-    }
+   }
 
     public String toSystem(RemittanceOutcome code) {
       return code.getSystem();

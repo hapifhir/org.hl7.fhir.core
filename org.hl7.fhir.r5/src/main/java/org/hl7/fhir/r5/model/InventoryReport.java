@@ -138,12 +138,14 @@ public class InventoryReport extends DomainResource {
         throw new FHIRException("Unknown InventoryCountType code '"+codeString+"'");
         }
     public String toCode(InventoryCountType code) {
-      if (code == InventoryCountType.SNAPSHOT)
+       if (code == InventoryCountType.NULL)
+           return null;
+       if (code == InventoryCountType.SNAPSHOT)
         return "snapshot";
       if (code == InventoryCountType.DIFFERENCE)
         return "difference";
       return "?";
-      }
+   }
     public String toSystem(InventoryCountType code) {
       return code.getSystem();
       }
@@ -262,7 +264,9 @@ public class InventoryReport extends DomainResource {
         throw new FHIRException("Unknown InventoryReportStatus code '"+codeString+"'");
         }
     public String toCode(InventoryReportStatus code) {
-      if (code == InventoryReportStatus.DRAFT)
+       if (code == InventoryReportStatus.NULL)
+           return null;
+       if (code == InventoryReportStatus.DRAFT)
         return "draft";
       if (code == InventoryReportStatus.REQUESTED)
         return "requested";
@@ -271,7 +275,7 @@ public class InventoryReport extends DomainResource {
       if (code == InventoryReportStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(InventoryReportStatus code) {
       return code.getSystem();
       }

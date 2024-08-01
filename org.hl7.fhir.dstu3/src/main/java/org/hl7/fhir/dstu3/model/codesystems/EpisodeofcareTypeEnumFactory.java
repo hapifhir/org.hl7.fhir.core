@@ -56,7 +56,9 @@ public class EpisodeofcareTypeEnumFactory implements EnumFactory<EpisodeofcareTy
   }
 
   public String toCode(EpisodeofcareType code) {
-    if (code == EpisodeofcareType.HACC)
+       if (code == EpisodeofcareType.NULL)
+           return null;
+       if (code == EpisodeofcareType.HACC)
       return "hacc";
     if (code == EpisodeofcareType.PAC)
       return "pac";
@@ -67,7 +69,7 @@ public class EpisodeofcareTypeEnumFactory implements EnumFactory<EpisodeofcareTy
     if (code == EpisodeofcareType.CACP)
       return "cacp";
     return "?";
-  }
+   }
 
     public String toSystem(EpisodeofcareType code) {
       return code.getSystem();

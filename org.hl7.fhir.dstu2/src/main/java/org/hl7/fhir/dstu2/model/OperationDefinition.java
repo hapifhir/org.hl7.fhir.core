@@ -156,13 +156,16 @@ public class OperationDefinition extends DomainResource {
       throw new FHIRException("Unknown OperationKind code '" + codeString + "'");
     }
 
-    public String toCode(OperationKind code) {
-      if (code == OperationKind.OPERATION)
+    public String toCode(OperationKind code)
+   {
+       if (code == OperationKind.NULL)
+           return null;
+       if (code == OperationKind.OPERATION)
         return "operation";
       if (code == OperationKind.QUERY)
         return "query";
       return "?";
-    }
+   }
   }
 
   public enum OperationParameterUse {
@@ -267,13 +270,16 @@ public class OperationDefinition extends DomainResource {
       throw new FHIRException("Unknown OperationParameterUse code '" + codeString + "'");
     }
 
-    public String toCode(OperationParameterUse code) {
-      if (code == OperationParameterUse.IN)
+    public String toCode(OperationParameterUse code)
+   {
+       if (code == OperationParameterUse.NULL)
+           return null;
+       if (code == OperationParameterUse.IN)
         return "in";
       if (code == OperationParameterUse.OUT)
         return "out";
       return "?";
-    }
+   }
   }
 
   @Block()

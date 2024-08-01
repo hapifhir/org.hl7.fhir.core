@@ -163,12 +163,14 @@ public class ExampleScenario extends MetadataResource {
     }
 
     public String toCode(ExampleScenarioActorType code) {
-      if (code == ExampleScenarioActorType.PERSON)
+       if (code == ExampleScenarioActorType.NULL)
+           return null;
+       if (code == ExampleScenarioActorType.PERSON)
         return "person";
       if (code == ExampleScenarioActorType.ENTITY)
         return "entity";
       return "?";
-    }
+   }
 
     public String toSystem(ExampleScenarioActorType code) {
       return code.getSystem();
@@ -3186,7 +3188,9 @@ public class ExampleScenario extends MetadataResource {
     }
 
     public String toCode(FHIRResourceType code) {
-      if (code == FHIRResourceType.ACCOUNT)
+       if (code == FHIRResourceType.NULL)
+           return null;
+       if (code == FHIRResourceType.ACCOUNT)
         return "Account";
       if (code == FHIRResourceType.ACTIVITYDEFINITION)
         return "ActivityDefinition";
@@ -3483,7 +3487,7 @@ public class ExampleScenario extends MetadataResource {
       if (code == FHIRResourceType.VISIONPRESCRIPTION)
         return "VisionPrescription";
       return "?";
-    }
+   }
 
     public String toSystem(FHIRResourceType code) {
       return code.getSystem();

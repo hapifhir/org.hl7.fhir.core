@@ -70,7 +70,9 @@ public class SmartCapabilitiesEnumFactory implements EnumFactory<SmartCapabiliti
   }
 
   public String toCode(SmartCapabilities code) {
-    if (code == SmartCapabilities.LAUNCHEHR)
+       if (code == SmartCapabilities.NULL)
+           return null;
+       if (code == SmartCapabilities.LAUNCHEHR)
       return "launch-ehr";
     if (code == SmartCapabilities.LAUNCHSTANDALONE)
       return "launch-standalone";
@@ -99,7 +101,7 @@ public class SmartCapabilitiesEnumFactory implements EnumFactory<SmartCapabiliti
     if (code == SmartCapabilities.PERMISSIONUSER)
       return "permission-user";
     return "?";
-  }
+   }
 
   public String toSystem(SmartCapabilities code) {
     return code.getSystem();

@@ -52,7 +52,9 @@ public class EncounterSpecialArrangementsEnumFactory implements EnumFactory<Enco
   }
 
   public String toCode(EncounterSpecialArrangements code) {
-    if (code == EncounterSpecialArrangements.WHEEL)
+       if (code == EncounterSpecialArrangements.NULL)
+           return null;
+       if (code == EncounterSpecialArrangements.WHEEL)
       return "wheel";
     if (code == EncounterSpecialArrangements.STRET)
       return "stret";
@@ -63,7 +65,7 @@ public class EncounterSpecialArrangementsEnumFactory implements EnumFactory<Enco
     if (code == EncounterSpecialArrangements.DOG)
       return "dog";
     return "?";
-  }
+   }
 
   public String toSystem(EncounterSpecialArrangements code) {
     return code.getSystem();

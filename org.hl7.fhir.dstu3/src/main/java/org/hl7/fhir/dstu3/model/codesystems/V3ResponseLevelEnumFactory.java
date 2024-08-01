@@ -60,7 +60,9 @@ public class V3ResponseLevelEnumFactory implements EnumFactory<V3ResponseLevel> 
   }
 
   public String toCode(V3ResponseLevel code) {
-    if (code == V3ResponseLevel.C)
+       if (code == V3ResponseLevel.NULL)
+           return null;
+       if (code == V3ResponseLevel.C)
       return "C";
     if (code == V3ResponseLevel.D)
       return "D";
@@ -75,7 +77,7 @@ public class V3ResponseLevelEnumFactory implements EnumFactory<V3ResponseLevel> 
     if (code == V3ResponseLevel.X)
       return "X";
     return "?";
-  }
+   }
 
     public String toSystem(V3ResponseLevel code) {
       return code.getSystem();

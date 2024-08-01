@@ -60,7 +60,9 @@ public class OperationalStatusEnumFactory implements EnumFactory<OperationalStat
   }
 
   public String toCode(OperationalStatus code) {
-    if (code == OperationalStatus.OFF)
+       if (code == OperationalStatus.NULL)
+           return null;
+       if (code == OperationalStatus.OFF)
       return "off";
     if (code == OperationalStatus.ON)
       return "on";
@@ -75,7 +77,7 @@ public class OperationalStatusEnumFactory implements EnumFactory<OperationalStat
     if (code == OperationalStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(OperationalStatus code) {
       return code.getSystem();

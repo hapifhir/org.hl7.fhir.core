@@ -208,8 +208,11 @@ public class AuditEvent extends DomainResource {
       throw new FHIRException("Unknown AuditEventAction code '" + codeString + "'");
     }
 
-    public String toCode(AuditEventAction code) {
-      if (code == AuditEventAction.C)
+    public String toCode(AuditEventAction code)
+   {
+       if (code == AuditEventAction.NULL)
+           return null;
+       if (code == AuditEventAction.C)
         return "C";
       if (code == AuditEventAction.R)
         return "R";
@@ -220,7 +223,7 @@ public class AuditEvent extends DomainResource {
       if (code == AuditEventAction.E)
         return "E";
       return "?";
-    }
+   }
   }
 
   public enum AuditEventOutcome {
@@ -364,8 +367,11 @@ public class AuditEvent extends DomainResource {
       throw new FHIRException("Unknown AuditEventOutcome code '" + codeString + "'");
     }
 
-    public String toCode(AuditEventOutcome code) {
-      if (code == AuditEventOutcome._0)
+    public String toCode(AuditEventOutcome code)
+   {
+       if (code == AuditEventOutcome.NULL)
+           return null;
+       if (code == AuditEventOutcome._0)
         return "0";
       if (code == AuditEventOutcome._4)
         return "4";
@@ -374,7 +380,7 @@ public class AuditEvent extends DomainResource {
       if (code == AuditEventOutcome._12)
         return "12";
       return "?";
-    }
+   }
   }
 
   public enum AuditEventParticipantNetworkType {
@@ -534,8 +540,11 @@ public class AuditEvent extends DomainResource {
       throw new FHIRException("Unknown AuditEventParticipantNetworkType code '" + codeString + "'");
     }
 
-    public String toCode(AuditEventParticipantNetworkType code) {
-      if (code == AuditEventParticipantNetworkType._1)
+    public String toCode(AuditEventParticipantNetworkType code)
+   {
+       if (code == AuditEventParticipantNetworkType.NULL)
+           return null;
+       if (code == AuditEventParticipantNetworkType._1)
         return "1";
       if (code == AuditEventParticipantNetworkType._2)
         return "2";
@@ -546,7 +555,7 @@ public class AuditEvent extends DomainResource {
       if (code == AuditEventParticipantNetworkType._5)
         return "5";
       return "?";
-    }
+   }
   }
 
   @Block()

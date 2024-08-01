@@ -164,7 +164,9 @@ public class ImagingStudy extends DomainResource {
         throw new FHIRException("Unknown InstanceAvailability code '"+codeString+"'");
         }
     public String toCode(InstanceAvailability code) {
-      if (code == InstanceAvailability.ONLINE)
+       if (code == InstanceAvailability.NULL)
+           return null;
+       if (code == InstanceAvailability.ONLINE)
         return "ONLINE";
       if (code == InstanceAvailability.OFFLINE)
         return "OFFLINE";
@@ -173,7 +175,7 @@ public class ImagingStudy extends DomainResource {
       if (code == InstanceAvailability.UNAVAILABLE)
         return "UNAVAILABLE";
       return "?";
-      }
+   }
     public String toSystem(InstanceAvailability code) {
       return code.getSystem();
       }

@@ -247,7 +247,9 @@ public class Timing extends Type implements ICompositeType {
     }
 
     public String toCode(UnitsOfTime code) {
-      if (code == UnitsOfTime.S)
+       if (code == UnitsOfTime.NULL)
+           return null;
+       if (code == UnitsOfTime.S)
         return "s";
       if (code == UnitsOfTime.MIN)
         return "min";
@@ -262,7 +264,7 @@ public class Timing extends Type implements ICompositeType {
       if (code == UnitsOfTime.A)
         return "a";
       return "?";
-    }
+   }
 
     public String toSystem(UnitsOfTime code) {
       return code.getSystem();
@@ -588,7 +590,9 @@ public class Timing extends Type implements ICompositeType {
     }
 
     public String toCode(EventTiming code) {
-      if (code == EventTiming.HS)
+       if (code == EventTiming.NULL)
+           return null;
+       if (code == EventTiming.HS)
         return "HS";
       if (code == EventTiming.WAKE)
         return "WAKE";
@@ -617,7 +621,7 @@ public class Timing extends Type implements ICompositeType {
       if (code == EventTiming.PCV)
         return "PCV";
       return "?";
-    }
+   }
 
     public String toSystem(EventTiming code) {
       return code.getSystem();

@@ -138,12 +138,14 @@ public class ConditionDefinition extends MetadataResource {
         throw new FHIRException("Unknown ConditionPreconditionType code '"+codeString+"'");
         }
     public String toCode(ConditionPreconditionType code) {
-      if (code == ConditionPreconditionType.SENSITIVE)
+       if (code == ConditionPreconditionType.NULL)
+           return null;
+       if (code == ConditionPreconditionType.SENSITIVE)
         return "sensitive";
       if (code == ConditionPreconditionType.SPECIFIC)
         return "specific";
       return "?";
-      }
+   }
     public String toSystem(ConditionPreconditionType code) {
       return code.getSystem();
       }
@@ -248,14 +250,16 @@ public class ConditionDefinition extends MetadataResource {
         throw new FHIRException("Unknown ConditionQuestionnairePurpose code '"+codeString+"'");
         }
     public String toCode(ConditionQuestionnairePurpose code) {
-      if (code == ConditionQuestionnairePurpose.PREADMIT)
+       if (code == ConditionQuestionnairePurpose.NULL)
+           return null;
+       if (code == ConditionQuestionnairePurpose.PREADMIT)
         return "preadmit";
       if (code == ConditionQuestionnairePurpose.DIFFDIAGNOSIS)
         return "diff-diagnosis";
       if (code == ConditionQuestionnairePurpose.OUTCOME)
         return "outcome";
       return "?";
-      }
+   }
     public String toSystem(ConditionQuestionnairePurpose code) {
       return code.getSystem();
       }

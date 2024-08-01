@@ -56,7 +56,9 @@ public class QuestionnaireUsageModeEnumFactory implements EnumFactory<Questionna
   }
 
   public String toCode(QuestionnaireUsageMode code) {
-    if (code == QuestionnaireUsageMode.CAPTUREDISPLAY)
+       if (code == QuestionnaireUsageMode.NULL)
+           return null;
+       if (code == QuestionnaireUsageMode.CAPTUREDISPLAY)
       return "capture-display";
     if (code == QuestionnaireUsageMode.CAPTURE)
       return "capture";
@@ -67,7 +69,7 @@ public class QuestionnaireUsageModeEnumFactory implements EnumFactory<Questionna
     if (code == QuestionnaireUsageMode.CAPTUREDISPLAYNONEMPTY)
       return "capture-display-non-empty";
     return "?";
-  }
+   }
 
     public String toSystem(QuestionnaireUsageMode code) {
       return code.getSystem();

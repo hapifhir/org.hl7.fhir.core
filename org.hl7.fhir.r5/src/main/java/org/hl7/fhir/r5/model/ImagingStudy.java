@@ -180,7 +180,9 @@ public class ImagingStudy extends DomainResource {
         throw new FHIRException("Unknown ImagingStudyStatus code '"+codeString+"'");
         }
     public String toCode(ImagingStudyStatus code) {
-      if (code == ImagingStudyStatus.REGISTERED)
+       if (code == ImagingStudyStatus.NULL)
+           return null;
+       if (code == ImagingStudyStatus.REGISTERED)
         return "registered";
       if (code == ImagingStudyStatus.AVAILABLE)
         return "available";
@@ -191,7 +193,7 @@ public class ImagingStudy extends DomainResource {
       if (code == ImagingStudyStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(ImagingStudyStatus code) {
       return code.getSystem();
       }

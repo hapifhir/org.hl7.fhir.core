@@ -54,7 +54,9 @@ public class ObservationParamcodeEnumFactory implements EnumFactory<ObservationP
   }
 
   public String toCode(ObservationParamcode code) {
-    if (code == ObservationParamcode.AVERAGE)
+       if (code == ObservationParamcode.NULL)
+           return null;
+       if (code == ObservationParamcode.AVERAGE)
       return "average";
     if (code == ObservationParamcode.MAX)
       return "max";
@@ -63,7 +65,7 @@ public class ObservationParamcodeEnumFactory implements EnumFactory<ObservationP
     if (code == ObservationParamcode.COUNT)
       return "count";
     return "?";
-  }
+   }
 
     public String toSystem(ObservationParamcode code) {
       return code.getSystem();

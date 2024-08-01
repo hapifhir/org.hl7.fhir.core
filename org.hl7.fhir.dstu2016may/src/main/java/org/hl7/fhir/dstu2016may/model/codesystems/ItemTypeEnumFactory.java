@@ -78,7 +78,9 @@ public class ItemTypeEnumFactory implements EnumFactory<ItemType> {
   }
 
   public String toCode(ItemType code) {
-    if (code == ItemType.GROUP)
+       if (code == ItemType.NULL)
+           return null;
+       if (code == ItemType.GROUP)
       return "group";
     if (code == ItemType.DISPLAY)
       return "display";
@@ -115,7 +117,7 @@ public class ItemTypeEnumFactory implements EnumFactory<ItemType> {
     if (code == ItemType.QUANTITY)
       return "quantity";
     return "?";
-  }
+   }
 
   public String toSystem(ItemType code) {
     return code.getSystem();

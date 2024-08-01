@@ -50,7 +50,9 @@ public class MetricCalibrationTypeEnumFactory implements EnumFactory<MetricCalib
   }
 
   public String toCode(MetricCalibrationType code) {
-    if (code == MetricCalibrationType.UNSPECIFIED)
+       if (code == MetricCalibrationType.NULL)
+           return null;
+       if (code == MetricCalibrationType.UNSPECIFIED)
       return "unspecified";
     if (code == MetricCalibrationType.OFFSET)
       return "offset";
@@ -59,7 +61,7 @@ public class MetricCalibrationTypeEnumFactory implements EnumFactory<MetricCalib
     if (code == MetricCalibrationType.TWOPOINT)
       return "two-point";
     return "?";
-  }
+   }
 
   public String toSystem(MetricCalibrationType code) {
     return code.getSystem();

@@ -236,7 +236,9 @@ public class Endpoint extends DomainResource {
     }
 
     public String toCode(EndpointStatus code) {
-      if (code == EndpointStatus.ACTIVE)
+       if (code == EndpointStatus.NULL)
+           return null;
+       if (code == EndpointStatus.ACTIVE)
         return "active";
       if (code == EndpointStatus.SUSPENDED)
         return "suspended";
@@ -249,7 +251,7 @@ public class Endpoint extends DomainResource {
       if (code == EndpointStatus.TEST)
         return "test";
       return "?";
-    }
+   }
 
     public String toSystem(EndpointStatus code) {
       return code.getSystem();

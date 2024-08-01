@@ -175,14 +175,16 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     public String toCode(MedicationKnowledgeStatus code) {
-      if (code == MedicationKnowledgeStatus.ACTIVE)
+       if (code == MedicationKnowledgeStatus.NULL)
+           return null;
+       if (code == MedicationKnowledgeStatus.ACTIVE)
         return "active";
       if (code == MedicationKnowledgeStatus.INACTIVE)
         return "inactive";
       if (code == MedicationKnowledgeStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(MedicationKnowledgeStatus code) {
       return code.getSystem();

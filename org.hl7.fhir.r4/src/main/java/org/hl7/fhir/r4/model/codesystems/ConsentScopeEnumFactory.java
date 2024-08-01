@@ -50,7 +50,9 @@ public class ConsentScopeEnumFactory implements EnumFactory<ConsentScope> {
   }
 
   public String toCode(ConsentScope code) {
-    if (code == ConsentScope.ADR)
+       if (code == ConsentScope.NULL)
+           return null;
+       if (code == ConsentScope.ADR)
       return "adr";
     if (code == ConsentScope.RESEARCH)
       return "research";
@@ -59,7 +61,7 @@ public class ConsentScopeEnumFactory implements EnumFactory<ConsentScope> {
     if (code == ConsentScope.TREATMENT)
       return "treatment";
     return "?";
-  }
+   }
 
   public String toSystem(ConsentScope code) {
     return code.getSystem();

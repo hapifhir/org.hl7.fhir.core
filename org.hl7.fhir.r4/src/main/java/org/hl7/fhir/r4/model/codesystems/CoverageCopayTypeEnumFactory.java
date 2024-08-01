@@ -62,7 +62,9 @@ public class CoverageCopayTypeEnumFactory implements EnumFactory<CoverageCopayTy
   }
 
   public String toCode(CoverageCopayType code) {
-    if (code == CoverageCopayType.GPVISIT)
+       if (code == CoverageCopayType.NULL)
+           return null;
+       if (code == CoverageCopayType.GPVISIT)
       return "gpvisit";
     if (code == CoverageCopayType.SPVISIT)
       return "spvisit";
@@ -83,7 +85,7 @@ public class CoverageCopayTypeEnumFactory implements EnumFactory<CoverageCopayTy
     if (code == CoverageCopayType.MAXOUTOFPOCKET)
       return "maxoutofpocket";
     return "?";
-  }
+   }
 
   public String toSystem(CoverageCopayType code) {
     return code.getSystem();

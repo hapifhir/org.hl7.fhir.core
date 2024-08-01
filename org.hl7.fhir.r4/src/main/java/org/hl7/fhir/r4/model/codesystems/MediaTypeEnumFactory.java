@@ -48,14 +48,16 @@ public class MediaTypeEnumFactory implements EnumFactory<MediaType> {
   }
 
   public String toCode(MediaType code) {
-    if (code == MediaType.IMAGE)
+       if (code == MediaType.NULL)
+           return null;
+       if (code == MediaType.IMAGE)
       return "image";
     if (code == MediaType.VIDEO)
       return "video";
     if (code == MediaType.AUDIO)
       return "audio";
     return "?";
-  }
+   }
 
   public String toSystem(MediaType code) {
     return code.getSystem();

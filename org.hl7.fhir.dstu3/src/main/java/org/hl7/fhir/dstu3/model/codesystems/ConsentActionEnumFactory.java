@@ -56,7 +56,9 @@ public class ConsentActionEnumFactory implements EnumFactory<ConsentAction> {
   }
 
   public String toCode(ConsentAction code) {
-    if (code == ConsentAction.COLLECT)
+       if (code == ConsentAction.NULL)
+           return null;
+       if (code == ConsentAction.COLLECT)
       return "collect";
     if (code == ConsentAction.ACCESS)
       return "access";
@@ -67,7 +69,7 @@ public class ConsentActionEnumFactory implements EnumFactory<ConsentAction> {
     if (code == ConsentAction.CORRECT)
       return "correct";
     return "?";
-  }
+   }
 
     public String toSystem(ConsentAction code) {
       return code.getSystem();

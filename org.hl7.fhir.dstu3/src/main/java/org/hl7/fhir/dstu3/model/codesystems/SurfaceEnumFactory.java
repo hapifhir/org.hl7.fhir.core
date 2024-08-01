@@ -68,7 +68,9 @@ public class SurfaceEnumFactory implements EnumFactory<Surface> {
   }
 
   public String toCode(Surface code) {
-    if (code == Surface.M)
+       if (code == Surface.NULL)
+           return null;
+       if (code == Surface.M)
       return "M";
     if (code == Surface.O)
       return "O";
@@ -91,7 +93,7 @@ public class SurfaceEnumFactory implements EnumFactory<Surface> {
     if (code == Surface.MOD)
       return "MOD";
     return "?";
-  }
+   }
 
     public String toSystem(Surface code) {
       return code.getSystem();

@@ -54,7 +54,9 @@ public class VerificationresultStatusEnumFactory implements EnumFactory<Verifica
   }
 
   public String toCode(VerificationresultStatus code) {
-    if (code == VerificationresultStatus.ATTESTED)
+       if (code == VerificationresultStatus.NULL)
+           return null;
+       if (code == VerificationresultStatus.ATTESTED)
       return "attested";
     if (code == VerificationresultStatus.VALIDATED)
       return "validated";
@@ -67,7 +69,7 @@ public class VerificationresultStatusEnumFactory implements EnumFactory<Verifica
     if (code == VerificationresultStatus.REVALFAIL)
       return "reval-fail";
     return "?";
-  }
+   }
 
   public String toSystem(VerificationresultStatus code) {
     return code.getSystem();

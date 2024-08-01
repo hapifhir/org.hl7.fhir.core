@@ -49,14 +49,16 @@ public class VerificationresultPushTypeAvailableEnumFactory
   }
 
   public String toCode(VerificationresultPushTypeAvailable code) {
-    if (code == VerificationresultPushTypeAvailable.SPECIFIC)
+       if (code == VerificationresultPushTypeAvailable.NULL)
+           return null;
+       if (code == VerificationresultPushTypeAvailable.SPECIFIC)
       return "specific";
     if (code == VerificationresultPushTypeAvailable.ANY)
       return "any";
     if (code == VerificationresultPushTypeAvailable.SOURCE)
       return "source";
     return "?";
-  }
+   }
 
   public String toSystem(VerificationresultPushTypeAvailable code) {
     return code.getSystem();

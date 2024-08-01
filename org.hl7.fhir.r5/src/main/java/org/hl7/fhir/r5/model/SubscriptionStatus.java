@@ -180,7 +180,9 @@ public class SubscriptionStatus extends DomainResource {
         throw new FHIRException("Unknown SubscriptionNotificationType code '"+codeString+"'");
         }
     public String toCode(SubscriptionNotificationType code) {
-      if (code == SubscriptionNotificationType.HANDSHAKE)
+       if (code == SubscriptionNotificationType.NULL)
+           return null;
+       if (code == SubscriptionNotificationType.HANDSHAKE)
         return "handshake";
       if (code == SubscriptionNotificationType.HEARTBEAT)
         return "heartbeat";
@@ -191,7 +193,7 @@ public class SubscriptionStatus extends DomainResource {
       if (code == SubscriptionNotificationType.QUERYEVENT)
         return "query-event";
       return "?";
-      }
+   }
     public String toSystem(SubscriptionNotificationType code) {
       return code.getSystem();
       }

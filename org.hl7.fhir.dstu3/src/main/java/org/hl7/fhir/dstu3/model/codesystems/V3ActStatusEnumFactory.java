@@ -66,7 +66,9 @@ public class V3ActStatusEnumFactory implements EnumFactory<V3ActStatus> {
   }
 
   public String toCode(V3ActStatus code) {
-    if (code == V3ActStatus.NORMAL)
+       if (code == V3ActStatus.NULL)
+           return null;
+       if (code == V3ActStatus.NORMAL)
       return "normal";
     if (code == V3ActStatus.ABORTED)
       return "aborted";
@@ -87,7 +89,7 @@ public class V3ActStatusEnumFactory implements EnumFactory<V3ActStatus> {
     if (code == V3ActStatus.OBSOLETE)
       return "obsolete";
     return "?";
-  }
+   }
 
     public String toSystem(V3ActStatus code) {
       return code.getSystem();

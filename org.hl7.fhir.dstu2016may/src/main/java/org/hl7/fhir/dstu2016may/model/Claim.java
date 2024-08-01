@@ -211,7 +211,9 @@ public class Claim extends DomainResource {
     }
 
     public String toCode(ClaimType code) {
-      if (code == ClaimType.INSTITUTIONAL)
+       if (code == ClaimType.NULL)
+           return null;
+       if (code == ClaimType.INSTITUTIONAL)
         return "institutional";
       if (code == ClaimType.ORAL)
         return "oral";
@@ -222,7 +224,7 @@ public class Claim extends DomainResource {
       if (code == ClaimType.VISION)
         return "vision";
       return "?";
-    }
+   }
 
     public String toSystem(ClaimType code) {
       return code.getSystem();
@@ -370,7 +372,9 @@ public class Claim extends DomainResource {
     }
 
     public String toCode(Use code) {
-      if (code == Use.COMPLETE)
+       if (code == Use.NULL)
+           return null;
+       if (code == Use.COMPLETE)
         return "complete";
       if (code == Use.PROPOSED)
         return "proposed";
@@ -379,7 +383,7 @@ public class Claim extends DomainResource {
       if (code == Use.OTHER)
         return "other";
       return "?";
-    }
+   }
 
     public String toSystem(Use code) {
       return code.getSystem();

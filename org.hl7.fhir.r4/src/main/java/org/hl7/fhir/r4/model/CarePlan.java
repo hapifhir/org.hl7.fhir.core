@@ -260,7 +260,9 @@ public class CarePlan extends DomainResource {
     }
 
     public String toCode(CarePlanStatus code) {
-      if (code == CarePlanStatus.DRAFT)
+       if (code == CarePlanStatus.NULL)
+           return null;
+       if (code == CarePlanStatus.DRAFT)
         return "draft";
       if (code == CarePlanStatus.ACTIVE)
         return "active";
@@ -275,7 +277,7 @@ public class CarePlan extends DomainResource {
       if (code == CarePlanStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(CarePlanStatus code) {
       return code.getSystem();
@@ -426,7 +428,9 @@ public class CarePlan extends DomainResource {
     }
 
     public String toCode(CarePlanIntent code) {
-      if (code == CarePlanIntent.PROPOSAL)
+       if (code == CarePlanIntent.NULL)
+           return null;
+       if (code == CarePlanIntent.PROPOSAL)
         return "proposal";
       if (code == CarePlanIntent.PLAN)
         return "plan";
@@ -435,7 +439,7 @@ public class CarePlan extends DomainResource {
       if (code == CarePlanIntent.OPTION)
         return "option";
       return "?";
-    }
+   }
 
     public String toSystem(CarePlanIntent code) {
       return code.getSystem();
@@ -658,7 +662,9 @@ public class CarePlan extends DomainResource {
     }
 
     public String toCode(CarePlanActivityKind code) {
-      if (code == CarePlanActivityKind.APPOINTMENT)
+       if (code == CarePlanActivityKind.NULL)
+           return null;
+       if (code == CarePlanActivityKind.APPOINTMENT)
         return "Appointment";
       if (code == CarePlanActivityKind.COMMUNICATIONREQUEST)
         return "CommunicationRequest";
@@ -675,7 +681,7 @@ public class CarePlan extends DomainResource {
       if (code == CarePlanActivityKind.VISIONPRESCRIPTION)
         return "VisionPrescription";
       return "?";
-    }
+   }
 
     public String toSystem(CarePlanActivityKind code) {
       return code.getSystem();
@@ -920,7 +926,9 @@ public class CarePlan extends DomainResource {
     }
 
     public String toCode(CarePlanActivityStatus code) {
-      if (code == CarePlanActivityStatus.NOTSTARTED)
+       if (code == CarePlanActivityStatus.NULL)
+           return null;
+       if (code == CarePlanActivityStatus.NOTSTARTED)
         return "not-started";
       if (code == CarePlanActivityStatus.SCHEDULED)
         return "scheduled";
@@ -939,7 +947,7 @@ public class CarePlan extends DomainResource {
       if (code == CarePlanActivityStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(CarePlanActivityStatus code) {
       return code.getSystem();

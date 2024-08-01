@@ -136,12 +136,14 @@ public class AdverseEvent extends DomainResource {
         throw new FHIRException("Unknown AdverseEventCategory code '"+codeString+"'");
         }
     public String toCode(AdverseEventCategory code) {
-      if (code == AdverseEventCategory.AE)
+       if (code == AdverseEventCategory.NULL)
+           return null;
+       if (code == AdverseEventCategory.AE)
         return "AE";
       if (code == AdverseEventCategory.PAE)
         return "PAE";
       return "?";
-      }
+   }
     public String toSystem(AdverseEventCategory code) {
       return code.getSystem();
       }
@@ -232,12 +234,14 @@ public class AdverseEvent extends DomainResource {
         throw new FHIRException("Unknown AdverseEventCausality code '"+codeString+"'");
         }
     public String toCode(AdverseEventCausality code) {
-      if (code == AdverseEventCausality.CAUSALITY1)
+       if (code == AdverseEventCausality.NULL)
+           return null;
+       if (code == AdverseEventCausality.CAUSALITY1)
         return "causality1";
       if (code == AdverseEventCausality.CAUSALITY2)
         return "causality2";
       return "?";
-      }
+   }
     public String toSystem(AdverseEventCausality code) {
       return code.getSystem();
       }

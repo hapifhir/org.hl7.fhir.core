@@ -45,10 +45,12 @@ public class NehtaNehtaNotidentifiedPresentIndeterminateEnumFactory
   }
 
   public String toCode(NehtaNehtaNotidentifiedPresentIndeterminate code) {
-    if (code == NehtaNehtaNotidentifiedPresentIndeterminate.NOTIDENTIFIED)
+       if (code == NehtaNehtaNotidentifiedPresentIndeterminate.NULL)
+           return null;
+       if (code == NehtaNehtaNotidentifiedPresentIndeterminate.NOTIDENTIFIED)
       return "not_identified";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaNotidentifiedPresentIndeterminate code) {
     return code.getSystem();

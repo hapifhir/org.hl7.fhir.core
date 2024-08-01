@@ -66,7 +66,9 @@ public class MapTransformEnumFactory implements EnumFactory<MapTransform> {
   }
 
   public String toCode(MapTransform code) {
-    if (code == MapTransform.CREATE)
+       if (code == MapTransform.NULL)
+           return null;
+       if (code == MapTransform.CREATE)
       return "create";
     if (code == MapTransform.COPY)
       return "copy";
@@ -91,7 +93,7 @@ public class MapTransformEnumFactory implements EnumFactory<MapTransform> {
     if (code == MapTransform.EVALUATE)
       return "evaluate";
     return "?";
-  }
+   }
 
   public String toSystem(MapTransform code) {
     return code.getSystem();

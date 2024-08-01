@@ -50,7 +50,9 @@ public class HspcObservationHeightPrecondEnumFactory implements EnumFactory<Hspc
   }
 
   public String toCode(HspcObservationHeightPrecond code) {
-    if (code == HspcObservationHeightPrecond._84138)
+       if (code == HspcObservationHeightPrecond.NULL)
+           return null;
+       if (code == HspcObservationHeightPrecond._84138)
       return "84138";
     if (code == HspcObservationHeightPrecond._84139)
       return "84139";
@@ -59,7 +61,7 @@ public class HspcObservationHeightPrecondEnumFactory implements EnumFactory<Hspc
     if (code == HspcObservationHeightPrecond._84141)
       return "84141";
     return "?";
-  }
+   }
 
   public String toSystem(HspcObservationHeightPrecond code) {
     return code.getSystem();

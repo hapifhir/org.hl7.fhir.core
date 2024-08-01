@@ -199,7 +199,9 @@ public class ClaimResponse extends DomainResource {
     }
 
     public String toCode(ClaimResponseStatus code) {
-      if (code == ClaimResponseStatus.ACTIVE)
+       if (code == ClaimResponseStatus.NULL)
+           return null;
+       if (code == ClaimResponseStatus.ACTIVE)
         return "active";
       if (code == ClaimResponseStatus.CANCELLED)
         return "cancelled";
@@ -208,7 +210,7 @@ public class ClaimResponse extends DomainResource {
       if (code == ClaimResponseStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(ClaimResponseStatus code) {
       return code.getSystem();
@@ -343,14 +345,16 @@ public class ClaimResponse extends DomainResource {
     }
 
     public String toCode(Use code) {
-      if (code == Use.CLAIM)
+       if (code == Use.NULL)
+           return null;
+       if (code == Use.CLAIM)
         return "claim";
       if (code == Use.PREAUTHORIZATION)
         return "preauthorization";
       if (code == Use.PREDETERMINATION)
         return "predetermination";
       return "?";
-    }
+   }
 
     public String toSystem(Use code) {
       return code.getSystem();
@@ -503,7 +507,9 @@ public class ClaimResponse extends DomainResource {
     }
 
     public String toCode(RemittanceOutcome code) {
-      if (code == RemittanceOutcome.QUEUED)
+       if (code == RemittanceOutcome.NULL)
+           return null;
+       if (code == RemittanceOutcome.QUEUED)
         return "queued";
       if (code == RemittanceOutcome.COMPLETE)
         return "complete";
@@ -512,7 +518,7 @@ public class ClaimResponse extends DomainResource {
       if (code == RemittanceOutcome.PARTIAL)
         return "partial";
       return "?";
-    }
+   }
 
     public String toSystem(RemittanceOutcome code) {
       return code.getSystem();

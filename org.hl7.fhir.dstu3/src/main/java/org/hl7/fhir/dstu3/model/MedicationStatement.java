@@ -192,7 +192,9 @@ public class MedicationStatement extends DomainResource {
         throw new FHIRException("Unknown MedicationStatementStatus code '"+codeString+"'");
         }
     public String toCode(MedicationStatementStatus code) {
-      if (code == MedicationStatementStatus.ACTIVE)
+       if (code == MedicationStatementStatus.NULL)
+           return null;
+       if (code == MedicationStatementStatus.ACTIVE)
         return "active";
       if (code == MedicationStatementStatus.COMPLETED)
         return "completed";
@@ -205,7 +207,7 @@ public class MedicationStatement extends DomainResource {
       if (code == MedicationStatementStatus.ONHOLD)
         return "on-hold";
       return "?";
-      }
+   }
     public String toSystem(MedicationStatementStatus code) {
       return code.getSystem();
       }
@@ -324,7 +326,9 @@ public class MedicationStatement extends DomainResource {
         throw new FHIRException("Unknown MedicationStatementTaken code '"+codeString+"'");
         }
     public String toCode(MedicationStatementTaken code) {
-      if (code == MedicationStatementTaken.Y)
+       if (code == MedicationStatementTaken.NULL)
+           return null;
+       if (code == MedicationStatementTaken.Y)
         return "y";
       if (code == MedicationStatementTaken.N)
         return "n";
@@ -333,7 +337,7 @@ public class MedicationStatement extends DomainResource {
       if (code == MedicationStatementTaken.NA)
         return "na";
       return "?";
-      }
+   }
     public String toSystem(MedicationStatementTaken code) {
       return code.getSystem();
       }

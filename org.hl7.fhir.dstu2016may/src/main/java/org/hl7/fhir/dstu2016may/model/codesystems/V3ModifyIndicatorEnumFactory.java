@@ -46,12 +46,14 @@ public class V3ModifyIndicatorEnumFactory implements EnumFactory<V3ModifyIndicat
   }
 
   public String toCode(V3ModifyIndicator code) {
-    if (code == V3ModifyIndicator.M)
+       if (code == V3ModifyIndicator.NULL)
+           return null;
+       if (code == V3ModifyIndicator.M)
       return "M";
     if (code == V3ModifyIndicator.N)
       return "N";
     return "?";
-  }
+   }
 
   public String toSystem(V3ModifyIndicator code) {
     return code.getSystem();

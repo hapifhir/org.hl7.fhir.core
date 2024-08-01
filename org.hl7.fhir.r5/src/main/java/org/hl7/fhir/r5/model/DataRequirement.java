@@ -136,12 +136,14 @@ public class DataRequirement extends DataType implements ICompositeType {
         throw new FHIRException("Unknown SortDirection code '"+codeString+"'");
         }
     public String toCode(SortDirection code) {
-      if (code == SortDirection.ASCENDING)
+       if (code == SortDirection.NULL)
+           return null;
+       if (code == SortDirection.ASCENDING)
         return "ascending";
       if (code == SortDirection.DESCENDING)
         return "descending";
       return "?";
-      }
+   }
     public String toSystem(SortDirection code) {
       return code.getSystem();
       }
@@ -302,7 +304,9 @@ public class DataRequirement extends DataType implements ICompositeType {
         throw new FHIRException("Unknown ValueFilterComparator code '"+codeString+"'");
         }
     public String toCode(ValueFilterComparator code) {
-      if (code == ValueFilterComparator.EQ)
+       if (code == ValueFilterComparator.NULL)
+           return null;
+       if (code == ValueFilterComparator.EQ)
         return "eq";
       if (code == ValueFilterComparator.GT)
         return "gt";
@@ -317,7 +321,7 @@ public class DataRequirement extends DataType implements ICompositeType {
       if (code == ValueFilterComparator.EB)
         return "eb";
       return "?";
-      }
+   }
     public String toSystem(ValueFilterComparator code) {
       return code.getSystem();
       }

@@ -225,8 +225,11 @@ public class Encounter extends DomainResource {
       throw new FHIRException("Unknown EncounterState code '" + codeString + "'");
     }
 
-    public String toCode(EncounterState code) {
-      if (code == EncounterState.PLANNED)
+    public String toCode(EncounterState code)
+   {
+       if (code == EncounterState.NULL)
+           return null;
+       if (code == EncounterState.PLANNED)
         return "planned";
       if (code == EncounterState.ARRIVED)
         return "arrived";
@@ -239,7 +242,7 @@ public class Encounter extends DomainResource {
       if (code == EncounterState.CANCELLED)
         return "cancelled";
       return "?";
-    }
+   }
   }
 
   public enum EncounterClass {
@@ -476,8 +479,11 @@ public class Encounter extends DomainResource {
       throw new FHIRException("Unknown EncounterClass code '" + codeString + "'");
     }
 
-    public String toCode(EncounterClass code) {
-      if (code == EncounterClass.INPATIENT)
+    public String toCode(EncounterClass code)
+   {
+       if (code == EncounterClass.NULL)
+           return null;
+       if (code == EncounterClass.INPATIENT)
         return "inpatient";
       if (code == EncounterClass.OUTPATIENT)
         return "outpatient";
@@ -496,7 +502,7 @@ public class Encounter extends DomainResource {
       if (code == EncounterClass.OTHER)
         return "other";
       return "?";
-    }
+   }
   }
 
   public enum EncounterLocationStatus {
@@ -644,8 +650,11 @@ public class Encounter extends DomainResource {
       throw new FHIRException("Unknown EncounterLocationStatus code '" + codeString + "'");
     }
 
-    public String toCode(EncounterLocationStatus code) {
-      if (code == EncounterLocationStatus.PLANNED)
+    public String toCode(EncounterLocationStatus code)
+   {
+       if (code == EncounterLocationStatus.NULL)
+           return null;
+       if (code == EncounterLocationStatus.PLANNED)
         return "planned";
       if (code == EncounterLocationStatus.ACTIVE)
         return "active";
@@ -654,7 +663,7 @@ public class Encounter extends DomainResource {
       if (code == EncounterLocationStatus.COMPLETED)
         return "completed";
       return "?";
-    }
+   }
   }
 
   @Block()

@@ -75,7 +75,8 @@
         "name": "Test Example",
         "description": "A test example to show how an implementation guide works",
         "profile": [
-          "http://hl7.org/fhir/us/core/StructureDefinition/patient"
+          "http://hl7.org/fhir/us/core/StructureDefinition/patient",
+          "http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips"
         ]
       }
     ],

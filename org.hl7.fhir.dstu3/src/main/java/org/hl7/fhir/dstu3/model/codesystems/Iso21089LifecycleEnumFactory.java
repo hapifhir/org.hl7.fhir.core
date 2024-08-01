@@ -96,7 +96,9 @@ public class Iso21089LifecycleEnumFactory implements EnumFactory<Iso21089Lifecyc
   }
 
   public String toCode(Iso21089Lifecycle code) {
-    if (code == Iso21089Lifecycle._2)
+       if (code == Iso21089Lifecycle.NULL)
+           return null;
+       if (code == Iso21089Lifecycle._2)
       return "2";
     if (code == Iso21089Lifecycle._14)
       return "14";
@@ -147,7 +149,7 @@ public class Iso21089LifecycleEnumFactory implements EnumFactory<Iso21089Lifecyc
     if (code == Iso21089Lifecycle._25)
       return "25";
     return "?";
-  }
+   }
 
     public String toSystem(Iso21089Lifecycle code) {
       return code.getSystem();
