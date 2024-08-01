@@ -33,15 +33,17 @@ public class FilesystemPackageCacheLock {
     } else {
       try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
         locks.putIfAbsent(lockFile, new ReentrantReadWriteLock());
-        ReadWriteLock lock = locks.get(lockFile);
+        ReadWriteLock lock = locks.computeIfAbsent(lockFile, k -> new ReentrantReadWriteLock());
         lock.writeLock().lock();
+        lock.readLock().lock();
+        lock.writeLock().unlock();
         final FileLock fileLock = channel.lock(0, Long.MAX_VALUE, true);
         T result = null;
         try {
           result = f.get();
         } finally {
           fileLock.release();
-          lock.writeLock().unlock();
+          lock.readLock().unlock();
         }
         return result;
       }
@@ -51,8 +53,8 @@ public class FilesystemPackageCacheLock {
   public <T> T doWriteWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> f) throws IOException {
 
     try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
-      locks.putIfAbsent(lockFile, new ReentrantReadWriteLock());
-      ReadWriteLock lock = locks.get(lockFile);
+      ReadWriteLock lock = locks.computeIfAbsent(lockFile, k -> new ReentrantReadWriteLock());
+
       lock.writeLock().lock();
       final FileLock fileLock = channel.lock();
       T result = null;
