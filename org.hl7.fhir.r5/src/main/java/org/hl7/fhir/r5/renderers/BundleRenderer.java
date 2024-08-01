@@ -60,12 +60,18 @@ public class BundleRenderer extends ResourceRenderer {
       for (ResourceWrapper be : entries) {
         i++;
         if (i >= start) {
+          String link = null;
           if (be.has("fullUrl")) {
-            root.an(context.prefixAnchor(makeInternalBundleLink(b, be.primitiveValue("fullUrl"))));
+            link = makeInternalBundleLink(b, be.primitiveValue("fullUrl"));
+            if (!context.hasAnchor(link)) {
+              context.addAnchor(link);
+              root.an(context.prefixAnchor(link));
+            }
           }
+          ResourceWrapper res = be.child("resource");
           if (be.has("resource")) {
-            String id = be.child("resource").has("id") ? be.child("resource").primitiveValue("id") : makeIdFromBundleEntry(be.primitiveValue("fullUrl"));
-            String anchor = be.child("resource").fhirType() + "_" + id;
+            String id = res.has("id") ? res.primitiveValue("id") : makeIdFromBundleEntry(be.primitiveValue("fullUrl"));
+            String anchor = res.fhirType() + "_" + id;
             if (id != null && !context.hasAnchor(anchor)) {
               context.addAnchor(anchor);
               root.an(context.prefixAnchor(anchor));
@@ -74,6 +80,23 @@ public class BundleRenderer extends ResourceRenderer {
             if (id != null && !context.hasAnchor(anchor)) {
               context.addAnchor(anchor);
               root.an(context.prefixAnchor(anchor));
+            }
+            String ver = res.has("meta") ? res.child("meta").primitiveValue("version") : null;
+            if (ver != null) {
+              if (link != null) {
+                link = link + "/"+ver;
+                if (!context.hasAnchor(link)) {
+                  context.addAnchor(link);
+                  root.an(context.prefixAnchor(link));
+                }
+              }
+              if (id != null) {
+                anchor = anchor + "/"+ver;
+                if (!context.hasAnchor(anchor)) {
+                  context.addAnchor(anchor);
+                  root.an(context.prefixAnchor(anchor));
+                }
+              }
             }
           }
           root.hr();
@@ -92,7 +115,7 @@ public class BundleRenderer extends ResourceRenderer {
           //        if (be.hasResponse())
           //          renderResponse(root, be.getResponse());
           if (be.has("resource")) {
-            ResourceWrapper r = be.child("resource");
+            ResourceWrapper r = res;
             root.para().addText(formatPhrase(RenderingContext.BUNDLE_RESOURCE, r.fhirType()));
             XhtmlNode xn = r.getNarrative();
             if (xn == null || xn.isEmpty()) {

@@ -173,15 +173,21 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (!renderDataType(status, parent, x, ew)) {
       // well, we have a cell (x) to render this thing, whatever it is
       // it's not a data type for which we have a built rendering, so we're going to get a list of it's renderable datatype properties, and render them in a list
-      XhtmlNode ul = x.ul();
       SourcedChildDefinitions childDefs = context.getProfileUtilities().getChildMap(sd, defn);
+      boolean first = true;
+      x.tx(" (");
       for (ResourceWrapper child : ew.children()) {
 //        ElementDefinition childDefn = getElementDefinition(childDefs.getList(), child.name());
         if (child != null && !"Extension".equals(child.fhirType()) && canRenderDataType(child.fhirType())) {
-          XhtmlNode li = ul.li();
-          li.tx(context.formatMessage(RenderingContext.GENERAL_DATA_DISPLAY_PROPERTY, child.name(), displayDataType(child)));          
+          if (first) {
+            first = false;
+          } else {
+            x.tx("; ");
+          }
+          x.tx(context.formatMessage(RenderingContext.GENERAL_DATA_DISPLAY_PROPERTY, child.name(), displayDataType(child)));          
         }
       }
+      x.tx(")");
     }    
   }
 
