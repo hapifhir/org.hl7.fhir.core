@@ -166,15 +166,18 @@ public class Flag extends DomainResource {
       throw new FHIRException("Unknown FlagStatus code '" + codeString + "'");
     }
 
-    public String toCode(FlagStatus code) {
-      if (code == FlagStatus.ACTIVE)
+    public String toCode(FlagStatus code)
+   {
+       if (code == FlagStatus.NULL)
+           return null;
+       if (code == FlagStatus.ACTIVE)
         return "active";
       if (code == FlagStatus.INACTIVE)
         return "inactive";
       if (code == FlagStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
   }
 
   /**

@@ -198,7 +198,9 @@ public class CoverageEligibilityRequest extends DomainResource {
     }
 
     public String toCode(EligibilityRequestStatus code) {
-      if (code == EligibilityRequestStatus.ACTIVE)
+       if (code == EligibilityRequestStatus.NULL)
+           return null;
+       if (code == EligibilityRequestStatus.ACTIVE)
         return "active";
       if (code == EligibilityRequestStatus.CANCELLED)
         return "cancelled";
@@ -207,7 +209,7 @@ public class CoverageEligibilityRequest extends DomainResource {
       if (code == EligibilityRequestStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(EligibilityRequestStatus code) {
       return code.getSystem();
@@ -362,7 +364,9 @@ public class CoverageEligibilityRequest extends DomainResource {
     }
 
     public String toCode(EligibilityRequestPurpose code) {
-      if (code == EligibilityRequestPurpose.AUTHREQUIREMENTS)
+       if (code == EligibilityRequestPurpose.NULL)
+           return null;
+       if (code == EligibilityRequestPurpose.AUTHREQUIREMENTS)
         return "auth-requirements";
       if (code == EligibilityRequestPurpose.BENEFITS)
         return "benefits";
@@ -371,7 +375,7 @@ public class CoverageEligibilityRequest extends DomainResource {
       if (code == EligibilityRequestPurpose.VALIDATION)
         return "validation";
       return "?";
-    }
+   }
 
     public String toSystem(EligibilityRequestPurpose code) {
       return code.getSystem();

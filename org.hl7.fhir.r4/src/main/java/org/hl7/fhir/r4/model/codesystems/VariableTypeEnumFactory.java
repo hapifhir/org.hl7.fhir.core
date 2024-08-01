@@ -48,14 +48,16 @@ public class VariableTypeEnumFactory implements EnumFactory<VariableType> {
   }
 
   public String toCode(VariableType code) {
-    if (code == VariableType.DICHOTOMOUS)
+       if (code == VariableType.NULL)
+           return null;
+       if (code == VariableType.DICHOTOMOUS)
       return "dichotomous";
     if (code == VariableType.CONTINUOUS)
       return "continuous";
     if (code == VariableType.DESCRIPTIVE)
       return "descriptive";
     return "?";
-  }
+   }
 
   public String toSystem(VariableType code) {
     return code.getSystem();

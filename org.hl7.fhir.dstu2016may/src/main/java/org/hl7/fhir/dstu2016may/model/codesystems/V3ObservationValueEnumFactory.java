@@ -498,7 +498,9 @@ public class V3ObservationValueEnumFactory implements EnumFactory<V3ObservationV
   }
 
   public String toCode(V3ObservationValue code) {
-    if (code == V3ObservationValue._ACTCOVERAGEASSESSMENTOBSERVATIONVALUE)
+       if (code == V3ObservationValue.NULL)
+           return null;
+       if (code == V3ObservationValue._ACTCOVERAGEASSESSMENTOBSERVATIONVALUE)
       return "_ActCoverageAssessmentObservationValue";
     if (code == V3ObservationValue._ACTFINANCIALSTATUSOBSERVATIONVALUE)
       return "_ActFinancialStatusObservationValue";
@@ -955,7 +957,7 @@ public class V3ObservationValueEnumFactory implements EnumFactory<V3ObservationV
     if (code == V3ObservationValue._INDICATIONVALUE)
       return "_IndicationValue";
     return "?";
-  }
+   }
 
   public String toSystem(V3ObservationValue code) {
     return code.getSystem();

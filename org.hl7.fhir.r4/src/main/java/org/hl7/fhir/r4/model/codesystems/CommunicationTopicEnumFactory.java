@@ -54,7 +54,9 @@ public class CommunicationTopicEnumFactory implements EnumFactory<CommunicationT
   }
 
   public String toCode(CommunicationTopic code) {
-    if (code == CommunicationTopic.PRESCRIPTIONREFILLREQUEST)
+       if (code == CommunicationTopic.NULL)
+           return null;
+       if (code == CommunicationTopic.PRESCRIPTIONREFILLREQUEST)
       return "prescription-refill-request";
     if (code == CommunicationTopic.PROGRESSUPDATE)
       return "progress-update";
@@ -67,7 +69,7 @@ public class CommunicationTopicEnumFactory implements EnumFactory<CommunicationT
     if (code == CommunicationTopic.SUMMARYREPORT)
       return "summary-report";
     return "?";
-  }
+   }
 
   public String toSystem(CommunicationTopic code) {
     return code.getSystem();

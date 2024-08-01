@@ -48,14 +48,16 @@ public class ActionParticipantTypeEnumFactory implements EnumFactory<ActionParti
   }
 
   public String toCode(ActionParticipantType code) {
-    if (code == ActionParticipantType.PATIENT)
+       if (code == ActionParticipantType.NULL)
+           return null;
+       if (code == ActionParticipantType.PATIENT)
       return "patient";
     if (code == ActionParticipantType.PRACTITIONER)
       return "practitioner";
     if (code == ActionParticipantType.RELATEDPERSON)
       return "related-person";
     return "?";
-  }
+   }
 
   public String toSystem(ActionParticipantType code) {
     return code.getSystem();

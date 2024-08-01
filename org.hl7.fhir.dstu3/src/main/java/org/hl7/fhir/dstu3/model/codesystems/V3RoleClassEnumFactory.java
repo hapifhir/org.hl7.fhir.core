@@ -270,7 +270,9 @@ public class V3RoleClassEnumFactory implements EnumFactory<V3RoleClass> {
   }
 
   public String toCode(V3RoleClass code) {
-    if (code == V3RoleClass.ROL)
+       if (code == V3RoleClass.NULL)
+           return null;
+       if (code == V3RoleClass.ROL)
       return "ROL";
     if (code == V3RoleClass._ROLECLASSASSOCIATIVE)
       return "_RoleClassAssociative";
@@ -495,7 +497,7 @@ public class V3RoleClassEnumFactory implements EnumFactory<V3RoleClass> {
     if (code == V3RoleClass.PHYS)
       return "PHYS";
     return "?";
-  }
+   }
 
     public String toSystem(V3RoleClass code) {
       return code.getSystem();

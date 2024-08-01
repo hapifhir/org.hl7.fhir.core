@@ -62,7 +62,9 @@ public class DigitalMediaSubtypeEnumFactory implements EnumFactory<DigitalMediaS
   }
 
   public String toCode(DigitalMediaSubtype code) {
-    if (code == DigitalMediaSubtype.DIAGRAM)
+       if (code == DigitalMediaSubtype.NULL)
+           return null;
+       if (code == DigitalMediaSubtype.DIAGRAM)
       return "diagram";
     if (code == DigitalMediaSubtype.FAX)
       return "fax";
@@ -79,7 +81,7 @@ public class DigitalMediaSubtypeEnumFactory implements EnumFactory<DigitalMediaS
     if (code == DigitalMediaSubtype.FACE)
       return "face";
     return "?";
-  }
+   }
 
     public String toSystem(DigitalMediaSubtype code) {
       return code.getSystem();

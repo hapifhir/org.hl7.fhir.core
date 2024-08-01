@@ -54,7 +54,9 @@ public class V3ActRelationshipSplitEnumFactory implements EnumFactory<V3ActRelat
   }
 
   public String toCode(V3ActRelationshipSplit code) {
-    if (code == V3ActRelationshipSplit.E1)
+       if (code == V3ActRelationshipSplit.NULL)
+           return null;
+       if (code == V3ActRelationshipSplit.E1)
       return "E1";
     if (code == V3ActRelationshipSplit.EW)
       return "EW";
@@ -63,7 +65,7 @@ public class V3ActRelationshipSplitEnumFactory implements EnumFactory<V3ActRelat
     if (code == V3ActRelationshipSplit.IW)
       return "IW";
     return "?";
-  }
+   }
 
     public String toSystem(V3ActRelationshipSplit code) {
       return code.getSystem();

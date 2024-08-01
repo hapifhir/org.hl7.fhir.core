@@ -56,7 +56,9 @@ public class ActivityDefinitionCategoryEnumFactory implements EnumFactory<Activi
   }
 
   public String toCode(ActivityDefinitionCategory code) {
-    if (code == ActivityDefinitionCategory.DIET)
+       if (code == ActivityDefinitionCategory.NULL)
+           return null;
+       if (code == ActivityDefinitionCategory.DIET)
       return "diet";
     if (code == ActivityDefinitionCategory.DRUG)
       return "drug";
@@ -71,7 +73,7 @@ public class ActivityDefinitionCategoryEnumFactory implements EnumFactory<Activi
     if (code == ActivityDefinitionCategory.OTHER)
       return "other";
     return "?";
-  }
+   }
 
   public String toSystem(ActivityDefinitionCategory code) {
     return code.getSystem();

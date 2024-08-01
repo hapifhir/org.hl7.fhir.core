@@ -50,12 +50,14 @@ public class V3ActUncertaintyEnumFactory implements EnumFactory<V3ActUncertainty
   }
 
   public String toCode(V3ActUncertainty code) {
-    if (code == V3ActUncertainty.N)
+       if (code == V3ActUncertainty.NULL)
+           return null;
+       if (code == V3ActUncertainty.N)
       return "N";
     if (code == V3ActUncertainty.U)
       return "U";
     return "?";
-  }
+   }
 
     public String toSystem(V3ActUncertainty code) {
       return code.getSystem();

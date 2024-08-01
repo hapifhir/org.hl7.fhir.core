@@ -66,7 +66,9 @@ public class ClaimInformationcategoryEnumFactory implements EnumFactory<ClaimInf
   }
 
   public String toCode(ClaimInformationcategory code) {
-    if (code == ClaimInformationcategory.INFO)
+       if (code == ClaimInformationcategory.NULL)
+           return null;
+       if (code == ClaimInformationcategory.INFO)
       return "info";
     if (code == ClaimInformationcategory.DISCHARGE)
       return "discharge";
@@ -87,7 +89,7 @@ public class ClaimInformationcategoryEnumFactory implements EnumFactory<ClaimInf
     if (code == ClaimInformationcategory.OTHER)
       return "other";
     return "?";
-  }
+   }
 
     public String toSystem(ClaimInformationcategory code) {
       return code.getSystem();

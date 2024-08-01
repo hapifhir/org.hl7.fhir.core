@@ -46,12 +46,14 @@ public class ConsentProvisionTypeEnumFactory implements EnumFactory<ConsentProvi
   }
 
   public String toCode(ConsentProvisionType code) {
-    if (code == ConsentProvisionType.DENY)
+       if (code == ConsentProvisionType.NULL)
+           return null;
+       if (code == ConsentProvisionType.DENY)
       return "deny";
     if (code == ConsentProvisionType.PERMIT)
       return "permit";
     return "?";
-  }
+   }
 
   public String toSystem(ConsentProvisionType code) {
     return code.getSystem();

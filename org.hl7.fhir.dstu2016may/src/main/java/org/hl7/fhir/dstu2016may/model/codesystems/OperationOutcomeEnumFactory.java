@@ -140,7 +140,9 @@ public class OperationOutcomeEnumFactory implements EnumFactory<OperationOutcome
   }
 
   public String toCode(OperationOutcome code) {
-    if (code == OperationOutcome.MSGAUTHREQUIRED)
+       if (code == OperationOutcome.NULL)
+           return null;
+       if (code == OperationOutcome.MSGAUTHREQUIRED)
       return "MSG_AUTH_REQUIRED";
     if (code == OperationOutcome.MSGBADFORMAT)
       return "MSG_BAD_FORMAT";
@@ -239,7 +241,7 @@ public class OperationOutcomeEnumFactory implements EnumFactory<OperationOutcome
     if (code == OperationOutcome.SEARCHNONE)
       return "SEARCH_NONE";
     return "?";
-  }
+   }
 
   public String toSystem(OperationOutcome code) {
     return code.getSystem();

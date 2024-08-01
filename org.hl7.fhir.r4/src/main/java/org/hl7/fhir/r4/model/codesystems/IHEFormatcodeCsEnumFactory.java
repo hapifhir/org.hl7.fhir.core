@@ -190,7 +190,9 @@ public class IHEFormatcodeCsEnumFactory implements EnumFactory<IHEFormatcodeCs> 
   }
 
   public String toCode(IHEFormatcodeCs code) {
-    if (code == IHEFormatcodeCs.URN_IHE_PCC_XPHR_2007)
+       if (code == IHEFormatcodeCs.NULL)
+           return null;
+       if (code == IHEFormatcodeCs.URN_IHE_PCC_XPHR_2007)
       return "urn:ihe:pcc:xphr:2007";
     if (code == IHEFormatcodeCs.URN_IHE_PCC_APS_2007)
       return "urn:ihe:pcc:aps:2007";
@@ -339,7 +341,7 @@ public class IHEFormatcodeCsEnumFactory implements EnumFactory<IHEFormatcodeCs> 
     if (code == IHEFormatcodeCs.URN_HL7ORG_SDWG_CCDANONXMLBODY_2_1)
       return "urn:hl7-org:sdwg:ccda-nonXMLBody:2.1";
     return "?";
-  }
+   }
 
   public String toSystem(IHEFormatcodeCs code) {
     return code.getSystem();

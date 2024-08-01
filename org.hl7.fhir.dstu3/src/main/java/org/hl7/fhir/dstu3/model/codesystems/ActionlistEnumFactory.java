@@ -54,7 +54,9 @@ public class ActionlistEnumFactory implements EnumFactory<Actionlist> {
   }
 
   public String toCode(Actionlist code) {
-    if (code == Actionlist.CANCEL)
+       if (code == Actionlist.NULL)
+           return null;
+       if (code == Actionlist.CANCEL)
       return "cancel";
     if (code == Actionlist.POLL)
       return "poll";
@@ -63,7 +65,7 @@ public class ActionlistEnumFactory implements EnumFactory<Actionlist> {
     if (code == Actionlist.STATUS)
       return "status";
     return "?";
-  }
+   }
 
     public String toSystem(Actionlist code) {
       return code.getSystem();

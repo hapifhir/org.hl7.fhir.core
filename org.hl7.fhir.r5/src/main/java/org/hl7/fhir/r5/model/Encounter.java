@@ -166,7 +166,9 @@ public class Encounter extends DomainResource {
         throw new FHIRException("Unknown EncounterLocationStatus code '"+codeString+"'");
         }
     public String toCode(EncounterLocationStatus code) {
-      if (code == EncounterLocationStatus.PLANNED)
+       if (code == EncounterLocationStatus.NULL)
+           return null;
+       if (code == EncounterLocationStatus.PLANNED)
         return "planned";
       if (code == EncounterLocationStatus.ACTIVE)
         return "active";
@@ -175,7 +177,7 @@ public class Encounter extends DomainResource {
       if (code == EncounterLocationStatus.COMPLETED)
         return "completed";
       return "?";
-      }
+   }
     public String toSystem(EncounterLocationStatus code) {
       return code.getSystem();
       }
@@ -1929,7 +1931,9 @@ public class Encounter extends DomainResource {
     protected DateTimeType plannedEndDate;
 
     /**
-     * Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.When missing it is the time in between the start and end values.
+     * Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.
+
+When missing it is the time in between the start and end values.
      */
     @Child(name = "length", type = {Duration.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Actual quantity of time the encounter lasted (less time absent)", formalDefinition="Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.\r\rWhen missing it is the time in between the start and end values." )
@@ -1981,7 +1985,9 @@ public class Encounter extends DomainResource {
     protected List<CodeableConcept> specialCourtesy;
 
     /**
-     * Details about the stay during which a healthcare service is provided.This does not describe the event of admitting the patient, but rather any information that is relevant from the time of admittance until the time of discharge.
+     * Details about the stay during which a healthcare service is provided.
+
+This does not describe the event of admitting the patient, but rather any information that is relevant from the time of admittance until the time of discharge.
      */
     @Child(name = "admission", type = {}, order=26, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Details about the admission to a healthcare service", formalDefinition="Details about the stay during which a healthcare service is provided.\r\rThis does not describe the event of admitting the patient, but rather any information that is relevant from the time of admittance until the time of discharge." )
@@ -2829,7 +2835,9 @@ public class Encounter extends DomainResource {
     }
 
     /**
-     * @return {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.When missing it is the time in between the start and end values.)
+     * @return {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.
+
+When missing it is the time in between the start and end values.)
      */
     public Duration getLength() { 
       if (this.length == null)
@@ -2845,7 +2853,9 @@ public class Encounter extends DomainResource {
     }
 
     /**
-     * @param value {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.When missing it is the time in between the start and end values.)
+     * @param value {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.
+
+When missing it is the time in between the start and end values.)
      */
     public Encounter setLength(Duration value) { 
       this.length = value;
@@ -3171,7 +3181,9 @@ public class Encounter extends DomainResource {
     }
 
     /**
-     * @return {@link #admission} (Details about the stay during which a healthcare service is provided.This does not describe the event of admitting the patient, but rather any information that is relevant from the time of admittance until the time of discharge.)
+     * @return {@link #admission} (Details about the stay during which a healthcare service is provided.
+
+This does not describe the event of admitting the patient, but rather any information that is relevant from the time of admittance until the time of discharge.)
      */
     public EncounterAdmissionComponent getAdmission() { 
       if (this.admission == null)
@@ -3187,7 +3199,9 @@ public class Encounter extends DomainResource {
     }
 
     /**
-     * @param value {@link #admission} (Details about the stay during which a healthcare service is provided.This does not describe the event of admitting the patient, but rather any information that is relevant from the time of admittance until the time of discharge.)
+     * @param value {@link #admission} (Details about the stay during which a healthcare service is provided.
+
+This does not describe the event of admitting the patient, but rather any information that is relevant from the time of admittance until the time of discharge.)
      */
     public Encounter setAdmission(EncounterAdmissionComponent value) { 
       this.admission = value;

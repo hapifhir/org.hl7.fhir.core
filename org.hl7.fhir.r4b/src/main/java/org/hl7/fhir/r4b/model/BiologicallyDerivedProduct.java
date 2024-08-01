@@ -224,7 +224,9 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public String toCode(BiologicallyDerivedProductCategory code) {
-      if (code == BiologicallyDerivedProductCategory.ORGAN)
+       if (code == BiologicallyDerivedProductCategory.NULL)
+           return null;
+       if (code == BiologicallyDerivedProductCategory.ORGAN)
         return "organ";
       if (code == BiologicallyDerivedProductCategory.TISSUE)
         return "tissue";
@@ -235,7 +237,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       if (code == BiologicallyDerivedProductCategory.BIOLOGICALAGENT)
         return "biologicalAgent";
       return "?";
-    }
+   }
 
     public String toSystem(BiologicallyDerivedProductCategory code) {
       return code.getSystem();
@@ -353,12 +355,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public String toCode(BiologicallyDerivedProductStatus code) {
-      if (code == BiologicallyDerivedProductStatus.AVAILABLE)
+       if (code == BiologicallyDerivedProductStatus.NULL)
+           return null;
+       if (code == BiologicallyDerivedProductStatus.AVAILABLE)
         return "available";
       if (code == BiologicallyDerivedProductStatus.UNAVAILABLE)
         return "unavailable";
       return "?";
-    }
+   }
 
     public String toSystem(BiologicallyDerivedProductStatus code) {
       return code.getSystem();
@@ -497,14 +501,16 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     public String toCode(BiologicallyDerivedProductStorageScale code) {
-      if (code == BiologicallyDerivedProductStorageScale.FARENHEIT)
+       if (code == BiologicallyDerivedProductStorageScale.NULL)
+           return null;
+       if (code == BiologicallyDerivedProductStorageScale.FARENHEIT)
         return "farenheit";
       if (code == BiologicallyDerivedProductStorageScale.CELSIUS)
         return "celsius";
       if (code == BiologicallyDerivedProductStorageScale.KELVIN)
         return "kelvin";
       return "?";
-    }
+   }
 
     public String toSystem(BiologicallyDerivedProductStorageScale code) {
       return code.getSystem();

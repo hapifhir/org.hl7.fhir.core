@@ -58,7 +58,9 @@ public class OrganizationRoleEnumFactory implements EnumFactory<OrganizationRole
   }
 
   public String toCode(OrganizationRole code) {
-    if (code == OrganizationRole.PROVIDER)
+       if (code == OrganizationRole.NULL)
+           return null;
+       if (code == OrganizationRole.PROVIDER)
       return "provider";
     if (code == OrganizationRole.AGENCY)
       return "agency";
@@ -75,7 +77,7 @@ public class OrganizationRoleEnumFactory implements EnumFactory<OrganizationRole
     if (code == OrganizationRole.MEMBER)
       return "member";
     return "?";
-  }
+   }
 
   public String toSystem(OrganizationRole code) {
     return code.getSystem();

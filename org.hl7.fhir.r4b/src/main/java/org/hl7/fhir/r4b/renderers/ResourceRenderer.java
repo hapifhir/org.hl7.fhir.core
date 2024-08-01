@@ -36,6 +36,13 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public abstract class ResourceRenderer extends DataRenderer {
 
   protected ResourceContext rcontext;
@@ -128,7 +135,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     } else {
       XhtmlNode n = r.getText().getDiv();
       n.clear();
-      n.getChildNodes().addAll(x.getChildNodes());
+      n.addChildNodes(x.getChildNodes());
     }
   }
 

@@ -188,7 +188,9 @@ public class ResearchSubject extends DomainResource {
         throw new FHIRException("Unknown ResearchSubjectStatus code '"+codeString+"'");
         }
     public String toCode(ResearchSubjectStatus code) {
-      if (code == ResearchSubjectStatus.CANDIDATE)
+       if (code == ResearchSubjectStatus.NULL)
+           return null;
+       if (code == ResearchSubjectStatus.CANDIDATE)
         return "candidate";
       if (code == ResearchSubjectStatus.ENROLLED)
         return "enrolled";
@@ -201,7 +203,7 @@ public class ResearchSubject extends DomainResource {
       if (code == ResearchSubjectStatus.COMPLETED)
         return "completed";
       return "?";
-      }
+   }
     public String toSystem(ResearchSubjectStatus code) {
       return code.getSystem();
       }

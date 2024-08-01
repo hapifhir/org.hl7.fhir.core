@@ -64,7 +64,9 @@ public class SearchComparatorEnumFactory implements EnumFactory<SearchComparator
   }
 
   public String toCode(SearchComparator code) {
-    if (code == SearchComparator.EQ)
+       if (code == SearchComparator.NULL)
+           return null;
+       if (code == SearchComparator.EQ)
       return "eq";
     if (code == SearchComparator.NE)
       return "ne";
@@ -83,7 +85,7 @@ public class SearchComparatorEnumFactory implements EnumFactory<SearchComparator
     if (code == SearchComparator.AP)
       return "ap";
     return "?";
-  }
+   }
 
     public String toSystem(SearchComparator code) {
       return code.getSystem();

@@ -58,7 +58,9 @@ public class MediaModalityEnumFactory implements EnumFactory<MediaModality> {
   }
 
   public String toCode(MediaModality code) {
-    if (code == MediaModality.DIAGRAM)
+       if (code == MediaModality.NULL)
+           return null;
+       if (code == MediaModality.DIAGRAM)
       return "diagram";
     if (code == MediaModality.FAX)
       return "fax";
@@ -75,7 +77,7 @@ public class MediaModalityEnumFactory implements EnumFactory<MediaModality> {
     if (code == MediaModality.FACE)
       return "face";
     return "?";
-  }
+   }
 
   public String toSystem(MediaModality code) {
     return code.getSystem();

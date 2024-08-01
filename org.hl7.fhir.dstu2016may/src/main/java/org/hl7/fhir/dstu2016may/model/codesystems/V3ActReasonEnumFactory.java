@@ -566,7 +566,9 @@ public class V3ActReasonEnumFactory implements EnumFactory<V3ActReason> {
   }
 
   public String toCode(V3ActReason code) {
-    if (code == V3ActReason._ACTACCOMMODATIONREASON)
+       if (code == V3ActReason.NULL)
+           return null;
+       if (code == V3ActReason._ACTACCOMMODATIONREASON)
       return "_ActAccommodationReason";
     if (code == V3ActReason.ACCREQNA)
       return "ACCREQNA";
@@ -1091,7 +1093,7 @@ public class V3ActReasonEnumFactory implements EnumFactory<V3ActReason> {
     if (code == V3ActReason.TRAN)
       return "TRAN";
     return "?";
-  }
+   }
 
   public String toSystem(V3ActReason code) {
     return code.getSystem();

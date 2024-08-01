@@ -46,12 +46,14 @@ public class EndpointPayloadTypeEnumFactory implements EnumFactory<EndpointPaylo
   }
 
   public String toCode(EndpointPayloadType code) {
-    if (code == EndpointPayloadType.ANY)
+       if (code == EndpointPayloadType.NULL)
+           return null;
+       if (code == EndpointPayloadType.ANY)
       return "any";
     if (code == EndpointPayloadType.NONE)
       return "none";
     return "?";
-  }
+   }
 
   public String toSystem(EndpointPayloadType code) {
     return code.getSystem();

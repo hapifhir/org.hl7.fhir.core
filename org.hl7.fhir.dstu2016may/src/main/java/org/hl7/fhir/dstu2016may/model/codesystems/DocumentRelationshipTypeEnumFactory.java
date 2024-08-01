@@ -50,7 +50,9 @@ public class DocumentRelationshipTypeEnumFactory implements EnumFactory<Document
   }
 
   public String toCode(DocumentRelationshipType code) {
-    if (code == DocumentRelationshipType.REPLACES)
+       if (code == DocumentRelationshipType.NULL)
+           return null;
+       if (code == DocumentRelationshipType.REPLACES)
       return "replaces";
     if (code == DocumentRelationshipType.TRANSFORMS)
       return "transforms";
@@ -59,7 +61,7 @@ public class DocumentRelationshipTypeEnumFactory implements EnumFactory<Document
     if (code == DocumentRelationshipType.APPENDS)
       return "appends";
     return "?";
-  }
+   }
 
   public String toSystem(DocumentRelationshipType code) {
     return code.getSystem();

@@ -181,7 +181,9 @@ public class ImagingSelection extends DomainResource {
         throw new FHIRException("Unknown ImagingSelection2DGraphicType code '"+codeString+"'");
         }
     public String toCode(ImagingSelection2DGraphicType code) {
-      if (code == ImagingSelection2DGraphicType.POINT)
+       if (code == ImagingSelection2DGraphicType.NULL)
+           return null;
+       if (code == ImagingSelection2DGraphicType.POINT)
         return "point";
       if (code == ImagingSelection2DGraphicType.POLYLINE)
         return "polyline";
@@ -192,7 +194,7 @@ public class ImagingSelection extends DomainResource {
       if (code == ImagingSelection2DGraphicType.ELLIPSE)
         return "ellipse";
       return "?";
-      }
+   }
     public String toSystem(ImagingSelection2DGraphicType code) {
       return code.getSystem();
       }
@@ -339,7 +341,9 @@ public class ImagingSelection extends DomainResource {
         throw new FHIRException("Unknown ImagingSelection3DGraphicType code '"+codeString+"'");
         }
     public String toCode(ImagingSelection3DGraphicType code) {
-      if (code == ImagingSelection3DGraphicType.POINT)
+       if (code == ImagingSelection3DGraphicType.NULL)
+           return null;
+       if (code == ImagingSelection3DGraphicType.POINT)
         return "point";
       if (code == ImagingSelection3DGraphicType.MULTIPOINT)
         return "multipoint";
@@ -352,7 +356,7 @@ public class ImagingSelection extends DomainResource {
       if (code == ImagingSelection3DGraphicType.ELLIPSOID)
         return "ellipsoid";
       return "?";
-      }
+   }
     public String toSystem(ImagingSelection3DGraphicType code) {
       return code.getSystem();
       }
@@ -457,14 +461,16 @@ public class ImagingSelection extends DomainResource {
         throw new FHIRException("Unknown ImagingSelectionStatus code '"+codeString+"'");
         }
     public String toCode(ImagingSelectionStatus code) {
-      if (code == ImagingSelectionStatus.AVAILABLE)
+       if (code == ImagingSelectionStatus.NULL)
+           return null;
+       if (code == ImagingSelectionStatus.AVAILABLE)
         return "available";
       if (code == ImagingSelectionStatus.ENTEREDINERROR)
         return "entered-in-error";
       if (code == ImagingSelectionStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(ImagingSelectionStatus code) {
       return code.getSystem();
       }

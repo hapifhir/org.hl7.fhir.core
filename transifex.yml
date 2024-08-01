@@ -4,4 +4,4 @@ git:
     file_format: PO
     source_language: en
     source_files_expression: org.hl7.fhir.utilities/src/main/resources/source/transifex/<file>-en.po
-    translation_files_expression: 'org.hl7.fhir.utilities/src/main/resources/source/transifex/translations/<file>-<lang>.po'
+    translation_files_expression: org.hl7.fhir.utilities/src/main/resources/source/transifex/translations/<file>-<lang>.po

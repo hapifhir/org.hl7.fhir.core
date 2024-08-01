@@ -39,6 +39,13 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class QuestionnaireResponseRenderer extends ResourceRenderer {
 
   public QuestionnaireResponseRenderer(RenderingContext context) {
@@ -103,7 +110,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       hasExt = renderTreeItem(gen, row.getSubRows(), qr, i) || hasExt;
     }
     XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
-    x.getChildNodes().add(xn);
+    x.addChildNode(xn);
     return hasExt;
   }
 
@@ -130,7 +137,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       hasExt = renderTreeItem(gen, row.getSubRows(), q, i) || hasExt;
     }
     XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
-    x.getChildNodes().add(xn);
+    x.addChildNode(xn);
     return hasExt;
   }
 

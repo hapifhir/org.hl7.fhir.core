@@ -64,7 +64,9 @@ public class NutritionRequestStatusEnumFactory implements EnumFactory<NutritionR
   }
 
   public String toCode(NutritionRequestStatus code) {
-    if (code == NutritionRequestStatus.PROPOSED)
+       if (code == NutritionRequestStatus.NULL)
+           return null;
+       if (code == NutritionRequestStatus.PROPOSED)
       return "proposed";
     if (code == NutritionRequestStatus.DRAFT)
       return "draft";
@@ -83,7 +85,7 @@ public class NutritionRequestStatusEnumFactory implements EnumFactory<NutritionR
     if (code == NutritionRequestStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(NutritionRequestStatus code) {
       return code.getSystem();

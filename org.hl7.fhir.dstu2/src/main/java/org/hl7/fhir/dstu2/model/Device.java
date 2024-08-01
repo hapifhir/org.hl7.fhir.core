@@ -173,15 +173,18 @@ public class Device extends DomainResource {
       throw new FHIRException("Unknown DeviceStatus code '" + codeString + "'");
     }
 
-    public String toCode(DeviceStatus code) {
-      if (code == DeviceStatus.AVAILABLE)
+    public String toCode(DeviceStatus code)
+   {
+       if (code == DeviceStatus.NULL)
+           return null;
+       if (code == DeviceStatus.AVAILABLE)
         return "available";
       if (code == DeviceStatus.NOTAVAILABLE)
         return "not-available";
       if (code == DeviceStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
   }
 
   /**

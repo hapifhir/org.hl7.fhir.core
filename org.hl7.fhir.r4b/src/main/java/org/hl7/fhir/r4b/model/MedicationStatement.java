@@ -294,7 +294,9 @@ public class MedicationStatement extends DomainResource {
     }
 
     public String toCode(MedicationStatusCodes code) {
-      if (code == MedicationStatusCodes.ACTIVE)
+       if (code == MedicationStatusCodes.NULL)
+           return null;
+       if (code == MedicationStatusCodes.ACTIVE)
         return "active";
       if (code == MedicationStatusCodes.COMPLETED)
         return "completed";
@@ -311,7 +313,7 @@ public class MedicationStatement extends DomainResource {
       if (code == MedicationStatusCodes.NOTTAKEN)
         return "not-taken";
       return "?";
-    }
+   }
 
     public String toSystem(MedicationStatusCodes code) {
       return code.getSystem();

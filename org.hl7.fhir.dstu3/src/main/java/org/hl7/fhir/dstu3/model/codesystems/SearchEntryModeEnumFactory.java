@@ -52,14 +52,16 @@ public class SearchEntryModeEnumFactory implements EnumFactory<SearchEntryMode> 
   }
 
   public String toCode(SearchEntryMode code) {
-    if (code == SearchEntryMode.MATCH)
+       if (code == SearchEntryMode.NULL)
+           return null;
+       if (code == SearchEntryMode.MATCH)
       return "match";
     if (code == SearchEntryMode.INCLUDE)
       return "include";
     if (code == SearchEntryMode.OUTCOME)
       return "outcome";
     return "?";
-  }
+   }
 
     public String toSystem(SearchEntryMode code) {
       return code.getSystem();

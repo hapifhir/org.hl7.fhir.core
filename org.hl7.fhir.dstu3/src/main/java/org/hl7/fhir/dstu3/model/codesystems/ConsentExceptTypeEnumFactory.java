@@ -50,12 +50,14 @@ public class ConsentExceptTypeEnumFactory implements EnumFactory<ConsentExceptTy
   }
 
   public String toCode(ConsentExceptType code) {
-    if (code == ConsentExceptType.DENY)
+       if (code == ConsentExceptType.NULL)
+           return null;
+       if (code == ConsentExceptType.DENY)
       return "deny";
     if (code == ConsentExceptType.PERMIT)
       return "permit";
     return "?";
-  }
+   }
 
     public String toSystem(ConsentExceptType code) {
       return code.getSystem();

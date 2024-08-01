@@ -86,7 +86,9 @@ public class MedicationknowledgePackageTypeEnumFactory implements EnumFactory<Me
   }
 
   public String toCode(MedicationknowledgePackageType code) {
-    if (code == MedicationknowledgePackageType.AMP)
+       if (code == MedicationknowledgePackageType.NULL)
+           return null;
+       if (code == MedicationknowledgePackageType.AMP)
       return "amp";
     if (code == MedicationknowledgePackageType.BAG)
       return "bag";
@@ -131,7 +133,7 @@ public class MedicationknowledgePackageTypeEnumFactory implements EnumFactory<Me
     if (code == MedicationknowledgePackageType.VIAL)
       return "vial";
     return "?";
-  }
+   }
 
   public String toSystem(MedicationknowledgePackageType code) {
     return code.getSystem();

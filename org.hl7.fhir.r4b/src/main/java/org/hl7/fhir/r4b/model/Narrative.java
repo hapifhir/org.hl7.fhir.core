@@ -206,7 +206,9 @@ public class Narrative extends BaseNarrative implements INarrative {
     }
 
     public String toCode(NarrativeStatus code) {
-      if (code == NarrativeStatus.GENERATED)
+       if (code == NarrativeStatus.NULL)
+           return null;
+       if (code == NarrativeStatus.GENERATED)
         return "generated";
       if (code == NarrativeStatus.EXTENSIONS)
         return "extensions";
@@ -215,7 +217,7 @@ public class Narrative extends BaseNarrative implements INarrative {
       if (code == NarrativeStatus.EMPTY)
         return "empty";
       return "?";
-    }
+   }
 
     public String toSystem(NarrativeStatus code) {
       return code.getSystem();
@@ -346,6 +348,7 @@ public class Narrative extends BaseNarrative implements INarrative {
     children.add(new Property("status", "code",
         "The status of the narrative - whether it's entirely generated (from just the defined data or the extensions too), or whether a human authored it and it may contain additional data.",
         0, 1, status));
+    children.add(new Property("div", "xhtml", "The actual narrative content, a stripped down version of XHTML", 0, 1, new XhtmlType(this))); 
   }
 
   @Override

@@ -54,7 +54,9 @@ public class CarePlanIntentEnumFactory implements EnumFactory<CarePlanIntent> {
   }
 
   public String toCode(CarePlanIntent code) {
-    if (code == CarePlanIntent.PROPOSAL)
+       if (code == CarePlanIntent.NULL)
+           return null;
+       if (code == CarePlanIntent.PROPOSAL)
       return "proposal";
     if (code == CarePlanIntent.PLAN)
       return "plan";
@@ -63,7 +65,7 @@ public class CarePlanIntentEnumFactory implements EnumFactory<CarePlanIntent> {
     if (code == CarePlanIntent.OPTION)
       return "option";
     return "?";
-  }
+   }
 
     public String toSystem(CarePlanIntent code) {
       return code.getSystem();

@@ -46,12 +46,14 @@ public class ContractActionEnumFactory implements EnumFactory<ContractAction> {
   }
 
   public String toCode(ContractAction code) {
-    if (code == ContractAction.ACTIONA)
+       if (code == ContractAction.NULL)
+           return null;
+       if (code == ContractAction.ACTIONA)
       return "action-a";
     if (code == ContractAction.ACTIONB)
       return "action-b";
     return "?";
-  }
+   }
 
   public String toSystem(ContractAction code) {
     return code.getSystem();

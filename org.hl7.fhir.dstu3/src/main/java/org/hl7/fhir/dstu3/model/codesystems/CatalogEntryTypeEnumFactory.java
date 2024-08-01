@@ -50,12 +50,14 @@ public class CatalogEntryTypeEnumFactory implements EnumFactory<CatalogEntryType
   }
 
   public String toCode(CatalogEntryType code) {
-    if (code == CatalogEntryType.MEDICATION)
+       if (code == CatalogEntryType.NULL)
+           return null;
+       if (code == CatalogEntryType.MEDICATION)
       return "medication";
     if (code == CatalogEntryType.DEVICE)
       return "device";
     return "?";
-  }
+   }
 
     public String toSystem(CatalogEntryType code) {
       return code.getSystem();

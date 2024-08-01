@@ -186,8 +186,11 @@ public class Identifier extends Type implements ICompositeType {
       throw new FHIRException("Unknown IdentifierUse code '" + codeString + "'");
     }
 
-    public String toCode(IdentifierUse code) {
-      if (code == IdentifierUse.USUAL)
+    public String toCode(IdentifierUse code)
+   {
+       if (code == IdentifierUse.NULL)
+           return null;
+       if (code == IdentifierUse.USUAL)
         return "usual";
       if (code == IdentifierUse.OFFICIAL)
         return "official";
@@ -196,7 +199,7 @@ public class Identifier extends Type implements ICompositeType {
       if (code == IdentifierUse.SECONDARY)
         return "secondary";
       return "?";
-    }
+   }
   }
 
   /**

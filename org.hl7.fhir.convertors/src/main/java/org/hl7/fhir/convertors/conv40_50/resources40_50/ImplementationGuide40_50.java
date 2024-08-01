@@ -17,7 +17,9 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Url40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.UrlType;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -56,6 +58,7 @@ public class ImplementationGuide40_50 {
   static final String EXT_IG_DEFINITION_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/ig-parameter";
   static final String EXT_IG_DEFINITION_PARAM_URL_EXT = "http://hl7.org/fhir/tools/CodeSystem/ig-parameters";
   static final String EXT_IG_DEFINITION_PARAM_URL_BASE = "http://hl7.org/fhir/guide-parameter-code";
+  static final String EXT_IG_DEFINITION_RESOURCE_PROFILE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.definition.resource.profile";
 
   public static org.hl7.fhir.r5.model.ImplementationGuide convertImplementationGuide(org.hl7.fhir.r4.model.ImplementationGuide src) throws FHIRException {
     if (src == null)
@@ -322,6 +325,9 @@ public class ImplementationGuide40_50 {
       tgt.setIsExample(true);
       tgt.getProfile().add(Canonical40_50.convertCanonical(src.getExampleCanonicalType()));
     }
+    for (Extension ext: src.getExtensionsByUrl(EXT_IG_DEFINITION_RESOURCE_PROFILE)) {
+      tgt.getProfile().add(Canonical40_50.convertCanonical((org.hl7.fhir.r4.model.CanonicalType)ext.getValue()));
+    }
     if (src.hasGroupingId())
       tgt.setGroupingIdElement(Id40_50.convertId(src.getGroupingIdElement()));
     return tgt;
@@ -342,6 +348,11 @@ public class ImplementationGuide40_50 {
       tgt.setExample(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getIsExampleElement()));
     if (src.hasProfile() && (!src.hasIsExample() || src.getIsExample())) {
       tgt.setExample(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getProfile().get(0)));
+    }
+    if (src.getProfile().size() > 1) {
+      for (CanonicalType p: src.getProfile().subList(1, src.getProfile().size())) {
+        tgt.addExtension(EXT_IG_DEFINITION_RESOURCE_PROFILE, Canonical40_50.convertCanonical(p));
+      }
     }
     if (src.hasGroupingId())
       tgt.setGroupingIdElement(Id40_50.convertId(src.getGroupingIdElement()));

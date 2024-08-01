@@ -209,7 +209,9 @@ public class Timing extends Type implements ICompositeType {
         throw new FHIRException("Unknown UnitsOfTime code '"+codeString+"'");
         }
     public String toCode(UnitsOfTime code) {
-      if (code == UnitsOfTime.S)
+       if (code == UnitsOfTime.NULL)
+           return null;
+       if (code == UnitsOfTime.S)
         return "s";
       if (code == UnitsOfTime.MIN)
         return "min";
@@ -224,7 +226,7 @@ public class Timing extends Type implements ICompositeType {
       if (code == UnitsOfTime.A)
         return "a";
       return "?";
-      }
+   }
     public String toSystem(UnitsOfTime code) {
       return code.getSystem();
       }
@@ -385,7 +387,9 @@ public class Timing extends Type implements ICompositeType {
         throw new FHIRException("Unknown DayOfWeek code '"+codeString+"'");
         }
     public String toCode(DayOfWeek code) {
-      if (code == DayOfWeek.MON)
+       if (code == DayOfWeek.NULL)
+           return null;
+       if (code == DayOfWeek.MON)
         return "mon";
       if (code == DayOfWeek.TUE)
         return "tue";
@@ -400,7 +404,7 @@ public class Timing extends Type implements ICompositeType {
       if (code == DayOfWeek.SUN)
         return "sun";
       return "?";
-      }
+   }
     public String toSystem(DayOfWeek code) {
       return code.getSystem();
       }
@@ -729,7 +733,9 @@ public class Timing extends Type implements ICompositeType {
         throw new FHIRException("Unknown EventTiming code '"+codeString+"'");
         }
     public String toCode(EventTiming code) {
-      if (code == EventTiming.MORN)
+       if (code == EventTiming.NULL)
+           return null;
+       if (code == EventTiming.MORN)
         return "MORN";
       if (code == EventTiming.AFT)
         return "AFT";
@@ -768,7 +774,7 @@ public class Timing extends Type implements ICompositeType {
       if (code == EventTiming.PCV)
         return "PCV";
       return "?";
-      }
+   }
     public String toSystem(EventTiming code) {
       return code.getSystem();
       }

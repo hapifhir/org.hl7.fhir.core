@@ -48,14 +48,16 @@ public class CatalogTypeEnumFactory implements EnumFactory<CatalogType> {
   }
 
   public String toCode(CatalogType code) {
-    if (code == CatalogType.MEDICATION)
+       if (code == CatalogType.NULL)
+           return null;
+       if (code == CatalogType.MEDICATION)
       return "medication";
     if (code == CatalogType.DEVICE)
       return "device";
     if (code == CatalogType.PROTOCOL)
       return "protocol";
     return "?";
-  }
+   }
 
   public String toSystem(CatalogType code) {
     return code.getSystem();

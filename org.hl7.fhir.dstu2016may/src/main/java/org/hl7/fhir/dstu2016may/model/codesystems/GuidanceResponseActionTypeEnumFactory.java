@@ -50,7 +50,9 @@ public class GuidanceResponseActionTypeEnumFactory implements EnumFactory<Guidan
   }
 
   public String toCode(GuidanceResponseActionType code) {
-    if (code == GuidanceResponseActionType.CREATE)
+       if (code == GuidanceResponseActionType.NULL)
+           return null;
+       if (code == GuidanceResponseActionType.CREATE)
       return "create";
     if (code == GuidanceResponseActionType.UPDATE)
       return "update";
@@ -59,7 +61,7 @@ public class GuidanceResponseActionTypeEnumFactory implements EnumFactory<Guidan
     if (code == GuidanceResponseActionType.FIREEVENT)
       return "fire-event";
     return "?";
-  }
+   }
 
   public String toSystem(GuidanceResponseActionType code) {
     return code.getSystem();

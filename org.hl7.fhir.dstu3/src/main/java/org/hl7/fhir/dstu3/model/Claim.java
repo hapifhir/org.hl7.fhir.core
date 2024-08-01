@@ -165,7 +165,9 @@ public class Claim extends DomainResource {
         throw new FHIRException("Unknown ClaimStatus code '"+codeString+"'");
         }
     public String toCode(ClaimStatus code) {
-      if (code == ClaimStatus.ACTIVE)
+       if (code == ClaimStatus.NULL)
+           return null;
+       if (code == ClaimStatus.ACTIVE)
         return "active";
       if (code == ClaimStatus.CANCELLED)
         return "cancelled";
@@ -174,7 +176,7 @@ public class Claim extends DomainResource {
       if (code == ClaimStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(ClaimStatus code) {
       return code.getSystem();
       }
@@ -293,7 +295,9 @@ public class Claim extends DomainResource {
         throw new FHIRException("Unknown Use code '"+codeString+"'");
         }
     public String toCode(Use code) {
-      if (code == Use.COMPLETE)
+       if (code == Use.NULL)
+           return null;
+       if (code == Use.COMPLETE)
         return "complete";
       if (code == Use.PROPOSED)
         return "proposed";
@@ -302,7 +306,7 @@ public class Claim extends DomainResource {
       if (code == Use.OTHER)
         return "other";
       return "?";
-      }
+   }
     public String toSystem(Use code) {
       return code.getSystem();
       }

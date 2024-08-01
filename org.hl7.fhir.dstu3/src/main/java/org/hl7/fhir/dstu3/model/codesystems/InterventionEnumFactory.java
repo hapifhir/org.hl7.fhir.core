@@ -50,12 +50,14 @@ public class InterventionEnumFactory implements EnumFactory<Intervention> {
   }
 
   public String toCode(Intervention code) {
-    if (code == Intervention.UNKNOWN)
+       if (code == Intervention.NULL)
+           return null;
+       if (code == Intervention.UNKNOWN)
       return "unknown";
     if (code == Intervention.OTHER)
       return "other";
     return "?";
-  }
+   }
 
     public String toSystem(Intervention code) {
       return code.getSystem();

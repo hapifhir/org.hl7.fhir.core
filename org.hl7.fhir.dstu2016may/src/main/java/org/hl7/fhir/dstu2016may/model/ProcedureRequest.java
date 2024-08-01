@@ -298,7 +298,9 @@ public class ProcedureRequest extends DomainResource {
     }
 
     public String toCode(ProcedureRequestStatus code) {
-      if (code == ProcedureRequestStatus.PROPOSED)
+       if (code == ProcedureRequestStatus.NULL)
+           return null;
+       if (code == ProcedureRequestStatus.PROPOSED)
         return "proposed";
       if (code == ProcedureRequestStatus.DRAFT)
         return "draft";
@@ -319,7 +321,7 @@ public class ProcedureRequest extends DomainResource {
       if (code == ProcedureRequestStatus.ABORTED)
         return "aborted";
       return "?";
-    }
+   }
 
     public String toSystem(ProcedureRequestStatus code) {
       return code.getSystem();
@@ -465,7 +467,9 @@ public class ProcedureRequest extends DomainResource {
     }
 
     public String toCode(ProcedureRequestPriority code) {
-      if (code == ProcedureRequestPriority.ROUTINE)
+       if (code == ProcedureRequestPriority.NULL)
+           return null;
+       if (code == ProcedureRequestPriority.ROUTINE)
         return "routine";
       if (code == ProcedureRequestPriority.URGENT)
         return "urgent";
@@ -474,7 +478,7 @@ public class ProcedureRequest extends DomainResource {
       if (code == ProcedureRequestPriority.ASAP)
         return "asap";
       return "?";
-    }
+   }
 
     public String toSystem(ProcedureRequestPriority code) {
       return code.getSystem();

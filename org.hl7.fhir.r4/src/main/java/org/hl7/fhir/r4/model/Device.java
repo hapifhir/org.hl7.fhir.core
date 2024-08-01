@@ -235,7 +235,9 @@ public class Device extends DomainResource {
     }
 
     public String toCode(UDIEntryType code) {
-      if (code == UDIEntryType.BARCODE)
+       if (code == UDIEntryType.NULL)
+           return null;
+       if (code == UDIEntryType.BARCODE)
         return "barcode";
       if (code == UDIEntryType.RFID)
         return "rfid";
@@ -248,7 +250,7 @@ public class Device extends DomainResource {
       if (code == UDIEntryType.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(UDIEntryType code) {
       return code.getSystem();
@@ -402,7 +404,9 @@ public class Device extends DomainResource {
     }
 
     public String toCode(FHIRDeviceStatus code) {
-      if (code == FHIRDeviceStatus.ACTIVE)
+       if (code == FHIRDeviceStatus.NULL)
+           return null;
+       if (code == FHIRDeviceStatus.ACTIVE)
         return "active";
       if (code == FHIRDeviceStatus.INACTIVE)
         return "inactive";
@@ -411,7 +415,7 @@ public class Device extends DomainResource {
       if (code == FHIRDeviceStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(FHIRDeviceStatus code) {
       return code.getSystem();
@@ -598,7 +602,9 @@ public class Device extends DomainResource {
     }
 
     public String toCode(DeviceNameType code) {
-      if (code == DeviceNameType.UDILABELNAME)
+       if (code == DeviceNameType.NULL)
+           return null;
+       if (code == DeviceNameType.UDILABELNAME)
         return "udi-label-name";
       if (code == DeviceNameType.USERFRIENDLYNAME)
         return "user-friendly-name";
@@ -611,7 +617,7 @@ public class Device extends DomainResource {
       if (code == DeviceNameType.OTHER)
         return "other";
       return "?";
-    }
+   }
 
     public String toSystem(DeviceNameType code) {
       return code.getSystem();

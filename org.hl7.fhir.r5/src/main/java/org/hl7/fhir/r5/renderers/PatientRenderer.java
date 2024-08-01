@@ -1,9 +1,9 @@
 package org.hl7.fhir.r5.renderers;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,28 +12,10 @@ import java.util.UUID;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Attachment;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.ContactPoint;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.DateType;
-import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.HumanName;
-import org.hl7.fhir.r5.model.HumanName.NameUse;
-import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.Identifier.IdentifierUse;
-import org.hl7.fhir.r5.model.Patient;
-import org.hl7.fhir.r5.model.Period;
-import org.hl7.fhir.r5.model.PrimitiveType;
-import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -42,68 +24,165 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class PatientRenderer extends ResourceRenderer {
 
-  public class NamedReferance {
 
-    private String name;
-    private Reference reference;
-    private BaseWrapper wrapper;
+  public PatientRenderer(RenderingContext context) { 
+    super(context); 
+  } 
 
-    public NamedReferance(String name, Reference ref, BaseWrapper refw) {
-      this.name = name;
-      this.reference = ref;
-      this.wrapper = refw;
-    }
 
-    public String getName() {
-      return name;
-    }
-
-    public Reference getReference() {
-      return reference;
-    }
-
-    public BaseWrapper getWrapper() {
-      return wrapper;
-    }
-
-  }
-
-  private static final int MAX_IMAGE_LENGTH = 2*1024*1024;
-
-  public PatientRenderer(RenderingContext context) {
-    super(context);
-  }
-
-  public boolean render(XhtmlNode x, Resource dr) throws UnsupportedEncodingException, IOException {
-    describe(x, dr);
-    return false;
-  }
-
-  // name gender DoB (MRN)
-  public String display(Resource dr) {
-    Patient pat = (Patient) dr;
-    Identifier id = null;
-    for (Identifier t : pat.getIdentifier()) {
+  @Override
+  public String buildSummary(ResourceWrapper pat) throws UnsupportedEncodingException, IOException {
+    ResourceWrapper id = null;
+    List<ResourceWrapper> list = pat.children("identifier");
+    for (ResourceWrapper t : list) {
       id = chooseId(id, t);
     }
-    HumanName n = null;
-    for (HumanName t : pat.getName()) {
+    list = pat.children("name");
+    ResourceWrapper n = null;
+    for (ResourceWrapper t : list) {
       n = chooseName(n, t);
     }
-    return display(n, pat.hasGender() ? context.getTranslatedCode(pat.getGenderElement(), "http://hl7.org/fhir/administrative-gender") : null, pat.getBirthDateElement(), id);
+    String gender = null;
+    ResourceWrapper item = pat.child("gender");
+    if (item != null) {
+      gender = context.getTranslatedCode(item.primitiveValue(), "http://hl7.org/fhir/administrative-gender");
+    }
+    ResourceWrapper dt = pat.child("birthDate"); 
+
+    StringBuilder b = new StringBuilder();
+    if (n != null) {
+      b.append(displayHumanName(n));
+    } else {
+      b.append(context.formatPhrase(RenderingContext.PAT_NO_NAME));      
+    }
+    b.append(" ");
+    if (item == null) {
+      b.append(context.formatPhrase(RenderingContext.PAT_NO_GENDER));
+    } else {
+      b.append(gender);
+    }
+    b.append(", ");
+    if (dt == null) {
+      b.append(context.formatPhrase(RenderingContext.PAT_NO_DOB));
+    } else {
+      b.append(context.formatPhrase(RenderingContext.PAT_DOB, displayDateTime(dt)));      
+    }
+    if (id != null) {
+      b.append(" ( ");      
+      b.append(displayIdentifier(id));
+      b.append(")");      
+    }
+    return b.toString();
   }
 
-  private Identifier chooseId(Identifier oldId, Identifier newId) {
+
+  //  // name gender DoB (MRN)
+  //  public String display(Resource dr) {
+  //    Patient pat = (Patient) dr;
+  //    Identifier id = null;
+  //    for (Identifier t : pat.getIdentifier()) {
+  //      id = chooseId(id, t);
+  //    }
+  //    HumanName n = null;
+  //    for (HumanName t : pat.getName()) {
+  //      n = chooseName(n, t);
+  //    }
+  //    return display(n, pat.hasGender() ? context.getTranslatedCode(pat.getGenderElement(), "http://hl7.org/fhir/administrative-gender") : null, pat.getBirthDateElement(), id);
+  //  }
+
+
+  private static final int MAX_IMAGE_LENGTH = 2*1024*1024;
+  private static final boolean SHORT = false;
+
+
+  @Override
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper pat) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    renderResourceTechDetails(pat, x);
+    if (context.isShortPatientForm()) {
+      ResourceWrapper id = null;
+      List<ResourceWrapper> list = pat.children("identifier");
+      for (ResourceWrapper t : list) {
+        id = chooseId(id, t);
+      }
+      list = pat.children("name");
+      ResourceWrapper n = null;
+      for (ResourceWrapper t : list) {
+        n = chooseName(n, t);
+      }
+      String gender = null;
+      ResourceWrapper item = pat.child("gender");
+      if (item != null) {
+        gender = getTranslatedCode(item);
+      }
+      ResourceWrapper dt = pat.child("birthDate");
+
+      if (n == null) {
+        x.b().tx(context.formatPhrase(RenderingContext.PAT_NO_NAME)); // todo: is this appropriate?  
+      } else {
+        renderDataType(status, x.b(), n);
+      }
+      x.tx(" ");
+      if (gender == null) {
+        x.tx(context.formatPhrase(RenderingContext.PAT_NO_GENDER));
+      } else {
+        x.tx(gender);
+      }
+      x.tx(", ");
+      if (dt == null) {
+        x.tx(context.formatPhrase(RenderingContext.PAT_NO_DOB));
+      } else {
+        x.tx(context.formatPhrase(RenderingContext.PAT_DOB, displayDateTime(dt)));
+      }
+      if (id != null) {
+        x.tx(" ( ");      
+        renderDataType(status, x, id);
+        x.tx(")");      
+      }
+    } else {
+      // banner
+      makeBanner(x.para()).tx(buildSummary(pat));
+      x.hr();
+      XhtmlNode tbl;
+      if (hasRenderablePhoto(pat)) {
+        tbl = x.table("none");
+        XhtmlNode tr = tbl.tr();
+        tbl = tr.td().table("grid");
+        renderPhoto(tr.td(), pat);
+      } else {
+        tbl = x.table("grid");
+      }
+
+      // the table has 4 columns
+      addStatus(status, tbl, pat);
+      addIdentifiers(status, tbl, pat);
+      addNames(status, tbl, pat);
+      addComms(status, tbl, pat);
+      addLangs(status, tbl, pat);
+      addNOKs(status, tbl, pat);
+      addLinks(status, tbl, pat);
+      addExtensions(status, tbl, pat);
+      if (tbl.isEmpty()) {
+        x.remove(tbl);
+      }
+      if (pat.has("contained") && context.isTechnicalMode()) {
+        x.hr();
+        x.para().b().tx(context.formatMessagePlural(pat.children("contained").size(), RenderingContext.PAT_CONTAINED));
+        addContained(status, x, pat.children("contained"));
+      }
+    }
+  }
+
+  private ResourceWrapper chooseId(ResourceWrapper oldId, ResourceWrapper newId) {
     if (oldId == null) {
       return newId;
     }
     if (newId == null) {
       return oldId;
     }
-    return isPreferred(newId.getUse(), oldId.getUse()) ? newId : oldId;
+    return isPreferredId(newId.primitiveValue("use"), oldId.primitiveValue("use")) ? newId : oldId;
   }
 
-  private boolean isPreferred(IdentifierUse newUse, IdentifierUse oldUse) {
+  private boolean isPreferredId(String newUse, String oldUse) {
     if (newUse == null && oldUse == null || newUse == oldUse) {
       return false;
     }
@@ -111,37 +190,27 @@ public class PatientRenderer extends ResourceRenderer {
       return true;
     }
     switch (newUse) {
-    case NULL: return !existsInList(oldUse, IdentifierUse.OFFICIAL, IdentifierUse.USUAL);
-    case OFFICIAL: return !existsInList(oldUse, IdentifierUse.USUAL);
-    case OLD: return !existsInList(oldUse, IdentifierUse.OFFICIAL, IdentifierUse.SECONDARY, IdentifierUse.USUAL);
-    case SECONDARY: return !existsInList(oldUse, IdentifierUse.OFFICIAL, IdentifierUse.USUAL);
-    case TEMP: return !existsInList(oldUse, IdentifierUse.OFFICIAL, IdentifierUse.SECONDARY, IdentifierUse.USUAL);
-    case USUAL: return true;
+    case "official": return !Utilities.existsInList(oldUse, "usual");
+    case "old": return !Utilities.existsInList(oldUse, "official", "secondary", "usual");
+    case "secondary": return !Utilities.existsInList(oldUse, "official", "usual");
+    case "temp": return !Utilities.existsInList(oldUse, "official", "secondary", "usual");
+    case "usual": return true;
     default: return false;
     }
   }
 
-  private boolean existsInList(IdentifierUse oldUse, IdentifierUse... values) {
-    for (IdentifierUse value : values) {
-      if (value == oldUse) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private HumanName chooseName(HumanName oldName, HumanName newName) {
+  private ResourceWrapper chooseName(ResourceWrapper oldName, ResourceWrapper newName) {
     if (oldName == null) {
       return newName;
     }
     if (newName == null) {
       return oldName;
     }
-    return isPreferred(newName.getUse(), oldName.getUse()) ? newName : oldName;
+    return isPreferredName(newName.primitiveValue("use"), oldName.primitiveValue("use")) ? newName : oldName;
   }
 
 
-  private boolean isPreferred(NameUse newUse, NameUse oldUse) {
+  private boolean isPreferredName(String newUse, String oldUse) {
     if (newUse == null && oldUse == null || newUse == oldUse) {
       return false;
     }
@@ -149,248 +218,103 @@ public class PatientRenderer extends ResourceRenderer {
       return true;
     }
     if (oldUse == null) {
-      return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
+      return Utilities.existsInList(newUse, "official", "usual");
     }
     switch (oldUse) {
-      case ANONYMOUS: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
-      case MAIDEN: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
-      case NICKNAME: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
-      case NULL: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
-      case OFFICIAL: return existsInList(newUse, NameUse.USUAL);
-      case OLD: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
-      case TEMP: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
-      case USUAL: return false; 
+    case "anonymous": return Utilities.existsInList(newUse, "official", "usual");
+    case "maiden": return Utilities.existsInList(newUse, "official", "usual");
+    case "nickname": return Utilities.existsInList(newUse, "official", "usual");
+    case "official": return Utilities.existsInList(newUse, "usual");
+    case "old": return Utilities.existsInList(newUse, "official", "usual");
+    case "temp": return Utilities.existsInList(newUse, "official", "usual");
+    case "usual": return false; 
     }
     return false;
   }
 
-  private boolean existsInList(NameUse oldUse, NameUse... values) {
-    for (NameUse value : values) {
-      if (value == oldUse) {
-        return true;
-      }
-    }
-    return false;
-  }
 
-  @Override
-  public String display(ResourceWrapper pat) throws UnsupportedEncodingException, IOException {
-    Identifier id = null;
-    PropertyWrapper pw = getProperty(pat, "identifier");
-    for (BaseWrapper t : pw.getValues()) {
-      id = chooseId(id, (Identifier) t.getBase());
-    }
-    pw = getProperty(pat, "name");
-    HumanName n = null;
-    for (BaseWrapper t : pw.getValues()) {
-      n = chooseName(n, (HumanName) t);
-    }
-    String gender = null;
-    pw = getProperty(pat, "gender");
-    if (valued(pw)) {
-      gender = context.getTranslatedCode(pw.value().getBase(), "http://hl7.org/fhir/administrative-gender");
-    }
-    DateType dt = null; 
-    pw = getProperty(pat, "birthDate");
-    if (valued(pw)) {
-      dt = (DateType) pw.value().getBase();
-    }
-    return display(n, gender, dt, id);  
-  }
-
-  public void describe(XhtmlNode x, ResourceWrapper pat) throws UnsupportedEncodingException, IOException {
-    Identifier id = null;
-    PropertyWrapper pw = getProperty(pat, "identifier");
-    for (BaseWrapper t : pw.getValues()) {
-      id = chooseId(id, (Identifier) t.getBase());
-    }
-    pw = getProperty(pat, "name");
-    HumanName n = null;
-    for (BaseWrapper t : pw.getValues()) {
-      n = chooseName(n, (HumanName) t.getBase());
-    }
-    String gender = null;
-    pw = getProperty(pat, "gender");
-    if (valued(pw)) {
-      gender = context.getTranslatedCode(pw.value().getBase(), "http://hl7.org/fhir/administrative-gender");
-    }
-    DateType dt = null; 
-    pw = getProperty(pat, "birthDate");
-    if (valued(pw)) {
-      dt = (DateType) pw.value().getBase();
-    }
-    describe(x, n, gender, dt, id);
-  }
-
-
-  private String display(HumanName name, String gender, DateType dob, Identifier id) {
-    StringBuilder b = new StringBuilder();
-    if (name == null) {
-      b.append(display(name));
-    } else {
-      b.append(context.formatPhrase(RenderingContext.PAT_NO_NAME));      
-    }
-    b.append(" ");
-    if (dob == null) {
-      b.append(context.formatPhrase(RenderingContext.PAT_NO_GENDER));
-    } else {
-      b.append(gender);
-    }
-    b.append(", ");
-    if (dob == null) {
-      b.append(context.formatPhrase(RenderingContext.PAT_NO_DOB));
-    } else {
-      b.append(context.formatPhrase(RenderingContext.PAT_DOB, display(dob)));      
-    }
-    if (id != null) {
-      b.append(" ( ");      
-      b.append(display(id));
-      b.append(")");      
-    }
-    return b.toString();
-  }
-  
-  public void describe(XhtmlNode x, HumanName name, String gender, DateType dob, Identifier id) throws UnsupportedEncodingException, IOException {
-    if (name == null) {
-      x.b().tx(context.formatPhrase(RenderingContext.PAT_NO_NAME)); // todo: is this appropriate?  
-    } else {
-      render(x.b(), name);
-    }
-    x.tx(" ");
-    if (gender == null) {
-      x.tx(context.formatPhrase(RenderingContext.PAT_NO_GENDER));
-    } else {
-      x.tx(gender);
-    }
-    x.tx(", ");
-    if (dob == null) {
-      x.tx(context.formatPhrase(RenderingContext.PAT_NO_DOB));
-    } else {
-      x.tx(context.formatPhrase(RenderingContext.PAT_DOB, display(dob)));
-    }
-    if (id != null) {
-      x.tx(" ( ");      
-      render(x, id);
-      x.tx(")");      
-    }
-  }
-
-  @Override
-  public boolean render(XhtmlNode x, ResourceWrapper r) throws IOException, FHIRException, EOperationOutcome {
-    // banner
-    describe(makeBanner(x.para()), r);
-    x.hr();
-    XhtmlNode tbl;
-    if (hasRenderablePhoto(r)) {
-      tbl = x.table("none");
-      XhtmlNode tr = tbl.tr();
-      tbl = tr.td().table("grid");
-      renderPhoto(tr.td(), r);
-    } else {
-      tbl = x.table("grid");
-    }
-    
-    // the table has 4 columns
-    addStatus(tbl, r);
-    addIdentifiers(tbl, r);
-    addNames(tbl, r);
-    addComms(tbl, r);
-    addLangs(tbl, r);
-    addNOKs(tbl, r);
-    addLinks(tbl, r);
-    addExtensions(tbl, r);
-    if (tbl.isEmpty()) {
-      x.remove(tbl);
-    }
-    if (r.has("contained") && context.isTechnicalMode()) {
-      x.hr();
-      x.para().b().tx(context.formatMessagePlural(r.getContained().size(), RenderingContext.PAT_CONTAINED));
-      addContained(x, r.getContained());
-    }
-    return false;
-  }
-
-  private void addContained(XhtmlNode x, List<ResourceWrapper> list) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
+  private void addContained(RenderingStatus status, XhtmlNode x, List<ResourceWrapper> list) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
     for (ResourceWrapper c : list) {
       x.hr();
-      x.an(c.getId());
-      new RendererFactory().factory(c, context).render(x, c);
+      String id = c.getScopedId();
+      if (!context.hasAnchor(id)) {
+        context.addAnchor(id);
+        x.an(context.prefixAnchor(id));
+      }
+      RendererFactory.factory(c, context.forContained()).buildNarrative(status, x, c);
     }
   }
 
-  private void addExtensions(XhtmlNode tbl, ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
-    Map<String, List<Extension>> extensions = new HashMap<>();
-    PropertyWrapper pw = getProperty(r, "extension");
-    for (BaseWrapper t : pw.getValues()) {      
-      Extension ext = (Extension) t.getBase();
-      if (!extensions.containsKey(ext.getUrl())) {
-        extensions.put(ext.getUrl(), new ArrayList<>());
+  private void addExtensions(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
+    Map<String, List<ResourceWrapper>> extensions = new HashMap<>();
+    List<ResourceWrapper> pw = r.children("extension");
+    for (ResourceWrapper t : pw) {  
+      String url = t.primitiveValue("url");
+      if (!extensions.containsKey(url)) {
+        extensions.put(url, new ArrayList<>());
       }
-      extensions.get(ext.getUrl()).add(ext);
+      extensions.get(url).add(t);
     }
+
     for (String url : extensions.keySet()) {
-      StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, url);
+      StructureDefinition sd = findCanonical(StructureDefinition.class, url, r);
       if (sd != null) {
-        List<Extension> list = extensions.get(url);
+        List<ResourceWrapper> list = extensions.get(url);
         boolean anyComplex = false;
-        for (Extension ext : list) {
-          anyComplex = anyComplex || ext.hasExtension();
+        for (ResourceWrapper ext : list) {
+          anyComplex = anyComplex || ext.has("extension");
         }
         if (!anyComplex) {
           XhtmlNode tr = tbl.tr();
           nameCell(tr, getContext().getTranslated(sd.getTitleElement()), sd.getDescription(), sd.getWebPath());
           XhtmlNode td = tr.td();
           td.colspan("3");
-          if (list.size() == 1) {
+          if (list.size() != 1) {
             XhtmlNode ul = td.ul();
-            for (Extension s : list) {
+            for (ResourceWrapper s : list) {
               XhtmlNode li = ul.li();
-              render(r, li, s.getValue());
+              renderDataType(status, li, s.child("value"));
             }
           } else {
-            render(r, td, list.get(0).getValue());
+            renderDataType(status, td, list.get(0).child("value"));
           }
         } else {
-          for (Extension ext : list) {
+          for (ResourceWrapper ext : list) {
             XhtmlNode tr = tbl.tr();
             nameCell(tr, sd.getTitle()+":", sd.getDescription());
             XhtmlNode td = tr.td();
             td.colspan("3");
-            if (ext.hasExtension()) {
+            if (ext.has("extension")) {
               XhtmlNode ul = td.ul();
-              for (Extension s : ext.getExtension()) {
+              for (ResourceWrapper s : ext.extensions()) {
                 XhtmlNode li = ul.li();
-                li.tx(s.getUrl()+": ");
-                if (s.hasExtension()) {
+                li.tx(s.primitiveValue("url")+": ");
+                if (s.has("extension")) {
                   boolean first = true;
-                  for (Extension t : s.getExtension()) {
+                  for (ResourceWrapper t : s.extensions()) {
                     if (first) first = false; else li.tx("; ");
-                    li.tx(t.getUrl()+"=");
-                    render(r, li, t.getValue());
+                    li.tx(t.primitiveValue("url")+"=");
+                    renderDataType(status, li, t.child("value"));
                   }
                 } else {
-                  render(r, li, s.getValue());
+                  renderDataType(status, li, s.child("value"));
                 }
               }
             } else {
-              render(r, td, ext.getValue());
+              renderDataType(status, td, ext.child("value"));
             }
           }
         }
       }
     }
-    
-    
+
+
   }
 
-  private void addIdentifiers(XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
-    List<Identifier> ids = new ArrayList<>();
-    PropertyWrapper pw = getProperty(r, "identifier");
-    for (BaseWrapper t : pw.getValues()) {
-      ids.add((Identifier) t.getBase());
-    }
-    Identifier id = null;
-    for (Identifier i : ids) {
+  private void addIdentifiers(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
+    List<ResourceWrapper> ids = r.children("identifier");
+    ResourceWrapper id = null;
+    for (ResourceWrapper i : ids) {
       id = chooseId(id, i);
     }
     if (id != null) {
@@ -402,27 +326,26 @@ public class PatientRenderer extends ResourceRenderer {
       XhtmlNode td = tr.td();
       td.colspan("3");
       if (ids.size() == 1) {
-        render(r, td, ids.get(0));
+        renderDataType(status, td, ids.get(0));
       } else { 
         XhtmlNode ul = td.ul();
-        for (Identifier i : ids) {
-          render(r, ul.li(), i);
+        for (ResourceWrapper i : ids) {
+          renderDataType(status, ul.li(), i);
         }
       }
     }
   }
 
-  private void addLangs(XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
-    List<CodeableConcept> langs = new ArrayList<>();
-    PropertyWrapper pw = getProperty(r, "communication");
-    CodeableConcept prefLang = null;
-    for (BaseWrapper t : pw.getValues()) {
-      PropertyWrapper l = getProperty(t, "language");
-      if (l != null && l.hasValues()) {
-        CodeableConcept lang = (CodeableConcept) l.getValues().get(0).getBase();
+  private void addLangs(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
+    List<ResourceWrapper> langs = new ArrayList<ResourceWrapper>();
+    List<ResourceWrapper> comms = r.children("communication");
+    ResourceWrapper prefLang = null;
+    for (ResourceWrapper t : comms) {
+      ResourceWrapper lang = t.child("language");
+      if (lang != null) {
         langs.add(lang);
-        l = getProperty(t, "preferred");
-        if (l != null && l.hasValues() && "true".equals(l.getValues().get(0).getBase().primitiveValue())) {
+        ResourceWrapper l = t.child("preferred");
+        if (l != null && "true".equals(l.primitiveValue())) {
           prefLang = lang;
         }
       }
@@ -433,15 +356,15 @@ public class PatientRenderer extends ResourceRenderer {
       XhtmlNode td = tr.td();
       td.colspan("3");
       if (langs.size() == 1) {
-        render(r, td, langs.get(0));
+        renderDataType(status, td, langs.get(0));
         if (prefLang != null) {
           td.tx(" "+context.formatPhrase(RenderingContext.PAT_LANG_PREFERRED));
         }
       } else if (langs.size() > 1) {
         XhtmlNode ul = td.ul();
-        for (CodeableConcept i : langs) {
+        for (ResourceWrapper i : langs) {
           XhtmlNode li = ul.li();
-          render(r, li, i);
+          renderDataType(status, li, i);
           if (i == prefLang) {
             li.tx(" "+context.formatPhrase(RenderingContext.PAT_LANG_PREFERRED));;
           }
@@ -450,39 +373,48 @@ public class PatientRenderer extends ResourceRenderer {
     }
   }
 
-  private void addLinks(XhtmlNode tbl, ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
+
+
+  public class NamedReferance {
+
+    private String name;
+    private ResourceWrapper reference;
+
+    public NamedReferance(String name, ResourceWrapper ref) {
+      this.name = name;
+      this.reference = ref;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public ResourceWrapper getReference() {
+      return reference;
+    }
+
+  }
+
+
+  private void addLinks(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
     List<NamedReferance> refs = new ArrayList<>();
-    PropertyWrapper pw = getProperty(r, "generalPractitioner");
-    if (pw != null) {
-      for (BaseWrapper t : pw.getValues()) {
-        refs.add(new NamedReferance(context.formatPhrase(RenderingContext.PAT_GP), (Reference) t.getBase(), t));
+    List<ResourceWrapper> pw = r.children("generalPractitioner");
+    for (ResourceWrapper t : pw) {
+      refs.add(new NamedReferance(context.formatPhrase(RenderingContext.PAT_GP), t));
+    }
+    pw = r.children("managingOrganization");
+    for (ResourceWrapper t : pw) {
+      refs.add(new NamedReferance(context.formatPhrase(RenderingContext.PAT_MO), t));
+    }
+    pw = r.children("link");
+    for (ResourceWrapper t : pw) {
+      ResourceWrapper o = t.firstChild("other");
+      ResourceWrapper l = t.firstChild("type");
+      if (l != null && o != null) {
+        refs.add(new NamedReferance(describeLinkedRecord(l.primitiveValue()), o));        
       }
     }
-    pw = getProperty(r, "managingOrganization");
-    if (pw != null) {
-      for (BaseWrapper t : pw.getValues()) {
-        refs.add(new NamedReferance(context.formatPhrase(RenderingContext.PAT_MO), (Reference) t.getBase(), t));
-      }
-    }
-    pw = getProperty(r, "link");
-    for (BaseWrapper t : pw.getValues()) {
-      PropertyWrapper l = getProperty(t, "other");
-      Reference ref = null;
-      BaseWrapper refw = null;
-      for (BaseWrapper v : l.getValues()) {
-        ref = (Reference) v.getBase();
-        refw = v;
-      }
-      String type = null;
-      l = getProperty(t, "type");
-      for (BaseWrapper v : l.getValues()) {
-        type = v.getBase().primitiveValue();
-      }
-      if (type != null && ref != null) {
-        refs.add(new NamedReferance(describeLinkedRecord(type), ref, refw));        
-      }
-    }
-    
+
     if (refs.size() > 0) {      
       XhtmlNode tr = tbl.tr();
       nameCell(tr, context.formatPhrase(RenderingContext.PAT_LINKS), context.formatPhrase(RenderingContext.PAT_LINKS_HINT));
@@ -493,7 +425,7 @@ public class PatientRenderer extends ResourceRenderer {
         XhtmlNode li = ul.li();
         li.tx(ref.getName());
         li.tx(": ");
-        renderReference(r, li, ref.getReference());        
+        renderReference(status, li, ref.getReference());        
       }
     }
   }
@@ -508,64 +440,27 @@ public class PatientRenderer extends ResourceRenderer {
     return "Unknown";
   }
 
-  private void addNOKs(XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
-    PropertyWrapper pw = getProperty(r, "contact");
-    for (BaseWrapper t : pw.getValues()) {
-      addNOK(tbl,r,  t);
+  private void addNOKs(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
+    for (ResourceWrapper t : r.children("contact")) {
+      addNOK(status, tbl, r,  t);
     }
   }
-  
-  private void addNOK(XhtmlNode tbl, ResourceWrapper r, BaseWrapper bw) throws FHIRFormatError, DefinitionException, IOException {
-    List<CodeableConcept> rels = new ArrayList<>();
-    HumanName name = null;
-    Address add = null;
-    String gender = null;
-    Period period = null;
-    Reference organization = null;
-    List<ContactPoint> tels = new ArrayList<>();
 
-    PropertyWrapper pw = getProperty(bw, "relationship");
-    for (BaseWrapper t : pw.getValues()) {
-      CodeableConcept v = (CodeableConcept) t.getBase();
-      rels.add(v);
-    }
-        
-    pw = getProperty(bw, "name");
-    if (pw.hasValues()) {
-      name = (HumanName) pw.getValues().get(0).getBase();
-    }
-    pw = getProperty(bw, "telecom");
-    for (BaseWrapper t : pw.getValues()) {
-      ContactPoint v = (ContactPoint) t.getBase();
-      tels.add(v);
-    }
-        
-    pw = getProperty(bw, "address");
-    if (pw.hasValues()) {
-      add = (Address) pw.getValues().get(0).getBase();
-    }
-    
-    pw = getProperty(bw, "gender");
-    if (pw.hasValues()) {
-      gender = context.getTranslatedCode(pw.getValues().get(0).getBase(), "http://hl7.org/fhir/administrative-gender");
-    }
+  private void addNOK(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r, ResourceWrapper bw) throws FHIRFormatError, DefinitionException, IOException {
+    List<ResourceWrapper> rels = bw.children("relationship");
+    ResourceWrapper name = bw.firstChild("name");
+    ResourceWrapper add = bw.firstChild("address");
+    String gender = context.getTranslatedCode(bw.primitiveValue("gender"), "http://hl7.org/fhir/administrative-gender");
+    ResourceWrapper period = bw.firstChild("period");
+    ResourceWrapper organization = bw.firstChild("organization");
+    List<ResourceWrapper> tels = bw.children("telecom");
 
-    pw = getProperty(bw, "organization");
-    if (pw.hasValues()) {
-      organization = (Reference) pw.getValues().get(0).getBase();
-    }
-    
-    pw = getProperty(bw, "period");
-    if (pw.hasValues()) {
-      period = (Period) pw.getValues().get(0).getBase();
-    }
-    
     if (rels.size() < 2 && name == null && add == null && gender == null && period == null && organization == null && tels.size() == 0) {
       return; // nothing to render 
     }
     XhtmlNode tr = tbl.tr();
     if (rels.size() == 1) {
-      nameCell(tr, (rels.get(0).getCodingFirstRep().hasDisplay() ? rels.get(0).getCodingFirstRep().getDisplay() : display(rels.get(0)))+":",  context.formatPhrase(RenderingContext.PAT_NOM_CONTACT)+" "+display(rels.get(0)));
+      nameCell(tr, displayDataType(rels.get(0))+":",  context.formatPhrase(RenderingContext.PAT_NOM_CONTACT)+" "+displayDataType(rels.get(0)));
     } else {
       nameCell(tr, context.formatPhrase(RenderingContext.GENERAL_CONTACT), context.formatPhrase(RenderingContext.PAT_NOK_CONTACT_HINT));
     }
@@ -575,7 +470,7 @@ public class PatientRenderer extends ResourceRenderer {
     XhtmlNode li;
     if (name != null) {
       li = ul.li();
-      render(r, li, name);
+      renderDataType(status, li, name);
       if (gender != null) {
         li.tx(" "+"("+gender+")");
       }
@@ -587,37 +482,33 @@ public class PatientRenderer extends ResourceRenderer {
       li = ul.li();
       li.tx(context.formatPhrase(RenderingContext.PAT_RELN));
       boolean first = true;
-      for (CodeableConcept rel : rels) {
+      for (ResourceWrapper rel : rels) {
         if (first) first = false; else li.tx(", ");
-        render(r, li, rel);
+        renderDataType(status, li, rel);
       }      
     }
     if (add != null) {
-      render(r, ul.li(), add);
+      renderDataType(status, ul.li(), add);
     }
-    for (ContactPoint cp : tels) {
-      render(r, ul.li(), cp);
+    for (ResourceWrapper cp : tels) {
+      renderDataType(status, ul.li(), cp);
     }
     if (organization != null) {
       li = ul.li();
       li.tx(context.formatPhrase(RenderingContext.PAT_ORG));
-      render(r, li, organization);
+      renderDataType(status, li, organization);
     }
     if (period != null) {
       li = ul.li();
       li.tx(context.formatPhrase(RenderingContext.PAT_PERIOD));
-      render(r, li, period);
+      renderDataType(status, li, period);
     }
   }
 
-  private void addNames(XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
-    List<HumanName> names = new ArrayList<>();
-    PropertyWrapper pw = getProperty(r, "name");
-    for (BaseWrapper t : pw.getValues()) {
-      names.add((HumanName) t.getBase());
-    }
-    HumanName name = null;
-    for (HumanName n : names) {
+  private void addNames(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
+    List<ResourceWrapper> names = r.children("name");
+    ResourceWrapper name = null;
+    for (ResourceWrapper n : names) {
       name = chooseName(name, n);
     }
     if (name != null) {
@@ -629,27 +520,19 @@ public class PatientRenderer extends ResourceRenderer {
       XhtmlNode td = tr.td();
       td.colspan("3");
       if (names.size() == 1) {
-        render(r, td, names.get(0));
+        renderDataType(status, td, names.get(0));
       } else {
         XhtmlNode ul = td.ul();
-        for (HumanName n : names) {
-          render(r, ul.li(), n);
+        for (ResourceWrapper n : names) {
+          renderDataType(status, ul.li(), n);
         }
       }
     }
   }
-  
-  private void addComms(XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
-    List<ContactPoint> tels = new ArrayList<>();
-    PropertyWrapper pw = getProperty(r, "telecom");
-    for (BaseWrapper t : pw.getValues()) {
-      tels.add((ContactPoint) t.getBase());
-    }
-    List<Address> adds = new ArrayList<>();
-    pw = getProperty(r, "address");
-    for (BaseWrapper t : pw.getValues()) {
-      adds.add((Address) t.getBase());
-    }
+
+  private void addComms(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
+    List<ResourceWrapper> tels = r.children("telecom");
+    List<ResourceWrapper> adds = r.children("address");
     if (tels.size() + adds.size() > 0) {
       XhtmlNode tr = tbl.tr();
       nameCell(tr, context.formatPhrase(RenderingContext.PAT_CONTACT), context.formatPhrase(RenderingContext.PAT_CONTACT_HINT));
@@ -657,23 +540,23 @@ public class PatientRenderer extends ResourceRenderer {
       td.colspan("3");
       if (tels.size() + adds.size() == 1) {
         if (adds.isEmpty()) {
-          render(r, td, tels.get(0));
+          renderDataType(status, td, tels.get(0));
         } else {
-          render(r, td, adds.get(0));
+          renderDataType(status, td, adds.get(0));
         }
       } else {
         XhtmlNode ul = td.ul();
-        for (ContactPoint n : tels) {
-          render(r, ul.li(), n);
+        for (ResourceWrapper n : tels) {
+          renderDataType(status, ul.li(), n);
         }
-        for (Address n : adds) {
-          render(r, ul.li(), n);
+        for (ResourceWrapper n : adds) {
+          renderDataType(status, ul.li(), n);
         }
       }
     }
   }
-  
-  private void addStatus(XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, UnsupportedEncodingException, FHIRException, IOException {
+
+  private void addStatus(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, UnsupportedEncodingException, FHIRException, IOException {
     // TODO Auto-generated method stub
     int count = 0;
     if (r.has("active")) {
@@ -692,32 +575,32 @@ public class PatientRenderer extends ResourceRenderer {
       XhtmlNode tr = tbl.tr();
       int pos = 0;
       if (r.has("active")) {
-        PropertyWrapper a = r.getChildByName("active");
-        if (a.hasValues()) {
+        List<ResourceWrapper> a = r.children("active");
+        if (!a.isEmpty()) {
           pos++;
           nameCell(tr, context.formatPhrase(RenderingContext.PAT_ACTIVE), context.formatPhrase(RenderingContext.PAT_ACTIVE_HINT));
           XhtmlNode td = tr.td();
           if (pos == count) {
             td.colspan("3");
           }
-          render(r, td, (DataType) a.value().getBase());
+          renderDataType(status, td, a.get(0));
         }
       }      
       if (r.has("deceased[x]")) {
-        PropertyWrapper a = r.getChildByName("deceased[x]");
-        if (a.hasValues()) {
+        List<ResourceWrapper> a = r.children("deceased[x]");
+        if (!a.isEmpty()) {
           pos++;
           nameCell(tr, context.formatPhrase(RenderingContext.PAT_DECEASED), context.formatPhrase(RenderingContext.PAT_DECEASED_HINT));
           XhtmlNode td = tr.td();
           if (pos == count) {
             td.colspan("3");
           }
-          render(r, td, (DataType) a.value().getBase());
+          renderDataType(status, td, a.get(0));
         }
       }      
       if (r.has("maritalStatus")) {
-        PropertyWrapper a = r.getChildByName("maritalStatus");
-        if (a.hasValues()) {
+        List<ResourceWrapper> a = r.children("maritalStatus");
+        if (!a.isEmpty()) {
           pos++;
           if (pos == 3) {
             tr = tbl.tr();          
@@ -727,12 +610,12 @@ public class PatientRenderer extends ResourceRenderer {
           if (pos == count) {
             td.colspan("3");
           }
-          render(r, td, (DataType) a.value().getBase());
+          renderDataType(status, td, a.get(0));
         }
       }      
       if (r.has("multipleBirth[x]")) {
-        PropertyWrapper a = r.getChildByName("multipleBirth[x]");
-        if (a.hasValues()) {
+        List<ResourceWrapper> a = r.children("multipleBirth[x]");
+        if (!a.isEmpty()) {
           pos++;
           if (pos == 3) {
             tr = tbl.tr();          
@@ -742,7 +625,7 @@ public class PatientRenderer extends ResourceRenderer {
           if (pos == count) {
             td.colspan("3");
           }
-          render(r, td, (DataType) a.value().getBase());
+          renderDataType(status, td, a.get(0));
         }
       }      
     }  
@@ -759,7 +642,7 @@ public class PatientRenderer extends ResourceRenderer {
     XhtmlNode td = tr.td();
     td.setAttribute("title", title);
     if (link != null) {
-      td.ah(link).tx(text); 
+      td.ah(context.prefixLocalHref(link)).tx(text); 
     } else {
       td.tx(text);
     }
@@ -768,17 +651,18 @@ public class PatientRenderer extends ResourceRenderer {
 
   private void renderPhoto(XhtmlNode td, ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
     if (r.has("photo")) {
-      PropertyWrapper a = r.getChildByName("photo");
-      for (BaseWrapper v : a.getValues()) {
-        Attachment att = (Attachment) v.getBase();
-        if (att.getContentType().startsWith("image/") &&
-            att.getData() != null && (!context.isInlineGraphics() || (att.getData().length > 0 && att.getData().length < MAX_IMAGE_LENGTH))) {
-          String ext = extensionForType(att.getContentType());
+      List<ResourceWrapper> a = r.children("photo");
+      for (ResourceWrapper att : a) {
+        String ct = att.primitiveValue("contentType");
+        byte[] cnt = att.has("data") ? Base64.getDecoder().decode(att.primitiveValue("data")) : null;
+        if (ct.startsWith("image/") &&
+            cnt != null && (!context.isInlineGraphics() || (cnt.length > 0 && cnt.length < MAX_IMAGE_LENGTH))) {
+          String ext = extensionForType(ct);
           if (context.isInlineGraphics() || Utilities.noString(context.getDestDir()) || ext == null) {
-            td.img("data:"+att.getContentType()+";base64,"+att.getDataElement().asStringValue(), "patient photo");
+            td.img("data:"+ct+";base64,"+att.primitiveValue("data"), "patient photo");
           } else {
             String n = UUID.randomUUID().toString().toLowerCase()+ext;
-            TextFile.bytesToFile(att.getData(), ManagedFileAccess.file(Utilities.path(context.getDestDir(), n)));
+            TextFile.bytesToFile(cnt, ManagedFileAccess.file(Utilities.path(context.getDestDir(), n)));
             context.registerFile(n);
             td.img(n, context.formatPhrase(RenderingContext.PAT_PHOTO));            
           }
@@ -804,11 +688,11 @@ public class PatientRenderer extends ResourceRenderer {
 
   private boolean hasRenderablePhoto(ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
     if (r.has("photo")) {
-      PropertyWrapper a = r.getChildByName("photo");
-      for (BaseWrapper v : a.getValues()) {
-        Attachment att = (Attachment) v.getBase();
-        if (att.hasContentType() && att.getContentType().startsWith("image/") &&
-            att.getData() != null && (!context.isInlineGraphics() || (att.getData().length > 0 && att.getData().length < MAX_IMAGE_LENGTH))) {
+      List<ResourceWrapper> a = r.children("photo");
+      for (ResourceWrapper att : a) {
+        if (att.has("contentType") && att.primitiveValue("contentType").startsWith("image/") &&
+            att.has("data") && (!context.isInlineGraphics() || (att.primitiveValue("data").length() > 0 && 
+                att.primitiveValue("data").length() < MAX_IMAGE_LENGTH))) {
           return true;
         } 
       }

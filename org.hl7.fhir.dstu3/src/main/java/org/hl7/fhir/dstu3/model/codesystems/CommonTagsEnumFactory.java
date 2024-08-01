@@ -48,10 +48,12 @@ public class CommonTagsEnumFactory implements EnumFactory<CommonTags> {
   }
 
   public String toCode(CommonTags code) {
-    if (code == CommonTags.ACTIONABLE)
+       if (code == CommonTags.NULL)
+           return null;
+       if (code == CommonTags.ACTIONABLE)
       return "actionable";
     return "?";
-  }
+   }
 
     public String toSystem(CommonTags code) {
       return code.getSystem();

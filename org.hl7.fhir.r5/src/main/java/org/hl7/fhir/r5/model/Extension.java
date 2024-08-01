@@ -70,7 +70,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
 
     @Override
     public String toString() {
-      return url + "=" + value.toString();
+      return url + "=" + (value == null ? "null" : value.toString());
     }
 
     private static final long serialVersionUID = 465890108L;

@@ -83,6 +83,13 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Element;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class ProfileDrivenRenderer extends ResourceRenderer {
 
   private Set<String> containedIds = new HashSet<>();
@@ -232,9 +239,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       XhtmlNode div = res.getNarrative();
       if (div != null) {
         if (div.allChildrenAreText())
-          x.getChildNodes().addAll(div.getChildNodes());
+          x.addChildNodes(div.getChildNodes());
         if (div.getChildNodes().size() == 1 && div.getChildNodes().get(0).allChildrenAreText())
-          x.getChildNodes().addAll(div.getChildNodes().get(0).getChildNodes());
+          x.addChildNodes(div.getChildNodes().get(0).getChildNodes());
       }
       x.tx("Generated Summary: ");
     }

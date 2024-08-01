@@ -227,7 +227,9 @@ public class Encounter extends DomainResource {
     }
 
     public String toCode(EncounterState code) {
-      if (code == EncounterState.PLANNED)
+       if (code == EncounterState.NULL)
+           return null;
+       if (code == EncounterState.PLANNED)
         return "planned";
       if (code == EncounterState.ARRIVED)
         return "arrived";
@@ -240,7 +242,7 @@ public class Encounter extends DomainResource {
       if (code == EncounterState.CANCELLED)
         return "cancelled";
       return "?";
-    }
+   }
 
     public String toSystem(EncounterState code) {
       return code.getSystem();
@@ -482,7 +484,9 @@ public class Encounter extends DomainResource {
     }
 
     public String toCode(EncounterClass code) {
-      if (code == EncounterClass.INPATIENT)
+       if (code == EncounterClass.NULL)
+           return null;
+       if (code == EncounterClass.INPATIENT)
         return "inpatient";
       if (code == EncounterClass.OUTPATIENT)
         return "outpatient";
@@ -501,7 +505,7 @@ public class Encounter extends DomainResource {
       if (code == EncounterClass.OTHER)
         return "other";
       return "?";
-    }
+   }
 
     public String toSystem(EncounterClass code) {
       return code.getSystem();
@@ -654,7 +658,9 @@ public class Encounter extends DomainResource {
     }
 
     public String toCode(EncounterLocationStatus code) {
-      if (code == EncounterLocationStatus.PLANNED)
+       if (code == EncounterLocationStatus.NULL)
+           return null;
+       if (code == EncounterLocationStatus.PLANNED)
         return "planned";
       if (code == EncounterLocationStatus.ACTIVE)
         return "active";
@@ -663,7 +669,7 @@ public class Encounter extends DomainResource {
       if (code == EncounterLocationStatus.COMPLETED)
         return "completed";
       return "?";
-    }
+   }
 
     public String toSystem(EncounterLocationStatus code) {
       return code.getSystem();

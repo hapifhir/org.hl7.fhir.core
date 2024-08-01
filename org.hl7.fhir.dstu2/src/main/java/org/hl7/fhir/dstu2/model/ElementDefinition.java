@@ -135,11 +135,14 @@ public class ElementDefinition extends Type implements ICompositeType {
       throw new FHIRException("Unknown PropertyRepresentation code '" + codeString + "'");
     }
 
-    public String toCode(PropertyRepresentation code) {
-      if (code == PropertyRepresentation.XMLATTR)
+    public String toCode(PropertyRepresentation code)
+   {
+       if (code == PropertyRepresentation.NULL)
+           return null;
+       if (code == PropertyRepresentation.XMLATTR)
         return "xmlAttr";
       return "?";
-    }
+   }
   }
 
   public enum SlicingRules {
@@ -265,15 +268,18 @@ public class ElementDefinition extends Type implements ICompositeType {
       throw new FHIRException("Unknown SlicingRules code '" + codeString + "'");
     }
 
-    public String toCode(SlicingRules code) {
-      if (code == SlicingRules.CLOSED)
+    public String toCode(SlicingRules code)
+   {
+       if (code == SlicingRules.NULL)
+           return null;
+       if (code == SlicingRules.CLOSED)
         return "closed";
       if (code == SlicingRules.OPEN)
         return "open";
       if (code == SlicingRules.OPENATEND)
         return "openAtEnd";
       return "?";
-    }
+   }
   }
 
   public enum AggregationMode {
@@ -398,15 +404,18 @@ public class ElementDefinition extends Type implements ICompositeType {
       throw new FHIRException("Unknown AggregationMode code '" + codeString + "'");
     }
 
-    public String toCode(AggregationMode code) {
-      if (code == AggregationMode.CONTAINED)
+    public String toCode(AggregationMode code)
+   {
+       if (code == AggregationMode.NULL)
+           return null;
+       if (code == AggregationMode.CONTAINED)
         return "contained";
       if (code == AggregationMode.REFERENCED)
         return "referenced";
       if (code == AggregationMode.BUNDLED)
         return "bundled";
       return "?";
-    }
+   }
   }
 
   public enum ConstraintSeverity {
@@ -512,13 +521,16 @@ public class ElementDefinition extends Type implements ICompositeType {
       throw new FHIRException("Unknown ConstraintSeverity code '" + codeString + "'");
     }
 
-    public String toCode(ConstraintSeverity code) {
-      if (code == ConstraintSeverity.ERROR)
+    public String toCode(ConstraintSeverity code)
+   {
+       if (code == ConstraintSeverity.NULL)
+           return null;
+       if (code == ConstraintSeverity.ERROR)
         return "error";
       if (code == ConstraintSeverity.WARNING)
         return "warning";
       return "?";
-    }
+   }
   }
 
   @Block()

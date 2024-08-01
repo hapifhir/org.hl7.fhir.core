@@ -223,7 +223,9 @@ public class RiskAssessment extends DomainResource {
         throw new FHIRException("Unknown RiskAssessmentStatus code '"+codeString+"'");
         }
     public String toCode(RiskAssessmentStatus code) {
-      if (code == RiskAssessmentStatus.REGISTERED)
+       if (code == RiskAssessmentStatus.NULL)
+           return null;
+       if (code == RiskAssessmentStatus.REGISTERED)
         return "registered";
       if (code == RiskAssessmentStatus.PRELIMINARY)
         return "preliminary";
@@ -240,7 +242,7 @@ public class RiskAssessment extends DomainResource {
       if (code == RiskAssessmentStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(RiskAssessmentStatus code) {
       return code.getSystem();
       }

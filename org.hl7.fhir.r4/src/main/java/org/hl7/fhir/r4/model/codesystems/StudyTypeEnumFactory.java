@@ -56,7 +56,9 @@ public class StudyTypeEnumFactory implements EnumFactory<StudyType> {
   }
 
   public String toCode(StudyType code) {
-    if (code == StudyType.RCT)
+       if (code == StudyType.NULL)
+           return null;
+       if (code == StudyType.RCT)
       return "RCT";
     if (code == StudyType.CCT)
       return "CCT";
@@ -71,7 +73,7 @@ public class StudyTypeEnumFactory implements EnumFactory<StudyType> {
     if (code == StudyType.MIXED)
       return "mixed";
     return "?";
-  }
+   }
 
   public String toSystem(StudyType code) {
     return code.getSystem();

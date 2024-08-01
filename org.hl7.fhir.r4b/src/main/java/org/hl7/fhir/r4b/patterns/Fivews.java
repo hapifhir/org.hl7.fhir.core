@@ -700,7 +700,9 @@ public interface Fivews extends PatternBase {
     }
 
     public String toCode(CanonicalStatus code) {
-      if (code == CanonicalStatus.ERROR)
+       if (code == CanonicalStatus.NULL)
+           return null;
+       if (code == CanonicalStatus.ERROR)
         return "error";
       if (code == CanonicalStatus.PROPOSED)
         return "proposed";
@@ -763,7 +765,7 @@ public interface Fivews extends PatternBase {
       if (code == CanonicalStatus.HWDISCON)
         return "hw-discon";
       return "?";
-    }
+   }
 
     public String toSystem(CanonicalStatus code) {
       return code.getSystem();

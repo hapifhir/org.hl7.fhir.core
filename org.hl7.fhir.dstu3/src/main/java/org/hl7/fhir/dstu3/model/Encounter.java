@@ -232,7 +232,9 @@ public class Encounter extends DomainResource {
         throw new FHIRException("Unknown EncounterStatus code '"+codeString+"'");
         }
     public String toCode(EncounterStatus code) {
-      if (code == EncounterStatus.PLANNED)
+       if (code == EncounterStatus.NULL)
+           return null;
+       if (code == EncounterStatus.PLANNED)
         return "planned";
       if (code == EncounterStatus.ARRIVED)
         return "arrived";
@@ -251,7 +253,7 @@ public class Encounter extends DomainResource {
       if (code == EncounterStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(EncounterStatus code) {
       return code.getSystem();
       }
@@ -374,7 +376,9 @@ Not to be used when the patient is currently at the location
         throw new FHIRException("Unknown EncounterLocationStatus code '"+codeString+"'");
         }
     public String toCode(EncounterLocationStatus code) {
-      if (code == EncounterLocationStatus.PLANNED)
+       if (code == EncounterLocationStatus.NULL)
+           return null;
+       if (code == EncounterLocationStatus.PLANNED)
         return "planned";
       if (code == EncounterLocationStatus.ACTIVE)
         return "active";
@@ -383,7 +387,7 @@ Not to be used when the patient is currently at the location
       if (code == EncounterLocationStatus.COMPLETED)
         return "completed";
       return "?";
-      }
+   }
     public String toSystem(EncounterLocationStatus code) {
       return code.getSystem();
       }

@@ -106,7 +106,7 @@ msgstr ""
 
 # BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON
 #: BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON
-msgid "The {1} resource did not math the profile {2} because: {3}"
+msgid "The {1} resource did not match the profile {2} because: {3}"
 msgstr ""
 
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
@@ -895,7 +895,7 @@ msgstr ""
 # Discriminator__is_based_on_type_but_slice__in__has_multiple_types
 #: Discriminator__is_based_on_type_but_slice__in__has_multiple_types
 msgctxt "Discriminator__is_based_on_type_but_slice__in__has_multiple_types"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #1 --"
 msgid_plural "Discriminator ({1}) is based on type, but slice {2} in {3} has {0} types: {4}"
 msgstr[0] ""
 msgstr[1] ""
@@ -1357,7 +1357,7 @@ msgstr ""
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #2 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
 msgstr[1] ""
@@ -1365,7 +1365,7 @@ msgstr[1] ""
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #3 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
 msgstr[1] ""
@@ -1388,7 +1388,7 @@ msgstr ""
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #4 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
@@ -1411,7 +1411,7 @@ msgstr ""
 # FHIRPATH_FOCUS
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #5 --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
@@ -1429,7 +1429,7 @@ msgstr ""
 # FHIRPATH_LEFT_VALUE
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #6 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
@@ -1512,7 +1512,7 @@ msgstr ""
 # FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #7 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
@@ -1520,7 +1520,7 @@ msgstr[1] ""
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #8 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
@@ -1608,6 +1608,66 @@ msgstr ""
 # Found__items_for__resolving_discriminator__from_
 #: Found__items_for__resolving_discriminator__from_
 msgid "Found {0} items for {1} resolving discriminator {2} from {3}"
+msgstr ""
+
+# IG_DEPENDENCY_CLASH_CANONICAL
+#: IG_DEPENDENCY_CLASH_CANONICAL
+msgid "The packageId {0} points to the canonical {1} which is inconsistent with the stated canonical of {2}"
+msgstr ""
+
+# IG_DEPENDENCY_CLASH_PACKAGEID
+#: IG_DEPENDENCY_CLASH_PACKAGEID
+msgid "The canonical URL {0} points to the package {1} which is inconsistent with the stated packageId of {2}"
+msgstr ""
+
+# IG_DEPENDENCY_DIRECT
+#: IG_DEPENDENCY_DIRECT
+msgid "The URL should refer directly to the ImplementationGuide resource (e.g. include ''/ImplementationGuide/'')"
+msgstr ""
+
+# IG_DEPENDENCY_EXCEPTION
+#: IG_DEPENDENCY_EXCEPTION
+msgid "Exception checking package version consistency: {0}"
+msgstr ""
+
+# IG_DEPENDENCY_INVALID_PACKAGEID
+#: IG_DEPENDENCY_INVALID_PACKAGEID
+msgid "The packageId {0} is not valid"
+msgstr ""
+
+# IG_DEPENDENCY_INVALID_PACKAGE_VERSION
+#: IG_DEPENDENCY_INVALID_PACKAGE_VERSION
+msgid "The version {0} is not a valid NPM package version"
+msgstr ""
+
+# IG_DEPENDENCY_NO_PACKAGE
+#: IG_DEPENDENCY_NO_PACKAGE
+msgid "No NPM package id could be determined so the version consistency can't be checked"
+msgstr ""
+
+# IG_DEPENDENCY_NO_VERSION
+#: IG_DEPENDENCY_NO_VERSION
+msgid "No version was specified for the package so the version consistency can't be checked"
+msgstr ""
+
+# IG_DEPENDENCY_PACKAGE_UNKNOWN
+#: IG_DEPENDENCY_PACKAGE_UNKNOWN
+msgid "The package {0} could not be found so the version consistency can't be checked"
+msgstr ""
+
+# IG_DEPENDENCY_VERSION_ERROR
+#: IG_DEPENDENCY_VERSION_ERROR
+msgid "The ImplementationGuide is based on FHIR version {0} but package {1} is based on FHIR version {2}. Use the package {3} instead"
+msgstr ""
+
+# IG_DEPENDENCY_VERSION_WARNING
+#: IG_DEPENDENCY_VERSION_WARNING
+msgid "The ImplementationGuide is based on FHIR version {0} but package {1} is based on FHIR version {2}. In general, this version mismatch should be avoided - some tools will try to make this work with variable degrees of success, but others will not even try"
+msgstr ""
+
+# IG_NO_VERSION
+#: IG_NO_VERSION
+msgid "No fhir version was specified for the IG so the version consistency can't be checked"
 msgstr ""
 
 # ILLEGAL_COMMENT_TYPE
@@ -2103,7 +2163,7 @@ msgstr ""
 # MULTIPLE_LOGICAL_MODELS
 #: MULTIPLE_LOGICAL_MODELS
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #9 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
 msgstr[1] ""
@@ -2126,6 +2186,11 @@ msgstr ""
 # MustSupport_VAL_MustSupport
 #: MustSupport_VAL_MustSupport
 msgid "The element {0} is not marked as ''mustSupport'' in the profile {1}. Consider not using the element, or marking the element as must-Support in the profile"
+msgstr ""
+
+# NDJSON_EMPTY_LINE_WARNING
+#: NDJSON_EMPTY_LINE_WARNING
+msgid "The NDJSON source contains an empty line. This may not be accepted by some processors"
 msgstr ""
 
 # NO_VALID_DISPLAY_FOUND
@@ -2352,7 +2417,7 @@ msgstr ""
 # Profile_based_discriminators_must_have_only_one_type__in_profile
 #: Profile_based_discriminators_must_have_only_one_type__in_profile
 msgctxt "Profile_based_discriminators_must_have_only_one_type__in_profile"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #10 --"
 msgid_plural "Profile based discriminators must have only one type ({1} in profile {2}) but found {0} types"
 msgstr[0] ""
 msgstr[1] ""
@@ -2580,7 +2645,7 @@ msgstr ""
 # Questionnaire_QR_Item_OnlyOneI
 #: Questionnaire_QR_Item_OnlyOneI
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid "-- no content: do not translate --"
+msgid "-- no content: do not translate #11 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] ""
 msgstr[1] ""
@@ -3052,6 +3117,11 @@ msgstr ""
 # SD_TYPE_NOT_MATCH_NS
 #: SD_TYPE_NOT_MATCH_NS
 msgid "The type namespace {0} SHOULD match the url namespace {1} for the definition of the type"
+msgstr ""
+
+# SD_TYPE_PARAMETER_ABSTRACT_WARNING
+#: SD_TYPE_PARAMETER_ABSTRACT_WARNING
+msgid "The type ''{0}'' at {3} refers to the abstract type ''{1}'' but the context is not an abstract type - this is usually an error"
 msgstr ""
 
 # SD_TYPE_PARAMETER_INVALID

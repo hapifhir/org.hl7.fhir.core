@@ -40,6 +40,13 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class QuestionnaireRenderer extends TerminologyRenderer {
   public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-Questionnaire.item.type";
 
@@ -103,7 +110,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       hasExt = renderTreeItem(gen, row.getSubRows(), q, i, hasFlags) || hasExt;
     }
     XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
-    x.getChildNodes().add(xn);
+    x.addChildNode(xn);
     if (doOpts) {
       renderOptions(q, x);
     }
@@ -532,7 +539,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       }
     }
     XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
-    x.getChildNodes().add(xn);
+    x.addChildNode(xn);
     return hasExt;
   }
 

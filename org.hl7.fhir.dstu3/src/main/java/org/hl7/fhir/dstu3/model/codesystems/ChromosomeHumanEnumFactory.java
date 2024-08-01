@@ -94,7 +94,9 @@ public class ChromosomeHumanEnumFactory implements EnumFactory<ChromosomeHuman> 
   }
 
   public String toCode(ChromosomeHuman code) {
-    if (code == ChromosomeHuman._1)
+       if (code == ChromosomeHuman.NULL)
+           return null;
+       if (code == ChromosomeHuman._1)
       return "1";
     if (code == ChromosomeHuman._2)
       return "2";
@@ -143,7 +145,7 @@ public class ChromosomeHumanEnumFactory implements EnumFactory<ChromosomeHuman> 
     if (code == ChromosomeHuman.Y)
       return "Y";
     return "?";
-  }
+   }
 
     public String toSystem(ChromosomeHuman code) {
       return code.getSystem();

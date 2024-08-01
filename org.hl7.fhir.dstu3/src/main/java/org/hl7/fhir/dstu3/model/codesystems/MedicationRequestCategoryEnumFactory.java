@@ -52,14 +52,16 @@ public class MedicationRequestCategoryEnumFactory implements EnumFactory<Medicat
   }
 
   public String toCode(MedicationRequestCategory code) {
-    if (code == MedicationRequestCategory.INPATIENT)
+       if (code == MedicationRequestCategory.NULL)
+           return null;
+       if (code == MedicationRequestCategory.INPATIENT)
       return "inpatient";
     if (code == MedicationRequestCategory.OUTPATIENT)
       return "outpatient";
     if (code == MedicationRequestCategory.COMMUNITY)
       return "community";
     return "?";
-  }
+   }
 
     public String toSystem(MedicationRequestCategory code) {
       return code.getSystem();

@@ -58,7 +58,9 @@ public class AdditionalmaterialsEnumFactory implements EnumFactory<Additionalmat
   }
 
   public String toCode(Additionalmaterials code) {
-    if (code == Additionalmaterials.XRAY)
+       if (code == Additionalmaterials.NULL)
+           return null;
+       if (code == Additionalmaterials.XRAY)
       return "xray";
     if (code == Additionalmaterials.IMAGE)
       return "image";
@@ -71,7 +73,7 @@ public class AdditionalmaterialsEnumFactory implements EnumFactory<Additionalmat
     if (code == Additionalmaterials.OTHER)
       return "other";
     return "?";
-  }
+   }
 
     public String toSystem(Additionalmaterials code) {
       return code.getSystem();

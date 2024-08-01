@@ -62,7 +62,9 @@ public class V3CodingRationaleEnumFactory implements EnumFactory<V3CodingRationa
   }
 
   public String toCode(V3CodingRationale code) {
-    if (code == V3CodingRationale.O)
+       if (code == V3CodingRationale.NULL)
+           return null;
+       if (code == V3CodingRationale.O)
       return "O";
     if (code == V3CodingRationale.OR)
       return "OR";
@@ -79,7 +81,7 @@ public class V3CodingRationaleEnumFactory implements EnumFactory<V3CodingRationa
     if (code == V3CodingRationale.SRC)
       return "SRC";
     return "?";
-  }
+   }
 
     public String toSystem(V3CodingRationale code) {
       return code.getSystem();

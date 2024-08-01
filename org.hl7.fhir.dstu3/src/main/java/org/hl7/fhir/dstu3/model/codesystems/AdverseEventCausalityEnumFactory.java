@@ -50,12 +50,14 @@ public class AdverseEventCausalityEnumFactory implements EnumFactory<AdverseEven
   }
 
   public String toCode(AdverseEventCausality code) {
-    if (code == AdverseEventCausality.CAUSALITY1)
+       if (code == AdverseEventCausality.NULL)
+           return null;
+       if (code == AdverseEventCausality.CAUSALITY1)
       return "causality1";
     if (code == AdverseEventCausality.CAUSALITY2)
       return "causality2";
     return "?";
-  }
+   }
 
     public String toSystem(AdverseEventCausality code) {
       return code.getSystem();

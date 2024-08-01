@@ -44,10 +44,12 @@ public class OperationParameterTypeEnumFactory implements EnumFactory<OperationP
   }
 
   public String toCode(OperationParameterType code) {
-    if (code == OperationParameterType.ANY)
+       if (code == OperationParameterType.NULL)
+           return null;
+       if (code == OperationParameterType.ANY)
       return "Any";
     return "?";
-  }
+   }
 
   public String toSystem(OperationParameterType code) {
     return code.getSystem();

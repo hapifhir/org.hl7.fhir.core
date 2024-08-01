@@ -138,12 +138,14 @@ public class Questionnaire extends MetadataResource {
         throw new FHIRException("Unknown EnableWhenBehavior code '"+codeString+"'");
         }
     public String toCode(EnableWhenBehavior code) {
-      if (code == EnableWhenBehavior.ALL)
+       if (code == EnableWhenBehavior.NULL)
+           return null;
+       if (code == EnableWhenBehavior.ALL)
         return "all";
       if (code == EnableWhenBehavior.ANY)
         return "any";
       return "?";
-      }
+   }
     public String toSystem(EnableWhenBehavior code) {
       return code.getSystem();
       }
@@ -248,14 +250,16 @@ public class Questionnaire extends MetadataResource {
         throw new FHIRException("Unknown QuestionnaireAnswerConstraint code '"+codeString+"'");
         }
     public String toCode(QuestionnaireAnswerConstraint code) {
-      if (code == QuestionnaireAnswerConstraint.OPTIONSONLY)
+       if (code == QuestionnaireAnswerConstraint.NULL)
+           return null;
+       if (code == QuestionnaireAnswerConstraint.OPTIONSONLY)
         return "optionsOnly";
       if (code == QuestionnaireAnswerConstraint.OPTIONSORTYPE)
         return "optionsOrType";
       if (code == QuestionnaireAnswerConstraint.OPTIONSORSTRING)
         return "optionsOrString";
       return "?";
-      }
+   }
     public String toSystem(QuestionnaireAnswerConstraint code) {
       return code.getSystem();
       }
@@ -346,12 +350,14 @@ public class Questionnaire extends MetadataResource {
         throw new FHIRException("Unknown QuestionnaireItemDisabledDisplay code '"+codeString+"'");
         }
     public String toCode(QuestionnaireItemDisabledDisplay code) {
-      if (code == QuestionnaireItemDisabledDisplay.HIDDEN)
+       if (code == QuestionnaireItemDisabledDisplay.NULL)
+           return null;
+       if (code == QuestionnaireItemDisabledDisplay.HIDDEN)
         return "hidden";
       if (code == QuestionnaireItemDisabledDisplay.PROTECTED)
         return "protected";
       return "?";
-      }
+   }
     public String toSystem(QuestionnaireItemDisabledDisplay code) {
       return code.getSystem();
       }
@@ -512,7 +518,9 @@ public class Questionnaire extends MetadataResource {
         throw new FHIRException("Unknown QuestionnaireItemOperator code '"+codeString+"'");
         }
     public String toCode(QuestionnaireItemOperator code) {
-      if (code == QuestionnaireItemOperator.EXISTS)
+       if (code == QuestionnaireItemOperator.NULL)
+           return null;
+       if (code == QuestionnaireItemOperator.EXISTS)
         return "exists";
       if (code == QuestionnaireItemOperator.EQUAL)
         return "=";
@@ -527,7 +535,7 @@ public class Questionnaire extends MetadataResource {
       if (code == QuestionnaireItemOperator.LESS_OR_EQUAL)
         return "<=";
       return "?";
-      }
+   }
     public String toSystem(QuestionnaireItemOperator code) {
       return code.getSystem();
       }
@@ -814,7 +822,9 @@ public class Questionnaire extends MetadataResource {
         throw new FHIRException("Unknown QuestionnaireItemType code '"+codeString+"'");
         }
     public String toCode(QuestionnaireItemType code) {
-      if (code == QuestionnaireItemType.GROUP)
+       if (code == QuestionnaireItemType.NULL)
+           return null;
+       if (code == QuestionnaireItemType.GROUP)
         return "group";
       if (code == QuestionnaireItemType.DISPLAY)
         return "display";
@@ -847,7 +857,7 @@ public class Questionnaire extends MetadataResource {
       if (code == QuestionnaireItemType.QUANTITY)
         return "quantity";
       return "?";
-      }
+   }
     public String toSystem(QuestionnaireItemType code) {
       return code.getSystem();
       }

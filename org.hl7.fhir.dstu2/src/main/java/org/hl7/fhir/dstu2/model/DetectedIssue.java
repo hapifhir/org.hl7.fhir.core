@@ -175,15 +175,18 @@ public class DetectedIssue extends DomainResource {
       throw new FHIRException("Unknown DetectedIssueSeverity code '" + codeString + "'");
     }
 
-    public String toCode(DetectedIssueSeverity code) {
-      if (code == DetectedIssueSeverity.HIGH)
+    public String toCode(DetectedIssueSeverity code)
+   {
+       if (code == DetectedIssueSeverity.NULL)
+           return null;
+       if (code == DetectedIssueSeverity.HIGH)
         return "high";
       if (code == DetectedIssueSeverity.MODERATE)
         return "moderate";
       if (code == DetectedIssueSeverity.LOW)
         return "low";
       return "?";
-    }
+   }
   }
 
   @Block()

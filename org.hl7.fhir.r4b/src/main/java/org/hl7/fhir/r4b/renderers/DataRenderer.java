@@ -96,6 +96,13 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 
+/**
+ * Rendering framework:
+ * 
+ * See R5 rendering framework to render R4B resources
+ * 
+ */
+@Deprecated
 public class DataRenderer extends Renderer {
 
   // -- 1. context --------------------------------------------------------------
@@ -144,7 +151,7 @@ public class DataRenderer extends Renderer {
       } catch (org.hl7.fhir.exceptions.FHIRFormatError e) {
         throw new FHIRFormatError(e.getMessage(), e);
       }
-      x.getChildNodes().addAll(m.getChildNodes());
+      x.addChildNodes(m.getChildNodes());
     }
   }
 
@@ -1731,24 +1738,5 @@ public class DataRenderer extends Renderer {
     return b.toString();
   }
 
-  protected String versionFromCanonical(String system) {
-    if (system == null) {
-      return null;
-    } else if (system.contains("|")) {
-      return system.substring(0, system.indexOf("|"));
-    } else {
-      return null;
-    }
-  }
-
-  protected String systemFromCanonical(String system) {
-    if (system == null) {
-      return null;
-    } else if (system.contains("|")) {
-      return system.substring(system.indexOf("|") + 1);
-    } else {
-      return system;
-    }
-  }
 
 }

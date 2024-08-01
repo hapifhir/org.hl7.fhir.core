@@ -589,7 +589,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
   }
 
   public XhtmlNode renderCompose(ValueSetComparison csc, String id, String prefix) throws FHIRException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), Utilities.path("[tmp]", "comparison"), false);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), Utilities.path("[tmp]", "comparison"), false, "c");
     TableModel model = gen.new TableModel(id, true);
     model.setAlternating(true);
     model.getTitles().add(gen.new Title(null, null, "Item", "The type of item being compared", null, 100));
@@ -780,7 +780,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
     boolean hasAbstract = findAbstract(csc.getExpansion());
     boolean hasInactive = findInactive(csc.getExpansion());
 
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), Utilities.path("[tmp]", "comparison"), false);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), Utilities.path("[tmp]", "comparison"), false, "c");
     TableModel model = gen.new TableModel(id, true);
     model.setAlternating(true);
     if (hasSystem) {

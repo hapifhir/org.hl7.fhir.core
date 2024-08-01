@@ -222,7 +222,9 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
         throw new FHIRException("Unknown BiologicallyDerivedProductDispenseCodes code '"+codeString+"'");
         }
     public String toCode(BiologicallyDerivedProductDispenseCodes code) {
-      if (code == BiologicallyDerivedProductDispenseCodes.PREPARATION)
+       if (code == BiologicallyDerivedProductDispenseCodes.NULL)
+           return null;
+       if (code == BiologicallyDerivedProductDispenseCodes.PREPARATION)
         return "preparation";
       if (code == BiologicallyDerivedProductDispenseCodes.INPROGRESS)
         return "in-progress";
@@ -239,7 +241,7 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
       if (code == BiologicallyDerivedProductDispenseCodes.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(BiologicallyDerivedProductDispenseCodes code) {
       return code.getSystem();
       }

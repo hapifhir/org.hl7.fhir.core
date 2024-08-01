@@ -52,14 +52,16 @@ public class CarePlanRelationshipEnumFactory implements EnumFactory<CarePlanRela
   }
 
   public String toCode(CarePlanRelationship code) {
-    if (code == CarePlanRelationship.INCLUDES)
+       if (code == CarePlanRelationship.NULL)
+           return null;
+       if (code == CarePlanRelationship.INCLUDES)
       return "includes";
     if (code == CarePlanRelationship.REPLACES)
       return "replaces";
     if (code == CarePlanRelationship.FULFILLS)
       return "fulfills";
     return "?";
-  }
+   }
 
     public String toSystem(CarePlanRelationship code) {
       return code.getSystem();

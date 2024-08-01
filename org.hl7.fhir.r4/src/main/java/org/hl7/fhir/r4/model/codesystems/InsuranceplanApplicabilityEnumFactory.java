@@ -48,14 +48,16 @@ public class InsuranceplanApplicabilityEnumFactory implements EnumFactory<Insura
   }
 
   public String toCode(InsuranceplanApplicability code) {
-    if (code == InsuranceplanApplicability.INNETWORK)
+       if (code == InsuranceplanApplicability.NULL)
+           return null;
+       if (code == InsuranceplanApplicability.INNETWORK)
       return "in-network";
     if (code == InsuranceplanApplicability.OUTOFNETWORK)
       return "out-of-network";
     if (code == InsuranceplanApplicability.OTHER)
       return "other";
     return "?";
-  }
+   }
 
   public String toSystem(InsuranceplanApplicability code) {
     return code.getSystem();

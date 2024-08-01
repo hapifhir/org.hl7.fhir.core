@@ -48,14 +48,16 @@ public class ChargeitemBillingcodesEnumFactory implements EnumFactory<Chargeitem
   }
 
   public String toCode(ChargeitemBillingcodes code) {
-    if (code == ChargeitemBillingcodes._1100)
+       if (code == ChargeitemBillingcodes.NULL)
+           return null;
+       if (code == ChargeitemBillingcodes._1100)
       return "1100";
     if (code == ChargeitemBillingcodes._1210)
       return "1210";
     if (code == ChargeitemBillingcodes._1320)
       return "1320";
     return "?";
-  }
+   }
 
   public String toSystem(ChargeitemBillingcodes code) {
     return code.getSystem();

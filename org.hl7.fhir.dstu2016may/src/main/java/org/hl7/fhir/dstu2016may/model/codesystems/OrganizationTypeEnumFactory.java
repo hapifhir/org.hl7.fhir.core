@@ -64,7 +64,9 @@ public class OrganizationTypeEnumFactory implements EnumFactory<OrganizationType
   }
 
   public String toCode(OrganizationType code) {
-    if (code == OrganizationType.PROV)
+       if (code == OrganizationType.NULL)
+           return null;
+       if (code == OrganizationType.PROV)
       return "prov";
     if (code == OrganizationType.DEPT)
       return "dept";
@@ -87,7 +89,7 @@ public class OrganizationTypeEnumFactory implements EnumFactory<OrganizationType
     if (code == OrganizationType.OTHER)
       return "other";
     return "?";
-  }
+   }
 
   public String toSystem(OrganizationType code) {
     return code.getSystem();

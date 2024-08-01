@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class ValidationEngineTests {
@@ -26,6 +28,88 @@ public class ValidationEngineTests {
   //private static final String DEF_TX = FhirSettings.getTxFhirLocal();
 
   public static boolean inbuild;
+
+  @Test
+  @DisplayName("A ValidationEngine copied from another validation engine shouldn't interfere with the original during validations")
+  void validateWithParallelCopiedEngine() throws Exception {
+
+    final String INPUT_1 = "patient-duplicate.json";
+    final String INPUT_2 = "patient-lang1.json";
+    final String INPUT_3 = "patient-id-bad-1.json";
+
+    final String[] ISSUE_CODES_1 = { "invalid" };
+    final String[] ISSUE_CODES_2 = {"business-rule"};
+    final String[] ISSUE_CODES_3 = {"invalid", "invariant"};
+
+    ValidationEngine originalEngine = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+
+    final ValidationEngine[] validationEngines = new ValidationEngine[10];
+    validationEngines[0] = originalEngine;
+
+    final OperationOutcome[] outcomes = new OperationOutcome[validationEngines.length];
+
+    for (int i = 1; i < validationEngines.length; i++) {
+      validationEngines[i] = new ValidationEngine(originalEngine);
+    }
+
+    final String[] testInputs = {
+      INPUT_1,
+      INPUT_1,
+      INPUT_2,
+      INPUT_3,
+      INPUT_1,
+      INPUT_2,
+      INPUT_3,
+      INPUT_1,
+      INPUT_2,
+      INPUT_3
+    };
+    // Pick 3 validation cases
+    final String[][] testCodes = {
+      ISSUE_CODES_1,
+      ISSUE_CODES_1,
+      ISSUE_CODES_2,
+      ISSUE_CODES_3,
+      ISSUE_CODES_1,
+      ISSUE_CODES_2,
+      ISSUE_CODES_3,
+      ISSUE_CODES_1,
+      ISSUE_CODES_2,
+      ISSUE_CODES_3
+    };
+
+
+    List<Thread> threads = new ArrayList<>();
+    for (int i = 0; i < validationEngines.length; i++) {
+      final int index = i;
+    Thread t = new Thread(() -> {
+      try {
+        final String testInput = testInputs[index];
+         outcomes[index] = validationEngines[index].validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator",  testInput), null);
+      } catch (Exception e) {
+        e.printStackTrace();
+        System.err.println("Thread " + index + " failed");
+      }
+    });
+    t.start();
+    threads.add(t);
+  }
+    threads.forEach(t -> {
+    try {
+      t.join();
+    } catch (InterruptedException e) {
+
+    }
+  });
+
+    for (int i = 0; i < outcomes.length; i++) {
+      assertEquals(testCodes[i].length, outcomes[i].getIssue().size());
+      for (int j = 0; j < outcomes[i].getIssue().size(); j++) {
+        System.out.print(i + " " + j);
+        assertEquals(testCodes[i][j], outcomes[i].getIssue().get(j).getCode().toCode());
+      }
+    }
+  }
 
   @Test
   public void test401Xml() throws Exception {
@@ -199,12 +283,13 @@ public class ValidationEngineTests {
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "observation401_ucum.json"), profiles);
     Assertions.assertTrue(checkOutcomes("test401USCore", op, 
       "Observation null information/informational: Validate Observation against the Body weight profile (http://hl7.org/fhir/StructureDefinition/bodyweight) which is required by the FHIR specification because the LOINC code 29463-7 was found\n"+
-      "Observation.code.coding[0].system null information/not-found: A definition for CodeSystem 'http://loinc.org' could not be found, so the code cannot be validated\n"+
       "Observation.value.ofType(Quantity) null warning/business-rule: Unable to validate code 'kg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services\n"+
       "Observation.value.ofType(Quantity).code null warning/informational: Unable to validate code without using server because: Resolved system http://unitsofmeasure.org (v3.0.1), but the definition doesn't include any codes, so the code has not been validated\n"+
-      "Observation.code null warning/code-invalid: None of the codings provided are in the value set 'Vital Signs' (http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1), and a coding should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable) (codes = http://loinc.org#29463-7)\n"+
+//      "Observation.code null warning/code-invalid: None of the codings provided are in the value set 'Vital Signs' (http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1), and a coding should come from this value set unless it has no suitable code (note that the validator cannot judge what is suitable) (codes = http://loinc.org#29463-7)\n"+
       "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
-      "Observation.code null warning/not-found: Unable to check whether the code is in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1' because the code system http://loinc.org was not found\n"+
+        "Observation.code.coding[0].system null warning/not-found: A definition for CodeSystem 'http://loinc.org' could not be found, so the code cannot be validated\n"+
+
+        "Observation.code null warning/not-found: Unable to check whether the code is in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1' because the code system http://loinc.org was not found\n"+
       "Observation null warning/invariant: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"));
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
   }

@@ -66,7 +66,9 @@ public class QicoreCommunicationMediumEnumFactory implements EnumFactory<QicoreC
   }
 
   public String toCode(QicoreCommunicationMedium code) {
-    if (code == QicoreCommunicationMedium.UNSPECIFIED)
+       if (code == QicoreCommunicationMedium.NULL)
+           return null;
+       if (code == QicoreCommunicationMedium.UNSPECIFIED)
       return "unspecified";
     if (code == QicoreCommunicationMedium.TELEPHONE)
       return "telephone";
@@ -91,7 +93,7 @@ public class QicoreCommunicationMediumEnumFactory implements EnumFactory<QicoreC
     if (code == QicoreCommunicationMedium.PORTAL)
       return "portal";
     return "?";
-  }
+   }
 
   public String toSystem(QicoreCommunicationMedium code) {
     return code.getSystem();

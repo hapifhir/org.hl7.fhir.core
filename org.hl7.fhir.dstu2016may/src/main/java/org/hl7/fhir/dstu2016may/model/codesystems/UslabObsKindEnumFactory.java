@@ -48,14 +48,16 @@ public class UslabObsKindEnumFactory implements EnumFactory<UslabObsKind> {
   }
 
   public String toCode(UslabObsKind code) {
-    if (code == UslabObsKind.RESULT)
+       if (code == UslabObsKind.NULL)
+           return null;
+       if (code == UslabObsKind.RESULT)
       return "result";
     if (code == UslabObsKind.RESPONSE)
       return "response";
     if (code == UslabObsKind.INFORMATION)
       return "information";
     return "?";
-  }
+   }
 
   public String toSystem(UslabObsKind code) {
     return code.getSystem();

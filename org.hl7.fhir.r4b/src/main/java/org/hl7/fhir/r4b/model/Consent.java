@@ -200,7 +200,9 @@ public class Consent extends DomainResource {
     }
 
     public String toCode(ConsentDataMeaning code) {
-      if (code == ConsentDataMeaning.INSTANCE)
+       if (code == ConsentDataMeaning.NULL)
+           return null;
+       if (code == ConsentDataMeaning.INSTANCE)
         return "instance";
       if (code == ConsentDataMeaning.RELATED)
         return "related";
@@ -209,7 +211,7 @@ public class Consent extends DomainResource {
       if (code == ConsentDataMeaning.AUTHOREDBY)
         return "authoredby";
       return "?";
-    }
+   }
 
     public String toSystem(ConsentDataMeaning code) {
       return code.getSystem();
@@ -324,12 +326,14 @@ public class Consent extends DomainResource {
     }
 
     public String toCode(ConsentProvisionType code) {
-      if (code == ConsentProvisionType.DENY)
+       if (code == ConsentProvisionType.NULL)
+           return null;
+       if (code == ConsentProvisionType.DENY)
         return "deny";
       if (code == ConsentProvisionType.PERMIT)
         return "permit";
       return "?";
-    }
+   }
 
     public String toSystem(ConsentProvisionType code) {
       return code.getSystem();
@@ -518,7 +522,9 @@ public class Consent extends DomainResource {
     }
 
     public String toCode(ConsentState code) {
-      if (code == ConsentState.DRAFT)
+       if (code == ConsentState.NULL)
+           return null;
+       if (code == ConsentState.DRAFT)
         return "draft";
       if (code == ConsentState.PROPOSED)
         return "proposed";
@@ -531,7 +537,7 @@ public class Consent extends DomainResource {
       if (code == ConsentState.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(ConsentState code) {
       return code.getSystem();

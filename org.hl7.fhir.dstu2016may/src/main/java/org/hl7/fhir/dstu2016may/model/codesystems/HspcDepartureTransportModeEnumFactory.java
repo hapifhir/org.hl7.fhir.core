@@ -44,10 +44,12 @@ public class HspcDepartureTransportModeEnumFactory implements EnumFactory<HspcDe
   }
 
   public String toCode(HspcDepartureTransportMode code) {
-    if (code == HspcDepartureTransportMode._14586425)
+       if (code == HspcDepartureTransportMode.NULL)
+           return null;
+       if (code == HspcDepartureTransportMode._14586425)
       return "14586425";
     return "?";
-  }
+   }
 
   public String toSystem(HspcDepartureTransportMode code) {
     return code.getSystem();

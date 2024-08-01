@@ -50,7 +50,9 @@ public class GraphCompartmentRuleEnumFactory implements EnumFactory<GraphCompart
   }
 
   public String toCode(GraphCompartmentRule code) {
-    if (code == GraphCompartmentRule.IDENTICAL)
+       if (code == GraphCompartmentRule.NULL)
+           return null;
+       if (code == GraphCompartmentRule.IDENTICAL)
       return "identical";
     if (code == GraphCompartmentRule.MATCHING)
       return "matching";
@@ -59,7 +61,7 @@ public class GraphCompartmentRuleEnumFactory implements EnumFactory<GraphCompart
     if (code == GraphCompartmentRule.CUSTOM)
       return "custom";
     return "?";
-  }
+   }
 
   public String toSystem(GraphCompartmentRule code) {
     return code.getSystem();

@@ -44,10 +44,12 @@ public class TaskIntentEnumFactory implements EnumFactory<TaskIntent> {
   }
 
   public String toCode(TaskIntent code) {
-    if (code == TaskIntent.UNKNOWN)
+       if (code == TaskIntent.NULL)
+           return null;
+       if (code == TaskIntent.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
   public String toSystem(TaskIntent code) {
     return code.getSystem();

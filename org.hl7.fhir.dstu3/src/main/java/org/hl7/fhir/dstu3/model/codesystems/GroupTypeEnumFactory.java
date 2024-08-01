@@ -58,7 +58,9 @@ public class GroupTypeEnumFactory implements EnumFactory<GroupType> {
   }
 
   public String toCode(GroupType code) {
-    if (code == GroupType.PERSON)
+       if (code == GroupType.NULL)
+           return null;
+       if (code == GroupType.PERSON)
       return "person";
     if (code == GroupType.ANIMAL)
       return "animal";
@@ -71,7 +73,7 @@ public class GroupTypeEnumFactory implements EnumFactory<GroupType> {
     if (code == GroupType.SUBSTANCE)
       return "substance";
     return "?";
-  }
+   }
 
     public String toSystem(GroupType code) {
       return code.getSystem();

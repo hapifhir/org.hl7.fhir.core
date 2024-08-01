@@ -383,7 +383,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
       String url = r.getUrl();
       if (!allowLoadingDuplicates && hasResourceVersion(r.getType(), url, r.getVersion()) && !packageInfo.isHTO()) {
-        // spcial workaround for known problems with existing packages
+        // special workaround for known problems with existing packages
         if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
           return;
         }
@@ -564,6 +564,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public Map<String, NamingSystem> getNSUrlMap() {
     if (systemUrlMap == null) {
       systemUrlMap = new HashMap<>();
+      try {
       List<NamingSystem> nsl = systems.getList();
       for (NamingSystem ns : nsl) {
         for (NamingSystemUniqueIdComponent uid : ns.getUniqueId()) {
@@ -571,6 +572,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             systemUrlMap.put(uid.getValue(), ns) ;
           }
         }        
+      }
+      } catch (Exception e) {
+        if (!nsFailHasFailed) {
+          e.printStackTrace();
+          nsFailHasFailed  = true;
+        }
       }
     }
     return systemUrlMap;
@@ -1279,7 +1286,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (res != null) {
       updateUnsupportedCodeSystems(res, code, getCodeKey(code));
-      return res;
+      return new ValidationResult(res);
     }
 
     List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
@@ -1559,7 +1566,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (cachingAllowed) {
       res = txCache.getValidation(cacheToken);
       if (res != null) {
-        return res;
+        return new ValidationResult(res);
       }
     }
     for (Coding c : code.getCoding()) {
@@ -2530,6 +2537,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected IWorkerContextManager.IPackageLoadingTracker packageTracker;
   private boolean forPublication;
   private boolean cachingAllowed = true;
+  private static boolean nsFailHasFailed;
 
   public Resource fetchResourceById(String type, String uri, FhirPublication fhirVersion) {
     return fetchResourceById(type, uri);

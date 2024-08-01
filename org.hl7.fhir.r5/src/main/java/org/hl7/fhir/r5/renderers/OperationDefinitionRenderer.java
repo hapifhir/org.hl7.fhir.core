@@ -1,47 +1,56 @@
 package org.hl7.fhir.r5.renderers; 
  
-import java.io.IOException; 
-import java.io.UnsupportedEncodingException; 
- 
-import org.hl7.fhir.exceptions.FHIRException; 
-import org.hl7.fhir.r5.model.CanonicalType; 
-import org.hl7.fhir.r5.model.CodeType; 
-import org.hl7.fhir.r5.model.Enumeration; 
-import org.hl7.fhir.r5.model.Enumerations.FHIRTypes; 
-import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll; 
-import org.hl7.fhir.r5.model.Extension; 
-import org.hl7.fhir.r5.model.OperationDefinition; 
-import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent; 
-import org.hl7.fhir.r5.model.OperationDefinition.OperationParameterScope; 
-import org.hl7.fhir.r5.model.Resource; 
-import org.hl7.fhir.r5.model.StructureDefinition; 
-import org.hl7.fhir.r5.renderers.utils.RenderingContext; 
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType; 
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext; 
-import org.hl7.fhir.r5.utils.EOperationOutcome; 
-import org.hl7.fhir.r5.utils.ToolingExtensions; 
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder; 
-import org.hl7.fhir.utilities.StandardsStatus; 
-import org.hl7.fhir.utilities.Utilities; 
-import org.hl7.fhir.utilities.VersionUtilities; 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.FHIRTypes;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
+import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.OperationDefinition;
+import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent;
+import org.hl7.fhir.r5.model.OperationDefinition.OperationParameterScope;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.StandardsStatus;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
  
 public class OperationDefinitionRenderer extends TerminologyRenderer { 
  
+
   public OperationDefinitionRenderer(RenderingContext context) { 
     super(context); 
   } 
  
-  public OperationDefinitionRenderer(RenderingContext context, ResourceContext rcontext) { 
-    super(context, rcontext); 
-  } 
+  @Override
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    if (r.isDirect()) {
+      renderResourceTechDetails(r, x);  
+      genSummaryTable(status, x, (OperationDefinition) r.getBase());    
+      render(status, x, (OperationDefinition) r.getBase());      
+    } else {
+      throw new Error("OperationDefinitionRenderer only renders native resources directly");
+    }
+  }
    
-  public boolean render(XhtmlNode x, Resource dr) throws IOException, FHIRException, EOperationOutcome { 
-    return render(x, (OperationDefinition) dr); 
-  } 
- 
-  public boolean render(XhtmlNode x, OperationDefinition opd) throws IOException, FHIRException, EOperationOutcome { 
-    if (context.isHeader()) { 
+  @Override
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
+  }
+
+  public void render(RenderingStatus status, XhtmlNode x, OperationDefinition opd) throws IOException, FHIRException, EOperationOutcome { 
+    if (context.isShowSummaryTable()) { 
       x.h2().addText(opd.getName()); 
       x.para().addText(Utilities.capitalize(opd.getKind().toString())+": "+opd.getName());     
       x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_OFFIC)+" "); 
@@ -64,7 +73,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       if (sd == null) { 
         p.pre().tx(opd.getInputProfile());         
       } else { 
-        p.ah(sd.getWebPath()).tx(sd.present());                  
+        p.ah(context.prefixLocalHref(sd.getWebPath())).tx(sd.present());                  
       }       
     } 
     if (opd.hasOutputProfile()) { 
@@ -74,7 +83,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       if (sd == null) { 
         p.pre().tx(opd.getOutputProfile());         
       } else { 
-        p.ah(sd.getWebPath()).tx(sd.present());                  
+        p.ah(context.prefixLocalHref(sd.getWebPath())).tx(sd.present());                  
       }       
     }
 
@@ -93,7 +102,6 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       genOpParam(tbl, "", p, opd); 
     } 
     addMarkdown(x, opd.getComment()); 
-    return true; 
   } 
  
   public void describe(XhtmlNode x, OperationDefinition opd) { 
@@ -140,10 +148,10 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
         if (sdt == null) 
           td.tx(p.hasType() ? actualType : ""); 
         else 
-          td.ah(sdt.getWebPath()).tx(s);          
+          td.ah(context.prefixLocalHref(sdt.getWebPath())).tx(s);          
       } 
     } else 
-      td.ah(sd.getWebPath()).tx(actualType); 
+      td.ah(context.prefixLocalHref(sd.getWebPath())).tx(actualType); 
     if (p.hasTargetProfile()) { 
       td.tx(" ("); 
       boolean first = true; 
@@ -153,7 +161,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
         if (sdt == null || !sdt.hasWebPath()) { 
           td.code().tx(tp.asStringValue()); 
         } else { 
-          td.ah(sdt.getWebPath(), tp.asStringValue()).tx(sdt.present()); 
+          td.ah(context.prefixLocalHref(sdt.getWebPath()), tp.asStringValue()).tx(sdt.present()); 
         } 
       } 
       td.tx(")"); 
@@ -161,7 +169,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (p.hasSearchType()) { 
       td.br(); 
       td.tx("("); 
-      td.ah( context.getLink(KnownLinkType.SPEC) == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "search.html#"+p.getSearchType().toCode())).tx(p.getSearchType().toCode());        
+      td.ah(context.prefixLocalHref(context.getLink(KnownLinkType.SPEC) == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "search.html#"+p.getSearchType().toCode()))).tx(p.getSearchType().toCode());        
       td.tx(")"); 
     } 
     td = tr.td(); 

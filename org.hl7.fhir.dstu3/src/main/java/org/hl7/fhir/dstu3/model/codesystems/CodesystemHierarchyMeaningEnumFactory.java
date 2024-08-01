@@ -54,7 +54,9 @@ public class CodesystemHierarchyMeaningEnumFactory implements EnumFactory<Codesy
   }
 
   public String toCode(CodesystemHierarchyMeaning code) {
-    if (code == CodesystemHierarchyMeaning.GROUPEDBY)
+       if (code == CodesystemHierarchyMeaning.NULL)
+           return null;
+       if (code == CodesystemHierarchyMeaning.GROUPEDBY)
       return "grouped-by";
     if (code == CodesystemHierarchyMeaning.ISA)
       return "is-a";
@@ -63,7 +65,7 @@ public class CodesystemHierarchyMeaningEnumFactory implements EnumFactory<Codesy
     if (code == CodesystemHierarchyMeaning.CLASSIFIEDWITH)
       return "classified-with";
     return "?";
-  }
+   }
 
     public String toSystem(CodesystemHierarchyMeaning code) {
       return code.getSystem();
