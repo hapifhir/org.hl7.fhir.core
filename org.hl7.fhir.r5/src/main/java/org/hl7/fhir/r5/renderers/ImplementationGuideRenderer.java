@@ -25,7 +25,8 @@ public class ImplementationGuideRenderer extends ResourceRenderer {
       genSummaryTable(status, x, (ImplementationGuide) r.getBase());
       render(status, x, (ImplementationGuide) r.getBase());      
     } else {
-      throw new Error("ImplementationGuideRenderer only renders native resources directly");
+      // the intention is to change this in the future
+      x.para().tx("ImplementationGuideRenderer only renders native resources directly");
     }
   }
   
