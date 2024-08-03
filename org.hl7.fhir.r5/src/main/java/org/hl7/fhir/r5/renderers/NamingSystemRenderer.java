@@ -29,7 +29,8 @@ public class NamingSystemRenderer extends ResourceRenderer {
       genSummaryTable(status, x, (NamingSystem) r.getBase());
       render(status, x, (NamingSystem) r.getBase());      
     } else {
-      throw new Error("NamingSystemRenderer only renders native resources directly");
+      // the intention is to change this in the future
+      x.para().tx("NamingSystemRenderer only renders native resources directly");
     }
   }
 

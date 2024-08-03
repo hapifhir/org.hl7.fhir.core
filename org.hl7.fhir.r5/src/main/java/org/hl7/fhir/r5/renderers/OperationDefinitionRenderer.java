@@ -40,7 +40,8 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       genSummaryTable(status, x, (OperationDefinition) r.getBase());    
       render(status, x, (OperationDefinition) r.getBase());      
     } else {
-      throw new Error("OperationDefinitionRenderer only renders native resources directly");
+      // the intention is to change this in the future
+      x.para().tx("OperationDefinitionRenderer only renders native resources directly");
     }
   }
    
