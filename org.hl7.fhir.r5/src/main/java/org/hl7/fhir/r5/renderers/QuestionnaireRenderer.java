@@ -126,14 +126,13 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
 
   private void renderOptions(List<ResourceWrapper> items, XhtmlNode x) {     
     for (ResourceWrapper i : items) { 
-      renderItemOptions(x, i); 
+      renderItemOptionsList(x, i); 
       renderOptions(i.children("item"), x); 
     }     
   } 
 
   public void renderItemOptions(XhtmlNode x, ResourceWrapper i) { 
     if (i.has("answerOption")) { 
-      assert x.getName().equals("select");
       for (ResourceWrapper opt : i.children("answerOption")) { 
         String value = "??";
         String text = "??";
@@ -155,6 +154,35 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         }
         boolean selected = "true".equals(opt.primitiveValue("initialSelected"));
         x.option(value, text, selected);
+      } 
+    } 
+  }  
+  
+  public void renderItemOptionsList(XhtmlNode x, ResourceWrapper i) { 
+    if (i.has("answerOption")) { 
+      x.an(context.prefixAnchor("opt-item."+i.primitiveValue("linkId"))); 
+      x.para().b().tx(context.formatPhrase(RenderingContext.QUEST_ANSW, i.primitiveValue("linkId"))+" "); 
+      XhtmlNode ul = x.ul(); 
+      for (ResourceWrapper opt : i.children("answerOption")) { 
+        XhtmlNode li = ul.li(); 
+        li.style("font-size: 11px"); 
+        ResourceWrapper v = opt.child("value");
+        if (v.isPrimitive()) { 
+          li.tx(v.primitiveValue()); 
+        } else if (v.fhirType().equals("Coding")) { 
+          String link = v.has("system") ? new ContextUtilities(context.getWorker()).getLinkForUrl(context.getLink(KnownLinkType.SPEC), v.primitiveValue("system")) : null; 
+          if (link == null) { 
+            li.tx(v.primitiveValue("system")+"#"+v.primitiveValue("code")); 
+          } else { 
+            li.ah(link).tx(displaySystem(v.primitiveValue("system"))); 
+            li.tx(": "+v.primitiveValue("code"));               
+          } 
+          if (v.has("display")) { 
+            li.tx(" (\""+v.primitiveValue("display")+"\")");               
+          } 
+        } else { 
+          li.tx("??");             
+        } 
       } 
     } 
   } 
