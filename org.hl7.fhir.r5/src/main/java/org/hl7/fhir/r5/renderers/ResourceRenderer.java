@@ -150,6 +150,9 @@ public abstract class ResourceRenderer extends DataRenderer {
   public abstract void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome;
   public abstract String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException;
     
+  public void buildSummary(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    x.tx(buildSummary(r));
+  }
 
   public String canonicalTitle(ResourceWrapper r) {
     if (r.has("title")) {
@@ -870,7 +873,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         boolean sfirst = true;
         p = plateStyle(div.para());
         if (versionId != null) {
-          p.tx(context.formatPhrase(RenderingContext.RES_REND_VER, versionId));
+          p.tx(context.formatPhrase(RenderingContext.RES_REND_VER, versionId.primitiveValue()));
           sfirst = false;
         }
         if (lastUpdated != null) {

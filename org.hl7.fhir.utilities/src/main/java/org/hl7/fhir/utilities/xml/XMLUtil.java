@@ -545,6 +545,14 @@ public class XMLUtil {
     return res;
   }
 
+  public static Element addChild(Document doc, Element element, String name, String namespace, int indent) {
+    Node node = doc.createTextNode("\n"+Utilities.padLeft("", ' ', indent));
+    Element child = doc.createElementNS(namespace, name);
+    element.appendChild(child);
+    element.appendChild(node);
+    return child;
+  }
+
   public static Element insertChild(Document doc, Element element, String name, String namespace, int indent) {
     Node node = doc.createTextNode("\n"+Utilities.padLeft("", ' ', indent));
     Element child = doc.createElementNS(namespace, name);

@@ -1841,7 +1841,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     else 
       x.tx("?"); 
     if (q.has("low") && q.child("low").has("unit")) 
-      x.tx(" "+q.child("low").child("unit")); 
+      x.tx(" "+q.child("low").primitiveValue("unit")); 
   } 
 
   public String displayPeriod(ResourceWrapper p) { 
