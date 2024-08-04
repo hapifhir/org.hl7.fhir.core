@@ -1810,10 +1810,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (cs != null && !hasCanonicalResource(pin, "tx-resource", cs.getVUrl()) && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
       cache = checkAddToParams(tc, pin, cs) || cache;
     }
-    for (CodeSystem supp : fetchResourcesByType(CodeSystem.class)) {
-      if (supp.getContent() == CodeSystemContentMode.SUPPLEMENT && supp.getSupplements().equals(inc.getSystem())) {
+    for (CodeSystem supp : codeSystems.getSupplements(cs)) {
+      //if (supp.getContent() == CodeSystemContentMode.SUPPLEMENT && supp.getSupplements().equals(inc.getSystem())) {
+      assert supp.getContent() == CodeSystemContentMode.SUPPLEMENT && supp.getSupplements().equals(inc.getSystem());
         cache = checkAddToParams(tc, pin, supp) || cache;
-      }
+      //}
     }
     return cache;
   }
