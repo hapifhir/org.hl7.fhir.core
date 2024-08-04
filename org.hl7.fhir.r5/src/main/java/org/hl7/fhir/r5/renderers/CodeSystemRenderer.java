@@ -53,7 +53,8 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       genSummaryTable(status, x, (CodeSystem) r.getBase());
       render(status, x, (CodeSystem) r.getBase(), r);      
     } else {
-      throw new Error("CodeSystemRenderer only renders native resources directly");
+      // the intention is to change this in the future
+      x.para().tx("CodeSystemRenderer only renders native resources directly");
     }
   }
 

@@ -73,21 +73,23 @@ public class ValueSetRenderer extends TerminologyRenderer {
   @Override
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (!r.isDirect()) {
-      throw new Error("ValueSetRenderer only renders native resources directly");
-    }
-    renderResourceTechDetails(r, x);
-    ValueSet vs = (ValueSet) r.getBase();
-    genSummaryTable(status, x, vs);
-    List<UsedConceptMap> maps = findReleventMaps(vs);
-    
-    if (vs.hasExpansion()) {
-      // for now, we just accept an expansion if there is one
-      generateExpansion(status, r, x, vs, false, maps);
+      // the intention is to change this in the future
+      x.para().tx("ValueSetRenderer only renders native resources directly");
     } else {
-      generateComposition(status, r, x, vs, false, maps);
+      renderResourceTechDetails(r, x);
+      ValueSet vs = (ValueSet) r.getBase();
+      genSummaryTable(status, x, vs);
+      List<UsedConceptMap> maps = findReleventMaps(vs);
+
+      if (vs.hasExpansion()) {
+        // for now, we just accept an expansion if there is one
+        generateExpansion(status, r, x, vs, false, maps);
+      } else {
+        generateComposition(status, r, x, vs, false, maps);
+      }
     }
   }
-  
+
   
   @Override
   public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {

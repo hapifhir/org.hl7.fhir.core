@@ -182,6 +182,8 @@ public class BundleRenderer extends ResourceRenderer {
       } else {
         RendererFactory.factory(subject, context).buildNarrative(status, sec, subject);
       }
+    } else {
+      sec.para().b().tx("Unable to resolve subject '"+displayReference(comp.child("subject"))+"'");
     }
     x.hr();
     sec = docSection(x, "Document Content");
@@ -212,7 +214,8 @@ public class BundleRenderer extends ResourceRenderer {
       }
       if (section.has("text")) {
         ResourceWrapper narrative = section.child("text");
-        x.addChildren(narrative.getXhtml());
+        ResourceWrapper xh = narrative.child("div");
+        x.addChildren(xh.getXhtml());
       }      
       if (section.has("section")) {
         List<ResourceWrapper> sections = section.children("section");

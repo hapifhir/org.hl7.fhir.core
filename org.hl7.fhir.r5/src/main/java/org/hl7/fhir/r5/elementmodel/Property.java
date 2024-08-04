@@ -419,8 +419,9 @@ public class Property {
             break;
           }
         }
-        if (url==null)
+        if (url==null) {
           throw new FHIRException("Unable to find type " + t + " for element " + elementName + " with path " + ed.getPath());
+        }
         sd = context.fetchResource(StructureDefinition.class, url);        
         if (sd == null)
           throw new DefinitionException("Unable to find type '"+t+"' for name '"+elementName+"' on property "+definition.getPath());
