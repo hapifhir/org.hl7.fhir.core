@@ -500,6 +500,7 @@ public class XhtmlParser {
     if ((entryName != null) && !n.getName().equals(entryName))
       throw new FHIRFormatError("Unable to Parse HTML - starts with '"+n+"' not '"+entryName+"'"+descLoc());
     XhtmlNode root = result.addTag(n.getName());
+    root.setCheckParaTree(false);
     root.setLocation(markLocation());
     parseAttributes(root);
     markLocation();

@@ -506,7 +506,7 @@ public class ProfileUtilities {
         
       for (ElementDefinition e : list) {
         if (id.equals(e.getId()))
-          return getChildMap(profile, e);
+          return getChildMap(src, e);
       }
       throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_NAME_REFERENCE__AT_PATH_, element.getContentReference(), element.getPath()));
 
