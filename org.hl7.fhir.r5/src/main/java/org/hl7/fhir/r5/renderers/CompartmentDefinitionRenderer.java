@@ -29,7 +29,8 @@ public class CompartmentDefinitionRenderer extends ResourceRenderer {
       genSummaryTable(status, x, (CompartmentDefinition) r.getBase());
       render(status, x, (CompartmentDefinition) r.getBase());      
     } else {
-      throw new Error("CompartmentDefinitionRenderer only renders native resources directly");
+      // it seems very inlikely this will change
+      x.para().tx("CompartmentDefinitionRenderer only renders native resources directly");
     }
   }
 

@@ -630,6 +630,9 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public List<T> getSupplements(T cr) {
+    if (cr == null) {
+      return new ArrayList<T>();
+    }
     if (cr.hasSourcePackage()) {
       List<String> pvl = new ArrayList<>();
       pvl.add(cr.getSourcePackage().getVID());

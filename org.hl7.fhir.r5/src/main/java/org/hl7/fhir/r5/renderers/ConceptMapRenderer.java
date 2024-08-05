@@ -49,7 +49,8 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       genSummaryTable(status, x, (ConceptMap) r.getBase());
       render(status, r, x, (ConceptMap) r.getBase(), false);      
     } else {
-      throw new Error("ConceptMapRenderer only renders native resources directly");
+      // the intention is to change this in the future
+      x.para().tx("ConceptMapRenderer only renders native resources directly");
     }
   }
   
