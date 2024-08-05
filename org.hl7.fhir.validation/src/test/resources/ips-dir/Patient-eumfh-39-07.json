@@ -1,0 +1,36 @@
+{
+  "resourceType" : "Patient",
+  "id" : "eumfh-39-07",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p style=\"border: 1px #661aff solid; background-color: #e6e6ff; padding: 10px;\"><b>Alexander Heig </b> male, DoB: 1957 ( <code>http://trilliumbridge.eu/fhir/demos/eumfh/inject</code>/39-07)</p><hr/><table class=\"grid\"><tr><td style=\"background-color: #f3f5da\" title=\"Record is active\">Active:</td><td colspan=\"3\">true</td></tr><tr><td style=\"background-color: #f3f5da\" title=\"Other Ids (see the one above)\">Other Id:</td><td colspan=\"3\"><code>http://trilliumbridge.eu/fhir/demos/eumfh/patient_id</code>/EUR01P0001</td></tr><tr><td style=\"background-color: #f3f5da\" title=\"The patient's legal status as citizen of a country.\">citizenship:</td><td colspan=\"3\"><ul><li>code: <span title=\"Codes: {urn:iso:std:iso:3166 US}\">United States of America</span></li></ul></td></tr></table></div>"
+  },
+  "extension" : [{
+    "url" : "http://hl7.org/fhir/StructureDefinition/patient-citizenship",
+    "extension" : [{
+      "url" : "code",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "urn:iso:std:iso:3166",
+          "code" : "US",
+          "display" : "United States of America"
+        }]
+      }
+    }]
+  }],
+  "identifier" : [{
+    "system" : "http://trilliumbridge.eu/fhir/demos/eumfh/inject",
+    "value" : "39-07"
+  },
+  {
+    "system" : "http://trilliumbridge.eu/fhir/demos/eumfh/patient_id",
+    "value" : "EUR01P0001"
+  }],
+  "active" : true,
+  "name" : [{
+    "family" : "Heig",
+    "given" : ["Alexander"]
+  }],
+  "gender" : "male",
+  "birthDate" : "1957"
+}

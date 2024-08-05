@@ -209,6 +209,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.codesystem.CodingsObserver;
@@ -280,8 +281,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       "table.frame", "table.rules", "table.cellspacing", "table.cellpadding", "pre.space", "td.nowrap"));
   private static final HashSet<String> HTML_BLOCK_LIST = new HashSet<>(Arrays.asList("div",  "blockquote", "table", "ol", "ul", "p"));
   private static final HashSet<String> RESOURCE_X_POINTS = new HashSet<>(Arrays.asList("Bundle.entry.resource", "Bundle.entry.response.outcome", "DomainResource.contained", "Parameters.parameter.resource", "Parameters.parameter.part.resource"));
-  
+
   private class ValidatorHostServices implements IEvaluationContext {
+
+    private final IWorkerContext srcContext;
+
+    public ValidatorHostServices(IWorkerContext context) {
+      this.srcContext = context;
+    }
 
     @Override
     public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
@@ -467,15 +474,26 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
       if (externalHostServices != null) {
         return setParentsBase(externalHostServices.resolveReference(engine, c.getAppContext(), url, refContext));
-      } else if (fetcher != null) {
+      }
+
+      // See whether the referred resource is part of the context, which includes the resources in directories targeted
+      // for validation.
+      if ( this.srcContext !=null && url.contains("/") ){
+        res = this.srcContext.fetchResourceById(url.substring(0, url.indexOf("/")), url);
+        if (res != null) {
+          return res;
+        }
+      }
+
+      if (fetcher != null) {
         try {
           return setParents(fetcher.fetch(InstanceValidator.this, c.getAppContext(), url));
         } catch (IOException e) {
           throw new FHIRException(e);
         }
-      } else {
-        throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET__RESOLVE__LOCALLY_2, url));
       }
+
+      throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET__RESOLVE__LOCALLY_2, url));
     }
 
    
@@ -618,7 +636,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.profileUtilities = new ProfileUtilities(theContext, null, null);
     cu = new ContextUtilities(theContext);
     fpe = new FHIRPathEngine(context);
-    validatorServices = new ValidatorHostServices();
+    validatorServices = new ValidatorHostServices( context );
     fpe.setHostServices(validatorServices);
     if (theContext.getVersion().startsWith("3.0") || theContext.getVersion().startsWith("1.0"))
       fpe.setLegacyMode(true);
@@ -778,9 +796,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     return sd;
   }
+  
 
   @Override
-  public org.hl7.fhir.r5.elementmodel.Element validate(Object appContext, List<ValidationMessage> errors, InputStream stream, FhirFormat format, List<StructureDefinition> profiles) throws FHIRException {
+  public org.hl7.fhir.r5.elementmodel.Element validate(Object appContext, List<ValidationMessage> errors,
+                                                       InputStream stream, FhirFormat format,
+                                                       List<StructureDefinition> profiles) throws FHIRException {
+    long t = System.nanoTime();
     ParserBase parser = Manager.makeParser(context, format);
     List<StructureDefinition> logicals = new ArrayList<>();
     for (StructureDefinition sd : profiles) {
@@ -790,8 +812,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (logicals.size() > 0) {
       if (rulePlural(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, "Configuration", logicals.size() == 1, logicals.size(), I18nConstants.MULTIPLE_LOGICAL_MODELS, ResourceUtilities.listUrls(logicals))) {
-        parser.setLogical(logicals.get(0));              
-      } 
+        parser.setLogical(logicals.get(0));
+      }
     }
     if (parser instanceof XmlParser) {
       ((XmlParser) parser).setAllowXsiLocation(allowXsiLocation);
@@ -804,8 +826,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ((JsonParser) parser).setAllowComments(allowComments);
     }
     parser.setSignatureServices(signatureServices);
-    
-    long t = System.nanoTime();
+
     validatedContent = null;
     try {
       validatedContent = parser.parse(stream);
@@ -838,6 +859,43 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return (validatedContent == null || validatedContent.isEmpty()) ? null : validatedContent.get(0).getElement(); // todo: this is broken, but fixing it really complicates things elsewhere, so we do this for now
+  }
+
+  private List<ValidatedFragment> getValidatedContent(Object appContext, List<ValidationMessage> errors,
+                                                      InputStream stream, FhirFormat format,
+                                                      List<StructureDefinition> profiles) {
+    ParserBase parser = Manager.makeParser(context, format);
+    List<StructureDefinition> logicals = new ArrayList<>();
+    for (StructureDefinition sd : profiles) {
+      if (sd.getKind() == StructureDefinitionKind.LOGICAL) {
+        logicals.add(sd);
+      }
+    }
+    if (logicals.size() > 0) {
+      if (rulePlural(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, "Configuration", logicals.size() == 1, logicals.size(), I18nConstants.MULTIPLE_LOGICAL_MODELS, ResourceUtilities.listUrls(logicals))) {
+        parser.setLogical(logicals.get(0));
+      }
+    }
+    if (parser instanceof XmlParser) {
+      ((XmlParser) parser).setAllowXsiLocation(allowXsiLocation);
+    }
+    parser.setupValidation(ValidationPolicy.EVERYTHING);
+    if (parser instanceof XmlParser) {
+      ((XmlParser) parser).setAllowXsiLocation(allowXsiLocation);
+    }
+    if (parser instanceof JsonParser) {
+      ((JsonParser) parser).setAllowComments(allowComments);
+    }
+    parser.setSignatureServices(signatureServices);
+
+    long t = System.nanoTime();
+    validatedContent = null;
+    try {
+      validatedContent = parser.parse(stream);
+    } catch (IOException e1) {
+      throw new FHIRException(e1);
+    }
+    return validatedContent;
   }
 
   private void saveValidatedContent(ValidatedFragment ne, int index) {
@@ -980,7 +1038,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   @Override
-  public void validate(Object appContext, List<ValidationMessage> errors, String path, Element element, List<StructureDefinition> profiles) throws FHIRException {
+  public void validate(Object appContext, List<ValidationMessage> errors, String path, Element element,
+                       List<StructureDefinition> profiles) throws FHIRException {
     // this is the main entry point; all the other public entry points end up here coming here...
     // so the first thing to do is to clear the internal state
     fetchCache.clear();
@@ -3835,7 +3894,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       valContext.getInternalRefs().add(ref.substring(1));
       refType = "contained";
     } else {
-      if (we == null) {
+      if ( externalHostServices.resolveReference( getFHIRPathEngine(),null, reference.getReference(), null )!=null ){
+        refType = "localFile";
+      } else if (we == null) {
         refType = "remote";
       } else {
         refType = "bundled";
@@ -3857,7 +3918,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   
     } else if (pol.checkExists()) {
       if (we == null) {
-        if (!refType.equals("contained")) {
+        if (!refType.equals("contained") && !refType.equals("localFile")) {
           if (fetcher == null) {
             throw new FHIRException(context.formatMessage(I18nConstants.RESOURCE_RESOLUTION_SERVICES_NOT_PROVIDED));
           } else {
