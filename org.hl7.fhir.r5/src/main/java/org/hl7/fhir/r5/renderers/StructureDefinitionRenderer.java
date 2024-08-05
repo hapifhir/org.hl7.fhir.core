@@ -103,18 +103,20 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   @Override
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (!r.isDirect()) {
-      throw new Error("StructureDefinitionRenderer only renders native resources directly");
-    } 
-    renderResourceTechDetails(r, x);
-    StructureDefinition sd = (StructureDefinition) r.getBase();
-    genSummaryTable(status, x, sd);
-    if (context.getStructureMode() == StructureDefinitionRendererMode.DATA_DICT) { 
-      renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict"), false, GEN_MODE_DIFF, "", r); 
-    } else { 
-      x.addChildNode(generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,  
-        context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r)); 
-    } 
-    status.setExtensions(true); 
+      // it seems very unlikely that this will change in the future
+      x.para().tx("StructureDefinitionRenderer only renders native resources directly");
+    } else {
+      renderResourceTechDetails(r, x);
+      StructureDefinition sd = (StructureDefinition) r.getBase();
+      genSummaryTable(status, x, sd);
+      if (context.getStructureMode() == StructureDefinitionRendererMode.DATA_DICT) { 
+        renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict"), false, GEN_MODE_DIFF, "", r); 
+      } else { 
+        x.addChildNode(generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,  
+            context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r)); 
+      } 
+      status.setExtensions(true); 
+    }
   }
   
   @Override

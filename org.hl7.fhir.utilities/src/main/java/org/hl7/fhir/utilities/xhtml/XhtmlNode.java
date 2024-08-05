@@ -72,7 +72,9 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     }
   }
 
-  private static boolean checkPara = false;
+  private static boolean checkParaGeneral = false;
+  private boolean checkParaTree = false;
+  
   public static final String NBSP = Character.toString((char)0xa0);
   public static final String XMLNS = "http://www.w3.org/1999/xhtml";
   private static final String DECL_XMLNS = " xmlns=\""+XMLNS+"\"";
@@ -91,6 +93,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
   public XhtmlNode() {
     super();
+    checkParaTree = checkParaGeneral;
   }
 
 
@@ -119,7 +122,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
   public XhtmlNode setName(String name) {
     assert name.contains(":") == false : "Name should not contain any : but was " + name;
-    if (checkPara && "p".equals(name)) {
+    if (checkParaTree && "p".equals(name)) {
       isInPara = true;
     }
     this.name = name;
@@ -1160,7 +1163,8 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
 
   private void checkWhenAddingNode(XhtmlNode node) {
-    if (checkPara) {
+    node.checkParaTree = checkParaTree;
+    if (checkParaTree) {
       if (isInPara) {
         if (Utilities.existsInList(node.name, "div",  "blockquote", "table", "ol", "ul", "p")) {
           throw new Error("Error: attempt to add "+node.name+" inside an html paragraph");
@@ -1176,13 +1180,23 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
 
-  public static boolean isCheckPara() {
-    return checkPara;
+  public static boolean isCheckParaGeneral() {
+    return checkParaGeneral;
   }
 
 
-  public static void setCheckPara(boolean checkPara) {
-    XhtmlNode.checkPara = checkPara;
+  public static void setCheckParaGeneral(boolean checkParaGeneral) {
+    XhtmlNode.checkParaGeneral = checkParaGeneral;
+  }
+
+
+  public boolean isCheckParaTree() {
+    return checkParaTree;
+  }
+
+
+  public void setCheckParaTree(boolean checkParaTree) {
+    this.checkParaTree = checkParaTree;
   }
 
 }

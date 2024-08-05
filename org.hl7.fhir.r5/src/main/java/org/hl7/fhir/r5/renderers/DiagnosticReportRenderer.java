@@ -149,13 +149,13 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     if (r == null) 
       container.tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_UNABLE)); 
     else if (r.getResource().fhirType().equals("Patient")) 
-      generatePatientSummary(container, r.getResource()); 
+      generatePatientSummary(status, container, r.getResource()); 
     else 
       container.tx(context.formatPhrase(RenderingContext.GENERAL_TODO)); 
   } 
 
-  private void generatePatientSummary(XhtmlNode c, ResourceWrapper r) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome { 
-    new PatientRenderer(context).describe(c, r); 
+  private void generatePatientSummary(RenderingStatus status, XhtmlNode c, ResourceWrapper r) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome { 
+    new PatientRenderer(context).buildSummary(status, c, r); 
   } 
 
   private List<ObservationNode> fetchObservations(List<ResourceWrapper> list) throws UnsupportedEncodingException, FHIRException, IOException { 

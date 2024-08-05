@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.utilities.HL7WorkGroups;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 
@@ -71,16 +72,18 @@ public class CanonicalResourceUtilities {
       if (ext == null) {
         ext = res.addElement("extension");
         ext.setChildValue("url", ToolingExtensions.EXT_WORKGROUP);
+      } 
+      ext.setChildValue("value[x]",  new CodeType(code));
+      if (!Utilities.existsInList(res.fhirType(), "ClinicalUseDefinition")) {
+        res.setChildValue("publisher", "HL7 International / "+wg.getName());
+        while (res.hasChildren("contact")) {
+          res.removeChild("contact");
+        }
+        Element c = res.addElement("contact");
+        Element t = c.addElement("telecom");
+        t.setChildValue("system", "url");
+        t.setChildValue("value", wg.getLink());
       }
-      ext.setChildValue("valueCode",  new CodeType(code));
-      res.setChildValue("publisher", "HL7 International / "+wg.getName());
-      while (res.hasChildren("contact")) {
-        res.removeChild("contact");
-      }
-      Element c = res.addElement("contact");
-      Element t = c.addElement("telecom");
-      t.setChildValue("system", "url");
-      t.setChildValue("value", wg.getLink());
     }    
   }
 //
