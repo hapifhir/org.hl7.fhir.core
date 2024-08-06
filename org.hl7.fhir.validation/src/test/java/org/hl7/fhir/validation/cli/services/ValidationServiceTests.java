@@ -28,7 +28,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.context.SystemOutLoggingService;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
@@ -43,7 +42,6 @@ import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
 import org.hl7.fhir.validation.cli.utils.Common;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -319,22 +317,30 @@ class ValidationServiceTests {
   }
 
 
+  final String[] multithreadTestPackages = {
+    /*"hl7.fhir.us.core#3.1.1",
+    "hl7.fhir.us.core#4.0.0",
+    "hl7.fhir.us.core#5.0.1",
+    "hl7.fhir.us.core#6.1.0",
+    "hl7.fhir.us.core#7.0.0"*.
+     */
+    "/Users/david.otasek/IN/2024-08-06-us-core-package-kaboom/us-core-3-1-1.tgz",
+    "/Users/david.otasek/IN/2024-08-06-us-core-package-kaboom/us-core-4-0-0.tgz",
+    "/Users/david.otasek/IN/2024-08-06-us-core-package-kaboom/us-core-5-0-1.tgz",
+    "/Users/david.otasek/IN/2024-08-06-us-core-package-kaboom/us-core-6-1-0.tgz",
+    "/Users/david.otasek/IN/2024-08-06-us-core-package-kaboom/us-core-7-0-0.tgz"
+  };
+
   @Test
   public void multithreadingTest() throws IOException {
     ValidationService myService = new ValidationService();
     final AtomicInteger totalSuccessful = new AtomicInteger();
 
-    final String[] packages = {
-      "hl7.fhir.us.core#3.1.1",
-      "hl7.fhir.us.core#4.0.0",
-      "hl7.fhir.us.core#5.0.1",
-      "hl7.fhir.us.core#6.1.0",
-      "hl7.fhir.us.core#7.0.0-ballot"
-    };
+
 
     List<Thread> threads = new ArrayList<>();
     int i = 0;
-    for (String currentPackage : packages) {
+    for (String currentPackage : multithreadTestPackages) {
       final int index = i++;
       Thread t = new Thread(() -> {
         try {
@@ -362,27 +368,19 @@ class ValidationServiceTests {
 
       }
     });
-    assertEquals(packages.length, totalSuccessful.get());
+    assertEquals(multithreadTestPackages.length, totalSuccessful.get());
   }
   @Test
   public void multithreadingTestMinimal() throws IOException {
 
     final AtomicInteger totalSuccessful = new AtomicInteger();
 
-    final String[] packages = {
-      "hl7.fhir.us.core#3.1.1",
-      "hl7.fhir.us.core#4.0.0",
-      "hl7.fhir.us.core#5.0.1",
-      "hl7.fhir.us.core#6.1.0",
-      "hl7.fhir.us.core#7.0.0-ballot"
-    };
-
     String definitions = "hl7.fhir.r4.core";
 
     List<Thread> threads = new ArrayList<>();
 
     int i = 0;
-    for (String currentPackage : packages) {
+    for (String currentPackage : multithreadTestPackages) {
       final int index = i++;
       Thread t = new Thread(() -> {
         try {
@@ -430,7 +428,7 @@ class ValidationServiceTests {
 
       }
     });
-    assertEquals(packages.length, totalSuccessful.get());
+    assertEquals(multithreadTestPackages.length, totalSuccessful.get());
   }
 
   private static ValidationService createFakeValidationService(ValidationEngine.ValidationEngineBuilder validationEngineBuilder, ValidationEngine validationEngine) {

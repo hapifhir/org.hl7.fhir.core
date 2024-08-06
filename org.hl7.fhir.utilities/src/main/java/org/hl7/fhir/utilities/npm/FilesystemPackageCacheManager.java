@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 
@@ -88,6 +89,11 @@ import org.slf4j.LoggerFactory;
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
 
   public static final String INI_TIMESTAMP_FORMAT = "yyyyMMddHHmmss";
+
+
+  private static final ConcurrentHashMap<File, FilesystemPackageCacheLockManager> cacheFolderLockManagers = new ConcurrentHashMap<>();
+
+  private final FilesystemPackageCacheLockManager cacheFolderLockManager;
 
   // When running in testing mode, some packages are provided from the test case repository rather than by the normal means
   // the PackageProvider is responsible for this. if no package provider is defined, or it declines to handle the package, 
@@ -181,26 +187,50 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private FilesystemPackageCacheManager(File cacheFolder, List<PackageServer> packageServers) throws IOException {
     this.cacheFolder = cacheFolder;
+
+    try {
+    this.cacheFolderLockManager = cacheFolderLockManagers.computeIfAbsent(cacheFolder, k -> {
+      try {
+        return  new FilesystemPackageCacheLockManager(k);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+
+    }); } catch (RuntimeException e) {
+      if (e.getCause() instanceof IOException) {
+        throw (IOException) e.getCause();
+      } else {
+         throw e;
+      }
+    }
+
     this.myPackageServers = packageServers;
     initCacheFolder();
   }
 
   protected void initCacheFolder() throws IOException {
-    if (!(cacheFolder.exists()))
-      Utilities.createDirectory(cacheFolder.getAbsolutePath());
-    String packagesIniPath = Utilities.path(cacheFolder, "packages.ini");
-    File packagesIniFile = ManagedFileAccess.file(packagesIniPath);
-    if (!(packagesIniFile.exists()))
-      packagesIniFile.createNewFile();
-    TextFile.stringToFile("[cache]\r\nversion=" + CACHE_VERSION + "\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", packagesIniPath);
-    createIniFile();
-    for (File f : cacheFolder.listFiles()) {
-      if (f.isDirectory() && Utilities.isValidUUID(f.getName())) {
-        Utilities.clearDirectory(f.getAbsolutePath());
-        f.delete();
+    cacheFolderLockManager.getCacheLock().doWriteWithLock( () -> {
+      System.out.println(">>> initCacheFolder");
+      //Thread.dumpStack();
+      if (!(cacheFolder.exists()))
+        Utilities.createDirectory(cacheFolder.getAbsolutePath());
+      String packagesIniPath = Utilities.path(cacheFolder, "packages.ini");
+      File packagesIniFile = ManagedFileAccess.file(packagesIniPath);
+      if (!(packagesIniFile.exists()))
+        packagesIniFile.createNewFile();
+      TextFile.stringToFile("[cache]\r\nversion=" + CACHE_VERSION + "\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", packagesIniPath);
+      createIniFile();
+      for (File f : cacheFolder.listFiles()) {
+        if (f.isDirectory() && Utilities.isValidUUID(f.getName())) {
+          System.out.println(">>> clearDirectory: "  + f.getAbsolutePath());
+          Utilities.clearDirectory(f.getAbsolutePath());
+          f.delete();
+        }
       }
-    }
+      return null;
+    });
   }
+
 
   private void initPackageServers() {
     myPackageServers.addAll(getConfiguredServers());
@@ -268,21 +298,21 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private void clearCache() throws IOException {
+    System.out.println(">>> clearCache");
     for (File f : cacheFolder.listFiles()) {
       if (f.isDirectory()) {
-        new FilesystemPackageCacheLock(cacheFolder, f.getName()).doWriteWithLock(() -> {
-          Utilities.clearDirectory(f.getAbsolutePath());
+        //FIXME lock the whole packages directory
+        Utilities.clearDirectory(f.getAbsolutePath());
+        try {
+          FileUtils.deleteDirectory(f);
+        } catch (Exception e1) {
           try {
             FileUtils.deleteDirectory(f);
-          } catch (Exception e1) {
-            try {
-              FileUtils.deleteDirectory(f);
-            } catch (Exception e2) {
-              // just give up
-            }
+          } catch (Exception e2) {
+            // just give up
           }
-          return null; // must return something
-        });
+        }
+
       } else if (!f.getName().equals("packages.ini"))
         FileUtils.forceDelete(f);
     }
@@ -415,7 +445,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * @throws IOException
    */
   public void removePackage(String id, String ver) throws IOException {
-    new FilesystemPackageCacheLock(cacheFolder, id + "#" + ver).doWriteWithLock(() -> {
+    cacheFolderLockManager.getPackageLock(id + "#" + ver).doWriteWithLock(() -> {
       String f = Utilities.path(cacheFolder, id + "#" + ver);
       File ff = ManagedFileAccess.file(f);
       if (ff.exists()) {
@@ -460,7 +490,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       File cf = ManagedFileAccess.file(Utilities.path(cacheFolder, f));
       if (cf.isDirectory()) {
         if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
-          return new FilesystemPackageCacheLock(cacheFolder, f).doReadWithLock(() -> loadPackageInfo(Utilities.path(cacheFolder, f)));
+          return cacheFolderLockManager.getPackageLock(f).doReadWithLock(() -> loadPackageInfo(Utilities.path(cacheFolder, f)));
+         // return loadPackageInfo(Utilities.path(cacheFolder, f));
         }
         if (version != null && !version.equals("current") && (version.endsWith(".x") || Utilities.charCount(version, '.') < 2) && f.contains("#")) {
           String[] parts = f.split("#");
@@ -506,7 +537,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     String v = version;
-    return new FilesystemPackageCacheLock(cacheFolder, id + "#" + version).doWriteWithLock(() -> {
+    return cacheFolderLockManager.getPackageLock(id + "#" + v).doWriteWithLock(() -> {
+      System.out.println(">>> start write lock for "+id+"#"+v);
       NpmPackage pck = null;
       String packRoot = Utilities.path(cacheFolder, id + "#" + v);
       try {
@@ -557,6 +589,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
         throw e;
       }
+      System.out.println(">>> end write lock for "+id+"#"+v);
       return pck;
     });
   }
