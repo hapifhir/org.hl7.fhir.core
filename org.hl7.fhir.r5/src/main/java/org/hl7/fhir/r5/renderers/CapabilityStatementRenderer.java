@@ -18,6 +18,10 @@ import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponen
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent;
+import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementDocumentComponent;
+import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingComponent;
+import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent;
+import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingEndpointComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.ReferenceHandlingPolicy;
 import org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent;
@@ -370,7 +374,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
           //Third time for individual resources
           int resCount = 1;
           for (CapabilityStatementRestResourceComponent r : rest.getResource()) {
-            addResourceConfigPanel(x, r, nextLevel+1, count, resCount, igRenderingMode);
+            addResourceConfigPanel(status, res, x, r, nextLevel+1, count, resCount, igRenderingMode);
             resCount++;
           }
         }
@@ -383,6 +387,25 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       }
     }
 
+    int messagingNum = conf.getMessaging().size();
+    nextLevel = 3;
+    if (messagingNum > 0) {
+      x.h(2,"messaging").addText((context.formatPhrase(RenderingContext.CAPABILITY_MESSAGING_CAPS)));
+      int count=1;
+      for (CapabilityStatementMessagingComponent msg : conf.getMessaging()) 
+      {
+        addMessagingPanel(status, res, x, msg, nextLevel, count, messagingNum);
+        count++;
+      }
+
+    }
+
+    int documentNum = conf.getDocument().size();
+    nextLevel = 3;
+    if (documentNum > 0) {
+      x.h(2,"document").addText((context.formatPhrase(RenderingContext.CAPABILITY_DOCUMENT_CAPS)));
+      addDocumentTable(status, res, x, conf, nextLevel);
+    }
     if (multExpectationsPresent) {
       addWarningPanel(x,"⹋⹋ - " + context.formatPhrase(RenderingContext.CAPABILITY_MULT_EXT));
     }
@@ -591,6 +614,107 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     body.div().attribute("class","lead").addTag("em").addText(context.formatPhrase(RenderingContext.CAPABILITY_SUMM_SYS_INT));
     addSystemInteractions(body, rest.getInteraction());
         
+  }
+
+  private void addMessagingPanel(RenderingStatus status, ResourceWrapper res, XhtmlNode x, CapabilityStatementMessagingComponent msg, int nextLevel, int index, int total) throws FHIRFormatError, DefinitionException, IOException {
+    XhtmlNode panel= null;
+    XhtmlNode body = null;
+    XhtmlNode row = null;
+    XhtmlNode heading = null;
+
+    XhtmlNode table;
+    XhtmlNode tbody;
+    XhtmlNode tr;
+
+    panel = x.div().attribute("class", "panel panel-default");
+    heading = panel.div().attribute("class", "panel-heading").h(nextLevel,"messaging_" + Integer.toString(index)).attribute("class", "panel-title");
+    if(total == 1)
+    {
+      heading.addText(context.formatPhrase(RenderingContext.CAPABILITY_MESSAGING_CAP));
+    }
+    else
+    {
+      heading.addText(context.formatPhrase(RenderingContext.CAPABILITY_MESSAGING_CAP) + " " + String.valueOf(index));
+    }
+
+    body = panel.div().attribute("class", "panel-body");
+
+    if(msg.hasReliableCache())
+    {
+      addLead(body, "Reliable Cache Length");
+      body.br();
+      body.addText(String.valueOf(msg.getReliableCache()) + " Minute(s)");
+      body.br();
+    }
+
+    if(msg.hasEndpoint())
+    {
+      body.h(nextLevel+1,"msg_end_"+Integer.toString(index)).addText(context.formatPhrase(RenderingContext.CAPABILITY_ENDPOINTS));
+      table = body.table("table table-condensed table-hover");
+      tr = table.addTag("thead").tr();
+      tr.th().addText("Protocol");
+      tr.th().addText("Address");
+
+      tbody = table.addTag("tbody");
+      for (CapabilityStatementMessagingEndpointComponent end : msg.getEndpoint())
+      {
+        tr = tbody.tr();
+        renderDataType(status, tr.td(), wrapNC(end.getProtocol()));
+        renderUri(status,  tr.td(), wrapNC(end.getAddressElement()));
+      }
+      body.br();
+    }
+
+    if(msg.hasSupportedMessage())
+    {
+      body.h(nextLevel+1,"msg_end_"+Integer.toString(index)).addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_MSGS));
+      table = body.table("table table-condensed table-hover");
+      tr = table.addTag("thead").tr();
+      tr.th().addText("Mode");
+      tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_DEFINITION));
+
+      tbody = table.addTag("tbody");
+      for (CapabilityStatementMessagingSupportedMessageComponent sup : msg.getSupportedMessage())
+      {
+        tr = tbody.tr();
+        tr.td().addText(sup.getMode().toCode());
+        renderCanonical(status, res, tr.td(), StructureDefinition.class, sup.getDefinitionElement());
+      }
+      if(msg.hasDocumentation())
+      {
+        addLead(body, context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION));
+        addMarkdown(body.blockquote(), msg.getDocumentation());
+      }
+      body.br();
+    }
+  }
+
+
+  private void addDocumentTable(RenderingStatus status, ResourceWrapper res, XhtmlNode x, CapabilityStatement conf, int nextLevel) throws FHIRFormatError, DefinitionException, IOException {
+    XhtmlNode table;
+    XhtmlNode tbody;
+    XhtmlNode tr;
+
+    table = x.table("table table-condensed table-hover");
+    tr = table.addTag("thead").tr();
+    tr.th().addText("Mode");
+    tr.th().addText(context.formatPhrase(RenderingContext.CAPABILITY_PROF_RES_DOC));
+    tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION));
+
+    tbody = table.addTag("tbody");
+    for (CapabilityStatementDocumentComponent document : conf.getDocument()) {
+      tr = tbody.tr();
+      tr.td().addText(document.getMode().toCode());
+      renderCanonical(status, res, tr.td(), StructureDefinition.class, document.getProfileElement());
+      if(document.hasDocumentation())
+      {
+        addMarkdown(tr.td(), document.getDocumentation());
+      }
+      else
+      {
+        tr.td().nbsp();
+      }
+    }
   }
 
   private String getCorsText(boolean on) {
@@ -1001,7 +1125,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     }
   }
 
-  private void addResourceConfigPanel(XhtmlNode x, CapabilityStatementRestResourceComponent r, int nextLevel, int count, int resCount, boolean igRenderingMode) throws FHIRFormatError, DefinitionException, IOException {
+  private void addResourceConfigPanel(RenderingStatus status, ResourceWrapper res, XhtmlNode x, CapabilityStatementRestResourceComponent r, int nextLevel, int count, int resCount, boolean igRenderingMode) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode panel= null;
     XhtmlNode body = null;
     XhtmlNode panelHead = null;
@@ -1036,7 +1160,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       cell = row.div().attribute("class", "col-lg-6");
       addLead(cell,context.formatPhrase(RenderingContext.CAPABILITY_BASE_SYS));
       cell.br();
-      addResourceLink(cell, text, text);
+      renderCanonical(status, res, cell, StructureDefinition.class, r.getProfileElement());
       cell=row.div().attribute("class", "col-lg-3");
       addLead(cell, context.formatPhrase(RenderingContext.CAPABILITY_PROF_CONF));
       cell.br();
@@ -1071,7 +1195,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
           para.br();
         }
         first=false;
-        addResourceLink(para, c.asStringValue(), c.asStringValue());
+        renderCanonical(status, res, para, StructureDefinition.class, c);
         //para.ah(c.asStringValue()).addText(c.asStringValue());
       }  
     }
