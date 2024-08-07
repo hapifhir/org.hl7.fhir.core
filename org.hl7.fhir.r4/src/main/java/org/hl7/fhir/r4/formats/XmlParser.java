@@ -6924,9 +6924,9 @@ public class XmlParser extends XmlParserBase {
     return true;
   }
 
-  protected Consent.provisionComponent parseConsentprovisionComponent(XmlPullParser xpp, Consent owner)
+  protected Consent.ProvisionComponent parseConsentprovisionComponent(XmlPullParser xpp, Consent owner)
       throws XmlPullParserException, IOException, FHIRFormatError {
-    Consent.provisionComponent res = new Consent.provisionComponent();
+    Consent.ProvisionComponent res = new Consent.ProvisionComponent();
     parseBackboneAttributes(xpp, res);
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
@@ -6941,7 +6941,7 @@ public class XmlParser extends XmlParserBase {
   }
 
   protected boolean parseConsentprovisionComponentContent(int eventType, XmlPullParser xpp, Consent owner,
-      Consent.provisionComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+      Consent.ProvisionComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("type")) {
       res.setTypeElement(
           parseEnumeration(xpp, Consent.ConsentProvisionType.NULL, new Consent.ConsentProvisionTypeEnumFactory()));
@@ -34008,7 +34008,7 @@ public class XmlParser extends XmlParserBase {
     }
   }
 
-  protected void composeConsentprovisionComponent(String name, Consent.provisionComponent element) throws IOException {
+  protected void composeConsentprovisionComponent(String name, Consent.ProvisionComponent element) throws IOException {
     if (element != null) {
       composeElementAttributes(element);
       xml.enter(FHIR_NS, name);
@@ -34018,7 +34018,7 @@ public class XmlParser extends XmlParserBase {
     }
   }
 
-  protected void composeConsentprovisionComponentElements(Consent.provisionComponent element) throws IOException {
+  protected void composeConsentprovisionComponentElements(Consent.ProvisionComponent element) throws IOException {
     composeBackboneElementElements(element);
     if (element.hasTypeElement())
       composeEnumeration("type", element.getTypeElement(), new Consent.ConsentProvisionTypeEnumFactory());
@@ -34057,7 +34057,7 @@ public class XmlParser extends XmlParserBase {
         composeConsentprovisionDataComponent("data", e);
     }
     if (element.hasProvision()) {
-      for (Consent.provisionComponent e : element.getProvision())
+      for (Consent.ProvisionComponent e : element.getProvision())
         composeConsentprovisionComponent("provision", e);
     }
   }
