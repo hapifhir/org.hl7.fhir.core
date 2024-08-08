@@ -743,12 +743,18 @@ public class ValueSetRenderer extends TerminologyRenderer {
       return "?cs-n?";
     }
     String ref = (String) cs.getUserData("filename");
-    if (ref == null)
+    if (ref == null) {
       ref = (String) cs.getWebPath();
-    if (ref == null)
+    }
+    if (ref == null && cs.hasUserData("webroot")) {
+      ref = (String) cs.getUserData("webroot");
+    }
+    if (ref == null) {
       return "?ngen-14?.html";
-    if (!ref.contains(".html"))
+    }
+    if (!ref.contains(".html")) {
       ref = ref + ".html";
+    }
     return ref.replace("\\", "/");
   }
 

@@ -749,6 +749,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return renderDataType(status, null, x, type);
   }
   public boolean renderDataType(RenderingStatus status, XhtmlNode parent, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException { 
+    if (type == null) {
+      return false;
+    }
     switch (type.fhirType()) {
     case "dateTime":
     case "date" : 
