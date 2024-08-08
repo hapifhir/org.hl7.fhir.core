@@ -110,8 +110,13 @@ public class ValidationService {
 
     TimeTracker timeTracker = new TimeTracker();
     String sessionId = initializeValidator(request.getCliContext(), null, timeTracker, request.sessionId);
-    ValidationEngine validator = sessionCache.fetchSessionValidatorEngine(sessionId);
+    ValidationEngine validationEngine = sessionCache.fetchSessionValidatorEngine(sessionId);
 
+    /* Cached validation engines already have expensive setup like loading definitions complete. But it wouldn't make
+       sense to rebuild a whole engine to change the language, so we manually change it here.
+     */
+    validationEngine.setLanguage(request.getCliContext().getLang());
+    validationEngine.setLocale(request.getCliContext().getLocale());
     if (request.getCliContext().getProfiles().size() > 0) {
       System.out.println("  .. validate " + request.listSourceFiles() + " against " + request.getCliContext().getProfiles().toString());
     } else {
@@ -122,7 +127,7 @@ public class ValidationService {
 
     for (FileInfo fileToValidate : request.getFilesToValidate()) {
       if (fileToValidate.getFileType() == null) {
-        Manager.FhirFormat format = ResourceChecker.checkIsResource(validator.getContext(),
+        Manager.FhirFormat format = ResourceChecker.checkIsResource(validationEngine.getContext(),
           false,
           fileToValidate.getFileContent().getBytes(),
           fileToValidate.getFileName(),
@@ -139,7 +144,7 @@ public class ValidationService {
             new FileInfo(fileToValidate.getFileName(), fileToValidate.getFileContent(), null));
           response.addOutcome(outcome);
       } else {
-        ValidatedFragments validatedFragments = validator.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
+        ValidatedFragments validatedFragments = validationEngine.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
           request.getCliContext().getProfiles(), messages);
 
         List<ValidationOutcome> validationOutcomes = getValidationOutcomesFromValidatedFragments(fileToValidate, validatedFragments);
@@ -510,17 +515,11 @@ public class ValidationService {
     ValidationEngine validationEngine;
     if (cliContext.getBaseEngine() != null && hasBaseEngineForKey(cliContext.getBaseEngine())) {
       validationEngine = new ValidationEngine(getBaseEngine(cliContext.getBaseEngine()));
-      /* As a service, it wouldn't be efficient to have a base validation engine
-       * for every language. So we just use the baseEngine and set the language
-       * manually afterward.
-       */
-      validationEngine.setLanguage(cliContext.getLang());
-      validationEngine.setLocale(cliContext.getLocale());
     } else {
       if (definitions == null) {
         throw new IllegalArgumentException("Cannot create a validator engine (definitions == null)");
       }
-      validationEngine  = buildValidationEngine(cliContext, definitions, tt);
+      validationEngine = buildValidationEngine(cliContext, definitions, tt);
     }
     return validationEngine;
   }
