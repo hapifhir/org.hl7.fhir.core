@@ -39,19 +39,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-import java.util.UUID;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 
@@ -1932,7 +1920,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       try {
         long t = System.nanoTime();
-        ValidationResult vr = checkCodeOnServer(stack, valueset, value, baseOptions.withLanguage(stack.getWorkingLang()));
+        ValidationResult vr = checkCodeOnServer(stack, valueset, value, baseOptions);
         ok = processTxIssues(errors, vr, element, path, null, "ex-checkMaxValueSet-3", false, maxVSUrl) && ok;
         timeTracker.tx(t, "vc "+value);
         if (!vr.isOk()) {
@@ -3516,7 +3504,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           long t = System.nanoTime();
           ValidationResult vr = null;
           if (binding.getStrength() != BindingStrength.EXAMPLE) {
-            ValidationOptions options = baseOptions.withLanguage(stack.getWorkingLang()).withGuessSystem();
+            ValidationOptions options = baseOptions.withGuessSystem();
             if (!validationPolicy.contains(CodedContentValidationAction.InvalidCode) && !validationPolicy.contains(CodedContentValidationAction.InvalidDisplay)) {
               options = options.withCheckValueSetOnly();              
             }
@@ -7495,7 +7483,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
 
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet vs, String value, ValidationOptions options) {
-    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), vs, context.validateCode(options, value, vs)), new CodeType(value));
+    String lang = getValidationOptionsLanguage(stack);
+    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), vs, context.validateCode(options.withLanguage(lang), value, vs)), new CodeType(value));
   }
 
   static class CheckCodeOnServerException extends Exception {
@@ -7504,25 +7493,36 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
+  public String getValidationOptionsLanguage(NodeStack stack) {
+    if (stack.getWorkingLang() != null) {
+      return stack.getWorkingLang();
+    }
+    if (validationLanguage != null) {
+      return validationLanguage;
+    }
+    if (context.getLocale() != null) {
+      return context.getLocale().toLanguageTag();
+    }
+    return Locale.US.toLanguageTag();
+  }
   // no delay on this one? 
   public ValidationResult checkCodeOnServer(NodeStack stack, String code, String system, String version, String display, boolean checkDisplay) {
-    String lang = stack.getWorkingLang();
-    if (lang == null) {
-      lang = validationLanguage;
-    }
+    String lang = getValidationOptionsLanguage(stack);
     codingObserver.seeCode(stack, system, version, code, display);
     return checkForInactive(filterOutSpecials(stack.getLiteralPath(), null, context.validateCode(baseOptions.withLanguage(lang), system, version, code, checkDisplay ? display : null)), new Coding(system, version, code, display));
   }
 
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, Coding c) {
     codingObserver.seeCode(stack, c);
-    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), c, valueset)), c);
+    String lang = getValidationOptionsLanguage(stack);
+    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(lang), c, valueset)), c);
   }
-  
+
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc) throws CheckCodeOnServerException {
     codingObserver.seeCode(stack, cc);
     try {
-      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), cc, valueset)), cc);
+      String lang = getValidationOptionsLanguage(stack);
+      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(lang), cc, valueset)), cc);
     } catch (Exception e) {
       throw new CheckCodeOnServerException(e);
     }
