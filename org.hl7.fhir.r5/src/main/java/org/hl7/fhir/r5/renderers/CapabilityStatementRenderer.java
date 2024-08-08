@@ -932,7 +932,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         renderSupportedProfiles(status, res, profCell, r);
       }
       //Show capabilities
-      tr.td().addText(showOp(r, TypeRestfulInteraction.READ));
+      tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.READ));
       if (hasVRead)
         tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.VREAD));
       tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.SEARCHTYPE));
