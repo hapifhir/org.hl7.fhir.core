@@ -1616,19 +1616,34 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (binding!=null && !binding.isEmpty()) { 
             if (!c.getPieces().isEmpty())  
               c.addPiece(gen.new Piece("br")); 
-            BindingResolution br = context.getPkp() == null ? makeNullBr(binding) : context.getPkp().resolveBinding(profile, binding, definition.getPath()); 
-            c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_BINDING))+": ", null).addStyle("font-weight:bold"))); 
-            c.getPieces().add(checkForNoChange(binding.getValueSetElement(), checkAddExternalFlag(br, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, br.display, br.uri)))); 
-            if (binding.hasStrength()) { 
-              c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, " (", null))); 
-              c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));                             
-              c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, ")", null))); 
-            } 
-            if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) { 
-              c.getPieces().add(gen.new Piece(null, ": ", null)); 
-              c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()))); 
-            }  
- 
+            if (!binding.hasValueSet()) {
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_VS))+": ", null).addStyle("font-weight:bold"))); 
+              if (binding.hasStrength()) { 
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, " (", null))); 
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));                             
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, ")", null))); 
+              } 
+              if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) { 
+                c.getPieces().add(gen.new Piece(null, ": ", null)); 
+                c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()))); 
+              } else {
+                c.getPieces().add(gen.new Piece(null, ": ", null)); 
+                c.addMarkdownNoPara(context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_DESC));
+              }
+            } else {
+              BindingResolution br = context.getPkp() == null ? makeNullBr(binding) : context.getPkp().resolveBinding(profile, binding, definition.getPath()); 
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_BINDING))+": ", null).addStyle("font-weight:bold"))); 
+              c.getPieces().add(checkForNoChange(binding.getValueSetElement(), checkAddExternalFlag(br, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, br.display, br.uri)))); 
+              if (binding.hasStrength()) { 
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, " (", null))); 
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));                             
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, ")", null))); 
+              } 
+              if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) { 
+                c.getPieces().add(gen.new Piece(null, ": ", null)); 
+                c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()))); 
+              }  
+            }
             AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, profile, definition.getPath(), rc, null, this); 
             abr.seeAdditionalBindings(definition, null, false); 
             if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET)) { 
