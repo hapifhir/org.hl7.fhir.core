@@ -336,8 +336,6 @@ class ValidationServiceTests {
     ValidationService myService = new ValidationService();
     final AtomicInteger totalSuccessful = new AtomicInteger();
 
-
-
     List<Thread> threads = new ArrayList<>();
     int i = 0;
     for (String currentPackage : multithreadTestPackages) {
