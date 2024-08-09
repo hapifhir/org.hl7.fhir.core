@@ -539,11 +539,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * Add an already fetched package to the cache
    */
   @Override
-  public NpmPackage addPackageToCache(String id, String version, InputStream packageTgzInputStream, String sourceDesc) throws IOException {
+  public NpmPackage addPackageToCache(final String id, final String version, final InputStream packageTgzInputStream, final String sourceDesc) throws IOException {
     checkValidVersionString(version, id);
     
     String uuid = UUID.randomUUID().toString().toLowerCase();
     String tempDir = Utilities.path(cacheFolder, uuid);
+
     NpmPackage npm =  NpmPackage.extractFromTgz(packageTgzInputStream, sourceDesc, tempDir, minimalMemory);
 
     if (progress) {
@@ -556,18 +557,15 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         throw new IOException("Attempt to import a mis-identified package. Expected " + id + ", got " + npm.name());
       }
     }
-    if (version == null) {
-      version = npm.version();
-    }
 
-    String v = version;
-    return cacheFolderLockManager.getPackageLock(id + "#" + v).doWriteWithLock(() -> {
-      System.out.println(">>> start write lock for "+id+"#"+v);
+
+    return cacheFolderLockManager.getPackageLock(id + "#" + version).doWriteWithLock(() -> {
+      System.out.println(">>> start write lock for "+id+"#"+version);
       NpmPackage pck = null;
-      String packRoot = Utilities.path(cacheFolder, id + "#" + v);
+      String packRoot = Utilities.path(cacheFolder, id + "#" + version);
       try {
         // ok, now we have a lock on it... check if something created it while we were waiting
-        if (!ManagedFileAccess.file(packRoot).exists() || Utilities.existsInList(v, "current", "dev")) {
+        if (!ManagedFileAccess.file(packRoot).exists() || Utilities.existsInList(version, "current", "dev")) {
           Utilities.createDirectory(packRoot);
           try {
             Utilities.clearDirectory(packRoot);
@@ -581,18 +579,18 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           Utilities.clearDirectory(tempDir);
           ManagedFileAccess.file(tempDir).delete();
         }
-        if (!id.equals(npm.getNpm().asString("name")) || !v.equals(npm.getNpm().asString("version"))) {
+        if (!id.equals(npm.getNpm().asString("name")) || !version.equals(npm.getNpm().asString("version"))) {
           if (!id.equals(npm.getNpm().asString("name"))) {
             npm.getNpm().add("original-name", npm.getNpm().asString("name"));
             npm.getNpm().remove("name");
             npm.getNpm().add("name", id);
           }
-          if (!v.equals(npm.getNpm().asString("version"))) {
+          if (!version.equals(npm.getNpm().asString("version"))) {
             npm.getNpm().add("original-version", npm.getNpm().asString("version"));
             npm.getNpm().remove("version");
-            npm.getNpm().add("version", v);
+            npm.getNpm().add("version", version);
           }
-          TextFile.stringToFile(JsonParser.compose(npm.getNpm(), true), Utilities.path(cacheFolder, id + "#" + v, "package", "package.json"));
+          TextFile.stringToFile(JsonParser.compose(npm.getNpm(), true), Utilities.path(cacheFolder, id + "#" + version, "package", "package.json"));
         }
         pck = loadPackageInfo(packRoot);
       } catch (Exception e) {
@@ -607,7 +605,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
         throw e;
       }
-      System.out.println(">>> end write lock for "+id+"#"+v);
+      System.out.println(">>> end write lock for "+id+"#"+version);
       return pck;
     });
   }
