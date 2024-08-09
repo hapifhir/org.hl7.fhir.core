@@ -65,15 +65,10 @@ public class FilesystemPackageCacheLockManager {
     }
 
     public <T> T doReadWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> f) throws IOException {
-        cacheLock.getLock().writeLock().lock();
-        lock.writeLock().lock();
-        lock.readLock().lock();
+         lock.readLock().lock();
         cacheLock.getLock().readLock().lock();
-        lock.writeLock().unlock();
-        cacheLock.getLock().writeLock().unlock();
-     // try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
-        //final FileLock fileLock = channel.lock(0, Long.MAX_VALUE, true);
-        T result = null;
+
+         T result = null;
         try {
           result = f.get();
         } finally {

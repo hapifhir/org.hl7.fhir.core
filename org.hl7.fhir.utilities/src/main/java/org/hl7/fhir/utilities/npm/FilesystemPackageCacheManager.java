@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -205,30 +204,63 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     this.myPackageServers = packageServers;
-    initCacheFolder();
+    prepareCacheFolder();
   }
 
-  protected void initCacheFolder() throws IOException {
+  /**
+   * Check if the cache folder exists and is valid.
+   *
+   * If it doesn't exist, create it.
+   *
+   * If it does exist and isn't valid, delete it and create a new one.
+   *
+   * If it does exist and is valid, just do some cleanup (temp directories, etc) and we're good to go.
+   *
+   * @throws IOException
+   */
+  protected void prepareCacheFolder() throws IOException {
     cacheFolderLockManager.getCacheLock().doWriteWithLock( () -> {
-      System.out.println(">>> initCacheFolder");
-      //Thread.dumpStack();
-      if (!(cacheFolder.exists()))
+      System.out.println(">>> prepareCacheFolder");
+
+      if (!(cacheFolder.exists())) {
+        System.out.println(">>> cache folder does not exist. Creating.");
         Utilities.createDirectory(cacheFolder.getAbsolutePath());
-      String packagesIniPath = Utilities.path(cacheFolder, "packages.ini");
-      File packagesIniFile = ManagedFileAccess.file(packagesIniPath);
-      if (!(packagesIniFile.exists()))
-        packagesIniFile.createNewFile();
-      TextFile.stringToFile("[cache]\r\nversion=" + CACHE_VERSION + "\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", packagesIniPath);
-      createIniFile();
-      for (File f : cacheFolder.listFiles()) {
-        if (f.isDirectory() && Utilities.isValidUUID(f.getName())) {
-          System.out.println(">>> clearDirectory: "  + f.getAbsolutePath());
-          Utilities.clearDirectory(f.getAbsolutePath());
-          f.delete();
+        createIniFile();
+      } else {
+        if (!isCacheFolderValid()) {
+          System.out.println(">>> cache folder is not valid. Clearing and recreating.");
+          clearCache();
+          createIniFile();
+        } else {
+          System.out.println(">>> cache folder is valid. deleting old temp.");
+          deleteOldTempDirectories();
         }
       }
       return null;
     });
+  }
+
+  private boolean isCacheFolderValid() throws IOException {
+    String iniPath = getPackagesIniPath();
+    File iniFile = ManagedFileAccess.file(iniPath);
+    if (!(iniFile.exists())) {
+      return false;
+    }
+    IniFile ini = new IniFile(iniPath);
+    String v = ini.getStringProperty("cache", "version");
+    if (!CACHE_VERSION.equals(v)) {
+      return false;
+    }
+    return true;
+  }
+  private void deleteOldTempDirectories() throws IOException {
+    for (File f : cacheFolder.listFiles()) {
+      if (f.isDirectory() && Utilities.isValidUUID(f.getName())) {
+        System.out.println(">>> clearDirectory: "  + f.getAbsolutePath());
+        Utilities.clearDirectory(f.getAbsolutePath());
+        f.delete();
+      }
+    }
   }
 
 
@@ -288,13 +320,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private NpmPackage loadPackageInfo(String path) throws IOException {
-    File f = ManagedFileAccess.file(Utilities.path(path, "usage.ini"));
-    JsonObject j = f.exists() ? JsonParser.parseObject(f) : new JsonObject();
-    j.set("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-    JsonParser.compose(j, f, true);
-
-    NpmPackage pi = minimalMemory ?  NpmPackage.fromFolderMinimal(path) : NpmPackage.fromFolder(path);
-    return pi;
+    return minimalMemory ?  NpmPackage.fromFolderMinimal(path) : NpmPackage.fromFolder(path);
   }
 
   private void clearCache() throws IOException {
@@ -316,20 +342,16 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       } else if (!f.getName().equals("packages.ini"))
         FileUtils.forceDelete(f);
     }
-    IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
-    ini.removeSection("packages");
-    ini.save();
   }
 
   private void createIniFile() throws IOException {
-    IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
-    boolean save = false;
-    String v = ini.getStringProperty("cache", "version");
-    if (!CACHE_VERSION.equals(v)) {
-      clearCache();
-      ini.setStringProperty("cache", "version", CACHE_VERSION, null);
-      ini.save();
-    }
+    IniFile ini = new IniFile(getPackagesIniPath());
+    ini.setStringProperty("cache", "version", CACHE_VERSION, null);
+    ini.save();
+  }
+
+  private String getPackagesIniPath() throws IOException {
+    return Utilities.path(cacheFolder, "packages.ini");
   }
 
   private void checkValidVersionString(String version, String id) {
@@ -450,9 +472,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       File ff = ManagedFileAccess.file(f);
       if (ff.exists()) {
         Utilities.clearDirectory(f);
-        IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
-        ini.removeProperty("packages", id + "#" + ver);
-        ini.save();
         ff.delete();
       }
       return null;
@@ -484,31 +503,36 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         return p;
       }
     }
-    String foundPackage = null;
-    String foundVersion = null;
-    for (String f : Utilities.reverseSorted(cacheFolder.list())) {
-      File cf = ManagedFileAccess.file(Utilities.path(cacheFolder, f));
-      if (cf.isDirectory()) {
-        if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
-          return cacheFolderLockManager.getPackageLock(f).doReadWithLock(() -> loadPackageInfo(Utilities.path(cacheFolder, f)));
-         // return loadPackageInfo(Utilities.path(cacheFolder, f));
-        }
-        if (version != null && !version.equals("current") && (version.endsWith(".x") || Utilities.charCount(version, '.') < 2) && f.contains("#")) {
-          String[] parts = f.split("#");
-          if (parts[0].equals(id) && VersionUtilities.isMajMinOrLaterPatch((foundVersion!=null ? foundVersion : version),parts[1])) {
-            foundVersion = parts[1];
-            foundPackage = f;
-          }
-        }
-      }
-    }
-    if (foundPackage!=null) {
-      return loadPackageInfo(Utilities.path(cacheFolder, foundPackage));
+
+    String foundPackageFolder = findPackageFolder(id, version);
+    if (foundPackageFolder!=null) {
+      return cacheFolderLockManager.getPackageLock(foundPackageFolder).doReadWithLock(() -> loadPackageInfo(Utilities.path(cacheFolder, foundPackageFolder)));
     }
     if ("dev".equals(version))
       return loadPackageFromCacheOnly(id, "current");
     else
       return null;
+  }
+
+  private String findPackageFolder(String id, String version) throws IOException {
+    String foundPackageFolder = null;
+    String foundVersion = null;
+    for (String currentPackageFolder : Utilities.reverseSorted(cacheFolder.list())) {
+      File cf = ManagedFileAccess.file(Utilities.path(cacheFolder, currentPackageFolder));
+      if (cf.isDirectory()) {
+        if (currentPackageFolder.equals(id + "#" + version) || (Utilities.noString(version) && currentPackageFolder.startsWith(id + "#"))) {
+          return currentPackageFolder;
+        }
+        if (version != null && !version.equals("current") && (version.endsWith(".x") || Utilities.charCount(version, '.') < 2) && currentPackageFolder.contains("#")) {
+          String[] parts = currentPackageFolder.split("#");
+          if (parts[0].equals(id) && VersionUtilities.isMajMinOrLaterPatch((foundVersion!=null ? foundVersion : version),parts[1])) {
+            foundVersion = parts[1];
+            foundPackageFolder = currentPackageFolder;
+          }
+        }
+      }
+    }
+    return foundPackageFolder;
   }
 
   /**
@@ -551,12 +575,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
             log("Unable to clear directory: "+packRoot+": "+t.getMessage()+" - this may cause problems later");
           }
           Utilities.renameDirectory(tempDir, packRoot);          
-
-          IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
-          ini.setTimeStampFormat(INI_TIMESTAMP_FORMAT);
-          ini.setTimestampProperty("packages", id + "#" + v, ZonedDateTime.now(), null);
-          ini.setIntegerProperty("package-sizes", id + "#" + v, npm.getSize(), null);
-          ini.save();
           if (progress)
             log(" done.");
         } else {

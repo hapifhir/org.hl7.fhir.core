@@ -104,16 +104,18 @@ public class FilesystemPackageManagerTests {
   @Test
   public void multithreadingTest() throws IOException {
     String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
 
     final AtomicInteger totalSuccessful = new AtomicInteger();
 
     List<Thread> threads = new ArrayList<>();
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 6; i++) {
       final int index = i;
       Thread t = new Thread(() -> {
         try {
-          pcm.loadPackage("hl7.fhir.xver-extensions#0.0.12");
+          FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
+
+          //pcm.loadPackage("hl7.fhir.xver-extensions#0.0.12");
+          pcm.loadPackage("hl7.fhir.us.core#7.0.0");
           totalSuccessful.incrementAndGet();
           System.out.println("Thread " + index + " completed");
         } catch (Exception e) {
@@ -131,6 +133,6 @@ public class FilesystemPackageManagerTests {
 
       }
     });
-    assertEquals(3, totalSuccessful.get());
+    assertEquals(6, totalSuccessful.get());
   }
 }
