@@ -99,8 +99,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   // then the normal means will be used
   public interface IPackageProvider {
     boolean handlesPackage(String id, String version);
+
     InputStreamWithSrc provide(String id, String version) throws IOException;
   }
+
   private static IPackageProvider packageProvider;
   public static final String PACKAGE_REGEX = "^[a-zA-Z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+$";
   public static final String PACKAGE_VERSION_REGEX = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+\\#[A-Za-z0-9\\-\\_\\$]+(\\.[A-Za-z0-9\\-\\_\\$]+)*$";
@@ -121,7 +123,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     @Getter
     private final File cacheFolder;
 
-    @With @Getter
+    @With
+    @Getter
     private final List<PackageServer> packageServers;
 
     public Builder() throws IOException {
@@ -132,6 +135,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     private File getUserCacheFolder() throws IOException {
       return ManagedFileAccess.file(Utilities.path(System.getProperty("user.home"), ".fhir", "packages"));
     }
+
     private List<PackageServer> getPackageServersFromFHIRSettings() {
       List<PackageServer> packageServers = new ArrayList<>(getConfiguredServers());
       if (!isIgnoreDefaultPackageServers()) {
@@ -152,15 +156,16 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     protected List<PackageServer> getConfiguredServers() {
       return PackageServer.getConfiguredServers();
     }
+
     private Builder(File cacheFolder, List<PackageServer> packageServers) {
       this.cacheFolder = cacheFolder;
       this.packageServers = packageServers;
     }
 
-    public Builder withCacheFolder (String cacheFolderPath) throws IOException {
+    public Builder withCacheFolder(String cacheFolderPath) throws IOException {
       File cacheFolder = ManagedFileAccess.file(cacheFolderPath);
       if (!cacheFolder.exists()) {
-        throw new FHIRException("The folder '"+cacheFolder+"' could not be found");
+        throw new FHIRException("The folder '" + cacheFolder + "' could not be found");
       }
       return new Builder(cacheFolder, this.packageServers);
     }
@@ -168,7 +173,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     public Builder withSystemCacheFolder() throws IOException {
       final File systemCacheFolder;
       if (Utilities.isWindows()) {
-       systemCacheFolder = ManagedFileAccess.file(Utilities.path(System.getenv("ProgramData"), ".fhir", "packages"));
+        systemCacheFolder = ManagedFileAccess.file(Utilities.path(System.getenv("ProgramData"), ".fhir", "packages"));
       } else {
         systemCacheFolder = ManagedFileAccess.file(Utilities.path("/var", "lib", ".fhir", "packages"));
       }
@@ -188,18 +193,19 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     this.cacheFolder = cacheFolder;
 
     try {
-    this.cacheFolderLockManager = cacheFolderLockManagers.computeIfAbsent(cacheFolder, k -> {
-      try {
-        return  new FilesystemPackageCacheLockManager(k);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
+      this.cacheFolderLockManager = cacheFolderLockManagers.computeIfAbsent(cacheFolder, k -> {
+        try {
+          return new FilesystemPackageCacheLockManager(k);
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
 
-    }); } catch (RuntimeException e) {
+      });
+    } catch (RuntimeException e) {
       if (e.getCause() instanceof IOException) {
         throw (IOException) e.getCause();
       } else {
-         throw e;
+        throw e;
       }
     }
 
@@ -209,17 +215,17 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   /**
    * Check if the cache folder exists and is valid.
-   *
+   * <p>
    * If it doesn't exist, create it.
-   *
+   * <p>
    * If it does exist and isn't valid, delete it and create a new one.
-   *
+   * <p>
    * If it does exist and is valid, just do some cleanup (temp directories, etc) and we're good to go.
    *
    * @throws IOException
    */
   protected void prepareCacheFolder() throws IOException {
-    cacheFolderLockManager.getCacheLock().doWriteWithLock( () -> {
+    cacheFolderLockManager.getCacheLock().doWriteWithLock(() -> {
       System.out.println(">>> prepareCacheFolder");
 
       if (!(cacheFolder.exists())) {
@@ -253,10 +259,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
     return true;
   }
+
   private void deleteOldTempDirectories() throws IOException {
     for (File f : cacheFolder.listFiles()) {
       if (f.isDirectory() && Utilities.isValidUUID(f.getName())) {
-        System.out.println(">>> clearDirectory: "  + f.getAbsolutePath());
+        System.out.println(">>> clearDirectory: " + f.getAbsolutePath());
         Utilities.clearDirectory(f.getAbsolutePath());
         f.delete();
       }
@@ -294,12 +301,13 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   /**
    * do not use this in minimal memory mode
+   *
    * @param packagesFolder
    * @throws IOException
    */
   public void loadFromFolder(String packagesFolder) throws IOException {
     assert !minimalMemory;
-    
+
     File[] files = ManagedFileAccess.file(packagesFolder).listFiles();
     if (files != null) {
       for (File f : files) {
@@ -320,7 +328,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private NpmPackage loadPackageInfo(String path) throws IOException {
-    return minimalMemory ?  NpmPackage.fromFolderMinimal(path) : NpmPackage.fromFolder(path);
+    return minimalMemory ? NpmPackage.fromFolderMinimal(path) : NpmPackage.fromFolder(path);
   }
 
   private void clearCache() throws IOException {
@@ -384,7 +392,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       return retVal;
     }
 
-    retVal = super.loadFromPackageServer(id, VersionUtilities.getMajMin(version)+".x");
+    retVal = super.loadFromPackageServer(id, VersionUtilities.getMajMin(version) + ".x");
     if (retVal != null) {
       return retVal;
     }
@@ -396,7 +404,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public String getLatestVersion(String id) throws IOException {
     for (PackageServer nextPackageServer : getPackageServers()) {
       // special case:
-      if (!(Utilities.existsInList(id,CommonPackages.ID_PUBPACK, "hl7.terminology.r5") && PackageServer.PRIMARY_SERVER.equals(nextPackageServer.getUrl()))) {
+      if (!(Utilities.existsInList(id, CommonPackages.ID_PUBPACK, "hl7.terminology.r5") && PackageServer.PRIMARY_SERVER.equals(nextPackageServer.getUrl()))) {
         PackageClient pc = new PackageClient(nextPackageServer);
         try {
           return pc.getLatestVersion(id);
@@ -408,7 +416,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     try {
       return fetchVersionTheOldWay(id);
     } catch (Exception e) {
-      ourLog.info("Failed to determine latest version of package {} from server: {}", id, "build.fhir.org");      
+      ourLog.info("Failed to determine latest version of package {} from server: {}", id, "build.fhir.org");
     }
     // still here? use the latest version we previously found or at least, is in the cache
 
@@ -416,7 +424,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (version != null) {
       return version;
     }
-    throw new FHIRException("Unable to find the last version for package "+id+": no local copy, and no network access");
+    throw new FHIRException("Unable to find the last version for package " + id + ": no local copy, and no network access");
   }
 
   public String getLatestVersionFromCache(String id) throws IOException {
@@ -424,8 +432,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       File cf = ManagedFileAccess.file(Utilities.path(cacheFolder, f));
       if (cf.isDirectory()) {
         if (f.startsWith(id + "#")) {
-          String ver = f.substring(f.indexOf("#")+1);
-          ourLog.info("Latest version of package {} found locally is {} - using that", id, ver);      
+          String ver = f.substring(f.indexOf("#") + 1);
+          ourLog.info("Latest version of package {} found locally is {} - using that", id, ver);
           return ver;
         }
       }
@@ -505,7 +513,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     String foundPackageFolder = findPackageFolder(id, version);
-    if (foundPackageFolder!=null) {
+    if (foundPackageFolder != null) {
       return cacheFolderLockManager.getPackageLock(foundPackageFolder).doReadWithLock(() -> loadPackageInfo(Utilities.path(cacheFolder, foundPackageFolder)));
     }
     if ("dev".equals(version))
@@ -525,7 +533,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
         if (version != null && !version.equals("current") && (version.endsWith(".x") || Utilities.charCount(version, '.') < 2) && currentPackageFolder.contains("#")) {
           String[] parts = currentPackageFolder.split("#");
-          if (parts[0].equals(id) && VersionUtilities.isMajMinOrLaterPatch((foundVersion!=null ? foundVersion : version),parts[1])) {
+          if (parts[0].equals(id) && VersionUtilities.isMajMinOrLaterPatch((foundVersion != null ? foundVersion : version), parts[1])) {
             foundVersion = parts[1];
             foundPackageFolder = currentPackageFolder;
           }
@@ -541,26 +549,25 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   @Override
   public NpmPackage addPackageToCache(final String id, final String version, final InputStream packageTgzInputStream, final String sourceDesc) throws IOException {
     checkValidVersionString(version, id);
-    
-    String uuid = UUID.randomUUID().toString().toLowerCase();
-    String tempDir = Utilities.path(cacheFolder, uuid);
-
-    NpmPackage npm =  NpmPackage.extractFromTgz(packageTgzInputStream, sourceDesc, tempDir, minimalMemory);
-
-    if (progress) {
-      log("");
-      logn("Installing "+id+"#"+version);
-    }
-    
-    if ((npm.name() != null && id != null && !id.equalsIgnoreCase(npm.name()))) {
-      if (!suppressErrors && (!id.equals("hl7.fhir.r5.core") && !id.equals("hl7.fhir.us.immds"))) {// temporary work around
-        throw new IOException("Attempt to import a mis-identified package. Expected " + id + ", got " + npm.name());
-      }
-    }
-
-
     return cacheFolderLockManager.getPackageLock(id + "#" + version).doWriteWithLock(() -> {
-      System.out.println(">>> start write lock for "+id+"#"+version);
+      String uuid = UUID.randomUUID().toString().toLowerCase();
+      String tempDir = Utilities.path(cacheFolder, uuid);
+
+      NpmPackage npm = NpmPackage.extractFromTgz(packageTgzInputStream, sourceDesc, tempDir, minimalMemory);
+
+      if (progress) {
+        log("");
+        logn("Installing " + id + "#" + version);
+      }
+
+      if ((npm.name() != null && id != null && !id.equalsIgnoreCase(npm.name()))) {
+        if (!suppressErrors && (!id.equals("hl7.fhir.r5.core") && !id.equals("hl7.fhir.us.immds"))) {// temporary work around
+          throw new IOException("Attempt to import a mis-identified package. Expected " + id + ", got " + npm.name());
+        }
+      }
+
+
+      System.out.println(">>> start write lock for " + id + "#" + version);
       NpmPackage pck = null;
       String packRoot = Utilities.path(cacheFolder, id + "#" + version);
       try {
@@ -570,9 +577,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           try {
             Utilities.clearDirectory(packRoot);
           } catch (Throwable t) {
-            log("Unable to clear directory: "+packRoot+": "+t.getMessage()+" - this may cause problems later");
+            log("Unable to clear directory: " + packRoot + ": " + t.getMessage() + " - this may cause problems later");
           }
-          Utilities.renameDirectory(tempDir, packRoot);          
+          Utilities.renameDirectory(tempDir, packRoot);
           if (progress)
             log(" done.");
         } else {
@@ -605,7 +612,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
         throw e;
       }
-      System.out.println(">>> end write lock for "+id+"#"+version);
+      System.out.println(">>> end write lock for " + id + "#" + version);
       return pck;
     });
   }
@@ -650,7 +657,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     if (version == null && id.contains("#")) {
-      version = id.substring(id.indexOf("#")+1);
+      version = id.substring(id.indexOf("#") + 1);
       id = id.substring(0, id.indexOf("#"));
     }
 
@@ -689,14 +696,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       source = packageProvider.provide(id, version);
     } else if (Utilities.isAbsoluteUrl(version)) {
       source = fetchSourceFromUrlSpecific(version);
-    } else if ("current".equals(version) || (version!= null && version.startsWith("current$"))) {
+    } else if ("current".equals(version) || (version != null && version.startsWith("current$"))) {
       // special case - fetch from ci-build server
       source = loadFromCIBuild(id, version.startsWith("current$") ? version.substring(8) : null);
     } else {
       source = loadFromPackageServer(id, version);
     }
     if (source == null) {
-      throw new FHIRException("Unable to find package "+id+"#"+version);
+      throw new FHIRException("Unable to find package " + id + "#" + version);
     }
     return addPackageToCache(id, source.version, source.stream, source.url);
   }
@@ -714,7 +721,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       if (optional)
         return null;
       else
-        throw new FHIRException("Unable to fetch: "+e.getMessage(), e);
+        throw new FHIRException("Unable to fetch: " + e.getMessage(), e);
     }
   }
 
@@ -726,18 +733,18 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         try {
           stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), false);
         } catch (Exception e) {
-           stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "branches", "main", "package.tgz"), false);          
+          stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "branches", "main", "package.tgz"), false);
         }
         return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "package.tgz"), "current");
       } else {
         InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "branches", branch, "package.tgz"), false);
-        return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "branches", branch, "package.tgz"), "current$"+branch);
+        return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "branches", branch, "package.tgz"), "current$" + branch);
       }
     } else if (id.startsWith("hl7.fhir.r6")) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", id + ".tgz"), false);
       return new InputStreamWithSrc(stream, Utilities.pathURL("http://build.fhir.org", id + ".tgz"), "current");
     } else {
-      throw new FHIRException("The package '" + id + "' has no entry on the current build server ("+ciList.toString()+")");
+      throw new FHIRException("The package '" + id + "' has no entry on the current build server (" + ciList.toString() + ")");
     }
   }
 
@@ -764,11 +771,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   @Override
   public String getPackageId(String canonicalUrl) throws IOException {
     String retVal = findCanonicalInLocalCache(canonicalUrl);
-    
-    if(retVal == null) {
+
+    if (retVal == null) {
       retVal = super.getPackageId(canonicalUrl);
     }
-    
+
     if (retVal == null) {
       retVal = getPackageIdFromBuildList(canonicalUrl);
     }
@@ -828,7 +835,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         return null; // nup, we need a new copy
       }
     } catch (Exception e) {
-      log("Unable to check package currency: "+id+": "+id);
+      log("Unable to check package currency: " + id + ": " + id);
     }
     return p;
   }
@@ -874,7 +881,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         ciList.put(bld.getPackageId(), "https://build.fhir.org/ig/" + bld.getRepo());
       }
     }
-    buildLoaded = true; 
+    buildLoaded = true;
   }
 
   private String getRepo(String path) {
@@ -1039,7 +1046,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
 
-
   public class VersionHistory {
     private String id;
     private String canonical;
@@ -1127,5 +1133,5 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     FilesystemPackageCacheManager.packageProvider = packageProvider;
   }
 
-  
+
 }
