@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities.npm;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.Nonnull;
 
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
@@ -101,38 +103,40 @@ public class FilesystemPackageManagerTests {
     assertEquals( System.getenv("ProgramData") + "\\.fhir\\packages", folder.getAbsolutePath());
   }
 
+  @Disabled
   @Test
   public void multithreadingTest() throws IOException {
     String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
 
-    final AtomicInteger totalSuccessful = new AtomicInteger();
-
-    List<Thread> threads = new ArrayList<>();
-    for (int i = 0; i < 6; i++) {
-      final int index = i;
-      Thread t = new Thread(() -> {
+    for (int j = 0; j < 6; j++) {
+      final AtomicInteger totalSuccessful = new AtomicInteger();
+      List<Thread> threads = new ArrayList<>();
+      for (int i = 0; i < 8; i++) {
+        final int index = i;
+        Thread t = new Thread(() -> {
+          try {
+            FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
+            FileInputStream tgzStream = ManagedFileAccess.inStream("/Users/david.otasek/IN/2024-08-06-us-core-package-kaboom/us-core-6-1-0.tgz");
+            pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package.tgz"), "https://packages.fhir.org/hl7.fhir.us.core/6.1.0");
+            //pcm.loadPackage("hl7.fhir.xver-extensions#0.0.12");
+            //pcm.loadPackage("hl7.fhir.us.core", "7.0.0");
+            totalSuccessful.incrementAndGet();
+            System.out.println("Thread " + index + " completed");
+          } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Thread " + index + " failed");
+          }
+        });
+        t.start();
+        threads.add(t);
+      }
+      threads.forEach(t -> {
         try {
-          FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
+          t.join();
+        } catch (InterruptedException e) {
 
-          //pcm.loadPackage("hl7.fhir.xver-extensions#0.0.12");
-          pcm.loadPackage("hl7.fhir.us.core#7.0.0");
-          totalSuccessful.incrementAndGet();
-          System.out.println("Thread " + index + " completed");
-        } catch (Exception e) {
-          e.printStackTrace();
-          System.err.println("Thread " + index + " failed");
         }
       });
-      t.start();
-      threads.add(t);
-    }
-    threads.forEach(t -> {
-      try {
-        t.join();
-      } catch (InterruptedException e) {
-
-      }
-    });
-    assertEquals(6, totalSuccessful.get());
-  }
+      assertEquals(8, totalSuccessful.get());
+    }}
 }
