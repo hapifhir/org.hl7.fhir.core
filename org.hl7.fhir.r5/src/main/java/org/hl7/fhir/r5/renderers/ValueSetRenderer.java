@@ -81,6 +81,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
       genSummaryTable(status, x, vs);
       List<UsedConceptMap> maps = findReleventMaps(vs);
 
+      if (context.isShowSummaryTable()) {
+        XhtmlNode h = x.h2();
+        h.addText(vs.hasTitle() ? vs.getTitle() : vs.getName());
+        addMarkdown(x, vs.getDescription());
+        if (vs.hasCopyright())
+          generateCopyright(x, r);
+      }
+
       if (vs.hasExpansion()) {
         // for now, we just accept an expansion if there is one
         generateExpansion(status, r, x, vs, false, maps);
