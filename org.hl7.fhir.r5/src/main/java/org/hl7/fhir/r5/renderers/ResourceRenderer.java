@@ -341,7 +341,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       ResourceWithReference rr = resolveReference(actual);
       if (rr == null) {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : actual.primitiveValue();
-        if (Utilities.isAbsoluteUrl(actual.primitiveValue())) {
+        if (Utilities.isAbsoluteUrl(actual.primitiveValue()) || !context.isUnknownLocalReferencesNotLinks()) {
           x.ah(context.prefixLocalHref(actual.primitiveValue())).tx(disp);
         } else {
           x.code().tx(disp);
