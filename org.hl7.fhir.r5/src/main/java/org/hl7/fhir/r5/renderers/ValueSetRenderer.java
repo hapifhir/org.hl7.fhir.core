@@ -1231,7 +1231,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
             ConceptSetFilterComponent f = inc.getFilter().get(i);
             if (i > 0) {
               if (i == inc.getFilter().size()-1) {
-                li.tx(" "+ context.formatPhrase(RenderingContext.VALUE_SET_AND));
+                li.tx(" "+ context.formatPhrase(RenderingContext.VALUE_SET_AND)+" ");
               } else {
                 li.tx(context.formatPhrase(RenderingContext.VALUE_SET_COMMA)+" ");
               }
@@ -1252,15 +1252,15 @@ public class ValueSetRenderer extends TerminologyRenderer {
                 else
                   href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(f.getValue());
                 wli.ah(context.prefixLocalHref(href)).addText(f.getValue());
-              } else if ("concept".equals(f.getProperty()) && inc.hasSystem()) {
+              } else if (inc.hasSystem()) {
                 wli.addText(f.getValue());
                 ValidationResult vr = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), inc.getVersion(), f.getValue(), null);
                 if (vr.isOk() && vr.getDisplay() != null) {
                   wli.tx(" ("+vr.getDisplay()+")");
                 }
-              }
-              else
+              } else {
                 wli.addText(f.getValue());
+              }
               String disp = ToolingExtensions.getDisplayHint(f);
               if (disp != null)
                 wli.tx(" ("+disp+")");
