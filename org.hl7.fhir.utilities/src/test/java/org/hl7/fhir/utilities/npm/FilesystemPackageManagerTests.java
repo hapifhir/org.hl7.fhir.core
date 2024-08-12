@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -17,6 +19,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class FilesystemPackageManagerTests {
 
@@ -35,6 +40,13 @@ public class FilesystemPackageManagerTests {
     new PackageServer(DUMMY_URL_3),
     new PackageServer(DUMMY_URL_4)
   );
+
+  public static Stream<Arguments> packageCacheMultiThreadTestParams() {
+    return Stream.of(
+      Arguments.of(100, 1),
+      Arguments.of(10, 10),
+      Arguments.of(100, 10));
+  }
 
   @Test
   public void testDefaultServers() throws IOException {
@@ -102,60 +114,52 @@ public class FilesystemPackageManagerTests {
     assertEquals( System.getenv("ProgramData") + "\\.fhir\\packages", folder.getAbsolutePath());
   }
 
-  @Test void loadPackageFromCacheOnlyMultiThreadTest() {
+  @MethodSource("packageCacheMultiThreadTestParams")
+  @ParameterizedTest
+  public void packageCacheMultiThreadTest(final int threadTotal, final int packageCacheManagerTotal) throws IOException {
 
-  }
-
-  private enum ThreadTaskType {
-    ADD_PACKAGE_TO_CACHE,
-    LOAD_PACKAGE_FROM_CACHE_ONLY,
-    REMOVE_PACKAGE
-  }
-
-  private void runThreadTask(FilesystemPackageCacheManager pcm, ThreadTaskType taskType, int sleepTime) throws IOException {
-    switch (taskType) {
-      case ADD_PACKAGE_TO_CACHE:
-        pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
-        break;
-      case LOAD_PACKAGE_FROM_CACHE_ONLY:
-        pcm.loadPackageFromCacheOnly("example.fhir.uv.myig");
-        break;
-      case REMOVE_PACKAGE:
-        pcm.removePackage("example.fhir.uv.myig", "1.2.3");
-        break;
-    }
-  }
-
-  @Test
-  public void addPackageToCacheMultiThreadTest() throws IOException {
     String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
+    FilesystemPackageCacheManager[] packageCacheManagers = new FilesystemPackageCacheManager[packageCacheManagerTotal];
+    Random rand = new Random();
 
-    for (int j = 0; j < 48; j++) {
-      final AtomicInteger totalSuccessful = new AtomicInteger();
-      List<Thread> threads = new ArrayList<>();
-      for (int i = 0; i < 8; i++) {
-        final int index = i;
-        Thread t = new Thread(() -> {
-          try {
-            FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
-            pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
-            totalSuccessful.incrementAndGet();
-            System.out.println("Thread " + index + " completed");
-          } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Thread " + index + " failed");
-          }
-        });
-        t.start();
-        threads.add(t);
-      }
-      threads.forEach(t -> {
+    final AtomicInteger totalSuccessful = new AtomicInteger();
+    List<Thread> threads = new ArrayList<>();
+    for (int i = 0; i < threadTotal; i++) {
+      final int index = i;
+      Thread t = new Thread(() -> {
         try {
-          t.join();
-        } catch (InterruptedException e) {
-
+          final int randomPCM = rand.nextInt(packageCacheManagerTotal);
+          final int randomOperation = rand.nextInt(4);
+          if (packageCacheManagers[randomPCM] == null) {
+            packageCacheManagers[randomPCM] = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
+          }
+          FilesystemPackageCacheManager pcm = packageCacheManagers[randomPCM];
+          if (randomOperation == 0) {
+            pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package-larger.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
+          } else if (randomOperation == 1) {
+            pcm.clear();
+          } else if (randomOperation == 2) {
+            pcm.loadPackageFromCacheOnly("example.fhir.uv.myig", "1.2.3");
+          } else {
+            pcm.removePackage("example.fhir.uv.myig", "1.2.3");
+          }
+          totalSuccessful.incrementAndGet();
+          System.out.println("Thread " + index + " completed");
+        } catch (Exception e) {
+          e.printStackTrace();
+          System.err.println("Thread " + index + " failed");
         }
       });
-      assertEquals(8, totalSuccessful.get());
-    }}
+      t.start();
+      threads.add(t);
+    }
+    threads.forEach(t -> {
+      try {
+        t.join();
+      } catch (InterruptedException e) {
+
+      }
+    });
+    assertEquals(threadTotal, totalSuccessful.get());
+  }
 }

@@ -296,27 +296,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     this.minimalMemory = minimalMemory;
   }
 
-  /**
-   * do not use this in minimal memory mode
-   *
-   * @param packagesFolder
-   * @throws IOException
-   */
-  public void loadFromFolder(String packagesFolder) throws IOException {
-    assert !minimalMemory;
-
-    File[] files = ManagedFileAccess.file(packagesFolder).listFiles();
-    if (files != null) {
-      for (File f : files) {
-        if (f.getName().endsWith(".tgz")) {
-          try (FileInputStream fs = ManagedFileAccess.inStream(f)) {
-            temporaryPackages.add(NpmPackage.fromPackage(fs));
-          }
-        }
-      }
-    }
-  }
-
   public String getFolder() {
     return cacheFolder.getAbsolutePath();
   }
@@ -366,16 +345,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     for (char ch : version.toCharArray()) {
       if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && !Utilities.existsInList(ch, '.', '-', '$')) {
         throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal (ch '" + ch + "'");
-      }
-    }
-  }
-
-  private void listSpecs(Map<String, String> specList, PackageServer server) throws IOException {
-    PackageClient pc = new PackageClient(server);
-    List<PackageInfo> matches = pc.search(null, null, null, false);
-    for (PackageInfo m : matches) {
-      if (!specList.containsKey(m.getId())) {
-        specList.put(m.getId(), m.getUrl());
       }
     }
   }
@@ -456,7 +425,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * @throws IOException
    */
   public void clear() throws IOException {
-    clearCache();
+    this.cacheFolderLockManager.getCacheLock().doWriteWithLock(() -> {
+        clearCache();
+        return null;
+      });
   }
 
   // ========================= Utilities ============================================================================
@@ -493,6 +465,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    */
   @Override
   public NpmPackage loadPackageFromCacheOnly(String id, String version) throws IOException {
+
     if (!Utilities.noString(version) && version.startsWith("file:")) {
       return loadPackageFromFile(id, version.substring(5));
     }
