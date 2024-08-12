@@ -87,9 +87,6 @@ import org.slf4j.LoggerFactory;
  */
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
 
-  public static final String INI_TIMESTAMP_FORMAT = "yyyyMMddHHmmss";
-
-
   private static final ConcurrentHashMap<File, FilesystemPackageCacheLockManager> cacheFolderLockManagers = new ConcurrentHashMap<>();
 
   private final FilesystemPackageCacheLockManager cacheFolderLockManager;
@@ -110,10 +107,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private static final Logger ourLog = LoggerFactory.getLogger(FilesystemPackageCacheManager.class);
   private static final String CACHE_VERSION = "3"; // second version - see wiki page
   private final File cacheFolder;
-  private boolean progress = true;
+
   private final List<NpmPackage> temporaryPackages = new ArrayList<>();
   private boolean buildLoaded = false;
-  private final Map<String, String> ciList = new HashMap<String, String>();
+  private final Map<String, String> ciList = new HashMap<>();
   private JsonArray buildInfo;
   private boolean suppressErrors;
   private boolean minimalMemory;
@@ -189,7 +186,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
   }
 
-  private FilesystemPackageCacheManager(File cacheFolder, List<PackageServer> packageServers) throws IOException {
+  private FilesystemPackageCacheManager(@Nonnull File cacheFolder, @Nonnull List<PackageServer> packageServers) throws IOException {
+    super(packageServers);
     this.cacheFolder = cacheFolder;
 
     try {
@@ -209,7 +207,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       }
     }
 
-    this.myPackageServers = packageServers;
     prepareCacheFolder();
   }
 
@@ -312,11 +309,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (files != null) {
       for (File f : files) {
         if (f.getName().endsWith(".tgz")) {
-          FileInputStream fs = ManagedFileAccess.inStream(f);
-          try {
+          try (FileInputStream fs = ManagedFileAccess.inStream(f)) {
             temporaryPackages.add(NpmPackage.fromPackage(fs));
-          } finally {
-            fs.close();
           }
         }
       }
@@ -555,10 +549,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
       NpmPackage npm = NpmPackage.extractFromTgz(packageTgzInputStream, sourceDesc, tempDir, minimalMemory);
 
-      if (progress) {
-        log("");
-        logn("Installing " + id + "#" + version);
-      }
+      log("");
+      log("Installing " + id + "#" + version);
 
       if ((npm.name() != null && id != null && !id.equalsIgnoreCase(npm.name()))) {
         if (!suppressErrors && (!id.equals("hl7.fhir.r5.core") && !id.equals("hl7.fhir.us.immds"))) {// temporary work around
@@ -580,8 +572,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
             log("Unable to clear directory: " + packRoot + ": " + t.getMessage() + " - this may cause problems later");
           }
           Utilities.renameDirectory(tempDir, packRoot);
-          if (progress)
-            log(" done.");
+
+          log(" done.");
         } else {
           Utilities.clearDirectory(tempDir);
           ManagedFileAccess.file(tempDir).delete();
@@ -607,7 +599,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           e.printStackTrace();
           Utilities.clearDirectory(packRoot);
           ManagedFileAccess.file(packRoot).delete();
-        } catch (Exception ei) {
+        } catch (Exception ignored) {
           // nothing
         }
         throw e;
@@ -623,12 +615,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
   }
 
-  private void logn(String s) {
-    if (!silent) {
-      System.out.print(s);
-    }
-  }
-
   @Override
   public String getPackageUrl(String packageId) throws IOException {
     String result = super.getPackageUrl(packageId);
@@ -637,16 +623,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     return result;
-  }
-
-  public void listAllIds(Map<String, String> specList) throws IOException {
-    for (NpmPackage p : temporaryPackages) {
-      specList.put(p.name(), p.canonical());
-    }
-    for (PackageServer next : getPackageServers()) {
-      listSpecs(specList, next);
-    }
-    addCIBuildSpecs(specList);
   }
 
   @Override
@@ -685,10 +661,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       version = "current";
     }
 
-    if (progress) {
-      log("Installing " + id + "#" + (version == null ? "?" : version) + " to the package cache");
-      log("  Fetching:");
-    }
+    log("Installing " + id + "#" + (version == null ? "?" : version) + " to the package cache");
+    log("  Fetching:");
 
     // nup, don't have it locally (or it's expired)
     FilesystemPackageCacheManager.InputStreamWithSrc source;
@@ -756,16 +730,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       }
     }
     return null;
-  }
-
-  private void addCIBuildSpecs(Map<String, String> specList) throws IOException {
-    checkBuildLoaded();
-    for (JsonElement n : buildInfo) {
-      JsonObject o = (JsonObject) n;
-      if (!specList.containsKey(o.asString("package-id"))) {
-        specList.put(o.asString("package-id"), o.asString("url"));
-      }
-    }
   }
 
   @Override
@@ -851,7 +815,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           loadFromBuildServer();
         } catch (Exception e2) {
           log("Error connecting to build server - running without build (" + e2.getMessage() + ")");
-          //        e.printStackTrace();
         }
       }
     }
@@ -905,8 +868,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (url == null) {
       try {
         url = getPackageUrlFromBuildList(id);
-      } catch (Exception e) {
-        url = null;
+      } catch (Exception ignored) {
+
       }
     }
     if (url == null) {
@@ -916,16 +879,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       url = url.substring(0, url.indexOf("/ImplementationGuide/"));
     }
     String pu = Utilities.pathURL(url, "package-list.json");
-    String aurl = pu;
+
     PackageList pl;
     try {
       pl = PackageList.fromUrl(pu);
     } catch (Exception e) {
       String pv = Utilities.pathURL(url, v, "package.tgz");
       try {
-        aurl = pv;
-        InputStreamWithSrc src = new InputStreamWithSrc(fetchFromUrlSpecific(pv, false), pv, v);
-        return src;
+        return new InputStreamWithSrc(fetchFromUrlSpecific(pv, false), pv, v);
       } catch (Exception e1) {
         throw new FHIRException("Error fetching package directly (" + pv + "), or fetching package list for " + id + " from " + pu + ": " + e1.getMessage(), e1);
       }
@@ -934,7 +895,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       throw new FHIRException("Package ids do not match in " + pu + ": " + id + " vs " + pl.pid());
     for (PackageListEntry vo : pl.versions()) {
       if (v.equals(vo.version())) {
-        aurl = Utilities.pathURL(vo.path(), "package.tgz");
+
         String u = Utilities.pathURL(vo.path(), "package.tgz");
         return new InputStreamWithSrc(fetchFromUrlSpecific(u, true), u, v);
       }
@@ -987,18 +948,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     return res;
   }
 
-  /**
-   * if you don't provide and implementation of this interface, the PackageCacheManager will use the web directly.
-   * <p>
-   * You can use this interface to
-   *
-   * @author graha
-   */
-  public interface INetworkServices {
-
-    InputStream resolvePackage(String packageId, String version);
-  }
-
   public interface CacheLockFunction<T> {
     T get() throws IOException;
   }
@@ -1013,10 +962,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   public class BuildRecord {
 
-    private String url;
-    private String packageId;
-    private String repo;
-    private Date date;
+    private final String url;
+    private final String packageId;
+    private final String repo;
+    private final Date date;
 
     public BuildRecord(String url, String packageId, String repo, Date date) {
       super();
@@ -1042,46 +991,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       return date;
     }
 
-
-  }
-
-
-  public class VersionHistory {
-    private String id;
-    private String canonical;
-    private String current;
-    private Map<String, String> versions = new HashMap<>();
-
-    public String getCanonical() {
-      return canonical;
-    }
-
-    public String getCurrent() {
-      return current;
-    }
-
-    public Map<String, String> getVersions() {
-      return versions;
-    }
-
-    public String getId() {
-      return id;
-    }
-  }
-
-  public class PackageEntry {
-
-    private byte[] bytes;
-    private String name;
-
-    public PackageEntry(String name) {
-      this.name = name;
-    }
-
-    public PackageEntry(String name, byte[] bytes) {
-      this.name = name;
-      this.bytes = bytes;
-    }
   }
 
   public boolean packageExists(String id, String ver) throws IOException {

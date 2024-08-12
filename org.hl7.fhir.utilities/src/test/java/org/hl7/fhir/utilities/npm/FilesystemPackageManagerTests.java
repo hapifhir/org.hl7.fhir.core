@@ -3,7 +3,7 @@ package org.hl7.fhir.utilities.npm;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
-import java.io.FileInputStream;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -13,7 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.Nonnull;
 
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
@@ -21,18 +20,18 @@ import org.junit.jupiter.api.condition.OS;
 
 public class FilesystemPackageManagerTests {
 
-  private static final String DUMMY_URL_1 = "http://dummy1.org";
-  private static final String DUMMY_URL_2 = "http://dummy2.org";
+  private static final String DUMMY_URL_1 = "https://dummy1.org";
+  private static final String DUMMY_URL_2 = "https://dummy2.org";
 
-  private static final String DUMMY_URL_3 = "http://dummy3.org";
+  private static final String DUMMY_URL_3 = "https://dummy3.org";
 
-  private static final String DUMMY_URL_4 = "http://dummy4.org";
-  private List<PackageServer> dummyPrivateServers = List.of(
+  private static final String DUMMY_URL_4 = "https://dummy4.org";
+  private final List<PackageServer> dummyPrivateServers = List.of(
      new PackageServer(DUMMY_URL_1),
      new PackageServer(DUMMY_URL_2)
   );
 
-  private List<PackageServer> dummyDefaultServers = List.of(
+  private final List<PackageServer> dummyDefaultServers = List.of(
     new PackageServer(DUMMY_URL_3),
     new PackageServer(DUMMY_URL_4)
   );
@@ -103,12 +102,35 @@ public class FilesystemPackageManagerTests {
     assertEquals( System.getenv("ProgramData") + "\\.fhir\\packages", folder.getAbsolutePath());
   }
 
-  @Disabled
+  @Test void loadPackageFromCacheOnlyMultiThreadTest() {
+
+  }
+
+  private enum ThreadTaskType {
+    ADD_PACKAGE_TO_CACHE,
+    LOAD_PACKAGE_FROM_CACHE_ONLY,
+    REMOVE_PACKAGE
+  }
+
+  private void runThreadTask(FilesystemPackageCacheManager pcm, ThreadTaskType taskType, int sleepTime) throws IOException {
+    switch (taskType) {
+      case ADD_PACKAGE_TO_CACHE:
+        pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
+        break;
+      case LOAD_PACKAGE_FROM_CACHE_ONLY:
+        pcm.loadPackageFromCacheOnly("example.fhir.uv.myig");
+        break;
+      case REMOVE_PACKAGE:
+        pcm.removePackage("example.fhir.uv.myig", "1.2.3");
+        break;
+    }
+  }
+
   @Test
-  public void multithreadingTest() throws IOException {
+  public void addPackageToCacheMultiThreadTest() throws IOException {
     String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
 
-    for (int j = 0; j < 6; j++) {
+    for (int j = 0; j < 48; j++) {
       final AtomicInteger totalSuccessful = new AtomicInteger();
       List<Thread> threads = new ArrayList<>();
       for (int i = 0; i < 8; i++) {
@@ -116,10 +138,7 @@ public class FilesystemPackageManagerTests {
         Thread t = new Thread(() -> {
           try {
             FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
-            FileInputStream tgzStream = ManagedFileAccess.inStream("/Users/david.otasek/IN/2024-08-06-us-core-package-kaboom/us-core-6-1-0.tgz");
-            pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package.tgz"), "https://packages.fhir.org/hl7.fhir.us.core/6.1.0");
-            //pcm.loadPackage("hl7.fhir.xver-extensions#0.0.12");
-            //pcm.loadPackage("hl7.fhir.us.core", "7.0.0");
+            pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
             totalSuccessful.incrementAndGet();
             System.out.println("Thread " + index + " completed");
           } catch (Exception e) {

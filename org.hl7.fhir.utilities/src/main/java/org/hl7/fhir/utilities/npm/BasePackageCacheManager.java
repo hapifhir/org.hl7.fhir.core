@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
   private static final Logger ourLog = LoggerFactory.getLogger(BasePackageCacheManager.class);
-  protected List<PackageServer> myPackageServers = new ArrayList<>();
+  protected final List<PackageServer> myPackageServers;
   private Function<PackageServer, PackageClient> myClientFactory = server -> new PackageClient(server);
   protected boolean silent;
 
@@ -27,8 +27,12 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
    */
   public BasePackageCacheManager() {
     super();
+    myPackageServers = new ArrayList<>();
   }
 
+  protected BasePackageCacheManager(@Nonnull List<PackageServer> thePackageServers) {
+    myPackageServers = thePackageServers;
+  }
   /**
    * Provide a new client factory implementation
    */
