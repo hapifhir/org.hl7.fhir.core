@@ -94,6 +94,10 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
       if (tester == null) {
         tester = new TxTester(this, SERVER, true, externals);
       }
+
+      if (setup.suite.asBoolean("disabled") || setup.test.asBoolean("disabled")) {
+        return;
+      }
       String err = tester.executeTest(setup.suite, setup.test, modes);
       Assertions.assertTrue(err == null, err);
     } else {
