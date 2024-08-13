@@ -12097,6 +12097,7 @@ The primary difference between a medicationstatement and a medicationadministrat
          */
         _6_0_0, 
         _6_0_0_BALLOT1, 
+        _6_0_0_BALLOT2, 
         /**
          * added to help the parsers
          */
@@ -12224,6 +12225,8 @@ The primary difference between a medicationstatement and a medicationadministrat
           return _6_0_0;
         if ("6.0.0-ballot1".equals(codeString))
           return _6_0_0_BALLOT1;
+        if ("6.0.0-ballot2".equals(codeString))
+          return _6_0_0_BALLOT2;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public static boolean isValidCode(String codeString) {
@@ -12293,6 +12296,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case _6_0_0CIBUILD: return "6.0.0-cibuild";
             case _6_0_0: return "6.0.0";
             case _6_0_0_BALLOT1: return "6.0.0-ballot1";
+            case _6_0_0_BALLOT2: return "6.0.0-ballot2";
             case NULL: return null;
             default: return "?";
           }
@@ -12491,6 +12495,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case _6_0_0CIBUILD: return "6.0.0-cibuild";
             case _6_0_0: return "6.0.0";
             case _6_0_0_BALLOT1: return "6.0.0-ballot1";
+            case _6_0_0_BALLOT2: return "6.0.0-ballot2";
             case NULL: return null;
             default: return "?";
           }
@@ -12639,6 +12644,8 @@ The primary difference between a medicationstatement and a medicationadministrat
           return FHIRVersion._6_0_0;
         if ("6.0.0-ballot1".equals(codeString))
           return FHIRVersion._6_0_0_BALLOT1;
+        if ("6.0.0-ballot2".equals(codeString))
+          return FHIRVersion._6_0_0_BALLOT2;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
 
@@ -12770,6 +12777,8 @@ The primary difference between a medicationstatement and a medicationadministrat
           return new Enumeration<FHIRVersion>(this, FHIRVersion._6_0_0, code);
         if ("6.0.0-ballot1".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._6_0_0_BALLOT1, code);
+        if ("6.0.0-ballot2".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._6_0_0_BALLOT2, code);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");        
         }
     public String toCode(FHIRVersion code) {
@@ -12895,6 +12904,9 @@ The primary difference between a medicationstatement and a medicationadministrat
         return "6.0.0";
       if (code == FHIRVersion._6_0_0_BALLOT1) {
         return "6.0.0-ballot1";
+      }
+      if (code == FHIRVersion._6_0_0_BALLOT2) {
+        return "6.0.0-ballot2";
       }
       return "?";
    }
