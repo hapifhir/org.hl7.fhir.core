@@ -78,7 +78,7 @@ public class LiquidRenderer extends ResourceRenderer implements ILiquidRendering
       xn = new XhtmlNode(NodeType.Element, "div");
       xn.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
     }
-    x.getChildNodes().addAll(xn.getChildNodes());
+    x.addChildNodes(xn.getChildNodes());
     status.setExtensions(true);
   }
 

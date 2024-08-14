@@ -36,7 +36,6 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
@@ -150,6 +149,9 @@ public abstract class ResourceRenderer extends DataRenderer {
   public abstract void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome;
   public abstract String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException;
     
+  public void buildSummary(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    x.tx(buildSummary(r));
+  }
 
   public String canonicalTitle(ResourceWrapper r) {
     if (r.has("title")) {
@@ -339,7 +341,11 @@ public abstract class ResourceRenderer extends DataRenderer {
       ResourceWithReference rr = resolveReference(actual);
       if (rr == null) {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : actual.primitiveValue();
-        x.ah(context.prefixLocalHref(actual.primitiveValue())).tx(disp);
+        if (Utilities.isAbsoluteUrl(actual.primitiveValue()) || !context.isUnknownLocalReferencesNotLinks()) {
+          x.ah(context.prefixLocalHref(actual.primitiveValue())).tx(disp);
+        } else {
+          x.code().tx(disp);
+        }
       } else if (rr.getResource() == null) {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : "??";
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(disp);
@@ -870,7 +876,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         boolean sfirst = true;
         p = plateStyle(div.para());
         if (versionId != null) {
-          p.tx(context.formatPhrase(RenderingContext.RES_REND_VER, versionId));
+          p.tx(context.formatPhrase(RenderingContext.RES_REND_VER, versionId.primitiveValue()));
           sfirst = false;
         }
         if (lastUpdated != null) {

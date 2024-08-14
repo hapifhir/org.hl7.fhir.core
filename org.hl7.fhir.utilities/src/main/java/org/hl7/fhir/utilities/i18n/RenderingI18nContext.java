@@ -321,6 +321,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String OBLIG_ELE = "OBLIG_ELE";
   public static final String GENERAL_OBLIG = "GENERAL_OBLIG";
   public static final String GENERAL_BINDING = "GENERAL_BINDING";
+  public static final String GENERAL_BINDING_NO_VS = "GENERAL_BINDING_NO_VS";
+  public static final String GENERAL_BINDING_NO_DESC = "GENERAL_BINDING_NO_DESC";
   public static final String GENERAL_CARDINALITY = "GENERAL_CARDINALITY";
   public static final String OP_DEF_INPAR = "OP_DEF_INPAR";
   public static final String OP_DEF_OFFIC = "OP_DEF_OFFIC";
@@ -905,6 +907,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_ATT_URL = "DATA_REND_ATT_URL";
   public static final String DATA_REND_ATT_DATA = "DATA_REND_ATT_DATA";
   public static final String GENERAL_DATA_DISPLAY_PROPERTY = "GENERAL_DATA_DISPLAY_PROPERTY";
+  public static final String DATA_REND_CURRENCY = "DATA_REND_CURRENCY";
   
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";

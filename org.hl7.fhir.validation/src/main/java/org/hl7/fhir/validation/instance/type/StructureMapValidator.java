@@ -736,13 +736,18 @@ public class StructureMapValidator extends BaseValidator {
         type = "string";
         break; 
       default:
-        rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_NOT_CHECKED, transform);
-        ok = false;
+        warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_NOT_CHECKED, transform);
+//        ok = false;
       }
 
       if (vn != null && type != null) {
         StructureDefinition sdt = this.context.fetchTypeDefinition(type);
-        vn.setType(ruleInfo.getMaxCount(), sdt, sdt.getSnapshot().getElementFirstRep(), null); // may overwrite
+        if (sdt != null) {
+          vn.setType(ruleInfo.getMaxCount(), sdt, sdt.getSnapshot().getElementFirstRep(), null); // may overwrite
+        } else {
+          ok = false;
+          rule(errors, "2023-07-30", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TYPE_UNKNOWN, type);
+        }
       }
       return ok;
     }
@@ -905,8 +910,8 @@ public class StructureMapValidator extends BaseValidator {
                 }
                 break;
               default:
-                rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_NOT_CHECKED, transform);
-                ok = false;
+                warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_NOT_CHECKED, transform);
+//                ok = false;
               }
               if (vn != null) {
                 // it's just a warning: maybe this'll work out at run time?

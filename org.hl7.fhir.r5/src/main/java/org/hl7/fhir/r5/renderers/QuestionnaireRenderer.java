@@ -110,7 +110,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       renderTreeItem(status, gen, row.getSubRows(), q, i, hasFlags); 
     } 
     XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null); 
-    x.getChildNodes().add(xn); 
+    x.addChildNode(xn); 
     if (doOpts) { 
       renderOptions(q, x); 
     } 
@@ -126,30 +126,46 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
 
   private void renderOptions(List<ResourceWrapper> items, XhtmlNode x) {     
     for (ResourceWrapper i : items) { 
-      renderItemOptions(x, i); 
+      renderItemOptionsList(x, i); 
       renderOptions(i.children("item"), x); 
     }     
   } 
 
   public void renderItemOptions(XhtmlNode x, ResourceWrapper i) { 
     if (i.has("answerOption")) { 
-      boolean useSelect = false; 
       for (ResourceWrapper opt : i.children("answerOption")) { 
-        useSelect = useSelect || "true".equals(opt.primitiveValue("initialSelected"));  
+        String value = "??";
+        String text = "??";
+        ResourceWrapper v = opt.child("value");
+        if (v.isPrimitive()) {
+          value = v.primitiveValue();
+          text = v.primitiveValue();
+        } else if (v.fhirType().equals("Coding")) {
+          if (v.has("system")) {
+            value = v.primitiveValue("system")+"#"+v.primitiveValue("code");
+          } else {
+            value = v.primitiveValue("code");
+          }
+          if (v.has("display")) { 
+            text = v.primitiveValue("display");
+          } else {
+            text = v.primitiveValue("code");
+          }
+        }
+        boolean selected = "true".equals(opt.primitiveValue("initialSelected"));
+        x.option(value, text, selected);
       } 
+    } 
+  }  
+  
+  public void renderItemOptionsList(XhtmlNode x, ResourceWrapper i) { 
+    if (i.has("answerOption")) { 
       x.an(context.prefixAnchor("opt-item."+i.primitiveValue("linkId"))); 
       x.para().b().tx(context.formatPhrase(RenderingContext.QUEST_ANSW, i.primitiveValue("linkId"))+" "); 
       XhtmlNode ul = x.ul(); 
       for (ResourceWrapper opt : i.children("answerOption")) { 
         XhtmlNode li = ul.li(); 
         li.style("font-size: 11px"); 
-        if (useSelect) { 
-          if ("true".equals(opt.primitiveValue("initialSelected"))) { 
-            li.img("icon-selected.png", "icon"); 
-          } else { 
-            li.img("icon-not-selected.png", "icon");             
-          } 
-        } 
         ResourceWrapper v = opt.child("value");
         if (v.isPrimitive()) { 
           li.tx(v.primitiveValue()); 
@@ -513,7 +529,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       } 
     } 
     XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null); 
-    x.getChildNodes().add(xn); 
+    x.addChildNode(xn); 
   } 
 
   private void renderLogicItem(RenderingStatus status, HierarchicalTableGenerator gen, List<Row> rows, ResourceWrapper q, ResourceWrapper i) throws IOException { 

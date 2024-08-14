@@ -1810,10 +1810,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (cs != null && !hasCanonicalResource(pin, "tx-resource", cs.getVUrl()) && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
       cache = checkAddToParams(tc, pin, cs) || cache;
     }
-    for (CodeSystem supp : fetchResourcesByType(CodeSystem.class)) {
-      if (supp.getContent() == CodeSystemContentMode.SUPPLEMENT && supp.getSupplements().equals(inc.getSystem())) {
+    for (CodeSystem supp : codeSystems.getSupplements(cs)) {
+      //if (supp.getContent() == CodeSystemContentMode.SUPPLEMENT && supp.getSupplements().equals(inc.getSystem())) {
+      assert supp.getContent() == CodeSystemContentMode.SUPPLEMENT && supp.getSupplements().equals(inc.getSystem());
         cache = checkAddToParams(tc, pin, supp) || cache;
-      }
+      //}
     }
     return cache;
   }
@@ -1885,8 +1886,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         } else if (p.getName().equals("status")) {
           status = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("x-caused-by-unknown-system")) {
-          err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
-          unknownSystems.add(((PrimitiveType<?>) p.getValue()).asStringValue());      
+          String unkSystem = ((PrimitiveType<?>) p.getValue()).asStringValue();
+          if (unkSystem != null && unkSystem.contains("|")) {
+            err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED_VERSION; 
+            system = unkSystem.substring(0, unkSystem.indexOf("|"));
+            version = unkSystem.substring(unkSystem.indexOf("|")+1);
+          } else {
+            err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;            
+            unknownSystems.add(unkSystem);      
+          }
         } else if (p.getName().equals("x-unknown-system")) {
           unknownSystems.add(((PrimitiveType<?>) p.getValue()).asStringValue());      
         } else if (p.getName().equals("warning-withdrawn")) {
@@ -1947,6 +1955,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (code != null) {
         res.setDefinition(new ConceptDefinitionComponent().setDisplay(display).setCode(code));
         res.setDisplay(display);
+      }
+      if (system != null) {
+        res.setSystem(system);
+      }
+      if (version != null) {
+        res.setVersion(version);
       }
     } else if (message != null && !message.equals("No Message returned")) { 
       res = new ValidationResult(IssueSeverity.WARNING, message, system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog.getLastId());

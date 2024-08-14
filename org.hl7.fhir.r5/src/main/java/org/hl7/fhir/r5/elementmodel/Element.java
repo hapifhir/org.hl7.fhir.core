@@ -347,10 +347,11 @@ public class Element extends Base implements NamedItem {
     if (children == null)
       children = new NamedItemList<Element>();
     for (Element child : children) {
-      if (name.equals(child.getName())) {
+      if (nameMatches(child.getName(), name)) {
         if (!child.isPrimitive())
           throw new Error("Cannot set a value of a non-primitive type ("+name+" on "+this.getName()+")");
         child.setValue(value.primitiveValue());
+        return;
       }
     }
 
@@ -1364,14 +1365,18 @@ public class Element extends Base implements NamedItem {
   public Element addElement(String name) {
     if (children == null)
       children = new NamedItemList<Element>();
+    int insertionPoint = 0;
 
     for (Property p : property.getChildProperties(this.name, type)) {
+      while (insertionPoint < children.size() && nameMatches(children.get(insertionPoint).getName(), p.getName())) {
+        insertionPoint++;
+      }
       if (p.getName().equals(name)) {
         if (!p.isList() && hasChild(name, false)) {
           throw new Error(name+" on "+this.name+" is not a list, so can't add an element"); 
         }
         Element ne = new Element(name, p).setFormat(format);
-        children.add(ne);
+        children.add(insertionPoint, ne);
         return ne;
       }
       // polymorphic support
@@ -1386,7 +1391,7 @@ public class Element extends Base implements NamedItem {
           if (p.canBeType(type)) {
             Element ne = new Element(name, p).setFormat(format);
             ne.setType(type);
-            children.add(ne);
+            children.add(insertionPoint, ne);
             return ne;
           }
         }
@@ -1394,6 +1399,15 @@ public class Element extends Base implements NamedItem {
     }
 
     throw new Error("Unrecognised property '"+name+"' on "+this.name); 
+  }
+
+  private boolean nameMatches(String elementName, String propertyName) {
+    if (propertyName.endsWith("[x]")) {
+      String base = propertyName.replace("[x]", "");
+      return elementName.startsWith(base);
+    } else {
+      return elementName.equals(propertyName);
+    }
   }
 
   @Override

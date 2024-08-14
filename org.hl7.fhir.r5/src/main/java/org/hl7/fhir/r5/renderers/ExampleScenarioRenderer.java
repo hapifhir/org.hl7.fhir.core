@@ -50,7 +50,8 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       genSummaryTable(status, x, (ExampleScenario) r.getBase());
       render(status, x, (ExampleScenario) r.getBase(), r);      
     } else {
-      throw new Error("ExampleScenarioRenderer only renders native resources directly");
+      // the intention is to change this in the future
+      x.para().tx("ExampleScenarioRenderer only renders native resources directly");
     }
   }
   

@@ -1,9 +1,6 @@
 package org.hl7.fhir.r5.terminologies.utilities;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
@@ -33,6 +30,30 @@ public class ValidationResult {
   public String toString() {
     return "ValidationResult [definition=" + definition + ", system=" + system + ", severity=" + severity + ", message=" + getMessage() + ", errorClass="
         + errorClass + ", txLink=" + txLink + "]";
+  }
+
+  public ValidationResult(ValidationResult validationResult) {
+    this.definition = validationResult.definition == null ? null : validationResult.definition.copy();
+    this.preferredDisplay = validationResult.preferredDisplay;
+    this.system = validationResult.system;
+    this.version = validationResult.version;
+    this.severity = validationResult.severity;
+    if (validationResult.messages != null) {
+      this.messages.addAll(validationResult.messages);
+    }
+    this.errorClass = validationResult.errorClass;
+    this.txLink = validationResult.txLink;
+    this.diagnostics = validationResult.diagnostics;
+    if (validationResult.issues != null) {
+      for (OperationOutcomeIssueComponent issue : validationResult.issues) {
+        this.issues.add(issue.copy());
+      }
+    }
+    this.codeableConcept = validationResult.codeableConcept == null ? null : validationResult.codeableConcept.copy();
+    this.unknownSystems = validationResult.unknownSystems == null ? null : new HashSet<>(validationResult.unknownSystems);
+    this.inactive = validationResult.inactive;
+    this.status = validationResult.status;
+    this.server = validationResult.server;
   }
 
   public ValidationResult(IssueSeverity severity, String message, List<OperationOutcomeIssueComponent> issues) {
@@ -334,4 +355,57 @@ public class ValidationResult {
     this.server = server;
   }
 
+  public boolean equals(Object otherObject) {
+    if (!(otherObject instanceof ValidationResult)) {
+      return false;
+    }
+
+    ValidationResult other = (ValidationResult) otherObject;
+    if (!Objects.equals(this.system, other.system)) {
+      return false;
+    }
+    if (!Objects.equals(this.version, other.version)) {
+      return false;
+    }
+    if (!Objects.equals(this.preferredDisplay, other.preferredDisplay)) {
+      return false;
+    }
+    if (!Objects.equals(this.severity, other.severity)) {
+      return false;
+    }
+    if (!Objects.equals(this.definition, other.definition)) {
+      return false;
+    }
+    if (!Objects.equals(this.messages, other.messages)) {
+      return false;
+    }
+    if (!Objects.equals(this.errorClass, other.errorClass)) {
+      return false;
+    }
+    if (!Objects.equals(this.txLink, other.txLink)) {
+      return false;
+    }
+    if (!Objects.equals(this.diagnostics, other.diagnostics)) {
+      return false;
+    }
+    if (!Objects.equals(this.issues, other.issues)) {
+      return false;
+    }
+    if (!Objects.equals(this.codeableConcept, other.codeableConcept)) {
+      return false;
+    }
+    if (!Objects.equals(this.unknownSystems, other.unknownSystems)) {
+      return false;
+    }
+    if (this.inactive != other.inactive) {
+      return false;
+    }
+    if (!Objects.equals(this.status, other.status)) {
+      return false;
+    }
+    if (!Objects.equals(this.server, other.server)) {
+      return false;
+    }
+    return true;
+  }
 }

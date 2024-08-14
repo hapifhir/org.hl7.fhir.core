@@ -274,6 +274,7 @@ public class RenderingContext extends RenderingI18nContext {
   private boolean shortPatientForm;
   private String uniqueLocalPrefix;
   private Set<String> anchors = new HashSet<>();
+  private boolean unknownLocalReferencesNotLinks;
   
   /**
    * 
@@ -297,7 +298,7 @@ public class RenderingContext extends RenderingI18nContext {
     }
   }
   
-  public RenderingContext copy() {
+  public RenderingContext copy(boolean copyAnchors) {
     RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC), localPrefix, locale, mode, rules);
 
     res.resolver = resolver;
@@ -339,6 +340,10 @@ public class RenderingContext extends RenderingI18nContext {
     res.typeMap.putAll(typeMap);
     res.multiLanguagePolicy = multiLanguagePolicy;
     res.allowedLanguages.addAll(allowedLanguages);
+    if (copyAnchors) {
+       res.anchors = anchors;
+    }
+    res.unknownLocalReferencesNotLinks = unknownLocalReferencesNotLinks;
     return res;
   }
   
@@ -994,13 +999,13 @@ public class RenderingContext extends RenderingI18nContext {
   }
 
   public RenderingContext withUniqueLocalPrefix(String uniqueLocalPrefix) {
-    RenderingContext self = this.copy();
+    RenderingContext self = this.copy(true);
     self.uniqueLocalPrefix = uniqueLocalPrefix;
     return self;
   }
 
   public RenderingContext forContained() {
-    RenderingContext self = this.copy();
+    RenderingContext self = this.copy(true);
     self.contained = true;
     return self;
   }
@@ -1015,5 +1020,17 @@ public class RenderingContext extends RenderingI18nContext {
 
   public Set<String> getAnchors() {
     return anchors;
+  }
+
+  public void clearAnchors() {
+    anchors.clear();
+  }
+
+  public boolean isUnknownLocalReferencesNotLinks() {
+    return unknownLocalReferencesNotLinks;
+  }
+
+  public void setUnknownLocalReferencesNotLinks(boolean unknownLocalReferencesNotLinks) {
+    this.unknownLocalReferencesNotLinks = unknownLocalReferencesNotLinks;
   }
 }

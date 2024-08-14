@@ -41,7 +41,8 @@ public class SearchParameterRenderer extends TerminologyRenderer {
 
       render(status, x, (SearchParameter) r.getBase());      
     } else {
-      throw new Error("SearchParameterRenderer only renders native resources directly");
+      // the intention is to change this in the future
+      x.para().tx("SearchParameterRenderer only renders native resources directly");
     }
   }
   
