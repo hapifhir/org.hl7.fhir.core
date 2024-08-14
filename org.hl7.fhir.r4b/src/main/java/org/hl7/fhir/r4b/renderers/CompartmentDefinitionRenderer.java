@@ -61,7 +61,7 @@ public class CompartmentDefinitionRenderer extends ResourceRenderer {
         + "<p>\r\nA resource is in this compartment if the nominated search parameter (or chain) refers to the patient resource that defines the compartment.\r\n</p>\r\n"
         + "<p>\r\n\r\n</p>\r\n" + "<p>\r\nThe following resources are never in this compartment:\r\n</p>\r\n"
         + "<ul>\r\n" + out.toString() + "</ul></div>\r\n");
-    x.getChildNodes().addAll(xn.getChildNodes());
+    x.addChildNodes(xn.getChildNodes());
     return true;
   }
 

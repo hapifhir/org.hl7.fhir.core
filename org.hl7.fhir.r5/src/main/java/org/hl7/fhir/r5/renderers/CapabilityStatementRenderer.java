@@ -53,7 +53,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       renderResourceTechDetails(r, x);
       render(status, x, (CapabilityStatement) r.getBase(), r);      
     } else {
-      throw new Error("CapabilityStatementRenderer only renders native resources directly");
+      // the intention is to change this in the future
+      x.para().tx("CapabilityStatementRenderer only renders native resources directly");
     }
   }
   
@@ -422,7 +423,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   private void addSupportedCSs(RenderingStatus status, XhtmlNode x, CapabilityStatement cap, ResourceWrapper res) throws UnsupportedEncodingException, IOException {
     if (cap.hasInstantiates()) {
       XhtmlNode p = x.para();
-      p.tx(cap.getInstantiates().size() > 1 ? "This CapabilityStatement instantiates these CapabilityStatements" : "This CapabilityStatement instantiates the CapabilityStatement");
+      p.tx(cap.getInstantiates().size() > 1 ? "This CapabilityStatement instantiates these CapabilityStatements " : "This CapabilityStatement instantiates the CapabilityStatement ");
       boolean first = true;
       for (CanonicalType ct : cap.getInstantiates()) {
         if (first) {first = false;} else {p.tx(", ");};
@@ -431,7 +432,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     }
     if (cap.hasImports()) {
       XhtmlNode p = x.para();
-      p.tx(cap.getImports().size() > 1 ? "This CapabilityStatement imports these CapabilityStatements" : "This CapabilityStatement imports the CapabilityStatement");
+      p.tx(cap.getImports().size() > 1 ? "This CapabilityStatement imports these CapabilityStatements " : "This CapabilityStatement imports the CapabilityStatement ");
       boolean first = true;
       for (CanonicalType ct : cap.getImports()) {
         if (first) {first = false;} else {p.tx(", ");};

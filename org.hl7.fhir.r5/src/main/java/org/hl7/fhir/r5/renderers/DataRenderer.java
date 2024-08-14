@@ -164,7 +164,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       } catch (org.hl7.fhir.exceptions.FHIRFormatError e) { 
         throw new FHIRFormatError(e.getMessage(), e); 
       } 
-      x.getChildNodes().addAll(m.getChildNodes()); 
+      x.addChildNodes(m.getChildNodes()); 
     } 
   } 
 
@@ -585,6 +585,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     case "Annotation":  return displayAnnotation(type);
     case "Ratio":  return displayRatio(type);
     case "Reference" : return displayReference(type);
+    case "Money" : return displayMoney(type);
     case "dateTime":
     case "date" : 
     case "instant" :
@@ -594,11 +595,19 @@ public class DataRenderer extends Renderer implements CodeResolver {
         return context.getTranslated(type); 
       } else if (Utilities.existsInList(type.fhirType(),  "Meta", "Dosage", "Signature", "UsageContext", "RelatedArtifact", "ElementDefinition", "Base64BinaryType", "Attachment")) {
         return "";
+      } else if ("Extension".equals(type.fhirType())) {
+        return displayDataType(type.child("value"));
       } else {
         return (context.formatPhrase(RenderingContext.DATA_REND_NO_DISP, type.fhirType()) + " "); 
       }
     }
   } 
+
+  private String displayMoney(ResourceWrapper type) {
+    String currency = type.primitiveValue("currency");
+    String value = type.primitiveValue("value");
+    return context.formatPhrase(RenderingContext.DATA_REND_CURRENCY, currency, value);
+  }
 
   private String displayAnnotation(ResourceWrapper type) {
     return type.primitiveValue("text");
@@ -740,6 +749,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return renderDataType(status, null, x, type);
   }
   public boolean renderDataType(RenderingStatus status, XhtmlNode parent, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException { 
+    if (type == null) {
+      return false;
+    }
     switch (type.fhirType()) {
     case "dateTime":
     case "date" : 
@@ -781,6 +793,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       renderContactPoint(status, x, type); 
       break;
     case "Quantity": 
+    case "Age":
       renderQuantity(status, x, type); 
       break;
     case "Range": 
@@ -1831,7 +1844,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     else 
       x.tx("?"); 
     if (q.has("low") && q.child("low").has("unit")) 
-      x.tx(" "+q.child("low").child("unit")); 
+      x.tx(" "+q.child("low").primitiveValue("unit")); 
   } 
 
   public String displayPeriod(ResourceWrapper p) { 

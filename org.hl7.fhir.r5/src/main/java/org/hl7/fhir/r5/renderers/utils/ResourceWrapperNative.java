@@ -86,8 +86,6 @@ public class ResourceWrapperNative extends ResourceWrapper {
       return ElementKind.DataType;
     } else if (!v.isResource()) {
       return ElementKind.BackboneElement;
-    } else if (parent == null) {
-      return ElementKind.IndependentResource;
     } else if ("Bundle.entry".equals(fhirType()) && "resource".equals(p.getName())) {
       return ElementKind.BundleEntry;
     } else if ("Bundle".equals(fhirType()) && "outcome".equals(p.getName())) {
@@ -159,7 +157,7 @@ public class ResourceWrapperNative extends ResourceWrapper {
           r.getText().getDiv().getChildNodes().removeIf(c -> !"div".equals(c.getName()) || !c.hasAttribute("xml:lang"));
         }
         markLanguage(x, locale);
-        r.getText().getDiv().getChildNodes().add(x);
+        r.getText().getDiv().addChildNode(x);
       } else {
         if (!x.hasAttribute("xmlns"))
           x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
