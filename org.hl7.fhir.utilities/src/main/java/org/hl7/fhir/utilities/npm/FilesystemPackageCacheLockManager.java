@@ -65,24 +65,35 @@ public class FilesystemPackageCacheLockManager {
     }
 
     public <T> T doReadWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> f) throws IOException {
-         lock.readLock().lock();
         cacheLock.getLock().readLock().lock();
+        lock.readLock().lock();
 
          T result = null;
         try {
           result = f.get();
         } finally {
          // fileLock.release();
-          cacheLock.getLock().readLock().unlock();
           lock.readLock().unlock();
+          cacheLock.getLock().readLock().unlock();
         }
         return result;
       //}
     }
 
     public <T> T doWriteWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> f) throws IOException {
-        cacheLock.getLock().readLock().lock();
+        cacheLock.getLock().writeLock().lock();
         lock.writeLock().lock();
+
+
+      if (!lockFile.isFile()) {
+        try {
+          System.out.println("Initializing lock file: " + lockFile.getName() + " Thread: " + Thread.currentThread().getId());
+          TextFile.stringToFile("", lockFile);
+        } catch (IOException e) {
+          e.printStackTrace();
+          return null;
+        }
+      }
         //try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
         //final FileLock fileLock = channel.lock();
         T result = null;
@@ -90,12 +101,16 @@ public class FilesystemPackageCacheLockManager {
           result = f.get();
         } finally {
           //fileLock.release();
+          if (!lockFile.delete()) {
+            System.out.println("Can't delete lock file: " + lockFile.getName() + " Thread: " + Thread.currentThread().getId());
+            lockFile.deleteOnExit();
+          } else {
+            System.out.println("Deleted lock file: " + lockFile.getName() + " Thread: " + Thread.currentThread().getId());
+          }
           lock.writeLock().unlock();
-          cacheLock.getLock().readLock().unlock();
+          cacheLock.getLock().writeLock().unlock();
         }
-        if (!lockFile.delete()) {
-          lockFile.deleteOnExit();
-        }
+
 
         return result;
       //}
@@ -108,19 +123,7 @@ public class FilesystemPackageCacheLockManager {
 
   public synchronized PackageLock getPackageLock(String packageName) throws IOException {
     File lockFile = new File(Utilities.path(cacheFolder.getAbsolutePath(), packageName + ".lock"));
-
-    PackageLock packageLock = packageLocks.computeIfAbsent(lockFile, (k) -> {
-      if (!lockFile.isFile()) {
-        try {
-          TextFile.stringToFile("", lockFile);
-        } catch (IOException e) {
-          e.printStackTrace();
-          return null;
-        }
-      }
-      return new PackageLock(k, new ReentrantReadWriteLock());
-    });
-    return packageLock;
+    return packageLocks.computeIfAbsent(lockFile, (k) -> new PackageLock(k, new ReentrantReadWriteLock()));
   }
 
 

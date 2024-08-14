@@ -193,12 +193,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     try {
       this.cacheFolderLockManager = cacheFolderLockManagers.computeIfAbsent(cacheFolder, k -> {
         try {
+          System.out.println("Computing cacheFolderLockManager for " + k.getAbsolutePath());
           return new FilesystemPackageCacheLockManager(k);
         } catch (IOException e) {
           throw new RuntimeException(e);
         }
 
       });
+      System.out.println("cacheFolderLockManagers.size()=" + cacheFolderLockManagers.size());
     } catch (RuntimeException e) {
       if (e.getCause() instanceof IOException) {
         throw (IOException) e.getCause();
@@ -223,20 +225,22 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    */
   protected void prepareCacheFolder() throws IOException {
     cacheFolderLockManager.getCacheLock().doWriteWithLock(() -> {
-      System.out.println(">>> prepareCacheFolder");
+      System.out.println(">>> prepareCacheFolder"+ " Thread: " + Thread.currentThread().getId());
 
       if (!(cacheFolder.exists())) {
-        System.out.println(">>> cache folder does not exist. Creating.");
+        System.out.println(">>> cache folder does not exist. Creating." + " Thread: " + Thread.currentThread().getId());
         Utilities.createDirectory(cacheFolder.getAbsolutePath());
         createIniFile();
       } else {
         if (!isCacheFolderValid()) {
-          System.out.println(">>> cache folder is not valid. Clearing and recreating.");
+          System.out.println(">>> cache folder is not valid. Clearing and recreating."+ " Thread: " + Thread.currentThread().getId());
           clearCache();
           createIniFile();
+          System.out.println(">>> cache folder recreated."+ " Thread: " + Thread.currentThread().getId());
         } else {
-          System.out.println(">>> cache folder is valid. deleting old temp.");
+          System.out.println(">>> cache folder is valid. deleting old temp."+ " Thread: " + Thread.currentThread().getId());
           deleteOldTempDirectories();
+          System.out.println(">>> old temps deleted."+ " Thread: " + Thread.currentThread().getId());
         }
       }
       return null;
@@ -260,7 +264,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private void deleteOldTempDirectories() throws IOException {
     for (File f : cacheFolder.listFiles()) {
       if (f.isDirectory() && Utilities.isValidUUID(f.getName())) {
-        System.out.println(">>> clearDirectory: " + f.getAbsolutePath());
+        System.out.println(">>> clear temp directory : " + f.getAbsolutePath() + " Thread: " + Thread.currentThread().getId());
         Utilities.clearDirectory(f.getAbsolutePath());
         f.delete();
       }
@@ -305,10 +309,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private void clearCache() throws IOException {
-    System.out.println(">>> clearCache");
+    System.out.println(">>> clearCache " + " Thread: " + Thread.currentThread().getId());
     for (File f : cacheFolder.listFiles()) {
       if (f.isDirectory()) {
-        //FIXME lock the whole packages directory
         Utilities.clearDirectory(f.getAbsolutePath());
         try {
           FileUtils.deleteDirectory(f);
@@ -320,8 +323,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           }
         }
 
-      } else if (!f.getName().equals("packages.ini"))
+      } else if (!f.getName().equals("packages.ini")) {
         FileUtils.forceDelete(f);
+      }
+
     }
   }
 
@@ -426,8 +431,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    */
   public void clear() throws IOException {
     this.cacheFolderLockManager.getCacheLock().doWriteWithLock(() -> {
-        clearCache();
-        return null;
+      System.out.println(">>> start write lock for cache clear Thread: " + Thread.currentThread().getId());
+      clearCache();
+      System.out.println(">>> end write lock for cache clear Thread: " + Thread.currentThread().getId());
+      return null;
       });
   }
 
@@ -442,12 +449,16 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    */
   public void removePackage(String id, String ver) throws IOException {
     cacheFolderLockManager.getPackageLock(id + "#" + ver).doWriteWithLock(() -> {
+      System.out.println(">>> start write lock for " + id + "#" + ver + " delete package Thread: " + Thread.currentThread().getId());
+
       String f = Utilities.path(cacheFolder, id + "#" + ver);
       File ff = ManagedFileAccess.file(f);
       if (ff.exists()) {
         Utilities.clearDirectory(f);
         ff.delete();
       }
+      System.out.println(">>> end write lock for " + id + "#" + ver + " delete package Thread: " + Thread.currentThread().getId());
+
       return null;
     });
   }
@@ -481,7 +492,26 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     String foundPackageFolder = findPackageFolder(id, version);
     if (foundPackageFolder != null) {
-      return cacheFolderLockManager.getPackageLock(foundPackageFolder).doReadWithLock(() -> loadPackageInfo(Utilities.path(cacheFolder, foundPackageFolder)));
+      NpmPackage foundPackage = cacheFolderLockManager.getPackageLock(foundPackageFolder).doReadWithLock(() -> {
+        System.out.println(">>> start read lock for " + id + "#" + version + " cache only Thread: " + Thread.currentThread().getId());
+
+        String path = Utilities.path(cacheFolder, foundPackageFolder);
+        File directory = ManagedFileAccess.file(path);
+
+        /* Check if the directory still exists now that we have a read lock. findPackageFolder does no locking in order
+        to avoid locking every potential package directory, so it's possible that a package deletion has occurred.
+        * */
+        if (!directory.exists()) {
+          return null;
+        }
+        NpmPackage npmPackage = loadPackageInfo(path);
+        System.out.println(">>> end read lock for " + id + "#" + version + " cache only Thread: " + Thread.currentThread().getId());
+
+        return npmPackage;
+      });
+      if (foundPackage != null) {
+        return foundPackage;
+      }
     }
     if ("dev".equals(version))
       return loadPackageFromCacheOnly(id, "current");
@@ -517,6 +547,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public NpmPackage addPackageToCache(final String id, final String version, final InputStream packageTgzInputStream, final String sourceDesc) throws IOException {
     checkValidVersionString(version, id);
     return cacheFolderLockManager.getPackageLock(id + "#" + version).doWriteWithLock(() -> {
+      System.out.println(">>> start write lock for " + id + "#" + version + " Thread: " + Thread.currentThread().getId());
+
       String uuid = UUID.randomUUID().toString().toLowerCase();
       String tempDir = Utilities.path(cacheFolder, uuid);
 
@@ -532,7 +564,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       }
 
 
-      System.out.println(">>> start write lock for " + id + "#" + version);
       NpmPackage pck = null;
       String packRoot = Utilities.path(cacheFolder, id + "#" + version);
       try {
@@ -577,7 +608,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
         throw e;
       }
-      System.out.println(">>> end write lock for " + id + "#" + version);
+      System.out.println(">>> end write lock for " + id + "#" + version + " Thread: " + Thread.currentThread().getId());
       return pck;
     });
   }

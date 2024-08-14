@@ -9,12 +9,14 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
@@ -41,12 +43,7 @@ public class FilesystemPackageManagerTests {
     new PackageServer(DUMMY_URL_4)
   );
 
-  public static Stream<Arguments> packageCacheMultiThreadTestParams() {
-    return Stream.of(
-      Arguments.of(100, 1),
-      Arguments.of(10, 10),
-      Arguments.of(100, 10));
-  }
+
 
   @Test
   public void testDefaultServers() throws IOException {
@@ -114,6 +111,20 @@ public class FilesystemPackageManagerTests {
     assertEquals( System.getenv("ProgramData") + "\\.fhir\\packages", folder.getAbsolutePath());
   }
 
+  /**
+    We repeat the same tests multiple times here, as the order of operations is random, and observed edge cases have
+    been rare.
+   */
+  public static Stream<Arguments> packageCacheMultiThreadTestParams() {
+    List<Arguments> params = new ArrayList<>();
+    for (int i = 0; i < 4; i++) {
+      params.add(Arguments.of(100, 1));
+      params.add(Arguments.of(10,10));
+      params.add(Arguments.of(100, 10));
+    }
+    return params.stream();
+  }
+
   @MethodSource("packageCacheMultiThreadTestParams")
   @ParameterizedTest
   public void packageCacheMultiThreadTest(final int threadTotal, final int packageCacheManagerTotal) throws IOException {
@@ -123,11 +134,13 @@ public class FilesystemPackageManagerTests {
     Random rand = new Random();
 
     final AtomicInteger totalSuccessful = new AtomicInteger();
+    final ConcurrentHashMap successfulThreads = new ConcurrentHashMap();
     List<Thread> threads = new ArrayList<>();
     for (int i = 0; i < threadTotal; i++) {
       final int index = i;
       Thread t = new Thread(() -> {
         try {
+          System.out.println("Thread #" + index + ": " + Thread.currentThread().getId() + " started");
           final int randomPCM = rand.nextInt(packageCacheManagerTotal);
           final int randomOperation = rand.nextInt(4);
           if (packageCacheManagers[randomPCM] == null) {
@@ -144,10 +157,11 @@ public class FilesystemPackageManagerTests {
             pcm.removePackage("example.fhir.uv.myig", "1.2.3");
           }
           totalSuccessful.incrementAndGet();
-          System.out.println("Thread " + index + " completed");
+          successfulThreads.put(Thread.currentThread().getId(), index);
+          System.out.println("Thread #" + index + ": " + Thread.currentThread().getId() + " completed");
         } catch (Exception e) {
           e.printStackTrace();
-          System.err.println("Thread " + index + " failed");
+          System.err.println("Thread #" + index + ": " + Thread.currentThread().getId() + " failed");
         }
       });
       t.start();
@@ -160,6 +174,17 @@ public class FilesystemPackageManagerTests {
 
       }
     });
-    assertEquals(threadTotal, totalSuccessful.get());
+
+    printUnsuccessfulThreads(successfulThreads, threads);
+    assertEquals(threadTotal, totalSuccessful.get(), "Not all threads were successful.");
+
+  }
+
+  private void printUnsuccessfulThreads(final ConcurrentHashMap successfulThreads, List<Thread> threads) {
+    for (Thread t : threads) {
+      if (!successfulThreads.containsKey(t.getId())) {
+        System.out.println("Thread #" + t.getId() + " failed");
+      }
+    }
   }
 }
