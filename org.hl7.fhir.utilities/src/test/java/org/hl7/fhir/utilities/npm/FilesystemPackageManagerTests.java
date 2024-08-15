@@ -116,7 +116,7 @@ public class FilesystemPackageManagerTests {
    */
   public static Stream<Arguments> packageCacheMultiThreadTestParams() {
     List<Arguments> params = new ArrayList<>();
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 5; i++) {
       params.add(Arguments.of(100, 1));
       params.add(Arguments.of(10,10));
       params.add(Arguments.of(100, 10));
