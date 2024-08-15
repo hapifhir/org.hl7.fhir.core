@@ -318,17 +318,11 @@ class ValidationServiceTests {
 
 
   final String[] multithreadTestPackages = {
-    /*"hl7.fhir.us.core#3.1.1",
+    "hl7.fhir.us.core#3.1.1",
     "hl7.fhir.us.core#4.0.0",
     "hl7.fhir.us.core#5.0.1",
     "hl7.fhir.us.core#6.1.0",
-    "hl7.fhir.us.core#7.0.0"*.
-     */
-    "/Users/david.otasek/IN/2024-08-06-us-core-package-kaboom/us-core-3-1-1.tgz",
-    "/Users/david.otasek/IN/2024-08-06-us-core-package-kaboom/us-core-4-0-0.tgz",
-    "/Users/david.otasek/IN/2024-08-06-us-core-package-kaboom/us-core-5-0-1.tgz",
-    "/Users/david.otasek/IN/2024-08-06-us-core-package-kaboom/us-core-6-1-0.tgz",
-    "/Users/david.otasek/IN/2024-08-06-us-core-package-kaboom/us-core-7-0-0.tgz"
+    "hl7.fhir.us.core#7.0.0"
   };
 
   @Test
@@ -392,22 +386,10 @@ class ValidationServiceTests {
           if (!VersionUtilities.isR5Ver(validationEngine.getContext().getVersion())) {
             igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.fhir.uv.extensions", false);
           }
-          //validationEngine.getContext().setLogger(new SystemOutLoggingService(false));
+
           for (String src : igs) {
             igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), src, cliContext.isRecursive());
           }
-
-          /*
-          myService.buildValidationEngine( new CliContext().setTxServer(null).setIgs(List.of(pckage)),
-            definitions, new TimeTracker());
-*/
-          /*
-          myService.initializeValidator(
-            new CliContext().setTxServer(null).setIgs(List.of(pckage)),
-            "hl7.fhir.r4.core",
-            new TimeTracker(),
-            null
-          );*/
 
           totalSuccessful.incrementAndGet();
           System.out.println("Thread " + index + " completed");
