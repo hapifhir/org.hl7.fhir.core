@@ -9,7 +9,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -52,6 +55,68 @@ public class FilesystemPackageManagerLockTests {
       assertThat(packageLock.getLockFile()).doesNotExist();
       return null;
     });
+  }
+
+  @Test void testSinglePackageWriteMultiPackageRead() throws IOException {
+    final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
+    AtomicInteger writeCounter = new AtomicInteger(0);
+
+    AtomicInteger readCounter = new AtomicInteger(0);
+    List<Thread> threadList = new ArrayList<>();
+
+    AtomicInteger maxReadThreads = new AtomicInteger();
+
+    for (int i = 0; i < 10; i++) {
+     threadList.add(new Thread(() -> {
+        try {
+          packageLock.doWriteWithLock(() -> {
+            int writeCount = writeCounter.incrementAndGet();
+            assertThat(writeCount).isEqualTo(1);
+            writeCounter.decrementAndGet();
+            return null;
+          });
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      }));
+    }
+
+    for (int i = 0; i < 10; i++) {
+      threadList.add(new Thread(() -> {
+        try {
+          packageLock.doReadWithLock(() -> {
+            int readCount = readCounter.incrementAndGet();
+            try {
+              Thread.sleep(100);
+            } catch (InterruptedException e) {
+              throw new RuntimeException(e);
+            }
+            assertThat(readCount).isGreaterThan(0);
+            if (readCount > maxReadThreads.get()) {
+              maxReadThreads.set(readCount);
+            }
+            readCounter.decrementAndGet();
+            return null;
+          });
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      }));
+    }
+
+    for (Thread thread: threadList) {
+      thread.start();
+    }
+
+    for (Thread thread: threadList) {
+      try {
+        thread.join();
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+    }
+
+    assertThat(maxReadThreads.get()).isGreaterThan(1);
   }
 
   @Test

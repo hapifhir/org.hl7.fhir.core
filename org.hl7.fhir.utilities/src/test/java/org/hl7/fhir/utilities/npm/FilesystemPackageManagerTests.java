@@ -112,12 +112,11 @@ public class FilesystemPackageManagerTests {
   }
 
   /**
-    We repeat the same tests multiple times here, as the order of operations is random, and observed edge cases have
-    been rare.
+    We repeat the same tests multiple times here, in order to catch very rare edge cases.
    */
   public static Stream<Arguments> packageCacheMultiThreadTestParams() {
     List<Arguments> params = new ArrayList<>();
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 100; i++) {
       params.add(Arguments.of(100, 1));
       params.add(Arguments.of(10,10));
       params.add(Arguments.of(100, 10));
