@@ -65,25 +65,31 @@ public class FilesystemPackageCacheLockManager {
     }
 
     public <T> T doReadWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> f) throws IOException {
-        cacheLock.getLock().readLock().lock();
-        lock.readLock().lock();
+      cacheLock.getLock().readLock().lock();
+      lock.readLock().lock();
 
-         T result = null;
-        try {
-          result = f.get();
-        } finally {
-         // fileLock.release();
-          lock.readLock().unlock();
-          cacheLock.getLock().readLock().unlock();
-        }
-        return result;
-      //}
+      try {
+      for (int i = 0; i < 100 && lockFile.isFile(); i++) {
+          Thread.sleep(100); //
+      }
+      } catch (InterruptedException e) {
+        throw new IOException("Thread interrupted while waiting for lock", e);
+      }
+
+      T result = null;
+      try {
+        result = f.get();
+      } finally {
+        lock.readLock().unlock();
+        cacheLock.getLock().readLock().unlock();
+      }
+      return result;
+
     }
 
     public <T> T doWriteWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> f) throws IOException {
-        cacheLock.getLock().writeLock().lock();
-        lock.writeLock().lock();
-
+      cacheLock.getLock().writeLock().lock();
+      lock.writeLock().lock();
 
       if (!lockFile.isFile()) {
         try {
@@ -94,13 +100,19 @@ public class FilesystemPackageCacheLockManager {
           return null;
         }
       }
-        //try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
-        //final FileLock fileLock = channel.lock();
+      try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
+        FileLock fileLock = null;
+        while (fileLock == null) {
+          fileLock = channel.tryLock(0, Long.MAX_VALUE, true);
+          if (fileLock == null) {
+            Thread.sleep(100); // Wait and retry
+          }
+        }
         T result = null;
         try {
           result = f.get();
         } finally {
-          //fileLock.release();
+          fileLock.release();
           if (!lockFile.delete()) {
             System.out.println("Can't delete lock file: " + lockFile.getName() + " Thread: " + Thread.currentThread().getId());
             lockFile.deleteOnExit();
@@ -110,10 +122,11 @@ public class FilesystemPackageCacheLockManager {
           lock.writeLock().unlock();
           cacheLock.getLock().writeLock().unlock();
         }
-
-
         return result;
-      //}
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        throw new IOException("Thread interrupted while waiting for lock", e);
+      }
     }
   }
 
