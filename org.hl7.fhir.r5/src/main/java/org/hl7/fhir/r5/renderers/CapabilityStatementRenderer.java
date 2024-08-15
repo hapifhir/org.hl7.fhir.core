@@ -406,6 +406,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       x.h(2,"document").addText((context.formatPhrase(RenderingContext.CAPABILITY_DOCUMENT_CAPS)));
       addDocumentTable(status, res, x, conf, nextLevel);
     }
+
+    
     if (multExpectationsPresent) {
       addWarningPanel(x,"⹋⹋ - " + context.formatPhrase(RenderingContext.CAPABILITY_MULT_EXT));
     }
