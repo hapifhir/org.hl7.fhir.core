@@ -1049,7 +1049,7 @@ public class Utilities {
         b.append("\\\\");
       else if (c == ' ')
         b.append(" ");
-      else if (isWhitespace(c)) {
+      else if (c == '\r' || c == '\n') { // was isWhitespace(c), but this escapes unicode characters, and seems unnecessary
         b.append("\\u"+Utilities.padLeft(Integer.toHexString(c), '0', 4));
       } else if (((int) c) < 32)
         b.append("\\u" + Utilities.padLeft(Integer.toHexString(c), '0', 4));
