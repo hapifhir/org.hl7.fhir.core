@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -154,13 +155,14 @@ public class BundleRenderer extends ResourceRenderer {
     ResourceWrapper comp = (ResourceWrapper) entries.get(0).child("resource");
     
     XhtmlNode sum = renderResourceTechDetails(b, docSection(x, "Document Details"), comp.primitiveValueMN("title", "name"));
+    List<ResourceWrapper> subjectList = comp.children("subject");
     if (sum != null) {
       XhtmlNode p = sum.para();
       p.startScript("doc");
       renderDataType(status, p.param("status"), comp.child("status"));
       renderDataType(status, p.param("date"), comp.child("date"));
-      renderDataType(status, p.param("author"), comp.child("author"));
-      renderDataType(status, p.param("subject"), comp.child("subject"));
+      renderDataTypes(status, p.param("author"), comp.children("author"));
+      renderDataTypes(status, p.param("subject"), subjectList);
       if (comp.has("encounter")) {
         renderDataType(status, p.param("encounter"), comp.child("encounter"));
         p.paramValue("has-encounter", "true");
@@ -174,19 +176,23 @@ public class BundleRenderer extends ResourceRenderer {
       x.hr();
     }
 
-    ResourceWrapper subject = resolveReference(entries, comp.child("subject"));
-    XhtmlNode sec = docSection(x, "Document Subject");
-    if (subject != null) {
-      if (subject.hasNarrative()) {
-        sec.addChildren(subject.getNarrative());        
+    List<ResourceWrapper> subjects = resolveReferences(entries, subjectList);
+    int i = 0;
+    for (ResourceWrapper subject : subjects) {
+      XhtmlNode sec = docSection(x, "Document Subject");
+      if (subject != null) {
+        if (subject.hasNarrative()) {
+          sec.addChildren(subject.getNarrative());        
+        } else {
+          RendererFactory.factory(subject, context).buildNarrative(status, sec, subject);
+        }
       } else {
-        RendererFactory.factory(subject, context).buildNarrative(status, sec, subject);
+        sec.para().b().tx("Unable to resolve subject '"+displayReference(subjects.get(i))+"'");
       }
-    } else {
-      sec.para().b().tx("Unable to resolve subject '"+displayReference(comp.child("subject"))+"'");
+      i++;
     }
     x.hr();
-    sec = docSection(x, "Document Content");
+    XhtmlNode sec = docSection(x, "Document Content");
     if (comp.hasNarrative()) {
       sec.addChildren(comp.getNarrative());
       sec.hr();
@@ -195,6 +201,16 @@ public class BundleRenderer extends ResourceRenderer {
     for (ResourceWrapper section : sections) {
       addSection(status, sec, section, 2, false);
     }
+  }
+
+  private void renderDataTypes(RenderingStatus status, XhtmlNode param, List<ResourceWrapper> children) throws FHIRFormatError, DefinitionException, IOException {
+    if (children != null && !children.isEmpty()) {
+      boolean first = true;
+      for (ResourceWrapper child : children) {
+        if (first) {first = false; } else {param.tx(", "); }
+        renderDataType(status, param, child);
+      }
+    } 
   }
 
   private XhtmlNode docSection(XhtmlNode x, String name) {
@@ -231,6 +247,28 @@ public class BundleRenderer extends ResourceRenderer {
     // children
   }
 
+  private List<ResourceWrapper> resolveReferences(List<ResourceWrapper> entries, List<ResourceWrapper> baselist) throws UnsupportedEncodingException, FHIRException, IOException {
+    List<ResourceWrapper> list = new ArrayList<>();
+    if (baselist != null) {
+      for (ResourceWrapper base : baselist) {
+        ResourceWrapper res = null;
+        ResourceWrapper prop = base.child("reference");
+        if (prop != null && prop.hasPrimitiveValue()) {
+          for (ResourceWrapper entry : entries) {
+            if (entry.has("fullUrl")) {
+              String fu = entry.primitiveValue("fullUrl");
+              if (prop.primitiveValue().equals(fu)) {
+                res = entry.child("resource");
+              }
+            }
+          }
+          list.add(res);
+        }
+      }
+    }
+    return list;
+  }
+  
   private ResourceWrapper resolveReference(List<ResourceWrapper> entries, ResourceWrapper base) throws UnsupportedEncodingException, FHIRException, IOException {
     if (base == null) {
       return null;

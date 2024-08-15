@@ -274,6 +274,7 @@ public class RenderingContext extends RenderingI18nContext {
   private boolean shortPatientForm;
   private String uniqueLocalPrefix;
   private Set<String> anchors = new HashSet<>();
+  private boolean unknownLocalReferencesNotLinks;
   
   /**
    * 
@@ -342,6 +343,7 @@ public class RenderingContext extends RenderingI18nContext {
     if (copyAnchors) {
        res.anchors = anchors;
     }
+    res.unknownLocalReferencesNotLinks = unknownLocalReferencesNotLinks;
     return res;
   }
   
@@ -1022,5 +1024,13 @@ public class RenderingContext extends RenderingI18nContext {
 
   public void clearAnchors() {
     anchors.clear();
+  }
+
+  public boolean isUnknownLocalReferencesNotLinks() {
+    return unknownLocalReferencesNotLinks;
+  }
+
+  public void setUnknownLocalReferencesNotLinks(boolean unknownLocalReferencesNotLinks) {
+    this.unknownLocalReferencesNotLinks = unknownLocalReferencesNotLinks;
   }
 }
