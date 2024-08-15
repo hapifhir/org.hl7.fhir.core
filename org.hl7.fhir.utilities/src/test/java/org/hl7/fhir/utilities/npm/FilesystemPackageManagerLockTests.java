@@ -14,19 +14,19 @@ import java.util.concurrent.TimeUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class FilesystemPackageCacheLockManagerTests {
+public class FilesystemPackageManagerLockTests {
 
   public static final String DUMMY_PACKAGE = "dummy#1.2.3";
   String cachePath;
   File cacheDirectory;
-  FilesystemPackageCacheLockManager filesystemPackageCacheLockManager;
+  FilesystemPackageCacheManagerLocks filesystemPackageCacheLockManager;
 
 
   @BeforeEach
   public void setUp() throws IOException {
     cachePath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
     cacheDirectory = new File(cachePath);
-    filesystemPackageCacheLockManager = new FilesystemPackageCacheLockManager(cacheDirectory);
+    filesystemPackageCacheLockManager = new FilesystemPackageCacheManagerLocks(cacheDirectory);
 
   }
 
@@ -41,7 +41,7 @@ public class FilesystemPackageCacheLockManagerTests {
     });
 
 
-    final  FilesystemPackageCacheLockManager.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
+    final  FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
     packageLock.doWriteWithLock(() -> {
       assertThat(packageLock.getLockFile()).exists();
       return null;
@@ -56,8 +56,8 @@ public class FilesystemPackageCacheLockManagerTests {
 
   @Test
   public void testReadWhenLockedByFileTimesOut() throws IOException {
-    FilesystemPackageCacheLockManager shorterTimeoutManager = filesystemPackageCacheLockManager.withLockTimeout(3L, TimeUnit.SECONDS);
-    final FilesystemPackageCacheLockManager.PackageLock packageLock = shorterTimeoutManager.getPackageLock(DUMMY_PACKAGE);
+    FilesystemPackageCacheManagerLocks shorterTimeoutManager = filesystemPackageCacheLockManager.withLockTimeout(3L, TimeUnit.SECONDS);
+    final FilesystemPackageCacheManagerLocks.PackageLock packageLock = shorterTimeoutManager.getPackageLock(DUMMY_PACKAGE);
     File lockFile = createPackageLockFile();
 
     Exception exception = assertThrows(IOException.class, () -> {
@@ -73,8 +73,8 @@ public class FilesystemPackageCacheLockManagerTests {
 
   @Test
   public void testReadWhenLockFileIsDeleted() throws IOException {
-    FilesystemPackageCacheLockManager shorterTimeoutManager = filesystemPackageCacheLockManager.withLockTimeout(5L, TimeUnit.SECONDS);
-    final FilesystemPackageCacheLockManager.PackageLock packageLock = shorterTimeoutManager.getPackageLock(DUMMY_PACKAGE);
+    FilesystemPackageCacheManagerLocks shorterTimeoutManager = filesystemPackageCacheLockManager.withLockTimeout(5L, TimeUnit.SECONDS);
+    final FilesystemPackageCacheManagerLocks.PackageLock packageLock = shorterTimeoutManager.getPackageLock(DUMMY_PACKAGE);
     File lockFile = createPackageLockFile();
 
     Thread t = new Thread(() -> {

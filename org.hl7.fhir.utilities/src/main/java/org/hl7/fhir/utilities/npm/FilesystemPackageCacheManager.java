@@ -2,7 +2,6 @@ package org.hl7.fhir.utilities.npm;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 
@@ -87,9 +85,7 @@ import org.slf4j.LoggerFactory;
  */
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
 
-  private static final ConcurrentHashMap<File, FilesystemPackageCacheLockManager> cacheFolderLockManagers = new ConcurrentHashMap<>();
-
-  private final FilesystemPackageCacheLockManager cacheFolderLockManager;
+  private final FilesystemPackageCacheManagerLocks locks;
 
   // When running in testing mode, some packages are provided from the test case repository rather than by the normal means
   // the PackageProvider is responsible for this. if no package provider is defined, or it declines to handle the package, 
@@ -191,16 +187,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     this.cacheFolder = cacheFolder;
 
     try {
-      this.cacheFolderLockManager = cacheFolderLockManagers.computeIfAbsent(cacheFolder, k -> {
-        try {
-          System.out.println("Computing cacheFolderLockManager for " + k.getAbsolutePath());
-          return new FilesystemPackageCacheLockManager(k);
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-
-      });
-      System.out.println("cacheFolderLockManagers.size()=" + cacheFolderLockManagers.size());
+      this.locks = FilesystemPackageCacheManagerLocks.getFilesystemPackageCacheManagerLocks(cacheFolder);
     } catch (RuntimeException e) {
       if (e.getCause() instanceof IOException) {
         throw (IOException) e.getCause();
@@ -224,7 +211,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * @throws IOException
    */
   protected void prepareCacheFolder() throws IOException {
-    cacheFolderLockManager.getCacheLock().doWriteWithLock(() -> {
+    locks.getCacheLock().doWriteWithLock(() -> {
       System.out.println(">>> prepareCacheFolder"+ " Thread: " + Thread.currentThread().getId());
 
       if (!(cacheFolder.exists())) {
@@ -430,7 +417,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * @throws IOException
    */
   public void clear() throws IOException {
-    this.cacheFolderLockManager.getCacheLock().doWriteWithLock(() -> {
+    this.locks.getCacheLock().doWriteWithLock(() -> {
       System.out.println(">>> start write lock for cache clear Thread: " + Thread.currentThread().getId());
       clearCache();
       System.out.println(">>> end write lock for cache clear Thread: " + Thread.currentThread().getId());
@@ -448,7 +435,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * @throws IOException
    */
   public void removePackage(String id, String ver) throws IOException {
-    cacheFolderLockManager.getPackageLock(id + "#" + ver).doWriteWithLock(() -> {
+    locks.getPackageLock(id + "#" + ver).doWriteWithLock(() -> {
       System.out.println(">>> start write lock for " + id + "#" + ver + " delete package Thread: " + Thread.currentThread().getId());
 
       String f = Utilities.path(cacheFolder, id + "#" + ver);
@@ -492,7 +479,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     String foundPackageFolder = findPackageFolder(id, version);
     if (foundPackageFolder != null) {
-      NpmPackage foundPackage = cacheFolderLockManager.getPackageLock(foundPackageFolder).doReadWithLock(() -> {
+      NpmPackage foundPackage = locks.getPackageLock(foundPackageFolder).doReadWithLock(() -> {
         System.out.println(">>> start read lock for " + id + "#" + version + " cache only Thread: " + Thread.currentThread().getId());
 
         String path = Utilities.path(cacheFolder, foundPackageFolder);
@@ -546,7 +533,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   @Override
   public NpmPackage addPackageToCache(final String id, final String version, final InputStream packageTgzInputStream, final String sourceDesc) throws IOException {
     checkValidVersionString(version, id);
-    return cacheFolderLockManager.getPackageLock(id + "#" + version).doWriteWithLock(() -> {
+    return locks.getPackageLock(id + "#" + version).doWriteWithLock(() -> {
       System.out.println(">>> start write lock for " + id + "#" + version + " Thread: " + Thread.currentThread().getId());
 
       String uuid = UUID.randomUUID().toString().toLowerCase();
