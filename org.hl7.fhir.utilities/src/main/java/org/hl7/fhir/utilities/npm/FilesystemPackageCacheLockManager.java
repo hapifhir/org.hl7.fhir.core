@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities.npm;
 
+import lombok.Getter;
+import lombok.With;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -8,17 +10,40 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.nio.file.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class FilesystemPackageCacheLockManager {
 
+  @Getter
   private final CacheLock cacheLock = new CacheLock();
 
   private final ConcurrentHashMap<File, PackageLock> packageLocks = new ConcurrentHashMap<>();
 
   private final File cacheFolder;
+
+  private final Long lockTimeoutTime;
+
+  private final TimeUnit lockTimeoutTimeUnit;
+
+
+  public FilesystemPackageCacheLockManager(File cacheFolder) throws IOException {
+    this(cacheFolder, 60L, TimeUnit.SECONDS);
+  }
+
+  private FilesystemPackageCacheLockManager(File cacheFolder, Long lockTimeoutTime, TimeUnit lockTimeoutTimeUnit) throws IOException {
+    this.cacheFolder = cacheFolder;
+    this.lockTimeoutTime = lockTimeoutTime;
+    this.lockTimeoutTimeUnit = lockTimeoutTimeUnit;
+  }
+
+  public FilesystemPackageCacheLockManager withLockTimeout(Long lockTimeoutTime, TimeUnit lockTimeoutTimeUnit) throws IOException {
+    return new FilesystemPackageCacheLockManager(cacheFolder, lockTimeoutTime, lockTimeoutTimeUnit);
+  }
 
   public class CacheLock {
     private final ReadWriteLock lock;
@@ -43,11 +68,8 @@ public class FilesystemPackageCacheLockManager {
     }
   }
 
-  public CacheLock getCacheLock() {
-    return cacheLock;
-  }
-
   public class PackageLock {
+    @Getter
     private final File lockFile;
     private final ReadWriteLock lock;
 
@@ -56,25 +78,45 @@ public class FilesystemPackageCacheLockManager {
       this.lock = lock;
     }
 
-    public File getLockFile() {
-      return lockFile;
+    private void checkForLockFileWaitForDeleteIfExists(File lockFile) throws IOException {
+      if (!lockFile.exists()) {
+        return;
+      }
+      System.out.println("Waiting for lock file to be deleted: " + lockFile.getName() + " Thread: " + Thread.currentThread().getId());
+     // boolean fileDeleted = false;
+      try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
+        Path dir = lockFile.getParentFile().toPath();
+        dir.register(watchService, StandardWatchEventKinds.ENTRY_DELETE);
+
+          WatchKey key = watchService.poll(lockTimeoutTime, lockTimeoutTimeUnit);
+          if (key == null && lockFile.exists()) {
+            throw new TimeoutException("Timeout waiting for lock file deletion: " + lockFile.getName());
+          }
+          for (WatchEvent<?> event : key.pollEvents()) {
+            WatchEvent.Kind<?> kind = event.kind();
+            if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
+              Path deletedFilePath = (Path) event.context();
+              if (deletedFilePath.toString().equals(lockFile.getName())) {
+                System.out.println("Lock file deleted: " + lockFile.getName() + " Thread: " + Thread.currentThread().getId());
+                return;
+              }
+            }
+          key.reset();
+        }
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        throw new IOException("Error reading package.", e);
+      } catch (TimeoutException e) {
+        throw new IOException("Error reading package.", e);
+      }
     }
 
-    public ReadWriteLock getLock() {
-      return lock;
-    }
 
-    public <T> T doReadWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> f) throws IOException {
+      public <T> T doReadWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> f) throws IOException {
       cacheLock.getLock().readLock().lock();
       lock.readLock().lock();
 
-      try {
-      for (int i = 0; i < 100 && lockFile.isFile(); i++) {
-          Thread.sleep(100); //
-      }
-      } catch (InterruptedException e) {
-        throw new IOException("Thread interrupted while waiting for lock", e);
-      }
+      checkForLockFileWaitForDeleteIfExists(lockFile);
 
       T result = null;
       try {
@@ -84,7 +126,6 @@ public class FilesystemPackageCacheLockManager {
         cacheLock.getLock().readLock().unlock();
       }
       return result;
-
     }
 
     public <T> T doWriteWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> f) throws IOException {
@@ -128,10 +169,6 @@ public class FilesystemPackageCacheLockManager {
         throw new IOException("Thread interrupted while waiting for lock", e);
       }
     }
-  }
-
-  public FilesystemPackageCacheLockManager(File cacheFolder) throws IOException {
-    this.cacheFolder = cacheFolder;
   }
 
   public synchronized PackageLock getPackageLock(String packageName) throws IOException {
