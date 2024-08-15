@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,6 +56,64 @@ public class FilesystemPackageManagerLockTests {
       assertThat(packageLock.getLockFile()).doesNotExist();
       return null;
     });
+  }
+
+  @Test void testNoPackageWriteOrReadWhileWholeCacheIsLocked() throws IOException, InterruptedException {
+    final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
+
+    AtomicBoolean cacheLockFinished = new AtomicBoolean(false);
+    List<Thread> threadList = new ArrayList<>();
+
+    Thread cacheThread = new Thread(() -> {
+      try {
+        filesystemPackageCacheLockManager.getCacheLock().doWriteWithLock(() -> {
+          try {
+            Thread.sleep(300);
+            cacheLockFinished.set(true);
+          } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+          }
+          return null;
+        });
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
+    cacheThread.start();
+    Thread.sleep(100);
+    for (int i = 0; i < 5; i++) {
+      threadList.add(new Thread(() -> {
+        try {
+          packageLock.doWriteWithLock(() -> {
+            assertThat(cacheLockFinished.get()).isTrue();
+            return null;
+          });
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      }));
+      threadList.add(new Thread(() -> {
+        try {
+          packageLock.doReadWithLock(() -> {
+            assertThat(cacheLockFinished.get()).isTrue();
+            return null;
+          });
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      }));
+    }
+
+    for (Thread thread: threadList) {
+      thread.start();
+    }
+    for (Thread thread: threadList) {
+      try {
+        thread.join();
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 
   @Test void testSinglePackageWriteMultiPackageRead() throws IOException {
