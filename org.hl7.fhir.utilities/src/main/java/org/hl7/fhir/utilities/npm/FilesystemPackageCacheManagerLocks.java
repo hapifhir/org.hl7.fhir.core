@@ -195,6 +195,7 @@ public class FilesystemPackageCacheManagerLocks {
           result = f.get();
         } finally {
           fileLock.release();
+          channel.close();
           if (!lockFile.delete()) {
             System.out.println("Can't delete lock file: " + lockFile.getName() + " Thread: " + Thread.currentThread().getId());
             lockFile.deleteOnExit();
