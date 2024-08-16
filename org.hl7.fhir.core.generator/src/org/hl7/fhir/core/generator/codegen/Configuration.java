@@ -11,6 +11,7 @@ import java.util.Map;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class Configuration {
   public static final SimpleDateFormat DATE_FORMAT() {
