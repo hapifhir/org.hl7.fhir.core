@@ -12,6 +12,7 @@ import org.hl7.fhir.core.generator.engine.Definitions;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class JavaExtensionsGenerator {
 
