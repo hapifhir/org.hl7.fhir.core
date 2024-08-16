@@ -62,6 +62,18 @@ public class StructureDefinitionHacker {
         }        
       }
     }
+    if (VersionUtilities.isR4Ver(version) && "http://hl7.org/fhir/StructureDefinition/ExplanationOfBenefit".equals(sd.getUrl())) {
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        if (ed.hasBinding() && "http://terminology.hl7.org/CodeSystem/processpriority".equals(ed.getBinding().getValueSet())) {
+          ed.getBinding().setValueSet("http://hl7.org/fhir/ValueSet/process-priority");
+        }
+      }
+      for (ElementDefinition ed : sd.getDifferential().getElement()) {
+        if (ed.hasBinding() && "http://terminology.hl7.org/CodeSystem/processpriority".equals(ed.getBinding().getValueSet())) {
+          ed.getBinding().setValueSet("http://hl7.org/fhir/ValueSet/process-priority");
+        }
+      }
+    }
     if (sd.getUrl().startsWith("http://hl7.org/fhir/uv/subscriptions-backport")) {
       for (ElementDefinition ed : sd.getDifferential().getElement()) {
         fixMarkdownR4BURLs(ed);
