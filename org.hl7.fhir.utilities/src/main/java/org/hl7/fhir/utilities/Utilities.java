@@ -1032,6 +1032,10 @@ public class Utilities {
 
 
   public static String escapeJson(String value) {
+    return escapeJson(value, true);
+  }
+  
+  public static String escapeJson(String value, boolean escapeUnicodeWhitespace) {
     if (value == null)
       return "";
 
@@ -1049,7 +1053,7 @@ public class Utilities {
         b.append("\\\\");
       else if (c == ' ')
         b.append(" ");
-      else if (c == '\r' || c == '\n') { // was isWhitespace(c), but this escapes unicode characters, and seems unnecessary
+      else if ((c == '\r' || c == '\n') || (isWhitespace(c) && escapeUnicodeWhitespace)) { 
         b.append("\\u"+Utilities.padLeft(Integer.toHexString(c), '0', 4));
       } else if (((int) c) < 32)
         b.append("\\u" + Utilities.padLeft(Integer.toHexString(c), '0', 4));
