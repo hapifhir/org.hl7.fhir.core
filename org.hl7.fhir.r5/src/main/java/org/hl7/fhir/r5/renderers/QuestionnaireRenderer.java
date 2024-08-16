@@ -152,6 +152,12 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
             text = v.primitiveValue("code");
           }
         }
+        if (value == null) {
+          value = "??";
+        }
+        if (text == null) {
+          text = "??";
+        }
         boolean selected = "true".equals(opt.primitiveValue("initialSelected"));
         x.option(value, text, selected);
       } 
