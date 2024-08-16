@@ -682,7 +682,7 @@ public class JsonParser {
       break;
     case STRING:
       b.append("\"");
-      b.append(Utilities.escapeJson(((JsonString) e).getValue()));
+      b.append(Utilities.escapeJson(((JsonString) e).getValue(), false));
       b.append("\"");
       break;
     default:

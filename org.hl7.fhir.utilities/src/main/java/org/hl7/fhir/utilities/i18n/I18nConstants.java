@@ -454,6 +454,8 @@ public class I18nConstants {
   public static final String NO_URL_IN_EXPAND_VALUE_SET_2 = "no_url_in_expand_value_set_2";
   public static final String NO_VALIDATOR_CONFIGURED = "No_validator_configured";
   public static final String NO_VALID_DISPLAY_FOUND = "NO_VALID_DISPLAY_FOUND";
+  public static final String NO_VALID_DISPLAY_FOUND_LANG_SOME = "NO_VALID_DISPLAY_FOUND_LANG_SOME";
+  public static final String NO_VALID_DISPLAY_FOUND_LANG_NONE = "NO_VALID_DISPLAY_FOUND_LANG_NONE";
   public static final String NO_VALUE_SET_IN_URL = "no_value_set";
   public static final String NULL_MIN = "null_min";
   public static final String OBJECT_CANNOT_BE_KEYED_ARRAY_CHILD_COUNT = "OBJECT_CANNOT_BE_KEYED_ARRAY_CHILD_COUNT";           
@@ -1105,4 +1107,5 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_XHTML_LITERAL_HREF = "TYPE_SPECIFIC_CHECKS_DT_XHTML_LITERAL_HREF";
   public static final String SM_TARGET_TYPE_UNKNOWN = "SM_TARGET_TYPE_UNKNOWN";
   public static final String XHTML_XHTML_ATTRIBUTE_XML_SPACE = "XHTML_XHTML_ATTRIBUTE_XML_SPACE";
+  public static final String VALIDATION_HL7_PUBLISHER_MULTIPLE_WGS = "VALIDATION_HL7_PUBLISHER_MULTIPLE_WGS";
 }
