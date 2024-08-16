@@ -576,7 +576,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       capExpectation = getExtValueCode(c.getExtensionByUrl(EXPECTATION));
       if (!Utilities.noString(capExpectation)) {
         lItem.addTag("strong").addText(capExpectation);
-        lItem.addText(context.formatPhrase(" " + RenderingContext.CAPABILITY_SUPP) + " ");
+        lItem.addText(" " + context.formatPhrase(RenderingContext.CAPABILITY_SUPP) + " ");
       }
       lItem.code().addText(c.getCode());
       first = false;

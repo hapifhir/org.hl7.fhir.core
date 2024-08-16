@@ -690,7 +690,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
 
   public XhtmlNode nbsp() {
-    addText("&nbsp;");
+    addText(NBSP);
     return this;
   }
 
