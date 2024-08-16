@@ -81,6 +81,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
       genSummaryTable(status, x, vs);
       List<UsedConceptMap> maps = findReleventMaps(vs);
 
+      if (context.isShowSummaryTable()) {
+        XhtmlNode h = x.h2();
+        h.addText(vs.hasTitle() ? vs.getTitle() : vs.getName());
+        addMarkdown(x, vs.getDescription());
+        if (vs.hasCopyright())
+          generateCopyright(x, r);
+      }
+
       if (vs.hasExpansion()) {
         // for now, we just accept an expansion if there is one
         generateExpansion(status, r, x, vs, false, maps);
@@ -743,12 +751,18 @@ public class ValueSetRenderer extends TerminologyRenderer {
       return "?cs-n?";
     }
     String ref = (String) cs.getUserData("filename");
-    if (ref == null)
+    if (ref == null) {
       ref = (String) cs.getWebPath();
-    if (ref == null)
+    }
+    if (ref == null && cs.hasUserData("webroot")) {
+      ref = (String) cs.getUserData("webroot");
+    }
+    if (ref == null) {
       return "?ngen-14?.html";
-    if (!ref.contains(".html"))
+    }
+    if (!ref.contains(".html")) {
       ref = ref + ".html";
+    }
     return ref.replace("\\", "/");
   }
 
@@ -1217,7 +1231,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
             ConceptSetFilterComponent f = inc.getFilter().get(i);
             if (i > 0) {
               if (i == inc.getFilter().size()-1) {
-                li.tx(" "+ context.formatPhrase(RenderingContext.VALUE_SET_AND));
+                li.tx(" "+ context.formatPhrase(RenderingContext.VALUE_SET_AND)+" ");
               } else {
                 li.tx(context.formatPhrase(RenderingContext.VALUE_SET_COMMA)+" ");
               }
@@ -1238,15 +1252,15 @@ public class ValueSetRenderer extends TerminologyRenderer {
                 else
                   href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(f.getValue());
                 wli.ah(context.prefixLocalHref(href)).addText(f.getValue());
-              } else if ("concept".equals(f.getProperty()) && inc.hasSystem()) {
+              } else if (inc.hasSystem()) {
                 wli.addText(f.getValue());
                 ValidationResult vr = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), inc.getVersion(), f.getValue(), null);
                 if (vr.isOk() && vr.getDisplay() != null) {
                   wli.tx(" ("+vr.getDisplay()+")");
                 }
-              }
-              else
+              } else {
                 wli.addText(f.getValue());
+              }
               String disp = ToolingExtensions.getDisplayHint(f);
               if (disp != null)
                 wli.tx(" ("+disp+")");

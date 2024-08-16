@@ -325,10 +325,15 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   
 
   public void render(RenderingStatus status, ResourceWrapper res, XhtmlNode x, ConceptMap cm, boolean header) throws FHIRFormatError, DefinitionException, IOException {
-    if (header) {
-      x.h2().addText(cm.getName()+" ("+cm.getUrl()+")");
-    }
 
+    if (context.isShowSummaryTable()) {
+      XhtmlNode h = x.h2();
+      h.addText(cm.hasTitle() ? cm.getTitle() : cm.getName());
+      addMarkdown(x, cm.getDescription());
+      if (cm.hasCopyright())
+        generateCopyright(x, res);
+    }
+    
     XhtmlNode p = x.para();
     p.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
     if (cm.hasSourceScope())
@@ -340,38 +345,6 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       AddVsRef(cm.getTargetScope().primitiveValue(), p, cm);
     else 
       p.tx(context.formatPhrase(RenderingContext.CONC_MAP_NOT_SPEC));
-
-    p = x.para();
-    if (cm.getExperimental())
-      p.addText(Utilities.capitalize(cm.getStatus().toString())+" "+ (context.formatPhrase(RenderingContext.CONC_MAP_NO_PROD_USE) + " "));
-    else
-      p.addText(Utilities.capitalize(cm.getStatus().toString())+". ");
-    p.tx(context.formatPhrase(RenderingContext.CONC_MAP_PUB_ON, (cm.hasDate() ? displayDataType(cm.getDateElement()) : "?ngen-10?")+" by "+cm.getPublisher()) + " ");
-    if (!cm.getContact().isEmpty()) {
-      p.tx(" (");
-      boolean firsti = true;
-      for (ContactDetail ci : cm.getContact()) {
-        if (firsti)
-          firsti = false;
-        else
-          p.tx(", ");
-        if (ci.hasName())
-          p.addText(ci.getName()+": ");
-        boolean first = true;
-        for (ContactPoint c : ci.getTelecom()) {
-          if (first)
-            first = false;
-          else
-            p.tx(", ");
-          addTelecom(p, wrapWC(res, c));
-        }
-      }
-      p.tx(")");
-    }
-    p.tx(". ");
-    p.addText(cm.getCopyright());
-    if (!Utilities.noString(cm.getDescription()))
-      addMarkdown(x, cm.getDescription());
 
     x.br();
     int gc = 0;

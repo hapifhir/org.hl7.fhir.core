@@ -102,6 +102,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CAPABILITY_PATCH_INT = "CAPABILITY_PATCH_INT";
   public static final String GENERAL_PROF = "GENERAL_PROF";
   public static final String CAPABILITY_PROF_CONF = "CAPABILITY_PROF_CONF";
+  public static final String CAPABILITY_PROF_RES_DOC = "CAPABILITY_PROF_RES_DOC";
   public static final String CAPABILITY_PROF_MAP = "CAPABILITY_PROF_MAP";
   public static final String CAPABILITY_PUB_BY = "CAPABILITY_PUB_BY";
   public static final String CAPABILITY_PUB_ON = "CAPABILITY_PUB_ON";
@@ -109,6 +110,9 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CAPABILITY_REF_PROF = "CAPABILITY_REF_PROF";
   public static final String CAPABILITY_REQ_RECOM = "CAPABILITY_REQ_RECOM";
   public static final String CAPABILITY_REST_CAPS = "CAPABILITY_REST_CAPS";
+  public static final String CAPABILITY_DOCUMENT_CAPS = "CAPABILITY_DOCUMENT_CAPS";
+  public static final String CAPABILITY_MESSAGING_CAPS = "CAPABILITY_MESSAGING_CAPS";
+  public static final String CAPABILITY_MESSAGING_CAP = "CAPABILITY_MESSAGING_CAP";
   public static final String CAPABILITY_REST_CONFIG = "CAPABILITY_REST_CONFIG";
   public static final String CAPABILITY_RES_CONF = "CAPABILITY_RES_CONF";
   public static final String CAPABILITY_RES_ENB = "CAPABILITY_RES_ENB";
@@ -129,6 +133,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CAPABILITY_SUPP_FORM = "CAPABILITY_SUPP_FORM";
   public static final String CAPABILITY_SUPP_PATCH_FORM = "CAPABILITY_SUPP_PATCH_FORM";
   public static final String CAPABILITY_SUPP_PROFS = "CAPABILITY_SUPP_PROFS";
+  public static final String CAPABILITY_SUPP_MSGS = "CAPABILITY_SUPP_MSGS";
+  public static final String CAPABILITY_ENDPOINTS = "CAPABILITY_ENDPOINTS";
   public static final String CAPABILITY_SUPP_THE = "CAPABILITY_SUPP_THE";
   public static final String CAPABILITY_SUPPS_THE = "CAPABILITY_SUPPS_THE";
   public static final String GENERAL_TYPE = "GENERAL_TYPE";

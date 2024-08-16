@@ -26,12 +26,13 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 public class ValueSetProcessBase {
 
   public enum OpIssueCode {
-    NotInVS, ThisNotInVS, InvalidCode, Display, NotFound, CodeRule, VSProcessing, InferFailed, StatusCheck, InvalidData;
+    NotInVS, ThisNotInVS, InvalidCode, Display, DisplayComment, NotFound, CodeRule, VSProcessing, InferFailed, StatusCheck, InvalidData;
     
     public String toCode() {
       switch (this) {
       case CodeRule: return "code-rule";
       case Display: return "invalid-display";
+      case DisplayComment: return "display-comment";
       case InferFailed: return "cannot-infer";
       case InvalidCode: return "invalid-code";
       case NotFound: return "not-found";
