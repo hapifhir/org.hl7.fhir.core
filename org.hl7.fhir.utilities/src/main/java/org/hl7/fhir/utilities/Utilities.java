@@ -1695,31 +1695,47 @@ public class Utilities {
       value = value.substring(0, value.indexOf("e"));
     }    
     if (isZero(value)) {
-      return applyPrecision("-0.5000000000000000000000000", precision);
+      return applyPrecision("-0.5000000000000000000000000", precision, true);
     } else if (value.startsWith("-")) {
       return "-"+highBoundaryForDecimal(value.substring(1), precision)+(e == null ? "" : e);
     } else {
       if (value.contains(".")) {
-        return applyPrecision(minusOne(value)+"50000000000000000000000000000", precision)+(e == null ? "" : e);
+        return applyPrecision(minusOne(value)+"50000000000000000000000000000", precision, true)+(e == null ? "" : e);
       } else {
-        return applyPrecision(minusOne(value)+".50000000000000000000000000000", precision)+(e == null ? "" : e);
+        return applyPrecision(minusOne(value)+".50000000000000000000000000000", precision, true)+(e == null ? "" : e);
       }
     }
   }
 
-  private static String applyPrecision(String v, int p) {
+  private static String applyPrecision(String v, int p, boolean down) {
+    String nv = v;
+    int dp = -1;
+    if (nv.contains(".")) {
+      dp = nv.indexOf(".");
+      nv = nv.substring(0, dp)+nv.substring(dp+1);
+    }
+    String s = null;
     int d = p - getDecimalPrecision(v);
     if (d == 0) {
-      return v;
+      s = nv;
     } else if (d > 0) {
-      return v + padLeft("", '0', d);
+      s = nv + padLeft("", '0', d);
     } else {
-      if (v.charAt(v.length()+d) >= '6') {
-        return v.substring(0, v.length()+d-1)+((char) (v.charAt(v.length()+d)+1));
+      int l = v.length();
+      int ld = l+d;
+      if (dp > -1) {
+        ld--;
+      }
+      if (nv.charAt(ld) >= '5' && !down) {
+        s = nv.substring(0, ld-1)+((char) (nv.charAt(ld-1)+1));
       } else {
-        return v.substring(0, v.length()+d);
+        s = nv.substring(0, ld);
       }
     }
+    if (s.endsWith(".")) {
+      s = s.substring(0, s.length()-1);
+    }
+    return dp == -1 || dp >= s.length() ? s : s.substring(0, dp)+"."+s.substring(dp);
   }
 
   private static String minusOne(String value) {
@@ -1831,14 +1847,14 @@ public class Utilities {
       value = value.substring(0, value.indexOf("e"));
     }
     if (isZero(value)) {
-      return applyPrecision("0.50000000000000000000000000000", precision);
+      return applyPrecision("0.50000000000000000000000000000", precision, false);
     } else if (value.startsWith("-")) {
       return "-"+lowBoundaryForDecimal(value.substring(1), precision)+(e == null ? "" : e);
     } else {
       if (value.contains(".")) {
-        return applyPrecision(value+"50000000000000000000000000000", precision)+(e == null ? "" : e);
+        return applyPrecision(value+"50000000000000000000000000000", precision, false)+(e == null ? "" : e);
       } else {
-        return applyPrecision(value+".50000000000000000000000000000", precision)+(e == null ? "" : e);
+        return applyPrecision(value+".50000000000000000000000000000", precision, false)+(e == null ? "" : e);
       }
     }
   }
