@@ -207,6 +207,9 @@ public class ConceptMap40_50 {
     for (org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent t : src.getTarget()) {
       if (t.getEquivalence() == org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.UNMATCHED) {
         tgt.setNoMap(true);
+        if (t.hasComment()) {
+          tgt.addExtension("http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.comment", ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getCommentElement()));
+        }
       } else {
         tgt.addTarget(convertTargetElementComponent(t, tgtMap));
       }
@@ -218,13 +221,18 @@ public class ConceptMap40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, "http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.comment");
     if (src.hasCode())
       tgt.setCodeElement(Code40_50.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
       tgt.setDisplayElement(String40_50.convertString(src.getDisplayElement()));
     if (src.hasNoMap() && src.getNoMap() == true) {
-      tgt.addTarget(new org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent().setEquivalence(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.UNMATCHED));
+      org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent t = new org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent();
+      t.setEquivalence(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.UNMATCHED);
+      if (src.hasExtension("http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.comment")) {
+        t.setCommentElement((org.hl7.fhir.r4.model.StringType) ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getExtensionByUrl("http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.comment").getValue()));
+      }
+      tgt.addTarget(t);
     } else {
       for (org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent t : src.getTarget())
         tgt.addTarget(convertTargetElementComponent(t, srcMap));
