@@ -292,7 +292,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private NpmPackage loadPackageInfo(String path) throws IOException {
-    return minimalMemory ? NpmPackage.fromFolderMinimal(path) : NpmPackage.fromFolder(path);
+    return minimalMemory ? NpmPackage.fromFolderMinimal(path, false) : NpmPackage.fromFolder(path, false);
   }
 
   private void clearCache() throws IOException {
@@ -497,7 +497,20 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         return npmPackage;
       });
       if (foundPackage != null) {
-        return foundPackage;
+        if (foundPackage.isIndexed()){
+          return foundPackage;
+        } else {
+          return locks.getPackageLock(foundPackageFolder).doWriteWithLock(() -> {
+            // Since another thread may have already indexed the package since our read, we need to check again
+            NpmPackage output = loadPackageInfo(foundPackage.getPath());
+            if (output.isIndexed()) {
+              return output;
+            }
+            String path = Utilities.path(cacheFolder, foundPackageFolder);
+            output.checkIndexed(path);
+            return output;
+          });
+          }
       }
     }
     if ("dev".equals(version))
@@ -583,6 +596,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           TextFile.stringToFile(JsonParser.compose(npm.getNpm(), true), Utilities.path(cacheFolder, id + "#" + version, "package", "package.json"));
         }
         pck = loadPackageInfo(packRoot);
+        if (pck != null && !pck.isIndexed()) {
+          pck.checkIndexed(packRoot);
+        }
       } catch (Exception e) {
         try {
           // don't leave a half extracted package behind
