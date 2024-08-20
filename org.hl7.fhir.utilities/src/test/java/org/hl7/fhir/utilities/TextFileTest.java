@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities;
  import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.*;
 
+ import java.io.ByteArrayOutputStream;
  import java.io.File;
  import java.io.IOException;
  import java.nio.charset.StandardCharsets;
@@ -23,6 +24,8 @@ import org.junit.jupiter.api.*;
    private static final String SAMPLE_CONTENT = "Line 1\nLine 2\nLine 3";
    private static final List<String> SAMPLE_CONTENT_LINES = List.of("Line 1", "Line 2", "Line 3");
    private static final String BOM = "\uFEFF";
+
+   private static final byte[] BOM_BYTES = new byte[]{(byte)239, (byte)187, (byte)191};
 
    private static File readFile;
    private final static List<File> createdFiles = new ArrayList<>(4);
@@ -102,6 +105,33 @@ import org.junit.jupiter.api.*;
    void testFileToBytes2() throws IOException {
      final var read = TextFile.fileToBytes(readFile.getAbsolutePath());
      assertArrayEquals(SAMPLE_CONTENT.getBytes(StandardCharsets.UTF_8), read);
+   }
+
+   @Test
+   void testBytesToFile() throws IOException {
+     final var writeFile = createTempFile();
+     TextFile.bytesToFile(BOM_BYTES, writeFile);
+     assertArrayEquals(BOM_BYTES, Files.readAllBytes(writeFile.toPath()));
+   }
+
+     @Test
+   void testAppendBytesToFile() throws IOException {
+     final var writeFile = createTempFile();
+      TextFile.bytesToFile(BOM_BYTES, writeFile);
+      assertArrayEquals(BOM_BYTES, Files.readAllBytes(writeFile.toPath()));
+
+      TextFile.appendBytesToFile(SAMPLE_CONTENT.getBytes(StandardCharsets.UTF_8), writeFile.getAbsolutePath());
+
+     ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
+     outputStream.write( BOM_BYTES );
+     outputStream.write(new byte[] {13, 10}); //newline
+     outputStream.write( SAMPLE_CONTENT.getBytes(StandardCharsets.UTF_8) );
+
+     byte[] expected = outputStream.toByteArray();
+
+     byte[] actual = Files.readAllBytes(writeFile.toPath());
+     assertArrayEquals(expected, actual);
+
    }
 
    @Test
