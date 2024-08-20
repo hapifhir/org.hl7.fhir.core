@@ -44,7 +44,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -69,7 +73,7 @@ public class TextFile {
 	public static void writeAllLines(String path, List<String> lines) throws IOException
 	{
 	  final File file = ManagedFileAccess.csfile(path);
-    Files.write(file.toPath(), lines, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.SYNC);
+    Files.write(file.toPath(), lines, StandardCharsets.UTF_8);
 	}
 	
   public static void stringToStream(final String content, final OutputStream stream) throws IOException {
@@ -87,13 +91,13 @@ public class TextFile {
 
 
   public static void stringToFile(final String content, final File file) throws IOException {
-    try (final OutputStream output = Files.newOutputStream(file.toPath(), StandardOpenOption.CREATE, StandardOpenOption.SYNC)) {
+    try (final OutputStream output = Files.newOutputStream(file.toPath())) {
       output.write(content.getBytes(StandardCharsets.UTF_8));
     }
   }  
   
   public static void stringToFileWithBOM(final String content, final File file) throws IOException  {
-    try (final OutputStream output = Files.newOutputStream(file.toPath(), StandardOpenOption.CREATE, StandardOpenOption.SYNC)) {
+    try (final OutputStream output = Files.newOutputStream(file.toPath())) {
       output.write(new byte[]{(byte)239, (byte)187, (byte)191});
       output.write(content.getBytes(StandardCharsets.UTF_8));
     }
@@ -153,8 +157,8 @@ public class TextFile {
   
   public static void appendBytesToFile(final byte[] bytes, final String path) throws IOException {
     byte[] linebreak = new byte[] {13, 10};
-    Files.write(Paths.get(path), linebreak, StandardOpenOption.APPEND, StandardOpenOption.SYNC);
-    Files.write(Paths.get(path), bytes, StandardOpenOption.APPEND, StandardOpenOption.SYNC);
+    Files.write(Paths.get(path), linebreak, StandardOpenOption.APPEND);
+    Files.write(Paths.get(path), bytes, StandardOpenOption.APPEND);
   }
 
   public static byte[] fileToBytes(final String srcFile) throws FileNotFoundException, IOException {
