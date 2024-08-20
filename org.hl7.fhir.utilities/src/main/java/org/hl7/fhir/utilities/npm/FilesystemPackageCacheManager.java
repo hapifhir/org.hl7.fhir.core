@@ -501,6 +501,15 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           return foundPackage;
         } else {
           return locks.getPackageLock(foundPackageFolder).doWriteWithLock(() -> {
+            File directory = ManagedFileAccess.file(foundPackage.getPath());
+
+        /* Check if the directory still exists now that we have a write lock. findPackageFolder does no locking in order
+        to avoid locking every potential package directory, so it's possible that a package deletion has occurred.
+        * */
+            if (!directory.exists()) {
+              return null;
+            }
+
             // Since another thread may have already indexed the package since our read, we need to check again
             NpmPackage output = loadPackageInfo(foundPackage.getPath());
             if (output.isIndexed()) {
