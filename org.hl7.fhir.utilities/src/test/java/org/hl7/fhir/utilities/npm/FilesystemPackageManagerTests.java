@@ -147,7 +147,7 @@ public class FilesystemPackageManagerTests {
           }
           FilesystemPackageCacheManager pcm = packageCacheManagers[randomPCM];
           if (randomOperation == 0) {
-            pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package-larger.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
+            pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
           } else if (randomOperation == 1) {
             pcm.clear();
           } else if (randomOperation == 2) {
