@@ -21,8 +21,6 @@ public class SimpleHTTPClientTest {
 
   private MockWebServer server;
 
-
-
   @BeforeEach
   void setup() {
     setupMockServer();
@@ -78,24 +76,31 @@ public class SimpleHTTPClientTest {
     HttpUrl[] url = new HttpUrl[urlArgs.length];
     for (int i = 0; i < urlArgs.length; i++) {
       url[i] = server.url(urlArgs[i]);
-      if (i > 0 && i < urlArgs.length - 1) {
+      if (i > 0 && i < urlArgs.length) {
         server.enqueue(
           new MockResponse()
             .setResponseCode(code)
+            .setBody("Pumas")
             .addHeader("Location", url[i].url().toString()));
-      } else if (i == urlArgs.length - 1) {
-        server.enqueue(
-          new MockResponse()
-            .setBody("Monkeys").setResponseCode(200)
-        );
       }
     }
+    server.enqueue(
+      new MockResponse()
+        .setBody("Monkeys").setResponseCode(200)
+    );
 
     SimpleHTTPClient http = new SimpleHTTPClient();
 
     HTTPResult res = http.get(url[0].url().toString(), "application/json");
 
     assertThat(res.getCode()).isEqualTo(200);
+    assertThat(res.getContentAsString()).isEqualTo("Monkeys");
+    assertThat(server.getRequestCount()).isEqualTo(urlArgs.length);
 
+    for (int i = 0; i < urlArgs.length; i++) {
+      RecordedRequest packageRequest = server.takeRequest();
+      assertThat(packageRequest.getMethod()).isEqualTo("GET");
+      assertThat(packageRequest.getHeader("Accept")).isEqualTo("application/json");
+    }
   }
 }
