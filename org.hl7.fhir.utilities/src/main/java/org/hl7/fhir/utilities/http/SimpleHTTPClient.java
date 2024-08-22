@@ -90,13 +90,10 @@ public class SimpleHTTPClient {
       setHeaders(c);
       c.setInstanceFollowRedirects(false);
 
-      int responseCode = c.getResponseCode();
-      System.out.println("Processing response code "+ responseCode);
-      switch (responseCode) {
+      switch (c.getResponseCode()) {
         case HttpURLConnection.HTTP_MOVED_PERM:
         case HttpURLConnection.HTTP_MOVED_TEMP:
         case 308: // Same as HTTP_MOVED_PERM, but does not allow changing the request method from POST to GET
-          System.out.println("Processing redirect to "+c.getHeaderField("Location"));
           String location = c.getHeaderField("Location");
           location = URLDecoder.decode(location, "UTF-8");
           URL base = new URL(url);
