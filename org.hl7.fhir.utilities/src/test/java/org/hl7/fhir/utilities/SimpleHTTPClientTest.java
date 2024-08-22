@@ -63,6 +63,9 @@ public class SimpleHTTPClientTest {
       Arguments.of(302, new String[]{"url1", "url2"}),
       Arguments.of(302, new String[]{"url1", "url2", "url3"}),
       Arguments.of(302, new String[]{"url1", "url2", "url3", "url4"}),
+      Arguments.of(307, new String[]{"url1", "url2"}),
+      Arguments.of(307, new String[]{"url1", "url2", "url3"}),
+      Arguments.of(307, new String[]{"url1", "url2", "url3", "url4"}),
       Arguments.of(308, new String[]{"url1", "url2"}),
       Arguments.of(308, new String[]{"url1", "url2", "url3"}),
       Arguments.of(308, new String[]{"url1", "url2", "url3", "url4"})
@@ -71,23 +74,24 @@ public class SimpleHTTPClientTest {
 
   @ParameterizedTest
   @MethodSource("getRedirectArgs")
-  public void testRedirects(int code, String[] urlArgs) throws IOException, InterruptedException {
+  public void testRedirectsGet(int code, String[] urlArgs) throws IOException, InterruptedException {
 
-    HttpUrl[] url = new HttpUrl[urlArgs.length];
+    HttpUrl[] urls = new HttpUrl[urlArgs.length];
     for (int i = 0; i < urlArgs.length; i++) {
-      url[i] = server.url(urlArgs[i]);
-      if (i > 0 && i < urlArgs.length) {
+      urls[i] = server.url(urlArgs[i]);
+      if (i > 0) {
         server.enqueue(
           new MockResponse()
             .setResponseCode(code)
             .setBody("Pumas")
-            .addHeader("Location", url[i].url().toString()));
+            .addHeader("Location", urls[i].url().toString()));
       }
     }
     server.enqueue(
       new MockResponse()
         .setBody("Monkeys").setResponseCode(200)
     );
+    HttpUrl[] url = urls;
 
     SimpleHTTPClient http = new SimpleHTTPClient();
 
@@ -103,4 +107,5 @@ public class SimpleHTTPClientTest {
       assertThat(packageRequest.getHeader("Accept")).isEqualTo("application/json");
     }
   }
+
 }
