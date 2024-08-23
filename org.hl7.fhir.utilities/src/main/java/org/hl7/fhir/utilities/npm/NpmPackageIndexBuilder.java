@@ -129,7 +129,7 @@ public class NpmPackageIndexBuilder {
           }
         }
       } catch (Exception e) {
-        System.out.println("Error parsing "+name+": "+e.getMessage());
+//        System.out.println("Error parsing "+name+": "+e.getMessage());
         if (name.contains("openapi")) {
           return false;
         }
