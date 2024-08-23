@@ -27,7 +27,6 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -42,9 +41,6 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
   @Override
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
-    if ("medicationrequest-coded-oral-axid".equals(r.getId())) {
-      DebugUtilities.breakpoint();
-    }
     renderResourceTechDetails(r, x);
     try {
       StructureDefinition sd = context.getContext().fetchTypeDefinition(r.fhirType());
