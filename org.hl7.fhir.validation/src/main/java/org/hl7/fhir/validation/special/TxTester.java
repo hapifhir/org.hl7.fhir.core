@@ -163,6 +163,7 @@ public class TxTester {
       return error;
     }
   }
+  
   private boolean runSuite(JsonObject suite, ITerminologyClient tx, List<String> modes, String filter, JsonArray output) throws FHIRFormatError, FileNotFoundException, IOException {
     System.out.println("Group "+suite.asString("name"));
     JsonObject outputS = new JsonObject();
@@ -187,6 +188,7 @@ public class TxTester {
     if (output != null) {
       output.add(outputT);
     }
+    long start = System.currentTimeMillis();
     Parameters profile = loadProfile(test);
     outputT.add("name", test.asString("name"));
     if (Utilities.noString(filter) || filter.equals("*") || test.asString("name").contains(filter)) {
@@ -219,7 +221,7 @@ public class TxTester {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
 
-        System.out.println(msg == null ? "Pass" : "Fail");
+        System.out.println((msg == null ? "Pass" : "Fail") + " ("+Utilities.describeDuration(System.currentTimeMillis() - start)+")");
         if (msg != null) {
           System.out.println("    "+msg);
           error = msg;

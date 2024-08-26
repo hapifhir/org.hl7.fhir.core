@@ -1,0 +1,30 @@
+{
+  "resourceType": "ConceptMap",
+  "id": "appointment-status-concept-map",
+  "url": "https://hl7.fi/fhir/finnish-scheduling/ConceptMap/appointment-status-concept-map",
+  "title": "FHIR Appointment status codes and Ajanvaraus - Ajanvarauksen tila",
+  "description": "Mapping between the Finnish logical model [*Ajanvaraus - Ajanvarauksen tila*](https://koodistopalvelu.kanta.fi/codeserver/pages/classification-view-page.xhtml?classificationKey=1943) (oid `1.2.246.537.6.881`) and FHIR Appoinment status codes, in both directions.",
+  "status": "draft",
+  "sourceUri": "https://koodistopalvelu.kanta.fi/codeserver/pages/classification-view-page.xhtml?classificationKey=1943",
+  "targetCanonical": "http://hl7.org/fhir/appointmentstatus",
+  "group": [{
+    "source": "https://koodistopalvelu.kanta.fi/codeserver/pages/classification-view-page.xhtml?classificationKey=1943",
+    "target": "http://hl7.org/fhir/appointmentstatus",
+    "element": [{
+      "code": "5",
+      "display": "Siirretty",
+      "target": [{
+        "equivalence": "unmatched",
+        "comment": "There is no status for rescheduled appointments in FHIR. This code SHOULD be mapped to cancelled, if required. Note that this code is deprecated."
+      }]
+    }, {
+      "code" : "3",
+      "display" : "Varattu",
+      "target" : [{
+        "code" : "booked",
+        "display" : "Booked",
+        "equivalence" : "equal"
+      }]
+    }]
+  ]}
+}
