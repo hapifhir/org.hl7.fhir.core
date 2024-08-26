@@ -31,6 +31,7 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
@@ -582,6 +583,9 @@ public class SnapShotGenerationTests {
       rc.setProfileUtilities(new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), null, new TestPKP()));
       RendererFactory.factory(output, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), output));
     }
+    // we just generated it - but we don't care what it is here, just that there's no exceptions (though we need it for the rules)
+    Narrative txt = output.getText();
+    output.setText(null);
     if (!fail) {
       test.output = output;
       TestingUtilities.getSharedWorkerContext().cacheResource(output);
@@ -603,6 +607,7 @@ public class SnapShotGenerationTests {
       }
       Assertions.assertTrue(structureDefinitionEquality, "Output does not match expected");
     }
+    output.setText(txt);
   }
 
   private StructureDefinition getSD(String url, SnapShotGenerationTestsContext context) throws DefinitionException, FHIRException, IOException {

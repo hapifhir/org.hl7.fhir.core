@@ -48,6 +48,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ElementRedirection;
+import org.hl7.fhir.r5.conformance.profile.MappingAssistant.MappingMergeModeOption;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.AllowUnknownProfile;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ElementDefinitionCounter;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -203,13 +204,6 @@ public class ProfileUtilities {
       return index;
     }
     
-  }
-
-  public enum MappingMergeModeOption {
-    DUPLICATE, // if there's more than one mapping for the same URI, just keep them all
-    IGNORE, // if there's more than one, keep the first 
-    OVERWRITE, // if there's opre than, keep the last 
-    APPEND, // if there's more than one, append them with ';' 
   }
 
   public enum AllowUnknownProfile {
@@ -640,26 +634,6 @@ public class ProfileUtilities {
     }
 	}
 
-  private void updateMaps(StructureDefinition base, StructureDefinition derived) throws DefinitionException {
-    if (base == null)
-      throw new DefinitionException(context.formatMessage(I18nConstants.NO_BASE_PROFILE_PROVIDED));
-    if (derived == null)
-      throw new DefinitionException(context.formatMessage(I18nConstants.NO_DERIVED_STRUCTURE_PROVIDED));
-    
-    for (StructureDefinitionMappingComponent baseMap : base.getMapping()) {
-      boolean found = false;
-      for (StructureDefinitionMappingComponent derivedMap : derived.getMapping()) {
-        if (derivedMap.getUri() != null && derivedMap.getUri().equals(baseMap.getUri())) {
-          found = true;
-          break;
-        }
-      }
-      if (!found) {
-        derived.getMapping().add(baseMap);
-      }
-    }
-  }
-  
   /**
    * Given a base (snapshot) profile structure, and a differential profile, generate a new snapshot profile
    *
@@ -752,7 +726,9 @@ public class ProfileUtilities {
         //        debug = true;
         //      }
 
-        ProfilePathProcessor.processPaths(this, base, derived, url, webUrl, diff, baseSnapshot);
+        MappingAssistant mappingDetails = new MappingAssistant(mappingMergeMode, base, derived, context.getVersion());
+        
+        ProfilePathProcessor.processPaths(this, base, derived, url, webUrl, diff, baseSnapshot, mappingDetails);
 
         checkGroupConstraints(derived);
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
@@ -761,7 +737,7 @@ public class ProfileUtilities {
             if (!e.hasUserData(UD_GENERATED_IN_SNAPSHOT) && e.getPath().contains(".")) {
               ElementDefinition existing = getElementInCurrentContext(e.getPath(), derived.getSnapshot().getElement());
               if (existing != null) {
-                updateFromDefinition(existing, e, profileName, false, url, base, derived, "StructureDefinition.differential.element["+i+"]");
+                updateFromDefinition(existing, e, profileName, false, url, base, derived, "StructureDefinition.differential.element["+i+"]", mappingDetails);
               } else {
                 ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
                 e.setUserData(UD_GENERATED_IN_SNAPSHOT, outcome);
@@ -781,7 +757,7 @@ public class ProfileUtilities {
 
         if (derived.getKind() != StructureDefinitionKind.LOGICAL && !derived.getSnapshot().getElementFirstRep().getType().isEmpty())
           throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_SNAPSHOT_ELEMENT_FOR__IN__FROM_, derived.getSnapshot().getElementFirstRep().getPath(), derived.getUrl(), base.getUrl()));
-        updateMaps(base, derived);
+        mappingDetails.update();
 
         setIds(derived, false);
         if (debug) {
@@ -2374,7 +2350,7 @@ public class ProfileUtilities {
   }
 
   
-  protected void updateFromDefinition(ElementDefinition dest, ElementDefinition source, String pn, boolean trimDifferential, String purl, StructureDefinition srcSD, StructureDefinition derivedSrc, String path) throws DefinitionException, FHIRException {
+  protected void updateFromDefinition(ElementDefinition dest, ElementDefinition source, String pn, boolean trimDifferential, String purl, StructureDefinition srcSD, StructureDefinition derivedSrc, String path, MappingAssistant mappings) throws DefinitionException, FHIRException {
     source.setUserData(UD_GENERATED_IN_SNAPSHOT, dest);
     // we start with a clone of the base profile ('dest') and we copy from the profile ('source')
     // over the top for anything the source has
@@ -2845,18 +2821,7 @@ public class ProfileUtilities {
             t.setUserData(UD_DERIVATION_EQUALS, true);
       }
 
-      List<ElementDefinitionMappingComponent> list = new ArrayList<>();
-      list.addAll(base.getMapping());
-      base.getMapping().clear();
-      addMappings(base.getMapping(), list);
-      if (derived.hasMapping()) {
-        addMappings(base.getMapping(), derived.getMapping());
-      } 
-      for (ElementDefinitionMappingComponent m : base.getMapping()) {
-        if (m.hasMap()) {
-          m.setMap(m.getMap().trim());
-        }
-      }
+      mappings.merge(derived, base); // note reversal of names to be correct in .merge()
 
       // todo: constraints are cumulative. there is no replacing
       for (ElementDefinitionConstraintComponent s : base.getConstraint()) { 
@@ -2958,52 +2923,6 @@ public class ProfileUtilities {
 
   private void mergeExtensions(Element tgt, Element src) {
      tgt.getExtension().addAll(src.getExtension());
-  }
-
-  private void addMappings(List<ElementDefinitionMappingComponent> destination, List<ElementDefinitionMappingComponent> source) {
-    for (ElementDefinitionMappingComponent s : source) {
-      boolean found = false;
-      for (ElementDefinitionMappingComponent d : destination) {
-        if (compareMaps(s, d)) {
-          found = true;
-          d.setUserData(UD_DERIVATION_EQUALS, true);
-          break;
-        }
-      }
-      if (!found) {
-        destination.add(s);
-      }
-    }
-  }
-
-  private boolean compareMaps(ElementDefinitionMappingComponent s, ElementDefinitionMappingComponent d) {
-    if (d.getIdentity().equals(s.getIdentity()) && d.getMap().equals(s.getMap())) {
-      return true;
-    }
-    if (VersionUtilities.isR5Plus(context.getVersion())) {
-      if (d.getIdentity().equals(s.getIdentity())) {
-        switch (mappingMergeMode) {
-        case APPEND:
-          if (!Utilities.splitStrings(d.getMap(), "\\,").contains(s.getMap())) {
-            d.setMap(d.getMap()+","+s.getMap());
-          }
-          return true;
-        case DUPLICATE:
-          return false;
-        case IGNORE:
-          d.setMap(s.getMap());
-          return true;
-        case OVERWRITE:
-          return true;
-        default:
-          return false;
-        }
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
   }
 
   private void checkTypeDerivation(String purl, StructureDefinition srcSD, ElementDefinition base, ElementDefinition derived, TypeRefComponent ts, String path) {
