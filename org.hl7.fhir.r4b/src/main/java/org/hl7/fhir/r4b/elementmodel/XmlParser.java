@@ -233,6 +233,8 @@ public class XmlParser extends ParserBase {
       return "sdtc:";
     if (ns.equals("urn:ihe:pharm"))
       return "pharm:";
+    if (ns.equals("http://ns.electronichealth.net.au/Ci/Cda/Extensions/3.0"))
+      return "ext:";
     return "?:";
   }
 
