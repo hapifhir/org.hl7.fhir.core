@@ -131,7 +131,7 @@ public class XmlParser extends ParserBase {
           stream.reset();
         }
         // use a slower parser that keeps location data
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = XMLUtil.newXXEProtectedTransformerFactory();
         Transformer nullTransformer = transformerFactory.newTransformer();
         DocumentBuilder docBuilder = factory.newDocumentBuilder();
         doc = docBuilder.newDocument();
