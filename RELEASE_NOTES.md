@@ -27,4 +27,5 @@
 * don't escape unicode whitespace in json files
 * Fix NPE in questionnaire renderer
 * Hack workaround for R4 issue with ProcessPriority
+* Rewrite concurrency management for file system package cache
 
