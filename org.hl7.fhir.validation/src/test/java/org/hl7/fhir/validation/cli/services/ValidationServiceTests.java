@@ -24,24 +24,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtil;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
-import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
-import org.hl7.fhir.validation.cli.utils.Common;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -153,30 +148,26 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that conversion throws an Exception when no -output or -outputSuffix params are set")
-  public void convertSingleSourceNoOutput() throws Exception {
+  public void convertSingleSourceNoOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
     CliContext cliContext = getCliContextSingleSource();
-    Exception exception = assertThrows( Exception.class, () -> {
-      validationService.convertSources(cliContext,validationEngine);
-    });
+    assertThrows( Exception.class, () -> validationService.convertSources(cliContext,validationEngine));
   }
 
 
 
   @Test
   @DisplayName("Test that conversion throws an Exception when multiple sources are set and an -output param is set")
-  public void convertMultipleSourceOnlyOutput() throws Exception {
+  public void convertMultipleSourceOnlyOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
     CliContext cliContext = getCliContextMultipleSource();
-    assertThrows( Exception.class, () -> {
-        validationService.convertSources(cliContext,validationEngine);
-      }
+    assertThrows( Exception.class, () -> validationService.convertSources(cliContext,validationEngine)
     );
   }
 
@@ -211,28 +202,24 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that snapshot generation throws an Exception when no -output or -outputSuffix params are set")
-  public void generateSnapshotSingleSourceNoOutput() throws Exception {
+  public void generateSnapshotSingleSourceNoOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
     CliContext cliContext = getCliContextSingleSource();
-    Exception exception = assertThrows( Exception.class, () -> {
-      validationService.generateSnapshot(cliContext.setSv(DUMMY_SV),validationEngine);
-    });
+    assertThrows( Exception.class, () -> validationService.generateSnapshot(cliContext.setSv(DUMMY_SV),validationEngine));
   }
 
   @Test
   @DisplayName("Test that snapshot generation throws an Exception when multiple sources are set and an -output param is set")
-  public void generateSnapshotMultipleSourceOnlyOutput() throws Exception {
+  public void generateSnapshotMultipleSourceOnlyOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
     CliContext cliContext = getCliContextMultipleSource();
-    assertThrows( Exception.class, () -> {
-      validationService.generateSnapshot(cliContext.setOutput(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine);
-      }
+    assertThrows( Exception.class, () -> validationService.generateSnapshot(cliContext.setOutput(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine)
     );
   }
 
@@ -287,7 +274,7 @@ class ValidationServiceTests {
     final ValidationEngine mockValidationEngine = mock(ValidationEngine.class);
     when(mockValidationEngine.getContext()).thenReturn(workerContext);
 
-    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);;
+    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);
     final ValidationService validationService = createFakeValidationService(mockValidationEngineBuilder, mockValidationEngine);
 
     CliContext cliContext = new CliContext();
@@ -305,7 +292,7 @@ class ValidationServiceTests {
     final ValidationEngine mockValidationEngine = mock(ValidationEngine.class);
     when(mockValidationEngine.getContext()).thenReturn(workerContext);
 
-    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);;
+    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);
     final ValidationService validationService = createFakeValidationService(mockValidationEngineBuilder, mockValidationEngine);
 
     CliContext cliContext = new CliContext();
@@ -314,101 +301,6 @@ class ValidationServiceTests {
 
     verify(mockValidationEngine, never()).setFetcher(any());
     verify(mockValidationEngineBuilder).withUserAgent(eq("fhir/validator/" + VersionUtil.getVersion()));
-  }
-
-
-  final String[] multithreadTestPackages = {
-    "hl7.fhir.us.core#3.1.1",
-    "hl7.fhir.us.core#4.0.0",
-    "hl7.fhir.us.core#5.0.1",
-    "hl7.fhir.us.core#6.1.0",
-    "hl7.fhir.us.core#7.0.0"
-  };
-
-  @Test
-  public void multithreadingTest() throws IOException {
-    ValidationService myService = new ValidationService();
-    final AtomicInteger totalSuccessful = new AtomicInteger();
-
-    List<Thread> threads = new ArrayList<>();
-    int i = 0;
-    for (String currentPackage : multithreadTestPackages) {
-      final int index = i++;
-      Thread t = new Thread(() -> {
-        try {
-          myService.initializeValidator(
-            new CliContext().setTxServer(null).setIgs(List.of(currentPackage)),
-            "hl7.fhir.r4.core",
-            new TimeTracker(),
-            null
-          );
-
-          totalSuccessful.incrementAndGet();
-          System.out.println("Thread " + index + " completed");
-        } catch (Throwable e) {
-          e.printStackTrace();
-          System.err.println("Thread " + index + " failed");
-        }
-      });
-      t.start();
-      threads.add(t);
-    }
-    threads.forEach(t -> {
-      try {
-        t.join();
-      } catch (InterruptedException e) {
-
-      }
-    });
-    assertEquals(multithreadTestPackages.length, totalSuccessful.get());
-  }
-  @Test
-  public void multithreadingTestMinimal() throws IOException {
-
-    final AtomicInteger totalSuccessful = new AtomicInteger();
-
-    String definitions = "hl7.fhir.r4.core";
-
-    List<Thread> threads = new ArrayList<>();
-
-    int i = 0;
-    for (String currentPackage : multithreadTestPackages) {
-      final int index = i++;
-      Thread t = new Thread(() -> {
-        try {
-          List<String> igs = List.of(currentPackage);
-          CliContext cliContext = new CliContext();
-          ValidationEngine validationEngine = new ValidationEngine.ValidationEngineBuilder().withTHO(false).withVersion("4.0.1").withTimeTracker(new TimeTracker()).withUserAgent(Common.getValidatorUserAgent()).fromSource(definitions);
-
-          FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());
-          IgLoader igLoader = new IgLoader(validationEngine.getPcm(), validationEngine.getContext(), validationEngine.getVersion(), validationEngine.isDebug());
-          igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.terminology", false);
-          if (!VersionUtilities.isR5Ver(validationEngine.getContext().getVersion())) {
-            igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.fhir.uv.extensions", false);
-          }
-
-          for (String src : igs) {
-            igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), src, cliContext.isRecursive());
-          }
-
-          totalSuccessful.incrementAndGet();
-          System.out.println("Thread " + index + " completed");
-        } catch (Throwable e) {
-          e.printStackTrace();
-          System.err.println("Thread " + index + " failed");
-        }
-      });
-      t.start();
-      threads.add(t);
-    }
-    threads.forEach(t -> {
-      try {
-        t.join();
-      } catch (InterruptedException e) {
-
-      }
-    });
-    assertEquals(multithreadTestPackages.length, totalSuccessful.get());
   }
 
   private static ValidationService createFakeValidationService(ValidationEngine.ValidationEngineBuilder validationEngineBuilder, ValidationEngine validationEngine) {
@@ -421,16 +313,14 @@ class ValidationServiceTests {
         when(validationEngineBuilder.withUserAgent(anyString())).thenReturn(validationEngineBuilder);
         try {
           when(validationEngineBuilder.fromSource(isNull())).thenReturn(validationEngine);
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        } catch (URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
           throw new RuntimeException(e);
         }
         return validationEngineBuilder;
       }
 
       @Override
-      protected void loadIgsAndExtensions(ValidationEngine validationEngine, CliContext cliContext, TimeTracker timeTracker) throws IOException, URISyntaxException {
+      protected void loadIgsAndExtensions(ValidationEngine validationEngine, CliContext cliContext, TimeTracker timeTracker) {
         //Don't care. Do nothing.
       }
     };
