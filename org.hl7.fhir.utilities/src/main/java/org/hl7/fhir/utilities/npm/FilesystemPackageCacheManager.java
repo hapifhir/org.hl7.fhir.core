@@ -1,9 +1,6 @@
 package org.hl7.fhir.utilities.npm;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -605,6 +602,29 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     return result;
+  }
+
+  /**
+   * do not use this in minimal memory mode
+   * @param packagesFolder
+   * @throws IOException
+   */
+  public void loadFromFolder(String packagesFolder) throws IOException {
+    assert !minimalMemory;
+
+    File[] files = ManagedFileAccess.file(packagesFolder).listFiles();
+    if (files != null) {
+      for (File f : files) {
+        if (f.getName().endsWith(".tgz")) {
+          FileInputStream fs = ManagedFileAccess.inStream(f);
+          try {
+            temporaryPackages.add(NpmPackage.fromPackage(fs));
+          } finally {
+            fs.close();
+          }
+        }
+      }
+    }
   }
 
   @Override
