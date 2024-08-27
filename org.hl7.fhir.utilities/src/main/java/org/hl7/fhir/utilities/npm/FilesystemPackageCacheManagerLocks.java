@@ -74,7 +74,6 @@ public class FilesystemPackageCacheManagerLocks {
   public static FilesystemPackageCacheManagerLocks getFilesystemPackageCacheManagerLocks(File cacheFolder) throws IOException {
     return cacheFolderLockManagers.computeIfAbsent(cacheFolder, k -> {
       try {
-        System.out.println("Computing cacheFolderLockManager for " + k.getAbsolutePath());
         return new FilesystemPackageCacheManagerLocks(k);
       } catch (IOException e) {
         throw new RuntimeException(e);
@@ -119,7 +118,6 @@ public class FilesystemPackageCacheManagerLocks {
       if (!lockFile.exists()) {
         return;
       }
-      System.out.println("Waiting for lock file to be deleted: " + lockFile.getName() + " Thread: " + Thread.currentThread().getId());
       try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
         Path dir = lockFile.getParentFile().toPath();
         dir.register(watchService, StandardWatchEventKinds.ENTRY_DELETE);
@@ -137,7 +135,6 @@ public class FilesystemPackageCacheManagerLocks {
             if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
               Path deletedFilePath = (Path) event.context();
               if (deletedFilePath.toString().equals(lockFile.getName())) {
-                System.out.println("Lock file deleted: " + lockFile.getName() + " Thread: " + Thread.currentThread().getId());
                 return;
               }
             }
@@ -175,7 +172,6 @@ public class FilesystemPackageCacheManagerLocks {
 
       if (!lockFile.isFile()) {
         try {
-          System.out.println("Initializing lock file: " + lockFile.getName() + " Thread: " + Thread.currentThread().getId());
           TextFile.stringToFile("", lockFile);
         } catch (IOException e) {
           e.printStackTrace();
@@ -197,10 +193,7 @@ public class FilesystemPackageCacheManagerLocks {
           fileLock.release();
           channel.close();
           if (!lockFile.delete()) {
-            System.out.println("Can't delete lock file: " + lockFile.getName() + " Thread: " + Thread.currentThread().getId());
             lockFile.deleteOnExit();
-          } else {
-            System.out.println("Deleted lock file: " + lockFile.getName() + " Thread: " + Thread.currentThread().getId());
           }
           lock.writeLock().unlock();
           cacheLock.getLock().writeLock().unlock();
