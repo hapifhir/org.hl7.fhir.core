@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* BugFix: Restore loadFromFolder method in FilesystemPackageCacheManager
