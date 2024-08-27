@@ -144,7 +144,7 @@ public class XmlParser extends ParserBase {
         stream.reset();
 
         // use a slower parser that keeps location data
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = XMLUtil.newXXEProtectedTransformerFactory();
         Transformer nullTransformer = transformerFactory.newTransformer();
         DocumentBuilder docBuilder = factory.newDocumentBuilder();
         doc = docBuilder.newDocument();
@@ -255,6 +255,8 @@ public class XmlParser extends ParserBase {
       return "sdtc:";
     if (ns.equals("urn:ihe:pharm"))
       return "pharm:";
+    if (ns.equals("http://ns.electronichealth.net.au/Ci/Cda/Extensions/3.0"))
+      return "ext:";
     return "?:";
   }
 

@@ -229,7 +229,7 @@ public class XLSXmlNormaliser {
 
   private void saveXml(FileOutputStream stream) throws TransformerException, IOException {
 
-    TransformerFactory factory = TransformerFactory.newInstance();
+    TransformerFactory factory = XMLUtil.newXXEProtectedTransformerFactory();
     Transformer transformer = factory.newTransformer();
     Result result = new StreamResult(stream);
     Source source = new DOMSource(xml);

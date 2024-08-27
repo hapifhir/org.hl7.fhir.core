@@ -86,8 +86,10 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       } else { 
         p.ah(context.prefixLocalHref(sd.getWebPath())).tx(sd.present());                  
       }       
-    } 
-    x.para().tx(context.formatPhrase(RenderingContext.GENERAL_PARS)); 
+    }
+
+    x.h3().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
+    //x.para().tx(context.formatPhrase(RenderingContext.GENERAL_PARS)); 
     XhtmlNode tbl = x.table( "grid"); 
     XhtmlNode tr = tbl.tr(); 
     tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_USE)); 
