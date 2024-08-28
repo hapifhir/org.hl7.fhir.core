@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Set fhir-test-cases to release version
