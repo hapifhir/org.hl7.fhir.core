@@ -14,14 +14,14 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.3.23-SNAPSHOT</version>
+    <version>6.3.24-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <commons_compress_version>1.26.0</commons_compress_version>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.5.20-SNAPSHOT</validator_test_case_version>
+        <validator_test_case_version>1.5.20</validator_test_case_version>
         <jackson_version>2.17.0</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
@@ -776,6 +776,40 @@
                             </filesets>
                         </configuration>
                     </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>checkForSnapshotDependencies</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>checkForSnapshotDependencies</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <configuration>
+                        <skip>false</skip>
+                        <rules>
+                            <requireJavaVersion>
+                                <version>(11,)</version>
+                            </requireJavaVersion>
+
+                            <requireReleaseDeps>
+                                <message>No Snapshots Allowed!</message>
+                                <failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
+                                <excludes>
+                                    <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.*</exclude>
+                                </excludes>
+                            </requireReleaseDeps>
+                        </rules>
+                    </configuration>
+                </plugin>
                 </plugins>
             </build>
         </profile>
