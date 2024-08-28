@@ -1,8 +1,7 @@
 package org.hl7.fhir.validation.cli.services;
 
 import static org.hl7.fhir.validation.tests.utilities.TestUtilities.getTerminologyCacheDirectory;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.AdditionalMatchers.and;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -38,7 +37,6 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -72,7 +70,7 @@ class ValidationServiceTests {
     Set<String> sessionIds = sessionCache.getSessionIds();
     if (sessionIds.stream().findFirst().isPresent()) {
       // Verify that after 1 run there is only one entry within the cache
-      Assertions.assertEquals(1, sessionIds.size());
+      assertEquals(1, sessionIds.size());
       myService.validateSources(request.setSessionId(sessionIds.stream().findFirst().get()));
       // Verify that the cache has been called on twice with the id created in the first run
       verify(sessionCache, Mockito.times(2)).fetchSessionValidatorEngine(sessionIds.stream().findFirst().get());
@@ -150,30 +148,26 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that conversion throws an Exception when no -output or -outputSuffix params are set")
-  public void convertSingleSourceNoOutput() throws Exception {
+  public void convertSingleSourceNoOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
     CliContext cliContext = getCliContextSingleSource();
-    Exception exception = assertThrows( Exception.class, () -> {
-      validationService.convertSources(cliContext,validationEngine);
-    });
+    assertThrows( Exception.class, () -> validationService.convertSources(cliContext,validationEngine));
   }
 
 
 
   @Test
   @DisplayName("Test that conversion throws an Exception when multiple sources are set and an -output param is set")
-  public void convertMultipleSourceOnlyOutput() throws Exception {
+  public void convertMultipleSourceOnlyOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
     CliContext cliContext = getCliContextMultipleSource();
-    assertThrows( Exception.class, () -> {
-        validationService.convertSources(cliContext,validationEngine);
-      }
+    assertThrows( Exception.class, () -> validationService.convertSources(cliContext,validationEngine)
     );
   }
 
@@ -208,28 +202,24 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that snapshot generation throws an Exception when no -output or -outputSuffix params are set")
-  public void generateSnapshotSingleSourceNoOutput() throws Exception {
+  public void generateSnapshotSingleSourceNoOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
     CliContext cliContext = getCliContextSingleSource();
-    Exception exception = assertThrows( Exception.class, () -> {
-      validationService.generateSnapshot(cliContext.setSv(DUMMY_SV),validationEngine);
-    });
+    assertThrows( Exception.class, () -> validationService.generateSnapshot(cliContext.setSv(DUMMY_SV),validationEngine));
   }
 
   @Test
   @DisplayName("Test that snapshot generation throws an Exception when multiple sources are set and an -output param is set")
-  public void generateSnapshotMultipleSourceOnlyOutput() throws Exception {
+  public void generateSnapshotMultipleSourceOnlyOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
     CliContext cliContext = getCliContextMultipleSource();
-    assertThrows( Exception.class, () -> {
-      validationService.generateSnapshot(cliContext.setOutput(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine);
-      }
+    assertThrows( Exception.class, () -> validationService.generateSnapshot(cliContext.setOutput(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine)
     );
   }
 
@@ -284,7 +274,7 @@ class ValidationServiceTests {
     final ValidationEngine mockValidationEngine = mock(ValidationEngine.class);
     when(mockValidationEngine.getContext()).thenReturn(workerContext);
 
-    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);;
+    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);
     final ValidationService validationService = createFakeValidationService(mockValidationEngineBuilder, mockValidationEngine);
 
     CliContext cliContext = new CliContext();
@@ -302,7 +292,7 @@ class ValidationServiceTests {
     final ValidationEngine mockValidationEngine = mock(ValidationEngine.class);
     when(mockValidationEngine.getContext()).thenReturn(workerContext);
 
-    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);;
+    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);
     final ValidationService validationService = createFakeValidationService(mockValidationEngineBuilder, mockValidationEngine);
 
     CliContext cliContext = new CliContext();
@@ -323,18 +313,18 @@ class ValidationServiceTests {
         when(validationEngineBuilder.withUserAgent(anyString())).thenReturn(validationEngineBuilder);
         try {
           when(validationEngineBuilder.fromSource(isNull())).thenReturn(validationEngine);
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        } catch (URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
           throw new RuntimeException(e);
         }
         return validationEngineBuilder;
       }
 
       @Override
-      protected void loadIgsAndExtensions(ValidationEngine validationEngine, CliContext cliContext, TimeTracker timeTracker) throws IOException, URISyntaxException {
+      protected void loadIgsAndExtensions(ValidationEngine validationEngine, CliContext cliContext, TimeTracker timeTracker) {
         //Don't care. Do nothing.
       }
     };
   }
+
+
 }

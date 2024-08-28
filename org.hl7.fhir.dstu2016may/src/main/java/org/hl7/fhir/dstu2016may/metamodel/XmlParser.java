@@ -90,7 +90,7 @@ public class XmlParser extends ParserBase {
       factory.setNamespaceAware(true);
       if (policy == ValidationPolicy.EVERYTHING) {
         // use a slower parser that keeps location data
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = XMLUtil.newXXEProtectedTransformerFactory();
         Transformer nullTransformer = transformerFactory.newTransformer();
         DocumentBuilder docBuilder = factory.newDocumentBuilder();
         doc = docBuilder.newDocument();

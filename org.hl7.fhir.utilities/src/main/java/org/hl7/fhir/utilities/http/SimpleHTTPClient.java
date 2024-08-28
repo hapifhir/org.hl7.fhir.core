@@ -91,16 +91,18 @@ public class SimpleHTTPClient {
       c.setInstanceFollowRedirects(false);
 
       switch (c.getResponseCode()) {
-      case HttpURLConnection.HTTP_MOVED_PERM:
-      case HttpURLConnection.HTTP_MOVED_TEMP:
-        String location = c.getHeaderField("Location");
-        location = URLDecoder.decode(location, "UTF-8");
-        URL base = new URL(url);               
-        URL next = new URL(base, location);  // Deal with relative URLs
-        url      = next.toExternalForm();
-        continue;
-      default:
-        done = true;
+        case HttpURLConnection.HTTP_MOVED_PERM:
+        case HttpURLConnection.HTTP_MOVED_TEMP:
+        case 307:
+        case 308: // Same as HTTP_MOVED_PERM, but does not allow changing the request method from POST to GET
+          String location = c.getHeaderField("Location");
+          location = URLDecoder.decode(location, "UTF-8");
+          URL base = new URL(url);
+          URL next = new URL(base, location);  // Deal with relative URLs
+          url = next.toExternalForm();
+          continue;
+        default:
+          done = true;
       }
     }
     

@@ -31,16 +31,28 @@ public abstract class ResourceWrapper {
   
   public static class NamedResourceWrapperList {
     private String name;
+    private String url; // for extension definitions
     private List<ResourceWrapper> values = new ArrayList<ResourceWrapper>();
-    
+
     public NamedResourceWrapperList(String name) {
       super();
       this.name = name;
+    }
+
+    public NamedResourceWrapperList(String name, String url) {
+      super();
+      this.name = name;
+      this.url = url;
     }
     
     public String getName() {
       return name;
     }
+    
+    public String getUrl() {
+      return url;
+    }
+
     public List<ResourceWrapper> getValues() {
       return values;
     }
