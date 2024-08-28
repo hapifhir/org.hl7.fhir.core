@@ -780,6 +780,36 @@
             </build>
         </profile>
         <profile>
+            <id>checkForSnapshotDependencies</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>checkForSnapshotDependencies</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <configuration>
+                        <skip>false</skip>
+                        <rules>
+                            <requireJavaVersion>
+                                <version>(11,)</version>
+                            </requireJavaVersion>
+
+                            <requireReleaseDeps>
+                                <message>No Snapshots Allowed!</message>
+                            </requireReleaseDeps>
+                        </rules>
+                    </configuration>
+                </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>OWASP_CHECK</id>
             <build>
                 <plugins>
