@@ -397,6 +397,11 @@ public class StructureDefinition extends CanonicalResource {
 
     @Block()
     public static class StructureDefinitionMappingComponent extends BackboneElement implements IBaseBackboneElement {
+        @Override
+      public String toString() {
+        return identity + "=" + uri + " (\""+name+"\")";
+      }
+
         /**
          * An Internal id that is used to identify this mapping set when specific mappings are made.
          */

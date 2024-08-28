@@ -5625,6 +5625,11 @@ public boolean hasTarget() {
 
     @Block()
     public static class ElementDefinitionMappingComponent extends Element implements IBaseDatatypeElement {
+        @Override
+      public String toString() {
+        return identity+"=" + map;
+      }
+
         /**
          * An internal reference to the definition of a mapping.
          */

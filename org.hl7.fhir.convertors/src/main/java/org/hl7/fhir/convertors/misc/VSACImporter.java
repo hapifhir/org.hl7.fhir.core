@@ -18,6 +18,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.model.CapabilityStatement;
+import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity;
@@ -60,8 +61,18 @@ public class VSACImporter extends OIDBasedValueSetImporter {
 
     CapabilityStatement cs = fhirToolingClient.getCapabilitiesStatement();
     JsonParser json = new JsonParser();
-    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "vsac-capability-statmenet.json")), cs);
+    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "vsac-capability-statement.json")), cs);
 
+    System.out.println("CodeSystems");
+    CodeSystem css = fhirToolingClient.fetchResource(CodeSystem.class, "CDCNHSN");
+    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-CDCNHSN.json")), css);
+    css = fhirToolingClient.fetchResource(CodeSystem.class, "CDCREC");
+    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-CDCREC.json")), css);
+    css = fhirToolingClient.fetchResource(CodeSystem.class, "HSLOC");
+    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-HSLOC.json")), css);
+    css = fhirToolingClient.fetchResource(CodeSystem.class, "SOP");
+    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-SOP.json")), css);
+    
     System.out.println("Loading");
     List<String> oids = new ArrayList<>();
     while (csv.line()) {

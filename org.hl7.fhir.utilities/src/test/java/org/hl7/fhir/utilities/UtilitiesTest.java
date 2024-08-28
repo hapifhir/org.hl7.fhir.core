@@ -182,7 +182,7 @@ class UtilitiesTest {
     assertEquals("0.95", Utilities.lowBoundaryForDecimal("1.0", 2));
     assertEquals("-1.05000000", Utilities.lowBoundaryForDecimal("-1.0", 8));
     assertEquals("1.23", Utilities.lowBoundaryForDecimal("1.234", 2));
-    assertEquals("1.57", Utilities.lowBoundaryForDecimal("1.567", 2));
+    assertEquals("1.56", Utilities.lowBoundaryForDecimal("1.567", 2));
 
     assertEquals("0.50000000", Utilities.highBoundaryForDecimal("0", 8));
     assertEquals("1.500000", Utilities.highBoundaryForDecimal("1", 6));

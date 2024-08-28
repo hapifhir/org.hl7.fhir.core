@@ -578,14 +578,16 @@ public abstract class ResourceRenderer extends DataRenderer {
   protected void renderUri(RenderingStatus status, XhtmlNode x, ResourceWrapper uri) throws FHIRFormatError, DefinitionException, IOException { 
     if (!renderPrimitiveWithNoValue(status, x, uri)) {
       String v = uri.primitiveValue();
+      boolean local = false;
 
       if (context.getContextUtilities().isResource(v)) {
         v = "http://hl7.org/fhir/StructureDefinition/"+v;
+        local = true;
       }
       if (v.startsWith("mailto:")) { 
         x.ah(v).addText(v.substring(7)); 
       } else { 
-        ResourceWithReference rr = resolveReference(uri);
+        ResourceWithReference rr = local ? resolveReference(uri.resource(), v, true) : resolveReference(uri);
         if (rr != null) {
           if (rr.getResource() == null) {
             x.ah(context.prefixLocalHref(rr.getWebPath())).addText(rr.getUrlReference());

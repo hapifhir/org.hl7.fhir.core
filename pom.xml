@@ -14,14 +14,14 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.3.21-SNAPSHOT</version>
+    <version>6.3.23-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <commons_compress_version>1.26.0</commons_compress_version>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.5.19</validator_test_case_version>
+        <validator_test_case_version>1.5.20-SNAPSHOT</validator_test_case_version>
         <jackson_version>2.17.0</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
@@ -32,7 +32,7 @@
         <lombok_version>1.18.32</lombok_version>
         <byte_buddy_version>1.14.8</byte_buddy_version>
         <apache_poi_version>5.2.1</apache_poi_version>
-        <saxon_he_version>9.8.0-15</saxon_he_version>
+        <saxon_he_version>11.6</saxon_he_version>
         <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>

@@ -5730,13 +5730,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkPublisherConsistency(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean contained) {
 
+    boolean ok = true;
     String pub = element.getNamedChildValue("publisher", false);
+    
+    ok = rule(errors, "2024-08-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), element.getExtensions(ToolingExtensions.EXT_WORKGROUP).size() <= 1, I18nConstants.VALIDATION_HL7_PUBLISHER_MULTIPLE_WGS) && ok;
     Base wgT = element.getExtensionValue(ToolingExtensions.EXT_WORKGROUP);
     String wg = wgT == null ? null : wgT.primitiveValue();
     String url = element.getNamedChildValue("url");
 
     if (contained && wg == null) {
-      boolean ok = true;
       Element container = valContext.getRootResource();
       if (element.hasExtension(ToolingExtensions.EXT_WORKGROUP)) {
         // container already specified the HL7 WG, so we don't need to test
@@ -5775,9 +5777,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (rule(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), wgd != null, I18nConstants.VALIDATION_HL7_WG_UNKNOWN, wg)) {
           String rpub = "HL7 International / "+wgd.getName();
           if (warning(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), pub != null, I18nConstants.VALIDATION_HL7_PUBLISHER_MISSING, wg, rpub)) {
-            boolean ok = rpub.equals(pub);
+            ok = rpub.equals(pub) && ok;
             if (!ok && wgd.getName2() != null) {
-              ok = ("HL7 International / "+wgd.getName2()).equals(pub);
+              ok = ("HL7 International / "+wgd.getName2()).equals(pub) && ok;
               warningOrError(pub.contains("/"), errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), ok, I18nConstants.VALIDATION_HL7_PUBLISHER_MISMATCH2, wg, rpub, "HL7 International / "+wgd.getName2(), pub);
             } else {
               warningOrError(pub.contains("/"), errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), ok, I18nConstants.VALIDATION_HL7_PUBLISHER_MISMATCH, wg, rpub, pub);
@@ -5785,14 +5787,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
           warning(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), 
               Utilities.startsWithInList( wgd.getLink(), urls), I18nConstants.VALIDATION_HL7_WG_URL, wg, wgd.getLink());
-          return true;
+          return ok;
         }      
       } else {
-        return true; // HL7 sid.
+        return ok; // HL7 sid.
       }
     }   
 
-    return false;
+    return ok;
   }
 
   private boolean statusCodesConsistent(String status, String standardsStatus) {
