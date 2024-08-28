@@ -802,6 +802,10 @@
 
                             <requireReleaseDeps>
                                 <message>No Snapshots Allowed!</message>
+                                <failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
+                                <excludes>
+                                    <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.*</exclude>
+                                </excludes>
                             </requireReleaseDeps>
                         </rules>
                     </configuration>
