@@ -428,7 +428,7 @@
                     while if true it will use an executable. -->
                     <fork>true</fork>
                     <meminitial>512m</meminitial>
-                    <maxmem>4000m</maxmem>
+                    <maxmem>5632m</maxmem>
                     <debug>true</debug>
                 </configuration>
                 <executions>
