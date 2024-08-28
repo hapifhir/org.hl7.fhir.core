@@ -154,7 +154,7 @@ jobs:
               sourceFolder: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}_target/'
               contents: '**'
               targetFolder: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}/target/'
-      - task: Maven@3
+      - task: Maven@4
         inputs:
           mavenPomFile: 'pom.xml'
           options: '-P JACOCO'
