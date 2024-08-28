@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* Set fhir-test-cases to release version
+* Set fhir-test-cases to release 1.5.20
