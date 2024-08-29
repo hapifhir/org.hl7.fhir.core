@@ -418,7 +418,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
+                <version>3.13.0</version>
                 <configuration>
                     <release>11</release>
 
@@ -428,7 +428,7 @@
                     while if true it will use an executable. -->
                     <fork>true</fork>
                     <meminitial>512m</meminitial>
-                    <maxmem>4000m</maxmem>
+                    <maxmem>5632m</maxmem>
                     <debug>true</debug>
                 </configuration>
                 <executions>
