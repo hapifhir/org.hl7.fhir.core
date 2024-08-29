@@ -34,9 +34,9 @@ public class ConceptMapValidator  extends BaseValidator {
   private static final int TOO_MANY_CODES_TO_VALIDATE = 500;
   
   public static class PropertyDefinition {
-    private String type;
-    private String system;
-    private CodeSystem cs;
+    private final String type;
+    private final String system;
+    private final CodeSystem cs;
     protected PropertyDefinition(String type, String system, CodeSystem cs) {
       super();
       this.type = type;
@@ -94,7 +94,7 @@ public class ConceptMapValidator  extends BaseValidator {
 
   public class CMCodingValidationRequest extends CodingValidationRequest {
 
-    private NodeStack stack;
+    private final NodeStack stack;
 
     public CMCodingValidationRequest(NodeStack stack, Coding code, ValueSet vs) {
       super(code, vs);
@@ -106,7 +106,7 @@ public class ConceptMapValidator  extends BaseValidator {
     }
   }
 
-  private List<CMCodingValidationRequest> batch = new ArrayList<>();
+  private final List<CMCodingValidationRequest> batch = new ArrayList<>();
   
   public ConceptMapValidator(BaseValidator parent) {
     super(parent);
@@ -237,7 +237,7 @@ public class ConceptMapValidator  extends BaseValidator {
       } else {
         warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), sourceScope != null, I18nConstants.CONCEPTMAP_GROUP_SOURCE_UNKNOWN, e.getValue());
       }
-      if (ctxt.source.version == null && ctxt.source.cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(ctxt.source.url)) {
+      if (ctxt.source.version == null && ctxt.source.cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(ctxt.source.url) && fetcher != null) {
           Set<String> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), ctxt.source.url);
           warning(errors, NO_RULE_DATE, IssueType.INVALID, grp.line(), grp.col(), stack.getLiteralPath(), possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
               ctxt.source.url,  ctxt.source.cs.getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(possibleVersions)));
