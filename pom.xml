@@ -385,6 +385,11 @@
                         <formats>sarif,html</formats>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <inherited>false</inherited>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -420,9 +425,10 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
+
                     <release>11</release>
 
-                    <forceJavacCompilerUse>false</forceJavacCompilerUse>
+                    <forceLegacyJavacApi>false</forceLegacyJavacApi>
                     <encoding>UTF-8</encoding>
                     <!-- Allows running the compiler in a separate process. If false it uses the built in compiler,
                     while if true it will use an executable. -->
