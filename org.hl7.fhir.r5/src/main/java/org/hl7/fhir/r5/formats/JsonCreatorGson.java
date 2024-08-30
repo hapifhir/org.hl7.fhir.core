@@ -126,5 +126,10 @@ public class JsonCreatorGson implements JsonCreator {
   public void externalLink(String string) {
     // not used
   }
-       
+
+  @Override
+  public void ellipse() {
+    // not used
+  }
+
 }
