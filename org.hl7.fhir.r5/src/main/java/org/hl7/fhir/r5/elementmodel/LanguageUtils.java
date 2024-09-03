@@ -166,7 +166,9 @@ public class LanguageUtils {
     }
     for (TranslationUnit t : translations) {
       if (!usedUnits.contains(t)) {
-        messages.add(new ValidationMessage(Source.Publisher, IssueType.INFORMATIONAL, t.getId(), "Unused '"+t.getLanguage()+"' translation '"+t.getSrcText()+"' -> '"+t.getTgtText()+"'", IssueSeverity.INFORMATION));
+        if (messages != null) {
+          messages.add(new ValidationMessage(Source.Publisher, IssueType.INFORMATIONAL, t.getId(), "Unused '"+t.getLanguage()+"' translation '"+t.getSrcText()+"' -> '"+t.getTgtText()+"'", IssueSeverity.INFORMATION));
+        }
       }
     }
     return r;
@@ -182,7 +184,9 @@ public class LanguageUtils {
     }
     for (TranslationUnit t : translations) {
       if (!usedUnits.contains(t)) {
-        messages.add(new ValidationMessage(Source.Publisher, IssueType.INFORMATIONAL, t.getId(), "Unused '"+t.getLanguage()+"' translation '"+t.getSrcText()+"' -> '"+t.getTgtText()+"'", IssueSeverity.INFORMATION));
+        if (messages != null) {
+          messages.add(new ValidationMessage(Source.Publisher, IssueType.INFORMATIONAL, t.getId(), "Unused '"+t.getLanguage()+"' translation '"+t.getSrcText()+"' -> '"+t.getTgtText()+"'", IssueSeverity.INFORMATION));
+        }
       }
     }
     return r;
@@ -296,7 +300,9 @@ public class LanguageUtils {
         }
       }
     }
-    for (Element c : element.getChildren()) {
+    List<Element> cl = new ArrayList<Element>();
+    cl.addAll(element.getChildren());
+    for (Element c : cl) {
       if (!c.getName().equals("designation")) {
         t = t + importFromTranslations(element, c, translations, usedUnits);
       }
