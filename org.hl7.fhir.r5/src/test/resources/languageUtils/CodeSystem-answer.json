@@ -1,0 +1,33 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "BasicAnswer",
+  "id": "basic-answer",
+  "title": "Administration-Method",
+  "description": "Basic answers for any kind of questions.",
+  "url": "https://example.com/CodeSystem/basic-answer",
+  "concept": [
+    {
+      "code": "ok",
+      "display": "OK",
+      "definition": "KO"
+    },
+    {
+      "code": "yes",
+      "display": "Yes",
+      "definition": "seY"
+    },
+    {
+      "code": "no",
+      "display": "No",
+      "definition": "oN"
+    }
+  ],
+  "language": "en",
+  "version": "0.1.0",
+  "date": "2024-04-07",
+  "publisher": "Sample",
+  "caseSensitive": false,
+  "count": 3
+}
