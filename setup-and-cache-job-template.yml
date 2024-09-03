@@ -2,7 +2,7 @@ jobs:
   - job: setup
     displayName: Cache Maven Artifacts and Build Targets
     pool:
-      vmImage: ubuntu-latest
+      vmImage: macos-latest
     steps:
       - checkout: self
         fetchDepth: 1
