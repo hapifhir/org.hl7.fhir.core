@@ -296,7 +296,10 @@ public class LanguageUtils {
         }
       }
     }
-    for (Element c : element.getChildren()) {
+
+    // Create a copy of the children collection before iterating
+    List<Element> childrenCopy = new ArrayList<>(element.getChildren());
+    for (Element c : childrenCopy) {
       if (!c.getName().equals("designation")) {
         t = t + importFromTranslations(element, c, translations, usedUnits);
       }
