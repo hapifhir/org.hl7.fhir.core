@@ -12,7 +12,6 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
-import org.hl7.fhir.utilities.DebugUtilities;
 
 public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
 
@@ -108,7 +107,6 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
   }
 
   private void genIncludeSystem(ValueSet vs, ConceptSetComponent inc, String mode, int count) {
-    DebugUtilities.ln(inc.getSystem());
     Sheet sheet = makeSheet(mode+" #"+count);
     if (inc.hasValueSet()) {
       addValueSets(sheet, inc.getValueSet());
