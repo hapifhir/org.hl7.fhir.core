@@ -166,7 +166,9 @@ public class LanguageUtils {
     }
     for (TranslationUnit t : translations) {
       if (!usedUnits.contains(t)) {
-        messages.add(new ValidationMessage(Source.Publisher, IssueType.INFORMATIONAL, t.getId(), "Unused '"+t.getLanguage()+"' translation '"+t.getSrcText()+"' -> '"+t.getTgtText()+"'", IssueSeverity.INFORMATION));
+        if (messages != null) {
+          messages.add(new ValidationMessage(Source.Publisher, IssueType.INFORMATIONAL, t.getId(), "Unused '"+t.getLanguage()+"' translation '"+t.getSrcText()+"' -> '"+t.getTgtText()+"'", IssueSeverity.INFORMATION));
+        }
       }
     }
     return r;
@@ -182,7 +184,9 @@ public class LanguageUtils {
     }
     for (TranslationUnit t : translations) {
       if (!usedUnits.contains(t)) {
-        messages.add(new ValidationMessage(Source.Publisher, IssueType.INFORMATIONAL, t.getId(), "Unused '"+t.getLanguage()+"' translation '"+t.getSrcText()+"' -> '"+t.getTgtText()+"'", IssueSeverity.INFORMATION));
+        if (messages != null) {
+          messages.add(new ValidationMessage(Source.Publisher, IssueType.INFORMATIONAL, t.getId(), "Unused '"+t.getLanguage()+"' translation '"+t.getSrcText()+"' -> '"+t.getTgtText()+"'", IssueSeverity.INFORMATION));
+        }
       }
     }
     return r;
@@ -296,7 +300,6 @@ public class LanguageUtils {
         }
       }
     }
-
     // Create a copy of the children collection before iterating
     List<Element> childrenCopy = List.copyOf(element.getChildren());
     for (Element c : childrenCopy) {
