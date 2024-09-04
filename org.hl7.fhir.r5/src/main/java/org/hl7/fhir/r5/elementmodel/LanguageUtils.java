@@ -298,7 +298,7 @@ public class LanguageUtils {
     }
 
     // Create a copy of the children collection before iterating
-    List<Element> childrenCopy = new ArrayList<>(element.getChildren());
+    List<Element> childrenCopy = List.copyOf(element.getChildren());
     for (Element c : childrenCopy) {
       if (!c.getName().equals("designation")) {
         t = t + importFromTranslations(element, c, translations, usedUnits);
