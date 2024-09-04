@@ -10,18 +10,15 @@
   "concept": [
     {
       "code": "ok",
-      "display": "OK",
-      "definition": "KO"
+      "display": "OK"
     },
     {
       "code": "yes",
-      "display": "Yes",
-      "definition": "seY"
+      "display": "Yes"
     },
     {
       "code": "no",
-      "display": "No",
-      "definition": "oN"
+      "display": "No"
     }
   ],
   "language": "en",
