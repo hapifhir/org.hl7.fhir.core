@@ -1,26 +1,18 @@
 package org.hl7.fhir.r5.renderers.spreadsheets;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.utilities.DebugUtilities;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
 
 public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
 
