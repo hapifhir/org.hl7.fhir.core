@@ -3463,6 +3463,11 @@ public class ProfileUtilities {
 
 
   public void sortDifferential(StructureDefinition base, StructureDefinition diff, String name, List<String> errors, boolean errorIfChanges) throws FHIRException  {
+    int index = 0;
+    for (ElementDefinition ed : diff.getDifferential().getElement()) {
+      ed.setUserData("ed.index", Integer.toString(index));
+      index++;
+    }
     List<ElementDefinition> original = new ArrayList<>();
     original.addAll(diff.getDifferential().getElement());
     final List<ElementDefinition> diffList = diff.getDifferential().getElement();
@@ -3520,7 +3525,7 @@ public class ProfileUtilities {
         ElementDefinition e = diffList.get(i);
         ElementDefinition n = newDiff.get(i);
         if (!n.getPath().equals(e.getPath())) {
-          errors.add("The element "+e.getPath()+" is out of order (and maybe others after it)");
+          errors.add("The element "+(e.hasId() ? e.getId() : e.getPath())+" @diff["+e.getUserString("ed.index")+"] is out of order (and maybe others after it)");
           return;
         }   
       }

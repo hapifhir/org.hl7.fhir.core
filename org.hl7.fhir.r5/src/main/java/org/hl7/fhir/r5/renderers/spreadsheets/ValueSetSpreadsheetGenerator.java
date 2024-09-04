@@ -1,25 +1,17 @@
 package org.hl7.fhir.r5.renderers.spreadsheets;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
 
 public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
 
@@ -36,11 +28,12 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
       System.out.println("no valueset!");
     }
     addValueSetMetadata(renderCanonicalResource(vs, false), vs);
+    int i = 0;
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-      genInclude(vs, inc, "Include");
+      genInclude(vs, inc, "Include", i++);
     }
     for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
-      genInclude(vs, exc, "Exclude");
+      genInclude(vs, exc, "Exclude", i++);
     }   
     if (vs.hasExpansion()) {
       if (vs.getExpansion().hasParameter()) {
@@ -82,11 +75,11 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
     return value ? "" : "false";
   }
 
-  private void genInclude(ValueSet vs, ConceptSetComponent inc, String mode) {
+  private void genInclude(ValueSet vs, ConceptSetComponent inc, String mode, int count) {
     if (inc.hasSystem()) {
-      genIncludeSystem(vs, inc, mode);
+      genIncludeSystem(vs, inc, mode, count);
     } else {
-      genIncludeValueSets(vs, inc, mode);      
+      genIncludeValueSets(vs, inc, mode, count);      
     }
 //    String subname = inc.hasSystem() ?  : "ValueSets";
 //    
@@ -107,14 +100,14 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
 //  configureSheet(sheet, sd);
   }
 
-  private void genIncludeValueSets(ValueSet vs, ConceptSetComponent inc, String mode) {
-    Sheet sheet = makeSheet(mode+" ValueSets");
+  private void genIncludeValueSets(ValueSet vs, ConceptSetComponent inc, String mode, int count) {
+    Sheet sheet = makeSheet(mode+" ValueSet #"+count);
     addValueSets(sheet, inc.getValueSet()); 
     configureSheet(sheet);
   }
 
-  private void genIncludeSystem(ValueSet vs, ConceptSetComponent inc, String mode) {
-    Sheet sheet = makeSheet(mode+" from "+dr.displaySystem(inc.getSystem()));
+  private void genIncludeSystem(ValueSet vs, ConceptSetComponent inc, String mode, int count) {
+    Sheet sheet = makeSheet(mode+" #"+count);
     if (inc.hasValueSet()) {
       addValueSets(sheet, inc.getValueSet());
     }

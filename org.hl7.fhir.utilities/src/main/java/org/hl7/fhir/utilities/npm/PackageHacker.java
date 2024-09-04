@@ -30,61 +30,73 @@ public class PackageHacker {
   private static boolean useSecureReferences = false;
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().massEdit(new File("/Users/grahamegrieve/web/hl7.org/fhir"));
-    //    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/us/vitals/2020Sep/package.tgz");
+//    new PackageHacker().massEdit(new File("/Users/grahamegrieve/web/hl7.org/fhir"));
+    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.core.tgz");
+    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.corexml.tgz");
+    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.examples.tgz");
+    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.expansions.tgz");
+    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.search.tgz");
+    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.core.tgz");
+    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.corexml.tgz");
+    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.examples.tgz");
+    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.expansions.tgz");
+    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.search.tgz");
+    
+//        new PackageHacker().edit(args[0]);
   }
 
-  private void massEdit(File dir) throws IOException {
-    System.out.println("process "+dir.getAbsolutePath());
-    for (File f : dir.listFiles()) {
-      if (f.isDirectory()) {
-        massEdit(f);
-      } else if (f.getName().equals("package.tgz")) {
-        try {
-          FileInputStream fs = ManagedFileAccess.inStream(f);
-          NpmPackage pck = NpmPackage.fromPackage(fs);
-          if ("fhir.core".equals(pck.getNpm().str("type"))) {
-            System.out.println("!!change "+f.getAbsolutePath());
-            pck.getNpm().remove("type");
-            pck.getNpm().set("type", "Core");
-            FileOutputStream fso = ManagedFileAccess.outStream(f);
-            try {
-              pck.save(fso);
-            } finally {
-              fso.close();
-            }
-          }
-        } catch (Exception e) {
-          System.out.println("!!Error: "+e.getMessage());
-        }
-      } else if (f.getName().startsWith("hl7.fhir.r") && f.getName().endsWith(".examples.tgz")) {
-        try {
-          FileInputStream fs = ManagedFileAccess.inStream(f);
-          NpmPackage pck = NpmPackage.fromPackage(fs);
-          if ("fhir.examples".equals(pck.getNpm().str("type"))) {
-            System.out.println("!!change "+f.getAbsolutePath());
-            pck.getNpm().remove("type");
-            pck.getNpm().set("type", "Examples");
-            FileOutputStream fso = ManagedFileAccess.outStream(f);
-            try {
-              pck.save(fso);
-            } finally {
-              fso.close();
-            }
-          }
-        } catch (Exception e) {
-          System.out.println("!!Error: "+e.getMessage());
-        }
-
-      }
-    }
-  }
+//  private void massEdit(File dir) throws IOException {
+//    System.out.println("process "+dir.getAbsolutePath());
+//    for (File f : dir.listFiles()) {
+//      if (f.isDirectory()) {
+//        massEdit(f);
+//      } else if (f.getName().equals("package.tgz")) {
+//        try {
+//          FileInputStream fs = ManagedFileAccess.inStream(f);
+//          NpmPackage pck = NpmPackage.fromPackage(fs);
+//          if ("fhir.core".equals(pck.getNpm().str("type"))) {
+//            System.out.println("!!change "+f.getAbsolutePath());
+//            pck.getNpm().remove("type");
+//            pck.getNpm().set("type", "Core");
+//            FileOutputStream fso = ManagedFileAccess.outStream(f);
+//            try {
+//              pck.save(fso);
+//            } finally {
+//              fso.close();
+//            }
+//          }
+//        } catch (Exception e) {
+//          System.out.println("!!Error: "+e.getMessage());
+//        }
+//      } else if (f.getName().startsWith("hl7.fhir.r") && f.getName().endsWith(".examples.tgz")) {
+//        try {
+//          FileInputStream fs = ManagedFileAccess.inStream(f);
+//          NpmPackage pck = NpmPackage.fromPackage(fs);
+//          if ("fhir.examples".equals(pck.getNpm().str("type"))) {
+//            System.out.println("!!change "+f.getAbsolutePath());
+//            pck.getNpm().remove("type");
+//            pck.getNpm().set("type", "Examples");
+//            FileOutputStream fso = ManagedFileAccess.outStream(f);
+//            try {
+//              pck.save(fso);
+//            } finally {
+//              fso.close();
+//            }
+//          }
+//        } catch (Exception e) {
+//          System.out.println("!!Error: "+e.getMessage());
+//        }
+//
+//      }
+//    }
+//  }
 
   private void edit(String name) throws FileNotFoundException, IOException {
     File f = ManagedFileAccess.file(name);
     if (!f.exists())
       throw new Error("Unable to find "+f.getAbsolutePath());
 
+    System.out.println("Loading Package "+f.getAbsolutePath());
     NpmPackage pck = null;
     FileInputStream fs = ManagedFileAccess.inStream(f);
     try {
@@ -95,15 +107,15 @@ public class PackageHacker {
     System.out.println("Altering Package "+f.getAbsolutePath());
     System.out.println(nice(pck.getNpm()));
 
-    change(pck.getNpm());
+    if (change(pck.getNpm())) {
 
     System.out.println("Revised Package");
     System.out.println("=======================");
     System.out.println(nice(pck.getNpm()));
     System.out.println("=======================");
-    System.out.print("save? y/n: ");
-    int r = System.in.read();
-    if (r == 'y') {
+//    System.out.print("save? y/n: ");
+//    int r = System.in.read();
+//    if (r == 'y') {
       f.renameTo(ManagedFileAccess.file(Utilities.changeFileExt(name, ".tgz.bak")));
       FileOutputStream fso = ManagedFileAccess.outStream(f);
       try {
@@ -111,7 +123,8 @@ public class PackageHacker {
       } finally {
         fso.close();
       }
-    }   
+//    } 
+    }
   }
 
   private void fixExampleContent(Map<String, byte[]> content) {
@@ -129,10 +142,13 @@ public class PackageHacker {
     return JsonParser.compose(json, true);
   }
 
-  private void change(JsonObject npm) throws FileNotFoundException, IOException {
+  private boolean change(JsonObject npm) throws FileNotFoundException, IOException {
     //    fixVersions(npm, ver);
-    npm.remove("notForPublication");
-    npm.set("name", "hl7.fhir.us.vitals");
+    if (npm.has("notForPublication")) {
+      npm.remove("notForPublication");
+      return true;
+    }
+    return false;
   }
 
   private void fixVersionInContent(Map<String, byte[]> content) {

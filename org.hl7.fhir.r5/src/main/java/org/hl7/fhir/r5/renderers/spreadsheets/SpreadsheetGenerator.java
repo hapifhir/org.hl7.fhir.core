@@ -100,7 +100,8 @@ public class SpreadsheetGenerator {
     if (name.length() > MAX_SENSITIVE_SHEET_NAME_LEN - 2) {
       name = name.substring(0, MAX_SENSITIVE_SHEET_NAME_LEN - 2);
     }
-    String s = fixSheetNameChars(name);
+    name = fixSheetNameChars(name);
+    String s = name;
     if (sheetNames.containsKey(s)) {
       int i = 1;
       do {
