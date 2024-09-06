@@ -226,6 +226,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean allowDoubleQuotesInFHIRPath;
   @Getter @Setter private boolean checkIPSCodes;
   @Getter @Setter private BestPracticeWarningLevel bestPracticeLevel;
+  @Getter @Setter private boolean unknownCodeSystemsCauseErrors;
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
@@ -289,6 +290,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     fhirPathEngine = other.fhirPathEngine;
     igLoader = other.igLoader;
     jurisdiction = other.jurisdiction;
+    unknownCodeSystemsCauseErrors = other.unknownCodeSystemsCauseErrors;
   }
   
   /**
@@ -906,6 +908,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (policyAdvisor != null) {
       validator.setPolicyAdvisor(policyAdvisor);
     }
+    validator.setUnknownCodeSystemsCauseErrors(unknownCodeSystemsCauseErrors);
     return validator;
   }
 

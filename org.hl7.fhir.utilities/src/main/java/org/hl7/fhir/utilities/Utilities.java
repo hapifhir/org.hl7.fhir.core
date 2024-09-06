@@ -1491,7 +1491,7 @@ public class Utilities {
   }
 
   public static boolean startsWithInList(String s, Collection<String> list) {
-    if (s == null) {
+    if (s == null || list == null) {
       return false;
     }
     for (String l : list) {
@@ -2302,6 +2302,18 @@ public class Utilities {
     default:
       return false;
     }
+  }
+
+  public static boolean listValueStartsWith(String s, Set<String> list) {
+    if (s == null || list == null) {
+      return false;
+    }
+    for (String l : list) {
+      if (l.startsWith(s)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }
