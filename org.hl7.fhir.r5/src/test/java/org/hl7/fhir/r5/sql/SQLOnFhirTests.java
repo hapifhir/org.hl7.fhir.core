@@ -88,6 +88,7 @@ public class SQLOnFhirTests {
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {
     List<Arguments> objects = new ArrayList<>();
+    // TODO: These test files should be added to the repository.
     File dir = ManagedFileAccess.file("/Users/grahamegrieve/work/sql-on-fhir-v2/tests/content");
     for (File f : dir.listFiles()) {
       if (f.getName().endsWith(".json")) {

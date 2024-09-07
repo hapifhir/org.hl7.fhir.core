@@ -1,7 +1,6 @@
 package org.hl7.fhir.r5.utils.sql;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,20 +31,26 @@ public class Validator {
   private FHIRPathEngine fpe;
   private List<String> prohibitedNames = new ArrayList<String>();
   private List<ValidationMessage> issues = new ArrayList<ValidationMessage>();
-  private Boolean arrays;
-  private Boolean complexTypes;
-  private Boolean needsName;
+  private boolean acceptArrays;
+  private boolean acceptComplexTypes;
+  private boolean needsName;
 
   private String resourceName;
   private String name;
 
-  public Validator(IWorkerContext context, FHIRPathEngine fpe, List<String> prohibitedNames, Boolean arrays, Boolean complexTypes, Boolean needsName) {
+  public Validator(
+      IWorkerContext context,
+      FHIRPathEngine fpe,
+      List<String> prohibitedNames,
+      boolean acceptArrays,
+      boolean acceptComplexTypes,
+      boolean needsName) {
     super();
     this.context = context;
     this.fpe = fpe;
     this.prohibitedNames = prohibitedNames;
-    this.arrays = arrays;
-    this.complexTypes = complexTypes;
+    this.acceptArrays = acceptArrays;
+    this.acceptComplexTypes = acceptComplexTypes;
     this.needsName = needsName;
   }
 
@@ -59,9 +64,9 @@ public class Validator {
     
     JsonElement nameJ = viewDefinition.get("name");
     if (nameJ == null) {
-      if (needsName == null) {
+      if (!needsName) {
         hint(path, viewDefinition, "No name provided. A name is required in many contexts where a ViewDefinition is used");        
-      } else if (needsName) {
+      } else {
         error(path, viewDefinition, "No name provided", IssueType.REQUIRED);
       }
     } else if (!(nameJ instanceof JsonString)) {
@@ -258,6 +263,8 @@ public class Validator {
         TypeDetails td = null;
         ExpressionNode node = null;
         try {
+          // TODO: Add support for `fhirVersion`.
+          // TODO: Add support for `getReferenceKey`.
           node = fpe.parse(expr);
           column.setUserData("path", node);
           td = fpe.checkOnTypes(null, resourceName, t, node, warnings);
@@ -296,6 +303,8 @@ public class Validator {
           // ok, name is sorted!
           if (columnName != null) {
             column.setUserData("name", columnName);
+            // TODO: Fix this collection testing logic as it does not seem to take into account
+            //  the `forEach` context.
             boolean isColl = (td.getCollectionStatus() != CollectionStatus.SINGLETON);
             if (column.has("collection")) {
               JsonElement collectionJ = column.get("collection");
@@ -310,9 +319,9 @@ public class Validator {
               }
             }
             if (isColl) {
-              if (arrays == null) {
+              if (acceptArrays) {
                 warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path. Collections are not supported in all execution contexts");
-              } else if (!arrays) {
+              } else {
                 warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path, but this is not allowed in the current execution context");
               }
             }
@@ -346,12 +355,11 @@ public class Validator {
               String type = types.iterator().next();
               boolean ok = false;
               if (!isSimpleType(type) && !"null".equals(type)) {
-                if (complexTypes) {
-                  warning(path, expression, "Column is a complex type. This is not supported in some Runners");
-                } else if (!complexTypes) {            
-                  error(path, expression, "Column is a complex type but this is not allowed in this context", IssueType.BUSINESSRULE);
-                } else {
+                if (acceptComplexTypes) {
+                  warning(path, expression, "The column '"+columnName+"' is a complex type. This is not supported in some Runners");
                   ok = true;
+                } else {
+                  error(path, expression, "The column '"+columnName+"' is a complex type but this is not allowed in this context", IssueType.BUSINESSRULE);
                 }
               } else {
                 ok = true;
@@ -384,7 +392,27 @@ public class Validator {
   }
 
   private boolean isSimpleType(String type) {
-    return Utilities.existsInList(type, "dateTime", "boolean", "integer", "decimal", "string", "base64Binary");
+    return Utilities.existsInList(
+        type,
+        "dateTime",
+        "boolean",
+        "integer",
+        "decimal",
+        "string",
+        "base64Binary",
+        "uri",
+        "url",
+        "canonical",
+        "code",
+        "id",
+        "instant",
+        "integer64",
+        "markdown",
+        "oid",
+        "positiveInt",
+        "time",
+        "unsignedInt",
+        "uuid");
   }
 
   private String simpleType(String type) {

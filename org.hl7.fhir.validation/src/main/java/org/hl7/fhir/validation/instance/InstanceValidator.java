@@ -5714,7 +5714,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else if ("http://hl7.org/fhir/uv/sql-on-fhir/StructureDefinition/ViewDefinition".equals(element.getProperty().getStructure().getUrl())) {
         if (element.getNativeObject() != null && element.getNativeObject() instanceof JsonObject) {
           JsonObject json = (JsonObject) element.getNativeObject();
-          Validator sqlv = new Validator(context, fpe, new ArrayList<>(), null, null, null);
+          Validator sqlv = new Validator(context, fpe, new ArrayList<>(), true, true, false);
           sqlv.checkViewDefinition(stack.getLiteralPath(), json);
           errors.addAll(sqlv.getIssues());
           ok = sqlv.isOk() && ok;
