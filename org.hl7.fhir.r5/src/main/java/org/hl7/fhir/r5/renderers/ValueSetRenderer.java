@@ -754,16 +754,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (ref == null) {
       ref = (String) cs.getWebPath();
     }
-    if (ref == null && cs.hasUserData("webroot")) {
-      ref = (String) cs.getUserData("webroot");
-    }
-    if (ref == null) {
-      return "?ngen-14?.html";
-    }
-    if (!ref.contains(".html")) {
-      ref = ref + ".html";
-    }
-    return ref.replace("\\", "/");
+    return ref == null ? null : ref.replace("\\", "/");
   }
 
   private void scanForDesignations(ValueSetExpansionContainsComponent c, List<String> langs, Map<String, String> designations) {
@@ -922,14 +913,18 @@ public class ValueSetRenderer extends TerminologyRenderer {
         td.addText(code);
     } else {
       String href = context.fixReference(getCsRef(e));
-      if (href.contains("#"))
-        href = href + "-"+Utilities.nmtokenize(code);
-      else
-        href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(code);
-      if (isAbstract)
-        td.ah(context.prefixLocalHref(href)).setAttribute("title", context.formatPhrase(RenderingContext.VS_ABSTRACT_CODE_HINT)).i().addText(code);
-      else
-        td.ah(context.prefixLocalHref(href)).addText(code);
+      if (href == null) {
+        td.code().tx(code);        
+      } else {
+        if (href.contains("#"))
+          href = href + "-"+Utilities.nmtokenize(code);
+        else
+          href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(code);
+        if (isAbstract)
+          td.ah(context.prefixLocalHref(href)).setAttribute("title", context.formatPhrase(RenderingContext.VS_ABSTRACT_CODE_HINT)).i().addText(code);
+        else
+          td.ah(context.prefixLocalHref(href)).addText(code);
+      }
     }
   }
 
@@ -1247,11 +1242,15 @@ public class ValueSetRenderer extends TerminologyRenderer {
               wli.tx(f.getProperty()+" "+describe(f.getOp())+" ");
               if (e != null && codeExistsInValueSet(e, f.getValue())) {
                 String href = getContext().fixReference(getCsRef(e));
-                if (href.contains("#"))
-                  href = href + "-"+Utilities.nmtokenize(f.getValue());
-                else
-                  href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(f.getValue());
-                wli.ah(context.prefixLocalHref(href)).addText(f.getValue());
+                if (href == null) {
+                  wli.code().tx(f.getValue());                  
+                } else {
+                  if (href.contains("#"))
+                    href = href + "-"+Utilities.nmtokenize(f.getValue());
+                  else
+                    href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(f.getValue());
+                  wli.ah(context.prefixLocalHref(href)).addText(f.getValue());
+                }
               } else if (inc.hasSystem()) {
                 wli.addText(f.getValue());
                 ValidationResult vr = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), inc.getVersion(), f.getValue(), null);

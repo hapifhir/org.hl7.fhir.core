@@ -11,6 +11,27 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.model.Base64BinaryType;
+import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.DateType;
+import org.hl7.fhir.r5.model.DecimalType;
+import org.hl7.fhir.r5.model.IdType;
+import org.hl7.fhir.r5.model.InstantType;
+import org.hl7.fhir.r5.model.Integer64Type;
+import org.hl7.fhir.r5.model.IntegerType;
+import org.hl7.fhir.r5.model.OidType;
+import org.hl7.fhir.r5.model.PositiveIntType;
+import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.TimeType;
+import org.hl7.fhir.r5.model.UnsignedIntType;
+import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.UrlType;
+import org.hl7.fhir.r5.model.UuidType;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
 import org.hl7.fhir.utilities.Utilities;
@@ -99,7 +120,7 @@ public class Validator {
         i = 0;
         if (checkAllObjects(path, viewDefinition, "where")) {
           for (JsonObject where : viewDefinition.getJsonObjects("where")) {
-            checkWhere(path+".where["+i+"]", where);
+            checkWhere(viewDefinition, path+".where["+i+"]", where);
             i++;
           }
         }
@@ -108,7 +129,7 @@ public class Validator {
         i = 0;
         if (checkAllObjects(path, viewDefinition, "select")) {
           for (JsonObject select : viewDefinition.getJsonObjects("select")) {
-            columns.addAll(checkSelect(path+".select["+i+"]", select, t));
+            columns.addAll(checkSelect(viewDefinition, path+".select["+i+"]", select, t));
             i++;
           }
           if (i == 0) {
@@ -119,15 +140,15 @@ public class Validator {
     }
   }
 
-  private List<Column> checkSelect(String path, JsonObject select, TypeDetails t) {
+  private List<Column> checkSelect(JsonObject vd, String path, JsonObject select, TypeDetails t) {
     List<Column> columns = new ArrayList<>();
     select.setUserData("columns", columns);
     checkProperties(select, path, "column", "select", "forEach", "forEachOrNull", "unionAll");
 
     if (select.has("forEach")) {
-      t = checkForEach(path, select, select.get("forEach"), t);
+      t = checkForEach(vd, path, select, select.get("forEach"), t);
     } else if (select.has("forEachOrNull")) {
-      t = checkForEachOrNull(path, select, select.get("forEachOrNull"), t);
+      t = checkForEachOrNull(vd, path, select, select.get("forEachOrNull"), t);
     } 
 
     if (t != null) {
@@ -142,7 +163,7 @@ public class Validator {
             if (!(e instanceof JsonObject)) {
               error(path+".column["+i+"]", a, "column["+i+"] is a "+e.type().toName()+" not an object", IssueType.INVALID);
             } else { 
-              columns.add(checkColumn(path+".column["+i+"]", (JsonObject) e, t));
+              columns.add(checkColumn(vd, path+".column["+i+"]", (JsonObject) e, t));
             }
           }      
         }     
@@ -158,14 +179,14 @@ public class Validator {
             if (!(e instanceof JsonObject)) {
               error(path+".select["+i+"]", e, "select["+i+"] is not an object", IssueType.INVALID);
             } else { 
-              columns.addAll(checkSelect(path+".select["+i+"]", (JsonObject) e, t));
+              columns.addAll(checkSelect(vd, path+".select["+i+"]", (JsonObject) e, t));
             }
           }      
         }     
       }
 
       if (select.has("unionAll")) {
-        columns.addAll(checkUnion(path, select, select.get("unionAll"), t));
+        columns.addAll(checkUnion(vd, path, select, select.get("unionAll"), t));
       } 
       if (columns.isEmpty()) {
         error(path, select, "The select has no columns or selects", IssueType.REQUIRED);
@@ -191,7 +212,7 @@ public class Validator {
     }    
   }
 
-  private List<Column> checkUnion(String path, JsonObject focus, JsonElement expression,  TypeDetails t) {
+  private List<Column> checkUnion(JsonObject vd, String path, JsonObject focus, JsonElement expression,  TypeDetails t) {
     JsonElement a = focus.get("unionAll");
     if (!(a instanceof JsonArray)) {
       error(path+".unionAll", a, "union is not an array", IssueType.INVALID);
@@ -203,7 +224,7 @@ public class Validator {
         if (!(e instanceof JsonObject)) {
           error(path+".unionAll["+i+"]", e, "unionAll["+i+"] is not an object", IssueType.INVALID);
         } else { 
-          unionColumns.add(checkSelect(path+".unionAll["+i+"]", (JsonObject) e, t));
+          unionColumns.add(checkSelect(vd, path+".unionAll["+i+"]", (JsonObject) e, t));
         }
         i++;
       }  
@@ -242,7 +263,7 @@ public class Validator {
     }
   }
 
-  private Column checkColumn(String path, JsonObject column, TypeDetails t) {
+  private Column checkColumn(JsonObject vd, String path, JsonObject column, TypeDetails t) {
     checkProperties(column, path, "path", "name", "description", "collection", "type", "tag");
 
     if (!column.has("path")) {
@@ -260,7 +281,7 @@ public class Validator {
         try {
           node = fpe.parse(expr);
           column.setUserData("path", node);
-          td = fpe.checkOnTypes(null, resourceName, t, node, warnings);
+          td = fpe.checkOnTypes(vd, resourceName, t, node, warnings);
         } catch (Exception e) {
           error(path, expression, e.getMessage(), IssueType.INVALID);
         }
@@ -296,24 +317,30 @@ public class Validator {
           // ok, name is sorted!
           if (columnName != null) {
             column.setUserData("name", columnName);
-            boolean isColl = (td.getCollectionStatus() != CollectionStatus.SINGLETON);
+            boolean isColl = false;
             if (column.has("collection")) {
               JsonElement collectionJ = column.get("collection");
               if (!(collectionJ instanceof JsonBoolean)) {
                 error(path+".collection", collectionJ, "collection is not a boolean", IssueType.INVALID);
               } else {
                 boolean collection = collectionJ.asJsonBoolean().asBoolean();
-                if (!collection && isColl) {
-                  isColl = false;
-                  warning(path, column, "collection is false, but the path statement(s) might return multiple values for the column '"+columnName+"' some inputs");
+                if (collection) {
+                  isColl = true;
                 }
               }
             }
             if (isColl) {
+              if (td.getCollectionStatus() == CollectionStatus.SINGLETON) {
+                hint(path, column, "collection is true, but the path statement(s) can only return single values for the column '"+columnName+"'");
+              }
+            } else {
               if (arrays == null) {
                 warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path. Collections are not supported in all execution contexts");
               } else if (!arrays) {
                 warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path, but this is not allowed in the current execution context");
+              }
+              if (td.getCollectionStatus() != CollectionStatus.SINGLETON) {
+                warning(path, column, "collection is not true, but the path statement(s) might return multiple values for the column '"+columnName+"' for some inputs");
               }
             }
             Set<String> types = new HashSet<>();
@@ -330,7 +357,7 @@ public class Validator {
                 if (typeJ instanceof JsonString) {
                   String type = typeJ.asString();
                   if (!td.hasType(type)) {
-                    error(path+".type", typeJ, "The path expression does not return a value of the type '"+type, IssueType.VALUE);
+                    error(path+".type", typeJ, "The path expression does not return a value of the type '"+type+"' - found "+td.describe(), IssueType.VALUE);
                   } else {
                     types.clear();
                     types.add(simpleType(type));
@@ -377,6 +404,8 @@ public class Validator {
     case "integer": return ColumnKind.Integer;
     case "decimal": return ColumnKind.Decimal;
     case "string": return ColumnKind.String;
+    case "id": return ColumnKind.String;
+    case "code": return ColumnKind.String;
     case "base64Binary": return ColumnKind.Binary;
     case "time": return ColumnKind.Time;
     default: return ColumnKind.Complex;
@@ -384,7 +413,7 @@ public class Validator {
   }
 
   private boolean isSimpleType(String type) {
-    return Utilities.existsInList(type, "dateTime", "boolean", "integer", "decimal", "string", "base64Binary");
+    return Utilities.existsInList(type, "dateTime", "boolean", "integer", "decimal", "string", "base64Binary", "id", "code", "date", "time");
   }
 
   private String simpleType(String type) {
@@ -413,7 +442,7 @@ public class Validator {
     return type;
   }
 
-  private TypeDetails checkForEach(String path, JsonObject focus, JsonElement expression, TypeDetails t) {
+  private TypeDetails checkForEach(JsonObject vd, String path, JsonObject focus, JsonElement expression, TypeDetails t) {
     if (!(expression instanceof JsonString)) {
       error(path+".forEach", expression, "forEach is not a string", IssueType.INVALID);
       return null;
@@ -425,7 +454,7 @@ public class Validator {
       try {
         ExpressionNode n = fpe.parse(expr);
         focus.setUserData("forEach", n);
-        td = fpe.checkOnTypes(null, resourceName, t, n, warnings);
+        td = fpe.checkOnTypes(vd, resourceName, t, n, warnings);
       } catch (Exception e) {
         error(path, expression, e.getMessage(), IssueType.INVALID);
       }
@@ -438,7 +467,7 @@ public class Validator {
     }
   }
 
-  private TypeDetails checkForEachOrNull(String path, JsonObject focus, JsonElement expression, TypeDetails t) {
+  private TypeDetails checkForEachOrNull(JsonObject vd, String path, JsonObject focus, JsonElement expression, TypeDetails t) {
     if (!(expression instanceof JsonString)) {
       error(path+".forEachOrNull", expression, "forEachOrNull is not a string", IssueType.INVALID);
       return null;
@@ -450,7 +479,7 @@ public class Validator {
       try {
         ExpressionNode n = fpe.parse(expr);
         focus.setUserData("forEachOrNull", n);
-        td = fpe.checkOnTypes(null, resourceName, t, n, warnings);
+        td = fpe.checkOnTypes(vd, resourceName, t, n, warnings);
       } catch (Exception e) {
         error(path, expression, e.getMessage(), IssueType.INVALID);
       }
@@ -477,69 +506,79 @@ public class Validator {
       }
     }
     if (constant.has("valueBase64Binary")) {
-      checkIsString(path, constant, "valueBase64Binary");
+      checkIsString(path, constant, "valueBase64Binary", new Base64BinaryType());
     } else if (constant.has("valueBoolean")) {
-      checkIsBoolean(path, constant, "valueBoolean");
+      checkIsBoolean(path, constant, "valueBoolean", new BooleanType());
     } else if (constant.has("valueCanonical")) { 
-      checkIsString(path, constant, "valueCanonical");
+      checkIsString(path, constant, "valueCanonical", new CanonicalType());
     } else if (constant.has("valueCode")) {
-      checkIsString(path, constant, "valueCode");
+      checkIsString(path, constant, "valueCode", new CodeType());
     } else if (constant.has("valueDate")) {
-      checkIsString(path, constant, "valueDate");
+      checkIsString(path, constant, "valueDate", new DateType());
     } else if (constant.has("valueDateTime")) {
-      checkIsString(path, constant, "valueDateTime");
+      checkIsString(path, constant, "valueDateTime", new DateTimeType());
     } else if (constant.has("valueDecimal")) {
-      checkIsNumber(path, constant, "valueDecimal");
+      checkIsNumber(path, constant, "valueDecimal", new DecimalType());
     } else if (constant.has("valueId")) {
-      checkIsString(path, constant, "valueId");
+      checkIsString(path, constant, "valueId", new IdType());
     } else if (constant.has("valueInstant")) {
-      checkIsString(path, constant, "valueInstant");
+      checkIsString(path, constant, "valueInstant", new InstantType());
     } else if (constant.has("valueInteger")) {
-      checkIsNumber(path, constant, "valueInteger");
+      checkIsNumber(path, constant, "valueInteger", new IntegerType());
     } else if (constant.has("valueInteger64")) {
-      checkIsNumber(path, constant, "valueInteger64");
+      checkIsNumber(path, constant, "valueInteger64", new Integer64Type());
     } else if (constant.has("valueOid")) {
-      checkIsString(path, constant, "valueOid");
+      checkIsString(path, constant, "valueOid", new OidType());
     } else if (constant.has("valueString")) {
-      checkIsString(path, constant, "valueString");
+      checkIsString(path, constant, "valueString", new StringType());
     } else if (constant.has("valuePositiveInt")) {
-      checkIsNumber(path, constant, "valuePositiveInt");
+      checkIsNumber(path, constant, "valuePositiveInt", new PositiveIntType());
     } else if (constant.has("valueTime")) {
-      checkIsString(path, constant, "valueTime");
+      checkIsString(path, constant, "valueTime", new TimeType());
     } else if (constant.has("valueUnsignedInt")) {
-      checkIsNumber(path, constant, "valueUnsignedInt");
+      checkIsNumber(path, constant, "valueUnsignedInt", new UnsignedIntType());
     } else if (constant.has("valueUri")) {
-      checkIsString(path, constant, "valueUri");
+      checkIsString(path, constant, "valueUri", new UriType());
     } else if (constant.has("valueUrl")) {
-      checkIsString(path, constant, "valueUrl");
+      checkIsString(path, constant, "valueUrl", new UrlType());
     } else if (constant.has("valueUuid")) {
-      checkIsString(path, constant, "valueUuid");
+      checkIsString(path, constant, "valueUuid", new UuidType());
     } else {
       error(path, constant, "No value found", IssueType.REQUIRED);
     }
   }
 
-  private void checkIsString(String path, JsonObject constant, String name) {
+  private void checkIsString(String path, JsonObject constant, String name, PrimitiveType<?> value) {
     JsonElement j = constant.get(name);
     if (!(j instanceof JsonString)) {
       error(path+"."+name, j, name+" must be a string", IssueType.INVALID);
+    } else {
+      value.setValueAsString(j.asString());
+      constant.setUserData("value", value);
     }
   }
 
-  private void checkIsBoolean(String path, JsonObject constant, String name) {
+  private void checkIsBoolean(String path, JsonObject constant, String name, PrimitiveType<?> value) {
     JsonElement j = constant.get(name);
     if (!(j instanceof JsonBoolean)) {
       error(path+"."+name, j, name+" must be a boolean", IssueType.INVALID);
+    } else {
+      value.setValueAsString(j.asString());
+      constant.setUserData("value", value);
     }
   }
 
-  private void checkIsNumber(String path, JsonObject constant, String name) {
+  private void checkIsNumber(String path, JsonObject constant, String name, PrimitiveType<?> value) {
     JsonElement j = constant.get(name);
     if (!(j instanceof JsonNumber)) {
       error(path+"."+name, j, name+" must be a number", IssueType.INVALID);
+    } else {
+      value.setValueAsString(j.asString());
+      constant.setUserData("value", value);
     }
   }
-  private void checkWhere(String path, JsonObject where) {
+  
+  private void checkWhere(JsonObject vd, String path, JsonObject where) {
     checkProperties(where, path, "path", "description");
 
     String expr = where.asString("path");
@@ -553,7 +592,7 @@ public class Validator {
     try {
       ExpressionNode n = fpe.parse(expr);
       where.setUserData("path", n);
-      td = fpe.checkOnTypes(null, resourceName, types, n, warnings);
+      td = fpe.checkOnTypes(vd, resourceName, types, n, warnings);
     } catch (Exception e) {
       error(path, where.get("path"), e.getMessage(), IssueType.INVALID);
     }
