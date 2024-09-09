@@ -118,6 +118,20 @@ public class FilesystemPackageCacheManagerLocks {
       if (!lockFile.exists()) {
         return;
       }
+
+      // Check if the file is locked by a process. If it is not, it is likely an incomplete package cache install, and
+      // we should throw an exception.
+      if (lockFile.isFile()) {
+        try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
+          FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, true);
+          if (fileLock != null) {
+            fileLock.release();
+            channel.close();
+            throw new IOException("Lock file exists, but is not locked by a process: " + lockFile.getName());
+          }
+        }
+      }
+
       try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
         Path dir = lockFile.getParentFile().toPath();
         dir.register(watchService, StandardWatchEventKinds.ENTRY_DELETE);
