@@ -59,6 +59,12 @@ public class ValidatorCliTests {
   SpreadsheetTask spreadsheetTask;
 
   @Spy
+  TestScriptQuestionnaireTask testScriptQuestionnaireTask;
+
+  @Spy
+  QuestionnaireExtractTask questionnaireExtractTask;
+
+  @Spy
   PreloadCacheTask preloadCacheTask = new PreloadCacheTask() {
     @Override
     public void executeTask(CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) {}
@@ -118,6 +124,8 @@ public class ValidatorCliTests {
           txTestsTask,
           transformTask,
           versionTask,
+          questionnaireExtractTask,
+          testScriptQuestionnaireTask,
           //validate is the default
           validateTask
         );
@@ -250,6 +258,26 @@ public class ValidatorCliTests {
     cli.readParamsAndExecuteTask(cliContext, args);
     Mockito.verify(validationService).determineVersion(same(cliContext));
     Mockito.verify(validationService).transformLang(same(cliContext), same(validationEngine));
+  }
+
+  @Test
+  public void testScriptQuestionnaireTest() throws Exception {
+    final String[] args = new String[]{"-ig", "hl7.fhir.us.physical-activity#dev", "-script-questionnaire", "-output", "outputQuestionnaire.json"};
+    CliContext cliContext = Params.loadCliContext(args);
+    ValidatorCli cli = mockValidatorCliWithService(cliContext);
+    cli.readParamsAndExecuteTask(cliContext, args);
+    Mockito.verify(validationService).determineVersion(same(cliContext));
+    Mockito.verify(validationService).genScriptQuestionnaire(same(cliContext), same(validationEngine));
+  }
+
+  @Test
+  public void questionnaireExtractTest() throws Exception {
+    final String[] args = new String[]{"questionnaireResponse.json", "-questionnaire-extract", "-output", "testScripts"};
+    CliContext cliContext = Params.loadCliContext(args);
+    ValidatorCli cli = mockValidatorCliWithService(cliContext);
+    cli.readParamsAndExecuteTask(cliContext, args);
+    Mockito.verify(validationService).determineVersion(same(cliContext));
+    Mockito.verify(validationService).questionnaireExtract(same(cliContext), same(validationEngine));
   }
 
   @Test
