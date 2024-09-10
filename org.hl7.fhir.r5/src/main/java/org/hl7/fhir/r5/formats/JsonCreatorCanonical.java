@@ -281,7 +281,10 @@ public class JsonCreatorCanonical implements JsonCreator {
   }
 
   @Override
-  public void ellipse() {
+  public boolean canEllide() { return false; }
+
+  @Override
+  public void ellide() {
     // not used
   }
 

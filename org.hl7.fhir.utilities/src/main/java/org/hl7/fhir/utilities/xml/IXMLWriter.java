@@ -106,6 +106,7 @@ public interface IXMLWriter {
   public abstract void externalLink(String ref) throws IOException;
 
   // this is only implemented by an implementation that is producing an xhtml representation and handles ellipsing elements
-  public abstract void ellipse() throws IOException;
-  public abstract void attributeEllipse();
+  public abstract boolean canEllide();
+  public abstract void ellide() throws IOException;
+  public abstract void attributeEllide();
 }

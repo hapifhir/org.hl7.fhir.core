@@ -162,7 +162,7 @@ public class Element extends Base implements NamedItem {
   private FhirFormat format;
   private Object nativeObject;
   private List<SliceDefinition> sliceDefinitions;
-  private boolean ellipsed;
+  private boolean ellided;
 
 	public Element(String name) {
 		super();
@@ -1430,8 +1430,8 @@ public class Element extends Base implements NamedItem {
   public Base copy() {
     Element element = new Element(this);
     this.copyValues(element);
-    if (this.isEllipsed())
-      element.setEllipsed(true);
+    if (this.isEllided())
+      element.setEllided(true);
     return element;
   }
 
@@ -1641,11 +1641,11 @@ public class Element extends Base implements NamedItem {
     return FhirPublication.fromCode(property.getStructure().getVersion());
   }
 
-  public void setEllipsed(boolean ellipsed) {
-    this.ellipsed = ellipsed;
+  public void setEllided(boolean ellided) {
+    this.ellided = ellided;
   }
 
-  public boolean isEllipsed() {
-    return this.ellipsed;
+  public boolean isEllided() {
+    return this.ellided;
   }
 }

@@ -94,7 +94,7 @@ import org.xml.sax.XMLReader;
 public class XmlParser extends ParserBase {
   private boolean allowXsiLocation;
   private String version;
-  private boolean ellipseElements;
+  private boolean ellideElements;
 
   public XmlParser(IWorkerContext context) {
     super(context);
@@ -806,7 +806,7 @@ public class XmlParser extends ParserBase {
   }
 
   private void composeElement(IXMLWriter xml, Element element, String elementName, boolean root) throws IOException, FHIRException {
-    if (!(isEllipseElements() && element.isEllipsed())) {
+    if (!(isEllideElements() && element.isEllided())) {
       if (showDecorations) {
         @SuppressWarnings("unchecked")
         List<ElementDecoration> decorations = (List<ElementDecoration>) element.getUserData("fhir.decorations");
@@ -819,8 +819,8 @@ public class XmlParser extends ParserBase {
       }
     }
     if (isText(element.getProperty())) {
-      if (isEllipseElements() && element.isEllipsed())
-        xml.ellipse();
+      if (isEllideElements() && element.isEllided() && xml.canEllide())
+        xml.ellide();
       else {
         if (linkResolver != null)
           xml.link(linkResolver.resolveProperty(element.getProperty()));
@@ -835,8 +835,8 @@ public class XmlParser extends ParserBase {
         xml.exit(element.getProperty().getXmlNamespace(),elementName);
       }
     } else if (!element.hasChildren() && !element.hasValue()) {
-      if (isEllipseElements() && element.isEllipsed())
-        xml.ellipse();
+      if (isEllideElements() && element.isEllided() && xml.canEllide())
+        xml.ellide();
       else {
         if (element.getExplicitType() != null)
           xml.attribute("xsi:type", element.getExplicitType());
@@ -844,8 +844,8 @@ public class XmlParser extends ParserBase {
       }
     } else if (element.isPrimitive() || (element.hasType() && isPrimitive(element.getType()))) {
       if (element.getType().equals("xhtml")) {
-        if (isEllipseElements() && element.isEllipsed())
-          xml.ellipse();
+        if (isEllideElements() && element.isEllided() && xml.canEllide())
+          xml.ellide();
         else {
           String rawXhtml = element.getValue();
           if (isCdaText(element.getProperty())) {
@@ -859,16 +859,16 @@ public class XmlParser extends ParserBase {
           }
         }
       } else if (isText(element.getProperty())) {
-        if (isEllipseElements() && element.isEllipsed())
-          xml.ellipse();
+        if (isEllideElements() && element.isEllided() && xml.canEllide())
+          xml.ellide();
         else {
           if (linkResolver != null)
             xml.link(linkResolver.resolveProperty(element.getProperty()));
           xml.text(element.getValue());
         }
       } else {
-        if (isEllipseElements() && element.isEllipsed())
-          xml.attributeEllipse();
+        if (isEllideElements() && element.isEllided())
+          xml.attributeEllide();
         else {
           setXsiTypeIfIsTypeAttr(xml, element);
           if (element.hasValue()) {
@@ -894,22 +894,22 @@ public class XmlParser extends ParserBase {
         }
       }
     } else {
-      if (isEllipseElements() && element.isEllipsed())
-        xml.ellipse();
+      if (isEllideElements() && element.isEllided() && xml.canEllide())
+        xml.ellide();
       else {
         setXsiTypeIfIsTypeAttr(xml, element);
         Set<String> handled = new HashSet<>();
       for (Element child : element.getChildren()) {
         if (!handled.contains(child.getName()) && isAttr(child.getProperty()) && wantCompose(element.getPath(), child)) {
           handled.add(child.getName());
-          if (isEllipseElements() && child.isEllipsed())
-            xml.attributeEllipse();
+          if (isEllideElements() && child.isEllided())
+            xml.attributeEllide();
           else {
             String av = child.getValue();
             if (child.getProperty().isList()) {
               for (Element c2 : element.getChildren()) {
                 if (c2 != child && c2.getName().equals(child.getName())) {
-                  if (c2.isEllipsed())
+                  if (c2.isEllided())
                     av = av + " ...";
                   else
                     av = av + " " + c2.getValue();
@@ -948,8 +948,8 @@ public class XmlParser extends ParserBase {
       }
       for (Element child : element.getChildren()) {
         if (wantCompose(element.getPath(), child)) {
-          if (isEllipseElements() && child.isEllipsed())
-            xml.ellipse();
+          if (isEllideElements() && child.isEllided() && xml.canEllide())
+            xml.ellide();
           else {
             if (isText(child.getProperty())) {
               if (linkResolver != null)
@@ -1073,12 +1073,12 @@ public class XmlParser extends ParserBase {
     }
   }
 
-  public boolean isEllipseElements() {
-    return ellipseElements;
+  public boolean isEllideElements() {
+    return ellideElements;
   }
 
-  public void setEllipseElements(boolean ellipseElements) {
-    this.ellipseElements = ellipseElements;
+  public void setEllideElements(boolean ellideElements) {
+    this.ellideElements = ellideElements;
   }
 
 }
