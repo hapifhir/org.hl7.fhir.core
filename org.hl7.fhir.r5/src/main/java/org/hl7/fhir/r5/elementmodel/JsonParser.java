@@ -86,8 +86,8 @@ public class JsonParser extends ParserBase {
 
   private JsonCreator json;
   private boolean allowComments;
-  private boolean ellipseElements;
-  private boolean suppressResourceType;
+  private boolean ellideElements;
+//  private boolean suppressResourceType;
 
   private Element baseElement;
   private boolean markedXhtml;
@@ -785,7 +785,7 @@ public class JsonParser extends ParserBase {
     }
     checkComposeComments(e);
     json.beginObject();
-    if (!isSuppressResourceType())
+//    if (!isSuppressResourceType())
       prop("resourceType", e.getType(), null);
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
@@ -811,7 +811,7 @@ public class JsonParser extends ParserBase {
     checkComposeComments(e);
     json.beginObject();
 
-    if (!isSuppressResourceType())
+//    if (!isSuppressResourceType())
       prop("resourceType", e.getType(), linkResolver == null ? null : linkResolver.resolveProperty(e.getProperty()));
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
@@ -826,8 +826,8 @@ public class JsonParser extends ParserBase {
     if (wantCompose(path, child)) {
       boolean isList = child.hasElementProperty() ? child.getElementProperty().isList() : child.getProperty().isList();
       if (!isList) {// for specials, ignore the cardinality of the stated type
-        if (child.isEllipsed() && ellipseElements)
-          json.ellipse();
+        if (child.isEllided() && isEllideElements() && json.canEllide())
+          json.ellide();
         else
           compose(path, child);
       } else if (!done.contains(child.getName())) {
@@ -887,8 +887,8 @@ public class JsonParser extends ParserBase {
       if (prim) {
         openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
         for (Element item : list) {
-          if (item.isEllipsed())
-            json.ellipse();
+          if (item.isEllided() && json.canEllide())
+            json.ellide();
           else if (item.hasValue()) {
             if (linkResolver != null && item.getProperty().isReference()) {
               String ref = linkResolver.resolveReference(getReferenceForElement(item));
@@ -908,8 +908,8 @@ public class JsonParser extends ParserBase {
       openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
       int i = 0;
       for (Element item : list) {
-        if (item.isEllipsed())
-          json.ellipse();
+        if (item.isEllided() && json.canEllide())
+          json.ellide();
         else if (item.hasChildren()) {
           open(null,null);
           if (item.getProperty().isResource()) {
@@ -996,15 +996,15 @@ public class JsonParser extends ParserBase {
     return this;
   }
 
-  public boolean isEllipseElements() {
-    return ellipseElements;
+  public boolean isEllideElements() {
+    return ellideElements;
   }
 
-  public JsonParser setEllipseElements(boolean ellipseElements) {
-    this.ellipseElements = ellipseElements;
+  public JsonParser setEllideElements(boolean ellideElements) {
+    this.ellideElements = ellideElements;
     return this;
   }
-
+/*
   public boolean isSuppressResourceType() {
     return suppressResourceType;
   }
@@ -1013,6 +1013,6 @@ public class JsonParser extends ParserBase {
     this.suppressResourceType = suppressResourceType;
     return this;
   }
-
+*/
 
 }

@@ -128,8 +128,11 @@ public class JsonCreatorGson implements JsonCreator {
   }
 
   @Override
-  public void ellipse() {
+  public void ellide() {
     // not used
   }
+
+  @Override
+  public boolean canEllide() { return false;}
 
 }
