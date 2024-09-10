@@ -195,7 +195,7 @@ public class FilesystemPackageCacheManagerLocks {
       try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
         FileLock fileLock = null;
         while (fileLock == null) {
-          fileLock = channel.tryLock(0, Long.MAX_VALUE, true);
+          fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
           if (fileLock == null) {
             Thread.sleep(100); // Wait and retry
           }
