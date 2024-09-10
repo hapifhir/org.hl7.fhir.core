@@ -86,7 +86,7 @@ public class JsonParser extends ParserBase {
 
   private JsonCreator json;
   private boolean allowComments;
-  private boolean ellideElements;
+  private boolean elideElements;
 //  private boolean suppressResourceType;
 
   private Element baseElement;
@@ -826,8 +826,8 @@ public class JsonParser extends ParserBase {
     if (wantCompose(path, child)) {
       boolean isList = child.hasElementProperty() ? child.getElementProperty().isList() : child.getProperty().isList();
       if (!isList) {// for specials, ignore the cardinality of the stated type
-        if (child.isEllided() && isEllideElements() && json.canEllide())
-          json.ellide();
+        if (child.isElided() && isElideElements() && json.canElide())
+          json.elide();
         else
           compose(path, child);
       } else if (!done.contains(child.getName())) {
@@ -887,8 +887,8 @@ public class JsonParser extends ParserBase {
       if (prim) {
         openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
         for (Element item : list) {
-          if (item.isEllided() && json.canEllide())
-            json.ellide();
+          if (item.isElided() && json.canElide())
+            json.elide();
           else if (item.hasValue()) {
             if (linkResolver != null && item.getProperty().isReference()) {
               String ref = linkResolver.resolveReference(getReferenceForElement(item));
@@ -908,8 +908,8 @@ public class JsonParser extends ParserBase {
       openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
       int i = 0;
       for (Element item : list) {
-        if (item.isEllided() && json.canEllide())
-          json.ellide();
+        if (item.isElided() && json.canElide())
+          json.elide();
         else if (item.hasChildren()) {
           open(null,null);
           if (item.getProperty().isResource()) {
@@ -996,12 +996,12 @@ public class JsonParser extends ParserBase {
     return this;
   }
 
-  public boolean isEllideElements() {
-    return ellideElements;
+  public boolean isElideElements() {
+    return elideElements;
   }
 
-  public JsonParser setEllideElements(boolean ellideElements) {
-    this.ellideElements = ellideElements;
+  public JsonParser setElideElements(boolean elideElements) {
+    this.elideElements = elideElements;
     return this;
   }
 /*
