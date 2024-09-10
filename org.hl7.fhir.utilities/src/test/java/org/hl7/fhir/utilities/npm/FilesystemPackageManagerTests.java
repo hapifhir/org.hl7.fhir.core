@@ -137,6 +137,24 @@ public class FilesystemPackageManagerTests {
     assertThat(exception.getMessage()).contains("Lock file exists, but is not locked by a process");
   }
 
+  private static Thread lockWaitAndDelete(String path, String lockFileName, int seconds)  {
+    Thread t = new Thread(() -> {
+    ProcessBuilder processBuilder = new ProcessBuilder("java", "-cp", "target/test-classes:.", "org.hl7.fhir.utilities.npm.LockfileUtility", path, lockFileName, Integer.toString(seconds));
+      try {
+        Process process = processBuilder.start();
+        process.getErrorStream().transferTo(System.err);
+        process.getInputStream().transferTo(System.out);
+        process.waitFor();
+      } catch (IOException | InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+      });
+    t.start();
+    return t;
+  }
+
+
+
   @Test
   //@EnabledOnOs(OS.LINUX)
   public void testCacheCleanupForUnlockedLockFiles() throws IOException, InterruptedException {
@@ -150,34 +168,19 @@ public class FilesystemPackageManagerTests {
     String lockFileName = packageAndVersion + ".lock";
     //Now sneak in a new lock file and directory:
     File lockFile = ManagedFileAccess.file(pcmPath, lockFileName);
-    lockFile.createNewFile();
+    //lockFile.createNewFile();
     File directory = ManagedFileAccess.file(pcmPath, packageAndVersion);
     directory.mkdir();
 
-    // We can't create a lock file from within the same JVM, so we have to use the flock utility, which is OS dependent.
-    // The following works for Linux only.
-    ProcessBuilder processBuilder = new ProcessBuilder("flock", lockFileName, "--command", "sleep 10");
-    processBuilder.directory(new File(pcmPath));
-    processBuilder.start();
+    Thread lockingThread = lockWaitAndDelete(pcmPath, lockFileName, 10);
 
-    ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-
-    executorService.schedule(()->{
-      try {
-        Utilities.clearDirectory(directory.getAbsolutePath());
-        directory.delete();
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-      lockFile.delete();
-    }, 15, TimeUnit.SECONDS);
-
+    Thread.sleep(200);
     IOException ioException = assertThrows(IOException.class, () -> { pcm.loadPackageFromCacheOnly("example.fhir.uv.myig", "1.2.3"); });
 
 
     ioException.printStackTrace();
 
-
+    lockingThread.join();
   }
 
   /**
