@@ -245,10 +245,10 @@ public class JsonCreatorDirect implements JsonCreator {
   }
 
   @Override
-  public boolean canEllide() { return false; }
+  public boolean canElide() { return false; }
 
   @Override
-  public void ellide() {
+  public void elide() {
     // not used
   }
 }

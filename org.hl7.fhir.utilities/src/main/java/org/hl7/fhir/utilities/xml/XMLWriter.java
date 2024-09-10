@@ -913,15 +913,15 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
   }
 
   @Override
-  public boolean canEllide() { return false; }
+  public boolean canElide() { return false; }
 
   @Override
-  public void attributeEllide() {
+  public void attributeElide() {
     // ignore this
   }
 
   @Override
-  public void ellide() throws IOException {
+  public void elide() throws IOException {
     // ignore this
   }
 
