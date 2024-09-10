@@ -135,6 +135,8 @@ public class ValidatorCli {
       new TxTestsTask(),
       new TransformTask(),
       new VersionTask(),
+      new QuestionnaireExtractTask(),
+      new TestScriptQuestionnaireTask(),
       defaultCliTask);
   }
 
@@ -338,6 +340,10 @@ public class ValidatorCli {
         res.add("5.0");
         res.add("-ig");
         res.add("hl7.fhir.uv.sql-on-fhir#current");
+      } else if (a.equals("-questionnaire-extract") || a.equals("-script-questionnaire")) {
+        res.add(a);
+        res.add("-tx");
+        res.add("n/a");
       } else {
         res.add(a);
       }
