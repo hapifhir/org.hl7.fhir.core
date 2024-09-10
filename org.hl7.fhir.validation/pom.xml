@@ -119,37 +119,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- CQL-to-ELM -->
-        <dependency>
-            <groupId>info.cqframework</groupId>
-            <artifactId>cql</artifactId>
-            <version>${info_cqframework_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>info.cqframework</groupId>
-            <artifactId>model</artifactId>
-            <version>${info_cqframework_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>info.cqframework</groupId>
-            <artifactId>elm</artifactId>
-            <version>${info_cqframework_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>info.cqframework</groupId>
-            <artifactId>cql-to-elm</artifactId>
-            <version>${info_cqframework_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>info.cqframework</groupId>
-            <artifactId>quick</artifactId>
-            <version>${info_cqframework_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>info.cqframework</groupId>
-            <artifactId>qdm</artifactId>
-            <version>${info_cqframework_version}</version>
-        </dependency>
         <!-- OkHttpDependency -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
