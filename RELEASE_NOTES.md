@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Fix logic for cache clearing on package cache initialization
