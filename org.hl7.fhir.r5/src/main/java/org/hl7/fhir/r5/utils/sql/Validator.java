@@ -85,9 +85,9 @@ public class Validator {
     
     JsonElement nameJ = viewDefinition.get("name");
     if (nameJ == null) {
-      if (!needsName) {
+      if (needsName == null) {
         hint(path, viewDefinition, "No name provided. A name is required in many contexts where a ViewDefinition is used");        
-      } else {
+      } else if (needsName) {
         error(path, viewDefinition, "No name provided", IssueType.REQUIRED);
       }
     } else if (!(nameJ instanceof JsonString)) {
@@ -324,9 +324,7 @@ public class Validator {
           // ok, name is sorted!
           if (columnName != null) {
             column.setUserData("name", columnName);
-            // TODO: Fix this collection testing logic as it does not seem to take into account
-            //  the `forEach` context.
-            //boolean isColl = (td.getCollectionStatus() != CollectionStatus.SINGLETON);
+            // TODO: Fix this collection testing; it mis-categorizes many singletons as collections.
             boolean isColl = false;
             if (column.has("collection")) {
               JsonElement collectionJ = column.get("collection");
@@ -340,14 +338,13 @@ public class Validator {
               }
             }
             if (isColl) {
-              //if (acceptArrays) {
               if (td.getCollectionStatus() == CollectionStatus.SINGLETON) {
                 hint(path, column, "collection is true, but the path statement(s) can only return single values for the column '"+columnName+"'");
               }
             } else {
               if (acceptArrays == null) {
                 warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path. Collections are not supported in all execution contexts");
-              } else {
+              } else if (!acceptArrays) {
                 warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path, but this is not allowed in the current execution context");
               }
               if (td.getCollectionStatus() != CollectionStatus.SINGLETON) {
@@ -384,10 +381,10 @@ public class Validator {
               String type = types.iterator().next();
               boolean ok = false;
               if (!isSimpleType(type) && !"null".equals(type)) {
-                if (acceptComplexTypes) {
+                if (acceptComplexTypes == null) {
                   warning(path, expression, "The column '"+columnName+"' is a complex type. This is not supported in some Runners");
                   ok = true;
-                } else {
+                } else if (!acceptComplexTypes) {
                   error(path, expression, "The column '"+columnName+"' is a complex type but this is not allowed in this context", IssueType.BUSINESSRULE);
                 }
               } else {
