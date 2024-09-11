@@ -210,26 +210,31 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         Utilities.createDirectory(cacheFolder.getAbsolutePath());
         createIniFile();
       } else {
-        if (!isCacheFolderValid()) {
-          clearCache();
+        if (!iniFileExists()) {
           createIniFile();
-        } else {
-          deleteOldTempDirectories();
         }
+        if (!isIniFileCurrentVersion()) {
+          //Don't do anything but update the ini file version. But we SHOULD be clearing any implementation specific
+          //data added to packages.
+          createIniFile();
+        }
+        deleteOldTempDirectories();
       }
       return null;
     });
   }
 
-  private boolean isCacheFolderValid() throws IOException {
+  private boolean iniFileExists() throws IOException {
     String iniPath = getPackagesIniPath();
     File iniFile = ManagedFileAccess.file(iniPath);
-    if (!(iniFile.exists())) {
-      return false;
-    }
+    return iniFile.exists();
+  }
+
+  private boolean isIniFileCurrentVersion() throws IOException {
+    String iniPath = getPackagesIniPath();
     IniFile ini = new IniFile(iniPath);
-    String v = ini.getStringProperty("cache", "version");
-    return CACHE_VERSION.equals(v);
+    String version = ini.getStringProperty("cache", "version");
+    return CACHE_VERSION.equals(version);
   }
 
   private void deleteOldTempDirectories() throws IOException {
