@@ -214,8 +214,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           createIniFile();
         }
         if (!isIniFileCurrentVersion()) {
-          //Don't do anything but update the ini file version. But we SHOULD be clearing any implementation specific
-          //data added to packages.
+          clearCache();
           createIniFile();
         }
         deleteOldTempDirectories();
