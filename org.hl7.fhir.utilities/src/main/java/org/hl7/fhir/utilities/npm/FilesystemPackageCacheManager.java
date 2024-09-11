@@ -171,23 +171,24 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     public FilesystemPackageCacheManager build() throws IOException {
-      return new FilesystemPackageCacheManager(cacheFolder, packageServers);
+      final FilesystemPackageCacheManagerLocks locks;
+      try {
+        locks = FilesystemPackageCacheManagerLocks.getFilesystemPackageCacheManagerLocks(cacheFolder);
+      } catch (RuntimeException e) {
+        if (e.getCause() instanceof IOException) {
+          throw (IOException) e.getCause();
+        } else {
+          throw e;
+        }
+      }
+      return new FilesystemPackageCacheManager(cacheFolder, packageServers, locks);
     }
   }
 
-  private FilesystemPackageCacheManager(@Nonnull File cacheFolder, @Nonnull List<PackageServer> packageServers) throws IOException {
+  private FilesystemPackageCacheManager(@Nonnull File cacheFolder, @Nonnull List<PackageServer> packageServers, @Nonnull FilesystemPackageCacheManagerLocks locks) throws IOException {
     super(packageServers);
     this.cacheFolder = cacheFolder;
-
-    try {
-      this.locks = FilesystemPackageCacheManagerLocks.getFilesystemPackageCacheManagerLocks(cacheFolder);
-    } catch (RuntimeException e) {
-      if (e.getCause() instanceof IOException) {
-        throw (IOException) e.getCause();
-      } else {
-        throw e;
-      }
-    }
+    this.locks = locks;
 
     prepareCacheFolder();
   }
@@ -210,13 +211,15 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         Utilities.createDirectory(cacheFolder.getAbsolutePath());
         createIniFile();
       } else {
-        if (!isCacheFolderValid()) {
+        if (!iniFileExists()) {
+          createIniFile();
+        }
+        if (!isIniFileCurrentVersion()) {
           clearCache();
           createIniFile();
-        } else {
-          deleteOldTempDirectories();
-          cleanUpCorruptPackages();
         }
+        deleteOldTempDirectories();
+        cleanUpCorruptPackages();
       }
       return null;
     });
@@ -240,15 +243,17 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
   }
 
-  private boolean isCacheFolderValid() throws IOException {
+  private boolean iniFileExists() throws IOException {
     String iniPath = getPackagesIniPath();
     File iniFile = ManagedFileAccess.file(iniPath);
-    if (!(iniFile.exists())) {
-      return false;
-    }
+    return iniFile.exists();
+  }
+
+  private boolean isIniFileCurrentVersion() throws IOException {
+    String iniPath = getPackagesIniPath();
     IniFile ini = new IniFile(iniPath);
-    String v = ini.getStringProperty("cache", "version");
-    return CACHE_VERSION.equals(v);
+    String version = ini.getStringProperty("cache", "version");
+    return CACHE_VERSION.equals(version);
   }
 
   private void deleteOldTempDirectories() throws IOException {
