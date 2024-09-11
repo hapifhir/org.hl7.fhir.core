@@ -1,0 +1,42 @@
+{
+  "resourceType" : "AllergyIntolerance",
+  "id" : "eumfh-39-07-1",
+  "meta":{
+    "profile": [
+        "http://hl7.org/fhir/uv/ips/StructureDefinition/AllergyIntolerance-uv-ips"
+    ]    
+  },
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative: AllergyIntolerance</b><a name=\"eumfh-39-07-1\"> </a><a name=\"hceumfh-39-07-1\"> </a></p><div style=\"display: inline-block; background-color: #d9e0e7; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\">Resource AllergyIntolerance &quot;eumfh-39-07-1&quot; </p></div><p><b>clinicalStatus</b>: Active <span style=\"background: LightGoldenRodYellow; margin: 4px; border: 1px solid khaki\"> (<a href=\"http://terminology.hl7.org/5.3.0/CodeSystem-allergyintolerance-clinical.html\">AllergyIntolerance Clinical Status Codes</a>#active)</span></p><p><b>verificationStatus</b>: Confirmed <span style=\"background: LightGoldenRodYellow; margin: 4px; border: 1px solid khaki\"> (<a href=\"http://terminology.hl7.org/5.3.0/CodeSystem-allergyintolerance-verification.html\">AllergyIntolerance Verification Status</a>#confirmed)</span></p><p><b>code</b>: No known allergies <span style=\"background: LightGoldenRodYellow; margin: 4px; border: 1px solid khaki\"> (<a href=\"CodeSystem-absent-unknown-uv-ips.html\">Absent and Unknown Data - IPS</a>#no-known-allergies)</span></p><p><b>patient</b>: <a href=\"Patient-eumfh-39-07.html\">Patient/eumfh-39-07: Alexander Heig (inject 39-07)</a> &quot; HEIG&quot;</p><p><b>onset</b>: Absent because : <code>unknown</code></p></div>"
+  },
+  "clinicalStatus" : {
+    "coding" : [{
+      "system" : "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+      "code" : "active"
+    }]
+  },
+  "verificationStatus" : {
+    "coding" : [{
+      "system" : "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+      "code" : "confirmed"
+    }]
+  },
+  "code" : {
+    "coding" : [{
+      "system" : "http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips",
+      "code" : "no-known-allergies",
+      "display" : "No known allergies"
+    }]
+  },
+  "patient" : {
+    "reference" : "Patient/eumfh-39-07",
+    "display" : "Alexander Heig (inject 39-07)"
+  },
+  "_onsetDateTime" : {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+      "valueCode" : "unknown"
+    }]
+  }
+}
