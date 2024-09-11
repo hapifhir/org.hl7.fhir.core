@@ -187,7 +187,7 @@ public class FHIRLexer {
           cursor++;
         } else
         while (cursor < source.length() && ((source.charAt(cursor) >= 'A' && source.charAt(cursor) <= 'Z') || (source.charAt(cursor) >= 'a' && source.charAt(cursor) <= 'z') || 
-            (source.charAt(cursor) >= '0' && source.charAt(cursor) <= '9') || source.charAt(cursor) == ':' || source.charAt(cursor) == '-'))
+            (source.charAt(cursor) >= '0' && source.charAt(cursor) <= '9') || source.charAt(cursor) == ':' || source.charAt(cursor) == '-' || source.charAt(cursor) == '_'))
           cursor++;
         current = source.substring(currentStart, cursor);
       } else if (ch == '/') {

@@ -83,24 +83,21 @@ public class SQLOnFhirTests {
       this.resources = resources;
       this.testCase = testCase;
     }
-
   }
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {
     List<Arguments> objects = new ArrayList<>();
-    // TODO: These test files should be added to the repository.
-    File dir = ManagedFileAccess.file("/Users/grahamegrieve/work/sql-on-fhir-v2/tests/content");
-    for (File f : dir.listFiles()) {
-      if (f.getName().endsWith(".json")) {
-        JsonObject json = JsonParser.parseObject(f);
-        String name1 = f.getName().replace(".json", "");
-        List<JsonObject> resources = json.getJsonObjects("resources");
-        int i = 0;
-        for (JsonObject test : json.getJsonObjects("tests")) {
-          String name2 = test.asString("title");
-          objects.add(Arguments.of(name1+":"+name2, new TestDetails(name1+":"+name2, "$.tests["+i+"]", resources, test)));
-          i++;
-        }
+    JsonArray testFiles = (JsonArray) JsonParser.parse(TestingUtilities.loadTestResourceStream("sql-on-fhir", "manifest.json"));
+
+    for (String s : testFiles.asStrings()) {
+      JsonObject json = JsonParser.parseObject(TestingUtilities.loadTestResourceStream("sql-on-fhir", s));
+      String name1 = s.replace(".json", "");
+      List<JsonObject> resources = json.getJsonObjects("resources");
+      int i = 0;
+      for (JsonObject test : json.getJsonObjects("tests")) {
+        String name2 = test.asString("title");
+        objects.add(Arguments.of(name1+":"+name2, new TestDetails(name1+":"+name2, "$.tests["+i+"]", resources, test)));
+        i++;
       }
     }
     return objects.stream();
@@ -111,7 +108,6 @@ public class SQLOnFhirTests {
   @SuppressWarnings("deprecation")
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
-  @Disabled
   public void test(String name, TestDetails test) throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
     this.details = test;
     Runner runner = new Runner();
@@ -138,8 +134,8 @@ public class SQLOnFhirTests {
         rows.add("rows", results);
         JsonObject exp = new JsonObject();
         exp.add("rows", test.testCase.getJsonArray("expect"));
-        sortResults(exp);
-        sortResults(rows);
+//        sortResults(exp);
+//        sortResults(rows);
         String expS = JsonParser.compose(exp, true);
         String rowS = JsonParser.compose(rows, true);
         String c = CompareUtilities.checkJsonSrcIsSame(name, expS, rowS, null);

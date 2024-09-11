@@ -773,6 +773,25 @@ public class FHIRPathEngine {
     return execute(new ExecutionContext(null, base != null && base.isResource() ? base : null, base != null && base.isResource() ? base : null, base, base), list, ExpressionNode, true);
   }
 
+
+  /**
+   * evaluate a path and return the matching elements
+   * 
+   * @param base - the object against which the path is being evaluated
+   * @param ExpressionNode - the parsed ExpressionNode statement to use
+   * @return
+   * @throws FHIRException 
+   * @
+   */
+  public List<Base> evaluate(Object appContext, Base base, ExpressionNode ExpressionNode) throws FHIRException {
+    List<Base> list = new ArrayList<Base>();
+    if (base != null) {
+      list.add(base);
+    }
+    log = new StringBuilder();
+    return execute(new ExecutionContext(appContext, base != null && base.isResource() ? base : null, base != null && base.isResource() ? base : null, base, base), list, ExpressionNode, true);
+  }
+  
   /**
    * evaluate a path and return the matching elements
    * 
@@ -3741,6 +3760,8 @@ public class FHIRPathEngine {
       }
       if ((focus.hasType("date") || focus.hasType("datetime") || focus.hasType("instant"))) {
         return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Decimal, TypeDetails.FP_DateTime);       
+      } else if ((focus.hasType("time"))) {
+          return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Time, TypeDetails.FP_Time);       
       } else if (focus.hasType("decimal") || focus.hasType("integer")) {
         return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Decimal);       
       } else {
@@ -6351,7 +6372,7 @@ public class FHIRPathEngine {
                   }
                   result.addTypes(worker.getResourceNames());
                 } else {
-                  pt = new ProfiledType(t.getCode());
+                  pt = new ProfiledType(t.getWorkingCode());
                 }
                 if (pt != null) {
                   if (t.hasProfile()) {
