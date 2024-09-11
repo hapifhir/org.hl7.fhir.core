@@ -123,7 +123,7 @@ public class FilesystemPackageCacheManagerLocks {
       // we should throw an exception.
       if (lockFile.isFile()) {
         try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
-          FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, true);
+          FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
           if (fileLock != null) {
             fileLock.release();
             channel.close();
@@ -131,7 +131,19 @@ public class FilesystemPackageCacheManagerLocks {
           }
         }
       }
+      try {
+        waitForLockFileDeletion(lockFile);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        throw new IOException("Thread interrupted while waiting for lock", e);
+      }
+    }
 
+    /*
+     Wait for the lock file to be deleted. If the lock file is not deleted within the timeout or if the thread is
+     interrupted, an IOException is thrown.
+     */
+    private void waitForLockFileDeletion(File lockFile) throws IOException, InterruptedException {
       try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
         Path dir = lockFile.getParentFile().toPath();
         dir.register(watchService, StandardWatchEventKinds.ENTRY_DELETE);
@@ -155,11 +167,8 @@ public class FilesystemPackageCacheManagerLocks {
             key.reset();
           }
         }
-      } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
-        throw new IOException("Error reading package.", e);
       } catch (TimeoutException e) {
-        throw new IOException("Error reading package.", e);
+        throw new IOException("Package cache timed out waiting for lock.", e);
       }
     }
 
@@ -184,20 +193,19 @@ public class FilesystemPackageCacheManagerLocks {
       cacheLock.getLock().writeLock().lock();
       lock.writeLock().lock();
 
-      if (!lockFile.isFile()) {
-        try {
-          TextFile.stringToFile("", lockFile);
-        } catch (IOException e) {
-          e.printStackTrace();
-          return null;
-        }
-      }
       try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
-        FileLock fileLock = null;
-        while (fileLock == null) {
-          fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
-          if (fileLock == null) {
-            Thread.sleep(100); // Wait and retry
+
+        FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
+
+        if (fileLock == null) {
+          waitForLockFileDeletion(lockFile);
+        }
+
+        if (!lockFile.isFile()) {
+          try {
+            TextFile.stringToFile(String.valueOf(ProcessHandle.current().pid()), lockFile);
+          } catch (IOException e) {
+            throw new IOException("Error writing lock file.", e);
           }
         }
         T result = null;
