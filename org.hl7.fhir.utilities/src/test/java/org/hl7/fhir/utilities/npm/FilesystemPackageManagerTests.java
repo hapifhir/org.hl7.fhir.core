@@ -1,22 +1,25 @@
 package org.hl7.fhir.utilities.npm;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
+import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
@@ -100,7 +103,6 @@ public class FilesystemPackageManagerTests {
   @DisabledOnOs(OS.WINDOWS)
   public void testSystemCacheDirectory() throws IOException {
     File folder = new FilesystemPackageCacheManager.Builder().withSystemCacheFolder().getCacheFolder();
-
     assertEquals( "/var/lib/.fhir/packages", folder.getAbsolutePath());
   }
 
@@ -122,6 +124,118 @@ public class FilesystemPackageManagerTests {
       params.add(Arguments.of(100, 10));
     }
     return params.stream();
+  }
+
+  private void createDummyTemp(File cacheDirectory, String lowerCase) throws IOException {
+    createDummyPackage(cacheDirectory, lowerCase);
+  }
+
+  private void createDummyPackage(File cacheDirectory, String packageName, String packageVersion) throws IOException {
+    String directoryName = packageName + "#" + packageVersion;
+    createDummyPackage(cacheDirectory, directoryName);
+  }
+
+  private static void createDummyPackage(File cacheDirectory, String directoryName) throws IOException {
+    File packageDirectory = ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), directoryName);
+    packageDirectory.mkdirs();
+
+    File dummyContentFile = ManagedFileAccess.file(packageDirectory.getAbsolutePath(), "dummy.txt");
+    FileWriter wr = new FileWriter(dummyContentFile);
+    wr.write("Ain't nobody here but us chickens");
+    wr.flush();
+    wr.close();
+  }
+
+  private void assertThatDummyTempExists(File cacheDirectory, String dummyTempPackage) throws IOException {
+    File dummyTempDirectory = ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), dummyTempPackage);
+    assertThat(dummyTempDirectory).exists();
+
+    File dummyContentFile = ManagedFileAccess.file(dummyTempDirectory.getAbsolutePath(), "dummy.txt");
+    assertThat(dummyContentFile).exists();
+  }
+
+  @Test
+  public void testCreatesIniIfDoesntExistAndCacheStaysIntact() throws IOException {
+    File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest"));
+    File cacheIni = ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), "packages.ini");
+
+    createDummyPackage(cacheDirectory, "example.fhir.uv.myig", "1.2.3");
+
+    String dummyTempPackage = UUID.randomUUID().toString().toLowerCase();
+    createDummyTemp(cacheDirectory, dummyTempPackage);
+    assertThatDummyTempExists(cacheDirectory, dummyTempPackage);
+
+    assertThat(cacheIni).doesNotExist();
+    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).build();
+    assertInitializedTestCacheIsValid(cacheDirectory, true);
+  }
+
+
+
+  @Test
+  public void testClearsCacheIfVersionIsWrong() throws IOException {
+    File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest"));
+    File cacheIni = ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), "packages.ini");
+
+    createDummyPackage(cacheDirectory, "example.fhir.uv.myig", "1.2.3");
+    String dummyTempPackage = UUID.randomUUID().toString().toLowerCase();
+    createDummyTemp(cacheDirectory, dummyTempPackage);
+    assertThatDummyTempExists(cacheDirectory, dummyTempPackage);
+
+
+    IniFile ini = new IniFile(cacheIni.getAbsolutePath());
+    ini.setStringProperty("cache", "version", "2", null);
+    ini.save();
+
+    assertThat(cacheIni).exists();
+    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).build();
+    assertInitializedTestCacheIsValid(cacheDirectory, false);
+  }
+
+  @Test
+  public void testCacheStaysIntactIfVersionIsTheSame() throws IOException {
+    File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest"));
+    File cacheIni = ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), "packages.ini");
+
+    createDummyPackage(cacheDirectory, "example.fhir.uv.myig", "1.2.3");
+    String dummyTempPackage = UUID.randomUUID().toString().toLowerCase();
+    createDummyTemp(cacheDirectory, dummyTempPackage);
+    assertThatDummyTempExists(cacheDirectory, dummyTempPackage);
+
+
+    IniFile ini = new IniFile(cacheIni.getAbsolutePath());
+    ini.setStringProperty("cache", "version", "3", null);
+    ini.save();
+
+    assertThat(cacheIni).exists();
+    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).build();
+    assertInitializedTestCacheIsValid(cacheDirectory, true);
+  }
+
+  private void assertInitializedTestCacheIsValid(File cacheDirectory, boolean dummyPackageShouldExist) throws IOException {
+    assertThat(cacheDirectory).exists();
+    File iniFile = ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), "packages.ini");
+    assertThat(ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), "packages.ini")).exists();
+    IniFile ini = new IniFile(iniFile.getAbsolutePath());
+    String version = ini.getStringProperty("cache", "version");
+    assertThat(version).isEqualTo("3");
+
+    File[] files = cacheDirectory.listFiles();
+    if (dummyPackageShouldExist) {
+      // Check that only packages.ini and our dummy package are in the cache. Our previous temp should be deleted.
+      assertThat(files).hasSize(2); // packages.ini and example.fhir.uv.myig#1.2.3 (directory)
+
+      File dummyPackage = ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), "example.fhir.uv.myig#1.2.3");
+      assertThat(dummyPackage).exists();
+
+      File dummyContentFile = ManagedFileAccess.file(dummyPackage.getAbsolutePath(), "dummy.txt");
+      assertThat(dummyContentFile).exists();
+    } else {
+      // Check that only packages.ini is in the cache.
+      assertThat(files).hasSize(1);
+    }
+
+
   }
 
   @MethodSource("packageCacheMultiThreadTestParams")
