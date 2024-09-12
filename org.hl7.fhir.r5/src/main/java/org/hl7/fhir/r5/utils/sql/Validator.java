@@ -10,7 +10,6 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
-import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Base64BinaryType;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -52,52 +51,57 @@ public class Validator {
   private FHIRPathEngine fpe;
   private List<String> prohibitedNames = new ArrayList<String>();
   private List<ValidationMessage> issues = new ArrayList<ValidationMessage>();
-  private Boolean acceptArrays;
-  private Boolean acceptComplexTypes;
-  private Boolean needsName;
+  private IssueSeverity checkArrays;
+  private IssueSeverity checkComplexTypes;
+  private IssueSeverity checkNames;
 
   private String resourceName;
   private String name;
 
+  /** To turn off a check, use {@code IssueSeverity.NULL}. */
   public Validator(
       IWorkerContext context,
       FHIRPathEngine fpe,
       List<String> prohibitedNames,
-      Boolean acceptArrays,
-      Boolean acceptComplexTypes,
-      Boolean needsName) {
+      IssueSeverity checkArrays,
+      IssueSeverity checkComplexTypes,
+      IssueSeverity checkNames) {
     super();
     this.context = context;
     this.fpe = fpe;
     this.prohibitedNames = prohibitedNames;
-    this.acceptArrays = acceptArrays;
-    this.acceptComplexTypes = acceptComplexTypes;
-    this.needsName = needsName;
+    this.checkArrays = checkArrays;
+    this.checkComplexTypes = checkComplexTypes;
+    this.checkNames = checkNames;
   }
 
   public String getResourceName() {
     return resourceName;
   }
 
-
-  public void checkViewDefinition(String path, JsonObject viewDefinition) {    
+  public void checkViewDefinition(String path, JsonObject viewDefinition) {
     checkProperties(viewDefinition, path, "resourceType", "url", "identifier", "name", "version", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "copyright", "resource", "constant", "select", "where");
     
     JsonElement nameJ = viewDefinition.get("name");
     if (nameJ == null) {
-      if (needsName == null) {
-        hint(path, viewDefinition, "No name provided. A name is required in many contexts where a ViewDefinition is used");        
-      } else if (needsName) {
-        error(path, viewDefinition, "No name provided", IssueType.REQUIRED);
+      if (!checkNames.isError()) {
+        addMessage(
+            checkNames,
+            path,
+            viewDefinition,
+            "No name provided. A name is required in many contexts where a ViewDefinition is used",
+            IssueType.BUSINESSRULE);
+      } else {
+        addMessage(checkNames, path, viewDefinition, "No name provided", IssueType.REQUIRED);
       }
     } else if (!(nameJ instanceof JsonString)) {
-      error(path, viewDefinition, "name must be a string", IssueType.INVALID);      
+      error(path, viewDefinition, "name must be a string", IssueType.INVALID);
     } else {
       name = nameJ.asString();
-      if (!isValidName(name)) {      
+      if (!isValidName(name)) {
         error(path+".name", nameJ, "The name '"+name+"' is not valid", IssueType.INVARIANT);
       }
-      if (prohibitedNames.contains(name)) {      
+      if (prohibitedNames.contains(name)) {
         error(path, nameJ, "The name '"+name+"' on the viewDefinition is not allowed in this context", IssueType.BUSINESSRULE);
       }
     }
@@ -342,10 +346,24 @@ public class Validator {
                 hint(path, column, "collection is true, but the path statement(s) can only return single values for the column '"+columnName+"'");
               }
             } else {
-              if (acceptArrays == null) {
-                warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path. Collections are not supported in all execution contexts");
-              } else if (!acceptArrays) {
-                warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path, but this is not allowed in the current execution context");
+              if (!checkArrays.isError()) {
+                addMessage(
+                    checkArrays,
+                    path,
+                    expression,
+                    "The column '"
+                        + columnName
+                        + "' appears to be a collection based on it's path. Collections are not supported in all execution contexts",
+                    IssueType.BUSINESSRULE);
+              } else {
+                addMessage(
+                    checkArrays,
+                    path,
+                    expression,
+                    "The column '"
+                        + columnName
+                        + "' appears to be a collection based on it's path, but this is not allowed in the current execution context",
+                    IssueType.INVALID);
               }
               if (td.getCollectionStatus() != CollectionStatus.SINGLETON) {
                 warning(path, column, "collection is not true, but the path statement(s) might return multiple values for the column '"+columnName+"' for some inputs");
@@ -379,16 +397,19 @@ public class Validator {
               error(path, column, "Unable to determine a type (found "+td.describe()+")", IssueType.BUSINESSRULE);
             } else {
               String type = types.iterator().next();
-              boolean ok = false;
+              boolean ok = true;
               if (!isSimpleType(type) && !"null".equals(type)) {
-                if (acceptComplexTypes == null) {
-                  warning(path, expression, "The column '"+columnName+"' is a complex type. This is not supported in some Runners");
-                  ok = true;
-                } else if (!acceptComplexTypes) {
-                  error(path, expression, "The column '"+columnName+"' is a complex type but this is not allowed in this context", IssueType.BUSINESSRULE);
+                String message = "The column '"
+                  + columnName
+                  + "' is a complex type. This is not supported in some Runners";
+                if (!checkComplexTypes.isError()) {
+                  message =
+                    "The column '"
+                      + columnName
+                      + "' is a complex type but this is not allowed in this context";
+                  ok = false;
                 }
-              } else {
-                ok = true;
+                addMessage(checkComplexTypes, path, expression, message, IssueType.BUSINESSRULE);
               }
               if (ok) {
                 Column col = new Column(columnName, isColl, type, kindForType(type));
@@ -679,34 +700,42 @@ public class Validator {
     }
   }
 
-  private void error(String path, JsonElement e, String issue, IssueType type) {
-    ValidationMessage vm = new ValidationMessage(Source.InstanceValidator, type, e.getStart().getLine(), e.getStart().getCol(), path, issue, IssueSeverity.ERROR);
+  private void addMessage(IssueSeverity severity, String path, JsonElement e, String issue, IssueType type) {
+    if (severity == IssueSeverity.NULL) return;
+    ValidationMessage vm =
+        new ValidationMessage(
+            Source.InstanceValidator,
+            type,
+            e.getStart().getLine(),
+            e.getStart().getCol(),
+            path,
+            issue,
+            severity);
     issues.add(vm);
+  }
 
+  private void error(String path, JsonElement e, String issue, IssueType type) {
+    addMessage(IssueSeverity.ERROR, path, e, issue, type);
   }
 
   private void warning(String path, JsonElement e, String issue) {
-    ValidationMessage vm = new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, e.getStart().getLine(), e.getStart().getCol(), path, issue, IssueSeverity.WARNING);
-    issues.add(vm);
+    addMessage(IssueSeverity.WARNING, path, e, issue, IssueType.BUSINESSRULE);
   }
 
   private void hint(String path, JsonElement e, String issue) {
-    ValidationMessage vm = new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, e.getStart().getLine(), e.getStart().getCol(), path, issue, IssueSeverity.INFORMATION);
-    issues.add(vm);
+    addMessage(IssueSeverity.INFORMATION, path, e, issue, IssueType.BUSINESSRULE);
   }
 
   public void dump() {
     for (ValidationMessage vm : issues) {
       System.out.println(vm.summary());
     }
-
   }
 
-  public void check() {    
+  public void check() {
     if (!isOk()) {
       throw new FHIRException("View Definition is not valid");
     }
-
   }
 
   public String getName() {

@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 
 public class Runner implements IEvaluationContext {
@@ -84,7 +85,14 @@ public class Runner implements IEvaluationContext {
     if (storage == null) {
       throw new FHIRException("No storage provided");
     }
-    Validator validator = new Validator(context, fpe, prohibitedNames, storage.supportsArrays(), storage.supportsComplexTypes(), storage.needsName());
+    Validator validator =
+        new Validator(
+            context,
+            fpe,
+            prohibitedNames,
+            storage.supportsArrays() ? IssueSeverity.NULL : IssueSeverity.ERROR,
+            storage.supportsComplexTypes() ? IssueSeverity.NULL : IssueSeverity.ERROR,
+            storage.needsName() ? IssueSeverity.ERROR : IssueSeverity.NULL);
     validator.checkViewDefinition(path, viewDefinition);
     issues = validator.getIssues();
     validator.dump();
