@@ -28,7 +28,7 @@ jobs:
             options: '--settings $(Agent.TempDirectory)/settings.xml -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests -DdeployToSonatype'
           ${{ else }}:
             options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests'
-          mavenOptions: '-Xmx768m $(MAVEN_OPTS)'
+          mavenOptions: '-Xmx768m'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
