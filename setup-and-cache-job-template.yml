@@ -28,9 +28,14 @@ jobs:
             options: '--settings $(Agent.TempDirectory)/settings.xml -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests -DdeployToSonatype'
           ${{ else }}:
             options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests'
-          mavenOptions: '-Xmx768m'
+          mavenOptions: '-Xmx768m $(MAVEN_OPTS)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install'
+      - task: Bash@3
+        displayName: Report free disk space
+        inputs:
+          targetType: 'inline'
+          script: df -H .
