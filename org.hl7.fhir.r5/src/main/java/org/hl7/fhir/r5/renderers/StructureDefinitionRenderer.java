@@ -3431,7 +3431,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       sdMapCache.put(url, sdCache); 
       String webroot = sd.getUserString("webroot"); 
       for (ElementDefinition e : sd.getSnapshot().getElement()) { 
-        context.getProfileUtilities().updateURLs(sd.getUrl(), webroot, e); 
+        context.getProfileUtilities().updateURLs(sd.getUrl(), webroot, e, false); 
         sdCache.put(e.getId(), e); 
       } 
     } 
