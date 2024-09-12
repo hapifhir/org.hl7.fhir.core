@@ -417,12 +417,17 @@
 
                     <forceLegacyJavacApi>false</forceLegacyJavacApi>
                     <encoding>UTF-8</encoding>
-                    <!-- Allows running the compiler in a separate process. If false it uses the built in compiler,
+                    <!-- Allows running the compiler in a separate process. If false it uses the built-in compiler,
                     while if true it will use an executable. -->
                     <fork>true</fork>
                     <meminitial>512m</meminitial>
-                    <maxmem>5632m</maxmem>
+                    <maxmem>768m</maxmem>
                     <debug>true</debug>
+                    <compilerArgs>
+                        <arg>-J-XX:MaxRAMPercentage=50.0</arg>
+                        <arg>-J-XX:+PrintFlagsFinal</arg>
+                        <arg>-version</arg>
+                    </compilerArgs>
                 </configuration>
                 <executions>
                     <!-- Replacing default-compile as it is treated specially by maven -->
