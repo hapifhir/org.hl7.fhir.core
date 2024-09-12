@@ -739,7 +739,7 @@ public class ProfileUtilities {
               if (existing != null) {
                 updateFromDefinition(existing, e, profileName, false, url, base, derived, "StructureDefinition.differential.element["+i+"]", mappingDetails);
               } else {
-                ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
+                ElementDefinition outcome = updateURLs(url, webUrl, e.copy(), true);
                 e.setUserData(UD_GENERATED_IN_SNAPSHOT, outcome);
                 derived.getSnapshot().addElement(outcome);
                 if (walksInto(diff.getElement(), e)) {
@@ -1042,7 +1042,7 @@ public class ProfileUtilities {
        // don't do this. should already be in snapshot ... addInheritedElementsForSpecialization(snapshot, focus, sd.getBaseDefinition(), path, url, weburl);
        for (ElementDefinition ed : sd.getSnapshot().getElement()) {
          if (ed.getPath().contains(".")) {
-           ElementDefinition outcome = updateURLs(url, weburl, ed.copy());
+           ElementDefinition outcome = updateURLs(url, weburl, ed.copy(), true);
            outcome.setPath(outcome.getPath().replace(sd.getTypeName(), path));
            snapshot.getElement().add(outcome);
          } else {
@@ -1548,7 +1548,6 @@ public class ProfileUtilities {
   protected void removeStatusExtensions(ElementDefinition outcome) {
     outcome.removeExtension(ToolingExtensions.EXT_FMM_LEVEL);
     outcome.removeExtension(ToolingExtensions.EXT_FMM_SUPPORT);
-    outcome.removeExtension(ToolingExtensions.EXT_FMM_DERIVED);
     outcome.removeExtension(ToolingExtensions.EXT_STANDARDS_STATUS);
     outcome.removeExtension(ToolingExtensions.EXT_NORMATIVE_VERSION);
     outcome.removeExtension(ToolingExtensions.EXT_WORKGROUP);    
@@ -1911,7 +1910,7 @@ public class ProfileUtilities {
    * @param element - the Element to update
    * @return - the updated Element
    */
-  public ElementDefinition updateURLs(String url, String webUrl, ElementDefinition element) {
+  public ElementDefinition updateURLs(String url, String webUrl, ElementDefinition element, boolean processRelatives) {
     if (element != null) {
       ElementDefinition defn = element;
       if (defn.hasBinding() && defn.getBinding().hasValueSet() && defn.getBinding().getValueSet().startsWith("#"))
@@ -1929,24 +1928,24 @@ public class ProfileUtilities {
       if (webUrl != null) {
         // also, must touch up the markdown
         if (element.hasDefinition()) {
-          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
         }
         if (element.hasComment()) {
-          element.setComment(processRelativeUrls(element.getComment(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+          element.setComment(processRelativeUrls(element.getComment(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
         }
         if (element.hasRequirements()) {
-          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
         }
         if (element.hasMeaningWhenMissing()) {
-          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
         }
         if (element.hasBinding() && element.getBinding().hasDescription()) {
-          element.getBinding().setDescription(processRelativeUrls(element.getBinding().getDescription(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+          element.getBinding().setDescription(processRelativeUrls(element.getBinding().getDescription(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
         }
         for (Extension ext : element.getExtension()) {
           if (ext.hasValueMarkdownType()) {
             MarkdownType md = ext.getValueMarkdownType();
-            md.setValue(processRelativeUrls(md.getValue(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+            md.setValue(processRelativeUrls(md.getValue(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
           }
         }
       }
@@ -2371,7 +2370,6 @@ public class ProfileUtilities {
     if (elist.size() == 2) {
       dest.getExtension().remove(elist.get(1));
     }
-    
     updateExtensionsFromDefinition(dest, source);
 
     for (ElementDefinition ed : obligationProfileElements) {
@@ -2423,6 +2421,9 @@ public class ProfileUtilities {
       if (e.hasDefinition()) {
         base.setDefinition(processRelativeUrls(e.getDefinition(), webroot, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, true));
       }
+      if (e.getBinding().hasDescription()) {
+        base.getBinding().setDescription(processRelativeUrls(e.getBinding().getDescription(), webroot, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, true));
+      }
       base.setShort(e.getShort());
       if (e.hasCommentElement())
         base.setCommentElement(e.getCommentElement());
@@ -2466,9 +2467,9 @@ public class ProfileUtilities {
       if (derived.hasDefinitionElement()) {
         if (derived.getDefinition().startsWith("..."))
           base.setDefinition(Utilities.appendDerivedTextToBase(base.getDefinition(), derived.getDefinition()));
-        else if (!Base.compareDeep(derived.getDefinitionElement(), base.getDefinitionElement(), false))
+        else if (!Base.compareDeep(derived.getDefinitionElement(), base.getDefinitionElement(), false)) {
           base.setDefinitionElement(derived.getDefinitionElement().copy());
-        else if (trimDifferential)
+        } else if (trimDifferential)
           derived.setDefinitionElement(null);
         else if (derived.hasDefinitionElement())
           derived.getDefinitionElement().setUserData(UD_DERIVATION_EQUALS, true);
