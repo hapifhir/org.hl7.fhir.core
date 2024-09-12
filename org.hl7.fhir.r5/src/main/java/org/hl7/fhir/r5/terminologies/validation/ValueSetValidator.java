@@ -124,10 +124,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     public String getMessage() {
       return message;
-    }
-    
+    } 
   }
-
 
   private ValueSet valueset;
   private Map<String, ValueSetValidator> inner = new HashMap<>();

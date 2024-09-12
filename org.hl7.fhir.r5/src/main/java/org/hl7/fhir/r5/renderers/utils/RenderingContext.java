@@ -554,6 +554,9 @@ public class RenderingContext extends RenderingI18nContext {
   }
 
   public String fixReference(String ref) {
+    if (ref == null) {
+      return null;
+    }
     if (!Utilities.isAbsoluteUrl(ref)) {
       return (localPrefix == null ? "" : localPrefix)+ref;
     }

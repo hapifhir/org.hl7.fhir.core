@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.utils.sql;
 
 import java.util.List;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonBoolean;
@@ -33,16 +34,16 @@ public class StorageJson implements Storage {
     JsonObject row = new JsonObject();
     rows.add(row);
     for (Cell cell : cells) {
-      if (cell.getValues().size() == 0) {
-        row.add(cell.getColumn().getName(), new JsonNull());
-      } else if (cell.getValues().size() == 1) {
-        row.add(cell.getColumn().getName(), makeJsonNode(cell.getValues().get(0)));
-      } else {
+      if (cell.getColumn().isColl() || cell.getValues().size() > 1) {
         JsonArray arr = new JsonArray();
-        row.add(cell.getColumn().getName(), arr);
+        row.add(cell.getColumn().getName(), arr);   
         for (Value value : cell.getValues()) {
           arr.add(makeJsonNode(value));
-        }
+        } 
+      } else if (cell.getValues().size() == 0) {
+        row.add(cell.getColumn().getName(), new JsonNull());
+      } else {
+        row.add(cell.getColumn().getName(), makeJsonNode(cell.getValues().get(0)));
       }
     }
   }
@@ -87,7 +88,7 @@ public class StorageJson implements Storage {
 
   @Override
   public String getKeyForSourceResource(Base res) {
-    return res.getIdBase();
+    return res.fhirType()+"/"+res.getIdBase();
   }
 
   @Override

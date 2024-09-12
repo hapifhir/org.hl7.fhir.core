@@ -163,6 +163,9 @@ public class CliContext {
   @JsonProperty("bestPracticeLevel")
   private BestPracticeWarningLevel bestPracticeLevel = BestPracticeWarningLevel.Warning;
 
+  @JsonProperty("unknownCodeSystemsCauseErrors")
+  private boolean unknownCodeSystemsCauseErrors;
+  
   @JsonProperty("baseEngine")
   public String getBaseEngine() {
     return baseEngine;
@@ -832,6 +835,7 @@ public class CliContext {
       Objects.equals(watchMode, that.watchMode) &&
       Objects.equals(bestPracticeLevel, that.bestPracticeLevel) &&
       Objects.equals(watchScanDelay, that.watchScanDelay) &&
+      Objects.equals(unknownCodeSystemsCauseErrors, that.unknownCodeSystemsCauseErrors) &&
       Objects.equals(watchSettleTime, that.watchSettleTime) ;
   }
 
@@ -839,8 +843,8 @@ public class CliContext {
   public int hashCode() {
     return Objects.hash(baseEngine, doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching,
             noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
-            targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars, watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel,
-            htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
+            targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
+            watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
   }
 
   @Override
@@ -899,6 +903,7 @@ public class CliContext {
       ", bestPracticeLevel=" + bestPracticeLevel +
       ", watchSettleTime=" + watchSettleTime +
       ", watchScanDelay=" + watchScanDelay +
+      ", unknownCodeSystemsCauseErrors=" + unknownCodeSystemsCauseErrors +
       '}';
   }
 
@@ -956,4 +961,17 @@ public class CliContext {
     return this;
   }
 
+
+  @JsonProperty("unknownCodeSystemsCauseErrors")
+  public boolean isUnknownCodeSystemsCauseErrors() {
+    return unknownCodeSystemsCauseErrors;
+  }
+
+
+  @JsonProperty("unknownCodeSystemsCauseErrors")
+  public void setUnknownCodeSystemsCauseErrors(boolean unknownCodeSystemsCauseErrors) {
+    this.unknownCodeSystemsCauseErrors = unknownCodeSystemsCauseErrors;
+  }
+
+  
 }

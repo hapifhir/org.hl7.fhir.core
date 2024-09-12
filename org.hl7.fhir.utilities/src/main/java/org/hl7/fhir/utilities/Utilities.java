@@ -1491,7 +1491,7 @@ public class Utilities {
   }
 
   public static boolean startsWithInList(String s, Collection<String> list) {
-    if (s == null) {
+    if (s == null || list == null) {
       return false;
     }
     for (String l : list) {
@@ -1819,9 +1819,14 @@ public class Utilities {
 
   private static Object applyDatePrecision(String v, int precision) {
     switch (precision) {
-    case 4: return v.substring(0, 4);
-    case 6: return v.substring(0, 7);
-    case 8: return v.substring(0, 10);
+    case 4: 
+      return v.substring(0, 4);
+    case 6:
+    case 7:
+      return v.substring(0, 7);
+    case 8:
+    case 10:
+      return v.substring(0, 10);
     case 14: return v.substring(0, 17);
     case 17: return v;      
     }
@@ -2302,6 +2307,18 @@ public class Utilities {
     default:
       return false;
     }
+  }
+
+  public static boolean listValueStartsWith(String s, Set<String> list) {
+    if (s == null || list == null) {
+      return false;
+    }
+    for (String l : list) {
+      if (l.startsWith(s)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

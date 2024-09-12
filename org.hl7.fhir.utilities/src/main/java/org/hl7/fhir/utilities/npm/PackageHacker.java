@@ -31,18 +31,19 @@ public class PackageHacker {
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
 //    new PackageHacker().massEdit(new File("/Users/grahamegrieve/web/hl7.org/fhir"));
-    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.core.tgz");
-    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.corexml.tgz");
-    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.examples.tgz");
-    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.expansions.tgz");
-    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.search.tgz");
-    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.core.tgz");
-    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.corexml.tgz");
-    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.examples.tgz");
-    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.expansions.tgz");
-    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.search.tgz");
+//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.core.tgz");
+//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.corexml.tgz");
+//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.examples.tgz");
+//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.expansions.tgz");
+//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.search.tgz");
+//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.core.tgz");
+//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.corexml.tgz");
+//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.examples.tgz");
+//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.expansions.tgz");
+//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.search.tgz");
     
-//        new PackageHacker().edit(args[0]);
+//      new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/us/core/v311/package.tgz", "http://hl7.org/fhir/us/core/STU3.1.1");
+      new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/us/core/v700/package.tgz", "http://hl7.org/fhir/us/core/STU7");
   }
 
 //  private void massEdit(File dir) throws IOException {
@@ -91,7 +92,7 @@ public class PackageHacker {
 //    }
 //  }
 
-  private void edit(String name) throws FileNotFoundException, IOException {
+  private void edit(String name, String path) throws FileNotFoundException, IOException {
     File f = ManagedFileAccess.file(name);
     if (!f.exists())
       throw new Error("Unable to find "+f.getAbsolutePath());
@@ -107,15 +108,15 @@ public class PackageHacker {
     System.out.println("Altering Package "+f.getAbsolutePath());
     System.out.println(nice(pck.getNpm()));
 
-    if (change(pck.getNpm())) {
+    if (change(pck.getNpm(), path)) {
 
     System.out.println("Revised Package");
     System.out.println("=======================");
     System.out.println(nice(pck.getNpm()));
     System.out.println("=======================");
-//    System.out.print("save? y/n: ");
-//    int r = System.in.read();
-//    if (r == 'y') {
+    System.out.print("save? y/n: ");
+    int r = System.in.read();
+    if (r == 'y') {
       f.renameTo(ManagedFileAccess.file(Utilities.changeFileExt(name, ".tgz.bak")));
       FileOutputStream fso = ManagedFileAccess.outStream(f);
       try {
@@ -123,7 +124,7 @@ public class PackageHacker {
       } finally {
         fso.close();
       }
-//    } 
+    } 
     }
   }
 
@@ -142,13 +143,15 @@ public class PackageHacker {
     return JsonParser.compose(json, true);
   }
 
-  private boolean change(JsonObject npm) throws FileNotFoundException, IOException {
-    //    fixVersions(npm, ver);
-    if (npm.has("notForPublication")) {
-      npm.remove("notForPublication");
-      return true;
-    }
-    return false;
+  private boolean change(JsonObject npm, String path) throws FileNotFoundException, IOException {
+    npm.remove("url");
+    npm.add("url", path);
+    return true;
+//    if (npm.has("notForPublication")) {
+//      npm.remove("notForPublication");
+//      return true;
+//    }
+//    return false;
   }
 
   private void fixVersionInContent(Map<String, byte[]> content) {

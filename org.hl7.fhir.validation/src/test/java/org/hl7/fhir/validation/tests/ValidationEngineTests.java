@@ -247,9 +247,9 @@ public class ValidationEngineTests {
     Assertions.assertTrue(checkOutcomes("testObs102", op, 
         "Observation.text.div null error/invalid: Wrong namespace on the XHTML ('null', should be 'http://www.w3.org/1999/xhtml')\n"+
         "Observation.category null information/business-rule: Reference to experimental CodeSystem http://hl7.org/fhir/observation-category\n"+
-        "Observation.code.coding[2].system null information/not-found: A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated\n"+
         "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
-        "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have an effective[x] ()"));
+        "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n"+
+        "Observation.code.coding[2].system null warning/not-found: A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated"));
     verifyNoTerminologyRequests(logger);
   }
 
@@ -265,8 +265,8 @@ public class ValidationEngineTests {
       System.out.println("  .. load USCore");
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "observation301.xml"), null);
     Assertions.assertTrue(checkOutcomes("test301", op,
-        "Observation.code.coding[3].system null information/not-found: A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated\n"+
-        "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer"));
+        "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
+        "Observation.code.coding[3].system null warning/not-found: A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated"));
     verifyNoTerminologyRequests(logger);
   }
 

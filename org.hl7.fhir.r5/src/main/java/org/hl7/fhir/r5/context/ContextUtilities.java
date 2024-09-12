@@ -366,7 +366,11 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   public StructureDefinition fetchByJsonName(String key) {
     for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
       ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
-      if (sd.getKind() == StructureDefinitionKind.LOGICAL && ed != null && ed.hasExtension(ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED) && 
+      if (/*sd.getKind() == StructureDefinitionKind.LOGICAL && */ 
+          // this is turned off because it's valid to use a FHIR type directly in
+          // an extension of this kind, and that can't be a logical model. Any profile on
+          // a type is acceptable as long as it has the json name on it  
+          ed != null && ed.hasExtension(ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED) && 
           key.equals(ToolingExtensions.readStringExtension(ed, ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED))) {
         return sd;
       }

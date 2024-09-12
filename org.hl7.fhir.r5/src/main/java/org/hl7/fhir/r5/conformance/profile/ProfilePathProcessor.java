@@ -289,7 +289,7 @@ public class ProfilePathProcessor {
       start++;
     } else {
       // we're just going to accept the differential slicing at face value
-      ElementDefinition outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), currentBase.copy());
+      ElementDefinition outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), currentBase.copy(), true);
       outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
       profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
 
@@ -667,14 +667,14 @@ public class ProfilePathProcessor {
       // some of what's in currentBase overrides template
       template = profileUtilities.fillOutFromBase(template, currentBase);
 
-    ElementDefinition outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), template);
+    ElementDefinition outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), template, true);
     outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
 
     res = outcome;
     profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
     if (diffMatches.get(0).hasSliceName()) {
       template = currentBase.copy();
-      template = profileUtilities.updateURLs(getUrl(), getWebUrl(), template);
+      template = profileUtilities.updateURLs(getUrl(), getWebUrl(), template, true);
       template.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), template.getPath(), getRedirector(), getContextPathSource()));
 
       checkToSeeIfSlicingExists(diffMatches.get(0), template);
@@ -866,13 +866,13 @@ public class ProfilePathProcessor {
 
 
   private void processSimplePathWithEmptyDiffMatches(ElementDefinition currentBase, String currentBasePath, List<ElementDefinition> diffMatches, ProfilePathProcessorState cursors, MappingAssistant mapHelper) {
-    ElementDefinition outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), currentBase.copy());
+    ElementDefinition outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), currentBase.copy(), true);
     outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
     profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
     profileUtilities.updateConstraintSources(outcome, getSourceStructureDefinition().getUrl());
     profileUtilities.checkExtensions(outcome);
     profileUtilities.updateFromObligationProfiles(outcome);
-    profileUtilities.updateURLs(url, webUrl, outcome);
+    profileUtilities.updateURLs(url, webUrl, outcome, true);
     profileUtilities.markDerived(outcome);
     if (cursors.resultPathBase == null)
       cursors.resultPathBase = outcome.getPath();
@@ -1033,7 +1033,7 @@ public class ProfilePathProcessor {
       if (!currentBase.isChoice() && !profileUtilities.ruleMatches(dSlice.getRules(), bSlice.getRules()))
         throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___RULE___, profileUtilities.summarizeSlicing(dSlice), profileUtilities.summarizeSlicing(bSlice), path, cursors.contextName));
     }
-    ElementDefinition outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), currentBase.copy());
+    ElementDefinition outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), currentBase.copy(), true);
     outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
     profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
     if (diffMatches.get(0).hasSlicing() || !diffMatches.get(0).hasSliceName()) {
@@ -1095,7 +1095,7 @@ public class ProfilePathProcessor {
       // We need to copy children of the backbone element before we start messing around with slices
       int newBaseLimit = profileUtilities.findEndOfElement(cursors.base, cursors.baseCursor);
       for (int i = cursors.baseCursor + 1; i <= newBaseLimit; i++) {
-        outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), cursors.base.getElement().get(i).copy());
+        outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), cursors.base.getElement().get(i).copy(), true);
         outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
         debugCheck(outcome);
         getResult().getElement().add(outcome);
@@ -1106,7 +1106,7 @@ public class ProfilePathProcessor {
     List<ElementDefinition> baseMatches = profileUtilities.getSiblings(cursors.base.getElement(), currentBase);
     for (ElementDefinition baseItem : baseMatches) {
       cursors.baseCursor = cursors.base.getElement().indexOf(baseItem);
-      outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), baseItem.copy());
+      outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), baseItem.copy(), true);
       profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
       outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
       outcome.setSlicing(null);
@@ -1139,7 +1139,7 @@ public class ProfilePathProcessor {
         cursors.baseCursor++;
         // just copy any children on the base
         while (cursors.baseCursor < cursors.base.getElement().size() && cursors.base.getElement().get(cursors.baseCursor).getPath().startsWith(path) && !cursors.base.getElement().get(cursors.baseCursor).getPath().equals(path)) {
-          outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), cursors.base.getElement().get(cursors.baseCursor).copy());
+          outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), cursors.base.getElement().get(cursors.baseCursor).copy(), true);
           outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
           if (!outcome.getPath().startsWith(cursors.resultPathBase))
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.ADDING_WRONG_PATH));
@@ -1166,7 +1166,7 @@ public class ProfilePathProcessor {
         for (ElementDefinition baseItem : baseMatches)
           if (baseItem.getSliceName().equals(diffItem.getSliceName()))
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.NAMED_ITEMS_ARE_OUT_OF_ORDER_IN_THE_SLICE));
-        outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), currentBase.copy());
+        outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), currentBase.copy(), true);
         //            outcome = updateURLs(url, diffItem.copy());
         outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
         profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
@@ -1409,7 +1409,7 @@ public class ProfilePathProcessor {
   private void processPathWithSlicedBaseAndEmptyDiffMatches(ElementDefinition currentBase, String currentBasePath, List<ElementDefinition> diffMatches, ProfilePathProcessorState cursors, String path, MappingAssistant mapHelper) {
     if (profileUtilities.hasInnerDiffMatches(getDifferential(), path, cursors.diffCursor, getDiffLimit(), cursors.base.getElement(), true)) {
       // so we just copy it in
-      ElementDefinition outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), currentBase.copy());
+      ElementDefinition outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), currentBase.copy(), true);
       outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
       profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
       profileUtilities.markDerived(outcome);
@@ -1457,7 +1457,7 @@ public class ProfilePathProcessor {
       // the differential doesn't say anything about this item
       // copy across the currentbase, and all of its children and siblings
       while (cursors.baseCursor < cursors.base.getElement().size() && cursors.base.getElement().get(cursors.baseCursor).getPath().startsWith(path)) {
-        ElementDefinition outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), cursors.base.getElement().get(cursors.baseCursor).copy());
+        ElementDefinition outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), cursors.base.getElement().get(cursors.baseCursor).copy(), true);
         outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
         if (!outcome.getPath().startsWith(cursors.resultPathBase))
           throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.ADDING_WRONG_PATH_IN_PROFILE___VS_, getProfileName(), outcome.getPath(), cursors.resultPathBase));

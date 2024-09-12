@@ -103,7 +103,7 @@ public class Runner implements IEvaluationContext {
       for (JsonObject w : vd.getJsonObjects("where")) {
         String expr = w.asString("path");
         ExpressionNode node = fpe.parse(expr);
-        boolean pass = fpe.evaluateToBoolean(null, b, b, b, node);
+        boolean pass = fpe.evaluateToBoolean(vd, b, b, b, node);
         if (!pass) {
           ok = false;
           break;
@@ -114,7 +114,7 @@ public class Runner implements IEvaluationContext {
         rows.add(new ArrayList<Cell>());
 
         for (JsonObject select : vd.getJsonObjects("select")) {
-          executeSelect(select, b, rows);
+          executeSelect(vd, select, b, rows);
         }
         for (List<Cell> row : rows) {
           storage.addRow(store, row);
@@ -124,14 +124,14 @@ public class Runner implements IEvaluationContext {
     storage.finish(store);
   }
   
-  private void executeSelect(JsonObject select, Base b, List<List<Cell>> rows) {
+  private void executeSelect(JsonObject vd, JsonObject select, Base b, List<List<Cell>> rows) {
     List<Base> focus = new ArrayList<>();
     
     if (select.has("forEach")) {
-      focus.addAll(executeForEach(select, b));
+      focus.addAll(executeForEach(vd, select, b));
     } else if (select.has("forEachOrNull")) {
       
-      focus.addAll(executeForEachOrNull(select, b));  
+      focus.addAll(executeForEachOrNull(vd, select, b));  
       if (focus.isEmpty()) {
         List<Column> columns = (List<Column>) select.getUserData("columns");
         for (List<Cell> row : rows) {
@@ -159,20 +159,20 @@ public class Runner implements IEvaluationContext {
       List<List<Cell>> rowsToAdd = cloneRows(tempRows);  
 
       for (JsonObject column : select.getJsonObjects("column")) {
-        executeColumn(column, f, rowsToAdd);
+        executeColumn(vd, column, f, rowsToAdd);
       }
 
       for (JsonObject sub : select.getJsonObjects("select")) {
-        executeSelect(sub, f, rowsToAdd);
+        executeSelect(vd, sub, f, rowsToAdd);
       }
       
-      executeUnionAll(select.getJsonObjects("unionAll"), f, rowsToAdd);
+      executeUnionAll(vd, select.getJsonObjects("unionAll"), f, rowsToAdd);
       
       rows.addAll(rowsToAdd);
     }
   }
 
-  private void executeUnionAll(List<JsonObject> unionList,  Base b, List<List<Cell>> rows) {
+  private void executeUnionAll(JsonObject vd, List<JsonObject> unionList,  Base b, List<List<Cell>> rows) {
     if (unionList.isEmpty()) {
       return;
     }
@@ -183,7 +183,7 @@ public class Runner implements IEvaluationContext {
     for (JsonObject union : unionList) {
       List<List<Cell>> tempRows = new ArrayList<>();
       tempRows.addAll(sourceRows);      
-      executeSelect(union, b, tempRows);
+      executeSelect(vd, union, b, tempRows);
       rows.addAll(tempRows);
     }
   }
@@ -204,25 +204,25 @@ public class Runner implements IEvaluationContext {
     return list;
   }
 
-  private List<Base> executeForEach(JsonObject focus, Base b) {
+  private List<Base> executeForEach(JsonObject vd, JsonObject focus, Base b) {
     ExpressionNode n = (ExpressionNode) focus.getUserData("forEach");
     List<Base> result = new ArrayList<>();
-    result.addAll(fpe.evaluate(b, n));
+    result.addAll(fpe.evaluate(vd, b, n));
     return result;  
   }
 
-  private List<Base> executeForEachOrNull(JsonObject focus, Base b) {
+  private List<Base> executeForEachOrNull(JsonObject vd, JsonObject focus, Base b) {
     ExpressionNode n = (ExpressionNode) focus.getUserData("forEachOrNull");
     List<Base> result = new ArrayList<>();
-    result.addAll(fpe.evaluate(b, n));
+    result.addAll(fpe.evaluate(vd, b, n));
     return result;  
   }
 
-  private void executeColumn(JsonObject column, Base b, List<List<Cell>> rows) {
+  private void executeColumn(JsonObject vd, JsonObject column, Base b, List<List<Cell>> rows) {
     ExpressionNode n = (ExpressionNode) column.getUserData("path");
     List<Base> bl2 = new ArrayList<>();
     if (b != null) {
-      bl2.addAll(fpe.evaluate(b, n));
+      bl2.addAll(fpe.evaluate(vd, b, n));
     }
     Column col = (Column) column.getUserData("column");
     if (col == null) {
@@ -344,14 +344,43 @@ public class Runner implements IEvaluationContext {
   
   @Override
   public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
-    throw new Error("Not implemented yet: resolveConstant");
+    List<Base> list = new ArrayList<Base>();
+    if (explicitConstant) {
+      JsonObject vd = (JsonObject) appContext;
+      JsonObject constant = findConstant(vd, name);
+      if (constant != null) {
+        Base b = (Base) constant.getUserData("value");
+        if (b != null) {
+          list.add(b);
+        }
+      }
+    }
+    return list;    
   }
 
   @Override
   public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
-    throw new Error("Not implemented yet: resolveConstantType");
+    if (explicitConstant) {
+      JsonObject vd = (JsonObject) appContext;
+      JsonObject constant = findConstant(vd, name.substring(1));
+      if (constant != null) {
+        Base b = (Base) constant.getUserData("value");
+        if (b != null) {
+          return new TypeDetails(CollectionStatus.SINGLETON, b.fhirType());
+        }
+      }
+    }
+    return null;
   }
 
+  private JsonObject findConstant(JsonObject vd, String name) {
+    for (JsonObject o : vd.getJsonObjects("constant")) {
+      if (name.equals(o.asString("name"))) {
+        return o;
+      }
+    }
+    return null;
+  }
   @Override
   public boolean log(String argument, List<Base> focus) {
     throw new Error("Not implemented yet: log");
