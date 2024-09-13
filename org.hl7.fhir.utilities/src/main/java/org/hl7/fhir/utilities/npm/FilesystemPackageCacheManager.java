@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -77,12 +78,13 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private final FilesystemPackageCacheManagerLocks locks;
 
+  private final FilesystemPackageCacheManagerLocks.LockParameters lockParameters;
+
   // When running in testing mode, some packages are provided from the test case repository rather than by the normal means
   // the PackageProvider is responsible for this. if no package provider is defined, or it declines to handle the package, 
   // then the normal means will be used
   public interface IPackageProvider {
     boolean handlesPackage(String id, String version);
-
     InputStreamWithSrc provide(String id, String version) throws IOException;
   }
 
@@ -92,6 +94,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public static final String PACKAGE_VERSION_REGEX_OPT = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+(\\#[A-Za-z0-9\\-\\_]+(\\.[A-Za-z0-9\\-\\_]+)*)?$";
   private static final Logger ourLog = LoggerFactory.getLogger(FilesystemPackageCacheManager.class);
   private static final String CACHE_VERSION = "3"; // second version - see wiki page
+
   @Nonnull
   private final File cacheFolder;
 
@@ -100,6 +103,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private final Map<String, String> ciList = new HashMap<>();
   private JsonArray buildInfo;
   private boolean suppressErrors;
+
   @Setter
   @Getter
   private boolean minimalMemory;
@@ -113,9 +117,20 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     @Getter
     private final List<PackageServer> packageServers;
 
+    @With
+    @Getter
+    private final FilesystemPackageCacheManagerLocks.LockParameters lockParameters;
+
     public Builder() throws IOException {
       this.cacheFolder = getUserCacheFolder();
       this.packageServers = getPackageServersFromFHIRSettings();
+      this.lockParameters = null;
+    }
+
+    private Builder(File cacheFolder, List<PackageServer> packageServers, FilesystemPackageCacheManagerLocks.LockParameters lockParameters) {
+      this.cacheFolder = cacheFolder;
+      this.packageServers = packageServers;
+      this.lockParameters = lockParameters;
     }
 
     private File getUserCacheFolder() throws IOException {
@@ -143,17 +158,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       return PackageServer.getConfiguredServers();
     }
 
-    private Builder(File cacheFolder, List<PackageServer> packageServers) {
-      this.cacheFolder = cacheFolder;
-      this.packageServers = packageServers;
-    }
-
     public Builder withCacheFolder(String cacheFolderPath) throws IOException {
       File cacheFolder = ManagedFileAccess.file(cacheFolderPath);
       if (!cacheFolder.exists()) {
         throw new FHIRException("The folder '" + cacheFolder + "' could not be found");
       }
-      return new Builder(cacheFolder, this.packageServers);
+      return new Builder(cacheFolder, this.packageServers, this.lockParameters);
     }
 
     public Builder withSystemCacheFolder() throws IOException {
@@ -163,11 +173,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       } else {
         systemCacheFolder = ManagedFileAccess.file(Utilities.path("/var", "lib", ".fhir", "packages"));
       }
-      return new Builder(systemCacheFolder, this.packageServers);
+      return new Builder(systemCacheFolder, this.packageServers, this.lockParameters);
     }
 
     public Builder withTestingCacheFolder() throws IOException {
-      return new Builder(ManagedFileAccess.file(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers);
+      return new Builder(ManagedFileAccess.file(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers, this.lockParameters);
     }
 
     public FilesystemPackageCacheManager build() throws IOException {
@@ -181,15 +191,15 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           throw e;
         }
       }
-      return new FilesystemPackageCacheManager(cacheFolder, packageServers, locks);
+      return new FilesystemPackageCacheManager(cacheFolder, packageServers, locks, lockParameters);
     }
   }
 
-  private FilesystemPackageCacheManager(@Nonnull File cacheFolder, @Nonnull List<PackageServer> packageServers, @Nonnull FilesystemPackageCacheManagerLocks locks) throws IOException {
+  private FilesystemPackageCacheManager(@Nonnull File cacheFolder, @Nonnull List<PackageServer> packageServers, @Nonnull FilesystemPackageCacheManagerLocks locks, @Nullable FilesystemPackageCacheManagerLocks.LockParameters lockParameters) throws IOException {
     super(packageServers);
     this.cacheFolder = cacheFolder;
     this.locks = locks;
-
+    this.lockParameters = lockParameters;
     prepareCacheFolder();
   }
 
@@ -441,7 +451,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       }
 
       return null;
-    });
+    }, lockParameters);
   }
 
   /**
@@ -485,7 +495,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           return null;
         }
         return loadPackageInfo(path);
-      });
+      }, lockParameters);
       if (foundPackage != null) {
         if (foundPackage.isIndexed()){
           return foundPackage;
@@ -508,7 +518,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
             String path = Utilities.path(cacheFolder, foundPackageFolder);
             output.checkIndexed(path);
             return output;
-          });
+          }, lockParameters);
           }
       }
     }
@@ -609,7 +619,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         throw e;
       }
       return npmPackage;
-    });
+    }, lockParameters);
   }
 
   private void log(String s) {

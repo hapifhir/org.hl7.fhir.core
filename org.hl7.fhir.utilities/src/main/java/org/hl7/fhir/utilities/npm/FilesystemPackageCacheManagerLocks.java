@@ -1,14 +1,18 @@
 package org.hl7.fhir.utilities.npm;
 
 import lombok.Getter;
-import org.hl7.fhir.utilities.TextFile;
+import lombok.With;
 import org.hl7.fhir.utilities.Utilities;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -27,9 +31,23 @@ public class FilesystemPackageCacheManagerLocks {
 
   private final File cacheFolder;
 
-  private final Long lockTimeoutTime;
+  private static final LockParameters lockParameters = new LockParameters();
 
-  private final TimeUnit lockTimeoutTimeUnit;
+  public static class LockParameters {
+    @Getter @With
+    private final long lockTimeoutTime;
+    @Getter @With
+    private final TimeUnit lockTimeoutTimeUnit;
+
+    public LockParameters() {
+      this(60L, TimeUnit.SECONDS);
+    }
+
+    public LockParameters(long lockTimeoutTime, TimeUnit lockTimeoutTimeUnit) {
+      this.lockTimeoutTime = lockTimeoutTime;
+      this.lockTimeoutTimeUnit = lockTimeoutTimeUnit;
+    }
+  }
 
   /**
    * This method is intended to be used only for testing purposes.
@@ -43,21 +61,9 @@ public class FilesystemPackageCacheManagerLocks {
    * @throws IOException
    */
   public FilesystemPackageCacheManagerLocks(File cacheFolder) throws IOException {
-    this(cacheFolder, 60L, TimeUnit.SECONDS);
-  }
-
-  private FilesystemPackageCacheManagerLocks(File cacheFolder, Long lockTimeoutTime, TimeUnit lockTimeoutTimeUnit) throws IOException {
     this.cacheFolder = cacheFolder;
-    this.lockTimeoutTime = lockTimeoutTime;
-    this.lockTimeoutTimeUnit = lockTimeoutTimeUnit;
   }
 
-  /**
-   * This method is intended to be used only for testing purposes.
-   */
-  protected FilesystemPackageCacheManagerLocks withLockTimeout(Long lockTimeoutTime, TimeUnit lockTimeoutTimeUnit) throws IOException {
-    return new FilesystemPackageCacheManagerLocks(cacheFolder, lockTimeoutTime, lockTimeoutTimeUnit);
-  }
 
   /**
    * Returns a single FilesystemPackageCacheManagerLocks instance for the given cacheFolder.
@@ -114,7 +120,7 @@ public class FilesystemPackageCacheManagerLocks {
       this.lock = lock;
     }
 
-    private void checkForLockFileWaitForDeleteIfExists(File lockFile) throws IOException {
+    private void checkForLockFileWaitForDeleteIfExists(File lockFile, @Nonnull LockParameters lockParameters) throws IOException {
       if (!lockFile.exists()) {
         return;
       }
@@ -129,10 +135,11 @@ public class FilesystemPackageCacheManagerLocks {
             channel.close();
             throw new IOException("Lock file exists, but is not locked by a process: " + lockFile.getName());
           }
+          System.out.println("File is locked.");
         }
       }
       try {
-        waitForLockFileDeletion(lockFile);
+        waitForLockFileDeletion(lockFile, lockParameters);
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
         throw new IOException("Thread interrupted while waiting for lock", e);
@@ -143,12 +150,13 @@ public class FilesystemPackageCacheManagerLocks {
      Wait for the lock file to be deleted. If the lock file is not deleted within the timeout or if the thread is
      interrupted, an IOException is thrown.
      */
-    private void waitForLockFileDeletion(File lockFile) throws IOException, InterruptedException {
+    private void waitForLockFileDeletion(File lockFile, @Nonnull LockParameters lockParameters) throws IOException, InterruptedException {
+
       try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
         Path dir = lockFile.getParentFile().toPath();
         dir.register(watchService, StandardWatchEventKinds.ENTRY_DELETE);
 
-        WatchKey key = watchService.poll(lockTimeoutTime, lockTimeoutTimeUnit);
+        WatchKey key = watchService.poll(lockParameters.lockTimeoutTime, lockParameters.lockTimeoutTimeUnit);
         if (key == null) {
           // It is possible that the lock file is deleted before the watch service is registered, so if we timeout at
           // this point, we should check if the lock file still exists.
@@ -173,15 +181,27 @@ public class FilesystemPackageCacheManagerLocks {
     }
 
 
-    public <T> T doReadWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> f) throws IOException {
+    /**
+     * Wraps the execution of a package read function with the appropriate cache, package, and .lock file locking and
+     * checks.
+     *
+     * @param function The function to execute
+     * @param lockParameters The parameters for the lock
+     * @return The return of the function
+     * @param <T> The return type of the function
+     * @throws IOException If an error occurs while managing locking.
+     */
+    public <T> T doReadWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> function, @Nullable LockParameters lockParameters) throws IOException {
+      final LockParameters resolvedLockParameters = lockParameters != null ? lockParameters : FilesystemPackageCacheManagerLocks.lockParameters;
+
       cacheLock.getLock().readLock().lock();
       lock.readLock().lock();
 
-      checkForLockFileWaitForDeleteIfExists(lockFile);
+      checkForLockFileWaitForDeleteIfExists(lockFile, resolvedLockParameters);
 
       T result = null;
       try {
-        result = f.get();
+        result = function.get();
       } finally {
         lock.readLock().unlock();
         cacheLock.getLock().readLock().unlock();
@@ -189,7 +209,19 @@ public class FilesystemPackageCacheManagerLocks {
       return result;
     }
 
-    public <T> T doWriteWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> f) throws IOException {
+    /**
+     * Wraps the execution of a package write function with the appropriate cache, package, and .lock file locking and
+     * checks.
+     *
+     * @param function The function to execute
+     * @param lockParameters The parameters for the lock
+     * @return The return of the function
+     * @param <T> The return type of the function
+     * @throws IOException If an error occurs while managing locking.
+     */
+    public <T> T doWriteWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> function, @Nullable LockParameters lockParameters) throws IOException {
+      final LockParameters resolvedLockParameters = lockParameters != null ? lockParameters : FilesystemPackageCacheManagerLocks.lockParameters;
+
       cacheLock.getLock().writeLock().lock();
       lock.writeLock().lock();
 
@@ -198,19 +230,20 @@ public class FilesystemPackageCacheManagerLocks {
         FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
 
         if (fileLock == null) {
-          waitForLockFileDeletion(lockFile);
+          waitForLockFileDeletion(lockFile, resolvedLockParameters);
+          fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
+        }
+        if (fileLock == null) {
+          throw new IOException("Failed to acquire lock on file: " + lockFile.getName());
         }
 
         if (!lockFile.isFile()) {
-          try {
-            TextFile.stringToFile(String.valueOf(ProcessHandle.current().pid()), lockFile);
-          } catch (IOException e) {
-            throw new IOException("Error writing lock file.", e);
-          }
+          final ByteBuffer buff = ByteBuffer.wrap(String.valueOf(ProcessHandle.current().pid()).getBytes(StandardCharsets.UTF_8));
+          channel.write(buff);
         }
         T result = null;
         try {
-          result = f.get();
+          result = function.get();
         } finally {
           fileLock.release();
           channel.close();
