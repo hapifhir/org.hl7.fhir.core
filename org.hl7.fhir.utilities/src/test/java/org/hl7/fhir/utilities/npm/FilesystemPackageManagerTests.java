@@ -16,6 +16,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -118,44 +119,35 @@ public class FilesystemPackageManagerTests {
   }
 
   @Test
-  public void testTimeoutForLockedPackageRead() throws IOException, InterruptedException {
+  public void testTimeoutForLockedPackageRead() throws IOException, InterruptedException, TimeoutException {
     String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
 
-    final FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
+    final FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder()
+      .withCacheFolder(pcmPath)
+      .withLockParameters(new FilesystemPackageCacheManagerLocks.LockParameters(5,TimeUnit.SECONDS))
+      .build();
 
     Assertions.assertTrue(pcm.listPackages().isEmpty());
 
-    //Now sneak in a new lock file and directory:
-    File lockFile = ManagedFileAccess.file(pcmPath, "example.fhir.uv.myig#1.2.3.lock");
-    lockFile.createNewFile();
+    Thread lockThread = LockfileUtility.lockWaitAndDeleteInNewProcess(pcmPath, "example.fhir.uv.myig#1.2.3.lock", 10);
     File directory = ManagedFileAccess.file(pcmPath, "example.fhir.uv.myig#1.2.3" );
     directory.mkdir();
 
+    LockfileUtility.waitForLockfileCreation(pcmPath, "example.fhir.uv.myig#1.2.3.lock");
+
     IOException exception = assertThrows(IOException.class, () -> pcm.loadPackageFromCacheOnly("example.fhir.uv.myig", "1.2.3"));
-    assertThat(exception.getMessage()).contains("Error reading package.");
+
+    assertThat(exception.getMessage()).contains("Package cache timed out waiting for lock");
     assertThat(exception.getCause().getMessage()).contains("Timeout waiting for lock file deletion");
+    lockThread.join();
   }
 
-  private static Thread lockWaitAndDelete(String path, String lockFileName, int seconds)  {
-    Thread t = new Thread(() -> {
-    ProcessBuilder processBuilder = new ProcessBuilder("java", "-cp", "target/test-classes:.", "org.hl7.fhir.utilities.npm.LockfileUtility", path, lockFileName, Integer.toString(seconds));
-      try {
-        Process process = processBuilder.start();
-        process.getErrorStream().transferTo(System.err);
-        process.getInputStream().transferTo(System.out);
-        process.waitFor();
-      } catch (IOException | InterruptedException e) {
-        throw new RuntimeException(e);
-      }
-      });
-    t.start();
-    return t;
-  }
+
 
 
 
   @Test
-  public void testReadFromCacheOnlyWaitsForLockDelete() throws IOException, InterruptedException {
+  public void testReadFromCacheOnlyWaitsForLockDelete() throws IOException, InterruptedException, TimeoutException {
     String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
 
     final FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
@@ -166,23 +158,20 @@ public class FilesystemPackageManagerTests {
 
     String packageAndVersion = "example.fhir.uv.myig#1.2.3";
 
-    String lockFileName = packageAndVersion + ".lock";
     //Now sneak in a new lock file and directory:
-    File lockFile = ManagedFileAccess.file(pcmPath, lockFileName);
-    lockFile.createNewFile();
+
     File directory = ManagedFileAccess.file(pcmPath, packageAndVersion);
     directory.mkdir();
 
-    final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
-    executor.schedule(() -> {
-      lockFile.delete();
-    }, 5, TimeUnit.SECONDS);
+    Thread lockThread = LockfileUtility.lockWaitAndDeleteInNewProcess(pcmPath, "example.fhir.uv.myig#1.2.3.lock", 5);
+    LockfileUtility.waitForLockfileCreation(pcmPath, "example.fhir.uv.myig#1.2.3.lock");
+
 
     NpmPackage npmPackage = pcm.loadPackageFromCacheOnly("example.fhir.uv.myig", "1.2.3");
 
     assertThat(npmPackage.id()).isEqualTo("example.fhir.uv.myig");
 
-
+    lockThread.join();
   }
 
   /**
