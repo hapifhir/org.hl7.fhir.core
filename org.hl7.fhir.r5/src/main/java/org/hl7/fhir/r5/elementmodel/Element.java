@@ -562,7 +562,6 @@ public class Element extends Base implements NamedItem {
         } else {
           Element ne = new Element(child).setFormat(format);
           children.add(ne);
-          numberChildren();
           return ne;
         }
       }
@@ -950,6 +949,8 @@ public class Element extends Base implements NamedItem {
         child.sort();
         if (child.isEmpty())
           remove.add(child);
+        else
+          child.numberChildren();
       }
       children.removeAll(remove);
       children.sort(new ElementSortComparator(this, this.property));
