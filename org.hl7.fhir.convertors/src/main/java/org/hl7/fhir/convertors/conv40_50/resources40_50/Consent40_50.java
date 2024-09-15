@@ -10,7 +10,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.Consent;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -221,7 +220,7 @@ public class Consent40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Consent.ProvisionComponent convertprovisionComponent(Consent.ProvisionComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Consent.ProvisionComponent convertprovisionComponent(org.hl7.fhir.r4.model.Consent.provisionComponent src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Consent.ProvisionComponent tgt = new org.hl7.fhir.r5.model.Consent.ProvisionComponent();
@@ -243,15 +242,15 @@ public class Consent40_50 {
       tgt.setDataPeriod(Period40_50.convertPeriod(src.getDataPeriod()));
     for (org.hl7.fhir.r4.model.Consent.provisionDataComponent t : src.getData())
       tgt.addData(convertprovisionDataComponent(t));
-    for (Consent.ProvisionComponent t : src.getProvision())
+    for (org.hl7.fhir.r4.model.Consent.provisionComponent t : src.getProvision())
       tgt.addProvision(convertprovisionComponent(t));
     return tgt;
   }
 
-  public static Consent.ProvisionComponent convertprovisionComponent(org.hl7.fhir.r5.model.Consent.ProvisionComponent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Consent.provisionComponent convertprovisionComponent(org.hl7.fhir.r5.model.Consent.ProvisionComponent src) throws FHIRException {
     if (src == null)
       return null;
-    Consent.ProvisionComponent tgt = new Consent.ProvisionComponent();
+    org.hl7.fhir.r4.model.Consent.provisionComponent tgt = new org.hl7.fhir.r4.model.Consent.provisionComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
 //    if (src.hasType())
 //      tgt.setTypeElement(convertConsentProvisionType(src.getTypeElement()));
