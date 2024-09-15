@@ -4917,7 +4917,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeConsentprovisionComponent(Complex parent, String parentType, String name,
-                                                  Consent.ProvisionComponent element, int index) {
+      Consent.provisionComponent element, int index) {
     if (element == null)
       return;
     Complex t;
