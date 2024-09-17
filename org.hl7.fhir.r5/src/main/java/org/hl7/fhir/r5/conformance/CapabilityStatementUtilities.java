@@ -53,7 +53,7 @@ public class CapabilityStatementUtilities {
       importedUrls.put(targetCS.getUrl(), importConformance);
 
       CapabilityStatement mergedImportedCS = resolveImports(importedCS, importedUrls, importConformance);
-      mergeCS(targetCS, mergedImportedCS, importConformance);
+      mergeCS(resolvedCS, mergedImportedCS, importConformance);
     }
 
     return resolvedCS;
@@ -74,14 +74,14 @@ public class CapabilityStatementUtilities {
       throw new FHIRException("Unable to handle messaging repetitions greater than one for imported Capability Statement - use one repetition with multiple messaging.supportedMessage elements.");
     else if (!importedCS.hasMessaging()) {
       // Do nothing
-    } else if (targetCS.hasMessaging())
+    } else if (!targetCS.hasMessaging())
       targetCS.setMessaging(importedCS.getMessaging());
     else {
       CapabilityStatement.CapabilityStatementMessagingComponent targetMessaging = targetCS.getMessaging().get(0);
       CapabilityStatement.CapabilityStatementMessagingComponent importedMessaging = importedCS.getMessaging().get(0);
       merge(targetMessaging.getReliableCacheElement(), importedMessaging.getReliableCacheElement(), maxConformance, "messaging.reliableCache");
-      if (targetMessaging.hasEndpoint() || importedMessaging.hasEndpoint())
-        throw new FHIRException("Importing capability statements where the importing or imported statement asserts endpoints is not supported");
+      if (importedMessaging.hasEndpoint())
+        throw new FHIRException("Importing capability statements that assert endpoints is not supported");
       merge(targetMessaging.getSupportedMessage(), importedMessaging.getSupportedMessage(), maxConformance, "messaging.supportedMessage");
     }
     merge(targetCS.getMessaging(), importedCS.getMessaging(), maxConformance, "messaging");
@@ -144,7 +144,7 @@ public class CapabilityStatementUtilities {
       // do nothing
     } else if (!targetType.hasDefinition())
       targetType.setDefinitionElement(importedType.getDefinitionElement());
-    else if (targetType.getDefinition().equals(importedType.getDefinition()))
+    else if (!targetType.getDefinition().equals(importedType.getDefinition()))
       throw new FHIRException("Differing definitions for same operation " + localContext + " in imported IG.  Importing:" + targetType.getDefinition() + "; imported:" + importedType.getDefinition());
   }
 
@@ -154,20 +154,19 @@ public class CapabilityStatementUtilities {
       // do nothing
     } else if (!targetType.hasDefinition()) {
       targetType.setDefinitionElement((CanonicalType)fixMax(importedType.getDefinitionElement(), maxConformance));
-    } else if (targetType.getDefinition().equals(importedType.getDefinition()))
+    } else if (!targetType.getDefinition().equals(importedType.getDefinition()))
       throw new FHIRException("Differing definitions for same Search parameter " + localContext + " in imported IG.  Importing:" + targetType.getDefinition() + "; imported:" + importedType.getDefinition());
     if (!importedType.hasType()) {
       // do nothing
     } else if (!targetType.hasType()) {
-      // TODO maxConformance
       targetType.setTypeElement((Enumeration<Enumerations.SearchParamType>)fixMax(importedType.getTypeElement(), maxConformance));
-    } else if (targetType.getType().equals(importedType.getType()))
+    } else if (!targetType.getType().equals(importedType.getType()))
       throw new FHIRException("Differing search types for same Search parameter " + localContext + " in imported IG.  Importing:" + targetType.getType() + "; imported:" + importedType.getType());
   }
 
   void mergeProperties(CapabilityStatement.CapabilityStatementMessagingComponent targetType, CapabilityStatement.CapabilityStatementMessagingComponent importedType, String maxConformance, String context) throws FHIRException {
-    if (targetType.hasEndpoint() || importedType.hasEndpoint()) {
-      throw new FHIRException("Importing CapabilityStatements ");
+    if (importedType.hasEndpoint()) {
+      throw new FHIRException("Cannot handle importing messaging with declared endpoints");
     }
     targetType.setReliableCacheElement(merge(targetType.getReliableCacheElement(), importedType.getReliableCacheElement(), maxConformance, context + ".reliableCache"));
     merge(targetType.getSupportedMessage(), importedType.getSupportedMessage(), maxConformance, context + ".reliableCache");
@@ -187,6 +186,8 @@ public class CapabilityStatementUtilities {
         boolean match;
         if (targetType instanceof PrimitiveType)
           match = importedType.toString().equals(targetType.toString());
+        else if (importedType instanceof CodeableConcept)
+          match = match((CodeableConcept)targetType,(CodeableConcept)importedType);
         else if (importedType instanceof CapabilityStatement.CapabilityStatementRestComponent)
           match = ((CapabilityStatement.CapabilityStatementRestComponent)targetType).getMode().equals(((CapabilityStatement.CapabilityStatementRestComponent)importedType).getMode());
         else if (importedType instanceof CapabilityStatement.CapabilityStatementRestResourceComponent)
@@ -197,9 +198,16 @@ public class CapabilityStatementUtilities {
           match = ((CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent)targetType).getName().equals(((CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent)importedType).getName());
         else if (importedType instanceof CapabilityStatement.CapabilityStatementMessagingComponent)
           match = true; // We only work if there's only one messaging component in each
+        else if (importedType instanceof CapabilityStatement.ResourceInteractionComponent)
+          match = ((CapabilityStatement.ResourceInteractionComponent)targetType).getCode().equals(((CapabilityStatement.ResourceInteractionComponent)importedType).getCode());
+        else if (importedType instanceof CapabilityStatement.SystemInteractionComponent)
+          match = ((CapabilityStatement.SystemInteractionComponent)targetType).getCode().equals(((CapabilityStatement.SystemInteractionComponent)importedType).getCode());
         else if (importedType instanceof CapabilityStatement.CapabilityStatementDocumentComponent)
           match = ((CapabilityStatement.CapabilityStatementDocumentComponent)targetType).getMode().equals(((CapabilityStatement.CapabilityStatementDocumentComponent)importedType).getMode()) &&
             ((CapabilityStatement.CapabilityStatementDocumentComponent)targetType).getProfile().equals(((CapabilityStatement.CapabilityStatementDocumentComponent)importedType).getProfile());
+        else if (importedType instanceof CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent)
+          match = ((CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent)targetType).getMode().equals(((CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent)importedType).getMode())
+            && ((CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent)targetType).getDefinition().equals(((CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent)importedType).getDefinition());
         else if (importedType instanceof Extension) {
           if (((Extension)importedType).getUrl().equals(ExtensionConstants.EXT_CSDECLARED_PROFILE))
             match = ((Extension)targetType).getValueCanonicalType().getValue().equals(((Extension)importedType).getValueCanonicalType().getValue());
@@ -227,7 +235,9 @@ public class CapabilityStatementUtilities {
           mergeProperties((CapabilityStatement.CapabilityStatementRestResourceOperationComponent)foundType, (CapabilityStatement.CapabilityStatementRestResourceOperationComponent)importedType, context);
         else if (importedType instanceof CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent)
           mergeProperties((CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent)foundType, (CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent)importedType, maxConformance, context);
-        else if (importedType instanceof CapabilityStatement.CapabilityStatementDocumentComponent) {
+        else if (importedType instanceof CapabilityStatement.ResourceInteractionComponent || importedType instanceof CapabilityStatement.SystemInteractionComponent) {
+          // No properties to merge
+        } else if (importedType instanceof CapabilityStatement.CapabilityStatementDocumentComponent) {
           // No properties to merge
         } else if (importedType instanceof CapabilityStatement.CapabilityStatementMessagingComponent)
           mergeProperties((CapabilityStatement.CapabilityStatementMessagingComponent)foundType, (CapabilityStatement.CapabilityStatementMessagingComponent)importedType, maxConformance, context);
@@ -239,9 +249,42 @@ public class CapabilityStatementUtilities {
           } else if (((Extension) importedType).getUrl().equals(ExtensionConstants.EXT_CSSEARCH_PARAMETER_COMBINATION))
             mergeSearchComboExt(((Extension) foundType), ((Extension) importedType), context + ".extension(SearchCombo - " + requiredSort(importedType) + ")");
         }
-        mergeExpectations((DataType) foundType, (DataType) importedType, maxConformance);
+        mergeExpectations((Element) foundType, (Element) importedType, maxConformance);
       }
     }
+  }
+
+  /*
+   * Two CodeableConcepts match if they have the same text and their codings match by code + system (and version if present)
+   */
+  private boolean match(CodeableConcept a, CodeableConcept b) {
+    if (a.hasText() || b.hasText())
+      if (a.hasText()!= b.hasText() || !a.getText().equals(b.getText()))
+        return false;
+    if (a.getCoding().size()!= b.getCoding().size())
+      return false;
+    for (Coding codeA: a.getCoding()) {
+      boolean codingMatch = false;
+      for (Coding codeB: b.getCoding()) {
+        if (codeA.hasSystem() != codeB.hasSystem())
+          continue;
+        if (codeA.hasSystem() && !codeA.getSystem().equals(codeB.getSystem()))
+          continue;
+        if (codeA.hasCode() != codeB.hasCode())
+          continue;
+        if (codeA.hasCode() && !codeA.getCode().equals(codeB.getCode()))
+          continue;
+        if (codeA.hasVersion() != codeB.hasVersion())
+          continue;
+        if (codeA.hasVersion() && !codeA.getVersion().equals(codeB.getVersion()))
+          continue;
+        codingMatch = true;
+        break;
+      }
+      if (!codingMatch)
+        return false;
+    }
+    return true;
   }
 
   private List<String> extensionValueList(Extension sortExtension, String url) {
@@ -402,9 +445,9 @@ public class CapabilityStatementUtilities {
    * Selects whichever code exists if only one exists, otherwise checks that the two codes match and merges conformance expectations
    */
   protected BooleanType merge(BooleanType targetBool, BooleanType importedBool, String maxConformance, String context) throws FHIRException {
-    if (targetBool == null)
+    if (targetBool == null || targetBool.getValue() == null)
       return (BooleanType)fixMax(importedBool,maxConformance);
-    else if (importedBool == null)
+    else if (importedBool == null || importedBool.getValue() == null)
       return targetBool;
     else if (targetBool.getValue().equals(importedBool.getValue())) {
       mergeExpectations(targetBool, importedBool, maxConformance);
@@ -428,8 +471,6 @@ public class CapabilityStatementUtilities {
 
 
   public void mergeExpectations(Element target, Element source, String maxConformance) {
-
-    // Todo fix maxConformance
     if (target.hasExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT)) {
       Extension targetExpectation = target.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT);
       if (!targetExpectation.getValueCodeType().getCode().equals("SHALL") && source.hasExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT)) {

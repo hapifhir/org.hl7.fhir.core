@@ -1,15 +1,22 @@
 package org.hl7.fhir.r5.utils;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.CapabilityStatementUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -33,10 +40,41 @@ class CapabilityStatementUtilitiesTests {
   private static final Enumeration CR_FULLSUPPORT = (new CapabilityStatement.ConditionalReadStatusEnumFactory()).fromType(new CodeType("full-support"));
 
   private CapabilityStatementUtilities csu;
+  private IWorkerContext ctxt;
 
   CapabilityStatementUtilitiesTests() {
-    IWorkerContext ctxt = TestingUtilities.getSharedWorkerContext();
+    ctxt = TestingUtilities.getSharedWorkerContext();
     csu = new CapabilityStatementUtilities(ctxt);
+  }
+
+  @Test
+  void testOverall() {
+    IParser p = new XmlParser(false);
+
+    CapabilityStatement c1 = null;
+    CapabilityStatement c2 = null;
+    CapabilityStatement expected = null;
+    try {
+      InputStream strm1 = TestingUtilities.loadTestResourceStream("r5", "capabilitystatement-import", "CapabilityStatement-1.xml");
+      InputStream strm2 = TestingUtilities.loadTestResourceStream("r5", "capabilitystatement-import", "CapabilityStatement-2.xml");
+      InputStream strm3 = TestingUtilities.loadTestResourceStream("r5", "capabilitystatement-import", "CapabilityStatement-2merged.xml");
+      c1 = (CapabilityStatement)p.parse(strm1);
+      c2 = (CapabilityStatement)p.parse(strm2);
+      expected = (CapabilityStatement)p.parse(strm3);
+    } catch (IOException e) {
+    }
+    if (c1==null || c2==null)
+      Assertions.fail("Unable to read source CapabilityStatements");
+
+    ctxt.cacheResource(c1);
+    CapabilityStatement out = csu.resolveImports(c2);
+    try {
+      String s1 = p.composeString(out);
+      String s2 = p.composeString(expected);
+      Assertions.assertEquals(s1, s2, "Merged capability statement must match expected value");
+    } catch (IOException e) {
+      Assertions.fail("Error serializing CapabilityStatements.");
+    }
   }
 
   @Test
