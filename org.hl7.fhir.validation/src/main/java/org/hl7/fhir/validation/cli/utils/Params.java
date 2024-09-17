@@ -94,7 +94,8 @@ public class Params {
   public static final String DISABLE_DEFAULT_RESOURCE_FETCHER = "-disable-default-resource-fetcher";
   public static final String CHECK_IPS_CODES = "-check-ips-codes";
   public static final String BEST_PRACTICE = "-best-practice";
-  public static final String UNKNOWN_CODESYSTEMS_CAUSE_ERROR = "-unknown-codesystems-cause-errors";  
+  public static final String UNKNOWN_CODESYSTEMS_CAUSE_ERROR = "-unknown-codesystems-cause-errors";
+  public static final String NO_EXPERIMENTAL_CONTENT = "-no-experimental-content";
 
   public static final String RUN_TESTS = "-run-tests";
 
@@ -321,6 +322,8 @@ public class Params {
         cliContext.setForPublication(true);
       } else if (args[i].equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
         cliContext.setUnknownCodeSystemsCauseErrors(true);
+      } else if (args[i].equals(NO_EXPERIMENTAL_CONTENT)) {
+        cliContext.setNoExperimentalContent(true);
       } else if (args[i].equals(VERBOSE)) {
         cliContext.setCrumbTrails(true);
       } else if (args[i].equals(ALLOW_EXAMPLE_URLS)) {
