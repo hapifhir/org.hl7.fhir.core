@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.npm;
 
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FilesystemPackageManagerLockTests {
@@ -114,6 +116,23 @@ public class FilesystemPackageManagerLockTests {
         throw new RuntimeException(e);
       }
     }
+  }
+
+  @Test void testWhenLockIsntHeld_canLockFileBeHeldByThisProcessIsTrue() throws IOException {
+    File lockFile = getPackageLockFile();
+    lockFile.createNewFile();
+    Assertions.assertTrue(filesystemPackageCacheLockManager.getCacheLock().canLockFileBeHeldByThisProcess(lockFile));
+  }
+
+  @Test void testWhenLockIsHelp_canLockFileBeHeldByThisProcessIsFalse() throws IOException, InterruptedException, TimeoutException {
+    File lockFile = getPackageLockFile();
+    Thread lockThread = LockfileTestUtility.lockWaitAndDeleteInNewProcess(cachePath, DUMMY_PACKAGE + ".lock", 2);
+
+    LockfileTestUtility.waitForLockfileCreation(cacheDirectory.getAbsolutePath(), DUMMY_PACKAGE + ".lock");
+
+    Assertions.assertFalse(filesystemPackageCacheLockManager.getCacheLock().canLockFileBeHeldByThisProcess(lockFile));
+
+    lockThread.join();
   }
 
   @Test void testSinglePackageWriteMultiPackageRead() throws IOException {
