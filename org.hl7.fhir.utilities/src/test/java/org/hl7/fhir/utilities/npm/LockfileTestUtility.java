@@ -29,14 +29,20 @@ public class LockfileTestUtility {
    * @throws TimeoutException If the lock file is not created within 10 seconds
    */
   public static void waitForLockfileCreation(String path, String lockFileName) throws InterruptedException, TimeoutException {
-    if (Files.exists(Paths.get(path, lockFileName))) {
-      return;
-    }
+
     CountDownLatch latch = new CountDownLatch(1);
     FileAlterationMonitor monitor = new FileAlterationMonitor(100);
     FileAlterationObserver observer = new FileAlterationObserver(path);
 
     observer.addListener(new FileAlterationListenerAdaptor(){
+
+      @Override
+      public void onStart(FileAlterationObserver observer) {
+        if (Files.exists(Paths.get(path, lockFileName))) {
+          latch.countDown();
+        }
+      }
+
       @Override
       public void onFileCreate(File file) {
         System.out.println("File created: " + file.getName());
@@ -45,21 +51,21 @@ public class LockfileTestUtility {
     });
     monitor.addObserver(observer);
 
-    try {
-      monitor.start();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-    latch.await(10, TimeUnit.SECONDS);
-    try {
-      monitor.stop();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+      try {
+        monitor.start();
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+      boolean success = latch.await(10, TimeUnit.SECONDS);
+      try {
+        monitor.stop();
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
 
-    if (!Files.exists(Paths.get(path, lockFileName))) {
-      throw new TimeoutException("Lock file not created within 10 seconds");
-    }
+      if (!success) {
+        throw new TimeoutException("Timed out waiting for lock file creation: " + lockFileName);
+      }
 
   }
 

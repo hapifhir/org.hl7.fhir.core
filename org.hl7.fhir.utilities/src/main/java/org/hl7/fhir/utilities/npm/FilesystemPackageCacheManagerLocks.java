@@ -261,11 +261,12 @@ public class FilesystemPackageCacheManagerLocks {
         try {
           result = function.get();
         } finally {
-          fileLock.release();
-          channel.close();
           if (!lockFile.delete()) {
             lockFile.deleteOnExit();
           }
+          fileLock.release();
+          channel.close();
+
           lock.writeLock().unlock();
           cacheLock.getLock().writeLock().unlock();
         }
