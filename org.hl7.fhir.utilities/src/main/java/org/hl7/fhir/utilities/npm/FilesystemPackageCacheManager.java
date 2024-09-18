@@ -244,12 +244,15 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       if (file.getName().endsWith(".lock")) {
         if (locks.getCacheLock().canLockFileBeHeldByThisProcess(file)) {
           String packageDirectoryName = file.getName().substring(0, file.getName().length() - 5);
+          log("Detected potential incomplete package installed in cache: " + packageDirectoryName + ". Attempting to delete");
+
           File packageDirectory = ManagedFileAccess.file(Utilities.path(cacheFolder, packageDirectoryName));
           if (packageDirectory.exists()) {
             Utilities.clearDirectory(packageDirectory.getAbsolutePath());
             packageDirectory.delete();
           }
           file.delete();
+          log("Deleted potential incomplete package: " + packageDirectoryName);
         }
       }
     }
