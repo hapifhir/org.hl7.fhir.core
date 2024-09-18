@@ -124,9 +124,9 @@ public class FilesystemPackageManagerLockTests {
     Assertions.assertTrue(filesystemPackageCacheLockManager.getCacheLock().canLockFileBeHeldByThisProcess(lockFile));
   }
 
-  @Test void testWhenLockIsHelp_canLockFileBeHeldByThisProcessIsFalse() throws IOException, InterruptedException, TimeoutException {
+  @Test void testWhenLockIsHelp_canLockFileBeHeldByThisProcessIsFalse() throws InterruptedException, TimeoutException, IOException {
     File lockFile = getPackageLockFile();
-    Thread lockThread = LockfileTestUtility.lockWaitAndDeleteInNewProcess(cachePath, DUMMY_PACKAGE + ".lock", 2);
+    Thread lockThread = LockfileTestProcessUtility.lockWaitAndDeleteInNewProcess(cachePath, DUMMY_PACKAGE + ".lock", 2);
 
     LockfileTestUtility.waitForLockfileCreation(cacheDirectory.getAbsolutePath(), DUMMY_PACKAGE + ".lock");
 
@@ -198,11 +198,11 @@ public class FilesystemPackageManagerLockTests {
   }
 
   @Test
-  public void testReadWhenLockedByFileTimesOut() throws IOException, InterruptedException, TimeoutException {
+  public void testReadWhenLockedByFileTimesOut() throws InterruptedException, TimeoutException, IOException {
     FilesystemPackageCacheManagerLocks shorterTimeoutManager = filesystemPackageCacheLockManager;
     final FilesystemPackageCacheManagerLocks.PackageLock packageLock = shorterTimeoutManager.getPackageLock(DUMMY_PACKAGE);
     File lockFile = getPackageLockFile();
-    Thread lockThread = LockfileTestUtility.lockWaitAndDeleteInNewProcess(cachePath, lockFile.getName(), 5);
+    Thread lockThread = LockfileTestProcessUtility.lockWaitAndDeleteInNewProcess(cachePath, lockFile.getName(), 5);
     LockfileTestUtility.waitForLockfileCreation(cachePath,lockFile.getName());
 
     Exception exception = assertThrows(IOException.class, () -> {
@@ -219,13 +219,25 @@ public class FilesystemPackageManagerLockTests {
   }
 
   @Test
-  public void testReadWhenLockFileIsDeleted() throws IOException, InterruptedException, TimeoutException {
+  public void apacheFileAlterationMonitorTest() {
+
+    // Use Apache FileAlterationMonitor to monitor the cache directory for file deletions
+    // and create a lock file in a separate thread
+
+    // Create a lock file in a separate thread
+
+
+
+  }
+
+  @Test
+  public void testReadWhenLockFileIsDeleted() throws InterruptedException, TimeoutException, IOException {
 
     final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
 
     final File lockFile = getPackageLockFile();
 
-    Thread lockThread = LockfileTestUtility.lockWaitAndDeleteInNewProcess(cachePath, lockFile.getName(), 5);
+    Thread lockThread = LockfileTestProcessUtility.lockWaitAndDeleteInNewProcess(cachePath, lockFile.getName(), 5);
     LockfileTestUtility.waitForLockfileCreation(cachePath,lockFile.getName());
 
     packageLock.doReadWithLock(() -> {

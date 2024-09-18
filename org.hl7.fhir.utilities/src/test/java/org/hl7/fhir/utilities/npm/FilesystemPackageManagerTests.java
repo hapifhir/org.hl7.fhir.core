@@ -140,7 +140,7 @@ public class FilesystemPackageManagerTests {
 
     File dummyPackage = createDummyPackage(cacheDirectory, "example.fhir.uv.myig", "1.2.3");
 
-    Thread lockThread = LockfileTestUtility.lockWaitAndDeleteInNewProcess(cacheDirectory.getAbsolutePath(), "example.fhir.uv.myig#1.2.3.lock", 2);
+    Thread lockThread = LockfileTestProcessUtility.lockWaitAndDeleteInNewProcess(cacheDirectory.getAbsolutePath(), "example.fhir.uv.myig#1.2.3.lock", 2);
 
     LockfileTestUtility.waitForLockfileCreation(cacheDirectory.getAbsolutePath(), "example.fhir.uv.myig#1.2.3.lock");
     File dummyLockFile = ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), "example.fhir.uv.myig#1.2.3.lock");
@@ -168,7 +168,7 @@ public class FilesystemPackageManagerTests {
 
     Assertions.assertTrue(pcm.listPackages().isEmpty());
 
-    Thread lockThread = LockfileTestUtility.lockWaitAndDeleteInNewProcess(pcmPath, "example.fhir.uv.myig#1.2.3.lock", 10);
+    Thread lockThread = LockfileTestProcessUtility.lockWaitAndDeleteInNewProcess(pcmPath, "example.fhir.uv.myig#1.2.3.lock", 10);
     File directory = ManagedFileAccess.file(pcmPath, "example.fhir.uv.myig#1.2.3" );
     directory.mkdir();
 
@@ -198,7 +198,7 @@ public class FilesystemPackageManagerTests {
     File directory = ManagedFileAccess.file(pcmPath, packageAndVersion);
     directory.mkdir();
 
-    Thread lockThread = LockfileTestUtility.lockWaitAndDeleteInNewProcess(pcmPath, "example.fhir.uv.myig#1.2.3.lock", 5);
+    Thread lockThread = LockfileTestProcessUtility.lockWaitAndDeleteInNewProcess(pcmPath, "example.fhir.uv.myig#1.2.3.lock", 5);
     LockfileTestUtility.waitForLockfileCreation(pcmPath, "example.fhir.uv.myig#1.2.3.lock");
 
     NpmPackage npmPackage = pcm.loadPackageFromCacheOnly("example.fhir.uv.myig", "1.2.3");
