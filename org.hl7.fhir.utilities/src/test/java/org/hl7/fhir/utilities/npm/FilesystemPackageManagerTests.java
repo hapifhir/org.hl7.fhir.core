@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -119,6 +118,23 @@ public class FilesystemPackageManagerTests {
   }
 
   @Test
+  public void testCorruptPackageCleanup() throws IOException {
+    File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest"));
+
+    File dummyPackage = createDummyPackage(cacheDirectory, "example.fhir.uv.myig", "1.2.3");
+    File dummyLockFile = createDummyLockFile(cacheDirectory, "example.fhir.uv.myig" , "1.2.3");
+
+    assertThat(dummyPackage).isDirectory();
+    assertThat(dummyPackage).exists();
+    assertThat(dummyLockFile).exists();
+
+    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).build();
+
+    assertThat(dummyPackage).doesNotExist();
+    assertThat(dummyLockFile).doesNotExist();
+  }
+
+  @Test
   public void testTimeoutForLockedPackageRead() throws IOException, InterruptedException, TimeoutException {
     String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
 
@@ -129,11 +145,11 @@ public class FilesystemPackageManagerTests {
 
     Assertions.assertTrue(pcm.listPackages().isEmpty());
 
-    Thread lockThread = LockfileUtility.lockWaitAndDeleteInNewProcess(pcmPath, "example.fhir.uv.myig#1.2.3.lock", 10);
+    Thread lockThread = LockfileTestUtility.lockWaitAndDeleteInNewProcess(pcmPath, "example.fhir.uv.myig#1.2.3.lock", 10);
     File directory = ManagedFileAccess.file(pcmPath, "example.fhir.uv.myig#1.2.3" );
     directory.mkdir();
 
-    LockfileUtility.waitForLockfileCreation(pcmPath, "example.fhir.uv.myig#1.2.3.lock");
+    LockfileTestUtility.waitForLockfileCreation(pcmPath, "example.fhir.uv.myig#1.2.3.lock");
 
     IOException exception = assertThrows(IOException.class, () -> pcm.loadPackageFromCacheOnly("example.fhir.uv.myig", "1.2.3"));
 
@@ -141,10 +157,6 @@ public class FilesystemPackageManagerTests {
     assertThat(exception.getCause().getMessage()).contains("Timeout waiting for lock file deletion");
     lockThread.join();
   }
-
-
-
-
 
   @Test
   public void testReadFromCacheOnlyWaitsForLockDelete() throws IOException, InterruptedException, TimeoutException {
@@ -163,9 +175,8 @@ public class FilesystemPackageManagerTests {
     File directory = ManagedFileAccess.file(pcmPath, packageAndVersion);
     directory.mkdir();
 
-    Thread lockThread = LockfileUtility.lockWaitAndDeleteInNewProcess(pcmPath, "example.fhir.uv.myig#1.2.3.lock", 5);
-    LockfileUtility.waitForLockfileCreation(pcmPath, "example.fhir.uv.myig#1.2.3.lock");
-
+    Thread lockThread = LockfileTestUtility.lockWaitAndDeleteInNewProcess(pcmPath, "example.fhir.uv.myig#1.2.3.lock", 5);
+    LockfileTestUtility.waitForLockfileCreation(pcmPath, "example.fhir.uv.myig#1.2.3.lock");
 
     NpmPackage npmPackage = pcm.loadPackageFromCacheOnly("example.fhir.uv.myig", "1.2.3");
 
@@ -187,16 +198,16 @@ public class FilesystemPackageManagerTests {
     return params.stream();
   }
 
-  private void createDummyTemp(File cacheDirectory, String lowerCase) throws IOException {
-    createDummyPackage(cacheDirectory, lowerCase);
+  private File createDummyTemp(File cacheDirectory, String lowerCase) throws IOException {
+    return createDummyPackage(cacheDirectory, lowerCase);
   }
 
-  private void createDummyPackage(File cacheDirectory, String packageName, String packageVersion) throws IOException {
+  private File createDummyPackage(File cacheDirectory, String packageName, String packageVersion) throws IOException {
     String directoryName = packageName + "#" + packageVersion;
-    createDummyPackage(cacheDirectory, directoryName);
+    return createDummyPackage(cacheDirectory, directoryName);
   }
 
-  private static void createDummyPackage(File cacheDirectory, String directoryName) throws IOException {
+  private static File createDummyPackage(File cacheDirectory, String directoryName) throws IOException {
     File packageDirectory = ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), directoryName);
     packageDirectory.mkdirs();
 
@@ -205,6 +216,16 @@ public class FilesystemPackageManagerTests {
     wr.write("Ain't nobody here but us chickens");
     wr.flush();
     wr.close();
+    return packageDirectory;
+  }
+
+  private File createDummyLockFile(File cacheDirectory, String packageName, String packageVersion) throws IOException {
+    final File dummyLockFile = ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), packageName + "#" + packageVersion + ".lock");
+    final FileWriter wr = new FileWriter(dummyLockFile);
+    wr.write("Ain't nobody here but us chickens");
+    wr.flush();
+    wr.close();
+    return dummyLockFile;
   }
 
   private void assertThatDummyTempExists(File cacheDirectory, String dummyTempPackage) throws IOException {

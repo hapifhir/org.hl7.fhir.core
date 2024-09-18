@@ -183,8 +183,8 @@ public class FilesystemPackageManagerLockTests {
     FilesystemPackageCacheManagerLocks shorterTimeoutManager = filesystemPackageCacheLockManager;
     final FilesystemPackageCacheManagerLocks.PackageLock packageLock = shorterTimeoutManager.getPackageLock(DUMMY_PACKAGE);
     File lockFile = getPackageLockFile();
-    Thread lockThread = LockfileUtility.lockWaitAndDeleteInNewProcess(cachePath, lockFile.getName(), 5);
-    LockfileUtility.waitForLockfileCreation(cachePath,lockFile.getName());
+    Thread lockThread = LockfileTestUtility.lockWaitAndDeleteInNewProcess(cachePath, lockFile.getName(), 5);
+    LockfileTestUtility.waitForLockfileCreation(cachePath,lockFile.getName());
 
     Exception exception = assertThrows(IOException.class, () -> {
       packageLock.doReadWithLock(() -> {
@@ -206,8 +206,8 @@ public class FilesystemPackageManagerLockTests {
 
     final File lockFile = getPackageLockFile();
 
-    Thread lockThread = LockfileUtility.lockWaitAndDeleteInNewProcess(cachePath, lockFile.getName(), 5);
-    LockfileUtility.waitForLockfileCreation(cachePath,lockFile.getName());
+    Thread lockThread = LockfileTestUtility.lockWaitAndDeleteInNewProcess(cachePath, lockFile.getName(), 5);
+    LockfileTestUtility.waitForLockfileCreation(cachePath,lockFile.getName());
 
     packageLock.doReadWithLock(() -> {
       assertThat(lockFile).doesNotExist();

@@ -10,7 +10,31 @@ import java.nio.file.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class LockfileUtility {
+/**
+ * FilesystemPackageCacheManagerLocks relies on the existence of .lock files to prevent access to packages being written
+ * by processes outside the current JVM. Testing this functionality means creating a process outside the JUnit test JVM,
+ * which is achieved by running a separate Java process.
+ * <p/>
+ * Intended usage:
+ * <p/>
+ * The helper method {@link #lockWaitAndDeleteInNewProcess(String, String, int)} is the intended starting point for
+ * using this class.
+ * <p/>
+ *
+ *
+ * This class deliberately avoids using any dependencies outside java.*, which avoids having to construct a classpath
+ * for the separate process.
+ */
+public class LockfileTestUtility {
+
+  /**
+   * Main method to allow running this class.
+   *
+   * It is not recommended to call this method directly. Instead, use the provided {@link LockfileTestUtility.l} method.
+   *
+   *
+   * @param args
+    */
   public static void main(String[] args) {
     String lockFileName = args[1];
     String path = args[0];
@@ -24,6 +48,18 @@ public class LockfileUtility {
 
   }
 
+  /**
+   * Wait for the lock file to be created in the given path.
+   * <p/>
+   * Normally, within the same JVM, you could use a CountdownLatch for the same purpose, but since this the lock file is
+   * being created in a separate process, we need to use a mechanism that doesn't rely on shared threads.
+   *
+   * @param path The path containing the lock file
+   * @param lockFileName The name of the lock file
+   * @throws InterruptedException If the thread is interrupted while waiting
+   * @throws IOException If there is an error accessing the file system
+   * @throws TimeoutException If the lock file is not created within 10 seconds
+   */
   public static void waitForLockfileCreation(String path, String lockFileName) throws InterruptedException, IOException, TimeoutException {
     if (Files.exists(Paths.get(path, lockFileName))) {
       return;
@@ -50,9 +86,21 @@ public class LockfileUtility {
     }
   }
 
+  /**
+   * Static helper method that starts a new process, creates a lock file in the path and waits for a specified number of
+   * seconds before deleting it.
+   * <p/>
+   * This method calls the {@link #main(String[])} method in a new process.
+   *
+   * @param path The path to create the lockfile in
+   * @param lockFileName The name of the lockfile
+   * @param seconds The number of seconds to wait before deleting the lockfile
+   * @return The thread wrapping the process execution. This can be used to wait for the process to complete, so that
+   * System.out and System.err can be processed before tests return results.
+   */
   public static Thread lockWaitAndDeleteInNewProcess(String path, String lockFileName, int seconds)  {
     Thread t = new Thread(() -> {
-      ProcessBuilder processBuilder = new ProcessBuilder("java", "-cp", "target/test-classes:.", "org.hl7.fhir.utilities.npm.LockfileUtility", path, lockFileName, Integer.toString(seconds));
+      ProcessBuilder processBuilder = new ProcessBuilder("java", "-cp", "target/test-classes:.", LockfileTestUtility.class.getName(), path, lockFileName, Integer.toString(seconds));
       try {
         Process process = processBuilder.start();
         process.getErrorStream().transferTo(System.err);
@@ -66,6 +114,21 @@ public class LockfileUtility {
     return t;
   }
 
+  /**
+   * The actual logic to create a .lock file.
+   * <p/>
+   * This should match the logic in FilesystemPackageCacheManagerLocks
+   * <p/>
+   *
+   * @param path The path to create the lockfile in
+   * @param lockFileName The name of the lockfile
+   * @param seconds The number of seconds to wait before deleting the lockfile
+   * @throws InterruptedException If the thread is interrupted while waiting
+   * @throws IOException If there is an error accessing the file system
+   */
+  /* TODO Eventually, this logic should exist in a Lockfile class so that it isn't duplicated between the main code and
+      the test code.
+   */
   private static void lockWaitAndDelete(String path, String lockFileName, int seconds) throws InterruptedException, IOException {
 
     File file = Paths.get(path,lockFileName).toFile();
