@@ -218,17 +218,6 @@ public class FilesystemPackageManagerLockTests {
     lockThread.join();
   }
 
-  @Test
-  public void apacheFileAlterationMonitorTest() {
-
-    // Use Apache FileAlterationMonitor to monitor the cache directory for file deletions
-    // and create a lock file in a separate thread
-
-    // Create a lock file in a separate thread
-
-
-
-  }
 
   @Test
   public void testReadWhenLockFileIsDeleted() throws InterruptedException, TimeoutException, IOException {
