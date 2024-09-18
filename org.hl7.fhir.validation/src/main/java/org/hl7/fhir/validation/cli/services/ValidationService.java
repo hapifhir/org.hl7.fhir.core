@@ -582,6 +582,7 @@ public class ValidationService {
     validationEngine.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
     validationEngine.setJurisdiction(CodeSystemUtilities.readCoding(cliContext.getJurisdiction()));
     validationEngine.setUnknownCodeSystemsCauseErrors(cliContext.isUnknownCodeSystemsCauseErrors());
+    validationEngine.setNoExperimentalContent(cliContext.isNoExperimentalContent());
     TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
     validationEngine.prepare(); // generate any missing snapshots
     System.out.println(" go (" + timeTracker.milestone() + ")");

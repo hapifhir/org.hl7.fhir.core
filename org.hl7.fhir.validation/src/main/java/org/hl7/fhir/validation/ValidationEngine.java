@@ -227,6 +227,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean checkIPSCodes;
   @Getter @Setter private BestPracticeWarningLevel bestPracticeLevel;
   @Getter @Setter private boolean unknownCodeSystemsCauseErrors;
+  @Getter @Setter private boolean noExperimentalContent;
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
@@ -909,6 +910,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       validator.setPolicyAdvisor(policyAdvisor);
     }
     validator.setUnknownCodeSystemsCauseErrors(unknownCodeSystemsCauseErrors);
+    validator.setNoExperimentalContent(noExperimentalContent);
     return validator;
   }
 
