@@ -1075,19 +1075,16 @@ public class StructureMapUtilities {
     if (lexer.hasToken("where")) {
       lexer.take();
       ExpressionNode node = fpe.parse(lexer);
-      source.setUserData(MAP_WHERE_EXPRESSION, node);
       source.setCondition(node.toString());
     }
     if (lexer.hasToken("check")) {
       lexer.take();
       ExpressionNode node = fpe.parse(lexer);
-      source.setUserData(MAP_WHERE_CHECK, node);
       source.setCheck(node.toString());
     }
     if (lexer.hasToken("log")) {
       lexer.take();
       ExpressionNode node = fpe.parse(lexer);
-      source.setUserData(MAP_WHERE_CHECK, node);
       source.setLogMessage(node.toString());
     }
   }
@@ -1601,6 +1598,7 @@ public class StructureMapUtilities {
       ExpressionNode expr = (ExpressionNode) src.getUserData(MAP_SEARCH_EXPRESSION);
       if (expr == null) {
         expr = fpe.parse(src.getElement());
+        patchVariablesInExpression(expr, vars);
         src.setUserData(MAP_SEARCH_EXPRESSION, expr);
       }
       String search = fpe.evaluateToString(vars, null, null, new StringType(), expr); // string is a holder of nothing to ensure that variables are processed correctly 
@@ -1629,17 +1627,21 @@ public class StructureMapUtilities {
       }
       items.removeAll(remove);
     }
-
+    
     if (src.hasCondition()) {
       ExpressionNode expr = (ExpressionNode) src.getUserData(MAP_WHERE_EXPRESSION);
       if (expr == null) {
         expr = fpe.parse(src.getCondition());
-        //        fpe.check(context.appInfo, ??, ??, expr)
+        patchVariablesInExpression(expr, vars);
         src.setUserData(MAP_WHERE_EXPRESSION, expr);
       }
       List<Base> remove = new ArrayList<Base>();
       for (Base item : items) {
-        if (!fpe.evaluateToBoolean(vars, null, null, item, expr)) {
+        Variables varsForSource = vars.copy();
+        if (src.hasVariable()) {
+            varsForSource.add(VariableMode.INPUT, src.getVariable(), item);
+        }
+        if (!fpe.evaluateToBoolean(varsForSource, null, null, item, expr)) {
           log(indent + "  condition [" + src.getCondition() + "] for " + item.toString() + " : false");
           remove.add(item);
         } else
@@ -1652,12 +1654,15 @@ public class StructureMapUtilities {
       ExpressionNode expr = (ExpressionNode) src.getUserData(MAP_WHERE_CHECK);
       if (expr == null) {
         expr = fpe.parse(src.getCheck());
-        //        fpe.check(context.appInfo, ??, ??, expr)
+        patchVariablesInExpression(expr, vars);
         src.setUserData(MAP_WHERE_CHECK, expr);
       }
-      List<Base> remove = new ArrayList<Base>();
       for (Base item : items) {
-        if (!fpe.evaluateToBoolean(vars, null, null, item, expr))
+        Variables varsForSource = vars.copy();
+        if (src.hasVariable()) {
+            varsForSource.add(VariableMode.INPUT, src.getVariable(), item);
+        }
+        if (!fpe.evaluateToBoolean(varsForSource, null, null, item, expr))
           throw new FHIRException("Rule \"" + ruleId + "\": Check condition failed");
       }
     }
@@ -1666,16 +1671,21 @@ public class StructureMapUtilities {
       ExpressionNode expr = (ExpressionNode) src.getUserData(MAP_WHERE_LOG);
       if (expr == null) {
         expr = fpe.parse(src.getLogMessage());
-        //        fpe.check(context.appInfo, ??, ??, expr)
+        patchVariablesInExpression(expr, vars);
         src.setUserData(MAP_WHERE_LOG, expr);
       }
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-      for (Base item : items)
-        b.appendIfNotNull(fpe.evaluateToString(vars, null, null, item, expr));
+      for (Base item : items) {
+        Variables varsForSource = vars.copy();
+        if (src.hasVariable()) {
+            varsForSource.add(VariableMode.INPUT, src.getVariable(), item);
+        }
+        b.appendIfNotNull(fpe.evaluateToString(varsForSource, null, null, item, expr));
+      }
       if (b.length() > 0)
         services.log(b.toString());
     }
-
+    
 
     if (src.hasListMode() && !items.isEmpty()) {
       switch (src.getListMode()) {
@@ -1753,6 +1763,29 @@ public class StructureMapUtilities {
     if (tgt.hasVariable() && v != null)
       vars.add(VariableMode.OUTPUT, tgt.getVariable(), v);
   }
+  
+  public static void patchVariablesInExpression(ExpressionNode node, Variables vars) {
+    if (node.isProximal() && node.getKind() == ExpressionNode.Kind.Name && node.getName() !=null && node.getName().length()>0 && !node.getName().startsWith("%")) {
+    // Check if this name is in the variables
+      if (vars.get(VariableMode.INPUT, node.getName())!=null)
+          node.setName("%" + node.getName());
+    }
+    // walk into children
+    var next = node.getOpNext();
+    if (next != null)
+      patchVariablesInExpression(next, vars);
+    var grp = node.getGroup();
+    if (grp != null)
+       patchVariablesInExpression(grp, vars);
+    var inner = node.getInner();
+    if (inner != null)
+       patchVariablesInExpression(inner, vars);
+    if (node.parameterCount() > 0) {
+      for(ExpressionNode p : node.getParameters()) {
+        patchVariablesInExpression(p, vars);
+      }
+    }
+  }
 
   private Base runTransform(String rulePath, TransformContext context, StructureMap map, StructureMapGroupComponent group, StructureMapGroupRuleTargetComponent tgt, Variables vars, Base dest, String element, String srcVar, boolean root) throws FHIRException {
     try {
@@ -1793,6 +1826,7 @@ public class StructureMapUtilities {
           ExpressionNode expr = (ExpressionNode) tgt.getUserData(MAP_EXPRESSION);
           if (expr == null) {
             expr = fpe.parse(getParamStringNoNull(vars, tgt.getParameter().get(tgt.getParameter().size() - 1), tgt.toString()));
+            patchVariablesInExpression(expr, vars);
             tgt.setUserData(MAP_EXPRESSION, expr);
           }
           List<Base> v = fpe.evaluate(vars, null, null, tgt.getParameter().size() == 2 ? getParam(vars, tgt.getParameter().get(0)) : new BooleanType(false), expr);
@@ -2520,7 +2554,6 @@ public class StructureMapUtilities {
         ExpressionNode expr = (ExpressionNode) tgt.getUserData(MAP_EXPRESSION);
         if (expr == null) {
           expr = fpe.parse(getParamString(vars, tgt.getParameter().get(tgt.getParameter().size() - 1)));
-          tgt.setUserData(MAP_WHERE_EXPRESSION, expr);
         }
         return fpe.check(vars, null, expr);
       case TRANSLATE:
