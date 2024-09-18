@@ -135,6 +135,29 @@ public class FilesystemPackageManagerTests {
   }
 
   @Test
+  public void testLockedPackageIsntCleanedUp() throws IOException, InterruptedException, TimeoutException {
+    File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest"));
+
+    File dummyPackage = createDummyPackage(cacheDirectory, "example.fhir.uv.myig", "1.2.3");
+
+    Thread lockThread = LockfileTestUtility.lockWaitAndDeleteInNewProcess(cacheDirectory.getAbsolutePath(), "example.fhir.uv.myig#1.2.3.lock", 2);
+
+    LockfileTestUtility.waitForLockfileCreation(cacheDirectory.getAbsolutePath(), "example.fhir.uv.myig#1.2.3.lock");
+    File dummyLockFile = ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), "example.fhir.uv.myig#1.2.3.lock");
+
+    assertThat(dummyPackage).isDirectory();
+    assertThat(dummyPackage).exists();
+    assertThat(dummyLockFile).exists();
+
+    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).build();
+
+    assertThat(dummyPackage).exists();
+    assertThat(dummyLockFile).exists();
+
+    lockThread.join();
+  }
+
+  @Test
   public void testTimeoutForLockedPackageRead() throws IOException, InterruptedException, TimeoutException {
     String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
 
