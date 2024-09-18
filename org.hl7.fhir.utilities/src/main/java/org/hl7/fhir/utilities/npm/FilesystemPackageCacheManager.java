@@ -242,13 +242,15 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   protected void cleanUpCorruptPackages() throws IOException {
     for (File file : Objects.requireNonNull(cacheFolder.listFiles())) {
       if (file.getName().endsWith(".lock")) {
-        String packageDirectoryName = file.getName().substring(0, file.getName().length() - 5);
-        File packageDirectory = ManagedFileAccess.file(Utilities.path(cacheFolder, packageDirectoryName));
-        if (packageDirectory.exists()) {
-          Utilities.clearDirectory(packageDirectory.getAbsolutePath());
-          packageDirectory.delete();
+        if (locks.getCacheLock().canLockFileBeHeldByThisProcess(file)) {
+          String packageDirectoryName = file.getName().substring(0, file.getName().length() - 5);
+          File packageDirectory = ManagedFileAccess.file(Utilities.path(cacheFolder, packageDirectoryName));
+          if (packageDirectory.exists()) {
+            Utilities.clearDirectory(packageDirectory.getAbsolutePath());
+            packageDirectory.delete();
+          }
+          file.delete();
         }
-        file.delete();
       }
     }
   }

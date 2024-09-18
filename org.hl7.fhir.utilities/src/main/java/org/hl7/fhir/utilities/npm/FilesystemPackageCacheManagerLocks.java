@@ -108,6 +108,19 @@ public class FilesystemPackageCacheManagerLocks {
       }
       return result;
     }
+
+    public boolean canLockFileBeHeldByThisProcess(File lockFile) throws IOException {
+      return doWriteWithLock(() -> {
+      try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
+        FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
+        if (fileLock != null) {
+          fileLock.release();
+          channel.close();
+          return true;
+        }
+      }
+      return false;});
+    }
   }
 
   public class PackageLock {
@@ -225,6 +238,9 @@ public class FilesystemPackageCacheManagerLocks {
       cacheLock.getLock().writeLock().lock();
       lock.writeLock().lock();
 
+       /*TODO Eventually, this logic should exist in a Lockfile class so that it isn't duplicated between the main code and
+          the test code.
+        */
       try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
 
         FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
