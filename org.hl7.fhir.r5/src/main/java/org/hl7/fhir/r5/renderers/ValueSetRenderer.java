@@ -750,9 +750,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (cs == null) {
       return "?cs-n?";
     }
-    String ref = (String) cs.getUserData("filename");
+    String ref = cs.getWebPath();
     if (ref == null) {
-      ref = (String) cs.getWebPath();
+      ref = cs.getUserString("filename");
     }
     return ref == null ? null : ref.replace("\\", "/");
   }

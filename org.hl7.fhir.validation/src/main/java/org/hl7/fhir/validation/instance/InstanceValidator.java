@@ -599,6 +599,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private IDigitalSignatureServices signatureServices;
   private ContextUtilities cu;
   private boolean unknownCodeSystemsCauseErrors;
+  private boolean noExperimentalContent;
 
   public InstanceValidator(@Nonnull IWorkerContext theContext, @Nonnull IEvaluationContext hostServices, @Nonnull XVerExtensionManager xverManager) {
     super(theContext, xverManager, false);
@@ -5718,6 +5719,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             hint(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesDeeplyConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT_HINT, status, standardsStatus);          
           }
         }
+        if (noExperimentalContent) {
+          String exp = element.getNamedChildValue("experimental");
+          ok = rule(errors, "2024-09-17", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), !"true".equals(exp), I18nConstants.VALIDATION_NO_EXPERIMENTAL_CONTENT) && ok;
+        }
         
         if (isHL7Core(element) && !isExample()) {
           ok = checkPublisherConsistency(valContext, errors, element, stack, contained) && ok;  
@@ -7838,6 +7843,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setUnknownCodeSystemsCauseErrors(boolean unknownCodeSystemsCauseErrors) {
     this.unknownCodeSystemsCauseErrors = unknownCodeSystemsCauseErrors;
+  }
+
+  public boolean isNoExperimentalContent() {
+    return noExperimentalContent;
+  }
+
+  public void setNoExperimentalContent(boolean noExperimentalContent) {
+    this.noExperimentalContent = noExperimentalContent;
   }
   
   
