@@ -70,7 +70,7 @@ public class LockfileTestUtility {
       //  the file system immediately. It is unlikely to appear in production environments, but should it occur, it will
       //  result in a lock file being erroneously reported as not having an owning process, and will cause a package to
       //  fail to be loaded from that cache until the lock is cleaned up by cache initialization.
-      Thread.sleep(100);
+      //Thread.sleep(100);
 
   }
 
