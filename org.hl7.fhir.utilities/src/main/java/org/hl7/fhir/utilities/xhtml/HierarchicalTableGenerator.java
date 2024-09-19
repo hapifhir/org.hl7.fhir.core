@@ -560,7 +560,6 @@ public class HierarchicalTableGenerator {
       }
       return b.toString();
     }
-    
   }
 
   public class TableModel {

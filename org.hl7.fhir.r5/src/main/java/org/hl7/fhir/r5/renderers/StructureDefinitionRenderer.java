@@ -897,7 +897,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             Row parent = null; 
             if (child.hasSliceName()) { 
               // ok, we're a slice 
-              if (slicer == null || !slicer.getId().equals(child.getPath())) { 
+              if (slicer == null || !noTail(slicer.getId()).equals(child.getPath())) { 
                 parent = gen.new Row(); 
                 String anchorE = child.getPath();
                 anchorE = makeAnchorUnique(anchorE);
@@ -906,7 +906,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 parent.setColor(context.getProfileUtilities().getRowColor(child, isConstraintMode)); 
                 parent.setLineColor(1); 
                 parent.setIcon("icon_slice.png", context.formatPhrase(RenderingContext.TEXT_ICON_SLICE)); 
-                parent.getCells().add(gen.new Cell(null, null, "Slices for "+ child.getName(), "", null)); 
+                parent.getCells().add(gen.new Cell(null, null, context.formatPhrase(RenderingContext.STRUC_DEF_SLICE_FOR, child.getName()), "", null)); 
                 switch (context.getStructureMode()) { 
                 case BINDINGS: 
                 case OBLIGATIONS: 
@@ -945,6 +945,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
     } 
     return slicingRow; 
+  }
+
+  private String noTail(String id) {
+    if (id.contains(".")) {
+      String t = id.substring(id.lastIndexOf(".")+1);
+      if (Utilities.isInteger(t)) {
+        return id.substring(0, id.lastIndexOf("."));
+      }
+    } 
+    return id;
   }
 
   private String makeAnchorUnique(String anchor) {
@@ -1063,7 +1073,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement())); 
     } 
     if (element.hasSlicing() && slicesExist(elements, element)) { // some elements set up slicing but don't actually slice, so we don't augment the name  
-      sName = context.formatPhrase(RenderingContext.STRUC_DEF_SLICE_FOR, sName);  
+      sName = context.formatPhrase(RenderingContext.STRUC_DEF_SLICE_FOR, sName); 
     } 
     Cell left = gen.new Cell(null, ref, sName, hint, null); 
     row.getCells().add(left); 
@@ -3421,7 +3431,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       sdMapCache.put(url, sdCache); 
       String webroot = sd.getUserString("webroot"); 
       for (ElementDefinition e : sd.getSnapshot().getElement()) { 
-        context.getProfileUtilities().updateURLs(sd.getUrl(), webroot, e); 
+        context.getProfileUtilities().updateURLs(sd.getUrl(), webroot, e, false); 
         sdCache.put(e.getId(), e); 
       } 
     } 
