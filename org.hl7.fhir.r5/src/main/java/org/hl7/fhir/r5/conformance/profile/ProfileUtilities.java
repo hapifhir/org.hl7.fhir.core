@@ -413,11 +413,10 @@ public class ProfileUtilities {
   // note that ProfileUtilities are used re-entrantly internally, so nothing with process state can be here
   private final IWorkerContext context;
   private FHIRPathEngine fpe;
-  private List<ValidationMessage> messages;
+  private List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
   private List<String> snapshotStack = new ArrayList<String>();
   private ProfileKnowledgeProvider pkp;
 //  private boolean igmode;
-  private boolean exception;
   private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R5);
   private boolean newSlicingProcessing;
   private String defWebRoot;
@@ -431,11 +430,16 @@ public class ProfileUtilities {
   private MappingMergeModeOption mappingMergeMode = MappingMergeModeOption.APPEND;
   private boolean forPublication;
   private List<StructureDefinition> obligationProfiles = new ArrayList<>();
+  private boolean wantThrowExceptions;
  
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
     super();
     this.context = context;
-    this.messages = messages;
+    if (messages != null) {
+      this.messages = messages;
+    } else {
+      wantThrowExceptions = true;
+    }
     this.pkp = pkp;
 
     this.fpe = fpe;
@@ -447,7 +451,11 @@ public class ProfileUtilities {
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp) {
     super();
     this.context = context;
-    this.messages = messages;
+    if (messages != null) {
+      this.messages = messages;
+    } else {
+      wantThrowExceptions = true;
+    }
     this.pkp = pkp;
     if (context != null) {
       this.fpe = new FHIRPathEngine(context, this);
@@ -739,7 +747,7 @@ public class ProfileUtilities {
               if (existing != null) {
                 updateFromDefinition(existing, e, profileName, false, url, base, derived, "StructureDefinition.differential.element["+i+"]", mappingDetails);
               } else {
-                ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
+                ElementDefinition outcome = updateURLs(url, webUrl, e.copy(), true);
                 e.setUserData(UD_GENERATED_IN_SNAPSHOT, outcome);
                 derived.getSnapshot().addElement(outcome);
                 if (walksInto(diff.getElement(), e)) {
@@ -789,7 +797,7 @@ public class ProfileUtilities {
             ce++;
             if (e.hasId()) {
               String msg = "No match found for "+e.getId()+" in the generated snapshot: check that the path and definitions are legal in the differential (including order)";
-              messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, "StructureDefinition.differential.element["+i+"]", msg, ValidationMessage.IssueSeverity.ERROR));
+              addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, "StructureDefinition.differential.element["+i+"]", msg, ValidationMessage.IssueSeverity.ERROR));
             }
           }
           i++;
@@ -862,19 +870,19 @@ public class ProfileUtilities {
                   slice.getFocus().setMin(count);
                 } else {
                   String msg = "The slice definition for "+slice.getFocus().getId()+" has a minimum of "+slice.getFocus().getMin()+" but the slices add up to a minimum of "+count; 
-                  messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
+                  addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
                       "StructureDefinition.snapshot.element["+slice.getIndex()+"]", msg, forPublication ? ValidationMessage.IssueSeverity.ERROR : ValidationMessage.IssueSeverity.INFORMATION).setIgnorableError(true));
                 }
               }
               count = slice.checkMax();
               if (count > -1 && repeats) {
                 String msg = "The slice definition for "+slice.getFocus().getId()+" has a maximum of "+slice.getFocus().getMax()+" but the slices add up to a maximum of "+count+". Check that this is what is intended"; 
-                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
+                addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
                     "StructureDefinition.snapshot.element["+slice.getIndex()+"]", msg, ValidationMessage.IssueSeverity.INFORMATION));                                            
               }
               if (!slice.checkMinMax()) {
                 String msg = "The slice definition for "+slice.getFocus().getId()+" has a maximum of "+slice.getFocus().getMax()+" which is less than the minimum of "+slice.getFocus().getMin(); 
-                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
+                addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
                     "StructureDefinition.snapshot.element["+slice.getIndex()+"]", msg, ValidationMessage.IssueSeverity.WARNING));                                                            
               }
               slices.remove(s);
@@ -885,13 +893,13 @@ public class ProfileUtilities {
           }
           if (ed.hasSliceName() && !slices.containsKey(ed.getPath())) {
             String msg = "The element "+ed.getId()+" launches straight into slicing without the slicing being set up properly first";
-            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
+            addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
                 "StructureDefinition.snapshot.element["+i+"]", msg, ValidationMessage.IssueSeverity.ERROR).setIgnorableError(true));            
           }
           if (ed.hasSliceName() && slices.containsKey(ed.getPath())) {
             if (!slices.get(ed.getPath()).count(ed, ed.getSliceName())) {
               String msg = "Duplicate slice name "+ed.getSliceName()+" on "+ed.getId()+" (["+i+"])";
-              messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
+              addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
                   "StructureDefinition.snapshot.element["+i+"]", msg, ValidationMessage.IssueSeverity.ERROR).setIgnorableError(true));            
             }
           }
@@ -910,10 +918,8 @@ public class ProfileUtilities {
                 }
               }
               if (sd == null) {
-                if (messages != null) {
-                  messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
+                addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
                       "StructureDefinition.snapshot.element["+i+"]", "The type of profile "+u.getValue()+" cannot be checked as the profile is not known", IssueSeverity.WARNING));
-                }
               } else {
                 String wt = t.getWorkingCode();
                 if (ed.getPath().equals("Bundle.entry.response.outcome")) {
@@ -1012,13 +1018,15 @@ public class ProfileUtilities {
   }
 
   private void handleError(String url, String msg) {
-    if (exception)
-      throw new DefinitionException(msg);
-    else
-      messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url, msg, ValidationMessage.IssueSeverity.ERROR));
+    addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url, msg, ValidationMessage.IssueSeverity.ERROR));
   }
 
-
+  private void addMessage(ValidationMessage msg) {
+    messages.add(msg);
+    if (msg.getLevel() == IssueSeverity.ERROR && wantThrowExceptions) {
+      throw new DefinitionException(msg.getMessage());   
+    }
+  }
 
 
   private void copyInheritedExtensions(StructureDefinition base, StructureDefinition derived, String webUrl) {
@@ -1042,7 +1050,7 @@ public class ProfileUtilities {
        // don't do this. should already be in snapshot ... addInheritedElementsForSpecialization(snapshot, focus, sd.getBaseDefinition(), path, url, weburl);
        for (ElementDefinition ed : sd.getSnapshot().getElement()) {
          if (ed.getPath().contains(".")) {
-           ElementDefinition outcome = updateURLs(url, weburl, ed.copy());
+           ElementDefinition outcome = updateURLs(url, weburl, ed.copy(), true);
            outcome.setPath(outcome.getPath().replace(sd.getTypeName(), path));
            snapshot.getElement().add(outcome);
          } else {
@@ -1548,7 +1556,6 @@ public class ProfileUtilities {
   protected void removeStatusExtensions(ElementDefinition outcome) {
     outcome.removeExtension(ToolingExtensions.EXT_FMM_LEVEL);
     outcome.removeExtension(ToolingExtensions.EXT_FMM_SUPPORT);
-    outcome.removeExtension(ToolingExtensions.EXT_FMM_DERIVED);
     outcome.removeExtension(ToolingExtensions.EXT_STANDARDS_STATUS);
     outcome.removeExtension(ToolingExtensions.EXT_NORMATIVE_VERSION);
     outcome.removeExtension(ToolingExtensions.EXT_WORKGROUP);    
@@ -1911,7 +1918,7 @@ public class ProfileUtilities {
    * @param element - the Element to update
    * @return - the updated Element
    */
-  public ElementDefinition updateURLs(String url, String webUrl, ElementDefinition element) {
+  public ElementDefinition updateURLs(String url, String webUrl, ElementDefinition element, boolean processRelatives) {
     if (element != null) {
       ElementDefinition defn = element;
       if (defn.hasBinding() && defn.getBinding().hasValueSet() && defn.getBinding().getValueSet().startsWith("#"))
@@ -1929,24 +1936,24 @@ public class ProfileUtilities {
       if (webUrl != null) {
         // also, must touch up the markdown
         if (element.hasDefinition()) {
-          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
         }
         if (element.hasComment()) {
-          element.setComment(processRelativeUrls(element.getComment(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+          element.setComment(processRelativeUrls(element.getComment(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
         }
         if (element.hasRequirements()) {
-          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
         }
         if (element.hasMeaningWhenMissing()) {
-          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
         }
         if (element.hasBinding() && element.getBinding().hasDescription()) {
-          element.getBinding().setDescription(processRelativeUrls(element.getBinding().getDescription(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+          element.getBinding().setDescription(processRelativeUrls(element.getBinding().getDescription(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
         }
         for (Extension ext : element.getExtension()) {
           if (ext.hasValueMarkdownType()) {
             MarkdownType md = ext.getValueMarkdownType();
-            md.setValue(processRelativeUrls(md.getValue(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+            md.setValue(processRelativeUrls(md.getValue(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, processRelatives));
           }
         }
       }
@@ -2250,7 +2257,7 @@ public class ProfileUtilities {
          * Not sure we have enough information here to do the check properly.  Might be better done when we're sorting the profile?
 
         if (i != start && result.isEmpty() && !path.startsWith(context.getElement().get(start).getPath()))
-          messages.add(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE, "StructureDefinition.differential.element["+Integer.toString(start)+"]", "Error: unknown element '"+context.getElement().get(start).getPath()+"' (or it is out of order) in profile '"+url+"' (looking for '"+path+"')", IssueSeverity.WARNING));
+          addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE, "StructureDefinition.differential.element["+Integer.toString(start)+"]", "Error: unknown element '"+context.getElement().get(start).getPath()+"' (or it is out of order) in profile '"+url+"' (looking for '"+path+"')", IssueSeverity.WARNING));
 
          */
         result.add(context.getElement().get(i));
@@ -2371,7 +2378,6 @@ public class ProfileUtilities {
     if (elist.size() == 2) {
       dest.getExtension().remove(elist.get(1));
     }
-    
     updateExtensionsFromDefinition(dest, source);
 
     for (ElementDefinition ed : obligationProfileElements) {
@@ -2423,6 +2429,9 @@ public class ProfileUtilities {
       if (e.hasDefinition()) {
         base.setDefinition(processRelativeUrls(e.getDefinition(), webroot, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, true));
       }
+      if (e.getBinding().hasDescription()) {
+        base.getBinding().setDescription(processRelativeUrls(e.getBinding().getDescription(), webroot, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, true));
+      }
       base.setShort(e.getShort());
       if (e.hasCommentElement())
         base.setCommentElement(e.getCommentElement());
@@ -2466,9 +2475,9 @@ public class ProfileUtilities {
       if (derived.hasDefinitionElement()) {
         if (derived.getDefinition().startsWith("..."))
           base.setDefinition(Utilities.appendDerivedTextToBase(base.getDefinition(), derived.getDefinition()));
-        else if (!Base.compareDeep(derived.getDefinitionElement(), base.getDefinitionElement(), false))
+        else if (!Base.compareDeep(derived.getDefinitionElement(), base.getDefinitionElement(), false)) {
           base.setDefinitionElement(derived.getDefinitionElement().copy());
-        else if (trimDifferential)
+        } else if (trimDifferential)
           derived.setDefinitionElement(null);
         else if (derived.hasDefinitionElement())
           derived.getDefinitionElement().setUserData(UD_DERIVATION_EQUALS, true);
@@ -2528,7 +2537,7 @@ public class ProfileUtilities {
       if (derived.hasMinElement()) {
         if (!Base.compareDeep(derived.getMinElement(), base.getMinElement(), false)) {
           if (derived.getMin() < base.getMin() && !derived.hasSliceName()) // in a slice, minimum cardinality rules do not apply
-            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+source.getPath(), "Element "+base.getPath()+": derived min ("+Integer.toString(derived.getMin())+") cannot be less than the base min ("+Integer.toString(base.getMin())+") in "+srcSD.getVersionedUrl(), ValidationMessage.IssueSeverity.ERROR));
+            addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+source.getPath(), "Element "+base.getPath()+": derived min ("+Integer.toString(derived.getMin())+") cannot be less than the base min ("+Integer.toString(base.getMin())+") in "+srcSD.getVersionedUrl(), ValidationMessage.IssueSeverity.ERROR));
           base.setMinElement(derived.getMinElement().copy());
         } else if (trimDifferential)
           derived.setMinElement(null);
@@ -2539,7 +2548,7 @@ public class ProfileUtilities {
       if (derived.hasMaxElement()) {
         if (!Base.compareDeep(derived.getMaxElement(), base.getMaxElement(), false)) {
           if (isLargerMax(derived.getMax(), base.getMax()))
-            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+source.getPath(), "Element "+base.getPath()+": derived max ("+derived.getMax()+") cannot be greater than the base max ("+base.getMax()+")", ValidationMessage.IssueSeverity.ERROR));
+            addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+source.getPath(), "Element "+base.getPath()+": derived max ("+derived.getMax()+") cannot be greater than the base max ("+base.getMax()+")", ValidationMessage.IssueSeverity.ERROR));
           base.setMaxElement(derived.getMaxElement().copy());
         } else if (trimDifferential)
           derived.setMaxElement(null);
@@ -2641,7 +2650,7 @@ public class ProfileUtilities {
         }
         if (!(base.hasMustSupportElement() && Base.compareDeep(base.getMustSupportElement(), mse, false))) {
           if (base.hasMustSupport() && base.getMustSupport() && !derived.getMustSupport()) {
-            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Illegal constraint [must-support = false] when [must-support = true] in the base profile", ValidationMessage.IssueSeverity.ERROR));
+            addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Illegal constraint [must-support = false] when [must-support = true] in the base profile", ValidationMessage.IssueSeverity.ERROR));
           }
           base.setMustSupportElement(mse);
         } else if (trimDifferential)
@@ -2653,7 +2662,7 @@ public class ProfileUtilities {
       if (derived.hasMustHaveValueElement()) {
         if (!(base.hasMustHaveValueElement() && Base.compareDeep(derived.getMustHaveValueElement(), base.getMustHaveValueElement(), false))) {
           if (base.hasMustHaveValue() && base.getMustHaveValue() && !derived.getMustHaveValue()) {
-            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Illegal constraint [must-have-value = false] when [must-have-value = true] in the base profile", ValidationMessage.IssueSeverity.ERROR));
+            addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Illegal constraint [must-have-value = false] when [must-have-value = true] in the base profile", ValidationMessage.IssueSeverity.ERROR));
           }
           base.setMustHaveValueElement(derived.getMustHaveValueElement().copy());
         } else if (trimDifferential)
@@ -2720,25 +2729,25 @@ public class ProfileUtilities {
         
         if (!base.hasBinding() || !Base.compareDeep(derived.getBinding(), base.getBinding(), false)) {
           if (base.hasBinding() && base.getBinding().getStrength() == BindingStrength.REQUIRED && derived.getBinding().getStrength() != BindingStrength.REQUIRED)
-            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "illegal attempt to change the binding on "+derived.getPath()+" from "+base.getBinding().getStrength().toCode()+" to "+derived.getBinding().getStrength().toCode(), ValidationMessage.IssueSeverity.ERROR));
+            addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "illegal attempt to change the binding on "+derived.getPath()+" from "+base.getBinding().getStrength().toCode()+" to "+derived.getBinding().getStrength().toCode(), ValidationMessage.IssueSeverity.ERROR));
 //            throw new DefinitionException("StructureDefinition "+pn+" at "+derived.getPath()+": illegal attempt to change a binding from "+base.getBinding().getStrength().toCode()+" to "+derived.getBinding().getStrength().toCode());
           else if (base.hasBinding() && derived.hasBinding() && base.getBinding().getStrength() == BindingStrength.REQUIRED && base.getBinding().hasValueSet() && derived.getBinding().hasValueSet()) {
             ValueSet baseVs = context.findTxResource(ValueSet.class, base.getBinding().getValueSet(), srcSD);
             ValueSet contextVs = context.findTxResource(ValueSet.class, derived.getBinding().getValueSet(), derivedSrc);
             if (baseVs == null) {
-              messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+base.getPath(), "Binding "+base.getBinding().getValueSet()+" could not be located", ValidationMessage.IssueSeverity.WARNING));
+              addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+base.getPath(), "Binding "+base.getBinding().getValueSet()+" could not be located", ValidationMessage.IssueSeverity.WARNING));
             } else if (contextVs == null) {
-              messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Binding "+derived.getBinding().getValueSet()+" could not be located", ValidationMessage.IssueSeverity.WARNING));
+              addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Binding "+derived.getBinding().getValueSet()+" could not be located", ValidationMessage.IssueSeverity.WARNING));
             } else {
               ValueSetExpansionOutcome expBase = context.expandVS(baseVs, true, false);
               ValueSetExpansionOutcome expDerived = context.expandVS(contextVs, true, false);
               if (expBase.getValueset() == null)
-                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+base.getPath(), "Binding "+base.getBinding().getValueSet()+" could not be expanded", ValidationMessage.IssueSeverity.WARNING));
+                addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+base.getPath(), "Binding "+base.getBinding().getValueSet()+" could not be expanded", ValidationMessage.IssueSeverity.WARNING));
               else if (expDerived.getValueset() == null)
-                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Binding "+derived.getBinding().getValueSet()+" could not be expanded", ValidationMessage.IssueSeverity.WARNING));
+                addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Binding "+derived.getBinding().getValueSet()+" could not be expanded", ValidationMessage.IssueSeverity.WARNING));
               else if (ToolingExtensions.hasExtension(expBase.getValueset().getExpansion(), ToolingExtensions.EXT_EXP_TOOCOSTLY)) {
                 if (ToolingExtensions.hasExtension(expDerived.getValueset().getExpansion(), ToolingExtensions.EXT_EXP_TOOCOSTLY) || expDerived.getValueset().getExpansion().getContains().size() > 100) {
-                  messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Unable to check if "+derived.getBinding().getValueSet()+" is a proper subset of " +base.getBinding().getValueSet()+" - base value set is too large to check", ValidationMessage.IssueSeverity.WARNING));
+                  addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Unable to check if "+derived.getBinding().getValueSet()+" is a proper subset of " +base.getBinding().getValueSet()+" - base value set is too large to check", ValidationMessage.IssueSeverity.WARNING));
                 } else {
                   boolean ok = true;
                   for (ValueSetExpansionContainsComponent cc : expDerived.getValueset().getExpansion().getContains()) {
@@ -2749,11 +2758,11 @@ public class ProfileUtilities {
                     }
                   }
                   if (!ok) {
-                    messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Binding "+derived.getBinding().getValueSet()+" is not a subset of binding "+base.getBinding().getValueSet(), ValidationMessage.IssueSeverity.ERROR));
+                    addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Binding "+derived.getBinding().getValueSet()+" is not a subset of binding "+base.getBinding().getValueSet(), ValidationMessage.IssueSeverity.ERROR));
                   }
                 }
               } else if (!isSubset(expBase.getValueset(), expDerived.getValueset()))
-                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Binding "+derived.getBinding().getValueSet()+" is not a subset of binding "+base.getBinding().getValueSet(), ValidationMessage.IssueSeverity.ERROR));
+                addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Binding "+derived.getBinding().getValueSet()+" is not a subset of binding "+base.getBinding().getValueSet(), ValidationMessage.IssueSeverity.ERROR));
             }
           }
           ElementDefinitionBindingComponent d = derived.getBinding();
@@ -2964,11 +2973,7 @@ public class ProfileUtilities {
             if (tgtOk) {
               ok = true;
             } else {
-              if (messages == null) {
-                throw new FHIRException(context.formatMessage(I18nConstants.ERROR_AT__THE_TARGET_PROFILE__IS_NOT__VALID_CONSTRAINT_ON_THE_BASE_, purl, derived.getPath(), url, td.getTargetProfile()));
-              } else {
-                messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, derived.getPath(), "The target profile " + u.getValue() + " is not a valid constraint on the base (" + td.getTargetProfile() + ") at " + derived.getPath(), IssueSeverity.ERROR));
-              }
+              addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, derived.getPath(), context.formatMessage(I18nConstants.ERROR_AT__THE_TARGET_PROFILE__IS_NOT__VALID_CONSTRAINT_ON_THE_BASE_, purl, derived.getPath(), url, td.getTargetProfile()), IssueSeverity.ERROR));
             }
           }
         } else {
@@ -2988,9 +2993,7 @@ public class ProfileUtilities {
     }
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
     if (sd == null) {
-      if (messages != null) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, "Cannot check whether the target profile " + url + " on "+dPath+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
-      }
+      addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, "Cannot check whether the target profile " + url + " on "+dPath+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
       return true;
     } else {
       if (sd.hasBaseDefinition() && sdConformsToTargets(path, dPath, sd.getBaseDefinition(), td)) {
@@ -3021,7 +3024,7 @@ public class ProfileUtilities {
 
     }
     if (!ok) {
-      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.CONFLICT, dest.getId(), "The "+fieldName+" value has type '"+ft+"' which is not valid (valid "+Utilities.pluralize("type", dest.getType().size())+": "+types.toString()+")", IssueSeverity.ERROR));
+      addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.CONFLICT, dest.getId(), "The "+fieldName+" value has type '"+ft+"' which is not valid (valid "+Utilities.pluralize("type", dest.getType().size())+": "+types.toString()+")", IssueSeverity.ERROR));
     }
   }
 
@@ -3463,6 +3466,11 @@ public class ProfileUtilities {
 
 
   public void sortDifferential(StructureDefinition base, StructureDefinition diff, String name, List<String> errors, boolean errorIfChanges) throws FHIRException  {
+    int index = 0;
+    for (ElementDefinition ed : diff.getDifferential().getElement()) {
+      ed.setUserData("ed.index", Integer.toString(index));
+      index++;
+    }
     List<ElementDefinition> original = new ArrayList<>();
     original.addAll(diff.getDifferential().getElement());
     final List<ElementDefinition> diffList = diff.getDifferential().getElement();
@@ -3520,7 +3528,7 @@ public class ProfileUtilities {
         ElementDefinition e = diffList.get(i);
         ElementDefinition n = newDiff.get(i);
         if (!n.getPath().equals(e.getPath())) {
-          errors.add("The element "+e.getPath()+" is out of order (and maybe others after it)");
+          errors.add("The element "+(e.hasId() ? e.getId() : e.getPath())+" @diff["+e.getUserString("ed.index")+"] is out of order (and maybe others after it)");
           return;
         }   
       }
@@ -3930,10 +3938,7 @@ public class ProfileUtilities {
       }
       ed.setId(bs);
       if (idList.containsKey(bs)) {
-        if (exception || messages == null) {
-          throw new DefinitionException(context.formatMessage(I18nConstants.SAME_ID_ON_MULTIPLE_ELEMENTS__IN_, bs, idList.get(bs), ed.getPath(), name));
-        } else
-          messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, name+"."+bs, "Duplicate Element id "+bs, ValidationMessage.IssueSeverity.ERROR));
+        addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, name+"."+bs, context.formatMessage(I18nConstants.SAME_ID_ON_MULTIPLE_ELEMENTS__IN_, bs, idList.get(bs), ed.getPath(), name), ValidationMessage.IssueSeverity.ERROR));
       }
       idList.put(bs, ed.getPath());
       if (ed.hasContentReference() && ed.getContentReference().startsWith("#")) {
@@ -4309,12 +4314,12 @@ public class ProfileUtilities {
 
 
   public boolean isThrowException() {
-    return exception;
+    return wantThrowExceptions;
   }
 
 
   public void setThrowException(boolean exception) {
-    this.exception = exception;
+    this.wantThrowExceptions = exception;
   }
 
 
@@ -4572,7 +4577,9 @@ public class ProfileUtilities {
   }
 
   public void setMessages(List<ValidationMessage> messages) {
-    this.messages = messages; 
+    if (messages != null) {
+      this.messages = messages;
+    }
   }
 
   private Map<String, List<Property>> propertyCache = new HashMap<>();

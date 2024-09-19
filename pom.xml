@@ -14,14 +14,14 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.3.24-SNAPSHOT</version>
+    <version>6.3.27-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <commons_compress_version>1.26.0</commons_compress_version>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.5.20</validator_test_case_version>
+        <validator_test_case_version>1.5.23-SNAPSHOT</validator_test_case_version>
         <jackson_version>2.17.0</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
@@ -418,7 +418,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
+                <version>3.13.0</version>
                 <configuration>
                     <release>11</release>
 
@@ -428,7 +428,7 @@
                     while if true it will use an executable. -->
                     <fork>true</fork>
                     <meminitial>512m</meminitial>
-                    <maxmem>4000m</maxmem>
+                    <maxmem>5632m</maxmem>
                     <debug>true</debug>
                 </configuration>
                 <executions>
@@ -717,7 +717,7 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.13</version>
+                        <version>1.7.0</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>ossrh</serverId>

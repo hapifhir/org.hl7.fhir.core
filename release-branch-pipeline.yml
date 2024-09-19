@@ -13,7 +13,7 @@ jobs:
    - job: check_all_dependencies_are_releases
      timeoutInMinutes: 5
      steps:
-       - task: Maven@3
+       - task: Maven@4
          inputs:
            mavenPomFile: 'pom.xml'
            options: '-DcheckForSnapshotDependencies'
@@ -136,7 +136,7 @@ jobs:
        version_from_pom: $[ dependencies.get_release_version.outputs['setOutput.version_from_pom'] ]
      steps:
         # Runs 'mvn clean package'
-        - task: Maven@3
+        - task: Maven@4
           inputs:
             mavenPomFile: 'pom.xml'
             mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
