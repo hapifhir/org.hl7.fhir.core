@@ -261,11 +261,15 @@ public class FilesystemPackageCacheManagerLocks {
         try {
           result = function.get();
         } finally {
+
+          lockFile.renameTo(File.createTempFile(lockFile.getName(), ".lock-renamed"));
+
+          fileLock.release();
+          channel.close();
+
           if (!lockFile.delete()) {
             lockFile.deleteOnExit();
           }
-          fileLock.release();
-          channel.close();
 
           lock.writeLock().unlock();
           cacheLock.getLock().writeLock().unlock();

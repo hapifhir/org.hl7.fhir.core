@@ -93,24 +93,27 @@ public class LockfileTestProcessUtility {
    */
   private static void lockWaitAndDelete(String path, String lockFileName, int seconds) throws InterruptedException, IOException {
 
-    File file = Paths.get(path,lockFileName).toFile();
+    File lockFile = Paths.get(path,lockFileName).toFile();
 
-    try (FileChannel channel = new RandomAccessFile(file.getAbsolutePath(), "rw").getChannel()) {
+    try (FileChannel channel = new RandomAccessFile(lockFile.getAbsolutePath(), "rw").getChannel()) {
       FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
       if (fileLock != null) {
         final ByteBuffer buff = ByteBuffer.wrap("Hello world".getBytes(StandardCharsets.UTF_8));
         channel.write(buff);
         System.out.println("File "+lockFileName+" is locked. Waiting for " + seconds + " seconds to release. ");
         Thread.sleep(seconds * 1000L);
-        file.delete();
+
+        lockFile.renameTo(File.createTempFile(lockFile.getName(), ".lock-renamed"));
+
         fileLock.release();
+        channel.close();
         System.out.println(System.currentTimeMillis());
         System.out.println("File "+lockFileName+" is released.");
 
-        channel.close();
+        lockFile.delete();
       }}finally {
-      if (file.exists()) {
-        file.delete();
+      if (lockFile.exists()) {
+        lockFile.delete();
       }
     }
   }
