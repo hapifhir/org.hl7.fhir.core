@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities.npm;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -103,7 +105,7 @@ public class LockfileTestProcessUtility {
         System.out.println("File "+lockFileName+" is locked. Waiting for " + seconds + " seconds to release. ");
         Thread.sleep(seconds * 1000L);
 
-        lockFile.renameTo(File.createTempFile(lockFile.getName(), ".lock-renamed"));
+        lockFile.renameTo(ManagedFileAccess.file(File.createTempFile(lockFile.getName(), ".lock-renamed").getAbsolutePath()));
 
         fileLock.release();
         channel.close();

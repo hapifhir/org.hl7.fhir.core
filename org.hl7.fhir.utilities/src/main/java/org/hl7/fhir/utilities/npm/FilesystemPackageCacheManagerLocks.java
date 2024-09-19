@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities.npm;
 import lombok.Getter;
 import lombok.With;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -262,7 +263,7 @@ public class FilesystemPackageCacheManagerLocks {
           result = function.get();
         } finally {
 
-          lockFile.renameTo(File.createTempFile(lockFile.getName(), ".lock-renamed"));
+          lockFile.renameTo(ManagedFileAccess.file(File.createTempFile(lockFile.getName(), ".lock-renamed").getAbsolutePath()));
 
           fileLock.release();
           channel.close();
