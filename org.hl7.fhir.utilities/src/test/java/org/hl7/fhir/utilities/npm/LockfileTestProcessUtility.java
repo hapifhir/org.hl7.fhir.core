@@ -62,7 +62,7 @@ public class LockfileTestProcessUtility {
    */
   public static Thread lockWaitAndDeleteInNewProcess(String path, String lockFileName, int seconds)  {
     Thread t = new Thread(() -> {
-      ProcessBuilder processBuilder = new ProcessBuilder("java", "-cp", "target/test-classes:.", LockfileTestProcessUtility.class.getName(), path, lockFileName, Integer.toString(seconds));
+      ProcessBuilder processBuilder = new ProcessBuilder("java", "-cp", "target/test-classes", LockfileTestProcessUtility.class.getName(), path, lockFileName, Integer.toString(seconds));
       try {
         Process process = processBuilder.start();
         process.getErrorStream().transferTo(System.err);

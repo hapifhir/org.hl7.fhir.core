@@ -66,6 +66,11 @@ public class LockfileTestUtility {
       if (!success) {
         throw new TimeoutException("Timed out waiting for lock file creation: " + lockFileName);
       }
+      // TODO This is a workaround for an edge condition that shows up with testing, where the lock is not reflected in
+      //  the file system immediately. It is unlikely to appear in production environments, but should it occur, it will
+      //  result in a lock file being erroneously reported as not having an owning process, and will cause a package to
+      //  fail to be loaded from that cache until the lock is cleaned up by cache initialization.
+      Thread.sleep(100);
 
   }
 
