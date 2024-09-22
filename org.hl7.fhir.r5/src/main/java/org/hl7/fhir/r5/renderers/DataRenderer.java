@@ -1301,7 +1301,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected void renderCoding(RenderingStatus status, XhtmlNode x, ResourceWrapper c) { 
+  protected void renderCoding(RenderingStatus status, XhtmlNode x, ResourceWrapper c) {
+    renderCoding(status, x, c, true);
+  }
+    
+  protected void renderCoding(RenderingStatus status, XhtmlNode x, ResourceWrapper c, boolean details) { 
     String s = ""; 
     if (c.has("display")) 
       s = context.getTranslated(c.child("display")); 
@@ -1311,10 +1315,13 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (Utilities.noString(s)) 
       s = c.primitiveValue("code"); 
 
-    if (context.isTechnicalMode()) { 
-      x.addText(s+" "+context.formatPhrase(RenderingContext.DATA_REND_DETAILS_STATED, displaySystem(c.primitiveValue("system")), c.primitiveValue("code"), " = '", lookupCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")), c.primitiveValue("display"), "')")); 
-    } else 
-      x.span(null, "{"+c.primitiveValue("system")+" "+c.primitiveValue("code")+"}").addText(s); 
+    if (context.isTechnicalMode() && details) {
+      String d = c.primitiveValue("display") == null ? lookupCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")): c.primitiveValue("display");
+      d = context.formatPhrase(d == null || d.equals(c.primitiveValue("code")) ? RenderingContext.DATA_REND_DETAILS_STATED_ND :  RenderingContext.DATA_REND_DETAILS_STATED, displaySystem(c.primitiveValue("system")), c.primitiveValue("code"), d); 
+      x.addText(s+" "+d);
+    } else { 
+      x.span(null, "{"+c.primitiveValue("system")+" "+c.primitiveValue("code")+"}").addText(s);
+    }
   } 
 
   public String displayCodeableConcept(ResourceWrapper cc) { 
@@ -1860,8 +1867,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
   public void renderUsageContext(RenderingStatus status, XhtmlNode x, ResourceWrapper u) throws FHIRFormatError, DefinitionException, IOException { 
-    renderCoding(status, x, u.child("code")); 
-    x.tx(": "); 
+    renderCoding(status, x, u.child("code"), false); 
+    x.tx(" = "); 
     renderDataType(status, x, u.child("value"));     
   } 
 
