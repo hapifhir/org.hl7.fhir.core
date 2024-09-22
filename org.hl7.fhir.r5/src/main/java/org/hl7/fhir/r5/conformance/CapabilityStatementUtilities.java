@@ -352,9 +352,9 @@ public class CapabilityStatementUtilities {
    * Selects whichever code exists if only one exists, otherwise checks that the two codes match and merges conformance expectations
    */
   private Enumeration merge(Enumeration targetCode, Enumeration importedCode, String maxConformance, String context) throws FHIRException {
-    if (targetCode == null)
+    if (targetCode == null || targetCode.getCode() == null)
       return (Enumeration)fixMax(importedCode, maxConformance);
-    else if (importedCode == null)
+    else if (importedCode == null || importedCode.getCode() == null)
       return targetCode;
     else if (targetCode.getValue().equals(importedCode.getValue())) {
       mergeExpectations(targetCode, importedCode, maxConformance);

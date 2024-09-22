@@ -768,14 +768,11 @@ public class NpmPackage {
   
   public List<PackageResourceInformation> listIndexedResources(List<String> types) throws IOException {
     List<PackageResourceInformation> res = new ArrayList<PackageResourceInformation>();
-    List<String> basicTypes = new ArrayList<String>();
-    List<String> effectiveTypes = effectiveTypes(types);
     for (NpmPackageFolder folder : folders.values()) {
       JsonObject index = folder.index();
       if (index != null) {
         for (JsonObject fi : index.getJsonObjects("files")) {
-          String resourceType = fi.asString("resourceType");
-          if (Utilities.existsInList(resourceType, effectiveTypes) || types.isEmpty()) {
+          if (Utilities.existsInList(fi.asString("resourceType"), types) || types.isEmpty()) {
             res.add(new PackageResourceInformation(folder.folder == null ? "@"+folder.getFolderName() : folder.folder.getAbsolutePath(), fi));
           }
         }
@@ -783,17 +780,6 @@ public class NpmPackage {
     } 
     //    Collections.sort(res, new PackageResourceInformationSorter());
     return res;
-  }
-
-  private List<String> effectiveTypes(List<String> types) {
-    List<String> effective = new ArrayList<String>();
-    for (String type: types) {
-      if (type.startsWith("Basic-"))
-        effective.add("Basic");
-      else
-        effective.add(type);
-    }
-    return effective;
   }
 
   /**

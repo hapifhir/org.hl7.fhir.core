@@ -23,7 +23,6 @@ public class Params {
   public static final String OUTPUT = "-output";
 
   public static final String OUTPUT_SUFFIX = "-outputSuffix";
-  public static final String OUTPUT_CANONICAL = "-outputCanonical";
   public static final String LEVEL = "-level";
   public static final String HTML_OUTPUT = "-html-output";
   public static final String PROXY = "-proxy";
@@ -68,8 +67,6 @@ public class Params {
   public static final String HELP = "help";
   public static final String COMPARE = "-compare";
   public static final String SPREADSHEET = "-spreadsheet";
-  public static final String SCRIPT_QUESTIONNAIRE = "-script-questionnaire";
-  public static final String QUESTIONNAIRE_EXTRACT = "-questionnaire-extract";
   public static final String DESTINATION = "-dest";
   public static final String LEFT = "-left";
   public static final String RIGHT = "-right";
@@ -168,11 +165,6 @@ public class Params {
           throw new Error("Specified -outputSuffix without indicating output suffix");
         else
           cliContext.setOutputSuffix(args[++i]);
-      } else if (args[i].equals(OUTPUT_CANONICAL)) {
-        if (i + 1 == args.length)
-          throw new Error("Specified -outputCanonical without indicating output canonical");
-        else
-          cliContext.setOutputCanonical(args[++i]);
       }
       else if (args[i].equals(HTML_OUTPUT)) {
         if (i + 1 == args.length)
@@ -458,10 +450,6 @@ public class Params {
             cliContext.setFhirpath(args[++i]);
         else
           throw new Exception("Can only nominate a single -fhirpath parameter");
-      } else if (args[i].equals(SCRIPT_QUESTIONNAIRE)) {
-        cliContext.setMode(EngineMode.SCRIPT_QUESTIONNAIRE);
-      } else if (args[i].equals(QUESTIONNAIRE_EXTRACT)) {
-        cliContext.setMode(EngineMode.SCRIPT_QUESTIONNAIRE);
       } else {
         cliContext.addSource(args[i]);
       }

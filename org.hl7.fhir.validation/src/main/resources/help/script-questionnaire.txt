@@ -1,9 +1,0 @@
-You can use the validator to generate a Questionnaire which, when completed, can produce a TestScript (using questionnaire-extract) that
-can test a specific system against a guide.  The Questionnaire will prompt a user to answer questions about which optional capabilities
-defined by an IG a given system supports - allowing creation of a system-specific test script focused on exactly what the system does.
-
-For parameters, you must specify:
--ig to identify the IG containing the CapabilityStatements, and ActorDefinitions to generate test scripts for
--questionnaire to identify the filename of the Questionnaire to create
-
-Example: `-ig hl7.fhir.us.physical-activity#1.0.0 -script-questionnaire -output outputQuestionnaire.json`
