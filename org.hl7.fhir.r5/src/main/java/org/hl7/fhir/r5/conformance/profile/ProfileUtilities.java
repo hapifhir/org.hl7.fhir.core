@@ -4579,6 +4579,7 @@ public class ProfileUtilities {
   public void setMessages(List<ValidationMessage> messages) {
     if (messages != null) {
       this.messages = messages;
+      wantThrowExceptions = false;
     }
   }
 
