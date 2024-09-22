@@ -3193,7 +3193,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         // check that no illegal elements and attributes have been used
         ok = checkInnerNames(errors, e, path, xhtml.getChildNodes(), false) && ok;
         ok = checkUrls(errors, e, path, xhtml.getChildNodes()) && ok;
-        ok = checkIdRefs(errors, e, path, xhtml, resource) && ok;
+        ok = checkIdRefs(errors, e, path, xhtml, resource, node) && ok;
         if (true) {
           ok = checkReferences(valContext, errors, e, path, "div", xhtml, resource) && ok;
         }
@@ -3642,11 +3642,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
-  private boolean checkIdRefs(List<ValidationMessage> errors, Element e, String path, XhtmlNode node, Element resource) {
+  private boolean checkIdRefs(List<ValidationMessage> errors, Element e, String path, XhtmlNode node, Element resource, NodeStack stack) {
     boolean ok = true;
     if (node.getNodeType() == NodeType.Element && node.getAttribute("idref") != null) {
       String idref = node.getAttribute("idref");
-      int count = countFragmentMatches(resource, idref);
+      int count = countFragmentMatches(resource, idref, stack);
       if (count == 0) {
         ok = warning(errors, "2023-12-01", IssueType.INVALID, e.line(), e.col(), path, idref == null, I18nConstants.XHTML_IDREF_NOT_FOUND, idref) && ok;                
       } else if (count > 1) {
@@ -3655,7 +3655,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (node.hasChildren()) {
       for (XhtmlNode child : node.getChildNodes()) {
-        checkIdRefs(errors, e, path, child, resource);
+        checkIdRefs(errors, e, path, child, resource, stack);
       }        
     }
     return ok;
@@ -6067,20 +6067,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       Element div = text.getNamedChild("div", false);
       if (lang != null && div != null) {
         XhtmlNode xhtml = div.getXhtml();
-        String l = xhtml.getAttribute("lang");
-        String xl = xhtml.getAttribute("xml:lang");
-        if (l == null && xl == null) {
-          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_MISSING1);
-        } else {
-          if (l == null) {
-            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_MISSING2);
-          } else if (!l.equals(lang)) {
-            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_DIFFERENT1, lang, l);
-          }
-          if (xl == null) {
-            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_MISSING3);
-          } else if (!xl.equals(lang)) {
-            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_DIFFERENT2, lang, xl);
+        if (xhtml != null) {
+          String l = xhtml.getAttribute("lang");
+          String xl = xhtml.getAttribute("xml:lang");
+          if (l == null && xl == null) {
+            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_MISSING1);
+          } else {
+            if (l == null) {
+              warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_MISSING2);
+            } else if (!l.equals(lang)) {
+              warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_DIFFERENT1, lang, l);
+            }
+            if (xl == null) {
+              warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_MISSING3);
+            } else if (!xl.equals(lang)) {
+              warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_DIFFERENT2, lang, xl);
+            }
           }
         }
       }
@@ -7615,6 +7617,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
 
+  public long timeNoTX() {
+    return (timeTracker.getOverall() - timeTracker.getTxTime()) / 1000000;
+  }
   public String reportTimes() {
     String s = String.format("Times (ms): overall = %d:4, tx = %d, sd = %d, load = %d, fpe = %d, spec = %d", timeTracker.getOverall() / 1000000, timeTracker.getTxTime() / 1000000, timeTracker.getSdTime() / 1000000, timeTracker.getLoadTime() / 1000000, timeTracker.getFpeTime() / 1000000, timeTracker.getSpecTime() / 1000000);
     timeTracker.reset();
@@ -8027,6 +8032,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setNoExperimentalContent(boolean noExperimentalContent) {
     this.noExperimentalContent = noExperimentalContent;
+  }
+
+  public void resetTimes() {
+    timeTracker.reset();   
   }
   
   
