@@ -44,6 +44,8 @@ import org.w3c.dom.events.MutationEvent;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.LocatorImpl;
 import org.xml.sax.helpers.XMLFilterImpl;
@@ -69,6 +71,13 @@ public class XmlLocationAnnotator extends XMLFilterImpl  {
           }
       };
       ((EventTarget) dom).addEventListener("DOMNodeInserted", modListener, true);
+  }
+
+  @Override
+  public void setProperty(String name, Object value) throws SAXNotRecognizedException, SAXNotSupportedException {
+    if (!name.equals("http://javax.xml.xmlconstants/property/accessExternalDTD")) {
+      super.setProperty(name, value);
+    }
   }
 
   @Override
