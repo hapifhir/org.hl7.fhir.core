@@ -911,6 +911,18 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
   public void externalLink(String ref) {
     // ignore this    
   }
-	
-	
+
+  @Override
+  public boolean canElide() { return false; }
+
+  @Override
+  public void attributeElide() {
+    // ignore this
+  }
+
+  @Override
+  public void elide() throws IOException {
+    // ignore this
+  }
+
 }

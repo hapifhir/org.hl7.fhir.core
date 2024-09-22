@@ -104,4 +104,9 @@ public interface IXMLWriter {
   public abstract void link(String href);
   public abstract void anchor(String name);
   public abstract void externalLink(String ref) throws IOException;
+
+  // this is only implemented by an implementation that is producing an xhtml representation and handles ellipsing elements
+  public abstract boolean canElide();
+  public abstract void elide() throws IOException;
+  public abstract void attributeElide();
 }
