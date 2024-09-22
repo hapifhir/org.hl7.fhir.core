@@ -14,4 +14,5 @@
 * Add support for active only to VSAC importer
 * Add r4b support to Package Version Generation
 * Fix argument confusion in format in time validation
+* Added support for tracking whether elements are ellipsed and for rendering accordingly
 
