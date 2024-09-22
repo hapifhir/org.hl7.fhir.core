@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -43,7 +44,44 @@ public class PackageHacker {
 //    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.search.tgz");
     
 //      new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/us/core/v311/package.tgz", "http://hl7.org/fhir/us/core/STU3.1.1");
-      new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/us/core/v700/package.tgz", "http://hl7.org/fhir/us/core/STU7");
+     // new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/us/core/v700/package.tgz", "http://hl7.org/fhir/us/core/STU7");
+    
+    PackageHacker self = new PackageHacker();
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/1.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/1.0.0/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/2.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/2.0.0/hl7.terminology.r4b.tgz");
+    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/2.1.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/2.1.0/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/3.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/3.0.0/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/3.1.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/3.1.0/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/4.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/4.0.0/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/5.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/5.0.0/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/5.1.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/5.1.0/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/5.2.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/5.2.0/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/5.3.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/5.3.0/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/5.4.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/5.4.0/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/5.5.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/5.5.0/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/6.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/6.0.0/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/6.0.1/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/6.0.1/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/6.0.2/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/6.0.2/hl7.terminology.r4b.tgz");    
+  }
+
+  private void cloneToR4B(String src, String dst) throws IOException {
+    FileInputStream fs = ManagedFileAccess.inStream(src);
+    NpmPackage pck = NpmPackage.fromPackage(fs);
+    System.out.println(nice(pck.getNpm()));
+    JsonObject json = pck.getNpm();
+    String name = json.asString("name");
+    json.remove("name");
+    json.add("name", name.replace(".r4", ".r4b"));
+    json.remove("fhirVersions");
+    json.remove("dependencies");
+    JsonArray fv = new JsonArray();
+    json.add("fhirVersions", fv);
+    fv.add("4.3.0");
+    JsonObject dep = new JsonObject();
+    json.add("dependencies", dep);
+    dep.add(VersionUtilities.packageForVersion("4.3.0"), "4.3.0");
+    pck.save(new FileOutputStream(dst));
   }
 
 //  private void massEdit(File dir) throws IOException {
