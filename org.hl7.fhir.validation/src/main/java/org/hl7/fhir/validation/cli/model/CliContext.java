@@ -68,8 +68,6 @@ public class CliContext {
   private String map = null;
   @JsonProperty("output")
   private String output = null;
-  @JsonProperty("outputCanonical")
-  private String outputCanonical = null;
   @JsonProperty("outputSuffix")
   private String outputSuffix;
   @JsonProperty("htmlOutput")
@@ -164,7 +162,7 @@ public class CliContext {
   
   @JsonProperty("bestPracticeLevel")
   private BestPracticeWarningLevel bestPracticeLevel = BestPracticeWarningLevel.Warning;
-  
+
   @JsonProperty("baseEngine")
   public String getBaseEngine() {
     return baseEngine;
@@ -438,17 +436,6 @@ public class CliContext {
   @JsonProperty("output")
   public CliContext setOutput(String output) {
     this.output = output;
-    return this;
-  }
-
-  @JsonProperty("outputCanonical")
-  public String getOutputCanonical() {
-    return outputCanonical;
-  }
-
-  @JsonProperty("outputCanonical")
-  public CliContext setOutputCanonical(String outputCanonical) {
-    this.outputCanonical = outputCanonical;
     return this;
   }
 

@@ -279,7 +279,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private int expandCodesLimit = 1000;
   protected org.hl7.fhir.r5.context.ILoggingService logger = new SystemOutLoggingService();
   protected Parameters expParameters;
-  protected Map<String, PackageInformation> packages = new HashMap<>();
+  private Map<String, PackageInformation> packages = new HashMap<>();
 
   @Getter
   protected TerminologyCache txCache = new TerminologyCache(this, null);

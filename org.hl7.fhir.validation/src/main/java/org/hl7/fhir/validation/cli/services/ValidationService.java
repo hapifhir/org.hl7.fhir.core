@@ -26,7 +26,15 @@ import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ValidatedFragment;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureMap;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
@@ -469,49 +477,6 @@ public class ValidationService {
       byte[] r = validator.transformVersion(cliContext.getSources().get(0), cliContext.getTargetVer(), cliContext.getOutput().endsWith(".json") ? Manager.FhirFormat.JSON : Manager.FhirFormat.XML, cliContext.getCanDoNative());
       System.out.println(" ...success");
       TextFile.bytesToFile(r, cliContext.getOutput());
-    } catch (Exception e) {
-      System.out.println(" ...Failure: " + e.getMessage());
-      e.printStackTrace();
-    }
-  }
-
-  public void genScriptQuestionnaire(CliContext cliContext, ValidationEngine validator) throws Exception {
-    if (cliContext.getIgs().size() != 1) {
-      throw new Exception("Must have exactly one IG when generating TestScript questionnaires (found " + cliContext.getIgs().size() + ")");
-    }
-    if (cliContext.getOutput() == null) {
-      throw new Exception("Must nominate an output when generating TestScript questionnaires");
-    }
-    if (cliContext.getOutputCanonical() == null) {
-      throw new Exception("Must specify an outputCanonical URL for the generated Questionnaire");
-    }
-    try {
-/*      if (cliContext.getMapLog() != null) {
-        validator.setMapLog(cliContext.getMapLog());
-      }*/
-      Questionnaire q = validator.genScriptQuestionnaire(cliContext.getIgs().get(0), cliContext.getOutputCanonical());
-      System.out.println(" ...success");
-      validator.handleOutput(q, cliContext.getOutput(), cliContext.getSv());
-    } catch (Exception e) {
-      System.out.println(" ...Failure: " + e.getMessage());
-      e.printStackTrace();
-    }
-  }
-
-  public void questionnaireExtract(CliContext cliContext, ValidationEngine validator) throws Exception {
-    if (cliContext.getSources().size() != 1) {
-      throw new Exception("Must have exactly one source QuestionnaireResponse when performing a Questionnaire extract");
-    }
-
-    if (cliContext.getOutput() == null) {
-      throw new Exception("Must nominate an output folder when extracting from a QuestionnaireResponse");
-    }
-    try {
-/*      if (cliContext.getMapLog() != null) {
-        validator.setMapLog(cliContext.getMapLog());
-      }*/
-      validator.questionnaireExtract(cliContext.getSources().get(0), cliContext.getOutput(), cliContext.getOutputSuffix().equals("json") ? Manager.FhirFormat.JSON : Manager.FhirFormat.XML);
-      System.out.println(" ...success");
     } catch (Exception e) {
       System.out.println(" ...Failure: " + e.getMessage());
       e.printStackTrace();

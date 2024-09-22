@@ -536,7 +536,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       for (PackageResourceInformation pri : pi.listIndexedResources(types)) {
         if (!pri.getFilename().contains("ig-r4") && (loader == null || loader.wantLoad(pi, pri))) {
           try {
-            if (!pri.hasId() || pri.getResourceType().equals("Basic")) {
+            if (!pri.hasId()) {
               loadDefinitionItem(pri.getFilename(), ManagedFileAccess.inStream(pri.getFilename()), loader, null, pii);
             } else {
               registerResourceFromPackage(new PackageResourceLoader(pri, loader, pii), pii);
@@ -830,7 +830,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   @Override
   public PackageInformation getPackage(String id, String ver) {
-    return packages.get(id + "#" + ver);
+    return null;
   }
 
   public boolean isAllowLazyLoading() {
