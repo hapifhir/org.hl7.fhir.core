@@ -130,7 +130,7 @@ public class CliContext {
   private boolean showTimes = false;
   
   @JsonProperty("locale")
-  private String locale = Locale.ENGLISH.getDisplayLanguage();
+  private String locale = Locale.ENGLISH.toLanguageTag();
 
   @JsonProperty("locations")
   private Map<String, String> locations = new HashMap<String, String>();

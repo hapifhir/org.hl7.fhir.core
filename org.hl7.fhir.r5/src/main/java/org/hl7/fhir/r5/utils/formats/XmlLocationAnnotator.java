@@ -81,6 +81,15 @@ public class XmlLocationAnnotator extends XMLFilterImpl  {
   }
 
   @Override
+  public Object getProperty(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
+    if (!name.equals("http://javax.xml.xmlconstants/property/accessExternalDTD")) {
+      return null;
+    } else {
+      return super.getProperty(name);
+    }
+  }
+
+  @Override
   public void setDocumentLocator(Locator locator) {
       super.setDocumentLocator(locator);
       this.locator = locator;

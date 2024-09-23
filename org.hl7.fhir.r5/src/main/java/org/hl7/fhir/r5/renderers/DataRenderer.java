@@ -46,6 +46,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -1177,8 +1178,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
   private String getLinkForSystem(String system, String version) { 
-    if ("http://snomed.info/sct".equals(system)) { 
-      return "https://browser.ihtsdotools.org/";       
+    if ("http://snomed.info/sct".equals(system)) {
+      return "https://browser.ihtsdotools.org/";
     } else if ("http://loinc.org".equals(system)) { 
       return "https://loinc.org/";             
     } else if ("http://unitsofmeasure.org".equals(system)) { 
@@ -1198,11 +1199,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
   protected String getLinkForCode(String system, String version, String code) { 
     if ("http://snomed.info/sct".equals(system)) { 
-      if (!Utilities.noString(code)) { 
-        return "http://snomed.info/id/"+code;         
-      } else { 
-        return "https://browser.ihtsdotools.org/"; 
-      } 
+      return SnomedUtilities.getSctLink(version, code, context.getContext().getExpansionParameters());
     } else if ("http://loinc.org".equals(system)) { 
       if (!Utilities.noString(code)) { 
         return "https://loinc.org/"+code; 
