@@ -87,6 +87,7 @@ public class POGenerator {
   }
 
   private List<String> prefixes = new ArrayList<>();
+  private int noTrans = 0;
 
   private void execute(String core, String igpub, String pascal) throws IOException {
     String source = Utilities.path(core, "/org.hl7.fhir.utilities/src/main/resources");
@@ -409,7 +410,7 @@ public class POGenerator {
       if (o.duplicate) {
         b.append("msgctxt \""+o.id+"\"\r\n");        
       } 
-      String m = tfxMode && Utilities.noString(o.msgid) ? "-- no content: do not translate --" : o.msgid; 
+      String m = tfxMode && Utilities.noString(o.msgid) ? "-- no content: do not translate #"+(++noTrans )+" --" : o.msgid; 
       b.append("msgid \""+wrapQuotes(m)+"\"\r\n");
       if (o.msgidPlural != null) {
         b.append("msgid_plural \""+wrapQuotes(o.msgidPlural)+"\"\r\n"); 
@@ -417,7 +418,11 @@ public class POGenerator {
           o.msgstr.add("");
         }
         for (int i = 0; i < o.msgstr.size(); i++) {
-          b.append("msgstr["+i+"] \""+wrapQuotes(o.msgstr.get(i))+"\"\r\n");
+          String s = o.msgstr.get(i);
+//          if (tfxMode && Utilities.noString(s)) {
+//            s = Utilities.noString(i == 0 ? o.msgid : o.msgidPlural) ? "-- no content: do not translate --" : "";
+//          }
+          b.append("msgstr["+i+"] \""+wrapQuotes(s)+"\"\r\n");
         }
       } else {
         if (o.msgstr.size() == 0) {
@@ -486,7 +491,7 @@ public class POGenerator {
 
   private POObject findObject(List<POObject> objects, String name) {
     for (POObject t : objects) {
-      if (t.id.equals(name)) {
+      if (t.id != null && t.id.equals(name)) {
         return t;
       }
     }

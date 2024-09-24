@@ -226,6 +226,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean allowDoubleQuotesInFHIRPath;
   @Getter @Setter private boolean checkIPSCodes;
   @Getter @Setter private BestPracticeWarningLevel bestPracticeLevel;
+  @Getter @Setter private boolean unknownCodeSystemsCauseErrors;
+  @Getter @Setter private boolean noExperimentalContent;
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
@@ -289,6 +291,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     fhirPathEngine = other.fhirPathEngine;
     igLoader = other.igLoader;
     jurisdiction = other.jurisdiction;
+    unknownCodeSystemsCauseErrors = other.unknownCodeSystemsCauseErrors;
   }
   
   /**
@@ -342,6 +345,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     @With
     private boolean THO = true;
 
+    private static final boolean USE_ECOSYSTEM_DEFAULT = true;
 
     public ValidationEngineBuilder() {
       terminologyCachePath = null;
@@ -352,10 +356,24 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       txVersion = null;
       timeTracker = null;
       canRunWithoutTerminologyServer = false;
-      useEcosystem = true;
+      useEcosystem = USE_ECOSYSTEM_DEFAULT;
       loggingService = new SystemOutLoggingService();
     }
 
+    /**
+     * @deprecated This method will be removed in a future release, and should not be used outside of this class.
+     * Use {@link #ValidationEngineBuilder()} instead.
+     */
+    @Deprecated
+    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, boolean THO) {
+      this(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, USE_ECOSYSTEM_DEFAULT, timeTracker, canRunWithoutTerminologyServer, loggingService, THO);
+    }
+
+    /**
+     * @deprecated This method will be made private in a future release, and should not be used outside of this class.
+     * Use {@link #ValidationEngineBuilder()} instead.
+     */
+    @Deprecated
     public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, boolean THO) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
@@ -366,7 +384,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       this.timeTracker = timeTracker;
       this.canRunWithoutTerminologyServer = canRunWithoutTerminologyServer;
       this.loggingService = loggingService;
-      this.useEcosystem = true;
+      this.useEcosystem = useEcosystem;
       this.THO = THO;
     }
 
@@ -891,6 +909,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (policyAdvisor != null) {
       validator.setPolicyAdvisor(policyAdvisor);
     }
+    validator.setUnknownCodeSystemsCauseErrors(unknownCodeSystemsCauseErrors);
+    validator.setNoExperimentalContent(noExperimentalContent);
     return validator;
   }
 

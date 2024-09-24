@@ -44,10 +44,12 @@ public class MaritalStatusEnumFactory implements EnumFactory<MaritalStatus> {
   }
 
   public String toCode(MaritalStatus code) {
-    if (code == MaritalStatus.U)
+       if (code == MaritalStatus.NULL)
+           return null;
+       if (code == MaritalStatus.U)
       return "U";
     return "?";
-  }
+   }
 
   public String toSystem(MaritalStatus code) {
     return code.getSystem();

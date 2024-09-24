@@ -46,12 +46,14 @@ public class LanguagePreferenceTypeEnumFactory implements EnumFactory<LanguagePr
   }
 
   public String toCode(LanguagePreferenceType code) {
-    if (code == LanguagePreferenceType.VERBAL)
+       if (code == LanguagePreferenceType.NULL)
+           return null;
+       if (code == LanguagePreferenceType.VERBAL)
       return "verbal";
     if (code == LanguagePreferenceType.WRITTEN)
       return "written";
     return "?";
-  }
+   }
 
   public String toSystem(LanguagePreferenceType code) {
     return code.getSystem();

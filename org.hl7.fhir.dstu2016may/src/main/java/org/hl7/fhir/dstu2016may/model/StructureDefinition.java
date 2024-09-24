@@ -178,14 +178,16 @@ public class StructureDefinition extends DomainResource {
     }
 
     public String toCode(StructureDefinitionKind code) {
-      if (code == StructureDefinitionKind.DATATYPE)
+       if (code == StructureDefinitionKind.NULL)
+           return null;
+       if (code == StructureDefinitionKind.DATATYPE)
         return "datatype";
       if (code == StructureDefinitionKind.RESOURCE)
         return "resource";
       if (code == StructureDefinitionKind.LOGICAL)
         return "logical";
       return "?";
-    }
+   }
 
     public String toSystem(StructureDefinitionKind code) {
       return code.getSystem();
@@ -316,14 +318,16 @@ public class StructureDefinition extends DomainResource {
     }
 
     public String toCode(ExtensionContext code) {
-      if (code == ExtensionContext.RESOURCE)
+       if (code == ExtensionContext.NULL)
+           return null;
+       if (code == ExtensionContext.RESOURCE)
         return "resource";
       if (code == ExtensionContext.DATATYPE)
         return "datatype";
       if (code == ExtensionContext.EXTENSION)
         return "extension";
       return "?";
-    }
+   }
 
     public String toSystem(ExtensionContext code) {
       return code.getSystem();
@@ -434,12 +438,14 @@ public class StructureDefinition extends DomainResource {
     }
 
     public String toCode(TypeDerivationRule code) {
-      if (code == TypeDerivationRule.SPECIALIZATION)
+       if (code == TypeDerivationRule.NULL)
+           return null;
+       if (code == TypeDerivationRule.SPECIALIZATION)
         return "specialization";
       if (code == TypeDerivationRule.CONSTRAINT)
         return "constraint";
       return "?";
-    }
+   }
 
     public String toSystem(TypeDerivationRule code) {
       return code.getSystem();

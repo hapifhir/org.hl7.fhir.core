@@ -336,7 +336,9 @@ public class V3EntityCodeEnumFactory implements EnumFactory<V3EntityCode> {
   }
 
   public String toCode(V3EntityCode code) {
-    if (code == V3EntityCode._MATERIALENTITYCLASSTYPE)
+       if (code == V3EntityCode.NULL)
+           return null;
+       if (code == V3EntityCode._MATERIALENTITYCLASSTYPE)
       return "_MaterialEntityClassType";
     if (code == V3EntityCode._CONTAINERENTITYTYPE)
       return "_ContainerEntityType";
@@ -627,7 +629,7 @@ public class V3EntityCodeEnumFactory implements EnumFactory<V3EntityCode> {
     if (code == V3EntityCode.PRAC)
       return "PRAC";
     return "?";
-  }
+   }
 
     public String toSystem(V3EntityCode code) {
       return code.getSystem();

@@ -15,8 +15,18 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /** 
- * This class is used to walk through the resources when rendering, whether
- * the resource is a native resource or loaded by the element model
+ * An R4 wrapper for the R5 rendering framework - use this to feed R4 resources directly
+ * into the R5 framework. 
+ * 
+ * The R5 framework is fine to render R4 resources, and has R4 (etc) specific code where 
+ * appropriate (or will be modified to do so).
+ * 
+ * Note that in order to use this, you need an R5 IWorkerContext. You can create a 
+ * R5 SimpleWorkerContext and load it with all the definitions from R4 (that's how the 
+ * validator works internally, so this is well tested code). But you only need to set 
+ * up the R5 context once; then you can create instances of these to wrap the objects you
+ * want rendered on the fly. (is thread safe)
+ * 
  */
 public class ResourceWrapperR4 extends ResourceWrapper {
 
@@ -159,7 +169,7 @@ public class ResourceWrapperR4 extends ResourceWrapper {
           r.getText().getDiv().getChildNodes().removeIf(c -> !"div".equals(c.getName()) || !c.hasAttribute("xml:lang"));
         }
         markLanguage(x, locale);
-        r.getText().getDiv().getChildNodes().add(x);
+        r.getText().getDiv().addChildNode(x);
       } else {
         if (!x.hasAttribute("xmlns"))
           x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");

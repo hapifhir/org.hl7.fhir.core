@@ -64,7 +64,9 @@ public class BundleTypeEnumFactory implements EnumFactory<BundleType> {
   }
 
   public String toCode(BundleType code) {
-    if (code == BundleType.DOCUMENT)
+       if (code == BundleType.NULL)
+           return null;
+       if (code == BundleType.DOCUMENT)
       return "document";
     if (code == BundleType.MESSAGE)
       return "message";
@@ -83,7 +85,7 @@ public class BundleTypeEnumFactory implements EnumFactory<BundleType> {
     if (code == BundleType.COLLECTION)
       return "collection";
     return "?";
-  }
+   }
 
     public String toSystem(BundleType code) {
       return code.getSystem();

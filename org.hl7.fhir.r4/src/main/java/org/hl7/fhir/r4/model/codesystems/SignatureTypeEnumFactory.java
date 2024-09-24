@@ -78,7 +78,9 @@ public class SignatureTypeEnumFactory implements EnumFactory<SignatureType> {
   }
 
   public String toCode(SignatureType code) {
-    if (code == SignatureType.OID_1_2_840_10065_1_12_1_1)
+       if (code == SignatureType.NULL)
+           return null;
+       if (code == SignatureType.OID_1_2_840_10065_1_12_1_1)
       return "1.2.840.10065.1.12.1.1";
     if (code == SignatureType.OID_1_2_840_10065_1_12_1_2)
       return "1.2.840.10065.1.12.1.2";
@@ -115,7 +117,7 @@ public class SignatureTypeEnumFactory implements EnumFactory<SignatureType> {
     if (code == SignatureType.OID_1_2_840_10065_1_12_1_18)
       return "1.2.840.10065.1.12.1.18";
     return "?";
-  }
+   }
 
   public String toSystem(SignatureType code) {
     return code.getSystem();

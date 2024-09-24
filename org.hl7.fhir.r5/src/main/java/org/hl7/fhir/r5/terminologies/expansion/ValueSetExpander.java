@@ -606,33 +606,35 @@ public class ValueSetExpander extends ValueSetProcessBase {
       excludeCodes(wc, importValueSetForExclude(wc, imp.getValue(), exp, expParams, false, vs).getExpansion());
     }
     
-    CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem());
-    if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.supportsSystem(exc.getSystem(), opContext.getOptions().getFhirVersion())) {
-      ValueSetExpansionOutcome vse = context.expandVS(exc, false, false);
-      ValueSet valueset = vse.getValueset();
-      if (valueset == null)
-        throw failTSE("Error Expanding ValueSet: "+vse.getError());
-      excludeCodes(wc, valueset.getExpansion());
-      return;
-    }
-
-    for (ConceptReferenceComponent c : exc.getConcept()) {
-      excludeCode(wc, exc.getSystem(), c.getCode());
-    }
-
-    if (exc.getFilter().size() > 0) {
-      if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
-        addFragmentWarning(exp, cs);
+    if (exc.hasSystem()) {
+      CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem());
+      if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.supportsSystem(exc.getSystem(), opContext.getOptions().getFhirVersion())) {
+        ValueSetExpansionOutcome vse = context.expandVS(exc, false, false);
+        ValueSet valueset = vse.getValueset();
+        if (valueset == null)
+          throw failTSE("Error Expanding ValueSet: "+vse.getError());
+        excludeCodes(wc, valueset.getExpansion());
+        return;
       }
-      List<WorkingContext> filters = new ArrayList<>();
-      for (int i = 1; i < exc.getFilter().size(); i++) {
-        WorkingContext wc1 = new WorkingContext();
-        filters.add(wc1);
-        processFilter(exc, exp, expParams, null, cs, false, exc.getFilter().get(i), wc1, null, true);
+
+      for (ConceptReferenceComponent c : exc.getConcept()) {
+        excludeCode(wc, exc.getSystem(), c.getCode());
       }
-      ConceptSetFilterComponent fc = exc.getFilter().get(0);
-      WorkingContext wc1 = dwc;
-      processFilter(exc, exp, expParams, null, cs, false, fc, wc1, filters, true);
+
+      if (exc.getFilter().size() > 0) {
+        if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
+          addFragmentWarning(exp, cs);
+        }
+        List<WorkingContext> filters = new ArrayList<>();
+        for (int i = 1; i < exc.getFilter().size(); i++) {
+          WorkingContext wc1 = new WorkingContext();
+          filters.add(wc1);
+          processFilter(exc, exp, expParams, null, cs, false, exc.getFilter().get(i), wc1, null, true);
+        }
+        ConceptSetFilterComponent fc = exc.getFilter().get(0);
+        WorkingContext wc1 = dwc;
+        processFilter(exc, exp, expParams, null, cs, false, fc, wc1, filters, true);
+      }
     }
   }
 
@@ -728,7 +730,6 @@ public class ValueSetExpander extends ValueSetProcessBase {
       expParams = makeDefaultExpansion();
     altCodeParams.seeParameters(expParams);
     altCodeParams.seeValueSet(source);
-    
     source.checkNoModifiers("ValueSet", "expanding");
     focus = source.copy();
     focus.setIdBase(null);

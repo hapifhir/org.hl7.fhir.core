@@ -62,7 +62,9 @@ public class AppointmentstatusEnumFactory implements EnumFactory<Appointmentstat
   }
 
   public String toCode(Appointmentstatus code) {
-    if (code == Appointmentstatus.PROPOSED)
+       if (code == Appointmentstatus.NULL)
+           return null;
+       if (code == Appointmentstatus.PROPOSED)
       return "proposed";
     if (code == Appointmentstatus.PENDING)
       return "pending";
@@ -83,7 +85,7 @@ public class AppointmentstatusEnumFactory implements EnumFactory<Appointmentstat
     if (code == Appointmentstatus.WAITLIST)
       return "waitlist";
     return "?";
-  }
+   }
 
   public String toSystem(Appointmentstatus code) {
     return code.getSystem();

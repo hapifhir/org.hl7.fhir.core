@@ -18,6 +18,10 @@ import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponen
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent;
+import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementDocumentComponent;
+import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingComponent;
+import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingSupportedMessageComponent;
+import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingEndpointComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.ReferenceHandlingPolicy;
 import org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent;
@@ -53,7 +57,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       renderResourceTechDetails(r, x);
       render(status, x, (CapabilityStatement) r.getBase(), r);      
     } else {
-      throw new Error("CapabilityStatementRenderer only renders native resources directly");
+      // the intention is to change this in the future
+      x.para().tx("CapabilityStatementRenderer only renders native resources directly");
     }
   }
   
@@ -280,6 +285,30 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
   }
 
+  private class ResourceInteraction {
+    private String codeString;
+    private String documentation;
+    public ResourceInteraction(String code, String markdown) {
+      codeString = code;
+      if (!Utilities.noString(markdown)) {
+        documentation = markdown;
+      }
+      else {
+        documentation = null;
+      }
+    }
+
+    public String getDocumentation() {
+      return documentation;
+    }
+
+    public String getInteraction() {
+      return codeString;
+    }
+  }
+
+
+
   public void render(RenderingStatus status, XhtmlNode x, CapabilityStatement conf, ResourceWrapper res) throws FHIRFormatError, DefinitionException, IOException {
     status.setExtensions(true);
     boolean igRenderingMode = (context.getRules() == GenerationRules.IG_PUBLISHER);
@@ -345,16 +374,42 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
           //Third time for individual resources
           int resCount = 1;
           for (CapabilityStatementRestResourceComponent r : rest.getResource()) {
-            addResourceConfigPanel(x, r, nextLevel+1, count, resCount, igRenderingMode);
+            addResourceConfigPanel(status, res, x, r, nextLevel+1, count, resCount, igRenderingMode);
             resCount++;
           }
+        }
+        if (rest.getOperation().size() > 0) {
+          //TODO Figure out what should come out of this
+          x.h(nextLevel,"operationsCap" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.CAPABILITY_OP));
+          x.h(nextLevel+1,"operationsSummary" + Integer.toString(count)).addText(context.formatPhrase(RenderingContext.OP_DEF_USE));
         }
         count++;
       }
     }
 
+    int messagingNum = conf.getMessaging().size();
+    nextLevel = 3;
+    if (messagingNum > 0) {
+      x.h(2,"messaging").addText((context.formatPhrase(RenderingContext.CAPABILITY_MESSAGING_CAPS)));
+      int count=1;
+      for (CapabilityStatementMessagingComponent msg : conf.getMessaging()) 
+      {
+        addMessagingPanel(status, res, x, msg, nextLevel, count, messagingNum);
+        count++;
+      }
+
+    }
+
+    int documentNum = conf.getDocument().size();
+    nextLevel = 3;
+    if (documentNum > 0) {
+      x.h(2,"document").addText((context.formatPhrase(RenderingContext.CAPABILITY_DOCUMENT_CAPS)));
+      addDocumentTable(status, res, x, conf, nextLevel);
+    }
+
+    
     if (multExpectationsPresent) {
-      addWarningPanel(x,"⹋⹋ - this mark indicates that there are more than one expectation extensions present");
+      addWarningPanel(x,"⹋⹋ - " + context.formatPhrase(RenderingContext.CAPABILITY_MULT_EXT));
     }
 
   }
@@ -422,7 +477,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   private void addSupportedCSs(RenderingStatus status, XhtmlNode x, CapabilityStatement cap, ResourceWrapper res) throws UnsupportedEncodingException, IOException {
     if (cap.hasInstantiates()) {
       XhtmlNode p = x.para();
-      p.tx(cap.getInstantiates().size() > 1 ? "This CapabilityStatement instantiates these CapabilityStatements" : "This CapabilityStatement instantiates the CapabilityStatement");
+      p.tx(cap.getInstantiates().size() > 1 ? "This CapabilityStatement instantiates these CapabilityStatements " : "This CapabilityStatement instantiates the CapabilityStatement ");
       boolean first = true;
       for (CanonicalType ct : cap.getInstantiates()) {
         if (first) {first = false;} else {p.tx(", ");};
@@ -431,7 +486,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     }
     if (cap.hasImports()) {
       XhtmlNode p = x.para();
-      p.tx(cap.getImports().size() > 1 ? "This CapabilityStatement imports these CapabilityStatements" : "This CapabilityStatement imports the CapabilityStatement");
+      p.tx(cap.getImports().size() > 1 ? "This CapabilityStatement imports these CapabilityStatements " : "This CapabilityStatement imports the CapabilityStatement ");
       boolean first = true;
       for (CanonicalType ct : cap.getImports()) {
         if (first) {first = false;} else {p.tx(", ");};
@@ -483,7 +538,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         }
       }
       if (igMays.size() > 0) {
-        x.h(3,"shouldIGs").addText(context.formatPhrase(RenderingContext.CAPABILITY_SHOULD_SUPP));
+        x.h(3,"mayIGs").addText(context.formatPhrase(RenderingContext.CAPABILITY_MAY_SUPP));
         ul = x.ul();
         for (String url : igMays) {
           addResourceLink(ul.li(), url, url);
@@ -521,7 +576,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       capExpectation = getExtValueCode(c.getExtensionByUrl(EXPECTATION));
       if (!Utilities.noString(capExpectation)) {
         lItem.addTag("strong").addText(capExpectation);
-        lItem.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP) + " ");
+        lItem.addText(" " + context.formatPhrase(RenderingContext.CAPABILITY_SUPP) + " ");
       }
       lItem.code().addText(c.getCode());
       first = false;
@@ -561,6 +616,107 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     body.div().attribute("class","lead").addTag("em").addText(context.formatPhrase(RenderingContext.CAPABILITY_SUMM_SYS_INT));
     addSystemInteractions(body, rest.getInteraction());
         
+  }
+
+  private void addMessagingPanel(RenderingStatus status, ResourceWrapper res, XhtmlNode x, CapabilityStatementMessagingComponent msg, int nextLevel, int index, int total) throws FHIRFormatError, DefinitionException, IOException {
+    XhtmlNode panel= null;
+    XhtmlNode body = null;
+    XhtmlNode row = null;
+    XhtmlNode heading = null;
+
+    XhtmlNode table;
+    XhtmlNode tbody;
+    XhtmlNode tr;
+
+    panel = x.div().attribute("class", "panel panel-default");
+    heading = panel.div().attribute("class", "panel-heading").h(nextLevel,"messaging_" + Integer.toString(index)).attribute("class", "panel-title");
+    if(total == 1)
+    {
+      heading.addText(context.formatPhrase(RenderingContext.CAPABILITY_MESSAGING_CAP));
+    }
+    else
+    {
+      heading.addText(context.formatPhrase(RenderingContext.CAPABILITY_MESSAGING_CAP) + " " + String.valueOf(index));
+    }
+
+    body = panel.div().attribute("class", "panel-body");
+
+    if(msg.hasReliableCache())
+    {
+      addLead(body, "Reliable Cache Length");
+      body.br();
+      body.addText(String.valueOf(msg.getReliableCache()) + " Minute(s)");
+      body.br();
+    }
+
+    if(msg.hasEndpoint())
+    {
+      body.h(nextLevel+1,"msg_end_"+Integer.toString(index)).addText(context.formatPhrase(RenderingContext.CAPABILITY_ENDPOINTS));
+      table = body.table("table table-condensed table-hover");
+      tr = table.addTag("thead").tr();
+      tr.th().addText("Protocol");
+      tr.th().addText("Address");
+
+      tbody = table.addTag("tbody");
+      for (CapabilityStatementMessagingEndpointComponent end : msg.getEndpoint())
+      {
+        tr = tbody.tr();
+        renderDataType(status, tr.td(), wrapNC(end.getProtocol()));
+        renderUri(status,  tr.td(), wrapNC(end.getAddressElement()));
+      }
+      body.br();
+    }
+
+    if(msg.hasSupportedMessage())
+    {
+      body.h(nextLevel+1,"msg_end_"+Integer.toString(index)).addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_MSGS));
+      table = body.table("table table-condensed table-hover");
+      tr = table.addTag("thead").tr();
+      tr.th().addText("Mode");
+      tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_DEFINITION));
+
+      tbody = table.addTag("tbody");
+      for (CapabilityStatementMessagingSupportedMessageComponent sup : msg.getSupportedMessage())
+      {
+        tr = tbody.tr();
+        tr.td().addText(sup.getMode().toCode());
+        renderCanonical(status, res, tr.td(), StructureDefinition.class, sup.getDefinitionElement());
+      }
+      if(msg.hasDocumentation())
+      {
+        addLead(body, context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION));
+        addMarkdown(body.blockquote(), msg.getDocumentation());
+      }
+      body.br();
+    }
+  }
+
+
+  private void addDocumentTable(RenderingStatus status, ResourceWrapper res, XhtmlNode x, CapabilityStatement conf, int nextLevel) throws FHIRFormatError, DefinitionException, IOException {
+    XhtmlNode table;
+    XhtmlNode tbody;
+    XhtmlNode tr;
+
+    table = x.table("table table-condensed table-hover");
+    tr = table.addTag("thead").tr();
+    tr.th().addText("Mode");
+    tr.th().addText(context.formatPhrase(RenderingContext.CAPABILITY_PROF_RES_DOC));
+    tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION));
+
+    tbody = table.addTag("tbody");
+    for (CapabilityStatementDocumentComponent document : conf.getDocument()) {
+      tr = tbody.tr();
+      tr.td().addText(document.getMode().toCode());
+      renderCanonical(status, res, tr.td(), StructureDefinition.class, document.getProfileElement());
+      if(document.hasDocumentation())
+      {
+        addMarkdown(tr.td(), document.getDocumentation());
+      }
+      else
+      {
+        tr.td().nbsp();
+      }
+    }
   }
 
   private String getCorsText(boolean on) {
@@ -638,10 +794,10 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     for (Map<String,String> interactionMap : interactions) {
       item = uList.li();
       if (Utilities.noString(verb)) {
-        item.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_THE) + " ");
+        item.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPPS_THE) + " ");
       }
       else {
-        item.addTag("strong").addText(verb);
+        item.addTag("strong").addText(verb + " ");
         item.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_THE) + " ");
       }
       interaction = interactionMap.keySet().toArray()[0].toString();
@@ -668,7 +824,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     }
   }
 
-  private void addInteractionSummaryList(XhtmlNode uList, String verb, List<String> interactions) {
+  private void addInteractionSummaryList(XhtmlNode uList, String verb, List<ResourceInteraction> interactions) {
     if (interactions.size() == 0) return;
     XhtmlNode item = uList.li();
     if (Utilities.noString(verb)) {
@@ -676,10 +832,10 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     }
     else {
       item.addTag("strong").addText(verb);
-      item.addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP) + " ");
+      item.addText(" " + context.formatPhrase(RenderingContext.CAPABILITY_SUPP) + " ");
     }
-    addSeparatedListOfCodes(item, interactions, ",");
-    item.addText(".");
+
+    applyInteractionsList(item, interactions);  
   }
 
   private void addSummaryIntro(XhtmlNode x) {
@@ -778,7 +934,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         renderSupportedProfiles(status, res, profCell, r);
       }
       //Show capabilities
-      tr.td().addText(showOp(r, TypeRestfulInteraction.READ));
+      tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.READ));
       if (hasVRead)
         tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.VREAD));
       tr.td().attribute("class", "text-center").addText(showOp(r, TypeRestfulInteraction.SEARCHTYPE));
@@ -933,11 +1089,45 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
           result.add("$"+op.getName());
         }
       }
+      else {
+        result.add("$"+op.getName());
+      }
     }
     return result;
   }
 
-  private void addResourceConfigPanel(XhtmlNode x, CapabilityStatementRestResourceComponent r, int nextLevel, int count, int resCount, boolean igRenderingMode) throws FHIRFormatError, DefinitionException, IOException {
+  private void applyInteractionsList(XhtmlNode item, List<ResourceInteraction> list) {
+    List<String> noDocList = new ArrayList<String>();
+    List<ResourceInteraction> docList = new ArrayList<ResourceInteraction>();
+    for (ResourceInteraction inter : list) {
+      if (Utilities.noString(inter.getDocumentation())) {
+        noDocList.add(inter.getInteraction());
+      }
+      else {
+        docList.add(inter);
+      }
+    }
+    if (noDocList.size() > 0) {
+      addSeparatedListOfCodes(item,noDocList, ",");
+    }
+    if (docList.size() > 0) {
+      item.br();
+      for (ResourceInteraction inter : docList) {
+        item.code().addText(inter.getInteraction());
+        try {
+          addMarkdown(item, inter.getDocumentation());
+        }
+        catch(IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    else {
+      item.addText(".");
+    }
+  }
+
+  private void addResourceConfigPanel(RenderingStatus status, ResourceWrapper res, XhtmlNode x, CapabilityStatementRestResourceComponent r, int nextLevel, int count, int resCount, boolean igRenderingMode) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode panel= null;
     XhtmlNode body = null;
     XhtmlNode panelHead = null;
@@ -972,7 +1162,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       cell = row.div().attribute("class", "col-lg-6");
       addLead(cell,context.formatPhrase(RenderingContext.CAPABILITY_BASE_SYS));
       cell.br();
-      addResourceLink(cell, text, text);
+      renderCanonical(status, res, cell, StructureDefinition.class, r.getProfileElement());
       cell=row.div().attribute("class", "col-lg-3");
       addLead(cell, context.formatPhrase(RenderingContext.CAPABILITY_PROF_CONF));
       cell.br();
@@ -1007,7 +1197,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
           para.br();
         }
         first=false;
-        addResourceLink(para, c.asStringValue(), c.asStringValue());
+        renderCanonical(status, res, para, StructureDefinition.class, c);
         //para.ah(c.asStringValue()).addText(c.asStringValue());
       }  
     }
@@ -1084,28 +1274,32 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   private void addInteractions(XhtmlNode row, CapabilityStatementRestResourceComponent r, int width) {
     String capExpectation;
     String widthString = "col-lg-" + Integer.toString(width);
-    List<String> shalls = new ArrayList<String>();
-    List<String> shoulds = new ArrayList<String>();
-    List<String> mays = new ArrayList<String>();
-    List<String> shouldnots = new ArrayList<String>();
-    List<String> supporteds = new ArrayList<String>();
+    //Need to build a different structure
+    List<ResourceInteraction> shalls = new ArrayList<ResourceInteraction>();
+    List<ResourceInteraction> shoulds = new ArrayList<ResourceInteraction>();
+    List<ResourceInteraction> mays = new ArrayList<ResourceInteraction>();
+    List<ResourceInteraction> shouldnots = new ArrayList<ResourceInteraction>();
+    List<ResourceInteraction> supporteds = new ArrayList<ResourceInteraction>();
+
+    ResourceInteraction tempInteraction = null;
 
     for (ResourceInteractionComponent op : r.getInteraction()) {
       capExpectation = expectationForDisplay(op,EXPECTATION);
+      tempInteraction = new ResourceInteraction(op.getCode().toCode(), op.getDocumentation());
       if (!Utilities.noString(capExpectation)) {
         switch(capExpectation) {
-          case "SHALL"      : shalls.add(op.getCode().toCode());
+          case "SHALL"      : shalls.add(tempInteraction);
                               break;
-          case "SHOULD"     : shoulds.add(op.getCode().toCode());
+          case "SHOULD"     : shoulds.add(tempInteraction);
                               break;
-          case "MAY"        : mays.add(op.getCode().toCode());
+          case "MAY"        : mays.add(tempInteraction);
                               break;
-          case "SHOULD-NOT" : shouldnots.add(op.getCode().toCode());
+          case "SHOULD-NOT" : shouldnots.add(tempInteraction);
                               break;
         }
       }
       else {
-        supporteds.add(op.getCode().toCode());
+        supporteds.add(tempInteraction);
       }
     }
     XhtmlNode cell = row.div().attribute("class", widthString);
@@ -1493,7 +1687,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
   private void addWarningPanel(XhtmlNode node, String text) {
     XhtmlNode panel = node.addTag("div").attribute("class","panel panel-danger").addTag("div").attribute("class","panel-body");
-    panel.addTag("span").attribute("class","label label-danger").addText("Error detected");
+    panel.addTag("span").attribute("class","label label-danger").addText(context.formatPhrase(RenderingContext.CAPABILITY_ERR_DET));
     panel.addText(" " + text);
   }
 }

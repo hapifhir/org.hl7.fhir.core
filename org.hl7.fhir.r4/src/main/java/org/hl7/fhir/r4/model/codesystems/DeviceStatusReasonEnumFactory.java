@@ -58,7 +58,9 @@ public class DeviceStatusReasonEnumFactory implements EnumFactory<DeviceStatusRe
   }
 
   public String toCode(DeviceStatusReason code) {
-    if (code == DeviceStatusReason.ONLINE)
+       if (code == DeviceStatusReason.NULL)
+           return null;
+       if (code == DeviceStatusReason.ONLINE)
       return "online";
     if (code == DeviceStatusReason.PAUSED)
       return "paused";
@@ -75,7 +77,7 @@ public class DeviceStatusReasonEnumFactory implements EnumFactory<DeviceStatusRe
     if (code == DeviceStatusReason.OFF)
       return "off";
     return "?";
-  }
+   }
 
   public String toSystem(DeviceStatusReason code) {
     return code.getSystem();

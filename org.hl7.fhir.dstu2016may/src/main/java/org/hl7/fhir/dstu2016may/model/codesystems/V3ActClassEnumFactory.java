@@ -290,7 +290,9 @@ public class V3ActClassEnumFactory implements EnumFactory<V3ActClass> {
   }
 
   public String toCode(V3ActClass code) {
-    if (code == V3ActClass.ACT)
+       if (code == V3ActClass.NULL)
+           return null;
+       if (code == V3ActClass.ACT)
       return "ACT";
     if (code == V3ActClass._ACTCLASSRECORDORGANIZER)
       return "_ActClassRecordOrganizer";
@@ -539,7 +541,7 @@ public class V3ActClassEnumFactory implements EnumFactory<V3ActClass> {
     if (code == V3ActClass.UNORDERED)
       return "unordered";
     return "?";
-  }
+   }
 
   public String toSystem(V3ActClass code) {
     return code.getSystem();

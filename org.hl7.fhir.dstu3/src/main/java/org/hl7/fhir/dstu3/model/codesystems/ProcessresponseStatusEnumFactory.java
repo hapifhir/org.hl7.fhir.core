@@ -54,7 +54,9 @@ public class ProcessresponseStatusEnumFactory implements EnumFactory<Processresp
   }
 
   public String toCode(ProcessresponseStatus code) {
-    if (code == ProcessresponseStatus.ACTIVE)
+       if (code == ProcessresponseStatus.NULL)
+           return null;
+       if (code == ProcessresponseStatus.ACTIVE)
       return "active";
     if (code == ProcessresponseStatus.CANCELLED)
       return "cancelled";
@@ -63,7 +65,7 @@ public class ProcessresponseStatusEnumFactory implements EnumFactory<Processresp
     if (code == ProcessresponseStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(ProcessresponseStatus code) {
       return code.getSystem();

@@ -48,14 +48,16 @@ public class ServiceProvisionConditionsEnumFactory implements EnumFactory<Servic
   }
 
   public String toCode(ServiceProvisionConditions code) {
-    if (code == ServiceProvisionConditions.FREE)
+       if (code == ServiceProvisionConditions.NULL)
+           return null;
+       if (code == ServiceProvisionConditions.FREE)
       return "free";
     if (code == ServiceProvisionConditions.DISC)
       return "disc";
     if (code == ServiceProvisionConditions.COST)
       return "cost";
     return "?";
-  }
+   }
 
   public String toSystem(ServiceProvisionConditions code) {
     return code.getSystem();

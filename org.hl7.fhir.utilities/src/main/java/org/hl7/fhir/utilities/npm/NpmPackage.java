@@ -237,9 +237,11 @@ public class NpmPackage {
     public List<String> listFiles() {
       List<String> res = new ArrayList<>();
       if (folder != null) {
-        for (File f : folder.listFiles()) {
-          if (!f.isDirectory() && !Utilities.existsInList(f.getName(), "package.json", ".index.json", ".index.db", ".oids.json", ".oids.db")) {
-            res.add(f.getName());
+        if (folder.exists()) {
+          for (File f : folder.listFiles()) {
+            if (!f.isDirectory() && !Utilities.existsInList(f.getName(), "package.json", ".index.json", ".index.db", ".oids.json", ".oids.db")) {
+              res.add(f.getName());
+            }
           }
         }
       } else {
@@ -357,9 +359,15 @@ public class NpmPackage {
    * Factory method that parses a package from an extracted folder
    */
   public static NpmPackage fromFolder(String path) throws IOException {
+    return fromFolder(path, true);
+  }
+
+  public static NpmPackage fromFolder(String path, boolean checkIndexed) throws IOException {
     NpmPackage res = new NpmPackage();
     res.loadFiles(path, ManagedFileAccess.file(path));
-    res.checkIndexed(path);
+    if (checkIndexed) {
+     res.checkIndexed(path);
+    }
     return res;
   }
 
@@ -367,10 +375,15 @@ public class NpmPackage {
    * Factory method that parses a package from an extracted folder
    */
   public static NpmPackage fromFolderMinimal(String path) throws IOException {
+    return fromFolderMinimal(path, true);
+  }
+
+  public static NpmPackage fromFolderMinimal(String path, boolean checkIndexed) throws IOException {
     NpmPackage res = new NpmPackage();
     res.minimalMemory = true;
     res.loadFiles(path, ManagedFileAccess.file(path));
-    res.checkIndexed(path);
+    if (checkIndexed) {
+    res.checkIndexed(path);}
     return res;
   }
 
@@ -616,7 +629,18 @@ public class NpmPackage {
     index.content.put(n, data);
   }
 
-  private void checkIndexed(String desc) throws IOException {
+  public boolean isIndexed() throws IOException {
+    for (NpmPackageFolder folder : folders.values()) {
+      JsonObject index = folder.index();
+      if (folder.index() == null || index.forceArray("files").size() == 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  public void checkIndexed(String desc) throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
       JsonObject index = folder.index();
       if (index == null || index.forceArray("files").size() == 0) {
@@ -626,6 +650,17 @@ public class NpmPackage {
   }
 
 
+  /**
+   * Create a package .index.json file for a package folder.
+   * <p>
+   * See <a href="https://hl7.org/fhir/packages.html#2.1.10.4">the FHIR specification</a> for details on .index.json
+   * format and usage.
+   *
+   * @param desc
+   * @param folder
+   * @throws FileNotFoundException
+   * @throws IOException
+   */
   public void indexFolder(String desc, NpmPackageFolder folder) throws FileNotFoundException, IOException {
     List<String> remove = new ArrayList<>();
     NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();

@@ -72,7 +72,9 @@ public class ContractStatusEnumFactory implements EnumFactory<ContractStatus> {
   }
 
   public String toCode(ContractStatus code) {
-    if (code == ContractStatus.AMENDED)
+       if (code == ContractStatus.NULL)
+           return null;
+       if (code == ContractStatus.AMENDED)
       return "amended";
     if (code == ContractStatus.APPENDED)
       return "appended";
@@ -103,7 +105,7 @@ public class ContractStatusEnumFactory implements EnumFactory<ContractStatus> {
     if (code == ContractStatus.TERMINATED)
       return "terminated";
     return "?";
-  }
+   }
 
   public String toSystem(ContractStatus code) {
     return code.getSystem();

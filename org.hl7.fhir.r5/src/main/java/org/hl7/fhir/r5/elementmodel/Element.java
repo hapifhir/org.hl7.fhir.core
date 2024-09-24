@@ -162,6 +162,7 @@ public class Element extends Base implements NamedItem {
   private FhirFormat format;
   private Object nativeObject;
   private List<SliceDefinition> sliceDefinitions;
+  private boolean elided;
 
 	public Element(String name) {
 		super();
@@ -343,6 +344,25 @@ public class Element extends Base implements NamedItem {
     }
   }
 
+  public void setChildValue(String name, Base value) {
+    if (children == null)
+      children = new NamedItemList<Element>();
+    for (Element child : children) {
+      if (nameMatches(child.getName(), name)) {
+        if (!child.isPrimitive())
+          throw new Error("Cannot set a value of a non-primitive type ("+name+" on "+this.getName()+")");
+        child.setValue(value.primitiveValue());
+        return;
+      }
+    }
+
+    try {
+      setProperty(name.hashCode(), name, value);
+    } catch (FHIRException e) {
+      throw new Error(e);
+    }
+  }
+
   public List<Element> getChildren(String name) {
     List<Element> res = new ArrayList<Element>(); 
     if (children.size() > 20) {
@@ -478,6 +498,11 @@ public class Element extends Base implements NamedItem {
           children.add(i, ne);
           childForValue = ne;
           break;
+        } else if (p.getName().endsWith("[x]") && name.startsWith(p.getName().replace("[x]", ""))) {
+          Element ne = new Element(p.getName(), p).setFormat(format);
+          children.add(i, ne);
+          childForValue = ne;
+          break;
         }
       }
     
@@ -485,7 +510,7 @@ public class Element extends Base implements NamedItem {
       throw new Error("Cannot set property "+name+" on "+this.name);
     else if (value.isPrimitive()) {
       if (childForValue.property.getName().endsWith("[x]"))
-        childForValue.name = name+Utilities.capitalize(value.fhirType());
+        childForValue.name = childForValue.name.replace("[x]", "")+Utilities.capitalize(value.fhirType());
       childForValue.setValue(value.primitiveValue());
     } else {
       Element ve = (Element) value;
@@ -693,6 +718,7 @@ public class Element extends Base implements NamedItem {
   public Element getNamedChild(String name) {
     return getNamedChild(name, true);
   }
+  
   public Element getNamedChild(String name, boolean exception) {
     if (children == null)
       return null;
@@ -1083,6 +1109,21 @@ public class Element extends Base implements NamedItem {
     return null;
   }
 
+  public List<Element> getExtensions(String url) {
+    List<Element> list = new ArrayList<>();
+    if (children != null) {
+      for (Element child : children) {
+        if (extensionList.contains(child.getName())) {
+          String u = child.getChildValue("url");
+          if (url.equals(u)) {
+            list.add(child);
+          }
+        }
+      }
+    }
+    return list;
+  }
+
   public Base getExtensionValue(String url) {
     if (children != null) {
       for (Element child : children) {
@@ -1163,7 +1204,9 @@ public class Element extends Base implements NamedItem {
   }
 
   public void removeChild(String name) {
-    children.removeIf(n -> name.equals(n.getName()));
+    if (children.removeIf(n -> name.equals(n.getName()))) {
+      children.clearMap();
+    }
   }
 
   public boolean isProhibited() {
@@ -1338,14 +1381,18 @@ public class Element extends Base implements NamedItem {
   public Element addElement(String name) {
     if (children == null)
       children = new NamedItemList<Element>();
+    int insertionPoint = 0;
 
     for (Property p : property.getChildProperties(this.name, type)) {
+      while (insertionPoint < children.size() && nameMatches(children.get(insertionPoint).getName(), p.getName())) {
+        insertionPoint++;
+      }
       if (p.getName().equals(name)) {
         if (!p.isList() && hasChild(name, false)) {
           throw new Error(name+" on "+this.name+" is not a list, so can't add an element"); 
         }
         Element ne = new Element(name, p).setFormat(format);
-        children.add(ne);
+        children.add(insertionPoint, ne);
         return ne;
       }
       // polymorphic support
@@ -1360,7 +1407,7 @@ public class Element extends Base implements NamedItem {
           if (p.canBeType(type)) {
             Element ne = new Element(name, p).setFormat(format);
             ne.setType(type);
-            children.add(ne);
+            children.add(insertionPoint, ne);
             return ne;
           }
         }
@@ -1370,10 +1417,21 @@ public class Element extends Base implements NamedItem {
     throw new Error("Unrecognised property '"+name+"' on "+this.name); 
   }
 
+  private boolean nameMatches(String elementName, String propertyName) {
+    if (propertyName.endsWith("[x]")) {
+      String base = propertyName.replace("[x]", "");
+      return elementName.startsWith(base);
+    } else {
+      return elementName.equals(propertyName);
+    }
+  }
+
   @Override
   public Base copy() {
     Element element = new Element(this);
     this.copyValues(element);
+    if (this.isElided())
+      element.setElided(true);
     return element;
   }
 
@@ -1583,4 +1641,11 @@ public class Element extends Base implements NamedItem {
     return FhirPublication.fromCode(property.getStructure().getVersion());
   }
 
+  public void setElided(boolean elided) {
+    this.elided = elided;
+  }
+
+  public boolean isElided() {
+    return this.elided;
+  }
 }

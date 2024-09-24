@@ -52,7 +52,9 @@ public class ProductCategoryEnumFactory implements EnumFactory<ProductCategory> 
   }
 
   public String toCode(ProductCategory code) {
-    if (code == ProductCategory.ORGAN)
+       if (code == ProductCategory.NULL)
+           return null;
+       if (code == ProductCategory.ORGAN)
       return "organ";
     if (code == ProductCategory.TISSUE)
       return "tissue";
@@ -63,7 +65,7 @@ public class ProductCategoryEnumFactory implements EnumFactory<ProductCategory> 
     if (code == ProductCategory.BIOLOGICALAGENT)
       return "biologicalAgent";
     return "?";
-  }
+   }
 
   public String toSystem(ProductCategory code) {
     return code.getSystem();

@@ -52,7 +52,9 @@ public class V3QueryStatusCodeEnumFactory implements EnumFactory<V3QueryStatusCo
   }
 
   public String toCode(V3QueryStatusCode code) {
-    if (code == V3QueryStatusCode.ABORTED)
+       if (code == V3QueryStatusCode.NULL)
+           return null;
+       if (code == V3QueryStatusCode.ABORTED)
       return "aborted";
     if (code == V3QueryStatusCode.DELIVEREDRESPONSE)
       return "deliveredResponse";
@@ -63,7 +65,7 @@ public class V3QueryStatusCodeEnumFactory implements EnumFactory<V3QueryStatusCo
     if (code == V3QueryStatusCode.WAITCONTINUEDQUERYRESPONSE)
       return "waitContinuedQueryResponse";
     return "?";
-  }
+   }
 
   public String toSystem(V3QueryStatusCode code) {
     return code.getSystem();

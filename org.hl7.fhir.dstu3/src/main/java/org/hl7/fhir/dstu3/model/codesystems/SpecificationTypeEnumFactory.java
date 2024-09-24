@@ -62,7 +62,9 @@ public class SpecificationTypeEnumFactory implements EnumFactory<SpecificationTy
   }
 
   public String toCode(SpecificationType code) {
-    if (code == SpecificationType.UNSPECIFIED)
+       if (code == SpecificationType.NULL)
+           return null;
+       if (code == SpecificationType.UNSPECIFIED)
       return "unspecified";
     if (code == SpecificationType.SERIALNUMBER)
       return "serial-number";
@@ -79,7 +81,7 @@ public class SpecificationTypeEnumFactory implements EnumFactory<SpecificationTy
     if (code == SpecificationType.GMDN)
       return "gmdn";
     return "?";
-  }
+   }
 
     public String toSystem(SpecificationType code) {
       return code.getSystem();

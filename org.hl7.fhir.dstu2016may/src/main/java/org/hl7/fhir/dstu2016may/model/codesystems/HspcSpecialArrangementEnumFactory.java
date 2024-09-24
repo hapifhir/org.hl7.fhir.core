@@ -54,7 +54,9 @@ public class HspcSpecialArrangementEnumFactory implements EnumFactory<HspcSpecia
   }
 
   public String toCode(HspcSpecialArrangement code) {
-    if (code == HspcSpecialArrangement._182850)
+       if (code == HspcSpecialArrangement.NULL)
+           return null;
+       if (code == HspcSpecialArrangement._182850)
       return "182850";
     if (code == HspcSpecialArrangement._528123036)
       return "528123036";
@@ -67,7 +69,7 @@ public class HspcSpecialArrangementEnumFactory implements EnumFactory<HspcSpecia
     if (code == HspcSpecialArrangement._528123038)
       return "528123038";
     return "?";
-  }
+   }
 
   public String toSystem(HspcSpecialArrangement code) {
     return code.getSystem();

@@ -103,18 +103,20 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   @Override
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (!r.isDirect()) {
-      throw new Error("StructureDefinitionRenderer only renders native resources directly");
-    } 
-    renderResourceTechDetails(r, x);
-    StructureDefinition sd = (StructureDefinition) r.getBase();
-    genSummaryTable(status, x, sd);
-    if (context.getStructureMode() == StructureDefinitionRendererMode.DATA_DICT) { 
-      renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict"), false, GEN_MODE_DIFF, "", r); 
-    } else { 
-      x.getChildNodes().add(generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,  
-        context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r)); 
-    } 
-    status.setExtensions(true); 
+      // it seems very unlikely that this will change in the future
+      x.para().tx("StructureDefinitionRenderer only renders native resources directly");
+    } else {
+      renderResourceTechDetails(r, x);
+      StructureDefinition sd = (StructureDefinition) r.getBase();
+      genSummaryTable(status, x, sd);
+      if (context.getStructureMode() == StructureDefinitionRendererMode.DATA_DICT) { 
+        renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict"), false, GEN_MODE_DIFF, "", r); 
+      } else { 
+        x.addChildNode(generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,  
+            context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r)); 
+      } 
+      status.setExtensions(true); 
+    }
   }
   
   @Override
@@ -779,7 +781,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         row.setOpacity("0.5"); 
       } 
       UnusedTracker used = new UnusedTracker(); 
-      String ref = defPath == null ? null : defPath + anchorPrefix + element.getId(); 
+      String ref = defPath == null ? null : defPath + element.getId(); 
       String sName = tail(element.getPath()); 
       if (element.hasSliceName()) {  
         sName = sName +":"+element.getSliceName(); 
@@ -895,7 +897,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             Row parent = null; 
             if (child.hasSliceName()) { 
               // ok, we're a slice 
-              if (slicer == null || !slicer.getId().equals(child.getPath())) { 
+              if (slicer == null || !noTail(slicer.getId()).equals(child.getPath())) { 
                 parent = gen.new Row(); 
                 String anchorE = child.getPath();
                 anchorE = makeAnchorUnique(anchorE);
@@ -904,7 +906,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 parent.setColor(context.getProfileUtilities().getRowColor(child, isConstraintMode)); 
                 parent.setLineColor(1); 
                 parent.setIcon("icon_slice.png", context.formatPhrase(RenderingContext.TEXT_ICON_SLICE)); 
-                parent.getCells().add(gen.new Cell(null, null, "Slices for "+ child.getName(), "", null)); 
+                parent.getCells().add(gen.new Cell(null, null, context.formatPhrase(RenderingContext.STRUC_DEF_SLICE_FOR, child.getName()), "", null)); 
                 switch (context.getStructureMode()) { 
                 case BINDINGS: 
                 case OBLIGATIONS: 
@@ -943,6 +945,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
     } 
     return slicingRow; 
+  }
+
+  private String noTail(String id) {
+    if (id.contains(".")) {
+      String t = id.substring(id.lastIndexOf(".")+1);
+      if (Utilities.isInteger(t)) {
+        return id.substring(0, id.lastIndexOf("."));
+      }
+    } 
+    return id;
   }
 
   private String makeAnchorUnique(String anchor) {
@@ -1061,7 +1073,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement())); 
     } 
     if (element.hasSlicing() && slicesExist(elements, element)) { // some elements set up slicing but don't actually slice, so we don't augment the name  
-      sName = context.formatPhrase(RenderingContext.STRUC_DEF_SLICE_FOR, sName);  
+      sName = context.formatPhrase(RenderingContext.STRUC_DEF_SLICE_FOR, sName); 
     } 
     Cell left = gen.new Cell(null, ref, sName, hint, null); 
     row.getCells().add(left); 
@@ -1614,19 +1626,34 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (binding!=null && !binding.isEmpty()) { 
             if (!c.getPieces().isEmpty())  
               c.addPiece(gen.new Piece("br")); 
-            BindingResolution br = context.getPkp() == null ? makeNullBr(binding) : context.getPkp().resolveBinding(profile, binding, definition.getPath()); 
-            c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_BINDING))+": ", null).addStyle("font-weight:bold"))); 
-            c.getPieces().add(checkForNoChange(binding.getValueSetElement(), checkAddExternalFlag(br, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, br.display, br.uri)))); 
-            if (binding.hasStrength()) { 
-              c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, " (", null))); 
-              c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));                             
-              c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, ")", null))); 
-            } 
-            if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) { 
-              c.getPieces().add(gen.new Piece(null, ": ", null)); 
-              c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()))); 
-            }  
- 
+            if (!binding.hasValueSet()) {
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_VS))+": ", null).addStyle("font-weight:bold"))); 
+              if (binding.hasStrength()) { 
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, " (", null))); 
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));                             
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, ")", null))); 
+              } 
+              if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) { 
+                c.getPieces().add(gen.new Piece(null, ": ", null)); 
+                c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()))); 
+              } else {
+                c.getPieces().add(gen.new Piece(null, ": ", null)); 
+                c.addMarkdownNoPara(context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_DESC));
+              }
+            } else {
+              BindingResolution br = context.getPkp() == null ? makeNullBr(binding) : context.getPkp().resolveBinding(profile, binding, definition.getPath()); 
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_BINDING))+": ", null).addStyle("font-weight:bold"))); 
+              c.getPieces().add(checkForNoChange(binding.getValueSetElement(), checkAddExternalFlag(br, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, br.display, br.uri)))); 
+              if (binding.hasStrength()) { 
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, " (", null))); 
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));                             
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, ")", null))); 
+              } 
+              if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) { 
+                c.getPieces().add(gen.new Piece(null, ": ", null)); 
+                c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()))); 
+              }  
+            }
             AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, profile, definition.getPath(), rc, null, this); 
             abr.seeAdditionalBindings(definition, null, false); 
             if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET)) { 
@@ -2779,7 +2806,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } else { 
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(t); 
           if (sd == null) { 
-            System.out.println("Unable to find "+t); 
+            if (DEBUG) {
+              System.out.println("Unable to find "+t);
+            }
             sd = context.getWorker().fetchTypeDefinition(t); 
           } else if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) { 
             used = true; 
@@ -3402,7 +3431,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       sdMapCache.put(url, sdCache); 
       String webroot = sd.getUserString("webroot"); 
       for (ElementDefinition e : sd.getSnapshot().getElement()) { 
-        context.getProfileUtilities().updateURLs(sd.getUrl(), webroot, e); 
+        context.getProfileUtilities().updateURLs(sd.getUrl(), webroot, e, false); 
         sdCache.put(e.getId(), e); 
       } 
     } 
@@ -3677,7 +3706,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (x1 == null) { 
       return false; 
     } else { 
-      x.getChildNodes().addAll(x1.getChildNodes()); 
+      x.addChildNodes(x1.getChildNodes()); 
       return true; 
     } 
   } 

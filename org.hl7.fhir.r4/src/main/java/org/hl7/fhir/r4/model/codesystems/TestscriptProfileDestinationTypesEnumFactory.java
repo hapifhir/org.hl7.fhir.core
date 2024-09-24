@@ -50,7 +50,9 @@ public class TestscriptProfileDestinationTypesEnumFactory implements EnumFactory
   }
 
   public String toCode(TestscriptProfileDestinationTypes code) {
-    if (code == TestscriptProfileDestinationTypes.FHIRSERVER)
+       if (code == TestscriptProfileDestinationTypes.NULL)
+           return null;
+       if (code == TestscriptProfileDestinationTypes.FHIRSERVER)
       return "FHIR-Server";
     if (code == TestscriptProfileDestinationTypes.FHIRSDCFORMMANAGER)
       return "FHIR-SDC-FormManager";
@@ -59,7 +61,7 @@ public class TestscriptProfileDestinationTypesEnumFactory implements EnumFactory
     if (code == TestscriptProfileDestinationTypes.FHIRSDCFORMRECEIVER)
       return "FHIR-SDC-FormReceiver";
     return "?";
-  }
+   }
 
   public String toSystem(TestscriptProfileDestinationTypes code) {
     return code.getSystem();

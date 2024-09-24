@@ -202,8 +202,11 @@ public class Provenance extends DomainResource {
       throw new FHIRException("Unknown ProvenanceEntityRole code '" + codeString + "'");
     }
 
-    public String toCode(ProvenanceEntityRole code) {
-      if (code == ProvenanceEntityRole.DERIVATION)
+    public String toCode(ProvenanceEntityRole code)
+   {
+       if (code == ProvenanceEntityRole.NULL)
+           return null;
+       if (code == ProvenanceEntityRole.DERIVATION)
         return "derivation";
       if (code == ProvenanceEntityRole.REVISION)
         return "revision";
@@ -212,7 +215,7 @@ public class Provenance extends DomainResource {
       if (code == ProvenanceEntityRole.SOURCE)
         return "source";
       return "?";
-    }
+   }
   }
 
   @Block()

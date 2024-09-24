@@ -50,7 +50,9 @@ public class NameAssemblyOrderEnumFactory implements EnumFactory<NameAssemblyOrd
   }
 
   public String toCode(NameAssemblyOrder code) {
-    if (code == NameAssemblyOrder.NL1)
+       if (code == NameAssemblyOrder.NULL)
+           return null;
+       if (code == NameAssemblyOrder.NL1)
       return "NL1";
     if (code == NameAssemblyOrder.NL2)
       return "NL2";
@@ -59,7 +61,7 @@ public class NameAssemblyOrderEnumFactory implements EnumFactory<NameAssemblyOrd
     if (code == NameAssemblyOrder.NL4)
       return "NL4";
     return "?";
-  }
+   }
 
   public String toSystem(NameAssemblyOrder code) {
     return code.getSystem();

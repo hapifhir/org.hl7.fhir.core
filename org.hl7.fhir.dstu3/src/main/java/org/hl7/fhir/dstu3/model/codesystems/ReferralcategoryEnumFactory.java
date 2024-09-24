@@ -52,14 +52,16 @@ public class ReferralcategoryEnumFactory implements EnumFactory<Referralcategory
   }
 
   public String toCode(Referralcategory code) {
-    if (code == Referralcategory.PROPOSAL)
+       if (code == Referralcategory.NULL)
+           return null;
+       if (code == Referralcategory.PROPOSAL)
       return "proposal";
     if (code == Referralcategory.PLAN)
       return "plan";
     if (code == Referralcategory.REQUEST)
       return "request";
     return "?";
-  }
+   }
 
     public String toSystem(Referralcategory code) {
       return code.getSystem();

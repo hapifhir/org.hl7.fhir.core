@@ -54,7 +54,9 @@ public class MapTargetListModeEnumFactory implements EnumFactory<MapTargetListMo
   }
 
   public String toCode(MapTargetListMode code) {
-    if (code == MapTargetListMode.FIRST)
+       if (code == MapTargetListMode.NULL)
+           return null;
+       if (code == MapTargetListMode.FIRST)
       return "first";
     if (code == MapTargetListMode.SHARE)
       return "share";
@@ -63,7 +65,7 @@ public class MapTargetListModeEnumFactory implements EnumFactory<MapTargetListMo
     if (code == MapTargetListMode.COLLATE)
       return "collate";
     return "?";
-  }
+   }
 
     public String toSystem(MapTargetListMode code) {
       return code.getSystem();

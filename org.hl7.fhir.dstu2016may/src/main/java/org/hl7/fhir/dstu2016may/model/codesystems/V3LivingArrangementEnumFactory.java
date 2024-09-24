@@ -66,7 +66,9 @@ public class V3LivingArrangementEnumFactory implements EnumFactory<V3LivingArran
   }
 
   public String toCode(V3LivingArrangement code) {
-    if (code == V3LivingArrangement.HL)
+       if (code == V3LivingArrangement.NULL)
+           return null;
+       if (code == V3LivingArrangement.HL)
       return "HL";
     if (code == V3LivingArrangement.M)
       return "M";
@@ -91,7 +93,7 @@ public class V3LivingArrangementEnumFactory implements EnumFactory<V3LivingArran
     if (code == V3LivingArrangement.SL)
       return "SL";
     return "?";
-  }
+   }
 
   public String toSystem(V3LivingArrangement code) {
     return code.getSystem();

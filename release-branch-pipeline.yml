@@ -10,6 +10,18 @@ variables:
   VERSION:
 
 jobs:
+   - job: check_all_dependencies_are_releases
+     timeoutInMinutes: 5
+     steps:
+       - task: Maven@4
+         inputs:
+           mavenPomFile: 'pom.xml'
+           options: '-DcheckForSnapshotDependencies'
+           javaHomeOption: 'JDKVersion'
+           jdkVersionOption: '1.11'
+           jdkArchitectureOption: 'x64'
+           publishJUnitResults: false
+           goals: 'enforcer:enforce'
    - job: check_release_notes
      timeoutInMinutes: 5
      steps:
@@ -119,12 +131,12 @@ jobs:
       # is that once we pull the code, it won't change again on this branch until the release is complete. We
       # want to fail fast if there is an issue, and avoid running the tests more than once so it doesn't take all day.
      timeoutInMinutes: 360
-     dependsOn: ['get_release_version', 'get_branch_id', 'check_release_notes']
+     dependsOn: ['get_release_version', 'get_branch_id', 'check_release_notes', 'check_all_dependencies_are_releases']
      variables:
        version_from_pom: $[ dependencies.get_release_version.outputs['setOutput.version_from_pom'] ]
      steps:
         # Runs 'mvn clean package'
-        - task: Maven@3
+        - task: Maven@4
           inputs:
             mavenPomFile: 'pom.xml'
             mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'

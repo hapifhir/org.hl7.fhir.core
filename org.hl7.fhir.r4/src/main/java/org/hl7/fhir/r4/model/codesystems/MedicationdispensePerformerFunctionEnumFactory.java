@@ -51,7 +51,9 @@ public class MedicationdispensePerformerFunctionEnumFactory
   }
 
   public String toCode(MedicationdispensePerformerFunction code) {
-    if (code == MedicationdispensePerformerFunction.DATAENTERER)
+       if (code == MedicationdispensePerformerFunction.NULL)
+           return null;
+       if (code == MedicationdispensePerformerFunction.DATAENTERER)
       return "dataenterer";
     if (code == MedicationdispensePerformerFunction.PACKAGER)
       return "packager";
@@ -60,7 +62,7 @@ public class MedicationdispensePerformerFunctionEnumFactory
     if (code == MedicationdispensePerformerFunction.FINALCHECKER)
       return "finalchecker";
     return "?";
-  }
+   }
 
   public String toSystem(MedicationdispensePerformerFunction code) {
     return code.getSystem();

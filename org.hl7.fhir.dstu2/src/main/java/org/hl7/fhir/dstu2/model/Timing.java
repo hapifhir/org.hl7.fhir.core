@@ -245,8 +245,11 @@ public class Timing extends Type implements ICompositeType {
       throw new FHIRException("Unknown UnitsOfTime code '" + codeString + "'");
     }
 
-    public String toCode(UnitsOfTime code) {
-      if (code == UnitsOfTime.S)
+    public String toCode(UnitsOfTime code)
+   {
+       if (code == UnitsOfTime.NULL)
+           return null;
+       if (code == UnitsOfTime.S)
         return "s";
       if (code == UnitsOfTime.MIN)
         return "min";
@@ -261,7 +264,7 @@ public class Timing extends Type implements ICompositeType {
       if (code == UnitsOfTime.A)
         return "a";
       return "?";
-    }
+   }
   }
 
   public enum EventTiming {
@@ -582,8 +585,11 @@ public class Timing extends Type implements ICompositeType {
       throw new FHIRException("Unknown EventTiming code '" + codeString + "'");
     }
 
-    public String toCode(EventTiming code) {
-      if (code == EventTiming.HS)
+    public String toCode(EventTiming code)
+   {
+       if (code == EventTiming.NULL)
+           return null;
+       if (code == EventTiming.HS)
         return "HS";
       if (code == EventTiming.WAKE)
         return "WAKE";
@@ -612,7 +618,7 @@ public class Timing extends Type implements ICompositeType {
       if (code == EventTiming.PCV)
         return "PCV";
       return "?";
-    }
+   }
   }
 
   @Block()

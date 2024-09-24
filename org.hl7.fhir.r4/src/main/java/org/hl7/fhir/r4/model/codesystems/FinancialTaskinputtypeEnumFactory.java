@@ -56,7 +56,9 @@ public class FinancialTaskinputtypeEnumFactory implements EnumFactory<FinancialT
   }
 
   public String toCode(FinancialTaskinputtype code) {
-    if (code == FinancialTaskinputtype.INCLUDE)
+       if (code == FinancialTaskinputtype.NULL)
+           return null;
+       if (code == FinancialTaskinputtype.INCLUDE)
       return "include";
     if (code == FinancialTaskinputtype.EXCLUDE)
       return "exclude";
@@ -71,7 +73,7 @@ public class FinancialTaskinputtypeEnumFactory implements EnumFactory<FinancialT
     if (code == FinancialTaskinputtype.STATUS)
       return "status";
     return "?";
-  }
+   }
 
   public String toSystem(FinancialTaskinputtype code) {
     return code.getSystem();

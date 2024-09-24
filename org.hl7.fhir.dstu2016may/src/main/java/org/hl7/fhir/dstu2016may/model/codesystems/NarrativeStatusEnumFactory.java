@@ -50,7 +50,9 @@ public class NarrativeStatusEnumFactory implements EnumFactory<NarrativeStatus> 
   }
 
   public String toCode(NarrativeStatus code) {
-    if (code == NarrativeStatus.GENERATED)
+       if (code == NarrativeStatus.NULL)
+           return null;
+       if (code == NarrativeStatus.GENERATED)
       return "generated";
     if (code == NarrativeStatus.EXTENSIONS)
       return "extensions";
@@ -59,7 +61,7 @@ public class NarrativeStatusEnumFactory implements EnumFactory<NarrativeStatus> 
     if (code == NarrativeStatus.EMPTY)
       return "empty";
     return "?";
-  }
+   }
 
   public String toSystem(NarrativeStatus code) {
     return code.getSystem();

@@ -50,7 +50,9 @@ public class V3QueryResponseEnumFactory implements EnumFactory<V3QueryResponse> 
   }
 
   public String toCode(V3QueryResponse code) {
-    if (code == V3QueryResponse.AE)
+       if (code == V3QueryResponse.NULL)
+           return null;
+       if (code == V3QueryResponse.AE)
       return "AE";
     if (code == V3QueryResponse.NF)
       return "NF";
@@ -59,7 +61,7 @@ public class V3QueryResponseEnumFactory implements EnumFactory<V3QueryResponse> 
     if (code == V3QueryResponse.QE)
       return "QE";
     return "?";
-  }
+   }
 
   public String toSystem(V3QueryResponse code) {
     return code.getSystem();

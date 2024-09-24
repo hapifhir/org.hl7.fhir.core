@@ -50,7 +50,9 @@ public class RequestPriorityEnumFactory implements EnumFactory<RequestPriority> 
   }
 
   public String toCode(RequestPriority code) {
-    if (code == RequestPriority.ROUTINE)
+       if (code == RequestPriority.NULL)
+           return null;
+       if (code == RequestPriority.ROUTINE)
       return "routine";
     if (code == RequestPriority.URGENT)
       return "urgent";
@@ -59,7 +61,7 @@ public class RequestPriorityEnumFactory implements EnumFactory<RequestPriority> 
     if (code == RequestPriority.STAT)
       return "stat";
     return "?";
-  }
+   }
 
   public String toSystem(RequestPriority code) {
     return code.getSystem();

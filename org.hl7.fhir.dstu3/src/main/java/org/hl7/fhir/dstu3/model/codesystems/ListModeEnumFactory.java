@@ -52,14 +52,16 @@ public class ListModeEnumFactory implements EnumFactory<ListMode> {
   }
 
   public String toCode(ListMode code) {
-    if (code == ListMode.WORKING)
+       if (code == ListMode.NULL)
+           return null;
+       if (code == ListMode.WORKING)
       return "working";
     if (code == ListMode.SNAPSHOT)
       return "snapshot";
     if (code == ListMode.CHANGES)
       return "changes";
     return "?";
-  }
+   }
 
     public String toSystem(ListMode code) {
       return code.getSystem();

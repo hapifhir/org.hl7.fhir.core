@@ -52,14 +52,16 @@ public class SystemVersionProcessingModeEnumFactory implements EnumFactory<Syste
   }
 
   public String toCode(SystemVersionProcessingMode code) {
-    if (code == SystemVersionProcessingMode.DEFAULT)
+       if (code == SystemVersionProcessingMode.NULL)
+           return null;
+       if (code == SystemVersionProcessingMode.DEFAULT)
       return "default";
     if (code == SystemVersionProcessingMode.CHECK)
       return "check";
     if (code == SystemVersionProcessingMode.OVERRIDE)
       return "override";
     return "?";
-  }
+   }
 
     public String toSystem(SystemVersionProcessingMode code) {
       return code.getSystem();

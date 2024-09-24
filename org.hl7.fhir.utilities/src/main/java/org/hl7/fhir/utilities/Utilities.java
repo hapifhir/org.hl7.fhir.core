@@ -830,7 +830,7 @@ public class Utilities {
 
 
   public static String encodeUri(String v) {
-    return v.replace(" ", "%20").replace("?", "%3F").replace("=", "%3D").replace("|", "%7C").replace("+", "%2B");
+    return v.replace("%", "%25").replace(" ", "%20").replace("?", "%3F").replace("=", "%3D").replace("|", "%7C").replace("+", "%2B");
   }
 
 
@@ -1032,6 +1032,10 @@ public class Utilities {
 
 
   public static String escapeJson(String value) {
+    return escapeJson(value, true);
+  }
+  
+  public static String escapeJson(String value, boolean escapeUnicodeWhitespace) {
     if (value == null)
       return "";
 
@@ -1049,7 +1053,7 @@ public class Utilities {
         b.append("\\\\");
       else if (c == ' ')
         b.append(" ");
-      else if (isWhitespace(c)) {
+      else if ((c == '\r' || c == '\n') || (isWhitespace(c) && escapeUnicodeWhitespace)) { 
         b.append("\\u"+Utilities.padLeft(Integer.toHexString(c), '0', 4));
       } else if (((int) c) < 32)
         b.append("\\u" + Utilities.padLeft(Integer.toHexString(c), '0', 4));
@@ -1487,7 +1491,7 @@ public class Utilities {
   }
 
   public static boolean startsWithInList(String s, Collection<String> list) {
-    if (s == null) {
+    if (s == null || list == null) {
       return false;
     }
     for (String l : list) {
@@ -1691,31 +1695,47 @@ public class Utilities {
       value = value.substring(0, value.indexOf("e"));
     }    
     if (isZero(value)) {
-      return applyPrecision("-0.5000000000000000000000000", precision);
+      return applyPrecision("-0.5000000000000000000000000", precision, true);
     } else if (value.startsWith("-")) {
       return "-"+highBoundaryForDecimal(value.substring(1), precision)+(e == null ? "" : e);
     } else {
       if (value.contains(".")) {
-        return applyPrecision(minusOne(value)+"50000000000000000000000000000", precision)+(e == null ? "" : e);
+        return applyPrecision(minusOne(value)+"50000000000000000000000000000", precision, true)+(e == null ? "" : e);
       } else {
-        return applyPrecision(minusOne(value)+".50000000000000000000000000000", precision)+(e == null ? "" : e);
+        return applyPrecision(minusOne(value)+".50000000000000000000000000000", precision, true)+(e == null ? "" : e);
       }
     }
   }
 
-  private static String applyPrecision(String v, int p) {
+  private static String applyPrecision(String v, int p, boolean down) {
+    String nv = v;
+    int dp = -1;
+    if (nv.contains(".")) {
+      dp = nv.indexOf(".");
+      nv = nv.substring(0, dp)+nv.substring(dp+1);
+    }
+    String s = null;
     int d = p - getDecimalPrecision(v);
     if (d == 0) {
-      return v;
+      s = nv;
     } else if (d > 0) {
-      return v + padLeft("", '0', d);
+      s = nv + padLeft("", '0', d);
     } else {
-      if (v.charAt(v.length()+d) >= '6') {
-        return v.substring(0, v.length()+d-1)+((char) (v.charAt(v.length()+d)+1));
+      int l = v.length();
+      int ld = l+d;
+      if (dp > -1) {
+        ld--;
+      }
+      if (nv.charAt(ld) >= '5' && !down) {
+        s = nv.substring(0, ld-1)+((char) (nv.charAt(ld-1)+1));
       } else {
-        return v.substring(0, v.length()+d);
+        s = nv.substring(0, ld);
       }
     }
+    if (s.endsWith(".")) {
+      s = s.substring(0, s.length()-1);
+    }
+    return dp == -1 || dp >= s.length() ? s : s.substring(0, dp)+"."+s.substring(dp);
   }
 
   private static String minusOne(String value) {
@@ -1799,9 +1819,14 @@ public class Utilities {
 
   private static Object applyDatePrecision(String v, int precision) {
     switch (precision) {
-    case 4: return v.substring(0, 4);
-    case 6: return v.substring(0, 7);
-    case 8: return v.substring(0, 10);
+    case 4: 
+      return v.substring(0, 4);
+    case 6:
+    case 7:
+      return v.substring(0, 7);
+    case 8:
+    case 10:
+      return v.substring(0, 10);
     case 14: return v.substring(0, 17);
     case 17: return v;      
     }
@@ -1827,14 +1852,14 @@ public class Utilities {
       value = value.substring(0, value.indexOf("e"));
     }
     if (isZero(value)) {
-      return applyPrecision("0.50000000000000000000000000000", precision);
+      return applyPrecision("0.50000000000000000000000000000", precision, false);
     } else if (value.startsWith("-")) {
       return "-"+lowBoundaryForDecimal(value.substring(1), precision)+(e == null ? "" : e);
     } else {
       if (value.contains(".")) {
-        return applyPrecision(value+"50000000000000000000000000000", precision)+(e == null ? "" : e);
+        return applyPrecision(value+"50000000000000000000000000000", precision, false)+(e == null ? "" : e);
       } else {
-        return applyPrecision(value+".50000000000000000000000000000", precision)+(e == null ? "" : e);
+        return applyPrecision(value+".50000000000000000000000000000", precision, false)+(e == null ? "" : e);
       }
     }
   }
@@ -2252,6 +2277,48 @@ public class Utilities {
     } catch (Exception e) {
       return "??";
     }
+  }
+
+  public static boolean isValidHtmlAnchorChar(char c) {
+    if ( (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')) {
+      return true;
+    } 
+    switch (c) {
+    case '!':
+    case '$':
+    case '&':
+    case '\'':
+    case '(':
+    case ')':
+    case '*':
+    case '+':
+    case ',':
+    case ';':
+    case '=':
+    case '.':
+    case '_':
+    case '-':
+    case '~':
+    case ':':
+    case '@':
+    case '/':
+    case '?':
+      return true;
+    default:
+      return false;
+    }
+  }
+
+  public static boolean listValueStartsWith(String s, Set<String> list) {
+    if (s == null || list == null) {
+      return false;
+    }
+    for (String l : list) {
+      if (l.startsWith(s)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

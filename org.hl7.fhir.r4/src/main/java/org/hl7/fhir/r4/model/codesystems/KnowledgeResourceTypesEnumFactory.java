@@ -60,7 +60,9 @@ public class KnowledgeResourceTypesEnumFactory implements EnumFactory<KnowledgeR
   }
 
   public String toCode(KnowledgeResourceTypes code) {
-    if (code == KnowledgeResourceTypes.ACTIVITYDEFINITION)
+       if (code == KnowledgeResourceTypes.NULL)
+           return null;
+       if (code == KnowledgeResourceTypes.ACTIVITYDEFINITION)
       return "ActivityDefinition";
     if (code == KnowledgeResourceTypes.CODESYSTEM)
       return "CodeSystem";
@@ -79,7 +81,7 @@ public class KnowledgeResourceTypesEnumFactory implements EnumFactory<KnowledgeR
     if (code == KnowledgeResourceTypes.VALUESET)
       return "ValueSet";
     return "?";
-  }
+   }
 
   public String toSystem(KnowledgeResourceTypes code) {
     return code.getSystem();

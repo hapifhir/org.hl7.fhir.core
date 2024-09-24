@@ -56,7 +56,9 @@ public class GenderIdentityEnumFactory implements EnumFactory<GenderIdentity> {
   }
 
   public String toCode(GenderIdentity code) {
-    if (code == GenderIdentity.TRANSGENDERFEMALE)
+       if (code == GenderIdentity.NULL)
+           return null;
+       if (code == GenderIdentity.TRANSGENDERFEMALE)
       return "transgender-female";
     if (code == GenderIdentity.TRANSGENDERMALE)
       return "transgender-male";
@@ -71,7 +73,7 @@ public class GenderIdentityEnumFactory implements EnumFactory<GenderIdentity> {
     if (code == GenderIdentity.NONDISCLOSE)
       return "non-disclose";
     return "?";
-  }
+   }
 
   public String toSystem(GenderIdentity code) {
     return code.getSystem();

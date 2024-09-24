@@ -44,10 +44,12 @@ public class HspcObservationDataOriginationModeEnumFactory implements EnumFactor
   }
 
   public String toCode(HspcObservationDataOriginationMode code) {
-    if (code == HspcObservationDataOriginationMode._14610118)
+       if (code == HspcObservationDataOriginationMode.NULL)
+           return null;
+       if (code == HspcObservationDataOriginationMode._14610118)
       return "14610118";
     return "?";
-  }
+   }
 
   public String toSystem(HspcObservationDataOriginationMode code) {
     return code.getSystem();

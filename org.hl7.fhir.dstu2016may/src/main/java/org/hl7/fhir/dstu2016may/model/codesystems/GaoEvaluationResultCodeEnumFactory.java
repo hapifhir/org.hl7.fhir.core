@@ -54,7 +54,9 @@ public class GaoEvaluationResultCodeEnumFactory implements EnumFactory<GaoEvalua
   }
 
   public String toCode(GaoEvaluationResultCode code) {
-    if (code == GaoEvaluationResultCode.WITHIN)
+       if (code == GaoEvaluationResultCode.NULL)
+           return null;
+       if (code == GaoEvaluationResultCode.WITHIN)
       return "within";
     if (code == GaoEvaluationResultCode.OUTSIDE)
       return "outside";
@@ -67,7 +69,7 @@ public class GaoEvaluationResultCodeEnumFactory implements EnumFactory<GaoEvalua
     if (code == GaoEvaluationResultCode.NOTCOVERED)
       return "notcovered";
     return "?";
-  }
+   }
 
   public String toSystem(GaoEvaluationResultCode code) {
     return code.getSystem();

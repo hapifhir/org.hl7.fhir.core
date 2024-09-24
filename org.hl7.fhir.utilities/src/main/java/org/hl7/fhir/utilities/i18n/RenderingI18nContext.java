@@ -78,6 +78,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CAPABILITY_CREATE_INT = "CAPABILITY_CREATE_INT";
   public static final String GENERAL_CRIT = "GENERAL_CRIT";
   public static final String CAPABILITY_DELETE_INT = "CAPABILITY_DELETE_INT";
+  public static final String CAPABILITY_ERR_DET = "CAPABILITY_ERR_DET";
   public static final String CAPABILITY_EXT_OP = "CAPABILITY_EXT_OP";
   public static final String CAPABILITY_FHIR = "CAPABILITY_FHIR";
   public static final String CAPABILITY_FHIR_VER = "CAPABILITY_FHIR_VER";
@@ -88,6 +89,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CAPABILITY_INTER_SUPP = "CAPABILITY_INTER_SUPP";
   public static final String CAPABILITY_INT_DESC = "CAPABILITY_INT_DESC";
   public static final String CAPABILITY_INT_SUMM = "CAPABILITY_INT_SUMM";
+  public static final String CAPABILITY_MAY_SUPP = "CAPABILITY_MAY_SUPP";
+  public static final String CAPABILITY_MULT_EXT = "CAPABILITY_MULT_EXT";
   public static final String CAPABILITY_NOTE_CAP = "CAPABILITY_NOTE_CAP";
   public static final String CAPABILITY_OP = "CAPABILITY_OP";
   public static final String CAPABILITY_OPER = "CAPABILITY_OPER";
@@ -99,6 +102,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CAPABILITY_PATCH_INT = "CAPABILITY_PATCH_INT";
   public static final String GENERAL_PROF = "GENERAL_PROF";
   public static final String CAPABILITY_PROF_CONF = "CAPABILITY_PROF_CONF";
+  public static final String CAPABILITY_PROF_RES_DOC = "CAPABILITY_PROF_RES_DOC";
   public static final String CAPABILITY_PROF_MAP = "CAPABILITY_PROF_MAP";
   public static final String CAPABILITY_PUB_BY = "CAPABILITY_PUB_BY";
   public static final String CAPABILITY_PUB_ON = "CAPABILITY_PUB_ON";
@@ -106,6 +110,9 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CAPABILITY_REF_PROF = "CAPABILITY_REF_PROF";
   public static final String CAPABILITY_REQ_RECOM = "CAPABILITY_REQ_RECOM";
   public static final String CAPABILITY_REST_CAPS = "CAPABILITY_REST_CAPS";
+  public static final String CAPABILITY_DOCUMENT_CAPS = "CAPABILITY_DOCUMENT_CAPS";
+  public static final String CAPABILITY_MESSAGING_CAPS = "CAPABILITY_MESSAGING_CAPS";
+  public static final String CAPABILITY_MESSAGING_CAP = "CAPABILITY_MESSAGING_CAP";
   public static final String CAPABILITY_REST_CONFIG = "CAPABILITY_REST_CONFIG";
   public static final String CAPABILITY_RES_CONF = "CAPABILITY_RES_CONF";
   public static final String CAPABILITY_RES_ENB = "CAPABILITY_RES_ENB";
@@ -126,7 +133,10 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CAPABILITY_SUPP_FORM = "CAPABILITY_SUPP_FORM";
   public static final String CAPABILITY_SUPP_PATCH_FORM = "CAPABILITY_SUPP_PATCH_FORM";
   public static final String CAPABILITY_SUPP_PROFS = "CAPABILITY_SUPP_PROFS";
+  public static final String CAPABILITY_SUPP_MSGS = "CAPABILITY_SUPP_MSGS";
+  public static final String CAPABILITY_ENDPOINTS = "CAPABILITY_ENDPOINTS";
   public static final String CAPABILITY_SUPP_THE = "CAPABILITY_SUPP_THE";
+  public static final String CAPABILITY_SUPPS_THE = "CAPABILITY_SUPPS_THE";
   public static final String GENERAL_TYPE = "GENERAL_TYPE";
   public static final String CAPABILITY_TYPS = "CAPABILITY_TYPS";
   public static final String CAPABILITY_TYP_PRES = "CAPABILITY_TYP_PRES";
@@ -204,6 +214,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_DATA = "DATA_REND_DATA";
   public static final String DATA_REND_DETAILS = "DATA_REND_DETAILS";
   public static final String DATA_REND_DETAILS_STATED = "DATA_REND_DETAILS_STATED";
+  public static final String DATA_REND_DETAILS_STATED_ND = "DATA_REND_DETAILS_STATED_ND";
   public static final String DATA_REND_DICOM = "DATA_REND_DICOM";
   public static final String DATA_REND_DIM = "DATA_REND_DIM";
   public static final String DATA_REND_DURATION = "DATA_REND_DURATION";
@@ -321,6 +332,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String OBLIG_ELE = "OBLIG_ELE";
   public static final String GENERAL_OBLIG = "GENERAL_OBLIG";
   public static final String GENERAL_BINDING = "GENERAL_BINDING";
+  public static final String GENERAL_BINDING_NO_VS = "GENERAL_BINDING_NO_VS";
+  public static final String GENERAL_BINDING_NO_DESC = "GENERAL_BINDING_NO_DESC";
   public static final String GENERAL_CARDINALITY = "GENERAL_CARDINALITY";
   public static final String OP_DEF_INPAR = "OP_DEF_INPAR";
   public static final String OP_DEF_OFFIC = "OP_DEF_OFFIC";
@@ -905,6 +918,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_ATT_URL = "DATA_REND_ATT_URL";
   public static final String DATA_REND_ATT_DATA = "DATA_REND_ATT_DATA";
   public static final String GENERAL_DATA_DISPLAY_PROPERTY = "GENERAL_DATA_DISPLAY_PROPERTY";
+  public static final String DATA_REND_CURRENCY = "DATA_REND_CURRENCY";
   
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";

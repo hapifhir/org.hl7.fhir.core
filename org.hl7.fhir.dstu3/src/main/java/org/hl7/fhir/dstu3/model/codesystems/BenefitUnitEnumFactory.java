@@ -50,12 +50,14 @@ public class BenefitUnitEnumFactory implements EnumFactory<BenefitUnit> {
   }
 
   public String toCode(BenefitUnit code) {
-    if (code == BenefitUnit.INDIVIDUAL)
+       if (code == BenefitUnit.NULL)
+           return null;
+       if (code == BenefitUnit.INDIVIDUAL)
       return "individual";
     if (code == BenefitUnit.FAMILY)
       return "family";
     return "?";
-  }
+   }
 
     public String toSystem(BenefitUnit code) {
       return code.getSystem();

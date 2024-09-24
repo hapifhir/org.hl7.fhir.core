@@ -161,12 +161,14 @@ public class CatalogEntry extends DomainResource {
     }
 
     public String toCode(CatalogEntryRelationType code) {
-      if (code == CatalogEntryRelationType.TRIGGERS)
+       if (code == CatalogEntryRelationType.NULL)
+           return null;
+       if (code == CatalogEntryRelationType.TRIGGERS)
         return "triggers";
       if (code == CatalogEntryRelationType.ISREPLACEDBY)
         return "is-replaced-by";
       return "?";
-    }
+   }
 
     public String toSystem(CatalogEntryRelationType code) {
       return code.getSystem();

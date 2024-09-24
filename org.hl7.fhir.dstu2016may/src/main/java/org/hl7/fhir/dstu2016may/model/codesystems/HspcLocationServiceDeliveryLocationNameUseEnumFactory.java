@@ -45,10 +45,12 @@ public class HspcLocationServiceDeliveryLocationNameUseEnumFactory
   }
 
   public String toCode(HspcLocationServiceDeliveryLocationNameUse code) {
-    if (code == HspcLocationServiceDeliveryLocationNameUse.ABR)
+       if (code == HspcLocationServiceDeliveryLocationNameUse.NULL)
+           return null;
+       if (code == HspcLocationServiceDeliveryLocationNameUse.ABR)
       return "ABR";
     return "?";
-  }
+   }
 
   public String toSystem(HspcLocationServiceDeliveryLocationNameUse code) {
     return code.getSystem();

@@ -52,8 +52,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         generateByProfile(status, r, sd, r, sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), context.isTechnicalMode(), 0);
       }
     } catch (Exception e) {
-      System.out.println(context.formatPhrase(RenderingContext.PROF_DRIV_ERR_GEN_NARR) +r.fhirType()+"/"+r.getId()+": "+e.getMessage());
-      e.printStackTrace();
+      if (DEBUG) {
+        System.out.println(context.formatPhrase(RenderingContext.PROF_DRIV_ERR_GEN_NARR) +r.fhirType()+"/"+r.getId()+": "+e.getMessage());
+        e.printStackTrace();
+      }
       x.para().b().style("color: maroon").tx(context.formatPhrase(RenderingContext.PROF_DRIV_EXCP, e.getMessage())+" ");
     }
   }
@@ -171,15 +173,21 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (!renderDataType(status, parent, x, ew)) {
       // well, we have a cell (x) to render this thing, whatever it is
       // it's not a data type for which we have a built rendering, so we're going to get a list of it's renderable datatype properties, and render them in a list
-      XhtmlNode ul = x.ul();
       SourcedChildDefinitions childDefs = context.getProfileUtilities().getChildMap(sd, defn);
+      boolean first = true;
+      x.tx(" (");
       for (ResourceWrapper child : ew.children()) {
 //        ElementDefinition childDefn = getElementDefinition(childDefs.getList(), child.name());
         if (child != null && !"Extension".equals(child.fhirType()) && canRenderDataType(child.fhirType())) {
-          XhtmlNode li = ul.li();
-          li.tx(context.formatMessage(RenderingContext.GENERAL_DATA_DISPLAY_PROPERTY, child.name(), displayDataType(child)));          
+          if (first) {
+            first = false;
+          } else {
+            x.tx("; ");
+          }
+          x.tx(context.formatMessage(RenderingContext.GENERAL_DATA_DISPLAY_PROPERTY, child.name(), displayDataType(child)));          
         }
       }
+      x.tx(")");
     }    
   }
 
@@ -324,13 +332,14 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         }
       }
     } else if (!round2 && !exemptFromRendering(child)) {
-      if (isExtension(p)) {
+      boolean isExt = isExtension(p);
+      if (isExt) {
         status.setExtensions(true);
       }
       List<ElementDefinition> grandChildren = getChildrenForPath(profile, allElements, path+"."+p.getName());
       filterGrandChildren(grandChildren, path+"."+p.getName(), p);
       if (p.getValues().size() > 0) {
-         if (isSimple(child)) {
+         if (isSimple(child) && !isExt) {
            XhtmlNode para = x.isPara() ? para = x : x.para();
            String name = p.getName();
            if (name.endsWith("[x]"))
@@ -375,22 +384,40 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             x.add(tbl);
           }
         } else if (isExtension(p)) {
+          StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, p.getUrl());          
           for (ResourceWrapper v : p.getValues()) {
             if (v != null) {
               ResourceWrapper vp = v.child("value");
               List<ResourceWrapper> ev = v.children("extension");
               if (vp != null) {
                 XhtmlNode para = x.para();
-                para.b().addText(labelforExtension(p.getName()));
+                para.b().addText(labelforExtension(sd, p.getUrl()));
                 para.tx(": ");
                 renderLeaf(status, res, vp, profile, child, x, para, false, showCodeDetails, displayHints, path, indent);
               } else if (!ev.isEmpty()) {
-                XhtmlNode bq = x.addTag("blockquote");                
-                bq.para().b().addText(labelforExtension(p.getName()));
+                XhtmlNode bq = x.addTag("blockquote");  
+                bq.para().b().addText(labelforExtension(sd, p.getUrl()));
+                // what happens now depends. If all the children are simple extensions, they'll be rendered as properties 
+                boolean allSimple = true;
                 for (ResourceWrapper vv : ev) {
-                  StructureDefinition ex = context.getWorker().fetchTypeDefinition("Extension");
-                  List<ElementDefinition> children = getChildrenForPath(profile, ex.getSnapshot().getElement(), "Extension");
-                  generateByProfile(status, res, ex, vv, allElements, child, children, bq, "Extension", showCodeDetails, indent+1);
+                  if (!vv.has("value")) {
+                    allSimple = false;
+                  }
+                }
+                if (allSimple) {
+                  XhtmlNode ul = bq.ul();
+                  for (ResourceWrapper vv : ev) {
+                    XhtmlNode li = ul.li();
+                    li.tx(labelForSubExtension(vv.primitiveValue("url"), sd));
+                    li.tx(": ");
+                    renderLeaf(status, res, vv.child("value"), sd, child, x, li, isExt, showCodeDetails, displayHints, path, indent);
+                  }
+                } else {
+                  for (ResourceWrapper vv : ev) {
+                    StructureDefinition ex = context.getWorker().fetchTypeDefinition("Extension");
+                    List<ElementDefinition> children = getChildrenForPath(profile, ex.getSnapshot().getElement(), "Extension");
+                    generateByProfile(status, res, ex, vv, allElements, child, children, bq, "Extension", showCodeDetails, indent+1);
+                  }
                 }
               }
             }
@@ -409,8 +436,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   }
 
 
-  private String labelforExtension(String url) {
-    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url);
+  private String labelForSubExtension(String url, StructureDefinition sd) {  
+    return url;
+  }
+
+  private String labelforExtension(StructureDefinition sd, String url) {
     if (sd == null) {
       return tail(url);
     } else {
@@ -459,7 +489,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   }
 
   public boolean isExtension(NamedResourceWrapperList p) {
-    return p.getName().contains("extension[");
+    return p.getUrl() != null;
   }
 
 
@@ -563,12 +593,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             // 2. Park it
             NamedResourceWrapperList nl = null;
             for (NamedResourceWrapperList t : results) {
-              if (t.getName().equals(url)) {
+              if (t.getUrl() != null && t.getUrl().equals(url)) {
                 nl = t;
               }
             }
             if (nl == null) {
-              nl = new NamedResourceWrapperList(url);
+              nl = new NamedResourceWrapperList(p.getName(), url);
               results.add(nl);
             }
             nl.getValues().add(v);

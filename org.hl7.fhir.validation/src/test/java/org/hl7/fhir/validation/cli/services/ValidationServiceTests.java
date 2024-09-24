@@ -1,8 +1,7 @@
 package org.hl7.fhir.validation.cli.services;
 
 import static org.hl7.fhir.validation.tests.utilities.TestUtilities.getTerminologyCacheDirectory;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.AdditionalMatchers.and;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -38,13 +37,12 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
-class ValidationServiceTest  {
+class ValidationServiceTests {
 
   final String DUMMY_SOURCE = "dummySource";
   final String DUMMY_SOURCE1 = "dummySource1";
@@ -54,32 +52,72 @@ class ValidationServiceTest  {
 
   final String DUMMY_SV = "1.2.3";
 
+  @DisplayName("Test validation session persists in session cache")
   @Test
-  void validateSources() throws Exception {
+  void validationSessionTest() throws Exception {
     TestingUtilities.injectCorePackageLoader();
     SessionCache sessionCache = Mockito.spy(new PassiveExpiringSessionCache());
-    ValidationService myService = new ValidationService(sessionCache);
+    ValidationService myService = Mockito.spy(new ValidationService(sessionCache));
 
-    String resource = IOUtils.toString(getFileFromResourceAsStream("detected_issues.json"), StandardCharsets.UTF_8);
-    List<FileInfo> filesToValidate = new ArrayList<>();
-    filesToValidate.add(new FileInfo().setFileName("test_resource.json").setFileContent(resource).setFileType(Manager.FhirFormat.JSON.getExtension()));
+    List<FileInfo> filesToValidate = getFilesToValidate();
 
     ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"))).setFilesToValidate(filesToValidate);
     // Validation run 1...nothing cached yet
     myService.validateSources(request);
     verify(sessionCache, Mockito.times(1)).cacheSession(ArgumentMatchers.any(ValidationEngine.class));
-
+    verify(sessionCache, Mockito.times(1)).cleanUp();
+    verify(myService, Mockito.times(1)).buildValidationEngine(any(), any(), any());
     Set<String> sessionIds = sessionCache.getSessionIds();
     if (sessionIds.stream().findFirst().isPresent()) {
       // Verify that after 1 run there is only one entry within the cache
-      Assertions.assertEquals(1, sessionIds.size());
-      myService.validateSources(request);
-      // Verify that the cache has been called on once with the id created in the first run
-      verify(sessionCache, Mockito.times(1)).fetchSessionValidatorEngine(sessionIds.stream().findFirst().get());
+      assertEquals(1, sessionIds.size());
+      myService.validateSources(request.setSessionId(sessionIds.stream().findFirst().get()));
+      // Verify that the cache has been called on twice with the id created in the first run
+      verify(sessionCache, Mockito.times(2)).fetchSessionValidatorEngine(sessionIds.stream().findFirst().get());
+      verify(sessionCache, Mockito.times(1)).cleanUp();
+      verify(myService, Mockito.times(1)).buildValidationEngine(any(), any(), any());
     } else {
       // If no sessions exist within the cache after a run, we auto-fail.
       fail();
     }
+  }
+
+  @DisplayName("Test validation session will inherit a base validation engine")
+  @Test
+  void validationSessionBaseEngineTest() throws Exception {
+    TestingUtilities.injectCorePackageLoader();
+
+    ValidationService myService = Mockito.spy(new ValidationService());
+
+    CliContext baseContext = new CliContext().setBaseEngine("myDummyKey").setSv("4.0.1").setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"));
+    myService.putBaseEngine("myDummyKey", baseContext);
+    verify(myService, Mockito.times(1)).buildValidationEngine(any(), any(), any());
+
+    {
+      final List<FileInfo> filesToValidate = getFilesToValidate();
+      final ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setSv("4.0.1")).setFilesToValidate(filesToValidate);
+      myService.validateSources(request);
+
+      verify(myService, Mockito.times(0)).getBaseEngine("myDummyKey");
+      verify(myService, Mockito.times(2)).buildValidationEngine(any(), any(), any());
+    }
+
+    {
+      final List<FileInfo> filesToValidate = getFilesToValidate();
+      final ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setBaseEngine("myDummyKey")).setFilesToValidate(filesToValidate);
+      myService.validateSources(request);
+
+      verify(myService, Mockito.times(1)).getBaseEngine("myDummyKey");
+      verify(myService, Mockito.times(2)).buildValidationEngine(any(), any(), any());
+    }
+  }
+
+  private List<FileInfo> getFilesToValidate() throws IOException {
+    List<FileInfo> filesToValidate = new ArrayList<>();
+    String resource = IOUtils.toString(getFileFromResourceAsStream("detected_issues.json"), StandardCharsets.UTF_8);
+
+    filesToValidate.add(new FileInfo().setFileName("test_resource.json").setFileContent(resource).setFileType(Manager.FhirFormat.JSON.getExtension()));
+  return filesToValidate;
   }
 
   private InputStream getFileFromResourceAsStream(String fileName) {
@@ -110,30 +148,26 @@ class ValidationServiceTest  {
 
   @Test
   @DisplayName("Test that conversion throws an Exception when no -output or -outputSuffix params are set")
-  public void convertSingleSourceNoOutput() throws Exception {
+  public void convertSingleSourceNoOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
     CliContext cliContext = getCliContextSingleSource();
-    Exception exception = assertThrows( Exception.class, () -> {
-      validationService.convertSources(cliContext,validationEngine);
-    });
+    assertThrows( Exception.class, () -> validationService.convertSources(cliContext,validationEngine));
   }
 
 
 
   @Test
   @DisplayName("Test that conversion throws an Exception when multiple sources are set and an -output param is set")
-  public void convertMultipleSourceOnlyOutput() throws Exception {
+  public void convertMultipleSourceOnlyOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
     CliContext cliContext = getCliContextMultipleSource();
-    assertThrows( Exception.class, () -> {
-        validationService.convertSources(cliContext,validationEngine);
-      }
+    assertThrows( Exception.class, () -> validationService.convertSources(cliContext,validationEngine)
     );
   }
 
@@ -168,28 +202,24 @@ class ValidationServiceTest  {
 
   @Test
   @DisplayName("Test that snapshot generation throws an Exception when no -output or -outputSuffix params are set")
-  public void generateSnapshotSingleSourceNoOutput() throws Exception {
+  public void generateSnapshotSingleSourceNoOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
     CliContext cliContext = getCliContextSingleSource();
-    Exception exception = assertThrows( Exception.class, () -> {
-      validationService.generateSnapshot(cliContext.setSv(DUMMY_SV),validationEngine);
-    });
+    assertThrows( Exception.class, () -> validationService.generateSnapshot(cliContext.setSv(DUMMY_SV),validationEngine));
   }
 
   @Test
   @DisplayName("Test that snapshot generation throws an Exception when multiple sources are set and an -output param is set")
-  public void generateSnapshotMultipleSourceOnlyOutput() throws Exception {
+  public void generateSnapshotMultipleSourceOnlyOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
     CliContext cliContext = getCliContextMultipleSource();
-    assertThrows( Exception.class, () -> {
-      validationService.generateSnapshot(cliContext.setOutput(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine);
-      }
+    assertThrows( Exception.class, () -> validationService.generateSnapshot(cliContext.setOutput(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine)
     );
   }
 
@@ -244,7 +274,7 @@ class ValidationServiceTest  {
     final ValidationEngine mockValidationEngine = mock(ValidationEngine.class);
     when(mockValidationEngine.getContext()).thenReturn(workerContext);
 
-    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);;
+    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);
     final ValidationService validationService = createFakeValidationService(mockValidationEngineBuilder, mockValidationEngine);
 
     CliContext cliContext = new CliContext();
@@ -262,7 +292,7 @@ class ValidationServiceTest  {
     final ValidationEngine mockValidationEngine = mock(ValidationEngine.class);
     when(mockValidationEngine.getContext()).thenReturn(workerContext);
 
-    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);;
+    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);
     final ValidationService validationService = createFakeValidationService(mockValidationEngineBuilder, mockValidationEngine);
 
     CliContext cliContext = new CliContext();
@@ -283,18 +313,18 @@ class ValidationServiceTest  {
         when(validationEngineBuilder.withUserAgent(anyString())).thenReturn(validationEngineBuilder);
         try {
           when(validationEngineBuilder.fromSource(isNull())).thenReturn(validationEngine);
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        } catch (URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
           throw new RuntimeException(e);
         }
         return validationEngineBuilder;
       }
 
       @Override
-      protected void loadIgsAndExtensions(ValidationEngine validationEngine, CliContext cliContext, TimeTracker timeTracker) throws IOException, URISyntaxException {
+      protected void loadIgsAndExtensions(ValidationEngine validationEngine, CliContext cliContext, TimeTracker timeTracker) {
         //Don't care. Do nothing.
       }
     };
   }
+
+
 }

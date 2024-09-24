@@ -46,12 +46,14 @@ public class TypeDerivationRuleEnumFactory implements EnumFactory<TypeDerivation
   }
 
   public String toCode(TypeDerivationRule code) {
-    if (code == TypeDerivationRule.SPECIALIZATION)
+       if (code == TypeDerivationRule.NULL)
+           return null;
+       if (code == TypeDerivationRule.SPECIALIZATION)
       return "specialization";
     if (code == TypeDerivationRule.CONSTRAINT)
       return "constraint";
     return "?";
-  }
+   }
 
   public String toSystem(TypeDerivationRule code) {
     return code.getSystem();

@@ -54,7 +54,9 @@ public class IssueSeverityEnumFactory implements EnumFactory<IssueSeverity> {
   }
 
   public String toCode(IssueSeverity code) {
-    if (code == IssueSeverity.FATAL)
+       if (code == IssueSeverity.NULL)
+           return null;
+       if (code == IssueSeverity.FATAL)
       return "fatal";
     if (code == IssueSeverity.ERROR)
       return "error";
@@ -63,7 +65,7 @@ public class IssueSeverityEnumFactory implements EnumFactory<IssueSeverity> {
     if (code == IssueSeverity.INFORMATION)
       return "information";
     return "?";
-  }
+   }
 
     public String toSystem(IssueSeverity code) {
       return code.getSystem();

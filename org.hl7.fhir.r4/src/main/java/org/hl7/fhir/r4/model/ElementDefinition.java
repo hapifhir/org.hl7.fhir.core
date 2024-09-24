@@ -218,7 +218,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public String toCode(PropertyRepresentation code) {
-      if (code == PropertyRepresentation.XMLATTR)
+       if (code == PropertyRepresentation.NULL)
+           return null;
+       if (code == PropertyRepresentation.XMLATTR)
         return "xmlAttr";
       if (code == PropertyRepresentation.XMLTEXT)
         return "xmlText";
@@ -229,7 +231,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       if (code == PropertyRepresentation.XHTML)
         return "xhtml";
       return "?";
-    }
+   }
 
     public String toSystem(PropertyRepresentation code) {
       return code.getSystem();
@@ -403,7 +405,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public String toCode(DiscriminatorType code) {
-      if (code == DiscriminatorType.VALUE)
+       if (code == DiscriminatorType.NULL)
+           return null;
+       if (code == DiscriminatorType.VALUE)
         return "value";
       if (code == DiscriminatorType.EXISTS)
         return "exists";
@@ -414,7 +418,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       if (code == DiscriminatorType.PROFILE)
         return "profile";
       return "?";
-    }
+   }
 
     public String toSystem(DiscriminatorType code) {
       return code.getSystem();
@@ -550,14 +554,16 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public String toCode(SlicingRules code) {
-      if (code == SlicingRules.CLOSED)
+       if (code == SlicingRules.NULL)
+           return null;
+       if (code == SlicingRules.CLOSED)
         return "closed";
       if (code == SlicingRules.OPEN)
         return "open";
       if (code == SlicingRules.OPENATEND)
         return "openAtEnd";
       return "?";
-    }
+   }
 
     public String toSystem(SlicingRules code) {
       return code.getSystem();
@@ -692,14 +698,16 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public String toCode(AggregationMode code) {
-      if (code == AggregationMode.CONTAINED)
+       if (code == AggregationMode.NULL)
+           return null;
+       if (code == AggregationMode.CONTAINED)
         return "contained";
       if (code == AggregationMode.REFERENCED)
         return "referenced";
       if (code == AggregationMode.BUNDLED)
         return "bundled";
       return "?";
-    }
+   }
 
     public String toSystem(AggregationMode code) {
       return code.getSystem();
@@ -832,14 +840,16 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public String toCode(ReferenceVersionRules code) {
-      if (code == ReferenceVersionRules.EITHER)
+       if (code == ReferenceVersionRules.NULL)
+           return null;
+       if (code == ReferenceVersionRules.EITHER)
         return "either";
       if (code == ReferenceVersionRules.INDEPENDENT)
         return "independent";
       if (code == ReferenceVersionRules.SPECIFIC)
         return "specific";
       return "?";
-    }
+   }
 
     public String toSystem(ReferenceVersionRules code) {
       return code.getSystem();
@@ -955,12 +965,14 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     }
 
     public String toCode(ConstraintSeverity code) {
-      if (code == ConstraintSeverity.ERROR)
+       if (code == ConstraintSeverity.NULL)
+           return null;
+       if (code == ConstraintSeverity.ERROR)
         return "error";
       if (code == ConstraintSeverity.WARNING)
         return "warning";
       return "?";
-    }
+   }
 
     public String toSystem(ConstraintSeverity code) {
       return code.getSystem();

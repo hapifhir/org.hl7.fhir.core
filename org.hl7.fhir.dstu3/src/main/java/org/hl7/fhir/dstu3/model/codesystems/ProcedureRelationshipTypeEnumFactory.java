@@ -50,12 +50,14 @@ public class ProcedureRelationshipTypeEnumFactory implements EnumFactory<Procedu
   }
 
   public String toCode(ProcedureRelationshipType code) {
-    if (code == ProcedureRelationshipType.CAUSEDBY)
+       if (code == ProcedureRelationshipType.NULL)
+           return null;
+       if (code == ProcedureRelationshipType.CAUSEDBY)
       return "caused-by";
     if (code == ProcedureRelationshipType.BECAUSEOF)
       return "because-of";
     return "?";
-  }
+   }
 
     public String toSystem(ProcedureRelationshipType code) {
       return code.getSystem();

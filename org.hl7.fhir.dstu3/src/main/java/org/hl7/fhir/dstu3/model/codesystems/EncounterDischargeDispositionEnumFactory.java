@@ -66,7 +66,9 @@ public class EncounterDischargeDispositionEnumFactory implements EnumFactory<Enc
   }
 
   public String toCode(EncounterDischargeDisposition code) {
-    if (code == EncounterDischargeDisposition.HOME)
+       if (code == EncounterDischargeDisposition.NULL)
+           return null;
+       if (code == EncounterDischargeDisposition.HOME)
       return "home";
     if (code == EncounterDischargeDisposition.OTHERHCF)
       return "other-hcf";
@@ -87,7 +89,7 @@ public class EncounterDischargeDispositionEnumFactory implements EnumFactory<Enc
     if (code == EncounterDischargeDisposition.OTH)
       return "oth";
     return "?";
-  }
+   }
 
     public String toSystem(EncounterDischargeDisposition code) {
       return code.getSystem();

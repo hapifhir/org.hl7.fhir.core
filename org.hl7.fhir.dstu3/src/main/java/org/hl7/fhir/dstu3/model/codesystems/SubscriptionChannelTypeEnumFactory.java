@@ -56,7 +56,9 @@ public class SubscriptionChannelTypeEnumFactory implements EnumFactory<Subscript
   }
 
   public String toCode(SubscriptionChannelType code) {
-    if (code == SubscriptionChannelType.RESTHOOK)
+       if (code == SubscriptionChannelType.NULL)
+           return null;
+       if (code == SubscriptionChannelType.RESTHOOK)
       return "rest-hook";
     if (code == SubscriptionChannelType.WEBSOCKET)
       return "websocket";
@@ -67,7 +69,7 @@ public class SubscriptionChannelTypeEnumFactory implements EnumFactory<Subscript
     if (code == SubscriptionChannelType.MESSAGE)
       return "message";
     return "?";
-  }
+   }
 
     public String toSystem(SubscriptionChannelType code) {
       return code.getSystem();

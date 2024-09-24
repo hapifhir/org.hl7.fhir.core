@@ -132,7 +132,9 @@ public class ProgramEnumFactory implements EnumFactory<Program> {
   }
 
   public String toCode(Program code) {
-    if (code == Program._1)
+       if (code == Program.NULL)
+           return null;
+       if (code == Program._1)
       return "1";
     if (code == Program._2)
       return "2";
@@ -223,7 +225,7 @@ public class ProgramEnumFactory implements EnumFactory<Program> {
     if (code == Program._45)
       return "45";
     return "?";
-  }
+   }
 
   public String toSystem(Program code) {
     return code.getSystem();

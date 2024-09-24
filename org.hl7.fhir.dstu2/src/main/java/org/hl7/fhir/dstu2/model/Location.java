@@ -172,15 +172,18 @@ public class Location extends DomainResource {
       throw new FHIRException("Unknown LocationStatus code '" + codeString + "'");
     }
 
-    public String toCode(LocationStatus code) {
-      if (code == LocationStatus.ACTIVE)
+    public String toCode(LocationStatus code)
+   {
+       if (code == LocationStatus.NULL)
+           return null;
+       if (code == LocationStatus.ACTIVE)
         return "active";
       if (code == LocationStatus.SUSPENDED)
         return "suspended";
       if (code == LocationStatus.INACTIVE)
         return "inactive";
       return "?";
-    }
+   }
   }
 
   public enum LocationMode {
@@ -288,13 +291,16 @@ public class Location extends DomainResource {
       throw new FHIRException("Unknown LocationMode code '" + codeString + "'");
     }
 
-    public String toCode(LocationMode code) {
-      if (code == LocationMode.INSTANCE)
+    public String toCode(LocationMode code)
+   {
+       if (code == LocationMode.NULL)
+           return null;
+       if (code == LocationMode.INSTANCE)
         return "instance";
       if (code == LocationMode.KIND)
         return "kind";
       return "?";
-    }
+   }
   }
 
   @Block()

@@ -283,8 +283,11 @@ public class Goal extends DomainResource {
       throw new FHIRException("Unknown GoalStatus code '" + codeString + "'");
     }
 
-    public String toCode(GoalStatus code) {
-      if (code == GoalStatus.PROPOSED)
+    public String toCode(GoalStatus code)
+   {
+       if (code == GoalStatus.NULL)
+           return null;
+       if (code == GoalStatus.PROPOSED)
         return "proposed";
       if (code == GoalStatus.PLANNED)
         return "planned";
@@ -303,7 +306,7 @@ public class Goal extends DomainResource {
       if (code == GoalStatus.CANCELLED)
         return "cancelled";
       return "?";
-    }
+   }
   }
 
   @Block()

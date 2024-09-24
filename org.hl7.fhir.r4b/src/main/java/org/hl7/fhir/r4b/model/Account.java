@@ -216,7 +216,9 @@ public class Account extends DomainResource {
     }
 
     public String toCode(AccountStatus code) {
-      if (code == AccountStatus.ACTIVE)
+       if (code == AccountStatus.NULL)
+           return null;
+       if (code == AccountStatus.ACTIVE)
         return "active";
       if (code == AccountStatus.INACTIVE)
         return "inactive";
@@ -227,7 +229,7 @@ public class Account extends DomainResource {
       if (code == AccountStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(AccountStatus code) {
       return code.getSystem();

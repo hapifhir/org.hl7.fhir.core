@@ -58,7 +58,9 @@ public class TaskPerformerTypeEnumFactory implements EnumFactory<TaskPerformerTy
   }
 
   public String toCode(TaskPerformerType code) {
-    if (code == TaskPerformerType.REQUESTER)
+       if (code == TaskPerformerType.NULL)
+           return null;
+       if (code == TaskPerformerType.REQUESTER)
       return "requester";
     if (code == TaskPerformerType.DISPATCHER)
       return "dispatcher";
@@ -75,7 +77,7 @@ public class TaskPerformerTypeEnumFactory implements EnumFactory<TaskPerformerTy
     if (code == TaskPerformerType.REVIEWER)
       return "reviewer";
     return "?";
-  }
+   }
 
   public String toSystem(TaskPerformerType code) {
     return code.getSystem();

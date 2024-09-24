@@ -174,15 +174,18 @@ public class QuestionnaireResponse extends DomainResource {
       throw new FHIRException("Unknown QuestionnaireResponseStatus code '" + codeString + "'");
     }
 
-    public String toCode(QuestionnaireResponseStatus code) {
-      if (code == QuestionnaireResponseStatus.INPROGRESS)
+    public String toCode(QuestionnaireResponseStatus code)
+   {
+       if (code == QuestionnaireResponseStatus.NULL)
+           return null;
+       if (code == QuestionnaireResponseStatus.INPROGRESS)
         return "in-progress";
       if (code == QuestionnaireResponseStatus.COMPLETED)
         return "completed";
       if (code == QuestionnaireResponseStatus.AMENDED)
         return "amended";
       return "?";
-    }
+   }
   }
 
   @Block()

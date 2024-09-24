@@ -266,7 +266,9 @@ public interface Request extends PatternBase {
     }
 
     public String toCode(RequestStatus code) {
-      if (code == RequestStatus.DRAFT)
+       if (code == RequestStatus.NULL)
+           return null;
+       if (code == RequestStatus.DRAFT)
         return "draft";
       if (code == RequestStatus.ACTIVE)
         return "active";
@@ -281,7 +283,7 @@ public interface Request extends PatternBase {
       if (code == RequestStatus.UNKNOWN)
         return "unknown";
       return "?";
-    }
+   }
 
     public String toSystem(RequestStatus code) {
       return code.getSystem();
@@ -535,7 +537,9 @@ public interface Request extends PatternBase {
     }
 
     public String toCode(RequestIntent code) {
-      if (code == RequestIntent.PROPOSAL)
+       if (code == RequestIntent.NULL)
+           return null;
+       if (code == RequestIntent.PROPOSAL)
         return "proposal";
       if (code == RequestIntent.PLAN)
         return "plan";
@@ -554,7 +558,7 @@ public interface Request extends PatternBase {
       if (code == RequestIntent.OPTION)
         return "option";
       return "?";
-    }
+   }
 
     public String toSystem(RequestIntent code) {
       return code.getSystem();
@@ -707,7 +711,9 @@ public interface Request extends PatternBase {
     }
 
     public String toCode(RequestPriority code) {
-      if (code == RequestPriority.ROUTINE)
+       if (code == RequestPriority.NULL)
+           return null;
+       if (code == RequestPriority.ROUTINE)
         return "routine";
       if (code == RequestPriority.URGENT)
         return "urgent";
@@ -716,7 +722,7 @@ public interface Request extends PatternBase {
       if (code == RequestPriority.STAT)
         return "stat";
       return "?";
-    }
+   }
 
     public String toSystem(RequestPriority code) {
       return code.getSystem();

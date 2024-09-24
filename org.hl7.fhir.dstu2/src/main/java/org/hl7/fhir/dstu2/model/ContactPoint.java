@@ -209,8 +209,11 @@ public class ContactPoint extends Type implements ICompositeType {
       throw new FHIRException("Unknown ContactPointSystem code '" + codeString + "'");
     }
 
-    public String toCode(ContactPointSystem code) {
-      if (code == ContactPointSystem.PHONE)
+    public String toCode(ContactPointSystem code)
+   {
+       if (code == ContactPointSystem.NULL)
+           return null;
+       if (code == ContactPointSystem.PHONE)
         return "phone";
       if (code == ContactPointSystem.FAX)
         return "fax";
@@ -221,7 +224,7 @@ public class ContactPoint extends Type implements ICompositeType {
       if (code == ContactPointSystem.OTHER)
         return "other";
       return "?";
-    }
+   }
   }
 
   public enum ContactPointUse {
@@ -387,8 +390,11 @@ public class ContactPoint extends Type implements ICompositeType {
       throw new FHIRException("Unknown ContactPointUse code '" + codeString + "'");
     }
 
-    public String toCode(ContactPointUse code) {
-      if (code == ContactPointUse.HOME)
+    public String toCode(ContactPointUse code)
+   {
+       if (code == ContactPointUse.NULL)
+           return null;
+       if (code == ContactPointUse.HOME)
         return "home";
       if (code == ContactPointUse.WORK)
         return "work";
@@ -399,7 +405,7 @@ public class ContactPoint extends Type implements ICompositeType {
       if (code == ContactPointUse.MOBILE)
         return "mobile";
       return "?";
-    }
+   }
   }
 
   /**

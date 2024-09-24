@@ -29,6 +29,8 @@ public class TestUtilities {
       .fromSource(src);
 
     TerminologyCache.setCacheErrors(true);
+    validationEngine.setLanguage("en-US");
+    validationEngine.setLocale(Locale.US);
     return validationEngine;
   }
 
@@ -45,7 +47,8 @@ public class TestUtilities {
       .withVersion(vString)
       .withUserAgent(TestConstants.USER_AGENT)
       .fromSource(src);
-
+    validationEngine.setLanguage("en-US");
+    validationEngine.setLocale(Locale.US);
     return validationEngine;
   }
   public static ValidationEngine getValidationEngine(java.lang.String src, java.lang.String txServer, FhirPublication version, java.lang.String vString) throws Exception {
@@ -66,7 +69,8 @@ public class TestUtilities {
         .fromSource(src);
       TerminologyCache.setCacheErrors(true);
     }
-
+    validationEngine.setLanguage("en-US");
+    validationEngine.setLocale(Locale.US);
     validationEngine.setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.IGNORE));
     return validationEngine;
   }

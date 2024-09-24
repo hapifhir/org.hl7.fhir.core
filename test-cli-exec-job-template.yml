@@ -19,7 +19,7 @@ jobs:
             modules:
               - org.hl7.fhir.validation.cli
           # Runs 'mvn exec'
-        - task: Maven@3
+        - task: Maven@4
           inputs:
             mavenPomFile: 'pom.xml'
             mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'

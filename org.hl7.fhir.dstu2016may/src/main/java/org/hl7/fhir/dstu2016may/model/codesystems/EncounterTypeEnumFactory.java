@@ -50,7 +50,9 @@ public class EncounterTypeEnumFactory implements EnumFactory<EncounterType> {
   }
 
   public String toCode(EncounterType code) {
-    if (code == EncounterType.ADMS)
+       if (code == EncounterType.NULL)
+           return null;
+       if (code == EncounterType.ADMS)
       return "ADMS";
     if (code == EncounterType.BD_BMCLIN)
       return "BD/BM-clin";
@@ -59,7 +61,7 @@ public class EncounterTypeEnumFactory implements EnumFactory<EncounterType> {
     if (code == EncounterType.OKI)
       return "OKI";
     return "?";
-  }
+   }
 
   public String toSystem(EncounterType code) {
     return code.getSystem();

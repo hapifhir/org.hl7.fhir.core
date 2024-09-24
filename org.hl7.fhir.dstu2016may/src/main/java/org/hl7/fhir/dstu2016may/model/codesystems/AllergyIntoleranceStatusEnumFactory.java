@@ -56,7 +56,9 @@ public class AllergyIntoleranceStatusEnumFactory implements EnumFactory<AllergyI
   }
 
   public String toCode(AllergyIntoleranceStatus code) {
-    if (code == AllergyIntoleranceStatus.ACTIVE)
+       if (code == AllergyIntoleranceStatus.NULL)
+           return null;
+       if (code == AllergyIntoleranceStatus.ACTIVE)
       return "active";
     if (code == AllergyIntoleranceStatus.UNCONFIRMED)
       return "unconfirmed";
@@ -71,7 +73,7 @@ public class AllergyIntoleranceStatusEnumFactory implements EnumFactory<AllergyI
     if (code == AllergyIntoleranceStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(AllergyIntoleranceStatus code) {
     return code.getSystem();

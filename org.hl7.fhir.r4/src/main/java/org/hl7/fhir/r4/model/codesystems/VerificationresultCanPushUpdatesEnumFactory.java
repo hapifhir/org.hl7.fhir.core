@@ -48,14 +48,16 @@ public class VerificationresultCanPushUpdatesEnumFactory implements EnumFactory<
   }
 
   public String toCode(VerificationresultCanPushUpdates code) {
-    if (code == VerificationresultCanPushUpdates.YES)
+       if (code == VerificationresultCanPushUpdates.NULL)
+           return null;
+       if (code == VerificationresultCanPushUpdates.YES)
       return "yes";
     if (code == VerificationresultCanPushUpdates.NO)
       return "no";
     if (code == VerificationresultCanPushUpdates.UNDETERMINED)
       return "undetermined";
     return "?";
-  }
+   }
 
   public String toSystem(VerificationresultCanPushUpdates code) {
     return code.getSystem();

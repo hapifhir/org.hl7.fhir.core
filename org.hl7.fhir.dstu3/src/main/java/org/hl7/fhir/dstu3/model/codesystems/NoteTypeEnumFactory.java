@@ -52,14 +52,16 @@ public class NoteTypeEnumFactory implements EnumFactory<NoteType> {
   }
 
   public String toCode(NoteType code) {
-    if (code == NoteType.DISPLAY)
+       if (code == NoteType.NULL)
+           return null;
+       if (code == NoteType.DISPLAY)
       return "display";
     if (code == NoteType.PRINT)
       return "print";
     if (code == NoteType.PRINTOPER)
       return "printoper";
     return "?";
-  }
+   }
 
     public String toSystem(NoteType code) {
       return code.getSystem();

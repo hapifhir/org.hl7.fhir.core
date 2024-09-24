@@ -234,7 +234,9 @@ public class Consent extends DomainResource {
     }
 
     public String toCode(ConsentState code) {
-      if (code == ConsentState.DRAFT)
+       if (code == ConsentState.NULL)
+           return null;
+       if (code == ConsentState.DRAFT)
         return "draft";
       if (code == ConsentState.PROPOSED)
         return "proposed";
@@ -247,7 +249,7 @@ public class Consent extends DomainResource {
       if (code == ConsentState.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(ConsentState code) {
       return code.getSystem();
@@ -362,12 +364,14 @@ public class Consent extends DomainResource {
     }
 
     public String toCode(ConsentProvisionType code) {
-      if (code == ConsentProvisionType.DENY)
+       if (code == ConsentProvisionType.NULL)
+           return null;
+       if (code == ConsentProvisionType.DENY)
         return "deny";
       if (code == ConsentProvisionType.PERMIT)
         return "permit";
       return "?";
-    }
+   }
 
     public String toSystem(ConsentProvisionType code) {
       return code.getSystem();
@@ -520,7 +524,9 @@ public class Consent extends DomainResource {
     }
 
     public String toCode(ConsentDataMeaning code) {
-      if (code == ConsentDataMeaning.INSTANCE)
+       if (code == ConsentDataMeaning.NULL)
+           return null;
+       if (code == ConsentDataMeaning.INSTANCE)
         return "instance";
       if (code == ConsentDataMeaning.RELATED)
         return "related";
@@ -529,7 +535,7 @@ public class Consent extends DomainResource {
       if (code == ConsentDataMeaning.AUTHOREDBY)
         return "authoredby";
       return "?";
-    }
+   }
 
     public String toSystem(ConsentDataMeaning code) {
       return code.getSystem();
@@ -1215,7 +1221,7 @@ public class Consent extends DomainResource {
   }
 
   @Block()
-  public static class provisionComponent extends BackboneElement implements IBaseBackboneElement {
+  public static class ProvisionComponent extends BackboneElement implements IBaseBackboneElement {
     /**
      * Action to take - permit or deny - when the rule conditions are met. Not
      * permitted in root rule, required in all nested rules.
@@ -1308,16 +1314,16 @@ public class Consent extends DomainResource {
      * Rules which provide exceptions to the base rule or subrules.
      */
     @Child(name = "provision", type = {
-        provisionComponent.class }, order = 11, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = false)
+        ProvisionComponent.class }, order = 11, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = false)
     @Description(shortDefinition = "Nested Exception Rules", formalDefinition = "Rules which provide exceptions to the base rule or subrules.")
-    protected List<provisionComponent> provision;
+    protected List<ProvisionComponent> provision;
 
     private static final long serialVersionUID = -1280172451L;
 
     /**
      * Constructor
      */
-    public provisionComponent() {
+    public ProvisionComponent() {
       super();
     }
 
@@ -1351,7 +1357,7 @@ public class Consent extends DomainResource {
      *              extensions. The accessor "getType" gives direct access to the
      *              value
      */
-    public provisionComponent setTypeElement(Enumeration<ConsentProvisionType> value) {
+    public ProvisionComponent setTypeElement(Enumeration<ConsentProvisionType> value) {
       this.type = value;
       return this;
     }
@@ -1368,7 +1374,7 @@ public class Consent extends DomainResource {
      * @param value Action to take - permit or deny - when the rule conditions are
      *              met. Not permitted in root rule, required in all nested rules.
      */
-    public provisionComponent setType(ConsentProvisionType value) {
+    public ProvisionComponent setType(ConsentProvisionType value) {
       if (value == null)
         this.type = null;
       else {
@@ -1398,7 +1404,7 @@ public class Consent extends DomainResource {
     /**
      * @param value {@link #period} (The timeframe in this rule is valid.)
      */
-    public provisionComponent setPeriod(Period value) {
+    public ProvisionComponent setPeriod(Period value) {
       this.period = value;
       return this;
     }
@@ -1417,7 +1423,7 @@ public class Consent extends DomainResource {
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public provisionComponent setActor(List<provisionActorComponent> theActor) {
+    public ProvisionComponent setActor(List<provisionActorComponent> theActor) {
       this.actor = theActor;
       return this;
     }
@@ -1439,7 +1445,7 @@ public class Consent extends DomainResource {
       return t;
     }
 
-    public provisionComponent addActor(provisionActorComponent t) { // 3
+    public ProvisionComponent addActor(provisionActorComponent t) { // 3
       if (t == null)
         return this;
       if (this.actor == null)
@@ -1471,7 +1477,7 @@ public class Consent extends DomainResource {
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public provisionComponent setAction(List<CodeableConcept> theAction) {
+    public ProvisionComponent setAction(List<CodeableConcept> theAction) {
       this.action = theAction;
       return this;
     }
@@ -1493,7 +1499,7 @@ public class Consent extends DomainResource {
       return t;
     }
 
-    public provisionComponent addAction(CodeableConcept t) { // 3
+    public ProvisionComponent addAction(CodeableConcept t) { // 3
       if (t == null)
         return this;
       if (this.action == null)
@@ -1527,7 +1533,7 @@ public class Consent extends DomainResource {
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public provisionComponent setSecurityLabel(List<Coding> theSecurityLabel) {
+    public ProvisionComponent setSecurityLabel(List<Coding> theSecurityLabel) {
       this.securityLabel = theSecurityLabel;
       return this;
     }
@@ -1549,7 +1555,7 @@ public class Consent extends DomainResource {
       return t;
     }
 
-    public provisionComponent addSecurityLabel(Coding t) { // 3
+    public ProvisionComponent addSecurityLabel(Coding t) { // 3
       if (t == null)
         return this;
       if (this.securityLabel == null)
@@ -1583,7 +1589,7 @@ public class Consent extends DomainResource {
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public provisionComponent setPurpose(List<Coding> thePurpose) {
+    public ProvisionComponent setPurpose(List<Coding> thePurpose) {
       this.purpose = thePurpose;
       return this;
     }
@@ -1605,7 +1611,7 @@ public class Consent extends DomainResource {
       return t;
     }
 
-    public provisionComponent addPurpose(Coding t) { // 3
+    public ProvisionComponent addPurpose(Coding t) { // 3
       if (t == null)
         return this;
       if (this.purpose == null)
@@ -1640,7 +1646,7 @@ public class Consent extends DomainResource {
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public provisionComponent setClass_(List<Coding> theClass_) {
+    public ProvisionComponent setClass_(List<Coding> theClass_) {
       this.class_ = theClass_;
       return this;
     }
@@ -1662,7 +1668,7 @@ public class Consent extends DomainResource {
       return t;
     }
 
-    public provisionComponent addClass_(Coding t) { // 3
+    public ProvisionComponent addClass_(Coding t) { // 3
       if (t == null)
         return this;
       if (this.class_ == null)
@@ -1695,7 +1701,7 @@ public class Consent extends DomainResource {
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public provisionComponent setCode(List<CodeableConcept> theCode) {
+    public ProvisionComponent setCode(List<CodeableConcept> theCode) {
       this.code = theCode;
       return this;
     }
@@ -1717,7 +1723,7 @@ public class Consent extends DomainResource {
       return t;
     }
 
-    public provisionComponent addCode(CodeableConcept t) { // 3
+    public ProvisionComponent addCode(CodeableConcept t) { // 3
       if (t == null)
         return this;
       if (this.code == null)
@@ -1758,7 +1764,7 @@ public class Consent extends DomainResource {
      * @param value {@link #dataPeriod} (Clinical or Operational Relevant period of
      *              time that bounds the data controlled by this rule.)
      */
-    public provisionComponent setDataPeriod(Period value) {
+    public ProvisionComponent setDataPeriod(Period value) {
       this.dataPeriod = value;
       return this;
     }
@@ -1776,7 +1782,7 @@ public class Consent extends DomainResource {
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public provisionComponent setData(List<provisionDataComponent> theData) {
+    public ProvisionComponent setData(List<provisionDataComponent> theData) {
       this.data = theData;
       return this;
     }
@@ -1798,7 +1804,7 @@ public class Consent extends DomainResource {
       return t;
     }
 
-    public provisionComponent addData(provisionDataComponent t) { // 3
+    public ProvisionComponent addData(provisionDataComponent t) { // 3
       if (t == null)
         return this;
       if (this.data == null)
@@ -1822,16 +1828,16 @@ public class Consent extends DomainResource {
      * @return {@link #provision} (Rules which provide exceptions to the base rule
      *         or subrules.)
      */
-    public List<provisionComponent> getProvision() {
+    public List<ProvisionComponent> getProvision() {
       if (this.provision == null)
-        this.provision = new ArrayList<provisionComponent>();
+        this.provision = new ArrayList<ProvisionComponent>();
       return this.provision;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public provisionComponent setProvision(List<provisionComponent> theProvision) {
+    public ProvisionComponent setProvision(List<ProvisionComponent> theProvision) {
       this.provision = theProvision;
       return this;
     }
@@ -1839,25 +1845,25 @@ public class Consent extends DomainResource {
     public boolean hasProvision() {
       if (this.provision == null)
         return false;
-      for (provisionComponent item : this.provision)
+      for (ProvisionComponent item : this.provision)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public provisionComponent addProvision() { // 3
-      provisionComponent t = new provisionComponent();
+    public ProvisionComponent addProvision() { // 3
+      ProvisionComponent t = new ProvisionComponent();
       if (this.provision == null)
-        this.provision = new ArrayList<provisionComponent>();
+        this.provision = new ArrayList<ProvisionComponent>();
       this.provision.add(t);
       return t;
     }
 
-    public provisionComponent addProvision(provisionComponent t) { // 3
+    public ProvisionComponent addProvision(ProvisionComponent t) { // 3
       if (t == null)
         return this;
       if (this.provision == null)
-        this.provision = new ArrayList<provisionComponent>();
+        this.provision = new ArrayList<ProvisionComponent>();
       this.provision.add(t);
       return this;
     }
@@ -1866,7 +1872,7 @@ public class Consent extends DomainResource {
      * @return The first repetition of repeating field {@link #provision}, creating
      *         it if it does not already exist
      */
-    public provisionComponent getProvisionFirstRep() {
+    public ProvisionComponent getProvisionFirstRep() {
       if (getProvision().isEmpty()) {
         addProvision();
       }
@@ -2021,7 +2027,7 @@ public class Consent extends DomainResource {
         this.getData().add((provisionDataComponent) value); // provisionDataComponent
         return value;
       case -547120939: // provision
-        this.getProvision().add((provisionComponent) value); // provisionComponent
+        this.getProvision().add((ProvisionComponent) value); // provisionComponent
         return value;
       default:
         return super.setProperty(hash, name, value);
@@ -2053,7 +2059,7 @@ public class Consent extends DomainResource {
       } else if (name.equals("data")) {
         this.getData().add((provisionDataComponent) value);
       } else if (name.equals("provision")) {
-        this.getProvision().add((provisionComponent) value);
+        this.getProvision().add((ProvisionComponent) value);
       } else
         return super.setProperty(name, value);
       return value;
@@ -2082,7 +2088,7 @@ public class Consent extends DomainResource {
       } else if (name.equals("data")) {
         this.getData().remove((provisionDataComponent) value);
       } else if (name.equals("provision")) {
-        this.getProvision().remove((provisionComponent) value);
+        this.getProvision().remove((ProvisionComponent) value);
       } else
         super.removeChild(name, value);
       
@@ -2180,13 +2186,13 @@ public class Consent extends DomainResource {
         return super.addChild(name);
     }
 
-    public provisionComponent copy() {
-      provisionComponent dst = new provisionComponent();
+    public ProvisionComponent copy() {
+      ProvisionComponent dst = new ProvisionComponent();
       copyValues(dst);
       return dst;
     }
 
-    public void copyValues(provisionComponent dst) {
+    public void copyValues(ProvisionComponent dst) {
       super.copyValues(dst);
       dst.type = type == null ? null : type.copy();
       dst.period = period == null ? null : period.copy();
@@ -2234,8 +2240,8 @@ public class Consent extends DomainResource {
       }
       ;
       if (provision != null) {
-        dst.provision = new ArrayList<provisionComponent>();
-        for (provisionComponent i : provision)
+        dst.provision = new ArrayList<ProvisionComponent>();
+        for (ProvisionComponent i : provision)
           dst.provision.add(i.copy());
       }
       ;
@@ -2245,9 +2251,9 @@ public class Consent extends DomainResource {
     public boolean equalsDeep(Base other_) {
       if (!super.equalsDeep(other_))
         return false;
-      if (!(other_ instanceof provisionComponent))
+      if (!(other_ instanceof ProvisionComponent))
         return false;
-      provisionComponent o = (provisionComponent) other_;
+      ProvisionComponent o = (ProvisionComponent) other_;
       return compareDeep(type, o.type, true) && compareDeep(period, o.period, true) && compareDeep(actor, o.actor, true)
           && compareDeep(action, o.action, true) && compareDeep(securityLabel, o.securityLabel, true)
           && compareDeep(purpose, o.purpose, true) && compareDeep(class_, o.class_, true)
@@ -2259,9 +2265,9 @@ public class Consent extends DomainResource {
     public boolean equalsShallow(Base other_) {
       if (!super.equalsShallow(other_))
         return false;
-      if (!(other_ instanceof provisionComponent))
+      if (!(other_ instanceof ProvisionComponent))
         return false;
-      provisionComponent o = (provisionComponent) other_;
+      ProvisionComponent o = (ProvisionComponent) other_;
       return compareValues(type, o.type, true);
     }
 
@@ -2996,7 +3002,7 @@ public class Consent extends DomainResource {
    */
   @Child(name = "provision", type = {}, order = 12, min = 0, max = 1, modifier = false, summary = true)
   @Description(shortDefinition = "Constraints to the base Consent.policyRule", formalDefinition = "An exception to the base policy of this consent. An exception can be an addition or removal of access permissions.")
-  protected provisionComponent provision;
+  protected ProvisionComponent provision;
 
   private static final long serialVersionUID = 206528051L;
 
@@ -3663,12 +3669,12 @@ public class Consent extends DomainResource {
    * @return {@link #provision} (An exception to the base policy of this consent.
    *         An exception can be an addition or removal of access permissions.)
    */
-  public provisionComponent getProvision() {
+  public ProvisionComponent getProvision() {
     if (this.provision == null)
       if (Configuration.errorOnAutoCreate())
         throw new Error("Attempt to auto-create Consent.provision");
       else if (Configuration.doAutoCreate())
-        this.provision = new provisionComponent(); // cc
+        this.provision = new ProvisionComponent(); // cc
     return this.provision;
   }
 
@@ -3681,7 +3687,7 @@ public class Consent extends DomainResource {
    *              consent. An exception can be an addition or removal of access
    *              permissions.)
    */
-  public Consent setProvision(provisionComponent value) {
+  public Consent setProvision(ProvisionComponent value) {
     this.provision = value;
     return this;
   }
@@ -3877,7 +3883,7 @@ public class Consent extends DomainResource {
       this.getVerification().add((ConsentVerificationComponent) value); // ConsentVerificationComponent
       return value;
     case -547120939: // provision
-      this.provision = (provisionComponent) value; // provisionComponent
+      this.provision = (ProvisionComponent) value; // provisionComponent
       return value;
     default:
       return super.setProperty(hash, name, value);
@@ -3913,7 +3919,7 @@ public class Consent extends DomainResource {
     } else if (name.equals("verification")) {
       this.getVerification().add((ConsentVerificationComponent) value);
     } else if (name.equals("provision")) {
-      this.provision = (provisionComponent) value; // provisionComponent
+      this.provision = (ProvisionComponent) value; // provisionComponent
     } else
       return super.setProperty(name, value);
     return value;
@@ -3946,7 +3952,7 @@ public class Consent extends DomainResource {
     } else if (name.equals("verification")) {
       this.getVerification().remove((ConsentVerificationComponent) value);
     } else if (name.equals("provision")) {
-      this.provision = (provisionComponent) value; // provisionComponent
+      this.provision = (ProvisionComponent) value; // provisionComponent
     } else
       super.removeChild(name, value);
     
@@ -4058,7 +4064,7 @@ public class Consent extends DomainResource {
     } else if (name.equals("verification")) {
       return addVerification();
     } else if (name.equals("provision")) {
-      this.provision = new provisionComponent();
+      this.provision = new ProvisionComponent();
       return this.provision;
     } else
       return super.addChild(name);

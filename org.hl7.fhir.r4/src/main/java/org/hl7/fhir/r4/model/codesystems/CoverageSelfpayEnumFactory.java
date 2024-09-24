@@ -44,10 +44,12 @@ public class CoverageSelfpayEnumFactory implements EnumFactory<CoverageSelfpay> 
   }
 
   public String toCode(CoverageSelfpay code) {
-    if (code == CoverageSelfpay.PAY)
+       if (code == CoverageSelfpay.NULL)
+           return null;
+       if (code == CoverageSelfpay.PAY)
       return "pay";
     return "?";
-  }
+   }
 
   public String toSystem(CoverageSelfpay code) {
     return code.getSystem();

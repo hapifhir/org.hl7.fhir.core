@@ -46,12 +46,14 @@ public class ExamplescenarioActorTypeEnumFactory implements EnumFactory<Examples
   }
 
   public String toCode(ExamplescenarioActorType code) {
-    if (code == ExamplescenarioActorType.PERSON)
+       if (code == ExamplescenarioActorType.NULL)
+           return null;
+       if (code == ExamplescenarioActorType.PERSON)
       return "person";
     if (code == ExamplescenarioActorType.ENTITY)
       return "entity";
     return "?";
-  }
+   }
 
   public String toSystem(ExamplescenarioActorType code) {
     return code.getSystem();

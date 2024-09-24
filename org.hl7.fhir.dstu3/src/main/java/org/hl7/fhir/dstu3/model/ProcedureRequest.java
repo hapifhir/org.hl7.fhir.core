@@ -206,7 +206,9 @@ public class ProcedureRequest extends DomainResource {
         throw new FHIRException("Unknown ProcedureRequestStatus code '"+codeString+"'");
         }
     public String toCode(ProcedureRequestStatus code) {
-      if (code == ProcedureRequestStatus.DRAFT)
+       if (code == ProcedureRequestStatus.NULL)
+           return null;
+       if (code == ProcedureRequestStatus.DRAFT)
         return "draft";
       if (code == ProcedureRequestStatus.ACTIVE)
         return "active";
@@ -221,7 +223,7 @@ public class ProcedureRequest extends DomainResource {
       if (code == ProcedureRequestStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(ProcedureRequestStatus code) {
       return code.getSystem();
       }
@@ -398,7 +400,9 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         throw new FHIRException("Unknown ProcedureRequestIntent code '"+codeString+"'");
         }
     public String toCode(ProcedureRequestIntent code) {
-      if (code == ProcedureRequestIntent.PROPOSAL)
+       if (code == ProcedureRequestIntent.NULL)
+           return null;
+       if (code == ProcedureRequestIntent.PROPOSAL)
         return "proposal";
       if (code == ProcedureRequestIntent.PLAN)
         return "plan";
@@ -415,7 +419,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       if (code == ProcedureRequestIntent.OPTION)
         return "option";
       return "?";
-      }
+   }
     public String toSystem(ProcedureRequestIntent code) {
       return code.getSystem();
       }
@@ -534,7 +538,9 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         throw new FHIRException("Unknown ProcedureRequestPriority code '"+codeString+"'");
         }
     public String toCode(ProcedureRequestPriority code) {
-      if (code == ProcedureRequestPriority.ROUTINE)
+       if (code == ProcedureRequestPriority.NULL)
+           return null;
+       if (code == ProcedureRequestPriority.ROUTINE)
         return "routine";
       if (code == ProcedureRequestPriority.URGENT)
         return "urgent";
@@ -543,7 +549,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       if (code == ProcedureRequestPriority.STAT)
         return "stat";
       return "?";
-      }
+   }
     public String toSystem(ProcedureRequestPriority code) {
       return code.getSystem();
       }

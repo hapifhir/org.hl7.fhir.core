@@ -318,7 +318,7 @@ public class BundleRenderer extends ResourceRenderer {
                 xn = makeExceptionXhtml(e, "generating narrative");
               }
             }
-            root.blockquote().getChildNodes().addAll(checkInternalLinks(b, xn.getChildNodes()));
+            root.blockquote().addChildNodes(checkInternalLinks(b, xn.getChildNodes()));
           }
         }
       }

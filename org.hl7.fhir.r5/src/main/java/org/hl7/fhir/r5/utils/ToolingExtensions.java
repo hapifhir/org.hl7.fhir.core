@@ -275,6 +275,7 @@ public class ToolingExtensions {
   public static final String EXT_VS_CS_SUPPL_NEEDED = "http://hl7.org/fhir/StructureDefinition/valueset-supplement";
   public static final String EXT_TYPE_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/type-parameter";
   public static final String EXT_ALTERNATE_CANONICAL = "http://hl7.org/fhir/StructureDefinition/alternate-canonical";
+  public static final String EXT_SUPPRESSED = "http://hl7.org/fhir/StructureDefinition/elementdefinition-suppress";
   
   // specific extension helpers
 

@@ -48,14 +48,16 @@ public class CopyNumberEventEnumFactory implements EnumFactory<CopyNumberEvent> 
   }
 
   public String toCode(CopyNumberEvent code) {
-    if (code == CopyNumberEvent.AMP)
+       if (code == CopyNumberEvent.NULL)
+           return null;
+       if (code == CopyNumberEvent.AMP)
       return "amp";
     if (code == CopyNumberEvent.DEL)
       return "del";
     if (code == CopyNumberEvent.LOF)
       return "lof";
     return "?";
-  }
+   }
 
   public String toSystem(CopyNumberEvent code) {
     return code.getSystem();

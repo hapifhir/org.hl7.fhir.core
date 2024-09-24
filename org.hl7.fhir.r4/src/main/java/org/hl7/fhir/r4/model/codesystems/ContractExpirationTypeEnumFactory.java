@@ -44,10 +44,12 @@ public class ContractExpirationTypeEnumFactory implements EnumFactory<ContractEx
   }
 
   public String toCode(ContractExpirationType code) {
-    if (code == ContractExpirationType.BREACH)
+       if (code == ContractExpirationType.NULL)
+           return null;
+       if (code == ContractExpirationType.BREACH)
       return "breach";
     return "?";
-  }
+   }
 
   public String toSystem(ContractExpirationType code) {
     return code.getSystem();

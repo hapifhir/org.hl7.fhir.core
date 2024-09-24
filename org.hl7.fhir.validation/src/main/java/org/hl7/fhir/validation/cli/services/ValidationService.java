@@ -2,7 +2,6 @@ package org.hl7.fhir.validation.cli.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -11,6 +10,7 @@ import java.lang.management.MemoryMXBean;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 
@@ -75,27 +75,48 @@ public class ValidationService {
   private final SessionCache sessionCache;
   private String runDate;
 
+  private final Map<String, ValidationEngine> baseEngines = new ConcurrentHashMap<>();
+
+  public void putBaseEngine(String key, CliContext cliContext) throws IOException, URISyntaxException {
+    if (cliContext.getSv() == null) {
+      throw new IllegalArgumentException("Cannot create a base engine without an explicit version");
+    }
+    String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
+
+    ValidationEngine baseEngine = buildValidationEngine(cliContext, definitions, new TimeTracker());
+    baseEngines.put(key, baseEngine);
+  }
+
+  public ValidationEngine getBaseEngine(String key) {
+    return baseEngines.get(key);
+  }
+
+  public Set<String> getBaseEngineKeys() { return baseEngines.keySet(); }
+
+  public boolean hasBaseEngineForKey(String key) { return baseEngines.containsKey(key); }
+
   public ValidationService() {
     sessionCache = new PassiveExpiringSessionCache();
     runDate = new SimpleDateFormat("hh:mm:ss", new Locale("en", "US")).format(new Date());
   }
+
+
 
   public ValidationService(SessionCache cache) {
     this.sessionCache = cache;
   }
 
   public ValidationResponse validateSources(ValidationRequest request) throws Exception {
-    if (request.getCliContext().getSv() == null) {
-      String sv = determineVersion(request.getCliContext(), request.sessionId);
-      request.getCliContext().setSv(sv);
-    }
-
-    String definitions = VersionUtilities.packageForVersion(request.getCliContext().getSv()) + "#" + VersionUtilities.getCurrentVersion(request.getCliContext().getSv());
 
     TimeTracker timeTracker = new TimeTracker();
-    String sessionId = initializeValidator(request.getCliContext(), definitions, timeTracker, request.sessionId);
-    ValidationEngine validator = sessionCache.fetchSessionValidatorEngine(sessionId);
+    String sessionId = initializeValidator(request.getCliContext(), null, timeTracker, request.sessionId);
+    ValidationEngine validationEngine = sessionCache.fetchSessionValidatorEngine(sessionId);
 
+    /* Cached validation engines already have expensive setup like loading definitions complete. But it wouldn't make
+       sense to rebuild a whole engine to change the language, so we manually change it here.
+     */
+    validationEngine.setLanguage(request.getCliContext().getLang());
+    validationEngine.setLocale(request.getCliContext().getLocale());
     if (request.getCliContext().getProfiles().size() > 0) {
       System.out.println("  .. validate " + request.listSourceFiles() + " against " + request.getCliContext().getProfiles().toString());
     } else {
@@ -106,7 +127,7 @@ public class ValidationService {
 
     for (FileInfo fileToValidate : request.getFilesToValidate()) {
       if (fileToValidate.getFileType() == null) {
-        Manager.FhirFormat format = ResourceChecker.checkIsResource(validator.getContext(),
+        Manager.FhirFormat format = ResourceChecker.checkIsResource(validationEngine.getContext(),
           false,
           fileToValidate.getFileContent().getBytes(),
           fileToValidate.getFileName(),
@@ -123,7 +144,7 @@ public class ValidationService {
             new FileInfo(fileToValidate.getFileName(), fileToValidate.getFileContent(), null));
           response.addOutcome(outcome);
       } else {
-        ValidatedFragments validatedFragments = validator.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
+        ValidatedFragments validatedFragments = validationEngine.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
           request.getCliContext().getProfiles(), messages);
 
         List<ValidationOutcome> validationOutcomes = getValidationOutcomesFromValidatedFragments(fileToValidate, validatedFragments);
@@ -180,7 +201,7 @@ public class ValidationService {
     return outcome;
   }
 
-  public VersionSourceInformation scanForVersions(CliContext cliContext) throws Exception {
+  public VersionSourceInformation scanForVersions(CliContext cliContext) throws IOException {
     VersionSourceInformation versions = new VersionSourceInformation();
     IgLoader igLoader = new IgLoader(
       new FilesystemPackageCacheManager.Builder().build(),
@@ -473,14 +494,34 @@ public class ValidationService {
       if (sessionId != null) {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
-        System.out.println("Building new validator engine from CliContext");
-      ValidationEngine validator = buildValidationEngine(cliContext, definitions, tt);
-      sessionId = sessionCache.cacheSession(validator);
+      sessionCache.cleanUp();
+      if (cliContext.getSv() == null) {
+        String sv = determineVersion(cliContext);
+        cliContext.setSv(sv);
+      }
+      final String engineDefinitions = definitions != null ? definitions : VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
+
+      ValidationEngine validationEngine = getValidationEngineFromCliContext(cliContext, engineDefinitions, tt);
+      sessionId = sessionCache.cacheSession(validationEngine);
       System.out.println("Cached new session. Cache size = " + sessionCache.getSessionIds().size());
+
     } else {
       System.out.println("Cached session exists for session id " + sessionId + ", returning stored validator session id. Cache size = " + sessionCache.getSessionIds().size());
     }
     return sessionId;
+  }
+
+  private ValidationEngine getValidationEngineFromCliContext(CliContext cliContext, String definitions, TimeTracker tt) throws Exception {
+    ValidationEngine validationEngine;
+    if (cliContext.getBaseEngine() != null && hasBaseEngineForKey(cliContext.getBaseEngine())) {
+      validationEngine = new ValidationEngine(getBaseEngine(cliContext.getBaseEngine()));
+    } else {
+      if (definitions == null) {
+        throw new IllegalArgumentException("Cannot create a validator engine (definitions == null)");
+      }
+      validationEngine = buildValidationEngine(cliContext, definitions, tt);
+    }
+    return validationEngine;
   }
 
   protected ValidationEngine.ValidationEngineBuilder getValidationEngineBuilder() {
@@ -540,6 +581,8 @@ public class ValidationService {
     }
     validationEngine.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
     validationEngine.setJurisdiction(CodeSystemUtilities.readCoding(cliContext.getJurisdiction()));
+    validationEngine.setUnknownCodeSystemsCauseErrors(cliContext.isUnknownCodeSystemsCauseErrors());
+    validationEngine.setNoExperimentalContent(cliContext.isNoExperimentalContent());
     TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
     validationEngine.prepare(); // generate any missing snapshots
     System.out.println(" go (" + timeTracker.milestone() + ")");
@@ -564,12 +607,7 @@ public class ValidationService {
     System.out.println("  Package Summary: "+ validationEngine.getContext().loadedPackageSummary());
   }
 
-
-  public String determineVersion(CliContext cliContext) throws Exception {
-    return determineVersion(cliContext, null);
-  }
-
-  public String determineVersion(CliContext cliContext, String sessionId) throws Exception {
+  public String determineVersion(CliContext cliContext) throws IOException {
     if (cliContext.getMode() != EngineMode.VALIDATION && cliContext.getMode() != EngineMode.INSTALL) {
       return "5.0";
     }
@@ -588,7 +626,7 @@ public class ValidationService {
       System.out.println("-> use version " + versions.version());
       return versions.version();
     }
-    throw new Exception("-> Multiple versions found. Specify a particular version using the -version parameter");
+    throw new IllegalArgumentException("-> Multiple versions found. Specify a particular version using the -version parameter");
   }
 
   public void generateSpreadsheet(CliContext cliContext, ValidationEngine validator) throws Exception {

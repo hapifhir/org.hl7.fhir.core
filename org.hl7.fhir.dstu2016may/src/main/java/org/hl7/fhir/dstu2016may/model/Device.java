@@ -175,14 +175,16 @@ public class Device extends DomainResource {
     }
 
     public String toCode(DeviceStatus code) {
-      if (code == DeviceStatus.AVAILABLE)
+       if (code == DeviceStatus.NULL)
+           return null;
+       if (code == DeviceStatus.AVAILABLE)
         return "available";
       if (code == DeviceStatus.NOTAVAILABLE)
         return "not-available";
       if (code == DeviceStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(DeviceStatus code) {
       return code.getSystem();

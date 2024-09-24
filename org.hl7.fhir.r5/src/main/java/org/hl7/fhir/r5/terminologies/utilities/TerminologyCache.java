@@ -628,7 +628,7 @@ public class TerminologyCache {
         return null;
       } else {
         hitCount++;
-        return e.v;
+        return new ValidationResult(e.v);
       }
     }
   }
@@ -640,7 +640,7 @@ public class TerminologyCache {
         CacheEntry e = new CacheEntry();
         e.request = cacheToken.request;
         e.persistent = persistent;
-        e.v = res;
+        e.v = new ValidationResult(res);
         store(cacheToken, persistent, nc, e);
       }    
     }

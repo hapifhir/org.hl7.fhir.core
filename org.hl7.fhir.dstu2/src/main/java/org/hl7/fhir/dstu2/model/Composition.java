@@ -200,8 +200,11 @@ public class Composition extends DomainResource {
       throw new FHIRException("Unknown CompositionStatus code '" + codeString + "'");
     }
 
-    public String toCode(CompositionStatus code) {
-      if (code == CompositionStatus.PRELIMINARY)
+    public String toCode(CompositionStatus code)
+   {
+       if (code == CompositionStatus.NULL)
+           return null;
+       if (code == CompositionStatus.PRELIMINARY)
         return "preliminary";
       if (code == CompositionStatus.FINAL)
         return "final";
@@ -210,7 +213,7 @@ public class Composition extends DomainResource {
       if (code == CompositionStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
   }
 
   public enum CompositionAttestationMode {
@@ -353,8 +356,11 @@ public class Composition extends DomainResource {
       throw new FHIRException("Unknown CompositionAttestationMode code '" + codeString + "'");
     }
 
-    public String toCode(CompositionAttestationMode code) {
-      if (code == CompositionAttestationMode.PERSONAL)
+    public String toCode(CompositionAttestationMode code)
+   {
+       if (code == CompositionAttestationMode.NULL)
+           return null;
+       if (code == CompositionAttestationMode.PERSONAL)
         return "personal";
       if (code == CompositionAttestationMode.PROFESSIONAL)
         return "professional";
@@ -363,7 +369,7 @@ public class Composition extends DomainResource {
       if (code == CompositionAttestationMode.OFFICIAL)
         return "official";
       return "?";
-    }
+   }
   }
 
   @Block()

@@ -773,6 +773,25 @@ public class FHIRPathEngine {
     return execute(new ExecutionContext(null, base != null && base.isResource() ? base : null, base != null && base.isResource() ? base : null, base, base), list, ExpressionNode, true);
   }
 
+
+  /**
+   * evaluate a path and return the matching elements
+   * 
+   * @param base - the object against which the path is being evaluated
+   * @param ExpressionNode - the parsed ExpressionNode statement to use
+   * @return
+   * @throws FHIRException 
+   * @
+   */
+  public List<Base> evaluate(Object appContext, Base base, ExpressionNode ExpressionNode) throws FHIRException {
+    List<Base> list = new ArrayList<Base>();
+    if (base != null) {
+      list.add(base);
+    }
+    log = new StringBuilder();
+    return execute(new ExecutionContext(appContext, base != null && base.isResource() ? base : null, base != null && base.isResource() ? base : null, base, base), list, ExpressionNode, true);
+  }
+  
   /**
    * evaluate a path and return the matching elements
    * 
@@ -2748,15 +2767,12 @@ public class FHIRPathEngine {
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) + Integer.parseInt(r.primitiveValue())));
     } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) { 
       result.add(new DecimalType(new BigDecimal(l.primitiveValue()).add(new BigDecimal(r.primitiveValue()))));
-    } else if ((l.isDateTime() || l.hasType("date")) && r.hasType("Quantity")) {
-      if (l.hasType("date")) {
-        BaseDateTimeType dt = l instanceof BaseDateTimeType ? (BaseDateTimeType) l : TypeConvertor.castToDateTime(l);
-        Quantity qty = r instanceof Quantity ? (Quantity) r : TypeConvertor.castToQuantity(r);
-        result.add(dateAdd(dt, qty, false, expr));
-      } else {
-        DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue());
-        result.add(dateAdd(dl, (Quantity) r, false, expr));
-      }
+    } else if (l.hasType("date") && r.hasType("Quantity")) {
+      DateType dl = l instanceof DateType ? (DateType) l : new DateType(l.primitiveValue()); 
+      result.add(dateAdd(dl, (Quantity) r, false, expr));
+    } else if ((l.isDateTime() || l.hasType("dateTime") || l.hasType("instant")) && r.hasType("Quantity")) {
+      DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue()); 
+      result.add(dateAdd(dl, (Quantity) r, false, expr));
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "+", left.get(0).fhirType(), right.get(0).fhirType());
     }
@@ -3001,7 +3017,7 @@ public class FHIRPathEngine {
     if (right.size() > 1) {
       throw makeExceptionPlural(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE, "-");
     }
-    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || left.get(0).hasType("date", "dateTime") || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) {
+    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || left.get(0).hasType("date", "dateTime", "instant") || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "-", right.get(0).fhirType());
     }
 
@@ -3019,15 +3035,12 @@ public class FHIRPathEngine {
         Quantity qty = (Quantity) r;
         result.add(qty.copy().setValue(qty.getValue().abs()));
       }
-    } else if ((l.isDateTime() || l.hasType("date", "dateTime", "instant")) && r.hasType("Quantity")) {
-      if (l.hasType("date")) {
-        BaseDateTimeType dt = l instanceof BaseDateTimeType ? (BaseDateTimeType) l : TypeConvertor.castToDateTime(l);
-        Quantity qty = r instanceof Quantity ? (Quantity) r : TypeConvertor.castToQuantity(r);
-        result.add(dateAdd(dt, qty, true, expr));
-      } else {
-        DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue());
-        result.add(dateAdd(dl, (Quantity) r, true, expr));
-      }
+    } else if (l.hasType("date") && r.hasType("Quantity")) {
+      DateType dl = l instanceof DateType ? (DateType) l : new DateType(l.primitiveValue()); 
+      result.add(dateAdd(dl, (Quantity) r, true, expr));
+    } else if ((l.isDateTime() || l.hasType("dateTime") || l.hasType("instant")) && r.hasType("Quantity")) {
+      DateTimeType dl = l instanceof DateTimeType ? (DateTimeType) l : new DateTimeType(l.primitiveValue()); 
+      result.add(dateAdd(dl, (Quantity) r, true, expr));
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "-", left.get(0).fhirType(), right.get(0).fhirType());
     }
@@ -3741,20 +3754,22 @@ public class FHIRPathEngine {
 
     case LowBoundary:
     case HighBoundary: {
-      checkContextContinuous(focus, exp.getFunction().toCode(), exp);      
+      checkContextContinuous(focus, exp.getFunction().toCode(), exp, true);      
       if (paramTypes.size() > 0) {
         checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer));
       }
-      if (focus.hasType("decimal") && (focus.hasType("date") || focus.hasType("datetime") || focus.hasType("instant"))) {
+      if ((focus.hasType("date") || focus.hasType("datetime") || focus.hasType("instant"))) {
         return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Decimal, TypeDetails.FP_DateTime);       
-      } else if (focus.hasType("decimal")) {
+      } else if ((focus.hasType("time"))) {
+          return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Time, TypeDetails.FP_Time);       
+      } else if (focus.hasType("decimal") || focus.hasType("integer")) {
         return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Decimal);       
       } else {
         return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_DateTime);       
       }
     }
     case Precision: {
-      checkContextContinuous(focus, exp.getFunction().toCode(), exp);      
+      checkContextContinuous(focus, exp.getFunction().toCode(), exp, false);      
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);       
     }
     case hasTemplateIdOf: {
@@ -3903,8 +3918,8 @@ public class FHIRPathEngine {
     }    
   }
 
-  private void checkContextContinuous(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
-    if (!focus.hasNoTypes() && !focus.hasType("decimal") && !focus.hasType("date") && !focus.hasType("dateTime") && !focus.hasType("time") && !focus.hasType("Quantity")) {
+  private void checkContextContinuous(TypeDetails focus, String name, ExpressionNode expr, boolean allowInteger) throws PathEngineException {
+    if (!focus.hasNoTypes() && !focus.hasType("decimal") && !focus.hasType("date") && !focus.hasType("dateTime") && !focus.hasType("time") && !focus.hasType("Quantity") && !(allowInteger && focus.hasType("integer"))) {
       throw makeException(expr, I18nConstants.FHIRPATH_CONTINUOUS_ONLY, name, focus.describe());
     }    
   }
@@ -4301,7 +4316,7 @@ public class FHIRPathEngine {
     if (focus.size() > 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "lowBoundary", focus.size());
     }
-    int precision = 0;
+    Integer precision = null;
     if (expr.getParameters().size() > 0) {
       List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
       if (n1.size() != 1) {
@@ -4314,17 +4329,23 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     
     if (base.hasType("decimal")) {
-      result.add(new DecimalType(Utilities.lowBoundaryForDecimal(base.primitiveValue(), precision == 0 ? 8 : precision)));
+      if (precision == null || (precision >= 0 && precision < 17)) {
+        result.add(new DecimalType(Utilities.lowBoundaryForDecimal(base.primitiveValue(), precision == null ? 8 : precision)));
+      }
+    } else if (base.hasType("integer")) {
+      if (precision == null || (precision >= 0 && precision < 17)) {
+        result.add(new DecimalType(Utilities.lowBoundaryForDecimal(base.primitiveValue(), precision == null ? 8 : precision)));
+      }
     } else if (base.hasType("date")) {
-      result.add(new DateTimeType(Utilities.lowBoundaryForDate(base.primitiveValue(), precision == 0 ? 10 : precision)));
+      result.add(new DateTimeType(Utilities.lowBoundaryForDate(base.primitiveValue(), precision == null ? 10 : precision)));
     } else if (base.hasType("dateTime")) {
-      result.add(new DateTimeType(Utilities.lowBoundaryForDate(base.primitiveValue(), precision == 0 ? 17 : precision)));
+      result.add(new DateTimeType(Utilities.lowBoundaryForDate(base.primitiveValue(), precision == null ? 17 : precision)));
     } else if (base.hasType("time")) {
-      result.add(new TimeType(Utilities.lowBoundaryForTime(base.primitiveValue(), precision == 0 ? 9 : precision)));
+      result.add(new TimeType(Utilities.lowBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
       Base v = base.copy();
-      v.setProperty("value", new DecimalType(Utilities.lowBoundaryForDecimal(value, precision == 0 ? 8 : precision)));
+      v.setProperty("value", new DecimalType(Utilities.lowBoundaryForDecimal(value, precision == null ? 8 : precision)));
       result.add(v);
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "decimal or date");
@@ -4339,7 +4360,7 @@ public class FHIRPathEngine {
     if (focus.size() > 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "highBoundary", focus.size());
     }
-    int precision = 0;
+    Integer precision = null;
     if (expr.getParameters().size() > 0) {
       List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
       if (n1.size() != 1) {
@@ -4352,17 +4373,23 @@ public class FHIRPathEngine {
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("decimal")) {
-      result.add(new DecimalType(Utilities.highBoundaryForDecimal(base.primitiveValue(), precision == 0 ? 8 : precision)));
+      if (precision == null || (precision >= 0 && precision < 17)) {
+        result.add(new DecimalType(Utilities.highBoundaryForDecimal(base.primitiveValue(), precision == null ? 8 : precision)));
+      }
+    } else if (base.hasType("integer")) {
+      if (precision == null || (precision >= 0 && precision < 17)) {
+        result.add(new DecimalType(Utilities.highBoundaryForDecimal(base.primitiveValue(), precision == null ? 8 : precision)));
+      }
     } else if (base.hasType("date")) {
-      result.add(new DateTimeType(Utilities.highBoundaryForDate(base.primitiveValue(), precision == 0 ? 10 : precision)));
+      result.add(new DateTimeType(Utilities.highBoundaryForDate(base.primitiveValue(), precision == null ? 10 : precision)));
     } else if (base.hasType("dateTime")) {
-      result.add(new DateTimeType(Utilities.highBoundaryForDate(base.primitiveValue(), precision == 0 ? 17 : precision)));
+      result.add(new DateTimeType(Utilities.highBoundaryForDate(base.primitiveValue(), precision == null ? 17 : precision)));
     } else if (base.hasType("time")) {
-      result.add(new TimeType(Utilities.highBoundaryForTime(base.primitiveValue(), precision == 0 ? 9 : precision)));
+      result.add(new TimeType(Utilities.highBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
       Base v = base.copy();
-      v.setProperty("value", new DecimalType(Utilities.highBoundaryForDecimal(value, precision == 0 ? 8 : precision)));
+      v.setProperty("value", new DecimalType(Utilities.highBoundaryForDecimal(value, precision == null ? 8 : precision)));
       result.add(v);
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "decimal or date");
@@ -4665,7 +4692,7 @@ public class FHIRPathEngine {
       }
       for (String an : node.getAttributes().keySet()) {
         boolean ok = an.startsWith("xmlns") || Utilities.existsInList(an,
-            "title", "style", "class", "id", "idref", "lang", "xml:lang", "dir", "accesskey", "tabindex",
+            "title", "style", "class", "id", "idref", "lang", "xml:lang", "xml:space", "dir", "accesskey", "tabindex",
             // tables
             "span", "width", "align", "valign", "char", "charoff", "abbr", "axis", "headers", "scope", "rowspan", "colspan") ||
 
@@ -6345,7 +6372,7 @@ public class FHIRPathEngine {
                   }
                   result.addTypes(worker.getResourceNames());
                 } else {
-                  pt = new ProfiledType(t.getCode());
+                  pt = new ProfiledType(t.getWorkingCode());
                 }
                 if (pt != null) {
                   if (t.hasProfile()) {

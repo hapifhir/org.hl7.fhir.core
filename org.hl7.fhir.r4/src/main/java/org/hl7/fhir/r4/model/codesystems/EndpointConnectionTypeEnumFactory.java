@@ -70,7 +70,9 @@ public class EndpointConnectionTypeEnumFactory implements EnumFactory<EndpointCo
   }
 
   public String toCode(EndpointConnectionType code) {
-    if (code == EndpointConnectionType.IHEXCPD)
+       if (code == EndpointConnectionType.NULL)
+           return null;
+       if (code == EndpointConnectionType.IHEXCPD)
       return "ihe-xcpd";
     if (code == EndpointConnectionType.IHEXCA)
       return "ihe-xca";
@@ -99,7 +101,7 @@ public class EndpointConnectionTypeEnumFactory implements EnumFactory<EndpointCo
     if (code == EndpointConnectionType.DIRECTPROJECT)
       return "direct-project";
     return "?";
-  }
+   }
 
   public String toSystem(EndpointConnectionType code) {
     return code.getSystem();

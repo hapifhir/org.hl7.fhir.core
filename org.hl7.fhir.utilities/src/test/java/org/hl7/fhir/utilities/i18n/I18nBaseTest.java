@@ -164,4 +164,17 @@ class I18nBaseTest {
     assertNull(enLocale.getRootKeyFromPlural(rootKey + "_many"));
   }
 
+  @Test
+  public void testMessagesChangeWhenLocaleDoes() {
+    I18nTestClass i18nInstance = new I18nTestClass();
+    i18nInstance.setLocale(Locale.forLanguageTag("de"));
+
+    String deMessage = i18nInstance.formatMessage(I18nConstants.ERROR_PARSING_JSON_, "test");
+    assertEquals("Fehler beim Parsen von JSON: test", deMessage);
+
+    i18nInstance.setLocale(Locale.forLanguageTag("en"));
+    String enMessage = i18nInstance.formatMessage(I18nConstants.ERROR_PARSING_JSON_, "test");
+    assertEquals("Error parsing JSON: test", enMessage);
+
+  }
 }

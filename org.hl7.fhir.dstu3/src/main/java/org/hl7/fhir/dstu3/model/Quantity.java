@@ -1,6 +1,7 @@
 package org.hl7.fhir.dstu3.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -160,7 +161,9 @@ public class Quantity extends Type implements ICompositeType {
         throw new FHIRException("Unknown QuantityComparator code '"+codeString+"'");
         }
     public String toCode(QuantityComparator code) {
-      if (code == QuantityComparator.LESS_THAN)
+       if (code == QuantityComparator.NULL)
+           return null;
+       if (code == QuantityComparator.LESS_THAN)
         return "<";
       if (code == QuantityComparator.LESS_OR_EQUAL)
         return "<=";
@@ -169,7 +172,7 @@ public class Quantity extends Type implements ICompositeType {
       if (code == QuantityComparator.GREATER_THAN)
         return ">";
       return "?";
-      }
+   }
     public String toSystem(QuantityComparator code) {
       return code.getSystem();
       }
@@ -666,12 +669,16 @@ public class Quantity extends Type implements ICompositeType {
       public Quantity copy() {
         Quantity dst = new Quantity();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Quantity dst) {
+        super.copyValues(dst);
         dst.value = value == null ? null : value.copy();
         dst.comparator = comparator == null ? null : comparator.copy();
         dst.unit = unit == null ? null : unit.copy();
         dst.system = system == null ? null : system.copy();
         dst.code = code == null ? null : code.copy();
-        return dst;
       }
 
       protected Quantity typedCopy() {

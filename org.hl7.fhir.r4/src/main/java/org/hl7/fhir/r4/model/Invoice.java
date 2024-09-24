@@ -215,7 +215,9 @@ public class Invoice extends DomainResource {
     }
 
     public String toCode(InvoiceStatus code) {
-      if (code == InvoiceStatus.DRAFT)
+       if (code == InvoiceStatus.NULL)
+           return null;
+       if (code == InvoiceStatus.DRAFT)
         return "draft";
       if (code == InvoiceStatus.ISSUED)
         return "issued";
@@ -226,7 +228,7 @@ public class Invoice extends DomainResource {
       if (code == InvoiceStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(InvoiceStatus code) {
       return code.getSystem();
@@ -415,7 +417,9 @@ public class Invoice extends DomainResource {
     }
 
     public String toCode(InvoicePriceComponentType code) {
-      if (code == InvoicePriceComponentType.BASE)
+       if (code == InvoicePriceComponentType.NULL)
+           return null;
+       if (code == InvoicePriceComponentType.BASE)
         return "base";
       if (code == InvoicePriceComponentType.SURCHARGE)
         return "surcharge";
@@ -428,7 +432,7 @@ public class Invoice extends DomainResource {
       if (code == InvoicePriceComponentType.INFORMATIONAL)
         return "informational";
       return "?";
-    }
+   }
 
     public String toSystem(InvoicePriceComponentType code) {
       return code.getSystem();

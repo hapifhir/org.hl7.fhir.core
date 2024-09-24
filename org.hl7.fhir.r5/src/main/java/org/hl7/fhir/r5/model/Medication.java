@@ -152,14 +152,16 @@ public class Medication extends DomainResource {
         throw new FHIRException("Unknown MedicationStatusCodes code '"+codeString+"'");
         }
     public String toCode(MedicationStatusCodes code) {
-      if (code == MedicationStatusCodes.ACTIVE)
+       if (code == MedicationStatusCodes.NULL)
+           return null;
+       if (code == MedicationStatusCodes.ACTIVE)
         return "active";
       if (code == MedicationStatusCodes.INACTIVE)
         return "inactive";
       if (code == MedicationStatusCodes.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(MedicationStatusCodes code) {
       return code.getSystem();
       }

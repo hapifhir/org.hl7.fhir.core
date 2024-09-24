@@ -36,6 +36,10 @@ public class PackageHackerR5 {
      r.hack("http://terminology.hl7.org/CodeSystem/v2-0360-2.3.1", "2.3.1");
    }
 
+   if ("http://hl7.org/fhir/ValueSet/languages".equals(r.getUrl())) {
+     r.getResource().setExperimental(false);
+   }
+   
    if ("http://hl7.org/fhir/StructureDefinition/iso21090-nullFlavor".equals(r.getUrl()) && "4.0.1".equals(r.getVersion())) {
      StructureDefinition sd = (StructureDefinition) r.getResource();
      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
@@ -78,6 +82,16 @@ public class PackageHackerR5 {
        }
      }
    }
+   // work around an r2b issue
+   if (packageInfo.getId().equals("hl7.fhir.r2b.core") && r.getType().equals("StructureDefinition")) {
+     StructureDefinition sd = (StructureDefinition) r.getResource();
+     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+       if (ed.getPath().equals(sd.getType()+".id")) {
+         ed.getBase().setMax("1");
+       }
+     }
+   }
+   
    // work around a r4 version of extension pack issue
    if (packageInfo.getId().equals("hl7.fhir.uv.extensions.r4") && r.getType().equals("StructureDefinition")) {
      StructureDefinition sd = (StructureDefinition) r.getResource();

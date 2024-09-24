@@ -44,10 +44,12 @@ public class NehtaNehtaYesNoNsEnumFactory implements EnumFactory<NehtaNehtaYesNo
   }
 
   public String toCode(NehtaNehtaYesNoNs code) {
-    if (code == NehtaNehtaYesNoNs.NOTSTATED)
+       if (code == NehtaNehtaYesNoNs.NULL)
+           return null;
+       if (code == NehtaNehtaYesNoNs.NOTSTATED)
       return "not-stated";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaYesNoNs code) {
     return code.getSystem();

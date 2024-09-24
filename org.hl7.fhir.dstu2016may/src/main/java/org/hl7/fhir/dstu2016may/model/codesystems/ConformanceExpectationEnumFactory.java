@@ -50,7 +50,9 @@ public class ConformanceExpectationEnumFactory implements EnumFactory<Conformanc
   }
 
   public String toCode(ConformanceExpectation code) {
-    if (code == ConformanceExpectation.SHALL)
+       if (code == ConformanceExpectation.NULL)
+           return null;
+       if (code == ConformanceExpectation.SHALL)
       return "SHALL";
     if (code == ConformanceExpectation.SHOULD)
       return "SHOULD";
@@ -59,7 +61,7 @@ public class ConformanceExpectationEnumFactory implements EnumFactory<Conformanc
     if (code == ConformanceExpectation.SHOULDNOT)
       return "SHOULD-NOT";
     return "?";
-  }
+   }
 
   public String toSystem(ConformanceExpectation code) {
     return code.getSystem();

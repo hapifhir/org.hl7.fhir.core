@@ -166,7 +166,9 @@ public class CodeSystem extends MetadataResource {
         throw new FHIRException("Unknown CodeSystemHierarchyMeaning code '"+codeString+"'");
         }
     public String toCode(CodeSystemHierarchyMeaning code) {
-      if (code == CodeSystemHierarchyMeaning.GROUPEDBY)
+       if (code == CodeSystemHierarchyMeaning.NULL)
+           return null;
+       if (code == CodeSystemHierarchyMeaning.GROUPEDBY)
         return "grouped-by";
       if (code == CodeSystemHierarchyMeaning.ISA)
         return "is-a";
@@ -175,7 +177,7 @@ public class CodeSystem extends MetadataResource {
       if (code == CodeSystemHierarchyMeaning.CLASSIFIEDWITH)
         return "classified-with";
       return "?";
-      }
+   }
     public String toSystem(CodeSystemHierarchyMeaning code) {
       return code.getSystem();
       }
@@ -336,7 +338,9 @@ public class CodeSystem extends MetadataResource {
         throw new FHIRException("Unknown PropertyType code '"+codeString+"'");
         }
     public String toCode(PropertyType code) {
-      if (code == PropertyType.CODE)
+       if (code == PropertyType.NULL)
+           return null;
+       if (code == PropertyType.CODE)
         return "code";
       if (code == PropertyType.CODING)
         return "Coding";
@@ -351,7 +355,7 @@ public class CodeSystem extends MetadataResource {
       if (code == PropertyType.DECIMAL)
         return "decimal";
       return "?";
-      }
+   }
     public String toSystem(PropertyType code) {
       return code.getSystem();
       }

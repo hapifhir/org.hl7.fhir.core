@@ -99,6 +99,7 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
+import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -123,10 +124,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     public String getMessage() {
       return message;
-    }
-    
+    } 
   }
-
 
   private ValueSet valueset;
   private Map<String, ValueSetValidator> inner = new HashMap<>();
@@ -697,7 +696,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path+".code", msg, OpIssueCode.NotInVS, null));
       }
     }
-    if (res != null && res.getSeverity() == IssueSeverity.INFORMATION) {
+    if (res != null && res.getSeverity() == IssueSeverity.INFORMATION && res.getMessage() != null) {
       res.setSeverity(IssueSeverity.ERROR); // back patching for display logic issue
     }
     return res;
@@ -865,6 +864,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     boolean inactive = (CodeSystemUtilities.isInactive(cs, cc));
     String status = inactive ? (CodeSystemUtilities.getStatus(cs, cc)) : null;
 
+    boolean isDefaultLang = false;
     boolean ws = false;     
     if (code.getDisplay() == null) {
       return new ValidationResult(code.getSystem(), cs.getVersion(), cc, vc.getDisplay()).setStatus(inactive, status);
@@ -877,12 +877,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
       } else if (Utilities.normalize(code.getDisplay()).equals(Utilities.normalize(cc.getDisplay()))) {
         ws = true;
       }
+    } else if (cc.hasDisplay() && code.getDisplay().equalsIgnoreCase(cc.getDisplay())) {
+      isDefaultLang = true;
     }
     
     for (ConceptDefinitionDesignationComponent ds : cc.getDesignation()) {
       opContext.deadCheck();
       if (isOkLanguage(ds.getLanguage())) {
-        b.append("'"+ds.getValue()+"'");
+        b.append("'"+ds.getValue()+"' ("+ds.getLanguage()+")");
         if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
           return new ValidationResult(code.getSystem(),cs.getVersion(),  cc, getPreferredDisplay(cc, cs)).setStatus(inactive, status);
         }
@@ -912,13 +914,51 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
       }
     }
-    if (b.count() == 0) {
-      String msg = context.formatMessagePlural(options.getLanguages().getLangs().size(), I18nConstants.NO_VALID_DISPLAY_FOUND, code.getSystem(), code.getCode(), code.getDisplay(), options.langSummary());
-      return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg, OpIssueCode.Display, null)).setStatus(inactive, status);      
-    } else {
+    if (b.count() > 0) {
       String msg = context.formatMessagePlural(b.count(), ws ? I18nConstants.DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF : I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF, code.getSystem(), code.getCode(), b.toString(), code.getDisplay(), options.langSummary());
       return new ValidationResult(dispWarningStatus(), msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(dispWarning(), IssueType.INVALID, path+".display", msg, OpIssueCode.Display, null)).setStatus(inactive, status);
+    } else if (isDefaultLang) {
+      // we didn't find any valid displays because there aren't any, so the default language is acceptable, but we'll still add a hint about that
+      boolean none = options.getLanguages().getLangs().size() == 1 && !hasLanguage(cs, options.getLanguages().getLangs().get(0));
+      String msg = context.formatMessagePlural(options.getLanguages().getLangs().size(), none ? I18nConstants.NO_VALID_DISPLAY_FOUND_LANG_NONE : I18nConstants.NO_VALID_DISPLAY_FOUND_LANG_SOME, code.getSystem(), code.getCode(), code.getDisplay(), options.langSummary(), code.getDisplay());
+      String n = null;
+      return new ValidationResult(IssueSeverity.INFORMATION, n, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.INFORMATION, IssueType.INVALID, path+".display", msg, OpIssueCode.DisplayComment, null)).setStatus(inactive, status);      
+    } else {
+      String msg = context.formatMessagePlural(options.getLanguages().getLangs().size(), I18nConstants.NO_VALID_DISPLAY_FOUND, code.getSystem(), code.getCode(), code.getDisplay(), options.langSummary());
+      return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, cc.getDisplay(), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg, OpIssueCode.Display, null)).setStatus(inactive, status);      
     }
+  }
+
+  private boolean hasLanguage(CodeSystem cs, LanguagePreference languagePreference) {
+    String lang = languagePreference.getLang();
+    if (lang == null) {
+      return false;
+    }
+    for (ConceptDefinitionComponent cc : cs.getConcept()) {
+      boolean hl = hasLanguage(cs, cc, lang);
+      if (hl) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean hasLanguage(CodeSystem cs, ConceptDefinitionComponent cc, String lang) {
+    if (lang.equals(cs.getLanguage()) && cc.hasDisplay()) {
+      return true;
+    }
+    for (ConceptDefinitionDesignationComponent d : cc.getDesignation()) {
+      if (lang.equals(d.getLanguage())) {
+        return true;
+      }
+    }
+    for (ConceptDefinitionComponent cc1 : cc.getConcept()) {
+      boolean hl = hasLanguage(cs, cc1, lang);
+      if (hl) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private ConceptDefinitionComponent findSpecialConcept(Coding c, CodeSystem cs) {

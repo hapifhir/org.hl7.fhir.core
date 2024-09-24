@@ -48,12 +48,14 @@ public class NehtaNehtaNotidentifiedPresentPresentextensiveEnumFactory
   }
 
   public String toCode(NehtaNehtaNotidentifiedPresentPresentextensive code) {
-    if (code == NehtaNehtaNotidentifiedPresentPresentextensive.NOTIDENTIFIED)
+       if (code == NehtaNehtaNotidentifiedPresentPresentextensive.NULL)
+           return null;
+       if (code == NehtaNehtaNotidentifiedPresentPresentextensive.NOTIDENTIFIED)
       return "not_identified";
     if (code == NehtaNehtaNotidentifiedPresentPresentextensive.PRESENTANDEXTENSIVE)
       return "present_and_extensive";
     return "?";
-  }
+   }
 
   public String toSystem(NehtaNehtaNotidentifiedPresentPresentextensive code) {
     return code.getSystem();
