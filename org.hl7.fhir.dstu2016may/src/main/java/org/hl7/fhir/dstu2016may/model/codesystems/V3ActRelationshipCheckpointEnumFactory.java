@@ -52,7 +52,9 @@ public class V3ActRelationshipCheckpointEnumFactory implements EnumFactory<V3Act
   }
 
   public String toCode(V3ActRelationshipCheckpoint code) {
-    if (code == V3ActRelationshipCheckpoint.B)
+       if (code == V3ActRelationshipCheckpoint.NULL)
+           return null;
+       if (code == V3ActRelationshipCheckpoint.B)
       return "B";
     if (code == V3ActRelationshipCheckpoint.E)
       return "E";
@@ -63,7 +65,7 @@ public class V3ActRelationshipCheckpointEnumFactory implements EnumFactory<V3Act
     if (code == V3ActRelationshipCheckpoint.X)
       return "X";
     return "?";
-  }
+   }
 
   public String toSystem(V3ActRelationshipCheckpoint code) {
     return code.getSystem();

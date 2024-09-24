@@ -219,7 +219,9 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     public String toCode(QuestionnaireResponseStatus code) {
-      if (code == QuestionnaireResponseStatus.INPROGRESS)
+       if (code == QuestionnaireResponseStatus.NULL)
+           return null;
+       if (code == QuestionnaireResponseStatus.INPROGRESS)
         return "in-progress";
       if (code == QuestionnaireResponseStatus.COMPLETED)
         return "completed";
@@ -230,7 +232,7 @@ public class QuestionnaireResponse extends DomainResource {
       if (code == QuestionnaireResponseStatus.STOPPED)
         return "stopped";
       return "?";
-    }
+   }
 
     public String toSystem(QuestionnaireResponseStatus code) {
       return code.getSystem();

@@ -82,7 +82,7 @@ jobs:
 
       # Deploy the SNAPSHOT artifact to sonatype nexus.
       # This is done for the master branch merges only.
-      - task: Maven@3
+      - task: Maven@4
         displayName: 'Deploy to Sonatype staging'
         inputs:
           mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
@@ -115,7 +115,7 @@ jobs:
 
       # Deploy the SNAPSHOT artifact to GitHub packages.
       # This is done for the master branch merges only.
-      - task: Maven@3
+      - task: Maven@4
         displayName: 'Deploy to GitHub packages'
         inputs:
           mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
@@ -164,7 +164,7 @@ jobs:
           pip3 install pandas
         displayName: 'Set up python packages'
 
-      - task: Maven@3
+      - task: Maven@4
         inputs:
           mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
           options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl org.hl7.fhir.utilities '

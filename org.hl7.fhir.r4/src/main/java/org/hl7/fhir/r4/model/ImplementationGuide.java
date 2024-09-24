@@ -10261,7 +10261,9 @@ public class ImplementationGuide extends MetadataResource {
     }
 
     public String toCode(SPDXLicense code) {
-      if (code == SPDXLicense._0BSD)
+       if (code == SPDXLicense.NULL)
+           return null;
+       if (code == SPDXLicense._0BSD)
         return "0BSD";
       if (code == SPDXLicense.AAL)
         return "AAL";
@@ -11378,7 +11380,7 @@ public class ImplementationGuide extends MetadataResource {
       if (code == SPDXLicense.ZPL_2_1)
         return "ZPL-2.1";
       return "?";
-    }
+   }
 
     public String toSystem(SPDXLicense code) {
       return code.getSystem();
@@ -11534,7 +11536,9 @@ public class ImplementationGuide extends MetadataResource {
     }
 
     public String toCode(GuidePageGeneration code) {
-      if (code == GuidePageGeneration.HTML)
+       if (code == GuidePageGeneration.NULL)
+           return null;
+       if (code == GuidePageGeneration.HTML)
         return "html";
       if (code == GuidePageGeneration.MARKDOWN)
         return "markdown";
@@ -11543,7 +11547,7 @@ public class ImplementationGuide extends MetadataResource {
       if (code == GuidePageGeneration.GENERATED)
         return "generated";
       return "?";
-    }
+   }
 
     public String toSystem(GuidePageGeneration code) {
       return code.getSystem();
@@ -11824,7 +11828,9 @@ public class ImplementationGuide extends MetadataResource {
     }
 
     public String toCode(GuideParameterCode code) {
-      if (code == GuideParameterCode.APPLY)
+       if (code == GuideParameterCode.NULL)
+           return null;
+       if (code == GuideParameterCode.APPLY)
         return "apply";
       if (code == GuideParameterCode.PATHRESOURCE)
         return "path-resource";
@@ -11845,7 +11851,7 @@ public class ImplementationGuide extends MetadataResource {
       if (code == GuideParameterCode.HTMLTEMPLATE)
         return "html-template";
       return "?";
-    }
+   }
 
     public String toSystem(GuideParameterCode code) {
       return code.getSystem();

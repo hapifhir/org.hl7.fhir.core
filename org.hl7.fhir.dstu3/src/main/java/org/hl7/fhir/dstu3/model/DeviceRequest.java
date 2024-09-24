@@ -206,7 +206,9 @@ public class DeviceRequest extends DomainResource {
         throw new FHIRException("Unknown DeviceRequestStatus code '"+codeString+"'");
         }
     public String toCode(DeviceRequestStatus code) {
-      if (code == DeviceRequestStatus.DRAFT)
+       if (code == DeviceRequestStatus.NULL)
+           return null;
+       if (code == DeviceRequestStatus.DRAFT)
         return "draft";
       if (code == DeviceRequestStatus.ACTIVE)
         return "active";
@@ -221,7 +223,7 @@ public class DeviceRequest extends DomainResource {
       if (code == DeviceRequestStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(DeviceRequestStatus code) {
       return code.getSystem();
       }
@@ -340,7 +342,9 @@ public class DeviceRequest extends DomainResource {
         throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
         }
     public String toCode(RequestPriority code) {
-      if (code == RequestPriority.ROUTINE)
+       if (code == RequestPriority.NULL)
+           return null;
+       if (code == RequestPriority.ROUTINE)
         return "routine";
       if (code == RequestPriority.URGENT)
         return "urgent";
@@ -349,7 +353,7 @@ public class DeviceRequest extends DomainResource {
       if (code == RequestPriority.STAT)
         return "stat";
       return "?";
-      }
+   }
     public String toSystem(RequestPriority code) {
       return code.getSystem();
       }

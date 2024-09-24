@@ -166,7 +166,9 @@ public class EnrollmentResponse extends DomainResource {
         throw new FHIRException("Unknown EnrollmentOutcome code '"+codeString+"'");
         }
     public String toCode(EnrollmentOutcome code) {
-      if (code == EnrollmentOutcome.QUEUED)
+       if (code == EnrollmentOutcome.NULL)
+           return null;
+       if (code == EnrollmentOutcome.QUEUED)
         return "queued";
       if (code == EnrollmentOutcome.COMPLETE)
         return "complete";
@@ -175,7 +177,7 @@ public class EnrollmentResponse extends DomainResource {
       if (code == EnrollmentOutcome.PARTIAL)
         return "partial";
       return "?";
-      }
+   }
     public String toSystem(EnrollmentOutcome code) {
       return code.getSystem();
       }

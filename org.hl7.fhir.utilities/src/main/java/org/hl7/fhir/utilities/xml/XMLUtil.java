@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -501,8 +502,16 @@ public class XMLUtil {
     return e == null ? null : e.getAttribute(aname);
   }
 
-  public static void writeDomToFile(Document doc, String filename) throws TransformerException, IOException {
+  public static TransformerFactory newXXEProtectedTransformerFactory() {
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+    return transformerFactory;
+  }
+
+
+  public static void writeDomToFile(Document doc, String filename) throws TransformerException, IOException {
+    TransformerFactory transformerFactory = XMLUtil.newXXEProtectedTransformerFactory();
     Transformer transformer = transformerFactory.newTransformer();
     DOMSource source = new DOMSource(doc);
     StreamResult streamResult =  new StreamResult(ManagedFileAccess.file(filename));
@@ -545,6 +554,14 @@ public class XMLUtil {
     return res;
   }
 
+  public static Element addChild(Document doc, Element element, String name, String namespace, int indent) {
+    Node node = doc.createTextNode("\n"+Utilities.padLeft("", ' ', indent));
+    Element child = doc.createElementNS(namespace, name);
+    element.appendChild(child);
+    element.appendChild(node);
+    return child;
+  }
+
   public static Element insertChild(Document doc, Element element, String name, String namespace, int indent) {
     Node node = doc.createTextNode("\n"+Utilities.padLeft("", ' ', indent));
     Element child = doc.createElementNS(namespace, name);
@@ -585,7 +602,7 @@ public class XMLUtil {
   }
 
   public static void saveToFile(Element root, OutputStream stream) throws TransformerException {
-    Transformer transformer = TransformerFactory.newInstance().newTransformer();
+    Transformer transformer = XMLUtil.newXXEProtectedTransformerFactory().newTransformer();
     Result output = new StreamResult(stream);
     Source input = new DOMSource(root);
 

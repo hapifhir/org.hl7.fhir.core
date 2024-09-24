@@ -64,7 +64,9 @@ public class PermittedDataTypeEnumFactory implements EnumFactory<PermittedDataTy
   }
 
   public String toCode(PermittedDataType code) {
-    if (code == PermittedDataType.QUANTITY)
+       if (code == PermittedDataType.NULL)
+           return null;
+       if (code == PermittedDataType.QUANTITY)
       return "Quantity";
     if (code == PermittedDataType.CODEABLECONCEPT)
       return "CodeableConcept";
@@ -87,7 +89,7 @@ public class PermittedDataTypeEnumFactory implements EnumFactory<PermittedDataTy
     if (code == PermittedDataType.PERIOD)
       return "Period";
     return "?";
-  }
+   }
 
   public String toSystem(PermittedDataType code) {
     return code.getSystem();

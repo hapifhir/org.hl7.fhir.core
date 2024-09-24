@@ -58,7 +58,9 @@ public class ConsentStatusEnumFactory implements EnumFactory<ConsentStatus> {
   }
 
   public String toCode(ConsentStatus code) {
-    if (code == ConsentStatus.DRAFT)
+       if (code == ConsentStatus.NULL)
+           return null;
+       if (code == ConsentStatus.DRAFT)
       return "draft";
     if (code == ConsentStatus.PROPOSED)
       return "proposed";
@@ -71,7 +73,7 @@ public class ConsentStatusEnumFactory implements EnumFactory<ConsentStatus> {
     if (code == ConsentStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(ConsentStatus code) {
       return code.getSystem();

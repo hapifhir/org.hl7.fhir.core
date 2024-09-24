@@ -50,7 +50,9 @@ public class ConceptSubsumptionOutcomeEnumFactory implements EnumFactory<Concept
   }
 
   public String toCode(ConceptSubsumptionOutcome code) {
-    if (code == ConceptSubsumptionOutcome.EQUIVALENT)
+       if (code == ConceptSubsumptionOutcome.NULL)
+           return null;
+       if (code == ConceptSubsumptionOutcome.EQUIVALENT)
       return "equivalent";
     if (code == ConceptSubsumptionOutcome.SUBSUMES)
       return "subsumes";
@@ -59,7 +61,7 @@ public class ConceptSubsumptionOutcomeEnumFactory implements EnumFactory<Concept
     if (code == ConceptSubsumptionOutcome.NOTSUBSUMED)
       return "not-subsumed";
     return "?";
-  }
+   }
 
   public String toSystem(ConceptSubsumptionOutcome code) {
     return code.getSystem();

@@ -46,12 +46,14 @@ public class RecommendationStrengthEnumFactory implements EnumFactory<Recommenda
   }
 
   public String toCode(RecommendationStrength code) {
-    if (code == RecommendationStrength.STRONG)
+       if (code == RecommendationStrength.NULL)
+           return null;
+       if (code == RecommendationStrength.STRONG)
       return "strong";
     if (code == RecommendationStrength.WEAK)
       return "weak";
     return "?";
-  }
+   }
 
   public String toSystem(RecommendationStrength code) {
     return code.getSystem();

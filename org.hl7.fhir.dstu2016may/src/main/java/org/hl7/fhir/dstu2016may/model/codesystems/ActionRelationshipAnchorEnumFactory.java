@@ -46,12 +46,14 @@ public class ActionRelationshipAnchorEnumFactory implements EnumFactory<ActionRe
   }
 
   public String toCode(ActionRelationshipAnchor code) {
-    if (code == ActionRelationshipAnchor.START)
+       if (code == ActionRelationshipAnchor.NULL)
+           return null;
+       if (code == ActionRelationshipAnchor.START)
       return "start";
     if (code == ActionRelationshipAnchor.END)
       return "end";
     return "?";
-  }
+   }
 
   public String toSystem(ActionRelationshipAnchor code) {
     return code.getSystem();

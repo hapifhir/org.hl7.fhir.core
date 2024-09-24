@@ -58,7 +58,9 @@ public class AdverseEventOutcomeEnumFactory implements EnumFactory<AdverseEventO
   }
 
   public String toCode(AdverseEventOutcome code) {
-    if (code == AdverseEventOutcome.RESOLVED)
+       if (code == AdverseEventOutcome.NULL)
+           return null;
+       if (code == AdverseEventOutcome.RESOLVED)
       return "resolved";
     if (code == AdverseEventOutcome.RECOVERING)
       return "recovering";
@@ -71,7 +73,7 @@ public class AdverseEventOutcomeEnumFactory implements EnumFactory<AdverseEventO
     if (code == AdverseEventOutcome.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
     public String toSystem(AdverseEventOutcome code) {
       return code.getSystem();

@@ -261,7 +261,9 @@ public class ContactPoint extends DataType implements ICompositeType {
     }
 
     public String toCode(ContactPointSystem code) {
-      if (code == ContactPointSystem.PHONE)
+       if (code == ContactPointSystem.NULL)
+           return null;
+       if (code == ContactPointSystem.PHONE)
         return "phone";
       if (code == ContactPointSystem.FAX)
         return "fax";
@@ -276,7 +278,7 @@ public class ContactPoint extends DataType implements ICompositeType {
       if (code == ContactPointSystem.OTHER)
         return "other";
       return "?";
-    }
+   }
 
     public String toSystem(ContactPointSystem code) {
       return code.getSystem();
@@ -452,7 +454,9 @@ public class ContactPoint extends DataType implements ICompositeType {
     }
 
     public String toCode(ContactPointUse code) {
-      if (code == ContactPointUse.HOME)
+       if (code == ContactPointUse.NULL)
+           return null;
+       if (code == ContactPointUse.HOME)
         return "home";
       if (code == ContactPointUse.WORK)
         return "work";
@@ -463,7 +467,7 @@ public class ContactPoint extends DataType implements ICompositeType {
       if (code == ContactPointUse.MOBILE)
         return "mobile";
       return "?";
-    }
+   }
 
     public String toSystem(ContactPointUse code) {
       return code.getSystem();

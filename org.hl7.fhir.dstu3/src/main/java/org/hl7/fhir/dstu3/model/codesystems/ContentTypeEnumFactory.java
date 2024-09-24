@@ -54,7 +54,9 @@ public class ContentTypeEnumFactory implements EnumFactory<ContentType> {
   }
 
   public String toCode(ContentType code) {
-    if (code == ContentType.XML)
+       if (code == ContentType.NULL)
+           return null;
+       if (code == ContentType.XML)
       return "xml";
     if (code == ContentType.JSON)
       return "json";
@@ -63,7 +65,7 @@ public class ContentTypeEnumFactory implements EnumFactory<ContentType> {
     if (code == ContentType.NONE)
       return "none";
     return "?";
-  }
+   }
 
     public String toSystem(ContentType code) {
       return code.getSystem();

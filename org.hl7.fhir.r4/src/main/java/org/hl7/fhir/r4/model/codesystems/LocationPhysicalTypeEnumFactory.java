@@ -70,7 +70,9 @@ public class LocationPhysicalTypeEnumFactory implements EnumFactory<LocationPhys
   }
 
   public String toCode(LocationPhysicalType code) {
-    if (code == LocationPhysicalType.SI)
+       if (code == LocationPhysicalType.NULL)
+           return null;
+       if (code == LocationPhysicalType.SI)
       return "si";
     if (code == LocationPhysicalType.BU)
       return "bu";
@@ -99,7 +101,7 @@ public class LocationPhysicalTypeEnumFactory implements EnumFactory<LocationPhys
     if (code == LocationPhysicalType.JDN)
       return "jdn";
     return "?";
-  }
+   }
 
   public String toSystem(LocationPhysicalType code) {
     return code.getSystem();

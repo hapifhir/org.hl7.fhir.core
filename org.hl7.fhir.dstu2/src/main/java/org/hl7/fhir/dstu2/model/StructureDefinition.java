@@ -176,15 +176,18 @@ public class StructureDefinition extends DomainResource {
       throw new FHIRException("Unknown StructureDefinitionKind code '" + codeString + "'");
     }
 
-    public String toCode(StructureDefinitionKind code) {
-      if (code == StructureDefinitionKind.DATATYPE)
+    public String toCode(StructureDefinitionKind code)
+   {
+       if (code == StructureDefinitionKind.NULL)
+           return null;
+       if (code == StructureDefinitionKind.DATATYPE)
         return "datatype";
       if (code == StructureDefinitionKind.RESOURCE)
         return "resource";
       if (code == StructureDefinitionKind.LOGICAL)
         return "logical";
       return "?";
-    }
+   }
   }
 
   public enum ExtensionContext {
@@ -331,8 +334,11 @@ public class StructureDefinition extends DomainResource {
       throw new FHIRException("Unknown ExtensionContext code '" + codeString + "'");
     }
 
-    public String toCode(ExtensionContext code) {
-      if (code == ExtensionContext.RESOURCE)
+    public String toCode(ExtensionContext code)
+   {
+       if (code == ExtensionContext.NULL)
+           return null;
+       if (code == ExtensionContext.RESOURCE)
         return "resource";
       if (code == ExtensionContext.DATATYPE)
         return "datatype";
@@ -341,7 +347,7 @@ public class StructureDefinition extends DomainResource {
       if (code == ExtensionContext.EXTENSION)
         return "extension";
       return "?";
-    }
+   }
   }
 
   @Block()

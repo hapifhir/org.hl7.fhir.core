@@ -163,12 +163,14 @@ public class SubscriptionTopic extends DomainResource {
     }
 
     public String toCode(CriteriaNotExistsBehavior code) {
-      if (code == CriteriaNotExistsBehavior.TESTPASSES)
+       if (code == CriteriaNotExistsBehavior.NULL)
+           return null;
+       if (code == CriteriaNotExistsBehavior.TESTPASSES)
         return "test-passes";
       if (code == CriteriaNotExistsBehavior.TESTFAILS)
         return "test-fails";
       return "?";
-    }
+   }
 
     public String toSystem(CriteriaNotExistsBehavior code) {
       return code.getSystem();
@@ -301,14 +303,16 @@ public class SubscriptionTopic extends DomainResource {
     }
 
     public String toCode(InteractionTrigger code) {
-      if (code == InteractionTrigger.CREATE)
+       if (code == InteractionTrigger.NULL)
+           return null;
+       if (code == InteractionTrigger.CREATE)
         return "create";
       if (code == InteractionTrigger.UPDATE)
         return "update";
       if (code == InteractionTrigger.DELETE)
         return "delete";
       return "?";
-    }
+   }
 
     public String toSystem(InteractionTrigger code) {
       return code.getSystem();
@@ -677,7 +681,9 @@ public class SubscriptionTopic extends DomainResource {
     }
 
     public String toCode(SubscriptionSearchModifier code) {
-      if (code == SubscriptionSearchModifier.EQUAL)
+       if (code == SubscriptionSearchModifier.NULL)
+           return null;
+       if (code == SubscriptionSearchModifier.EQUAL)
         return "=";
       if (code == SubscriptionSearchModifier.EQ)
         return "eq";
@@ -708,7 +714,7 @@ public class SubscriptionTopic extends DomainResource {
       if (code == SubscriptionSearchModifier.OFTYPE)
         return "of-type";
       return "?";
-    }
+   }
 
     public String toSystem(SubscriptionSearchModifier code) {
       return code.getSystem();

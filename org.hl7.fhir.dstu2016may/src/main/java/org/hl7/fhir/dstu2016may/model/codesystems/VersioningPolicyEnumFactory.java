@@ -48,14 +48,16 @@ public class VersioningPolicyEnumFactory implements EnumFactory<VersioningPolicy
   }
 
   public String toCode(VersioningPolicy code) {
-    if (code == VersioningPolicy.NOVERSION)
+       if (code == VersioningPolicy.NULL)
+           return null;
+       if (code == VersioningPolicy.NOVERSION)
       return "no-version";
     if (code == VersioningPolicy.VERSIONED)
       return "versioned";
     if (code == VersioningPolicy.VERSIONEDUPDATE)
       return "versioned-update";
     return "?";
-  }
+   }
 
   public String toSystem(VersioningPolicy code) {
     return code.getSystem();

@@ -247,8 +247,11 @@ public class Appointment extends DomainResource {
       throw new FHIRException("Unknown AppointmentStatus code '" + codeString + "'");
     }
 
-    public String toCode(AppointmentStatus code) {
-      if (code == AppointmentStatus.PROPOSED)
+    public String toCode(AppointmentStatus code)
+   {
+       if (code == AppointmentStatus.NULL)
+           return null;
+       if (code == AppointmentStatus.PROPOSED)
         return "proposed";
       if (code == AppointmentStatus.PENDING)
         return "pending";
@@ -263,7 +266,7 @@ public class Appointment extends DomainResource {
       if (code == AppointmentStatus.NOSHOW)
         return "noshow";
       return "?";
-    }
+   }
   }
 
   public enum ParticipantRequired {
@@ -388,15 +391,18 @@ public class Appointment extends DomainResource {
       throw new FHIRException("Unknown ParticipantRequired code '" + codeString + "'");
     }
 
-    public String toCode(ParticipantRequired code) {
-      if (code == ParticipantRequired.REQUIRED)
+    public String toCode(ParticipantRequired code)
+   {
+       if (code == ParticipantRequired.NULL)
+           return null;
+       if (code == ParticipantRequired.REQUIRED)
         return "required";
       if (code == ParticipantRequired.OPTIONAL)
         return "optional";
       if (code == ParticipantRequired.INFORMATIONONLY)
         return "information-only";
       return "?";
-    }
+   }
   }
 
   public enum ParticipationStatus {
@@ -541,8 +547,11 @@ public class Appointment extends DomainResource {
       throw new FHIRException("Unknown ParticipationStatus code '" + codeString + "'");
     }
 
-    public String toCode(ParticipationStatus code) {
-      if (code == ParticipationStatus.ACCEPTED)
+    public String toCode(ParticipationStatus code)
+   {
+       if (code == ParticipationStatus.NULL)
+           return null;
+       if (code == ParticipationStatus.ACCEPTED)
         return "accepted";
       if (code == ParticipationStatus.DECLINED)
         return "declined";
@@ -551,7 +560,7 @@ public class Appointment extends DomainResource {
       if (code == ParticipationStatus.NEEDSACTION)
         return "needs-action";
       return "?";
-    }
+   }
   }
 
   @Block()

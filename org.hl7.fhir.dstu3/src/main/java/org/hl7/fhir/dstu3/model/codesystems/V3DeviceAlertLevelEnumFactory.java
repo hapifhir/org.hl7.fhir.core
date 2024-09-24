@@ -54,7 +54,9 @@ public class V3DeviceAlertLevelEnumFactory implements EnumFactory<V3DeviceAlertL
   }
 
   public String toCode(V3DeviceAlertLevel code) {
-    if (code == V3DeviceAlertLevel.C)
+       if (code == V3DeviceAlertLevel.NULL)
+           return null;
+       if (code == V3DeviceAlertLevel.C)
       return "C";
     if (code == V3DeviceAlertLevel.N)
       return "N";
@@ -63,7 +65,7 @@ public class V3DeviceAlertLevelEnumFactory implements EnumFactory<V3DeviceAlertL
     if (code == V3DeviceAlertLevel.W)
       return "W";
     return "?";
-  }
+   }
 
     public String toSystem(V3DeviceAlertLevel code) {
       return code.getSystem();

@@ -187,8 +187,11 @@ public class Procedure extends DomainResource {
       throw new FHIRException("Unknown ProcedureStatus code '" + codeString + "'");
     }
 
-    public String toCode(ProcedureStatus code) {
-      if (code == ProcedureStatus.INPROGRESS)
+    public String toCode(ProcedureStatus code)
+   {
+       if (code == ProcedureStatus.NULL)
+           return null;
+       if (code == ProcedureStatus.INPROGRESS)
         return "in-progress";
       if (code == ProcedureStatus.ABORTED)
         return "aborted";
@@ -197,7 +200,7 @@ public class Procedure extends DomainResource {
       if (code == ProcedureStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
   }
 
   @Block()

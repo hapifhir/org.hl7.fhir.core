@@ -46,12 +46,14 @@ public class HspcFetalestimationmethodEnumFactory implements EnumFactory<HspcFet
   }
 
   public String toCode(HspcFetalestimationmethod code) {
-    if (code == HspcFetalestimationmethod._103241)
+       if (code == HspcFetalestimationmethod.NULL)
+           return null;
+       if (code == HspcFetalestimationmethod._103241)
       return "103241";
     if (code == HspcFetalestimationmethod._205940)
       return "205940";
     return "?";
-  }
+   }
 
   public String toSystem(HspcFetalestimationmethod code) {
     return code.getSystem();

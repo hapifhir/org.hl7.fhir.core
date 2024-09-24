@@ -58,7 +58,9 @@ public class RestfulSecurityServiceEnumFactory implements EnumFactory<RestfulSec
   }
 
   public String toCode(RestfulSecurityService code) {
-    if (code == RestfulSecurityService.OAUTH)
+       if (code == RestfulSecurityService.NULL)
+           return null;
+       if (code == RestfulSecurityService.OAUTH)
       return "OAuth";
     if (code == RestfulSecurityService.SMARTONFHIR)
       return "SMART-on-FHIR";
@@ -71,7 +73,7 @@ public class RestfulSecurityServiceEnumFactory implements EnumFactory<RestfulSec
     if (code == RestfulSecurityService.CERTIFICATES)
       return "Certificates";
     return "?";
-  }
+   }
 
     public String toSystem(RestfulSecurityService code) {
       return code.getSystem();

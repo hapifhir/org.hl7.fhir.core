@@ -50,7 +50,9 @@ public class TimingAbbreviationEnumFactory implements EnumFactory<TimingAbbrevia
   }
 
   public String toCode(TimingAbbreviation code) {
-    if (code == TimingAbbreviation.QD)
+       if (code == TimingAbbreviation.NULL)
+           return null;
+       if (code == TimingAbbreviation.QD)
       return "QD";
     if (code == TimingAbbreviation.QOD)
       return "QOD";
@@ -59,7 +61,7 @@ public class TimingAbbreviationEnumFactory implements EnumFactory<TimingAbbrevia
     if (code == TimingAbbreviation.Q6H)
       return "Q6H";
     return "?";
-  }
+   }
 
   public String toSystem(TimingAbbreviation code) {
     return code.getSystem();

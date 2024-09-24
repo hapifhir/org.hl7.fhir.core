@@ -3660,23 +3660,22 @@ public class FHIRPathEngine {
 
     case LowBoundary:
     case HighBoundary: {
-      checkContextContinuous(focus, exp.getFunction().toCode(), exp);
+      checkContextContinuous(focus, exp.getFunction().toCode(), exp, true);      
       if (paramTypes.size() > 0) {
         checkParamTypes(exp, exp.getFunction().toCode(), paramTypes,
             new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer));
       }
-      if (focus.hasType("decimal")
-          && (focus.hasType("date") || focus.hasType("datetime") || focus.hasType("instant"))) {
-        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Decimal, TypeDetails.FP_DateTime);
-      } else if (focus.hasType("decimal")) {
-        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Decimal);
+      if ((focus.hasType("date") || focus.hasType("datetime") || focus.hasType("instant"))) {
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Decimal, TypeDetails.FP_DateTime);       
+      } else if (focus.hasType("decimal") || focus.hasType("integer")) {
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Decimal);       
       } else {
-        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_DateTime);
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_DateTime);       
       }
     }
     case Precision: {
-      checkContextContinuous(focus, exp.getFunction().toCode(), exp);
-      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);
+      checkContextContinuous(focus, exp.getFunction().toCode(), exp, false);      
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);       
     }
 
     case Custom: {
@@ -3780,9 +3779,8 @@ public class FHIRPathEngine {
     }
   }
 
-  private void checkContextContinuous(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
-    if (!focus.hasNoTypes() && !focus.hasType("decimal") && !focus.hasType("date") && !focus.hasType("dateTime")
-        && !focus.hasType("time") && !focus.hasType("Quantity")) {
+  private void checkContextContinuous(TypeDetails focus, String name, ExpressionNode expr, boolean allowInteger) throws PathEngineException {
+    if (!focus.hasNoTypes() && !focus.hasType("decimal") && !focus.hasType("date") && !focus.hasType("dateTime") && !focus.hasType("time") && !focus.hasType("Quantity") && !(allowInteger && focus.hasType("integer"))) {
       throw makeException(expr, I18nConstants.FHIRPATH_CONTINUOUS_ONLY, name, focus.describe());
     }
   }
@@ -4233,42 +4231,43 @@ public class FHIRPathEngine {
     if (focus.size() > 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "lowBoundary", focus.size());
     }
-    int precision = 0;
+    Integer precision = null;
     if (expr.getParameters().size() > 0) {
       List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
       if (n1.size() != 1) {
-        throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "lowBoundary", "0", "Multiple Values",
-            "integer");
+        throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "lowBoundary", "0", "Multiple Values", "integer");
       }
       precision = Integer.parseInt(n1.get(0).primitiveValue());
     }
-
+    
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
-
+    
     if (base.hasType("decimal")) {
-      result
-          .add(new DecimalType(Utilities.lowBoundaryForDecimal(base.primitiveValue(), precision == 0 ? 8 : precision)));
+      if (precision == null || (precision >= 0 && precision < 17)) {
+        result.add(new DecimalType(Utilities.lowBoundaryForDecimal(base.primitiveValue(), precision == null ? 8 : precision)));
+      }
+    } else if (base.hasType("integer")) {
+      if (precision == null || (precision >= 0 && precision < 17)) {
+        result.add(new DecimalType(Utilities.lowBoundaryForDecimal(base.primitiveValue(), precision == null ? 8 : precision)));
+      }
     } else if (base.hasType("date")) {
-      result
-          .add(new DateTimeType(Utilities.lowBoundaryForDate(base.primitiveValue(), precision == 0 ? 10 : precision)));
+      result.add(new DateTimeType(Utilities.lowBoundaryForDate(base.primitiveValue(), precision == null ? 10 : precision)));
     } else if (base.hasType("dateTime")) {
-      result
-          .add(new DateTimeType(Utilities.lowBoundaryForDate(base.primitiveValue(), precision == 0 ? 17 : precision)));
+      result.add(new DateTimeType(Utilities.lowBoundaryForDate(base.primitiveValue(), precision == null ? 17 : precision)));
     } else if (base.hasType("time")) {
-      result.add(new TimeType(Utilities.lowBoundaryForTime(base.primitiveValue(), precision == 0 ? 9 : precision)));
+      result.add(new TimeType(Utilities.lowBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
       Base v = base.copy();
-      v.setProperty("value", new DecimalType(Utilities.lowBoundaryForDecimal(value, precision == 0 ? 8 : precision)));
+      v.setProperty("value", new DecimalType(Utilities.lowBoundaryForDecimal(value, precision == null ? 8 : precision)));
       result.add(v);
     } else {
-      makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(),
-          "decimal or date");
+      makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "decimal or date");
     }
     return result;
   }
-
+  
   private List<Base> funcHighBoundary(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() == 0) {
       return makeNull();
@@ -4276,41 +4275,43 @@ public class FHIRPathEngine {
     if (focus.size() > 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "highBoundary", focus.size());
     }
-    int precision = 0;
+    Integer precision = null;
     if (expr.getParameters().size() > 0) {
       List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
       if (n1.size() != 1) {
-        throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "lowBoundary", "0", "Multiple Values",
-            "integer");
+        throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "lowBoundary", "0", "Multiple Values", "integer");
       }
       precision = Integer.parseInt(n1.get(0).primitiveValue());
     }
-
+    
+    
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("decimal")) {
-      result.add(
-          new DecimalType(Utilities.highBoundaryForDecimal(base.primitiveValue(), precision == 0 ? 8 : precision)));
+      if (precision == null || (precision >= 0 && precision < 17)) {
+        result.add(new DecimalType(Utilities.highBoundaryForDecimal(base.primitiveValue(), precision == null ? 8 : precision)));
+      }
+    } else if (base.hasType("integer")) {
+      if (precision == null || (precision >= 0 && precision < 17)) {
+        result.add(new DecimalType(Utilities.highBoundaryForDecimal(base.primitiveValue(), precision == null ? 8 : precision)));
+      }
     } else if (base.hasType("date")) {
-      result
-          .add(new DateTimeType(Utilities.highBoundaryForDate(base.primitiveValue(), precision == 0 ? 10 : precision)));
+      result.add(new DateTimeType(Utilities.highBoundaryForDate(base.primitiveValue(), precision == null ? 10 : precision)));
     } else if (base.hasType("dateTime")) {
-      result
-          .add(new DateTimeType(Utilities.highBoundaryForDate(base.primitiveValue(), precision == 0 ? 17 : precision)));
+      result.add(new DateTimeType(Utilities.highBoundaryForDate(base.primitiveValue(), precision == null ? 17 : precision)));
     } else if (base.hasType("time")) {
-      result.add(new TimeType(Utilities.highBoundaryForTime(base.primitiveValue(), precision == 0 ? 9 : precision)));
+      result.add(new TimeType(Utilities.highBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
       Base v = base.copy();
-      v.setProperty("value", new DecimalType(Utilities.highBoundaryForDecimal(value, precision == 0 ? 8 : precision)));
+      v.setProperty("value", new DecimalType(Utilities.highBoundaryForDecimal(value, precision == null ? 8 : precision)));
       result.add(v);
     } else {
-      makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(),
-          "decimal or date");
+      makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "decimal or date");
     }
     return result;
   }
-
+  
   private List<Base> funcPrecision(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "highBoundary", focus.size());

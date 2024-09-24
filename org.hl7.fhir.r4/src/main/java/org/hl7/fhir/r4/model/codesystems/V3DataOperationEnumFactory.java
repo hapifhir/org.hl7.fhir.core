@@ -82,7 +82,9 @@ public class V3DataOperationEnumFactory implements EnumFactory<V3DataOperation> 
   }
 
   public String toCode(V3DataOperation code) {
-    if (code == V3DataOperation.OPERATE)
+       if (code == V3DataOperation.NULL)
+           return null;
+       if (code == V3DataOperation.OPERATE)
       return "OPERATE";
     if (code == V3DataOperation.CREATE)
       return "CREATE";
@@ -123,7 +125,7 @@ public class V3DataOperationEnumFactory implements EnumFactory<V3DataOperation> 
     if (code == V3DataOperation.SUSPEND)
       return "SUSPEND";
     return "?";
-  }
+   }
 
   public String toSystem(V3DataOperation code) {
     return code.getSystem();

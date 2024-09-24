@@ -233,7 +233,9 @@ public class VerificationResult extends DomainResource {
     }
 
     public String toCode(Status code) {
-      if (code == Status.ATTESTED)
+       if (code == Status.NULL)
+           return null;
+       if (code == Status.ATTESTED)
         return "attested";
       if (code == Status.VALIDATED)
         return "validated";
@@ -246,7 +248,7 @@ public class VerificationResult extends DomainResource {
       if (code == Status.REVALFAIL)
         return "reval-fail";
       return "?";
-    }
+   }
 
     public String toSystem(Status code) {
       return code.getSystem();

@@ -60,7 +60,9 @@ public class SubstanceCategoryEnumFactory implements EnumFactory<SubstanceCatego
   }
 
   public String toCode(SubstanceCategory code) {
-    if (code == SubstanceCategory.ALLERGEN)
+       if (code == SubstanceCategory.NULL)
+           return null;
+       if (code == SubstanceCategory.ALLERGEN)
       return "allergen";
     if (code == SubstanceCategory.BIOLOGICAL)
       return "biological";
@@ -75,7 +77,7 @@ public class SubstanceCategoryEnumFactory implements EnumFactory<SubstanceCatego
     if (code == SubstanceCategory.MATERIAL)
       return "material";
     return "?";
-  }
+   }
 
     public String toSystem(SubstanceCategory code) {
       return code.getSystem();

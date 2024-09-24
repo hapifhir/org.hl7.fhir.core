@@ -50,7 +50,9 @@ public class PatientMpiMatchEnumFactory implements EnumFactory<PatientMpiMatch> 
   }
 
   public String toCode(PatientMpiMatch code) {
-    if (code == PatientMpiMatch.CERTAIN)
+       if (code == PatientMpiMatch.NULL)
+           return null;
+       if (code == PatientMpiMatch.CERTAIN)
       return "certain";
     if (code == PatientMpiMatch.PROBABLE)
       return "probable";
@@ -59,7 +61,7 @@ public class PatientMpiMatchEnumFactory implements EnumFactory<PatientMpiMatch> 
     if (code == PatientMpiMatch.CERTAINLYNOT)
       return "certainly-not";
     return "?";
-  }
+   }
 
   public String toSystem(PatientMpiMatch code) {
     return code.getSystem();

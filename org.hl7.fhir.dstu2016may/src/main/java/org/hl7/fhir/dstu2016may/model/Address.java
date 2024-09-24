@@ -192,7 +192,9 @@ public class Address extends Type implements ICompositeType {
     }
 
     public String toCode(AddressUse code) {
-      if (code == AddressUse.HOME)
+       if (code == AddressUse.NULL)
+           return null;
+       if (code == AddressUse.HOME)
         return "home";
       if (code == AddressUse.WORK)
         return "work";
@@ -201,7 +203,7 @@ public class Address extends Type implements ICompositeType {
       if (code == AddressUse.OLD)
         return "old";
       return "?";
-    }
+   }
 
     public String toSystem(AddressUse code) {
       return code.getSystem();
@@ -329,14 +331,16 @@ public class Address extends Type implements ICompositeType {
     }
 
     public String toCode(AddressType code) {
-      if (code == AddressType.POSTAL)
+       if (code == AddressType.NULL)
+           return null;
+       if (code == AddressType.POSTAL)
         return "postal";
       if (code == AddressType.PHYSICAL)
         return "physical";
       if (code == AddressType.BOTH)
         return "both";
       return "?";
-    }
+   }
 
     public String toSystem(AddressType code) {
       return code.getSystem();

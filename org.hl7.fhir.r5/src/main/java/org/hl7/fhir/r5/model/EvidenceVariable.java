@@ -208,7 +208,9 @@ public class EvidenceVariable extends MetadataResource {
         throw new FHIRException("Unknown CharacteristicCombination code '"+codeString+"'");
         }
     public String toCode(CharacteristicCombination code) {
-      if (code == CharacteristicCombination.ALLOF)
+       if (code == CharacteristicCombination.NULL)
+           return null;
+       if (code == CharacteristicCombination.ALLOF)
         return "all-of";
       if (code == CharacteristicCombination.ANYOF)
         return "any-of";
@@ -223,7 +225,7 @@ public class EvidenceVariable extends MetadataResource {
       if (code == CharacteristicCombination.DATASET)
         return "dataset";
       return "?";
-      }
+   }
     public String toSystem(CharacteristicCombination code) {
       return code.getSystem();
       }

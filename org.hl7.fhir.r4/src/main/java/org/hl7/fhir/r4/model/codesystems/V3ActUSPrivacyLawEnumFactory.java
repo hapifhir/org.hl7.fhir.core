@@ -56,7 +56,9 @@ public class V3ActUSPrivacyLawEnumFactory implements EnumFactory<V3ActUSPrivacyL
   }
 
   public String toCode(V3ActUSPrivacyLaw code) {
-    if (code == V3ActUSPrivacyLaw._ACTUSPRIVACYLAW)
+       if (code == V3ActUSPrivacyLaw.NULL)
+           return null;
+       if (code == V3ActUSPrivacyLaw._ACTUSPRIVACYLAW)
       return "_ActUSPrivacyLaw";
     if (code == V3ActUSPrivacyLaw._42CFRPART2)
       return "42CFRPart2";
@@ -71,7 +73,7 @@ public class V3ActUSPrivacyLawEnumFactory implements EnumFactory<V3ActUSPrivacyL
     if (code == V3ActUSPrivacyLaw.TITLE38SECTION7332)
       return "Title38Section7332";
     return "?";
-  }
+   }
 
   public String toSystem(V3ActUSPrivacyLaw code) {
     return code.getSystem();

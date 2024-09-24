@@ -68,7 +68,9 @@ public class MedicationrequestStatusReasonEnumFactory implements EnumFactory<Med
   }
 
   public String toCode(MedicationrequestStatusReason code) {
-    if (code == MedicationrequestStatusReason.ALTCHOICE)
+       if (code == MedicationrequestStatusReason.NULL)
+           return null;
+       if (code == MedicationrequestStatusReason.ALTCHOICE)
       return "altchoice";
     if (code == MedicationrequestStatusReason.CLARIF)
       return "clarif";
@@ -95,7 +97,7 @@ public class MedicationrequestStatusReasonEnumFactory implements EnumFactory<Med
     if (code == MedicationrequestStatusReason.WASHOUT)
       return "washout";
     return "?";
-  }
+   }
 
   public String toSystem(MedicationrequestStatusReason code) {
     return code.getSystem();

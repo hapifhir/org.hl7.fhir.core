@@ -48,14 +48,16 @@ public class VerificationresultValidationTypeEnumFactory implements EnumFactory<
   }
 
   public String toCode(VerificationresultValidationType code) {
-    if (code == VerificationresultValidationType.NOTHING)
+       if (code == VerificationresultValidationType.NULL)
+           return null;
+       if (code == VerificationresultValidationType.NOTHING)
       return "nothing";
     if (code == VerificationresultValidationType.PRIMARY)
       return "primary";
     if (code == VerificationresultValidationType.MULTIPLE)
       return "multiple";
     return "?";
-  }
+   }
 
   public String toSystem(VerificationresultValidationType code) {
     return code.getSystem();

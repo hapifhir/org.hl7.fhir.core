@@ -54,7 +54,9 @@ public class ExProgramCodeEnumFactory implements EnumFactory<ExProgramCode> {
   }
 
   public String toCode(ExProgramCode code) {
-    if (code == ExProgramCode.AS)
+       if (code == ExProgramCode.NULL)
+           return null;
+       if (code == ExProgramCode.AS)
       return "as";
     if (code == ExProgramCode.HD)
       return "hd";
@@ -63,7 +65,7 @@ public class ExProgramCodeEnumFactory implements EnumFactory<ExProgramCode> {
     if (code == ExProgramCode.NONE)
       return "none";
     return "?";
-  }
+   }
 
     public String toSystem(ExProgramCode code) {
       return code.getSystem();

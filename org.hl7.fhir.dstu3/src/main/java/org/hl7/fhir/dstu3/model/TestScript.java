@@ -168,7 +168,9 @@ public class TestScript extends MetadataResource {
         throw new FHIRException("Unknown ContentType code '"+codeString+"'");
         }
     public String toCode(ContentType code) {
-      if (code == ContentType.XML)
+       if (code == ContentType.NULL)
+           return null;
+       if (code == ContentType.XML)
         return "xml";
       if (code == ContentType.JSON)
         return "json";
@@ -177,7 +179,7 @@ public class TestScript extends MetadataResource {
       if (code == ContentType.NONE)
         return "none";
       return "?";
-      }
+   }
     public String toSystem(ContentType code) {
       return code.getSystem();
       }
@@ -268,12 +270,14 @@ public class TestScript extends MetadataResource {
         throw new FHIRException("Unknown AssertionDirectionType code '"+codeString+"'");
         }
     public String toCode(AssertionDirectionType code) {
-      if (code == AssertionDirectionType.RESPONSE)
+       if (code == AssertionDirectionType.NULL)
+           return null;
+       if (code == AssertionDirectionType.RESPONSE)
         return "response";
       if (code == AssertionDirectionType.REQUEST)
         return "request";
       return "?";
-      }
+   }
     public String toSystem(AssertionDirectionType code) {
       return code.getSystem();
       }
@@ -490,7 +494,9 @@ public class TestScript extends MetadataResource {
         throw new FHIRException("Unknown AssertionOperatorType code '"+codeString+"'");
         }
     public String toCode(AssertionOperatorType code) {
-      if (code == AssertionOperatorType.EQUALS)
+       if (code == AssertionOperatorType.NULL)
+           return null;
+       if (code == AssertionOperatorType.EQUALS)
         return "equals";
       if (code == AssertionOperatorType.NOTEQUALS)
         return "notEquals";
@@ -513,7 +519,7 @@ public class TestScript extends MetadataResource {
       if (code == AssertionOperatorType.EVAL)
         return "eval";
       return "?";
-      }
+   }
     public String toSystem(AssertionOperatorType code) {
       return code.getSystem();
       }
@@ -660,7 +666,9 @@ public class TestScript extends MetadataResource {
         throw new FHIRException("Unknown TestScriptRequestMethodCode code '"+codeString+"'");
         }
     public String toCode(TestScriptRequestMethodCode code) {
-      if (code == TestScriptRequestMethodCode.DELETE)
+       if (code == TestScriptRequestMethodCode.NULL)
+           return null;
+       if (code == TestScriptRequestMethodCode.DELETE)
         return "delete";
       if (code == TestScriptRequestMethodCode.GET)
         return "get";
@@ -673,7 +681,7 @@ public class TestScript extends MetadataResource {
       if (code == TestScriptRequestMethodCode.PUT)
         return "put";
       return "?";
-      }
+   }
     public String toSystem(TestScriptRequestMethodCode code) {
       return code.getSystem();
       }
@@ -904,7 +912,9 @@ public class TestScript extends MetadataResource {
         throw new FHIRException("Unknown AssertionResponseTypes code '"+codeString+"'");
         }
     public String toCode(AssertionResponseTypes code) {
-      if (code == AssertionResponseTypes.OKAY)
+       if (code == AssertionResponseTypes.NULL)
+           return null;
+       if (code == AssertionResponseTypes.OKAY)
         return "okay";
       if (code == AssertionResponseTypes.CREATED)
         return "created";
@@ -929,7 +939,7 @@ public class TestScript extends MetadataResource {
       if (code == AssertionResponseTypes.UNPROCESSABLE)
         return "unprocessable";
       return "?";
-      }
+   }
     public String toSystem(AssertionResponseTypes code) {
       return code.getSystem();
       }

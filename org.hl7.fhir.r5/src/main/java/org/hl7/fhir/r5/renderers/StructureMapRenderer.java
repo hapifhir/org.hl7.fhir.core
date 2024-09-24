@@ -57,7 +57,8 @@ public class StructureMapRenderer extends TerminologyRenderer {
       genSummaryTable(status, x, (StructureMap) r.getBase());
       renderMap(status, x.pre("fml"), (StructureMap) r.getBase());      
     } else {
-      throw new Error("StructureMapRenderer only renders native resources directly");
+      // the intention is to change this in the future
+      x.para().tx("StructureMapRenderer only renders native resources directly");
     }
   }
   

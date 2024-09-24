@@ -371,7 +371,9 @@ public class DiagnosticOrder extends DomainResource {
     }
 
     public String toCode(DiagnosticOrderStatus code) {
-      if (code == DiagnosticOrderStatus.PROPOSED)
+       if (code == DiagnosticOrderStatus.NULL)
+           return null;
+       if (code == DiagnosticOrderStatus.PROPOSED)
         return "proposed";
       if (code == DiagnosticOrderStatus.DRAFT)
         return "draft";
@@ -400,7 +402,7 @@ public class DiagnosticOrder extends DomainResource {
       if (code == DiagnosticOrderStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(DiagnosticOrderStatus code) {
       return code.getSystem();
@@ -546,7 +548,9 @@ public class DiagnosticOrder extends DomainResource {
     }
 
     public String toCode(DiagnosticOrderPriority code) {
-      if (code == DiagnosticOrderPriority.ROUTINE)
+       if (code == DiagnosticOrderPriority.NULL)
+           return null;
+       if (code == DiagnosticOrderPriority.ROUTINE)
         return "routine";
       if (code == DiagnosticOrderPriority.URGENT)
         return "urgent";
@@ -555,7 +559,7 @@ public class DiagnosticOrder extends DomainResource {
       if (code == DiagnosticOrderPriority.ASAP)
         return "asap";
       return "?";
-    }
+   }
 
     public String toSystem(DiagnosticOrderPriority code) {
       return code.getSystem();

@@ -60,7 +60,9 @@ public class DaysOfWeekEnumFactory implements EnumFactory<DaysOfWeek> {
   }
 
   public String toCode(DaysOfWeek code) {
-    if (code == DaysOfWeek.MON)
+       if (code == DaysOfWeek.NULL)
+           return null;
+       if (code == DaysOfWeek.MON)
       return "mon";
     if (code == DaysOfWeek.TUE)
       return "tue";
@@ -75,7 +77,7 @@ public class DaysOfWeekEnumFactory implements EnumFactory<DaysOfWeek> {
     if (code == DaysOfWeek.SUN)
       return "sun";
     return "?";
-  }
+   }
 
     public String toSystem(DaysOfWeek code) {
       return code.getSystem();

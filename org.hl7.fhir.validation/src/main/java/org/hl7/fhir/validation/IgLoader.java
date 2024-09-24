@@ -316,7 +316,7 @@ public class IgLoader implements IValidationEngineLoader {
 
   public void scanForIgVersion(String src,
                                boolean recursive,
-                               VersionSourceInformation versions) throws Exception {
+                               VersionSourceInformation versions) throws IOException {
     Map<String, ByteProvider> source = loadIgSourceForVersion(src, recursive, true, versions);
     if (source != null) {
       if (source.containsKey("version.info")) {
@@ -497,10 +497,12 @@ public class IgLoader implements IValidationEngineLoader {
   private Map<String, ByteProvider> fetchByPackage(String src, boolean loadInContext) throws FHIRException, IOException {
     NpmPackage pi;
     
-    InputStream stream = directProvider.fetchByPackage(src);
-    if (stream != null) {
-      pi = NpmPackage.fromPackage(stream);
-      return loadPackage(pi, loadInContext);
+    if (directProvider != null) {
+      InputStream stream = directProvider.fetchByPackage(src);
+      if (stream != null) {
+        pi = NpmPackage.fromPackage(stream);
+        return loadPackage(pi, loadInContext);
+      }
     }
     String id = src;
     String version = null;

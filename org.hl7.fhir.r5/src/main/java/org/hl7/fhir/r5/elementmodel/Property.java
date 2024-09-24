@@ -280,7 +280,7 @@ public class Property {
 	}
 
   public boolean isList() {
-    return !"1".equals(definition.getMax());
+    return !"1".equals(definition.getBase().hasMax() ? definition.getBase().getMax() : definition.getMax());
   }
 
   public boolean isBaseList() {
@@ -419,8 +419,9 @@ public class Property {
             break;
           }
         }
-        if (url==null)
+        if (url==null) {
           throw new FHIRException("Unable to find type " + t + " for element " + elementName + " with path " + ed.getPath());
+        }
         sd = context.fetchResource(StructureDefinition.class, url);        
         if (sd == null)
           throw new DefinitionException("Unable to find type '"+t+"' for name '"+elementName+"' on property "+definition.getPath());
@@ -641,7 +642,7 @@ public class Property {
 
   public boolean isTranslatable() {
     boolean ok = ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_TRANSLATABLE);
-    if (!ok && !definition.getPath().endsWith(".id") && !Utilities.existsInList(definition.getBase().getPath(), "Resource.id", "Reference.reference", "Coding.version", "Identifier.value", "SampledData.offsets", "SampledData.data", "ContactPoint.value")) {
+    if (!ok && !definition.getPath().endsWith(".id") && !definition.getPath().endsWith(".linkId") && !Utilities.existsInList(definition.getBase().getPath(), "Resource.id", "Reference.reference", "Coding.version", "Identifier.value", "SampledData.offsets", "SampledData.data", "ContactPoint.value")) {
       String t = getType();
       ok = Utilities.existsInList(t, "string", "markdown");
     }

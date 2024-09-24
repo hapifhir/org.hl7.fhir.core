@@ -48,14 +48,16 @@ public class QualityTypeEnumFactory implements EnumFactory<QualityType> {
   }
 
   public String toCode(QualityType code) {
-    if (code == QualityType.INDEL)
+       if (code == QualityType.NULL)
+           return null;
+       if (code == QualityType.INDEL)
       return "indel";
     if (code == QualityType.SNP)
       return "snp";
     if (code == QualityType.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
   public String toSystem(QualityType code) {
     return code.getSystem();

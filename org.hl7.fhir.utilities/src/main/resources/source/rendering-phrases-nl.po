@@ -4544,3 +4544,4 @@ msgstr ". waar de codes staan in"
 #: VS_ABSTRACT_CODE_HINT
 msgid "This code is not selectable (''Abstract'')"
 msgstr "Deze code is niet selecteerbaar (''Abstract'')"
+

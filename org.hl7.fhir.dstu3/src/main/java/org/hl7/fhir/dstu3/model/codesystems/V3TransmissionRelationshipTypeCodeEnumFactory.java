@@ -48,10 +48,12 @@ public class V3TransmissionRelationshipTypeCodeEnumFactory implements EnumFactor
   }
 
   public String toCode(V3TransmissionRelationshipTypeCode code) {
-    if (code == V3TransmissionRelationshipTypeCode.SEQL)
+       if (code == V3TransmissionRelationshipTypeCode.NULL)
+           return null;
+       if (code == V3TransmissionRelationshipTypeCode.SEQL)
       return "SEQL";
     return "?";
-  }
+   }
 
     public String toSystem(V3TransmissionRelationshipTypeCode code) {
       return code.getSystem();

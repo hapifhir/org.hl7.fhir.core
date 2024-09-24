@@ -66,7 +66,9 @@ public class ConceptMapEquivalenceEnumFactory implements EnumFactory<ConceptMapE
   }
 
   public String toCode(ConceptMapEquivalence code) {
-    if (code == ConceptMapEquivalence.RELATEDTO)
+       if (code == ConceptMapEquivalence.NULL)
+           return null;
+       if (code == ConceptMapEquivalence.RELATEDTO)
       return "relatedto";
     if (code == ConceptMapEquivalence.EQUIVALENT)
       return "equivalent";
@@ -87,7 +89,7 @@ public class ConceptMapEquivalenceEnumFactory implements EnumFactory<ConceptMapE
     if (code == ConceptMapEquivalence.DISJOINT)
       return "disjoint";
     return "?";
-  }
+   }
 
     public String toSystem(ConceptMapEquivalence code) {
       return code.getSystem();

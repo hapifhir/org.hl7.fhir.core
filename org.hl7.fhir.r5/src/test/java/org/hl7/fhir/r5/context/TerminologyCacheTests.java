@@ -1,10 +1,5 @@
 package org.hl7.fhir.r5.context;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +38,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TerminologyCacheTests implements ResourceLoaderTests {
 
@@ -93,7 +90,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
   }
 
   @Test
-  public void testCachePersistence() throws IOException, URISyntaxException {
+  public void testCachePersistence() throws IOException {
     String address = "/...";
     
     Object lock = new Object();
@@ -115,8 +112,6 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
     CodeableConcept concept = new CodeableConcept();
     concept.addCoding(new Coding().setCode("dummyCode"));
-    ValueSet ccvalueSet = new ValueSet();
-
 
     // Add dummy results to the cache
     TerminologyCache terminologyCacheA = new TerminologyCache(lock, tempCacheDirectory.toString());
@@ -143,8 +138,13 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       assertEquals(terminologyCapabilities, terminologyCacheA.getTerminologyCapabilities(address));
       assertEquals(capabilityStatement, terminologyCacheA.getCapabilityStatement(address));
 
-      assertValidationResultEquals(codingResultA, terminologyCacheA.getValidation(codingTokenA));
-      assertValidationResultEquals(codeableConceptResultA, terminologyCacheA.getValidation(codeableConceptTokenA));
+      ValidationResult retrievedCodingResultA = terminologyCacheA.getValidation(codingTokenA);
+      assertNotSame(codingResultA, retrievedCodingResultA);
+      assertValidationResultEquals(codingResultA, retrievedCodingResultA);
+
+      ValidationResult retrievedCodeableConceptResultA = terminologyCacheA.getValidation(codeableConceptTokenA);
+      assertNotSame(codeableConceptResultA, retrievedCodeableConceptResultA);
+      assertValidationResultEquals(codeableConceptResultA, retrievedCodeableConceptResultA);
       assertExpansionOutcomeEquals(expansionOutcomeA,terminologyCacheA.getExpansion(expansionTokenA));
     }
 
@@ -155,11 +155,62 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       assertCanonicalResourceEquals(terminologyCapabilities, terminologyCacheB.getTerminologyCapabilities(address));
       assertCanonicalResourceEquals(capabilityStatement, terminologyCacheB.getCapabilityStatement(address));
 
-      assertValidationResultEquals(codingResultA, terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters())));
-      assertValidationResultEquals(codeableConceptResultA, terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, concept, valueSet, new Parameters())));
+      ValidationResult retrievedCodingResultA = terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters()));
+      assertNotSame(codingResultA, retrievedCodingResultA);
+      assertValidationResultEquals(codingResultA, retrievedCodingResultA);
+
+      ValidationResult retrievedCodeableConceptResultA = terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, concept, valueSet, new Parameters()));
+      assertNotSame(codeableConceptResultA, retrievedCodeableConceptResultA);
+      assertValidationResultEquals(codeableConceptResultA, retrievedCodeableConceptResultA);
       assertExpansionOutcomeEquals(expansionOutcomeA,terminologyCacheB.getExpansion(terminologyCacheA.generateExpandToken(valueSet, true)));
     }
     deleteTempCacheDirectory(tempCacheDirectory);
+  }
+
+  @Test
+  public void testCacheMakesCopiesOfResults() throws IOException{
+
+    Object lock = new Object();
+    Path tempCacheDirectory = createTempCacheDirectory();
+
+    TerminologyCache terminologyCache = new TerminologyCache(lock, tempCacheDirectory.toString());
+
+    Coding coding = new Coding();
+    coding.setCode("dummyCode");
+
+    CodeableConcept concept = new CodeableConcept();
+    concept.addCoding(new Coding().setCode("dummyCode"));
+
+    ValueSet valueSet = new ValueSet();
+    valueSet.setUrl("dummyValueSetURL");
+
+    ValidationResult codingResult = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
+    TerminologyCache.CacheToken codingToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
+      coding, valueSet, new Parameters());
+    terminologyCache.cacheValidation(codingToken, codingResult, true);
+
+    ValidationResult retrievedCodingResult = terminologyCache.getValidation(codingToken);
+    assertEquals(codingResult, retrievedCodingResult);
+
+    codingResult.setMessage("changed");
+
+    retrievedCodingResult = terminologyCache.getValidation(codingToken);
+    assertNotEquals(codingResult, retrievedCodingResult);
+    assertEquals("dummyInfo", retrievedCodingResult.getMessage());
+
+    ValidationResult codeableConceptResult = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
+    TerminologyCache.CacheToken codeableConceptToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
+      concept, valueSet, new Parameters());
+    terminologyCache.cacheValidation(codeableConceptToken, codeableConceptResult, true);
+
+    ValidationResult retrievedCodeableConceptResult = terminologyCache.getValidation(codeableConceptToken);
+    assertEquals(codeableConceptResult, retrievedCodeableConceptResult);
+
+    codeableConceptResult.setMessage("changed");
+
+    retrievedCodeableConceptResult = terminologyCache.getValidation(codeableConceptToken);
+    assertNotEquals(codeableConceptResult, retrievedCodeableConceptResult);
+    assertEquals("dummyInfo", retrievedCodeableConceptResult.getMessage());
   }
 
   private void assertCanonicalResourceEquals(CanonicalResource a, CanonicalResource b) {

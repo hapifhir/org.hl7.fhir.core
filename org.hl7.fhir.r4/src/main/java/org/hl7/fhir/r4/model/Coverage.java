@@ -194,7 +194,9 @@ public class Coverage extends DomainResource {
     }
 
     public String toCode(CoverageStatus code) {
-      if (code == CoverageStatus.ACTIVE)
+       if (code == CoverageStatus.NULL)
+           return null;
+       if (code == CoverageStatus.ACTIVE)
         return "active";
       if (code == CoverageStatus.CANCELLED)
         return "cancelled";
@@ -203,7 +205,7 @@ public class Coverage extends DomainResource {
       if (code == CoverageStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
 
     public String toSystem(CoverageStatus code) {
       return code.getSystem();

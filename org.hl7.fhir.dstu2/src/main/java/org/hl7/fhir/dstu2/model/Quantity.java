@@ -187,8 +187,11 @@ public class Quantity extends Type implements ICompositeType {
       throw new FHIRException("Unknown QuantityComparator code '" + codeString + "'");
     }
 
-    public String toCode(QuantityComparator code) {
-      if (code == QuantityComparator.LESS_THAN)
+    public String toCode(QuantityComparator code)
+   {
+       if (code == QuantityComparator.NULL)
+           return null;
+       if (code == QuantityComparator.LESS_THAN)
         return "<";
       if (code == QuantityComparator.LESS_OR_EQUAL)
         return "<=";
@@ -197,7 +200,7 @@ public class Quantity extends Type implements ICompositeType {
       if (code == QuantityComparator.GREATER_THAN)
         return ">";
       return "?";
-    }
+   }
   }
 
   /**

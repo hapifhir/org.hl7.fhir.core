@@ -560,7 +560,6 @@ public class HierarchicalTableGenerator {
       }
       return b.toString();
     }
-    
   }
 
   public class TableModel {
@@ -921,7 +920,7 @@ public class HierarchicalTableGenerator {
           tag.setAttribute("title", p.getHint());
         addStyle(tag, p);
         if (p.hasChildren()) {
-          tag.getChildNodes().addAll(p.getChildren());
+          tag.addChildNodes(p.getChildren());
         }
       } else if (!Utilities.noString(p.getReference())) {
         XhtmlNode a = addStyle(tc.addTag("a"), p);
@@ -943,7 +942,7 @@ public class HierarchicalTableGenerator {
         }
         
         if (p.hasChildren()) {
-          tc.getChildNodes().addAll(p.getChildren());
+          tc.addChildNodes(p.getChildren());
         }
       } else { 
         if (!Utilities.noString(p.getHint())) {
@@ -957,7 +956,7 @@ public class HierarchicalTableGenerator {
           tc.addText(p.getText());
         }
         if (p.hasChildren()) {
-          tc.getChildNodes().addAll(p.getChildren());
+          tc.addChildNodes(p.getChildren());
         }
         if (p.getTagImg() != null) {
           tc.tx(" ");
@@ -1168,11 +1167,11 @@ public class HierarchicalTableGenerator {
   }
 
   public String prefixAnchor(String anchor) {
-    return uniqueLocalPrefix == null ? anchor : uniqueLocalPrefix+"-" + anchor;
+    return Utilities.noString(uniqueLocalPrefix) ? anchor : uniqueLocalPrefix+"-" + anchor;
   }
 
   public String prefixLocalHref(String url) {
-    if (url == null || uniqueLocalPrefix == null || !url.startsWith("#")) {
+    if (url == null || Utilities.noString(uniqueLocalPrefix) || !url.startsWith("#")) {
       return url;
     }
     return "#"+uniqueLocalPrefix+"-"+url.substring(1);

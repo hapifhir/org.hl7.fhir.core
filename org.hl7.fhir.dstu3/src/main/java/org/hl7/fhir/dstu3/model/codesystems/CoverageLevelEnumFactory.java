@@ -58,7 +58,9 @@ public class CoverageLevelEnumFactory implements EnumFactory<CoverageLevel> {
   }
 
   public String toCode(CoverageLevel code) {
-    if (code == CoverageLevel.GROUP)
+       if (code == CoverageLevel.NULL)
+           return null;
+       if (code == CoverageLevel.GROUP)
       return "group";
     if (code == CoverageLevel.SUBGROUP)
       return "subgroup";
@@ -71,7 +73,7 @@ public class CoverageLevelEnumFactory implements EnumFactory<CoverageLevel> {
     if (code == CoverageLevel.SUBCLASS)
       return "subclass";
     return "?";
-  }
+   }
 
     public String toSystem(CoverageLevel code) {
       return code.getSystem();

@@ -50,7 +50,9 @@ public class ResourceValidationModeEnumFactory implements EnumFactory<ResourceVa
   }
 
   public String toCode(ResourceValidationMode code) {
-    if (code == ResourceValidationMode.CREATE)
+       if (code == ResourceValidationMode.NULL)
+           return null;
+       if (code == ResourceValidationMode.CREATE)
       return "create";
     if (code == ResourceValidationMode.UPDATE)
       return "update";
@@ -59,7 +61,7 @@ public class ResourceValidationModeEnumFactory implements EnumFactory<ResourceVa
     if (code == ResourceValidationMode.PROFILE)
       return "profile";
     return "?";
-  }
+   }
 
   public String toSystem(ResourceValidationMode code) {
     return code.getSystem();

@@ -54,7 +54,9 @@ public class DefinitionUseEnumFactory implements EnumFactory<DefinitionUse> {
   }
 
   public String toCode(DefinitionUse code) {
-    if (code == DefinitionUse.FHIRSTRUCTURE)
+       if (code == DefinitionUse.NULL)
+           return null;
+       if (code == DefinitionUse.FHIRSTRUCTURE)
       return "fhir-structure";
     if (code == DefinitionUse.CUSTOMRESOURCE)
       return "custom-resource";
@@ -67,7 +69,7 @@ public class DefinitionUseEnumFactory implements EnumFactory<DefinitionUse> {
     if (code == DefinitionUse.TEMPLATE)
       return "template";
     return "?";
-  }
+   }
 
   public String toSystem(DefinitionUse code) {
     return code.getSystem();

@@ -52,7 +52,9 @@ public class ReportStatusCodesEnumFactory implements EnumFactory<ReportStatusCod
   }
 
   public String toCode(ReportStatusCodes code) {
-    if (code == ReportStatusCodes.COMPLETED)
+       if (code == ReportStatusCodes.NULL)
+           return null;
+       if (code == ReportStatusCodes.COMPLETED)
       return "completed";
     if (code == ReportStatusCodes.INPROGRESS)
       return "in-progress";
@@ -63,7 +65,7 @@ public class ReportStatusCodesEnumFactory implements EnumFactory<ReportStatusCod
     if (code == ReportStatusCodes.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
   public String toSystem(ReportStatusCodes code) {
     return code.getSystem();

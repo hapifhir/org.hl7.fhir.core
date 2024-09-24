@@ -46,12 +46,14 @@ public class ServiceModifiersEnumFactory implements EnumFactory<ServiceModifiers
   }
 
   public String toCode(ServiceModifiers code) {
-    if (code == ServiceModifiers.SR)
+       if (code == ServiceModifiers.NULL)
+           return null;
+       if (code == ServiceModifiers.SR)
       return "SR";
     if (code == ServiceModifiers.AH)
       return "AH";
     return "?";
-  }
+   }
 
   public String toSystem(ServiceModifiers code) {
     return code.getSystem();

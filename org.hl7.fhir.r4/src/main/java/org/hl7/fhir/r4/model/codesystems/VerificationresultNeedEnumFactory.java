@@ -48,14 +48,16 @@ public class VerificationresultNeedEnumFactory implements EnumFactory<Verificati
   }
 
   public String toCode(VerificationresultNeed code) {
-    if (code == VerificationresultNeed.NONE)
+       if (code == VerificationresultNeed.NULL)
+           return null;
+       if (code == VerificationresultNeed.NONE)
       return "none";
     if (code == VerificationresultNeed.INITIAL)
       return "initial";
     if (code == VerificationresultNeed.PERIODIC)
       return "periodic";
     return "?";
-  }
+   }
 
   public String toSystem(VerificationresultNeed code) {
     return code.getSystem();

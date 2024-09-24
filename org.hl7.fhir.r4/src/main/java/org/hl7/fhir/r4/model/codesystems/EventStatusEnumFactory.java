@@ -58,7 +58,9 @@ public class EventStatusEnumFactory implements EnumFactory<EventStatus> {
   }
 
   public String toCode(EventStatus code) {
-    if (code == EventStatus.PREPARATION)
+       if (code == EventStatus.NULL)
+           return null;
+       if (code == EventStatus.PREPARATION)
       return "preparation";
     if (code == EventStatus.INPROGRESS)
       return "in-progress";
@@ -75,7 +77,7 @@ public class EventStatusEnumFactory implements EnumFactory<EventStatus> {
     if (code == EventStatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
   public String toSystem(EventStatus code) {
     return code.getSystem();

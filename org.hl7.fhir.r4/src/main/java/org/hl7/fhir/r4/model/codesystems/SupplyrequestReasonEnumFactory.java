@@ -46,12 +46,14 @@ public class SupplyrequestReasonEnumFactory implements EnumFactory<Supplyrequest
   }
 
   public String toCode(SupplyrequestReason code) {
-    if (code == SupplyrequestReason.PATIENTCARE)
+       if (code == SupplyrequestReason.NULL)
+           return null;
+       if (code == SupplyrequestReason.PATIENTCARE)
       return "patient-care";
     if (code == SupplyrequestReason.WARDSTOCK)
       return "ward-stock";
     return "?";
-  }
+   }
 
   public String toSystem(SupplyrequestReason code) {
     return code.getSystem();

@@ -209,7 +209,9 @@ public class Patient extends DomainResource {
     }
 
     public String toCode(LinkType code) {
-      if (code == LinkType.REPLACEDBY)
+       if (code == LinkType.NULL)
+           return null;
+       if (code == LinkType.REPLACEDBY)
         return "replaced-by";
       if (code == LinkType.REPLACES)
         return "replaces";
@@ -218,7 +220,7 @@ public class Patient extends DomainResource {
       if (code == LinkType.SEEALSO)
         return "seealso";
       return "?";
-    }
+   }
 
     public String toSystem(LinkType code) {
       return code.getSystem();

@@ -48,14 +48,16 @@ public class ReportParticipantTypeEnumFactory implements EnumFactory<ReportParti
   }
 
   public String toCode(ReportParticipantType code) {
-    if (code == ReportParticipantType.TESTENGINE)
+       if (code == ReportParticipantType.NULL)
+           return null;
+       if (code == ReportParticipantType.TESTENGINE)
       return "test-engine";
     if (code == ReportParticipantType.CLIENT)
       return "client";
     if (code == ReportParticipantType.SERVER)
       return "server";
     return "?";
-  }
+   }
 
   public String toSystem(ReportParticipantType code) {
     return code.getSystem();

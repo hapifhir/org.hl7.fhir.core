@@ -46,12 +46,14 @@ public class StrandTypeEnumFactory implements EnumFactory<StrandType> {
   }
 
   public String toCode(StrandType code) {
-    if (code == StrandType.WATSON)
+       if (code == StrandType.NULL)
+           return null;
+       if (code == StrandType.WATSON)
       return "watson";
     if (code == StrandType.CRICK)
       return "crick";
     return "?";
-  }
+   }
 
   public String toSystem(StrandType code) {
     return code.getSystem();

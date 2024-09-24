@@ -44,10 +44,12 @@ public class V3Hl7ITSVersionCodeEnumFactory implements EnumFactory<V3Hl7ITSVersi
   }
 
   public String toCode(V3Hl7ITSVersionCode code) {
-    if (code == V3Hl7ITSVersionCode.XMLV1PR1)
+       if (code == V3Hl7ITSVersionCode.NULL)
+           return null;
+       if (code == V3Hl7ITSVersionCode.XMLV1PR1)
       return "XMLV1PR1";
     return "?";
-  }
+   }
 
   public String toSystem(V3Hl7ITSVersionCode code) {
     return code.getSystem();

@@ -46,12 +46,14 @@ public class QuestionnaireEnableBehaviorEnumFactory implements EnumFactory<Quest
   }
 
   public String toCode(QuestionnaireEnableBehavior code) {
-    if (code == QuestionnaireEnableBehavior.ALL)
+       if (code == QuestionnaireEnableBehavior.NULL)
+           return null;
+       if (code == QuestionnaireEnableBehavior.ALL)
       return "all";
     if (code == QuestionnaireEnableBehavior.ANY)
       return "any";
     return "?";
-  }
+   }
 
   public String toSystem(QuestionnaireEnableBehavior code) {
     return code.getSystem();

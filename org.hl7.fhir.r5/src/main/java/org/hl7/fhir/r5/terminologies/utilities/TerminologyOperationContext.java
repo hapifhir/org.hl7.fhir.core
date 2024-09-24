@@ -42,12 +42,14 @@ public class TerminologyOperationContext {
   private IWorkerContext worker;
   private boolean original;
   private ValidationOptions options;
+  private String name;
   
-  public TerminologyOperationContext(IWorkerContext worker, ValidationOptions options) {
+  public TerminologyOperationContext(IWorkerContext worker, ValidationOptions options, String name) {
     super();
     this.worker = worker;
     this.original = true;
     this.options = options;
+    this.name = name;
     
     if (EXPANSION_DEAD_TIME_SECS == 0 || debugging) {
       deadTime = 0;
@@ -56,13 +58,14 @@ public class TerminologyOperationContext {
     }
   }
   
-  private TerminologyOperationContext(ValidationOptions options) {
+  private TerminologyOperationContext(ValidationOptions options, String name) {
     super();
     this.options = options;
+    this.name = name;
   }
 
   public TerminologyOperationContext copy() {
-    TerminologyOperationContext ret = new TerminologyOperationContext(this.options);
+    TerminologyOperationContext ret = new TerminologyOperationContext(this.options, name);
     ret.worker = worker;
     ret.contexts.addAll(contexts);
     ret.deadTime = deadTime;
@@ -71,7 +74,7 @@ public class TerminologyOperationContext {
   
   public void deadCheck() {
     if (deadTime != 0 &&  System.currentTimeMillis() > deadTime) {
-      throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_TIME, contexts.get(0), EXPANSION_DEAD_TIME_SECS), TerminologyServiceErrorClass.TOO_COSTLY, IssueType.TOOCOSTLY);
+      throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_TIME, contexts.get(0), EXPANSION_DEAD_TIME_SECS, name), TerminologyServiceErrorClass.TOO_COSTLY, IssueType.TOOCOSTLY);
     }
   }
   

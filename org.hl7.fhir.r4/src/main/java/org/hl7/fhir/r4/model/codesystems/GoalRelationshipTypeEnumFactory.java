@@ -52,7 +52,9 @@ public class GoalRelationshipTypeEnumFactory implements EnumFactory<GoalRelation
   }
 
   public String toCode(GoalRelationshipType code) {
-    if (code == GoalRelationshipType.PREDECESSOR)
+       if (code == GoalRelationshipType.NULL)
+           return null;
+       if (code == GoalRelationshipType.PREDECESSOR)
       return "predecessor";
     if (code == GoalRelationshipType.SUCCESSOR)
       return "successor";
@@ -63,7 +65,7 @@ public class GoalRelationshipTypeEnumFactory implements EnumFactory<GoalRelation
     if (code == GoalRelationshipType.OTHER)
       return "other";
     return "?";
-  }
+   }
 
   public String toSystem(GoalRelationshipType code) {
     return code.getSystem();

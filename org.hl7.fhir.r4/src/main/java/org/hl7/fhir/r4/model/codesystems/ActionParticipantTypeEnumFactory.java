@@ -50,7 +50,9 @@ public class ActionParticipantTypeEnumFactory implements EnumFactory<ActionParti
   }
 
   public String toCode(ActionParticipantType code) {
-    if (code == ActionParticipantType.PATIENT)
+       if (code == ActionParticipantType.NULL)
+           return null;
+       if (code == ActionParticipantType.PATIENT)
       return "patient";
     if (code == ActionParticipantType.PRACTITIONER)
       return "practitioner";
@@ -59,7 +61,7 @@ public class ActionParticipantTypeEnumFactory implements EnumFactory<ActionParti
     if (code == ActionParticipantType.DEVICE)
       return "device";
     return "?";
-  }
+   }
 
   public String toSystem(ActionParticipantType code) {
     return code.getSystem();

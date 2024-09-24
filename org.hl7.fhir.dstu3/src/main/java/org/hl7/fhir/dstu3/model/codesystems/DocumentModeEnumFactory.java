@@ -50,12 +50,14 @@ public class DocumentModeEnumFactory implements EnumFactory<DocumentMode> {
   }
 
   public String toCode(DocumentMode code) {
-    if (code == DocumentMode.PRODUCER)
+       if (code == DocumentMode.NULL)
+           return null;
+       if (code == DocumentMode.PRODUCER)
       return "producer";
     if (code == DocumentMode.CONSUMER)
       return "consumer";
     return "?";
-  }
+   }
 
     public String toSystem(DocumentMode code) {
       return code.getSystem();

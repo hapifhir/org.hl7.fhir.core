@@ -84,7 +84,9 @@ public class HspcAdmissionSourceEnumFactory implements EnumFactory<HspcAdmission
   }
 
   public String toCode(HspcAdmissionSource code) {
-    if (code == HspcAdmissionSource._102702)
+       if (code == HspcAdmissionSource.NULL)
+           return null;
+       if (code == HspcAdmissionSource._102702)
       return "102702";
     if (code == HspcAdmissionSource._17567)
       return "17567";
@@ -127,7 +129,7 @@ public class HspcAdmissionSourceEnumFactory implements EnumFactory<HspcAdmission
     if (code == HspcAdmissionSource._510105654)
       return "510105654";
     return "?";
-  }
+   }
 
   public String toSystem(HspcAdmissionSource code) {
     return code.getSystem();

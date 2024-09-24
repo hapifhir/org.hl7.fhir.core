@@ -46,12 +46,14 @@ public class ExProcedureTypeEnumFactory implements EnumFactory<ExProcedureType> 
   }
 
   public String toCode(ExProcedureType code) {
-    if (code == ExProcedureType.PRIMARY)
+       if (code == ExProcedureType.NULL)
+           return null;
+       if (code == ExProcedureType.PRIMARY)
       return "primary";
     if (code == ExProcedureType.SECONDARY)
       return "secondary";
     return "?";
-  }
+   }
 
   public String toSystem(ExProcedureType code) {
     return code.getSystem();

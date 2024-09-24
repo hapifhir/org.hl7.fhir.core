@@ -48,14 +48,16 @@ public class LocationStatusEnumFactory implements EnumFactory<LocationStatus> {
   }
 
   public String toCode(LocationStatus code) {
-    if (code == LocationStatus.ACTIVE)
+       if (code == LocationStatus.NULL)
+           return null;
+       if (code == LocationStatus.ACTIVE)
       return "active";
     if (code == LocationStatus.SUSPENDED)
       return "suspended";
     if (code == LocationStatus.INACTIVE)
       return "inactive";
     return "?";
-  }
+   }
 
   public String toSystem(LocationStatus code) {
     return code.getSystem();

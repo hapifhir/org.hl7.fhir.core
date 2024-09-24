@@ -238,8 +238,11 @@ public class DataElement extends DomainResource {
       throw new FHIRException("Unknown DataElementStringency code '" + codeString + "'");
     }
 
-    public String toCode(DataElementStringency code) {
-      if (code == DataElementStringency.COMPARABLE)
+    public String toCode(DataElementStringency code)
+   {
+       if (code == DataElementStringency.NULL)
+           return null;
+       if (code == DataElementStringency.COMPARABLE)
         return "comparable";
       if (code == DataElementStringency.FULLYSPECIFIED)
         return "fully-specified";
@@ -252,7 +255,7 @@ public class DataElement extends DomainResource {
       if (code == DataElementStringency.FLEXIBLE)
         return "flexible";
       return "?";
-    }
+   }
   }
 
   @Block()

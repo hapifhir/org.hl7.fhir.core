@@ -73,7 +73,7 @@ public class XsltUtilities {
   }
 
   public static byte[] transform(Map<String, byte[]> files, byte[] source, byte[] xslt) throws TransformerException {
-    TransformerFactory f = TransformerFactory.newInstance();
+    TransformerFactory f = org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedTransformerFactory();
     f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
     StreamSource xsrc = new StreamSource(new ByteArrayInputStream(xslt));
     f.setURIResolver(new ZipURIResolver(files));
@@ -129,7 +129,7 @@ public class XsltUtilities {
 
   public static void transform(String xsltDir, String source, String xslt, String dest, URIResolver alt) throws TransformerException, IOException {
 
-    TransformerFactory f = TransformerFactory.newInstance();
+    TransformerFactory f = org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedTransformerFactory();
     StreamSource xsrc = new StreamSource(ManagedFileAccess.inStream(xslt));
     f.setURIResolver(new MyURIResolver(xsltDir, alt));
     Transformer t = f.newTransformer(xsrc);

@@ -165,7 +165,9 @@ public class ProcessRequest extends DomainResource {
         throw new FHIRException("Unknown ProcessRequestStatus code '"+codeString+"'");
         }
     public String toCode(ProcessRequestStatus code) {
-      if (code == ProcessRequestStatus.ACTIVE)
+       if (code == ProcessRequestStatus.NULL)
+           return null;
+       if (code == ProcessRequestStatus.ACTIVE)
         return "active";
       if (code == ProcessRequestStatus.CANCELLED)
         return "cancelled";
@@ -174,7 +176,7 @@ public class ProcessRequest extends DomainResource {
       if (code == ProcessRequestStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-      }
+   }
     public String toSystem(ProcessRequestStatus code) {
       return code.getSystem();
       }
@@ -293,7 +295,9 @@ public class ProcessRequest extends DomainResource {
         throw new FHIRException("Unknown ActionList code '"+codeString+"'");
         }
     public String toCode(ActionList code) {
-      if (code == ActionList.CANCEL)
+       if (code == ActionList.NULL)
+           return null;
+       if (code == ActionList.CANCEL)
         return "cancel";
       if (code == ActionList.POLL)
         return "poll";
@@ -302,7 +306,7 @@ public class ProcessRequest extends DomainResource {
       if (code == ActionList.STATUS)
         return "status";
       return "?";
-      }
+   }
     public String toSystem(ActionList code) {
       return code.getSystem();
       }

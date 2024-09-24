@@ -52,14 +52,16 @@ public class V3IdentifierReliabilityEnumFactory implements EnumFactory<V3Identif
   }
 
   public String toCode(V3IdentifierReliability code) {
-    if (code == V3IdentifierReliability.ISS)
+       if (code == V3IdentifierReliability.NULL)
+           return null;
+       if (code == V3IdentifierReliability.ISS)
       return "ISS";
     if (code == V3IdentifierReliability.UNV)
       return "UNV";
     if (code == V3IdentifierReliability.VRF)
       return "VRF";
     return "?";
-  }
+   }
 
     public String toSystem(V3IdentifierReliability code) {
       return code.getSystem();

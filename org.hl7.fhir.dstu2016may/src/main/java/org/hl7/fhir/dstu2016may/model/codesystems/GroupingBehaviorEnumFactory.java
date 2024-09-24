@@ -48,14 +48,16 @@ public class GroupingBehaviorEnumFactory implements EnumFactory<GroupingBehavior
   }
 
   public String toCode(GroupingBehavior code) {
-    if (code == GroupingBehavior.VISUALGROUP)
+       if (code == GroupingBehavior.NULL)
+           return null;
+       if (code == GroupingBehavior.VISUALGROUP)
       return "visual-group";
     if (code == GroupingBehavior.LOGICALGROUP)
       return "logical-group";
     if (code == GroupingBehavior.SENTENCEGROUP)
       return "sentence-group";
     return "?";
-  }
+   }
 
   public String toSystem(GroupingBehavior code) {
     return code.getSystem();

@@ -208,7 +208,9 @@ public class ReferralRequest extends DomainResource {
         throw new FHIRException("Unknown ReferralRequestStatus code '"+codeString+"'");
         }
     public String toCode(ReferralRequestStatus code) {
-      if (code == ReferralRequestStatus.DRAFT)
+       if (code == ReferralRequestStatus.NULL)
+           return null;
+       if (code == ReferralRequestStatus.DRAFT)
         return "draft";
       if (code == ReferralRequestStatus.ACTIVE)
         return "active";
@@ -223,7 +225,7 @@ public class ReferralRequest extends DomainResource {
       if (code == ReferralRequestStatus.UNKNOWN)
         return "unknown";
       return "?";
-      }
+   }
     public String toSystem(ReferralRequestStatus code) {
       return code.getSystem();
       }
@@ -400,7 +402,9 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         throw new FHIRException("Unknown ReferralCategory code '"+codeString+"'");
         }
     public String toCode(ReferralCategory code) {
-      if (code == ReferralCategory.PROPOSAL)
+       if (code == ReferralCategory.NULL)
+           return null;
+       if (code == ReferralCategory.PROPOSAL)
         return "proposal";
       if (code == ReferralCategory.PLAN)
         return "plan";
@@ -417,7 +421,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       if (code == ReferralCategory.OPTION)
         return "option";
       return "?";
-      }
+   }
     public String toSystem(ReferralCategory code) {
       return code.getSystem();
       }
@@ -536,7 +540,9 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         throw new FHIRException("Unknown ReferralPriority code '"+codeString+"'");
         }
     public String toCode(ReferralPriority code) {
-      if (code == ReferralPriority.ROUTINE)
+       if (code == ReferralPriority.NULL)
+           return null;
+       if (code == ReferralPriority.ROUTINE)
         return "routine";
       if (code == ReferralPriority.URGENT)
         return "urgent";
@@ -545,7 +551,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       if (code == ReferralPriority.STAT)
         return "stat";
       return "?";
-      }
+   }
     public String toSystem(ReferralPriority code) {
       return code.getSystem();
       }

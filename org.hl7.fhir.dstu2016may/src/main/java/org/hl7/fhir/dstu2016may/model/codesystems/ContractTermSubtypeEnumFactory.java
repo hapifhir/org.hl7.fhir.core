@@ -48,14 +48,16 @@ public class ContractTermSubtypeEnumFactory implements EnumFactory<ContractTermS
   }
 
   public String toCode(ContractTermSubtype code) {
-    if (code == ContractTermSubtype.ORALHEALTHBASIC)
+       if (code == ContractTermSubtype.NULL)
+           return null;
+       if (code == ContractTermSubtype.ORALHEALTHBASIC)
       return "OralHealth-Basic";
     if (code == ContractTermSubtype.ORALHEALTHMAJOR)
       return "OralHealth-Major";
     if (code == ContractTermSubtype.ORALHEALTHORTHODONTIC)
       return "OralHealth-Orthodontic";
     return "?";
-  }
+   }
 
   public String toSystem(ContractTermSubtype code) {
     return code.getSystem();

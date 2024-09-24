@@ -56,7 +56,9 @@ public class ReferralRequestStatusEnumFactory implements EnumFactory<ReferralReq
   }
 
   public String toCode(ReferralRequestStatus code) {
-    if (code == ReferralRequestStatus.DRAFT)
+       if (code == ReferralRequestStatus.NULL)
+           return null;
+       if (code == ReferralRequestStatus.DRAFT)
       return "draft";
     if (code == ReferralRequestStatus.ACTIVE)
       return "active";
@@ -67,7 +69,7 @@ public class ReferralRequestStatusEnumFactory implements EnumFactory<ReferralReq
     if (code == ReferralRequestStatus.ENTEREDINERROR)
       return "entered-in-error";
     return "?";
-  }
+   }
 
     public String toSystem(ReferralRequestStatus code) {
       return code.getSystem();

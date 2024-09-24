@@ -84,7 +84,9 @@ public class MedicationdispenseStatusReasonEnumFactory implements EnumFactory<Me
   }
 
   public String toCode(MedicationdispenseStatusReason code) {
-    if (code == MedicationdispenseStatusReason.FRR01)
+       if (code == MedicationdispenseStatusReason.NULL)
+           return null;
+       if (code == MedicationdispenseStatusReason.FRR01)
       return "frr01";
     if (code == MedicationdispenseStatusReason.FRR02)
       return "frr02";
@@ -127,7 +129,7 @@ public class MedicationdispenseStatusReasonEnumFactory implements EnumFactory<Me
     if (code == MedicationdispenseStatusReason.OFFMARKET)
       return "offmarket";
     return "?";
-  }
+   }
 
   public String toSystem(MedicationdispenseStatusReason code) {
     return code.getSystem();

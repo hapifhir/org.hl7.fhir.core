@@ -371,7 +371,7 @@ public class XhtmlParser {
         res.addComment(child.getTextContent());
       } else if (child.getNodeType() == Node.ELEMENT_NODE) {
         if (elementIsOk(child.getLocalName()))
-          res.getChildNodes().add(parseNode((Element) child, defaultNS));
+          res.addChildNode(parseNode((Element) child, defaultNS));
       } else
         throw new FHIRFormatError("Unhandled XHTML feature: "+Integer.toString(child.getNodeType())+descLoc());
       child = child.getNextSibling();
@@ -418,7 +418,7 @@ public class XhtmlParser {
         xpp.next();
       } else if (eventType == XmlPullParser.START_TAG) {
         if (elementIsOk(xpp.getName()))
-          res.getChildNodes().add(parseNode(xpp));
+          res.addChildNode(parseNode(xpp));
       } else
         throw new FHIRFormatError("Unhandled XHTML feature: "+Integer.toString(eventType)+descLoc());
       eventType = xpp.getEventType();
@@ -500,6 +500,7 @@ public class XhtmlParser {
     if ((entryName != null) && !n.getName().equals(entryName))
       throw new FHIRFormatError("Unable to Parse HTML - starts with '"+n+"' not '"+entryName+"'"+descLoc());
     XhtmlNode root = result.addTag(n.getName());
+    root.setCheckParaTree(false);
     root.setLocation(markLocation());
     parseAttributes(root);
     markLocation();
@@ -630,12 +631,12 @@ public class XhtmlParser {
                   return;
                 if (i == parents.size())
                 {
-                  parents.get(i - 1).getChildNodes().addAll(node.getChildNodes());
+                  parents.get(i - 1).addChildNodes(node.getChildNodes());
                   node.getChildNodes().clear();
                 }
                 else
                 {
-                  parents.get(i - 1).getChildNodes().addAll(parents.get(i).getChildNodes());
+                  parents.get(i - 1).addChildNodes(parents.get(i).getChildNodes());
                   parents.get(i).getChildNodes().clear();
                 }
               }

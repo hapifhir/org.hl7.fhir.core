@@ -46,12 +46,14 @@ public class V3LocalMarkupIgnoreEnumFactory implements EnumFactory<V3LocalMarkup
   }
 
   public String toCode(V3LocalMarkupIgnore code) {
-    if (code == V3LocalMarkupIgnore.ALL)
+       if (code == V3LocalMarkupIgnore.NULL)
+           return null;
+       if (code == V3LocalMarkupIgnore.ALL)
       return "all";
     if (code == V3LocalMarkupIgnore.MARKUP)
       return "markup";
     return "?";
-  }
+   }
 
   public String toSystem(V3LocalMarkupIgnore code) {
     return code.getSystem();

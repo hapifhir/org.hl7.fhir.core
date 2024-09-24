@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -60,16 +61,43 @@ public class BundleRenderer extends ResourceRenderer {
       for (ResourceWrapper be : entries) {
         i++;
         if (i >= start) {
+          String link = null;
           if (be.has("fullUrl")) {
-            root.an(context.prefixAnchor(makeInternalBundleLink(b, be.primitiveValue("fullUrl"))));
+            link = makeInternalBundleLink(b, be.primitiveValue("fullUrl"));
+            if (!context.hasAnchor(link)) {
+              context.addAnchor(link);
+              root.an(context.prefixAnchor(link));
+            }
           }
+          ResourceWrapper res = be.child("resource");
           if (be.has("resource")) {
-            String id = be.child("resource").has("id") ? be.child("resource").primitiveValue("id") : makeIdFromBundleEntry(be.primitiveValue("fullUrl"));
-            String anchor = be.child("resource").fhirType() + "_" + id;
+            String id = res.has("id") ? res.primitiveValue("id") : makeIdFromBundleEntry(be.primitiveValue("fullUrl"));
+            String anchor = res.fhirType() + "_" + id;
             if (id != null && !context.hasAnchor(anchor)) {
               context.addAnchor(anchor);
               root.an(context.prefixAnchor(anchor));
-              root.an(context.prefixAnchor("hc"+anchor));
+            }
+            anchor = "hc"+anchor;
+            if (id != null && !context.hasAnchor(anchor)) {
+              context.addAnchor(anchor);
+              root.an(context.prefixAnchor(anchor));
+            }
+            String ver = res.has("meta") ? res.child("meta").primitiveValue("version") : null;
+            if (ver != null) {
+              if (link != null) {
+                link = link + "/"+ver;
+                if (!context.hasAnchor(link)) {
+                  context.addAnchor(link);
+                  root.an(context.prefixAnchor(link));
+                }
+              }
+              if (id != null) {
+                anchor = anchor + "/"+ver;
+                if (!context.hasAnchor(anchor)) {
+                  context.addAnchor(anchor);
+                  root.an(context.prefixAnchor(anchor));
+                }
+              }
             }
           }
           root.hr();
@@ -88,7 +116,7 @@ public class BundleRenderer extends ResourceRenderer {
           //        if (be.hasResponse())
           //          renderResponse(root, be.getResponse());
           if (be.has("resource")) {
-            ResourceWrapper r = be.child("resource");
+            ResourceWrapper r = res;
             root.para().addText(formatPhrase(RenderingContext.BUNDLE_RESOURCE, r.fhirType()));
             XhtmlNode xn = r.getNarrative();
             if (xn == null || xn.isEmpty()) {
@@ -100,8 +128,10 @@ public class BundleRenderer extends ResourceRenderer {
                 xn = new XhtmlNode();
                 xn.para().b().tx(context.formatPhrase(RenderingContext.BUNDLE_REV_EXCP, e.getMessage()) + " ");
               }
+            } else {
+              xn.stripAnchorsByName(context.getAnchors());
             }
-            root.blockquote().para().addChildren(xn);
+            root.blockquote().addChildren(xn);
           }
           if (be.has("request")) {
             renderRequest(x, be.child("request"));
@@ -125,13 +155,14 @@ public class BundleRenderer extends ResourceRenderer {
     ResourceWrapper comp = (ResourceWrapper) entries.get(0).child("resource");
     
     XhtmlNode sum = renderResourceTechDetails(b, docSection(x, "Document Details"), comp.primitiveValueMN("title", "name"));
+    List<ResourceWrapper> subjectList = comp.children("subject");
     if (sum != null) {
       XhtmlNode p = sum.para();
       p.startScript("doc");
       renderDataType(status, p.param("status"), comp.child("status"));
       renderDataType(status, p.param("date"), comp.child("date"));
-      renderDataType(status, p.param("author"), comp.child("author"));
-      renderDataType(status, p.param("subject"), comp.child("subject"));
+      renderDataTypes(status, p.param("author"), comp.children("author"));
+      renderDataTypes(status, p.param("subject"), subjectList);
       if (comp.has("encounter")) {
         renderDataType(status, p.param("encounter"), comp.child("encounter"));
         p.paramValue("has-encounter", "true");
@@ -145,17 +176,23 @@ public class BundleRenderer extends ResourceRenderer {
       x.hr();
     }
 
-    ResourceWrapper subject = resolveReference(entries, comp.child("subject"));
-    XhtmlNode sec = docSection(x, "Document Subject");
-    if (subject != null) {
-      if (subject.hasNarrative()) {
-        sec.addChildren(subject.getNarrative());        
+    List<ResourceWrapper> subjects = resolveReferences(entries, subjectList);
+    int i = 0;
+    for (ResourceWrapper subject : subjects) {
+      XhtmlNode sec = docSection(x, "Document Subject");
+      if (subject != null) {
+        if (subject.hasNarrative()) {
+          sec.addChildren(subject.getNarrative());        
+        } else {
+          RendererFactory.factory(subject, context).buildNarrative(status, sec, subject);
+        }
       } else {
-        RendererFactory.factory(subject, context).buildNarrative(status, sec, subject);
+        sec.para().b().tx("Unable to resolve subject '"+displayReference(subjects.get(i))+"'");
       }
+      i++;
     }
     x.hr();
-    sec = docSection(x, "Document Content");
+    XhtmlNode sec = docSection(x, "Document Content");
     if (comp.hasNarrative()) {
       sec.addChildren(comp.getNarrative());
       sec.hr();
@@ -164,6 +201,16 @@ public class BundleRenderer extends ResourceRenderer {
     for (ResourceWrapper section : sections) {
       addSection(status, sec, section, 2, false);
     }
+  }
+
+  private void renderDataTypes(RenderingStatus status, XhtmlNode param, List<ResourceWrapper> children) throws FHIRFormatError, DefinitionException, IOException {
+    if (children != null && !children.isEmpty()) {
+      boolean first = true;
+      for (ResourceWrapper child : children) {
+        if (first) {first = false; } else {param.tx(", "); }
+        renderDataType(status, param, child);
+      }
+    } 
   }
 
   private XhtmlNode docSection(XhtmlNode x, String name) {
@@ -183,7 +230,8 @@ public class BundleRenderer extends ResourceRenderer {
       }
       if (section.has("text")) {
         ResourceWrapper narrative = section.child("text");
-        x.addChildren(narrative.getXhtml());
+        ResourceWrapper xh = narrative.child("div");
+        x.addChildren(xh.getXhtml());
       }      
       if (section.has("section")) {
         List<ResourceWrapper> sections = section.children("section");
@@ -199,6 +247,28 @@ public class BundleRenderer extends ResourceRenderer {
     // children
   }
 
+  private List<ResourceWrapper> resolveReferences(List<ResourceWrapper> entries, List<ResourceWrapper> baselist) throws UnsupportedEncodingException, FHIRException, IOException {
+    List<ResourceWrapper> list = new ArrayList<>();
+    if (baselist != null) {
+      for (ResourceWrapper base : baselist) {
+        ResourceWrapper res = null;
+        ResourceWrapper prop = base.child("reference");
+        if (prop != null && prop.hasPrimitiveValue()) {
+          for (ResourceWrapper entry : entries) {
+            if (entry.has("fullUrl")) {
+              String fu = entry.primitiveValue("fullUrl");
+              if (prop.primitiveValue().equals(fu)) {
+                res = entry.child("resource");
+              }
+            }
+          }
+          list.add(res);
+        }
+      }
+    }
+    return list;
+  }
+  
   private ResourceWrapper resolveReference(List<ResourceWrapper> entries, ResourceWrapper base) throws UnsupportedEncodingException, FHIRException, IOException {
     if (base == null) {
       return null;

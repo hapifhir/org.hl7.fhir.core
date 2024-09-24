@@ -50,7 +50,9 @@ public class MetricCategoryEnumFactory implements EnumFactory<MetricCategory> {
   }
 
   public String toCode(MetricCategory code) {
-    if (code == MetricCategory.MEASUREMENT)
+       if (code == MetricCategory.NULL)
+           return null;
+       if (code == MetricCategory.MEASUREMENT)
       return "measurement";
     if (code == MetricCategory.SETTING)
       return "setting";
@@ -59,7 +61,7 @@ public class MetricCategoryEnumFactory implements EnumFactory<MetricCategory> {
     if (code == MetricCategory.UNSPECIFIED)
       return "unspecified";
     return "?";
-  }
+   }
 
   public String toSystem(MetricCategory code) {
     return code.getSystem();

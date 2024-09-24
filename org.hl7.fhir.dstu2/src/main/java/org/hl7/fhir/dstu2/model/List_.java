@@ -169,15 +169,18 @@ public class List_ extends DomainResource {
       throw new FHIRException("Unknown ListStatus code '" + codeString + "'");
     }
 
-    public String toCode(ListStatus code) {
-      if (code == ListStatus.CURRENT)
+    public String toCode(ListStatus code)
+   {
+       if (code == ListStatus.NULL)
+           return null;
+       if (code == ListStatus.CURRENT)
         return "current";
       if (code == ListStatus.RETIRED)
         return "retired";
       if (code == ListStatus.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
-    }
+   }
   }
 
   public enum ListMode {
@@ -301,15 +304,18 @@ public class List_ extends DomainResource {
       throw new FHIRException("Unknown ListMode code '" + codeString + "'");
     }
 
-    public String toCode(ListMode code) {
-      if (code == ListMode.WORKING)
+    public String toCode(ListMode code)
+   {
+       if (code == ListMode.NULL)
+           return null;
+       if (code == ListMode.WORKING)
         return "working";
       if (code == ListMode.SNAPSHOT)
         return "snapshot";
       if (code == ListMode.CHANGES)
         return "changes";
       return "?";
-    }
+   }
   }
 
   @Block()

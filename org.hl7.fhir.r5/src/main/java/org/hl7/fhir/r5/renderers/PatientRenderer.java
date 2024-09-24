@@ -236,7 +236,11 @@ public class PatientRenderer extends ResourceRenderer {
   private void addContained(RenderingStatus status, XhtmlNode x, List<ResourceWrapper> list) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
     for (ResourceWrapper c : list) {
       x.hr();
-      x.an(context.prefixAnchor(c.getId()));
+      String id = c.getScopedId();
+      if (!context.hasAnchor(id)) {
+        context.addAnchor(id);
+        x.an(context.prefixAnchor(id));
+      }
       RendererFactory.factory(c, context.forContained()).buildNarrative(status, x, c);
     }
   }

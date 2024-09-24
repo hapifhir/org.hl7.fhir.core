@@ -70,7 +70,9 @@ public class MessageEventsEnumFactory implements EnumFactory<MessageEvents> {
   }
 
   public String toCode(MessageEvents code) {
-    if (code == MessageEvents.CODESYSTEMEXPAND)
+       if (code == MessageEvents.NULL)
+           return null;
+       if (code == MessageEvents.CODESYSTEMEXPAND)
       return "CodeSystem-expand";
     if (code == MessageEvents.MEDICATIONADMINISTRATIONCOMPLETE)
       return "MedicationAdministration-Complete";
@@ -95,7 +97,7 @@ public class MessageEventsEnumFactory implements EnumFactory<MessageEvents> {
     if (code == MessageEvents.VALUESETEXPAND)
       return "valueset-expand";
     return "?";
-  }
+   }
 
     public String toSystem(MessageEvents code) {
       return code.getSystem();

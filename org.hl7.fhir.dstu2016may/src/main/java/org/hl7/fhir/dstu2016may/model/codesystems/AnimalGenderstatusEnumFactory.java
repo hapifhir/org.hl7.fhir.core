@@ -48,14 +48,16 @@ public class AnimalGenderstatusEnumFactory implements EnumFactory<AnimalGenderst
   }
 
   public String toCode(AnimalGenderstatus code) {
-    if (code == AnimalGenderstatus.NEUTERED)
+       if (code == AnimalGenderstatus.NULL)
+           return null;
+       if (code == AnimalGenderstatus.NEUTERED)
       return "neutered";
     if (code == AnimalGenderstatus.INTACT)
       return "intact";
     if (code == AnimalGenderstatus.UNKNOWN)
       return "unknown";
     return "?";
-  }
+   }
 
   public String toSystem(AnimalGenderstatus code) {
     return code.getSystem();

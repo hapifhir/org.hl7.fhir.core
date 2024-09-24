@@ -54,7 +54,9 @@ public class ClaimUseEnumFactory implements EnumFactory<ClaimUse> {
   }
 
   public String toCode(ClaimUse code) {
-    if (code == ClaimUse.COMPLETE)
+       if (code == ClaimUse.NULL)
+           return null;
+       if (code == ClaimUse.COMPLETE)
       return "complete";
     if (code == ClaimUse.PROPOSED)
       return "proposed";
@@ -63,7 +65,7 @@ public class ClaimUseEnumFactory implements EnumFactory<ClaimUse> {
     if (code == ClaimUse.OTHER)
       return "other";
     return "?";
-  }
+   }
 
     public String toSystem(ClaimUse code) {
       return code.getSystem();
