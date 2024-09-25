@@ -1276,9 +1276,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
   
   public ValidationResult validateCode(final ValidationOptions optionsArg, String path, final Coding code, final ValueSet vs, final ValidationContextCarrier ctxt) {
-
+  
     ValidationOptions options = optionsArg != null ? optionsArg : ValidationOptions.defaults();
-
+    
     if (code.hasSystem()) {
       codeSystemsUsed.add(code.getSystem());
     }
@@ -1643,7 +1643,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       Parameters pIn = constructParameters(options, code);
       res = validateOnServer(tc, vs, pIn, options);
     } catch (Exception e) {
-      res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage(), null).setTxLink(txLog == null ? null : txLog.getLastId());
+      issues.clear();
+      OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXCEPTION);
+      iss.getDetails().setText(e.getMessage());
+      issues.add(iss);
+      res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage(), issues).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
     }
     if (cachingAllowed) {
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
@@ -1779,6 +1783,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (options.isDisplayWarningMode()) {
       pin.addParameter("mode","lenient-display-validation");
     }
+    pin.addParameter("diagnostics", true);
   }
 
   private boolean addDependentResources(TerminologyClientContext tc, Parameters pin, ValueSet vs) {
