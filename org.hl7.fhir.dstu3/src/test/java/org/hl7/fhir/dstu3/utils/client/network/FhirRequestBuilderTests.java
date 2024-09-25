@@ -95,13 +95,13 @@ public class FhirRequestBuilderTests {
     Mockito.doReturn(parser).when(fhirRequestBuilder).getParser(ArgumentMatchers.eq("json"));
 
     fhirRequestBuilder.unmarshalReference(response, "json");
-    Mockito.verify(logger).logResponse(ArgumentMatchers.eq("200"), ArgumentMatchers.anyList(), AdditionalMatchers.aryEq(RESPONSE_BODY_STRING.getBytes()));
+    Mockito.verify(logger).logResponse(ArgumentMatchers.eq("200"), ArgumentMatchers.anyList(), AdditionalMatchers.aryEq(RESPONSE_BODY_STRING.getBytes()), 0);
   }
 
   @Test
   public void testUnmarshallFeedLogging() {
     fhirRequestBuilder.unmarshalFeed(response, "application/json");
-    Mockito.verify(logger).logResponse(ArgumentMatchers.eq("200"), ArgumentMatchers.anyList(), AdditionalMatchers.aryEq(RESPONSE_BODY_STRING.getBytes()));
+    Mockito.verify(logger).logResponse(ArgumentMatchers.eq("200"), ArgumentMatchers.anyList(), AdditionalMatchers.aryEq(RESPONSE_BODY_STRING.getBytes()), 0);
   }
 
 }
