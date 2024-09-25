@@ -224,6 +224,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
     // first, we validate the codings themselves
     ValidationProcessInfo info = new ValidationProcessInfo();
+    
+    if (throwToServer) {
+      checkValueSetLoad(info);
+    }
 
     CodeableConcept vcc = new CodeableConcept();
     List<ValidationResult> resList = new ArrayList<>();
@@ -393,6 +397,45 @@ public class ValueSetValidator extends ValueSetProcessBase {
     } else {
       throw new Error("what?");
     }
+  }
+
+  private void checkValueSetLoad(ValidationProcessInfo info) {
+    int serverCount = getServerLoad(info);
+    // There's a trade off here: if we're going to hit the server inside the components, then
+    // the amount of value set collateral we send is limited, but we pay the price of hitting 
+    // the server multiple times. If, on the other hand, we give up on that, and hit the server 
+    // directly, we have to send value set collateral (though we cache at the higher level)
+    //
+    // the cutoff value is chosen experimentally
+    if (serverCount > 2) {
+      throw new VSCheckerException("This value set is better processed on the server for performance reasons", null, true);
+    }
+  }
+
+  private int getServerLoad(ValidationProcessInfo info) {
+    int serverCount = 0;
+    if (valueset != null) {
+      for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
+        serverCount = serverCount + checkValueSetLoad(inc, info);
+      }
+      for (ConceptSetComponent inc : valueset.getCompose().getExclude()) {
+        serverCount = serverCount + checkValueSetLoad(inc, info);
+      }
+    }
+    return serverCount;
+  }
+  
+  private int checkValueSetLoad(ConceptSetComponent inc, ValidationProcessInfo info) {
+    int serverCount = 0;
+    for (UriType uri : inc.getValueSet()) {
+      ValueSetValidator vsv = getVSVal(uri, info);
+      serverCount += vsv.getServerLoad(info);
+    }
+    CodeSystem cs = resolveCodeSystem(inc.getSystem(), inc.getVersion());
+    if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
+      serverCount++;
+    }
+    return serverCount;
   }
 
   private boolean checkRequiredSupplements(ValidationProcessInfo info) {
@@ -1297,19 +1340,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (isValueSetUnionImports()) {
         ok = false;
         for (UriType uri : vsi.getValueSet()) {
-          if (inImport(path, uri.getValue(), system, version, code, info)) {
+          if (inImport(path, uri, system, version, code, info)) {
             return true;
           }
         }
       } else {
-        Boolean bok = inImport(path, vsi.getValueSet().get(0).getValue(), system, version, code, info);
+        Boolean bok = inImport(path, vsi.getValueSet().get(0), system, version, code, info);
         if (bok == null) {
           return bok;
         }
         ok = bok;
         for (int i = 1; i < vsi.getValueSet().size(); i++) {
           UriType uri = vsi.getValueSet().get(i);
-          ok = ok && inImport(path, uri.getValue(), system, version, code, info); 
+          ok = ok && inImport(path, uri, system, version, code, info); 
         }
       }
     }
@@ -1581,8 +1624,17 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return vsc;
   }
 
-  private Boolean inImport(String path, String uri, String system, String version, String code, ValidationProcessInfo info) throws FHIRException {
-    ValueSetValidator vs = getVs(uri, info);
+  private ValueSetValidator getVSVal(UriType uri, ValidationProcessInfo info) { 
+    ValueSetValidator vs = (ValueSetValidator) uri.getUserData("tx-fhir-cache");
+    if (vs == null) {
+      vs = getVs(uri.getValue(), info);
+      uri.setUserData("tx-fhir-cache", vs);
+    }
+    return vs;    
+  }
+  
+  private Boolean inImport(String path, UriType uri, String system, String version, String code, ValidationProcessInfo info) throws FHIRException {
+    ValueSetValidator vs = getVSVal(uri, info);
     if (vs == null) {
       return false;
     } else {
