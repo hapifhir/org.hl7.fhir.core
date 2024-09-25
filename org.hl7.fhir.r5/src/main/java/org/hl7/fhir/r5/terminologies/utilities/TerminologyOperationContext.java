@@ -7,6 +7,7 @@ import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
@@ -38,11 +39,14 @@ public class TerminologyOperationContext {
   public static boolean debugging = java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
   private static final int EXPANSION_DEAD_TIME_SECS = 60;
   private long deadTime;
+  private int nestCount = 0;
+  private long startTime;
   private List<String> contexts = new ArrayList<>();
   private IWorkerContext worker;
   private boolean original;
   private ValidationOptions options;
   private String name;
+  private List<String> notes = new ArrayList<>();
   
   public TerminologyOperationContext(IWorkerContext worker, ValidationOptions options, String name) {
     super();
@@ -50,6 +54,7 @@ public class TerminologyOperationContext {
     this.original = true;
     this.options = options;
     this.name = name;
+    this.startTime = System.currentTimeMillis();
     
     if (EXPANSION_DEAD_TIME_SECS == 0 || debugging) {
       deadTime = 0;
@@ -62,6 +67,7 @@ public class TerminologyOperationContext {
     super();
     this.options = options;
     this.name = name;
+    this.startTime = System.currentTimeMillis();
   }
 
   public TerminologyOperationContext copy() {
@@ -69,11 +75,20 @@ public class TerminologyOperationContext {
     ret.worker = worker;
     ret.contexts.addAll(contexts);
     ret.deadTime = deadTime;
+    ret.notes = notes;
+    ret.startTime = startTime;
+    ret.nestCount = nestCount + 1;
     return ret;
   }
   
-  public void deadCheck() {
+  public void deadCheck(String note) {
+    note(note);
     if (deadTime != 0 &&  System.currentTimeMillis() > deadTime) {
+      System.out.println();
+      System.out.println("Operation took too long - longer than "+(deadTime - startTime)+"ms");
+      for (String s : notes) {
+        System.out.println(s);
+      }
       throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_TIME, contexts.get(0), EXPANSION_DEAD_TIME_SECS, name+" (local)"), TerminologyServiceErrorClass.TOO_COSTLY, IssueType.TOOCOSTLY);
     }
   }
@@ -93,5 +108,8 @@ public class TerminologyOperationContext {
     return options;
   }
 
-  
+  public void note(String s) {
+    s = Utilities.padLeft("", ' ', nestCount)+" "+(System.currentTimeMillis() - startTime)+" "+s;
+    notes.add(s);
+  }
 }
