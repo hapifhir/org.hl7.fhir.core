@@ -1654,7 +1654,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 }
               } else if (vr.getErrorClass() != null && vr.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
                 // we've already handled the warnings / errors about this, and set the status correctly. We don't need to do anything more?
-              } else {
+              } else if (vr.getErrorClass() != TerminologyServiceErrorClass.SERVER_ERROR) { // (should have?) already handled server error
                 if (strength == BindingStrength.REQUIRED) {
                   bh.see(txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_1_CC, describeReference(vsRef, valueset, bc, usageNote), ccSummary(cc)));
                 } else if (strength == BindingStrength.EXTENSIBLE) {
