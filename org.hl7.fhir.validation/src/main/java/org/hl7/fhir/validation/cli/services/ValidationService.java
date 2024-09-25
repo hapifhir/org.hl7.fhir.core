@@ -540,7 +540,7 @@ public class ValidationService {
       TerminologyCache cache = new TerminologyCache(new Object(), cliContext.getTxCache());
       validationEngine.getContext().initTxCache(cache);
     }
-    if (validationEngine.getContext().getTxCache().getFolder() == null) {
+    if (validationEngine.getContext().getTxCache() == null || validationEngine.getContext().getTxCache().getFolder() == null) {
       System.out.println("  No Terminology Cache");      
     } else {
       System.out.println("  Terminology Cache at "+validationEngine.getContext().getTxCache().getFolder());
