@@ -75,14 +75,14 @@ public class XmlLocationAnnotator extends XMLFilterImpl  {
 
   @Override
   public void setProperty(String name, Object value) throws SAXNotRecognizedException, SAXNotSupportedException {
-    if (!name.equals("http://javax.xml.xmlconstants/property/accessExternalDTD")) {
+    if (!name.equals("http://javax.xml.XMLConstants/property/accessExternalDTD")) {
       super.setProperty(name, value);
     }
   }
 
   @Override
   public Object getProperty(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
-    if (!name.equals("http://javax.xml.xmlconstants/property/accessExternalDTD")) {
+    if (!name.equals("http://javax.xml.XMLConstants/property/accessExternalDTD")) {
       return null;
     } else {
       return super.getProperty(name);
