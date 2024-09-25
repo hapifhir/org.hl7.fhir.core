@@ -433,7 +433,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private int checkValueSetLoad(ConceptSetComponent inc, ValidationProcessInfo info) {
     int serverCount = 0;
     for (UriType uri : inc.getValueSet()) {
-      ValueSetValidator vsv = getVSVal(uri, info);
+      ValueSetValidator vsv = getVs(uri.getValue(), info);
       serverCount += vsv.getServerLoad(info);
     }
     CodeSystem cs = resolveCodeSystem(inc.getSystem(), inc.getVersion());
@@ -1345,19 +1345,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (isValueSetUnionImports()) {
         ok = false;
         for (UriType uri : vsi.getValueSet()) {
-          if (inImport(path, uri, system, version, code, info)) {
+          if (inImport(path, uri.getValue(), system, version, code, info)) {
             return true;
           }
         }
       } else {
-        Boolean bok = inImport(path, vsi.getValueSet().get(0), system, version, code, info);
+        Boolean bok = inImport(path, vsi.getValueSet().get(0).getValue(), system, version, code, info);
         if (bok == null) {
           return bok;
         }
         ok = bok;
         for (int i = 1; i < vsi.getValueSet().size(); i++) {
           UriType uri = vsi.getValueSet().get(i);
-          ok = ok && inImport(path, uri, system, version, code, info); 
+          ok = ok && inImport(path, uri.getValue(), system, version, code, info); 
         }
       }
     }
@@ -1633,18 +1633,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
     inner.put(url, vsc);
     return vsc;
   }
-
-  private ValueSetValidator getVSVal(UriType uri, ValidationProcessInfo info) { 
-    ValueSetValidator vs = (ValueSetValidator) uri.getUserData("tx-fhir-cache");
-    if (vs == null) {
-      vs = getVs(uri.getValue(), info);
-      uri.setUserData("tx-fhir-cache", vs);
-    }
-    return vs;    
-  }
   
-  private Boolean inImport(String path, UriType uri, String system, String version, String code, ValidationProcessInfo info) throws FHIRException {
-    ValueSetValidator vs = getVSVal(uri, info);
+  private Boolean inImport(String path, String uri, String system, String version, String code, ValidationProcessInfo info) throws FHIRException {
+    ValueSetValidator vs = getVs(uri, info);
     if (vs == null) {
       return false;
     } else {
