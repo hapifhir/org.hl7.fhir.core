@@ -302,22 +302,26 @@ public class TerminologyCache {
     this.lock = lock;
     if (folder == null) {
       folder = Utilities.path("[tmp]", "default-tx-cache");
+    } else if ("n/a".equals(folder)) {
+      // this is a weird way to do things but it maintains the legacy interface
+      folder = null;
     }
     this.folder = folder;
     requestCount = 0;
     hitCount = 0;
     networkCount = 0;
 
-    
-    File f = ManagedFileAccess.file(folder);
-    if (!f.exists()) {
-      Utilities.createDirectory(folder);
+    if (folder != null) {
+      File f = ManagedFileAccess.file(folder);
+      if (!f.exists()) {
+        Utilities.createDirectory(folder);
+      }
+      if (!f.exists()) {
+        throw new IOException("Unable to create terminology cache at "+folder);
+      }
+      checkVersion();      
+      load();
     }
-    if (!f.exists()) {
-      throw new IOException("Unable to create terminology cache at "+folder);
-    }
-    checkVersion();      
-    load();
   }
 
   private void checkVersion() throws IOException {
@@ -361,7 +365,9 @@ public class TerminologyCache {
   }
   
   private void clear() throws IOException {
-    Utilities.clearDirectory(folder);
+    if (folder != null) {
+      Utilities.clearDirectory(folder);
+    }
     caches.clear();
     vsCache.clear();
     csCache.clear();
@@ -1039,7 +1045,7 @@ public class TerminologyCache {
 
   public SourcedValueSet getValueSet(String canonical) {
     SourcedValueSetEntry sp = vsCache.get(canonical);
-    if (sp == null) {
+    if (sp == null || folder == null) {
       return null;
     } else {
       try {
@@ -1052,7 +1058,7 @@ public class TerminologyCache {
 
   public SourcedCodeSystem getCodeSystem(String canonical) {
     SourcedCodeSystemEntry sp = csCache.get(canonical);
-    if (sp == null) {
+    if (sp == null || folder == null) {
       return null;
     } else {
       try {
@@ -1073,7 +1079,9 @@ public class TerminologyCache {
       } else {
         String uuid = Utilities.makeUuidLC();
         String fn = "vs-"+uuid+".json";
-        new JsonParser().compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), svs.getVs());
+        if (folder != null) {
+          new JsonParser().compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), svs.getVs());
+        }
         vsCache.put(canonical, new SourcedValueSetEntry(svs.getServer(), fn));
       }    
       org.hl7.fhir.utilities.json.model.JsonObject j = new org.hl7.fhir.utilities.json.model.JsonObject();
@@ -1090,7 +1098,9 @@ public class TerminologyCache {
           j.add(k, e);
         }
       }
-      org.hl7.fhir.utilities.json.parser.JsonParser.compose(j, ManagedFileAccess.file(Utilities.path(folder, "vs-externals.json")), true);
+      if (folder != null) {
+        org.hl7.fhir.utilities.json.parser.JsonParser.compose(j, ManagedFileAccess.file(Utilities.path(folder, "vs-externals.json")), true);
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -1106,7 +1116,9 @@ public class TerminologyCache {
       } else {
         String uuid = Utilities.makeUuidLC();
         String fn = "cs-"+uuid+".json";
-        new JsonParser().compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
+        if (folder != null) {
+          new JsonParser().compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
+        }
         csCache.put(canonical, new SourcedCodeSystemEntry(scs.getServer(), fn));
       }    
       org.hl7.fhir.utilities.json.model.JsonObject j = new org.hl7.fhir.utilities.json.model.JsonObject();
@@ -1123,7 +1135,9 @@ public class TerminologyCache {
           j.add(k, e);
         }
       }
-      org.hl7.fhir.utilities.json.parser.JsonParser.compose(j, ManagedFileAccess.file(Utilities.path(folder, "cs-externals.json")), true);
+      if (folder != null) {
+        org.hl7.fhir.utilities.json.parser.JsonParser.compose(j, ManagedFileAccess.file(Utilities.path(folder, "cs-externals.json")), true);
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
