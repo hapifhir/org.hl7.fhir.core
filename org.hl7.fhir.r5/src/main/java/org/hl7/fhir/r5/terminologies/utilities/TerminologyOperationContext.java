@@ -74,7 +74,7 @@ public class TerminologyOperationContext {
   
   public void deadCheck() {
     if (deadTime != 0 &&  System.currentTimeMillis() > deadTime) {
-      throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_TIME, contexts.get(0), EXPANSION_DEAD_TIME_SECS, name), TerminologyServiceErrorClass.TOO_COSTLY, IssueType.TOOCOSTLY);
+      throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_TIME, contexts.get(0), EXPANSION_DEAD_TIME_SECS, name+" (local)"), TerminologyServiceErrorClass.TOO_COSTLY, IssueType.TOOCOSTLY);
     }
   }
   
