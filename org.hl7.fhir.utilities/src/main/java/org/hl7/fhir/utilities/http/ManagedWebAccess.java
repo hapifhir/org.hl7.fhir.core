@@ -64,9 +64,9 @@ public class ManagedWebAccess {
   }
 
   public enum WebAccessPolicy {
-    DIRECT, // open access to the local file system, though access can be restricted only to files under the paths in AllowedPaths
-    MANAGED, // no access except by the FileSystemProxyProvider
-    PROHIBITED, // no access at all to File() services
+    DIRECT, // open access to the web, though access can be restricted only to domains in AllowedDomains
+    MANAGED, // no access except by the IWebAccessor
+    PROHIBITED, // no access at all to the web
   }
 
   private static WebAccessPolicy accessPolicy = WebAccessPolicy.DIRECT; // for legacy reasons
