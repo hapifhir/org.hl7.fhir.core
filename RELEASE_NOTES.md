@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* remove spurious logging statement
+* no changes
 
 ## Other code changes
 
