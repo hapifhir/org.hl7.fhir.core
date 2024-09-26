@@ -1331,7 +1331,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         issues.add(iss);
         return new ValidationResult(IssueSeverity.FATAL, e.getMessage(), e.getError(), issues);
       } catch (Exception e) {
-        e.printStackTrace();
+//        e.printStackTrace();
         localError = e.getMessage();
       }
     }
