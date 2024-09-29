@@ -2176,9 +2176,9 @@ public class ProfileUtilities {
   protected boolean discriminatorMatches(List<ElementDefinitionSlicingDiscriminatorComponent> diff, List<ElementDefinitionSlicingDiscriminatorComponent> base) {
     if (diff.isEmpty() || base.isEmpty())
     	return true;
-    if (diff.size() != base.size())
+    if (diff.size() < base.size())
     	return false;
-    for (int i = 0; i < diff.size(); i++)
+    for (int i = 0; i < base.size(); i++)
     	if (!matches(diff.get(i), base.get(i)))
     		return false;
     return true;
