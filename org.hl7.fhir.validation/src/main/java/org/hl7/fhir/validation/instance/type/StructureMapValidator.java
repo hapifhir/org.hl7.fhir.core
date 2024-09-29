@@ -181,7 +181,7 @@ public class StructureMapValidator extends BaseValidator {
     }
 
     public String summary() {
-      return mode+" "+getWorkingType()+" "+name;
+      return name+" : "+getWorkingType()+" ("+mode+")";
     }
 
     public boolean matches(VariableDefn other) {
@@ -213,6 +213,13 @@ public class StructureMapValidator extends BaseValidator {
       } else {
         return sd.getVersionedUrl();        
       }
+    }
+
+    public void copyType(VariableDefn source) {
+      this.max = source.max;
+      this.sd = source.sd;
+      this.ed = source.ed;
+      this.type = source.type;
     }
 
   }
@@ -332,6 +339,9 @@ public class StructureMapValidator extends BaseValidator {
 
   public boolean validateStructureMap(ValidationContext valContext, List<ValidationMessage> errors, Element src, NodeStack stack)  {
     boolean ok = true;
+    if ("http://smart.who.int/immunizations-measles/StructureMap/IMMZCQRToLM".equals(src.getNamedChildValue("url"))) {
+      DebugUtilities.breakpoint();
+    }
     List<Element> imports = src.getChildrenByName("import");
     int cc = 0;
     for (Element import_ : imports) {
@@ -649,6 +659,20 @@ public class StructureMapValidator extends BaseValidator {
           }
           // check condition
           // check check
+        } else {
+          String variable = source.getChildValue("variable");
+          VariableDefn vn = null;
+          if (hint(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), variable != null, I18nConstants.SM_RULE_SOURCE_UNASSIGNED)) {
+            if (rule(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), idIsValid(variable), I18nConstants.SM_NAME_INVALID, variable)) {
+              vn = variables.add(variable, v.getMode()); // may overwrite
+              vn.copyType(v);
+              if (loopCounter == 0) {
+                ruleInfo.setDefVariable(variable);
+              }
+            } else {
+              ok = false;
+            }
+          }
         }
       } else {
         String variable = source.getChildValue("variable");
@@ -1237,7 +1261,10 @@ public class StructureMapValidator extends BaseValidator {
               // target can transition to the source
               v = getParameter(errors, param, pstack, variables, StructureMapInputMode.TARGET);
             }
-            if (rule(errors, "2023-06-27", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), v != null, I18nConstants.SM_DEPENDENT_PARAM_NOT_FOUND, pname, input.getMode().toCode())) {
+            if (v == null) {
+              DebugUtilities.breakpoint();
+            }
+            if (rule(errors, "2023-06-27", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), v != null, I18nConstants.SM_DEPENDENT_PARAM_NOT_FOUND, pname, input.getMode().toCode(), variables.summary())) {
               if (rule(errors, "2023-03-01", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(),
                     v.mode.equals(input.getMode().toCode()) || (v.mode.equals("target") && input.getMode() == StructureMapInputMode.SOURCE), I18nConstants.SM_DEPENDENT_PARAM_MODE_MISMATCH, param.getChildValue("name"), v.mode, input.getMode().toCode(), grp.getTargetGroup().getName()) &&
                 rule(errors, "2023-03-01", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), typesMatch(v, iType), I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH, 
