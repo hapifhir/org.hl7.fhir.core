@@ -200,7 +200,7 @@ public class PackageVisitor {
     }
 
     if (step == 0 || step == 3) {
-      JsonObject json = JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json");
+      JsonObject json = JsonParser.parseObjectFromUrl("https://fhir.github.io/ig-registry/fhir-ig-list.json");
       i = 0;
       List<JsonObject> objects = json.getJsonObjects("guides");
       for (JsonObject o : objects) {
@@ -315,11 +315,11 @@ public class PackageVisitor {
     for (PackageInfo i : pc.search(null, null, null, false)) {
       list.add(i.getId());
     }    
-    JsonObject json = JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json");
+    JsonObject json = JsonParser.parseObjectFromUrl("https://fhir.github.io/ig-registry/fhir-ig-list.json");
     for (JsonObject ig : json.getJsonObjects("guides")) {
       list.add(ig.asString("npm-name"));
     }
-    json = JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/FHIR/ig-registry/master/package-feeds.json");
+    json = JsonParser.parseObjectFromUrl("https://fhir.github.io/ig-registry/package-feeds.json");
     for (JsonObject feed : json.getJsonObjects("feeds")) {
       processFeed(list, feed.asString("url"));
     }
