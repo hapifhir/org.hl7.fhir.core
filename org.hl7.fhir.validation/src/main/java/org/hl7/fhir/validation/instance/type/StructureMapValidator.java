@@ -339,9 +339,7 @@ public class StructureMapValidator extends BaseValidator {
 
   public boolean validateStructureMap(ValidationContext valContext, List<ValidationMessage> errors, Element src, NodeStack stack)  {
     boolean ok = true;
-    if ("http://smart.who.int/immunizations-measles/StructureMap/IMMZCQRToLM".equals(src.getNamedChildValue("url"))) {
-      DebugUtilities.breakpoint();
-    }
+
     List<Element> imports = src.getChildrenByName("import");
     int cc = 0;
     for (Element import_ : imports) {
@@ -1261,9 +1259,7 @@ public class StructureMapValidator extends BaseValidator {
               // target can transition to the source
               v = getParameter(errors, param, pstack, variables, StructureMapInputMode.TARGET);
             }
-            if (v == null) {
-              DebugUtilities.breakpoint();
-            }
+
             if (rule(errors, "2023-06-27", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), v != null, I18nConstants.SM_DEPENDENT_PARAM_NOT_FOUND, pname, input.getMode().toCode(), variables.summary())) {
               if (rule(errors, "2023-03-01", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(),
                     v.mode.equals(input.getMode().toCode()) || (v.mode.equals("target") && input.getMode() == StructureMapInputMode.SOURCE), I18nConstants.SM_DEPENDENT_PARAM_MODE_MISMATCH, param.getChildValue("name"), v.mode, input.getMode().toCode(), grp.getTargetGroup().getName()) &&
