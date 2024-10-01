@@ -46,6 +46,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -1177,8 +1178,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
   private String getLinkForSystem(String system, String version) { 
-    if ("http://snomed.info/sct".equals(system)) { 
-      return "https://browser.ihtsdotools.org/";       
+    if ("http://snomed.info/sct".equals(system)) {
+      return "https://browser.ihtsdotools.org/";
     } else if ("http://loinc.org".equals(system)) { 
       return "https://loinc.org/";             
     } else if ("http://unitsofmeasure.org".equals(system)) { 
@@ -1198,11 +1199,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
   protected String getLinkForCode(String system, String version, String code) { 
     if ("http://snomed.info/sct".equals(system)) { 
-      if (!Utilities.noString(code)) { 
-        return "http://snomed.info/id/"+code;         
-      } else { 
-        return "https://browser.ihtsdotools.org/"; 
-      } 
+      return SnomedUtilities.getSctLink(version, code, context.getContext().getExpansionParameters());
     } else if ("http://loinc.org".equals(system)) { 
       if (!Utilities.noString(code)) { 
         return "https://loinc.org/"+code; 
@@ -1301,7 +1298,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected void renderCoding(RenderingStatus status, XhtmlNode x, ResourceWrapper c) { 
+  protected void renderCoding(RenderingStatus status, XhtmlNode x, ResourceWrapper c) {
+    renderCoding(status, x, c, true);
+  }
+    
+  protected void renderCoding(RenderingStatus status, XhtmlNode x, ResourceWrapper c, boolean details) { 
     String s = ""; 
     if (c.has("display")) 
       s = context.getTranslated(c.child("display")); 
@@ -1311,10 +1312,13 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (Utilities.noString(s)) 
       s = c.primitiveValue("code"); 
 
-    if (context.isTechnicalMode()) { 
-      x.addText(s+" "+context.formatPhrase(RenderingContext.DATA_REND_DETAILS_STATED, displaySystem(c.primitiveValue("system")), c.primitiveValue("code"), " = '", lookupCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")), c.primitiveValue("display"), "')")); 
-    } else 
-      x.span(null, "{"+c.primitiveValue("system")+" "+c.primitiveValue("code")+"}").addText(s); 
+    if (context.isTechnicalMode() && details) {
+      String d = c.primitiveValue("display") == null ? lookupCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")): c.primitiveValue("display");
+      d = context.formatPhrase(d == null || d.equals(c.primitiveValue("code")) ? RenderingContext.DATA_REND_DETAILS_STATED_ND :  RenderingContext.DATA_REND_DETAILS_STATED, displaySystem(c.primitiveValue("system")), c.primitiveValue("code"), d); 
+      x.addText(s+" "+d);
+    } else { 
+      x.span(null, "{"+c.primitiveValue("system")+" "+c.primitiveValue("code")+"}").addText(s);
+    }
   } 
 
   public String displayCodeableConcept(ResourceWrapper cc) { 
@@ -1860,8 +1864,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
   public void renderUsageContext(RenderingStatus status, XhtmlNode x, ResourceWrapper u) throws FHIRFormatError, DefinitionException, IOException { 
-    renderCoding(status, x, u.child("code")); 
-    x.tx(": "); 
+    renderCoding(status, x, u.child("code"), false); 
+    x.tx(" = "); 
     renderDataType(status, x, u.child("value"));     
   } 
 

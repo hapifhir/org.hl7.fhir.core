@@ -94,6 +94,7 @@ import org.xml.sax.XMLReader;
 public class XmlParser extends ParserBase {
   private boolean allowXsiLocation;
   private String version;
+  private boolean elideElements;
 
   public XmlParser(IWorkerContext context) {
     super(context);
@@ -805,91 +806,124 @@ public class XmlParser extends ParserBase {
   }
 
   private void composeElement(IXMLWriter xml, Element element, String elementName, boolean root) throws IOException, FHIRException {
-    if (showDecorations) {
-      @SuppressWarnings("unchecked")
-      List<ElementDecoration> decorations = (List<ElementDecoration>) element.getUserData("fhir.decorations");
-      if (decorations != null)
-        for (ElementDecoration d : decorations)
-          xml.decorate(d);
-    }
-    for (String s : element.getComments()) {
-      xml.comment(s, true);
+    if (!(isElideElements() && element.isElided())) {
+      if (showDecorations) {
+        @SuppressWarnings("unchecked")
+        List<ElementDecoration> decorations = (List<ElementDecoration>) element.getUserData("fhir.decorations");
+        if (decorations != null)
+          for (ElementDecoration d : decorations)
+            xml.decorate(d);
+      }
+      for (String s : element.getComments()) {
+        xml.comment(s, true);
+      }
     }
     if (isText(element.getProperty())) {
-      if (linkResolver != null)
-        xml.link(linkResolver.resolveProperty(element.getProperty()));
-      xml.enter(element.getProperty().getXmlNamespace(),elementName);
-      if (linkResolver != null && element.getProperty().isReference()) {
-        String ref = linkResolver.resolveReference(getReferenceForElement(element));
-        if (ref != null) {
-          xml.externalLink(ref);
+      if (isElideElements() && element.isElided() && xml.canElide())
+        xml.elide();
+      else {
+        if (linkResolver != null)
+          xml.link(linkResolver.resolveProperty(element.getProperty()));
+        xml.enter(element.getProperty().getXmlNamespace(),elementName);
+        if (linkResolver != null && element.getProperty().isReference()) {
+          String ref = linkResolver.resolveReference(getReferenceForElement(element));
+          if (ref != null) {
+            xml.externalLink(ref);
+          }
         }
+        xml.text(element.getValue());
+        xml.exit(element.getProperty().getXmlNamespace(),elementName);
       }
-      xml.text(element.getValue());
-      xml.exit(element.getProperty().getXmlNamespace(),elementName);   
     } else if (!element.hasChildren() && !element.hasValue()) {
-      if (element.getExplicitType() != null)
-        xml.attribute("xsi:type", element.getExplicitType());
-      xml.element(elementName);
+      if (isElideElements() && element.isElided() && xml.canElide())
+        xml.elide();
+      else {
+        if (element.getExplicitType() != null)
+          xml.attribute("xsi:type", element.getExplicitType());
+        xml.element(elementName);
+      }
     } else if (element.isPrimitive() || (element.hasType() && isPrimitive(element.getType()))) {
       if (element.getType().equals("xhtml")) {
-        String rawXhtml = element.getValue();
-        if (isCdaText(element.getProperty())) {
-          new CDANarrativeFormat().convert(xml, new XhtmlParser().parseFragment(rawXhtml));
-        } else {
-          xml.escapedText(rawXhtml);
-          if (!markedXhtml) {
-            xml.anchor("end-xhtml");
-            markedXhtml = true;
+        if (isElideElements() && element.isElided() && xml.canElide())
+          xml.elide();
+        else {
+          String rawXhtml = element.getValue();
+          if (isCdaText(element.getProperty())) {
+            new CDANarrativeFormat().convert(xml, new XhtmlParser().parseFragment(rawXhtml));
+          } else {
+            xml.escapedText(rawXhtml);
+            if (!markedXhtml) {
+              xml.anchor("end-xhtml");
+              markedXhtml = true;
+            }
           }
         }
       } else if (isText(element.getProperty())) {
-        if (linkResolver != null)
-          xml.link(linkResolver.resolveProperty(element.getProperty()));
-        xml.text(element.getValue());
-      } else {
-        setXsiTypeIfIsTypeAttr(xml, element);
-        if (element.hasValue()) {
+        if (isElideElements() && element.isElided() && xml.canElide())
+          xml.elide();
+        else {
           if (linkResolver != null)
-            xml.link(linkResolver.resolveType(element.getType()));
-          xml.attribute("value", element.getValue());
+            xml.link(linkResolver.resolveProperty(element.getProperty()));
+          xml.text(element.getValue());
         }
-        if (linkResolver != null)
-          xml.link(linkResolver.resolveProperty(element.getProperty()));
-        if (element.hasChildren()) {
-          xml.enter(element.getProperty().getXmlNamespace(), elementName);
-          if (linkResolver != null && element.getProperty().isReference()) {
-            String ref = linkResolver.resolveReference(getReferenceForElement(element));
-            if (ref != null) {
-              xml.externalLink(ref);
-            }
+      } else {
+        if (isElideElements() && element.isElided())
+          xml.attributeElide();
+        else {
+          setXsiTypeIfIsTypeAttr(xml, element);
+          if (element.hasValue()) {
+            if (linkResolver != null)
+              xml.link(linkResolver.resolveType(element.getType()));
+            xml.attribute("value", element.getValue());
           }
-          for (Element child : element.getChildren()) 
-            composeElement(xml, child, child.getName(), false);
-          xml.exit(element.getProperty().getXmlNamespace(),elementName);
-        } else
-          xml.element(elementName);
+          if (linkResolver != null)
+            xml.link(linkResolver.resolveProperty(element.getProperty()));
+          if (element.hasChildren()) {
+            xml.enter(element.getProperty().getXmlNamespace(), elementName);
+            if (linkResolver != null && element.getProperty().isReference()) {
+              String ref = linkResolver.resolveReference(getReferenceForElement(element));
+              if (ref != null) {
+                xml.externalLink(ref);
+              }
+            }
+            for (Element child : element.getChildren())
+              composeElement(xml, child, child.getName(), false);
+            xml.exit(element.getProperty().getXmlNamespace(),elementName);
+          } else
+            xml.element(elementName);
+        }
       }
     } else {
-      setXsiTypeIfIsTypeAttr(xml, element);
-      Set<String> handled = new HashSet<>();
+      if (isElideElements() && element.isElided() && xml.canElide())
+        xml.elide();
+      else {
+        setXsiTypeIfIsTypeAttr(xml, element);
+        Set<String> handled = new HashSet<>();
       for (Element child : element.getChildren()) {
         if (!handled.contains(child.getName()) && isAttr(child.getProperty()) && wantCompose(element.getPath(), child)) {
           handled.add(child.getName());
-          String av = child.getValue();
-          if (child.getProperty().isList()) {
-            for (Element c2 : element.getChildren()) {
-              if (c2 != child && c2.getName().equals(child.getName())) {
-                av = av + " "+c2.getValue();
+          if (isElideElements() && child.isElided())
+            xml.attributeElide();
+          else {
+            String av = child.getValue();
+            if (child.getProperty().isList()) {
+              for (Element c2 : element.getChildren()) {
+                if (c2 != child && c2.getName().equals(child.getName())) {
+                  if (c2.isElided())
+                    av = av + " ...";
+                  else
+                    av = av + " " + c2.getValue();
+                }
               }
-            }            
+            }
+            if (linkResolver != null)
+              xml.link(linkResolver.resolveType(child.getType()));
+            if (ToolingExtensions.hasExtension(child.getProperty().getDefinition(), ToolingExtensions.EXT_DATE_FORMAT))
+              av = convertForDateFormatToExternal(ToolingExtensions.readStringExtension(child.getProperty().getDefinition(), ToolingExtensions.EXT_DATE_FORMAT), av);
+            xml.attribute(child.getProperty().getXmlNamespace(), child.getProperty().getXmlName(), av);
           }
-          if (linkResolver != null)
-            xml.link(linkResolver.resolveType(child.getType()));
-          if (ToolingExtensions.hasExtension(child.getProperty().getDefinition(), ToolingExtensions.EXT_DATE_FORMAT))
-            av = convertForDateFormatToExternal(ToolingExtensions.readStringExtension(child.getProperty().getDefinition(), ToolingExtensions.EXT_DATE_FORMAT), av);
-          xml.attribute(child.getProperty().getXmlNamespace(),child.getProperty().getXmlName(), av);
         }
+      }
       }
       if (!element.getProperty().getDefinition().hasExtension(ToolingExtensions.EXT_ID_CHOICE_GROUP)) {
         if (linkResolver != null)
@@ -914,12 +948,16 @@ public class XmlParser extends ParserBase {
       }
       for (Element child : element.getChildren()) {
         if (wantCompose(element.getPath(), child)) {
-          if (isText(child.getProperty())) {
-            if (linkResolver != null)
-              xml.link(linkResolver.resolveProperty(element.getProperty()));
-            xml.text(child.getValue());
-          } else if (!isAttr(child.getProperty())) {
-            composeElement(xml, child, child.getName(), false);
+          if (isElideElements() && child.isElided() && xml.canElide())
+            xml.elide();
+          else {
+            if (isText(child.getProperty())) {
+              if (linkResolver != null)
+                xml.link(linkResolver.resolveProperty(element.getProperty()));
+              xml.text(child.getValue());
+            } else if (!isAttr(child.getProperty())) {
+              composeElement(xml, child, child.getName(), false);
+            }
           }
         }
       }
@@ -1034,4 +1072,13 @@ public class XmlParser extends ParserBase {
       // do nothing
     }
   }
+
+  public boolean isElideElements() {
+    return elideElements;
+  }
+
+  public void setElideElements(boolean elideElements) {
+    this.elideElements = elideElements;
+  }
+
 }

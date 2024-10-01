@@ -172,6 +172,6 @@ class ClientTest {
     Mockito.verify(mockLogger, Mockito.times(1))
       .logRequest(Mockito.anyString(), Mockito.anyString(), Mockito.anyList(), Mockito.any());
     Mockito.verify(mockLogger, Mockito.times(1))
-      .logResponse(Mockito.anyString(), Mockito.anyList(), Mockito.any());
+      .logResponse(Mockito.anyString(), Mockito.anyList(), Mockito.any(), Mockito.anyLong());
   }
 }
