@@ -130,7 +130,7 @@ public class CliContext {
   private boolean showTimes = false;
   
   @JsonProperty("locale")
-  private String locale = Locale.ENGLISH.getDisplayLanguage();
+  private String locale = Locale.ENGLISH.toLanguageTag();
 
   @JsonProperty("locations")
   private Map<String, String> locations = new HashMap<String, String>();
@@ -165,6 +165,9 @@ public class CliContext {
 
   @JsonProperty("unknownCodeSystemsCauseErrors")
   private boolean unknownCodeSystemsCauseErrors;
+
+  @JsonProperty("noExperimentalContent")
+  private boolean noExperimentalContent;
   
   @JsonProperty("baseEngine")
   public String getBaseEngine() {
@@ -836,6 +839,7 @@ public class CliContext {
       Objects.equals(bestPracticeLevel, that.bestPracticeLevel) &&
       Objects.equals(watchScanDelay, that.watchScanDelay) &&
       Objects.equals(unknownCodeSystemsCauseErrors, that.unknownCodeSystemsCauseErrors) &&
+      Objects.equals(noExperimentalContent, that.noExperimentalContent) &&
       Objects.equals(watchSettleTime, that.watchSettleTime) ;
   }
 
@@ -844,7 +848,7 @@ public class CliContext {
     return Objects.hash(baseEngine, doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching,
             noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
             targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
-            watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
+            watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
   }
 
   @Override
@@ -904,6 +908,7 @@ public class CliContext {
       ", watchSettleTime=" + watchSettleTime +
       ", watchScanDelay=" + watchScanDelay +
       ", unknownCodeSystemsCauseErrors=" + unknownCodeSystemsCauseErrors +
+      ", noExperimentalContent=" + noExperimentalContent +
       '}';
   }
 
@@ -971,6 +976,17 @@ public class CliContext {
   @JsonProperty("unknownCodeSystemsCauseErrors")
   public void setUnknownCodeSystemsCauseErrors(boolean unknownCodeSystemsCauseErrors) {
     this.unknownCodeSystemsCauseErrors = unknownCodeSystemsCauseErrors;
+  }
+
+  @JsonProperty("noExperimentalContent")
+  public boolean isNoExperimentalContent() {
+    return noExperimentalContent;
+  }
+
+
+  @JsonProperty("noExperimentalContent")
+  public void setNoExperimentalContent(boolean noExperimentalContent) {
+    this.noExperimentalContent = noExperimentalContent;
   }
 
   

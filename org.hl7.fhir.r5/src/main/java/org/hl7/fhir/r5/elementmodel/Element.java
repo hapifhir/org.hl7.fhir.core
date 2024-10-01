@@ -162,6 +162,7 @@ public class Element extends Base implements NamedItem {
   private FhirFormat format;
   private Object nativeObject;
   private List<SliceDefinition> sliceDefinitions;
+  private boolean elided;
 
 	public Element(String name) {
 		super();
@@ -1429,6 +1430,8 @@ public class Element extends Base implements NamedItem {
   public Base copy() {
     Element element = new Element(this);
     this.copyValues(element);
+    if (this.isElided())
+      element.setElided(true);
     return element;
   }
 
@@ -1638,4 +1641,11 @@ public class Element extends Base implements NamedItem {
     return FhirPublication.fromCode(property.getStructure().getVersion());
   }
 
+  public void setElided(boolean elided) {
+    this.elided = elided;
+  }
+
+  public boolean isElided() {
+    return this.elided;
+  }
 }

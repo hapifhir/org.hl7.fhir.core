@@ -25,8 +25,10 @@ import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
 import org.hl7.fhir.r5.model.UsageContext;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 
 public class ElementDefinition40_50 {
+  
   public static org.hl7.fhir.r5.model.ElementDefinition convertElementDefinition(org.hl7.fhir.r4.model.ElementDefinition src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.ElementDefinition tgt = new org.hl7.fhir.r5.model.ElementDefinition();
@@ -616,12 +618,15 @@ public class ElementDefinition40_50 {
     if (src == null) return null;
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt, 
-        "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.binding.additional");
+        "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.binding.additional", ToolingExtensions.EXT_BINDING_ADDITIONAL);
     if (src.hasStrength()) tgt.setStrengthElement(Enumerations40_50.convertBindingStrength(src.getStrengthElement()));
     if (src.hasDescription()) tgt.setDescriptionElement(String40_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasValueSet()) tgt.setValueSetElement(Canonical40_50.convertCanonical(src.getValueSetElement()));
 
     for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.binding.additional")) {
+      tgt.addAdditional(convertAdditional(ext));
+    }
+    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(ToolingExtensions.EXT_BINDING_ADDITIONAL)) {
       tgt.addAdditional(convertAdditional(ext));
     }
     return tgt;
@@ -652,12 +657,12 @@ public class ElementDefinition40_50 {
     return tgt;
   }
 
-  private static Extension convertAdditional(ElementDefinitionBindingAdditionalComponent src) {
+  private static org.hl7.fhir.r4.model.Extension convertAdditional(ElementDefinitionBindingAdditionalComponent src) {
     if (src == null) return null;
-    Extension tgt = new Extension();
+    org.hl7.fhir.r4.model.Extension tgt = new Extension(ToolingExtensions.EXT_BINDING_ADDITIONAL);
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasPurpose()) {
-      tgt.addExtension(new Extension("purpose", new CodeType(src.getPurposeElement().primitiveValue())));
+      tgt.addExtension(new Extension("purpose", new org.hl7.fhir.r4.model.CodeType(src.getPurposeElement().primitiveValue())));
     }
     if (src.hasValueSet()) {
       tgt.addExtension(new Extension("valueSet", Canonical40_50.convertCanonical(src.getValueSetElement())));

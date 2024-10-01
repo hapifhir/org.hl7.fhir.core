@@ -8400,15 +8400,15 @@ public class JsonParser extends JsonParserBase {
       parseElementProperties(getJObject(json, "_verificationDate"), res.getVerificationDateElement());
   }
 
-  protected Consent.provisionComponent parseConsentprovisionComponent(JsonObject json, Consent owner)
+  protected Consent.ProvisionComponent parseConsentprovisionComponent(JsonObject json, Consent owner)
       throws IOException, FHIRFormatError {
-    Consent.provisionComponent res = new Consent.provisionComponent();
+    Consent.ProvisionComponent res = new Consent.ProvisionComponent();
     parseConsentprovisionComponentProperties(json, owner, res);
     return res;
   }
 
   protected void parseConsentprovisionComponentProperties(JsonObject json, Consent owner,
-      Consent.provisionComponent res) throws IOException, FHIRFormatError {
+      Consent.ProvisionComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
     if (json.has("type"))
       res.setTypeElement(parseEnumeration(json.get("type").getAsString(), Consent.ConsentProvisionType.NULL,
@@ -41383,7 +41383,7 @@ public class JsonParser extends JsonParserBase {
     }
   }
 
-  protected void composeConsentprovisionComponent(String name, Consent.provisionComponent element) throws IOException {
+  protected void composeConsentprovisionComponent(String name, Consent.ProvisionComponent element) throws IOException {
     if (element != null) {
       open(name);
       composeConsentprovisionComponentInner(element);
@@ -41391,7 +41391,7 @@ public class JsonParser extends JsonParserBase {
     }
   }
 
-  protected void composeConsentprovisionComponentInner(Consent.provisionComponent element) throws IOException {
+  protected void composeConsentprovisionComponentInner(Consent.ProvisionComponent element) throws IOException {
     composeBackbone(element);
     if (element.hasTypeElement()) {
       composeEnumerationCore("type", element.getTypeElement(), new Consent.ConsentProvisionTypeEnumFactory(), false);
@@ -41454,7 +41454,7 @@ public class JsonParser extends JsonParserBase {
     ;
     if (element.hasProvision()) {
       openArray("provision");
-      for (Consent.provisionComponent e : element.getProvision())
+      for (Consent.ProvisionComponent e : element.getProvision())
         composeConsentprovisionComponent(null, e);
       closeArray();
     }

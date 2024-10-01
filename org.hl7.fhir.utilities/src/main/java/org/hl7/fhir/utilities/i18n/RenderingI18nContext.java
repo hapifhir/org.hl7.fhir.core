@@ -214,6 +214,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_DATA = "DATA_REND_DATA";
   public static final String DATA_REND_DETAILS = "DATA_REND_DETAILS";
   public static final String DATA_REND_DETAILS_STATED = "DATA_REND_DETAILS_STATED";
+  public static final String DATA_REND_DETAILS_STATED_ND = "DATA_REND_DETAILS_STATED_ND";
   public static final String DATA_REND_DICOM = "DATA_REND_DICOM";
   public static final String DATA_REND_DIM = "DATA_REND_DIM";
   public static final String DATA_REND_DURATION = "DATA_REND_DURATION";

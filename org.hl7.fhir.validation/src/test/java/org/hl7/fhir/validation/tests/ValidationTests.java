@@ -362,6 +362,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("security-checks")) {
       val.setSecurityChecks(content.get("security-checks").getAsBoolean());
     }
+    if (content.has("no-experimental-content")) {
+      val.setNoExperimentalContent(content.get("no-experimental-content").getAsBoolean());
+    }
     if (content.has("noHtmlInMarkdown")) {
       val.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.ERROR);
     }

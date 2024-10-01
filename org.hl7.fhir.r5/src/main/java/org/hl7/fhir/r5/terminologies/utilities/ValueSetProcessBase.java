@@ -49,7 +49,7 @@ public class ValueSetProcessBase {
   protected IWorkerContext context;
   protected TerminologyOperationContext opContext;
   protected List<String> requiredSupplements = new ArrayList<>();
-
+  
   protected ValueSetProcessBase(IWorkerContext context, TerminologyOperationContext opContext) {
     super();
     this.context = context;
@@ -229,7 +229,11 @@ public class ValueSetProcessBase {
       }
     }
   }
-            
+
+  public TerminologyOperationContext getOpContext() {
+    return opContext;
+  }
+
                          
   protected AlternateCodesProcessingRules altCodeParams = new AlternateCodesProcessingRules(false);
   protected AlternateCodesProcessingRules allAltCodes = new AlternateCodesProcessingRules(true);

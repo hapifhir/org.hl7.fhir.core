@@ -87,7 +87,7 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
   }
 
   @Override
-  public void logResponse(String outcome, List<String> headers, byte[] body) {
+  public void logResponse(String outcome, List<String> headers, byte[] body, long start) {
     if (DEBUG) {
       System.out.println(" txlog resp: " +outcome+" "+present(body));
     }

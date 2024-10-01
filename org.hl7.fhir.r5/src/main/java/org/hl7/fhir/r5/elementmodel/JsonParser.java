@@ -62,6 +62,7 @@ import org.hl7.fhir.r5.formats.JsonCreatorDirect;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
@@ -85,6 +86,8 @@ public class JsonParser extends ParserBase {
 
   private JsonCreator json;
   private boolean allowComments;
+  private boolean elideElements;
+//  private boolean suppressResourceType;
 
   private Element baseElement;
   private boolean markedXhtml;
@@ -782,7 +785,8 @@ public class JsonParser extends ParserBase {
     }
     checkComposeComments(e);
     json.beginObject();
-    prop("resourceType", e.getType(), null);
+//    if (!isSuppressResourceType())
+      prop("resourceType", e.getType(), null);
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
       compose(e.getName(), e, done, child);
@@ -807,7 +811,8 @@ public class JsonParser extends ParserBase {
     checkComposeComments(e);
     json.beginObject();
 
-    prop("resourceType", e.getType(), linkResolver == null ? null : linkResolver.resolveProperty(e.getProperty()));
+//    if (!isSuppressResourceType())
+      prop("resourceType", e.getType(), linkResolver == null ? null : linkResolver.resolveProperty(e.getProperty()));
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
       compose(e.getName(), e, done, child);
@@ -821,15 +826,50 @@ public class JsonParser extends ParserBase {
     if (wantCompose(path, child)) {
       boolean isList = child.hasElementProperty() ? child.getElementProperty().isList() : child.getProperty().isList();
       if (!isList) {// for specials, ignore the cardinality of the stated type
-        compose(path, child);
+        if (child.isElided() && isElideElements() && json.canElide())
+          json.elide();
+        else
+          compose(path, child);
       } else if (!done.contains(child.getName())) {
         done.add(child.getName());
         List<Element> list = e.getChildrenByName(child.getName());
-        composeList(path, list);
+        if (child.getProperty().getDefinition().hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY))
+          composeKeyList(path, list);
+        else
+          composeList(path, list);
       }
     }
   }
 
+  private void composeKeyList(String path, List<Element> list) throws IOException {
+    String keyName = list.get(0).getProperty().getDefinition().getExtensionString(ToolingExtensions.EXT_JSON_PROP_KEY);
+    json.name(list.get(0).getName());
+    json.beginObject();
+    for (Element e: list) {
+      Element key = null;
+      Element value = null;
+      for (Element child: e.getChildren()) {
+        if (child.getName().equals(keyName))
+          key = child;
+        else
+          value = child;
+      }
+      if (value.isPrimitive())
+        primitiveValue(key.getValue(), value);
+      else {
+        json.name(key.getValue());
+        checkComposeComments(e);
+        json.beginObject();
+        Set<String> done = new HashSet<String>();
+        for (Element child : value.getChildren()) {
+          compose(value.getName(), value, done, child);
+        }
+        json.endObject();
+        compose(path + "." + key.getValue(), value);
+      }
+    }
+    json.endObject();
+  }
 
   private void composeList(String path, List<Element> list) throws IOException {
     // there will be at least one element
@@ -847,7 +887,9 @@ public class JsonParser extends ParserBase {
       if (prim) {
         openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
         for (Element item : list) {
-          if (item.hasValue()) {
+          if (item.isElided() && json.canElide())
+            json.elide();
+          else if (item.hasValue()) {
             if (linkResolver != null && item.getProperty().isReference()) {
               String ref = linkResolver.resolveReference(getReferenceForElement(item));
               if (ref != null) {
@@ -866,7 +908,9 @@ public class JsonParser extends ParserBase {
       openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
       int i = 0;
       for (Element item : list) {
-        if (item.hasChildren()) {
+        if (item.isElided() && json.canElide())
+          json.elide();
+        else if (item.hasChildren()) {
           open(null,null);
           if (item.getProperty().isResource()) {
             prop("resourceType", item.getType(), linkResolver == null ? null : linkResolver.resolveType(item.getType()));
@@ -933,9 +977,10 @@ public class JsonParser extends ParserBase {
           json.externalLink(ref);
         }
       }
+
       Set<String> done = new HashSet<String>();
       for (Element child : element.getChildren()) {
-        compose(path+"."+element.getName(), element, done, child);
+        compose(path + "." + element.getName(), element, done, child);
       }
       close();
     }
@@ -951,5 +996,23 @@ public class JsonParser extends ParserBase {
     return this;
   }
 
+  public boolean isElideElements() {
+    return elideElements;
+  }
+
+  public JsonParser setElideElements(boolean elideElements) {
+    this.elideElements = elideElements;
+    return this;
+  }
+/*
+  public boolean isSuppressResourceType() {
+    return suppressResourceType;
+  }
+
+  public JsonParser setSuppressResourceType(boolean suppressResourceType) {
+    this.suppressResourceType = suppressResourceType;
+    return this;
+  }
+*/
 
 }

@@ -33,7 +33,7 @@ public class CacheVerificationLogger implements ToolingClientLogger {
   }
 
   @Override
-  public void logResponse(String outcome, List<String> headers, byte[] body) {
+  public void logResponse(String outcome, List<String> headers, byte[] body, long start) {
 
   }
 

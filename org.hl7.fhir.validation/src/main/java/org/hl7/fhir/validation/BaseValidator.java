@@ -1192,6 +1192,34 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
 
+  protected int countFragmentMatches(Element element, String fragment, NodeStack stack) {
+    int count = countFragmentMatches(element, fragment); 
+    if (count == 0 && element.isResource() && element.hasParentForValidator()) {
+      Element bnd = getElementBundle(element);
+      if (bnd != null) {
+        // in this case, we look into the parent - if there is one - and if it's a bundle, we look at the entries (but not in them)
+        for (Element be : bnd.getChildrenByName("entry")) {
+          String id = be.getIdBase();
+          if (fragment.equals(id)) {
+            count++;
+          }
+        }
+      }
+    }
+    return count;
+  }
+  
+  private Element getElementBundle(Element element) {
+    Element p = element.getParentForValidator();
+    if (p != null) {
+      Element b = p.getParentForValidator();
+      if (b != null && b.fhirType().equals("Bundle")) {
+        return b;
+      }
+    }
+    return null;
+  }
+
   protected int countFragmentMatches(Element element, String fragment) {
     int count = 0;
     if (fragment.equals(element.getIdBase())) {

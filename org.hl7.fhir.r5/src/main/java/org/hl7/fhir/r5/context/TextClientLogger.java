@@ -76,10 +76,10 @@ public class TextClientLogger extends BaseLogger implements ToolingClientLogger 
   }
 
   @Override
-  public void logResponse(String outcome, List<String> headers, byte[] body) {
+  public void logResponse(String outcome, List<String> headers, byte[] body, long length) {
     if (file == null)
       return;
-    file.println("\r\n\r\nResponse: \r\n");
+    file.println("\r\n\r\nResponse ("+Utilities.describeDuration(length)+"): \r\n");
     file.println(outcome);
     for (String s : headers)  
       file.println(s);

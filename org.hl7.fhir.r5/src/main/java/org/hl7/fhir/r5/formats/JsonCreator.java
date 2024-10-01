@@ -71,4 +71,6 @@ public interface JsonCreator {
   void link(String href);
   void anchor(String string);
   void externalLink(String string);
+  void elide();
+  boolean canElide();
 }

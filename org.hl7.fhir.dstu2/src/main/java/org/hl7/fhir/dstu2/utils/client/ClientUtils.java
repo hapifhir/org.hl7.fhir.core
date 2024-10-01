@@ -683,7 +683,7 @@ public class ClientUtils {
       for (Header h : response.getAllHeaders()) {
         headers.add(h.toString());
       }
-      logger.logResponse(response.getStatusLine().toString(), headers, cnt);
+      logger.logResponse(response.getStatusLine().toString(), headers, cnt, 0);
     }
     return cnt;
   }

@@ -188,7 +188,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private ValueSetExpansionContainsComponent addCode(WorkingContext wc, String system, String code, String display, String dispLang, ValueSetExpansionContainsComponent parent, List<ConceptDefinitionDesignationComponent> designations, Parameters expParams, 
       boolean isAbstract, boolean inactive, List<ValueSet> filters, boolean noInactive, boolean deprecated, List<ValueSetExpansionPropertyComponent> vsProp, 
       List<ConceptPropertyComponent> csProps, CodeSystem cs, List<org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent> expProps, List<Extension> csExtList, List<Extension> vsExtList, ValueSetExpansionComponent exp) throws ETooCostly {
-    opContext.deadCheck();
+    opContext.deadCheck("addCode"+code);
     
     if (filters != null && !filters.isEmpty() && !filterContainsCode(filters, system, code, exp))
       return null;
@@ -447,7 +447,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private void addCodeAndDescendents(WorkingContext wc, ValueSetExpansionContainsComponent focus, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp)  throws FHIRException, ETooCostly {
-    opContext.deadCheck();
+    opContext.deadCheck("addCodeAndDescendents");
     focus.checkNoModifiers("Expansion.contains", "expanding");
     ValueSetExpansionContainsComponent np = null;
     for (String code : getCodesForConcept(focus, expParams)) {
@@ -497,7 +497,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   private void addCodeAndDescendents(WorkingContext wc, CodeSystem cs, String system, ConceptDefinitionComponent def, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, 
         ConceptDefinitionComponent exclusion, ConceptFilter filterFunc, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, List<WorkingContext> otherFilters, ValueSetExpansionComponent exp)  throws FHIRException, ETooCostly {
-    opContext.deadCheck();
+    opContext.deadCheck("addCodeAndDescendents");
     def.checkNoModifiers("Code in Code System", "expanding");
     if (exclusion != null) {
       if (exclusion.getCode().equals(def.getCode()))
@@ -528,7 +528,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   private void excludeCodeAndDescendents(WorkingContext wc, CodeSystem cs, String system, ConceptDefinitionComponent def, Parameters expParams, List<ValueSet> filters, 
       ConceptDefinitionComponent exclusion, ConceptFilter filterFunc, List<WorkingContext> otherFilters, ValueSetExpansionComponent exp)  throws FHIRException, ETooCostly {
-    opContext.deadCheck();
+    opContext.deadCheck("excludeCodeAndDescendents");
     def.checkNoModifiers("Code in Code System", "expanding");
     if (exclusion != null) {
       if (exclusion.getCode().equals(def.getCode()))
@@ -596,7 +596,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private void excludeCodes(WorkingContext wc, ConceptSetComponent exc, Parameters expParams, ValueSetExpansionComponent exp, ValueSet vs) throws FHIRException, FileNotFoundException, ETooCostly, IOException {
-    opContext.deadCheck();
+    opContext.deadCheck("excludeCodes");
     exc.checkNoModifiers("Compose.exclude", "expanding");
     if (exc.hasSystem() && exc.getConcept().size() == 0 && exc.getFilter().size() == 0) {
       wc.getExcludeSystems().add(exc.getSystem());
@@ -639,7 +639,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private void excludeCodes(WorkingContext wc, ValueSetExpansionComponent expand) {
-    opContext.deadCheck();
+    opContext.deadCheck("excludeCodes");
     for (ValueSetExpansionContainsComponent c : expand.getContains()) {
       excludeCode(wc, c.getSystem(), c.getCode());
     }
@@ -959,7 +959,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   public void copyExpansion(WorkingContext wc,List<ValueSetExpansionContainsComponent> list) {
-    opContext.deadCheck();
+    opContext.deadCheck("copyExpansion");
     for (ValueSetExpansionContainsComponent cc : list) {
        ValueSetExpansionContainsComponent n = new ValueSet.ValueSetExpansionContainsComponent();
        n.setSystem(cc.getSystem());
@@ -988,7 +988,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   private int copyImportContains(List<ValueSetExpansionContainsComponent> list, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filter, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp) throws FHIRException, ETooCostly {
     int count = 0;
-    opContext.deadCheck();
+    opContext.deadCheck("copyImportContains");
     for (ValueSetExpansionContainsComponent c : list) {
       c.checkNoModifiers("Imported Expansion in Code System", "expanding");
       ValueSetExpansionContainsComponent np = addCode(dwc, c.getSystem(), c.getCode(), c.getDisplay(), vsSrc.getLanguage(), parent, null, expParams, c.getAbstract(), c.getInactive(), 
@@ -1002,7 +1002,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private void includeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, boolean heirarchical, boolean noInactive, List<Extension> extensions, ValueSet valueSet) throws ETooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {
-    opContext.deadCheck();
+    opContext.deadCheck("includeCodes");
     inc.checkNoModifiers("Compose.include", "expanding");
     List<ValueSet> imports = new ArrayList<ValueSet>();
     for (CanonicalType imp : inc.getValueSet()) {
@@ -1033,7 +1033,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private void doServerIncludeCodes(ConceptSetComponent inc, boolean heirarchical, ValueSetExpansionComponent exp, List<ValueSet> imports, Parameters expParams, List<Extension> extensions, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps) throws FHIRException, CodeSystemProviderExtension, ETooCostly {
-    opContext.deadCheck();
+    opContext.deadCheck("doServerIncludeCodes");
     CodeSystemProvider csp = CodeSystemProvider.factory(inc.getSystem());
     if (csp != null) {
       csp.includeCodes(inc, heirarchical, exp, imports, expParams, extensions, noInactive, vsProps);
@@ -1075,7 +1075,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
 
   public void doInternalIncludeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports, CodeSystem cs, boolean noInactive, Resource vsSrc) throws NoTerminologyServiceException, TerminologyServiceException, FHIRException, ETooCostly {
-    opContext.deadCheck();
+    opContext.deadCheck("doInternalIncludeCodes");
     if (cs == null) {
       if (context.isNoTerminologyServer())
         throw failTSE("Unable to find code system " + inc.getSystem().toString());
@@ -1160,7 +1160,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private void processFilter(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports, CodeSystem cs, boolean noInactive, 
       ConceptSetFilterComponent fc, WorkingContext wc, List<WorkingContext> filters, boolean exclude)
       throws ETooCostly {
-    opContext.deadCheck();
+    opContext.deadCheck("processFilter");
     if ("concept".equals(fc.getProperty()) && fc.getOp() == FilterOperator.ISA) {
       // special: all codes in the target code system under the value
       ConceptDefinitionComponent def = getConceptForCode(cs.getConcept(), fc.getValue());
@@ -1213,7 +1213,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         if (isNotBlank(def.getDisplay()) && isNotBlank(fc.getValue())) {
           if (def.getDisplay().contains(fc.getValue()) && passesOtherFilters(filters, cs, def.getCode())) {
             for (String code : getCodesForConcept(def, expParams)) {
-              opContext.deadCheck();
+              opContext.deadCheck("processFilter2");
               if (exclude) {
                 excludeCode(wc, inc.getSystem(), code);
               } else {

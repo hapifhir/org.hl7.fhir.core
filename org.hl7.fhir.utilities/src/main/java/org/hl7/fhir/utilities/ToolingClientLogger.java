@@ -36,7 +36,7 @@ import java.util.List;
 public interface ToolingClientLogger {
 
   void logRequest(String method, String url, List<String> headers, byte[] body);
-  void logResponse(String outcome, List<String> headers, byte[] body);
+  void logResponse(String outcome, List<String> headers, byte[] body, long length);
   String getLastId();
   void clearLastId();
 

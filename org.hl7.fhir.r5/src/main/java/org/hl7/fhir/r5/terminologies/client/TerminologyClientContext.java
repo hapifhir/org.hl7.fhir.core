@@ -51,6 +51,8 @@ public class TerminologyClientContext {
     
   }
 
+  private static boolean canUseCacheId;
+
   private ITerminologyClient client;
   private boolean initialised = false;
   private CapabilityStatement capabilitiesStatementQuick;
@@ -180,7 +182,7 @@ public class TerminologyClientContext {
           txCache.cacheTerminologyCapabilities(getAddress(), txcaps);
         }
       }
-      if (txcaps != null) {
+      if (txcaps != null && TerminologyClientContext.canUseCacheId) {
         for (TerminologyCapabilitiesExpansionParameterComponent t : txcaps.getExpansion().getParameter()) {
           if ("cache-id".equals(t.getName())) {
             setTxCaching(true);
@@ -206,6 +208,13 @@ public class TerminologyClientContext {
   public String toString() {
     return client.getAddress();
   }
-  
+
+  public static boolean isCanUseCacheId() {
+    return canUseCacheId;
+  }
+
+  public static void setCanUseCacheId(boolean canUseCacheId) {
+    TerminologyClientContext.canUseCacheId = canUseCacheId;
+  }
   
 }
