@@ -45,10 +45,10 @@ public class VSACImporter extends OIDBasedValueSetImporter {
 
   public static void main(String[] args) throws FHIRException, IOException, ParseException, URISyntaxException {
     VSACImporter self = new VSACImporter();
-    self.process(args[0], args[1], args[2], "true".equals(args[3]));
+    self.process(args[0], args[1], args[2], "true".equals(args[3]), "true".equals(args[4]));
   }
 
-  private void process(String source, String dest, String apiKey, boolean onlyNew) throws FHIRException, IOException, URISyntaxException {
+  private void process(String source, String dest, String apiKey, boolean onlyNew, boolean onlyActive) throws FHIRException, IOException, URISyntaxException {
     CSVReader csv = new CSVReader(ManagedFileAccess.inStream(source));
     csv.readHeaders();
     Map<String, String> errs = new HashMap<>();
@@ -75,13 +75,20 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     
     System.out.println("Loading");
     List<String> oids = new ArrayList<>();
+    List<String> allOids = new ArrayList<>();
     while (csv.line()) {
-      String oid = csv.cell("OID");
-      if (!onlyNew || !(ManagedFileAccess.file(Utilities.path(dest, "ValueSet-" + oid + ".json")).exists())) {
-        oids.add(oid);
+      String status = csv.cell("Expansion Status");
+      if (!onlyActive || "Active".equals(status)) {
+        String oid = csv.cell("OID");
+        allOids.add(oid);
+        if (!onlyNew || !(ManagedFileAccess.file(Utilities.path(dest, "ValueSet-" + oid + ".json")).exists())) {
+          oids.add(oid);
+        }
       }
     }
     Collections.sort(oids);
+    System.out.println("Cleaning");
+    cleanValueSets(allOids, dest);
     System.out.println("Go: "+oids.size()+" oids");
     int i = 0;
     int j = 0;
@@ -108,12 +115,29 @@ public class VSACImporter extends OIDBasedValueSetImporter {
         errs.put(oid, e.getMessage());
       }
     }
+    
     OperationOutcome oo = new OperationOutcome();
     for (String oid : errs.keySet()) {
       oo.addIssue().setSeverity(IssueSeverity.ERROR).setCode(IssueType.EXCEPTION).setDiagnostics(errs.get(oid)).addLocation(oid);
     }
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "other", "OperationOutcome-vsac-errors.json")), oo);
     System.out.println("Done. " + i + " ValueSets in "+Utilities.describeDuration(System.currentTimeMillis() - tt));
+  }
+
+  private void cleanValueSets(List<String> allOids, String dest) throws IOException {
+    cleanValueSets(allOids, new File(Utilities.path(dest)));
+  }
+
+  private void cleanValueSets(List<String> allOids, File file) {
+    for (File f : file.listFiles()) {
+      if (f.getName().startsWith("ValueSet-")) {
+        String oid = f.getName().substring(9).replace(".json", "");
+        if (!allOids.contains(oid)) {
+          f.delete();
+        }
+      }
+    }
+    
   }
 
   private long estimate(int i, int size, long tt) {
@@ -201,7 +225,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
         }
         vs.setName(makeValidName(vs.getName()));
         JurisdictionUtilities.setJurisdictionCountry(vs.getJurisdiction(), "US");
-        new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
+        new JsonParser().setOutputStyle(OutputStyle.NORMAL).compose(ManagedFileAccess.outStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
         return true;
       }
     }

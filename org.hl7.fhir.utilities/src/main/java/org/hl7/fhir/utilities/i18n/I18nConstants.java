@@ -18,7 +18,9 @@ public class I18nConstants {
   public static final String BAD_FILE_PATH_ERROR = "Bad_file_path_error";
   public static final String BASE_PROFILE__HAS_NO_TYPE = "Base_profile__has_no_type";
   public static final String BASE__DERIVED_PROFILES_HAVE_DIFFERENT_TYPES____VS___ = "Base__Derived_profiles_have_different_types____vs___";
-  public static final String BINDING_ADDITIONAL = "BINDING_ADDITIONAL";
+  public static final String BINDING_ADDITIONAL_D = "BINDING_ADDITIONAL_D";
+  public static final String BINDING_ADDITIONAL_UC = "BINDING_ADDITIONAL_UC";
+  public static final String BINDING_ADDITIONAL_USAGE = "BINDING_ADDITIONAL_USAGE";
   public static final String BINDING_MAX = "BINDING_MAX";
   public static final String BUNDLE_BUNDLE_ENTRY_CANONICAL = "Bundle_BUNDLE_Entry_Canonical";
   public static final String BUNDLE_BUNDLE_ENTRY_DOCUMENT = "Bundle_BUNDLE_Entry_Document";
@@ -1111,4 +1113,7 @@ public class I18nConstants {
   public static final String SD_BASE_EXPERIMENTAL = "SD_BASE_EXPERIMENTAL";
   public static final String SD_ED_EXPERIMENTAL_BINDING = "SD_ED_EXPERIMENTAL_BINDING";
   public static final String VALIDATION_NO_EXPERIMENTAL_CONTENT = "VALIDATION_NO_EXPERIMENTAL_CONTENT";
+  public static final String SD_ED_ADDITIONAL_BINDING_USAGE_UNKNOWN = "SD_ED_ADDITIONAL_BINDING_USAGE_UNKNOWN";
+  public static final String SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_ELEMENT = "SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_ELEMENT";
+  public static final String SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_TYPE = "SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_TYPE";
 }
