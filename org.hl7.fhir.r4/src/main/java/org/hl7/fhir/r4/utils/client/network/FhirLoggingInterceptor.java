@@ -64,7 +64,7 @@ public class FhirLoggingInterceptor implements Interceptor {
     headerMap.keySet().forEach(key -> headerMap.get(key).forEach(value -> headerList.add(key + ":" + value)));
 
     if (logger != null) {
-      logger.logResponse(Integer.toString(response.code()), headerList, bodyBytes);
+      logger.logResponse(Integer.toString(response.code()), headerList, bodyBytes, 0);
     }
 
     // Reading byte[] clears body. Need to recreate.

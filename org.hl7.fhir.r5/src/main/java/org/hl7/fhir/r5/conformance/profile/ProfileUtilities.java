@@ -2923,7 +2923,7 @@ public class ProfileUtilities {
 
   private ElementDefinitionBindingAdditionalComponent getMatchingAdditionalBinding(ElementDefinitionBindingComponent nb,ElementDefinitionBindingAdditionalComponent ab) {
     for (ElementDefinitionBindingAdditionalComponent t : nb.getAdditional()) {
-      if (t.getValueSet() != null && t.getValueSet().equals(ab.getValueSet()) && t.getPurpose() == ab.getPurpose()) {
+      if (t.getValueSet() != null && t.getValueSet().equals(ab.getValueSet()) && t.getPurpose() == ab.getPurpose() && !ab.hasUsage()) {
         return t;
       }
     }
@@ -4579,6 +4579,7 @@ public class ProfileUtilities {
   public void setMessages(List<ValidationMessage> messages) {
     if (messages != null) {
       this.messages = messages;
+      wantThrowExceptions = false;
     }
   }
 

@@ -529,14 +529,18 @@ public class ValidationService {
   }
 
   @Nonnull
-  protected ValidationEngine buildValidationEngine( CliContext cliContext, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
+  protected ValidationEngine buildValidationEngine(CliContext cliContext, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
     System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
     ValidationEngine validationEngine = getValidationEngineBuilder().withTHO(false).withVersion(cliContext.getSv()).withTimeTracker(timeTracker).withUserAgent(Common.getValidatorUserAgent()).fromSource(definitions);
 
     System.out.println(" - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
 
     loadIgsAndExtensions(validationEngine, cliContext, timeTracker);
-    if (validationEngine.getContext().getTxCache() == null) {
+    if (cliContext.getTxCache() != null) {
+      TerminologyCache cache = new TerminologyCache(new Object(), cliContext.getTxCache());
+      validationEngine.getContext().initTxCache(cache);
+    }
+    if (validationEngine.getContext().getTxCache() == null || validationEngine.getContext().getTxCache().getFolder() == null) {
       System.out.println("  No Terminology Cache");      
     } else {
       System.out.println("  Terminology Cache at "+validationEngine.getContext().getTxCache().getFolder());

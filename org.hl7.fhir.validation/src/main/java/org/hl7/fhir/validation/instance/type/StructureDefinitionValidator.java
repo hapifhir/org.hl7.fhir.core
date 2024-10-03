@@ -191,7 +191,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      //e.printStackTrace();
       rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
       ok = false;
     }
@@ -525,7 +525,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("can-bind") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Binding", typeCodes) && ok;
       }
       Element binding = element.getNamedChild("binding", false);
-      ok = validateBinding(errors, binding, stack.push(binding, -1, null, null), typeCodes, snapshot, path, experimental) && ok;
+      ok = validateBinding(errors, binding, stack.push(binding, -1, null, null), typeCodes, snapshot, path, experimental, sd) && ok;
     } else {
       // this is a good idea but there's plenty of cases where the rule isn't met; maybe one day it's worth investing the time to exclude these cases and bring this rule back
       //      String bt = boundType(typeCodes);
@@ -989,7 +989,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     return null;
   }
 
-  private boolean validateBinding(List<ValidationMessage> errors, Element binding, NodeStack stack, Set<String> typeCodes, boolean snapshot, String path, boolean experimental) {
+  private boolean validateBinding(List<ValidationMessage> errors, Element binding, NodeStack stack, Set<String> typeCodes, boolean snapshot, String path, boolean experimental, StructureDefinition profile) {
     boolean ok = true;
     if (bindableType(typeCodes) == null) {
       ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot, I18nConstants.SD_ED_BIND_NO_BINDABLE, path, typeCodes.toString()) && ok;
@@ -1019,9 +1019,122 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
     } 
+    if (binding.hasChildren("additional")) {
+      int i = 0;
+      for (Element ab : binding.getChildren("additional")) {
+         ok = validateAdditionalBinding(errors, ab, stack.push(ab, i, null, null), snapshot, path, experimental) && ok;
+         i++;
+      }
+    }
+    if (binding.hasExtension(ToolingExtensions.EXT_BINDING_ADDITIONAL)) {
+      int i = 0;
+      for (Element ab : binding.getChildren("extension")) {
+        String url = ab.getNamedChildValue("url");
+        if (ToolingExtensions.EXT_BINDING_ADDITIONAL.equals(url)) {
+           ok = validateAdditionalBindingExtension(errors, ab, stack.push(ab, i, null, null), snapshot, path, experimental, profile) && ok;
+        }
+        i++;
+      }      
+    }
+    return ok;
+  }
+  
+  private boolean validateAdditionalBinding(List<ValidationMessage> errors, Element binding, NodeStack stack, boolean snapshot, String path, boolean experimental) {
+    boolean ok = true;
+
+    if (binding.hasChild("valueSet", false)) {
+      Element valueSet = binding.getNamedChild("valueSet", false);
+      String ref = valueSet.hasPrimitiveValue() ? valueSet.primitiveValue() : valueSet.getNamedChildValue("reference", false);
+      if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || ref != null, I18nConstants.SD_ED_SHOULD_BIND_WITH_VS, path)) {
+        Resource vs = context.fetchResource(Resource.class, ref);
+
+        // just because we can't resolve it directly doesn't mean that terminology server can't. Check with it
+
+        if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs != null || serverSupportsValueSet(ref), I18nConstants.SD_ED_BIND_UNKNOWN_VS, path, ref)) {
+          if (vs != null) {
+            if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs instanceof ValueSet, I18nConstants.SD_ED_BIND_NOT_VS, path, ref, vs.fhirType())) {              
+              ValueSet vsr = (ValueSet) vs;
+              warning(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), !vsr.getExperimental() || experimental, I18nConstants.SD_ED_EXPERIMENTAL_BINDING, path, ref);
+            } else {
+              ok = false;
+            }
+          }
+        }
+      }
+    } 
+    if (binding.hasChildren("usage")) {
+      for (Element usage : binding.getChildren("usage")) {
+        warning(errors, "2024-09-20", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, "test");        
+      }
+    }
     return ok;
   }
 
+  private boolean validateAdditionalBindingExtension(List<ValidationMessage> errors, Element binding, NodeStack stack, boolean snapshot, String path, boolean experimental, StructureDefinition profile) {
+    boolean ok = true;
+
+    if (binding.hasExtension("valueSet")) {
+      Element valueSet = binding.getExtension("valueSet");
+      Element vv = valueSet.getNamedChild("value");
+      String ref = vv.hasPrimitiveValue() ? vv.primitiveValue() : vv.getNamedChildValue("reference", false);
+      if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || ref != null, I18nConstants.SD_ED_SHOULD_BIND_WITH_VS, path)) {
+        Resource vs = context.fetchResource(Resource.class, ref);
+
+        // just because we can't resolve it directly doesn't mean that terminology server can't. Check with it
+
+        if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs != null || serverSupportsValueSet(ref), I18nConstants.SD_ED_BIND_UNKNOWN_VS, path, ref)) {
+          if (vs != null) {
+            if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs instanceof ValueSet, I18nConstants.SD_ED_BIND_NOT_VS, path, ref, vs.fhirType())) {              
+              ValueSet vsr = (ValueSet) vs;
+              warning(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), !vsr.getExperimental() || experimental, I18nConstants.SD_ED_EXPERIMENTAL_BINDING, path, ref);
+            } else {
+              ok = false;
+            }
+          }
+        }
+      }
+    } 
+    if (binding.hasExtension("usage")) {
+      int i = 0;
+      for (Element usage : binding.getChildren("extension")) {
+        String url = usage.getNamedChildValue("url");
+        if ("usage".equals(url)) {
+          Element uv = usage.getNamedChild("value");  
+          ok = validateAdditionalBindingUsage(errors, uv, stack.push(uv, -1, null, null), path, profile) && ok;
+        }
+        i++;
+      }      
+    }
+    return ok;
+  }
+
+  private boolean validateAdditionalBindingUsage(List<ValidationMessage> errors, Element usage, NodeStack stack, String path, StructureDefinition profile) {
+    boolean ok = true;
+    Element cc = usage.getNamedChild("code");
+    if (cc != null) {
+      String system = cc.getNamedChildValue("system");
+      String code = cc.getNamedChildValue("code");
+      if (system != null && system.equals(profile.getUrl())) {
+        ElementDefinition ed = profile.getDifferential().getElementByPath(code);
+        if (ed == null) {
+          ed = profile.getSnapshot().getElementByPath(code);          
+        }
+        if (ed == null) {
+          ok = false;
+          rule(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_ELEMENT, system, code);
+        } else {
+          if (usage.hasChild("value")) {
+            String t = usage.getNamedChild("value").fhirType();
+            ok = rule(errors, "2024-09-20", IssueType.BUSINESSRULE, stack.getLiteralPath(), "CodeableConcept".equals(t), I18nConstants.SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_TYPE, t, "CodeableConcept") && ok;
+          }
+        }
+      } else {
+        warning(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_ED_ADDITIONAL_BINDING_USAGE_UNKNOWN, system, code);
+      }
+    }
+    return ok;
+  }
+  
   private Set<String> getListofBindableTypes(Set<String> types) {
     Set<String> res = new HashSet<>();
     for (String s : types) {
