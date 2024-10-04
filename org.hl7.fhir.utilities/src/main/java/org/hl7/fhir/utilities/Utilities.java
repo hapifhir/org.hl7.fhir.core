@@ -67,7 +67,6 @@ import javax.annotation.Nullable;
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FileNotifier.FileNotifier2;
-import org.hl7.fhir.utilities.Utilities.CaseInsensitiveSorter;
 import org.hl7.fhir.utilities.filesystem.CSFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -449,6 +448,28 @@ public class Utilities {
     return s.toString();
   }
 
+  /**
+   * Delete a directory atomically by first renaming it to a temp directory in
+   * its parent, and then deleting its contents.
+   *
+   * @param path The directory to delete.
+   */
+  public static void atomicDeleteDirectory(String path) throws IOException {
+
+      File directory = ManagedFileAccess.file(path);
+
+      String tempDirectoryPath = generateUniqueRandomUUIDPath(directory.getParent());
+      File tempDirectory = ManagedFileAccess.file(tempDirectoryPath);
+     if (!directory.renameTo(tempDirectory)) {
+       throw new IOException("Unable to rename directory " + path + " to " + tempDirectory +" for atomic delete");
+     }
+     clearDirectory(tempDirectory.getAbsolutePath());
+     if (!tempDirectory.delete()) {
+       throw new IOException("Unable to delete temp directory " + tempDirectory + " when atomically deleting " + path);
+     }
+  }
+
+
   public static void clearDirectory(String folder, String... exemptions) throws IOException {
     File dir = ManagedFileAccess.file(folder);
     if (dir.exists()) {
@@ -468,6 +489,21 @@ public class Utilities {
         }
       }
     }
+  }
+
+  public static String generateUniqueRandomUUIDPath(String path) throws IOException {
+    String randomUUIDPath = null;
+
+    while (randomUUIDPath == null) {
+      final String uuid = UUID.randomUUID().toString().toLowerCase();
+      final String pathCandidate = Utilities.path(path, uuid);
+
+      if (!ManagedFileAccess.file(pathCandidate).exists()) {
+        randomUUIDPath = pathCandidate;
+      }
+    }
+
+    return randomUUIDPath;
   }
 
   public static File createDirectory(String path) throws IOException {
