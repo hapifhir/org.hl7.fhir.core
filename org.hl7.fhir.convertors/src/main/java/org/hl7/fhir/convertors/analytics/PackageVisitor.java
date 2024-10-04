@@ -92,6 +92,13 @@ public class PackageVisitor {
     this.resourceTypes = resourceTypes;
   }
 
+  public void setResourceTypes(String... resourceTypes) {
+    this.resourceTypes = new ArrayList<String>();
+    for (String s : resourceTypes) {
+      this.resourceTypes.add(s);
+    }
+  }
+
   public List<String> getVersions() {
     return versions;
   }
