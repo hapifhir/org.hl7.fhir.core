@@ -50,10 +50,7 @@ public class FilesystemPackageManagerTests {
     new PackageServer(DUMMY_URL_4)
   );
 
-  @Test
-  public void testCheckCurrentPackage() {
 
-  }
 
   @Test
   public void testDefaultServers() throws IOException {
