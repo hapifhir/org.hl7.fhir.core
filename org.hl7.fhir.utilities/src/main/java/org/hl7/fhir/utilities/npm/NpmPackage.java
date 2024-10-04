@@ -640,11 +640,11 @@ public class NpmPackage {
   }
 
 
-  public void checkIndexed(String path) throws IOException {
+  public void checkIndexed(String desc) throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
       JsonObject index = folder.index();
       if (index == null || index.forceArray("files").size() == 0) {
-        indexFolder(path, folder);
+        indexFolder(desc, folder);
       }  
     }
   }
@@ -656,18 +656,18 @@ public class NpmPackage {
    * See <a href="https://hl7.org/fhir/packages.html#2.1.10.4">the FHIR specification</a> for details on .index.json
    * format and usage.
    *
-   * @param path
+   * @param desc
    * @param folder
    * @throws FileNotFoundException
    * @throws IOException
    */
-  public void indexFolder(String path, NpmPackageFolder folder) throws FileNotFoundException, IOException {
+  public void indexFolder(String desc, NpmPackageFolder folder) throws FileNotFoundException, IOException {
     List<String> remove = new ArrayList<>();
     NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
     indexer.start(folder.folder != null ? Utilities.path(folder.folder.getAbsolutePath(), ".index.db") : null);
-    for (String file : folder.listFiles()) {
-      if (!indexer.seeFile(file, folder.fetchFile(file))) {
-        remove.add(file);
+    for (String n : folder.listFiles()) {
+      if (!indexer.seeFile(n, folder.fetchFile(n))) {
+        remove.add(n);
       }
     } 
     for (String n : remove) {
@@ -684,7 +684,7 @@ public class NpmPackage {
       }
     } catch (Exception e) {
       TextFile.stringToFile(json, Utilities.path("[tmp]", ".index.json"));
-      throw new IOException("Error parsing "+(path == null ? "" : path+"#")+"package/"+folder.folderName+"/.index.json: "+e.getMessage(), e);
+      throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/"+folder.folderName+"/.index.json: "+e.getMessage(), e);
     }
   }
 

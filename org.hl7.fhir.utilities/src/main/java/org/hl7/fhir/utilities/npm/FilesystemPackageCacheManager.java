@@ -99,14 +99,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private final File cacheFolder;
 
   private final List<NpmPackage> temporaryPackages = new ArrayList<>();
-  private long ciQueryTimeStamp = 0;
-  private final long ciQueryInterval;
-  private static final long DEFAULT_CI_QUERY_INTERVAL = 1000 * 60 * 60 * 24;
-
-  /** key = packageId
-   * value = url of built package on https://build.fhir.org/ig/ */
-  private final Map<String, String> ciPackageList = new HashMap<>();
-  private JsonArray ciBuildInfo;
+  private boolean buildLoaded = false;
+  private final Map<String, String> ciList = new HashMap<>();
+  private JsonArray buildInfo;
   private boolean suppressErrors;
 
   @Setter
@@ -124,23 +119,17 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     @With
     @Getter
-    private final long ciQueryInterval;
-
-    @With
-    @Getter
     private final FilesystemPackageCacheManagerLocks.LockParameters lockParameters;
 
     public Builder() throws IOException {
       this.cacheFolder = getUserCacheFolder();
       this.packageServers = getPackageServersFromFHIRSettings();
       this.lockParameters = null;
-      this.ciQueryInterval = FilesystemPackageCacheManager.DEFAULT_CI_QUERY_INTERVAL;
     }
 
-    private Builder(File cacheFolder, List<PackageServer> packageServers, long ciQueryInterval, FilesystemPackageCacheManagerLocks.LockParameters lockParameters) {
+    private Builder(File cacheFolder, List<PackageServer> packageServers, FilesystemPackageCacheManagerLocks.LockParameters lockParameters) {
       this.cacheFolder = cacheFolder;
       this.packageServers = packageServers;
-      this.ciQueryInterval = ciQueryInterval;
       this.lockParameters = lockParameters;
     }
 
@@ -174,7 +163,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       if (!cacheFolder.exists()) {
         throw new FHIRException("The folder '" + cacheFolder + "' could not be found");
       }
-      return new Builder(cacheFolder, this.packageServers, this.ciQueryInterval, this.lockParameters);
+      return new Builder(cacheFolder, this.packageServers, this.lockParameters);
     }
 
     public Builder withSystemCacheFolder() throws IOException {
@@ -184,11 +173,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       } else {
         systemCacheFolder = ManagedFileAccess.file(Utilities.path("/var", "lib", ".fhir", "packages"));
       }
-      return new Builder(systemCacheFolder,  this.packageServers, this.ciQueryInterval, this.lockParameters);
+      return new Builder(systemCacheFolder, this.packageServers, this.lockParameters);
     }
 
     public Builder withTestingCacheFolder() throws IOException {
-      return new Builder(ManagedFileAccess.file(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers, this.ciQueryInterval, this.lockParameters);
+      return new Builder(ManagedFileAccess.file(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers, this.lockParameters);
     }
 
     public FilesystemPackageCacheManager build() throws IOException {
@@ -202,14 +191,13 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           throw e;
         }
       }
-      return new FilesystemPackageCacheManager(cacheFolder, packageServers, ciQueryInterval, locks, lockParameters);
+      return new FilesystemPackageCacheManager(cacheFolder, packageServers, locks, lockParameters);
     }
   }
 
-  private FilesystemPackageCacheManager(@Nonnull File cacheFolder, @Nonnull List<PackageServer> packageServers, long ciQueryInterval,@Nonnull FilesystemPackageCacheManagerLocks locks, @Nullable FilesystemPackageCacheManagerLocks.LockParameters lockParameters) throws IOException {
+  private FilesystemPackageCacheManager(@Nonnull File cacheFolder, @Nonnull List<PackageServer> packageServers, @Nonnull FilesystemPackageCacheManagerLocks locks, @Nullable FilesystemPackageCacheManagerLocks.LockParameters lockParameters) throws IOException {
     super(packageServers);
     this.cacheFolder = cacheFolder;
-    this.ciQueryInterval = ciQueryInterval;
     this.locks = locks;
     this.lockParameters = lockParameters;
     prepareCacheFolder();
@@ -292,6 +280,27 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
   }
 
+
+  private void initPackageServers() {
+    myPackageServers.addAll(getConfiguredServers());
+    if (!isIgnoreDefaultPackageServers()) {
+      myPackageServers.addAll(getDefaultServers());
+    }
+  }
+
+  protected boolean isIgnoreDefaultPackageServers() {
+    return FhirSettings.isIgnoreDefaultPackageServers();
+  }
+
+  @Nonnull
+  protected List<PackageServer> getDefaultServers() {
+    return PackageServer.defaultServers();
+  }
+
+  protected List<PackageServer> getConfiguredServers() {
+    return PackageServer.getConfiguredServers();
+  }
+
   public String getFolder() {
     return cacheFolder.getAbsolutePath();
   }
@@ -303,7 +312,16 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private void clearCache() throws IOException {
     for (File f : Objects.requireNonNull(cacheFolder.listFiles())) {
       if (f.isDirectory()) {
-        Utilities.atomicDeleteDirectory(f.getAbsolutePath());
+        Utilities.clearDirectory(f.getAbsolutePath());
+        try {
+          FileUtils.deleteDirectory(f);
+        } catch (Exception e1) {
+          try {
+            FileUtils.deleteDirectory(f);
+          } catch (Exception e2) {
+            // just give up
+          }
+        }
 
       } else if (!f.getName().equals("packages.ini")) {
         FileUtils.forceDelete(f);
@@ -431,10 +449,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     locks.getPackageLock(id + "#" + version).doWriteWithLock(() -> {
 
       String f = Utilities.path(cacheFolder, id + "#" + version);
-        File ff = ManagedFileAccess.file(f);
-        if (ff.exists()) {
-          Utilities.atomicDeleteDirectory(f);
-        }
+      File ff = ManagedFileAccess.file(f);
+      if (ff.exists()) {
+        Utilities.clearDirectory(f);
+        ff.delete();
+      }
+
       return null;
     }, lockParameters);
   }
@@ -541,42 +561,25 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public NpmPackage addPackageToCache(final String id, final String version, final InputStream packageTgzInputStream, final String sourceDesc) throws IOException {
     checkValidVersionString(version, id);
     return locks.getPackageLock(id + "#" + version).doWriteWithLock(() -> {
+      String uuid = UUID.randomUUID().toString().toLowerCase();
+      String tempDir = Utilities.path(cacheFolder, uuid);
 
-      String tempDir = Utilities.generateUniqueRandomUUIDPath(cacheFolder.getAbsolutePath());
-
-      NpmPackage extractedNpm = NpmPackage.extractFromTgz(packageTgzInputStream, sourceDesc, tempDir, minimalMemory);
+      NpmPackage npm = NpmPackage.extractFromTgz(packageTgzInputStream, sourceDesc, tempDir, minimalMemory);
 
       log("");
       log("Installing " + id + "#" + version);
 
-      if ((extractedNpm.name() != null && id != null && !id.equalsIgnoreCase(extractedNpm.name()))) {
+      if ((npm.name() != null && id != null && !id.equalsIgnoreCase(npm.name()))) {
         if (!suppressErrors && (!id.equals("hl7.fhir.r5.core") && !id.equals("hl7.fhir.us.immds"))) {// temporary work around
-          throw new IOException("Attempt to import a mis-identified package. Expected " + id + ", got " + extractedNpm.name());
+          throw new IOException("Attempt to import a mis-identified package. Expected " + id + ", got " + npm.name());
         }
       }
+
 
       NpmPackage npmPackage = null;
       String packageRoot = Utilities.path(cacheFolder, id + "#" + version);
       try {
-        if (!id.equals(extractedNpm.getNpm().asString("name")) || !version.equals(extractedNpm.getNpm().asString("version"))) {
-          if (!id.equals(extractedNpm.getNpm().asString("name"))) {
-            extractedNpm.getNpm().add("original-name", extractedNpm.getNpm().asString("name"));
-            extractedNpm.getNpm().remove("name");
-            extractedNpm.getNpm().add("name", id);
-          }
-          if (!version.equals(extractedNpm.getNpm().asString("version"))) {
-            extractedNpm.getNpm().add("original-version", extractedNpm.getNpm().asString("version"));
-            extractedNpm.getNpm().remove("version");
-            extractedNpm.getNpm().add("version", version);
-          }
-          TextFile.stringToFile(JsonParser.compose(extractedNpm.getNpm(), true), Utilities.path(tempDir, "package", "package.json"));
-        }
-
-        final NpmPackage tempPackage = loadPackageInfo(tempDir);
-        if (tempPackage != null && !tempPackage.isIndexed()) {
-          tempPackage.checkIndexed(packageRoot);
-        }
-
+        // ok, now we have a lock on it... check if something created it while we were waiting
         if (!ManagedFileAccess.file(packageRoot).exists() || Utilities.existsInList(version, "current", "dev")) {
           Utilities.createDirectory(packageRoot);
           try {
@@ -584,18 +587,30 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           } catch (Throwable t) {
             log("Unable to clear directory: " + packageRoot + ": " + t.getMessage() + " - this may cause problems later");
           }
-
           Utilities.renameDirectory(tempDir, packageRoot);
-
-          npmPackage = loadPackageInfo(packageRoot);
 
           log(" done.");
         } else {
           Utilities.clearDirectory(tempDir);
           ManagedFileAccess.file(tempDir).delete();
         }
+        if (!id.equals(npm.getNpm().asString("name")) || !version.equals(npm.getNpm().asString("version"))) {
+          if (!id.equals(npm.getNpm().asString("name"))) {
+            npm.getNpm().add("original-name", npm.getNpm().asString("name"));
+            npm.getNpm().remove("name");
+            npm.getNpm().add("name", id);
+          }
+          if (!version.equals(npm.getNpm().asString("version"))) {
+            npm.getNpm().add("original-version", npm.getNpm().asString("version"));
+            npm.getNpm().remove("version");
+            npm.getNpm().add("version", version);
+          }
+          TextFile.stringToFile(JsonParser.compose(npm.getNpm(), true), Utilities.path(cacheFolder, id + "#" + version, "package", "package.json"));
+        }
         npmPackage = loadPackageInfo(packageRoot);
-
+        if (npmPackage != null && !npmPackage.isIndexed()) {
+          npmPackage.checkIndexed(packageRoot);
+        }
       } catch (Exception e) {
         try {
           // don't leave a half extracted package behind
@@ -726,31 +741,31 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private InputStreamWithSrc loadFromCIBuild(String id, String branch) throws IOException {
-    checkCIServerQueried();
-    if (ciPackageList.containsKey(id)) {
+    checkBuildLoaded();
+    if (ciList.containsKey(id)) {
       if (branch == null) {
         InputStream stream;
         try {
-          stream = fetchFromUrlSpecific(Utilities.pathURL(ciPackageList.get(id), "package.tgz"), false);
+          stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), false);
         } catch (Exception e) {
-          stream = fetchFromUrlSpecific(Utilities.pathURL(ciPackageList.get(id), "branches", "main", "package.tgz"), false);
+          stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "branches", "main", "package.tgz"), false);
         }
-        return new InputStreamWithSrc(stream, Utilities.pathURL(ciPackageList.get(id), "package.tgz"), "current");
+        return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "package.tgz"), "current");
       } else {
-        InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciPackageList.get(id), "branches", branch, "package.tgz"), false);
-        return new InputStreamWithSrc(stream, Utilities.pathURL(ciPackageList.get(id), "branches", branch, "package.tgz"), "current$" + branch);
+        InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "branches", branch, "package.tgz"), false);
+        return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "branches", branch, "package.tgz"), "current$" + branch);
       }
     } else if (id.startsWith("hl7.fhir.r6")) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("https://build.fhir.org", id + ".tgz"), false);
       return new InputStreamWithSrc(stream, Utilities.pathURL("https://build.fhir.org", id + ".tgz"), "current");
     } else {
-      throw new FHIRException("The package '" + id + "' has no entry on the current build server (" + ciPackageList + ")");
+      throw new FHIRException("The package '" + id + "' has no entry on the current build server (" + ciList + ")");
     }
   }
 
   private String getPackageUrlFromBuildList(String packageId) throws IOException {
-    checkCIServerQueried();
-    for (JsonObject o : ciBuildInfo.asJsonObjects()) {
+    checkBuildLoaded();
+    for (JsonObject o : buildInfo.asJsonObjects()) {
       if (packageId.equals(o.asString("package-id"))) {
         return o.asString("url");
       }
@@ -795,15 +810,15 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (canonical == null) {
       return null;
     }
-    checkCIServerQueried();
-    if (ciBuildInfo != null) {
-      for (JsonElement n : ciBuildInfo) {
+    checkBuildLoaded();
+    if (buildInfo != null) {
+      for (JsonElement n : buildInfo) {
         JsonObject o = (JsonObject) n;
         if (canonical.equals(o.asString("url"))) {
           return o.asString("package-id");
         }
       }
-      for (JsonElement n : ciBuildInfo) {
+      for (JsonElement n : buildInfo) {
         JsonObject o = (JsonObject) n;
         if (o.asString("url").startsWith(canonical + "/ImplementationGuide/")) {
           return o.asString("package-id");
@@ -813,39 +828,32 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     return null;
   }
 
-  /**
-   * Checks https://
-   *
-   * @param id
-   * @param npmPackage
-   * @return
-   */
-  private NpmPackage checkCurrency(String id, NpmPackage npmPackage) {
-    checkCIServerQueried();
+  private NpmPackage checkCurrency(String id, NpmPackage p) {
+    checkBuildLoaded();
     // special case: current versions roll over, and we have to check their currency
     try {
-      String packageManifestUrl = ciPackageList.get(id);
-      JsonObject packageManifestJson = JsonParser.parseObjectFromUrl(Utilities.pathURL(packageManifestUrl, "package.manifest.json"));
-      String currentDate = packageManifestJson.asString("date");
-      String packageDate = npmPackage.date();
-      if (!currentDate.equals(packageDate)) {
+      String url = ciList.get(id);
+      JsonObject json = JsonParser.parseObjectFromUrl(Utilities.pathURL(url, "package.manifest.json"));
+      String currDate = json.asString("date");
+      String packDate = p.date();
+      if (!currDate.equals(packDate)) {
         return null; // nup, we need a new copy
       }
     } catch (Exception e) {
       log("Unable to check package currency: " + id + ": " + id);
     }
-    return npmPackage;
+    return p;
   }
 
-  private void checkCIServerQueried() {
-    if (System.currentTimeMillis() - ciQueryTimeStamp > ciQueryInterval) {
+  private void checkBuildLoaded() {
+    if (!buildLoaded) {
       try {
-        queryCIServer();
+        loadFromBuildServer();
       } catch (Exception e) {
         try {
           // we always pause a second and try again - the most common reason to be here is that the file was being changed on the server
           Thread.sleep(1000);
-          queryCIServer();
+          loadFromBuildServer();
         } catch (Exception e2) {
           log("Error connecting to build server - running without build (" + e2.getMessage() + ")");
         }
@@ -853,31 +861,31 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
   }
 
-  private void queryCIServer() throws IOException {
+  private void loadFromBuildServer() throws IOException {
 
     HTTPResult res = ManagedWebAccess.get("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
     res.checkThrowException();
 
-    ciBuildInfo = (JsonArray) JsonParser.parse(TextFile.bytesToString(res.getContent()));
+    buildInfo = (JsonArray) JsonParser.parse(TextFile.bytesToString(res.getContent()));
 
     List<BuildRecord> builds = new ArrayList<>();
 
-    for (JsonElement n : ciBuildInfo) {
-      JsonObject j = (JsonObject) n;
-      if (j.has("url") && j.has("package-id") && j.asString("package-id").contains(".")) {
-        String packageUrl = j.asString("url");
-        if (packageUrl.contains("/ImplementationGuide/"))
-          packageUrl = packageUrl.substring(0, packageUrl.indexOf("/ImplementationGuide/"));
-        builds.add(new BuildRecord(packageUrl, j.asString("package-id"), getRepo(j.asString("repo")), readDate(j.asString("date"))));
+    for (JsonElement n : buildInfo) {
+      JsonObject o = (JsonObject) n;
+      if (o.has("url") && o.has("package-id") && o.asString("package-id").contains(".")) {
+        String u = o.asString("url");
+        if (u.contains("/ImplementationGuide/"))
+          u = u.substring(0, u.indexOf("/ImplementationGuide/"));
+        builds.add(new BuildRecord(u, o.asString("package-id"), getRepo(o.asString("repo")), readDate(o.asString("date"))));
       }
     }
     Collections.sort(builds, new BuildRecordSorter());
-    for (BuildRecord build : builds) {
-      if (!ciPackageList.containsKey(build.getPackageId())) {
-        ciPackageList.put(build.getPackageId(), "https://build.fhir.org/ig/" + build.getRepo());
+    for (BuildRecord bld : builds) {
+      if (!ciList.containsKey(bld.getPackageId())) {
+        ciList.put(bld.getPackageId(), "https://build.fhir.org/ig/" + bld.getRepo());
       }
     }
-    ciQueryTimeStamp = System.currentTimeMillis();
+    buildLoaded = true;
   }
 
   private String getRepo(String path) {
