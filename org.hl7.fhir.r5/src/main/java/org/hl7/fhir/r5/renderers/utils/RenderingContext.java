@@ -72,6 +72,28 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  */
 public class RenderingContext extends RenderingI18nContext {
 
+  public static class RenderingContextLangs {
+    
+    private RenderingContext defLangRC;
+    private Map<String, RenderingContext> langs = new HashMap<>();
+
+    public RenderingContextLangs(RenderingContext defLangRC) {
+      this.defLangRC = defLangRC;
+    }
+
+    public void seeLang(String lang, RenderingContext rc) {
+      this.langs.put(lang, rc);
+    }
+    
+    public RenderingContext get(String lang) {
+      if (lang == null || !langs.containsKey(lang)) {
+        return defLangRC;
+      } else {
+        return langs.get(lang);
+      }
+    }
+  }
+
   // provides liquid templates, if they are available for the content
   public interface ILiquidTemplateProvider {
     String findTemplate(RenderingContext rcontext, DomainResource r);
