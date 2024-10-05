@@ -11,6 +11,8 @@ though there are other reasons.
 
 Warning: Implementers use this functionality to hide known issues with their resources. 
 
+use the command line parameter ```-rules {filename}``` to make a set of rules apply.
+
 There are two ways to turn off validation rules:
 
 * Suppressing output messages 
@@ -22,8 +24,7 @@ This approach is conceptually simple: the entire validation is executed, and the
 messages are filtered from the output based on their messageId. 
 
 The messageId is not usually shown; use the command line parameter ```-show-message-ids``` to show 
-the messageIds in the output. use the command line parameter ```-rules {filename}``` to make a set of 
-rules apply.
+the messageIds in the output. 
 
 Some notes on this approach:
 
