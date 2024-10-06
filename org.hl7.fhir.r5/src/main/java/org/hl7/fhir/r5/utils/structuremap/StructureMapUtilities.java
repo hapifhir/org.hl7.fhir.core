@@ -1087,7 +1087,7 @@ public class StructureMapUtilities {
     if (lexer.hasToken("log")) {
       lexer.take();
       ExpressionNode node = fpe.parse(lexer);
-      source.setUserData(MAP_WHERE_CHECK, node);
+      source.setUserData(MAP_WHERE_LOG, node);
       source.setLogMessage(node.toString());
     }
   }
@@ -1629,17 +1629,20 @@ public class StructureMapUtilities {
       }
       items.removeAll(remove);
     }
-
+    
     if (src.hasCondition()) {
       ExpressionNode expr = (ExpressionNode) src.getUserData(MAP_WHERE_EXPRESSION);
       if (expr == null) {
         expr = fpe.parse(src.getCondition());
-        //        fpe.check(context.appInfo, ??, ??, expr)
         src.setUserData(MAP_WHERE_EXPRESSION, expr);
       }
       List<Base> remove = new ArrayList<Base>();
       for (Base item : items) {
-        if (!fpe.evaluateToBoolean(vars, null, null, item, expr)) {
+        Variables varsForSource = vars.copy();
+        if (src.hasVariable()) {
+            varsForSource.add(VariableMode.INPUT, src.getVariable(), item);
+        }
+        if (!fpe.evaluateToBoolean(varsForSource, null, null, item, expr)) {
           log(indent + "  condition [" + src.getCondition() + "] for " + item.toString() + " : false");
           remove.add(item);
         } else
@@ -1652,12 +1655,14 @@ public class StructureMapUtilities {
       ExpressionNode expr = (ExpressionNode) src.getUserData(MAP_WHERE_CHECK);
       if (expr == null) {
         expr = fpe.parse(src.getCheck());
-        //        fpe.check(context.appInfo, ??, ??, expr)
         src.setUserData(MAP_WHERE_CHECK, expr);
       }
-      List<Base> remove = new ArrayList<Base>();
       for (Base item : items) {
-        if (!fpe.evaluateToBoolean(vars, null, null, item, expr))
+        Variables varsForSource = vars.copy();
+        if (src.hasVariable()) {
+            varsForSource.add(VariableMode.INPUT, src.getVariable(), item);
+        }
+        if (!fpe.evaluateToBoolean(varsForSource, null, null, item, expr))
           throw new FHIRException("Rule \"" + ruleId + "\": Check condition failed");
       }
     }
@@ -1666,16 +1671,20 @@ public class StructureMapUtilities {
       ExpressionNode expr = (ExpressionNode) src.getUserData(MAP_WHERE_LOG);
       if (expr == null) {
         expr = fpe.parse(src.getLogMessage());
-        //        fpe.check(context.appInfo, ??, ??, expr)
         src.setUserData(MAP_WHERE_LOG, expr);
       }
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-      for (Base item : items)
-        b.appendIfNotNull(fpe.evaluateToString(vars, null, null, item, expr));
+      for (Base item : items) {
+        Variables varsForSource = vars.copy();
+        if (src.hasVariable()) {
+            varsForSource.add(VariableMode.INPUT, src.getVariable(), item);
+        }
+        b.appendIfNotNull(fpe.evaluateToString(varsForSource, null, null, item, expr));
+      }
       if (b.length() > 0)
         services.log(b.toString());
     }
-
+    
 
     if (src.hasListMode() && !items.isEmpty()) {
       switch (src.getListMode()) {
@@ -1753,7 +1762,7 @@ public class StructureMapUtilities {
     if (tgt.hasVariable() && v != null)
       vars.add(VariableMode.OUTPUT, tgt.getVariable(), v);
   }
-
+  
   private Base runTransform(String rulePath, TransformContext context, StructureMap map, StructureMapGroupComponent group, StructureMapGroupRuleTargetComponent tgt, Variables vars, Base dest, String element, String srcVar, boolean root) throws FHIRException {
     try {
       switch (tgt.getTransform()) {
@@ -2520,7 +2529,6 @@ public class StructureMapUtilities {
         ExpressionNode expr = (ExpressionNode) tgt.getUserData(MAP_EXPRESSION);
         if (expr == null) {
           expr = fpe.parse(getParamString(vars, tgt.getParameter().get(tgt.getParameter().size() - 1)));
-          tgt.setUserData(MAP_WHERE_EXPRESSION, expr);
         }
         return fpe.check(vars, null, expr);
       case TRANSLATE:
