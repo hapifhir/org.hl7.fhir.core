@@ -201,6 +201,7 @@ import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.codesystem.CodingsObserver;
 import org.hl7.fhir.validation.instance.InstanceValidator.BindingContext;
+import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.type.BundleValidator;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
 import org.hl7.fhir.validation.instance.type.ConceptMapValidator;
@@ -7072,7 +7073,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   context.formatMessage(I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_,
                       profile == null ? "" : "defined in the profile " + profile.getVersionedUrl()),
                   context.formatMessage(I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_, profile == null ? "" : context.formatMessage(I18nConstants.DEFINED_IN_THE_PROFILE) + " "+profile.getVersionedUrl()) + errorSummaryForSlicingAsHtml(ei.sliceInfo),
-                  errorSummaryForSlicingAsText(ei.sliceInfo), ei.sliceInfo);
+                  errorSummaryForSlicingAsText(ei.sliceInfo), ei.sliceInfo, I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_);
             }
           } else if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.CLOSED)) {
             bh.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTSLICE, (profile == null ? "" : " defined in the profile " + profile.getVersionedUrl()), errorSummaryForSlicing(ei.sliceInfo)));
