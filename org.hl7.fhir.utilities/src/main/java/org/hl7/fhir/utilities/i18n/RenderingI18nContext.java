@@ -919,7 +919,20 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_ATT_DATA = "DATA_REND_ATT_DATA";
   public static final String GENERAL_DATA_DISPLAY_PROPERTY = "GENERAL_DATA_DISPLAY_PROPERTY";
   public static final String DATA_REND_CURRENCY = "DATA_REND_CURRENCY";
-  
+  public static final String _NA = "_NA";
+  public static final String FMM_TABLE = "FMM_TABLE";
+  public static final String KIND_EXTENSION = "KIND_EXTENSION";
+  public static final String KIND_LOGICAL = "KIND_LOGICAL";
+  public static final String KIND_PROFILE = "KIND_PROFILE";
+  public static final String IP_NONE = "IP_NONE";
+  public static final String IP_NONE_EXT = "IP_NONE_EXT";
+  public static final String IP_INTRO = "IP_INTRO";
+  public static final String MATURITY_PUBLISHER = "MATURITY_PUBLISHER";
+  public static final String MATURITY_STATUS = "MATURITY_STATUS";
+  public static final String MATURITY_MATURITY = "MATURITY_MATURITY";
+  public static final String MATURITY_STDS_STATUS = "MATURITY_STDS_STATUS";
+
+
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
   }
@@ -937,4 +950,5 @@ public class RenderingI18nContext extends I18nBase {
   public String formatPhrasePlural(Integer plural, String theMessage, Object... theMessageArguments) {
     return formatMessagePlural(plural, theMessage, theMessageArguments);
   }
+
 }
