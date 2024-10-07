@@ -20,8 +20,8 @@ jobs:
         uses: aquasecurity/trivy-action@master
         env:
           # Workaround for rate limiting on ghcr. Use these two entries for ghcr related TOOMANYREQUESTS errors.
-          TRVIY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db
-          TRVIY_JAVA_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-java-db
+          TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db
+          TRIVY_JAVA_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-java-db
         with:
           scan-type: 'fs'
           vuln-type: 'library'
