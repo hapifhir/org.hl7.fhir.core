@@ -120,6 +120,9 @@ public class CliContext {
   @JsonProperty("crumbTrails")
   private boolean crumbTrails = false;
   
+  @JsonProperty("showMessageIds")
+  private boolean showMessageIds = false;
+  
   @JsonProperty("forPublication")
   private boolean forPublication = false;
   
@@ -719,6 +722,14 @@ public class CliContext {
     this.crumbTrails = crumbTrails;
   }
 
+  public boolean isShowMessageIds() {
+    return showMessageIds;
+  }
+
+  public void setShowMessageIds(boolean showMessageIds) {
+    this.showMessageIds = showMessageIds;
+  }
+
   public boolean isForPublication() {
     return forPublication;
   }
@@ -827,6 +838,7 @@ public class CliContext {
       Objects.equals(profiles, that.profiles) &&
       Objects.equals(sources, that.sources) &&
       Objects.equals(crumbTrails, that.crumbTrails) &&
+      Objects.equals(showMessageIds, that.showMessageIds) &&
       Objects.equals(forPublication, that.forPublication)&&
       Objects.equals(allowExampleUrls, that.allowExampleUrls) &&
       Objects.equals(showTimes, that.showTimes) &&
@@ -847,7 +859,7 @@ public class CliContext {
   public int hashCode() {
     return Objects.hash(baseEngine, doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching,
             noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
-            targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
+            targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, showMessageIds, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
             watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
   }
 
@@ -892,6 +904,7 @@ public class CliContext {
       ", mode=" + mode +
       ", securityChecks=" + securityChecks +
       ", crumbTrails=" + crumbTrails +
+      ", showMessageIds=" + showMessageIds +
       ", forPublication=" + forPublication +
       ", outputStyle=" + outputStyle +
       ", jurisdiction=" + jurisdiction +

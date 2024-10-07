@@ -518,9 +518,9 @@ public class IgLoader implements IValidationEngineLoader {
       if (pi != null)
         System.out.println("   ... Using version " + pi.version());
     } else
-      pi = getPackageCacheManager().loadPackageFromCacheOnly(id, version);
+      pi = getPackageCacheManager().loadPackage(id, version);
     if (pi == null) {
-      return resolvePackage(id, version, loadInContext);
+      throw new FHIRException("Unable to find package "+src);
     } else
       return loadPackage(pi, loadInContext);
   }
@@ -670,9 +670,9 @@ public class IgLoader implements IValidationEngineLoader {
       if (pi != null)
         System.out.println("   ... Using version " + pi.version());
     } else
-      pi = getPackageCacheManager().loadPackageFromCacheOnly(id, version);
+      pi = getPackageCacheManager().loadPackage(id, version);
     if (pi == null) {
-      return resolvePackageForVersion(id, version);
+      throw new FHIRException("Unable to resolve package "+src);
     } else {
       return pi.fhirVersion();
     }

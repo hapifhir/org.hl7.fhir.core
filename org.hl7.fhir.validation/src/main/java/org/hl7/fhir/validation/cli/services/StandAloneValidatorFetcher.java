@@ -42,7 +42,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.validation.cli.utils.Common;
-import org.hl7.fhir.validation.instance.BasePolicyAdvisorForFullValidation;
+import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 
 import javax.annotation.Nonnull;
 

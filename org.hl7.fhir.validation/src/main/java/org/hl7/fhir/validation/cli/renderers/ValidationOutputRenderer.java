@@ -13,6 +13,7 @@ public abstract class ValidationOutputRenderer {
   protected boolean crumbTrails;
   protected boolean moreThanOne;
   protected PrintStream dst;
+  protected boolean showMessageIds;
 
   public boolean isCrumbTrails() {
     return crumbTrails;
@@ -20,6 +21,14 @@ public abstract class ValidationOutputRenderer {
 
   public void setCrumbTrails(boolean crumbTrails) {
     this.crumbTrails = crumbTrails;
+  }
+
+  public boolean isShowMessageIds() {
+    return showMessageIds;
+  }
+
+  public void setShowMessageIds(boolean showMessageIds) {
+    this.showMessageIds = showMessageIds;
   }
 
   public String getRunDate() {
@@ -56,4 +65,10 @@ public abstract class ValidationOutputRenderer {
   public abstract String getStyleCode();
 
   public abstract void setFolder(File dir);
+  
+
+  protected String renderMessageId(OperationOutcome.OperationOutcomeIssueComponent issue) {
+    return showMessageIds ? " {" +issue.getExtensionString("http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id")+"}" : "";
+  }
+
 }

@@ -428,7 +428,7 @@ msgstr "Het codesysteem is een fragment/voorbeeld maar het aantal concepten ({0}
 # CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO
 #: CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO
 msgid "The code system has no content, but the exceeds the stated total number is 0 concepts - check that this isn''t a complete code system that has no concepts, or update/remove the stated count"
-msgstr ""
+msgstr "Het codesysteem heeft geen inhoud, maar heeft meer dan het opgegeven totaal van 0 concepten - controleer dat dit niet een compleet codesysteem is zonder concepten, of update/verwijder het opgegeven totaal"
 
 # CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED
 #: CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED
@@ -618,7 +618,7 @@ msgstr "Door HL7 gepubliceerde codesystemen MOETEN zich houden aan het Shareable
 # CODESYSTEM_SUPP_NO_DISPLAY
 #: CODESYSTEM_SUPP_NO_DISPLAY
 msgid "This display (''{0}'') differs from that defined by the base code system (''{1}''). Both displays claim to be the ''primary designation'' for the same language (''{2}''), and the correct interpretation of this is undefined"
-msgstr ""
+msgstr "Deze weergave (''{0}'') verschilt van wat in het onderliggende codesysteem (''{1}'') is gedefinieerd. Beide weergaven claimen de ''primaire weergave'' te zijn voor dezelfde taal (''{2}'') en de juiste interpretatie hiervan is niet gedefinieerd"
 
 # CODESYSTEM_THO_CHECK
 #: CODESYSTEM_THO_CHECK
@@ -1668,7 +1668,7 @@ msgstr "De ImplementationGuide is gebaseerd op FHIR-versie {0} maar package {1} 
 # IG_NO_VERSION
 #: IG_NO_VERSION
 msgid "No fhir version was specified for the IG so the version consistency can't be checked"
-msgstr ""
+msgstr "Er is geen versie van FHIR gespecificeerd voor de IG, dus versieconsistentie kan niet worden gecontroleerd"
 
 # ILLEGAL_COMMENT_TYPE
 #: ILLEGAL_COMMENT_TYPE

@@ -71,6 +71,19 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     assertEquals("2023-10-26", fp.evaluateToString(target, "birthDate"));
     assertEquals("2023-09-20T13:19:13.502Z", fp.evaluateToString(target, "deceased"));
   }
+  
+  @Test
+  public void testWhereClause() throws IOException, FHIRException {
+      StructureMapUtilities scu = new StructureMapUtilities(context, this);
+      scu.setDebug(true);
+      String fileMap = TestingUtilities.loadTestResource("r5", "structure-mapping", "whereclause.map");
+      Element source = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r4", "examples", "capabilitystatement-example.json"), FhirFormat.JSON);
+      StructureMap structureMap = scu.parse(fileMap, "whereclause");
+      Element target = Manager.build(context, scu.getTargetType(structureMap));
+      scu.transform(null, source, structureMap, target);
+      FHIRPathEngine fp = new FHIRPathEngine(context);
+      assertEquals("true", fp.evaluateToString(target, "rest.resource.interaction.where(code='create').exists()"));
+  }
 
   private void assertSerializeDeserialize(StructureMap structureMap) {
     Assertions.assertEquals("syntax", structureMap.getName());

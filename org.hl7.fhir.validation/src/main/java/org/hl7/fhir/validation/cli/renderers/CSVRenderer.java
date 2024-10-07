@@ -10,7 +10,7 @@ public class CSVRenderer extends ValidationOutputRenderer {
   @Override
   public void start(boolean moreThanOne) {
     super.start(moreThanOne);
-    dst.println("file, line, col, level, message");
+    dst.println("file, line, col, level, message"+(showMessageIds ? "message-id" : ""));
   }
   
   @Override
@@ -19,7 +19,8 @@ public class CSVRenderer extends ValidationOutputRenderer {
     for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
       int line = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, -1);
       int col = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, -1);      
-      dst.println(file+", " + (line == -1 ? "" : Integer.toString(line)) + ", " + (col == -1 ? "" : Integer.toString(col))+", "+issue.getSeverity().getDisplay()+", \""+issue.getDetails().getText()+"\"");
+      dst.println(file+", " + (line == -1 ? "" : Integer.toString(line)) + ", " + (col == -1 ? "" : Integer.toString(col))+", "+issue.getSeverity().getDisplay()+", \""+issue.getDetails().getText()+"\""+
+      (showMessageIds ? "," +issue.getExtensionString("http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id") : ""));
     }
   }
   

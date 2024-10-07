@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.instance;
+package org.hl7.fhir.validation.instance.advisor;
 
 import java.util.ArrayList;
 import java.util.EnumSet;

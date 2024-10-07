@@ -34,7 +34,7 @@ public class DefaultRenderer extends ValidationOutputRenderer {
     }
     dst.println((error == 0 ? "Success" : "*FAILURE*") + ": " + Integer.toString(error) + " errors, " + Integer.toString(warn) + " warnings, " + Integer.toString(info) + " notes");
     for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
-      dst.println(getIssueSummary(issue));
+      dst.println(getIssueSummary(issue)+renderMessageId(issue));
       ValidationMessage vm = (ValidationMessage) issue.getUserData("source.msg");
       if (vm != null && vm.sliceText != null && (crumbTrails || vm.isCriticalSignpost())) {
         for (String s : vm.sliceText) {

@@ -273,7 +273,7 @@ public class PackageClient {
   
   public List<PackageInfo> listFromRegistry(String name, String canonical, String fhirVersion) throws IOException {
     List<PackageInfo> result = new ArrayList<>();
-    JsonObject packages = JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
+    JsonObject packages = JsonParser.parseObjectFromUrl("https://fhir.github.io/ig-registry/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
     for (JsonObject o : packages.getJsonObjects("guides")) {
       if (o.has("canonical")) {
       final PackageInfo packageInfo = getPackageInfoFromJSON(o, name, canonical, fhirVersion);
