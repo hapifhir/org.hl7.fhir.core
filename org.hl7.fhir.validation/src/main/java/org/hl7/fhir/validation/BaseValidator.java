@@ -587,8 +587,8 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    */
   protected boolean ruleHtml(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String msg, String html) {
     if (!thePass && doingErrors()) {
-      msg = context.formatMessage(msg, null);
-      html = context.formatMessage(html, null);
+      msg = context.formatMessage(msg);
+      html = context.formatMessage(html);
       addValidationMessage(errors, ruleDate, type, path, msg, html, IssueSeverity.ERROR, null);
     }
     return thePass;
