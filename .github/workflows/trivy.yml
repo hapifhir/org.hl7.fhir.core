@@ -18,6 +18,10 @@ jobs:
 
       - name: Run static analysis
         uses: aquasecurity/trivy-action@master
+        env:
+          # temporary workaround for rate limiting on github
+          TRVIY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db
+          TRVIY_JAVA_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-java-db
         with:
           scan-type: 'fs'
           vuln-type: 'library'
@@ -26,13 +30,12 @@ jobs:
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'MEDIUM,HIGH,CRITICAL'
-          # temporary workaround for rate limiting on github
-          db-repository: public.ecr.aws/aquasecurity/trivy-db
-          java-db-repository: public.ecr.aws/aquasecurity/trivy-java-db
+
+
 
 
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'trivy-results.sarif'
           category: 'Trivy-security-scan'
