@@ -13,6 +13,7 @@ import java.util.List;
  Due to a circular dependency, they cannot be updated without a release of HAPI, which requires backwards
  compatibility with core version 6.1.2.2
  **/
+@Deprecated
 public class FHIRPathEngine  extends  org.hl7.fhir.r5.fhirpath.FHIRPathEngine {
 
   public interface IEvaluationContext extends org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext{ }
