@@ -19,7 +19,7 @@
 
     <properties>
         <commons_compress_version>1.26.0</commons_compress_version>
-        <commons_io_version>2.14.0</commons_io_version>
+        <commons_io_version>2.17.0</commons_io_version>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
         <validator_test_case_version>1.5.25-SNAPSHOT</validator_test_case_version>
