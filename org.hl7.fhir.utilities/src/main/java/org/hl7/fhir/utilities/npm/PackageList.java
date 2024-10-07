@@ -290,6 +290,7 @@ public class PackageList {
     }
     cibuild = new PackageListEntry(new JsonObject());
     cibuild.init(version, path, status, status, null);
+    cibuild.describe(desc, null, null);
     json.getJsonArray("list").add(0, cibuild.json);    
   }
 

@@ -441,8 +441,9 @@ public class ExampleScenario40_50 {
       tgt.setPauseElement(Boolean40_50.convertBoolean(src.getPauseElement()));
     if (src.hasOperation())
       tgt.setOperation(convertExampleScenarioProcessStepOperationComponent(src.getOperation(), src.getNumber()));
-    else
+    else if (src.hasNumber()) {
       tgt.addExtension(PROCESS_STEP_NUMBER, String40_50.convertString(src.getNumberElement()));
+    }
     for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepAlternativeComponent t : src.getAlternative())
       tgt.addAlternative(convertExampleScenarioProcessStepAlternativeComponent(t));
     return tgt;

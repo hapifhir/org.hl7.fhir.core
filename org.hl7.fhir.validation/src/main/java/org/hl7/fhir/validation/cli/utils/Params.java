@@ -80,6 +80,7 @@ public class Params {
   public static final String WANT_INVARIANTS_IN_MESSAGES = "-want-invariants-in-messages";
   public static final String SECURITY_CHECKS = "-security-checks";
   public static final String CRUMB_TRAIL = "-crumb-trails";
+  public static final String SHOW_MESSAGE_IDS = "-show-message-ids";
   public static final String FOR_PUBLICATION = "-forPublication";
   public static final String VERBOSE = "-verbose";
   public static final String SHOW_TIMES = "-show-times";
@@ -318,6 +319,8 @@ public class Params {
         cliContext.setSecurityChecks(true);
       } else if (args[i].equals(CRUMB_TRAIL)) {
         cliContext.setCrumbTrails(true);
+      } else if (args[i].equals(SHOW_MESSAGE_IDS)) {
+        cliContext.setShowMessageIds(true);
       } else if (args[i].equals(FOR_PUBLICATION)) {
         cliContext.setForPublication(true);
       } else if (args[i].equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
@@ -326,6 +329,7 @@ public class Params {
         cliContext.setNoExperimentalContent(true);
       } else if (args[i].equals(VERBOSE)) {
         cliContext.setCrumbTrails(true);
+        cliContext.setShowMessageIds(true);
       } else if (args[i].equals(ALLOW_EXAMPLE_URLS)) {
         String bl = args[++i]; 
         if ("true".equals(bl)) {
