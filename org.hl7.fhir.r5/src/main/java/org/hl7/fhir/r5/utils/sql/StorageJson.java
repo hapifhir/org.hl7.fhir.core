@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.utils.sql.Validator.TrueFalseOrUnknown;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonBoolean;
 import org.hl7.fhir.utilities.json.model.JsonElement;
@@ -18,8 +19,8 @@ public class StorageJson implements Storage {
   private JsonArray rows;
   
   @Override
-  public boolean supportsArrays() {
-    return true;
+  public TrueFalseOrUnknown supportsArrays() {
+    return TrueFalseOrUnknown.TRUE;
   }
 
   @Override
@@ -77,13 +78,13 @@ public class StorageJson implements Storage {
   }
 
   @Override
-  public boolean supportsComplexTypes() {
-    return true;
+  public TrueFalseOrUnknown supportsComplexTypes() {
+    return TrueFalseOrUnknown.TRUE;
   }
 
   @Override
-  public boolean needsName() {
-    return false;
+  public TrueFalseOrUnknown needsName() {
+    return TrueFalseOrUnknown.FALSE;
   }
 
   @Override
