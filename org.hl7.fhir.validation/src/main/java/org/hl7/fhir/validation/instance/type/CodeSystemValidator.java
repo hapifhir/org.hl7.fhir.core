@@ -571,6 +571,8 @@ public class CodeSystemValidator  extends BaseValidator {
       }     
     }
 
+    warning(errors, "2024-10-03", IssueType.BUSINESSRULE, stack.getLiteralPath(), !(count == 0 && "complete".equals(content)), I18nConstants.CODESYSTEM_CS_COMPLETE_AND_EMPTY);
+
     if (cs.hasChild("count", false)) {
       int statedCount = Utilities.parseInt(cs.getNamedChildValue("count", false), -1);
       if (statedCount > -1 && content != null) { // error elsewhere

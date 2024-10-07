@@ -240,6 +240,7 @@ public class ValidationService {
         PrintStream dst = null;
         ValidationOutputRenderer renderer = makeValidationOutputRenderer(cliContext);
         renderer.setCrumbTrails(validator.isCrumbTrails());
+        renderer.setShowMessageIds(validator.isShowMessageIds());
         renderer.setRunDate(runDate);
         if (renderer.isSingleFile()) {
           if (cliContext.getOutput() == null) {
@@ -574,6 +575,7 @@ public class ValidationService {
     validationEngine.setWantInvariantInMessage(cliContext.isWantInvariantsInMessages());
     validationEngine.setSecurityChecks(cliContext.isSecurityChecks());
     validationEngine.setCrumbTrails(cliContext.isCrumbTrails());
+    validationEngine.setShowMessageIds(cliContext.isShowMessageIds());
     validationEngine.setForPublication(cliContext.isForPublication());
     validationEngine.setShowTimes(cliContext.isShowTimes());
     validationEngine.setAllowExampleUrls(cliContext.isAllowExampleUrls());
