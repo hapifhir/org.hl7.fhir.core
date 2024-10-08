@@ -32,6 +32,7 @@ import org.hl7.fhir.r5.model.UnsignedIntType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.UuidType;
+import org.hl7.fhir.r5.utils.sql.Validator.TrueFalseOrUnknown;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
 import org.hl7.fhir.utilities.Utilities;
@@ -49,25 +50,29 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 public class Validator {
 
+  public enum TrueFalseOrUnknown {
+    TRUE, FALSE, UNKNOWN
+  }
+
   private IWorkerContext context;
   private FHIRPathEngine fpe;
   private List<String> prohibitedNames = new ArrayList<String>();
   private List<ValidationMessage> issues = new ArrayList<ValidationMessage>();
-  private Boolean arrays;
-  private Boolean complexTypes;
-  private Boolean needsName;
+  private TrueFalseOrUnknown supportsArrays;
+  private TrueFalseOrUnknown supportsComplexTypes;
+  private TrueFalseOrUnknown supportsNeedsName;
 
   private String resourceName;
   private String name;
 
-  public Validator(IWorkerContext context, FHIRPathEngine fpe, List<String> prohibitedNames, Boolean arrays, Boolean complexTypes, Boolean needsName) {
+  public Validator(IWorkerContext context, FHIRPathEngine fpe, List<String> prohibitedNames, TrueFalseOrUnknown supportsArrays, TrueFalseOrUnknown supportsComplexTypes, TrueFalseOrUnknown supportsNeedsName) {
     super();
     this.context = context;
     this.fpe = fpe;
     this.prohibitedNames = prohibitedNames;
-    this.arrays = arrays;
-    this.complexTypes = complexTypes;
-    this.needsName = needsName;
+    this.supportsArrays = supportsArrays;
+    this.supportsComplexTypes = supportsComplexTypes;
+    this.supportsNeedsName = supportsNeedsName;
   }
 
   public String getResourceName() {
@@ -80,9 +85,9 @@ public class Validator {
     
     JsonElement nameJ = viewDefinition.get("name");
     if (nameJ == null) {
-      if (needsName == null) {
+      if (supportsNeedsName == null) {
         hint(path, viewDefinition, "No name provided. A name is required in many contexts where a ViewDefinition is used");        
-      } else if (needsName) {
+      } else if (supportsNeedsName == TrueFalseOrUnknown.TRUE) {
         error(path, viewDefinition, "No name provided", IssueType.REQUIRED);
       }
     } else if (!(nameJ instanceof JsonString)) {
@@ -334,9 +339,9 @@ public class Validator {
                 hint(path, column, "collection is true, but the path statement(s) can only return single values for the column '"+columnName+"'");
               }
             } else {
-              if (arrays == null) {
+              if (supportsArrays == TrueFalseOrUnknown.UNKNOWN) {
                 warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path. Collections are not supported in all execution contexts");
-              } else if (!arrays) {
+              } else if (supportsArrays == TrueFalseOrUnknown.FALSE) {
                 warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path, but this is not allowed in the current execution context");
               }
               if (td.getCollectionStatus() != CollectionStatus.SINGLETON) {
@@ -373,9 +378,9 @@ public class Validator {
               String type = types.iterator().next();
               boolean ok = false;
               if (!isSimpleType(type) && !"null".equals(type)) {
-                if (complexTypes) {
+                if (supportsComplexTypes == TrueFalseOrUnknown.UNKNOWN) {
                   warning(path, expression, "Column is a complex type. This is not supported in some Runners");
-                } else if (!complexTypes) {            
+                } else if (supportsComplexTypes == TrueFalseOrUnknown.FALSE) {            
                   error(path, expression, "Column is a complex type but this is not allowed in this context", IssueType.BUSINESSRULE);
                 } else {
                   ok = true;
