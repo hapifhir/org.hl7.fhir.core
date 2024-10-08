@@ -2,16 +2,16 @@
 
 This document describes the use of the advisor format that advises the validator which rules to enforce.
 By default the validator enforces the entire FHIR specification as described. Implementers simply wishing
-to know whether a resource is valid or not should not be using this functionality. 
+to know whether a resource is valid or not should not be using the advisor functionality. 
 
 The advisor functionality exists to assist implementers who are using the validator in pipelines where 
 known issues are tolerated and suppressed. Usually this arises because additional rules were added in
 later validator versions after design decision had been made, and the specific issues cannot be rectified,
 though there are other reasons.
 
-Warning: Implementers use this functionality to hide known issues with their resources. 
+Warning: Implementers use the advisor functionality to hide known issues with their resources. 
 
-use the command line parameter ```-rules {filename}``` to make a set of rules apply.
+To use this functionality, use the command line parameter ```-rules {filename}``` to make a set of rules apply.
 
 There are two ways to turn off validation rules:
 
@@ -23,14 +23,16 @@ There are two ways to turn off validation rules:
 This approach is conceptually simple: the entire validation is executed, and then 
 messages are filtered from the output based on their messageId. 
 
-The messageId is not usually shown; use the command line parameter ```-show-message-ids``` to show 
-the messageIds in the output. 
+The message ids are not usually shown in the validator output; use the command line parameter
+```-show-message-ids``` to show the message ids in the output. 
+
+Messages can be suppressed by id, or by path and id (where path is the element the message is associated with).
 
 Some notes on this approach:
 
-* This turns off all uses of that message id - there's no way to be selective about what context they occur in
+* This turns off all uses of that message id(+path) - there's no way to be selective about what context they occur in beyond the element path
 * the messageId is directly tied to the format of the message. For some messages, there are multiple variants of the message, each with their own id, and these all need to be suppressed
-* message ids are stable, but sometimes an existing message is improved in some contexts, and new message ids are introduced in later versions
+* message ids are stable (including across languages), but sometimes an existing message is improved in some contexts, and new message ids are introduced in later versions
 * the underlying validation still happens, even when the messages are suppressed
 
 
@@ -159,7 +161,7 @@ For each rule, zero or more filters are provided, and a set of options (which ma
 The file begins with zero or more suppression statements:
 
 ```
-- VALIDATION_VAL_STATUS_INCONSISTENT_HINT
+- VALIDATION_VAL_STATUS_INCONSISTENT_HINT@CodeSystem.valueSet
 - MSG_DEPRECATED # comments are allowed
 # comments are allowed here too
 - This_element_does_not_match_any_known_slice_
@@ -181,7 +183,7 @@ Comments can also be on empty lines e.g. lines with no rules:
 
 ```json
 {
-  "suppress" : ["VALIDATION_VAL_STATUS_INCONSISTENT_HINT", "MSG_DEPRECATED", "This_element_does_not_match_any_known_slice_"],
+  "suppress" : ["VALIDATION_VAL_STATUS_INCONSISTENT_HINT@CodeSystem.valueSet", "MSG_DEPRECATED", "This_element_does_not_match_any_known_slice_"],
   "rules" : [{
     "type" : "element",
     "filters" : [{

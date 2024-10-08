@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
@@ -65,7 +67,7 @@ public class Validator {
   private String resourceName;
   private String name;
 
-  public Validator(IWorkerContext context, FHIRPathEngine fpe, List<String> prohibitedNames, TrueFalseOrUnknown supportsArrays, TrueFalseOrUnknown supportsComplexTypes, TrueFalseOrUnknown supportsNeedsName) {
+  public Validator(IWorkerContext context, FHIRPathEngine fpe, List<String> prohibitedNames, @Nonnull TrueFalseOrUnknown supportsArrays, @Nonnull TrueFalseOrUnknown supportsComplexTypes, @Nonnull TrueFalseOrUnknown supportsNeedsName) {
     super();
     this.context = context;
     this.fpe = fpe;
