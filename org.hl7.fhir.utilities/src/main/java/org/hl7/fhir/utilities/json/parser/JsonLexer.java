@@ -51,6 +51,8 @@ public class JsonLexer {
   private boolean isUnquoted;
   private String sourceName;
 
+  private final Stack<String> parenthesis = new Stack<>();
+
   public JsonLexer(String source, boolean allowComments, boolean allowUnquotedStrings, int line) throws IOException {
     this.source = source;
     this.allowComments = allowComments;
@@ -162,6 +164,7 @@ public class JsonLexer {
     return lastLocationAWS;
   }
 
+
   public void next() throws IOException {
     lastLocationBWS = location.copy();
     char ch;
@@ -185,15 +188,25 @@ public class JsonLexer {
     } while (more() && Utilities.charInSet(ch, ' ', '\r', '\n', '\t'));
     lastLocationAWS = location.copy().prev();
     isUnquoted = false;
-    
     if (!more()) {
       type = TokenType.Eof;
+      if(!parenthesis.empty()) {
+        throw error("parenthesis matching is not respected. One or more parenthesis were not closed : " + parenthesis);
+      }
     } else {
       switch (ch) {
       case '{' : 
         type = TokenType.Open;
+        parenthesis.push("{");
         break;
-      case '}' : 
+      case '}' :
+        if(parenthesis.empty()) {
+          throw error("Unexpected close marker '}'. No '{' before.");
+        }
+        String par = parenthesis.pop();
+        if(!par.equals("{")) {
+          throw error("Unexpected close marker '}'. Expected ']'.");
+        }
         type = TokenType.Close;
         break;
       case '"' :
@@ -229,10 +242,18 @@ public class JsonLexer {
       case ',' : 
         type = TokenType.Comma;
         break;
-      case '[' : 
+      case '[' :
+        parenthesis.push("[");
         type = TokenType.OpenArray;
         break;
-      case ']' : 
+      case ']' :
+        if(parenthesis.empty()) {
+          throw error("Unexpected close marker ']'. No '[' before.");
+        }
+        par = parenthesis.pop();
+        if(!par.equals("[")) {
+          throw error("Unexpected close marker ']'. Expected '}'");
+        }
         type = TokenType.CloseArray;
         break;
       default:
