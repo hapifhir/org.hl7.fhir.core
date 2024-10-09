@@ -1,6 +1,12 @@
 package org.hl7.fhir.r5.utils.client.network;
 
-import okhttp3.*;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.formats.IParser;
@@ -9,18 +15,21 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.utilities.MimeType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.xhtml.XhtmlUtils;
 
-import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import okhttp3.Authenticator;
+import okhttp3.Credentials;
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class FhirRequestBuilder {
 
@@ -227,7 +236,7 @@ public class FhirRequestBuilder {
   public <T extends Resource> ResourceRequest<T> execute() throws IOException {
     formatHeaders(httpRequest, resourceFormat, headers);
     Response response = getHttpClient().newCall(httpRequest.build()).execute();
-    T resource = unmarshalReference(response, resourceFormat);
+    T resource = unmarshalReference(response, resourceFormat, null);
     return new ResourceRequest<T>(resource, response.code(), getLocationHeader(response.headers()));
   }
 
@@ -241,50 +250,35 @@ public class FhirRequestBuilder {
    * Unmarshalls a resource from the response stream.
    */
   @SuppressWarnings("unchecked")
-  protected <T extends Resource> T unmarshalReference(Response response, String format) {
-    T resource = null;
-    OperationOutcome error = null;
-
-    if (response.body() != null) {
-      try {
-        byte[] body = response.body().bytes();
-        resource = (T) getParser(format).parse(body);
-        if (resource instanceof OperationOutcome && hasError((OperationOutcome) resource)) {
-          error = (OperationOutcome) resource;
-        }
-      } catch (IOException ioe) {
-        throw new EFhirClientException("Error reading Http Response from "+source+": " + ioe.getMessage(), ioe);
-      } catch (Exception e) {
-        throw new EFhirClientException("Error parsing response message from "+source+": " + e.getMessage(), e);
-      }
+  protected <T extends Resource> T unmarshalReference(Response response, String format, String resourceType) {
+    if (response.body() == null) {
+      return null;
     }
-
-    if (error != null) {
-      throw new EFhirClientException("Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
-    }
-
-    return resource;
-  }
-
-  /**
-   * Unmarshalls Bundle from response stream.
-   */
-  protected Bundle unmarshalFeed(Response response, String format) {
-    Bundle feed = null;
-    OperationOutcome error = null;
+    Resource resource = null;
     try {
-      byte[] body = response.body().bytes();
-      String contentType = response.header("Content-Type");
-      if (body != null) {
-        if (contentType.contains(ResourceFormat.RESOURCE_XML.getHeader()) || contentType.contains(ResourceFormat.RESOURCE_JSON.getHeader()) || contentType.contains("text/xml+fhir")) {
-          Resource rf = getParser(format).parse(body);
-          if (rf instanceof Bundle)
-            feed = (Bundle) rf;
-          else if (rf instanceof OperationOutcome && hasError((OperationOutcome) rf)) {
-            error = (OperationOutcome) rf;
-          } else {
-            throw new EFhirClientException("Error reading server response: a resource was returned instead");
-          }
+      String ct = response.header("Content-Type"); 
+      if (ct == null) {
+        resource = getParser(format).parse(response.body().bytes());
+      } else {
+        switch (ct) {
+        case "application/json":
+        case "application/fhir+json":
+          resource = getParser(ResourceFormat.RESOURCE_JSON.getHeader()).parse(response.body().bytes());
+          break;
+        case "application/xml":
+        case "application/fhir+xml":
+        case "text/xml":
+          resource = getParser(ResourceFormat.RESOURCE_JSON.getHeader()).parse(response.body().bytes());
+          break;
+        case "text/plain":
+          resource = OperationOutcomeUtilities.outcomeFromTextError(response.body().string());
+          break;
+        case "text/html" : 
+          resource = OperationOutcomeUtilities.outcomeFromTextError(XhtmlUtils.convertHtmlToText(response.body().string()));
+          break;
+        default: // not sure what else to do? 
+          System.out.println("Got content-type '"+ct+"' from "+source);
+          resource = OperationOutcomeUtilities.outcomeFromTextError(response.body().string());
         }
       }
     } catch (IOException ioe) {
@@ -292,10 +286,28 @@ public class FhirRequestBuilder {
     } catch (Exception e) {
       throw new EFhirClientException("Error parsing response message from "+source+": "+e.getMessage(), e);
     }
-    if (error != null) {
-      throw new EFhirClientException("Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
+    if (resource instanceof OperationOutcome && !"OperationOutcome".equals(resourceType)) {
+      OperationOutcome error = (OperationOutcome) resource;  
+      if (hasError((OperationOutcome) resource)) {
+        throw new EFhirClientException("Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
+      } else {
+        // umm, weird...
+      }
     }
-    return feed;
+    if (resource == null) {
+      return null; // shouldn't get here?
+    }
+    if (resourceType != null && !resource.fhirType().equals(resourceType)) {
+      throw new EFhirClientException("Error parsing response message from "+source+": Found an "+resource.fhirType()+" looking for a "+resourceType);        
+    }
+    return (T) resource;
+  }
+
+  /**
+   * Unmarshalls Bundle from response stream.
+   */
+  protected Bundle unmarshalFeed(Response response, String format) {
+    return unmarshalReference(response, format, "Bundle");
   }
 
   /**

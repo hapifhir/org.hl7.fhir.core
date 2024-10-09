@@ -35,6 +35,7 @@ import java.util.List;
 
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.IntegerType;
+import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
@@ -43,6 +44,8 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.xhtml.NodeType;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class OperationOutcomeUtilities {
 
@@ -178,6 +181,18 @@ public class OperationOutcomeUtilities {
       res.addIssue(convertToIssueSimple(vm, res));
     }
     return res;
+  }
+
+  public static OperationOutcome outcomeFromTextError(String text) {
+    OperationOutcome oo = new OperationOutcome();
+    oo.getText().setStatus(NarrativeStatus.GENERATED);
+    oo.getText().setDiv(new XhtmlNode(NodeType.Element, "div"));
+    oo.getText().getDiv().tx(text);
+    OperationOutcomeIssueComponent issue = oo.addIssue();
+    issue.setSeverity(IssueSeverity.ERROR);
+    issue.setCode(IssueType.EXCEPTION);
+    issue.getDetails().setText(text);
+    return oo;
   }
 
 }
