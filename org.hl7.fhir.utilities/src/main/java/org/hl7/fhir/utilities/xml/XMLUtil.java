@@ -32,7 +32,6 @@ package org.hl7.fhir.utilities.xml;
 
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -437,28 +436,28 @@ public class XMLUtil {
   }
 
   public static Document parseToDom(String content) throws ParserConfigurationException, SAXException, IOException  {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     return builder.parse(new ByteArrayInputStream(content.getBytes()));
   }
 
   public static Document parseToDom(byte[] content) throws ParserConfigurationException, SAXException, IOException  {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     return builder.parse(new ByteArrayInputStream(content));
   }
 
   public static Document parseToDom(byte[] content, boolean ns) throws ParserConfigurationException, SAXException, IOException  {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(ns);
     DocumentBuilder builder = factory.newDocumentBuilder();
     return builder.parse(new ByteArrayInputStream(content));
   }
 
   public static Document parseFileToDom(String filename) throws ParserConfigurationException, SAXException, IOException  {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     FileInputStream fs = ManagedFileAccess.inStream(filename);
@@ -470,7 +469,7 @@ public class XMLUtil {
   }
 
   public static Document parseFileToDom(String filename, boolean ns) throws ParserConfigurationException, SAXException, IOException  {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(ns);
     DocumentBuilder builder = factory.newDocumentBuilder();
     FileInputStream fs = ManagedFileAccess.inStream(filename);
@@ -503,10 +502,17 @@ public class XMLUtil {
   }
 
   public static TransformerFactory newXXEProtectedTransformerFactory() {
-    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    final TransformerFactory transformerFactory = TransformerFactory.newInstance();
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
     return transformerFactory;
+  }
+
+  public static DocumentBuilderFactory newXXEProtectedDocumentBuilderFactory() throws ParserConfigurationException {
+    final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    documentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+    documentBuilderFactory.setXIncludeAware(false);
+    return documentBuilderFactory;
   }
 
 

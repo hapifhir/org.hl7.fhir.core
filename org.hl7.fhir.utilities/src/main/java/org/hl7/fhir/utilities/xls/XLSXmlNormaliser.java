@@ -221,7 +221,7 @@ public class XLSXmlNormaliser {
   
 
   private Document parseXml(InputStream in) throws FHIRException, ParserConfigurationException, SAXException, IOException  {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
     return builder.parse(in);

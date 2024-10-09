@@ -69,7 +69,7 @@ public class TranslatorXml implements TranslationServices {
 
 
   private void load(String filename) throws ParserConfigurationException, SAXException, IOException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     Document xml = builder.parse(ManagedFileAccess.file(filename)); 
