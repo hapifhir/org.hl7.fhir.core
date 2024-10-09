@@ -126,7 +126,7 @@ public class XmlParser extends ParserBase {
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     Document doc = null;
     try {
-      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
       // xxe protection
       factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
       factory.setFeature("http://xml.org/sax/features/external-general-entities", false);

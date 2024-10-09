@@ -96,7 +96,7 @@ public class XmlParser extends ParserBase {
   public Element parse(InputStream stream) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
     Document doc = null;
     try {
-      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
       // xxe protection
       factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
       factory.setFeature("http://xml.org/sax/features/external-general-entities", false);

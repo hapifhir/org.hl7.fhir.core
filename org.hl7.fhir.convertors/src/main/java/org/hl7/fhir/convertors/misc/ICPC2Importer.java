@@ -120,7 +120,7 @@ public class ICPC2Importer {
   }
 
   public void go() throws Exception {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     Document doc = builder.parse(ManagedFileAccess.inStream(sourceFileName));
