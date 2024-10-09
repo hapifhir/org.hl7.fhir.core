@@ -275,7 +275,7 @@ public class FhirRequestBuilder {
         case "application/xml":
         case "application/fhir+xml":
         case "text/xml":
-          resource = getParser(ResourceFormat.RESOURCE_JSON.getHeader()).parse(response.body().bytes());
+          resource = getParser(ResourceFormat.RESOURCE_XML.getHeader()).parse(response.body().bytes());
           break;
         case "text/plain":
           resource = outcomeFromTextError(response.body().string());
