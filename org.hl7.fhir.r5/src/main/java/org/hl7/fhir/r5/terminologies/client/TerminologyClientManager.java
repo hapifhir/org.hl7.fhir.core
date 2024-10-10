@@ -201,12 +201,16 @@ public class TerminologyClientManager {
     // no agreement? Then what we do depends     
     if (vs != null) {
       if (vs.hasUserData("External.Link")) {
-        if (systems.size() == 1) {
-          internalLog.add(vs.getVersionedUrl()+" uses the system "+systems.toString()+" not handled by any servers. Using source @ '"+vs.getUserString("External.Link")+"'");
-        } else {
-          internalLog.add(vs.getVersionedUrl()+" includes multiple systems "+systems.toString()+" best handled by multiple servers: "+choices.toString()+". Using source @ '"+vs.getUserString("External.Link")+"'");
+        String el = vs.getUserString("External.Link");
+        if ("https://vsac.nlm.nih.gov".equals(el)) {
+          el = getMaster().getAddress();
         }
-        return findClient(vs.getUserString("External.Link"), systems, expand);
+        if (systems.size() == 1) {
+          internalLog.add(vs.getVersionedUrl()+" uses the system "+systems.toString()+" not handled by any servers. Using source @ '"+el+"'");
+        } else {
+          internalLog.add(vs.getVersionedUrl()+" includes multiple systems "+systems.toString()+" best handled by multiple servers: "+choices.toString()+". Using source @ '"+el+"'");
+        }        
+        return findClient(el, systems, expand);
       } else {
         if (systems.size() == 1) {
           internalLog.add(vs.getVersionedUrl()+" uses the system "+systems.toString()+" not handled by any servers. Using master @ '"+serverList.get(0)+"'");
