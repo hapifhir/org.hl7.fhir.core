@@ -251,34 +251,59 @@ public class FhirRequestBuilder {
    */
   @SuppressWarnings("unchecked")
   protected <T extends Resource> T unmarshalReference(Response response, String format, String resourceType) {
+    int code = response.code();
+    boolean ok = code >= 200 && code < 300;
     if (response.body() == null) {
-      return null;
+      if (!ok) {
+        throw new EFhirClientException(response.message());
+      } else {
+        return null;
+      }
     }
+    String body;
+    
     Resource resource = null;
     try {
+      body = response.body().string();
       String ct = response.header("Content-Type"); 
       if (ct == null) {
-        resource = getParser(format).parse(response.body().bytes());
+        if (ok) {
+          resource = getParser(format).parse(body);
+        } else {
+          System.out.println("Got error response with no Content-Type from "+source+" with status "+code);
+          System.out.println(body);
+          resource = OperationOutcomeUtilities.outcomeFromTextError(body);
+        }
       } else {
+        if (ct.contains(";")) {
+          ct = ct.substring(0, ct.indexOf(";"));
+        }
         switch (ct) {
         case "application/json":
         case "application/fhir+json":
-          resource = getParser(ResourceFormat.RESOURCE_JSON.getHeader()).parse(response.body().bytes());
+          if (!format.contains("json")) {
+            System.out.println("Got json response expecting "+format+" from "+source+" with status "+code);            
+          }
+          resource = getParser(ResourceFormat.RESOURCE_JSON.getHeader()).parse(body);
           break;
         case "application/xml":
         case "application/fhir+xml":
         case "text/xml":
-          resource = getParser(ResourceFormat.RESOURCE_XML.getHeader()).parse(response.body().bytes());
+          if (!format.contains("xml")) {
+            System.out.println("Got xml response expecting "+format+" from "+source+" with status "+code);            
+          }
+          resource = getParser(ResourceFormat.RESOURCE_XML.getHeader()).parse(body);
           break;
         case "text/plain":
-          resource = OperationOutcomeUtilities.outcomeFromTextError(response.body().string());
+          resource = OperationOutcomeUtilities.outcomeFromTextError(body);
           break;
         case "text/html" : 
-          resource = OperationOutcomeUtilities.outcomeFromTextError(XhtmlUtils.convertHtmlToText(response.body().string()));
+          resource = OperationOutcomeUtilities.outcomeFromTextError(XhtmlUtils.convertHtmlToText(response.body().string(), source));
           break;
         default: // not sure what else to do? 
           System.out.println("Got content-type '"+ct+"' from "+source);
-          resource = OperationOutcomeUtilities.outcomeFromTextError(response.body().string());
+          System.out.println(body);
+          resource = OperationOutcomeUtilities.outcomeFromTextError(body);
         }
       }
     } catch (IOException ioe) {
@@ -286,15 +311,20 @@ public class FhirRequestBuilder {
     } catch (Exception e) {
       throw new EFhirClientException("Error parsing response message from "+source+": "+e.getMessage(), e);
     }
-    if (resource instanceof OperationOutcome && !"OperationOutcome".equals(resourceType)) {
+    if (resource instanceof OperationOutcome && (!"OperationOutcome".equals(resourceType) || !ok)) {
       OperationOutcome error = (OperationOutcome) resource;  
       if (hasError((OperationOutcome) resource)) {
         throw new EFhirClientException("Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
       } else {
         // umm, weird...
+        System.out.println("Got OperationOutcome with no error from "+source+" with status "+code);            
+        System.out.println(body);
+        return null;
       }
     }
     if (resource == null) {
+      System.out.println("No resource from "+source+" with status "+code);   
+      System.out.println(body);         
       return null; // shouldn't get here?
     }
     if (resourceType != null && !resource.fhirType().equals(resourceType)) {

@@ -348,7 +348,13 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
         }
       } 
       if (n.getNodeType() == NodeType.Element) {
-        b.append(n.allText());
+        if (!Utilities.existsInList(n.getName(), "img")) {
+          b.append(n.allText());          
+        } else if (n.hasAttribute("alt")) {
+          b.append(n.getAttribute("alt"));
+        } else {
+          b.append("[image]");
+        }
         if (Utilities.existsInList(n.getName(), "p", "div", "tr", "th", "ul", "ol", "li", "h1", "h2", "h3", "h4", "h5", "h6")) {
           b.append("\r\n");
         } else if (Utilities.existsInList(n.getName(), "th", "td", "span")) {
