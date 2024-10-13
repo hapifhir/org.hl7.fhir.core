@@ -169,5 +169,15 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
     return false;
   }
 
+  @Override
+  public boolean suppressMessageId(String path, String messageId) {
+    return false;
+  }
+
+  @Override
+  public ReferenceValidationPolicy getReferencePolicy() {
+    return refpol;
+  }
+
   
 }
