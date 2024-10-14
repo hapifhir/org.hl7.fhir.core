@@ -34,7 +34,7 @@ Some notes on this approach:
 * the messageId is directly tied to the format of the message. For some messages, there are multiple variants of the message, each with their own id, and these all need to be suppressed
 * message ids are stable (including across languages), but sometimes an existing message is improved in some contexts, and new message ids are introduced in later versions
 * the underlying validation still happens, even when the messages are suppressed
-
+* for invariants in profiles, the message id is the profile URL and the invariant id e.g. http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6
 
 ## Controlling what validation runs 
 
