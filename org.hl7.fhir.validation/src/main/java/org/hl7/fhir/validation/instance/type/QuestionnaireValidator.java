@@ -16,6 +16,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DateType;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Questionnaire;
+import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireAnswerConstraint;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemAnswerOptionComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType;
@@ -812,7 +813,7 @@ public class QuestionnaireValidator extends BaseValidator {
   }
 
   private boolean checkOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, String type) {
-    return checkOption(errors, answer, stack, qSrc, qItem, type, false);
+    return checkOption(errors, answer, stack, qSrc, qItem, type, qItem.getAnswerConstraint() == QuestionnaireAnswerConstraint.OPTIONSORSTRING);
   }
 
   private boolean checkOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, String type, boolean openChoice) {
@@ -928,31 +929,29 @@ public class QuestionnaireValidator extends BaseValidator {
     Element v = answer.getNamedChild("valueString", false);
     NodeStack ns = stack.push(v, -1, null, null);
     if (qItem.getAnswerOption().size() > 0) {
-      List<StringType> list = new ArrayList<StringType>();
+      boolean found = false;
+      boolean empty = true;
       for (QuestionnaireItemAnswerOptionComponent components : qItem.getAnswerOption()) {
-        try {
-          if (components.getValue() != null) {
-            list.add(components.getValueStringType());
-          }
-        } catch (FHIRException e) {
-          // If it's the wrong type, just keep going
+        if (components.getValue() != null && components.hasValueStringType()) {
+          empty = false;
+          found = found || components.getValue().primitiveValue().equals((v.primitiveValue()));
         }
       }
       if (!openChoice) {
-        if (list.isEmpty()) {
+        if (empty) {
           ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONSSTRING) && ok;
         } else {
-          boolean found = false;
-          for (StringType item : list) {
-            if (item.getValue().equals((v.primitiveValue()))) {
-              found = true;
-              break;
-            }
-          }
-          if (!found) {
-            ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOSTRING, v.primitiveValue()) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOSTRING, v.primitiveValue()) && ok;
+        }
+      } else {
+        found = false;
+        for (QuestionnaireItemAnswerOptionComponent components : qItem.getAnswerOption()) {
+          if (components.getValue() != null && components.hasValueCoding()) {
+            Coding c = components.getValueCoding();
+            found = found || (c.hasDisplay() && c.getDisplay().equalsIgnoreCase(v.primitiveValue())) || (c.hasCode() && c.getCode().equalsIgnoreCase(v.primitiveValue()));
           }
         }
+        ok = warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), !found, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING, v.primitiveValue()) && ok;        
       }
     } else {
       hint(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRINGNOOPTIONS);
