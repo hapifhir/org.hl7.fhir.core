@@ -132,6 +132,12 @@ public class CliContext {
   @JsonProperty("showTimes")
   private boolean showTimes = false;
   
+  @JsonProperty("showTerminologyRouting")
+  private boolean showTerminologyRouting = false;  
+  
+  @JsonProperty("clearTxCache")
+  private boolean clearTxCache = false;  
+  
   @JsonProperty("locale")
   private String locale = Locale.ENGLISH.toLanguageTag();
 
@@ -171,6 +177,9 @@ public class CliContext {
 
   @JsonProperty("noExperimentalContent")
   private boolean noExperimentalContent;
+  
+  @JsonProperty("advisorFile")
+  private String advisorFile;
   
   @JsonProperty("baseEngine")
   public String getBaseEngine() {
@@ -754,6 +763,22 @@ public class CliContext {
     this.showTimes = showTimes;
   }
 
+  public boolean isShowTerminologyRouting() {
+    return showTerminologyRouting;
+  }
+
+  public void setShowTerminologyRouting(boolean showTerminologyRouting) {
+    this.showTerminologyRouting = showTerminologyRouting;
+  }
+
+  public boolean isClearTxCache() {
+    return clearTxCache;
+  }
+
+  public void setClearTxCache(boolean clearTxCache) {
+    this.clearTxCache = clearTxCache;
+  }
+
   public String getOutputStyle() {
     return outputStyle;
   }
@@ -852,6 +877,7 @@ public class CliContext {
       Objects.equals(watchScanDelay, that.watchScanDelay) &&
       Objects.equals(unknownCodeSystemsCauseErrors, that.unknownCodeSystemsCauseErrors) &&
       Objects.equals(noExperimentalContent, that.noExperimentalContent) &&
+      Objects.equals(advisorFile, that.advisorFile) &&
       Objects.equals(watchSettleTime, that.watchSettleTime) ;
   }
 
@@ -860,7 +886,7 @@ public class CliContext {
     return Objects.hash(baseEngine, doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching,
             noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
             targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, showMessageIds, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
-            watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
+            watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, advisorFile, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
   }
 
   @Override
@@ -922,6 +948,7 @@ public class CliContext {
       ", watchScanDelay=" + watchScanDelay +
       ", unknownCodeSystemsCauseErrors=" + unknownCodeSystemsCauseErrors +
       ", noExperimentalContent=" + noExperimentalContent +
+      ", advisorFile=" + advisorFile +
       '}';
   }
 
@@ -1000,6 +1027,16 @@ public class CliContext {
   @JsonProperty("noExperimentalContent")
   public void setNoExperimentalContent(boolean noExperimentalContent) {
     this.noExperimentalContent = noExperimentalContent;
+  }
+
+  @JsonProperty("advisorFile")
+  public String getAdvisorFile() {
+    return advisorFile;
+  }
+
+  @JsonProperty("advisorFile")
+  public void setAdvisorFile(String advisorFile) {
+    this.advisorFile = advisorFile;
   }
 
   

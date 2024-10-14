@@ -294,10 +294,17 @@ public class ProfileUtilities {
   public static class SourcedChildDefinitions {
     private StructureDefinition source;
     private List<ElementDefinition> list;
+    private String path;
     public SourcedChildDefinitions(StructureDefinition source, List<ElementDefinition> list) {
       super();
       this.source = source;
       this.list = list;
+    }
+    public SourcedChildDefinitions(StructureDefinition source, List<ElementDefinition> list, String path) {
+      super();
+      this.source = source;
+      this.list = list;
+      this.path = path;
     }
     public StructureDefinition getSource() {
       return source;
@@ -305,6 +312,10 @@ public class ProfileUtilities {
     public List<ElementDefinition> getList() {
       return list;
     }
+    public String getPath() {
+      return path;
+    }
+    
   }
 
   public class ElementDefinitionResolution {

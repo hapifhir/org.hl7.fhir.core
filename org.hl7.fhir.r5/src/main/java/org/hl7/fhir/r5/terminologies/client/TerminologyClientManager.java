@@ -83,6 +83,42 @@ public class TerminologyClientManager {
     ITerminologyClient makeClient(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException;
     String getVersion();
   }
+  
+  public class InternalLogEvent {
+    private String message;
+    private String server;
+    private String vs;
+    private String systems;
+    private String choices;
+    protected InternalLogEvent(String message, String server, String vs, String systems, String choices) {
+      super();
+      this.message = message;
+      this.server = server;
+      this.vs = vs;
+      this.systems = systems;
+      this.choices = choices;
+    }
+    protected InternalLogEvent(String message) {
+      super();
+      this.message = message;
+    }
+    public String getMessage() {
+      return message;
+    }
+    public String getVs() {
+      return vs;
+    }
+    public String getSystems() {
+      return systems;
+    }
+    public String getChoices() {
+      return choices;
+    }
+    public String getServer() {
+      return server;
+    }
+    
+  }
 
   public static final String UNRESOLVED_VALUESET = "--unknown--";
 
@@ -93,7 +129,7 @@ public class TerminologyClientManager {
   private List<TerminologyClientContext> serverList = new ArrayList<>(); // clients by server address
   private Map<String, TerminologyClientContext> serverMap = new HashMap<>(); // clients by server address
   private Map<String, ServerOptionList> resMap = new HashMap<>(); // client resolution list
-  private List<String> internalLog = new ArrayList<>();
+  private List<InternalLogEvent> internalLog = new ArrayList<>();
   protected Parameters expParameters;
 
   private TerminologyCache cache;
@@ -124,6 +160,7 @@ public class TerminologyClientManager {
     monitorServiceURL = other.monitorServiceURL;
     factory = other.factory;
     usage = other.usage;
+    internalLog = other.internalLog;
   }
 
 
@@ -150,6 +187,7 @@ public class TerminologyClientManager {
           }
         }
         if (ok) {
+          log(vs, s, systems, choices, "Found authoritative server "+s);
           return findClient(s, systems, expand);
         }
       }
@@ -165,6 +203,7 @@ public class TerminologyClientManager {
           }
         }
         if (ok) {
+          log(vs, s, systems, choices, "Found partially authoritative server "+s);
           return findClient(s, systems, expand);
         }
       }
@@ -180,6 +219,7 @@ public class TerminologyClientManager {
           }
         }
         if (ok) {
+          log(vs, s, systems, choices, "Found candidate server "+s);
           return findClient(s, systems, expand);
         }
       }
@@ -194,6 +234,7 @@ public class TerminologyClientManager {
           "urn:ietf:rfc:3986", "http://www.ama-assn.org/go/cpt", "urn:oid:1.2.36.1.2001.1005.17", "urn:iso:std:iso:3166", 
           "http://varnomen.hgvs.org", "http://unstats.un.org/unsd/methods/m49/m49.htm", "urn:iso:std:iso:4217", 
           "http://hl7.org/fhir/sid/ndc", "http://fhir.ohdsi.org/CodeSystem/concepts", "http://fdasis.nlm.nih.gov", "https://www.usps.com/")) {
+        log(vs, serverList.get(0).getAddress(), systems, choices, "Use primary server for "+uri);
         return serverList.get(0);
       }
     }
@@ -206,27 +247,35 @@ public class TerminologyClientManager {
           el = getMaster().getAddress();
         }
         if (systems.size() == 1) {
-          internalLog.add(vs.getVersionedUrl()+" uses the system "+systems.toString()+" not handled by any servers. Using source @ '"+el+"'");
+          log(vs, el, systems, choices, "Not handled by any servers. Using source @ '"+el+"'");
         } else {
-          internalLog.add(vs.getVersionedUrl()+" includes multiple systems "+systems.toString()+" best handled by multiple servers: "+choices.toString()+". Using source @ '"+el+"'");
+          log(vs, el, systems, choices, "Handled by multiple servers. Using source @ '"+el+"'");
         }        
         return findClient(el, systems, expand);
       } else {
         if (systems.size() == 1) {
-          internalLog.add(vs.getVersionedUrl()+" uses the system "+systems.toString()+" not handled by any servers. Using master @ '"+serverList.get(0)+"'");
+          log(vs, serverList.get(0).getAddress(), systems, choices, "System not handled by any servers. Using primary server");
         } else {
-          internalLog.add(vs.getVersionedUrl()+" includes multiple systems "+systems.toString()+" best handled by multiple servers: "+choices.toString()+". Using master @ '"+serverList.get(0)+"'");
+          log(vs, serverList.get(0).getAddress(), systems, choices, "Systems handled by multiple servers. Using primary server");
         }
         return findClient(serverList.get(0).getAddress(), systems, expand);
       }      
     } else {
       if (systems.size() == 1) {
-        internalLog.add("Request for system "+systems.toString()+" not handled by any servers. Using master @ '"+serverList.get(0)+"'");
+        log(vs, serverList.get(0).getAddress(), systems, choices, "System not handled by any servers. Using primary server");
       } else {
-        internalLog.add("Request for multiple systems "+systems.toString()+" best handled by multiple servers: "+choices.toString()+". Using master @ '"+serverList.get(0)+"'");
+        log(vs, serverList.get(0).getAddress(), systems, choices, "Systems handled by multiple servers. Using primary server");
       }
+      log(vs, serverList.get(0).getAddress(), systems, choices, "Fallback: primary server");
       return findClient(serverList.get(0).getAddress(), systems, expand);
     }
+  }
+
+  private void log(ValueSet vs, String server, Set<String> systems, List<ServerOptionList> choices, String message) {
+    String svs = (vs == null ? "null" : vs.getVersionedUrl());
+    String sys = systems.isEmpty() ? "--" : systems.size() == 1 ? systems.iterator().next() : systems.toString();
+    String sch = choices.isEmpty() ? "--" : choices.size() == 1 ? choices.iterator().next().toString() : choices.toString();
+    internalLog.add(new InternalLogEvent(message, server, svs, sys, sch));
   }
 
   private TerminologyClientContext findClient(String server, Set<String> systems, boolean expand) {
@@ -297,8 +346,8 @@ public class TerminologyClientManager {
       return ret;
     } catch (Exception e) {
       String msg = "Error resolving system "+url+": "+e.getMessage()+" ("+request+")";
-      if (!internalLog.contains(msg)) {
-        internalLog.add(msg);
+      if (!hasMessage(msg)) {
+        internalLog.add(new InternalLogEvent(msg));
       }
       if (!monitorServiceURL.contains("tx.fhir.org")) {
         e.printStackTrace();
@@ -306,6 +355,15 @@ public class TerminologyClientManager {
     }
     return new ServerOptionList( getMasterClient().getAddress());
     
+  }
+
+  private boolean hasMessage(String msg) {
+    for (InternalLogEvent log : internalLog) {
+      if (msg.equals(log.message)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public List<TerminologyClientContext> serverList() {
@@ -408,10 +466,6 @@ public class TerminologyClientManager {
       } catch (IOException e) {
       }
     }
-  }
-
-  public List<String> getInternalLog() {
-    return internalLog;
   }
 
   public List<TerminologyClientContext> getServerList() {
@@ -518,8 +572,8 @@ public class TerminologyClientManager {
     } catch (Exception e) {
       e.printStackTrace();
       String msg = "Error resolving valueSet "+canonical+": "+e.getMessage()+" ("+request+")";
-      if (!internalLog.contains(msg)) {
-        internalLog.add(msg);
+      if (!hasMessage(msg)) {
+        internalLog.add(new InternalLogEvent(msg));
       }
       e.printStackTrace();
       return null;
@@ -598,8 +652,8 @@ public class TerminologyClientManager {
     } catch (Exception e) {
       e.printStackTrace();
       String msg = "Error resolving valueSet "+canonical+": "+e.getMessage()+" ("+request+")";
-      if (!internalLog.contains(msg)) {
-        internalLog.add(msg);
+      if (!hasMessage(msg)) {
+        internalLog.add(new InternalLogEvent(msg));
       }
       e.printStackTrace();
       return null;
@@ -614,5 +668,8 @@ public class TerminologyClientManager {
     }
     return false;
   }
-  
+
+  public List<InternalLogEvent> getInternalLog() {
+    return internalLog;
+  }
 }

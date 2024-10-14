@@ -514,6 +514,7 @@ public class I18nConstants {
   public static final String QUESTIONNAIRE_QR_ITEM_ONLYONEI = "Questionnaire_QR_Item_OnlyOneI";
   public static final String QUESTIONNAIRE_QR_ITEM_ORDER = "Questionnaire_QR_Item_Order";
   public static final String QUESTIONNAIRE_QR_ITEM_STRINGNOOPTIONS = "Questionnaire_QR_Item_StringNoOptions";
+  public static final String QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING = "QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING";
   public static final String QUESTIONNAIRE_QR_ITEM_TEXT = "Questionnaire_QR_Item_Text";
   public static final String QUESTIONNAIRE_QR_ITEM_TIMENOOPTIONS = "Questionnaire_QR_Item_TimeNoOptions";
   public static final String QUESTIONNAIRE_QR_ITEM_WRONGTYPE = "Questionnaire_QR_Item_WrongType";
