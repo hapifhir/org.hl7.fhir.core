@@ -29,7 +29,7 @@ public interface IValidationPolicyAdvisor {
    * @param messageId - the message id (from messages.properties)
    * @return true if the validator should ignore the message
    */
-  boolean suppressMessageId(String path, String messageId);
+  boolean isSuppressMessageId(String path, String messageId);
   
   /**
    *

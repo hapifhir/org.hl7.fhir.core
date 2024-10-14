@@ -278,7 +278,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     if (policyAdvisor == null) {
       return false;
     } else {
-      return policyAdvisor.suppressMessageId(path, theMessage);
+      return policyAdvisor.isSuppressMessageId(path, theMessage);
     }
   }
 

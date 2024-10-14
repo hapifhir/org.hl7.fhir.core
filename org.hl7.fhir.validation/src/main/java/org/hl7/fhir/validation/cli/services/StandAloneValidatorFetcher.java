@@ -302,8 +302,8 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   @Override
-  public boolean suppressMessageId(String path, String messageId) {
-    return policyAdvisor.suppressMessageId(path, messageId);
+  public boolean isSuppressMessageId(String path, String messageId) {
+    return policyAdvisor.isSuppressMessageId(path, messageId);
   }
 
   @Override
