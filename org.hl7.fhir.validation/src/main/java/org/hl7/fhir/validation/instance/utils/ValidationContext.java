@@ -220,7 +220,7 @@ public class ValidationContext {
     public ValidationContext forSlicing() {
         ValidationContext res = new ValidationContext(appContext);
         res.resource = resource;
-        res.rootResource = resource;
+        res.rootResource = rootResource;
         res.groupingResource = groupingResource;
         res.profile = profile;
         res.checkSpecials = false;
