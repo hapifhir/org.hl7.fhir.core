@@ -13,10 +13,6 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.AdditionalBindingPurpose;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.CodedContentValidationAction;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ElementValidationAction;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ResourceValidationAction;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
@@ -170,7 +166,7 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
   }
 
   @Override
-  public boolean suppressMessageId(String path, String messageId) {
+  public boolean isSuppressMessageId(String path, String messageId) {
     return false;
   }
 

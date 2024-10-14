@@ -922,7 +922,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public boolean suppressMessageId(String path, String messageId) {
+  public boolean isSuppressMessageId(String path, String messageId) {
     return false;
   }
 

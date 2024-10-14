@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -11,12 +13,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.AdditionalBindingPurpose;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.CodedContentValidationAction;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ElementValidationAction;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ResourceValidationAction;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
-import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -38,48 +35,105 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
   private class SuppressMessageRule {
     private String id;
     private String path;
-    protected SuppressMessageRule(String id, String path) {
+    private String[] pathSegments;
+    private boolean regex;
+    
+    protected SuppressMessageRule(@Nonnull String id, String path, boolean regex) {
       super();
       this.id = id;
       this.path = path;
+      this.pathSegments = path.split("\\.");
+      this.regex = regex;
     }
-    public String getId() {
-      return id;
+
+    protected SuppressMessageRule(@Nonnull String id) {
+      super();
+      this.id = id;
     }
-    public String getPath() {
-      return path;
-    }
-    public boolean matches(String mid, String p) {
-      if (((id == null) || id.equals(mid)) && ((path == null) || path.equals(p))) {
-        suppressed++;
-        return true;
-      } else if (((id == null) || mid.matches(id)) && ((path == null) || p.matches(path))) {
-        suppressed++;
-        return true;
+
+    public boolean matches(@Nonnull String mid, @Nonnull String path, String[] p) {
+      if (regex) {
+        return stringMatches(id, mid) && regexMatches(path, path);
       } else {
+        return stringMatches(id, mid) && pathMatches(pathSegments, p);
+      }
+    }
+  }
+  
+  // string matching 
+
+  boolean pathMatches(String[] specifier, String[] actual) {
+    if (specifier == null) {
+      return true;
+    }
+    for (int i = 0; i < specifier.length; i++) {
+      if (i == actual.length) {
+        return false;
+      } else if (!pathSegmentMatches(specifier[i], actual[i])) {
         return false;
       }
+    }
+    if (actual.length > specifier.length) {
+      return specifier[specifier.length-1].equals("*");
+    } else {
+      return true;
+    }
+  }
+
+  boolean pathSegmentMatches(String specifier, String actual) {
+    if ("*".equals(specifier)) {
+      return true;
+    } else if (!specifier.contains("[")) {
+      if (actual.contains("[")) {
+        actual = actual.substring(0, actual.indexOf("["));
+      }
+      return specifier.equals(actual);
+    } else {      
+      return specifier.equals(actual);
+    }
+  }
+
+  boolean stringMatches(String specifier, @Nonnull String actual) {
+    if (specifier == null) {
+      return true;
+    } else if (specifier.endsWith("*")) {
+      return specifier.substring(0, specifier.length()-1).equalsIgnoreCase(actual.substring(0, specifier.length()-1));      
+    } else {
+      return specifier.equalsIgnoreCase(actual);
+    }
+  }
+  
+  boolean regexMatches(String specifier, @Nonnull String actual) {
+    if (specifier == null) {
+      return true;
+    } else {
+      return actual.matches(specifier);
     }
   }
   
   private List<SuppressMessageRule> suppressMessageRules = new ArrayList<>();
   private int suppressed = 0;
 
-  protected void addSuppressMessageRule(String id, String path) {
-    suppressMessageRules.add(new SuppressMessageRule(id, path));
+  protected void addSuppressMessageRule(@Nonnull String id, String path, boolean regex) {
+    suppressMessageRules.add(new SuppressMessageRule(id, path, regex));
+  }
+  
+  protected void addSuppressMessageRule(@Nonnull String id) {
+    suppressMessageRules.add(new SuppressMessageRule(id));
   }
   
   @Override
-  public boolean suppressMessageId(String path, String messageId) {
+  public boolean isSuppressMessageId(String path, String messageId) {
+    String[] p = path.split("\\.");
     for (SuppressMessageRule rule : suppressMessageRules) {
-      if (rule.matches(messageId, path)) {
+      if (rule.matches(messageId, path, p)) {
         return true;
       }
     }
     if (base != null) {
-      return base.suppressMessageId(path, messageId);      
+      return base.isSuppressMessageId(path, messageId);      
     } else {
-      return super.suppressMessageId(path, messageId);
+      return super.isSuppressMessageId(path, messageId);
     }
   }
 

@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.Utilities;
@@ -38,14 +40,19 @@ public class TextDrivenPolicyAdvisor extends RulesDrivenPolicyAdvisor {
       return;
     }
     if (line.startsWith("-")) {
-      String s = line.substring(1).trim();
-      String id = s;
-      String path = null;
+      @Nonnull String s = line.substring(1).trim();
       if (s.contains("@")) {
-        id = s.substring(0, s.indexOf("@"));
-        path = s.substring(s.indexOf("@")+1);
+        String id = s.substring(0, s.indexOf("@"));
+        String path = s.substring(s.indexOf("@")+1);
+        boolean regex = false;
+        if (path.startsWith("^")) {
+          regex = true;
+          path = path.substring(1);
+        }
+        addSuppressMessageRule(id, path, regex);
+      } else {
+        addSuppressMessageRule(s);
       }
-      addSuppressMessageRule(id, path);
     } else {
       // ignore it for now
     }
