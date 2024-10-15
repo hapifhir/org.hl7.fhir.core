@@ -2453,10 +2453,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return (T) valueSets.get(uri, version);
       } else if ("CodeSystem".equals(cls)) {
         return (T) codeSystems.get(uri, version);
-      } 
-      else if ("NamingSystem".equals(cls)) {
+      } else if ("NamingSystem".equals(cls)) {
         return (T) systems.get(uri, version);
-      }else if ("ConceptMap".equals(cls)) {
+      } else if ("ConceptMap".equals(cls)) {
         return (T) maps.get(uri, version);
       } else if ("PlanDefinition".equals(cls)) {
         return (T) plans.get(uri, version);
