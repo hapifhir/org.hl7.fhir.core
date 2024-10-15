@@ -2191,10 +2191,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           return (T) transforms.get(uri, version, pvlist);
         } 
         if (actors.has(uri)) {
-          return (T) transforms.get(uri, version, pvlist);
+          return (T) actors.get(uri, version, pvlist);
         } 
         if (requirements.has(uri)) {
-          return (T) transforms.get(uri, version, pvlist);
+          return (T) requirements.get(uri, version, pvlist);
         } 
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version, pvlist);
@@ -2453,16 +2453,19 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return (T) valueSets.get(uri, version);
       } else if ("CodeSystem".equals(cls)) {
         return (T) codeSystems.get(uri, version);
-      } else if ("ConceptMap".equals(cls)) {
+      } 
+      else if ("NamingSystem".equals(cls)) {
+        return (T) systems.get(uri, version);
+      }else if ("ConceptMap".equals(cls)) {
         return (T) maps.get(uri, version);
       } else if ("PlanDefinition".equals(cls)) {
         return (T) plans.get(uri, version);
       } else if ("OperationDefinition".equals(cls)) {
         OperationDefinition od = operations.get(uri, version);
         return (T) od;
-      } else if ("Questionnaire.class".equals(cls)) {
+      } else if ("Questionnaire".equals(cls)) {
         return (T) questionnaires.get(uri, version);
-      } else if ("SearchParameter.class".equals(cls)) {
+      } else if ("SearchParameter".equals(cls)) {
         SearchParameter res = searchParameters.get(uri, version);
         return (T) res;
       }
