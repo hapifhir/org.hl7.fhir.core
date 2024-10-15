@@ -1,0 +1,53 @@
+{"resourceType": "Questionnaire",
+    "id": "ed364266b937bb3bd73082b1",
+    "item": [
+        {
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "code": "editableDropdown"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "id": "specimen-source",
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "code": "U",
+                        "display": "Urine"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "code": "B",
+                        "display": "Blood"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "code": "S",
+                        "display": "Saliva"
+                    }
+                }
+            ],
+            "code": [
+                {
+                    "code": "specimen-source"
+                }
+            ],
+            "linkId": "specimen-source",
+            "text": "Source of specimen",
+            "type": "open-choice"
+        }
+    ],
+    "name": "Test Open Choice question",
+    "status": "active",
+    "subjectType": [
+        "Patient"
+    ]
+}

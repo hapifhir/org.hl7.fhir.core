@@ -21,6 +21,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditiona
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.MarkdownType;
+import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
@@ -35,6 +36,7 @@ import org.hl7.fhir.utilities.i18n.LanguageFileProducer;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerLanguageSession;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
+import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -664,5 +666,31 @@ public class LanguageUtils {
       }
     }
     return true;
+  }
+
+  public boolean hasTranslation(org.hl7.fhir.r5.model.Element e, String lang) {
+    return getTranslation(e, lang) != null;
+  }
+
+  public String getTranslation(org.hl7.fhir.r5.model.Element e, String lang) {
+    for (Extension ext : e.getExtensionsByUrl(ToolingExtensions.EXT_TRANSLATION)) {
+      String l = ext.getExtensionString("lang");
+      String v =  ext.getExtensionString("content");
+      if (langsMatch(l, lang) && v != null) {
+        return v;
+      }
+    }
+    return null;
+  }
+
+  public String getTranslationOrBase(PrimitiveType<?> e, String lang) {
+    for (Extension ext : e.getExtensionsByUrl(ToolingExtensions.EXT_TRANSLATION)) {
+      String l = ext.getExtensionString("lang");
+      String v =  ext.getExtensionString("content");
+      if (langsMatch(l, lang) && v != null) {
+        return v;
+      }
+    }
+    return e.primitiveValue();
   }
 }

@@ -128,6 +128,7 @@ public class ValueSetValidator extends BaseValidator {
   }
 
   private static final int TOO_MANY_CODES_TO_VALIDATE = 1000;
+  private static final int VALIDATION_BATCH_SIZE = 300;
 
   private CodeSystemChecker getSystemValidator(String system, List<ValidationMessage> errors) {
     if (system == null) {
@@ -319,36 +320,26 @@ public class ValueSetValidator extends BaseValidator {
       int cc = 0;
       List<VSCodingValidationRequest> batch = new ArrayList<>();
       boolean first = true;
-      for (Element concept : concepts) {
-        // we treat the first differently because we want to know if the system is worth validating. if it is, then we batch the rest
-        if (first) {
-          systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version, csChecker);
-          first = false;
-        } else if (systemOk) {
-          batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version, csChecker));
-        }
-        cc++;
-      }    
-      if (((InstanceValidator) parent).isValidateValueSetCodesOnTxServer() && batch.size() > 0 & !context.isNoTerminologyServer()) {
-        if (batch.size() > TOO_MANY_CODES_TO_VALIDATE) {
-          ok = hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_TOO_MANY_CODES, batch.size()) && ok;
-        } else {
-          long t = System.currentTimeMillis();
-          if (parent.isDebug()) {
-            System.out.println("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
-          }
+      if (concepts.size() > TOO_MANY_CODES_TO_VALIDATE) {
+        hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_TOO_MANY_CODES, batch.size());
+      } else {        
+        if (((InstanceValidator) parent).isValidateValueSetCodesOnTxServer() && !context.isNoTerminologyServer()) {
           try {
-            context.validateCodeBatch(ValidationOptions.defaults().withExampleOK(), batch, null);
-            if (parent.isDebug()) {
-              System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
-            }
-            for (VSCodingValidationRequest cv : batch) {
-              if (version == null) {
-                warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode(), cv.getResult().getMessage());
-              } else {
-                warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode(), cv.getResult().getMessage());
+            for (Element concept : concepts) {
+              // we treat the first differently because we want to know if the system is worth validating. if it is, then we batch the rest
+              if (first) {
+                systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version, csChecker);
+                first = false;
+              } else if (systemOk) {
+                batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version, csChecker));
+                if (batch.size() > VALIDATION_BATCH_SIZE) {
+                  executeValidationBatch(errors, vsid, retired, system, version, batch);
+                  batch.clear();
+                }
               }
-            }
+              cc++;
+            }    
+            executeValidationBatch(errors, vsid, retired, system, version, batch);
           } catch (Exception e) {
             ok = false;
             VSCodingValidationRequest cv = batch.get(0);
@@ -356,7 +347,6 @@ public class ValueSetValidator extends BaseValidator {
           }
         }
       }
-
       int cf = 0;
       for (Element filter : filters) {
         ok = validateValueSetIncludeFilter(errors, filter, stack.push(filter, cf, null, null), system, version, cs, csChecker) & ok;
@@ -367,6 +357,27 @@ public class ValueSetValidator extends BaseValidator {
       warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, filters.size() == 0 && concepts.size() == 0, I18nConstants.VALUESET_NO_SYSTEM_WARNING);      
     }
     return ok;
+  }
+
+  private void executeValidationBatch(List<ValidationMessage> errors, String vsid, boolean retired, String system,
+      String version, List<VSCodingValidationRequest> batch) {
+    if (batch.size() > 0) {
+      long t = System.currentTimeMillis();
+      if (parent.isDebug()) {
+        System.out.println("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
+      }
+      context.validateCodeBatch(ValidationOptions.defaults().withExampleOK(), batch, null);
+      if (parent.isDebug()) {
+        System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
+      }
+      for (VSCodingValidationRequest cv : batch) {
+        if (version == null) {
+          warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode(), cv.getResult().getMessage());
+        } else {
+          warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode(), cv.getResult().getMessage());
+        }
+      }
+    }
   }
 
 
