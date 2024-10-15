@@ -11,7 +11,7 @@ import org.hl7.fhir.utilities.tests.TestConfig;
 import org.hl7.fhir.utilities.tests.TestConstants;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher;
-import org.hl7.fhir.validation.instance.BasePolicyAdvisorForFullValidation;
+import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 
 public class TestUtilities {
 

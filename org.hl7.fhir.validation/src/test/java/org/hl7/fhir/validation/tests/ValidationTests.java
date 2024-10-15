@@ -93,8 +93,8 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher;
-import org.hl7.fhir.validation.instance.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -919,5 +919,15 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     } else {
       return null;
     }
+  }
+
+  @Override
+  public boolean isSuppressMessageId(String path, String messageId) {
+    return false;
+  }
+
+  @Override
+  public ReferenceValidationPolicy getReferencePolicy() {
+    return ReferenceValidationPolicy.IGNORE;
   }
 }

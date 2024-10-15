@@ -54,6 +54,8 @@ public class Params {
   public static final String TERMINOLOGY = "-tx";
   public static final String TERMINOLOGY_LOG = "-txLog";
   public static final String TERMINOLOGY_CACHE = "-txCache";
+  public static final String TERMINOLOGY_ROUTING = "-tx-routing";
+  public static final String TERMINOLOGY_CACHE_CLEAR = "-clear-tx-cache";
   public static final String LOG = "-log";
   public static final String LANGUAGE = "-language";
   public static final String IMPLEMENTATION_GUIDE = "-ig";
@@ -80,11 +82,13 @@ public class Params {
   public static final String WANT_INVARIANTS_IN_MESSAGES = "-want-invariants-in-messages";
   public static final String SECURITY_CHECKS = "-security-checks";
   public static final String CRUMB_TRAIL = "-crumb-trails";
+  public static final String SHOW_MESSAGE_IDS = "-show-message-ids";
   public static final String FOR_PUBLICATION = "-forPublication";
   public static final String VERBOSE = "-verbose";
   public static final String SHOW_TIMES = "-show-times";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
   public static final String OUTPUT_STYLE = "-output-style";
+  public static final String ADVSIOR_FILE = "-advisor-file";
   public static final String DO_IMPLICIT_FHIRPATH_STRING_CONVERSION = "-implicit-fhirpath-string-conversions";
   public static final String JURISDICTION = "-jurisdiction";
   public static final String HTML_IN_MARKDOWN = "-html-in-markdown";
@@ -318,6 +322,8 @@ public class Params {
         cliContext.setSecurityChecks(true);
       } else if (args[i].equals(CRUMB_TRAIL)) {
         cliContext.setCrumbTrails(true);
+      } else if (args[i].equals(SHOW_MESSAGE_IDS)) {
+        cliContext.setShowMessageIds(true);
       } else if (args[i].equals(FOR_PUBLICATION)) {
         cliContext.setForPublication(true);
       } else if (args[i].equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
@@ -326,6 +332,7 @@ public class Params {
         cliContext.setNoExperimentalContent(true);
       } else if (args[i].equals(VERBOSE)) {
         cliContext.setCrumbTrails(true);
+        cliContext.setShowMessageIds(true);
       } else if (args[i].equals(ALLOW_EXAMPLE_URLS)) {
         String bl = args[++i]; 
         if ("true".equals(bl)) {
@@ -335,10 +342,22 @@ public class Params {
         } else {
           throw new Error("Value for "+ALLOW_EXAMPLE_URLS+" not understood: "+bl);          
         }          
+      } else if (args[i].equals(TERMINOLOGY_ROUTING)) {
+        cliContext.setShowTerminologyRouting(true);
+      } else if (args[i].equals(TERMINOLOGY_CACHE_CLEAR)) {
+        cliContext.setClearTxCache(true);
       } else if (args[i].equals(SHOW_TIMES)) {
         cliContext.setShowTimes(true);
       } else if (args[i].equals(OUTPUT_STYLE)) {
         cliContext.setOutputStyle(args[++i]);
+      } else if (args[i].equals(ADVSIOR_FILE)) {
+        cliContext.setAdvisorFile(args[++i]);
+        File f = new File(cliContext.getAdvisorFile());
+        if (!f.exists()) {
+          throw new Error("Cannot find advisor file "+cliContext.getAdvisorFile());
+        } else if (!Utilities.existsInList(Utilities.getFileExtension(f.getName()), "json", "txt")) {
+          throw new Error("Advisor file "+cliContext.getAdvisorFile()+" must be a .json or a .txt file");
+        }
       } else if (args[i].equals(SCAN)) {
         cliContext.setMode(EngineMode.SCAN);
       } else if (args[i].equals(TERMINOLOGY)) {

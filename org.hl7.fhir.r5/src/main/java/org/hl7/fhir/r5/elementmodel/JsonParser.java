@@ -833,10 +833,26 @@ public class JsonParser extends ParserBase {
       } else if (!done.contains(child.getName())) {
         done.add(child.getName());
         List<Element> list = e.getChildrenByName(child.getName());
-        if (child.getProperty().getDefinition().hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY))
-          composeKeyList(path, list);
-        else
-          composeList(path, list);
+        boolean skipList = false;
+        if (json.canElide() && isElideElements()) {
+          boolean foundNonElide = false;
+          for (Element listElement: list) {
+            if (!listElement.isElided()) {
+              foundNonElide = true;
+              break;
+            }
+          }
+          if (!foundNonElide) {
+            json.elide();
+            skipList = true;
+          }
+        }
+        if (!skipList) {
+          if (child.getProperty().getDefinition().hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY))
+            composeKeyList(path, list);
+          else
+            composeList(path, list);
+        }
       }
     }
   }

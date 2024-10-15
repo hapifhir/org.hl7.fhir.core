@@ -40,6 +40,7 @@ import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.InternalLogEvent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.SystemExitManager;
@@ -69,6 +70,8 @@ import org.hl7.fhir.validation.cli.renderers.ValidationOutputRenderer;
 import org.hl7.fhir.validation.cli.utils.Common;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
+import org.hl7.fhir.validation.instance.advisor.JsonDrivenPolicyAdvisor;
+import org.hl7.fhir.validation.instance.advisor.TextDrivenPolicyAdvisor;
 
 public class ValidationService {
 
@@ -155,6 +158,7 @@ public class ValidationService {
         if (request.getCliContext().isShowTimes()) {
           response.getValidationTimes().put(fileToValidate.getFileName(), validatedFragments.getValidationTime());
         }
+        
       }
     }
 
@@ -240,6 +244,7 @@ public class ValidationService {
         PrintStream dst = null;
         ValidationOutputRenderer renderer = makeValidationOutputRenderer(cliContext);
         renderer.setCrumbTrails(validator.isCrumbTrails());
+        renderer.setShowMessageIds(validator.isShowMessageIds());
         renderer.setRunDate(runDate);
         if (renderer.isSingleFile()) {
           if (cliContext.getOutput() == null) {
@@ -287,6 +292,19 @@ public class ValidationService {
           String html = new HTMLOutputGenerator(records).generate(System.currentTimeMillis() - start);
           TextFile.stringToFile(html, cliContext.getHtmlOutput());
           System.out.println("HTML Summary in " + cliContext.getHtmlOutput());
+        }
+
+        if (cliContext.isShowTerminologyRouting()) {
+          System.out.println("");
+          System.out.println("Terminology Routing Dump ---------------------------------------");
+          if (validator.getContext().getTxClientManager().getInternalLog().isEmpty()) {
+            System.out.println("(nothing happened)");            
+          } else {
+            for (InternalLogEvent log : validator.getContext().getTxClientManager().getInternalLog()) {
+              System.out.println(log.getMessage()+" -> "+log.getServer()+" (for VS "+log.getVs()+" with systems '"+log.getSystems()+"', choices = '"+log.getChoices()+"')");
+            }
+          }
+          validator.getContext().getTxClientManager().getInternalLog().clear();
         }
       }
       if (watch != ValidatorWatchMode.NONE) {
@@ -544,6 +562,10 @@ public class ValidationService {
       System.out.println("  No Terminology Cache");      
     } else {
       System.out.println("  Terminology Cache at "+validationEngine.getContext().getTxCache().getFolder());
+      if (cliContext.isClearTxCache()) {
+        System.out.println("  Terminology Cache Entries Cleaned out");
+        validationEngine.getContext().getTxCache().clear();
+      }
     }
     System.out.print("  Get set... ");
     validationEngine.setQuestionnaireMode(cliContext.getQuestionnaireMode());
@@ -574,6 +596,7 @@ public class ValidationService {
     validationEngine.setWantInvariantInMessage(cliContext.isWantInvariantsInMessages());
     validationEngine.setSecurityChecks(cliContext.isSecurityChecks());
     validationEngine.setCrumbTrails(cliContext.isCrumbTrails());
+    validationEngine.setShowMessageIds(cliContext.isShowMessageIds());
     validationEngine.setForPublication(cliContext.isForPublication());
     validationEngine.setShowTimes(cliContext.isShowTimes());
     validationEngine.setAllowExampleUrls(cliContext.isAllowExampleUrls());
@@ -582,6 +605,13 @@ public class ValidationService {
       validationEngine.setFetcher(fetcher);
       validationEngine.getContext().setLocator(fetcher);
       validationEngine.setPolicyAdvisor(fetcher);
+      if (cliContext.getAdvisorFile() != null) {
+        if (cliContext.getAdvisorFile().endsWith(".json")) {
+          fetcher.setPolicyAdvisor(new JsonDrivenPolicyAdvisor(fetcher.getPolicyAdvisor(), new File(cliContext.getAdvisorFile())));
+        } else {
+          fetcher.setPolicyAdvisor(new TextDrivenPolicyAdvisor(fetcher.getPolicyAdvisor(), new File(cliContext.getAdvisorFile())));          
+        }
+      }
     }
     validationEngine.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
     validationEngine.setJurisdiction(CodeSystemUtilities.readCoding(cliContext.getJurisdiction()));
