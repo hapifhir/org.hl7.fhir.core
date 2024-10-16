@@ -17,12 +17,14 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContextManager;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
+import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
@@ -41,13 +43,14 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.cli.utils.Common;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 
 import javax.annotation.Nonnull;
 
 
-public class StandAloneValidatorFetcher extends BasePolicyAdvisorForFullValidation implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IWorkerContextManager.ICanonicalResourceLocator {
+public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IWorkerContextManager.ICanonicalResourceLocator {
 
   List<String> mappingsUris = new ArrayList<>();
   private FilesystemPackageCacheManager pcm;
@@ -56,12 +59,13 @@ public class StandAloneValidatorFetcher extends BasePolicyAdvisorForFullValidati
   private Map<String, Boolean> urlList = new HashMap<>();
   private Map<String, String> pidList = new HashMap<>();
   private Map<String, NpmPackage> pidMap = new HashMap<>();
-
+  private IValidationPolicyAdvisor policyAdvisor;
+  
   public StandAloneValidatorFetcher(FilesystemPackageCacheManager pcm, IWorkerContext context, IPackageInstaller installer) {
-    super(ReferenceValidationPolicy.IGNORE);
     this.pcm = pcm;
     this.context = context;
     this.installer = installer;
+    this.policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.IGNORE);
   }
 
   @Override
@@ -295,6 +299,57 @@ public class StandAloneValidatorFetcher extends BasePolicyAdvisorForFullValidati
   @Override
   public Set<String> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
     return new HashSet<>();
+  }
+
+  @Override
+  public boolean isSuppressMessageId(String path, String messageId) {
+    return policyAdvisor.isSuppressMessageId(path, messageId);
+  }
+
+  @Override
+  public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator, Object appContext,
+      StructureDefinition structure, ElementDefinition element, String containerType, String containerId,
+      SpecialElement containingResourceType, String path, String url) {
+    return policyAdvisor.policyForContained(validator, appContext, structure, element, containerType, containerId, containingResourceType, path, url);
+  }
+
+  @Override
+  public EnumSet<ResourceValidationAction> policyForResource(IResourceValidator validator, Object appContext,
+      StructureDefinition type, String path) {
+    return policyAdvisor.policyForResource(validator, appContext, type, path);
+  }
+
+  @Override
+  public EnumSet<ElementValidationAction> policyForElement(IResourceValidator validator, Object appContext,
+      StructureDefinition structure, ElementDefinition element, String path) {
+    return policyAdvisor.policyForElement(validator, appContext, structure, element, path);
+  }
+
+  @Override
+  public EnumSet<CodedContentValidationAction> policyForCodedContent(IResourceValidator validator, Object appContext,
+      String stackPath, ElementDefinition definition, StructureDefinition structure, BindingKind kind,
+      AdditionalBindingPurpose purpose, ValueSet valueSet, List<String> systems) {
+    return policyAdvisor.policyForCodedContent(validator, appContext, stackPath, definition, structure, kind, purpose, valueSet, systems);
+  }
+
+  @Override
+  public List<StructureDefinition> getImpliedProfilesForResource(IResourceValidator validator, Object appContext,
+      String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
+      IMessagingServices msgServices, List<ValidationMessage> messages) {
+    return policyAdvisor.getImpliedProfilesForResource(validator, appContext, stackPath, definition, structure, resource, valid, msgServices, messages);
+  }
+
+  @Override
+  public ReferenceValidationPolicy getReferencePolicy() {
+    return policyAdvisor.getReferencePolicy();
+  }
+
+  public IValidationPolicyAdvisor getPolicyAdvisor() {
+    return policyAdvisor;
+  }
+
+  public void setPolicyAdvisor(IValidationPolicyAdvisor policyAdvisor) {
+    this.policyAdvisor = policyAdvisor;
   }
 
 }

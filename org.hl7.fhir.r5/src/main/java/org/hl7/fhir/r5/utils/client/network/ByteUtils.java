@@ -18,8 +18,8 @@ public class ByteUtils {
   public static <T extends Resource> byte[] resourceToByteArray(T resource, boolean pretty, boolean isJson, boolean noXhtml) {
     ByteArrayOutputStream baos = null;
     byte[] byteArray = null;
+    baos = new ByteArrayOutputStream();
     try {
-      baos = new ByteArrayOutputStream();
       IParser parser = null;
       if (isJson) {
         parser = new JsonParser();
