@@ -376,6 +376,9 @@ public class ValidatorCli {
       ((StandaloneTask) cliTask).executeTask(cliContext,params,tt,tts);
     }
 
+    if (cliContext.getAdvisorFile() != null) {
+      System.out.println("Note: Some validation issues might be hidden by the advisor settings in the file "+cliContext.getAdvisorFile());      
+    }
     System.out.println("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     SystemExitManager.finish();
   }

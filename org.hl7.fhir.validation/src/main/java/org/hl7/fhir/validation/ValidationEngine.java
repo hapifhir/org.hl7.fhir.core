@@ -1288,4 +1288,14 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
           definition, structure, resource, valid, msgServices, messages);
   }
 
+  @Override
+  public boolean isSuppressMessageId(String path, String messageId) {
+    return policyAdvisor.isSuppressMessageId(path, messageId);
+  }
+
+  @Override
+  public ReferenceValidationPolicy getReferencePolicy() {
+    return ReferenceValidationPolicy.IGNORE;
+  }
+
 }

@@ -920,4 +920,14 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       return null;
     }
   }
+
+  @Override
+  public boolean isSuppressMessageId(String path, String messageId) {
+    return false;
+  }
+
+  @Override
+  public ReferenceValidationPolicy getReferencePolicy() {
+    return ReferenceValidationPolicy.IGNORE;
+  }
 }

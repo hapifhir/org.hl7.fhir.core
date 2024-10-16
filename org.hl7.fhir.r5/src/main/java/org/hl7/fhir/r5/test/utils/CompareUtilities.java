@@ -65,6 +65,7 @@ public class CompareUtilities extends BaseTestingUtilities {
         case "$$" : return "$$";
         case "$instant$": return "\"An Instant\"";
         case "$uuid$": return "\"A Uuid\"";
+        case "$id$": return "\"An Id\"";
         default: return "Unhandled template: "+expected;
         }
       }
@@ -466,6 +467,7 @@ public class CompareUtilities extends BaseTestingUtilities {
         case "$$" : return true;
         case "$instant$": return actualJsonString.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]{1,9})?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))");
         case "$uuid$": return actualJsonString.matches("urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+        case "$id$": return actualJsonString.matches("[A-Za-z0-9\\-\\.]{1,64}");
         default: 
           throw new Error("Unhandled template: "+expectedJsonString);
         }
