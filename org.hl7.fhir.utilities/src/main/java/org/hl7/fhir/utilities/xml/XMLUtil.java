@@ -42,9 +42,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.*;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -64,10 +62,15 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
+import org.xml.sax.XMLReader;
 
 public class XMLUtil {
 
 	public static final String SPACE_CHAR = "\u00A0";
+  public static final String SAX_FEATURES_EXTERNAL_GENERAL_ENTITIES = "http://xml.org/sax/features/external-general-entities";
+  public static final String APACHE_XML_FEATURES_DISALLOW_DOCTYPE_DECL = "http://apache.org/xml/features/disallow-doctype-decl";
 
   public static boolean isNMToken(String name) {
 		if (name == null)
@@ -510,12 +513,34 @@ public class XMLUtil {
 
   public static DocumentBuilderFactory newXXEProtectedDocumentBuilderFactory() throws ParserConfigurationException {
     final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-    documentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+    documentBuilderFactory.setFeature(APACHE_XML_FEATURES_DISALLOW_DOCTYPE_DECL, true);
     documentBuilderFactory.setXIncludeAware(false);
     return documentBuilderFactory;
   }
 
+  public static SAXParserFactory newXXEProtectedSaxParserFactory() throws SAXNotSupportedException, SAXNotRecognizedException, ParserConfigurationException {
+    final SAXParserFactory spf = SAXParserFactory.newInstance();
+    spf.setFeature(SAX_FEATURES_EXTERNAL_GENERAL_ENTITIES, false);
+    spf.setFeature(APACHE_XML_FEATURES_DISALLOW_DOCTYPE_DECL, true);
+    return spf;
+  }
 
+  public static XMLReader getXXEProtectedXMLReader(SAXParserFactory spf) throws ParserConfigurationException, SAXException {
+    final SAXParser saxParser = spf.newSAXParser();
+    final XMLReader xmlReader = saxParser.getXMLReader();
+
+    final boolean externalGeneralEntitiesFeatureValue = spf.getFeature(SAX_FEATURES_EXTERNAL_GENERAL_ENTITIES);
+    if (externalGeneralEntitiesFeatureValue) {
+      throw new IllegalArgumentException("SAXParserFactory has insecure feature setting:" + SAX_FEATURES_EXTERNAL_GENERAL_ENTITIES+ "=" + externalGeneralEntitiesFeatureValue);
+    }
+    final boolean disallowDocTypeDeclFeatureValue = spf.getFeature(APACHE_XML_FEATURES_DISALLOW_DOCTYPE_DECL);
+    if (!disallowDocTypeDeclFeatureValue) {
+      throw new IllegalArgumentException("SAXParserFactory has insecure feature setting:" + APACHE_XML_FEATURES_DISALLOW_DOCTYPE_DECL + "=" + disallowDocTypeDeclFeatureValue);
+    }
+    xmlReader.setFeature(SAX_FEATURES_EXTERNAL_GENERAL_ENTITIES, false);
+    xmlReader.setFeature(APACHE_XML_FEATURES_DISALLOW_DOCTYPE_DECL, true);
+    return xmlReader;
+  }
   public static void writeDomToFile(Document doc, String filename) throws TransformerException, IOException {
     TransformerFactory transformerFactory = XMLUtil.newXXEProtectedTransformerFactory();
     Transformer transformer = transformerFactory.newTransformer();
