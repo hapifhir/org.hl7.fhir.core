@@ -37,6 +37,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.cli.utils.AsteriskFilter;
 import org.hl7.fhir.validation.cli.utils.Common;
 import org.w3c.dom.Document;
@@ -115,7 +116,7 @@ public class ValidatorUtils {
   }
 
   protected static Document parseXml(byte[] cnt) throws ParserConfigurationException, SAXException, IOException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     // xxe protection
     factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
     factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
