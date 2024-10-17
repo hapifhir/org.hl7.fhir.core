@@ -274,6 +274,10 @@
             <artifactId>ucum</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.ogce</groupId>
             <artifactId>xpp3</artifactId>
         </dependency>
