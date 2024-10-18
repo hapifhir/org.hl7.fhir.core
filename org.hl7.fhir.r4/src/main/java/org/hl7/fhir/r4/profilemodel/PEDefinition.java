@@ -39,6 +39,7 @@ import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.ElementDefinition;
 import org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r4.model.StructureDefinition;
+import org.hl7.fhir.r4.model.Type;
 import org.hl7.fhir.r4.profilemodel.PEDefinition.PEDefinitionElementMode;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -220,7 +221,7 @@ public abstract class PEDefinition {
     if (types().size() == 1) {
       return children(types.get(0).getUrl(), false);
     } else {
-      throw new DefinitionException("Attempt to get children for an element that doesn't have a single type (types = "+types()+")");
+      throw new DefinitionException("Attempt to get children for an element that doesn't have a single type (element = "+path+", types = "+types()+")");
     }
   }
   
@@ -228,17 +229,22 @@ public abstract class PEDefinition {
     if (types().size() == 1) {
       return children(types.get(0).getUrl(), allFixed);
     } else {
-      throw new DefinitionException("Attempt to get children for an element that doesn't have a single type (types = "+types()+")");
+      throw new DefinitionException("Attempt to get children for an element that doesn't have a single type (element = "+path+", types = "+types()+")");
     }
   }
   
   /**
    * @return True if the element has a fixed value. This will always be false if fixedProps = false when the builder is created
    */
-  public boolean fixedValue() {
+  public boolean hasFixedValue() {
     return definition.hasFixed() || definition.hasPattern();
   }
+
+  public Type getFixedValue() {
+    return definition.hasFixed() ? definition.getFixed() : definition.getPattern();
+  }
   
+
   protected abstract void makeChildren(String typeUrl, List<PEDefinition> children, boolean allFixed);
 
   @Override
@@ -289,7 +295,7 @@ public abstract class PEDefinition {
 
 
   public boolean isList() {
-    return "*".equals(definition.getMax());
+    return "*".equals(definition.getMax()) || (Utilities.parseInt(definition.getMax(), 2) > 1);
   }
 
 

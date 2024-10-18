@@ -90,6 +90,8 @@ public class CliContext {
   private String snomedCT = "900000000000207008";
   @JsonProperty("targetVer")
   private String targetVer = null;
+  @JsonProperty("packageName")
+  private String packageName = null;
   @JsonProperty("noEcosystem")
   private boolean noEcosystem = false;
 
@@ -101,6 +103,8 @@ public class CliContext {
   private QuestionnaireMode questionnaireMode = QuestionnaireMode.CHECK;
   @JsonProperty("level")
   private ValidationLevel level = ValidationLevel.HINTS;
+  @JsonProperty("options")
+  private List<String> options = new ArrayList<String>();
   
   @JsonProperty("profiles")
   private List<String> profiles = new ArrayList<String>();
@@ -435,6 +439,25 @@ public class CliContext {
     return this;
   }
 
+  @JsonProperty("options")
+  public List<String> getOptions() {
+    return options;
+  }
+
+  @JsonProperty("options")
+  public CliContext setOptions(List<String> options) {
+    this.options = options;
+    return this;
+  }
+
+  public CliContext addOption(String option) {
+    if (this.options == null) {
+      this.options = new ArrayList<>();
+    }
+    this.options.add(option);
+    return this;
+  }
+
   @JsonProperty("mode")
   public EngineMode getMode() {
     return mode;
@@ -635,6 +658,17 @@ public class CliContext {
   @JsonProperty("targetVer")
   public CliContext setTargetVer(String targetVer) {
     this.targetVer = targetVer;
+    return this;
+  }
+
+  @JsonProperty("packageName")
+  public String getPackageName() {
+    return packageName;
+  }
+
+  @JsonProperty("packageName")
+  public CliContext setPackageName(String packageName) {
+    this.packageName = packageName;
     return this;
   }
 
@@ -857,10 +891,12 @@ public class CliContext {
       Objects.equals(fhirpath, that.fhirpath) &&
       Objects.equals(snomedCT, that.snomedCT) &&
       Objects.equals(targetVer, that.targetVer) &&
+      Objects.equals(packageName, that.packageName) &&
       Objects.equals(igs, that.igs) &&
       Objects.equals(questionnaireMode, that.questionnaireMode) &&
       Objects.equals(level, that.level) &&
       Objects.equals(profiles, that.profiles) &&
+      Objects.equals(options, that.options) &&
       Objects.equals(sources, that.sources) &&
       Objects.equals(crumbTrails, that.crumbTrails) &&
       Objects.equals(showMessageIds, that.showMessageIds) &&
@@ -885,7 +921,7 @@ public class CliContext {
   public int hashCode() {
     return Objects.hash(baseEngine, doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching,
             noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
-            targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, showMessageIds, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
+            targetVer, packageName, igs, questionnaireMode, level, profiles, options, sources, inputs, mode, locale, locations, crumbTrails, showMessageIds, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
             watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, advisorFile, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
   }
 
@@ -921,10 +957,12 @@ public class CliContext {
       ", fhirpath='" + fhirpath + '\'' +
       ", snomedCT='" + snomedCT + '\'' +
       ", targetVer='" + targetVer + '\'' +
+      ", packageName='" + packageName + '\'' +
       ", igs=" + igs +
       ", questionnaireMode=" + questionnaireMode +
       ", level=" + level +
       ", profiles=" + profiles +
+      ", options=" + options +
       ", sources=" + sources +
       ", inputs=" + inputs +
       ", mode=" + mode +

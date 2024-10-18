@@ -60,6 +60,29 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
+/**
+ * 
+ * The easiest way to generate code is to use the FHIR Validator, which can generate java classes for profiles
+ * using this code. Parameters:
+ * 
+ *   -codegen -version r4 -ig hl7.fhir.dk.core#3.2.0 -profiles http://hl7.dk/fhir/core/StructureDefinition/dk-core-gln-identifier,http://hl7.dk/fhir/core/StructureDefinition/dk-core-patient -output /Users/grahamegrieve/temp/codegen -package-name org.hl7.fhir.test
+ * 
+ * Parameter Documentation:
+ *   -codegen: tells the validator to generate code
+ *   -version {r4|5}: which version to generate for 
+ *   -ig {name}: loads an IG (and it's dependencies) - see -ig documentation for the validator
+ *   -profiles {list}: a comma separated list of profile URLs to generate code for 
+ *   -output {folder}: the folder where to generate the output java class source code
+ *   -package-name {name}: the name of the java package to generate in
+ *      
+ * options
+ *   -option {name}: a code generation option, one of:
+ *   
+ *     narrative: generate code for the resource narrative (recommended: don't - leave that for the native resource level)
+ *     meta: generate code the what's in meta
+ *     contained: generate code for contained resources 
+ *     all-elements: generate code for all elements, not just the key elements (makes the code verbose)
+ */
 
 public class PECodeGenerator {
 
@@ -321,7 +344,7 @@ public class PECodeGenerator {
           String enumName = generateEnum(source, field);
           boolean isPrim = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
           boolean isAbstract = sd.getAbstract();
-          String name = field.name().replace("[x]", "");
+          String name = Utilities.javaTokenize(field.name().replace("[x]", ""), false);
           String sname = name;
           String type = null;
           String init = "";
@@ -593,7 +616,8 @@ public class PECodeGenerator {
   private IWorkerContext workerContext;
   private String canonical;
   private String pkgName;
-
+  private String version;
+  
   // options:
   private ExtensionPolicy extensionPolicy;
   private boolean narrative;
@@ -618,6 +642,14 @@ public class PECodeGenerator {
     this.folder = folder;
   }
 
+
+  public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
+  }
 
   public String getCanonical() {
     return canonical;
@@ -698,7 +730,7 @@ public class PECodeGenerator {
    * @throws IOException 
    * 
    */
-  public void execute() throws IOException {
+  public String execute() throws IOException {
     imports = new StringBuilder();
     
     PEDefinition source = new PEBuilder(workerContext, PEElementPropertiesPolicy.EXTENSION, true).buildPEDefinition(canonical);
@@ -707,20 +739,20 @@ public class PECodeGenerator {
     w(imports, "import javax.annotation.Nullable;");
     w(imports, "import java.util.Date;\r\n");
     w(imports);
-    w(imports, "import org.hl7.fhir.r5.context.IWorkerContext;");
-    w(imports, "import org.hl7.fhir.r5.model.*;");
-    w(imports, "import org.hl7.fhir.r5.profilemodel.PEBuilder;");
-    w(imports, "import org.hl7.fhir.r5.profilemodel.PEInstance;");
-    w(imports, "import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;");
-    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.PEGeneratedBase;");
-    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.Min;");
-    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.Max;");
-    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.Label;");
-    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.Doco;");
-    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.BindingStrength;");
-    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.ValueSet;");
-    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.MustSupport;");
-    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.Definition;");
+    w(imports, "import org.hl7.fhir."+version+".context.IWorkerContext;");
+    w(imports, "import org.hl7.fhir."+version+".model.*;");
+    w(imports, "import org.hl7.fhir."+version+".profilemodel.PEBuilder;");
+    w(imports, "import org.hl7.fhir."+version+".profilemodel.PEInstance;");
+    w(imports, "import org.hl7.fhir."+version+".profilemodel.PEBuilder.PEElementPropertiesPolicy;");
+    w(imports, "import org.hl7.fhir."+version+".profilemodel.gen.PEGeneratedBase;");
+    w(imports, "import org.hl7.fhir."+version+".profilemodel.gen.Min;");
+    w(imports, "import org.hl7.fhir."+version+".profilemodel.gen.Max;");
+    w(imports, "import org.hl7.fhir."+version+".profilemodel.gen.Label;");
+    w(imports, "import org.hl7.fhir."+version+".profilemodel.gen.Doco;");
+    w(imports, "import org.hl7.fhir."+version+".profilemodel.gen.BindingStrength;");
+    w(imports, "import org.hl7.fhir."+version+".profilemodel.gen.ValueSet;");
+    w(imports, "import org.hl7.fhir."+version+".profilemodel.gen.MustSupport;");
+    w(imports, "import org.hl7.fhir."+version+".profilemodel.gen.Definition;");
       
       
     PEGenClass cls = genClass(source);
@@ -733,6 +765,7 @@ public class PECodeGenerator {
     w(b, imports.toString());
     cls.write(b, source.getProfile().getCopyright());
     TextFile.stringToFile(b.toString(), Utilities.path(folder, cls.name+".java"));
+    return cls.name+".java";
   }
 
   public void jdoc(StringBuilder b, String doco, int indent, boolean jdoc) {
