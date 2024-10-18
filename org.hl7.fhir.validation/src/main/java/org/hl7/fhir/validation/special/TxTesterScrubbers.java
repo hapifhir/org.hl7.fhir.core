@@ -4,6 +4,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -90,6 +91,9 @@ public class TxTesterScrubbers {
   public static void scrubOO(OperationOutcome po, boolean tight) {
     scrubDR(po, tight);
     po.getIssue().removeIf(i -> i.hasDiagnostics() & !i.hasDetails());
+    for (OperationOutcomeIssueComponent iss : po.getIssue()) {
+      iss.setDiagnostics(null);
+    }
   }
 
 }

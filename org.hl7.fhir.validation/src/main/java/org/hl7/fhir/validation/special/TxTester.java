@@ -81,6 +81,12 @@ public class TxTester {
     System.out.println("Run terminology service Tests");
     System.out.println("  Source for tests: "+loader.describe());
     System.out.println("  Output Directory: "+output);
+    if (!new File(output).exists()) {
+      Utilities.createDirectory(output);
+    }
+    if (!new File(output).exists()) {
+      throw new IOException("Unable to create output directory "+output);
+    }
     System.out.println("  Term Service Url: "+server);
     System.out.println("  External Strings: "+(externals != null));
     System.out.println("  Test  Exec Modes: "+modes.toString());
@@ -198,7 +204,7 @@ public class TxTester {
 
         String fn = chooseParam(test, "response", modes);
         String resp = TextFile.bytesToString(loader.loadContent(fn));
-        String fp = Utilities.path("[tmp]", serverId(), fn);
+        String fp = this.output == null ?  Utilities.path("[tmp]", serverId(), fn) : Utilities.path(this.output, fn);
         File fo = ManagedFileAccess.file(fp);
         if (fo.exists()) {
           fo.delete();
@@ -477,7 +483,7 @@ public class TxTester {
       org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_40_50.convertResource(res);
       String p = Utilities.path(folder, "r4", filename);
       Utilities.createDirectory(Utilities.getDirectoryForFile(p));
-      new org.hl7.fhir.r4.formats.JsonParser().compose(ManagedFileAccess.outStream(p), r4);
+      new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(p), r4);
       return res;
     }
 
