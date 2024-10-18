@@ -616,7 +616,7 @@ public class PECodeGenerator {
   private IWorkerContext workerContext;
   private String canonical;
   private String pkgName;
-  private String version;
+  private String version = "r5";
   
   // options:
   private ExtensionPolicy extensionPolicy;
