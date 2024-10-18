@@ -135,6 +135,7 @@ public class ValidatorCli {
       new TxTestsTask(),
       new TransformTask(),
       new VersionTask(),
+      new CodeGenTask(),
       defaultCliTask);
   }
 
