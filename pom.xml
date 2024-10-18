@@ -439,6 +439,13 @@
                     <compilerArgs>
                         <arg>-J-XX:MaxRAMPercentage=50.0</arg>
                     </compilerArgs>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok_version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
                 <executions>
                     <!-- Replacing default-compile as it is treated specially by maven -->
