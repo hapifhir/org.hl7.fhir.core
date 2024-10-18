@@ -117,6 +117,15 @@ public class ManagedWebAccessBuilder {
   }
 
 
+  private ServerDetailsPOJO getServer(String url) {
+    for (ServerDetailsPOJO t : serverAuthDetails) {
+      if (url.startsWith(t.getUrl())) {
+        return t;
+      }
+    }
+    return null;
+  }
+
   public HTTPResult get(String url) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
     case DIRECT:
