@@ -16,7 +16,7 @@ public class ServerDetailsPOJO {
     // possible values: none, basic, token, apikey
     String authenticationType;
 
-    @Deprecated
+    // npm or fhir, because the FHIR npm usage varies a little bit from general NPM usage (change over time)
     String serverType; 
 
     String username;
