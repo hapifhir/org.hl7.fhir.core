@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
 import org.hl7.fhir.utilities.http.SimpleHTTPClient;
 import org.hl7.fhir.utilities.settings.FhirSettings;
-import org.hl7.fhir.utilities.settings.PackageServerPOJO;
+import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 import lombok.Getter;
 
@@ -65,7 +65,7 @@ public class PackageServer {
     return servers;
   }
 
-  public static PackageServer getPackageServerFromPOJO(PackageServerPOJO pojo) {
+  public static PackageServer getPackageServerFromPOJO(ServerDetailsPOJO pojo) {
     return new PackageServer(pojo.getUrl())
       .withAuthenticationMode(getModeFromPOJO(pojo))
       .withServerType(
@@ -77,7 +77,7 @@ public class PackageServer {
   }
 
   @Nullable
-  private static HTTPAuthenticationMode getModeFromPOJO(PackageServerPOJO pojo) {
+  private static HTTPAuthenticationMode getModeFromPOJO(ServerDetailsPOJO pojo) {
     if (pojo.getAuthenticationType().equalsIgnoreCase("basic")) return HTTPAuthenticationMode.BASIC;
     if (pojo.getAuthenticationType().equalsIgnoreCase("token")) return HTTPAuthenticationMode.TOKEN;
     return null;
