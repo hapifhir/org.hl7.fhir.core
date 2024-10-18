@@ -481,6 +481,8 @@ public class JsonParser extends ParserBase {
               } else if (propV.hasType(type)) {
                 pvl = new Property(propV.getContext(), propV.getDefinition(), propV.getStructure(), propV.getUtils(), propV.getContextUtils(), type);
                 ok = true;
+              } else if (propV.getDefinition().getType().size() == 1 && propV.typeIsConsistent(type)) {
+                pvl = new Property(propV.getContext(), propV.getDefinition(), propV.getStructure(), propV.getUtils(), propV.getContextUtils(), propV.getType());
               } else {
                 logError(errors, ValidationMessage.NO_RULE_DATE, line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(pv.getValue()), propV.getName(), type, propV.typeSummary()), IssueSeverity.ERROR);
               }
