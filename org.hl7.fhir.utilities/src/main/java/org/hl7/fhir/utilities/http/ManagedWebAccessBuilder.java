@@ -118,9 +118,11 @@ public class ManagedWebAccessBuilder {
 
 
   private ServerDetailsPOJO getServer(String url) {
-    for (ServerDetailsPOJO t : serverAuthDetails) {
-      if (url.startsWith(t.getUrl())) {
-        return t;
+    if (serverAuthDetails != null) {
+      for (ServerDetailsPOJO t : serverAuthDetails) {
+        if (url.startsWith(t.getUrl())) {
+          return t;
+        }
       }
     }
     return null;
