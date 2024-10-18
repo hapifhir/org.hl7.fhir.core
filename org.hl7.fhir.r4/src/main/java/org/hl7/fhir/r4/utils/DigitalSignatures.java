@@ -60,6 +60,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.utilities.xml.XmlGenerator;
 import org.w3c.dom.Document;
 
@@ -88,7 +89,7 @@ public class DigitalSignatures {
     //
     byte[] inputXml = "<Envelope xmlns=\"urn:envelope\">\r\n</Envelope>\r\n".getBytes();
     // load the document that's going to be signed
-    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory dbf = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     dbf.setNamespaceAware(true);
     DocumentBuilder builder = dbf.newDocumentBuilder();
     Document doc = builder.parse(new ByteArrayInputStream(inputXml));

@@ -1,7 +1,5 @@
 package org.hl7.fhir.convertors.misc.adl;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,7 +87,7 @@ public class ADLImporter {
 
   private void execute() throws Exception {
     // load config
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
     adlConfig = builder.parse(ManagedFileAccess.inStream(config)).getDocumentElement();
