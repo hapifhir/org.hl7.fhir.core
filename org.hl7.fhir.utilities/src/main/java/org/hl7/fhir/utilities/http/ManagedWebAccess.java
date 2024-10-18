@@ -31,18 +31,11 @@ package org.hl7.fhir.utilities.http;
 
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import org.hl7.fhir.utilities.Utilities;
+import lombok.Getter;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 /**
@@ -57,12 +50,6 @@ import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
  *
  */
 public class ManagedWebAccess {
-  
-  public interface IWebAccessor {
-    HTTPResult get(String url, String accept, Map<String, String> headers) throws IOException;
-    HTTPResult post(String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
-    HTTPResult put(String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
-  }
 
   public enum WebAccessPolicy {
     DIRECT, // open access to the web, though access can be restricted only to domains in AllowedDomains
@@ -70,16 +57,18 @@ public class ManagedWebAccess {
     PROHIBITED, // no access at all to the web
   }
 
+  @Getter
   private static WebAccessPolicy accessPolicy = WebAccessPolicy.DIRECT; // for legacy reasons
+
+  @Getter
   private static List<String> allowedDomains = new ArrayList<>();
-  private static IWebAccessor accessor;
+
+  @Getter
+  private static IWebAccessorSimple accessor;
+  @Getter
   private static String userAgent;
+  @Getter
   private static List<ServerDetailsPOJO> serverAuthDetails;
-  
-  
-  public static WebAccessPolicy getAccessPolicy() {
-    return accessPolicy;
-  }
 
   public static void setAccessPolicy(WebAccessPolicy accessPolicy) {
     ManagedWebAccess.accessPolicy = accessPolicy;
@@ -97,20 +86,12 @@ public class ManagedWebAccess {
     return false;
   }
 
-  public static String getUserAgent() {
-    return userAgent;
-  }
-
   public static void setUserAgent(String userAgent) {
     ManagedWebAccess.userAgent = userAgent;
   }
 
-  public static IWebAccessor getAccessor() {
-    return accessor;
-  }
-
   public static ManagedWebAccessBuilder builder() {
-    return new ManagedWebAccessBuilder(userAgent, serverAuthDetails);
+    return new ManagedWebAccessBuilder(getUserAgent(), getServerAuthDetails());
   }
 
   public static HTTPResult get(String url) throws IOException {
