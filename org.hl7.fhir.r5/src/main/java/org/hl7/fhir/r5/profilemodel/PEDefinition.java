@@ -222,7 +222,7 @@ public abstract class PEDefinition {
     if (types().size() == 1) {
       return children(types.get(0).getUrl(), false);
     } else {
-      throw new DefinitionException("Attempt to get children for an element that doesn't have a single type (types = "+types()+")");
+      throw new DefinitionException("Attempt to get children for an element that doesn't have a single type (element = "+path+", types = "+types()+")");
     }
   }
   
@@ -230,7 +230,7 @@ public abstract class PEDefinition {
     if (types().size() == 1) {
       return children(types.get(0).getUrl(), allFixed);
     } else {
-      throw new DefinitionException("Attempt to get children for an element that doesn't have a single type (types = "+types()+")");
+      throw new DefinitionException("Attempt to get children for an element that doesn't have a single type (element = "+path+", types = "+types()+")");
     }
   }
   

@@ -35,6 +35,8 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator;
+import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
 import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
@@ -72,6 +74,8 @@ import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 import org.hl7.fhir.validation.instance.advisor.JsonDrivenPolicyAdvisor;
 import org.hl7.fhir.validation.instance.advisor.TextDrivenPolicyAdvisor;
+
+import kotlin.NotImplementedError;
 
 public class ValidationService {
 
@@ -824,6 +828,54 @@ public class ValidationService {
           validator.handleOutput(sd, filename, validator.getVersion());
         }
       }
+    }
+  }
+
+  public void codeGen(CliContext cliContext, ValidationEngine validationEngine) throws IOException {
+    boolean ok = true;
+    if (cliContext.getProfiles().isEmpty()) {
+      System.out.println("Must specify at least one profile to generate code for with -profile or -profiles ");
+      ok = false;
+    }
+    if (cliContext.getPackageName() == null) {
+      System.out.println("Must provide a Java package name (-package-name)");
+      ok = false;
+    }
+    if (cliContext.getSv() == null) {
+      System.out.println("Must specify a version (-version)");
+      ok = false;
+    } else if (!VersionUtilities.isR4Ver(cliContext.getSv()) && !VersionUtilities.isR5Ver(cliContext.getSv())) {      
+      System.out.println("Only versions 4 and 5 are supported (-version)");
+      ok = false;
+    }
+    if (cliContext.getOutput() == null) {
+      System.out.println("Must provide an output directory (-output)");
+      ok = false;
+    }
+    if (ok) {
+      PECodeGenerator gen = new PECodeGenerator(validationEngine.getContext());
+      gen.setFolder(cliContext.getOutput());
+      gen.setExtensionPolicy(ExtensionPolicy.Complexes);
+      gen.setNarrative(cliContext.getOptions().contains("narrative"));
+      gen.setMeta(cliContext.getOptions().contains("meta"));
+      gen.setLanguage(Locale.getDefault().toLanguageTag());
+      gen.setContained(cliContext.getOptions().contains("contained"));
+      gen.setKeyElementsOnly(!cliContext.getOptions().contains("all-elements"));
+      gen.setGenDate(new SimpleDateFormat().format(new Date()));
+      gen.setPkgName(cliContext.getPackageName());
+      if (VersionUtilities.isR4Ver(cliContext.getSv())) {
+        gen.setVersion("r4");
+      } else {
+        gen.setVersion("r5");
+      }
+
+      for (String profile : cliContext.getProfiles()) {
+        gen.setCanonical(profile);
+        System.out.print("Generate for "+profile);
+        String s = gen.execute();
+        System.out.println(": "+s);
+      }
+      System.out.println("Done");
     }
   }
 
