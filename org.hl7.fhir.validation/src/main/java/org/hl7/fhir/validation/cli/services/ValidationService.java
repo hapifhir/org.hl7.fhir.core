@@ -870,10 +870,21 @@ public class ValidationService {
       }
 
       for (String profile : cliContext.getProfiles()) {
-        gen.setCanonical(profile);
-        System.out.print("Generate for "+profile);
-        String s = gen.execute();
-        System.out.println(": "+s);
+        if (profile.endsWith("*")) {
+          for (StructureDefinition sd : validationEngine.getContext().fetchResourcesByType(StructureDefinition.class)) {
+            if (sd.getUrl().startsWith(profile.replace("*", ""))) {
+              gen.setCanonical(sd.getUrl());
+              System.out.print("Generate for "+sd.getUrl());
+              String s = gen.execute();
+              System.out.println(": "+s);
+            }
+          }
+        } else {
+          gen.setCanonical(profile);
+          System.out.print("Generate for "+profile);
+          String s = gen.execute();
+          System.out.println(": "+s);
+        }
       }
       System.out.println("Done");
     }
