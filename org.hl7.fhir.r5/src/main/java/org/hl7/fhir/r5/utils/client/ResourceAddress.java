@@ -255,7 +255,7 @@ public class ResourceAddress {
 	public static URI buildAbsoluteURI(String absoluteURI) {
 		
 		if(StringUtils.isBlank(absoluteURI)) {
-			throw new EFhirClientException("Invalid URI", new URISyntaxException(absoluteURI, "URI/URL cannot be blank"));
+			throw new EFhirClientException(0, "Invalid URI", new URISyntaxException(absoluteURI, "URI/URL cannot be blank"));
 		} 
 		
 		String endpoint = appendForwardSlashToPath(absoluteURI);
@@ -278,13 +278,13 @@ public class ResourceAddress {
 			String scheme = uri.getScheme();
 			String host = uri.getHost();
 			if(!scheme.equalsIgnoreCase("http") && !scheme.equalsIgnoreCase("https")) {
-				throw new EFhirClientException("Scheme must be 'http' or 'https': " + uri);
+				throw new EFhirClientException(0, "Scheme must be 'http' or 'https': " + uri);
 			}
 			if(StringUtils.isBlank(host)) {
-				throw new EFhirClientException("host cannot be blank: " + uri);
+				throw new EFhirClientException(0, "host cannot be blank: " + uri);
 			}
 		} catch(URISyntaxException e) {
-			throw new EFhirClientException("Invalid URI", e);
+			throw new EFhirClientException(0, "Invalid URI", e);
 		}
 		return uri;
 	}
@@ -296,7 +296,7 @@ public class ResourceAddress {
 			uriBuilder.setQuery(parameterName + "=" + parameterValue);
 			modifiedUri = uriBuilder.build();
 		} catch(Exception e) {
-			throw new EFhirClientException("Unable to append query parameter '" + parameterName + "=" + parameterValue + " to URI " + uri, e);
+			throw new EFhirClientException(0, "Unable to append query parameter '" + parameterName + "=" + parameterValue + " to URI " + uri, e);
 		}
 		return modifiedUri;
 	}
@@ -431,7 +431,7 @@ public class ResourceAddress {
 	
 	        return new URI(basePath.getScheme(), basePath.getUserInfo(), basePath.getHost(),basePath.getPort(), basePath.getPath(), query, basePath.getFragment());
         } catch(Exception e) {
-        	throw new EFhirClientException("Error appending http parameter", e);
+        	throw new EFhirClientException(0, "Error appending http parameter", e);
         }
     }
 	
