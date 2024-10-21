@@ -249,6 +249,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
       return (context.formatPhrase(RenderingContext.DATA_REND_DICOM)); 
     if (system.equals("http://unitsofmeasure.org")) 
       return (context.formatPhrase(RenderingContext.GENERAL_UCUM)); 
+    if (system.equals("http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl")) 
+      return (context.formatPhrase(RenderingContext.GENERAL_NCI_THES)); 
+    
 
     CodeSystem cs = context.getContext().fetchCodeSystem(system); 
     if (cs != null) { 
@@ -1213,7 +1216,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } else if ("http://loinc.org".equals(system)) { 
       return "https://loinc.org/";             
     } else if ("http://unitsofmeasure.org".equals(system)) { 
-      return "http://ucum.org";             
+      return "http://ucum.org";    
+    } else if ("http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl".equals(system)) { 
+      return "https://ncit.nci.nih.gov/ncitbrowser/pages/home.jsf";    
     } else { 
       String url = system; 
       if (version != null) { 
@@ -1241,6 +1246,12 @@ public class DataRenderer extends Renderer implements CodeResolver {
         return "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm="+code;         
       } else { 
         return "https://www.nlm.nih.gov/research/umls/rxnorm/index.html"; 
+      } 
+    } else if ("http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl".equals(system)) { 
+      if (!Utilities.noString(code)) { 
+        return "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?code="+code;         
+      } else { 
+        return "https://ncit.nci.nih.gov/ncitbrowser/pages/home.jsf"; 
       } 
     } else if ("urn:iso:std:iso:3166".equals(system)) { 
       if (!Utilities.noString(code)) { 

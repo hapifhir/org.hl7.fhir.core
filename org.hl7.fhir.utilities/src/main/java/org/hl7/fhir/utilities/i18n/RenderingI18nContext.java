@@ -251,6 +251,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_TIMING = "DATA_REND_TIMING";
   public static final String DATA_REND_TO_DO = "DATA_REND_TO_DO";
   public static final String GENERAL_UCUM = "GENERAL_UCUM";
+  public static final String GENERAL_NCI_THES = "GENERAL_NCI_THES";
   public static final String DATA_REND_UNKNWN = "DATA_REND_UNKNWN";
   public static final String DATA_REND_UNRD_EX = "DATA_REND_UNRD_EX";
   public static final String DATA_REND_UNTIL = "DATA_REND_UNTIL";
