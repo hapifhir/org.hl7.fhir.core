@@ -87,9 +87,9 @@ public class TerminologyClientR4 implements ITerminologyClient {
       return (ValueSet) VersionConvertorFactory_40_50.convertResource(vs2);
     } catch (org.hl7.fhir.r4.utils.client.EFhirClientException e) {
       if (e.getServerErrors().size() > 0) {
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), (org.hl7.fhir.r5.model.OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0)));
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), (org.hl7.fhir.r5.model.OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0)));
       } else {
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage());        
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage());        
       }
     }
   }
@@ -103,9 +103,9 @@ public class TerminologyClientR4 implements ITerminologyClient {
     } catch (EFhirClientException e) {
       if (e.getServerErrors().size() == 1) {
         OperationOutcome op =  (OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0));
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), op, e);
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), e);        
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);        
       }
     } catch (IOException e) {
       throw new FHIRException(e);
@@ -122,9 +122,9 @@ public class TerminologyClientR4 implements ITerminologyClient {
     } catch (EFhirClientException e) {
       if (e.getServerErrors().size() == 1) {
         OperationOutcome op =  (OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0));
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), op, e);
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), e);        
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);        
       }
     } catch (IOException e) {
       throw new FHIRException(e);
@@ -140,9 +140,9 @@ public class TerminologyClientR4 implements ITerminologyClient {
     } catch (EFhirClientException e) {
       if (e.getServerErrors().size() == 1) {
         OperationOutcome op =  (OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0));
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), op, e);
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), e);        
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);        
       }
     } catch (IOException e) {
       throw new FHIRException(e);
