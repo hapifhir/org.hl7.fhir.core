@@ -42,6 +42,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
@@ -57,11 +60,15 @@ import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
  *
  */
 public class ManagedWebAccess {
-  
+
   public interface IWebAccessor {
     HTTPResult get(String url, String accept, Map<String, String> headers) throws IOException;
     HTTPResult post(String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
     HTTPResult put(String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
+  }
+
+  public interface IFhirWebAccessor {
+    Response httpCall(Request.Builder httpRequest);
   }
 
   public enum WebAccessPolicy {
@@ -72,11 +79,16 @@ public class ManagedWebAccess {
 
   private static WebAccessPolicy accessPolicy = WebAccessPolicy.DIRECT; // for legacy reasons
   private static List<String> allowedDomains = new ArrayList<>();
+  @Getter
   private static IWebAccessor accessor;
+
+  @Getter
+  private static IFhirWebAccessor fhirWebAccessor;
+
+  @Getter
   private static String userAgent;
   private static List<ServerDetailsPOJO> serverAuthDetails;
-  
-  
+
   public static WebAccessPolicy getAccessPolicy() {
     return accessPolicy;
   }
@@ -97,20 +109,16 @@ public class ManagedWebAccess {
     return false;
   }
 
-  public static String getUserAgent() {
-    return userAgent;
-  }
-
   public static void setUserAgent(String userAgent) {
     ManagedWebAccess.userAgent = userAgent;
   }
 
-  public static IWebAccessor getAccessor() {
-    return accessor;
-  }
-
   public static ManagedWebAccessBuilder builder() {
     return new ManagedWebAccessBuilder(userAgent, serverAuthDetails);
+  }
+
+  public static ManagedFhirWebAccessBuilder fhirBuilder() {
+    return new ManagedFhirWebAccessBuilder(userAgent, serverAuthDetails);
   }
 
   public static HTTPResult get(String url) throws IOException {
@@ -128,6 +136,10 @@ public class ManagedWebAccess {
 
   public static HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
     return builder().withAccept(accept).put(url, content, contentType);
+  }
+
+  public static Response httpCall(Request.Builder httpRequest) throws IOException {
+    return fhirBuilder().httpCall(httpRequest);
   }
 
 }

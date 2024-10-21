@@ -2,7 +2,6 @@ package org.hl7.fhir.r5.terminologies.client;
 
 import java.net.URISyntaxException;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Map;
 
 /*
@@ -41,13 +40,10 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5.TerminologyClientR5Factory;
 import org.hl7.fhir.r5.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -84,6 +80,7 @@ public class TerminologyClientR5 implements ITerminologyClient {
 
   public TerminologyClientR5(String id, String address, String userAgent) throws URISyntaxException {
     this.client = new FHIRToolingClient(address, userAgent);
+    //FIXME set up FHIR Tooling Client to use ManagedWebAccess
     setClientHeaders(new ClientHeaders());
     this.id = id;
   }
