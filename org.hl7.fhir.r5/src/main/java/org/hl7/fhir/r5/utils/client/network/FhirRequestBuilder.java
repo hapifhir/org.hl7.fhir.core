@@ -255,7 +255,7 @@ public class FhirRequestBuilder {
     boolean ok = code >= 200 && code < 300;
     if (response.body() == null) {
       if (!ok) {
-        throw new EFhirClientException(response.message());
+        throw new EFhirClientException(code, response.message());
       } else {
         return null;
       }
@@ -307,14 +307,14 @@ public class FhirRequestBuilder {
         }
       }
     } catch (IOException ioe) {
-      throw new EFhirClientException("Error reading Http Response from "+source+":"+ioe.getMessage(), ioe);
+      throw new EFhirClientException(0, "Error reading Http Response from "+source+":"+ioe.getMessage(), ioe);
     } catch (Exception e) {
-      throw new EFhirClientException("Error parsing response message from "+source+": "+e.getMessage(), e);
+      throw new EFhirClientException(0, "Error parsing response message from "+source+": "+e.getMessage(), e);
     }
     if (resource instanceof OperationOutcome && (!"OperationOutcome".equals(resourceType) || !ok)) {
       OperationOutcome error = (OperationOutcome) resource;  
       if (hasError((OperationOutcome) resource)) {
-        throw new EFhirClientException("Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
+        throw new EFhirClientException(0, "Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
       } else {
         // umm, weird...
         System.out.println("Got OperationOutcome with no error from "+source+" with status "+code);            
@@ -328,7 +328,7 @@ public class FhirRequestBuilder {
       return null; // shouldn't get here?
     }
     if (resourceType != null && !resource.fhirType().equals(resourceType)) {
-      throw new EFhirClientException("Error parsing response message from "+source+": Found an "+resource.fhirType()+" looking for a "+resourceType);        
+      throw new EFhirClientException(0, "Error parsing response message from "+source+": Found an "+resource.fhirType()+" looking for a "+resourceType);        
     }
     return (T) resource;
   }
@@ -359,7 +359,7 @@ public class FhirRequestBuilder {
     } else if (mt.getBase().equalsIgnoreCase(ResourceFormat.RESOURCE_XML.getHeader())) {
       return new XmlParser();
     } else {
-      throw new EFhirClientException("Invalid format: " + format);
+      throw new EFhirClientException(0, "Invalid format: " + format);
     }
   }
 }

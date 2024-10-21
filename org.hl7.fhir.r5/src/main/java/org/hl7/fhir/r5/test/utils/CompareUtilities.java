@@ -303,11 +303,30 @@ public class CompareUtilities extends BaseTestingUtilities {
     for (JsonProperty en : expectedJsonObject.getProperties()) {
       String n = en.getName();
       if (!n.equals("fhir_comments") && !n.equals("$optional$") && !optionals.contains(n)) {
-        if (!actualJsonObject.has(n))
+        if (!actualJsonObject.has(n) && !allOptional(en.getValue()))
           return "properties differ at " + path + ": missing property " + n;
       }
     }
     return null;
+  }
+
+  private boolean allOptional(JsonElement value) {
+    if (value.isJsonArray()) {
+      JsonArray a = value.asJsonArray();
+      for (JsonElement e : a) {
+        if (e.isJsonObject()) {
+          JsonObject o = e.asJsonObject();
+          if (!o.has("$optional$")) {
+            return false;
+          }
+        } else {
+          // nothing
+        }
+      }
+      return true;
+    } else {
+      return false;
+    }
   }
 
   private List<String> listOptionals(JsonObject expectedJsonObject) {

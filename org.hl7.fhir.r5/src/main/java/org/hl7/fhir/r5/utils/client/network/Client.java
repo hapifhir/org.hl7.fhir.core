@@ -99,7 +99,7 @@ public class Client {
                                                                  Headers headers,
                                                                  String message,
                                                                  long timeout) throws IOException {
-    if (payload == null) throw new EFhirClientException("PUT requests require a non-null payload");
+    if (payload == null) throw new EFhirClientException(0, "PUT requests require a non-null payload");
     this.payload = payload;
     RequestBody body = RequestBody.create(payload);
     Request.Builder request = new Request.Builder()
@@ -123,7 +123,7 @@ public class Client {
                                                                   Headers headers,
                                                                   String message,
                                                                   long timeout) throws IOException {
-    if (payload == null) throw new EFhirClientException("POST requests require a non-null payload");
+    if (payload == null) throw new EFhirClientException(0, "POST requests require a non-null payload");
     this.payload = payload;
     RequestBody body = RequestBody.create(MediaType.parse(resourceFormat + ";charset=" + DEFAULT_CHARSET), payload);
     Request.Builder request = new Request.Builder()
@@ -168,7 +168,7 @@ public class Client {
                                  Headers headers,
                                  String message,
                                  int timeout) throws IOException {
-    if (payload == null) throw new EFhirClientException("POST requests require a non-null payload");
+    if (payload == null) throw new EFhirClientException(0, "POST requests require a non-null payload");
     RequestBody body = RequestBody.create(MediaType.parse(resourceFormat + ";charset=" + DEFAULT_CHARSET), payload);
     Request.Builder request = new Request.Builder()
       .url(resourceUri.toURL())
