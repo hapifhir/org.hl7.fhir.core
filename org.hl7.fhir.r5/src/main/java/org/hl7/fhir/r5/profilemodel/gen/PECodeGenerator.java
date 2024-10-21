@@ -252,7 +252,7 @@ public class PECodeGenerator {
               w(enums, "  public enum "+name+" {");
               for (int i = 0; i < vse.getValueset().getExpansion().getContains().size(); i++) {
                 ValueSetExpansionContainsComponent cc = vse.getValueset().getExpansion().getContains().get(i);
-                String code = Utilities.nmtokenize(cc.getCode()).toUpperCase();
+                String code = Utilities.javaTokenize(cc.getCode(), true).toUpperCase();
                 if (cc.getAbstract()) {
                   code = "_"+code;
                 }
@@ -398,7 +398,11 @@ public class PECodeGenerator {
     private void genLoad(boolean isPrim, boolean isAbstract, String name, String sname, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, boolean isFixed, PEType typeInfo, boolean isEnum) {
       if (isList) {
         w(load, "    for (PEInstance item : src.children(\""+sname+"\")) {");
-        w(load, "      "+name+".add(("+type+") item.asDataType());");
+        if ("BackboneElement".equals(type)) {
+          w(load, "      "+name+".add(("+type+") item.asElement());");          
+        } else {
+          w(load, "      "+name+".add(("+type+") item.asDataType());");
+        }
         w(load, "    }");
       } else if (isEnum) {
         w(load, "    if (src.hasChild(\""+name+"\")) {");
@@ -407,7 +411,7 @@ public class PECodeGenerator {
         } else if ("Coding".equals(typeInfo.getName())) {
           w(load, "      "+name+" = "+type+".fromCoding((Coding) src.child(\""+name+"\").asDataType());");
         } else {
-          w(load, "      "+name+" = "+type+".fromCode(src.child(\""+name+"\").asDataType()).primitiveValue());");
+          w(load, "      "+name+" = "+type+".fromCode(src.child(\""+name+"\").asDataType().primitiveValue());");
         }  
         w(load, "    }");      
       } else if (isPrim) {
@@ -424,8 +428,12 @@ public class PECodeGenerator {
         w(load, "      "+name+" = "+type+".fromSource(src.child(\""+name+"\"));");
         w(load, "    }");
       } else {
-        w(load, "    if (src.hasChild(\""+name+"\")) {");
-        w(load, "      "+name+" = ("+type+") src.child(\""+name+"\").asDataType();");
+        w(load, "    if (src.hasChild(\""+name+"\")) {");      
+        if ("BackboneElement".equals(type)) {
+          w(load, "      "+name+" = ("+type+") src.child(\""+name+"\").asElement();");
+        } else {
+          w(load, "      "+name+" = ("+type+") src.child(\""+name+"\").asDataType();");
+        }
         w(load, "    }");
       }
     }
@@ -447,7 +455,7 @@ public class PECodeGenerator {
         } else if ("Coding".equals(typeInfo.getName())) {
           w(save, "      tgt.addChild(\""+sname+"\", "+name+".toCoding());");
         } else {
-          w(save, "      tgt.addChild(\""+sname+"\", "+name+").toCode();");
+          w(save, "      tgt.addChild(\""+sname+"\", "+name+".toCode());");
         }  
         w(save, "    }");      
       } else if (isPrim) {
