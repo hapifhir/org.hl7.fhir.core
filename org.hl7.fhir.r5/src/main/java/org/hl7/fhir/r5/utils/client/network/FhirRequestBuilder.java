@@ -7,8 +7,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
 
+import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -21,15 +21,9 @@ import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.utilities.MimeType;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.http.FhirRequest;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlUtils;
-
-import okhttp3.Authenticator;
-import okhttp3.Credentials;
-import okhttp3.Headers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class FhirRequestBuilder {
 
@@ -62,6 +56,16 @@ public class FhirRequestBuilder {
    */
   private FhirLoggingInterceptor logger = null;
   private String source;
+
+  //TODO this should be the only constructor. There should be no okHttp exposure.
+  public FhirRequestBuilder(FhirRequest fhirRequest, String source) {
+    this.source = source;
+
+    RequestBody body = RequestBody.create(fhirRequest.getBody());
+    this.httpRequest = new Request.Builder()
+      .url(fhirRequest.getUrl())
+      .method(fhirRequest.getMethod().name(), body);
+  }
 
   public FhirRequestBuilder(Request.Builder httpRequest, String source) {
     this.httpRequest = httpRequest;
@@ -162,11 +166,9 @@ public class FhirRequestBuilder {
    *
    * @return {@link OkHttpClient} instance
    */
+  //TODO replace this.
   protected OkHttpClient getHttpClient() {
-    if (FhirSettings.isProhibitNetworkAccess()) {
-      throw new FHIRException("Network Access is prohibited in this context");
-    }
-    
+
     if (okHttpClient == null) {
       okHttpClient = new OkHttpClient();
     }
@@ -235,7 +237,7 @@ public class FhirRequestBuilder {
 
   public <T extends Resource> ResourceRequest<T> execute() throws IOException {
     formatHeaders(httpRequest, resourceFormat, headers);
-    Response response = getHttpClient().newCall(httpRequest.build()).execute();
+    Response response = ManagedWebAccess.httpCall(httpRequest);//getHttpClient().newCall(httpRequest.build()).execute();
     T resource = unmarshalReference(response, resourceFormat, null);
     return new ResourceRequest<T>(resource, response.code(), getLocationHeader(response.headers()));
   }
