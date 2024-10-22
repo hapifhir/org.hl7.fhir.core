@@ -34,6 +34,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -42,6 +43,8 @@ import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+
+import okhttp3.internal.http2.Header;
 
 public class TxTester {
 
@@ -101,7 +104,7 @@ public class TxTester {
     json.add("date", new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(Calendar.getInstance().getTime()) + timezone());
     try {
       JsonObject tests = loadTests();
-      ITerminologyClient tx = connectToServer();
+      ITerminologyClient tx = connectToServer(modes);
       boolean ok = checkClient(tx);
       for (JsonObject suite : tests.getJsonObjects("suites")) {
         if ((!suite.has("mode") || modes.contains(suite.asString("mode")))) {
@@ -150,19 +153,21 @@ public class TxTester {
     return JsonParser.parseObject(loader.loadContent("test-cases.json"));
   }
 
-  private ITerminologyClient connectToServer() throws URISyntaxException {
+  private ITerminologyClient connectToServer(List<String> modes) throws URISyntaxException {
     System.out.println("Connect to "+server);
-    return new TerminologyClientFactory(FhirPublication.R4).makeClient("Test-Server", server, "Tools/Java", null);  
+    ITerminologyClient client = new TerminologyClientFactory(FhirPublication.R4).makeClient("Test-Server", server, "Tools/Java", null);
+    return client;  
   }
 
 
   public String executeTest(JsonObject suite, JsonObject test, List<String> modes) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
     error = null;
     if (tx == null) {
-      tx = connectToServer();
+      tx = connectToServer(modes);
       checkClient(tx);
     }
     List<Resource> setup = loadSetupResources(suite);
+
     if (runTest(test, tx, setup, modes, "*", null)) {
       return null;      
     } else {
@@ -180,10 +185,12 @@ public class TxTester {
     List<Resource> setup = loadSetupResources(suite);
     boolean ok = true;
     for (JsonObject test : suite.getJsonObjects("tests")) {
-      if (test.asBoolean("disabled")) {
-        ok = true;
-      } else {
-        ok = runTest(test, tx, setup, modes, filter, outputS.forceArray("tests")) && ok;
+      if ((!test.has("mode") || modes.contains(test.asString("mode")))) {
+        if (test.asBoolean("disabled")) {
+          ok = true;
+        } else {
+          ok = runTest(test, tx, setup, modes, filter, outputS.forceArray("tests")) && ok;
+        }
       }
     }
     return ok;
@@ -199,7 +206,16 @@ public class TxTester {
     outputT.add("name", test.asString("name"));
     if (Utilities.noString(filter) || filter.equals("*") || test.asString("name").contains(filter)) {
       System.out.print("  Test "+test.asString("name")+": ");
+      Header header = null;
       try {
+        if (test.has("header")) {
+          JsonObject hdr = test.getJsonObject("header");
+          if (hdr.has("mode") && modes.contains(hdr.asString("mode"))) {
+            header = new Header(hdr.asString("name"), hdr.asString("value"));
+            tx.getClientHeaders().addHeader(header);
+          }
+        }
+
         Parameters req = (Parameters) loader.loadResource(chooseParam(test, "request", modes));
 
         String fn = chooseParam(test, "response", modes);
@@ -236,12 +252,18 @@ public class TxTester {
         if (msg != null) {
           outputT.add("message", msg);
         }
+        if (header != null) {
+          tx.getClientHeaders().removeHeader(header);
+        }
         return msg == null;
       } catch (Exception e) {
         System.out.println("  ... Exception: "+e.getMessage());
         System.out.print("    ");
         error = e.getMessage();
         e.printStackTrace();
+        if (header != null) {
+          tx.getClientHeaders().removeHeader(header);
+        }
         return false;
       }
     } else {
@@ -400,6 +422,7 @@ public class TxTester {
     } catch (EFhirClientException e) {
       code = e.getCode();
       OperationOutcome oo = e.getServerError(); 
+      TxTesterScrubbers.scrubOO(oo, tight);
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
