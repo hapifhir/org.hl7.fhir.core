@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,10 +68,10 @@ class FhirRequestBuilderTest {
     String headerName2 = "headerName2";
     String headerValue2 = "headerValue2";
 
-    Headers headers = new Headers.Builder()
-      .add(headerName1, headerValue1)
-      .add(headerName2, headerValue2)
-      .build();
+    List<HTTPHeader> headers = List.of(
+      new HTTPHeader(headerName1, headerValue1),
+      new HTTPHeader(headerName2, headerValue2)
+    );
 
     Request.Builder request = new Request.Builder().url("http://www.google.com");
     FhirRequestBuilder.addHeaders(request, headers);

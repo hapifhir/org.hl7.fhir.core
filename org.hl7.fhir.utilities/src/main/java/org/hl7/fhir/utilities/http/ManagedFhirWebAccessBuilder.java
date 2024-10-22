@@ -4,6 +4,7 @@ import lombok.With;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.hl7.fhir.utilities.http.okhttpimpl.RetryInterceptor;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 import java.io.IOException;
@@ -66,8 +67,9 @@ public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<Man
     if (okHttpClient == null) {
       okHttpClient = new OkHttpClient();
     }
-
-    return okHttpClient;
+    OkHttpClient.Builder builder = okHttpClient.newBuilder();
+    builder.addInterceptor(new RetryInterceptor(retries));
+    return builder.build();
   }
 
 }
