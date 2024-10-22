@@ -180,10 +180,12 @@ public class TxTester {
     List<Resource> setup = loadSetupResources(suite);
     boolean ok = true;
     for (JsonObject test : suite.getJsonObjects("tests")) {
-      if (test.asBoolean("disabled")) {
-        ok = true;
-      } else {
-        ok = runTest(test, tx, setup, modes, filter, outputS.forceArray("tests")) && ok;
+      if ((!test.has("mode") || modes.contains(test.asString("mode")))) {
+        if (test.asBoolean("disabled")) {
+          ok = true;
+        } else {
+          ok = runTest(test, tx, setup, modes, filter, outputS.forceArray("tests")) && ok;
+        }
       }
     }
     return ok;
