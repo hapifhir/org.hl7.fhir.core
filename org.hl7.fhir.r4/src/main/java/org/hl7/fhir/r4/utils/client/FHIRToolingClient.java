@@ -3,10 +3,7 @@ package org.hl7.fhir.r4.utils.client;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Bundle;
@@ -31,6 +28,7 @@ import org.hl7.fhir.utilities.Utilities;
 
 import okhttp3.Headers;
 import okhttp3.internal.http2.Header;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 
 /**
  * Very Simple RESTful client. This is purely for use in the standalone tools
@@ -74,7 +72,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   private int maxResultSetSize = -1;// _count
   private CapabilityStatement capabilities;
   private Client client = new Client();
-  private ArrayList<Header> headers = new ArrayList<>();
+  private List<HTTPHeader> headers = new ArrayList<>();
   private String username;
   private String password;
   private String userAgent;
@@ -558,8 +556,9 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     client.setRetryCount(retryCount);
   }
 
-  public void setClientHeaders(ArrayList<Header> headers) {
-    this.headers = headers;
+  public void setClientHeaders(Iterable<HTTPHeader> headers) {
+    this.headers = new ArrayList<>();
+    headers.forEach(this.headers::add);
   }
 
   private Headers generateHeaders() {

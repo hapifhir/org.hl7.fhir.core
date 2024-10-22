@@ -22,6 +22,7 @@ import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.utilities.MimeType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.FhirRequest;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlUtils;
 
@@ -39,7 +40,7 @@ public class FhirRequestBuilder {
   private static OkHttpClient okHttpClient;
   private final Request.Builder httpRequest;
   private String resourceFormat = null;
-  private Headers headers = null;
+  private Iterable<HTTPHeader> headers = null;
   private String message = null;
   private int retryCount = 1;
   /**
@@ -61,15 +62,15 @@ public class FhirRequestBuilder {
   public FhirRequestBuilder(FhirRequest fhirRequest, String source) {
     this.source = source;
 
-    RequestBody body = RequestBody.create(fhirRequest.getBody());
+    Request.Builder baseRequestBuilder = new Request.Builder();
+    assert fhirRequest.getUrl() != null;
+    baseRequestBuilder.url(fhirRequest.getUrl());
+
+
+    RequestBody body = fhirRequest.getBody() == null ? null : RequestBody.create(fhirRequest.getBody());
     this.httpRequest = new Request.Builder()
       .url(fhirRequest.getUrl())
       .method(fhirRequest.getMethod().name(), body);
-  }
-
-  public FhirRequestBuilder(Request.Builder httpRequest, String source) {
-    this.httpRequest = httpRequest;
-    this.source = source;
   }
 
   /**
@@ -80,7 +81,7 @@ public class FhirRequestBuilder {
    * @param format  Expected {@link Resource} format.
    * @param headers Any additional {@link Headers} to add to the request.
    */
-  protected static void formatHeaders(Request.Builder request, String format, Headers headers) {
+  protected static void formatHeaders(Request.Builder request, String format, Iterable<HTTPHeader> headers) {
     addDefaultHeaders(request, headers);
     if (format != null) addResourceFormatHeaders(request, format);
     if (headers != null) addHeaders(request, headers);
@@ -92,8 +93,17 @@ public class FhirRequestBuilder {
    *
    * @param request {@link Request.Builder} to add default headers to.
    */
-  protected static void addDefaultHeaders(Request.Builder request, Headers headers) {
-    if (headers == null || !headers.names().contains("User-Agent")) {
+  protected static void addDefaultHeaders(Request.Builder request, Iterable<HTTPHeader> headers) {
+    boolean hasUserAgent = false;
+    if (headers != null) {
+      for (HTTPHeader header : headers) {
+        if (header.getName().equalsIgnoreCase("User-Agent")) {
+          hasUserAgent = true;
+          break;
+        }
+      }
+    }
+    if (!hasUserAgent) {
       request.addHeader("User-Agent", "hapi-fhir-tooling-client");
     }
   }
@@ -116,8 +126,8 @@ public class FhirRequestBuilder {
    * @param request {@link Request.Builder} to add headers to.
    * @param headers {@link Headers} to add to request.
    */
-  protected static void addHeaders(Request.Builder request, Headers headers) {
-    headers.forEach(header -> request.addHeader(header.getFirst(), header.getSecond()));
+  protected static void addHeaders(Request.Builder request, Iterable<HTTPHeader> headers) {
+    headers.forEach(header -> request.addHeader(header.getName(), header.getValue()));
   }
 
   /**
@@ -166,7 +176,7 @@ public class FhirRequestBuilder {
    *
    * @return {@link OkHttpClient} instance
    */
-  //TODO replace this.
+  //FIXME delete this whole method.
   protected OkHttpClient getHttpClient() {
 
     if (okHttpClient == null) {
@@ -205,7 +215,7 @@ public class FhirRequestBuilder {
     return this;
   }
 
-  public FhirRequestBuilder withHeaders(Headers headers) {
+  public FhirRequestBuilder withHeaders(Iterable<HTTPHeader> headers) {
     this.headers = headers;
     return this;
   }
@@ -244,7 +254,7 @@ public class FhirRequestBuilder {
 
   public Bundle executeAsBatch() throws IOException {
     formatHeaders(httpRequest, resourceFormat, null);
-    Response response = getHttpClient().newCall(httpRequest.build()).execute();
+    Response response = ManagedWebAccess.httpCall(httpRequest);
     return unmarshalFeed(response, resourceFormat);
   }
 

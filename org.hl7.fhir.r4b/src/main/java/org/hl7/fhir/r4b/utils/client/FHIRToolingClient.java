@@ -1,7 +1,8 @@
 package org.hl7.fhir.r4b.utils.client;
 
-import okhttp3.Headers;
-import okhttp3.internal.http2.Header;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -42,6 +43,7 @@ import org.hl7.fhir.r4b.utils.client.network.ResourceRequest;
 import org.hl7.fhir.utilities.FHIRBaseToolingClient;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -91,9 +93,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
   private int maxResultSetSize = -1;// _count
   private CapabilityStatement capabilities;
   private Client client = new Client();
-  private ArrayList<Header> headers = new ArrayList<>();
+  private List<HTTPHeader> headers = new ArrayList<>();
   private String username;
   private String password;
+  @Setter
+  @Getter
   private String userAgent;
 
   // Pass endpoint for client - URI
@@ -537,42 +541,35 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
     client.setRetryCount(retryCount);
   }
 
-  public void setClientHeaders(ArrayList<Header> headers) {
-    this.headers = headers;
+  public void setClientHeaders(Iterable<HTTPHeader> headers) {
+    this.headers = new ArrayList<>();
+    headers.forEach(this.headers::add);
   }
 
-  private Headers generateHeaders() {
-    Headers.Builder builder = new Headers.Builder();
+  private Iterable<HTTPHeader> generateHeaders() {
+    List<HTTPHeader> headers = new ArrayList<>();
     // Add basic auth header if it exists
     if (basicAuthHeaderExists()) {
-      builder.add(getAuthorizationHeader().toString());
+      headers.add(getAuthorizationHeader());
     }
     // Add any other headers
     if (this.headers != null) {
-      this.headers.forEach(header -> builder.add(header.toString()));
+      headers.addAll(this.headers);
     }
     if (!Utilities.noString(userAgent)) {
-      builder.add("User-Agent: " + userAgent);
+      headers.add(new HTTPHeader("User-Agent",userAgent));
     }
-    return builder.build();
+    return headers;
   }
 
   public boolean basicAuthHeaderExists() {
     return (username != null) && (password != null);
   }
 
-  public Header getAuthorizationHeader() {
+  public HTTPHeader getAuthorizationHeader() {
     String usernamePassword = username + ":" + password;
     String base64usernamePassword = Base64.getEncoder().encodeToString(usernamePassword.getBytes());
-    return new Header("Authorization", "Basic " + base64usernamePassword);
-  }
-
-  public String getUserAgent() {
-    return userAgent;
-  }
-
-  public void setUserAgent(String userAgent) {
-    this.userAgent = userAgent;
+    return new HTTPHeader("Authorization", "Basic " + base64usernamePassword);
   }
 
   public String getServerVersion() {
