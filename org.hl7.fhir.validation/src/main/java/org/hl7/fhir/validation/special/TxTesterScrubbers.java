@@ -92,7 +92,9 @@ public class TxTesterScrubbers {
     scrubDR(po, tight);
     po.getIssue().removeIf(i -> i.hasDiagnostics() & !i.hasDetails());
     for (OperationOutcomeIssueComponent iss : po.getIssue()) {
-      iss.setDiagnostics(null);
+      if (iss.hasDiagnostics() && !iss.getDiagnostics().toLowerCase().contains("x-request-id")) {
+        iss.setDiagnostics(null);
+      }
     }
   }
 
