@@ -402,6 +402,7 @@ public class TxTester {
     } catch (EFhirClientException e) {
       code = e.getCode();
       OperationOutcome oo = e.getServerError(); 
+      TxTesterScrubbers.scrubOO(oo, tight);
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
