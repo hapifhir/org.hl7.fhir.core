@@ -139,7 +139,7 @@ public class PECodeGenerator {
       w(b, "public class "+name+" extends PEGeneratedBase {");
       w(b);
       if (url != null) {
-        w(b, "  private static final String CANONICAL_URL = \""+url+"\";");
+        w(b, "  public static final String CANONICAL_URL = \""+url+"\";");
         w(b);        
       }
       if (enums.length() > 0) {
