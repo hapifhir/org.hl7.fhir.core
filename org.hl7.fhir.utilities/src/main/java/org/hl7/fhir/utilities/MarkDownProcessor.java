@@ -93,6 +93,9 @@ public class MarkDownProcessor {
    */
   // todo: dialect dependency?
   public boolean isProbablyMarkdown(String content, boolean mdIfParagrapghs) {
+    if (content == null) {
+      return false;
+    }
     if (mdIfParagrapghs && content.contains("\n")) {
       return true;
     }
