@@ -101,7 +101,7 @@ public class PETests {
     checkElement(children.get(2), "language", "language", 0, 1, false, "http://hl7.org/fhir/StructureDefinition/code", 2, "language");
     checkElement(children.get(3), "text", "text", 0, 1, false, "http://hl7.org/fhir/StructureDefinition/Narrative", 3, "text");
     checkElement(children.get(4), "contained", "contained", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Resource", 4, "contained");
-    checkElement(children.get(5), "extension", "extension", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Extension", 3, "extension.where(((url = 'http://hl7.org/fhir/test/StructureDefinition/pe-extension-simple') or (url = 'http://hl7.org/fhir/test/StructureDefinition/pe-extension-complex')).not())");
+    checkElement(children.get(5), "extension", "extension", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Extension", 2, "extension.where(((url = 'http://hl7.org/fhir/test/StructureDefinition/pe-extension-simple') or (url = 'http://hl7.org/fhir/test/StructureDefinition/pe-extension-complex')).not())");
     checkElement(children.get(6), "extension", "simple", 0, 1, false, "http://hl7.org/fhir/StructureDefinition/code", 2, "extension('http://hl7.org/fhir/test/StructureDefinition/pe-extension-simple').value");
     checkElement(children.get(7), "extension", "complex", 0, 1, false, "http://hl7.org/fhir/test/StructureDefinition/pe-extension-complex", 4, "extension('http://hl7.org/fhir/test/StructureDefinition/pe-extension-complex')");
     checkElement(children.get(8), "identifier", "identifier", 0, 1, false, "http://hl7.org/fhir/StructureDefinition/Identifier", 7, "identifier");
@@ -116,7 +116,7 @@ public class PETests {
     checkElement(children.get(17), "value[x]", "valueCodeableConcept", 0, 1, false, "http://hl7.org/fhir/test/StructureDefinition/pe-profile2", 4, "value.ofType(CodeableConcept)");
 
     List<PEDefinition> gchildren = children.get(11).children();
-    checkElement(gchildren.get(0), "extension", "extension", 0, Integer.MAX_VALUE, true, "http://hl7.org/fhir/StructureDefinition/Extension", 3, "extension");
+    checkElement(gchildren.get(0), "extension", "extension", 0, Integer.MAX_VALUE, true, "http://hl7.org/fhir/StructureDefinition/Extension", 2, "extension");
     checkElement(gchildren.get(1), "coding", "coding", 0, Integer.MAX_VALUE, true, "http://hl7.org/fhir/StructureDefinition/Coding", 6, "coding");
     checkElement(gchildren.get(2), "text", "text", 0, 1, true, "http://hl7.org/fhir/StructureDefinition/string", 2, "text");
     
@@ -128,17 +128,17 @@ public class PETests {
     checkElement(gchildren.get(3), "text", "text", 1, 1, false, "http://hl7.org/fhir/StructureDefinition/string", 2, "text");
     
     List<PEDefinition> ggchildren = gchildren.get(3).children("http://hl7.org/fhir/StructureDefinition/string");
-    checkElement(ggchildren.get(0), "extension", "extension", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Extension", 3, "extension");
+    checkElement(ggchildren.get(0), "extension", "extension", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Extension", 2, "extension");
     checkElement(ggchildren.get(1), "value", "value", 1, 1, false, null, 3, "value");
     
     gchildren = children.get(7).children("http://hl7.org/fhir/StructureDefinition/Extension");
-    checkElement(gchildren.get(0), "extension", "extension", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Extension", 3, "extension.where(((url = 'slice1') or (url = 'slice2') or (url = 'slice3')).not())");
+    checkElement(gchildren.get(0), "extension", "extension", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Extension", 2, "extension.where(((url = 'slice1') or (url = 'slice2') or (url = 'slice3')).not())");
     checkElement(gchildren.get(1), "extension", "slice1", 0, 2, false, "http://hl7.org/fhir/StructureDefinition/Coding", 6, "extension('slice1').value");
     checkElement(gchildren.get(2), "extension", "slice2", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/string", 2, "extension('slice2').value");
     checkElement(gchildren.get(3), "extension", "slice3", 1, 1, false, "http://hl7.org/fhir/StructureDefinition/Extension", 3, "extension('slice3')");
 
     ggchildren = gchildren.get(3).children("http://hl7.org/fhir/StructureDefinition/Extension");
-    checkElement(ggchildren.get(0), "extension", "extension", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Extension", 3, "extension");
+    checkElement(ggchildren.get(0), "extension", "extension", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Extension", 2, "extension");
     checkElement(ggchildren.get(1), "extension", "slice3a", 0, 2, false, "http://hl7.org/fhir/StructureDefinition/Coding", 6, "extension('slice3a').value");
     checkElement(ggchildren.get(2), "extension", "slice3b", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/string", 2, "extension('slice3b').value");
   }
@@ -177,7 +177,7 @@ public class PETests {
     Assertions.assertEquals("\\-", pe.documentation());
 
     List<PEDefinition> children = pe.children("Patient");
-    Assertions.assertEquals(28, children.size());
+    Assertions.assertEquals(26, children.size());
     
     pe = children.get(9);
     Assertions.assertEquals("birthsex", pe.name());
@@ -269,7 +269,7 @@ public class PETests {
     Assertions.assertEquals("May be used to represent additional information that is not part of the basic definition of the resource. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", pe.documentation());
 
     iChildren = pe.children("http://hl7.org/fhir/StructureDefinition/Extension");
-    Assertions.assertEquals(4, iChildren.size());
+    Assertions.assertEquals(3, iChildren.size());
     pe = iChildren.get(1);
     Assertions.assertEquals("extension", pe.name());
     Assertions.assertEquals("extension", pe.schemaName());
@@ -283,7 +283,7 @@ public class PETests {
 
 
     iChildren = pe.children("http://hl7.org/fhir/StructureDefinition/Extension");
-    Assertions.assertEquals(4, iChildren.size());
+    Assertions.assertEquals(3, iChildren.size());
     pe = iChildren.get(1);
     Assertions.assertEquals("extension", pe.name());
     Assertions.assertEquals("extension", pe.schemaName());

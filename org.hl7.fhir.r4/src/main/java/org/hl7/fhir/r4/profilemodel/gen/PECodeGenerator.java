@@ -60,6 +60,29 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
+/**
+ * 
+ * The easiest way to generate code is to use the FHIR Validator, which can generate java classes for profiles
+ * using this code. Parameters:
+ * 
+ *   -codegen -version r4 -ig hl7.fhir.dk.core#3.2.0 -profiles http://hl7.dk/fhir/core/StructureDefinition/dk-core-gln-identifier,http://hl7.dk/fhir/core/StructureDefinition/dk-core-patient -output /Users/grahamegrieve/temp/codegen -package-name org.hl7.fhir.test
+ * 
+ * Parameter Documentation:
+ *   -codegen: tells the validator to generate code
+ *   -version {r4|5}: which version to generate for 
+ *   -ig {name}: loads an IG (and it's dependencies) - see -ig documentation for the validator
+ *   -profiles {list}: a comma separated list of profile URLs to generate code for 
+ *   -output {folder}: the folder where to generate the output java class source code
+ *   -package-name {name}: the name of the java package to generate in
+ *      
+ * options
+ *   -option {name}: a code generation option, one of:
+ *   
+ *     narrative: generate code for the resource narrative (recommended: don't - leave that for the native resource level)
+ *     meta: generate code the what's in meta
+ *     contained: generate code for contained resources 
+ *     all-elements: generate code for all elements, not just the key elements (makes the code verbose)
+ */
 
 public class PECodeGenerator {
 
@@ -229,7 +252,7 @@ public class PECodeGenerator {
               w(enums, "  public enum "+name+" {");
               for (int i = 0; i < vse.getValueset().getExpansion().getContains().size(); i++) {
                 ValueSetExpansionContainsComponent cc = vse.getValueset().getExpansion().getContains().get(i);
-                String code = Utilities.nmtokenize(cc.getCode()).toUpperCase();
+                String code = Utilities.javaTokenize(cc.getCode(), true).toUpperCase();
                 if (cc.getAbstract()) {
                   code = "_"+code;
                 }
@@ -375,7 +398,12 @@ public class PECodeGenerator {
     private void genLoad(boolean isPrim, boolean isAbstract, String name, String sname, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, boolean isFixed, PEType typeInfo, boolean isEnum) {
       if (isList) {
         w(load, "    for (PEInstance item : src.children(\""+sname+"\")) {");
-        w(load, "      "+name+".add(("+type+") item.asDataType());");
+
+        if ("BackboneElement".equals(type)) {
+          w(load, "      "+name+".add(("+type+") item.asElement());");          
+        } else {
+          w(load, "      "+name+".add(("+type+") item.asDataType());");
+        }
         w(load, "    }");
       } else if (isEnum) {
         w(load, "    if (src.hasChild(\""+name+"\")) {");
@@ -384,7 +412,7 @@ public class PECodeGenerator {
         } else if ("Coding".equals(typeInfo.getName())) {
           w(load, "      "+name+" = "+type+".fromCoding((Coding) src.child(\""+name+"\").asDataType());");
         } else {
-          w(load, "      "+name+" = "+type+".fromCode(src.child(\""+name+"\").asDataType()).primitiveValue());");
+          w(load, "      "+name+" = "+type+".fromCode(src.child(\""+name+"\").asDataType().primitiveValue());");
         }  
         w(load, "    }");      
       } else if (isPrim) {
@@ -401,8 +429,12 @@ public class PECodeGenerator {
         w(load, "      "+name+" = "+type+".fromSource(src.child(\""+name+"\"));");
         w(load, "    }");
       } else {
-        w(load, "    if (src.hasChild(\""+name+"\")) {");
-        w(load, "      "+name+" = ("+type+") src.child(\""+name+"\").asDataType();");
+        w(load, "    if (src.hasChild(\""+name+"\")) {");      
+        if ("BackboneElement".equals(type)) {
+          w(load, "      "+name+" = ("+type+") src.child(\""+name+"\").asElement();");
+        } else {
+          w(load, "      "+name+" = ("+type+") src.child(\""+name+"\").asDataType();");
+        }
         w(load, "    }");
       }
     }
@@ -424,7 +456,7 @@ public class PECodeGenerator {
         } else if ("Coding".equals(typeInfo.getName())) {
           w(save, "      tgt.addChild(\""+sname+"\", "+name+".toCoding());");
         } else {
-          w(save, "      tgt.addChild(\""+sname+"\", "+name+").toCode();");
+          w(save, "      tgt.addChild(\""+sname+"\", "+name+".toCode());");
         }  
         w(save, "    }");      
       } else if (isPrim) {
@@ -593,7 +625,7 @@ public class PECodeGenerator {
   private IWorkerContext workerContext;
   private String canonical;
   private String pkgName;
-  private String version;
+  private String version = "r4";
   
   // options:
   private ExtensionPolicy extensionPolicy;
