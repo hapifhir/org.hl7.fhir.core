@@ -130,7 +130,7 @@ public class CKMImporter {
     res.checkThrowException();
     InputStream xml = new ByteArrayInputStream(res.getContent());
 
-    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory dbf = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     DocumentBuilder db = dbf.newDocumentBuilder();
     return db.parse(xml);
   }
