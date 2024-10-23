@@ -1,15 +1,18 @@
 package org.hl7.fhir.utilities.http;
 
 import lombok.With;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
+import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.http.okhttpimpl.LoggingInterceptor;
+import org.hl7.fhir.utilities.http.okhttpimpl.ProxyAuthenticator;
 import org.hl7.fhir.utilities.http.okhttpimpl.RetryInterceptor;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<ManagedFhirWebAccessBuilder>{
 
@@ -19,10 +22,14 @@ public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<Man
   private static OkHttpClient okHttpClient;
 
   private long timeout;
+  private TimeUnit timeoutUnit;
   private int retries;
+  private ToolingClientLogger logger;
+  private LoggingInterceptor loggingInterceptor;
 
-  public ManagedFhirWebAccessBuilder withTimeout(long timeout) {
+  public ManagedFhirWebAccessBuilder withTimeout(long timeout, TimeUnit timeoutUnit) {
     this.timeout = timeout;
+    this.timeoutUnit = timeoutUnit;
     return this;
   }
 
@@ -30,6 +37,13 @@ public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<Man
     this.retries = retries;
     return this;
   }
+
+  public ManagedFhirWebAccessBuilder withLogger(ToolingClientLogger logger) {
+    this.logger = logger;
+    this.loggingInterceptor = new LoggingInterceptor(logger);
+    return this;
+  }
+
 
   public ManagedFhirWebAccessBuilder(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
     super(userAgent, serverAuthDetails);
@@ -61,15 +75,17 @@ public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<Man
     }
   }
 
-
-
   private OkHttpClient getOkHttpClient() {
     if (okHttpClient == null) {
       okHttpClient = new OkHttpClient();
     }
     OkHttpClient.Builder builder = okHttpClient.newBuilder();
+    if (logger != null) builder.addInterceptor(loggingInterceptor);
     builder.addInterceptor(new RetryInterceptor(retries));
-    return builder.build();
+    builder.proxyAuthenticator(new ProxyAuthenticator());
+    return builder.connectTimeout(timeout, timeoutUnit)
+      .writeTimeout(timeout, timeoutUnit)
+      .readTimeout(timeout, timeoutUnit).build();
   }
 
 }
