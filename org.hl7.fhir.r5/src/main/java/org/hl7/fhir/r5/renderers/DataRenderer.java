@@ -1318,18 +1318,14 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (Utilities.noString(s)) 
       s = lookupCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")); 
 
-    CodeSystem cs = context.getWorker().fetchCodeSystem(c.primitiveValue("system")); 
+    String sn = displaySystem(c.primitiveValue("system"));
+    String link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"));
+    XhtmlNode xi = link != null ? x.ah(context.prefixLocalHref(link)) : x;    
+    xi.tx(sn);
+    xi.tx(" "); 
 
-    String sn = cs != null ? crPresent(cs) : displaySystem(c.primitiveValue("system")); 
-    String link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")); 
-    if (link != null) { 
-      x.ah(context.prefixLocalHref(link)).tx(sn); 
-    } else { 
-      x.tx(sn); 
-    } 
-
-    x.tx(" "); 
-    x.tx(c.primitiveValue("code")); 
+    xi.tx(c.primitiveValue("code"));
+    
     if (!Utilities.noString(s)) { 
       x.tx(": "); 
       x.tx(s); 
