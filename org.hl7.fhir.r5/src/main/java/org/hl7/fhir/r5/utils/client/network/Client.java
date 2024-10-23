@@ -20,9 +20,9 @@ public class Client {
 
   public static final String DEFAULT_CHARSET = "UTF-8";
   private static final long DEFAULT_TIMEOUT = 5000;
-  @Getter
+  @Getter @Setter
   private ToolingClientLogger logger;
-  private FhirLoggingInterceptor fhirLoggingInterceptor;
+
   @Setter @Getter
   private int retryCount;
   @Setter @Getter
@@ -30,11 +30,6 @@ public class Client {
 
   @Setter @Getter
   private String base;
-
-  public void setLogger(ToolingClientLogger logger) {
-    this.logger = logger;
-    this.fhirLoggingInterceptor = new FhirLoggingInterceptor(logger);
-  }
 
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri,
                                                                      String resourceFormat,
@@ -204,7 +199,7 @@ public class Client {
                                                           int retryCount,
                                                           long timeout) throws IOException {
     return new FhirRequestBuilder(request, base)
-      .withLogger(fhirLoggingInterceptor)
+      .withLogger(logger)
       .withResourceFormat(resourceFormat)
       .withRetryCount(retryCount)
       .withMessage(message)
@@ -220,7 +215,7 @@ public class Client {
                                                                        int retryCount,
                                                                        long timeout) throws IOException {
     return new FhirRequestBuilder(request, base)
-      .withLogger(fhirLoggingInterceptor)
+      .withLogger(logger)
       .withResourceFormat(resourceFormat)
       .withRetryCount(retryCount)
       .withMessage(message)

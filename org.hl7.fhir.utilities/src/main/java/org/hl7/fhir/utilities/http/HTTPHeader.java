@@ -5,11 +5,17 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.With;
 
-@AllArgsConstructor
+import javax.annotation.Nonnull;
+
 @EqualsAndHashCode
 public class HTTPHeader {
-  @With @Getter
+  @With @Getter @Nonnull
   private final String name;
   @With @Getter
   private final String value;
+
+  public HTTPHeader(@Nonnull String name, String value) {
+    this.name = name;
+    this.value = value;
+  }
 }

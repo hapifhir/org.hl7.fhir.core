@@ -39,6 +39,7 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -206,12 +207,12 @@ public class TxTester {
     outputT.add("name", test.asString("name"));
     if (Utilities.noString(filter) || filter.equals("*") || test.asString("name").contains(filter)) {
       System.out.print("  Test "+test.asString("name")+": ");
-      Header header = null;
+      HTTPHeader header = null;
       try {
         if (test.has("header")) {
           JsonObject hdr = test.getJsonObject("header");
           if (hdr.has("mode") && modes.contains(hdr.asString("mode"))) {
-            header = new Header(hdr.asString("name"), hdr.asString("value"));
+            header = new HTTPHeader(hdr.asString("name"), hdr.asString("value"));
             tx.getClientHeaders().addHeader(header);
           }
         }

@@ -20,18 +20,14 @@ import org.hl7.fhir.r5.utils.ResourceUtilities;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.utilities.MimeType;
+import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.http.FhirRequest;
-import org.hl7.fhir.utilities.http.HTTPHeader;
-import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.http.*;
 import org.hl7.fhir.utilities.xhtml.XhtmlUtils;
 
 public class FhirRequestBuilder {
 
-  protected static final String HTTP_PROXY_USER = "http.proxyUser";
-  protected static final String HTTP_PROXY_PASS = "http.proxyPassword";
-  protected static final String HEADER_PROXY_AUTH = "Proxy-Authorization";
-  protected static final String LOCATION_HEADER = "location";
+   protected static final String LOCATION_HEADER = "location";
   protected static final String CONTENT_LOCATION_HEADER = "content-location";
   protected static final String DEFAULT_CHARSET = "UTF-8";
   /**
@@ -55,7 +51,8 @@ public class FhirRequestBuilder {
   /**
    * {@link FhirLoggingInterceptor} for log output.
    */
-  private FhirLoggingInterceptor logger = null;
+  private ToolingClientLogger logger = null;
+
   private String source;
 
   //TODO this should be the only constructor. There should be no okHttp exposure.
@@ -65,7 +62,6 @@ public class FhirRequestBuilder {
     Request.Builder baseRequestBuilder = new Request.Builder();
     assert fhirRequest.getUrl() != null;
     baseRequestBuilder.url(fhirRequest.getUrl());
-
 
     RequestBody body = fhirRequest.getBody() == null ? null : RequestBody.create(fhirRequest.getBody());
     this.httpRequest = new Request.Builder()
@@ -163,6 +159,9 @@ public class FhirRequestBuilder {
     }
   }
 
+  protected ManagedFhirWebAccessBuilder getManagedWebAccessBuilder() {
+    return new ManagedFhirWebAccessBuilder("hapi-fhir-tooling-client", null).withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
+  }
   /**
    * We only ever want to have one copy of the HttpClient kicking around at any given time. If we need to make changes
    * to any configuration, such as proxy settings, timeout, caches, etc, we can do a per-call configuration through
@@ -176,7 +175,7 @@ public class FhirRequestBuilder {
    *
    * @return {@link OkHttpClient} instance
    */
-  //FIXME delete this whole method.
+  /*FIXME delete after refactor
   protected OkHttpClient getHttpClient() {
 
     if (okHttpClient == null) {
@@ -194,7 +193,8 @@ public class FhirRequestBuilder {
       .proxyAuthenticator(proxyAuthenticator)
       .build();
   }
-
+*/
+  /*FIXME delete after refactor
   @Nonnull
   private static Authenticator getAuthenticator() {
     return (route, response) -> {
@@ -209,7 +209,7 @@ public class FhirRequestBuilder {
       return response.request().newBuilder().build();
     };
   }
-
+*/
   public FhirRequestBuilder withResourceFormat(String resourceFormat) {
     this.resourceFormat = resourceFormat;
     return this;
@@ -230,7 +230,7 @@ public class FhirRequestBuilder {
     return this;
   }
 
-  public FhirRequestBuilder withLogger(FhirLoggingInterceptor logger) {
+  public FhirRequestBuilder withLogger(ToolingClientLogger logger) {
     this.logger = logger;
     return this;
   }
@@ -247,14 +247,14 @@ public class FhirRequestBuilder {
 
   public <T extends Resource> ResourceRequest<T> execute() throws IOException {
     formatHeaders(httpRequest, resourceFormat, headers);
-    Response response = ManagedWebAccess.httpCall(httpRequest);//getHttpClient().newCall(httpRequest.build()).execute();
+    Response response = getManagedWebAccessBuilder().httpCall(httpRequest);//getHttpClient().newCall(httpRequest.build()).execute();
     T resource = unmarshalReference(response, resourceFormat, null);
     return new ResourceRequest<T>(resource, response.code(), getLocationHeader(response.headers()));
   }
 
   public Bundle executeAsBatch() throws IOException {
     formatHeaders(httpRequest, resourceFormat, null);
-    Response response = ManagedWebAccess.httpCall(httpRequest);
+    Response response = getManagedWebAccessBuilder().httpCall(httpRequest);
     return unmarshalFeed(response, resourceFormat);
   }
 
