@@ -338,16 +338,20 @@ public class Validator {
             }
             if (isColl) {
               if (td.getCollectionStatus() == CollectionStatus.SINGLETON) {
-                hint(path, column, "collection is true, but the path statement(s) can only return single values for the column '"+columnName+"'");
+                hint(path, column, "collection is true, but the path statement(s) ('"+expr+"') can only return single values for the column '"+columnName+"'");
+              }
+              if (supportsArrays == TrueFalseOrUnknown.UNKNOWN) {
+                warning(path, expression, "The column '"+columnName+"' is defined as a collection, but collections are not supported in all execution contexts");
+              } else if (supportsArrays == TrueFalseOrUnknown.FALSE) {
+                if (td.getCollectionStatus() == CollectionStatus.SINGLETON) {
+                  warning(path, expression, "The column '"+columnName+"' is defined as a collection, but this is not allowed in the current execution context. Note that the path '"+expr+"' can only return a single value");
+                } else {
+                  warning(path, expression, "The column '"+columnName+"' is defined as a collection, but this is not allowed in the current execution context. Note that the path '"+expr+"' can return a collection of values");                  
+                }
               }
             } else {
-              if (supportsArrays == TrueFalseOrUnknown.UNKNOWN) {
-                warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path. Collections are not supported in all execution contexts");
-              } else if (supportsArrays == TrueFalseOrUnknown.FALSE) {
-                warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path, but this is not allowed in the current execution context");
-              }
               if (td.getCollectionStatus() != CollectionStatus.SINGLETON) {
-                warning(path, column, "collection is not true, but the path statement(s) might return multiple values for the column '"+columnName+"' for some inputs");
+                warning(path, column, "This column is not defined as a collection, but the path statement '"+expr+"' might return multiple values for the column '"+columnName+"' for some inputs");
               }
             }
             Set<String> types = new HashSet<>();
@@ -364,7 +368,7 @@ public class Validator {
                 if (typeJ instanceof JsonString) {
                   String type = typeJ.asString();
                   if (!td.hasType(type)) {
-                    error(path+".type", typeJ, "The path expression does not return a value of the type '"+type+"' - found "+td.describe(), IssueType.VALUE);
+                    error(path+".type", typeJ, "The path expression ('"+expr+"') does not return a value of the type '"+type+"' - found "+td.describe(), IssueType.VALUE);
                   } else {
                     types.clear();
                     types.add(simpleType(type));
@@ -381,9 +385,9 @@ public class Validator {
               boolean ok = false;
               if (!isSimpleType(type) && !"null".equals(type)) {
                 if (supportsComplexTypes == TrueFalseOrUnknown.UNKNOWN) {
-                  warning(path, expression, "Column is a complex type. This is not supported in some Runners");
+                  warning(path, expression, "Column from path '"+expr+"' is a complex type ('"+type+"'). This is not supported in some Runners");
                 } else if (supportsComplexTypes == TrueFalseOrUnknown.FALSE) {            
-                  error(path, expression, "Column is a complex type but this is not allowed in this context", IssueType.BUSINESSRULE);
+                  error(path, expression, "Column from path '"+expr+"' is a complex type ('"+type+"') but this is not allowed in this context", IssueType.BUSINESSRULE);
                 } else {
                   ok = true;
                 }
@@ -411,6 +415,11 @@ public class Validator {
     case "integer": return ColumnKind.Integer;
     case "decimal": return ColumnKind.Decimal;
     case "string": return ColumnKind.String;
+    case "canonical": return ColumnKind.String;
+    case "url": return ColumnKind.String;
+    case "uri": return ColumnKind.String;
+    case "oid": return ColumnKind.String;
+    case "uuid": return ColumnKind.String;
     case "id": return ColumnKind.String;
     case "code": return ColumnKind.String;
     case "base64Binary": return ColumnKind.Binary;
@@ -420,7 +429,7 @@ public class Validator {
   }
 
   private boolean isSimpleType(String type) {
-    return Utilities.existsInList(type, "dateTime", "boolean", "integer", "decimal", "string", "base64Binary", "id", "code", "date", "time");
+    return Utilities.existsInList(type, "dateTime", "boolean", "integer", "decimal", "string", "base64Binary", "id", "code", "date", "time", "canonical");
   }
 
   private String simpleType(String type) {
