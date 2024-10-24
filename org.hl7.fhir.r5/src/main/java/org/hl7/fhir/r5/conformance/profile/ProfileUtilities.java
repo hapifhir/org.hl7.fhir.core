@@ -968,6 +968,7 @@ public class ProfileUtilities {
       snapshotStack.remove(derived.getUrl());
     }
     derived.setUserData("profileutils.snapshot.generated", true); // used by the publisher
+    derived.setUserData("profileutils.snapshot.generated.messages", messages); // used by the publisher
   }
 
 
