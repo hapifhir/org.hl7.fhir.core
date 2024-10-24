@@ -20,10 +20,6 @@ public class ManagedWebAccessBuilder extends ManagedWebAccessBuilderBase<Managed
   public ManagedWebAccessBuilder(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
     super(userAgent, serverAuthDetails);
   }
-
-  public ManagedWebAccessBuilder withAccept(String accept) {
-    return super.withAccept(accept);
-  }
   
   private Map<String, String> newHeaders() {
     Map<String, String> headers = new HashMap<String, String>();
@@ -51,7 +47,8 @@ public class ManagedWebAccessBuilder extends ManagedWebAccessBuilderBase<Managed
     if (getUserAgent() != null) {
       client.addHeader("User-Agent", getUserAgent());
     }
-    if (getAuthenticationMode() != null && getAuthenticationMode() != HTTPAuthenticationMode.NONE) {
+    if (getAuthenticationMode() != null) {
+      if (getAuthenticationMode() != HTTPAuthenticationMode.NONE) {
       client.setAuthenticationMode(getAuthenticationMode());
       switch (getAuthenticationMode()) {
       case BASIC :
@@ -65,8 +62,9 @@ public class ManagedWebAccessBuilder extends ManagedWebAccessBuilderBase<Managed
         client.setApiKey(getToken());
         break;
       }
+      }
     } else {
-      ServerDetailsPOJO settings = getServer(url);
+      ServerDetailsPOJO settings = ManagedWebAccessUtils.getServer(url, getServerAuthDetails());
       if (settings != null) {
         switch (settings.getAuthenticationType()) {
         case "basic" :
@@ -91,24 +89,17 @@ public class ManagedWebAccessBuilder extends ManagedWebAccessBuilderBase<Managed
     return client;
   }
 
-  private ServerDetailsPOJO getServer(String url) {
-    if (getServerAuthDetails() != null) {
-      for (ServerDetailsPOJO t : getServerAuthDetails()) {
-        if (url.startsWith(t.getUrl())) {
-          return t;
-        }
-      }
-    }
-    return null;
+  public HTTPResult get(String url) throws IOException {
+    return get(url, null);
   }
 
-  public HTTPResult get(String url) throws IOException {
+  public HTTPResult get(String url, String accept) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
     case DIRECT:
       SimpleHTTPClient client = setupClient(url);
-      return client.get(url, getAccept());
+      return client.get(url, accept);
     case MANAGED:
-      return ManagedWebAccess.getAccessor().get(url, getAccept(), newHeaders());
+      return ManagedWebAccess.getAccessor().get(url, accept, newHeaders());
     case PROHIBITED:
       throw new IOException("Access to the internet is not allowed by local security policy");
     default:
@@ -117,12 +108,16 @@ public class ManagedWebAccessBuilder extends ManagedWebAccessBuilderBase<Managed
   }
 
   public HTTPResult post(String url, byte[] content, String contentType) throws IOException {
+    return post(url, content, contentType, null);
+  }
+
+  public HTTPResult post(String url, byte[] content, String contentType, String accept) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
     case DIRECT:
       SimpleHTTPClient client = setupClient(url);
-      return client.post(url, contentType, content, getAccept());
+      return client.post(url, contentType, content, accept);
     case MANAGED:
-      return ManagedWebAccess.getAccessor().post(url, content, contentType, getAccept(), newHeaders());
+      return ManagedWebAccess.getAccessor().post(url, content, contentType, accept, newHeaders());
     case PROHIBITED:
       throw new IOException("Access to the internet is not allowed by local security policy");
     default:
@@ -131,12 +126,16 @@ public class ManagedWebAccessBuilder extends ManagedWebAccessBuilderBase<Managed
   }
 
   public HTTPResult put(String url, byte[] content, String contentType) throws IOException {
+    return put(url, content, contentType, null);
+  }
+
+  public HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
     case DIRECT:
       SimpleHTTPClient client = setupClient(url);
-      return client.put(url, contentType, content, getAccept());
+      return client.put(url, contentType, content, accept);
     case MANAGED:
-      return ManagedWebAccess.getAccessor().put(url, content, contentType, getAccept(), newHeaders());
+      return ManagedWebAccess.getAccessor().put(url, content, contentType, accept, newHeaders());
     case PROHIBITED:
       throw new IOException("Access to the internet is not allowed by local security policy");
     default:

@@ -126,19 +126,19 @@ public class ManagedWebAccess {
   }
 
   public static HTTPResult get(String url, String accept) throws IOException {
-    return builder().withAccept(accept).get(url);
+    return builder().get(url, accept);
   }
 
   public static HTTPResult post(String url, byte[] content, String contentType, String accept) throws IOException {
-    return builder().withAccept(accept).post(url, content, contentType);
+    return builder().post(url, content, contentType, accept);
   }
   
 
   public static HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
-    return builder().withAccept(accept).put(url, content, contentType);
+    return builder().put(url, content, contentType, accept);
   }
 
-  public static Response httpCall(Request.Builder httpRequest) throws IOException {
+  public static Response httpCall(FhirRequest httpRequest) throws IOException {
     return fhirBuilder().httpCall(httpRequest);
   }
 

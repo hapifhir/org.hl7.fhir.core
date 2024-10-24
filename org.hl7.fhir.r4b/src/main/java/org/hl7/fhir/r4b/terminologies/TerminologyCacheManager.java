@@ -158,7 +158,7 @@ public class TerminologyCacheManager {
 
     HTTPResult res = ManagedWebAccess.builder()
      .withBasicAuth(token.substring(0, token.indexOf(':')), token.substring(token.indexOf(':') + 1))
-     .withAccept("application/zip").put(url, bs.toByteArray(), null);
+     .put(url, bs.toByteArray(), null, "application/zip");
     if (res.getCode() >= 300) {
       System.out.println("sending cache failed: " + res.getCode());
     } else {
