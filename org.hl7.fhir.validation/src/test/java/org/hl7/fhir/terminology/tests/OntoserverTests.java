@@ -60,15 +60,20 @@ public class OntoserverTests implements ITxTesterLoader {
   public static Iterable<Object[]> data() throws IOException {
 
     String contents = TestingUtilities.loadTestResource("tx", "test-cases.json");
-    externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(TestingUtilities.loadTestResource("tx", "messages-tx.fhir.org.json"));
+    externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(TestingUtilities.loadTestResource("tx", "messages-ontoserver.csiro.au.json"));
 
     Map<String, JsonObjectPair> examples = new HashMap<String, JsonObjectPair>();
     manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
     for (org.hl7.fhir.utilities.json.model.JsonObject suite : manifest.getJsonObjects("suites")) {
-      String sn = suite.asString("name");
-      for (org.hl7.fhir.utilities.json.model.JsonObject test : suite.getJsonObjects("tests")) {
-        String tn = test.asString("name");
-        examples.put(sn+"."+tn, new JsonObjectPair(suite, test));
+
+      if (!suite.has("mode") && !suite.asBoolean("disabled")) {
+        String sn = suite.asString("name");
+        for (org.hl7.fhir.utilities.json.model.JsonObject test : suite.getJsonObjects("tests")) {
+          if (!test.has("mode") && !test.asBoolean("disabled")) {
+            String tn = test.asString("name");
+            examples.put(sn+"."+tn, new JsonObjectPair(suite, test));
+          }
+        }
       }
     }
 
@@ -107,10 +112,13 @@ public class OntoserverTests implements ITxTesterLoader {
       return;
     }
     if (tester == null) {
-      tester = new TxTester(this, SERVER, true, externals);
+      tester = new TxTester(this, SERVER, false, externals);
     }
     String err = tester.executeTest(setup.suite, setup.test, modes);
-    Assertions.assertTrue(true); // we don't care what the result is, only that we didn't crash
+    if (err != null) {
+      System.out.println(err);
+    }
+    Assertions.assertTrue(err == null, err); // we don't care what the result is, only that we didn't crash
 
   }
 

@@ -1,5 +1,8 @@
 package org.hl7.fhir.utilities.settings;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,18 +12,11 @@ import lombok.extern.jackson.Jacksonized;
 @Builder
 @Jacksonized
 @AllArgsConstructor
-public class PackageServerPOJO {
+public class TerminologyServersPOJO {
 
-    String url;
+  private List<ServerDetailsPOJO> servers;
 
-    String authenticationType;
-
-    String serverType;
-
-    String username;
-
-    String password;
-
-    String token;
-
+  protected TerminologyServersPOJO() {
+    servers = new ArrayList<>();
+  }
 }

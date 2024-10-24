@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 /**
  * see security.md - manages access to the local file system by the FHIR HAPI Core library
@@ -73,6 +74,7 @@ public class ManagedWebAccess {
   private static List<String> allowedDomains = new ArrayList<>();
   private static IWebAccessor accessor;
   private static String userAgent;
+  private static List<ServerDetailsPOJO> serverAuthDetails;
   
   
   public static WebAccessPolicy getAccessPolicy() {
@@ -108,7 +110,7 @@ public class ManagedWebAccess {
   }
 
   public static ManagedWebAccessBuilder builder() {
-    return new ManagedWebAccessBuilder(userAgent);
+    return new ManagedWebAccessBuilder(userAgent, serverAuthDetails);
   }
 
   public static HTTPResult get(String url) throws IOException {

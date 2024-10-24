@@ -5889,6 +5889,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (isHL7Core(element) && !isExample()) {
           ok = checkPublisherConsistency(valContext, errors, element, stack, contained) && ok;  
         }
+        String version = element.getNamedChildValue("version");
+        if (!Utilities.noString(version)) {
+          warning(errors, "2024-10-18", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), !version.contains("#"), I18nConstants.VALIDATION_VAL_VERSION_NOHASH, version);
+        }        
       }
       if (element.getType().equals(BUNDLE)) {
         return new BundleValidator(this, serverBase).validateBundle(errors, element, stack, checkSpecials, valContext, pct, mode) && ok;
@@ -7061,7 +7065,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   errorSummaryForSlicingAsText(ei.sliceInfo), ei.sliceInfo, I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_);
             }
           } else if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.CLOSED)) {
-            bh.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTSLICE, (profile == null ? "" : " defined in the profile " + profile.getVersionedUrl()), errorSummaryForSlicing(ei.sliceInfo)));
+            bh.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTSLICE, (profile == null ? "" : "defined in the profile " + profile.getVersionedUrl()), errorSummaryForSlicing(ei.sliceInfo)));
           }
         } else {
           // Don't raise this if we're in an abstract profile, like Resource

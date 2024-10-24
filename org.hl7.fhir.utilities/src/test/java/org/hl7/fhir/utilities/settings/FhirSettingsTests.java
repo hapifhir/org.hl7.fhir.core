@@ -87,7 +87,7 @@ public class FhirSettingsTests implements ResourceLoaderTests {
 
     assertTrue(fhirSettings.getPackageManagement().getIgnoreDefaultServers());
 
-    List<PackageServerPOJO> packageServers = fhirSettings.getPackageManagement().getServers();
+    List<ServerDetailsPOJO> packageServers = fhirSettings.getPackageManagement().getServers();
 
     assertEquals(2, packageServers.size());
 
