@@ -24,7 +24,6 @@ public class RendererFactory {
     case "CompartmentDefinition":  return new CompartmentDefinitionRenderer(context);
     case "ConceptMap": return new ConceptMapRenderer(context);
     case "DiagnosticReport": return new DiagnosticReportRenderer(context);
-    case "Encounter": return new EncounterRenderer(context);
     case "ExampleScenario": return new ExampleScenarioRenderer(context);
     case "ImplementationGuide": return new ImplementationGuideRenderer(context);
     case "Library": return new LibraryRenderer(context);
@@ -87,7 +86,6 @@ public class RendererFactory {
       case "CodeSystem": return new CodeSystemRenderer(context);
       case "CompartmentDefinition":  return new CompartmentDefinitionRenderer(context);
       case "ConceptMap": return new ConceptMapRenderer(context);
-      case "Encounter": return new EncounterRenderer(context);
       case "ExampleScenario": return new ExampleScenarioRenderer(context);
       case "ImplementationGuide": return new ImplementationGuideRenderer(context);
       case "NamingSystem": return new NamingSystemRenderer(context);

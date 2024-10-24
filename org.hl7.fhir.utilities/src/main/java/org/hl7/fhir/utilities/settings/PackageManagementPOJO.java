@@ -16,7 +16,7 @@ public class PackageManagementPOJO {
 
   private Boolean ignoreDefaultServers;
 
-  private List<PackageServerPOJO> servers;
+  private List<ServerDetailsPOJO> servers;
 
   protected PackageManagementPOJO() {
     ignoreDefaultServers = false;

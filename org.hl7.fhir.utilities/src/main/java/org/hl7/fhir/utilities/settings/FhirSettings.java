@@ -227,11 +227,11 @@ public class FhirSettings {
     return instance.fhirSettings.getPackageManagement().getIgnoreDefaultServers();
   }
 
-  public static List<PackageServerPOJO> getPackageServers() {
+  public static List<ServerDetailsPOJO> getPackageServers() {
     getInstance();
     if (instance.fhirSettings.getPackageManagement() == null) {
       return Collections.emptyList();
     }
-    return List.of(instance.fhirSettings.getPackageManagement().getServers().toArray(new PackageServerPOJO[]{}));
+    return List.of(instance.fhirSettings.getPackageManagement().getServers().toArray(new ServerDetailsPOJO[]{}));
   }
 }

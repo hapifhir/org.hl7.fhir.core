@@ -205,14 +205,35 @@ public class Property {
       return ed.getType().get(0).getWorkingCode();
 	}
 
-  public boolean hasType(String elementName) {
+  public boolean typeIsConsistent(String typeName) {
+    for (TypeRefComponent tr : definition.getType()) {
+      if (typeName.equals(tr.getWorkingCode()) || typeSpecializes(tr.getWorkingCode(), typeName)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  
+  private boolean typeSpecializes(String workingCode, String typeName) {
+    if ("string".equals(typeName)) {
+      return Utilities.existsInList(workingCode, "uri", "oid", "canonical", "url", "uuid", "id", "markdown");
+    }
+    if ("integer".equals(typeName)) {
+      return Utilities.existsInList(workingCode, "positiveInt", "unsignedInt");
+    }
+    return false;
+  }
+
+
+  public boolean hasType(String typeName) {
     if (type != null) {
       return false; // ?
     } else if (definition.getType().size() == 0) {
       return false;
     } else if (isJsonPrimitiveChoice()) { 
       for (TypeRefComponent tr : definition.getType()) {
-        if (elementName.equals(tr.getWorkingCode())) {
+        if (typeName.equals(tr.getWorkingCode())) {
           return true;
         }
       }
@@ -227,7 +248,7 @@ public class Property {
       if (all)
         return true;
       String tail = definition.getPath().substring(definition.getPath().lastIndexOf(".")+1);
-      if (tail.endsWith("[x]") && elementName.startsWith(tail.substring(0, tail.length()-3))) {
+      if (tail.endsWith("[x]") && typeName.startsWith(tail.substring(0, tail.length()-3))) {
 //        String name = elementName.substring(tail.length()-3);
         return true;        
       } else
@@ -706,5 +727,5 @@ public class Property {
     return false;
   }
 
-  
+
 }

@@ -54,6 +54,9 @@ public class SimpleHTTPClient {
   @Getter @Setter
   private String token;
   
+  @Getter @Setter
+  private String apiKey;
+  
   public void addHeader(String name, String value) {
     headers.add(new Header(name, value));
   }
@@ -128,6 +131,8 @@ public class SimpleHTTPClient {
       String auth = username+":"+password;
       byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
       authHeaderValue = "Basic " + new String(encodedAuth);
+    } else if (authenticationMode == HTTPAuthenticationMode.APIKEY) {
+      c.setRequestProperty("Api-Key", apiKey);
     }
 
     if (authHeaderValue != null) {

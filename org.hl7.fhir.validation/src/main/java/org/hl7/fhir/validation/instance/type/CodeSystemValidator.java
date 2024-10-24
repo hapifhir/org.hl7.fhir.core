@@ -26,7 +26,7 @@ import org.hl7.fhir.validation.instance.type.CodeSystemValidator.PropertyDef;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
-public class CodeSystemValidator  extends BaseValidator {
+public class CodeSystemValidator extends BaseValidator {
 
   public enum KnownProperty {
     Status, Inactive, EffectiveDate, DeprecationDate, RetirementDate, NotSelectable, Parent, Child, PartOf, Synonym, Comment, ItemWeight;

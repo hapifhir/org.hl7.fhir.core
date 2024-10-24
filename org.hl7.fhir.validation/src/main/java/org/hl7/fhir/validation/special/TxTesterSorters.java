@@ -212,8 +212,8 @@ public class TxTesterSorters {
         if (code1 != null && code2 != null && !code1.equals(code2)) {
           return code1.compareTo(code2);          
         }           
-        String v1 = o1.getPart("value") != null && o1.getPart("value").hasPrimitiveValue() ? o1.getPart("value").getValue().primitiveValue().toLowerCase() : null;
-        String v2 = o2.getPart("value") != null && o2.getPart("value").hasPrimitiveValue() ? o2.getPart("value").getValue().primitiveValue().toLowerCase() : null;
+        String v1 = o1.getPart("value") != null && o1.getPart("value").getValue().hasPrimitiveValue() ? o1.getPart("value").getValue().primitiveValue().toLowerCase() : null;
+        String v2 = o2.getPart("value") != null && o2.getPart("value").getValue().hasPrimitiveValue() ? o2.getPart("value").getValue().primitiveValue().toLowerCase() : null;
         if (v1 != null && v2 != null && !v1.equals(v2)) {
           return v1.compareTo(v2);          
         }           

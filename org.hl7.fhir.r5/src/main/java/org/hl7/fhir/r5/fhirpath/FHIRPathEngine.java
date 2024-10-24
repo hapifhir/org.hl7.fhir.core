@@ -3430,7 +3430,7 @@ public class FHIRPathEngine {
     case Item : {
       checkOrdered(focus, "item", exp);
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer)); 
-      return focus; 
+      return focus.toSingleton(); 
     }
     case As : {
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));

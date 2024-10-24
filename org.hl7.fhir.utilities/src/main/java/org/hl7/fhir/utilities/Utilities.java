@@ -722,6 +722,27 @@ public class Utilities {
     return s.toString();
   }
 
+  public static String javaTokenize(String cs, boolean capFirst) {
+    if (cs == null)
+      return "";
+    StringBuilder s = new StringBuilder();
+    boolean upcase = capFirst;
+    for (int i = 0; i < cs.length(); i++) {
+      char c = cs.charAt(i);
+      if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_') {
+        if (upcase) {
+          s.append(Character.toUpperCase(c));
+          upcase = false;
+        } else {
+          s.append(c);
+        }
+      } else {
+        upcase = true;
+      }
+    }
+    return s.toString();
+  }
+
 
   public static boolean isToken(String tail) {
     if (tail == null || tail.length() == 0)
