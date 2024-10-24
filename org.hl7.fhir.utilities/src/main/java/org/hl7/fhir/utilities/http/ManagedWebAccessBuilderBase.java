@@ -18,8 +18,7 @@ public abstract class ManagedWebAccessBuilderBase<B extends ManagedWebAccessBuil
   private String password;
   @Getter
   private String token;
-  @Getter
-  private String accept;
+
   @Getter
   private final List<ServerDetailsPOJO> serverAuthDetails;
   @Getter
@@ -33,11 +32,6 @@ public abstract class ManagedWebAccessBuilderBase<B extends ManagedWebAccessBuil
   @SuppressWarnings("unchecked")
   final B self() {
     return (B) this;
-  }
-
-  public B withAccept(String accept) {
-    this.accept = accept;
-    return self();
   }
 
   public B withHeader(String name, String value) {

@@ -176,13 +176,13 @@ public class PackageClient {
   }
  
   private InputStream fetchUrl(String source, String accept) throws IOException {
-    ManagedWebAccessBuilder client = ManagedWebAccess.builder().withAccept(accept);
+    ManagedWebAccessBuilder client = ManagedWebAccess.builder();
     if (server.getAuthenticationMode() == HTTPAuthenticationMode.TOKEN) {
       client.withToken(server.getToken());
     } else if (server.getAuthenticationMode() == HTTPAuthenticationMode.BASIC) {
       client.withBasicAuth(server.getUsername(), server.getPassword());
     }
-    HTTPResult res = client.get(source);
+    HTTPResult res = client.get(source, accept);
     res.checkThrowException();
     return new ByteArrayInputStream(res.getContent());
   }
