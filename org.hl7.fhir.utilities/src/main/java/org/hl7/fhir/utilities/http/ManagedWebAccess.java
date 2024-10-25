@@ -31,26 +31,18 @@ package org.hl7.fhir.utilities.http;
 
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import lombok.Getter;
-import okhttp3.Request;
 import okhttp3.Response;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 /**
  * see security.md - manages access to the local file system by the FHIR HAPI Core library
- * 
+ * <p/>
  * By using accessPolicy, allowedDomains and accessor, a host java application can control 
  * whether this library has direct access to the web (and which domains it is allowed to access),
  * or whether the host application provides controlled access, or whether no access is allowed at all
@@ -68,7 +60,7 @@ public class ManagedWebAccess {
   }
 
   public interface IFhirWebAccessor {
-    Response httpCall(Request.Builder httpRequest);
+    HTTPResult httpCall(HTTPRequest httpRequest);
   }
 
   public enum WebAccessPolicy {
@@ -132,13 +124,12 @@ public class ManagedWebAccess {
   public static HTTPResult post(String url, byte[] content, String contentType, String accept) throws IOException {
     return builder().post(url, content, contentType, accept);
   }
-  
 
   public static HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
     return builder().put(url, content, contentType, accept);
   }
 
-  public static Response httpCall(FhirRequest httpRequest) throws IOException {
+  public static HTTPResult httpCall(HTTPRequest httpRequest) throws IOException {
     return fhirBuilder().httpCall(httpRequest);
   }
 

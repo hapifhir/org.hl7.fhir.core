@@ -1,6 +1,5 @@
 package org.hl7.fhir.utilities.http;
 
-import lombok.With;
 import okhttp3.*;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.http.okhttpimpl.LoggingInterceptor;
@@ -8,8 +7,8 @@ import org.hl7.fhir.utilities.http.okhttpimpl.ProxyAuthenticator;
 import org.hl7.fhir.utilities.http.okhttpimpl.RetryInterceptor;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -49,30 +48,97 @@ public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<Man
     super(userAgent, serverAuthDetails);
   }
 
-  private void setHeaders(Request.Builder httpRequest) {
-    for (Map.Entry<String, String> entry : this.getHeaders().entrySet()) {
-      httpRequest.header(entry.getKey(), entry.getValue());
+  protected HTTPRequest httpRequestWithDefaultHeaders(HTTPRequest request) {
+    List<HTTPHeader> headers = new ArrayList<>();
+    if (HTTPHeaderUtil.getSingleHeader(request.getHeaders(), HTTPHeaderUtil.USER_AGENT) == null) {
+      headers.add(new HTTPHeader(HTTPHeaderUtil.USER_AGENT, getUserAgent()));
     }
+    request.getHeaders().forEach(headers::add);
+    return request.withHeaders(headers);
   }
 
-  public Response httpCall(Request.Builder httpRequest) throws IOException {
+  protected HTTPRequest requestWithManagedHeaders(HTTPRequest httpRequest) {
+    HTTPRequest requestWithDefaultHeaders = httpRequestWithDefaultHeaders(httpRequest);
+
+    List<HTTPHeader> headers = new ArrayList<>();
+    requestWithDefaultHeaders.getHeaders().forEach(headers::add);
+
+    for (Map.Entry<String, String> entry : this.getHeaders().entrySet()) {
+      headers.add(new HTTPHeader(entry.getKey(), entry.getValue()));
+    }
+
+    if (getAuthenticationMode() != null) {
+      if (getAuthenticationMode() != HTTPAuthenticationMode.NONE) {
+        switch (getAuthenticationMode()) {
+          case BASIC:
+            final String basicCredential = Credentials.basic(getUsername(), getPassword());
+            headers.add(new HTTPHeader("Authorization", basicCredential));
+            break;
+          case TOKEN:
+            String tokenCredential = "Bearer " + new String(getToken());
+            headers.add(new HTTPHeader("Authorization", tokenCredential));
+            break;
+          case APIKEY:
+            String apiKeyCredential = " " + new String(getToken());
+            headers.add(new HTTPHeader("Api-Key", apiKeyCredential));
+            break;
+        }
+      }
+    } else {
+      ServerDetailsPOJO settings = ManagedWebAccessUtils.getServer(httpRequest.getUrl().toString(), getServerAuthDetails());
+      if (settings != null) {
+        switch (settings.getAuthenticationType()) {
+          case "basic":
+            final String basicCredential = Credentials.basic(settings.getUsername(), settings.getPassword());
+            headers.add(new HTTPHeader("Authorization", basicCredential));
+            break;
+          case "token":
+            String tokenCredential = "Bearer " + settings.getToken();
+            headers.add(new HTTPHeader("Authorization", tokenCredential));
+            break;
+          case "apikey":
+            String apiKeyCredential = new String(settings.getToken());
+            headers.add(new HTTPHeader("Api-Key", apiKeyCredential));
+            break;
+        }
+      }
+    }
+    return httpRequest.withHeaders(headers);
+  }
+
+  public HTTPResult httpCall(HTTPRequest httpRequest) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
       case DIRECT:
+
+        HTTPRequest httpRequestWithDirectHeaders = requestWithManagedHeaders(httpRequest);
+        assert httpRequestWithDirectHeaders.getUrl() != null;
+
+        RequestBody body = httpRequestWithDirectHeaders.getBody() == null ? null : RequestBody.create(httpRequestWithDirectHeaders.getBody());
+        Request.Builder requestBuilder = new Request.Builder()
+          .url(httpRequestWithDirectHeaders.getUrl())
+          .method(httpRequestWithDirectHeaders.getMethod().name(), body);
+
         OkHttpClient okHttpClient = getOkHttpClient();
         //TODO check and throw based on httpRequest:
         // if (!ManagedWebAccess.inAllowedPaths(url)) {
         //      throw new IOException("The pathname '"+url+"' cannot be accessed by policy");
         // }
         //TODO add auth headers to httpRequest
-        return okHttpClient.newCall(httpRequest.build()).execute();
+        Response response = okHttpClient.newCall(requestBuilder.build()).execute();
+        return getHTTPResult(response);
       case MANAGED:
-        setHeaders(httpRequest);
-        return ManagedWebAccess.getFhirWebAccessor().httpCall(httpRequest);
+        HTTPRequest httpRequestWithManagedHeaders = requestWithManagedHeaders(httpRequest);
+        assert httpRequestWithManagedHeaders.getUrl() != null;
+        return ManagedWebAccess.getFhirWebAccessor().httpCall(httpRequestWithManagedHeaders);
       case PROHIBITED:
         throw new IOException("Access to the internet is not allowed by local security policy");
       default:
         throw new IOException("Internal Error");
     }
+  }
+
+  private HTTPResult getHTTPResult(Response execute) throws IOException {
+    return new HTTPResult(execute.request().url().toString(), execute.code(), execute.message(), execute.header("Content-Type"), execute.body() != null ? execute.body().bytes() : null);
   }
 
   private OkHttpClient getOkHttpClient() {

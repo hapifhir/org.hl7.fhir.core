@@ -22,7 +22,7 @@ public abstract class ManagedWebAccessBuilderBase<B extends ManagedWebAccessBuil
   @Getter
   private final List<ServerDetailsPOJO> serverAuthDetails;
   @Getter
-  private Map<String, String> headers = new HashMap<String, String>();
+  private final Map<String, String> headers = new HashMap<>();
 
   public ManagedWebAccessBuilderBase(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
     this.userAgent = userAgent;

@@ -20,27 +20,10 @@ import lombok.Setter;
 
 public class SimpleHTTPClient {
 
-
-	public static class Header {
-    private String name;
-    private String value;
-    public Header(String name, String value) {
-      super();
-      this.name = name;
-      this.value = value;
-    }
-    public String getName() {
-      return name;
-    }
-    public String getValue() {
-      return value;
-    }
-  }
-
   private static final int MAX_REDIRECTS = 5;
   private static int counter = 1;
 
-  private List<Header> headers = new ArrayList<>();
+  private List<HTTPHeader> headers = new ArrayList<>();
 
   @Getter @Setter
   private HTTPAuthenticationMode authenticationMode;
@@ -58,7 +41,7 @@ public class SimpleHTTPClient {
   private String apiKey;
   
   public void addHeader(String name, String value) {
-    headers.add(new Header(name, value));
+    headers.add(new HTTPHeader(name, value));
   }
 
   public HTTPResult get(String url) throws IOException {
@@ -114,8 +97,8 @@ public class SimpleHTTPClient {
 
   private void setHeaders(HttpURLConnection c) {
     if (headers != null) {
-      for (Header h : headers) {
-        c.setRequestProperty(h.getName(), h.getValue());        
+      for (HTTPHeader header : headers) {
+        c.setRequestProperty(header.getName(), header.getValue());
       }
     }
     c.setConnectTimeout(15000);
