@@ -109,7 +109,7 @@ public class SimpleHTTPClient {
   private void setAuthenticationHeader(HttpURLConnection c) {
     String authHeaderValue = null;
     if (authenticationMode == HTTPAuthenticationMode.TOKEN) {
-      authHeaderValue = "Bearer " + new String(token);
+      authHeaderValue = "Bearer " + token;
     } else if (authenticationMode == HTTPAuthenticationMode.BASIC) {
       String auth = username+":"+password;
       byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
