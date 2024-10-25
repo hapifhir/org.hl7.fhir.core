@@ -139,13 +139,15 @@ public interface IWorkerContext {
     private String url;
     private String version;
     private String packageSrc;
-    protected OIDDefinition(String type, String oid, String url, String version, String packageSrc) {
+    private String status;
+    protected OIDDefinition(String type, String oid, String url, String version, String status, String packageSrc) {
       super();
       this.type = type;
       this.oid = oid;
       this.url = url;
       this.version = version == null ? "" : version;
       this.packageSrc = packageSrc;
+      this.status = status;
     }
     public String getType() {
       return type;
@@ -158,6 +160,9 @@ public interface IWorkerContext {
     }
     public String getVersion() {
       return version;
+    }
+    public String getStatus() {
+      return status;
     }
     public String getPackageSrc() {
       return packageSrc;

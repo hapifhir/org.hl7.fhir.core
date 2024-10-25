@@ -499,7 +499,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             if (!oidCacheManual.containsKey(s)) {
               oidCacheManual.put(s, new HashSet<>());
             }
-            oidCacheManual.get(s).add(new OIDDefinition(r.fhirType(), s, url, ((CanonicalResource) r).getVersion(), null));
+            oidCacheManual.get(s).add(new OIDDefinition(r.fhirType(), s, url, ((CanonicalResource) r).getVersion(), null, null));
           }
         }
       }
@@ -3189,7 +3189,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
                 String rt = rs.getString(1);
                 String url = rs.getString(2);
                 String version = rs.getString(3);
-                summary.addOID(new OIDDefinition(rt, oid, url, version, os.pid));
+                String status = rs.getString(4);
+                summary.addOID(new OIDDefinition(rt, oid, url, version, os.pid, status));
               }
             }
           } catch (Exception e) {
@@ -3201,13 +3202,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   
       switch (oid) {
       case "2.16.840.1.113883.6.1" :
-        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.1", "http://loinc.org", null, null));
+        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.1", "http://loinc.org", null, null, null));
         break;
       case "2.16.840.1.113883.6.8" :
-        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.8", "http://unitsofmeasure.org", null, null));
+        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.8", "http://unitsofmeasure.org", null, null, null));
         break;
       case "2.16.840.1.113883.6.96" :
-        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.96", "http://snomed.info/sct", null, null));
+        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.96", "http://snomed.info/sct", null, null, null));
         break;
       default:
       }
