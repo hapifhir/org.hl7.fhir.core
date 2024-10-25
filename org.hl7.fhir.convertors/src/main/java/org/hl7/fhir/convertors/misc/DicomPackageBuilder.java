@@ -131,7 +131,7 @@ public class DicomPackageBuilder {
   }
 
   private CodeSystem buildCodeSystem() throws ParserConfigurationException, FileNotFoundException, SAXException, IOException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
     Document doc = builder.parse(ManagedFileAccess.inStream(Utilities.path(source, "Resources", "Ontology", "DCM", "dcm.owl")));

@@ -41,7 +41,6 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -97,7 +96,7 @@ public class XmlParser extends ParserBase {
   public Element parse(InputStream stream) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
 		Document doc = null;
   	try {
-  		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+  		DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
   		// xxe protection
   		factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
   		factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
@@ -114,18 +113,11 @@ public class XmlParser extends ParserBase {
   			DocumentBuilder docBuilder = factory.newDocumentBuilder();
   			doc = docBuilder.newDocument();
   			DOMResult domResult = new DOMResult(doc);
-  			SAXParserFactory spf = SAXParserFactory.newInstance();
+  			SAXParserFactory spf = XMLUtil.newXXEProtectedSaxParserFactory();
   			spf.setNamespaceAware(true);
   			spf.setValidating(false);
-    		// xxe protection
-  		  spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
-        spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-  			SAXParser saxParser = spf.newSAXParser();
-  			XMLReader xmlReader = saxParser.getXMLReader();
-    		// xxe protection
-  		  xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-  		  xmlReader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-  	   			
+  			XMLReader xmlReader = XMLUtil.getXXEProtectedXMLReader(spf);
+
   			XmlLocationAnnotator locationAnnotator = new XmlLocationAnnotator(xmlReader, doc);
   			InputSource inputSource = new InputSource(stream);
   			SAXSource saxSource = new SAXSource(locationAnnotator, inputSource);
