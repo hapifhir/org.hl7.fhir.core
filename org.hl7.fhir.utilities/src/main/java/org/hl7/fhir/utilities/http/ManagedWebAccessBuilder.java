@@ -22,8 +22,7 @@ public class ManagedWebAccessBuilder extends ManagedWebAccessBuilderBase<Managed
   }
   
   private Map<String, String> newHeaders() {
-    Map<String, String> headers = new HashMap<String, String>();
-    headers.putAll(this.getHeaders());
+    Map<String, String> headers = new HashMap<String, String>(this.getHeaders());
     if (getAuthenticationMode() == HTTPAuthenticationMode.TOKEN) {
       headers.put("Authorization", "Bearer " + getToken());
     } else if (getAuthenticationMode() == HTTPAuthenticationMode.BASIC) {
@@ -35,7 +34,6 @@ public class ManagedWebAccessBuilder extends ManagedWebAccessBuilderBase<Managed
     if (getUserAgent() != null) {
       headers.put("User-Agent", getUserAgent());
     }
-
     return headers;
   }
 
