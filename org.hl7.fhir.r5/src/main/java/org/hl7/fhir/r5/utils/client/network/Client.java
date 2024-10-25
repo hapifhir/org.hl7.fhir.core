@@ -7,7 +7,7 @@ import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.ToolingClientLogger;
-import org.hl7.fhir.utilities.http.FhirRequest;
+import org.hl7.fhir.utilities.http.HTTPRequest;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 
 import java.io.IOException;
@@ -40,9 +40,9 @@ public class Client {
       .method("OPTIONS", null)
       .url(optionsUri.toURL());
       */
-    FhirRequest request = new FhirRequest()
+    HTTPRequest request = new HTTPRequest()
       .withUrl(optionsUri.toURL())
-      .withMethod(FhirRequest.HttpMethod.OPTIONS);
+      .withMethod(HTTPRequest.HttpMethod.OPTIONS);
     return executeFhirRequest(request, resourceFormat, Collections.emptyList(), message, retryCount, timeout);
   }
 
@@ -56,9 +56,9 @@ public class Client {
       .url(resourceUri.toURL());
 
      */
-    FhirRequest request = new FhirRequest()
+    HTTPRequest request = new HTTPRequest()
       .withUrl(resourceUri.toURL())
-      .withMethod(FhirRequest.HttpMethod.GET);
+      .withMethod(HTTPRequest.HttpMethod.GET);
 
     return executeFhirRequest(request, resourceFormat, headers, message, retryCount, timeout);
   }
@@ -84,9 +84,9 @@ public class Client {
       .url(resourceUri.toURL())
       .put(body);
 */
-    FhirRequest request = new FhirRequest()
+    HTTPRequest request = new HTTPRequest()
       .withUrl(resourceUri.toURL())
-      .withMethod(FhirRequest.HttpMethod.PUT)
+      .withMethod(HTTPRequest.HttpMethod.PUT)
       .withBody(payload)
       .withContentType(getContentTypeWithDefaultCharset(resourceFormat));
 
@@ -114,9 +114,9 @@ public class Client {
       .url(resourceUri.toURL())
       .post(body);
 */
-    FhirRequest request = new FhirRequest()
+    HTTPRequest request = new HTTPRequest()
       .withUrl(resourceUri.toURL())
-      .withMethod(FhirRequest.HttpMethod.POST)
+      .withMethod(HTTPRequest.HttpMethod.POST)
       .withBody(payload)
       .withContentType(getContentTypeWithDefaultCharset(resourceFormat));
 
@@ -129,9 +129,9 @@ public class Client {
       .url(resourceUri.toURL())
       .delete();
      */
-    FhirRequest request = new FhirRequest()
+    HTTPRequest request = new HTTPRequest()
       .withUrl(resourceUri.toURL())
-      .withMethod(FhirRequest.HttpMethod.DELETE);
+      .withMethod(HTTPRequest.HttpMethod.DELETE);
     return executeFhirRequest(request, null, Collections.emptyList(), null, retryCount, timeout).isSuccessfulRequest();
   }
 
@@ -140,9 +140,9 @@ public class Client {
     Request.Builder request = new Request.Builder()
       .url(resourceUri.toURL());
     */
-    FhirRequest request = new FhirRequest()
+    HTTPRequest request = new HTTPRequest()
       .withUrl(resourceUri.toURL())
-      .withMethod(FhirRequest.HttpMethod.GET);
+      .withMethod(HTTPRequest.HttpMethod.GET);
     return executeBundleRequest(request, resourceFormat, Collections.emptyList(), null, retryCount, timeout);
   }
 
@@ -159,9 +159,9 @@ public class Client {
       .url(resourceUri.toURL())
       .post(body);
 */
-    FhirRequest request = new FhirRequest()
+    HTTPRequest request = new HTTPRequest()
       .withUrl(resourceUri.toURL())
-      .withMethod(FhirRequest.HttpMethod.POST)
+      .withMethod(HTTPRequest.HttpMethod.POST)
       .withBody(payload)
       .withContentType(getContentTypeWithDefaultCharset(resourceFormat));
     return executeBundleRequest(request, resourceFormat, Collections.emptyList(), null, retryCount, timeout);
@@ -180,9 +180,9 @@ public class Client {
       .url(resourceUri.toURL())
       .post(body);
     */
-    FhirRequest request = new FhirRequest()
+    HTTPRequest request = new HTTPRequest()
       .withUrl(resourceUri.toURL())
-      .withMethod(FhirRequest.HttpMethod.POST)
+      .withMethod(HTTPRequest.HttpMethod.POST)
       .withBody(payload)
       .withContentType(getContentTypeWithDefaultCharset(resourceFormat));
     return executeBundleRequest(request, resourceFormat, headers, message, retryCount, timeout);
@@ -192,7 +192,7 @@ public class Client {
     return resourceFormat + ";charset=" + DEFAULT_CHARSET;
   }
 
-  public <T extends Resource> Bundle executeBundleRequest(FhirRequest request,
+  public <T extends Resource> Bundle executeBundleRequest(HTTPRequest request,
                                                           String resourceFormat,
                                                           Iterable<HTTPHeader> headers,
                                                           String message,
@@ -208,12 +208,12 @@ public class Client {
       .executeAsBatch();
   }
 
-  public <T extends Resource> ResourceRequest<T> executeFhirRequest(FhirRequest request,
-                                                                       String resourceFormat,
-                                                                       Iterable<HTTPHeader> headers,
-                                                                       String message,
-                                                                       int retryCount,
-                                                                       long timeout) throws IOException {
+  public <T extends Resource> ResourceRequest<T> executeFhirRequest(HTTPRequest request,
+                                                                    String resourceFormat,
+                                                                    Iterable<HTTPHeader> headers,
+                                                                    String message,
+                                                                    int retryCount,
+                                                                    long timeout) throws IOException {
     return new FhirRequestBuilder(request, base)
       .withLogger(logger)
       .withResourceFormat(resourceFormat)

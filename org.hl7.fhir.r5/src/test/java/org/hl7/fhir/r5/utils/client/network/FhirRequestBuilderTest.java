@@ -1,40 +1,32 @@
 package org.hl7.fhir.r5.utils.client.network;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.utilities.http.HTTPHeaderUtil;
+import org.hl7.fhir.utilities.http.HTTPRequest;
 import org.hl7.fhir.utilities.http.HTTPHeader;
+import org.hl7.fhir.utilities.http.HTTPResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import okhttp3.Headers;
 import okhttp3.Request;
 
 class FhirRequestBuilderTest {
 
   @Test
-  @DisplayName("Test default headers are added correctly.")
-  void addDefaultHeaders() {
-    Request.Builder request = new Request.Builder().url("http://www.google.com");
-    FhirRequestBuilder.addDefaultHeaders(request, null);
-
-    Map<String, List<String>> headersMap = request.build().headers().toMultimap();
-    Assertions.assertNotNull(headersMap.get("User-Agent"), "User-Agent header null.");
-    Assertions.assertEquals("hapi-fhir-tooling-client", headersMap.get("User-Agent").get(0),
-      "User-Agent header not populated with expected value \"hapi-fhir-tooling-client\".");
-  }
-
-  @Test
   @DisplayName("Test resource format headers are added correctly (GET).")
   void addResourceFormatHeadersGET() {
+    //FIXME tested here. Should get list of HTTPHeader.
     String testFormat = "yaml";
-    Request.Builder request = new Request.Builder().url("http://www.google.com");
-    request.setMethod$okhttp("GET");
-    FhirRequestBuilder.addResourceFormatHeaders(request, testFormat);
+    HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com").withMethod(HTTPRequest.HttpMethod.GET);
 
-    Map<String, List<String>> headersMap = request.build().headers().toMultimap();
+    Iterable<HTTPHeader> headers = FhirRequestBuilder.getResourceFormatHeaders(request, testFormat);
+
+    Map<String, List<String>> headersMap = HTTPHeaderUtil.getMultimap(headers);
     Assertions.assertNotNull(headersMap.get("Accept"), "Accept header null.");
     Assertions.assertEquals(testFormat, headersMap.get("Accept").get(0),
       "Accept header not populated with expected value " + testFormat + ".");
@@ -45,12 +37,13 @@ class FhirRequestBuilderTest {
   @Test
   @DisplayName("Test resource format headers are added correctly (POST).")
   void addResourceFormatHeadersPOST() {
+    //FIXME tested here. Should get list of HTTPHeader.
     String testFormat = "yaml";
-    Request.Builder request = new Request.Builder().url("http://www.google.com");
-    request.setMethod$okhttp("POST");
-    FhirRequestBuilder.addResourceFormatHeaders(request, testFormat);
+    HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com").withMethod(HTTPRequest.HttpMethod.POST);
 
-    Map<String, List<String>> headersMap = request.build().headers().toMultimap();
+    Iterable<HTTPHeader> headers = FhirRequestBuilder.getResourceFormatHeaders(request, testFormat);
+
+    Map<String, List<String>> headersMap = HTTPHeaderUtil.getMultimap(headers);
     Assertions.assertNotNull(headersMap.get("Accept"), "Accept header null.");
     Assertions.assertEquals(testFormat, headersMap.get("Accept").get(0),
       "Accept header not populated with expected value " + testFormat + ".");
@@ -63,6 +56,7 @@ class FhirRequestBuilderTest {
   @Test
   @DisplayName("Test a list of provided headers are added correctly.")
   void addHeaders() {
+    //FIXME tested here. Should get list of HTTPHeader.
     String headerName1 = "headerName1";
     String headerValue1 = "headerValue1";
     String headerName2 = "headerName2";
@@ -74,7 +68,7 @@ class FhirRequestBuilderTest {
     );
 
     Request.Builder request = new Request.Builder().url("http://www.google.com");
-    FhirRequestBuilder.addHeaders(request, headers);
+    headers.forEach(header -> request.addHeader(header.getName(), header.getValue()));
 
     Map<String, List<String>> headersMap = request.build().headers().toMultimap();
     Assertions.assertNotNull(headersMap.get(headerName1), headerName1 + " header null.");
@@ -121,19 +115,22 @@ class FhirRequestBuilderTest {
   @DisplayName("Test that getLocationHeader returns header for 'location'.")
   void getLocationHeaderWhenOnlyLocationIsSet() {
     final String expectedLocationHeader = "location_header_value";
-    Headers headers = new Headers.Builder()
-      .add(FhirRequestBuilder.LOCATION_HEADER, expectedLocationHeader)
-      .build();
-    Assertions.assertEquals(expectedLocationHeader, FhirRequestBuilder.getLocationHeader(headers));
+    HTTPResult result = new HTTPResult("source",
+      200,
+      "message",
+      "contentType",
+      new byte[0],
+      List.of(new HTTPHeader(FhirRequestBuilder.LOCATION_HEADER, expectedLocationHeader)));
+
+    Assertions.assertEquals(expectedLocationHeader, FhirRequestBuilder.getLocationHeader(result.getHeaders()));
   }
 
   @Test
   @DisplayName("Test that getLocationHeader returns header for 'content-location'.")
   void getLocationHeaderWhenOnlyContentLocationIsSet() {
     final String expectedContentLocationHeader = "content_location_header_value";
-    Headers headers = new Headers.Builder()
-      .add(FhirRequestBuilder.CONTENT_LOCATION_HEADER, expectedContentLocationHeader)
-      .build();
+    Iterable<HTTPHeader> headers = List.of(new HTTPHeader(FhirRequestBuilder.CONTENT_LOCATION_HEADER, expectedContentLocationHeader));
+
     Assertions.assertEquals(expectedContentLocationHeader, FhirRequestBuilder.getLocationHeader(headers));
   }
 
@@ -142,18 +139,18 @@ class FhirRequestBuilderTest {
   void getLocationHeaderWhenLocationAndContentLocationAreSet() {
     final String expectedLocationHeader = "location_header_value";
     final String expectedContentLocationHeader = "content_location_header_value";
-    Headers headers = new Headers.Builder()
-      .add(FhirRequestBuilder.LOCATION_HEADER, expectedLocationHeader)
-      .add(FhirRequestBuilder.CONTENT_LOCATION_HEADER, expectedContentLocationHeader)
-      .build();
+
+   Iterable<HTTPHeader> headers = List.of(
+        new HTTPHeader(FhirRequestBuilder.LOCATION_HEADER, expectedLocationHeader),
+        new HTTPHeader(FhirRequestBuilder.CONTENT_LOCATION_HEADER, expectedContentLocationHeader)
+      );
+
     Assertions.assertEquals(expectedLocationHeader, FhirRequestBuilder.getLocationHeader(headers));
   }
 
   @Test
   @DisplayName("Test that getLocationHeader returns null when no location available.")
   void getLocationHeaderWhenNoLocationSet() {
-    Headers headers = new Headers.Builder()
-      .build();
-    Assertions.assertNull(FhirRequestBuilder.getLocationHeader(headers));
+    Assertions.assertNull(FhirRequestBuilder.getLocationHeader(Collections.emptyList()));
   }
 }

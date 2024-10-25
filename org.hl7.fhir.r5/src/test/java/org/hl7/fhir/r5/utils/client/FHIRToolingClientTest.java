@@ -23,7 +23,7 @@ import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.utils.client.network.Client;
 import org.hl7.fhir.r5.utils.client.network.ResourceRequest;
 
-import org.hl7.fhir.utilities.http.FhirRequest;
+import org.hl7.fhir.utilities.http.HTTPRequest;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,7 +74,7 @@ class FHIRToolingClientTest {
         ArgumentMatchers.any(), Mockito.contains("validate"), Mockito.anyLong()))
       .thenReturn(new ResourceRequest<>(new OperationOutcome(), 200, "location"));
     //BUNDLE REQ
-    Mockito.when(mockClient.executeBundleRequest(Mockito.any(FhirRequest.class), Mockito.anyString(),
+    Mockito.when(mockClient.executeBundleRequest(Mockito.any(HTTPRequest.class), Mockito.anyString(),
         ArgumentMatchers.any(), Mockito.anyString(), Mockito.anyInt(), Mockito.anyLong()))
       .thenReturn(generateBundle());
     toolingClient = new FHIRToolingClient(TX_ADDR, "fhir/test-cases");
