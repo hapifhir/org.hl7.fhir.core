@@ -30,7 +30,7 @@ import org.hl7.fhir.r5.profilemodel.gen.Definition;
  */
 public class TestDatatypeProfile extends PEGeneratedBase {
 
-  private static final String CANONICAL_URL = "http://hl7.org/fhir/test/StructureDefinition/pe-profile2|0.1";
+  public static final String CANONICAL_URL = "http://hl7.org/fhir/test/StructureDefinition/pe-profile2|0.1";
 
   @Min("1") @Max("2") @Doco("Code defined by a terminology system")
   @Definition("A reference to a code defined by a terminology system.")
