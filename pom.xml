@@ -434,7 +434,7 @@
                     while if true it will use an executable. -->
                     <fork>true</fork>
                     <meminitial>512m</meminitial>
-                    <maxmem>768m</maxmem>
+                    <maxmem>2G</maxmem>
                     <debug>true</debug>
                     <compilerArgs>
                         <arg>-J-XX:MaxRAMPercentage=50.0</arg>
