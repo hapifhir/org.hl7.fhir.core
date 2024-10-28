@@ -19,7 +19,7 @@ import org.hl7.fhir.r4b.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r4b.utils.ResourceUtilities;
 import org.hl7.fhir.r4b.utils.client.EFhirClientException;
 import org.hl7.fhir.r4b.utils.client.ResourceFormat;
-import org.hl7.fhir.utilities.http.FhirRequest;
+import org.hl7.fhir.utilities.http.HTTPRequest;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.xhtml.XhtmlUtils;
 
@@ -57,13 +57,13 @@ public class FhirRequestBuilder {
   private String source;
 
   //TODO this should be the only constructor. There should be no okHttp exposure.
-  public FhirRequestBuilder(FhirRequest fhirRequest, String source) {
+  public FhirRequestBuilder(HTTPRequest HTTPRequest, String source) {
     this.source = source;
 
-    RequestBody body = RequestBody.create(fhirRequest.getBody());
+    RequestBody body = RequestBody.create(HTTPRequest.getBody());
     this.httpRequest = new Request.Builder()
-      .url(fhirRequest.getUrl())
-      .method(fhirRequest.getMethod().name(), body);
+      .url(HTTPRequest.getUrl())
+      .method(HTTPRequest.getMethod().name(), body);
   }
 
   /**
