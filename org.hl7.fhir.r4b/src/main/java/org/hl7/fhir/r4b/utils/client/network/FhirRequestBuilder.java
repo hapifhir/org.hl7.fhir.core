@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
 
-import okhttp3.*;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4b.formats.IParser;
 import org.hl7.fhir.r4b.formats.JsonParser;
@@ -32,10 +32,7 @@ public class FhirRequestBuilder {
   protected static final String LOCATION_HEADER = "location";
   protected static final String CONTENT_LOCATION_HEADER = "content-location";
   protected static final String DEFAULT_CHARSET = "UTF-8";
-  /**
-   * The singleton instance of the HttpClient, used for all requests.
-   */
-  //private static OkHttpClient okHttpClient;
+
   private final HTTPRequest httpRequest;
   private String resourceFormat = null;
   private Iterable<HTTPHeader> headers = null;
@@ -65,11 +62,11 @@ public class FhirRequestBuilder {
 
   /**
    * Adds necessary default headers, formatting headers, and any passed in
-   * {@link Headers} to the passed in {@link okhttp3.Request.Builder}
+   * {@link HTTPHeader} to the passed in {@link okhttp3.Request.Builder}
    *
    * @param request {@link okhttp3.Request.Builder} to add headers to.
    * @param format  Expected {@link Resource} format.
-   * @param headers Any additional {@link Headers} to add to the request.
+   * @param headers Any additional {@link HTTPHeader} to add to the request.
    */
   protected static HTTPRequest formatHeaders(HTTPRequest request, String format, Iterable<HTTPHeader> headers) {
     List<HTTPHeader> allHeaders = new ArrayList<>();
@@ -90,17 +87,6 @@ public class FhirRequestBuilder {
       headers.add( new HTTPHeader("Content-Type", format + ";charset=" + DEFAULT_CHARSET));
     }
     return headers;
-  }
-
-  /**
-   * Iterates through the passed in {@link Headers} and adds them to the provided
-   * {@link Request.Builder}.
-   *
-   * @param request {@link Request.Builder} to add headers to.
-   * @param headers {@link Headers} to add to request.
-   */
-  protected static void addHeaders(Request.Builder request, Iterable<HTTPHeader> headers) {
-    headers.forEach(header -> request.addHeader(header.getName(), header.getValue()));
   }
 
   /**
@@ -142,53 +128,6 @@ public class FhirRequestBuilder {
 
   protected ManagedFhirWebAccessBuilder getManagedWebAccessBuilder() {
     return new ManagedFhirWebAccessBuilder("hapi-fhir-tooling-client", null).withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
-  }
-
-  /**
-   * We only ever want to have one copy of the HttpClient kicking around at any
-   * given time. If we need to make changes to any configuration, such as proxy
-   * settings, timeout, caches, etc, we can do a per-call configuration through
-   * the {@link OkHttpClient#newBuilder()} method. That will return a builder that
-   * shares the same connection pool, dispatcher, and configuration with the
-   * original client.
-   * </p>
-   * The {@link OkHttpClient} uses the proxy auth properties set in the current
-   * system properties. The reason we don't set the proxy address and
-   * authentication explicitly, is due to the fact that this class is often used
-   * in conjunction with other http client tools which rely on the
-   * system.properties settings to determine proxy settings. It's easier to keep
-   * the method consistent across the board. ...for now.
-   *
-   * @return {@link OkHttpClient} instance
-   */
-  /*FIXME remove after refactor
-  protected OkHttpClient getHttpClient() {
-    if (okHttpClient == null) {
-      okHttpClient = new OkHttpClient();
-    }
-
-    Authenticator proxyAuthenticator = getAuthenticator();
-
-    OkHttpClient.Builder builder = okHttpClient.newBuilder();
-    if (logger != null)
-      builder.addInterceptor(logger);
-    builder.addInterceptor(new RetryInterceptor(retryCount));
-
-    return builder.connectTimeout(timeout, timeoutUnit).writeTimeout(timeout, timeoutUnit)
-        .readTimeout(timeout, timeoutUnit).proxyAuthenticator(proxyAuthenticator).build();
-  }
-*/
-  @Nonnull
-  private static Authenticator getAuthenticator() {
-    return (route, response) -> {
-      final String httpProxyUser = System.getProperty(HTTP_PROXY_USER);
-      final String httpProxyPass = System.getProperty(HTTP_PROXY_PASS);
-      if (httpProxyUser != null && httpProxyPass != null) {
-        String credential = Credentials.basic(httpProxyUser, httpProxyPass);
-        return response.request().newBuilder().header(HEADER_PROXY_AUTH, credential).build();
-      }
-      return response.request().newBuilder().build();
-    };
   }
 
   public FhirRequestBuilder withResourceFormat(String resourceFormat) {

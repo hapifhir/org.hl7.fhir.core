@@ -25,16 +25,8 @@ import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.http.*;
 import org.hl7.fhir.utilities.xhtml.XhtmlUtils;
 
-import okhttp3.Authenticator;
-import okhttp3.Credentials;
-import okhttp3.Headers;
-import okhttp3.Request;
-
 public class FhirRequestBuilder {
 
-  protected static final String HTTP_PROXY_USER = "http.proxyUser";
-  protected static final String HTTP_PROXY_PASS = "http.proxyPassword";
-  protected static final String HEADER_PROXY_AUTH = "Proxy-Authorization";
   protected static final String LOCATION_HEADER = "location";
   protected static final String CONTENT_LOCATION_HEADER = "content-location";
   protected static final String DEFAULT_CHARSET = "UTF-8";
@@ -72,11 +64,11 @@ public class FhirRequestBuilder {
 
   /**
    * Adds necessary default headers, formatting headers, and any passed in
-   * {@link Headers} to the passed in {@link okhttp3.Request.Builder}
+   * {@link HTTPHeader}s to the passed in {@link okhttp3.Request.Builder}
    *
    * @param request {@link okhttp3.Request.Builder} to add headers to.
    * @param format  Expected {@link Resource} format.
-   * @param headers Any additional {@link Headers} to add to the request.
+   * @param headers Any additional {@link HTTPHeader}s to add to the request.
    */
   protected static HTTPRequest formatHeaders(HTTPRequest request, String format, Iterable<HTTPHeader> headers) {
     List<HTTPHeader> allHeaders = new ArrayList<>();
@@ -97,39 +89,6 @@ public class FhirRequestBuilder {
       headers.add(new HTTPHeader("Content-Type", format + ";charset=" + DEFAULT_CHARSET));
     }
     return headers;
-  }
-
-  /**
-   * Adds necessary headers for all REST requests.
-   * <li>User-Agent : hapi-fhir-tooling-client</li>
-   *
-   * @param request {@link Request.Builder} to add default headers to.
-   */
-  protected static void addDefaultHeaders(Request.Builder request, Headers headers) {
-    if (headers == null || !headers.names().contains("User-Agent")) {
-      request.addHeader("User-Agent", "hapi-fhir-tooling-client");
-    }
-  }
-
-  /**
-   * Adds necessary headers for the given resource format provided.
-   *
-   * @param request {@link Request.Builder} to add default headers to.
-   */
-  protected static void addResourceFormatHeaders(Request.Builder request, String format) {
-    request.addHeader("Accept", format);
-    request.addHeader("Content-Type", format + ";charset=" + DEFAULT_CHARSET);
-  }
-
-  /**
-   * Iterates through the passed in {@link Headers} and adds them to the provided
-   * {@link Request.Builder}.
-   *
-   * @param request {@link Request.Builder} to add headers to.
-   * @param headers {@link Headers} to add to request.
-   */
-  protected static void addHeaders(Request.Builder request, Headers headers) {
-    headers.forEach(header -> request.addHeader(header.getFirst(), header.getSecond()));
   }
 
   /**
@@ -167,20 +126,6 @@ public class FhirRequestBuilder {
 
   protected ManagedFhirWebAccessBuilder getManagedWebAccessBuilder() {
     return new ManagedFhirWebAccessBuilder("hapi-fhir-tooling-client", null).withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
-  }
-
-
-  @Nonnull
-  private static Authenticator getAuthenticator() {
-    return (route, response) -> {
-      final String httpProxyUser = System.getProperty(HTTP_PROXY_USER);
-      final String httpProxyPass = System.getProperty(HTTP_PROXY_PASS);
-      if (httpProxyUser != null && httpProxyPass != null) {
-        String credential = Credentials.basic(httpProxyUser, httpProxyPass);
-        return response.request().newBuilder().header(HEADER_PROXY_AUTH, credential).build();
-      }
-      return response.request().newBuilder().build();
-    };
   }
 
   public FhirRequestBuilder withResourceFormat(String resourceFormat) {
