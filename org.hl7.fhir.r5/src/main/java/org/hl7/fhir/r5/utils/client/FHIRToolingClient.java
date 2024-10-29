@@ -112,10 +112,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   @Getter
   private String userAgent;
 
-
   @Setter
   private String acceptLanguage;
-  private String contentLang;
+
+  @Setter
+  private String contentLanguage;
 
 
   private int useCount;
@@ -618,8 +619,8 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       headers.add(new HTTPHeader("Accept-Language", acceptLanguage));
     }
     
-    if (hasBody && !Utilities.noString(contentLang)) {
-      headers.add(new HTTPHeader("Content-Language",contentLang));
+    if (hasBody && !Utilities.noString(contentLanguage)) {
+      headers.add(new HTTPHeader("Content-Language", contentLanguage));
     }
     
     return headers;
@@ -644,10 +645,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       }
     }
     return capabilities == null ? null : capabilities.getSoftware().getVersion();
-  }
-
-  public void setContentLanguage(String lang) {
-    this.contentLang = lang;
   }
 
   public Bundle search(String type, String criteria) {

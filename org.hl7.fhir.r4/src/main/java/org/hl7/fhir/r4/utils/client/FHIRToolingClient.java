@@ -5,6 +5,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CapabilityStatement;
@@ -26,8 +28,6 @@ import org.hl7.fhir.utilities.FHIRBaseToolingClient;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
-import okhttp3.Headers;
-import okhttp3.internal.http2.Header;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 
 /**
@@ -68,16 +68,25 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   private String base;
   private ResourceAddress resourceAddress;
+  @Setter
   private ResourceFormat preferredResourceFormat;
   private int maxResultSetSize = -1;// _count
   private CapabilityStatement capabilities;
+  @Getter
+  @Setter
   private Client client = new Client();
   private List<HTTPHeader> headers = new ArrayList<>();
+  @Getter @Setter
   private String username;
+  @Getter @Setter
   private String password;
+  @Getter @Setter
   private String userAgent;
-  private String acceptLang;
-  private String contentLang;
+  @Setter
+  private String acceptLanguage;
+
+  @Setter
+  private String contentLanguage;
   private int useCount;
   
   // Pass endpoint for client - URI
@@ -94,14 +103,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     this.maxResultSetSize = -1;
   }
 
-  public Client getClient() {
-    return client;
-  }
-
-  public void setClient(Client client) {
-    this.client = client;
-  }
-
   private void checkCapabilities() {
     try {
       capabilities = getCapabilitiesStatementQuick();
@@ -111,10 +112,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   public String getPreferredResourceFormat() {
     return preferredResourceFormat.getHeader();
-  }
-
-  public void setPreferredResourceFormat(ResourceFormat resourceFormat) {
-    preferredResourceFormat = resourceFormat;
   }
 
   public int getMaximumRecordCount() {
@@ -129,7 +126,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     TerminologyCapabilities capabilities = null;
     try {
       capabilities = (TerminologyCapabilities) client.issueGetResourceRequest(resourceAddress.resolveMetadataTxCaps(),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(), "TerminologyCapabilities", timeoutNormal).getReference();
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false), "TerminologyCapabilities", timeoutNormal).getReference();
     } catch (Exception e) {
       throw new FHIRException("Error fetching the server's terminology capabilities", e);
     }
@@ -140,7 +137,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     CapabilityStatement conformance = null;
     try {
       conformance = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(false),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(), "CapabilitiesStatement", timeoutNormal).getReference();
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false), "CapabilitiesStatement", timeoutNormal).getReference();
     } catch (Exception e) {
       throw new FHIRException("Error fetching the server's conformance statement", e);
     }
@@ -152,7 +149,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       return capabilities;
     try {
       capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(), "CapabilitiesStatement-Quick", timeoutNormal)
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false), "CapabilitiesStatement-Quick", timeoutNormal)
           .getReference();
     } catch (Exception e) {
       throw new FHIRException("Error fetching the server's capability statement: " + e.getMessage(), e);
@@ -165,7 +162,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     ResourceRequest<Resource> result = null;
     try {
       result = client.issueGetResourceRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(), "Read " + resourceClass + "/" + id,
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false), "Read " + resourceClass + "/" + id,
           timeoutNormal);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
@@ -182,7 +179,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     ResourceRequest<T> result = null;
     try {
       result = client.issueGetResourceRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(), "Read " + resourceClass.getName() + "/" + id,
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false), "Read " + resourceClass.getName() + "/" + id,
           timeoutNormal);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
@@ -200,7 +197,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       result = client.issueGetResourceRequest(
           resourceAddress.resolveGetUriFromResourceClassAndIdAndVersion(resourceClass, id, version),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(),
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false),
           "VRead " + resourceClass.getName() + "/" + id + "/?_history/" + version, timeoutNormal);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
@@ -218,7 +215,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       result = client.issueGetResourceRequest(
           resourceAddress.resolveGetUriFromResourceClassAndCanonical(resourceClass, canonicalURL),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(), "Read " + resourceClass.getName() + "?url=" + canonicalURL,
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false), "Read " + resourceClass.getName() + "?url=" + canonicalURL,
           timeoutNormal);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
@@ -242,7 +239,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       result = client.issuePutRequest(
           resourceAddress.resolveGetUriFromResourceClassAndId(resource.getClass(), resource.getId()),
           ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(), "Update " + resource.fhirType() + "/" + resource.getId(),
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true), "Update " + resource.fhirType() + "/" + resource.getId(),
           timeoutOperation);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
@@ -272,7 +269,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       result = client.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
           ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(), "Update " + resource.fhirType() + "/" + id,
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true), "Update " + resource.fhirType() + "/" + id,
           timeoutOperation);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
@@ -310,10 +307,10 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
     if (complex) {
       byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()), true);
-      result = client.issuePostRequest(url, body, withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(),
+      result = client.issuePostRequest(url, body, withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true),
           "POST " + resourceClass.getName() + "/$" + name, timeoutLong);
     } else {
-      result = client.issueGetResourceRequest(url, withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(),
+      result = client.issueGetResourceRequest(url, withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false),
           "GET " + resourceClass.getName() + "/$" + name, timeoutLong);
     }
     if (result.isUnsuccessfulRequest()) {
@@ -349,7 +346,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       result = client.issuePostRequest(resourceAddress.resolveValidateUri(resourceClass, id),
           ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(),
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true),
           "POST " + resourceClass.getName() + (id != null ? "/" + id : "") + "/$validate", timeoutLong);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
@@ -406,7 +403,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup", params),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(), "CodeSystem/$lookup", timeoutNormal);
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false), "CodeSystem/$lookup", timeoutNormal);
     } catch (IOException e) {
       throw new FHIRException(e);
     }
@@ -423,7 +420,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup"),
           ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(), "CodeSystem/$lookup", timeoutNormal);
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true), "CodeSystem/$lookup", timeoutNormal);
     } catch (IOException e) {
       throw new FHIRException(e);
     }
@@ -440,7 +437,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ConceptMap.class, "translate"),
           ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(), "ConceptMap/$translate", timeoutNormal);
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true), "ConceptMap/$translate", timeoutNormal);
     } catch (IOException e) {
       throw new FHIRException(e);
     }
@@ -461,7 +458,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand"),
           ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true), withVer(getPreferredResourceFormat(), "4.0"),
-          generateHeaders(), source == null ? "ValueSet/$expand" : "ValueSet/$expand?url=" + source.getUrl(),
+          generateHeaders(true), source == null ? "ValueSet/$expand" : "ValueSet/$expand?url=" + source.getUrl(),
               timeoutExpand);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
@@ -492,7 +489,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       result = client.issuePostRequest(
           resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
           ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()), true),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(), "Closure?name=" + name, timeoutNormal);
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true), "Closure?name=" + name, timeoutNormal);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
             (OperationOutcome) result.getPayload());
@@ -513,7 +510,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       result = client.issuePostRequest(
           resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
           ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()), true),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(), "UpdateClosure?name=" + name, timeoutOperation);
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true), "UpdateClosure?name=" + name, timeoutOperation);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
             (OperationOutcome) result.getPayload());
@@ -522,22 +519,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       throw new FHIRException(e);
     }
     return result == null ? null : (ConceptMap) result.getPayload();
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   public ToolingClientLogger getLogger() {
@@ -561,59 +542,43 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     headers.forEach(this.headers::add);
   }
 
-  private Headers generateHeaders() {
-    Headers.Builder builder = new Headers.Builder();
+  //FIXME should be in ManagedWebAccess?
+  private Iterable<HTTPHeader> generateHeaders(boolean hasBody) {
+    List<HTTPHeader> headers = new ArrayList<>();
     // Add basic auth header if it exists
     if (basicAuthHeaderExists()) {
-      builder.add(getAuthorizationHeader().toString());
+      headers.add(getAuthorizationHeader());
     }
     // Add any other headers
-    if (this.headers != null) {
-      this.headers.forEach(header -> builder.add(header.toString()));
-    }
+    headers.addAll(this.headers);
     if (!Utilities.noString(userAgent)) {
-      builder.add("User-Agent: " + userAgent);
+      headers.add(new HTTPHeader("User-Agent",userAgent));
     }
 
-    if (!Utilities.noString(acceptLang)) {
-      builder.add("Accept-Language: "+acceptLang);
+    if (!Utilities.noString(acceptLanguage)) {
+      headers.add(new HTTPHeader("Accept-Language", acceptLanguage));
     }
-    if (!Utilities.noString(contentLang)) {
-      builder.add("Content-Language: "+contentLang);
+
+    if (hasBody && !Utilities.noString(contentLanguage)) {
+      headers.add(new HTTPHeader("Content-Language",contentLanguage));
     }
-    
-    return builder.build();
+
+    return headers;
   }
 
   public boolean basicAuthHeaderExists() {
     return (username != null) && (password != null);
   }
 
-  public Header getAuthorizationHeader() {
+  public HTTPHeader getAuthorizationHeader() {
     String usernamePassword = username + ":" + password;
     String base64usernamePassword = Base64.getEncoder().encodeToString(usernamePassword.getBytes());
-    return new Header("Authorization", "Basic " + base64usernamePassword);
-  }
-
-  public String getUserAgent() {
-    return userAgent;
-  }
-
-  public void setUserAgent(String userAgent) {
-    this.userAgent = userAgent;
+    return new HTTPHeader("Authorization", "Basic " + base64usernamePassword);
   }
 
   public String getServerVersion() {
     checkCapabilities();
     return capabilities == null ? null : capabilities.getSoftware().getVersion();
-  }
-
-  public void setAcceptLanguage(String lang) {
-    this.acceptLang = lang;
-  }
-
-  public void setContentLanguage(String lang) {
-    this.acceptLang = lang;
   }
 
   public Bundle search(String type, String criteria) {
@@ -626,7 +591,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issueGetResourceRequest(resourceAddress.resolveGetResource(resourceClass, id),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(), resourceClass.getName()+"/"+id, timeoutNormal);
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true), resourceClass.getName()+"/"+id, timeoutNormal);
     } catch (IOException e) {
       throw new FHIRException(e);
     }
