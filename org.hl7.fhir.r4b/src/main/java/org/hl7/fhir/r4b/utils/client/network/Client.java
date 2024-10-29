@@ -19,23 +19,19 @@ public class Client {
 
   public static final String DEFAULT_CHARSET = "UTF-8";
   private static final long DEFAULT_TIMEOUT = 5000;
-  @Getter
+  @Getter @Setter
   private ToolingClientLogger logger;
-  private FhirLoggingInterceptor fhirLoggingInterceptor;
+
   @Setter
   @Getter
   private int retryCount;
+
   @Setter
   @Getter
   private long timeout = DEFAULT_TIMEOUT;
-  //private byte[] payload;
+
   @Setter @Getter
   private String base;
-
-  public void setLogger(ToolingClientLogger logger) {
-    this.logger = logger;
-    this.fhirLoggingInterceptor = new FhirLoggingInterceptor(logger);
-  }
 
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat,
       String message, long timeout) throws IOException {
@@ -163,7 +159,7 @@ public class Client {
 
   public <T extends Resource> Bundle executeBundleRequest(HTTPRequest request, String resourceFormat,
                                                           Iterable<HTTPHeader> headers, String message, int retryCount, long timeout) throws IOException {
-    return new FhirRequestBuilder(request, base).withLogger(fhirLoggingInterceptor).withResourceFormat(resourceFormat)
+    return new FhirRequestBuilder(request, base).withLogger(logger).withResourceFormat(resourceFormat)
         .withRetryCount(retryCount).withMessage(message)
         .withHeaders(headers == null ? Collections.emptyList() : headers)
         .withTimeout(timeout, TimeUnit.MILLISECONDS).executeAsBatch();
@@ -171,7 +167,7 @@ public class Client {
 
   public <T extends Resource> ResourceRequest<T> executeFhirRequest(HTTPRequest request, String resourceFormat,
                                                                     Iterable<HTTPHeader> headers, String message, int retryCount, long timeout) throws IOException {
-    return new FhirRequestBuilder(request, base).withLogger(fhirLoggingInterceptor).withResourceFormat(resourceFormat)
+    return new FhirRequestBuilder(request, base).withLogger(logger).withResourceFormat(resourceFormat)
         .withRetryCount(retryCount).withMessage(message)
         .withHeaders(headers == null ? Collections.emptyList() : headers)
         .withTimeout(timeout, TimeUnit.MILLISECONDS).execute();
