@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.*;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -62,12 +62,12 @@ public class FhirRequestBuilder {
   }
 
   /**
-   * Adds necessary default headers, formatting headers, and any passed in {@link Headers} to the passed in
-   * {@link Request.Builder}
+   * Adds necessary default headers, formatting headers, and any passed in {@link HTTPHeader}s to the passed in
+   * {@link HTTPRequest}
    *
-   * @param request {@link Request.Builder} to add headers to.
+   * @param request {@link HTTPRequest} to add headers to.
    * @param format  Expected {@link Resource} format.
-   * @param headers Any additional {@link Headers} to add to the request.
+   * @param headers Any additional {@link HTTPHeader}s to add to the request.
    */
   protected static HTTPRequest formatHeaders(HTTPRequest request, String format, Iterable<HTTPHeader> headers) {
     List<HTTPHeader> allHeaders = new ArrayList<>();
@@ -84,7 +84,7 @@ public class FhirRequestBuilder {
   /**
    * Adds necessary headers for the given resource format provided.
    *
-   * @param httpRequest {@link Request.Builder} to add default headers to.
+   * @param httpRequest {@link HTTPRequest} to add default headers to.
    */
   protected static Iterable<HTTPHeader> getResourceFormatHeaders(HTTPRequest httpRequest, String format) {
     List<HTTPHeader> headers = new ArrayList<>();
@@ -96,16 +96,6 @@ public class FhirRequestBuilder {
       headers.add( new HTTPHeader("Content-Type", format + ";charset=" + DEFAULT_CHARSET));
     }
     return headers;
-  }
-
-  /**
-   * Iterates through the passed in {@link Headers} and adds them to the provided {@link Request.Builder}.
-   *
-   * @param request {@link Request.Builder} to add headers to.
-   * @param headers {@link Headers} to add to request.
-   */
-  protected static void addHeaders(Request.Builder request, Iterable<HTTPHeader> headers) {
-    headers.forEach(header -> request.addHeader(header.getName(), header.getValue()));
   }
 
   /**

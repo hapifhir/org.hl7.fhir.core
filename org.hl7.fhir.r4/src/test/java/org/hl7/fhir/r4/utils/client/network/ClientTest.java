@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.utils.client;
+package org.hl7.fhir.r4.utils.client.network;
 
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockWebServer;
@@ -7,9 +7,6 @@ import okhttp3.mockwebserver.RecordedRequest;
 import org.hl7.fhir.r4.context.HTMLClientLogger;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.utils.client.network.ByteUtils;
-import org.hl7.fhir.r4.utils.client.network.Client;
-import org.hl7.fhir.r4.utils.client.network.ResourceRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

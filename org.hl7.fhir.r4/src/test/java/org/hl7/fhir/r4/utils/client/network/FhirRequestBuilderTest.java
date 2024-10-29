@@ -1,7 +1,6 @@
-package org.hl7.fhir.r4b.utils.client.network;
+package org.hl7.fhir.r4.utils.client.network;
 
-
-import org.hl7.fhir.r4b.model.OperationOutcome;
+import okhttp3.Request;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.http.HTTPHeaderUtil;
 import org.hl7.fhir.utilities.http.HTTPRequest;
@@ -9,11 +8,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
-class FhirRequestBuilderTest {
-
-
+public class FhirRequestBuilderTest {
   @Test
   @DisplayName("Test resource format headers are added correctly.")
   void addResourceFormatHeadersGET() {
@@ -25,7 +24,7 @@ class FhirRequestBuilderTest {
     Map<String, List<String>> headersMap = HTTPHeaderUtil.getMultimap(headers);
     Assertions.assertNotNull(headersMap.get("Accept"), "Accept header null.");
     Assertions.assertEquals(testFormat, headersMap.get("Accept").get(0),
-        "Accept header not populated with expected value " + testFormat + ".");
+      "Accept header not populated with expected value " + testFormat + ".");
 
     Assertions.assertNull(headersMap.get("Content-Type"), "Content-Type header null.");
   }
@@ -50,17 +49,42 @@ class FhirRequestBuilderTest {
   }
 
   @Test
+  @DisplayName("Test a list of provided headers are added correctly.")
+  void addHeaders() {
+    String headerName1 = "headerName1";
+    String headerValue1 = "headerValue1";
+    String headerName2 = "headerName2";
+    String headerValue2 = "headerValue2";
+
+    List<HTTPHeader> headers = List.of(
+      new HTTPHeader(headerName1, headerValue1),
+      new HTTPHeader(headerName2, headerValue2)
+    );
+
+    Request.Builder request = new Request.Builder().url("http://www.google.com");
+    FhirRequestBuilder.addHeaders(request, headers);
+
+    Map<String, List<String>> headersMap = request.build().headers().toMultimap();
+    Assertions.assertNotNull(headersMap.get(headerName1), headerName1 + " header null.");
+    Assertions.assertEquals(headerValue1, headersMap.get(headerName1).get(0),
+      headerName1 + " header not populated with expected value " + headerValue1 + ".");
+    Assertions.assertNotNull(headersMap.get(headerName2), headerName2 + " header null.");
+    Assertions.assertEquals(headerValue2, headersMap.get(headerName2).get(0),
+      headerName2 + " header not populated with expected value " + headerValue2 + ".");
+  }
+
+  @Test
   @DisplayName("Test that FATAL issue severity triggers error.")
   void hasErrorTestFatal() {
     OperationOutcome outcome = new OperationOutcome();
     outcome.addIssue(
-        new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.INFORMATION));
+      new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.INFORMATION));
     outcome.addIssue(
-        new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.NULL));
+      new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.NULL));
     outcome.addIssue(
-        new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.WARNING));
+      new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.WARNING));
     outcome.addIssue(
-        new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.FATAL));
+      new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.FATAL));
     Assertions.assertTrue(FhirRequestBuilder.hasError(outcome), "Error check not triggered for FATAL issue severity.");
   }
 
@@ -69,13 +93,13 @@ class FhirRequestBuilderTest {
   void hasErrorTestError() {
     OperationOutcome outcome = new OperationOutcome();
     outcome.addIssue(
-        new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.INFORMATION));
+      new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.INFORMATION));
     outcome.addIssue(
-        new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.NULL));
+      new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.NULL));
     outcome.addIssue(
-        new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.WARNING));
+      new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.WARNING));
     outcome.addIssue(
-        new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.ERROR));
+      new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.ERROR));
     Assertions.assertTrue(FhirRequestBuilder.hasError(outcome), "Error check not triggered for ERROR issue severity.");
   }
 
@@ -84,11 +108,11 @@ class FhirRequestBuilderTest {
   void hasErrorTestNoErrors() {
     OperationOutcome outcome = new OperationOutcome();
     outcome.addIssue(
-        new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.INFORMATION));
+      new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.INFORMATION));
     outcome.addIssue(
-        new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.NULL));
+      new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.NULL));
     outcome.addIssue(
-        new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.WARNING));
+      new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.WARNING));
     Assertions.assertFalse(FhirRequestBuilder.hasError(outcome), "Error check triggered unexpectedly.");
   }
 

@@ -13,8 +13,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import okhttp3.Request;
-
 class FhirRequestBuilderTest {
 
   @Test
@@ -67,7 +65,7 @@ class FhirRequestBuilderTest {
       new HTTPHeader(headerName2, headerValue2)
     );
 
-    Request.Builder request = new Request.Builder().url("http://www.google.com");
+    HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com");
     headers.forEach(header -> request.addHeader(header.getName(), header.getValue()));
 
     Map<String, List<String>> headersMap = request.build().headers().toMultimap();
