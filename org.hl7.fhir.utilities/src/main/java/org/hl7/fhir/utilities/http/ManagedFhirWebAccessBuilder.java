@@ -118,6 +118,9 @@ public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<Man
           .url(httpRequestWithDirectHeaders.getUrl())
           .method(httpRequestWithDirectHeaders.getMethod().name(), body);
 
+        for (HTTPHeader header : httpRequestWithDirectHeaders.getHeaders()) {
+          requestBuilder.addHeader(header.getName(), header.getValue());
+        }
         OkHttpClient okHttpClient = getOkHttpClient();
         //TODO check and throw based on httpRequest:
         // if (!ManagedWebAccess.inAllowedPaths(url)) {
