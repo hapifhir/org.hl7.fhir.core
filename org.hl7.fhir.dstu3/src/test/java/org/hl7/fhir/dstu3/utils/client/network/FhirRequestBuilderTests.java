@@ -1,111 +1,128 @@
 package org.hl7.fhir.dstu3.utils.client.network;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
-import org.hl7.fhir.dstu3.formats.IParser;
-import org.hl7.fhir.utilities.ToolingClientLogger;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.hl7.fhir.dstu3.model.OperationOutcome;
+import org.hl7.fhir.utilities.http.*;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.AdditionalMatchers;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 @ExtendWith(MockitoExtension.class)
 public class FhirRequestBuilderTests {
 
-  private static final String DUMMY_URL = "https://some-url.com/";
+  @Test
+  @DisplayName("Test resource format headers are added correctly (GET).")
+  void addResourceFormatHeadersGET() {
+    //FIXME tested here. Should get list of HTTPHeader.
+    String testFormat = "yaml";
+    HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com").withMethod(HTTPRequest.HttpMethod.GET);
 
-  Request mockRequest = new Request.Builder()
-    .url(DUMMY_URL)
-    .build();
+    Iterable<HTTPHeader> headers = FhirRequestBuilder.getResourceFormatHeaders(request, testFormat);
 
-  final String RESPONSE_BODY_STRING = "{}";
+    Map<String, List<String>> headersMap = HTTPHeaderUtil.getMultimap(headers);
+    Assertions.assertNotNull(headersMap.get("Accept"), "Accept header null.");
+    Assertions.assertEquals(testFormat, headersMap.get("Accept").get(0),
+      "Accept header not populated with expected value " + testFormat + ".");
 
-  Response response = new Response.Builder()
-    .request(mockRequest)
-    .protocol(Protocol.HTTP_2)
-    .code(200) // status code
-    .message("")
-    .body(ResponseBody.create(RESPONSE_BODY_STRING,
-      MediaType.get("application/json; charset=utf-8")
-    ))
-    .addHeader("Content-Type", "")
-    .build();
-
-  final Request.Builder requestBuilder = new Request.Builder()
-    .url(DUMMY_URL);
-
-  final FhirRequestBuilder fhirRequestBuilder = Mockito.spy(new FhirRequestBuilder(requestBuilder, "http://local/local"));
-
-  @Mock
-  OkHttpClient client;
-
-  @Mock
-  Call mockCall;
-
-  @Mock
-  ToolingClientLogger logger;
-
-  public FhirRequestBuilderTests() throws MalformedURLException {
-  }
-
-  @BeforeEach
-  public void beforeEach() {
-    Mockito.doReturn(client).when(fhirRequestBuilder).getHttpClient();
-    fhirRequestBuilder.withLogger(logger);
-  }
-
-  @Nested
-  class RequestLoggingTests {
-
-    @BeforeEach
-    public void beforeEach() throws IOException {
-      Mockito.doReturn(response).when(mockCall).execute();
-      Mockito.doReturn(mockCall).when(client).newCall(ArgumentMatchers.any());
-
-      Mockito.doReturn(null).when(fhirRequestBuilder).unmarshalReference(ArgumentMatchers.any(), ArgumentMatchers.isNull());
-    }
-
-    @Test
-    public void testExecuteLogging() throws IOException {
-      fhirRequestBuilder.execute();
-      Mockito.verify(logger).logRequest(ArgumentMatchers.eq("GET"), ArgumentMatchers.eq(DUMMY_URL), ArgumentMatchers.anyList(), ArgumentMatchers.isNull());
-    }
-
-    @Test
-    public void testExecuteBatchLogging() throws IOException {
-      fhirRequestBuilder.executeAsBatch();
-      Mockito.verify(logger).logRequest(ArgumentMatchers.eq("GET"), ArgumentMatchers.eq(DUMMY_URL), ArgumentMatchers.anyList(), ArgumentMatchers.isNull());
-    }
-
+    Assertions.assertNull(headersMap.get("Content-Type"), "Content-Type header not null.");
   }
 
   @Test
-  public void testUnmarshallReferenceLogging() {
-    IParser parser = Mockito.mock(IParser.class);
-    Mockito.doReturn(parser).when(fhirRequestBuilder).getParser(ArgumentMatchers.eq("json"));
+  @DisplayName("Test resource format headers are added correctly (POST).")
+  void addResourceFormatHeadersPOST() {
+    //FIXME tested here. Should get list of HTTPHeader.
+    String testFormat = "yaml";
+    HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com").withMethod(HTTPRequest.HttpMethod.POST);
 
-    fhirRequestBuilder.unmarshalReference(response, "json");
-    Mockito.verify(logger).logResponse(ArgumentMatchers.eq("200"), ArgumentMatchers.anyList(), AdditionalMatchers.aryEq(RESPONSE_BODY_STRING.getBytes()), ArgumentMatchers.anyLong());
+    Iterable<HTTPHeader> headers = FhirRequestBuilder.getResourceFormatHeaders(request, testFormat);
+
+    Map<String, List<String>> headersMap = HTTPHeaderUtil.getMultimap(headers);
+    Assertions.assertNotNull(headersMap.get("Accept"), "Accept header null.");
+    Assertions.assertEquals(testFormat, headersMap.get("Accept").get(0),
+      "Accept header not populated with expected value " + testFormat + ".");
+
+    Assertions.assertNotNull(headersMap.get("Content-Type"), "Content-Type header null.");
+    Assertions.assertEquals(testFormat + ";charset=" + FhirRequestBuilder.DEFAULT_CHARSET, headersMap.get("Content-Type").get(0),
+      "Content-Type header not populated with expected value \"" + testFormat + ";charset=" + FhirRequestBuilder.DEFAULT_CHARSET + "\".");
   }
 
   @Test
-  public void testUnmarshallFeedLogging() {
-    fhirRequestBuilder.unmarshalFeed(response, "application/json");
-    Mockito.verify(logger).logResponse(ArgumentMatchers.eq("200"), ArgumentMatchers.anyList(), AdditionalMatchers.aryEq(RESPONSE_BODY_STRING.getBytes()), ArgumentMatchers.anyLong());
+  @DisplayName("Test that FATAL issue severity triggers error.")
+  void hasErrorTestFatal() {
+    OperationOutcome outcome = new OperationOutcome();
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.INFORMATION));
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.NULL));
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.WARNING));
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.FATAL));
+    Assertions.assertTrue(FhirRequestBuilder.hasError(outcome), "Error check not triggered for FATAL issue severity.");
   }
+
+  @Test
+  @DisplayName("Test that ERROR issue severity triggers error.")
+  void hasErrorTestError() {
+    OperationOutcome outcome = new OperationOutcome();
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.INFORMATION));
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.NULL));
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.WARNING));
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.ERROR));
+    Assertions.assertTrue(FhirRequestBuilder.hasError(outcome), "Error check not triggered for ERROR issue severity.");
+  }
+
+  @Test
+  @DisplayName("Test that no FATAL or ERROR issue severity does not trigger error.")
+  void hasErrorTestNoErrors() {
+    OperationOutcome outcome = new OperationOutcome();
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.INFORMATION));
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.NULL));
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.WARNING));
+    Assertions.assertFalse(FhirRequestBuilder.hasError(outcome), "Error check triggered unexpectedly.");
+  }
+
+  @Test
+  @DisplayName("Test that getLocationHeader returns header for 'location'.")
+  void getLocationHeaderWhenOnlyLocationIsSet() {
+    final String expectedLocationHeader = "location_header_value";
+    HTTPResult result = new HTTPResult("source",
+      200,
+      "message",
+      "contentType",
+      new byte[0],
+      List.of(new HTTPHeader(FhirRequestBuilder.LOCATION_HEADER, expectedLocationHeader)));
+
+    Assertions.assertEquals(expectedLocationHeader, FhirRequestBuilder.getLocationHeader(result.getHeaders()));
+  }
+
+  @Test
+  @DisplayName("Test that getLocationHeader returns header for 'content-location'.")
+  void getLocationHeaderWhenOnlyContentLocationIsSet() {
+    final String expectedContentLocationHeader = "content_location_header_value";
+    Iterable<HTTPHeader> headers = List.of(new HTTPHeader(FhirRequestBuilder.CONTENT_LOCATION_HEADER, expectedContentLocationHeader));
+
+    Assertions.assertEquals(expectedContentLocationHeader, FhirRequestBuilder.getLocationHeader(headers));
+  }
+
+  @Test
+  @DisplayName("Test that getLocationHeader returns 'location' header when both 'location' and 'content-location' are set.")
+  void getLocationHeaderWhenLocationAndContentLocationAreSet() {
+    final String expectedLocationHeader = "location_header_value";
+    final String expectedContentLocationHeader = "content_location_header_value";
+
+    Iterable<HTTPHeader> headers = List.of(
+      new HTTPHeader(FhirRequestBuilder.LOCATION_HEADER, expectedLocationHeader),
+      new HTTPHeader(FhirRequestBuilder.CONTENT_LOCATION_HEADER, expectedContentLocationHeader)
+    );
+
+    Assertions.assertEquals(expectedLocationHeader, FhirRequestBuilder.getLocationHeader(headers));
+  }
+
+  @Test
+  @DisplayName("Test that getLocationHeader returns null when no location available.")
+  void getLocationHeaderWhenNoLocationSet() {
+    Assertions.assertNull(FhirRequestBuilder.getLocationHeader(Collections.emptyList()));
+  }
+
 
 }

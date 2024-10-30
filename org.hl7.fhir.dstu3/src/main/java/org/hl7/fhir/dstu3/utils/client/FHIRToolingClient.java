@@ -5,12 +5,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
+import lombok.Getter;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.CapabilityStatement;
 import org.hl7.fhir.dstu3.model.CodeSystem;
 import org.hl7.fhir.dstu3.model.Coding;
 import org.hl7.fhir.dstu3.model.ConceptMap;
-import org.hl7.fhir.dstu3.model.ExpansionProfile;
 import org.hl7.fhir.dstu3.model.OperationOutcome;
 import org.hl7.fhir.dstu3.model.Parameters;
 import org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent;
@@ -27,8 +27,6 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
-import okhttp3.Headers;
-import okhttp3.internal.http2.Header;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 
 /**
@@ -74,8 +72,9 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   private String password;
   private String userAgent;
   private EnumSet<FhirPublication> allowedVersions;
-  private String acceptLang;
-  private String contentLang;
+  @Getter
+  private String acceptLanguage;
+  private String contentLanguage;
   private int useCount;
 
   //Pass endpoint for client - URI
@@ -147,7 +146,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       capabilities = (Parameters) client.issueGetResourceRequest(resourceAddress.resolveMetadataTxCaps(),
         withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
+        generateHeaders(false),
         "TerminologyCapabilities",
         timeoutNormal).getReference();
     } catch (Exception e) {
@@ -161,7 +160,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       conformance = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(false),
         withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
+        generateHeaders(false),
         "CapabilitiesStatement",
         timeoutNormal).getReference();
     } catch (Exception e) {
@@ -175,7 +174,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
         withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
+        generateHeaders(false),
         "CapabilitiesStatement-Quick",
         timeoutNormal).getReference();
     } catch (Exception e) {
@@ -190,7 +189,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       result = client.issueGetResourceRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
         withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
+        generateHeaders(false),
         "Read " + resourceClass.getName() + "/" + id,
         timeoutNormal);
       if (result.isUnsuccessfulRequest()) {
@@ -208,7 +207,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       result = client.issueGetResourceRequest(resourceAddress.resolveGetUriFromResourceClassAndIdAndVersion(resourceClass, id, version),
         withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
+        generateHeaders(false),
         "VRead " + resourceClass.getName() + "/" + id + "/?_history/" + version,
         timeoutNormal);
       if (result.isUnsuccessfulRequest()) {
@@ -226,7 +225,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       result = client.issueGetResourceRequest(resourceAddress.resolveGetUriFromResourceClassAndCanonical(resourceClass, canonicalURL),
         withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
+        generateHeaders(false),
         "Read " + resourceClass.getName() + "?url=" + canonicalURL,
         timeoutNormal);
       if (result.isUnsuccessfulRequest()) {
@@ -250,7 +249,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       result = client.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resource.getClass(), resource.getId()),
         ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
         withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
+        generateHeaders(true),
         "Update " + resource.fhirType() + "/" + resource.getId(),
         timeoutOperation);
       if (result.isUnsuccessfulRequest()) {
@@ -278,7 +277,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       result = client.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
         ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
         withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
+        generateHeaders(true),
         "Update " + resource.fhirType() + "/" + id,
         timeoutOperation);
       if (result.isUnsuccessfulRequest()) {
@@ -317,13 +316,13 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       if (client.getLogger() != null) {
         client.getLogger().logRequest("POST", url.toString(), null, body);
       }
-      result = client.issuePostRequest(url, body, withVer(getPreferredResourceFormat(), "3.0"), generateHeaders(),
+      result = client.issuePostRequest(url, body, withVer(getPreferredResourceFormat(), "3.0"), generateHeaders(true),
           "POST " + resourceClass.getName() + "/$" + name, timeoutLong);
     } else {
       if (client.getLogger() != null) {
         client.getLogger().logRequest("GET", url.toString(), null, null);
       }
-      result = client.issueGetResourceRequest(url, withVer(getPreferredResourceFormat(), "3.0"), generateHeaders(), "GET " + resourceClass.getName() + "/$" + name, timeoutLong);
+      result = client.issueGetResourceRequest(url, withVer(getPreferredResourceFormat(), "3.0"), generateHeaders(false), "GET " + resourceClass.getName() + "/$" + name, timeoutLong);
     }
     if (result.isUnsuccessfulRequest()) {
       throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
@@ -360,7 +359,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       result = client.issuePostRequest(resourceAddress.resolveValidateUri(resourceClass, id),
         ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
-        withVer(getPreferredResourceFormat(), "3.0"), generateHeaders(),
+        withVer(getPreferredResourceFormat(), "3.0"), generateHeaders(true),
         "POST " + resourceClass.getName() + (id != null ? "/" + id : "") + "/$validate", timeoutLong);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
@@ -417,7 +416,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup", params),
         withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
+        generateHeaders(false),
         "CodeSystem/$lookup",
         timeoutNormal);
     } catch (IOException e) {
@@ -436,7 +435,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup"),
           ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
         withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
+        generateHeaders(true),
         "CodeSystem/$lookup",
         timeoutNormal);
     } catch (IOException e) {
@@ -455,7 +454,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ConceptMap.class, "transform"),
           ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
         withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
+        generateHeaders(true),
         "ConceptMap/$transform",
         timeoutNormal);
     } catch (IOException e) {
@@ -476,7 +475,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand"),
         ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
         withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
+        generateHeaders(true),
         "ValueSet/$expand?url=" + source.getUrl(),
         timeoutExpand);
       if (result.isUnsuccessfulRequest()) {
@@ -501,7 +500,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
         ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()), true),
         withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
+        generateHeaders(true),
         "Closure?name=" + name,
         timeoutNormal);
       if (result.isUnsuccessfulRequest()) {
@@ -523,7 +522,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
         ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()), true),
         withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
+        generateHeaders(true),
         "UpdateClosure?name=" + name,
         timeoutOperation);
       if (result.isUnsuccessfulRequest()) {
@@ -580,36 +579,38 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     headers.forEach(this.headers::add);
   }
 
-  private Headers generateHeaders() {
-    Headers.Builder builder = new Headers.Builder();
+  //FIXME should be in ManagedWebAccess?
+  private Iterable<HTTPHeader> generateHeaders(boolean hasBody) {
+    List<HTTPHeader> headers = new ArrayList<>();
     // Add basic auth header if it exists
     if (basicAuthHeaderExists()) {
-      builder.add(getAuthorizationHeader().toString());
+      headers.add(getAuthorizationHeader());
     }
     // Add any other headers
-    if(this.headers != null) {
-      this.headers.forEach(header -> builder.add(header.toString()));
-    }
+    headers.addAll(this.headers);
     if (!Utilities.noString(userAgent)) {
-      builder.add("User-Agent: "+userAgent);
-    } 
-    if (!Utilities.noString(acceptLang)) {
-      builder.add("Accept-Language: "+acceptLang);
+      headers.add(new HTTPHeader("User-Agent",userAgent));
     }
-    if (!Utilities.noString(contentLang)) {
-      builder.add("Content-Language: "+contentLang);
+
+    if (!Utilities.noString(acceptLanguage)) {
+      headers.add(new HTTPHeader("Accept-Language", acceptLanguage));
     }
-    return builder.build();
+
+    if (hasBody && !Utilities.noString(contentLanguage)) {
+      headers.add(new HTTPHeader("Content-Language",contentLanguage));
+    }
+
+    return headers;
   }
 
   public boolean basicAuthHeaderExists() {
     return (username != null) && (password != null);
   }
 
-  public Header getAuthorizationHeader() {
+  public HTTPHeader getAuthorizationHeader() {
     String usernamePassword = username + ":" + password;
     String base64usernamePassword = Base64.getEncoder().encodeToString(usernamePassword.getBytes());
-    return new Header("Authorization", "Basic " + base64usernamePassword);
+    return new HTTPHeader("Authorization", "Basic " + base64usernamePassword);
   }
   
   public String getUserAgent() {
@@ -626,10 +627,10 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public void setAcceptLanguage(String lang) {
-    this.acceptLang = lang;
+    this.acceptLanguage = lang;
   }
   public void setContentLanguage(String lang) {
-    this.contentLang = lang;
+    this.contentLanguage = lang;
   }
 
   public int getUseCount() {
