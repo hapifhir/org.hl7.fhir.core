@@ -57,6 +57,10 @@ To skip unit tests:
 ```
 mvn -Dmaven.test.skip install
 ```
+> **Note:** If you're on Windows and use PowerShell, The `-` needs to be escaped with a backtick (`)
+> ```
+> mvn `-Dmaven.test.skip install
+> ``` 
 
 To clean and rebuild the terminology server caches:
 
