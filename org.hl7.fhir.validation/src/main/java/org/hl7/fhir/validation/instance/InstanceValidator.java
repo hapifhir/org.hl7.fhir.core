@@ -6933,7 +6933,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           slices = profileUtilities.getSliceList(profile, ed);
         }
         for (ElementInfo ei : children) {
-          if (ei.definition == ed) {
+          if (ei.definition == ed || (ei.getElement().getValueProperty() == ed)) {
             count++;
           } else if (slices != null) {
             for (ElementDefinition sed : slices) {
