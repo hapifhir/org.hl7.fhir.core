@@ -141,7 +141,15 @@ public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<Man
   }
 
   private HTTPResult getHTTPResult(Response execute) throws IOException {
-    return new HTTPResult(execute.request().url().toString(), execute.code(), execute.message(), execute.header("Content-Type"), execute.body() != null ? execute.body().bytes() : null);
+    return new HTTPResult(execute.request().url().toString(), execute.code(), execute.message(), execute.header("Content-Type"), execute.body() != null ? execute.body().bytes() : null, getHeadersFromResponse(execute));
+  }
+
+  private Iterable<HTTPHeader> getHeadersFromResponse(Response response) {
+    List<HTTPHeader> headers = new ArrayList<>();
+    for (String name : response.headers().names()) {
+      headers.add(new HTTPHeader(name, response.header(name)));
+    }
+    return headers;
   }
 
   private OkHttpClient getOkHttpClient() {
