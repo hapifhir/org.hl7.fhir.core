@@ -173,7 +173,7 @@ public class FHIRPathEngine {
   private StringBuilder log = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
-  private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for emptty sets, so when running for R2/R3, this is set ot true  
+  private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for empty sets, so when running for R2/R3, this is set ot true  
   private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R5);
   private ProfileUtilities profileUtilities;
   private String location; // for error messages
