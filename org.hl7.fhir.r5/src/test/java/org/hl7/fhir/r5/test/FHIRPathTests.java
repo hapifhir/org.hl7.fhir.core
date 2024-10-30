@@ -262,7 +262,7 @@ public class FHIRPathTests {
 
       List<Element> expected = new ArrayList<Element>();
       XMLUtil.getNamedChildren(test, "output", expected);
-      assertEquals(outcome.size(), expected.size(), String.format("Expected %d objects but found %d for expression %s", expected.size(), outcome.size(), expression));
+      assertEquals(expected.size(), outcome.size(), String.format("Expected %d objects but found %d for expression %s", expected.size(), outcome.size(), expression));
       if ("false".equals(test.getAttribute("ordered"))) {
         for (int i = 0; i < Math.min(outcome.size(), expected.size()); i++) {
           String tn = outcome.get(i).fhirType();
