@@ -13,10 +13,6 @@ import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 
-///import okhttp3.Headers;
-//import okhttp3.MediaType;
-//import okhttp3.Request;
-//import okhttp3.RequestBody;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.http.HTTPRequest;
 

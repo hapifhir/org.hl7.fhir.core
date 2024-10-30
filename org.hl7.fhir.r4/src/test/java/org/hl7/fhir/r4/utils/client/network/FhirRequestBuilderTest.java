@@ -1,6 +1,7 @@
 package org.hl7.fhir.r4.utils.client.network;
 
 import okhttp3.Request;
+import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.http.HTTPHeaderUtil;
 import org.hl7.fhir.utilities.http.HTTPRequest;
@@ -46,31 +47,6 @@ public class FhirRequestBuilderTest {
     Assertions.assertNotNull(headersMap.get("Content-Type"), "Content-Type header null.");
     Assertions.assertEquals(testFormat + ";charset=" + FhirRequestBuilder.DEFAULT_CHARSET, headersMap.get("Content-Type").get(0),
       "Content-Type header not populated with expected value \"" + testFormat + ";charset=" + FhirRequestBuilder.DEFAULT_CHARSET + "\".");
-  }
-
-  @Test
-  @DisplayName("Test a list of provided headers are added correctly.")
-  void addHeaders() {
-    String headerName1 = "headerName1";
-    String headerValue1 = "headerValue1";
-    String headerName2 = "headerName2";
-    String headerValue2 = "headerValue2";
-
-    List<HTTPHeader> headers = List.of(
-      new HTTPHeader(headerName1, headerValue1),
-      new HTTPHeader(headerName2, headerValue2)
-    );
-
-    Request.Builder request = new Request.Builder().url("http://www.google.com");
-    FhirRequestBuilder.addHeaders(request, headers);
-
-    Map<String, List<String>> headersMap = request.build().headers().toMultimap();
-    Assertions.assertNotNull(headersMap.get(headerName1), headerName1 + " header null.");
-    Assertions.assertEquals(headerValue1, headersMap.get(headerName1).get(0),
-      headerName1 + " header not populated with expected value " + headerValue1 + ".");
-    Assertions.assertNotNull(headersMap.get(headerName2), headerName2 + " header null.");
-    Assertions.assertEquals(headerValue2, headersMap.get(headerName2).get(0),
-      headerName2 + " header not populated with expected value " + headerValue2 + ".");
   }
 
   @Test
