@@ -337,4 +337,23 @@ public class FHIRPathTests {
     assertEquals(1, results.size());
     assertEquals("123", results.get(0).toString());
   }
+
+  @Test
+  public void testEvaluate_ToStringOnDateValue() {
+    Patient input = new Patient();
+    var dtv = new DateType("2024");
+    input.setBirthDateElement(dtv);
+    List<Base> results = fp.evaluate(input, "Patient.birthDate.toString()");
+    assertEquals(1, results.size());
+    assertEquals("2024", results.get(0).toString());
+  }
+
+  @Test
+  public void testEvaluate_ToStringOnExtensionOnlyValue() {
+    Patient input = new Patient();
+    var dtv = new DateType();
+    input.setBirthDateElement(dtv);
+    List<Base> results = fp.evaluate(input, "Patient.birthDate.toString()");
+    assertEquals(0, results.size());
+  }
 }

@@ -4817,7 +4817,15 @@ public class FHIRPathEngine {
 
   private List<Base> funcToString(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
-    result.add(new StringType(convertToString(focus)).noExtensions());
+    for (Base item : focus) {
+      String value = convertToString(item);
+      if (value != null)
+        result.add(new StringType(value).noExtensions());
+    }
+
+    if (result.size() > 1) {
+      throw makeException(exp, I18nConstants.FHIRPATH_NO_COLLECTION, "toString", result.size());
+    }
     return result;
   }
 
