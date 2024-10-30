@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.utils.client;
 
-//import okhttp3.Headers;
-//import okhttp3.internal.http2.Header;
 import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
