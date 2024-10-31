@@ -163,8 +163,7 @@ public class Element extends Base implements NamedItem {
   private Object nativeObject;
   private List<SliceDefinition> sliceDefinitions;
   private boolean elided;
-  private ElementDefinition valueProperty; // used to track the property value for JSON Key properties in logical models
-
+  
 	public Element(String name) {
 		super();
 		this.name = name;
@@ -1648,14 +1647,6 @@ public class Element extends Base implements NamedItem {
 
   public boolean isElided() {
     return this.elided;
-  }
-
-  public ElementDefinition getValueProperty() {
-    return valueProperty;
-  }
-
-  public void setValueProperty(ElementDefinition valueProperty) {
-    this.valueProperty = valueProperty;
   }
   
 }

@@ -469,7 +469,6 @@ public class JsonParser extends ParserBase {
             nKey.setPath(fpathKey);
             n.getChildren().add(nKey);
             nKey.setValue(pv.getName());
-            nKey.setValueProperty(propV.getDefinition());
             
             boolean ok = true;
             Property pvl = propV;
@@ -483,6 +482,7 @@ public class JsonParser extends ParserBase {
                 ok = true;
               } else if (propV.getDefinition().getType().size() == 1 && propV.typeIsConsistent(type)) {
                 pvl = new Property(propV.getContext(), propV.getDefinition(), propV.getStructure(), propV.getUtils(), propV.getContextUtils(), propV.getType());
+                ok = true;
               } else {
                 logError(errors, ValidationMessage.NO_RULE_DATE, line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(pv.getValue()), propV.getName(), type, propV.typeSummary()), IssueSeverity.ERROR);
               }
