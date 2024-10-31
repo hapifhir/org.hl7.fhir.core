@@ -29,7 +29,7 @@ public class TerminologyClientFactoryTest {
     objects.addAll(getDefaultServerArgs("tx.fhir.org/r2", "tx.fhir.org", FhirPublication.DSTU2));
     objects.addAll(getDefaultServerArgs("tx.fhir.org/r3", "tx.fhir.org", FhirPublication.DSTU2016May));
     objects.addAll(getDefaultServerArgs("tx.fhir.org/r4", "tx.fhir.org", FhirPublication.R4B));
-    objects.addAll(getDefaultServerArgs("tx.fhir.org/r4", "tx.fhir.org", FhirPublication.R5));
+    objects.addAll(getDefaultServerArgs("tx.fhir.org/r5", "tx.fhir.org", FhirPublication.R5));
     objects.addAll(getDefaultServerArgs("tx.fhir.org/r3", "tx.fhir.org", FhirPublication.STU3));
     objects.addAll(getHttpAndHttpsArgs("someserver.org", FhirPublication.R4, "someserver.org"));
     objects.addAll(getHttpAndHttpsArgs("someserver.org", null, "someserver.org"));
