@@ -332,7 +332,7 @@ public class FHIRPathEngine {
   protected void getChildrenByName(Base item, String name, List<Base> result) throws FHIRException {
     String tn = null;
     if (isAllowPolymorphicNames()) {
-      // we'll look to see whether we hav a polymorphic name 
+      // we'll look to see whether we have a polymorphic name 
       for (Property p : item.children()) {
         if (p.getName().endsWith("[x]")) {
           String n = p.getName().substring(0, p.getName().length()-3);
@@ -1561,7 +1561,7 @@ public class FHIRPathEngine {
       work.addAll(work2);
       break;
     case Constant:
-      work.addAll(resolveConstant(context, exp.getConstant(), false, exp));
+      work.addAll(resolveConstant(context, exp.getConstant(), false, exp, true));
       break;
     case Group:
       work2 = execute(context, focus, exp.getGroup(), atEntry);
@@ -1719,8 +1719,7 @@ public class FHIRPathEngine {
       }
     }
   }
-
-  private List<Base> resolveConstant(ExecutionContext context, Base constant, boolean beforeContext, ExpressionNode expr) throws PathEngineException {
+  private List<Base> resolveConstant(ExecutionContext context, Base constant, boolean beforeContext, ExpressionNode expr, boolean explicitConstant) throws PathEngineException {
     if (constant == null) {
       return new ArrayList<Base>();
     }
@@ -1733,7 +1732,7 @@ public class FHIRPathEngine {
       if (context.hasDefinedVariable(varName)) {
         return context.getDefinedVariable(varName);
       }
-      return resolveConstant(context, c.getValue(), beforeContext, expr, true);
+      return resolveConstant(context, c.getValue(), beforeContext, expr, explicitConstant);
     } else if (c.getValue().startsWith("@")) {
       return new ArrayList<Base>(Arrays.asList(processDateConstant(context.appInfo, c.getValue().substring(1), expr)));
     } else {
