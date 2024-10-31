@@ -445,7 +445,7 @@ public class Property {
         }
         sd = context.fetchResource(StructureDefinition.class, url);        
         if (sd == null)
-          throw new DefinitionException("Unable to find type '"+t+"' for name '"+elementName+"' on property "+definition.getPath());
+          throw new DefinitionException("Unable to find definition '"+url+"' for type '"+t+"' for name '"+elementName+"' on property "+definition.getPath());
         children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElement().get(0));
       }
     }
