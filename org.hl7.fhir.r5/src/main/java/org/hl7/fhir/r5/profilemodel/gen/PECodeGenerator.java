@@ -122,7 +122,7 @@ public class PECodeGenerator {
         genAccessors(true, false, "id", "String", "", "String", "String", "Id", "Ids", false, "", false, false);   
         genLoad(true, false, "id", "id", "IdType", "", "String", "String", "Id", "Ids", false, false, null, false);
         genSave(true, false, "id", "id", "IdType", "", "String", "String", "Id", "Ids", false, false, false, null, false);
-        genClear(false, "id");
+        genClear(false, "id", "String");
       }
     }
     public void write(StringBuilder b, String copyright) {
@@ -380,16 +380,20 @@ public class PECodeGenerator {
           genAccessors(isPrim, isAbstract, name, type, init, ptype, ltype, cname, csname, field.isList(), field.documentation(), field.hasFixedValue(), isEnum);   
           genLoad(isPrim, isAbstract, name, sname, type, init, ptype, ltype, cname, csname, field.isList(), field.hasFixedValue(), field.types().get(0), isEnum); 
           genSave(isPrim, isAbstract, name, sname, type, init, ptype, ltype, cname, csname, field.isList(), field.hasFixedValue(), isExtension, field.types().get(0), isEnum);
-          genClear(field.isList(), name);
+          genClear(field.isList(), name, ptype);
         }
       } else {
         // ignoring polymorphics for now
       }
     }
     
-    private void genClear(boolean list, String name) {
+    private void genClear(boolean list, String name, String ptype) {
       if (list) {
         w(clear, "    "+name+".clear();");        
+      } else if ("boolean".equals(ptype)) {
+        w(clear, "    "+name+" = false;");
+      } else if ("int".equals(ptype)) {
+        w(clear, "    "+name+" = 0;");
       } else {
         w(clear, "    "+name+" = null;");
       }
@@ -407,7 +411,7 @@ public class PECodeGenerator {
       } else if (isEnum) {
         w(load, "    if (src.hasChild(\""+name+"\")) {");
         if ("CodeableConcept".equals(typeInfo.getName())) {
-        w(load, "      "+name+" = "+type+".fromCodeableConcept((CodeableConcept) src.child(\""+name+"\").asDataType());");
+          w(load, "      "+name+" = "+type+".fromCodeableConcept((CodeableConcept) src.child(\""+name+"\").asDataType());");
         } else if ("Coding".equals(typeInfo.getName())) {
           w(load, "      "+name+" = "+type+".fromCoding((Coding) src.child(\""+name+"\").asDataType());");
         } else {
@@ -431,6 +435,8 @@ public class PECodeGenerator {
         w(load, "    if (src.hasChild(\""+name+"\")) {");      
         if ("BackboneElement".equals(type)) {
           w(load, "      "+name+" = ("+type+") src.child(\""+name+"\").asElement();");
+        } else if (Utilities.existsInList(type, workerContext.getResourceNames())) {
+          w(load, "      "+name+" = ("+type+") src.child(\""+name+"\").asResource();");
         } else {
           w(load, "      "+name+" = ("+type+") src.child(\""+name+"\").asDataType();");
         }
@@ -459,7 +465,13 @@ public class PECodeGenerator {
         }  
         w(save, "    }");      
       } else if (isPrim) {
-        w(save, "    if ("+name+" != null) {");
+        if ("boolean".equals(ptype)) {
+          w(save, "    if (true) { // for now, at least");
+        } else if ("int".equals(ptype)) {
+          w(save, "    if ("+name+" != 0) {");
+        } else {
+          w(save, "    if ("+name+" != null) {");
+        }
         if (isExtension) {
           w(save, "      tgt.makeChild(\""+sname+"\").data().setProperty(\"value[x]\", new "+type+"("+name+"));");
         } else if (Utilities.existsInList(type, "DateType", "InstantType", "DateTimeType")) {
@@ -467,7 +479,7 @@ public class PECodeGenerator {
         } else {
           w(save, "      tgt.makeChild(\""+sname+"\").data().setProperty(\"value\", new "+type+"("+name+"));");
         }
-        w(save, "    }");      
+        w(save, "    }");
       } else if (typeInfo != null && typeInfo.getUrl() != null && !typeInfo.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition")) {
         w(save, "    if ("+name+" != null) {");
         w(save, "      "+name+".save(tgt.makeChild(\""+sname+"\"), nulls);");
@@ -501,7 +513,13 @@ public class PECodeGenerator {
           w(accessors, "  }");
           w(accessors);
           w(accessors, "  public boolean has"+cname+"() {");
-          w(accessors, "    return "+name+" != null;");
+          if ("boolean".equals(ptype)) {
+            w(accessors, "    return true; // not "+name+" != false ?");             
+          } else if ("int".equals(ptype)) {
+            w(accessors, "    return "+name+" != 0;");            
+          } else {
+            w(accessors, "    return "+name+" != null;");
+          }
           w(accessors, "  }");  
         }
       } else {

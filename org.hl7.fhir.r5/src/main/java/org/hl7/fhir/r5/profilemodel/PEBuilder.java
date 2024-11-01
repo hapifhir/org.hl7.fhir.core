@@ -50,6 +50,7 @@ import org.hl7.fhir.r5.model.ResourceFactory;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 /**
@@ -341,6 +342,9 @@ public class PEBuilder {
       List<PEDefinition> res = new ArrayList<>();
       if (list.size() == 0) {
         profile = context.fetchResource(StructureDefinition.class, url);
+        if (profile == null) {
+          DebugUtilities.breakpoint();
+        }
         list = pu.getChildList(profile, profile.getSnapshot().getElementFirstRep());
       }
       if (list.size() > 0) {
