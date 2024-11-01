@@ -48,7 +48,7 @@ You can copy, modify, distribute and perform the work, even for commercial purpo
  */
 public class TestProfile extends PEGeneratedBase {
 
-  private static final String CANONICAL_URL = "http://hl7.org/fhir/test/StructureDefinition/pe-profile1|0.1";
+  public static final String CANONICAL_URL = "http://hl7.org/fhir/test/StructureDefinition/pe-profile1|0.1";
 
   public enum ProfileObservationCategoryCode {
     LABORATORY, // "Laboratory" = http://terminology.hl7.org/CodeSystem/observation-category#laboratory

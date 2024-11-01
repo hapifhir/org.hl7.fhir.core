@@ -3,6 +3,7 @@ package org.hl7.fhir.r4.context;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,6 +58,9 @@ import org.hl7.fhir.r4.terminologies.ValueSetExpander.TerminologyServiceErrorCla
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
+import org.hl7.fhir.r4.model.DomainResource;
+import org.hl7.fhir.r4.model.Library;
+import org.hl7.fhir.r4.model.Measure;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
@@ -894,6 +898,22 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  @Override
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, Resource source) {
+    return fetchResource(class_, uri);
+  }
+
+  @Override
+  public List<StructureDefinition> fetchTypeDefinitions(String n) {
+    List<StructureDefinition> types = new ArrayList<>();
+    for (StructureDefinition sd : fetchResourcesByType(StructureDefinition.class)) {
+      if (n.equals(sd.getTypeTail())) {
+        types.add(sd);
+      }
+    }
+    return types;
+  }
+
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version) {
     try {
       return fetchResourceWithException(class_, uri+"|"+version);
@@ -1250,4 +1270,51 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return corePath + "snomed.html";
     return null;
   }
+
+  @SuppressWarnings("unchecked")
+  public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_) {
+
+    List<T> res = new ArrayList<>();
+
+    synchronized (lock) {
+
+      if (class_ == Resource.class || class_ == DomainResource.class || class_ == null) {
+        res.addAll((Collection<T>) structures.values());
+        res.addAll((Collection<T>) guides.values());
+        res.addAll((Collection<T>) capstmts.values());
+        res.addAll((Collection<T>) valueSets.values());
+        res.addAll((Collection<T>) codeSystems.values());
+        res.addAll((Collection<T>) operations.values());
+        res.addAll((Collection<T>) searchParameters.values());
+        res.addAll((Collection<T>) plans.values());
+        res.addAll((Collection<T>) maps.values());
+        res.addAll((Collection<T>) transforms.values());
+        res.addAll((Collection<T>) questionnaires.values());
+      } else if (class_ == ImplementationGuide.class) {
+        res.addAll((Collection<T>) guides.values());
+      } else if (class_ == CapabilityStatement.class) {
+        res.addAll((Collection<T>) capstmts.values());
+      } else if (class_ == StructureDefinition.class) {
+        res.addAll((Collection<T>) structures.values());
+      } else if (class_ == StructureMap.class) {
+        res.addAll((Collection<T>) transforms.values());
+      } else if (class_ == ValueSet.class) {
+        res.addAll((Collection<T>) valueSets.values());
+      } else if (class_ == CodeSystem.class) {
+        res.addAll((Collection<T>) codeSystems.values());
+      } else if (class_ == ConceptMap.class) {
+        res.addAll((Collection<T>) maps.values());
+      } else if (class_ == PlanDefinition.class) {
+        res.addAll((Collection<T>) plans.values());
+      } else if (class_ == OperationDefinition.class) {
+        res.addAll((Collection<T>) operations.values());
+      } else if (class_ == Questionnaire.class) {
+        res.addAll((Collection<T>) questionnaires.values());
+      } else if (class_ == SearchParameter.class) {
+        res.addAll((Collection<T>) searchParameters.values());
+      }
+    }
+    return res;
+  }
+
 }
