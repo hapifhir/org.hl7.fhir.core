@@ -249,6 +249,11 @@ public class SnapShotGenerationTests {
       return null;
     }
 
+    @Override
+    public boolean isPrimitiveType(String name) {
+      StructureDefinition sd = TestingUtilities.context().fetchTypeDefinition(name);
+      return (sd != null) && (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) && (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE);
+    }
   }
 
   private static class SnapShotGenerationTestsContext implements IEvaluationContext {
@@ -386,6 +391,10 @@ public class SnapShotGenerationTests {
       throw new Error("Not implemented yet");
     }
 
+    @Override
+    public boolean paramIsType(String name, int index) {
+      return false;
+    }
   }
 
   private static FHIRPathEngine fp;

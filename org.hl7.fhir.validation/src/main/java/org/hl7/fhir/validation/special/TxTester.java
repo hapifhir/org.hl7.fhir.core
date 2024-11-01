@@ -1,9 +1,14 @@
 package org.hl7.fhir.validation.special;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -12,6 +17,7 @@ import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -25,6 +31,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
@@ -35,6 +42,7 @@ import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.json.JsonException;
@@ -58,6 +66,8 @@ public class TxTester {
   private ITerminologyClient tx;
   private boolean tight;
   private JsonObject externals;
+  private String software;
+  private List<String> fails = new ArrayList<>();
   
 
   public TxTester(ITxTesterLoader loader, String server, boolean tight, JsonObject externals) {
@@ -112,13 +122,21 @@ public class TxTester {
         }
       }
       TextFile.stringToFile(JsonParser.compose(json, true), Utilities.path(output, "test-results.json"));
-      if (ok) {
-        System.out.println("Terminology Service Tests all passed");
-        return true;
+
+      if (filter == null) {
+        String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join(";", modes);
+        if (ok) {
+          System.out.println(software+" passed all HL7 terminology service tests (modes "+m+", tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+          return true;
+        } else {
+          System.out.println(software+" did not pass all HL7 terminology service tests (modes "+m+", tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+          System.out.println("Failed Tests: "+CommaSeparatedStringBuilder.join(",", fails ));
+          return false;
+        }        
       } else {
-        System.out.println("Terminology Service Tests did not all pass");
-        return false;
-      }        
+        System.out.println(software+" "+(ok ? "Passed the tests" : "did not pass the tests")+" '"+filter+"'");
+        return ok;
+      }
     } catch (Exception e) {
       System.out.println("Exception running Terminology Service Tests: "+e.getMessage());
       e.printStackTrace();
@@ -139,7 +157,10 @@ public class TxTester {
   }
 
   private boolean checkClient(ITerminologyClient tx) {
-    tx.getCapabilitiesStatementQuick();
+    CapabilityStatement cstmt =  tx.getCapabilitiesStatementQuick();
+    if (cstmt.hasSoftware()) {
+      software = cstmt.getSoftware().getName()+" v"+cstmt.getSoftware().getVersion();
+    }
     tx.getTerminologyCapabilities();
     return true;
   }
@@ -148,9 +169,32 @@ public class TxTester {
     System.out.println("Load Tests from "+loader.describe());
     return JsonParser.parseObject(loader.loadContent("test-cases.json"));
   }
+  
+  private String loadVersion() throws JsonException, IOException {
+    return processHistoryMarkdown(loader.loadContent("history.md"));
+  }
+
+  private String processHistoryMarkdown(byte[] content) throws IOException {
+    DataInputStream in = new DataInputStream(new ByteArrayInputStream(content));
+    BufferedReader br = new BufferedReader(new InputStreamReader(in));
+    try {
+      String strLine;
+      //Read File Line By Line
+      while ((strLine = br.readLine()) != null)   {
+        if (strLine.startsWith("## ")) {
+          return strLine.substring(3);
+        }
+      }
+    } finally {
+      br.close();
+      in.close();
+    }
+    return "<1.6.0";
+  }
 
   private ITerminologyClient connectToServer(List<String> modes) throws URISyntaxException {
     System.out.println("Connect to "+server);
+    software = server;
     ITerminologyClient client = new TerminologyClientFactory(FhirPublication.R4).makeClient("Test-Server", server, "Tools/Java", null);
     return client;  
   }
@@ -164,7 +208,7 @@ public class TxTester {
     }
     List<Resource> setup = loadSetupResources(suite);
 
-    if (runTest(test, tx, setup, modes, "*", null)) {
+    if (runTest(suite, test, tx, setup, modes, "*", null)) {
       return null;      
     } else {
       return error;
@@ -185,14 +229,14 @@ public class TxTester {
         if (test.asBoolean("disabled")) {
           ok = true;
         } else {
-          ok = runTest(test, tx, setup, modes, filter, outputS.forceArray("tests")) && ok;
+          ok = runTest(suite, test, tx, setup, modes, filter, outputS.forceArray("tests")) && ok;
         }
       }
     }
     return ok;
   }
 
-  private boolean runTest(JsonObject test, ITerminologyClient tx, List<Resource> setup, List<String> modes, String filter, JsonArray output) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
+  private boolean runTest(JsonObject suite, JsonObject test, ITerminologyClient tx, List<Resource> setup, List<String> modes, String filter, JsonArray output) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
     JsonObject outputT = new JsonObject();
     if (output != null) {
       output.add(outputT);
@@ -243,6 +287,7 @@ public class TxTester {
         if (msg != null) {
           System.out.println("    "+msg);
           error = msg;
+          fails.add(suite.asString("name")+"/"+test.asString("name"));
         }  
         outputT.add("status", msg == null ? "pass" : "fail");
         if (msg != null) {
@@ -255,6 +300,7 @@ public class TxTester {
       } catch (Exception e) {
         System.out.println("  ... Exception: "+e.getMessage());
         System.out.print("    ");
+        fails.add(suite.asString("name")+"/"+test.asString("name"));
         error = e.getMessage();
         e.printStackTrace();
         if (header != null) {
