@@ -48,6 +48,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -98,47 +100,37 @@ public class ClientUtils {
   public static final String HEADER_LOCATION = "location";
   private static boolean debugging = false;
 
+  @Getter
+  @Setter
   private HttpHost proxy;
+
+  @Getter
+  @Setter
   private int timeout = 5000;
+
+  @Getter
+  @Setter
   private String username;
+
+  @Getter
+  @Setter
   private String password;
+
+  @Setter
+  @Getter
   private ToolingClientLogger logger;
+
+  @Setter
+  @Getter
   private int retryCount;
+
+  @Getter
+  @Setter
   private String userAgent;
-  private String acceptLang;
-  private String contentLang;
-
-  public HttpHost getProxy() {
-    return proxy;
-  }
-
-  public void setProxy(HttpHost proxy) {
-    this.proxy = proxy;
-  }
-
-  public int getTimeout() {
-    return timeout;
-  }
-
-  public void setTimeout(int timeout) {
-    this.timeout = timeout;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
+  @Setter
+  private String acceptLanguage;
+  @Setter
+  private String contentLanguage;
 
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat,
       int timeoutLoading) {
@@ -247,7 +239,6 @@ public class ClientUtils {
 
   /**
    * @param resourceFormat
-   * @param options
    * @return
    */
   protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request,
@@ -257,7 +248,6 @@ public class ClientUtils {
 
   /**
    * @param resourceFormat
-   * @param options
    * @return
    */
   protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request,
@@ -296,11 +286,11 @@ public class ClientUtils {
     if (!Utilities.noString(userAgent)) {
       request.addHeader("User-Agent", userAgent);
     }
-    if (!Utilities.noString(acceptLang)) {
-      request.addHeader("Accept-Language", acceptLang);
+    if (!Utilities.noString(acceptLanguage)) {
+      request.addHeader("Accept-Language", acceptLanguage);
     }
-    if (!Utilities.noString(contentLang)) {
-      request.addHeader("Content-Language", acceptLang);
+    if (!Utilities.noString(contentLanguage)) {
+      request.addHeader("Content-Language", acceptLanguage);
     }
 
     if (format != null) {
@@ -363,9 +353,8 @@ public class ClientUtils {
 
   /**
    * 
-   * @param request
-   * @param payload
-   * @return
+   * @param request The request to be sent
+   * @return The response from the server
    */
   protected HttpResponse sendRequest(HttpUriRequest request) {
     if (FhirSettings.isProhibitNetworkAccess()) {
@@ -455,7 +444,7 @@ public class ClientUtils {
     return feed;
   }
 
-  private boolean hasError(OperationOutcome oo) {
+  protected boolean hasError(OperationOutcome oo) {
     for (OperationOutcomeIssueComponent t : oo.getIssue())
       if (t.getSeverity() == IssueSeverity.ERROR || t.getSeverity() == IssueSeverity.FATAL)
         return true;
@@ -688,14 +677,6 @@ public class ClientUtils {
     return cnt;
   }
 
-  public ToolingClientLogger getLogger() {
-    return logger;
-  }
-
-  public void setLogger(ToolingClientLogger logger) {
-    this.logger = logger;
-  }
-
   /**
    * Used for debugging
    * 
@@ -714,26 +695,5 @@ public class ClientUtils {
     return value;
   }
 
-  public int getRetryCount() {
-    return retryCount;
-  }
 
-  public void setRetryCount(int retryCount) {
-    this.retryCount = retryCount;
-  }
-
-  public String getUserAgent() {
-    return userAgent;
-  }
-
-  public void setUserAgent(String userAgent) {
-    this.userAgent = userAgent;
-  }
-
-  public void setAcceptLanguage(String language) {
-    this.acceptLang = language;
-  }
-  public void setContentLanguage(String language) {
-    this.contentLang = language;
-  }
 }
