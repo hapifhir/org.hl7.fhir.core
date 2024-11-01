@@ -298,7 +298,7 @@ public class PEInstance {
     return builder.getContext();
   }
 
-  public Base addChild(String name, DataType value) {
+  public Base addChild(String name, Type value) {
     PEDefinition child = byName(definition.children(), name);
     Base b = data.setProperty(child.schemaName(), value);
     return b;
