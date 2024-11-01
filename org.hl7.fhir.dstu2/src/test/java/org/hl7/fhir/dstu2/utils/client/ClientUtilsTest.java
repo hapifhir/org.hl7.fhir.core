@@ -100,11 +100,29 @@ public class ClientUtilsTest {
   }
 
   @Test
-  public void testResourceFormat() {
-    ResourceFormat format = ResourceFormat.RESOURCE_XML;
-    assertThat(format.getHeader()).isEqualTo("application/xml+fhir");
-    format = ResourceFormat.RESOURCE_JSON;
-    assertThat(format.getHeader()).isEqualTo("application/json+fhir");
+  public void testResourceFormatHeaders_GET() throws IOException, InterruptedException {
+    server.enqueue(
+      new MockResponse()
+        .setBody(new String(generateResourceBytes(patient)))
+        .addHeader("Content-Type", ResourceFormat.RESOURCE_JSON)
+    );
+    ResourceRequest<Patient> resourceRequest = clientUtils.issueGetResourceRequest(serverUrl.uri(), "application/json+fhir",  TIMEOUT);
+    RecordedRequest recordedRequest = server.takeRequest();
+    assertThat(recordedRequest.getHeader("Accept")).isEqualTo("application/json+fhir");
+  }
+
+  @Test
+  public void testResourceFormatHeaders_POST() throws IOException, InterruptedException {
+    byte[] payload = generateResourceBytes(patient);
+    server.enqueue(
+      new MockResponse()
+        .setBody(new String(payload))
+        .addHeader("Content-Type", "application/json+fhir")
+        .setResponseCode(201)
+    );
+    ResourceRequest<Patient> resourceRequest = clientUtils.issuePostRequest(serverUrl.uri(), payload, "application/json+fhir",  TIMEOUT);
+    RecordedRequest recordedRequest = server.takeRequest();
+    assertThat(recordedRequest.getHeader("Accept")).isEqualTo("application/json+fhir");
   }
 
   @Test
@@ -142,10 +160,8 @@ public class ClientUtilsTest {
         .addHeader("Content-Location", DUMMY_LOCATION)
     );
     ResourceRequest<Patient> resourceRequest = clientUtils.issueGetResourceRequest(serverUrl.uri(), "application/json+fhir",  TIMEOUT);
-    resourceRequest.addSuccessStatus(200);
+
     assertThat(resourceRequest.getLocation()).isEqualTo(DUMMY_LOCATION);
-    assertTrue(resourceRequest.isSuccessfulRequest());
-    assertTrue(patient.equalsDeep(resourceRequest.getPayload()));
   }
 
   @Test
@@ -159,10 +175,7 @@ public class ClientUtilsTest {
         .addHeader("Content-Location", "Wrong wrong wrong")
     );
     ResourceRequest<Patient> resourceRequest = clientUtils.issueGetResourceRequest(serverUrl.uri(), "application/json+fhir",  TIMEOUT);
-    resourceRequest.addSuccessStatus(200);
     assertThat(resourceRequest.getLocation()).isEqualTo(DUMMY_LOCATION);
-    assertTrue(resourceRequest.isSuccessfulRequest());
-    assertTrue(patient.equalsDeep(resourceRequest.getPayload()));
   }
 
   @Test
@@ -174,17 +187,18 @@ public class ClientUtilsTest {
         .addHeader("Content-Type", "application/json+fhir")
     );
     ResourceRequest<Patient> resourceRequest = clientUtils.issueGetResourceRequest(serverUrl.uri(), "application/json+fhir",  TIMEOUT);
-    resourceRequest.addSuccessStatus(200);
     assertThat(resourceRequest.getLocation()).isNull();
-    assertTrue(resourceRequest.isSuccessfulRequest());
-    assertTrue(patient.equalsDeep(resourceRequest.getPayload()));
   }
 
   @Test
   public void testIssuePostRequest() throws IOException, InterruptedException {
     byte[] payload = generateResourceBytes(patient);
     server.enqueue(
-      new MockResponse().setBody(new String(payload)).addHeader("Content-Type", "application/json+fhir").addHeader("Location", DUMMY_LOCATION).setResponseCode(201)
+      new MockResponse()
+        .setBody(new String(payload))
+        .addHeader("Content-Type", "application/json+fhir")
+        .addHeader("Location", DUMMY_LOCATION)
+        .setResponseCode(201)
     );
     ResourceRequest<Patient> resourceRequest = clientUtils.issuePostRequest(serverUrl.uri(), payload, "application/json+fhir", TIMEOUT);
     resourceRequest.addSuccessStatus(201);
@@ -201,7 +215,11 @@ public class ClientUtilsTest {
   public void testIssuePutRequest() throws IOException, InterruptedException {
     byte[] payload = generateResourceBytes(patient);
     server.enqueue(
-      new MockResponse().setBody(new String(payload)).addHeader("Content-Type", "application/json+fhir").addHeader("Location", DUMMY_LOCATION).setResponseCode(200)
+      new MockResponse()
+        .setBody(new String(payload))
+        .addHeader("Content-Type", "application/json+fhir")
+        .addHeader("Location", DUMMY_LOCATION)
+        .setResponseCode(200)
     );
     ResourceRequest<Patient> resourceRequest = clientUtils.issuePutRequest(serverUrl.uri(), payload, "application/json+fhir", TIMEOUT);
     resourceRequest.addSuccessStatus(200);

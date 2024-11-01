@@ -95,12 +95,17 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   private HttpHost proxy;
   private int maxResultSetSize = -1;// _count
   private Conformance conf;
-  private ClientUtils utils = new ClientUtils();
+  private ClientUtils utils = null;
   private int useCount;
+
+  protected ClientUtils getClientUtils() {
+    return new ClientUtils();
+  }
 
   // Pass enpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_XML;
+    utils = getClientUtils();
     utils.setUserAgent(userAgent);
     detectProxy();
     initialize(baseServiceUrl);
@@ -109,6 +114,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   public FHIRToolingClient(String baseServiceUrl, String userAgent, String username, String password)
       throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_XML;
+    utils = getClientUtils();
     utils.setUserAgent(userAgent);
     utils.setUsername(username);
     utils.setPassword(password);
@@ -324,9 +330,12 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     ResourceRequest<T> result = null;
     try {
       List<Header> headers = null;
-      result = utils.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
+      result = utils.issuePutRequest(
+        resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
           utils.getResourceAsByteArray(resource, false, isJson(getPreferredResourceFormat())),
-          withVer(getPreferredResourceFormat(), "1.0"), headers, timeoutOperation);
+          withVer(getPreferredResourceFormat(), "1.0"),
+        headers,
+        timeoutOperation);
       result.addErrorStatus(410);// gone
       result.addErrorStatus(404);// unknown
       result.addErrorStatus(405);
