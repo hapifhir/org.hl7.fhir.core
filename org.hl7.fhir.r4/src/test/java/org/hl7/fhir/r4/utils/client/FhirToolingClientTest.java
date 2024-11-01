@@ -33,7 +33,6 @@ public class FhirToolingClientTest {
   @Captor
   private ArgumentCaptor<Iterable<HTTPHeader>> headersArgumentCaptor;
 
-
   @BeforeEach
   void setUp() throws IOException, URISyntaxException {
     MockitoAnnotations.openMocks(this);
