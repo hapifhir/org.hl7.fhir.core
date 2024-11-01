@@ -740,10 +740,71 @@ public class Utilities {
         upcase = true;
       }
     }
-    return s.toString();
+    String res = s.toString();
+    if (isJavaReservedWord(res)) {
+      return "_"+res;
+    } else { 
+      return res;
+    }
   }
 
-
+  public static boolean isJavaReservedWord(String word) {
+    if (word.equals("abstract")) return true;   
+    if (word.equals("assert")) return true;
+    if (word.equals("boolean")) return true;
+    if (word.equals("break")) return true;  
+    if (word.equals("byte")) return true;   
+    if (word.equals("case")) return true;
+    if (word.equals("catch")) return true;  
+    if (word.equals("char")) return true;   
+    if (word.equals("class")) return true;  
+    if (word.equals("const")) return true;  
+    if (word.equals("continue")) return true;   
+    if (word.equals("default")) return true;
+    if (word.equals("double")) return true;   
+    if (word.equals("do")) return true;   
+    if (word.equals("else")) return true;   
+    if (word.equals("enum")) return true;   
+    if (word.equals("extends")) return true;  
+    if (word.equals("false")) return true;
+    if (word.equals("final")) return true;  
+    if (word.equals("finally")) return true;  
+    if (word.equals("float")) return true;  
+    if (word.equals("for")) return true;  
+    if (word.equals("goto")) return true;   
+    if (word.equals("if")) return true;
+    if (word.equals("implements")) return true;   
+    if (word.equals("import")) return true;   
+    if (word.equals("instanceof")) return true;   
+    if (word.equals("int")) return true;  
+    if (word.equals("interface")) return true;  
+    if (word.equals("long")) return true;
+    if (word.equals("native")) return true;   
+    if (word.equals("new")) return true;  
+    if (word.equals("null")) return true;   
+    if (word.equals("package")) return true;  
+    if (word.equals("private")) return true;  
+    if (word.equals("protected")) return true;
+    if (word.equals("public")) return true;   
+    if (word.equals("return")) return true;   
+    if (word.equals("short")) return true;  
+    if (word.equals("static")) return true;   
+    if (word.equals("strictfp")) return true;   
+    if (word.equals("super")) return true;
+    if (word.equals("switch")) return true;   
+    if (word.equals("synchronized")) return true;   
+    if (word.equals("this")) return true;   
+    if (word.equals("throw")) return true;  
+    if (word.equals("throws")) return true;   
+    if (word.equals("transient")) return true;
+    if (word.equals("true")) return true;   
+    if (word.equals("try")) return true;  
+    if (word.equals("void")) return true;   
+    if (word.equals("volatile")) return true;
+    if (word.equals("while")) return true;
+    if (word.equals("Exception")) return true;
+    return false;
+  }
   public static boolean isToken(String tail) {
     if (tail == null || tail.length() == 0)
       return false;

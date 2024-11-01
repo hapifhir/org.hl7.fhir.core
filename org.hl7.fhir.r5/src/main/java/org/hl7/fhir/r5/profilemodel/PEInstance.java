@@ -299,10 +299,16 @@ public class PEInstance {
   }
 
   public Base addChild(String name, DataType value) {
-      PEDefinition child = byName(definition.children(), name);
-      Base b = data.setProperty(child.schemaName(), value);
-      return b;
-  }
+    PEDefinition child = byName(definition.children(), name);
+    Base b = data.setProperty(child.schemaName(), value);
+    return b;
+}
+
+  public Base addChild(String name, Resource value) {
+    PEDefinition child = byName(definition.children(), name);
+    Base b = data.setProperty(child.schemaName(), value);
+    return b;
+}
 
   public Base addChild(String name, BackboneElement value) {
       PEDefinition child = byName(definition.children(), name);
