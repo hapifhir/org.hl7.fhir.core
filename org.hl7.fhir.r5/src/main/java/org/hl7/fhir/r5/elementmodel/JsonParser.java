@@ -470,7 +470,6 @@ public class JsonParser extends ParserBase {
             n.getChildren().add(nKey);
             nKey.setValue(pv.getName());
             
-
             boolean ok = true;
             Property pvl = propV;
             if (propV.isJsonPrimitiveChoice()) {
@@ -483,6 +482,7 @@ public class JsonParser extends ParserBase {
                 ok = true;
               } else if (propV.getDefinition().getType().size() == 1 && propV.typeIsConsistent(type)) {
                 pvl = new Property(propV.getContext(), propV.getDefinition(), propV.getStructure(), propV.getUtils(), propV.getContextUtils(), propV.getType());
+                ok = true;
               } else {
                 logError(errors, ValidationMessage.NO_RULE_DATE, line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(pv.getValue()), propV.getName(), type, propV.typeSummary()), IssueSeverity.ERROR);
               }
@@ -573,7 +573,8 @@ public class JsonParser extends ParserBase {
       n.setNull(true);
       // nothing to do, it's ok, but we treat it like it doesn't exist
     } else {
-      logError(errors, ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e), name, npath), IssueSeverity.ERROR);
+      String msg = context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e), name, npath);
+      logError(errors, ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, msg, IssueSeverity.ERROR);
     }
     return null;
   }

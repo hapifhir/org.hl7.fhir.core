@@ -444,4 +444,8 @@ public class LiquidEngine implements IEvaluationContext {
       return engine.getWorker().fetchResource(ValueSet.class, url);
   }
 
+  @Override
+  public boolean paramIsType(String name, int index) {
+    return false;
+  }
 }

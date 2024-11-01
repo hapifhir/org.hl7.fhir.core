@@ -232,19 +232,6 @@ public class PatientRenderer extends ResourceRenderer {
     return false;
   }
 
-
-  private void addContained(RenderingStatus status, XhtmlNode x, List<ResourceWrapper> list) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
-    for (ResourceWrapper c : list) {
-      x.hr();
-      String id = c.getScopedId();
-      if (!context.hasAnchor(id)) {
-        context.addAnchor(id);
-        x.an(context.prefixAnchor(id));
-      }
-      RendererFactory.factory(c, context.forContained()).buildNarrative(status, x, c);
-    }
-  }
-
   private void addExtensions(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
     Map<String, List<ResourceWrapper>> extensions = new HashMap<>();
     List<ResourceWrapper> pw = r.children("extension");

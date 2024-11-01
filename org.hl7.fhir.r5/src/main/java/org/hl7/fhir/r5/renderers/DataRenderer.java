@@ -2236,7 +2236,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return b.toString(); 
   } 
 
-  protected String versionFromCanonical(String system) { 
+  protected String systemFromCanonical(String system) { 
     if (system == null) { 
       return null; 
     } else if (system.contains("|")) { 
@@ -2246,7 +2246,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected String systemFromCanonical(String system) { 
+  protected String versionFromCanonical(String system) { 
     if (system == null) { 
       return null; 
     } else if (system.contains("|")) { 
