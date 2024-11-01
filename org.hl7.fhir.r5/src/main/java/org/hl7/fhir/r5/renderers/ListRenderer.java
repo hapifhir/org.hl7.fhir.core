@@ -100,6 +100,12 @@ public class ListRenderer extends ResourceRenderer {
         tr.td().tx(e.has("deleted") ? e.primitiveValue("deleted") : ""); 
       } 
     }     
+    
+    if (list.has("contained") && context.isTechnicalMode()) {
+      x.hr();
+      x.para().b().tx(context.formatMessagePlural(list.children("contained").size(), RenderingContext.PAT_CONTAINED));
+      addContained(status, x, list.children("contained"));
+    }
   } 
   
   public void describe(XhtmlNode x, ListResource list) { 

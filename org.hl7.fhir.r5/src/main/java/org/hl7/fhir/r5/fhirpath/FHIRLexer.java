@@ -16,22 +16,14 @@ public class FHIRLexer {
   public class FHIRLexerException extends FHIRException {
 
     private SourceLocation location;
-
-//    public FHIRLexerException() {
-//      super();
-//    }
-//
-//    public FHIRLexerException(String message, Throwable cause) {
-//      super(message, cause);
-//    }
-//
-//    public FHIRLexerException(String message) {
-//      super(message);
-//    }
-//
-//    public FHIRLexerException(Throwable cause) {
-//      super(cause);
-//    }
+    
+    public FHIRLexerException(String message) {
+      super(message);
+    }
+    
+    public FHIRLexerException(String message, Throwable cause) {
+      super(message, cause);
+    }
 
     public FHIRLexerException(String message, SourceLocation location) {
       super(message);
@@ -43,6 +35,7 @@ public class FHIRLexer {
     }
 
   }
+
   private String source;
   private int cursor;
   private int currentStart;
@@ -63,6 +56,7 @@ public class FHIRLexer {
     currentLocation = new SourceLocation(1, 1);
     next();
   }
+
   public FHIRLexer(String source, int i) throws FHIRLexerException {
     this.source = Utilities.stripBOM(source);
     this.cursor = i;
@@ -87,6 +81,7 @@ public class FHIRLexer {
   public String getCurrent() {
     return current;
   }
+
   public SourceLocation getCurrentLocation() {
     return currentLocation;
   }
@@ -337,28 +332,37 @@ public class FHIRLexer {
     
     return ch == '-' || ch == ':' || ch == 'T' || ch == '+' || ch == 'Z' || Character.isDigit(ch) || (cursor-start == eot && ch == '.' && cursor < source.length()-1&& Character.isDigit(source.charAt(cursor+1)));
   }
+
   public boolean isOp() {
     return ExpressionNode.Operation.fromCode(current) != null;
   }
+
   public boolean done() {
     return currentStart >= source.length();
   }
+
   public int nextId() {
     id++;
     return id;
   }
+
   public SourceLocation getCurrentStartLocation() {
     return currentStartLocation;
   }
-  
+
   // special case use
   public void setCurrent(String current) {
     this.current = current;
   }
 
+  public boolean hasComment() {
+    return !done() && current.startsWith("//");
+  }
+
   public boolean hasComments() {
     return comments.size() > 0;
   }
+
 
   public List<String> getComments() {
     return comments;
@@ -519,6 +523,7 @@ public class FHIRLexer {
       next();
     
   }
+  
   public String takeDottedToken() throws FHIRLexerException {
     StringBuilder b = new StringBuilder();
     b.append(take());
@@ -528,7 +533,12 @@ public class FHIRLexer {
     }
     return b.toString();
   }
-  
+
+  public void skipComments() throws FHIRLexerException {
+    while (!done() && hasComment())
+      next();
+  }
+
   public int getCurrentStart() {
     return currentStart;
   }

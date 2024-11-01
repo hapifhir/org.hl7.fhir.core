@@ -101,4 +101,9 @@ public class VersionUtil {
       return "??";
     }
   }
+
+  public static String getBaseVersion() {
+    String ver = getVersion();
+    return ver.contains("-") ? ver.substring(0, ver.indexOf("-")) : ver;
+  }
 }

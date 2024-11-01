@@ -169,8 +169,10 @@ public interface IWorkerContext {
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri);
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, Resource source);
 
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
+  public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_);
 
   /**
    * Variation of fetchResource when you have a string type, and don't need the
@@ -485,6 +487,7 @@ public interface IWorkerContext {
   public void setOverrideVersionNs(String value);
 
   public StructureDefinition fetchTypeDefinition(String typeName);
+  public List<StructureDefinition> fetchTypeDefinitions(String n);
 
   public void setUcumService(UcumService ucumService);
 

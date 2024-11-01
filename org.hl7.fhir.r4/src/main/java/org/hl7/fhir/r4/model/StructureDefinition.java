@@ -4839,4 +4839,17 @@ public class StructureDefinition extends MetadataResource {
     return hasVersion() ? getUrl()+"|"+getVersion() : getUrl();
   }
 
+
+  public String getTypeName() { 
+    String t = getType(); 
+    return StructureDefinitionKind.LOGICAL.equals(getKind()) && t.contains("/") ? t.substring(t.lastIndexOf("/")+1) : t; 
+  } 
+
+  public String getTypeTail() { 
+    if (getType().contains("/")) { 
+      return getType().substring(getType().lastIndexOf("/")+1); 
+    } else { 
+      return getType(); 
+    } 
+  }
 }
