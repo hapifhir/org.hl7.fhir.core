@@ -33,6 +33,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -50,7 +51,6 @@ import org.hl7.fhir.r5.model.ResourceFactory;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 /**
@@ -343,7 +343,7 @@ public class PEBuilder {
       if (list.size() == 0) {
         profile = context.fetchResource(StructureDefinition.class, url);
         if (profile == null) {
-          DebugUtilities.breakpoint();
+          throw new FHIRException("Unable to resolve profile "+url);
         }
         list = pu.getChildList(profile, profile.getSnapshot().getElementFirstRep());
       }
