@@ -196,11 +196,16 @@ public class PECodeGenerator {
       w(b);
 
       if (isResource) {
-        jdoc(b, "Build an instance of the object based on this source object ", 2, true);
+        jdoc(b, "Build a instance of the underlying object based on this wrapping object ", 2, true);
         w(b, "  public "+base+" build(IWorkerContext context) {");
         w(b, "    workerContext = context;");
+        w(b, "    return build();");
+        w(b, "  }");
+        w(b);
+        jdoc(b, "Build a instance of the underlying object based on this wrapping object ", 2, true);
+        w(b, "  public "+base+" build() {");
         w(b, "    "+base+" theThing = new "+base+"();");
-        w(b, "    PEBuilder builder = new PEBuilder(context, PEElementPropertiesPolicy.EXTENSION, true);");
+        w(b, "    PEBuilder builder = new PEBuilder(workerContext, PEElementPropertiesPolicy.EXTENSION, true);");
         w(b, "    PEInstance tgt = builder.buildPEInstance(CANONICAL_URL, theThing);");      
         w(b, "    save(tgt, false);");
         w(b, "    return theThing;");
