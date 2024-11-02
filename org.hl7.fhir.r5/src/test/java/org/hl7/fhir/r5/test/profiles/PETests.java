@@ -391,7 +391,7 @@ public class PETests {
     load();
     PECodeGenerator gen = new PECodeGenerator(ctxt);
     
-    gen.setFolder(Utilities.path("[tmp]"));
+    gen.setFolder(Utilities.path("[tmp]", "codegen"));
     gen.setExtensionPolicy(ExtensionPolicy.Complexes);
     gen.setNarrative(false);
     gen.setMeta(false);
@@ -415,7 +415,7 @@ public class PETests {
 
 
   private void checkGeneratedJava(String name) throws FileNotFoundException, IOException {
-    String actual = Utilities.normalize(TextFile.fileToString(Utilities.path("[tmp]", name+".java")));
+    String actual = Utilities.normalize(TextFile.fileToString(Utilities.path("[tmp]", "codegen", name+".java")));
     String expected = Utilities.normalize(TestingUtilities.loadTestResource("r5", "profiles", name+".java"));
     String msg = CompareUtilities.checkTextIsSame(name, expected, actual);
     if (msg != null) {      

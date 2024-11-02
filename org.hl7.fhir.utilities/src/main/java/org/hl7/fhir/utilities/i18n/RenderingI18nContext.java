@@ -443,6 +443,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String QUEST_LINKID = "QUEST_LINKID";
   public static final String QUEST_MAND = "QUEST_MAND";
   public static final String GENERAL_MAX_LENGTH = "GENERAL_MAX_LENGTH";
+  public static final String GENERAL_MIN_LENGTH = "GENERAL_MIN_LENGTH";
   public static final String QUEST_MAX_LENGTH = "QUEST_MAX_LENGTH";
   public static final String QUEST_NLM = "QUEST_NLM";
   public static final String QUEST_NONE_SPEC = "QUEST_NONE_SPEC";
