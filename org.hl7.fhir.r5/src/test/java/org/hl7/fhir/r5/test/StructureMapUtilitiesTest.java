@@ -53,6 +53,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     StructureMap structureMap = scu.parse(fileMap, "cast");
     Element target = Manager.build(context, scu.getTargetType(structureMap));
     scu.transform(null, source, structureMap, target);
+    checkNumberChildren(target, "");
     FHIRPathEngine fp = new FHIRPathEngine(context);
     Assertions.assertEquals("implicit",fp.evaluateToString(target, "extension[0].value"));
     Assertions.assertEquals("explicit",fp.evaluateToString(target, "extension[1].value"));
@@ -68,6 +69,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     StructureMap structureMap = scu.parse(fileMap, "qr2patfordates");
     Element target = Manager.build(context, scu.getTargetType(structureMap));
     scu.transform(null, source, structureMap, target);
+    checkNumberChildren(target, "");
     FHIRPathEngine fp = new FHIRPathEngine(context);
     assertEquals("2023-10-26", fp.evaluateToString(target, "birthDate"));
     assertEquals("2023-09-20T13:19:13.502Z", fp.evaluateToString(target, "deceased"));
@@ -82,6 +84,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
       StructureMap structureMap = scu.parse(fileMap, "whereclause");
       Element target = Manager.build(context, scu.getTargetType(structureMap));
       scu.transform(null, source, structureMap, target);
+      checkNumberChildren(target, "");
       FHIRPathEngine fp = new FHIRPathEngine(context);
       assertEquals("true", fp.evaluateToString(target, "rest.resource.interaction.where(code='create').exists()"));
   }
@@ -135,6 +138,30 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     Assertions.assertEquals("-quote", structureMap.getGroup().get(0).getRule().get(1).getSourceFirstRep().getElement());
     Assertions.assertEquals("-backtick", structureMap.getGroup().get(0).getRule().get(2).getSourceFirstRep().getElement());
   }
+  
+  // assert indices are equal to Element.numberChildren()
+  private void checkNumberChildren(Element e, String indent) {
+    System.out.println(indent + e + ", index: " + e.getIndex());
+    String last = "";
+    int index = 0;
+    for (Element child : e.getChildren()) {
+      if (child.getProperty().isList()) {
+        if (last.equals(child.getName())) {
+          index++;
+        } else {
+          last = child.getName();
+          index = 0;
+        }
+        // child.index = index;
+        Assertions.assertEquals(index, child.getIndex());
+      } else {
+        // child.index = -1;
+        Assertions.assertEquals(-1, child.getIndex());
+      }
+      checkNumberChildren(child, indent + "  ");
+    }
+  }
+  
 
   @Override
   public void log(String message) {
