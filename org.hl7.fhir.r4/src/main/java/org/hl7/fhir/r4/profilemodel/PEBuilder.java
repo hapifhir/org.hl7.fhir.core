@@ -34,6 +34,7 @@ import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
+import org.hl7.fhir.r4.context.ContextUtilities;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r4.model.Base;
@@ -110,6 +111,7 @@ public class PEBuilder {
 
   private IWorkerContext context;
   private ProfileUtilities pu;
+  private ContextUtilities cu;
   private PEElementPropertiesPolicy elementProps;
   private boolean fixedPropsDefault;
   private FHIRPathEngine fpe;
@@ -124,6 +126,7 @@ public class PEBuilder {
     this.elementProps = elementProps;
     this.fixedPropsDefault = fixedPropsDefault;
     pu = new ProfileUtilities(context, null, null);
+    cu = new ContextUtilities(context);
     fpe = new FHIRPathEngine(context, pu);
   }
   
@@ -338,6 +341,9 @@ public class PEBuilder {
       List<PEDefinition> res = new ArrayList<>();
       if (list.size() == 0) {
         profile = context.fetchResource(StructureDefinition.class, url);
+        if (profile == null) {
+          throw new FHIRException("Unable to resolve profile "+url);
+        }
         list = pu.getChildList(profile, profile.getSnapshot().getElementFirstRep());
       }
       if (list.size() > 0) {
@@ -568,6 +574,8 @@ public class PEBuilder {
         throw new DefinitionException("The discriminator type 'exists' is not supported by the PEBuilder");
       case PATTERN:
         throw new DefinitionException("The discriminator type 'pattern' is not supported by the PEBuilder");
+      case POSITION:
+        throw new DefinitionException("The discriminator type 'position' is not supported by the PEBuilder");
       case PROFILE:
         throw new DefinitionException("The discriminator type 'profile' is not supported by the PEBuilder");
       case TYPE:
@@ -613,6 +621,6 @@ public class PEBuilder {
   }
 
   public boolean isResource(String name) {
-    return context.getResourceNamesAsSet().contains(name);
+    return cu.isResource(name);
   }
 }
