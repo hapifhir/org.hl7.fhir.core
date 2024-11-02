@@ -33,6 +33,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.context.ContextUtilities;
 import org.hl7.fhir.r4.context.IWorkerContext;
@@ -574,8 +575,6 @@ public class PEBuilder {
         throw new DefinitionException("The discriminator type 'exists' is not supported by the PEBuilder");
       case PATTERN:
         throw new DefinitionException("The discriminator type 'pattern' is not supported by the PEBuilder");
-      case POSITION:
-        throw new DefinitionException("The discriminator type 'position' is not supported by the PEBuilder");
       case PROFILE:
         throw new DefinitionException("The discriminator type 'profile' is not supported by the PEBuilder");
       case TYPE:
