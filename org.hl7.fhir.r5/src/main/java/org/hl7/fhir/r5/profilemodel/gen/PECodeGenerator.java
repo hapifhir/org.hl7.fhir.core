@@ -119,7 +119,7 @@ public class PECodeGenerator {
     public void genId() {
       if (isResource) {
         genField(true, "id", "String", "id", "", false, "", 0, 1, null);
-        genAccessors(true, false, "id", "String", "", "String", "String", "Id", "Ids", false, "", false, false);   
+        genAccessors(true, false, "id", "String", "", "String", "String", "Id", "Ids", false, "", false, false, null);   
         genLoad(true, false, "id", "id", "IdType", "", "String", "String", "Id", "Ids", false, false, null, false);
         genSave(true, false, "id", "id", "IdType", "", "String", "String", "Id", "Ids", false, false, false, null, false);
         genClear(false, "id", "String");
@@ -377,7 +377,7 @@ public class PECodeGenerator {
           if (isPrim && field.hasFixedValue()) {
             genFixed(name, ptype, field.getFixedValue());
           }
-          genAccessors(isPrim, isAbstract, name, type, init, ptype, ltype, cname, csname, field.isList(), field.documentation(), field.hasFixedValue(), isEnum);   
+          genAccessors(isPrim, isAbstract, name, type, init, ptype, ltype, cname, csname, field.isList(), field.documentation(), field.hasFixedValue(), isEnum, field.definition());   
           genLoad(isPrim, isAbstract, name, sname, type, init, ptype, ltype, cname, csname, field.isList(), field.hasFixedValue(), field.types().get(0), isEnum); 
           genSave(isPrim, isAbstract, name, sname, type, init, ptype, ltype, cname, csname, field.isList(), field.hasFixedValue(), isExtension, field.types().get(0), isEnum);
           genClear(field.isList(), name, ptype);
@@ -495,8 +495,10 @@ public class PECodeGenerator {
       }
     }
 
-    private void genAccessors(boolean isPrim, boolean isAbstract, String name, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, String shortDoco, boolean isFixed, boolean isEnum) {
-      jdoc(accessors, doco, 2, true);
+    private void genAccessors(boolean isPrim, boolean isAbstract, String name, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, String shortDoco, boolean isFixed, boolean isEnum, ElementDefinition ed) {
+      if (ed != null) {
+        jdoc(accessors, ed.getDefinition(), 2, true);
+      }
       if ((isEnum || isPrim) && extensionPolicy != ExtensionPolicy.Primitives && !isList) {
         w(accessors, "  public "+ptype+" get"+cname+"() {");
         w(accessors, "    return "+name+";");
