@@ -107,7 +107,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     preferredResourceFormat = ResourceFormat.RESOURCE_XML;
     utils = getClientUtils();
     utils.setUserAgent(userAgent);
-    detectProxy();
     initialize(baseServiceUrl);
   }
 
@@ -118,30 +117,12 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     utils.setUserAgent(userAgent);
     utils.setUsername(username);
     utils.setPassword(password);
-    detectProxy();
     initialize(baseServiceUrl);
   }
 
-  public void configureProxy(String proxyHost, int proxyPort) {
-    utils.setProxy(new HttpHost(proxyHost, proxyPort));
-  }
 
-  public void detectProxy() {
-    String host = System.getenv(hostKey);
-    String port = System.getenv(portKey);
 
-    if (host == null) {
-      host = System.getProperty(hostKey);
-    }
 
-    if (port == null) {
-      port = System.getProperty(portKey);
-    }
-
-    if (host != null && port != null) {
-      this.configureProxy(host, Integer.parseInt(port));
-    }
-  }
 
   public void initialize(String baseServiceUrl) throws URISyntaxException {
     base = baseServiceUrl;
@@ -292,11 +273,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     recordUse();
     ResourceRequest<Resource> result = null;
     try {
-      List<Header> headers = null;
+
       result = utils.issuePutRequest(
           resourceAddress.resolveGetUriFromResourceClassAndId(resource.getClass(), resource.getId()),
           utils.getResourceAsByteArray(resource, false, isJson(getPreferredResourceFormat())),
-          withVer(getPreferredResourceFormat(), "1.0"), headers, timeoutOperation);
+          withVer(getPreferredResourceFormat(), "1.0"), null, timeoutOperation);
       result.addErrorStatus(410);// gone
       result.addErrorStatus(404);// unknown
       result.addErrorStatus(405);
@@ -329,12 +310,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     recordUse();
     ResourceRequest<T> result = null;
     try {
-      List<Header> headers = null;
       result = utils.issuePutRequest(
         resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
           utils.getResourceAsByteArray(resource, false, isJson(getPreferredResourceFormat())),
           withVer(getPreferredResourceFormat(), "1.0"),
-        headers,
+        null,
         timeoutOperation);
       result.addErrorStatus(410);// gone
       result.addErrorStatus(404);// unknown
@@ -535,13 +515,13 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   public ValueSet expandValueset(ValueSet source, Parameters expParams) {
     recordUse();
-    List<Header> headers = null;
+
     Parameters p = expParams == null ? new Parameters() : expParams.copy();
     p.addParameter().setName("valueSet").setResource(source);
     ResourceRequest<Resource> result = utils.issuePostRequest(
         resourceAddress.resolveOperationUri(ValueSet.class, "expand"),
         utils.getResourceAsByteArray(p, false, isJson(getPreferredResourceFormat())), withVer(getPreferredResourceFormat(), "1.0"),
-        headers, 4);
+        null, 4);
     result.addErrorStatus(410); // gone
     result.addErrorStatus(404); // unknown
     result.addErrorStatus(405);
@@ -563,11 +543,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     recordUse();
     Parameters params = new Parameters();
     params.addParameter().setName("name").setValue(new StringType(name));
-    List<Header> headers = null;
+
     ResourceRequest<Resource> result = utils.issuePostRequest(
         resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
         utils.getResourceAsByteArray(params, false, isJson(getPreferredResourceFormat())), withVer(getPreferredResourceFormat(), "1.0"),
-        headers, timeoutNormal);
+        null, timeoutNormal);
     result.addErrorStatus(410);// gone
     result.addErrorStatus(404);// unknown
     result.addErrorStatus(405);
@@ -586,11 +566,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     Parameters params = new Parameters();
     params.addParameter().setName("name").setValue(new StringType(name));
     params.addParameter().setName("concept").setValue(coding);
-    List<Header> headers = null;
+
     ResourceRequest<Resource> result = utils.issuePostRequest(
         resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
         utils.getResourceAsByteArray(params, false, isJson(getPreferredResourceFormat())), withVer(getPreferredResourceFormat(), "1.0"),
-        headers, timeoutOperation);
+        null, timeoutOperation);
     result.addErrorStatus(410);// gone
     result.addErrorStatus(404);// unknown
     result.addErrorStatus(405);

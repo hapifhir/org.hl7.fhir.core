@@ -319,6 +319,7 @@ public class ClientUtilsTest {
 
     ResourceRequest<Resource> resourceRequest = clientUtils.issueGetResourceRequest(serverUrl.uri(), "application/json+fhir"
       , TIMEOUT);
+    resourceRequest.addSuccessStatus(200);
     Assertions.assertTrue(resourceRequest.isSuccessfulRequest());
     Assertions.assertTrue(patient.equalsDeep(resourceRequest.getPayload()),
       "GET request returned resource does not match expected.");
@@ -336,6 +337,7 @@ public class ClientUtilsTest {
     clientUtils.setRetryCount(failedAttempts + 1);
 
     ResourceRequest<Resource> resourceRequest = clientUtils.issueGetResourceRequest(serverUrl.uri(), "application/json+fhir", TIMEOUT);
+    resourceRequest.addSuccessStatus(200);
     Assertions.assertTrue(resourceRequest.isSuccessfulRequest());
     Assertions.assertTrue(patient.equalsDeep(resourceRequest.getPayload()),
       "GET request returned resource does not match expected.");

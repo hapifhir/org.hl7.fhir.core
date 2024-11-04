@@ -41,36 +41,16 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpEntityEnclosingRequest;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpOptions;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
+
 import org.hl7.fhir.dstu2.formats.IParser;
 import org.hl7.fhir.dstu2.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu2.formats.JsonParser;
@@ -86,7 +66,10 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.MimeType;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.http.*;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+
+import javax.annotation.Nonnull;
 
 /**
  * Helper class handling lower level HTTP transport concerns. TODO Document
@@ -95,15 +78,17 @@ import org.hl7.fhir.utilities.settings.FhirSettings;
  * @author Claude Nanjo
  */
 public class ClientUtils {
-
+  protected static final String LOCATION_HEADER = "location";
+  protected static final String CONTENT_LOCATION_HEADER = "content-location";
   public static final String DEFAULT_CHARSET = "UTF-8";
-  public static final String HEADER_LOCATION = "location";
+
   private static boolean debugging = false;
 
+/*
   @Getter
   @Setter
   private HttpHost proxy;
-
+*/
   @Getter
   @Setter
   private int timeout = 5000;
@@ -131,6 +116,11 @@ public class ClientUtils {
   private String acceptLanguage;
   @Setter
   private String contentLanguage;
+  private final TimeUnit timeoutUnit = TimeUnit.MILLISECONDS;
+
+  protected ManagedFhirWebAccessBuilder getManagedWebAccessBuilder() {
+    return new ManagedFhirWebAccessBuilder("hapi-fhir-tooling-client", null).withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
+  }
 
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat,
       int timeoutLoading) {
@@ -138,8 +128,13 @@ public class ClientUtils {
       throw new FHIRException("Network Access is prohibited in this context");
     }
 
+    /*FIXME delete this after refactor
     HttpOptions options = new HttpOptions(optionsUri);
-    return issueResourceRequest(resourceFormat, options, timeoutLoading);
+     */
+    HTTPRequest httpRequest = new HTTPRequest()
+      .withMethod(HTTPRequest.HttpMethod.OPTIONS)
+      .withUrl(optionsUri.toString());
+    return issueResourceRequest(resourceFormat, httpRequest, timeoutLoading);
   }
 
   public <T extends Resource> ResourceRequest<T> issueGetResourceRequest(URI resourceUri, String resourceFormat,
@@ -147,17 +142,25 @@ public class ClientUtils {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
+    /*FIXME delete this after refactor
     HttpGet httpget = new HttpGet(resourceUri);
-    return issueResourceRequest(resourceFormat, httpget, timeoutLoading);
+     */
+    HTTPRequest httpRequest = new HTTPRequest()
+      .withMethod(HTTPRequest.HttpMethod.GET)
+      .withUrl(resourceUri.toString());
+    return issueResourceRequest(resourceFormat, httpRequest, timeoutLoading);
   }
 
   public <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri, byte[] payload, String resourceFormat,
-      List<Header> headers, int timeoutLoading) {
+      Iterable<HTTPHeader> headers, int timeoutLoading) {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    HttpPut httpPut = new HttpPut(resourceUri);
-    return issueResourceRequest(resourceFormat, httpPut, payload, headers, timeoutLoading);
+    HTTPRequest httpRequest = new HTTPRequest()
+      .withMethod(HTTPRequest.HttpMethod.PUT)
+      .withUrl(resourceUri.toString())
+      .withBody(payload);
+    return issueResourceRequest(resourceFormat, httpRequest, headers, timeoutLoading);
   }
 
   public <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri, byte[] payload, String resourceFormat,
@@ -165,17 +168,29 @@ public class ClientUtils {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
+    /*FIXME delete this after refactor
     HttpPut httpPut = new HttpPut(resourceUri);
-    return issueResourceRequest(resourceFormat, httpPut, payload, null, timeoutLoading);
+     */
+    HTTPRequest httpRequest = new HTTPRequest()
+      .withMethod(HTTPRequest.HttpMethod.PUT)
+      .withUrl(resourceUri.toString())
+      .withBody(payload);
+    return issueResourceRequest(resourceFormat, httpRequest, timeoutLoading);
   }
 
   public <T extends Resource> ResourceRequest<T> issuePostRequest(URI resourceUri, byte[] payload,
-      String resourceFormat, List<Header> headers, int timeoutLoading) {
+      String resourceFormat, Iterable<HTTPHeader> headers, int timeoutLoading) {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
+    /*FIXME delete this after refactor
     HttpPost httpPost = new HttpPost(resourceUri);
-    return issueResourceRequest(resourceFormat, httpPost, payload, headers, timeoutLoading);
+     */
+    HTTPRequest httpRequest = new HTTPRequest()
+      .withMethod(HTTPRequest.HttpMethod.POST)
+      .withUrl(resourceUri.toString())
+      .withBody(payload);
+    return issueResourceRequest(resourceFormat, httpRequest, headers, timeoutLoading);
   }
 
   public <T extends Resource> ResourceRequest<T> issuePostRequest(URI resourceUri, byte[] payload,
@@ -187,30 +202,42 @@ public class ClientUtils {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
+    /*FIXME delete this after refactor
     HttpGet httpget = new HttpGet(resourceUri);
-    configureFhirRequest(httpget, resourceFormat);
-    HttpResponse response = sendRequest(httpget);
+     */
+    HTTPRequest httpRequest = new HTTPRequest()
+      .withMethod(HTTPRequest.HttpMethod.GET)
+      .withUrl(resourceUri.toString());
+    Iterable<HTTPHeader> headers = getFhirHeaders(resourceFormat);
+    HTTPResult response = sendRequest(httpRequest.withHeaders(headers));
     return unmarshalReference(response, resourceFormat);
   }
 
-  private void setAuth(HttpRequest httpget) {
+  private Iterable<HTTPHeader> getAuthHeaders() {
     if (password != null) {
       try {
         byte[] b = Base64.encodeBase64((username + ":" + password).getBytes("ASCII"));
         String b64 = new String(b, StandardCharsets.US_ASCII);
-        httpget.setHeader("Authorization", "Basic " + b64);
+        return Arrays.asList(new HTTPHeader[]{new HTTPHeader("Authorization", "Basic " + b64)});
       } catch (UnsupportedEncodingException e) {
       }
     }
+    return Collections.emptyList();
   }
 
   public Bundle postBatchRequest(URI resourceUri, byte[] payload, String resourceFormat, int timeoutLoading) {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
+    /*FIXME delete this after refactor
     HttpPost httpPost = new HttpPost(resourceUri);
-    configureFhirRequest(httpPost, resourceFormat);
-    HttpResponse response = sendPayload(httpPost, payload, proxy, timeoutLoading);
+     */
+    HTTPRequest httpRequest = new HTTPRequest()
+      .withMethod(HTTPRequest.HttpMethod.POST)
+      .withUrl(resourceUri.toString())
+      .withBody(payload);
+    Iterable<HTTPHeader> headers =  getFhirHeaders(resourceFormat);
+    HTTPResult response = sendPayload(httpRequest.withHeaders(headers));
     return unmarshalFeed(response, resourceFormat);
   }
 
@@ -218,9 +245,14 @@ public class ClientUtils {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
+    /*FIXME delete this after refactor
     HttpDelete deleteRequest = new HttpDelete(resourceUri);
-    HttpResponse response = sendRequest(deleteRequest);
-    int responseStatusCode = response.getStatusLine().getStatusCode();
+     */
+    HTTPRequest request = new HTTPRequest()
+      .withMethod(HTTPRequest.HttpMethod.DELETE)
+      .withUrl(resourceUri.toString());
+    HTTPResult response = sendRequest(request);
+    int responseStatusCode = response.getCode();
     boolean deletionSuccessful = false;
     if (responseStatusCode == 204) {
       deletionSuccessful = true;
@@ -232,123 +264,68 @@ public class ClientUtils {
    * Request/Response Helper methods
    ***********************************************************/
 
-  protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request,
+  protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HTTPRequest request,
       int timeoutLoading) {
-    return issueResourceRequest(resourceFormat, request, null, timeoutLoading);
+    return issueResourceRequest(resourceFormat, request, Collections.emptyList(), timeoutLoading);
   }
-
   /**
    * @param resourceFormat
    * @return
    */
-  protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request,
-      byte[] payload, int timeoutLoading) {
-    return issueResourceRequest(resourceFormat, request, payload, null, timeoutLoading);
-  }
-
-  /**
-   * @param resourceFormat
-   * @return
-   */
-  protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request,
-      byte[] payload, List<Header> headers, int timeoutLoading) {
+  protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HTTPRequest request,
+                                                                         @Nonnull Iterable<HTTPHeader> headers, int timeoutLoading) {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    configureFhirRequest(request, resourceFormat, headers);
-    HttpResponse response = null;
-    if (request instanceof HttpEntityEnclosingRequest && payload != null) {
-      response = sendPayload((HttpEntityEnclosingRequestBase) request, payload, proxy, timeoutLoading);
-    } else if (request instanceof HttpEntityEnclosingRequest && payload == null) {
-      throw new EFhirClientException("PUT and POST requests require a non-null payload");
-    } else {
-      response = sendRequest(request);
+    Iterable<HTTPHeader> configuredHeaders = getFhirHeaders(resourceFormat, headers);
+    try {
+
+      HTTPResult response = getManagedWebAccessBuilder().httpCall(request.withHeaders(configuredHeaders));
+      T resource = unmarshalReference(response, resourceFormat);
+      return new ResourceRequest<T>(resource, response.getCode(), getLocationHeader(response.getHeaders()));
+    } catch (IOException ioe) {
+      throw new EFhirClientException("Error sending HTTP Post/Put Payload to " + "??" + ": " + ioe.getMessage(),
+        ioe);
     }
-    T resource = unmarshalReference(response, resourceFormat);
-    return new ResourceRequest<T>(resource, response.getStatusLine().getStatusCode(), getLocationHeader(response));
   }
 
   /**
    * Method adds required request headers. TODO handle JSON request as well.
    * 
-   * @param request
+   * @param format
    */
-  protected void configureFhirRequest(HttpRequest request, String format) {
-    configureFhirRequest(request, format, null);
+  protected Iterable<HTTPHeader> getFhirHeaders(String format) {
+    return getFhirHeaders(format, null);
   }
 
   /**
    * Method adds required request headers. TODO handle JSON request as well.
    * 
-   * @param request
+   * @param format
    */
-  protected void configureFhirRequest(HttpRequest request, String format, List<Header> headers) {
+  protected Iterable<HTTPHeader> getFhirHeaders(String format, Iterable<HTTPHeader> headers) {
+    List<HTTPHeader> configuredHeaders = new ArrayList<>();
     if (!Utilities.noString(userAgent)) {
-      request.addHeader("User-Agent", userAgent);
+      configuredHeaders.add(new HTTPHeader("User-Agent", userAgent));
     }
     if (!Utilities.noString(acceptLanguage)) {
-      request.addHeader("Accept-Language", acceptLanguage);
+      configuredHeaders.add(new HTTPHeader("Accept-Language", acceptLanguage));
     }
     if (!Utilities.noString(contentLanguage)) {
-      request.addHeader("Content-Language", acceptLanguage);
+      configuredHeaders.add(new HTTPHeader("Content-Language", acceptLanguage));
     }
 
     if (format != null) {
-      request.addHeader("Accept", format);
-      request.addHeader("Content-Type", format + ";charset=" + DEFAULT_CHARSET);
+      configuredHeaders.add(new HTTPHeader("Accept", format));
+      configuredHeaders.add(new HTTPHeader("Content-Type", format + ";charset=" + DEFAULT_CHARSET));
     }
+    Iterable<HTTPHeader> authHeaders = getAuthHeaders();
+    authHeaders.forEach(configuredHeaders::add);
+
     if (headers != null) {
-      for (Header header : headers) {
-        request.addHeader(header);
-      }
+      headers.forEach(configuredHeaders::add);
     }
-    setAuth(request);
-  }
-
-  /**
-   * Method posts request payload
-   * 
-   * @param request
-   * @param payload
-   * @return
-   */
-  @SuppressWarnings({ "resource", "deprecation" })
-  protected HttpResponse sendPayload(HttpEntityEnclosingRequestBase request, byte[] payload, HttpHost proxy,
-      int timeoutLoading) {
-    if (FhirSettings.isProhibitNetworkAccess()) {
-      throw new FHIRException("Network Access is prohibited in this context");
-    }
-    HttpResponse response = null;
-    boolean ok = false;
-    long t = System.currentTimeMillis();
-    int tryCount = 0;
-    while (!ok) {
-      try {
-        tryCount++;
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpParams params = httpclient.getParams();
-        HttpConnectionParams.setConnectionTimeout(params, timeout);
-        HttpConnectionParams.setSoTimeout(params, timeout * timeoutLoading);
-
-        if (proxy != null) {
-          httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
-        }
-        request.setEntity(new ByteArrayEntity(payload));
-        log(request);
-        response = httpclient.execute(request);
-        ok = true;
-      } catch (IOException ioe) {
-        System.out.println(ioe.getMessage() + " (" + (System.currentTimeMillis() - t) + "ms / "
-            + Utilities.describeSize(payload.length) + ")");
-        if (tryCount <= retryCount || (tryCount < 3 && ioe instanceof org.apache.http.conn.ConnectTimeoutException)) {
-          ok = false;
-        } else {
-          throw new EFhirClientException("Error sending HTTP Post/Put Payload to " + "??" + ": " + ioe.getMessage(),
-              ioe);
-        }
-      }
-    }
-    return response;
+    return configuredHeaders;
   }
 
   /**
@@ -356,28 +333,21 @@ public class ClientUtils {
    * @param request The request to be sent
    * @return The response from the server
    */
-  protected HttpResponse sendRequest(HttpUriRequest request) {
+  protected HTTPResult sendRequest(HTTPRequest request) {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    HttpResponse response = null;
+    HTTPResult response = null;
     try {
-      HttpClient httpclient = new DefaultHttpClient();
-      log(request);
-      HttpParams params = httpclient.getParams();
-      HttpConnectionParams.setConnectionTimeout(params, timeout);
-      HttpConnectionParams.setSoTimeout(params, timeout);
-      if (proxy != null) {
-        httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
-      }
-      response = httpclient.execute(request);
+
+      response = getManagedWebAccessBuilder().httpCall(request);
+      return response;
     } catch (IOException ioe) {
       if (ClientUtils.debugging) {
         ioe.printStackTrace();
       }
       throw new EFhirClientException("Error sending Http Request: " + ioe.getMessage(), ioe);
     }
-    return response;
   }
 
   /**
@@ -387,13 +357,12 @@ public class ClientUtils {
    * @return
    */
   @SuppressWarnings("unchecked")
-  protected <T extends Resource> T unmarshalReference(HttpResponse response, String format) {
+  protected <T extends Resource> T unmarshalReference(HTTPResult response, String format) {
     T resource = null;
     OperationOutcome error = null;
-    byte[] cnt = log(response);
-    if (cnt != null) {
+    if (response.getContent() != null) {
       try {
-        resource = (T) getParser(format).parse(cnt);
+        resource = (T) getParser(format).parse(response.getContent());
         if (resource instanceof OperationOutcome && hasError((OperationOutcome) resource)) {
           error = (OperationOutcome) resource;
         }
@@ -415,15 +384,15 @@ public class ClientUtils {
    * @param response
    * @return
    */
-  protected Bundle unmarshalFeed(HttpResponse response, String format) {
+  protected Bundle unmarshalFeed(HTTPResult response, String format) {
     Bundle feed = null;
-    byte[] cnt = log(response);
-    String contentType = response.getHeaders("Content-Type")[0].getValue();
+
+    String contentType = HTTPHeaderUtil.getSingleHeader(response.getHeaders(), "Content-Type");
     OperationOutcome error = null;
     try {
-      if (cnt != null) {
+      if (response.getContent() != null) {
         if (contentType.contains(ResourceFormat.RESOURCE_XML.getHeader()) || contentType.contains("text/xml+fhir")) {
-          Resource rf = getParser(format).parse(cnt);
+          Resource rf = getParser(format).parse(response.getContent());
           if (rf instanceof Bundle)
             feed = (Bundle) rf;
           else if (rf instanceof OperationOutcome && hasError((OperationOutcome) rf)) {
@@ -451,14 +420,13 @@ public class ClientUtils {
     return false;
   }
 
-  protected String getLocationHeader(HttpResponse response) {
-    String location = null;
-    if (response.getHeaders("location").length > 0) {// TODO Distinguish between both cases if necessary
-      location = response.getHeaders("location")[0].getValue();
-    } else if (response.getHeaders("content-location").length > 0) {
-      location = response.getHeaders("content-location")[0].getValue();
+  protected static String getLocationHeader(Iterable<HTTPHeader> headers) {
+    String locationHeader = HTTPHeaderUtil.getSingleHeader(headers, LOCATION_HEADER);
+
+    if (locationHeader != null) {
+      return locationHeader;
     }
-    return location;
+    return HTTPHeaderUtil.getSingleHeader(headers, CONTENT_LOCATION_HEADER);
   }
 
   /*****************************************************************
@@ -575,12 +543,19 @@ public class ClientUtils {
 
   public Bundle issuePostFeedRequest(URI resourceUri, Map<String, String> parameters, String resourceName,
       Resource resource, String resourceFormat) throws IOException {
+    /*FIXME delete this after refactor
     HttpPost httppost = new HttpPost(resourceUri);
+     */
+
+    HTTPRequest httppost = new HTTPRequest()
+      .withMethod(HTTPRequest.HttpMethod.POST)
+      .withUrl(resourceUri.toString());
     String boundary = "----WebKitFormBoundarykbMUo6H8QaUnYtRy";
-    httppost.addHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
-    httppost.addHeader("Accept", resourceFormat);
-    configureFhirRequest(httppost, null);
-    HttpResponse response = sendPayload(httppost, encodeFormSubmission(parameters, resourceName, resource, boundary));
+  List<HTTPHeader> headers = new ArrayList<>();
+    headers.add(new HTTPHeader("Content-Type", "multipart/form-data; boundary=" + boundary));
+    headers.add(new HTTPHeader("Accept", resourceFormat));
+    this.getFhirHeaders(null);
+    HTTPResult response = sendPayload(httppost.withBody(encodeFormSubmission(parameters, resourceName, resource, boundary)));
     return unmarshalFeed(response, resourceFormat);
   }
 
@@ -614,67 +589,17 @@ public class ClientUtils {
    * Method posts request payload
    * 
    * @param request
-   * @param payload
    * @return
    */
-  protected HttpResponse sendPayload(HttpEntityEnclosingRequestBase request, byte[] payload) {
-    HttpResponse response = null;
+  protected HTTPResult sendPayload(HTTPRequest request) {
+    HTTPResult response = null;
     try {
-      log(request);
-      HttpClient httpclient = new DefaultHttpClient();
-      request.setEntity(new ByteArrayEntity(payload));
-      response = httpclient.execute(request);
-      log(response);
+
+      response = getManagedWebAccessBuilder().httpCall(request);
     } catch (IOException ioe) {
       throw new EFhirClientException("Error sending HTTP Post/Put Payload: " + ioe.getMessage(), ioe);
     }
     return response;
-  }
-
-  private void log(HttpUriRequest request) {
-    if (logger != null) {
-      List<String> headers = new ArrayList<>();
-      for (Header h : request.getAllHeaders()) {
-        headers.add(h.toString());
-      }
-      logger.logRequest(request.getMethod(), request.getURI().toString(), headers, null);
-    }
-  }
-
-  private void log(HttpEntityEnclosingRequestBase request) {
-    if (logger != null) {
-      List<String> headers = new ArrayList<>();
-      for (Header h : request.getAllHeaders()) {
-        headers.add(h.toString());
-      }
-      byte[] cnt = null;
-      InputStream s;
-      try {
-        s = request.getEntity().getContent();
-        cnt = IOUtils.toByteArray(s);
-        s.close();
-      } catch (Exception e) {
-      }
-      logger.logRequest(request.getMethod(), request.getURI().toString(), headers, cnt);
-    }
-  }
-
-  private byte[] log(HttpResponse response) {
-    byte[] cnt = null;
-    try {
-      InputStream s = response.getEntity().getContent();
-      cnt = IOUtils.toByteArray(s);
-      s.close();
-    } catch (Exception e) {
-    }
-    if (logger != null) {
-      List<String> headers = new ArrayList<>();
-      for (Header h : response.getAllHeaders()) {
-        headers.add(h.toString());
-      }
-      logger.logResponse(response.getStatusLine().toString(), headers, cnt, 0);
-    }
-    return cnt;
   }
 
   /**
