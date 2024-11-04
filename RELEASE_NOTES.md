@@ -5,6 +5,7 @@
 * Correct bug parsing json-property-key values with meant validation failed
 * Fix problem validating json-property-key value pairs
 * Fix special case r5 loading of terminology to fix validation error on ExampleScenario
+* Improve handling of JSON format errors
 
 ## Other code changes
 
