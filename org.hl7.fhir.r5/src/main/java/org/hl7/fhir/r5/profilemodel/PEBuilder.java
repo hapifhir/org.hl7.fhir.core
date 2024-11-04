@@ -46,10 +46,14 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceFactory;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -590,13 +594,38 @@ public class PEBuilder {
         if (ed == null) {
           throw new DefinitionException("The discriminator path '"+path+"' could not be resolved by the PEBuilder");          
         }
-        if (!ed.hasFixed()) {
-          throw new DefinitionException("The discriminator path '"+path+"' has no fixed value - this is not supported by the PEBuilder");          
+        // three things possible:
+        //  fixed, pattern, or binding
+        if (ed.hasFixed()) {
+          if (!ed.getFixed().isPrimitive()) {
+            throw new DefinitionException("The discriminator path '"+path+"' has a fixed value that is not a primitive ("+ed.getFixed().fhirType()+") - this is not supported by the PEBuilder");          
+          }
+          b.append(path+" = '"+ed.getFixed().primitiveValue()+"'");
+        } else if (ed.hasPattern()) {
+          throw new DefinitionException("The discriminator path '"+path+"' has a pattern on the element '"+ed.getId()+"' - this is not supported by the PEBuilder");
+        } else if (ed.hasBinding()) {
+          if (ed.getBinding().getStrength() != BindingStrength.REQUIRED) {
+            throw new DefinitionException("The discriminator path '"+path+"' has a binding on the element '"+ed.getId()+"' but the strength is not required - this is not supported by the PEBuilder");
+          } else {
+            ValueSet vs = context.findTxResource(ValueSet.class, ed.getBinding().getValueSet());
+            if (vs == null) {
+              throw new DefinitionException("The discriminator path '"+path+"' has a binding on the element '"+ed.getId()+"' but the valueSet '"+ed.getBinding().getValueSet()+"' is not known - this is not supported by the PEBuilder");              
+            }
+            ValueSetExpansionOutcome exp = context.expandVS(vs, true, false);
+            if (exp.isOk()) {
+              CommaSeparatedStringBuilder bs = new CommaSeparatedStringBuilder(" | ");
+              for (ValueSetExpansionContainsComponent cc : exp.getValueset().getExpansion().getContains()) {
+                bs.append("'"+cc.getCode()+"'");
+              }
+              b.append(path+" in ("+bs.toString()+")");
+            } else {
+              throw new DefinitionException("The discriminator path '"+path+"' has a binding on the element '"+ed.getId()+"' but the valueSet '"+ed.getBinding().getValueSet()+"' could not be expanded: "+exp.getError());                            
+            }            
+          }
+        } else {
+          throw new DefinitionException("The discriminator path '"+path+"' has no fixed or pattern value or a binding on the element '"+ed.getId()+"' - this is not supported by the PEBuilder");          
+          
         }
-        if (!ed.getFixed().isPrimitive()) {
-          throw new DefinitionException("The discriminator path '"+path+"' has a fixed value that is not a primitive ("+ed.getFixed().fhirType()+") - this is not supported by the PEBuilder");          
-        }
-        b.append(path+" = '"+ed.getFixed().primitiveValue()+"'");
         break;
       case NULL:
         throw new DefinitionException("The discriminator type 'null' is not supported by the PEBuilder");
