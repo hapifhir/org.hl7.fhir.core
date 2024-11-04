@@ -75,11 +75,11 @@ public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<Man
             headers.add(new HTTPHeader("Authorization", basicCredential));
             break;
           case TOKEN:
-            String tokenCredential = "Bearer " + new String(getToken());
+            String tokenCredential = "Bearer " + getToken();
             headers.add(new HTTPHeader("Authorization", tokenCredential));
             break;
           case APIKEY:
-            String apiKeyCredential = " " + new String(getToken());
+            String apiKeyCredential = getToken();
             headers.add(new HTTPHeader("Api-Key", apiKeyCredential));
             break;
         }
@@ -97,7 +97,7 @@ public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<Man
             headers.add(new HTTPHeader("Authorization", tokenCredential));
             break;
           case "apikey":
-            String apiKeyCredential = new String(settings.getToken());
+            String apiKeyCredential = settings.getToken();
             headers.add(new HTTPHeader("Api-Key", apiKeyCredential));
             break;
         }
@@ -141,7 +141,7 @@ public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<Man
   }
 
   private HTTPResult getHTTPResult(Response execute) throws IOException {
-    return new HTTPResult(execute.request().url().toString(), execute.code(), execute.message(), execute.header("Content-Type"), execute.body() != null ? execute.body().bytes() : null, getHeadersFromResponse(execute));
+    return new HTTPResult(execute.request().url().toString(), execute.code(), execute.message(), execute.header("Content-Type"), execute.body() != null && execute.body().contentLength() > 0 ? execute.body().bytes() : null, getHeadersFromResponse(execute));
   }
 
   private Iterable<HTTPHeader> getHeadersFromResponse(Response response) {

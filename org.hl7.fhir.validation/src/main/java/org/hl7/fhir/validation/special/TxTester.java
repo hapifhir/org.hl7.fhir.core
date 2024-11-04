@@ -39,10 +39,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtil;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.json.JsonException;
@@ -130,7 +127,7 @@ public class TxTester {
           return true;
         } else {
           System.out.println(software+" did not pass all HL7 terminology service tests (modes "+m+", tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
-          System.out.println("Failed Tests: "+CommaSeparatedStringBuilder.join(",", fails ));
+          System.out.println("Failed Tests: "+ CommaSeparatedStringBuilder.join(",", fails ));
           return false;
         }        
       } else {

@@ -1,7 +1,6 @@
 package org.hl7.fhir.dstu2.utils.client;
 
 import org.hl7.fhir.dstu2.model.*;
-import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
