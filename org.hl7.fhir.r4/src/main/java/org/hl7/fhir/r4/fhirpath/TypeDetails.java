@@ -593,5 +593,17 @@ public class TypeDetails {
   public boolean isChoice() {
     return choice;
   }
+  public boolean isEmpty() {
+    return types.isEmpty();
+  }
+  public List<String> getProfiles(String t) {
+    t = ProfiledType.ns(t);
+    for (ProfiledType pt : types) {
+      if (t.equals(pt.uri)) {
+        return pt.getProfiles();
+      }
+    }
+    return new ArrayList<String>();
+  }
   
 }
