@@ -3625,15 +3625,18 @@ public class FHIRPathEngine {
         String url = exp.getParameters().get(0).getConstant().primitiveValue();
         if (!Utilities.isAbsoluteUrl(url) && focus.hasType("Extension")) {
           TypeDetails res = new TypeDetails(CollectionStatus.ORDERED);
-          for (String pt : focus.getProfiles("Extension")) {
-            String extn = pt.contains("#") ? pt.substring(0, pt.indexOf("#")) : pt;
-            String subExtn = pt.contains("#") ? pt.substring(0, pt.indexOf("#")) : null;
-            StructureDefinition sd = worker.fetchResource(StructureDefinition.class, extn);
-            if (sd != null) {
-              String id = subExtn == null ? "Extension.extension:"+url : subExtn+".extension:"+url;
-              ElementDefinition ed = sd.getSnapshot().getElementById(id);
-              if (ed != null) {
-                res.addType("Extension", sd.getUrl()+"#"+id);
+          List<String> profiles = focus.getProfiles("Extension");
+          if (profiles != null) {
+            for (String pt : profiles) {
+              String extn = pt.contains("#") ? pt.substring(0, pt.indexOf("#")) : pt;
+              String subExtn = pt.contains("#") ? pt.substring(0, pt.indexOf("#")) : null;
+              StructureDefinition sd = worker.fetchResource(StructureDefinition.class, extn);
+              if (sd != null) {
+                String id = subExtn == null ? "Extension.extension:"+url : subExtn+".extension:"+url;
+                ElementDefinition ed = sd.getSnapshot().getElementById(id);
+                if (ed != null) {
+                  res.addType("Extension", sd.getUrl()+"#"+id);
+                }
               }
             }
           }
