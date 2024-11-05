@@ -46,10 +46,14 @@ import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingComponent
 import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.r4.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r4.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceFactory;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r4.model.ValueSet;
+import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -598,7 +602,7 @@ public class PEBuilder {
           if (ed.getBinding().getStrength() != BindingStrength.REQUIRED) {
             throw new DefinitionException("The discriminator path '"+path+"' has a binding on the element '"+ed.getId()+"' but the strength is not required - this is not supported by the PEBuilder");
           } else {
-            ValueSet vs = context.findTxResource(ValueSet.class, ed.getBinding().getValueSet());
+            ValueSet vs = context.fetchResource(ValueSet.class, ed.getBinding().getValueSet());
             if (vs == null) {
               throw new DefinitionException("The discriminator path '"+path+"' has a binding on the element '"+ed.getId()+"' but the valueSet '"+ed.getBinding().getValueSet()+"' is not known - this is not supported by the PEBuilder");              
             }
