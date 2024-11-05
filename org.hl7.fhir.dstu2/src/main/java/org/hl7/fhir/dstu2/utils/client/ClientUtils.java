@@ -208,7 +208,7 @@ public class ClientUtils {
     HTTPRequest httpRequest = new HTTPRequest()
       .withMethod(HTTPRequest.HttpMethod.GET)
       .withUrl(resourceUri.toString());
-    Iterable<HTTPHeader> headers = getFhirHeaders(resourceFormat);
+    Iterable<HTTPHeader> headers = getFhirHeaders(httpRequest, resourceFormat);
     HTTPResult response = sendRequest(httpRequest.withHeaders(headers));
     return unmarshalReference(response, resourceFormat);
   }
@@ -236,7 +236,7 @@ public class ClientUtils {
       .withMethod(HTTPRequest.HttpMethod.POST)
       .withUrl(resourceUri.toString())
       .withBody(payload);
-    Iterable<HTTPHeader> headers =  getFhirHeaders(resourceFormat);
+    Iterable<HTTPHeader> headers =  getFhirHeaders(httpRequest, resourceFormat);
     HTTPResult response = sendPayload(httpRequest.withHeaders(headers));
     return unmarshalFeed(response, resourceFormat);
   }
@@ -277,7 +277,7 @@ public class ClientUtils {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    Iterable<HTTPHeader> configuredHeaders = getFhirHeaders(resourceFormat, headers);
+    Iterable<HTTPHeader> configuredHeaders = getFhirHeaders(request, resourceFormat, headers);
     try {
 
       HTTPResult response = getManagedWebAccessBuilder().httpCall(request.withHeaders(configuredHeaders));
@@ -294,8 +294,8 @@ public class ClientUtils {
    * 
    * @param format
    */
-  protected Iterable<HTTPHeader> getFhirHeaders(String format) {
-    return getFhirHeaders(format, null);
+  protected Iterable<HTTPHeader> getFhirHeaders(HTTPRequest httpRequest, String format) {
+    return getFhirHeaders(httpRequest, format, null);
   }
 
   /**
@@ -303,7 +303,7 @@ public class ClientUtils {
    * 
    * @param format
    */
-  protected Iterable<HTTPHeader> getFhirHeaders(String format, Iterable<HTTPHeader> headers) {
+  protected Iterable<HTTPHeader> getFhirHeaders(HTTPRequest httpRequest, String format, Iterable<HTTPHeader> headers) {
     List<HTTPHeader> configuredHeaders = new ArrayList<>();
     if (!Utilities.noString(userAgent)) {
       configuredHeaders.add(new HTTPHeader("User-Agent", userAgent));
@@ -315,7 +315,7 @@ public class ClientUtils {
       configuredHeaders.add(new HTTPHeader("Content-Language", acceptLanguage));
     }
 
-    Iterable<HTTPHeader> resourceFormatHeaders = getResourceFormatHeaders(format);
+    Iterable<HTTPHeader> resourceFormatHeaders = getResourceFormatHeaders(httpRequest, format);
     resourceFormatHeaders.forEach(configuredHeaders::add);
 
     Iterable<HTTPHeader> authHeaders = getAuthHeaders();
@@ -328,11 +328,16 @@ public class ClientUtils {
   }
 
   //FIXME this shouldn't set Content-Type header for GET requests
-  protected static List<HTTPHeader> getResourceFormatHeaders(String format) {
-    return Arrays.asList(
-      new HTTPHeader("Accept", format),
-      new HTTPHeader("Content-Type", format + ";charset=" + DEFAULT_CHARSET)
-    );
+  protected static List<HTTPHeader> getResourceFormatHeaders(HTTPRequest httpRequest, String format) {
+    List<HTTPHeader> headers = new ArrayList<>();
+    headers.add(new HTTPHeader("Accept", format));
+    if (httpRequest.getMethod() == HTTPRequest.HttpMethod.PUT
+      || httpRequest.getMethod() == HTTPRequest.HttpMethod.POST
+      || httpRequest.getMethod() == HTTPRequest.HttpMethod.PATCH
+    ) {
+      headers.add(new HTTPHeader("Content-Type", format + ";charset=" + DEFAULT_CHARSET));
+    }
+    return headers;
   }
 
   /**
@@ -551,18 +556,18 @@ public class ClientUtils {
   public Bundle issuePostFeedRequest(URI resourceUri, Map<String, String> parameters, String resourceName,
       Resource resource, String resourceFormat) throws IOException {
     /*FIXME delete this after refactor
-    HttpPost httppost = new HttpPost(resourceUri);
+    HttpPost httpRequest = new HttpPost(resourceUri);
      */
 
-    HTTPRequest httppost = new HTTPRequest()
+    HTTPRequest httpRequest = new HTTPRequest()
       .withMethod(HTTPRequest.HttpMethod.POST)
       .withUrl(resourceUri.toString());
     String boundary = "----WebKitFormBoundarykbMUo6H8QaUnYtRy";
   List<HTTPHeader> headers = new ArrayList<>();
     headers.add(new HTTPHeader("Content-Type", "multipart/form-data; boundary=" + boundary));
     headers.add(new HTTPHeader("Accept", resourceFormat));
-    this.getFhirHeaders(null);
-    HTTPResult response = sendPayload(httppost.withBody(encodeFormSubmission(parameters, resourceName, resource, boundary)));
+    this.getFhirHeaders(httpRequest, null);
+    HTTPResult response = sendPayload(httpRequest.withBody(encodeFormSubmission(parameters, resourceName, resource, boundary)));
     return unmarshalFeed(response, resourceFormat);
   }
 

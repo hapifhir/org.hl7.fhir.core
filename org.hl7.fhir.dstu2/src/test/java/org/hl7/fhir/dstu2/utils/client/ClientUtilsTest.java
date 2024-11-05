@@ -66,7 +66,7 @@ public class ClientUtilsTest {
     String testFormat = "yaml";
     HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com").withMethod(HTTPRequest.HttpMethod.GET);
 
-    Iterable<HTTPHeader> headers = ClientUtils.getResourceFormatHeaders(testFormat);
+    Iterable<HTTPHeader> headers = ClientUtils.getResourceFormatHeaders(request, testFormat);
 
     Map<String, List<String>> headersMap = HTTPHeaderUtil.getMultimap(headers);
     Assertions.assertNotNull(headersMap.get("Accept"), "Accept header null.");
@@ -85,7 +85,7 @@ public class ClientUtilsTest {
     String testFormat = "yaml";
     HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com").withMethod(HTTPRequest.HttpMethod.POST);
 
-    Iterable<HTTPHeader> headers = ClientUtils.getResourceFormatHeaders(testFormat);
+    Iterable<HTTPHeader> headers = ClientUtils.getResourceFormatHeaders(request, testFormat);
 
     Map<String, List<String>> headersMap = HTTPHeaderUtil.getMultimap(headers);
     Assertions.assertNotNull(headersMap.get("Accept"), "Accept header null.");
