@@ -62,11 +62,11 @@ public class ClientUtilsTest {
   @Test
   @DisplayName("Test resource format headers are added correctly.")
   void addResourceFormatHeadersGET() {
-    /* FIXME restore this after refactor
+
     String testFormat = "yaml";
     HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com").withMethod(HTTPRequest.HttpMethod.GET);
 
-    Iterable<HTTPHeader> headers = FhirRequestBuilder.getResourceFormatHeaders(request, testFormat);
+    Iterable<HTTPHeader> headers = ClientUtils.getResourceFormatHeaders(testFormat);
 
     Map<String, List<String>> headersMap = HTTPHeaderUtil.getMultimap(headers);
     Assertions.assertNotNull(headersMap.get("Accept"), "Accept header null.");
@@ -75,17 +75,17 @@ public class ClientUtilsTest {
 
     Assertions.assertNull(headersMap.get("Content-Type"), "Content-Type header null.");
 
-     */
+
   }
 
   @Test
   @DisplayName("Test resource format headers are added correctly (POST).")
   void addResourceFormatHeadersPOST() {
-   /*FIXME restore this after refactor
+
     String testFormat = "yaml";
     HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com").withMethod(HTTPRequest.HttpMethod.POST);
 
-    Iterable<HTTPHeader> headers = FhirRequestBuilder.getResourceFormatHeaders(request, testFormat);
+    Iterable<HTTPHeader> headers = ClientUtils.getResourceFormatHeaders(testFormat);
 
     Map<String, List<String>> headersMap = HTTPHeaderUtil.getMultimap(headers);
     Assertions.assertNotNull(headersMap.get("Accept"), "Accept header null.");
@@ -93,10 +93,10 @@ public class ClientUtilsTest {
       "Accept header not populated with expected value " + testFormat + ".");
 
     Assertions.assertNotNull(headersMap.get("Content-Type"), "Content-Type header null.");
-    Assertions.assertEquals(testFormat + ";charset=" + FhirRequestBuilder.DEFAULT_CHARSET, headersMap.get("Content-Type").get(0),
-      "Content-Type header not populated with expected value \"" + testFormat + ";charset=" + FhirRequestBuilder.DEFAULT_CHARSET + "\".");
+    Assertions.assertEquals(testFormat + ";charset=" + ClientUtils.DEFAULT_CHARSET, headersMap.get("Content-Type").get(0),
+      "Content-Type header not populated with expected value \"" + testFormat + ";charset=" + ClientUtils.DEFAULT_CHARSET + "\".");
 
-    */
+
   }
 
   @Test

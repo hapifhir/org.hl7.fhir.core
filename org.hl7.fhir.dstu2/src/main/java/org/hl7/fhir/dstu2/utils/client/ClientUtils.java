@@ -315,10 +315,9 @@ public class ClientUtils {
       configuredHeaders.add(new HTTPHeader("Content-Language", acceptLanguage));
     }
 
-    if (format != null) {
-      configuredHeaders.add(new HTTPHeader("Accept", format));
-      configuredHeaders.add(new HTTPHeader("Content-Type", format + ";charset=" + DEFAULT_CHARSET));
-    }
+    Iterable<HTTPHeader> resourceFormatHeaders = getResourceFormatHeaders(format);
+    resourceFormatHeaders.forEach(configuredHeaders::add);
+
     Iterable<HTTPHeader> authHeaders = getAuthHeaders();
     authHeaders.forEach(configuredHeaders::add);
 
@@ -326,6 +325,14 @@ public class ClientUtils {
       headers.forEach(configuredHeaders::add);
     }
     return configuredHeaders;
+  }
+
+  //FIXME this shouldn't set Content-Type header for GET requests
+  protected static List<HTTPHeader> getResourceFormatHeaders(String format) {
+    return Arrays.asList(
+      new HTTPHeader("Accept", format),
+      new HTTPHeader("Content-Type", format + ";charset=" + DEFAULT_CHARSET)
+    );
   }
 
   /**
