@@ -51,6 +51,7 @@ import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.junit.jupiter.api.Assertions;
@@ -390,8 +391,12 @@ public class PETests {
   public void testGenerate() throws IOException {
     load();
     PECodeGenerator gen = new PECodeGenerator(ctxt);
-    
-    gen.setFolder(Utilities.path("[tmp]", "codegen"));
+
+    String codeGenFolder = Utilities.path("[tmp]", "codegen");
+    if (!ManagedFileAccess.csfile(codeGenFolder).exists()) {
+      ManagedFileAccess.csfile(codeGenFolder).mkdirs();
+    }
+    gen.setFolder(codeGenFolder);
     gen.setExtensionPolicy(ExtensionPolicy.Complexes);
     gen.setNarrative(false);
     gen.setMeta(false);
