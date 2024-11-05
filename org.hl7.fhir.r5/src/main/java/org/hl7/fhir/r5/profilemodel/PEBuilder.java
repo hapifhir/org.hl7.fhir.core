@@ -587,9 +587,6 @@ public class PEBuilder {
         throw new DefinitionException("The discriminator type 'type' is not supported by the PEBuilder");
       case VALUE:
         String path = d.getPath();
-        if (path.contains(".")) {
-          throw new DefinitionException("The discriminator path '"+path+"' is not supported by the PEBuilder");          
-        }
         ElementDefinition ed = getChildElement(profile, definition, path);
         if (ed == null) {
           throw new DefinitionException("The discriminator path '"+path+"' could not be resolved by the PEBuilder");          
@@ -637,13 +634,26 @@ public class PEBuilder {
   }
 
   private ElementDefinition getChildElement(StructureDefinition profile, ElementDefinition definition, String path) {
-    List<ElementDefinition> elements = pu.getChildList(profile, definition);
-    if (elements.size() == 0) {
-      profile = definition.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, definition.getTypeFirstRep().getProfile().get(0).asStringValue()) :
-        context.fetchTypeDefinition(definition.getTypeFirstRep().getWorkingCode());
-      elements = pu.getChildList(profile, profile.getSnapshot().getElementFirstRep());
-    }
-    return getByName(elements, path);
+    String head = path.contains(".") ? path.substring(0, path.indexOf(".")) : path;
+    String tail = path.contains(".") ? path.substring(path.indexOf(".")+1) : null;
+    ElementDefinition focus = definition;
+    
+    do {
+      List<ElementDefinition> elements = pu.getChildList(profile, focus);
+      if (elements.size() == 0) {
+        profile = focus.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, focus.getTypeFirstRep().getProfile().get(0).asStringValue()) :
+          context.fetchTypeDefinition(focus.getTypeFirstRep().getWorkingCode());
+        elements = pu.getChildList(profile, profile.getSnapshot().getElementFirstRep());
+      }
+      focus = getByName(elements, head);
+      if (tail != null) {
+        head = tail.contains(".") ? tail.substring(0, tail.indexOf(".")) : tail;
+        tail = tail.contains(".") ? tail.substring(tail.indexOf(".")+1) : null;
+      } else {
+        head = null;
+      }
+    } while (head != null && focus != null);
+    return focus;
   }
 
   public List<Base> exec(Resource resource, Base data, String fhirpath) {

@@ -1,11 +1,14 @@
 package org.hl7.fhir.r5.test.profiles;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.MedicinalProductDefinition;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.test.profiles.codegen.DkCoreDeCprIdentifier;
+import org.hl7.fhir.r5.test.profiles.codegen.DkCorePatient;
 import org.hl7.fhir.r5.test.profiles.codegen.MedicinalProductDefinitionUvEpi;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
@@ -46,6 +49,13 @@ public class PECodeGenTests {
   }
 
 
+  @Test
+  public void testConstruct1() throws IOException {
+    load();
+    var patient = new DkCorePatient(ctxt).setDEcpr(new DkCoreDeCprIdentifier().setSystem(DkCoreDeCprIdentifier.DkCoreDeCPRValueSet.URNOID122081761613).setValue(UUID.randomUUID().toString()));
+    var pat = patient.build(ctxt);
+  }
+  
   @Test
   public void testProfile() throws IOException {
     load();

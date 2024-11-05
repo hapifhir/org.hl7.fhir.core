@@ -119,9 +119,9 @@ public class PECodeGenerator {
     public void genId() {
       if (isResource) {
         genField(true, "id", "String", "id", "", false, "", 0, 1, null);
-        genAccessors(true, false, "id", "String", "", "String", "String", "Id", "Ids", false, "", false, false, null);   
-        genLoad(true, false, "id", "id", "IdType", "", "String", "String", "Id", "Ids", false, false, null, false);
-        genSave(true, false, "id", "id", "IdType", "", "String", "String", "Id", "Ids", false, false, false, null, false);
+        genAccessors(true, false, "id", "id", "String", "", "String", "String", "Id", "Ids", false, "", false, false, null);   
+        genLoad(true, false, "id", "id", "id", "IdType", "", "String", "String", "Id", "Ids", false, false, null, false);
+        genSave(true, false, "id", "id", "id", "IdType", "", "String", "String", "Id", "Ids", false, false, false, null, false);
         genClear(false, "id", "String");
       }
     }
@@ -382,9 +382,9 @@ public class PECodeGenerator {
           if (isPrim && field.hasFixedValue()) {
             genFixed(name, ptype, field.getFixedValue());
           }
-          genAccessors(isPrim, isAbstract, name, type, init, ptype, ltype, cname, csname, field.isList(), field.documentation(), field.hasFixedValue(), isEnum, field.definition());   
-          genLoad(isPrim, isAbstract, name, sname, type, init, ptype, ltype, cname, csname, field.isList(), field.hasFixedValue(), field.types().get(0), isEnum); 
-          genSave(isPrim, isAbstract, name, sname, type, init, ptype, ltype, cname, csname, field.isList(), field.hasFixedValue(), isExtension, field.types().get(0), isEnum);
+          genAccessors(isPrim, isAbstract, name, field.name(), type, init, ptype, ltype, cname, csname, field.isList(), field.documentation(), field.hasFixedValue(), isEnum, field.definition());   
+          genLoad(isPrim, isAbstract, name, sname, field.name(), type, init, ptype, ltype, cname, csname, field.isList(), field.hasFixedValue(), field.types().get(0), isEnum); 
+          genSave(isPrim, isAbstract, name, sname, field.name(), type, init, ptype, ltype, cname, csname, field.isList(), field.hasFixedValue(), isExtension, field.types().get(0), isEnum);
           genClear(field.isList(), name, ptype);
         }
       } else {
@@ -404,9 +404,9 @@ public class PECodeGenerator {
       }
     }
     
-    private void genLoad(boolean isPrim, boolean isAbstract, String name, String sname, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, boolean isFixed, PEType typeInfo, boolean isEnum) {
+    private void genLoad(boolean isPrim, boolean isAbstract, String name, String sname, String fname, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, boolean isFixed, PEType typeInfo, boolean isEnum) {
       if (isList) {
-        w(load, "    for (PEInstance item : src.children(\""+sname+"\")) {");
+        w(load, "    for (PEInstance item : src.children(\""+fname+"\")) {");
         if ("BackboneElement".equals(type)) {
           w(load, "      "+name+".add(("+type+") item.asElement());");          
         } else {
@@ -414,59 +414,59 @@ public class PECodeGenerator {
         }
         w(load, "    }");
       } else if (isEnum) {
-        w(load, "    if (src.hasChild(\""+name+"\")) {");
+        w(load, "    if (src.hasChild(\""+fname+"\")) {");
         if ("CodeableConcept".equals(typeInfo.getName())) {
-          w(load, "      "+name+" = "+type+".fromCodeableConcept((CodeableConcept) src.child(\""+name+"\").asDataType());");
+          w(load, "      "+name+" = "+type+".fromCodeableConcept((CodeableConcept) src.child(\""+fname+"\").asDataType());");
         } else if ("Coding".equals(typeInfo.getName())) {
-          w(load, "      "+name+" = "+type+".fromCoding((Coding) src.child(\""+name+"\").asDataType());");
+          w(load, "      "+name+" = "+type+".fromCoding((Coding) src.child(\""+fname+"\").asDataType());");
         } else {
-          w(load, "      "+name+" = "+type+".fromCode(src.child(\""+name+"\").asDataType().primitiveValue());");
+          w(load, "      "+name+" = "+type+".fromCode(src.child(\""+fname+"\").asDataType().primitiveValue());");
         }  
         w(load, "    }");      
       } else if (isPrim) {
-        w(load, "    if (src.hasChild(\""+name+"\")) {");
+        w(load, "    if (src.hasChild(\""+fname+"\")) {");
         if ("CodeType".equals(type)) {
           // might be code or enum 
-          w(load, "      "+name+" = src.child(\""+name+"\").asDataType().primitiveValue();");
+          w(load, "      "+name+" = src.child(\""+fname+"\").asDataType().primitiveValue();");
         } else {
-          w(load, "      "+name+" = (("+type+") src.child(\""+name+"\").asDataType()).getValue();");
+          w(load, "      "+name+" = (("+type+") src.child(\""+fname+"\").asDataType()).getValue();");
         }
         w(load, "    }");      
       } else if (typeInfo != null && typeInfo.getUrl() != null && !typeInfo.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition")) {
-        w(load, "    if (src.hasChild(\""+name+"\")) {");
-        w(load, "      "+name+" = "+type+".fromSource(src.child(\""+name+"\"));");
+        w(load, "    if (src.hasChild(\""+fname+"\")) {");
+        w(load, "      "+name+" = "+type+".fromSource(src.child(\""+fname+"\"));");
         w(load, "    }");
       } else {
-        w(load, "    if (src.hasChild(\""+name+"\")) {");      
+        w(load, "    if (src.hasChild(\""+fname+"\")) {");      
         if ("BackboneElement".equals(type)) {
-          w(load, "      "+name+" = ("+type+") src.child(\""+name+"\").asElement();");
+          w(load, "      "+name+" = ("+type+") src.child(\""+fname+"\").asElement();");
         } else if (Utilities.existsInList(type, workerContext.getResourceNames())) {
-          w(load, "      "+name+" = ("+type+") src.child(\""+name+"\").asResource();");
+          w(load, "      "+name+" = ("+type+") src.child(\""+fname+"\").asResource();");
         } else {
-          w(load, "      "+name+" = ("+type+") src.child(\""+name+"\").asDataType();");
+          w(load, "      "+name+" = ("+type+") src.child(\""+fname+"\").asDataType();");
         }
         w(load, "    }");
       }
     }
 
-    private void genSave(boolean isPrim, boolean isAbstract, String name, String sname, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, boolean isFixed, boolean isExtension, PEType typeInfo, boolean isEnum) {
-      w(save, "    tgt.clear(\""+sname+"\");");
+    private void genSave(boolean isPrim, boolean isAbstract, String name, String sname, String fname, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, boolean isFixed, boolean isExtension, PEType typeInfo, boolean isEnum) {
+      w(save, "    tgt.clear(\""+fname+"\");");
       if (isList) {
         w(save, "    for ("+type+" item : "+name+") {");
         if (isExtension) {
-          w(save, "      tgt.makeChild(\""+sname+"\").data().setProperty(\"value[x]\", item);");          
+          w(save, "      tgt.makeChild(\""+fname+"\").data().setProperty(\"value[x]\", item);");          
         } else {
-          w(save, "      tgt.addChild(\""+sname+"\", item);");
+          w(save, "      tgt.addChild(\""+fname+"\", item);");
         }
         w(save, "    }");
       } else if (isEnum) {
         w(save, "    if ("+name+" != null) {");
         if ("CodeableConcept".equals(typeInfo.getName())) {
-          w(save, "      tgt.addChild(\""+sname+"\", "+name+".toCodeableConcept());");
+          w(save, "      tgt.addChild(\""+fname+"\", "+name+".toCodeableConcept());");
         } else if ("Coding".equals(typeInfo.getName())) {
-          w(save, "      tgt.addChild(\""+sname+"\", "+name+".toCoding());");
+          w(save, "      tgt.addChild(\""+fname+"\", "+name+".toCoding());");
         } else {
-          w(save, "      tgt.addChild(\""+sname+"\", "+name+".toCode());");
+          w(save, "      tgt.addChild(\""+fname+"\", "+name+".toCode());");
         }  
         w(save, "    }");      
       } else if (isPrim) {
@@ -478,29 +478,29 @@ public class PECodeGenerator {
           w(save, "    if ("+name+" != null) {");
         }
         if (isExtension) {
-          w(save, "      tgt.makeChild(\""+sname+"\").data().setProperty(\"value[x]\", new "+type+"("+name+"));");
+          w(save, "      tgt.makeChild(\""+fname+"\").data().setProperty(\"value[x]\", new "+type+"("+name+"));");
         } else if (Utilities.existsInList(type, "DateType", "InstantType", "DateTimeType")) {
-          w(save, "      tgt.addChild(\""+sname+"\", new "+type+"("+name+"));");          
+          w(save, "      tgt.addChild(\""+fname+"\", new "+type+"("+name+"));");          
         } else {
-          w(save, "      tgt.makeChild(\""+sname+"\").data().setProperty(\"value\", new "+type+"("+name+"));");
+          w(save, "      tgt.makeChild(\""+fname+"\").data().setProperty(\"value\", new "+type+"("+name+"));");
         }
         w(save, "    }");
       } else if (typeInfo != null && typeInfo.getUrl() != null && !typeInfo.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition")) {
         w(save, "    if ("+name+" != null) {");
-        w(save, "      "+name+".save(tgt.makeChild(\""+sname+"\"), nulls);");
+        w(save, "      "+name+".save(tgt.makeChild(\""+fname+"\"), nulls);");
         w(save, "    }");
       } else if (isExtension) {
         w(save, "    if ("+name+" != null) {");
-        w(save, "      tgt.makeChild(\""+sname+"\").data().setProperty(\"value[x]\", "+name+");");
+        w(save, "      tgt.makeChild(\""+fname+"\").data().setProperty(\"value[x]\", "+name+");");
         w(save, "    }");
       } else {
         w(save, "    if ("+name+" != null) {");
-        w(save, "      tgt.addChild(\""+sname+"\", "+name+");");
+        w(save, "      tgt.addChild(\""+fname+"\", "+name+");");
         w(save, "    }");
       }
     }
 
-    private void genAccessors(boolean isPrim, boolean isAbstract, String name, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, String shortDoco, boolean isFixed, boolean isEnum, ElementDefinition ed) {
+    private void genAccessors(boolean isPrim, boolean isAbstract, String name, String fname, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, String shortDoco, boolean isFixed, boolean isEnum, ElementDefinition ed) {
       if (ed != null) {
         jdoc(accessors, ed.getDefinition(), 2, true);
       }
