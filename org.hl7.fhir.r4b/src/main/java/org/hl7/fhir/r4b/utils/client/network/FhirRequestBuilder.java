@@ -127,7 +127,7 @@ public class FhirRequestBuilder {
   }
 
   protected ManagedFhirWebAccessBuilder getManagedWebAccessBuilder() {
-    return new ManagedFhirWebAccessBuilder("hapi-fhir-tooling-client", null).withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
+    return ManagedWebAccess.fhirBuilder().withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
   }
 
   public FhirRequestBuilder withResourceFormat(String resourceFormat) {

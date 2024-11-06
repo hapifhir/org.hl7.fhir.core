@@ -119,7 +119,7 @@ public class ClientUtils {
   private final TimeUnit timeoutUnit = TimeUnit.MILLISECONDS;
 
   protected ManagedFhirWebAccessBuilder getManagedWebAccessBuilder() {
-    return new ManagedFhirWebAccessBuilder("hapi-fhir-tooling-client", null).withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
+    return ManagedWebAccess.fhirBuilder().withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
   }
 
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat,

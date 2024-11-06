@@ -113,59 +113,10 @@ public class FhirRequestBuilder {
         || issue.getSeverity() == OperationOutcome.IssueSeverity.FATAL));
   }
 
-
-
   protected ManagedFhirWebAccessBuilder getManagedWebAccessBuilder() {
-    return new ManagedFhirWebAccessBuilder("hapi-fhir-tooling-client", null).withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
+    return ManagedWebAccess.fhirBuilder().withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
   }
-  /**
-   * We only ever want to have one copy of the HttpClient kicking around at any given time. If we need to make changes
-   * to any configuration, such as proxy settings, timeout, caches, etc, we can do a per-call configuration through
-   * the {@link OkHttpClient#newBuilder()} method. That will return a builder that shares the same connection pool,
-   * dispatcher, and configuration with the original client.
-   * </p>
-   * The {@link OkHttpClient} uses the proxy auth properties set in the current system properties. The reason we don't
-   * set the proxy address and authentication explicitly, is due to the fact that this class is often used in conjunction
-   * with other http client tools which rely on the system.properties settings to determine proxy settings. It's easier
-   * to keep the method consistent across the board. ...for now.
-   *
-   * @return {@link OkHttpClient} instance
-   */
-  /*FIXME delete after refactor
-  protected OkHttpClient getHttpClient() {
 
-    if (okHttpClient == null) {
-      okHttpClient = new OkHttpClient();
-    }
-
-    Authenticator proxyAuthenticator = getAuthenticator();
-
-    OkHttpClient.Builder builder = okHttpClient.newBuilder();
-    if (logger != null) builder.addInterceptor(logger);
-    builder.addInterceptor(new RetryInterceptor(retryCount));
-    return builder.connectTimeout(timeout, timeoutUnit)
-      .writeTimeout(timeout, timeoutUnit)
-      .readTimeout(timeout, timeoutUnit)
-      .proxyAuthenticator(proxyAuthenticator)
-      .build();
-  }
-*/
-  /*FIXME delete after refactor
-  @Nonnull
-  private static Authenticator getAuthenticator() {
-    return (route, response) -> {
-      final String httpProxyUser = System.getProperty(HTTP_PROXY_USER);
-      final String httpProxyPass = System.getProperty(HTTP_PROXY_PASS);
-      if (httpProxyUser != null && httpProxyPass != null) {
-        String credential = Credentials.basic(httpProxyUser, httpProxyPass);
-        return response.request().newBuilder()
-          .header(HEADER_PROXY_AUTH, credential)
-          .build();
-      }
-      return response.request().newBuilder().build();
-    };
-  }
-*/
   public FhirRequestBuilder withResourceFormat(String resourceFormat) {
     this.resourceFormat = resourceFormat;
     return this;
@@ -196,8 +147,6 @@ public class FhirRequestBuilder {
     this.timeoutUnit = unit;
     return this;
   }
-
-
 
   public <T extends Resource> ResourceRequest<T> execute() throws IOException {
     HTTPRequest requestWithHeaders = formatHeaders(httpRequest, resourceFormat, headers);

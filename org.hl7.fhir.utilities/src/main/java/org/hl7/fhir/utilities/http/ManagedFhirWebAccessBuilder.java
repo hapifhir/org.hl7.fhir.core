@@ -50,7 +50,8 @@ public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<Man
 
   protected HTTPRequest httpRequestWithDefaultHeaders(HTTPRequest request) {
     List<HTTPHeader> headers = new ArrayList<>();
-    if (HTTPHeaderUtil.getSingleHeader(request.getHeaders(), HTTPHeaderUtil.USER_AGENT) == null) {
+    if (HTTPHeaderUtil.getSingleHeader(request.getHeaders(), HTTPHeaderUtil.USER_AGENT) == null
+      && getUserAgent() != null) {
       headers.add(new HTTPHeader(HTTPHeaderUtil.USER_AGENT, getUserAgent()));
     }
     request.getHeaders().forEach(headers::add);
