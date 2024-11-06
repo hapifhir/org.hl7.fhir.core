@@ -32,16 +32,15 @@ package org.hl7.fhir.utilities.http;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import lombok.Getter;
 import okhttp3.Response;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 /**
- * see security.md - manages access to the local file system by the FHIR HAPI Core library
+ * see security.md - manages web access by the FHIR HAPI Core library
  * <p/>
  * By using accessPolicy, allowedDomains and accessor, a host java application can control 
  * whether this library has direct access to the web (and which domains it is allowed to access),
@@ -76,6 +75,8 @@ public class ManagedWebAccess {
 
   @Getter
   private static IFhirWebAccessor fhirWebAccessor;
+
+
 
   @Getter
   private static String userAgent;
@@ -133,4 +134,19 @@ public class ManagedWebAccess {
     return fhirBuilder().httpCall(httpRequest);
   }
 
+  public static void loadFromFHIRSettings() {
+    setAccessPolicy(FhirSettings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
+    setUserAgent("hapi-fhir-tooling-client");
+    serverAuthDetails = new ArrayList<>();
+    serverAuthDetails.addAll(FhirSettings.getPackageServers());
+    serverAuthDetails.addAll(FhirSettings.getTerminologyServers());
+  }
+
+  public static void loadFromFHIRSettings(FhirSettings settings) {
+    setAccessPolicy(settings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
+    setUserAgent("hapi-fhir-tooling-client");
+    serverAuthDetails = new ArrayList<>();
+    serverAuthDetails.addAll(settings.getPackageServers());
+    serverAuthDetails.addAll(settings.getTerminologyServers());
+  }
 }
