@@ -2908,6 +2908,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       warningPlural(errors, "2023-07-26", IssueType.INVALID, e.line(), e.col(), path, badChars.isEmpty(), badChars.size(), I18nConstants.UNICODE_XML_BAD_CHARS, badChars.toString());      
     }
+    if (context.hasExtension(ToolingExtensions.EXT_MIN_LENGTH) && e.hasPrimitiveValue()) {
+      int length = e.primitiveValue().length();  
+      int spec = ToolingExtensions.readIntegerExtension(context, ToolingExtensions.EXT_MIN_LENGTH, 0);
+      ok = rule(errors, "2024-11-02", IssueType.INVALID, e.line(), e.col(), path, length >= spec, I18nConstants.PRIMITIVE_TOO_SHORT, length, spec) && ok;
+
+    }
     String regex = context.getExtensionString(ToolingExtensions.EXT_REGEX);
     // there's a messy history here - this extension snhould only be on the element definition itself, but for historical reasons 
     //( see task 13328) it might also be found on one the types

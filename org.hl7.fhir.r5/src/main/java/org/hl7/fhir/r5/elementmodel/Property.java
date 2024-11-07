@@ -304,6 +304,19 @@ public class Property {
     return !"1".equals(definition.getBase().hasMax() ? definition.getBase().getMax() : definition.getMax());
   }
 
+  /**
+   * This handles a very special case: An extension used with json extensions in CDS hooks, 
+   * where the extension definition, not the base, decides whether it's an array or not 
+   * @return
+   */
+  public boolean isJsonList() {
+    if (definition.hasExtension("http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-json-name")) {
+      return !"1".equals(definition.getMax());
+    } else {
+      return !"1".equals(definition.getBase().hasMax() ? definition.getBase().getMax() : definition.getMax());
+    }
+  }
+
   public boolean isBaseList() {
     return !"1".equals(definition.getBase().getMax());
   }

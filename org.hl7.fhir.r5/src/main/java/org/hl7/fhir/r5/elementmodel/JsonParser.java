@@ -504,7 +504,7 @@ public class JsonParser extends ParserBase {
         }
       }
     } else {
-      if (property.isList()) {
+      if (property.isJsonList()) {
         logError(errors, ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(e), name, path), IssueSeverity.ERROR);
       }
       parseChildComplexInstance(errors, npath, fpath, element, property, name, e, null, null, null);
@@ -611,7 +611,7 @@ public class JsonParser extends ParserBase {
       logError(errors, "2022-11-26", line(main.getValue()), col(main.getValue()), path, IssueType.INVALID, context.formatMessage(I18nConstants.JSON_PROPERTY_VALUE_NO_QUOTES, main.getName(), main.getValue().asString()), IssueSeverity.ERROR);
     }
     if (main != null || fork != null) {
-      if (property.isList()) {
+      if (property.isJsonList()) {
         boolean ok = true;
         if (!(main == null || main.getValue() instanceof JsonArray)) {
           logError(errors, ValidationMessage.NO_RULE_DATE, line(main.getValue()), col(main.getValue()), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(main.getValue()), name, path), IssueSeverity.ERROR);
