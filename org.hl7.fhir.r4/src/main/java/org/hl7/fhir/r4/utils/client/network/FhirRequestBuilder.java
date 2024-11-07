@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.Nonnull;
-
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -124,7 +122,7 @@ public class FhirRequestBuilder {
     return HTTPHeaderUtil.getSingleHeader(headers, CONTENT_LOCATION_HEADER);
   }
 
-  protected ManagedFhirWebAccessBuilder getManagedWebAccessBuilder() {
+  protected ManagedFhirWebAccessor getManagedWebAccessBuilder() {
     return ManagedWebAccess.fhirBuilder().withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
   }
 

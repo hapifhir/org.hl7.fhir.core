@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.util.*;
 
 import lombok.Getter;
-import okhttp3.Response;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
@@ -104,12 +103,12 @@ public class ManagedWebAccess {
     ManagedWebAccess.userAgent = userAgent;
   }
 
-  public static ManagedWebAccessBuilder builder() {
-    return new ManagedWebAccessBuilder(userAgent, serverAuthDetails);
+  public static ManagedWebAccessor builder() {
+    return new ManagedWebAccessor(userAgent, serverAuthDetails);
   }
 
-  public static ManagedFhirWebAccessBuilder fhirBuilder() {
-    return new ManagedFhirWebAccessBuilder(userAgent, serverAuthDetails);
+  public static ManagedFhirWebAccessor fhirBuilder() {
+    return new ManagedFhirWebAccessor(userAgent, serverAuthDetails);
   }
 
   public static HTTPResult get(String url) throws IOException {

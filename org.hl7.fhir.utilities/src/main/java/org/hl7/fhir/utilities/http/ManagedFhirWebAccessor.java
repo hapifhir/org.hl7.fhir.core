@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<ManagedFhirWebAccessBuilder>{
+public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWebAccessor> {
 
   /**
    * The singleton instance of the HttpClient, used for all requests.
@@ -26,25 +26,25 @@ public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<Man
   private ToolingClientLogger logger;
   private LoggingInterceptor loggingInterceptor;
 
-  public ManagedFhirWebAccessBuilder withTimeout(long timeout, TimeUnit timeoutUnit) {
+  public ManagedFhirWebAccessor withTimeout(long timeout, TimeUnit timeoutUnit) {
     this.timeout = timeout;
     this.timeoutUnit = timeoutUnit;
     return this;
   }
 
-  public ManagedFhirWebAccessBuilder withRetries(int retries) {
+  public ManagedFhirWebAccessor withRetries(int retries) {
     this.retries = retries;
     return this;
   }
 
-  public ManagedFhirWebAccessBuilder withLogger(ToolingClientLogger logger) {
+  public ManagedFhirWebAccessor withLogger(ToolingClientLogger logger) {
     this.logger = logger;
     this.loggingInterceptor = new LoggingInterceptor(logger);
     return this;
   }
 
 
-  public ManagedFhirWebAccessBuilder(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
+  public ManagedFhirWebAccessor(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
     super(userAgent, serverAuthDetails);
     this.timeout = 5000;
     this.timeoutUnit = TimeUnit.MILLISECONDS;

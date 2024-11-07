@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class ManagedFhirWebAccessBuilderTests {
+public class ManagedFhirWebAccessorTests {
   final String expectedUserAgent = "dummy-agent";
 
   @Test
@@ -13,7 +13,7 @@ public class ManagedFhirWebAccessBuilderTests {
     // FIXME move to ManagedFhirWebAccessBuilder
     HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com");
 
-    ManagedFhirWebAccessBuilder builder = new ManagedFhirWebAccessBuilder(expectedUserAgent, null);
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(expectedUserAgent, null);
 
     HTTPRequest requestWithDefaultHeaders = builder.httpRequestWithDefaultHeaders(request);
     assertRequestContainsExpectedAgentHeader(requestWithDefaultHeaders);
@@ -25,7 +25,7 @@ public class ManagedFhirWebAccessBuilderTests {
     // FIXME move to ManagedFhirWebAccessBuilder
     HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com");
 
-    ManagedFhirWebAccessBuilder builder = new ManagedFhirWebAccessBuilder(expectedUserAgent, null)
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(expectedUserAgent, null)
       .withBasicAuth("dummy-user", "dummy-password");
 
     HTTPRequest requestWithManagedHeaders = builder.requestWithManagedHeaders(request);

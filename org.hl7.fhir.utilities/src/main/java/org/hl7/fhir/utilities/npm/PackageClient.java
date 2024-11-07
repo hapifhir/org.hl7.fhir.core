@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -24,7 +23,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
-import org.hl7.fhir.utilities.http.ManagedWebAccessBuilder;
+import org.hl7.fhir.utilities.http.ManagedWebAccessor;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
@@ -176,7 +175,7 @@ public class PackageClient {
   }
  
   private InputStream fetchUrl(String source, String accept) throws IOException {
-    ManagedWebAccessBuilder client = ManagedWebAccess.builder();
+    ManagedWebAccessor client = ManagedWebAccess.builder();
     if (server.getAuthenticationMode() == HTTPAuthenticationMode.TOKEN) {
       client.withToken(server.getToken());
     } else if (server.getAuthenticationMode() == HTTPAuthenticationMode.BASIC) {

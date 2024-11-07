@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ManagedWebAccessBuilderBase<B extends ManagedWebAccessBuilderBase<B>> {
+public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>> {
   @Getter
   private final String userAgent;
   @Getter
@@ -24,7 +24,7 @@ public abstract class ManagedWebAccessBuilderBase<B extends ManagedWebAccessBuil
   @Getter
   private final Map<String, String> headers = new HashMap<>();
 
-  public ManagedWebAccessBuilderBase(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
+  public ManagedWebAccessorBase(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
     this.userAgent = userAgent;
     this.serverAuthDetails = serverAuthDetails;
   }

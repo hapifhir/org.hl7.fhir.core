@@ -7,17 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 /**
  * Simple HTTP client for making requests to a server.
  */
-public class ManagedWebAccessBuilder extends ManagedWebAccessBuilderBase<ManagedWebAccessBuilder> {
+public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccessor> {
 
-  public ManagedWebAccessBuilder(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
+  public ManagedWebAccessor(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
     super(userAgent, serverAuthDetails);
   }
   
