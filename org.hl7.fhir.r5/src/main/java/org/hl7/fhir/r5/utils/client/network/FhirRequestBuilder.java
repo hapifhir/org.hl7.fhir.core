@@ -113,7 +113,7 @@ public class FhirRequestBuilder {
         || issue.getSeverity() == OperationOutcome.IssueSeverity.FATAL));
   }
 
-  protected ManagedFhirWebAccessBuilder getManagedWebAccessBuilder() {
+  protected ManagedFhirWebAccessor getManagedWebAccessBuilder() {
     return ManagedWebAccess.fhirBuilder().withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
   }
 

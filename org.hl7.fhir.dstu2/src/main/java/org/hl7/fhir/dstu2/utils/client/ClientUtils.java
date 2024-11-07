@@ -109,7 +109,7 @@ public class ClientUtils {
   private String contentLanguage;
   private final TimeUnit timeoutUnit = TimeUnit.MILLISECONDS;
 
-  protected ManagedFhirWebAccessBuilder getManagedWebAccessBuilder() {
+  protected ManagedFhirWebAccessor getManagedWebAccessBuilder() {
     return ManagedWebAccess.fhirBuilder().withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
   }
 

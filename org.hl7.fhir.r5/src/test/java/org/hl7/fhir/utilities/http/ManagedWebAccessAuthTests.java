@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ManagedWebAccessAuthTests {
 
-
   public static final String DUMMY_AGENT = "dummyAgent";
   public static final String DUMMY_USERNAME = "dummy1";
   public static final String DUMMY_PASSWORD = "pass1";
@@ -44,7 +43,7 @@ public class ManagedWebAccessAuthTests {
         .setBody("Dummy Response").setResponseCode(200)
     );
 
-    ManagedFhirWebAccessBuilder builder = new ManagedFhirWebAccessBuilder("dummyAgent", null);
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", null);
     HTTPResult result = builder.httpCall(new HTTPRequest().withUrl(serverUrl.toString()).withMethod(HTTPRequest.HttpMethod.GET));
 
     assertThat(result.getCode()).isEqualTo(200);
@@ -62,12 +61,12 @@ public class ManagedWebAccessAuthTests {
   public void testBasicAuthCase() throws IOException, InterruptedException {
 
 
-    ManagedFhirWebAccessBuilder builder = new ManagedFhirWebAccessBuilder("dummyAgent", null).withBasicAuth("dummy1", "pass1");
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", null).withBasicAuth("dummy1", "pass1");
 
     testBasicServerAuth(builder);
   }
 
-  private void testBasicServerAuth(ManagedFhirWebAccessBuilder builder) throws IOException, InterruptedException {
+  private void testBasicServerAuth(ManagedFhirWebAccessor builder) throws IOException, InterruptedException {
     HttpUrl serverUrl = server.url("blah/blah/blah?arg=blah");
 
     server.enqueue(
@@ -99,7 +98,7 @@ public class ManagedWebAccessAuthTests {
         .setBody("Dummy Response").setResponseCode(200)
     );
 
-    ManagedFhirWebAccessBuilder builder = new ManagedFhirWebAccessBuilder("dummyAgent", null).withToken(DUMMY_TOKEN);
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", null).withToken(DUMMY_TOKEN);
     HTTPResult result = builder.httpCall(new HTTPRequest().withUrl(serverUrl.toString()).withMethod(HTTPRequest.HttpMethod.GET));
 
     assertThat(result.getCode()).isEqualTo(200);
@@ -128,7 +127,7 @@ public class ManagedWebAccessAuthTests {
         .setBody("Dummy Response").setResponseCode(200)
     );
 
-    ManagedFhirWebAccessBuilder builder = new ManagedFhirWebAccessBuilder("dummyAgent", null).withApiKey(DUMMY_API_KEY);
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", null).withApiKey(DUMMY_API_KEY);
     HTTPResult result = builder.httpCall(new HTTPRequest().withUrl(serverUrl.toString()).withMethod(HTTPRequest.HttpMethod.GET));
 
     assertThat(result.getCode()).isEqualTo(200);
@@ -144,7 +143,7 @@ public class ManagedWebAccessAuthTests {
 
   @Test
   public void testServerAuthFromSettings() throws IOException, InterruptedException {
-    ManagedFhirWebAccessBuilder builder = new ManagedFhirWebAccessBuilder(
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(
       "dummyAgent",
       List.of(getBasicAuthServerPojo()));
 

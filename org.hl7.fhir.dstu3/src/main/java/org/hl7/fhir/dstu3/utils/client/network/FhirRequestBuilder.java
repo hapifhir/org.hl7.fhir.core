@@ -114,7 +114,7 @@ public class FhirRequestBuilder {
     return HTTPHeaderUtil.getSingleHeader(headers, CONTENT_LOCATION_HEADER);
   }
 
-  protected ManagedFhirWebAccessBuilder getManagedWebAccessBuilder() {
+  protected ManagedFhirWebAccessor getManagedWebAccessBuilder() {
     return ManagedWebAccess.fhirBuilder().withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
   }
 
