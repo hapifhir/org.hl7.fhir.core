@@ -110,20 +110,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     initialize(baseServiceUrl);
   }
 
-  public FHIRToolingClient(String baseServiceUrl, String userAgent, String username, String password)
-      throws URISyntaxException {
-    preferredResourceFormat = ResourceFormat.RESOURCE_XML;
-    utils = getClientUtils();
-    utils.setUserAgent(userAgent);
-    utils.setUsername(username);
-    utils.setPassword(password);
-    initialize(baseServiceUrl);
-  }
-
-
-
-
-
   public void initialize(String baseServiceUrl) throws URISyntaxException {
     base = baseServiceUrl;
     resourceAddress = new ResourceAddress(baseServiceUrl);
@@ -590,22 +576,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   public void setTimeout(int timeout) {
     utils.setTimeout(timeout);
-  }
-
-  public String getUsername() {
-    return utils.getUsername();
-  }
-
-  public void setUsername(String username) {
-    utils.setUsername(username);
-  }
-
-  public String getPassword() {
-    return utils.getPassword();
-  }
-
-  public void setPassword(String password) {
-    utils.setPassword(password);
   }
 
   public Parameters getTerminologyCapabilities() {
