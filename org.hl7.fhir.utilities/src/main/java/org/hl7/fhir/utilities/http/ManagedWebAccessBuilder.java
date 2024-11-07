@@ -29,6 +29,8 @@ public class ManagedWebAccessBuilder extends ManagedWebAccessBuilderBase<Managed
       String auth = getUsername() +":"+ getPassword();
       byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
       headers.put("Authorization", "Basic " + new String(encodedAuth));
+    } else if (getAuthenticationMode() == HTTPAuthenticationMode.APIKEY) {
+      headers.put("Api-Key", getToken());
     }
 
     if (getUserAgent() != null) {
