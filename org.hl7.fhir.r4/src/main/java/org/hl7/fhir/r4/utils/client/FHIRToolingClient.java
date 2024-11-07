@@ -563,6 +563,8 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       headers.add(new HTTPHeader("Content-Language",contentLanguage));
     }
 
+    headers.add(new HTTPHeader("Host", "cts.nlm.nih.gov"));
+    
     return headers;
   }
 
