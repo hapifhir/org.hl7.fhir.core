@@ -1047,7 +1047,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean check(String v1, String v2) {
-    return v1 == null ? Utilities.noString(v1) : v1.equals(v2);
+    boolean res = v1 == null ? Utilities.noString(v1) : v1.equals(v2);
+    return res;
   }
 
   private boolean checkAddress(List<ValidationMessage> errors, String path, Element focus, Address fixed, String fixedSource, boolean pattern, String context) {
@@ -3209,10 +3210,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     if (context.hasFixed()) {
-      ok = checkFixedValue(errors, path, e, context.getFixed(), profile.getVersionedUrl(), context.getSliceName(), null, false, "") && ok;
+      ok = checkFixedValue(errors, path, e, context.getFixed(), profile.getVersionedUrl(), context.getSliceName(), null, false, profile.getVersionedUrl()+"#"+context.getId()) && ok;
     }
     if (context.hasPattern()) {
-      ok = checkFixedValue(errors, path, e, context.getPattern(), profile.getVersionedUrl(), context.getSliceName(), null, true, "") && ok;
+      ok = checkFixedValue(errors, path, e, context.getPattern(), profile.getVersionedUrl(), context.getSliceName(), null, true, profile.getVersionedUrl()+"#"+context.getId()) && ok;
     }
 
     if (ok && !ID_EXEMPT_LIST.contains(e.fhirType())) { // ids get checked elsewhere
@@ -5129,12 +5130,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if ("0".equals(criteriaElement.getMax())) {
             expression.append(" and " + discriminator + ".empty()");            
           } else if (s.getType() == DiscriminatorType.TYPE) {
-            String type = null;
             if (!criteriaElement.getPath().contains("[") && discriminator.contains("[")) {
               discriminator = discriminator.substring(0, discriminator.indexOf('['));
               String lastNode = tail(discriminator);
-              type = makeTypeForFHIRPath(criteriaElement.getPath()).substring(lastNode.length());
+              String type = makeTypeForFHIRPath(criteriaElement.getPath()).substring(lastNode.length());
+              expression.append(" and " + discriminator + " is " + type);
             } else if (!criteriaElement.hasType() || criteriaElement.getType().size() == 1) {
+              String type = null;
               if (discriminator.contains("["))
                 discriminator = discriminator.substring(0, discriminator.indexOf('['));
               if (criteriaElement.hasType()) {
@@ -5144,23 +5146,25 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               } else {
                 throw new DefinitionException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES, discriminator, ed.getId(), profile.getVersionedUrl()));
               }
+              expression.append(" and " + discriminator + " is " + type);
             } else if (criteriaElement.getType().size() > 1) {
-              throw new DefinitionException(context.formatMessagePlural(criteriaElement.getType().size(), I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_MULTIPLE_TYPES, discriminator, ed.getId(), profile.getVersionedUrl(), criteriaElement.typeSummary()));
+              CommaSeparatedStringBuilder cb = new CommaSeparatedStringBuilder(" or ");
+              for (TypeRefComponent tr : criteriaElement.getType()) {
+                String type = makeTypeForFHIRPath(tr.getWorkingCode());
+                cb.append(discriminator + " is " + type);
+              }
+              expression.append(" and (" + cb.toString()+")");
             } else
               throw new DefinitionException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES, discriminator, ed.getId(), profile.getVersionedUrl()));
-            if (discriminator.isEmpty()) {     
-              expression.append(" and $this is " + type);
-            } else {
-              expression.append(" and " + discriminator + " is " + type);
-            }
           } else if (s.getType() == DiscriminatorType.PROFILE) {
             if (criteriaElement.getType().size() == 0) {
               throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE__IN_PROFILE_, criteriaElement.getId(), profile.getVersionedUrl()));
             }
-            if (criteriaElement.getType().size() != 1) {
-              throw new DefinitionException(context.formatMessagePlural(criteriaElement.getType().size(), I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_ONLY_ONE_TYPE__IN_PROFILE, criteriaElement.getId(), profile.getVersionedUrl()));
+            List<CanonicalType> list = new ArrayList<>();
+            boolean ref = discriminator.endsWith(".resolve()") || discriminator.equals("resolve()");
+            for (TypeRefComponent tr : criteriaElement.getType()) {
+              list.addAll(ref ? tr.getTargetProfile() : tr.getProfile()); 
             }
-            List<CanonicalType> list = discriminator.endsWith(".resolve()") || discriminator.equals("resolve()") ? criteriaElement.getType().get(0).getTargetProfile() : criteriaElement.getType().get(0).getProfile();
             if (list.size() == 0) {
               // we don't have to find something 
               // throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE_WITH_A_PROFILE__IN_PROFILE_, criteriaElement.getId(), profile.getVersionedUrl()));
@@ -6357,10 +6361,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     ValidationInfo vi = element.addDefinition(profile, definition, mode);
     
     if (definition.getFixed() != null) {
-      ok = checkFixedValue(errors, stack.getLiteralPath(), element, definition.getFixed(), profile.getVersionedUrl(), definition.getSliceName(), null, false, "") && ok;
+      ok = checkFixedValue(errors, stack.getLiteralPath(), element, definition.getFixed(), profile.getVersionedUrl(), definition.getSliceName(), null, false, profile.getVersionedUrl()+"#"+definition.getId()) && ok;
     } 
     if (definition.getPattern() != null) {
-      ok = checkFixedValue(errors, stack.getLiteralPath(), element, definition.getPattern(), profile.getVersionedUrl(), definition.getSliceName(), null, true, "") && ok;
+      ok = checkFixedValue(errors, stack.getLiteralPath(), element, definition.getPattern(), profile.getVersionedUrl(), definition.getSliceName(), null, true, profile.getVersionedUrl()+"#"+definition.getId()) && ok;
     }
     
     // get the list of direct defined children, including slices
@@ -6644,10 +6648,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = checkPrimitive(valContext, errors, ei.getPath(), type, checkDefn, ei.getElement(), profile, localStack, stack, valContext.getRootResource()) && ok;
       } else {
         if (checkDefn.hasFixed()) {
-          ok = checkFixedValue(errors, ei.getPath(), ei.getElement(), checkDefn.getFixed(), profile.getVersionedUrl(), checkDefn.getSliceName(), null, false, "") && ok;
+          ok = checkFixedValue(errors, ei.getPath(), ei.getElement(), checkDefn.getFixed(), profile.getVersionedUrl(), checkDefn.getSliceName(), null, false, profile.getVersionedUrl()+"#"+definition.getId()) && ok;
         }
         if (checkDefn.hasPattern()) {
-          ok = checkFixedValue(errors, ei.getPath(), ei.getElement(), checkDefn.getPattern(), profile.getVersionedUrl(), checkDefn.getSliceName(), null, true, "") && ok;
+          ok = checkFixedValue(errors, ei.getPath(), ei.getElement(), checkDefn.getPattern(), profile.getVersionedUrl(), checkDefn.getSliceName(), null, true, profile.getVersionedUrl()+"#"+definition.getId()) && ok;
         }
       }
       if (type.equals("Identifier")) {
@@ -7600,7 +7604,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean valueMatchesCriteria(Element value, ElementDefinition criteria, StructureDefinition profile) throws FHIRException {
     if (criteria.hasFixed()) {
       List<ValidationMessage> msgs = new ArrayList<ValidationMessage>();
-      checkFixedValue(msgs, "{virtual}", value, criteria.getFixed(), profile.getVersionedUrl(), "value", null, false, "");
+      checkFixedValue(msgs, "{virtual}", value, criteria.getFixed(), profile.getVersionedUrl(), "value", null, false, profile.getVersionedUrl()+"#"+criteria.getId());
       return msgs.size() == 0;
     } else if (criteria.hasBinding() && criteria.getBinding().getStrength() == BindingStrength.REQUIRED && criteria.getBinding().hasValueSet()) {
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SLICE_MATCHING__SLICE_MATCHING_BY_VALUE_SET_NOT_DONE));
