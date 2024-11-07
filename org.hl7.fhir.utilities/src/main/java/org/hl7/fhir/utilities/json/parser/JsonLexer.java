@@ -191,7 +191,7 @@ public class JsonLexer {
     if (!more()) {
       type = TokenType.Eof;
       if(!parenthesis.empty()) {
-        throw error("parenthesis matching is not respected. One or more parenthesis were not closed : " + parenthesis);
+        throw error("One or more parenthesis were not closed: " + parenthesis);
       }
     } else {
       switch (ch) {
@@ -201,11 +201,11 @@ public class JsonLexer {
         break;
       case '}' :
         if(parenthesis.empty()) {
-          throw error("Unexpected close marker '}'. No '{' before.");
+          throw error("Unexpected close marker '}' at end of JSON");
         }
         String par = parenthesis.pop();
         if(!par.equals("{")) {
-          throw error("Unexpected close marker '}'. Expected ']'.");
+          throw error("Unexpected close marker '}'. Expected ']'");
         }
         type = TokenType.Close;
         break;
@@ -233,7 +233,7 @@ public class JsonLexer {
             b.append(ch);
         } while (more() && (ch != '"'));
         if (!more())
-          throw error("premature termination of json stream during a string");
+          throw error("Unclosed string");
         value = b.toString();
         break;
       case ':' : 
@@ -248,7 +248,7 @@ public class JsonLexer {
         break;
       case ']' :
         if(parenthesis.empty()) {
-          throw error("Unexpected close marker ']'. No '[' before.");
+          throw error("Unexpected close marker ']' at end of JSON");
         }
         par = parenthesis.pop();
         if(!par.equals("[")) {
@@ -283,8 +283,10 @@ public class JsonLexer {
             this.type = TokenType.Null;
             isUnquoted = false;
           } else if (!allowUnquotedStrings) {
-            throw error("Unexpected token '"+value+"' in json stream");
+            throw error("Unexpected content '"+value+"' in json format");
           } 
+        } else {
+          throw error("Unexpected content '"+ch+"' in json format");
         }
       }
     }

@@ -33,6 +33,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -45,10 +46,14 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceFactory;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -341,6 +346,9 @@ public class PEBuilder {
       List<PEDefinition> res = new ArrayList<>();
       if (list.size() == 0) {
         profile = context.fetchResource(StructureDefinition.class, url);
+        if (profile == null) {
+          throw new FHIRException("Unable to resolve profile "+url);
+        }
         list = pu.getChildList(profile, profile.getSnapshot().getElementFirstRep());
       }
       if (list.size() > 0) {
@@ -579,20 +587,42 @@ public class PEBuilder {
         throw new DefinitionException("The discriminator type 'type' is not supported by the PEBuilder");
       case VALUE:
         String path = d.getPath();
-        if (path.contains(".")) {
-          throw new DefinitionException("The discriminator path '"+path+"' is not supported by the PEBuilder");          
-        }
         ElementDefinition ed = getChildElement(profile, definition, path);
         if (ed == null) {
           throw new DefinitionException("The discriminator path '"+path+"' could not be resolved by the PEBuilder");          
         }
-        if (!ed.hasFixed()) {
-          throw new DefinitionException("The discriminator path '"+path+"' has no fixed value - this is not supported by the PEBuilder");          
+        // three things possible:
+        //  fixed, pattern, or binding
+        if (ed.hasFixed()) {
+          if (!ed.getFixed().isPrimitive()) {
+            throw new DefinitionException("The discriminator path '"+path+"' has a fixed value that is not a primitive ("+ed.getFixed().fhirType()+") - this is not supported by the PEBuilder");          
+          }
+          b.append(path+" = '"+ed.getFixed().primitiveValue()+"'");
+        } else if (ed.hasPattern()) {
+          throw new DefinitionException("The discriminator path '"+path+"' has a pattern on the element '"+ed.getId()+"' - this is not supported by the PEBuilder");
+        } else if (ed.hasBinding()) {
+          if (ed.getBinding().getStrength() != BindingStrength.REQUIRED) {
+            throw new DefinitionException("The discriminator path '"+path+"' has a binding on the element '"+ed.getId()+"' but the strength is not required - this is not supported by the PEBuilder");
+          } else {
+            ValueSet vs = context.findTxResource(ValueSet.class, ed.getBinding().getValueSet());
+            if (vs == null) {
+              throw new DefinitionException("The discriminator path '"+path+"' has a binding on the element '"+ed.getId()+"' but the valueSet '"+ed.getBinding().getValueSet()+"' is not known - this is not supported by the PEBuilder");              
+            }
+            ValueSetExpansionOutcome exp = context.expandVS(vs, true, false);
+            if (exp.isOk()) {
+              CommaSeparatedStringBuilder bs = new CommaSeparatedStringBuilder(" | ");
+              for (ValueSetExpansionContainsComponent cc : exp.getValueset().getExpansion().getContains()) {
+                bs.append("'"+cc.getCode()+"'");
+              }
+              b.append(path+" in ("+bs.toString()+")");
+            } else {
+              throw new DefinitionException("The discriminator path '"+path+"' has a binding on the element '"+ed.getId()+"' but the valueSet '"+ed.getBinding().getValueSet()+"' could not be expanded: "+exp.getError());                            
+            }            
+          }
+        } else {
+          throw new DefinitionException("The discriminator path '"+path+"' has no fixed or pattern value or a binding on the element '"+ed.getId()+"' - this is not supported by the PEBuilder");          
+          
         }
-        if (!ed.getFixed().isPrimitive()) {
-          throw new DefinitionException("The discriminator path '"+path+"' has a fixed value that is not a primitive ("+ed.getFixed().fhirType()+") - this is not supported by the PEBuilder");          
-        }
-        b.append(path+" = '"+ed.getFixed().primitiveValue()+"'");
         break;
       case NULL:
         throw new DefinitionException("The discriminator type 'null' is not supported by the PEBuilder");
@@ -604,13 +634,26 @@ public class PEBuilder {
   }
 
   private ElementDefinition getChildElement(StructureDefinition profile, ElementDefinition definition, String path) {
-    List<ElementDefinition> elements = pu.getChildList(profile, definition);
-    if (elements.size() == 0) {
-      profile = definition.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, definition.getTypeFirstRep().getProfile().get(0).asStringValue()) :
-        context.fetchTypeDefinition(definition.getTypeFirstRep().getWorkingCode());
-      elements = pu.getChildList(profile, profile.getSnapshot().getElementFirstRep());
-    }
-    return getByName(elements, path);
+    String head = path.contains(".") ? path.substring(0, path.indexOf(".")) : path;
+    String tail = path.contains(".") ? path.substring(path.indexOf(".")+1) : null;
+    ElementDefinition focus = definition;
+    
+    do {
+      List<ElementDefinition> elements = pu.getChildList(profile, focus);
+      if (elements.size() == 0) {
+        profile = focus.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, focus.getTypeFirstRep().getProfile().get(0).asStringValue()) :
+          context.fetchTypeDefinition(focus.getTypeFirstRep().getWorkingCode());
+        elements = pu.getChildList(profile, profile.getSnapshot().getElementFirstRep());
+      }
+      focus = getByName(elements, head);
+      if (tail != null) {
+        head = tail.contains(".") ? tail.substring(0, tail.indexOf(".")) : tail;
+        tail = tail.contains(".") ? tail.substring(tail.indexOf(".")+1) : null;
+      } else {
+        head = null;
+      }
+    } while (head != null && focus != null);
+    return focus;
   }
 
   public List<Base> exec(Resource resource, Base data, String fhirpath) {

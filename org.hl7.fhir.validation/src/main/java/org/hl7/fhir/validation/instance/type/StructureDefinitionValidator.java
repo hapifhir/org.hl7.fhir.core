@@ -22,8 +22,10 @@ import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.extensions.ExtensionConstants;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
+import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
@@ -673,18 +675,18 @@ public class StructureDefinitionValidator extends BaseValidator {
                 // we have to figure out the context, and we might be in type slicing. 
                 String exp = expression;
                 Element te = element;
-                List<String> types = getTypesForElement(elements, te, profileType);
-                while (types.size() == 0 && te != null) {
+                TypeDetails types = getTypesForElement(elements, te, profileType, profileUrl);
+                while (types.isEmpty() && te != null) {
                   Element oldte = te;
                   te = getParent(elements, te);
                   if (te != null) {
                     exp = tail(oldte, te)+".all("+exp+")";
-                    types = getTypesForElement(elements, te, profileType);
+                    types = getTypesForElement(elements, te, profileType, profileUrl);
                   }
                 }
-                if (types.size() == 0) {
+                if (types.isEmpty()) {
                   // we got to the root before finding anything typed
-                  types.add(elements.get(0).getNamedChildValue("path", false));
+                  types.addType(elements.get(0).getNamedChildValue("path", false));
                 }
                 List<IssueMessage> warnings = new ArrayList<>();
                 ValidationContext vc = new ValidationContext(invariant);
@@ -807,14 +809,14 @@ public class StructureDefinitionValidator extends BaseValidator {
     return null;
   }
 
-  private List<String> getTypesForElement(List<Element> elements, Element element, String profileType) {
-    List<String> types = new ArrayList<>();
+  private TypeDetails getTypesForElement(List<Element> elements, Element element, String profileType, String profileUrl) {
+    TypeDetails types = new TypeDetails(CollectionStatus.SINGLETON);
     if (element.hasChild("path", false) && !element.getNamedChildValue("path", false).contains(".")) {
       String t = element.getNamedChildValue("path", false);
       if (profileType.equals(t)) {
-        types.add(profileType);
+        types.addType(profileType, profileUrl);
       } else if (profileType.endsWith("/"+t)) {
-        types.add(profileType);
+        types.addType(profileType, profileUrl);
       } else {
         throw new Error("Error: this should not happen: '"+t+"' vs '"+profileType+"'?");
       }      
@@ -827,12 +829,12 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (t != null) {
           if (isAbstractType(t) && hasChildren(element, elements) ) {
             if (!Utilities.isAbsoluteUrl(profileType)) {
-              types.add(element.getNamedChildValue("path", false));
+              types.addType(profileUrl+ "#"+element.getNamedChildValue("path", false));
             } else {
-              types.add(profileType+"#"+element.getNamedChildValue("path", false));              
+              types.addType(profileType+"#"+element.getNamedChildValue("path", false));              
             }
           } else {
-            types.add(t);
+            types.addType(t);
           }
         }
       }

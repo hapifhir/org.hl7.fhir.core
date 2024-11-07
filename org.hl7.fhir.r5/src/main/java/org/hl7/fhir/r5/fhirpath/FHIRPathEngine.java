@@ -64,7 +64,6 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.SourcedElementDefinition;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -3624,11 +3623,35 @@ public class FHIRPathEngine {
       ExpressionNode p = exp.getParameters().get(0);
       if (p.getKind() == Kind.Constant && p.getConstant() != null) {
         String url = exp.getParameters().get(0).getConstant().primitiveValue();
-        ExtensionDefinition ed = findExtensionDefinition(focus, url);
-        if (ed != null) {
-          return new TypeDetails(CollectionStatus.ORDERED, new ProfiledType(ed.sd.getUrl()));
+        if (!Utilities.isAbsoluteUrl(url) && focus.hasType("Extension")) {
+          TypeDetails res = new TypeDetails(CollectionStatus.ORDERED);
+          List<String> profiles = focus.getProfiles("Extension");
+          if (profiles != null) {
+            for (String pt : profiles) {
+              String extn = pt.contains("#") ? pt.substring(0, pt.indexOf("#")) : pt;
+              String subExtn = pt.contains("#") ? pt.substring(0, pt.indexOf("#")) : null;
+              StructureDefinition sd = worker.fetchResource(StructureDefinition.class, extn);
+              if (sd != null) {
+                String id = subExtn == null ? "Extension.extension:"+url : subExtn+".extension:"+url;
+                ElementDefinition ed = sd.getSnapshot().getElementById(id);
+                if (ed != null) {
+                  res.addType("Extension", sd.getUrl()+"#"+id);
+                }
+              }
+            }
+          }
+          if (res.isEmpty()) {
+            typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_UNKNOWN_EXTENSION, url), I18nConstants.FHIRPATH_UNKNOWN_EXTENSION));            
+          } else {
+            return res;
+          }
         } else {
-          typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_UNKNOWN_EXTENSION, url), I18nConstants.FHIRPATH_UNKNOWN_EXTENSION));
+          ExtensionDefinition ed = findExtensionDefinition(focus, url);
+          if (ed != null) {
+            return new TypeDetails(CollectionStatus.ORDERED, new ProfiledType(ed.sd.getUrl()));
+          } else {
+            typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_UNKNOWN_EXTENSION, url), I18nConstants.FHIRPATH_UNKNOWN_EXTENSION));
+          }
         }
         return new TypeDetails(CollectionStatus.SINGLETON, "Extension");
       }
