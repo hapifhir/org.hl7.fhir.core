@@ -32,6 +32,7 @@ import org.hl7.fhir.r4.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
@@ -53,9 +54,8 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     csv.readHeaders();
     Map<String, String> errs = new HashMap<>();
 
+    ManagedWebAccess.loadFromFHIRSettings();
     FHIRToolingClient fhirToolingClient = new FHIRToolingClient("https://cts.nlm.nih.gov/fhir", "fhir/vsac");
-    fhirToolingClient.setUsername("apikey");
-    fhirToolingClient.setPassword(apiKey);
     fhirToolingClient.setTimeoutNormal(30000);
     fhirToolingClient.setTimeoutExpand(30000);
 
