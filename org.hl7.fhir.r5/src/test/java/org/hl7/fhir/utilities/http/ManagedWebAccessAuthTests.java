@@ -60,7 +60,6 @@ public class ManagedWebAccessAuthTests {
   @Test
   public void testBasicAuthCase() throws IOException, InterruptedException {
 
-
     ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", null).withBasicAuth("dummy1", "pass1");
 
     testBasicServerAuth(builder);
@@ -91,14 +90,20 @@ public class ManagedWebAccessAuthTests {
 
   @Test
   public void testTokenAuthCase() throws IOException, InterruptedException {
+
+
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", null).withToken(DUMMY_TOKEN);
+
+    testTokenAuthCase(builder);
+  }
+
+  private void testTokenAuthCase(ManagedFhirWebAccessor builder) throws IOException, InterruptedException {
     HttpUrl serverUrl = server.url("blah/blah/blah?arg=blah");
 
     server.enqueue(
       new MockResponse()
         .setBody("Dummy Response").setResponseCode(200)
     );
-
-    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", null).withToken(DUMMY_TOKEN);
     HTTPResult result = builder.httpCall(new HTTPRequest().withUrl(serverUrl.toString()).withMethod(HTTPRequest.HttpMethod.GET));
 
     assertThat(result.getCode()).isEqualTo(200);
@@ -112,7 +117,7 @@ public class ManagedWebAccessAuthTests {
     assertThat(packageRequest.getHeader("Authorization")).isEqualTo("Bearer " + DUMMY_TOKEN);
   }
 
-  private static void assertExpectedHeaders(RecordedRequest packageRequest, String expectedUrl, String expectedHttpMethod) {
+  private void assertExpectedHeaders(RecordedRequest packageRequest, String expectedUrl, String expectedHttpMethod) {
     assertThat(packageRequest.getRequestUrl().toString()).isEqualTo(expectedUrl);
     assertThat(packageRequest.getMethod()).isEqualTo(expectedHttpMethod);
     assertThat(packageRequest.getHeader("User-Agent")).isEqualTo(DUMMY_AGENT);
@@ -120,14 +125,19 @@ public class ManagedWebAccessAuthTests {
 
   @Test
   public void testApiKeyAuthCase() throws IOException, InterruptedException {
+
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", null).withApiKey(DUMMY_API_KEY);
+
+    testApiKeyAuthCase(builder);
+  }
+
+  private void testApiKeyAuthCase(ManagedFhirWebAccessor builder) throws IOException, InterruptedException {
     HttpUrl serverUrl = server.url("blah/blah/blah?arg=blah");
 
     server.enqueue(
       new MockResponse()
         .setBody("Dummy Response").setResponseCode(200)
     );
-
-    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", null).withApiKey(DUMMY_API_KEY);
     HTTPResult result = builder.httpCall(new HTTPRequest().withUrl(serverUrl.toString()).withMethod(HTTPRequest.HttpMethod.GET));
 
     assertThat(result.getCode()).isEqualTo(200);
@@ -142,7 +152,7 @@ public class ManagedWebAccessAuthTests {
   }
 
   @Test
-  public void testServerAuthFromSettings() throws IOException, InterruptedException {
+  public void testBasicAuthFromSettings() throws IOException, InterruptedException {
     ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(
       "dummyAgent",
       List.of(getBasicAuthServerPojo()));
@@ -151,13 +161,50 @@ public class ManagedWebAccessAuthTests {
   }
 
   private ServerDetailsPOJO getBasicAuthServerPojo() {
-    ServerDetailsPOJO pojo = new ServerDetailsPOJO(
+    return new ServerDetailsPOJO(
       server.url("").toString(),
       "basic",
       "dummyServerType",
       DUMMY_USERNAME,
       DUMMY_PASSWORD,
       null, null);
-    return pojo;
+  }
+
+@Test
+public void testTokenAuthFromSettings() throws IOException, InterruptedException {
+  ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(
+    "dummyAgent",
+    List.of(getTokenAuthServerPojo()));
+
+  testTokenAuthCase(builder);
+}
+
+  private ServerDetailsPOJO getTokenAuthServerPojo() {
+    return new ServerDetailsPOJO(
+      server.url("").toString(),
+      "token",
+      "dummyServerType",
+     null,
+      null,
+      DUMMY_TOKEN, null);
+  }
+
+  @Test
+  public void testApiKeyAuthFromSettings() throws IOException, InterruptedException {
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(
+      "dummyAgent",
+      List.of(getApiKeyAuthServerPojo()));
+
+    testApiKeyAuthCase(builder);
+  }
+
+  private ServerDetailsPOJO getApiKeyAuthServerPojo() {
+    return new ServerDetailsPOJO(
+      server.url("").toString(),
+      "apikey",
+      "dummyServerType",
+      null,
+      null,
+     null, DUMMY_API_KEY);
   }
 }
