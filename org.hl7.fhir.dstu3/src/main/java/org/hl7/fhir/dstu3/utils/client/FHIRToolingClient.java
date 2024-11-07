@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.CapabilityStatement;
 import org.hl7.fhir.dstu3.model.CodeSystem;
@@ -68,13 +69,16 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   private CapabilityStatement capabilities;
   private Client client = new Client();
   private List<HTTPHeader> headers = new ArrayList<>();
-  private String username;
-  private String password;
+  @Setter
+  @Getter
   private String userAgent;
   private EnumSet<FhirPublication> allowedVersions;
+  @Setter
   @Getter
   private String acceptLanguage;
+  @Setter
   private String contentLanguage;
+  @Getter
   private int useCount;
 
   //Pass endpoint for client - URI
@@ -534,21 +538,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return result == null ? null : (ConceptMap) result.getPayload();
   }
 
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
 
   public long getTimeout() {
     return client.getTimeout();
@@ -579,15 +568,9 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     headers.forEach(this.headers::add);
   }
 
-  //FIXME should be in ManagedWebAccess?
   private Iterable<HTTPHeader> generateHeaders(boolean hasBody) {
-    List<HTTPHeader> headers = new ArrayList<>();
-    // Add basic auth header if it exists
-    if (basicAuthHeaderExists()) {
-      headers.add(getAuthorizationHeader());
-    }
     // Add any other headers
-    headers.addAll(this.headers);
+    List<HTTPHeader> headers = new ArrayList<>(this.headers);
     if (!Utilities.noString(userAgent)) {
       headers.add(new HTTPHeader("User-Agent",userAgent));
     }
@@ -603,38 +586,9 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return headers;
   }
 
-  public boolean basicAuthHeaderExists() {
-    return (username != null) && (password != null);
-  }
-
-  public HTTPHeader getAuthorizationHeader() {
-    String usernamePassword = username + ":" + password;
-    String base64usernamePassword = Base64.getEncoder().encodeToString(usernamePassword.getBytes());
-    return new HTTPHeader("Authorization", "Basic " + base64usernamePassword);
-  }
-  
-  public String getUserAgent() {
-    return userAgent;
-  }
-
-  public void setUserAgent(String userAgent) {
-    this.userAgent = userAgent;
-  }
-
   public String getServerVersion() {
     checkCapabilities();
     return capabilities == null ? null : capabilities.getSoftware().getVersion();
-  }
-
-  public void setAcceptLanguage(String lang) {
-    this.acceptLanguage = lang;
-  }
-  public void setContentLanguage(String lang) {
-    this.contentLanguage = lang;
-  }
-
-  public int getUseCount() {
-    return useCount;
   }
 
   private void recordUse() {
