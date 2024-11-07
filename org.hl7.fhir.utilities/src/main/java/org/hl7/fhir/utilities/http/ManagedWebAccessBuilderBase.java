@@ -52,6 +52,12 @@ public abstract class ManagedWebAccessBuilderBase<B extends ManagedWebAccessBuil
     return self();
   }
 
+  public B withApiKey(String apiKey) {
+    this.authenticationMode = HTTPAuthenticationMode.APIKEY;
+    this.token = apiKey;
+    return self();
+  }
+
   public B withNoneAuth() {
     this.authenticationMode = HTTPAuthenticationMode.NONE;
     setAllAuthHeadersToNull();

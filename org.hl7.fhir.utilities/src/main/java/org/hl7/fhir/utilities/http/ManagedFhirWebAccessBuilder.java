@@ -46,6 +46,8 @@ public class ManagedFhirWebAccessBuilder extends ManagedWebAccessBuilderBase<Man
 
   public ManagedFhirWebAccessBuilder(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
     super(userAgent, serverAuthDetails);
+    this.timeout = 5000;
+    this.timeoutUnit = TimeUnit.MILLISECONDS;
   }
 
   protected HTTPRequest httpRequestWithDefaultHeaders(HTTPRequest request) {
