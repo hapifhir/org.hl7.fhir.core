@@ -76,8 +76,6 @@ public class ManagedWebAccess {
   @Getter
   private static IFhirWebAccessor fhirWebAccessor;
 
-
-
   @Getter
   private static String userAgent;
   private static List<ServerDetailsPOJO> serverAuthDetails;

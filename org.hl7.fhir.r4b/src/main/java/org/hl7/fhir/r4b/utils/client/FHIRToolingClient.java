@@ -38,7 +38,6 @@ import org.hl7.fhir.r4b.model.*;
 import org.hl7.fhir.r4b.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r4b.utils.client.network.ByteUtils;
 import org.hl7.fhir.r4b.utils.client.network.Client;
-import org.hl7.fhir.r4b.utils.client.network.ClientHeaders;
 import org.hl7.fhir.r4b.utils.client.network.ResourceRequest;
 import org.hl7.fhir.utilities.FHIRBaseToolingClient;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -46,7 +45,6 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -96,13 +94,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
   @Setter
   private Client client = new Client();
   private List<HTTPHeader> headers = new ArrayList<>();
-  @Getter
-  @Setter
-  private String username;
-
-  @Getter
-  @Setter
-  private String password;
 
   @Setter
   @Getter
@@ -537,13 +528,8 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
   }
 
   private Iterable<HTTPHeader> generateHeaders(boolean hasBody) {
-    List<HTTPHeader> headers = new ArrayList<>();
-    // Add basic auth header if it exists
-    if (basicAuthHeaderExists()) {
-      headers.add(getAuthorizationHeader());
-    }
     // Add any other headers
-    headers.addAll(this.headers);
+    List<HTTPHeader> headers = new ArrayList<>(this.headers);
     if (!Utilities.noString(userAgent)) {
       headers.add(new HTTPHeader("User-Agent",userAgent));
     }
@@ -557,16 +543,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
     }
 
     return headers;
-  }
-
-  public boolean basicAuthHeaderExists() {
-    return (username != null) && (password != null);
-  }
-
-  public HTTPHeader getAuthorizationHeader() {
-    String usernamePassword = username + ":" + password;
-    String base64usernamePassword = Base64.getEncoder().encodeToString(usernamePassword.getBytes());
-    return new HTTPHeader("Authorization", "Basic " + base64usernamePassword);
   }
 
   public String getServerVersion() {
