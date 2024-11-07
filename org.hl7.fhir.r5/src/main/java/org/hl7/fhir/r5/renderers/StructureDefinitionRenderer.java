@@ -1731,8 +1731,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
           if (definition.hasMaxLength() && definition.getMaxLength()!=0) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, "Max Length: ", null).addStyle("font-weight:bold"))); 
+            c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingContext.GENERAL_MAX_LENGTH), null).addStyle("font-weight:bold"))); 
             c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).addStyle("color: darkgreen"))); 
+          } 
+          if (definition.hasExtension(ToolingExtensions.EXT_MIN_LENGTH)) {
+            int min = ToolingExtensions.readIntegerExtension(definition, ToolingExtensions.EXT_MIN_LENGTH, 0);
+            if (min > 0) {
+              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+              c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.GENERAL_MIN_LENGTH), null).addStyle("font-weight:bold")); 
+              c.getPieces().add(gen.new Piece(null, Integer.toString(min), null).addStyle("color: darkgreen"));
+            }
           } 
           if (profile != null) { 
             for (StructureDefinitionMappingComponent md : profile.getMapping()) { 
@@ -2597,6 +2605,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingContext.GENERAL_MAX_LENGTH), null).addStyle("font-weight:bold"))); 
             c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).addStyle("color: darkgreen"))); 
           } 
+          if (definition.hasExtension(ToolingExtensions.EXT_MIN_LENGTH)) {
+            int min = ToolingExtensions.readIntegerExtension(definition, ToolingExtensions.EXT_MIN_LENGTH, 0);
+            if (min > 0) {
+              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
+              c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.GENERAL_MIN_LENGTH), null).addStyle("font-weight:bold")); 
+              c.getPieces().add(gen.new Piece(null, Integer.toString(min), null).addStyle("color: darkgreen"));
+            }
+          }
           if (profile != null) { 
             for (StructureDefinitionMappingComponent md : profile.getMapping()) { 
               if (md.hasExtension(ToolingExtensions.EXT_TABLE_NAME)) { 
@@ -3912,6 +3928,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_MIN_VALUE), null, strikethrough, compareString(d.hasMinValue() ? encodeValue(d.getMinValue(), null) : null, d.getMinValue(), null, "minValue", d, compare!= null && compare.hasMinValue() ? encodeValue(compare.getMinValue(), null) : null, null, mode, false, false)); 
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_MAX_VALUE), null, strikethrough, compareString(d.hasMaxValue() ? encodeValue(d.getMaxValue(), null) : null, d.getMaxValue(), null, "maxValue", d, compare!= null && compare.hasMaxValue() ? encodeValue(compare.getMaxValue(), null) : null, null, mode, false, false)); 
     tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_MAX_LENGTH), null, strikethrough, compareString(d.hasMaxLength() ? toStr(d.getMaxLength()) : null, d.getMaxLengthElement(), null, "maxLength", d, compare!= null && compare.hasMaxLengthElement() ? toStr(compare.getMaxLength()) : null, null, mode, false, false)); 
+    tableRow(tbl, context.formatPhrase(RenderingContext.GENERAL_MIN_LENGTH), null, strikethrough, ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_MIN_LENGTH)); 
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_VALUE_REQ), null, strikethrough, compareString(encodeValue(d.getMustHaveValueElement(), null), d.getMustHaveValueElement(), null, (compare != null ? encodeValue(compare.getMustHaveValueElement(), null) : null), d, null, "mustHaveValueElement", mode, false, false));    
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_VALUE_ALT), null, strikethrough, compareSimpleTypeLists(d.getValueAlternatives(), ((compare==null) || slicedExtension ? null : compare.getValueAlternatives()), mode)); 
     tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_DEFAULT_VALUE), null, strikethrough, encodeValue(d.getDefaultValue(), "defaultValue", d, compare==null ? null : compare.getDefaultValue(), mode, d.getName())); 
