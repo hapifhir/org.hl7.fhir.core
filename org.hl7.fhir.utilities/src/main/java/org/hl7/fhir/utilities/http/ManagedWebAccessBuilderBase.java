@@ -51,4 +51,22 @@ public abstract class ManagedWebAccessBuilderBase<B extends ManagedWebAccessBuil
     this.token = token;
     return self();
   }
+
+  public B withNoneAuth() {
+    this.authenticationMode = HTTPAuthenticationMode.NONE;
+    setAllAuthHeadersToNull();
+    return self();
+  }
+
+  public B withServerSpecificAuth() {
+    this.authenticationMode = null;
+    setAllAuthHeadersToNull();
+    return self();
+  }
+
+  private void setAllAuthHeadersToNull() {
+    this.token = null;
+    this.username = null;
+    this.password = null;
+  }
 }

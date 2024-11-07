@@ -76,10 +76,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   @Setter
   private Client client = new Client();
   private List<HTTPHeader> headers = new ArrayList<>();
-  @Getter @Setter
-  private String username;
-  @Getter @Setter
-  private String password;
+
   @Getter @Setter
   private String userAgent;
   @Setter
@@ -544,13 +541,8 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   //FIXME should be in ManagedWebAccess?
   private Iterable<HTTPHeader> generateHeaders(boolean hasBody) {
-    List<HTTPHeader> headers = new ArrayList<>();
-    // Add basic auth header if it exists
-    if (basicAuthHeaderExists()) {
-      headers.add(getAuthorizationHeader());
-    }
     // Add any other headers
-    headers.addAll(this.headers);
+    List<HTTPHeader> headers = new ArrayList<>(this.headers);
     if (!Utilities.noString(userAgent)) {
       headers.add(new HTTPHeader("User-Agent",userAgent));
     }
@@ -563,19 +555,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       headers.add(new HTTPHeader("Content-Language",contentLanguage));
     }
 
-    headers.add(new HTTPHeader("Host", "cts.nlm.nih.gov"));
-    
     return headers;
-  }
-
-  public boolean basicAuthHeaderExists() {
-    return (username != null) && (password != null);
-  }
-
-  public HTTPHeader getAuthorizationHeader() {
-    String usernamePassword = username + ":" + password;
-    String base64usernamePassword = Base64.getEncoder().encodeToString(usernamePassword.getBytes());
-    return new HTTPHeader("Authorization", "Basic " + base64usernamePassword);
   }
 
   public String getServerVersion() {

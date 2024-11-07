@@ -33,12 +33,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -47,7 +45,6 @@ import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -93,13 +90,7 @@ public class ClientUtils {
   @Setter
   private int timeout = 5000;
 
-  @Getter
-  @Setter
-  private String username;
 
-  @Getter
-  @Setter
-  private String password;
 
   @Setter
   @Getter
@@ -213,18 +204,6 @@ public class ClientUtils {
     return unmarshalReference(response, resourceFormat);
   }
 
-  private Iterable<HTTPHeader> getAuthHeaders() {
-    if (password != null) {
-      try {
-        byte[] b = Base64.encodeBase64((username + ":" + password).getBytes("ASCII"));
-        String b64 = new String(b, StandardCharsets.US_ASCII);
-        return Arrays.asList(new HTTPHeader[]{new HTTPHeader("Authorization", "Basic " + b64)});
-      } catch (UnsupportedEncodingException e) {
-      }
-    }
-    return Collections.emptyList();
-  }
-
   public Bundle postBatchRequest(URI resourceUri, byte[] payload, String resourceFormat, int timeoutLoading) {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
@@ -317,9 +296,6 @@ public class ClientUtils {
 
     Iterable<HTTPHeader> resourceFormatHeaders = getResourceFormatHeaders(httpRequest, format);
     resourceFormatHeaders.forEach(configuredHeaders::add);
-
-    Iterable<HTTPHeader> authHeaders = getAuthHeaders();
-    authHeaders.forEach(configuredHeaders::add);
 
     if (headers != null) {
       headers.forEach(configuredHeaders::add);

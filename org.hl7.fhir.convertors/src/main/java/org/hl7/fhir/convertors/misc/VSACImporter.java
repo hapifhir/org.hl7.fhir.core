@@ -54,8 +54,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     Map<String, String> errs = new HashMap<>();
 
     FHIRToolingClient fhirToolingClient = new FHIRToolingClient("https://cts.nlm.nih.gov/fhir", "fhir/vsac");
-    fhirToolingClient.setUsername("apikey");
-    fhirToolingClient.setPassword(apiKey);
+
     fhirToolingClient.setTimeoutNormal(30000);
     fhirToolingClient.setTimeoutExpand(30000);
 
