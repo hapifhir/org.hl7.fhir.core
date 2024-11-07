@@ -100,7 +100,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
             headers.add(new HTTPHeader("Authorization", tokenCredential));
             break;
           case "apikey":
-            String apiKeyCredential = settings.getToken();
+            String apiKeyCredential = settings.getApikey();
             headers.add(new HTTPHeader("Api-Key", apiKeyCredential));
             break;
         }
