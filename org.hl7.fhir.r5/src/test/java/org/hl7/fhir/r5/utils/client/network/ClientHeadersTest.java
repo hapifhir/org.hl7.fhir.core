@@ -4,20 +4,19 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import okhttp3.internal.http2.Header;
-
 class ClientHeadersTest {
 
   ClientHeaders clientHeaders;
 
-  Header h1 = new Header("header1", "value1");
-  Header h2 = new Header("header2", "value2");
-  Header h3 = new Header("header3", "value3");
+  HTTPHeader h1 = new HTTPHeader("header1", "value1");
+  HTTPHeader h2 = new HTTPHeader("header2", "value2");
+  HTTPHeader h3 = new HTTPHeader("header3", "value3");
 
   @BeforeEach
   void setUp() {
@@ -43,7 +42,7 @@ class ClientHeadersTest {
   @Test
   @DisplayName("Happy path add headers as list.")
   void addHeaders() {
-    List<Header> headersList = Arrays.asList(h1, h2, h3);
+    List<HTTPHeader> headersList = Arrays.asList(h1, h2, h3);
     clientHeaders.addHeaders(headersList);
     Assertions.assertEquals(3, clientHeaders.headers().size());
     Assertions.assertEquals(headersList, clientHeaders.headers());
@@ -52,7 +51,7 @@ class ClientHeadersTest {
   @Test
   @DisplayName("Happy path add headers as list.")
   void addHeadersDuplicateAdd() {
-    List<Header> headersList = Arrays.asList(h1, h2, h1);
+    List<HTTPHeader> headersList = Arrays.asList(h1, h2, h1);
     Assertions.assertThrows(FHIRException.class, () -> clientHeaders.addHeaders(headersList));
   }
 
@@ -64,7 +63,7 @@ class ClientHeadersTest {
     clientHeaders.addHeader(h3);
     clientHeaders.removeHeader(h2);
     Assertions.assertEquals(2, clientHeaders.headers().size());
-    clientHeaders.removeHeader(new Header("header3", "value3"));
+    clientHeaders.removeHeader(new HTTPHeader("header3", "value3"));
     Assertions.assertEquals(1, clientHeaders.headers().size());
   }
 
@@ -79,8 +78,8 @@ class ClientHeadersTest {
   @Test
   @DisplayName("Happy path remove list of existing headers.")
   void removeHeaders() {
-    List<Header> headersToAddList = Arrays.asList(h1, h2, h3);
-    List<Header> headersToRemoveList = Arrays.asList(h2, h3);
+    List<HTTPHeader> headersToAddList = Arrays.asList(h1, h2, h3);
+    List<HTTPHeader> headersToRemoveList = Arrays.asList(h2, h3);
     clientHeaders.addHeaders(headersToAddList);
     clientHeaders.removeHeaders(headersToRemoveList);
     Assertions.assertEquals(1, clientHeaders.headers().size());
@@ -89,15 +88,15 @@ class ClientHeadersTest {
   @Test
   @DisplayName("Remove list containing unknown header.")
   void removeHeadersUnknown() {
-    List<Header> headersToAddList = Arrays.asList(h1, h3);
-    List<Header> headersToRemoveList = Arrays.asList(h2, h3);
+    List<HTTPHeader> headersToAddList = Arrays.asList(h1, h3);
+    List<HTTPHeader> headersToRemoveList = Arrays.asList(h2, h3);
     clientHeaders.addHeaders(headersToAddList);
     Assertions.assertThrows(FHIRException.class, () -> clientHeaders.removeHeaders(headersToRemoveList));
   }
 
   @Test
   void clearHeaders() {
-    List<Header> headersToAddList = Arrays.asList(h1, h3);
+    List<HTTPHeader> headersToAddList = Arrays.asList(h1, h3);
     clientHeaders.addHeaders(headersToAddList);
     Assertions.assertEquals(2, clientHeaders.headers().size());
     clientHeaders.clearHeaders();
