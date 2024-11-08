@@ -207,4 +207,10 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
       null,
      null, DUMMY_API_KEY);
   }
+
+  @Test
+  public void verifyAllowedPaths() {
+    //TODO the allowed paths cannot be set for now, meaning all will be allowed.
+    ManagedWebAccess.inAllowedPaths("http://www.anywhere.com");
+  }
 }
