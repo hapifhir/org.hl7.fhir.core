@@ -29,11 +29,6 @@ public class FhirRequestBuilder {
   protected static final String LOCATION_HEADER = "location";
   protected static final String CONTENT_LOCATION_HEADER = "content-location";
 
-  /**
-   * The singleton instance of the HttpClient, used for all requests.
-   */
- // private static OkHttpClient okHttpClient;
-  //private final Request.Builder httpRequest;
   private final HTTPRequest httpRequest;
   private String resourceFormat = null;
   private Iterable<HTTPHeader> headers = null;
@@ -55,7 +50,6 @@ public class FhirRequestBuilder {
 
   private String source;
 
-  //TODO this should be the only constructor. There should be no okHttp exposure.
   public FhirRequestBuilder(HTTPRequest httpRequest, String source) {
     this.source = source;
     this.httpRequest = httpRequest;
@@ -79,12 +73,10 @@ public class FhirRequestBuilder {
   }
 
   /**
-
-
-  /**
    * Adds necessary headers for the given resource format provided.
    *
    * @param httpRequest {@link HTTPRequest} to add default headers to.
+   * @param format     Expected {@link Resource} format.
    */
   protected static Iterable<HTTPHeader> getResourceFormatHeaders(HTTPRequest httpRequest, String format) {
     List<HTTPHeader> headers = new ArrayList<>();
@@ -279,8 +271,10 @@ public class FhirRequestBuilder {
   }
 
   /**
-   * Extracts the 'location' header from. If no value for 'location' exists, the
+   * Extracts the 'location' header from the passed headers. If no value for 'location' exists, the
    * value for 'content-location' is returned. If neither header exists, we return null.
+   *
+   * @param headers Headers to search for 'location' or 'content-location'.
    */
   protected static String getLocationHeader(Iterable<HTTPHeader> headers) {
     String locationHeader = HTTPHeaderUtil.getSingleHeader(headers, LOCATION_HEADER);

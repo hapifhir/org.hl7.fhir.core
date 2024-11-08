@@ -33,7 +33,6 @@ public class FhirRequestBuilderTest {
   @Test
   @DisplayName("Test resource format headers are added correctly (POST).")
   void addResourceFormatHeadersPOST() {
-    //FIXME tested here. Should get list of HTTPHeader.
     String testFormat = "yaml";
     HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com").withMethod(HTTPRequest.HttpMethod.POST);
 

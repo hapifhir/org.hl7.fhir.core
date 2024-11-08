@@ -119,9 +119,6 @@ public class ClientUtils {
       throw new FHIRException("Network Access is prohibited in this context");
     }
 
-    /*FIXME delete this after refactor
-    HttpOptions options = new HttpOptions(optionsUri);
-     */
     HTTPRequest httpRequest = new HTTPRequest()
       .withMethod(HTTPRequest.HttpMethod.OPTIONS)
       .withUrl(optionsUri.toString());
@@ -133,9 +130,7 @@ public class ClientUtils {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    /*FIXME delete this after refactor
-    HttpGet httpget = new HttpGet(resourceUri);
-     */
+
     HTTPRequest httpRequest = new HTTPRequest()
       .withMethod(HTTPRequest.HttpMethod.GET)
       .withUrl(resourceUri.toString());
@@ -159,9 +154,7 @@ public class ClientUtils {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    /*FIXME delete this after refactor
-    HttpPut httpPut = new HttpPut(resourceUri);
-     */
+
     HTTPRequest httpRequest = new HTTPRequest()
       .withMethod(HTTPRequest.HttpMethod.PUT)
       .withUrl(resourceUri.toString())
@@ -174,9 +167,7 @@ public class ClientUtils {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    /*FIXME delete this after refactor
-    HttpPost httpPost = new HttpPost(resourceUri);
-     */
+
     HTTPRequest httpRequest = new HTTPRequest()
       .withMethod(HTTPRequest.HttpMethod.POST)
       .withUrl(resourceUri.toString())
@@ -193,9 +184,7 @@ public class ClientUtils {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    /*FIXME delete this after refactor
-    HttpGet httpget = new HttpGet(resourceUri);
-     */
+
     HTTPRequest httpRequest = new HTTPRequest()
       .withMethod(HTTPRequest.HttpMethod.GET)
       .withUrl(resourceUri.toString());
@@ -208,9 +197,7 @@ public class ClientUtils {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    /*FIXME delete this after refactor
-    HttpPost httpPost = new HttpPost(resourceUri);
-     */
+
     HTTPRequest httpRequest = new HTTPRequest()
       .withMethod(HTTPRequest.HttpMethod.POST)
       .withUrl(resourceUri.toString())
@@ -224,9 +211,7 @@ public class ClientUtils {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    /*FIXME delete this after refactor
-    HttpDelete deleteRequest = new HttpDelete(resourceUri);
-     */
+
     HTTPRequest request = new HTTPRequest()
       .withMethod(HTTPRequest.HttpMethod.DELETE)
       .withUrl(resourceUri.toString());
@@ -303,7 +288,6 @@ public class ClientUtils {
     return configuredHeaders;
   }
 
-  //FIXME this shouldn't set Content-Type header for GET requests
   protected static List<HTTPHeader> getResourceFormatHeaders(HTTPRequest httpRequest, String format) {
     List<HTTPHeader> headers = new ArrayList<>();
     headers.add(new HTTPHeader("Accept", format));
@@ -531,9 +515,6 @@ public class ClientUtils {
 
   public Bundle issuePostFeedRequest(URI resourceUri, Map<String, String> parameters, String resourceName,
       Resource resource, String resourceFormat) throws IOException {
-    /*FIXME delete this after refactor
-    HttpPost httpRequest = new HttpPost(resourceUri);
-     */
 
     HTTPRequest httpRequest = new HTTPRequest()
       .withMethod(HTTPRequest.HttpMethod.POST)
@@ -542,8 +523,9 @@ public class ClientUtils {
   List<HTTPHeader> headers = new ArrayList<>();
     headers.add(new HTTPHeader("Content-Type", "multipart/form-data; boundary=" + boundary));
     headers.add(new HTTPHeader("Accept", resourceFormat));
-    this.getFhirHeaders(httpRequest, null);
-    HTTPResult response = sendPayload(httpRequest.withBody(encodeFormSubmission(parameters, resourceName, resource, boundary)));
+    this.getFhirHeaders(httpRequest, null).forEach(headers::add);
+
+    HTTPResult response = sendPayload(httpRequest.withBody(encodeFormSubmission(parameters, resourceName, resource, boundary)).withHeaders(headers));
     return unmarshalFeed(response, resourceFormat);
   }
 
