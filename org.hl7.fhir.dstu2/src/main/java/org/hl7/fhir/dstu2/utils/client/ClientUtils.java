@@ -102,8 +102,8 @@ public class ClientUtils {
   private String contentLanguage;
   private final TimeUnit timeoutUnit = TimeUnit.MILLISECONDS;
 
-  protected ManagedFhirWebAccessor getManagedWebAccessBuilder() {
-    return ManagedWebAccess.fhirBuilder().withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
+  protected ManagedFhirWebAccessor getManagedWebAccessor() {
+    return ManagedWebAccess.fhirAccessor().withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
   }
 
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat,
@@ -241,7 +241,7 @@ public class ClientUtils {
     Iterable<HTTPHeader> configuredHeaders = getFhirHeaders(request, resourceFormat, headers);
     try {
 
-      HTTPResult response = getManagedWebAccessBuilder().httpCall(request.withHeaders(configuredHeaders));
+      HTTPResult response = getManagedWebAccessor().httpCall(request.withHeaders(configuredHeaders));
       T resource = unmarshalReference(response, resourceFormat);
       return new ResourceRequest<T>(resource, response.getCode(), getLocationHeader(response.getHeaders()));
     } catch (IOException ioe) {
@@ -312,7 +312,7 @@ public class ClientUtils {
     HTTPResult response = null;
     try {
 
-      response = getManagedWebAccessBuilder().httpCall(request);
+      response = getManagedWebAccessor().httpCall(request);
       return response;
     } catch (IOException ioe) {
       if (ClientUtils.debugging) {
@@ -565,7 +565,7 @@ public class ClientUtils {
     HTTPResult response = null;
     try {
 
-      response = getManagedWebAccessBuilder().httpCall(request);
+      response = getManagedWebAccessor().httpCall(request);
     } catch (IOException ioe) {
       throw new EFhirClientException("Error sending HTTP Post/Put Payload: " + ioe.getMessage(), ioe);
     }

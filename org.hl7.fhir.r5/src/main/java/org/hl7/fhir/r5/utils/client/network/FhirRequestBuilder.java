@@ -105,8 +105,8 @@ public class FhirRequestBuilder {
         || issue.getSeverity() == OperationOutcome.IssueSeverity.FATAL));
   }
 
-  protected ManagedFhirWebAccessor getManagedWebAccessBuilder() {
-    return ManagedWebAccess.fhirBuilder().withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
+  protected ManagedFhirWebAccessor getManagedWebAccessor() {
+    return ManagedWebAccess.fhirAccessor().withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
   }
 
   public FhirRequestBuilder withResourceFormat(String resourceFormat) {
@@ -142,14 +142,14 @@ public class FhirRequestBuilder {
 
   public <T extends Resource> ResourceRequest<T> execute() throws IOException {
     HTTPRequest requestWithHeaders = formatHeaders(httpRequest, resourceFormat, headers);
-    HTTPResult response = getManagedWebAccessBuilder().httpCall(requestWithHeaders);//getHttpClient().newCall(httpRequest.build()).execute();
+    HTTPResult response = getManagedWebAccessor().httpCall(requestWithHeaders);//getHttpClient().newCall(httpRequest.build()).execute();
     T resource = unmarshalReference(response, resourceFormat, null);
     return new ResourceRequest<T>(resource, response.getCode(), getLocationHeader(response.getHeaders()));
   }
 
   public Bundle executeAsBatch() throws IOException {
     HTTPRequest requestWithHeaders = formatHeaders(httpRequest, resourceFormat, null);
-    HTTPResult response = getManagedWebAccessBuilder().httpCall(requestWithHeaders);
+    HTTPResult response = getManagedWebAccessor().httpCall(requestWithHeaders);
     return unmarshalFeed(response, resourceFormat);
   }
 
