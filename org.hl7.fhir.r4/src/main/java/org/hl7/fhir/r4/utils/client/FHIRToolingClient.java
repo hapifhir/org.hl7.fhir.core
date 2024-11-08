@@ -356,10 +356,14 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   /**
-   * Helper method to prevent nesting of previously thrown EFhirClientExceptions
+   * Helper method to prevent nesting of previously thrown EFhirClientExceptions. If the e param is an instance of
+   * EFhirClientException, it will be rethrown. Otherwise, a new EFhirClientException will be thrown with e as the
+   * cause.
    *
-   * @param e
-   * @throws EFhirClientException
+   * @param code The EFhirClientException code.
+   * @param message The EFhirClientException message.
+   * @param e The exception.
+   * @throws EFhirClientException representing the exception.
    */
   protected void handleException(int code, String message, Exception e) throws EFhirClientException {
     if (e instanceof EFhirClientException) {
@@ -370,11 +374,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   /**
-   * Helper method to determine whether desired resource representation is Json or
-   * XML.
+   * Helper method to determine whether desired resource representation
+   * is Json or XML.
    *
-   * @param format
-   * @return
+   * @param format The format
+   * @return true if the format is JSON, false otherwise
    */
   protected boolean isJson(String format) {
     boolean isJson = false;

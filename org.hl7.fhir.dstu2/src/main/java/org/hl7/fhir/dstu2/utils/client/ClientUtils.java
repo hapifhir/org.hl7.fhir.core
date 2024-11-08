@@ -81,16 +81,9 @@ public class ClientUtils {
 
   private static boolean debugging = false;
 
-/*
-  @Getter
-  @Setter
-  private HttpHost proxy;
-*/
   @Getter
   @Setter
   private int timeout = 5000;
-
-
 
   @Setter
   @Getter
@@ -233,8 +226,12 @@ public class ClientUtils {
     return issueResourceRequest(resourceFormat, request, Collections.emptyList(), timeoutLoading);
   }
   /**
-   * @param resourceFormat
-   * @return
+   * Issue a resource request.
+   * @param resourceFormat the expected FHIR format
+   * @param request the request to be sent
+   * @param headers any additional headers to add
+   *
+   * @return A ResourceRequest object containing the requested resource
    */
   protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HTTPRequest request,
                                                                          @Nonnull Iterable<HTTPHeader> headers, int timeoutLoading) {
@@ -254,18 +251,21 @@ public class ClientUtils {
   }
 
   /**
-   * Method adds required request headers. TODO handle JSON request as well.
+   * Get required headers for FHIR requests.
    * 
-   * @param format
+   * @param httpRequest the request
+   * @param format the expected format
    */
   protected Iterable<HTTPHeader> getFhirHeaders(HTTPRequest httpRequest, String format) {
     return getFhirHeaders(httpRequest, format, null);
   }
 
   /**
-   * Method adds required request headers. TODO handle JSON request as well.
+   * Get required headers for FHIR requests.
    * 
-   * @param format
+   * @param httpRequest the request
+   * @param format the expected format
+   * @param headers any additional headers to add
    */
   protected Iterable<HTTPHeader> getFhirHeaders(HTTPRequest httpRequest, String format, Iterable<HTTPHeader> headers) {
     List<HTTPHeader> configuredHeaders = new ArrayList<>();
@@ -325,8 +325,8 @@ public class ClientUtils {
   /**
    * Unmarshals a resource from the response stream.
    * 
-   * @param response
-   * @return
+   * @param response The response from the server
+   * @return The unmarshalled resource
    */
   @SuppressWarnings("unchecked")
   protected <T extends Resource> T unmarshalReference(HTTPResult response, String format) {
@@ -353,8 +353,8 @@ public class ClientUtils {
   /**
    * Unmarshals Bundle from response stream.
    * 
-   * @param response
-   * @return
+   * @param response The response from the server
+   * @return The unmarshalled Bundle
    */
   protected Bundle unmarshalFeed(HTTPResult response, String format) {
     Bundle feed = null;
@@ -556,10 +556,10 @@ public class ClientUtils {
   }
 
   /**
-   * Method posts request payload
+   * Send an HTTP Post/Put Payload
    * 
-   * @param request
-   * @return
+   * @param request The request to be sent
+   * @return The response from the server
    */
   protected HTTPResult sendPayload(HTTPRequest request) {
     HTTPResult response = null;
