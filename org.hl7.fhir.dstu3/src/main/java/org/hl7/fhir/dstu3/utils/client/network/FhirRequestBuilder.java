@@ -114,8 +114,8 @@ public class FhirRequestBuilder {
     return HTTPHeaderUtil.getSingleHeader(headers, CONTENT_LOCATION_HEADER);
   }
 
-  protected ManagedFhirWebAccessor getManagedWebAccessBuilder() {
-    return ManagedWebAccess.fhirBuilder().withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
+  protected ManagedFhirWebAccessor getManagedWebAccessor() {
+    return ManagedWebAccess.fhirAccessor().withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
   }
 
   public FhirRequestBuilder withResourceFormat(String resourceFormat) {
@@ -151,14 +151,14 @@ public class FhirRequestBuilder {
 
   public <T extends Resource> ResourceRequest<T> execute() throws IOException {
     HTTPRequest requestWithHeaders = formatHeaders(httpRequest, resourceFormat, headers);
-    HTTPResult response = getManagedWebAccessBuilder().httpCall(requestWithHeaders);
+    HTTPResult response = getManagedWebAccessor().httpCall(requestWithHeaders);
     T resource = unmarshalReference(response, resourceFormat);
     return new ResourceRequest<T>(resource, response.getCode(), getLocationHeader(response.getHeaders()));
   }
 
   public Bundle executeAsBatch() throws IOException {
     HTTPRequest requestWithHeaders = formatHeaders(httpRequest, resourceFormat, null);
-    HTTPResult response = getManagedWebAccessBuilder().httpCall(requestWithHeaders);
+    HTTPResult response = getManagedWebAccessor().httpCall(requestWithHeaders);
     return unmarshalFeed(response, resourceFormat);
   }
 

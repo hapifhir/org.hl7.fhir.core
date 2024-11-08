@@ -104,32 +104,32 @@ public class ManagedWebAccess {
     ManagedWebAccess.userAgent = userAgent;
   }
 
-  public static ManagedWebAccessor builder() {
+  public static ManagedWebAccessor accessor() {
     return new ManagedWebAccessor(userAgent, serverAuthDetails);
   }
 
-  public static ManagedFhirWebAccessor fhirBuilder() {
+  public static ManagedFhirWebAccessor fhirAccessor() {
     return new ManagedFhirWebAccessor(userAgent, serverAuthDetails);
   }
 
   public static HTTPResult get(String url) throws IOException {
-    return builder().get(url);
+    return accessor().get(url);
   }
 
   public static HTTPResult get(String url, String accept) throws IOException {
-    return builder().get(url, accept);
+    return accessor().get(url, accept);
   }
 
   public static HTTPResult post(String url, byte[] content, String contentType, String accept) throws IOException {
-    return builder().post(url, content, contentType, accept);
+    return accessor().post(url, content, contentType, accept);
   }
 
   public static HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
-    return builder().put(url, content, contentType, accept);
+    return accessor().put(url, content, contentType, accept);
   }
 
   public static HTTPResult httpCall(HTTPRequest httpRequest) throws IOException {
-    return fhirBuilder().httpCall(httpRequest);
+    return fhirAccessor().httpCall(httpRequest);
   }
 
   public static void loadFromFHIRSettings() {
