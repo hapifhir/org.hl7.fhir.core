@@ -8,7 +8,9 @@
 * Fix special case r5 loading of terminology to fix validation error on ExampleScenario
 * Improve handling of JSON format errors
 * Fix bug where extension slices defined in other profiles are not found when processing slices based on extension
-* Validate slice expressions where possible
+* Validate fhirpath expression in slice discriminators
+* Fix slicing by type and profile to allow multiple options per slice
+* List measure choices when a match by version can't be found
 
 ## Other code changes
 
