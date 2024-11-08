@@ -80,7 +80,6 @@ public class TerminologyClientR5 implements ITerminologyClient {
 
   public TerminologyClientR5(String id, String address, String userAgent) throws URISyntaxException {
     this.client = new FHIRToolingClient(address, userAgent);
-    //FIXME set up FHIR Tooling Client to use ManagedWebAccess
     setClientHeaders(new ClientHeaders());
     this.id = id;
   }

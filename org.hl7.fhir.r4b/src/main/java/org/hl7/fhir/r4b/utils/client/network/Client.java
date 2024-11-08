@@ -35,9 +35,6 @@ public class Client {
 
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat,
       String message, long timeout) throws IOException {
-    /*FIXME delete once refactor is done
-    Request.Builder request = new Request.Builder().method("OPTIONS", null).url(optionsUri.toURL());
-*/
     HTTPRequest request = new HTTPRequest()
       .withUrl(optionsUri.toURL())
       .withMethod(HTTPRequest.HttpMethod.OPTIONS);
@@ -46,9 +43,6 @@ public class Client {
 
   public <T extends Resource> ResourceRequest<T> issueGetResourceRequest(URI resourceUri, String resourceFormat,
       Iterable<HTTPHeader> headers, String message, long timeout) throws IOException {
-/*FIXME delete once refactor is done
-    Request.Builder request = new Request.Builder().url(resourceUri.toURL());
-*/
     HTTPRequest request = new HTTPRequest()
       .withUrl(resourceUri.toURL())
       .withMethod(HTTPRequest.HttpMethod.GET);
@@ -64,10 +58,7 @@ public class Client {
       Iterable<HTTPHeader> headers, String message, long timeout) throws IOException {
     if (payload == null)
       throw new EFhirClientException("PUT requests require a non-null payload");
-/*FIXME delete once refactor is done
-    RequestBody body = RequestBody.create(payload);
-    Request.Builder request = new Request.Builder().url(resourceUri.toURL()).put(body);
-*/
+
     HTTPRequest request = new HTTPRequest()
       .withUrl(resourceUri.toURL())
       .withMethod(HTTPRequest.HttpMethod.PUT)
@@ -87,10 +78,6 @@ public class Client {
     if (payload == null)
       throw new EFhirClientException("POST requests require a non-null payload");
 
-    /*FIXME delete once refactor is done
-    RequestBody body = RequestBody.create(MediaType.parse(resourceFormat + ";charset=" + DEFAULT_CHARSET), payload);
-    Request.Builder request = new Request.Builder().url(resourceUri.toURL()).post(body);
-*/
     HTTPRequest request = new HTTPRequest()
       .withUrl(resourceUri.toURL())
       .withMethod(HTTPRequest.HttpMethod.POST)
@@ -101,9 +88,6 @@ public class Client {
   }
 
   public boolean issueDeleteRequest(URI resourceUri) throws IOException {
-   /*FIXME delete once refactor is done
-    Request.Builder request = new Request.Builder().url(resourceUri.toURL()).delete();
-    */
     HTTPRequest request = new HTTPRequest()
       .withUrl(resourceUri.toURL())
       .withMethod(HTTPRequest.HttpMethod.DELETE);
@@ -112,9 +96,6 @@ public class Client {
   }
 
   public Bundle issueGetFeedRequest(URI resourceUri, String resourceFormat) throws IOException {
-    /*FIXME delete once refactor is done
-    Request.Builder request = new Request.Builder().url(resourceUri.toURL());
-    */
     HTTPRequest request = new HTTPRequest()
       .withUrl(resourceUri.toURL())
       .withMethod(HTTPRequest.HttpMethod.GET);
@@ -125,10 +106,7 @@ public class Client {
       Resource resource, String resourceFormat) throws IOException {
     String boundary = "----WebKitFormBoundarykbMUo6H8QaUnYtRy";
     byte[] payload = ByteUtils.encodeFormSubmission(parameters, resourceName, resource, boundary);
-    /*FIXME delete once refactor is done
-    RequestBody body = RequestBody.create(MediaType.parse(resourceFormat + ";charset=" + DEFAULT_CHARSET), payload);
-    Request.Builder request = new Request.Builder().url(resourceUri.toURL()).post(body);
-*/
+
     HTTPRequest request = new HTTPRequest()
       .withUrl(resourceUri.toURL())
       .withMethod(HTTPRequest.HttpMethod.POST)
@@ -141,10 +119,7 @@ public class Client {
       String message, int timeout) throws IOException {
     if (payload == null)
       throw new EFhirClientException("POST requests require a non-null payload");
-    /*FIXME delete once refactor is done
-    RequestBody body = RequestBody.create(MediaType.parse(resourceFormat + ";charset=" + DEFAULT_CHARSET), payload);
-    Request.Builder request = new Request.Builder().url(resourceUri.toURL()).post(body);
-*/
+
     HTTPRequest request = new HTTPRequest()
       .withUrl(resourceUri.toURL())
       .withMethod(HTTPRequest.HttpMethod.POST)

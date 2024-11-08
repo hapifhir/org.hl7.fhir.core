@@ -539,7 +539,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     headers.forEach(this.headers::add);
   }
 
-  //FIXME should be in ManagedWebAccess?
   private Iterable<HTTPHeader> generateHeaders(boolean hasBody) {
     // Add any other headers
     List<HTTPHeader> headers = new ArrayList<>(this.headers);

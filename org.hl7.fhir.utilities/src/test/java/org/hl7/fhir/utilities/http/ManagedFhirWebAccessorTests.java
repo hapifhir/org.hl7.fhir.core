@@ -10,7 +10,6 @@ public class ManagedFhirWebAccessorTests {
   @Test
   @DisplayName("Test default headers are added correctly.")
   void addDefaultAgentHeader() {
-    // FIXME move to ManagedFhirWebAccessBuilder
     HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com");
 
     ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(expectedUserAgent, null);
@@ -22,7 +21,6 @@ public class ManagedFhirWebAccessorTests {
   @Test
   @DisplayName("Test default headers are added correctly.")
   void addDefaultBasicHeader() {
-    // FIXME move to ManagedFhirWebAccessBuilder
     HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com");
 
     ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(expectedUserAgent, null)
