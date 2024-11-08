@@ -143,7 +143,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
   }
 
   private HTTPResult getHTTPResult(Response execute) throws IOException {
-    return new HTTPResult(execute.request().url().toString(), execute.code(), execute.message(), execute.header("Content-Type"), execute.body() != null && execute.body().contentLength() > 0 ? execute.body().bytes() : null, getHeadersFromResponse(execute));
+    return new HTTPResult(execute.request().url().toString(), execute.code(), execute.message(), execute.header("Content-Type"), execute.body() != null && execute.body().contentLength() != 0 ? execute.body().bytes() : null, getHeadersFromResponse(execute));
   }
 
   private Iterable<HTTPHeader> getHeadersFromResponse(Response response) {
