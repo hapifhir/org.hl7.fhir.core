@@ -68,6 +68,7 @@ public class ManagedWebAccess {
   }
 
   private static WebAccessPolicy accessPolicy = WebAccessPolicy.DIRECT; // for legacy reasons
+  //TODO get this from fhir settings
   private static List<String> allowedDomains = new ArrayList<>();
   @Getter
   private static IWebAccessor accessor;
