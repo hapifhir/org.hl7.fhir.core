@@ -1,11 +1,14 @@
 ## Validator Changes
 
+* Support authentication for terminology servers (see https://confluence.hl7.org/display/FHIR/Using+fhir-settings.json)
 * Fix issue where valdiator not retaining extension context when checking constraint expressions in profiles
 * Validate min-length when found in extension
 * Correct bug parsing json-property-key values with meant validation failed
 * Fix problem validating json-property-key value pairs
 * Fix special case r5 loading of terminology to fix validation error on ExampleScenario
 * Improve handling of JSON format errors
+* Fix bug where extension slices defined in other profiles are not found when processing slices based on extension
+* Validate slice expressions where possible
 
 ## Other code changes
 
