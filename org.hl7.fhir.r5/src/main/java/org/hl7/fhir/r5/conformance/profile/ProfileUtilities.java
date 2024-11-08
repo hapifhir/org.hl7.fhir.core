@@ -119,6 +119,7 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Rule;
 import org.hl7.fhir.utilities.xml.SchematronWriter.SchematronType;
 import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
 
+
 /** 
  * This class provides a set of utility operations for working with Profiles.
  * Key functionality:
@@ -490,8 +491,8 @@ public class ProfileUtilities {
     return this;
   }
 
-  public SourcedChildDefinitions getChildMap(StructureDefinition profile, ElementDefinition element) throws DefinitionException {
-    String cacheKey = "cm."+profile.getVersionedUrl()+"#"+(element.hasId() ? element.getId() : element.getPath());
+  public SourcedChildDefinitions getChildMap(StructureDefinition profile, ElementDefinition element, boolean chaseTypes) throws DefinitionException {
+    String cacheKey = "cm."+profile.getVersionedUrl()+"#"+(element.hasId() ? element.getId() : element.getPath())+"."+chaseTypes;
     if (childMapCache.containsKey(cacheKey)) {
       return childMapCache.get(cacheKey);
     }
@@ -519,7 +520,7 @@ public class ProfileUtilities {
         
       for (ElementDefinition e : list) {
         if (id.equals(e.getId()))
-          return getChildMap(src, e);
+          return getChildMap(src, e, true);
       }
       throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_NAME_REFERENCE__AT_PATH_, element.getContentReference(), element.getPath()));
 
@@ -535,6 +536,30 @@ public class ProfileUtilities {
             res.add(e);
         } else
           break;
+      }
+      if (res.isEmpty() && chaseTypes) {
+        // we've got no in-line children. Some consumers of this routine will figure this out for themselves but most just want to walk into 
+        // the type children.
+        src = null;
+        if (element.getType().isEmpty()) {
+          throw new DefinitionException("No defined children and no type information on element '"+element.getId()+"'");
+        } else if (element.getType().size() > 1) {
+          throw new DefinitionException("No defined children and multiple possible types '"+element.typeSummary()+"' on element '"+element.getId()+"'");
+        } else if (element.getType().get(0).getProfile().size() > 1) {
+          throw new DefinitionException("No defined children and multiple possible type profiles '"+element.typeSummary()+"' on element '"+element.getId()+"'");
+        } else if (element.getType().get(0).hasProfile()) {
+          src = context.fetchResource(StructureDefinition.class, element.getType().get(0).getProfile().get(0).getValue());
+          if (src == null) {
+            throw new DefinitionException("No defined children and unknown type profile '"+element.typeSummary()+"' on element '"+element.getId()+"'");
+          }
+        } else {
+          src = context.fetchTypeDefinition(element.getType().get(0).getWorkingCode());
+          if (src == null) {
+            throw new DefinitionException("No defined children and unknown type '"+element.typeSummary()+"' on element '"+element.getId()+"'");
+          }
+        }
+        SourcedChildDefinitions scd  = getChildMap(src, src.getSnapshot().getElementFirstRep(), false);
+        res = scd.list;
       }
       SourcedChildDefinitions result  = new SourcedChildDefinitions(src, res);
       childMapCache.put(cacheKey, result);
@@ -4085,7 +4110,7 @@ public class ProfileUtilities {
   private org.hl7.fhir.r5.elementmodel.Element generateExample(StructureDefinition profile, ExampleValueAccessor accessor) throws FHIRException {
     ElementDefinition ed = profile.getSnapshot().getElementFirstRep();
     org.hl7.fhir.r5.elementmodel.Element r = new org.hl7.fhir.r5.elementmodel.Element(ed.getPath(), new Property(context, ed, profile));
-    SourcedChildDefinitions children = getChildMap(profile, ed);
+    SourcedChildDefinitions children = getChildMap(profile, ed, true);
     for (ElementDefinition child : children.getList()) {
       if (child.getPath().endsWith(".id")) {
         org.hl7.fhir.r5.elementmodel.Element id = new org.hl7.fhir.r5.elementmodel.Element("id", new Property(context, child, profile));
@@ -4107,7 +4132,7 @@ public class ProfileUtilities {
     } else {
       org.hl7.fhir.r5.elementmodel.Element res = new org.hl7.fhir.r5.elementmodel.Element(tail(ed.getPath()), new Property(context, ed, profile));
       boolean hasValue = false;
-      SourcedChildDefinitions children = getChildMap(profile, ed);
+      SourcedChildDefinitions children = getChildMap(profile, ed, true);
       for (ElementDefinition child : children.getList()) {
         if (!child.hasContentReference()) {
         org.hl7.fhir.r5.elementmodel.Element e = createExampleElement(profile, child, accessor);
