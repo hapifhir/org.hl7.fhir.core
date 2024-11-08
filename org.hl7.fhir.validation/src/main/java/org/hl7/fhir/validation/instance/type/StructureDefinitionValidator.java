@@ -463,9 +463,13 @@ public class StructureDefinitionValidator extends BaseValidator {
         } else {
           Element pattern = element.getNamedChild("pattern");
           if (pattern != null) {
-            NodeStack fn = stack.push(pattern, 0, null, null);            
-            if (rule(errors, "2024-03-26", IssueType.INVALID, fn, pattern.fhirType().equals(ed.getFixed().fhirType()), I18nConstants.SD_ELEMENT_PATTERN_WRONG_TYPE, pattern.fhirType(), ed.getFixed().fhirType())) {
-              ok = ((org.hl7.fhir.validation.instance.InstanceValidator) parent).checkFixedValue(errors, path, pattern, ed.getFixed(), base.getVersionedUrl(), "pattern", element, true, context.formatMessage(I18nConstants.SD_ELEMENT_REASON_DERIVED, base.getVersionedUrl())) && ok;
+            NodeStack fn = stack.push(pattern, 0, null, null);  
+            if (rule(errors, "2024-03-26", IssueType.INVALID, fn, ed.hasFixed(), I18nConstants.SD_ELEMENT_PATTERN_NO_FIXED, pattern.fhirType())) {
+              if (rule(errors, "2024-03-26", IssueType.INVALID, fn, pattern.fhirType().equals(ed.getFixed().fhirType()), I18nConstants.SD_ELEMENT_PATTERN_WRONG_TYPE, pattern.fhirType(), ed.getFixed().fhirType())) {
+                ok = ((org.hl7.fhir.validation.instance.InstanceValidator) parent).checkFixedValue(errors, path, pattern, ed.getFixed(), base.getVersionedUrl(), "pattern", element, true, context.formatMessage(I18nConstants.SD_ELEMENT_REASON_DERIVED, base.getVersionedUrl())) && ok;
+              } else {
+                ok = false;
+              }
             } else {
               ok = false;
             }
