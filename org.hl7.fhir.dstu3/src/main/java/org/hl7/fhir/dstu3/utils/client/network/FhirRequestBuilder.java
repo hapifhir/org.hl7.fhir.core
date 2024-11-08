@@ -56,9 +56,9 @@ public class FhirRequestBuilder {
 
   /**
    * Adds necessary default headers, formatting headers, and any passed in {@link HTTPHeader}s to the passed in
-   * {@link okhttp3.Request.Builder}
+   * {@link HTTPRequest}
    *
-   * @param request {@link okhttp3.Request.Builder} to add headers to.
+   * @param request {@link HTTPRequest} to add headers to.
    * @param format  Expected {@link Resource} format.
    * @param headers Any additional {@link HTTPHeader}s to add to the request.
    */
@@ -228,7 +228,7 @@ public class FhirRequestBuilder {
   /**
    * Returns the appropriate parser based on the format type passed in. Defaults to XML parser if a blank format is
    * provided...because reasons.
-   * <p>
+   * <p/>
    * Currently supports only "json" and "xml" formats.
    *
    * @param format One of "json" or "xml".

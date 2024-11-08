@@ -102,16 +102,12 @@ public class FhirRequestBuilder {
   }
 
   /**
-   * Extracts the 'location' header from the passes in {@link Headers}. If no
+   * Extracts the 'location' header from the passed in {@link HTTPHeader}s. If no
    * value for 'location' exists, the value for 'content-location' is returned. If
    * neither header exists, we return null.
    *
-   * @param headers {@link Headers} to evaluate
+   * @param headers {@link HTTPHeader}s to evaluate
    * @return {@link String} header value, or null if no location headers are set.
-   */
-  /**
-   * Extracts the 'location' header from. If no value for 'location' exists, the
-   * value for 'content-location' is returned. If neither header exists, we return null.
    */
   protected static String getLocationHeader(Iterable<HTTPHeader> headers) {
     String locationHeader = HTTPHeaderUtil.getSingleHeader(headers, LOCATION_HEADER);

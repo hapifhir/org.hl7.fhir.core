@@ -250,7 +250,7 @@ public class FhirRequestBuilder {
   /**
    * Returns the appropriate parser based on the format type passed in. Defaults to XML parser if a blank format is
    * provided...because reasons.
-   * <p>
+   * <p/>
    * Currently supports only "json" and "xml" formats.
    *
    * @param format One of "json" or "xml".
