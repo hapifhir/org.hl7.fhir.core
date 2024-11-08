@@ -40,7 +40,7 @@ public class FhirSettingsPOJO {
   private String txFhirLocal;
 
   private PackageManagementPOJO packageManagement;
-  private TerminologyServersPOJO terminologyServers;
+  private FHIRServersPOJO fhirServers;
 
   protected FhirSettingsPOJO() {
     apiKeys = null;
@@ -55,6 +55,6 @@ public class FhirSettingsPOJO {
     txFhirLocal = TX_SERVER_LOCAL;
 
     packageManagement = null;
-    terminologyServers = null;
+    fhirServers = null;
   }
 }
