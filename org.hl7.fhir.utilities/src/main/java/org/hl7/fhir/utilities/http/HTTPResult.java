@@ -2,39 +2,40 @@ package org.hl7.fhir.utilities.http;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.*;
 
+import lombok.Getter;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
 public class HTTPResult {
-  private int code;
-  private String contentType;
-  private byte[] content;
-  private String source;
-  private String message;
-  
-  
+
+  @Getter
+  private final int code;
+  @Getter
+  private final String contentType;
+  @Getter
+  private final byte[] content;
+  @Getter
+  private final String source;
+  @Getter
+  private final String message;
+  @Getter
+  private final Iterable<HTTPHeader> headers;
+
   public HTTPResult(String source, int code, String message, String contentType, byte[] content) {
+    this(source, code, message, contentType, content, Collections.emptyList());
+  }
+
+
+  public HTTPResult(String source, int code, String message, String contentType, byte[] content, Iterable<HTTPHeader> headers) {
     super();
     this.source = source;
     this.code = code;
     this.contentType = contentType;
     this.content = content;
     this.message = message;
-  }
-  
-  public int getCode() {
-    return code;
-  }
-  public String getContentType() {
-    return contentType;
-  }
-  public byte[] getContent() {
-    return content;
-  }
-
-  public String getSource() {
-    return source;
+    this.headers = headers;
   }
 
   public void checkThrowException() throws IOException {
@@ -52,11 +53,7 @@ public class HTTPResult {
     }      
   }
 
-  public String getMessage() {
-    return message;
-  }
-
   public String getContentAsString() {
     return new String(content, StandardCharsets.UTF_8);
-  }    
+  }
 }
