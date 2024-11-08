@@ -46,10 +46,10 @@ public class VSACImporter extends OIDBasedValueSetImporter {
 
   public static void main(String[] args) throws FHIRException, IOException, ParseException, URISyntaxException {
     VSACImporter self = new VSACImporter();
-    self.process(args[0], args[1], args[2], "true".equals(args[3]), "true".equals(args[4]));
+    self.process(args[0], args[1], "true".equals(args[2]), "true".equals(args[3]));
   }
 
-  private void process(String source, String dest, String apiKey, boolean onlyNew, boolean onlyActive) throws FHIRException, IOException, URISyntaxException {
+  private void process(String source, String dest, boolean onlyNew, boolean onlyActive) throws FHIRException, IOException, URISyntaxException {
     CSVReader csv = new CSVReader(ManagedFileAccess.inStream(source));
     csv.readHeaders();
     Map<String, String> errs = new HashMap<>();
@@ -121,6 +121,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
       oo.addIssue().setSeverity(IssueSeverity.ERROR).setCode(IssueType.EXCEPTION).setDiagnostics(errs.get(oid)).addLocation(oid);
     }
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "other", "OperationOutcome-vsac-errors.json")), oo);
+    System.out.println();
     System.out.println("Done. " + i + " ValueSets in "+Utilities.describeDuration(System.currentTimeMillis() - tt));
   }
 
