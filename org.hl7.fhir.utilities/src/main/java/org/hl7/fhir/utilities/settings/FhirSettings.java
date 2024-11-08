@@ -1,7 +1,6 @@
 package org.hl7.fhir.utilities.settings;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -40,7 +39,6 @@ public class FhirSettings {
 
   final String filePath;
   private FhirSettings(FhirSettingsPOJO fhirSettings, String filePath) {
-
     this.fhirSettings = fhirSettings;
     this.filePath = filePath;
   }
@@ -236,11 +234,11 @@ public class FhirSettings {
     return Arrays.asList(instance.fhirSettings.getPackageManagement().getServers().toArray(new ServerDetailsPOJO[]{}));
   }
 
-  public static List<ServerDetailsPOJO> getTerminologyServers() {
+  public static List<ServerDetailsPOJO> getFhirServers() {
     getInstance();
-    if (instance.fhirSettings.getTerminologyServers() == null) {
+    if (instance.fhirSettings.getFhirServers() == null) {
       return Collections.emptyList();
     }
-    return Arrays.asList(instance.fhirSettings.getTerminologyServers().getServers().toArray(new ServerDetailsPOJO[]{}));
+    return Arrays.asList(instance.fhirSettings.getFhirServers().getServers().toArray(new ServerDetailsPOJO[]{}));
   }
 }

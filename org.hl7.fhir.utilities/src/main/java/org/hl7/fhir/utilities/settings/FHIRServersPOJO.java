@@ -12,11 +12,11 @@ import lombok.extern.jackson.Jacksonized;
 @Builder
 @Jacksonized
 @AllArgsConstructor
-public class TerminologyServersPOJO {
+public class FHIRServersPOJO {
 
   private List<ServerDetailsPOJO> servers;
 
-  protected TerminologyServersPOJO() {
+  protected FHIRServersPOJO() {
     servers = new ArrayList<>();
   }
 }
