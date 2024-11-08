@@ -51,7 +51,6 @@ public class FhirRequestBuilder {
   private ToolingClientLogger logger = null;
   private String source;
 
-  //TODO this should be the only constructor. There should be no okHttp exposure.
   public FhirRequestBuilder(HTTPRequest httpRequest, String source) {
     this.source = source;
     this.httpRequest = httpRequest;

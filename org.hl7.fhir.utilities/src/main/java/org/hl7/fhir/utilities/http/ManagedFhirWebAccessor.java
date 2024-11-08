@@ -126,10 +126,9 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
         }
         OkHttpClient okHttpClient = getOkHttpClient();
         //TODO check and throw based on httpRequest:
-        // if (!ManagedWebAccess.inAllowedPaths(url)) {
-        //      throw new IOException("The pathname '"+url+"' cannot be accessed by policy");
-        // }
-        //TODO add auth headers to httpRequest
+
+        if (!ManagedWebAccess.inAllowedPaths(httpRequestWithDirectHeaders.getUrl().toString())) {
+              throw new IOException("The pathname '"+httpRequestWithDirectHeaders.getUrl().toString()+"' cannot be accessed by policy");}
         Response response = okHttpClient.newCall(requestBuilder.build()).execute();
         return getHTTPResult(response);
       case MANAGED:
