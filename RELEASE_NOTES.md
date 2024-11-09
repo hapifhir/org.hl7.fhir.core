@@ -7,8 +7,10 @@
 * Fix problem validating json-property-key value pairs
 * Fix special case r5 loading of terminology to fix validation error on ExampleScenario
 * Improve handling of JSON format errors
+* Fix slicing by type and profile to allow multiple options per slice
 * Fix bug where extension slices defined in other profiles are not found when processing slices based on extension
-* Validate slice expressions where possible
+* Validate fhirpath expression in slice discriminators
+* List measure choices when a match by version can't be found
 
 ## Other code changes
 

@@ -604,10 +604,17 @@ public class FHIRPathEngine {
     warnings.addAll(typeWarnings);
     return res;
   }
-  
+
   public TypeDetails checkOnTypes(Object appContext, String resourceType, TypeDetails types, ExpressionNode expr, List<IssueMessage> warnings) throws FHIRLexerException, PathEngineException, DefinitionException {
     typeWarnings.clear();
     TypeDetails res = executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, false, expr);
+    warnings.addAll(typeWarnings);
+    return res;
+  }
+  
+  public TypeDetails checkOnTypes(Object appContext, String resourceType, TypeDetails types, ExpressionNode expr, List<IssueMessage> warnings, boolean canBeNone) throws FHIRLexerException, PathEngineException, DefinitionException {
+    typeWarnings.clear();
+    TypeDetails res = executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, canBeNone, expr);
     warnings.addAll(typeWarnings);
     return res;
   }
@@ -6585,7 +6592,7 @@ public class FHIRPathEngine {
 
 
   /** given an element definition in a profile, what element contains the differentiating fixed 
-   * for the element, given the differentiating expresssion. The expression is only allowed to 
+   * for the element, given the differentiating expression. The expression is only allowed to 
    * use a subset of FHIRPath
    * 
    * @param profile

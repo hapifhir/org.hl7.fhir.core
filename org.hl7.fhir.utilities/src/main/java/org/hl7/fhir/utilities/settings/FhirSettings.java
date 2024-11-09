@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -232,6 +233,14 @@ public class FhirSettings {
     if (instance.fhirSettings.getPackageManagement() == null) {
       return Collections.emptyList();
     }
-    return List.of(instance.fhirSettings.getPackageManagement().getServers().toArray(new ServerDetailsPOJO[]{}));
+    return Arrays.asList(instance.fhirSettings.getPackageManagement().getServers().toArray(new ServerDetailsPOJO[]{}));
+  }
+
+  public static List<ServerDetailsPOJO> getTerminologyServers() {
+    getInstance();
+    if (instance.fhirSettings.getTerminologyServers() == null) {
+      return Collections.emptyList();
+    }
+    return Arrays.asList(instance.fhirSettings.getTerminologyServers().getServers().toArray(new ServerDetailsPOJO[]{}));
   }
 }
