@@ -52,9 +52,9 @@ import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 public class ManagedWebAccess {
 
   public interface IWebAccessor {
-    HTTPResult get(String url, String accept, Map<String, String> headers) throws IOException;
-    HTTPResult post(String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
-    HTTPResult put(String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
+    HTTPResult get(String mode, String url, String accept, Map<String, String> headers) throws IOException;
+    HTTPResult post(String mode, String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
+    HTTPResult put(String mode, String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
   }
 
   public interface IFhirWebAccessor {
@@ -104,28 +104,28 @@ public class ManagedWebAccess {
     ManagedWebAccess.userAgent = userAgent;
   }
 
-  public static ManagedWebAccessor accessor() {
-    return new ManagedWebAccessor(userAgent, serverAuthDetails);
+  public static ManagedWebAccessor accessor(String mode) {
+    return new ManagedWebAccessor(mode, userAgent, serverAuthDetails);
   }
 
   public static ManagedFhirWebAccessor fhirAccessor() {
     return new ManagedFhirWebAccessor(userAgent, serverAuthDetails);
   }
 
-  public static HTTPResult get(String url) throws IOException {
-    return accessor().get(url);
+  public static HTTPResult get(String mode, String url) throws IOException {
+    return accessor(mode).get(url);
   }
 
-  public static HTTPResult get(String url, String accept) throws IOException {
-    return accessor().get(url, accept);
+  public static HTTPResult get(String mode, String url, String accept) throws IOException {
+    return accessor(mode).get(url, accept);
   }
 
-  public static HTTPResult post(String url, byte[] content, String contentType, String accept) throws IOException {
-    return accessor().post(url, content, contentType, accept);
+  public static HTTPResult post(String mode, String url, byte[] content, String contentType, String accept) throws IOException {
+    return accessor(mode).post(url, content, contentType, accept);
   }
 
-  public static HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
-    return accessor().put(url, content, contentType, accept);
+  public static HTTPResult put(String mode, String url, byte[] content, String contentType, String accept) throws IOException {
+    return accessor(mode).put(url, content, contentType, accept);
   }
 
   public static HTTPResult httpCall(HTTPRequest httpRequest) throws IOException {

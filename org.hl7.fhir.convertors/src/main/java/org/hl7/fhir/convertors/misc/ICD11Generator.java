@@ -394,7 +394,7 @@ public class ICD11Generator {
 
 
   private JsonObject fetchJson(String source) throws IOException {
-    HTTPResult res = ManagedWebAccess.accessor().withHeader("API-Version", "v2").withHeader("Accept-Language", "en").get(source,"application/json");
+    HTTPResult res = ManagedWebAccess.accessor("web").withHeader("API-Version", "v2").withHeader("Accept-Language", "en").get(source,"application/json");
     res.checkThrowException();
     return JsonParser.parseObject(res.getContent());
   }

@@ -25,7 +25,7 @@ public class ProfileLoader {
 
   private static byte[] loadProfileFromUrl(String src) throws FHIRException {
     try {
-      HTTPResult res = ManagedWebAccess.get(src + "?nocache=" + System.currentTimeMillis());
+      HTTPResult res = ManagedWebAccess.get("web", src + "?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       return res.getContent();
     } catch (Exception e) {

@@ -162,6 +162,7 @@ public class ManagedWebAccessAuthTests {
 
   private ServerDetailsPOJO getBasicAuthServerPojo() {
     return new ServerDetailsPOJO(
+      null,
       server.url("").toString(),
       "basic",
       "dummyServerType",
@@ -181,6 +182,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
 
   private ServerDetailsPOJO getTokenAuthServerPojo() {
     return new ServerDetailsPOJO(
+        null,
       server.url("").toString(),
       "token",
       "dummyServerType",
@@ -200,6 +202,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
 
   private ServerDetailsPOJO getApiKeyAuthServerPojo() {
     return new ServerDetailsPOJO(
+        null,
       server.url("").toString(),
       "apikey",
       "dummyServerType",

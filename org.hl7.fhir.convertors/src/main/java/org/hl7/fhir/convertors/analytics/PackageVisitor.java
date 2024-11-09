@@ -241,7 +241,7 @@ public class PackageVisitor {
         File co = ManagedFileAccess.file(Utilities.path(cache, pid+"."+manifest.asString("date")+".tgz"));
         if (!co.exists()) {
 
-          HTTPResult res = ManagedWebAccess.get(repo+"/package.tgz?nocache=" + System.currentTimeMillis());
+          HTTPResult res = ManagedWebAccess.get("web", repo+"/package.tgz?nocache=" + System.currentTimeMillis());
           res.checkThrowException();
           TextFile.bytesToFile(res.getContent(), co);
         }
@@ -338,7 +338,7 @@ public class PackageVisitor {
     System.out.println("Feed "+str);
     try {
 
-      HTTPResult res = ManagedWebAccess.get(str+"?nocache=" + System.currentTimeMillis());
+      HTTPResult res = ManagedWebAccess.get("web", str+"?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       Document xml = XMLUtil.parseToDom(res.getContent());
       for (Element channel : XMLUtil.getNamedChildren(xml.getDocumentElement(), "channel")) {
