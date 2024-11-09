@@ -6619,7 +6619,7 @@ public class FHIRPathEngine {
         focus = element;
       } else { 
         SourcedChildDefinitions childDefinitions;
-        childDefinitions = profileUtilities.getChildMap(sd, element.getElement());
+        childDefinitions = profileUtilities.getChildMap(sd, element.getElement(), false);
         // if that's empty, get the children of the type
         if (childDefinitions.getList().isEmpty()) {
 
@@ -6627,7 +6627,7 @@ public class FHIRPathEngine {
           if (sd == null) {
             throw makeException(expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_CANT_FIND, element.getElement().getType().get(0).getProfile(), element.getElement().getId());
           }
-          childDefinitions = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep());
+          childDefinitions = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep(), false);
         }
         for (ElementDefinition t : childDefinitions.getList()) {
           if (tailMatches(t, expr.getName()) && !t.hasSlicing()) { // GG: slicing is a problem here. This is for an exetnsion with a fixed value (type slicing) 
@@ -6657,7 +6657,7 @@ public class FHIRPathEngine {
         focus = new TypedElementDefinition(sd.getSnapshot().getElementFirstRep());
       } else if ("extension".equals(expr.getName())) {
         String targetUrl = expr.getParameters().get(0).getConstant().primitiveValue();
-        SourcedChildDefinitions childDefinitions = profileUtilities.getChildMap(sd, element.getElement());
+        SourcedChildDefinitions childDefinitions = profileUtilities.getChildMap(sd, element.getElement(), true);
         for (ElementDefinition t : childDefinitions.getList()) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
             StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty() || t.getType().get(0).getProfile().isEmpty()) ?
@@ -6666,7 +6666,7 @@ public class FHIRPathEngine {
               exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition(), exsd);
             }
             if (exsd != null && exsd.getUrl().equals(targetUrl)) {
-              if (profileUtilities.getChildMap(sd, t).getList().isEmpty()) {
+              if (profileUtilities.getChildMap(sd, t, false).getList().isEmpty()) {
                 sd = exsd;
               }
               focus = new TypedElementDefinition(t);
