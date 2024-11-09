@@ -78,7 +78,7 @@ public class TerminologyCacheManager {
     try {
       System.out.println("Initialise terminology cache from "+source);
 
-      HTTPResult res = ManagedWebAccess.get(source+"?nocache=" + System.currentTimeMillis());
+      HTTPResult res = ManagedWebAccess.get("web", source+"?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       unzip(new ByteArrayInputStream(res.getContent()), cacheFolder);
     } catch (Exception e) {
@@ -148,7 +148,7 @@ public class TerminologyCacheManager {
     // post it to
     String url = "https://tx.fhir.org/post/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip";
     System.out.println("Sending tx-cache to "+url+" ("+Utilities.describeSize(bs.toByteArray().length)+")");
-    HTTPResult res = ManagedWebAccess.accessor()
+    HTTPResult res = ManagedWebAccess.accessor("web")
         .withBasicAuth(token.substring(0, token.indexOf(':')), token.substring(token.indexOf(':') + 1))
         .put(url, bs.toByteArray(), null, "application/zip");
     

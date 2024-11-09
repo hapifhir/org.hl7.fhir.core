@@ -319,7 +319,7 @@ public class Scanner {
   }
 
   protected void download(String address, String filename) throws IOException {
-    HTTPResult res = ManagedWebAccess.get(address);
+    HTTPResult res = ManagedWebAccess.get("web", address);
     res.checkThrowException();
     TextFile.bytesToFile(res.getContent(), filename);
   }

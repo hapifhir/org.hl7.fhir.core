@@ -858,7 +858,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   @Override
   public byte[] fetchRaw(IResourceValidator validator, String source) throws MalformedURLException, IOException {
-    HTTPResult res = ManagedWebAccess.get(source);
+    HTTPResult res = ManagedWebAccess.get("web", source);
     res.checkThrowException();
     return res.getContent();
   }

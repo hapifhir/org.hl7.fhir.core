@@ -45,7 +45,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
 
 
   public ManagedFhirWebAccessor(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
-    super(userAgent, serverAuthDetails);
+    super("fhir", userAgent, serverAuthDetails);
     this.timeout = 5000;
     this.timeoutUnit = TimeUnit.MILLISECONDS;
   }
@@ -88,7 +88,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
         }
       }
     } else {
-      ServerDetailsPOJO settings = ManagedWebAccessUtils.getServer(httpRequest.getUrl().toString(), getServerAuthDetails());
+      ServerDetailsPOJO settings = ManagedWebAccessUtils.getServer(getMode(), httpRequest.getUrl().toString(), getServerAuthDetails());
       if (settings != null) {
         switch (settings.getAuthenticationType()) {
           case "basic":

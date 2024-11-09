@@ -1384,7 +1384,7 @@ public class ProfileComparer {
     if (f.exists())
       return TextFile.fileToString(f);
 
-    HTTPResult res = ManagedWebAccess.get(source);
+    HTTPResult res = ManagedWebAccess.get("web", source);
     res.checkThrowException();
     String result = TextFile.bytesToString(res.getContent());
     TextFile.stringToFile(result, f);

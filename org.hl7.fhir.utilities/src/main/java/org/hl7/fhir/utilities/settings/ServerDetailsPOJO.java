@@ -11,6 +11,9 @@ import lombok.extern.jackson.Jacksonized;
 @AllArgsConstructor
 public class ServerDetailsPOJO {
 
+    // what kind of HTTP server this is - a FHIR tx server, an NPM server, or a general web server
+    String mode;
+  
     String url;
 
     // possible values: none, basic, token, apikey

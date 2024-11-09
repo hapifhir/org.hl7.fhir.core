@@ -175,7 +175,7 @@ public class PackageClient {
   }
  
   private InputStream fetchUrl(String source, String accept) throws IOException {
-    ManagedWebAccessor webAccessor = ManagedWebAccess.accessor();
+    ManagedWebAccessor webAccessor = ManagedWebAccess.accessor("web");
     if (server.getAuthenticationMode() == HTTPAuthenticationMode.TOKEN) {
       webAccessor.withToken(server.getToken());
     } else if (server.getAuthenticationMode() == HTTPAuthenticationMode.BASIC) {

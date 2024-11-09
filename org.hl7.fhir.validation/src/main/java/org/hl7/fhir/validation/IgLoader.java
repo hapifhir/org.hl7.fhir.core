@@ -430,7 +430,7 @@ public class IgLoader implements IValidationEngineLoader {
 
   private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException, IOException {
     try {
-      HTTPResult res = ManagedWebAccess.get(source + "?nocache=" + System.currentTimeMillis());
+      HTTPResult res = ManagedWebAccess.get("web", source + "?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       return new ByteArrayInputStream(res.getContent());
     } catch (IOException e) {
