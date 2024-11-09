@@ -1,11 +1,10 @@
 package org.hl7.fhir.r4b.utils.client.network;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4b.formats.IParser;
@@ -18,14 +17,9 @@ import org.hl7.fhir.r4b.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r4b.utils.ResourceUtilities;
 import org.hl7.fhir.r4b.utils.client.EFhirClientException;
 import org.hl7.fhir.r4b.utils.client.ResourceFormat;
+import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.http.*;
 import org.hl7.fhir.utilities.xhtml.XhtmlUtils;
-
-import okhttp3.Authenticator;
-import okhttp3.Credentials;
-import okhttp3.Headers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class FhirRequestBuilder {
 
@@ -35,13 +29,10 @@ public class FhirRequestBuilder {
   protected static final String LOCATION_HEADER = "location";
   protected static final String CONTENT_LOCATION_HEADER = "content-location";
   protected static final String DEFAULT_CHARSET = "UTF-8";
-  /**
-   * The singleton instance of the HttpClient, used for all requests.
-   */
-  private static OkHttpClient okHttpClient;
-  private final Request.Builder httpRequest;
+
+  private final HTTPRequest httpRequest;
   private String resourceFormat = null;
-  private Headers headers = null;
+  private Iterable<HTTPHeader> headers = null;
   private String message = null;
   private int retryCount = 1;
   /**
@@ -55,63 +46,43 @@ public class FhirRequestBuilder {
   private TimeUnit timeoutUnit = TimeUnit.MILLISECONDS;
 
   /**
-   * {@link FhirLoggingInterceptor} for log output.
+   * {@link ToolingClientLogger} for log output.
    */
-  private FhirLoggingInterceptor logger = null;
+  private ToolingClientLogger logger = null;
   private String source;
 
-  public FhirRequestBuilder(Request.Builder httpRequest, String source) {
-    this.httpRequest = httpRequest;
+  public FhirRequestBuilder(HTTPRequest httpRequest, String source) {
     this.source = source;
+    this.httpRequest = httpRequest;
   }
 
   /**
    * Adds necessary default headers, formatting headers, and any passed in
-   * {@link Headers} to the passed in {@link okhttp3.Request.Builder}
+   * {@link HTTPHeader} to the passed in {@link okhttp3.Request.Builder}
    *
    * @param request {@link okhttp3.Request.Builder} to add headers to.
    * @param format  Expected {@link Resource} format.
-   * @param headers Any additional {@link Headers} to add to the request.
+   * @param headers Any additional {@link HTTPHeader} to add to the request.
    */
-  protected static void formatHeaders(Request.Builder request, String format, Headers headers) {
-    addDefaultHeaders(request, headers);
-    if (format != null)
-      addResourceFormatHeaders(request, format);
-    if (headers != null)
-      addHeaders(request, headers);
+  protected static HTTPRequest formatHeaders(HTTPRequest request, String format, Iterable<HTTPHeader> headers) {
+    List<HTTPHeader> allHeaders = new ArrayList<>();
+    request.getHeaders().forEach(allHeaders::add);
+
+    if (format != null) getResourceFormatHeaders(request, format).forEach(allHeaders::add);
+    if (headers != null) headers.forEach(allHeaders::add);
+    return request.withHeaders(allHeaders);
   }
 
-  /**
-   * Adds necessary headers for all REST requests.
-   * <li>User-Agent : hapi-fhir-tooling-client</li>
-   *
-   * @param request {@link Request.Builder} to add default headers to.
-   */
-  protected static void addDefaultHeaders(Request.Builder request, Headers headers) {
-    if (headers == null || !headers.names().contains("User-Agent")) {
-      request.addHeader("User-Agent", "hapi-fhir-tooling-client");
+  protected static Iterable<HTTPHeader> getResourceFormatHeaders(HTTPRequest httpRequest, String format) {
+    List<HTTPHeader> headers = new ArrayList<>();
+    headers.add(new HTTPHeader("Accept", format));
+    if (httpRequest.getMethod() == HTTPRequest.HttpMethod.PUT
+      || httpRequest.getMethod() ==  HTTPRequest.HttpMethod.POST
+      || httpRequest.getMethod() == HTTPRequest.HttpMethod.PATCH
+    ) {
+      headers.add( new HTTPHeader("Content-Type", format + ";charset=" + DEFAULT_CHARSET));
     }
-  }
-
-  /**
-   * Adds necessary headers for the given resource format provided.
-   *
-   * @param request {@link Request.Builder} to add default headers to.
-   */
-  protected static void addResourceFormatHeaders(Request.Builder request, String format) {
-    request.addHeader("Accept", format);
-    request.addHeader("Content-Type", format + ";charset=" + DEFAULT_CHARSET);
-  }
-
-  /**
-   * Iterates through the passed in {@link Headers} and adds them to the provided
-   * {@link Request.Builder}.
-   *
-   * @param request {@link Request.Builder} to add headers to.
-   * @param headers {@link Headers} to add to request.
-   */
-  protected static void addHeaders(Request.Builder request, Headers headers) {
-    headers.forEach(header -> request.addHeader(header.getFirst(), header.getSecond()));
+    return headers;
   }
 
   /**
@@ -131,68 +102,24 @@ public class FhirRequestBuilder {
   }
 
   /**
-   * Extracts the 'location' header from the passes in {@link Headers}. If no
+   * Extracts the 'location' header from the passed in {@link HTTPHeader}s. If no
    * value for 'location' exists, the value for 'content-location' is returned. If
    * neither header exists, we return null.
    *
-   * @param headers {@link Headers} to evaluate
+   * @param headers {@link HTTPHeader}s to evaluate
    * @return {@link String} header value, or null if no location headers are set.
    */
-  protected static String getLocationHeader(Headers headers) {
-    Map<String, List<String>> headerMap = headers.toMultimap();
-    if (headerMap.containsKey(LOCATION_HEADER)) {
-      return headerMap.get(LOCATION_HEADER).get(0);
-    } else if (headerMap.containsKey(CONTENT_LOCATION_HEADER)) {
-      return headerMap.get(CONTENT_LOCATION_HEADER).get(0);
-    } else {
-      return null;
+  protected static String getLocationHeader(Iterable<HTTPHeader> headers) {
+    String locationHeader = HTTPHeaderUtil.getSingleHeader(headers, LOCATION_HEADER);
+
+    if (locationHeader != null) {
+      return locationHeader;
     }
+    return HTTPHeaderUtil.getSingleHeader(headers, CONTENT_LOCATION_HEADER);
   }
 
-  /**
-   * We only ever want to have one copy of the HttpClient kicking around at any
-   * given time. If we need to make changes to any configuration, such as proxy
-   * settings, timeout, caches, etc, we can do a per-call configuration through
-   * the {@link OkHttpClient#newBuilder()} method. That will return a builder that
-   * shares the same connection pool, dispatcher, and configuration with the
-   * original client.
-   * </p>
-   * The {@link OkHttpClient} uses the proxy auth properties set in the current
-   * system properties. The reason we don't set the proxy address and
-   * authentication explicitly, is due to the fact that this class is often used
-   * in conjunction with other http client tools which rely on the
-   * system.properties settings to determine proxy settings. It's easier to keep
-   * the method consistent across the board. ...for now.
-   *
-   * @return {@link OkHttpClient} instance
-   */
-  protected OkHttpClient getHttpClient() {
-    if (okHttpClient == null) {
-      okHttpClient = new OkHttpClient();
-    }
-
-    Authenticator proxyAuthenticator = getAuthenticator();
-
-    OkHttpClient.Builder builder = okHttpClient.newBuilder();
-    if (logger != null)
-      builder.addInterceptor(logger);
-    builder.addInterceptor(new RetryInterceptor(retryCount));
-
-    return builder.connectTimeout(timeout, timeoutUnit).writeTimeout(timeout, timeoutUnit)
-        .readTimeout(timeout, timeoutUnit).proxyAuthenticator(proxyAuthenticator).build();
-  }
-
-  @Nonnull
-  private static Authenticator getAuthenticator() {
-    return (route, response) -> {
-      final String httpProxyUser = System.getProperty(HTTP_PROXY_USER);
-      final String httpProxyPass = System.getProperty(HTTP_PROXY_PASS);
-      if (httpProxyUser != null && httpProxyPass != null) {
-        String credential = Credentials.basic(httpProxyUser, httpProxyPass);
-        return response.request().newBuilder().header(HEADER_PROXY_AUTH, credential).build();
-      }
-      return response.request().newBuilder().build();
-    };
+  protected ManagedFhirWebAccessor getManagedWebAccessor() {
+    return ManagedWebAccess.fhirAccessor().withRetries(retryCount).withTimeout(timeout, timeoutUnit).withLogger(logger);
   }
 
   public FhirRequestBuilder withResourceFormat(String resourceFormat) {
@@ -200,7 +127,7 @@ public class FhirRequestBuilder {
     return this;
   }
 
-  public FhirRequestBuilder withHeaders(Headers headers) {
+  public FhirRequestBuilder withHeaders(Iterable<HTTPHeader> headers) {
     this.headers = headers;
     return this;
   }
@@ -215,7 +142,7 @@ public class FhirRequestBuilder {
     return this;
   }
 
-  public FhirRequestBuilder withLogger(FhirLoggingInterceptor logger) {
+  public FhirRequestBuilder withLogger(ToolingClientLogger logger) {
     this.logger = logger;
     return this;
   }
@@ -226,33 +153,28 @@ public class FhirRequestBuilder {
     return this;
   }
 
-  protected Request buildRequest() {
-    return httpRequest.build();
-  }
-
   public <T extends Resource> ResourceRequest<T> execute() throws IOException {
-    formatHeaders(httpRequest, resourceFormat, headers);
-    Response response = getHttpClient().newCall(httpRequest.build()).execute();
+    HTTPRequest requestWithHeaders = formatHeaders(httpRequest, resourceFormat, headers);
+    HTTPResult response = getManagedWebAccessor().httpCall(requestWithHeaders);
     T resource = unmarshalReference(response, resourceFormat, null);
-    return new ResourceRequest<T>(resource, response.code(), getLocationHeader(response.headers()));
+    return new ResourceRequest<T>(resource, response.getCode(), getLocationHeader(response.getHeaders()));
   }
 
   public Bundle executeAsBatch() throws IOException {
-    formatHeaders(httpRequest, resourceFormat, null);
-    Response response = getHttpClient().newCall(httpRequest.build()).execute();
-    return unmarshalFeed(response, resourceFormat);
+    HTTPRequest requestWithHeaders = formatHeaders(httpRequest, resourceFormat, null);
+    HTTPResult response = getManagedWebAccessor().httpCall(requestWithHeaders);return unmarshalFeed(response, resourceFormat);
   }
 
   /**
    * Unmarshalls a resource from the response stream.
    */
   @SuppressWarnings("unchecked")
-  protected <T extends Resource> T unmarshalReference(Response response, String format, String resourceType) {
-    int code = response.code();
+  protected <T extends Resource> T unmarshalReference(HTTPResult response, String format, String resourceType) {
+    int code = response.getCode();
     boolean ok = code >= 200 && code < 300;
-    if (response.body() == null) {
+    if (response.getContent() == null) {
       if (!ok) {
-        throw new EFhirClientException(response.message());
+        throw new EFhirClientException(response.getMessage());
       } else {
         return null;
       }
@@ -261,9 +183,9 @@ public class FhirRequestBuilder {
     
     Resource resource = null;
     try {
-      body = response.body().string();
-      String ct = response.header("Content-Type");
-      if (ct == null) {
+      body = response.getContentAsString();
+      String contentType = HTTPHeaderUtil.getSingleHeader(response.getHeaders(), "Content-Type");
+      if (contentType == null) {
         if (ok) {
           resource = getParser(format).parse(body);
         } else {
@@ -272,10 +194,10 @@ public class FhirRequestBuilder {
           resource = OperationOutcomeUtilities.outcomeFromTextError(body);
         }
       } else { 
-        if (ct.contains(";")) {
-          ct = ct.substring(0, ct.indexOf(";"));
+        if (contentType.contains(";")) {
+          contentType = contentType.substring(0, contentType.indexOf(";"));
         }
-        switch (ct) {
+        switch (contentType) {
         case "application/json":
         case "application/fhir+json":
           if (!format.contains("json")) {
@@ -295,10 +217,10 @@ public class FhirRequestBuilder {
           resource = OperationOutcomeUtilities.outcomeFromTextError(body);
           break;
         case "text/html" : 
-          resource = OperationOutcomeUtilities.outcomeFromTextError(XhtmlUtils.convertHtmlToText(response.body().string(), source));
+          resource = OperationOutcomeUtilities.outcomeFromTextError(XhtmlUtils.convertHtmlToText(response.getContentAsString(), source));
           break;
         default: // not sure what else to do? 
-          System.out.println("Got content-type '"+ct+"' from "+source);
+          System.out.println("Got content-type '"+contentType+"' from "+source);
           System.out.println(body);
           resource = OperationOutcomeUtilities.outcomeFromTextError(body);
         }
@@ -333,7 +255,7 @@ public class FhirRequestBuilder {
   /**
    * Unmarshalls Bundle from response stream.
    */
-  protected Bundle unmarshalFeed(Response response, String format) {
+  protected Bundle unmarshalFeed(HTTPResult response, String format) {
     return unmarshalReference(response, format, "Bundle");
   }
 

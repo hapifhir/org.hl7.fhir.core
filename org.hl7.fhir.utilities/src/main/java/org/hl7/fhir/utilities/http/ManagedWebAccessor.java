@@ -9,61 +9,30 @@ import java.util.Map;
 
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
+/**
+ * Simple HTTP client for making requests to a server.
+ */
+public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccessor> {
 
-public class ManagedWebAccessBuilder {
-
-  private String userAgent;
-  private HTTPAuthenticationMode authenticationMode;
-  private String username;
-  private String password;
-  private String token;
-  private String accept;
-  private List<ServerDetailsPOJO> serverAuthDetails;
-  private Map<String, String> headers = new HashMap<String, String>();
-  
-  public ManagedWebAccessBuilder(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
-    this.userAgent = userAgent;
-    this.serverAuthDetails = serverAuthDetails;
-  }
-
-  public ManagedWebAccessBuilder withAccept(String accept) {
-    this.accept = accept;
-    return this;
-  }
-
-  public ManagedWebAccessBuilder withHeader(String name, String value) {
-    headers.put(name, value);
-    return this;
-  }
-
-  public ManagedWebAccessBuilder withBasicAuth(String username, String password) {
-    this.authenticationMode = HTTPAuthenticationMode.BASIC;
-    this.username = username;
-    this.password = password;
-    return this;
+  public ManagedWebAccessor(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
+    super(userAgent, serverAuthDetails);
   }
   
-  public ManagedWebAccessBuilder withToken(String token) {
-    this.authenticationMode = HTTPAuthenticationMode.TOKEN;
-    this.token = token;
-    return this;
-  }
-  
-  private Map<String, String> headers() {
-    Map<String, String> headers = new HashMap<String, String>();
-    headers.putAll(this.headers);
-    if (authenticationMode == HTTPAuthenticationMode.TOKEN) {
-      headers.put("Authorization", "Bearer " + token);
-    } else if (authenticationMode == HTTPAuthenticationMode.BASIC) {
-      String auth = username+":"+password;
+  private Map<String, String> newHeaders() {
+    Map<String, String> headers = new HashMap<String, String>(this.getHeaders());
+    if (getAuthenticationMode() == HTTPAuthenticationMode.TOKEN) {
+      headers.put("Authorization", "Bearer " + getToken());
+    } else if (getAuthenticationMode() == HTTPAuthenticationMode.BASIC) {
+      String auth = getUsername() +":"+ getPassword();
       byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
       headers.put("Authorization", "Basic " + new String(encodedAuth));
+    } else if (getAuthenticationMode() == HTTPAuthenticationMode.APIKEY) {
+      headers.put("Api-Key", getToken());
     }
 
-    if (userAgent != null) {
-      headers.put("User-Agent", userAgent);
+    if (getUserAgent() != null) {
+      headers.put("User-Agent", getUserAgent());
     }
-
     return headers;
   }
 
@@ -72,25 +41,32 @@ public class ManagedWebAccessBuilder {
       throw new IOException("The pathname '"+url+"' cannot be accessed by policy");
     }
     SimpleHTTPClient client = new SimpleHTTPClient();
-    if (userAgent != null) {
-      client.addHeader("User-Agent", userAgent);
+
+    for (Map.Entry<String, String> entry : this.getHeaders().entrySet()) {
+      client.addHeader(entry.getKey(), entry.getValue());
     }
-    if (authenticationMode != null && authenticationMode != HTTPAuthenticationMode.NONE) {
-      client.setAuthenticationMode(authenticationMode);
-      switch (authenticationMode) {
+
+    if (getUserAgent() != null) {
+      client.addHeader("User-Agent", getUserAgent());
+    }
+    if (getAuthenticationMode() != null) {
+      if (getAuthenticationMode() != HTTPAuthenticationMode.NONE) {
+      client.setAuthenticationMode(getAuthenticationMode());
+      switch (getAuthenticationMode()) {
       case BASIC :
-        client.setUsername(username); 
-        client.setPassword(password);
+        client.setUsername(getUsername());
+        client.setPassword(getPassword());
         break;
       case TOKEN :
-        client.setToken(token);
+        client.setToken(getToken());
         break;
       case APIKEY :
-        client.setApiKey(token);
+        client.setApiKey(getToken());
         break;
       }
+      }
     } else {
-      ServerDetailsPOJO settings = getServer(url);
+      ServerDetailsPOJO settings = ManagedWebAccessUtils.getServer(url, getServerAuthDetails());
       if (settings != null) {
         switch (settings.getAuthenticationType()) {
         case "basic" :
@@ -109,32 +85,23 @@ public class ManagedWebAccessBuilder {
         }
       }
     }
-    if (username != null || token != null) {
-      
-      client.setAuthenticationMode(authenticationMode);
+    if (getUsername() != null || getToken() != null) {
+      client.setAuthenticationMode(getAuthenticationMode());
     }
     return client;
   }
 
-
-  private ServerDetailsPOJO getServer(String url) {
-    if (serverAuthDetails != null) {
-      for (ServerDetailsPOJO t : serverAuthDetails) {
-        if (url.startsWith(t.getUrl())) {
-          return t;
-        }
-      }
-    }
-    return null;
+  public HTTPResult get(String url) throws IOException {
+    return get(url, null);
   }
 
-  public HTTPResult get(String url) throws IOException {
+  public HTTPResult get(String url, String accept) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
     case DIRECT:
       SimpleHTTPClient client = setupClient(url);
       return client.get(url, accept);
     case MANAGED:
-      return ManagedWebAccess.getAccessor().get(url, accept, headers());
+      return ManagedWebAccess.getAccessor().get(url, accept, newHeaders());
     case PROHIBITED:
       throw new IOException("Access to the internet is not allowed by local security policy");
     default:
@@ -142,14 +109,17 @@ public class ManagedWebAccessBuilder {
     }
   }
 
-
   public HTTPResult post(String url, byte[] content, String contentType) throws IOException {
+    return post(url, content, contentType, null);
+  }
+
+  public HTTPResult post(String url, byte[] content, String contentType, String accept) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
     case DIRECT:
       SimpleHTTPClient client = setupClient(url);
       return client.post(url, contentType, content, accept);
     case MANAGED:
-      return ManagedWebAccess.getAccessor().post(url, content, contentType, accept, headers());
+      return ManagedWebAccess.getAccessor().post(url, content, contentType, accept, newHeaders());
     case PROHIBITED:
       throw new IOException("Access to the internet is not allowed by local security policy");
     default:
@@ -158,17 +128,20 @@ public class ManagedWebAccessBuilder {
   }
 
   public HTTPResult put(String url, byte[] content, String contentType) throws IOException {
+    return put(url, content, contentType, null);
+  }
+
+  public HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
     case DIRECT:
       SimpleHTTPClient client = setupClient(url);
       return client.put(url, contentType, content, accept);
     case MANAGED:
-      return ManagedWebAccess.getAccessor().put(url, content, contentType, accept, headers());
+      return ManagedWebAccess.getAccessor().put(url, content, contentType, accept, newHeaders());
     case PROHIBITED:
       throw new IOException("Access to the internet is not allowed by local security policy");
     default:
       throw new IOException("Internal Error");
     }
   }
-
 }

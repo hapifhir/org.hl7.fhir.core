@@ -237,6 +237,17 @@ public class MeasureValidator extends BaseValidator {
         NodeStack ns = stack.push(m, -1, m.getProperty().getDefinition(), m.getProperty().getDefinition());
         hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, m.line(), m.col(), ns.getLiteralPath(), Utilities.existsInList(mc.scoring(), "proportion", "ratio", "continuous-variable", "cohort"), I18nConstants.MEASURE_MR_M_SCORING_UNK); 
         ok = validateMeasureReportGroups(hostContext, mc, errors, element, stack, inComplete) && ok;
+      } else {
+        if (measure.contains("|")) {
+          List<Measure> versionList = context.fetchResourcesByUrl(Measure.class, measure.substring(0, measure.indexOf("|")));
+          if (versionList != null && !versionList.isEmpty()) {
+            CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+            for (Measure mm : versionList) {
+              b.append(mm.getVersion());
+            }
+            hint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, m.line(), m.col(), stack.getLiteralPath(), msrc != null, I18nConstants.CANONICAL_MULTIPLE_VERSIONS_KNOWN, "Measure", measure, measure.substring(measure.indexOf("|")+1), b.toString());            
+          }
+        }
       }
     }
     return ok;

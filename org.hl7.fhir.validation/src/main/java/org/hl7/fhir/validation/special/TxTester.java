@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -26,7 +25,6 @@ import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.hl7.fhir.convertors.conv40_50.VersionConvertor_40_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -41,18 +39,13 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtil;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
-
-import okhttp3.internal.http2.Header;
 
 public class TxTester {
 
@@ -134,7 +127,7 @@ public class TxTester {
           return true;
         } else {
           System.out.println(software+" did not pass all HL7 terminology service tests (modes "+m+", tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
-          System.out.println("Failed Tests: "+CommaSeparatedStringBuilder.join(",", fails ));
+          System.out.println("Failed Tests: "+ CommaSeparatedStringBuilder.join(",", fails ));
           return false;
         }        
       } else {
@@ -250,12 +243,12 @@ public class TxTester {
     outputT.add("name", test.asString("name"));
     if (Utilities.noString(filter) || filter.equals("*") || test.asString("name").contains(filter)) {
       System.out.print("  Test "+test.asString("name")+": ");
-      Header header = null;
+      HTTPHeader header = null;
       try {
         if (test.has("header")) {
           JsonObject hdr = test.getJsonObject("header");
           if (hdr.has("mode") && modes.contains(hdr.asString("mode"))) {
-            header = new Header(hdr.asString("name"), hdr.asString("value"));
+            header = new HTTPHeader(hdr.asString("name"), hdr.asString("value"));
             tx.getClientHeaders().addHeader(header);
           }
         }

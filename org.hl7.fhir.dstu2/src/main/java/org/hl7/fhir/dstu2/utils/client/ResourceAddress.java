@@ -233,9 +233,8 @@ public class ResourceAddress {
   /**
    * For now, assume this type of location header structure. Generalize later:
    * http://hl7connect.healthintersections.com.au/svc/fhir/318/_history/1
-   * 
-   * @param serviceBase
-   * @param locationHeader
+   *
+   * @param locationResponseHeader
    */
   public static ResourceAddress.ResourceVersionedIdentifier parseCreateLocation(String locationResponseHeader) {
     Pattern pattern = Pattern.compile(REGEX_ID_WITH_HISTORY);
