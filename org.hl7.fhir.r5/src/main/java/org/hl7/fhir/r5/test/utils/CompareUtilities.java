@@ -15,6 +15,7 @@ import org.hl7.fhir.utilities.json.model.JsonPrimitive;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -205,7 +206,7 @@ public class CompareUtilities extends BaseTestingUtilities {
   }
 
   private Document loadXml(InputStream fn) throws Exception {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
     factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
     factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
@@ -303,11 +304,30 @@ public class CompareUtilities extends BaseTestingUtilities {
     for (JsonProperty en : expectedJsonObject.getProperties()) {
       String n = en.getName();
       if (!n.equals("fhir_comments") && !n.equals("$optional$") && !optionals.contains(n)) {
-        if (!actualJsonObject.has(n))
+        if (!actualJsonObject.has(n) && !allOptional(en.getValue()))
           return "properties differ at " + path + ": missing property " + n;
       }
     }
     return null;
+  }
+
+  private boolean allOptional(JsonElement value) {
+    if (value.isJsonArray()) {
+      JsonArray a = value.asJsonArray();
+      for (JsonElement e : a) {
+        if (e.isJsonObject()) {
+          JsonObject o = e.asJsonObject();
+          if (!o.has("$optional$")) {
+            return false;
+          }
+        } else {
+          // nothing
+        }
+      }
+      return true;
+    } else {
+      return false;
+    }
   }
 
   private List<String> listOptionals(JsonObject expectedJsonObject) {

@@ -117,6 +117,10 @@ public class FHIRPathTests {
       return TestingUtilities.context().fetchResource(ValueSet.class, url);
     }
 
+    @Override
+    public boolean paramIsType(String name, int index) {
+      return false;
+    }
   }
 
   private static FHIRPathEngine fp;

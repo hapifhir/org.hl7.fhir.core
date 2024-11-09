@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashSet;
@@ -395,7 +394,7 @@ public class ICD11Generator {
 
 
   private JsonObject fetchJson(String source) throws IOException {
-    HTTPResult res = ManagedWebAccess.builder().withAccept("application/json").withHeader("API-Version", "v2").withHeader("Accept-Language", "en").get(source);
+    HTTPResult res = ManagedWebAccess.accessor().withHeader("API-Version", "v2").withHeader("Accept-Language", "en").get(source,"application/json");
     res.checkThrowException();
     return JsonParser.parseObject(res.getContent());
   }

@@ -30,6 +30,9 @@ public class Params {
   public static final String HTTPS_PROXY = "-https-proxy";
   public static final String PROXY_AUTH = "-auth";
   public static final String PROFILE = "-profile";
+  public static final String PROFILES = "-profiles";
+  public static final String OPTION = "-option";
+  public static final String OPTIONS = "-options";
   public static final String BUNDLE = "-bundle";
   public static final String QUESTIONNAIRE = "-questionnaire";
   public static final String NATIVE = "-native";
@@ -42,9 +45,11 @@ public class Params {
   public static final String EXTENSION = "-extension";
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
   public static final String TO_VERSION = "-to-version";
+  public static final String PACKAGE_NAME = "-package-name";
   public static final String DO_NATIVE = "-do-native";
   public static final String NO_NATIVE = "-no-native";
   public static final String COMPILE = "-compile";
+  public static final String CODEGEN = "-codegen";
   public static final String TRANSFORM = "-transform";
   public static final String LANG_TRANSFORM = "-lang-transform";
   public static final String NARRATIVE = "-narrative";
@@ -184,10 +189,38 @@ public class Params {
       } else if (args[i].equals(PROFILE)) {
         String p = null;
         if (i + 1 == args.length) {
-          throw new Error("Specified -profile without indicating profile source");
+          throw new Error("Specified -profile without indicating profile url");
         } else {
           p = args[++i];
           cliContext.addProfile(p);
+        }
+      } else if (args[i].equals(PROFILES)) {
+        String p = null;
+        if (i + 1 == args.length) {
+          throw new Error("Specified -profiles without indicating profile urls");
+        } else {
+          p = args[++i];
+          for (String s : p.split("\\,")) {
+            cliContext.addProfile(s);
+          }
+        }
+      } else if (args[i].equals(OPTION)) {
+        String p = null;
+        if (i + 1 == args.length) {
+          throw new Error("Specified -option without indicating option value");
+        } else {
+          p = args[++i];
+          cliContext.addOption(p);
+        }
+      } else if (args[i].equals(OPTIONS)) {
+        String p = null;
+        if (i + 1 == args.length) {
+          throw new Error("Specified -options without indicating option values");
+        } else {
+          p = args[++i];
+          for (String s : p.split("\\,")) {
+            cliContext.addOption(s);
+          }
         }
       } else if (args[i].equals(BUNDLE)) {
         String profile = null;
@@ -294,6 +327,9 @@ public class Params {
       } else if (args[i].equals(TO_VERSION)) {
         cliContext.setTargetVer(args[++i]);
         cliContext.setMode(EngineMode.VERSION);
+      } else if (args[i].equals(PACKAGE_NAME)) {
+        cliContext.setPackageName(args[++i]);
+        cliContext.setMode(EngineMode.CODEGEN);
       } else if (args[i].equals(DO_NATIVE)) {
         cliContext.setCanDoNative(true);
       } else if (args[i].equals(NO_NATIVE)) {
@@ -307,6 +343,8 @@ public class Params {
       } else if (args[i].equals(COMPILE)) {
         cliContext.setMap(args[++i]);
         cliContext.setMode(EngineMode.COMPILE);
+      } else if (args[i].equals(CODEGEN)) {
+        cliContext.setMode(EngineMode.CODEGEN);
       } else if (args[i].equals(NARRATIVE)) {
         cliContext.setMode(EngineMode.NARRATIVE);
       } else if (args[i].equals(SPREADSHEET)) {

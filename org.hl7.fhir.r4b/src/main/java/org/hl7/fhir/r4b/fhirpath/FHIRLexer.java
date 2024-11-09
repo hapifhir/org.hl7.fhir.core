@@ -58,26 +58,26 @@ public class FHIRLexer {
   private boolean allowDoubleQuotes;
 
   public FHIRLexer(String source, String name) throws FHIRLexerException {
-    this.source = source == null ? "" : source;
+    this.source = source == null ? "" : Utilities.stripBOM(source);
     this.name = name == null ? "??" : name;
     currentLocation = new SourceLocation(1, 1);
     next();
   }
   public FHIRLexer(String source, int i) throws FHIRLexerException {
-    this.source = source;
+    this.source = Utilities.stripBOM(source);
     this.cursor = i;
     currentLocation = new SourceLocation(1, 1);
     next();
   }
   public FHIRLexer(String source, int i, boolean allowDoubleQuotes) throws FHIRLexerException {
-    this.source = source;
+    this.source = Utilities.stripBOM(source);
     this.cursor = i;
     this.allowDoubleQuotes =  allowDoubleQuotes;
     currentLocation = new SourceLocation(1, 1);
     next();
   }
   public FHIRLexer(String source, String name, boolean metadataFormat, boolean allowDoubleQuotes) throws FHIRLexerException {
-    this.source = source == null ? "" : source;
+    this.source = source == null ? "" : Utilities.stripBOM(source);
     this.name = name == null ? "??" : name;
     this.metadataFormat = metadataFormat;
     this.allowDoubleQuotes =  allowDoubleQuotes;
@@ -187,7 +187,7 @@ public class FHIRLexer {
           cursor++;
         } else
         while (cursor < source.length() && ((source.charAt(cursor) >= 'A' && source.charAt(cursor) <= 'Z') || (source.charAt(cursor) >= 'a' && source.charAt(cursor) <= 'z') || 
-            (source.charAt(cursor) >= '0' && source.charAt(cursor) <= '9') || source.charAt(cursor) == ':' || source.charAt(cursor) == '-'))
+            (source.charAt(cursor) >= '0' && source.charAt(cursor) <= '9') || source.charAt(cursor) == ':' || source.charAt(cursor) == '-' || source.charAt(cursor) == '_'))
           cursor++;
         current = source.substring(currentStart, cursor);
       } else if (ch == '/') {
@@ -455,7 +455,7 @@ public class FHIRLexer {
           i = i + 4;
           break;
         default:
-          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i), currentLocation);
+          throw new FHIRLexerException("Unknown FHIRPath character escape \\"+s.charAt(i), currentLocation);
         }
       } else {
         b.append(ch);
@@ -499,12 +499,12 @@ public class FHIRLexer {
           break;
         case 'u':
           i++;
-          int uc = Integer.parseInt(s.substring(i, i+4), 16);
+          int uc = Integer.parseInt(s.substring(i, i+4), 32);
           b.append(Character.toString(uc));
           i = i + 4;
           break;
         default:
-          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i), currentLocation);
+          throw new FHIRLexerException("Unknown FHIRPath character escape \\"+s.charAt(i), currentLocation);
         }
       } else {
         b.append(ch);

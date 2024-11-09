@@ -1620,7 +1620,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else if ("ValueSet".equals(cls)) {
         return (T) valueSets.get(uri, version);
       } else if ("CodeSystem".equals(cls)) {
-        return (T) codeSystems.get(uri, version);
+        return (T) codeSystems.get(uri, version);       
+      } else if ("NamingSystem".equals(cls)) {
+        return (T) systems.get(uri, version);
       } else if ("ConceptMap".equals(cls)) {
         return (T) maps.get(uri, version);
       } else if ("PlanDefinition".equals(cls)) {
@@ -1628,9 +1630,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else if ("OperationDefinition".equals(cls)) {
         OperationDefinition od = operations.get(uri, version);
         return (T) od;
-      } else if ("Questionnaire.class".equals(cls)) {
+      } else if ("Questionnaire".equals(cls)) {
         return (T) questionnaires.get(uri, version);
-      } else if ("SearchParameter.class".equals(cls)) {
+      } else if ("SearchParameter".equals(cls)) {
         SearchParameter res = searchParameters.get(uri, version);
         return (T) res;
       }

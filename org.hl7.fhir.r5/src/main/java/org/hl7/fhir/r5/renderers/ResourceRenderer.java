@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceReferenceKind;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
@@ -1447,4 +1448,16 @@ public abstract class ResourceRenderer extends DataRenderer {
       }
     }
   }
+  protected void addContained(RenderingStatus status, XhtmlNode x, List<ResourceWrapper> list) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
+    for (ResourceWrapper c : list) {
+      x.hr();
+      String id = c.getScopedId();
+      if (!context.hasAnchor(id)) {
+        context.addAnchor(id);
+        x.an(context.prefixAnchor(id));
+      }
+      RendererFactory.factory(c, context.forContained()).buildNarrative(status, x, c);
+    }
+  }
+
 }
