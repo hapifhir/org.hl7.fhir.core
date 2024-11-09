@@ -18,4 +18,5 @@ public class ManagedWebAccessUtils {
   private static boolean modesMatch(String criteria, String value) {
     return criteria == null || value == null || criteria.equals(value);
   }
+
 }
