@@ -117,6 +117,7 @@ jobs:
       # This is done for the master branch merges only.
       - task: Maven@4
         displayName: 'Deploy to GitHub packages'
+        enabled: false
         inputs:
           mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
           goals: jar:jar deploy:deploy

@@ -589,6 +589,7 @@ public class I18nConstants {
   public static final String SD_ELEMENT_FIXED_WRONG_TYPE = "SD_ELEMENT_FIXED_WRONG_TYPE";
   public static final String SD_ELEMENT_NOT_IN_CONSTRAINT = "SD_ELEMENT_NOT_IN_CONSTRAINT";
   public static final String SD_ELEMENT_PATTERN_WRONG_TYPE = "SD_ELEMENT_PATTERN_WRONG_TYPE";
+  public static final String SD_ELEMENT_PATTERN_NO_FIXED = "SD_ELEMENT_PATTERN_NO_FIXED";
   public static final String SD_ELEMENT_REASON_DERIVED = "SD_ELEMENT_REASON_DERIVED";
   public static final String SD_EXTENSION_URL_MISMATCH = "SD_EXTENSION_URL_MISMATCH";
   public static final String SD_EXTENSION_URL_MISSING = "SD_EXTENSION_URL_MISSING";
