@@ -71,6 +71,7 @@ import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
@@ -135,6 +136,7 @@ public class ValidatorCli {
       new TxTestsTask(),
       new TransformTask(),
       new VersionTask(),
+      new CodeGenTask(),
       defaultCliTask);
   }
 
@@ -150,6 +152,7 @@ public class ValidatorCli {
     if (cliContext.getFhirSettingsFile() != null) {
       FhirSettings.setExplicitFilePath(cliContext.getFhirSettingsFile());
     }
+    ManagedWebAccess.loadFromFHIRSettings();
 
     FileFormat.checkCharsetAndWarnIfNotUTF8(System.out);
 

@@ -64,7 +64,6 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.SourcedElementDefinition;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -173,7 +172,7 @@ public class FHIRPathEngine {
   private StringBuilder log = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
-  private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for emptty sets, so when running for R2/R3, this is set ot true  
+  private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for empty sets, so when running for R2/R3, this is set ot true  
   private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R5);
   private ProfileUtilities profileUtilities;
   private String location; // for error messages
@@ -332,7 +331,7 @@ public class FHIRPathEngine {
   protected void getChildrenByName(Base item, String name, List<Base> result) throws FHIRException {
     String tn = null;
     if (isAllowPolymorphicNames()) {
-      // we'll look to see whether we hav a polymorphic name 
+      // we'll look to see whether we have a polymorphic name 
       for (Property p : item.children()) {
         if (p.getName().endsWith("[x]")) {
           String n = p.getName().substring(0, p.getName().length()-3);
@@ -605,10 +604,17 @@ public class FHIRPathEngine {
     warnings.addAll(typeWarnings);
     return res;
   }
-  
+
   public TypeDetails checkOnTypes(Object appContext, String resourceType, TypeDetails types, ExpressionNode expr, List<IssueMessage> warnings) throws FHIRLexerException, PathEngineException, DefinitionException {
     typeWarnings.clear();
     TypeDetails res = executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, false, expr);
+    warnings.addAll(typeWarnings);
+    return res;
+  }
+  
+  public TypeDetails checkOnTypes(Object appContext, String resourceType, TypeDetails types, ExpressionNode expr, List<IssueMessage> warnings, boolean canBeNone) throws FHIRLexerException, PathEngineException, DefinitionException {
+    typeWarnings.clear();
+    TypeDetails res = executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, canBeNone, expr);
     warnings.addAll(typeWarnings);
     return res;
   }
@@ -1561,7 +1567,7 @@ public class FHIRPathEngine {
       work.addAll(work2);
       break;
     case Constant:
-      work.addAll(resolveConstant(context, exp.getConstant(), false, exp));
+      work.addAll(resolveConstant(context, exp.getConstant(), false, exp, true));
       break;
     case Group:
       work2 = execute(context, focus, exp.getGroup(), atEntry);
@@ -1719,8 +1725,7 @@ public class FHIRPathEngine {
       }
     }
   }
-
-  private List<Base> resolveConstant(ExecutionContext context, Base constant, boolean beforeContext, ExpressionNode expr) throws PathEngineException {
+  private List<Base> resolveConstant(ExecutionContext context, Base constant, boolean beforeContext, ExpressionNode expr, boolean explicitConstant) throws PathEngineException {
     if (constant == null) {
       return new ArrayList<Base>();
     }
@@ -1733,7 +1738,7 @@ public class FHIRPathEngine {
       if (context.hasDefinedVariable(varName)) {
         return context.getDefinedVariable(varName);
       }
-      return resolveConstant(context, c.getValue(), beforeContext, expr, true);
+      return resolveConstant(context, c.getValue(), beforeContext, expr, explicitConstant);
     } else if (c.getValue().startsWith("@")) {
       return new ArrayList<Base>(Arrays.asList(processDateConstant(context.appInfo, c.getValue().substring(1), expr)));
     } else {
@@ -3430,7 +3435,7 @@ public class FHIRPathEngine {
     case Item : {
       checkOrdered(focus, "item", exp);
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer)); 
-      return focus; 
+      return focus.toSingleton(); 
     }
     case As : {
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
@@ -3625,11 +3630,35 @@ public class FHIRPathEngine {
       ExpressionNode p = exp.getParameters().get(0);
       if (p.getKind() == Kind.Constant && p.getConstant() != null) {
         String url = exp.getParameters().get(0).getConstant().primitiveValue();
-        ExtensionDefinition ed = findExtensionDefinition(focus, url);
-        if (ed != null) {
-          return new TypeDetails(CollectionStatus.ORDERED, new ProfiledType(ed.sd.getUrl()));
+        if (!Utilities.isAbsoluteUrl(url) && focus.hasType("Extension")) {
+          TypeDetails res = new TypeDetails(CollectionStatus.ORDERED);
+          List<String> profiles = focus.getProfiles("Extension");
+          if (profiles != null) {
+            for (String pt : profiles) {
+              String extn = pt.contains("#") ? pt.substring(0, pt.indexOf("#")) : pt;
+              String subExtn = pt.contains("#") ? pt.substring(0, pt.indexOf("#")) : null;
+              StructureDefinition sd = worker.fetchResource(StructureDefinition.class, extn);
+              if (sd != null) {
+                String id = subExtn == null ? "Extension.extension:"+url : subExtn+".extension:"+url;
+                ElementDefinition ed = sd.getSnapshot().getElementById(id);
+                if (ed != null) {
+                  res.addType("Extension", sd.getUrl()+"#"+id);
+                }
+              }
+            }
+          }
+          if (res.isEmpty()) {
+            typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_UNKNOWN_EXTENSION, url), I18nConstants.FHIRPATH_UNKNOWN_EXTENSION));            
+          } else {
+            return res;
+          }
         } else {
-          typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_UNKNOWN_EXTENSION, url), I18nConstants.FHIRPATH_UNKNOWN_EXTENSION));
+          ExtensionDefinition ed = findExtensionDefinition(focus, url);
+          if (ed != null) {
+            return new TypeDetails(CollectionStatus.ORDERED, new ProfiledType(ed.sd.getUrl()));
+          } else {
+            typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_UNKNOWN_EXTENSION, url), I18nConstants.FHIRPATH_UNKNOWN_EXTENSION));
+          }
         }
         return new TypeDetails(CollectionStatus.SINGLETON, "Extension");
       }
@@ -6563,7 +6592,7 @@ public class FHIRPathEngine {
 
 
   /** given an element definition in a profile, what element contains the differentiating fixed 
-   * for the element, given the differentiating expresssion. The expression is only allowed to 
+   * for the element, given the differentiating expression. The expression is only allowed to 
    * use a subset of FHIRPath
    * 
    * @param profile

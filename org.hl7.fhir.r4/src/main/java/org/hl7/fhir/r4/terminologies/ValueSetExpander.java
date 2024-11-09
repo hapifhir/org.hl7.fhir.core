@@ -112,6 +112,10 @@ public interface ValueSetExpander {
       return this;
     }
 
+    public boolean isOk() {
+      return error == null;
+    }
+
   }
 
   /**

@@ -84,6 +84,9 @@ public class ValidatorCliTests {
   ValidateTask validateTask;
 
   @Spy
+  CodeGenTask codeGenTask;
+
+  @Spy
   ScanTask scanTask = new ScanTask() {
     @Override
     public void executeTask(ValidationService validationService, ValidationEngine validationEngine, CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) {}
@@ -118,6 +121,7 @@ public class ValidatorCliTests {
           txTestsTask,
           transformTask,
           versionTask,
+          codeGenTask,
           //validate is the default
           validateTask
         );

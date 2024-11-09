@@ -16,14 +16,18 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.extensions.ExtensionConstants;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r5.fhirpath.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
+import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
@@ -191,7 +195,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
     } catch (Exception e) {
-      //e.printStackTrace();
+      e.printStackTrace();
       rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
       ok = false;
     }
@@ -443,6 +447,44 @@ public class StructureDefinitionValidator extends BaseValidator {
       addCharacteristics(characteristics, path);
       characteristicsValid = true;
     }
+    
+    if (element.hasChild("slicing")) {
+      Element slicing = element.getNamedChild("slicing");
+      NodeStack sStack = stack.push(slicing, -1, null, null);
+      
+      // validating slicing. 
+      // slicing can only be present if base cardinality > 1, but we can't always know that on the differential - though we can look it up 
+      String tn = path.contains(".") ? path.substring(0, path.indexOf(".")) : path;
+      StructureDefinition tsd = context.fetchTypeDefinition(tn);
+      ElementDefinition ted = null;
+      if (tsd != null) {
+        ted = tsd.getSnapshot().getElementByPath(path);
+        if (ted != null) {
+          ok = rule(errors, "2022-11-02", IssueType.NOTFOUND, sStack, canSlice(ted), I18nConstants.SD_PATH_NO_SLICING, path) && ok;
+        }
+      }
+      int i = 0;
+      for (Element discriminator : slicing.getChildren("discriminator")) {
+        NodeStack dStack = sStack.push(discriminator, i, null, null);
+        String type = discriminator.getNamedChildValue("type");        
+        warning(errors, "2024-11-06", IssueType.BUSINESSRULE, dStack, !"pattern".equals(type), I18nConstants.SD_PATH_SLICING_DEPRECATED, type);  
+        String pathExp = discriminator.getNamedChildValue("path");
+        if (ted != null) {
+          TypeDetails td = getTypesForElement(elements, element, tn, tsd.getUrl());
+          if (!td.isEmpty()) {
+            List<IssueMessage> warnings = new ArrayList<IssueMessage>();
+            try {
+              TypeDetails eval = fpe.checkOnTypes(this, tn, td, fpe.parse(pathExp), warnings, true);
+              if (eval.isEmpty()) {
+                ok = rule(errors, "2024-11-06", IssueType.INVALID, dStack, false, I18nConstants.SD_PATH_NOT_VALID, pathExp, path) && ok;
+              } 
+            } catch (Exception e) {
+                ok = rule(errors, "2024-11-06", IssueType.INVALID, dStack, false, I18nConstants.SD_PATH_ERROR, pathExp, path, e.getMessage()) && ok;                
+            }
+          }
+        }
+      }
+    }
 
     if (!snapshot && (element.hasChild("fixed") || element.hasChild("pattern")) && base != null) {
       ElementDefinition ed = getDefinitionFromBase(base, element.getNamedChildValue("id"), element.getNamedChildValue("path"));
@@ -593,6 +635,10 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
 
+  private boolean canSlice(ElementDefinition ted) {
+    return !("1".equals(ted.getMax())) || ted.getPath().contains("[x]");
+  }
+
   private boolean checkTypeParameters(List<ValidationMessage> errors, NodeStack stack, Element typeE, String tc, StructureDefinition tsd, String path, StructureDefinition sd) {
     boolean ok = true;
     if (tsd.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
@@ -673,18 +719,18 @@ public class StructureDefinitionValidator extends BaseValidator {
                 // we have to figure out the context, and we might be in type slicing. 
                 String exp = expression;
                 Element te = element;
-                List<String> types = getTypesForElement(elements, te, profileType);
-                while (types.size() == 0 && te != null) {
+                TypeDetails types = getTypesForElement(elements, te, profileType, profileUrl);
+                while (types.isEmpty() && te != null) {
                   Element oldte = te;
                   te = getParent(elements, te);
                   if (te != null) {
                     exp = tail(oldte, te)+".all("+exp+")";
-                    types = getTypesForElement(elements, te, profileType);
+                    types = getTypesForElement(elements, te, profileType, profileUrl);
                   }
                 }
-                if (types.size() == 0) {
+                if (types.isEmpty()) {
                   // we got to the root before finding anything typed
-                  types.add(elements.get(0).getNamedChildValue("path", false));
+                  types.addType(elements.get(0).getNamedChildValue("path", false));
                 }
                 List<IssueMessage> warnings = new ArrayList<>();
                 ValidationContext vc = new ValidationContext(invariant);
@@ -807,14 +853,14 @@ public class StructureDefinitionValidator extends BaseValidator {
     return null;
   }
 
-  private List<String> getTypesForElement(List<Element> elements, Element element, String profileType) {
-    List<String> types = new ArrayList<>();
+  private TypeDetails getTypesForElement(List<Element> elements, Element element, String profileType, String profileUrl) {
+    TypeDetails types = new TypeDetails(CollectionStatus.SINGLETON);
     if (element.hasChild("path", false) && !element.getNamedChildValue("path", false).contains(".")) {
       String t = element.getNamedChildValue("path", false);
       if (profileType.equals(t)) {
-        types.add(profileType);
+        types.addType(profileType, profileUrl);
       } else if (profileType.endsWith("/"+t)) {
-        types.add(profileType);
+        types.addType(profileType, profileUrl);
       } else {
         throw new Error("Error: this should not happen: '"+t+"' vs '"+profileType+"'?");
       }      
@@ -827,12 +873,12 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (t != null) {
           if (isAbstractType(t) && hasChildren(element, elements) ) {
             if (!Utilities.isAbsoluteUrl(profileType)) {
-              types.add(element.getNamedChildValue("path", false));
+              types.addType(profileUrl+ "#"+element.getNamedChildValue("path", false));
             } else {
-              types.add(profileType+"#"+element.getNamedChildValue("path", false));              
+              types.addType(profileType+"#"+element.getNamedChildValue("path", false));              
             }
           } else {
-            types.add(t);
+            types.addType(t);
           }
         }
       }
@@ -1129,7 +1175,7 @@ public class StructureDefinitionValidator extends BaseValidator {
           }
         }
       } else {
-        warning(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_ED_ADDITIONAL_BINDING_USAGE_UNKNOWN, system, code);
+        hint(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_ED_ADDITIONAL_BINDING_USAGE_UNKNOWN, system, code);
       }
     }
     return ok;

@@ -178,7 +178,6 @@ public class I18nConstants {
   public static final String DIFFERENTIAL_WALKS_INTO____BUT_THE_BASE_DOES_NOT_AND_THERE_IS_NOT_A_SINGLE_FIXED_TYPE_THE_TYPE_IS__THIS_IS_NOT_HANDLED_YET = "Differential_walks_into____but_the_base_does_not_and_there_is_not_a_single_fixed_type_The_type_is__This_is_not_handled_yet";
   public static final String DISCRIMINATOR_BAD_PATH = "DISCRIMINATOR_BAD_PATH";
   public static final String DISCRIMINATOR__IS_BASED_ON_ELEMENT_EXISTENCE_BUT_SLICE__NEITHER_SETS_MIN1_OR_MAX0 = "Discriminator__is_based_on_element_existence_but_slice__neither_sets_min1_or_max0";
-  public static final String DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_MULTIPLE_TYPES = "Discriminator__is_based_on_type_but_slice__in__has_multiple_types";
   public static final String DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES = "Discriminator__is_based_on_type_but_slice__in__has_no_types";
   public static final String DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF = "Display_Name_for__should_be_one_of__instead_of";
   public static final String DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF = "Display_Name_WS_for__should_be_one_of__instead_of";
@@ -475,7 +474,6 @@ public class I18nConstants {
   public static final String PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__ = "Problem_processing_expression__in_profile__path__";
   public static final String PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE_WITH_A_PROFILE__IN_PROFILE_ = "Profile_based_discriminators_must_have_a_type_with_a_profile__in_profile_";
   public static final String PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE__IN_PROFILE_ = "Profile_based_discriminators_must_have_a_type__in_profile_";
-  public static final String PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_ONLY_ONE_TYPE__IN_PROFILE = "Profile_based_discriminators_must_have_only_one_type__in_profile";
   public static final String PROFILE_EXT_NOT_HERE = "Profile_EXT_Not_Here";
   public static final String PROFILE_VAL_MISSINGELEMENT = "Profile_VAL_MissingElement";
   public static final String PROFILE_VAL_NOTALLOWED = "Profile_VAL_NotAllowed";
@@ -1044,6 +1042,8 @@ public class I18nConstants {
   public static final String VALUESET_TOO_COSTLY = "VALUESET_TOO_COSTLY";
   public static final String VALUESET_TOO_COSTLY_COUNT = "VALUESET_TOO_COSTLY_COUNT";
   public static final String VALUESET_TOO_COSTLY_TIME = "VALUESET_TOO_COSTLY_TIME";
+  public static final String TX_SERVER_NOT_READY = "TX_SERVER_NOT_READY";
+  public static final String REQUEST_TOO_COSTLY_TIME = "REQUEST_TOO_COSTLY_TIME";
   public static final String VALUESET_UNC_SYSTEM_WARNING = "VALUESET_UNC_SYSTEM_WARNING";
   public static final String VALUESET_UNC_SYSTEM_WARNING_VER = "VALUESET_UNC_SYSTEM_WARNING_VER";
   public static final String VALUESET_UNKNOWN_FILTER_PROPERTY = "VALUESET_UNKNOWN_FILTER_PROPERTY";
@@ -1118,4 +1118,11 @@ public class I18nConstants {
   public static final String SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_ELEMENT = "SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_ELEMENT";
   public static final String SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_TYPE = "SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_TYPE";
   public static final String CODESYSTEM_CS_COMPLETE_AND_EMPTY = "CODESYSTEM_CS_COMPLETE_AND_EMPTY";
+  public static final String VALIDATION_VAL_VERSION_NOHASH = "VALIDATION_VAL_VERSION_NOHASH";
+  public static final String PRIMITIVE_TOO_SHORT = "PRIMITIVE_TOO_SHORT";
+  public static final String CANONICAL_MULTIPLE_VERSIONS_KNOWN = "CANONICAL_MULTIPLE_VERSIONS_KNOWN";
+  public static final String SD_PATH_NO_SLICING = "SD_PATH_NO_SLICING";
+  public static final String SD_PATH_SLICING_DEPRECATED = "SD_PATH_SLICING_DEPRECATED";
+  public static final String SD_PATH_NOT_VALID = "SD_PATH_NOT_VALID";
+  public static final String SD_PATH_ERROR = "SD_PATH_ERROR";
 }

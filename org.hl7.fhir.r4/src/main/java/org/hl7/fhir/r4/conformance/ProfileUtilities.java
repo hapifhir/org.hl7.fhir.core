@@ -282,6 +282,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       public String url;
     }
 
+    public boolean isPrimitiveType(String typeSimple);
+
     public boolean isDatatype(String typeSimple);
 
     public boolean isResource(String typeSimple);

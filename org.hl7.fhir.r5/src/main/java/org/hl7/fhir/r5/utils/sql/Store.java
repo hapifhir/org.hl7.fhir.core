@@ -13,4 +13,7 @@ public class Store {
     return name;
   }
   
+  public void flush() {
+    
+  }
 }

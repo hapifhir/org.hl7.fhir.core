@@ -251,6 +251,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_TIMING = "DATA_REND_TIMING";
   public static final String DATA_REND_TO_DO = "DATA_REND_TO_DO";
   public static final String GENERAL_UCUM = "GENERAL_UCUM";
+  public static final String GENERAL_NCI_THES = "GENERAL_NCI_THES";
   public static final String DATA_REND_UNKNWN = "DATA_REND_UNKNWN";
   public static final String DATA_REND_UNRD_EX = "DATA_REND_UNRD_EX";
   public static final String DATA_REND_UNTIL = "DATA_REND_UNTIL";
@@ -442,6 +443,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String QUEST_LINKID = "QUEST_LINKID";
   public static final String QUEST_MAND = "QUEST_MAND";
   public static final String GENERAL_MAX_LENGTH = "GENERAL_MAX_LENGTH";
+  public static final String GENERAL_MIN_LENGTH = "GENERAL_MIN_LENGTH";
   public static final String QUEST_MAX_LENGTH = "QUEST_MAX_LENGTH";
   public static final String QUEST_NLM = "QUEST_NLM";
   public static final String QUEST_NONE_SPEC = "QUEST_NONE_SPEC";

@@ -1,22 +1,14 @@
 package org.hl7.fhir.r5.terminologies;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -156,9 +148,9 @@ public class TerminologyCacheManager {
     // post it to
     String url = "https://tx.fhir.org/post/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip";
     System.out.println("Sending tx-cache to "+url+" ("+Utilities.describeSize(bs.toByteArray().length)+")");
-    HTTPResult res = ManagedWebAccess.builder()
+    HTTPResult res = ManagedWebAccess.accessor()
         .withBasicAuth(token.substring(0, token.indexOf(':')), token.substring(token.indexOf(':') + 1))
-        .withAccept("application/zip").put(url, bs.toByteArray(), null);
+        .put(url, bs.toByteArray(), null, "application/zip");
     
     if (res.getCode() >= 300) {
       System.out.println("sending cache failed: "+res.getCode());

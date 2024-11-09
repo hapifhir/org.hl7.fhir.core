@@ -249,6 +249,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
       return (context.formatPhrase(RenderingContext.DATA_REND_DICOM)); 
     if (system.equals("http://unitsofmeasure.org")) 
       return (context.formatPhrase(RenderingContext.GENERAL_UCUM)); 
+    if (system.equals("http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl")) 
+      return (context.formatPhrase(RenderingContext.GENERAL_NCI_THES)); 
+    
 
     CodeSystem cs = context.getContext().fetchCodeSystem(system); 
     if (cs != null) { 
@@ -1213,7 +1216,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } else if ("http://loinc.org".equals(system)) { 
       return "https://loinc.org/";             
     } else if ("http://unitsofmeasure.org".equals(system)) { 
-      return "http://ucum.org";             
+      return "http://ucum.org";    
+    } else if ("http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl".equals(system)) { 
+      return "https://ncit.nci.nih.gov/ncitbrowser/pages/home.jsf";    
     } else { 
       String url = system; 
       if (version != null) { 
@@ -1241,6 +1246,12 @@ public class DataRenderer extends Renderer implements CodeResolver {
         return "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm="+code;         
       } else { 
         return "https://www.nlm.nih.gov/research/umls/rxnorm/index.html"; 
+      } 
+    } else if ("http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl".equals(system)) { 
+      if (!Utilities.noString(code)) { 
+        return "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?code="+code;         
+      } else { 
+        return "https://ncit.nci.nih.gov/ncitbrowser/pages/home.jsf"; 
       } 
     } else if ("urn:iso:std:iso:3166".equals(system)) { 
       if (!Utilities.noString(code)) { 
@@ -1307,18 +1318,14 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (Utilities.noString(s)) 
       s = lookupCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")); 
 
-    CodeSystem cs = context.getWorker().fetchCodeSystem(c.primitiveValue("system")); 
+    String sn = displaySystem(c.primitiveValue("system"));
+    String link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"));
+    XhtmlNode xi = link != null ? x.ah(context.prefixLocalHref(link)) : x;    
+    xi.tx(sn);
+    xi.tx(" "); 
 
-    String sn = cs != null ? crPresent(cs) : displaySystem(c.primitiveValue("system")); 
-    String link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")); 
-    if (link != null) { 
-      x.ah(context.prefixLocalHref(link)).tx(sn); 
-    } else { 
-      x.tx(sn); 
-    } 
-
-    x.tx(" "); 
-    x.tx(c.primitiveValue("code")); 
+    xi.tx(c.primitiveValue("code"));
+    
     if (!Utilities.noString(s)) { 
       x.tx(": "); 
       x.tx(s); 
@@ -2229,7 +2236,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return b.toString(); 
   } 
 
-  protected String versionFromCanonical(String system) { 
+  protected String systemFromCanonical(String system) { 
     if (system == null) { 
       return null; 
     } else if (system.contains("|")) { 
@@ -2239,7 +2246,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected String systemFromCanonical(String system) { 
+  protected String versionFromCanonical(String system) { 
     if (system == null) { 
       return null; 
     } else if (system.contains("|")) { 

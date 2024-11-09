@@ -470,7 +470,6 @@ public class JsonParser extends ParserBase {
             n.getChildren().add(nKey);
             nKey.setValue(pv.getName());
             
-
             boolean ok = true;
             Property pvl = propV;
             if (propV.isJsonPrimitiveChoice()) {
@@ -480,6 +479,9 @@ public class JsonParser extends ParserBase {
                 logError(errors, ValidationMessage.NO_RULE_DATE, line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE, describeType(pv.getValue()), propV.getName(), propV.typeSummary()), IssueSeverity.ERROR);
               } else if (propV.hasType(type)) {
                 pvl = new Property(propV.getContext(), propV.getDefinition(), propV.getStructure(), propV.getUtils(), propV.getContextUtils(), type);
+                ok = true;
+              } else if (propV.getDefinition().getType().size() == 1 && propV.typeIsConsistent(type)) {
+                pvl = new Property(propV.getContext(), propV.getDefinition(), propV.getStructure(), propV.getUtils(), propV.getContextUtils(), propV.getType());
                 ok = true;
               } else {
                 logError(errors, ValidationMessage.NO_RULE_DATE, line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(pv.getValue()), propV.getName(), type, propV.typeSummary()), IssueSeverity.ERROR);
@@ -502,7 +504,7 @@ public class JsonParser extends ParserBase {
         }
       }
     } else {
-      if (property.isList()) {
+      if (property.isJsonList()) {
         logError(errors, ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(e), name, path), IssueSeverity.ERROR);
       }
       parseChildComplexInstance(errors, npath, fpath, element, property, name, e, null, null, null);
@@ -571,7 +573,8 @@ public class JsonParser extends ParserBase {
       n.setNull(true);
       // nothing to do, it's ok, but we treat it like it doesn't exist
     } else {
-      logError(errors, ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e), name, npath), IssueSeverity.ERROR);
+      String msg = context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e), name, npath);
+      logError(errors, ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, msg, IssueSeverity.ERROR);
     }
     return null;
   }
@@ -608,7 +611,7 @@ public class JsonParser extends ParserBase {
       logError(errors, "2022-11-26", line(main.getValue()), col(main.getValue()), path, IssueType.INVALID, context.formatMessage(I18nConstants.JSON_PROPERTY_VALUE_NO_QUOTES, main.getName(), main.getValue().asString()), IssueSeverity.ERROR);
     }
     if (main != null || fork != null) {
-      if (property.isList()) {
+      if (property.isJsonList()) {
         boolean ok = true;
         if (!(main == null || main.getValue() instanceof JsonArray)) {
           logError(errors, ValidationMessage.NO_RULE_DATE, line(main.getValue()), col(main.getValue()), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(main.getValue()), name, path), IssueSeverity.ERROR);
