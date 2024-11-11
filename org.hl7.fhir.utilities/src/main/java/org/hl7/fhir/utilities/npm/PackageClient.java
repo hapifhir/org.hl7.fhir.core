@@ -176,6 +176,8 @@ public class PackageClient {
       webAccessor.withToken(server.getToken());
     } else if (server.getAuthenticationMode() == HTTPAuthenticationMode.BASIC) {
       webAccessor.withBasicAuth(server.getUsername(), server.getPassword());
+    } else if (server.getAuthenticationMode() == HTTPAuthenticationMode.APIKEY) {
+      webAccessor.withApiKey(server.getApiKey());
     }
     HTTPResult res = webAccessor.get(source, accept);
     res.checkThrowException();
