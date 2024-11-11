@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities.settings;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import lombok.AllArgsConstructor;
@@ -39,8 +41,9 @@ public class FhirSettingsPOJO {
   private String txFhirDevelopment;
   private String txFhirLocal;
 
-  private PackageManagementPOJO packageManagement;
-  private TerminologyServersPOJO terminologyServers;
+  private Boolean ignoreDefaultPackageServers;
+
+  private List<ServerDetailsPOJO> servers;
 
   protected FhirSettingsPOJO() {
     apiKeys = null;
@@ -53,8 +56,6 @@ public class FhirSettingsPOJO {
     txFhirProduction = TX_SERVER_PROD;
     txFhirDevelopment = TX_SERVER_DEV;
     txFhirLocal = TX_SERVER_LOCAL;
-
-    packageManagement = null;
-    terminologyServers = null;
+    servers = new ArrayList<>();
   }
 }

@@ -136,15 +136,13 @@ public class ManagedWebAccess {
     setAccessPolicy(FhirSettings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
     setUserAgent("hapi-fhir-tooling-client");
     serverAuthDetails = new ArrayList<>();
-    serverAuthDetails.addAll(FhirSettings.getPackageServers());
-    serverAuthDetails.addAll(FhirSettings.getTerminologyServers());
+    serverAuthDetails.addAll(FhirSettings.getServers());
   }
 
   public static void loadFromFHIRSettings(FhirSettings settings) {
     setAccessPolicy(settings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
     setUserAgent("hapi-fhir-tooling-client");
     serverAuthDetails = new ArrayList<>();
-    serverAuthDetails.addAll(settings.getPackageServers());
-    serverAuthDetails.addAll(settings.getTerminologyServers());
+    serverAuthDetails.addAll(settings.getServers());
   }
 }

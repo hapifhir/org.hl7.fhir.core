@@ -85,19 +85,19 @@ public class FhirSettingsTests implements ResourceLoaderTests {
     assertEquals("dummy-temp-path", fhirSettings.getTempPath());
     assertEquals("dummy-test-igs-path", fhirSettings.getTestIgsPath());
 
-    assertTrue(fhirSettings.getPackageManagement().getIgnoreDefaultServers());
+    assertTrue(fhirSettings.getIgnoreDefaultPackageServers());
 
-    List<ServerDetailsPOJO> packageServers = fhirSettings.getPackageManagement().getServers();
+    List<ServerDetailsPOJO> servers = fhirSettings.getServers();
 
-    assertEquals(2, packageServers.size());
+    assertEquals(2, servers.size());
 
-    assertEquals("http://dummy.org", packageServers.get(0).url);
-    assertEquals("npm-package", packageServers.get(0).type);
-    assertEquals("joe", packageServers.get(0).username);
-    assertEquals("swordfish", packageServers.get(0).password);
-    assertEquals("BASIC", packageServers.get(0).authenticationType);
+    assertEquals("http://dummy.org", servers.get(0).url);
+    assertEquals("npm-package", servers.get(0).type);
+    assertEquals("joe", servers.get(0).username);
+    assertEquals("swordfish", servers.get(0).password);
+    assertEquals("BASIC", servers.get(0).authenticationType);
 
-    assertEquals("http://dummy2.com", packageServers.get(1).url);
+    assertEquals("http://dummy2.com", servers.get(1).url);
 
   }
 }

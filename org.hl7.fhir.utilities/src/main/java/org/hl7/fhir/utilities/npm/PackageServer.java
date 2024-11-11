@@ -69,11 +69,37 @@ public class PackageServer {
     return new PackageServer(pojo.getUrl())
       .withAuthenticationMode(getModeFromPOJO(pojo))
       .withServerType(
-        pojo.getType() != null && pojo.getType().equalsIgnoreCase("npm-package") ? PackageServerType.NPM : PackageServerType.FHIR
+        getPackageServerType(pojo.getType())
       )
       .withUsername(pojo.getUsername())
       .withPassword(pojo.getPassword())
       .withToken(pojo.getToken());
+  }
+
+  private static boolean isPackageServer(String serverType) {
+    if (serverType == null) {
+      return false;
+    }
+    if (serverType.equals("fhir-package")) {
+      return true;
+    }
+    if (serverType.equals("npm-package")) {
+      return true;
+    }
+    return false;
+  }
+
+  private static PackageServerType getPackageServerType(String serverType) {
+    if (serverType == null) {
+      return null;
+    }
+    if (serverType.equals("fhir-package")) {
+      return PackageServerType.FHIR;
+    }
+    if (serverType.equals("npm-package")) {
+      return PackageServerType.NPM;
+    }
+    return null;
   }
 
   @Nullable
@@ -84,9 +110,10 @@ public class PackageServer {
   }
 
   public static List<PackageServer> getConfiguredServers() {
-    return FhirSettings.getPackageServers().stream().map(
-      PackageServer::getPackageServerFromPOJO
-    ).collect(Collectors.toList());
+    return FhirSettings.getServers().stream()
+      .filter(serverDetailsPOJO -> isPackageServer(serverDetailsPOJO.getType()))
+      .map(PackageServer::getPackageServerFromPOJO)
+      .collect(Collectors.toList());
   }
 
   @Override
