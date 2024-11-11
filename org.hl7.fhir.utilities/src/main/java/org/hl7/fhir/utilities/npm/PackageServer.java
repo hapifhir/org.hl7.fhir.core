@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
-import org.hl7.fhir.utilities.http.SimpleHTTPClient;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
@@ -27,10 +26,11 @@ public class PackageServer {
     serverType = PackageServerType.FHIR;
   }
 
+  @Getter
   private String url;
 
   @Getter
-  private  HTTPAuthenticationMode authenticationMode;
+  private HTTPAuthenticationMode authenticationMode;
 
   @Getter
   private PackageServerType serverType;
@@ -43,9 +43,11 @@ public class PackageServer {
 
   @Getter
   private String token;
-  public String getUrl() {
-    return url;
-  }
+
+  @Getter
+  private String apiKey;
+
+
 
   public static final String PRIMARY_SERVER = "https://packages.fhir.org";
   public static final String SECONDARY_SERVER = "https://packages2.fhir.org/packages";
@@ -73,7 +75,9 @@ public class PackageServer {
       )
       .withUsername(pojo.getUsername())
       .withPassword(pojo.getPassword())
-      .withToken(pojo.getToken());
+      .withToken(pojo.getToken())
+      .withApiKey(pojo.getApikey());
+
   }
 
   private static boolean isPackageServer(String serverType) {
@@ -129,6 +133,7 @@ public class PackageServer {
     packageServer.username = this.username;
     packageServer.password = this.password;
     packageServer.token = this.token;
+    packageServer.apiKey = this.apiKey;
     return packageServer;
   }
 
@@ -159,6 +164,12 @@ public class PackageServer {
   public PackageServer withToken(String token) {
     PackageServer packageServer = this.copy();
     packageServer.token = token;
+    return packageServer;
+  }
+
+  public PackageServer withApiKey(String apiKey) {
+    PackageServer packageServer = this.copy();
+    packageServer.apiKey = apiKey;
     return packageServer;
   }
 }
