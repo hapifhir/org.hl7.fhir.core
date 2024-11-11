@@ -69,7 +69,7 @@ public class PackageServer {
     return new PackageServer(pojo.getUrl())
       .withAuthenticationMode(getModeFromPOJO(pojo))
       .withServerType(
-        pojo.getServerType() != null && pojo.getServerType().equalsIgnoreCase("npm") ? PackageServerType.NPM : PackageServerType.FHIR
+        pojo.getType() != null && pojo.getType().equalsIgnoreCase("npm-package") ? PackageServerType.NPM : PackageServerType.FHIR
       )
       .withUsername(pojo.getUsername())
       .withPassword(pojo.getPassword())

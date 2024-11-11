@@ -31,12 +31,7 @@ package org.hl7.fhir.r4.conformance;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -1384,7 +1379,7 @@ public class ProfileComparer {
     if (f.exists())
       return TextFile.fileToString(f);
 
-    HTTPResult res = ManagedWebAccess.get("web", source);
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source);
     res.checkThrowException();
     String result = TextFile.bytesToString(res.getContent());
     TextFile.stringToFile(result, f);

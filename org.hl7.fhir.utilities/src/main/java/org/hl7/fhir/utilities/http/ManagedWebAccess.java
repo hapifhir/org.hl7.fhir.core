@@ -52,9 +52,9 @@ import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 public class ManagedWebAccess {
 
   public interface IWebAccessor {
-    HTTPResult get(String mode, String url, String accept, Map<String, String> headers) throws IOException;
-    HTTPResult post(String mode, String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
-    HTTPResult put(String mode, String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
+    HTTPResult get(Iterable<String> serverTypes, String url, String accept, Map<String, String> headers) throws IOException;
+    HTTPResult post(Iterable<String> serverTypes, String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
+    HTTPResult put(Iterable<String> serverTypes, String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
   }
 
   public interface IFhirWebAccessor {
@@ -104,28 +104,28 @@ public class ManagedWebAccess {
     ManagedWebAccess.userAgent = userAgent;
   }
 
-  public static ManagedWebAccessor accessor(String mode) {
-    return new ManagedWebAccessor(mode, userAgent, serverAuthDetails);
+  public static ManagedWebAccessor accessor(Iterable<String> serverTypes) {
+    return new ManagedWebAccessor(serverTypes, userAgent, serverAuthDetails);
   }
 
   public static ManagedFhirWebAccessor fhirAccessor() {
     return new ManagedFhirWebAccessor(userAgent, serverAuthDetails);
   }
 
-  public static HTTPResult get(String mode, String url) throws IOException {
-    return accessor(mode).get(url);
+  public static HTTPResult get(Iterable<String> serverTypes, String url) throws IOException {
+    return accessor(serverTypes).get(url);
   }
 
-  public static HTTPResult get(String mode, String url, String accept) throws IOException {
-    return accessor(mode).get(url, accept);
+  public static HTTPResult get(Iterable<String> serverTypes, String url, String accept) throws IOException {
+    return accessor(serverTypes).get(url, accept);
   }
 
-  public static HTTPResult post(String mode, String url, byte[] content, String contentType, String accept) throws IOException {
-    return accessor(mode).post(url, content, contentType, accept);
+  public static HTTPResult post(Iterable<String> serverTypes, String url, byte[] content, String contentType, String accept) throws IOException {
+    return accessor(serverTypes).post(url, content, contentType, accept);
   }
 
-  public static HTTPResult put(String mode, String url, byte[] content, String contentType, String accept) throws IOException {
-    return accessor(mode).put(url, content, contentType, accept);
+  public static HTTPResult put(Iterable<String> serverTypes, String url, byte[] content, String contentType, String accept) throws IOException {
+    return accessor(serverTypes).put(url, content, contentType, accept);
   }
 
   public static HTTPResult httpCall(HTTPRequest httpRequest) throws IOException {

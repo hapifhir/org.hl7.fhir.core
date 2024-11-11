@@ -14,7 +14,7 @@
      "servers": [
       {
         "url": "http://dummy.org",
-        "serverType": "npm",
+        "serverType": "npm-fhir",
         "authenticationType": "BASIC",
         "username": "joe",
         "password": "swordfish"
