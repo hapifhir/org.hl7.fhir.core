@@ -171,7 +171,6 @@ public class PackageClient {
   }
  
   private InputStream fetchUrl(String source, String accept) throws IOException {
-    //FIXME: Could this be in disagreement with the credentials selected by ManagedWebAccess?
     ManagedWebAccessor webAccessor = ManagedWebAccess.accessor(Arrays.asList("web"));
     if (server.getAuthenticationMode() == HTTPAuthenticationMode.TOKEN) {
       webAccessor.withToken(server.getToken());
