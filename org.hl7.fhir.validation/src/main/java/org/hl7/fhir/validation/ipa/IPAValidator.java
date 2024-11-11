@@ -160,7 +160,7 @@ public class IPAValidator {
 
   private Element makeRequest(ValidationNode vn, String url)  {
     try {
-      HTTPResult result = ManagedWebAccess.get(url, "application/fhir+json");
+      HTTPResult result = ManagedWebAccess.get("web", url, "application/fhir+json");
       if (result.getCode() >= 300) {
         vn.getIssues().add(new ValidationMessage(Source.IPAValidator, IssueType.EXCEPTION, "http.request", 
             "HTTP Return code is "+result.getCode()+" "+result.getMessage(),

@@ -584,11 +584,11 @@ public class IgLoader implements IValidationEngineLoader {
     try {
       try {
         // try with cache-busting option and then try withhout in case the server doesn't support that
-        HTTPResult res = ManagedWebAccess.get(source + "?nocache=" + System.currentTimeMillis(), contentType);
+        HTTPResult res = ManagedWebAccess.get("web",source + "?nocache=" + System.currentTimeMillis(), contentType);
         res.checkThrowException();
         return res.getContent();
       } catch (Exception e) {
-        HTTPResult res = ManagedWebAccess.get(source, contentType);
+        HTTPResult res = ManagedWebAccess.get("web", source, contentType);
         res.checkThrowException();
         return res.getContent();
       }

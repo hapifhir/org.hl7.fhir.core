@@ -126,7 +126,7 @@ public class CKMImporter {
 
   private Document loadXml(String address) throws Exception {
 
-    HTTPResult res = ManagedWebAccess.get(address, "application/xml");
+    HTTPResult res = ManagedWebAccess.get("web", address, "application/xml");
     res.checkThrowException();
     InputStream xml = new ByteArrayInputStream(res.getContent());
 
