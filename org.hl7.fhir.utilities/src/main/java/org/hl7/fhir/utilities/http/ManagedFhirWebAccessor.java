@@ -9,6 +9,7 @@ import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -45,7 +46,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
 
 
   public ManagedFhirWebAccessor(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
-    super("fhir", userAgent, serverAuthDetails);
+    super(Arrays.asList("fhir"), userAgent, serverAuthDetails);
     this.timeout = 5000;
     this.timeoutUnit = TimeUnit.MILLISECONDS;
   }
@@ -88,7 +89,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
         }
       }
     } else {
-      ServerDetailsPOJO settings = ManagedWebAccessUtils.getServer(getMode(), httpRequest.getUrl().toString(), getServerAuthDetails());
+      ServerDetailsPOJO settings = ManagedWebAccessUtils.getServer(getServerTypes(), httpRequest.getUrl().toString(), getServerAuthDetails());
       if (settings != null) {
         switch (settings.getAuthenticationType()) {
           case "basic":

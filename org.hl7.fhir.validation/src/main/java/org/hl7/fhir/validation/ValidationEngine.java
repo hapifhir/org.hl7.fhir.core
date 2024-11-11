@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
@@ -72,12 +71,9 @@ import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.AdditionalBindingPurpose;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.CodedContentValidationAction;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
-import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
@@ -942,7 +938,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (output.startsWith("http://")) {
       ByteArrayOutputStream bs = new ByteArrayOutputStream();
       handleOutputToStream(r, output, bs, version);
-      HTTPResult res = ManagedWebAccess.post("web", output, bs.toByteArray(), "application/fhir+xml", "application/fhir+xml");
+      HTTPResult res = ManagedWebAccess.post(Arrays.asList("web"), output, bs.toByteArray(), "application/fhir+xml", "application/fhir+xml");
       res.checkThrowException();
     } else {
       FileOutputStream s = ManagedFileAccess.outStream(output);
@@ -1099,7 +1095,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   @Override
   public byte[] fetchRaw(IResourceValidator validator, String source) throws IOException {
-    HTTPResult res = ManagedWebAccess.get("web", source);
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source);
     res.checkThrowException();
     return res.getContent();
   }

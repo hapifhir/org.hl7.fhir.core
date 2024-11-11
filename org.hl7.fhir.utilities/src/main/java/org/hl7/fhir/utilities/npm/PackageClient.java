@@ -8,11 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Nullable;
 
@@ -175,7 +171,8 @@ public class PackageClient {
   }
  
   private InputStream fetchUrl(String source, String accept) throws IOException {
-    ManagedWebAccessor webAccessor = ManagedWebAccess.accessor("web");
+    //FIXME: Could this be in disagreement with the credentials selected by ManagedWebAccess?
+    ManagedWebAccessor webAccessor = ManagedWebAccess.accessor(Arrays.asList("web"));
     if (server.getAuthenticationMode() == HTTPAuthenticationMode.TOKEN) {
       webAccessor.withToken(server.getToken());
     } else if (server.getAuthenticationMode() == HTTPAuthenticationMode.BASIC) {

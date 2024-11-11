@@ -9,7 +9,7 @@ import java.util.Map;
 
 public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>> {
   @Getter
-  private final String mode;
+  private final Iterable<String> serverTypes;
   
   @Getter
   private final String userAgent;
@@ -27,8 +27,8 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
   @Getter
   private final Map<String, String> headers = new HashMap<>();
 
-  public ManagedWebAccessorBase(String mode, String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
-    this.mode = mode;
+  public ManagedWebAccessorBase(Iterable<String> serverTypes, String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
+    this.serverTypes = serverTypes;
     this.userAgent = userAgent;
     this.serverAuthDetails = serverAuthDetails;
   }

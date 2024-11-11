@@ -8,13 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -319,7 +313,7 @@ public class Scanner {
   }
 
   protected void download(String address, String filename) throws IOException {
-    HTTPResult res = ManagedWebAccess.get("web", address);
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), address);
     res.checkThrowException();
     TextFile.bytesToFile(res.getContent(), filename);
   }

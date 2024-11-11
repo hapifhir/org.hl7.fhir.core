@@ -10,17 +10,25 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @AllArgsConstructor
 public class ServerDetailsPOJO {
-
-    // what kind of HTTP server this is - a FHIR tx server, an NPM server, or a general web server
-    String mode;
   
     String url;
 
     // possible values: none, basic, token, apikey
     String authenticationType;
 
-    // npm or fhir, because the FHIR npm usage varies a little bit from general NPM usage (change over time)
-    String serverType; 
+  /**
+   * This helps clients use appropriate API endpoints for each server type.
+   * <p/>
+   * It can be of the following types:
+   *  <ul>
+   *    <li>web</li>
+   *    <li>fhir</li>
+   *    <li>npm-package</li>
+   *    <li>fhir-package</li>
+   *  </ul>
+   */
+
+    String type;
 
     String username;
 

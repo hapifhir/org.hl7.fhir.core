@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.ipa;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -160,7 +161,7 @@ public class IPAValidator {
 
   private Element makeRequest(ValidationNode vn, String url)  {
     try {
-      HTTPResult result = ManagedWebAccess.get("web", url, "application/fhir+json");
+      HTTPResult result = ManagedWebAccess.get(Arrays.asList("web"), url, "application/fhir+json");
       if (result.getCode() >= 300) {
         vn.getIssues().add(new ValidationMessage(Source.IPAValidator, IssueType.EXCEPTION, "http.request", 
             "HTTP Return code is "+result.getCode()+" "+result.getMessage(),
