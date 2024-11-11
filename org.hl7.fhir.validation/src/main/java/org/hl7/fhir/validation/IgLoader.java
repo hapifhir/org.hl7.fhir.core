@@ -430,7 +430,6 @@ public class IgLoader implements IValidationEngineLoader {
 
   private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException, IOException {
     try {
-      //FIXME: Could this be in disagreement with the credentials selected by ManagedWebAccess?
       HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source + "?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       return new ByteArrayInputStream(res.getContent());
@@ -584,13 +583,11 @@ public class IgLoader implements IValidationEngineLoader {
   private byte[] fetchFromUrlSpecific(String source, String contentType, boolean optional, List<String> errors) throws FHIRException, IOException {
     try {
       try {
-        // try with cache-busting option and then try withhout in case the server doesn't support that
-        //FIXME: Could this be in disagreement with the credentials selected by ManagedWebAccess?
+        // try with cache-busting option and then try without in case the server doesn't support that
         HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"),source + "?nocache=" + System.currentTimeMillis(), contentType);
         res.checkThrowException();
         return res.getContent();
       } catch (Exception e) {
-        //FIXME: Could this be in disagreement with the credentials selected by ManagedWebAccess?
         HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source, contentType);
         res.checkThrowException();
         return res.getContent();
