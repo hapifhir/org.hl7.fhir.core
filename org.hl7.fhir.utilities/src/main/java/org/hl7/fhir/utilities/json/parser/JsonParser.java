@@ -692,7 +692,7 @@ public class JsonParser {
 
   private static byte[] fetch(String source) throws IOException {
     String murl = source.contains("?") ? source+"&nocache=" + System.currentTimeMillis() : source+"?nocache=" + System.currentTimeMillis();
-    HTTPResult res = ManagedWebAccess.get(murl, "application/json, application/fhir+json");
+    HTTPResult res = ManagedWebAccess.get("web", murl, "application/json, application/fhir+json");
     res.checkThrowException();
     return res.getContent();
   }

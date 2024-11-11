@@ -724,13 +724,13 @@ public class JsonTrackingParser {
   }
   
   public static JsonObject fetchJson(String source) throws IOException {
-    HTTPResult res = ManagedWebAccess.get(source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
+    HTTPResult res = ManagedWebAccess.get("web", source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
     res.checkThrowException();
     return parseJson(res.getContent());
   }
   
   public static JsonArray fetchJsonArray(String source) throws IOException {
-    HTTPResult res = ManagedWebAccess.get(source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
+    HTTPResult res = ManagedWebAccess.get("web",source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
     res.checkThrowException();
     return parseJsonArray(res.getContent());
   }

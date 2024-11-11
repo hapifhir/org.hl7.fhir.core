@@ -287,7 +287,7 @@ public class SHLParser extends ParserBase {
 
 
   private HTTPResult fetchFile(String url, String ct) throws IOException {
-    HTTPResult res = ManagedWebAccess.get(url, ct);
+    HTTPResult res = ManagedWebAccess.get("web", url, ct);
     res.checkThrowException();
     return res;
   }

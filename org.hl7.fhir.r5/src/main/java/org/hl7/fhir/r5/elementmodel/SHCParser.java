@@ -29,6 +29,9 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.http.HTTPRequest;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
@@ -428,6 +431,20 @@ public class SHCParser extends ParserBase {
   private String getVCIIssuer(List<ValidationMessage> errors, String issuer) {
     try {
       JsonObject vci = org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/the-commons-project/vci-directory/main/vci-issuers.json");
+
+      /* HTTPResult httpResult = ManagedWebAccess.httpCall(
+        new HTTPRequest().withMethod(HTTPVerb.GET).withUrl(new URL("https://raw.githubusercontent.com/the-commons-project/vci-directory/main/vci-issuers.json"))
+          new URL("https://raw.githubusercontent.com/the-commons-project/vci-directory/main/vci-issuers.json")
+          HTTPRequest.HttpMethod.GET,
+          null,
+          null,
+          null
+
+        )
+      )
+      */
+
+      //JsonObject vci = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject();
       for (JsonObject j : vci.getJsonObjects("participating_issuers")) {
         if (issuer.equals(j.asString("iss"))) {
           return j.asString("name");
