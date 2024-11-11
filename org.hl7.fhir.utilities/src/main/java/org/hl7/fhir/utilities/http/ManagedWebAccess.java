@@ -61,10 +61,6 @@ public class ManagedWebAccess {
     HTTPResult httpCall(HTTPRequest httpRequest);
   }
 
-  public interface IFhirWebAccessor {
-    HTTPResult httpCall(HTTPRequest httpRequest);
-  }
-
   public enum WebAccessPolicy {
     DIRECT, // open access to the web, though access can be restricted only to domains in AllowedDomains
     MANAGED, // no access except by the IWebAccessor
