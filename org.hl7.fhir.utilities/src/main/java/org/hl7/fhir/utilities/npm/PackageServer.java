@@ -106,6 +106,7 @@ public class PackageServer {
   private static HTTPAuthenticationMode getModeFromPOJO(ServerDetailsPOJO pojo) {
     if (pojo.getAuthenticationType().equalsIgnoreCase("basic")) return HTTPAuthenticationMode.BASIC;
     if (pojo.getAuthenticationType().equalsIgnoreCase("token")) return HTTPAuthenticationMode.TOKEN;
+    if (pojo.getAuthenticationType().equalsIgnoreCase("apikey")) return HTTPAuthenticationMode.APIKEY;
     return null;
   }
 
