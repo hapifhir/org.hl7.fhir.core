@@ -52,9 +52,9 @@ import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 public class ManagedWebAccess {
 
   public interface IWebAccessor {
-    HTTPResult get(String url, String accept, Map<String, String> headers) throws IOException;
-    HTTPResult post(String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
-    HTTPResult put(String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
+    HTTPResult get(Iterable<String> serverTypes, String url, String accept, Map<String, String> headers) throws IOException;
+    HTTPResult post(Iterable<String> serverTypes, String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
+    HTTPResult put(Iterable<String> serverTypes, String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
   }
 
   public interface IFhirWebAccessor {
@@ -104,28 +104,28 @@ public class ManagedWebAccess {
     ManagedWebAccess.userAgent = userAgent;
   }
 
-  public static ManagedWebAccessor accessor() {
-    return new ManagedWebAccessor(userAgent, serverAuthDetails);
+  public static ManagedWebAccessor accessor(Iterable<String> serverTypes) {
+    return new ManagedWebAccessor(serverTypes, userAgent, serverAuthDetails);
   }
 
   public static ManagedFhirWebAccessor fhirAccessor() {
     return new ManagedFhirWebAccessor(userAgent, serverAuthDetails);
   }
 
-  public static HTTPResult get(String url) throws IOException {
-    return accessor().get(url);
+  public static HTTPResult get(Iterable<String> serverTypes, String url) throws IOException {
+    return accessor(serverTypes).get(url);
   }
 
-  public static HTTPResult get(String url, String accept) throws IOException {
-    return accessor().get(url, accept);
+  public static HTTPResult get(Iterable<String> serverTypes, String url, String accept) throws IOException {
+    return accessor(serverTypes).get(url, accept);
   }
 
-  public static HTTPResult post(String url, byte[] content, String contentType, String accept) throws IOException {
-    return accessor().post(url, content, contentType, accept);
+  public static HTTPResult post(Iterable<String> serverTypes, String url, byte[] content, String contentType, String accept) throws IOException {
+    return accessor(serverTypes).post(url, content, contentType, accept);
   }
 
-  public static HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
-    return accessor().put(url, content, contentType, accept);
+  public static HTTPResult put(Iterable<String> serverTypes, String url, byte[] content, String contentType, String accept) throws IOException {
+    return accessor(serverTypes).put(url, content, contentType, accept);
   }
 
   public static HTTPResult httpCall(HTTPRequest httpRequest) throws IOException {
@@ -136,15 +136,13 @@ public class ManagedWebAccess {
     setAccessPolicy(FhirSettings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
     setUserAgent("hapi-fhir-tooling-client");
     serverAuthDetails = new ArrayList<>();
-    serverAuthDetails.addAll(FhirSettings.getPackageServers());
-    serverAuthDetails.addAll(FhirSettings.getTerminologyServers());
+    serverAuthDetails.addAll(FhirSettings.getServers());
   }
 
   public static void loadFromFHIRSettings(FhirSettings settings) {
     setAccessPolicy(settings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
     setUserAgent("hapi-fhir-tooling-client");
     serverAuthDetails = new ArrayList<>();
-    serverAuthDetails.addAll(settings.getPackageServers());
-    serverAuthDetails.addAll(settings.getTerminologyServers());
+    serverAuthDetails.addAll(settings.getServers());
   }
 }

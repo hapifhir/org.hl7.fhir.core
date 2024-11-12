@@ -430,7 +430,7 @@ public class IgLoader implements IValidationEngineLoader {
 
   private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException, IOException {
     try {
-      HTTPResult res = ManagedWebAccess.get(source + "?nocache=" + System.currentTimeMillis());
+      HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source + "?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       return new ByteArrayInputStream(res.getContent());
     } catch (IOException e) {
@@ -583,12 +583,12 @@ public class IgLoader implements IValidationEngineLoader {
   private byte[] fetchFromUrlSpecific(String source, String contentType, boolean optional, List<String> errors) throws FHIRException, IOException {
     try {
       try {
-        // try with cache-busting option and then try withhout in case the server doesn't support that
-        HTTPResult res = ManagedWebAccess.get(source + "?nocache=" + System.currentTimeMillis(), contentType);
+        // try with cache-busting option and then try without in case the server doesn't support that
+        HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"),source + "?nocache=" + System.currentTimeMillis(), contentType);
         res.checkThrowException();
         return res.getContent();
       } catch (Exception e) {
-        HTTPResult res = ManagedWebAccess.get(source, contentType);
+        HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source, contentType);
         res.checkThrowException();
         return res.getContent();
       }

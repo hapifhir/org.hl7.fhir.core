@@ -287,7 +287,7 @@ public class SHLParser extends ParserBase {
 
 
   private HTTPResult fetchFile(String url, String ct) throws IOException {
-    HTTPResult res = ManagedWebAccess.get(url, ct);
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), url, ct);
     res.checkThrowException();
     return res;
   }
@@ -299,7 +299,7 @@ public class SHLParser extends ParserBase {
 
     JsonObject j = new JsonObject();
     j.add("recipient", "FHIR Validator");
-    HTTPResult res = ManagedWebAccess.post(url, org.hl7.fhir.utilities.json.parser.JsonParser.composeBytes(j), "application/json", "application/json");        
+    HTTPResult res = ManagedWebAccess.post(Arrays.asList("web"), url, org.hl7.fhir.utilities.json.parser.JsonParser.composeBytes(j), "application/json", "application/json");
     res.checkThrowException();
     return res;
   }
