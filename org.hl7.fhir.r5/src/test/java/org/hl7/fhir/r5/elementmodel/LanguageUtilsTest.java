@@ -47,7 +47,7 @@ class LanguageUtilsTest implements ResourceLoaderTests {
       .lines()
       .collect(Collectors.joining("\n"));
 
-    String msg = CompareUtilities.checkJsonSrcIsSame("", generatedResource.toString(),text, null);
+    String msg = new CompareUtilities().checkJsonSrcIsSame("", generatedResource.toString(),text);
     Assertions.assertNull(msg);
 
   }

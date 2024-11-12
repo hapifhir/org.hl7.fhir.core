@@ -138,7 +138,7 @@ public class SQLOnFhirTests {
 //        sortResults(rows);
         String expS = JsonParser.compose(exp, true);
         String rowS = JsonParser.compose(rows, true);
-        String c = CompareUtilities.checkJsonSrcIsSame(name, expS, rowS, null);
+        String c = new CompareUtilities().checkJsonSrcIsSame(name, expS, rowS);
         Assertions.assertNull(c, c);
       } else if (test.testCase.has("expectCount")) {
         Assertions.assertEquals(test.testCase.asInteger("expectCount"), results.size());
