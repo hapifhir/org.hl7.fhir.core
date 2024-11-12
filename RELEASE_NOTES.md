@@ -11,6 +11,7 @@
 * Validate fhirpath expression in slice discriminators
 * Fix slicing by type and profile to allow multiple options per slice
 * List measure choices when a match by version can't be found
+* Check server metadata when executing terminology test cases
 
 ## Other code changes
 
