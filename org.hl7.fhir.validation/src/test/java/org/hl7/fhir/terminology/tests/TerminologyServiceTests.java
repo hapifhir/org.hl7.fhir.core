@@ -92,7 +92,8 @@ private static TxTestData testData;
     if (setup.getSuite().asBoolean("disabled") || setup.getTest().asBoolean("disabled")) {
       return;
     }
-    Resource req = loadResource(setup.getTest().asString("request"));
+    String reqFile = setup.getTest().asString("request");
+    Resource req = reqFile == null ? null : loadResource(reqFile);
     String fn = setup.getTest().has("response:tx.fhir.org") ? setup.getTest().asString("response:tx.fhir.org") : setup.getTest().asString("response");
     String resp = TestingUtilities.loadTestResource("tx", fn);
     String fp = Utilities.path("[tmp]", "tx", fn);
@@ -114,7 +115,7 @@ private static TxTestData testData;
     } else if (setup.getTest().asString("operation").equals("cs-validate-code")) {
       String diff = TxServiceTestHelper.getDiffForValidation(setup.getTest().str("name"), engine.getContext(), setup.getTest().asString("name"), req, resp, setup.getTest().asString("Content-Language"), fp, ext, true);
       assertNull(diff, diff);
-    } else if (Utilities.existsInList(setup.getTest().asString("operation"), "lookup", "translate")) {
+    } else if (Utilities.existsInList(setup.getTest().asString("operation"), "lookup", "translate", "metadata", "term-caps")) {
       Assertions.assertTrue(true); // we don't test these for the internal server
     } else {
       Assertions.fail("Unknown Operation "+ setup.getTest().asString("operation"));
@@ -140,7 +141,7 @@ private static TxTestData testData;
         TxTesterSorters.sortValueSet(vse.getValueset());
         TxTesterScrubbers.scrubVS(vse.getValueset(), false);
         String vsj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
-        String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, vsj, ext);
+        String diff = new CompareUtilities(ext).checkJsonSrcIsSame(id, resp, vsj);
         if (diff != null) {
           Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
           TextFile.stringToFile(vsj, fp);        
@@ -189,7 +190,7 @@ private static TxTestData testData;
       TxTesterScrubbers.scrubOO(oo, false);
 
       String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
-      String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, ooj, ext);
+      String diff = new CompareUtilities(ext).checkJsonSrcIsSame(id, resp, ooj);
       if (diff != null) {
         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
         TextFile.stringToFile(ooj, fp);        

@@ -61,11 +61,11 @@ public class TextClientLogger extends BaseLogger implements ToolingClientLogger 
     file.println("\r\n--- " + id + " -----------------\r\nRequest: \r\n");
     file.println(method + " " + url + " HTTP/1.0");
     for (String s : headers)
-      file.println(Utilities.escapeXml(s));
+      file.println(s);
     if (body != null) {
       file.println("");
       try {
-        file.println(Utilities.escapeXml(new String(body, "UTF-8")));
+        file.println(new String(body, "UTF-8"));
       } catch (UnsupportedEncodingException e) {
       }
     }
@@ -82,7 +82,7 @@ public class TextClientLogger extends BaseLogger implements ToolingClientLogger 
     if (body != null) {
       file.println("");
       try {
-        file.println(Utilities.escapeXml(new String(body, "UTF-8")));
+        file.println(new String(body, "UTF-8"));
       } catch (UnsupportedEncodingException e) {
       }
     }
