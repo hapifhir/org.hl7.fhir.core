@@ -3,12 +3,7 @@ package org.hl7.fhir.convertors.analytics;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -241,7 +236,7 @@ public class PackageVisitor {
         File co = ManagedFileAccess.file(Utilities.path(cache, pid+"."+manifest.asString("date")+".tgz"));
         if (!co.exists()) {
 
-          HTTPResult res = ManagedWebAccess.get(repo+"/package.tgz?nocache=" + System.currentTimeMillis());
+          HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), repo+"/package.tgz?nocache=" + System.currentTimeMillis());
           res.checkThrowException();
           TextFile.bytesToFile(res.getContent(), co);
         }
@@ -338,7 +333,7 @@ public class PackageVisitor {
     System.out.println("Feed "+str);
     try {
 
-      HTTPResult res = ManagedWebAccess.get(str+"?nocache=" + System.currentTimeMillis());
+      HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), str+"?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       Document xml = XMLUtil.parseToDom(res.getContent());
       for (Element channel : XMLUtil.getNamedChildren(xml.getDocumentElement(), "channel")) {

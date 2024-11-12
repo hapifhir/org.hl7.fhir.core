@@ -14,8 +14,8 @@ import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
  */
 public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccessor> {
 
-  public ManagedWebAccessor(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
-    super(userAgent, serverAuthDetails);
+  public ManagedWebAccessor(Iterable<String> serverTypes, String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
+    super(serverTypes, userAgent, serverAuthDetails);
   }
   
   private Map<String, String> newHeaders() {
@@ -66,7 +66,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
       }
       }
     } else {
-      ServerDetailsPOJO settings = ManagedWebAccessUtils.getServer(url, getServerAuthDetails());
+      ServerDetailsPOJO settings = ManagedWebAccessUtils.getServer(getServerTypes(), url, getServerAuthDetails());
       if (settings != null) {
         switch (settings.getAuthenticationType()) {
         case "basic" :
@@ -101,7 +101,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
       SimpleHTTPClient client = setupClient(url);
       return client.get(url, accept);
     case MANAGED:
-      return ManagedWebAccess.getAccessor().get(url, accept, newHeaders());
+      return ManagedWebAccess.getAccessor().get(getServerTypes(), url, accept, newHeaders());
     case PROHIBITED:
       throw new IOException("Access to the internet is not allowed by local security policy");
     default:
@@ -119,7 +119,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
       SimpleHTTPClient client = setupClient(url);
       return client.post(url, contentType, content, accept);
     case MANAGED:
-      return ManagedWebAccess.getAccessor().post(url, content, contentType, accept, newHeaders());
+      return ManagedWebAccess.getAccessor().post(getServerTypes(), url, content, contentType, accept, newHeaders());
     case PROHIBITED:
       throw new IOException("Access to the internet is not allowed by local security policy");
     default:
@@ -137,7 +137,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
       SimpleHTTPClient client = setupClient(url);
       return client.put(url, contentType, content, accept);
     case MANAGED:
-      return ManagedWebAccess.getAccessor().put(url, content, contentType, accept, newHeaders());
+      return ManagedWebAccess.getAccessor().put(getServerTypes(), url, content, contentType, accept, newHeaders());
     case PROHIBITED:
       throw new IOException("Access to the internet is not allowed by local security policy");
     default:
