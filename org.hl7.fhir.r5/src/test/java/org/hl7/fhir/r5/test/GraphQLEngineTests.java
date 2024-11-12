@@ -98,7 +98,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       IOUtils.copy(CompareUtilities.loadTestResourceStream("r5", "graphql", source), ManagedFileAccess.outStream(CompareUtilities.tempFile("graphql", source)));
       IOUtils.copy(CompareUtilities.loadTestResourceStream("r5", "graphql", output), ManagedFileAccess.outStream(CompareUtilities.tempFile("graphql", output)));
       TextFile.stringToFile(str.toString(), CompareUtilities.tempFile("graphql", output+".out"));
-      msg = CompareUtilities.checkJsonIsSame(id, CompareUtilities.tempFile("graphql", output), CompareUtilities.tempFile("graphql", output+".out"));
+      msg = new CompareUtilities().checkJsonIsSame(id, CompareUtilities.tempFile("graphql", output), CompareUtilities.tempFile("graphql", output+".out"));
       Assertions.assertTrue(Utilities.noString(msg), msg);
     }
     else

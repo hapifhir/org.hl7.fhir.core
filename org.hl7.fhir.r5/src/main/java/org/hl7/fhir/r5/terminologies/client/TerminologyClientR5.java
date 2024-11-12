@@ -166,6 +166,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
+  public CapabilityStatement getCapabilitiesStatement() {
+    return client.getCapabilitiesStatement();
+  }
+
+  @Override
   public Parameters lookupCode(Map<String, String> params) {
     return client.lookupCode(params);
   }
