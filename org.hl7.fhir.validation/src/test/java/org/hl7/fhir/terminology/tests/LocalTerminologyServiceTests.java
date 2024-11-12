@@ -135,7 +135,9 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   }
 
   private void logTestSkip(String reason) {
-    System.out.println("Skipping test: " + setup.suite.asString("name") + " " + setup.test.asString("name") + " reason: " + reason);
+    if (setup != null) {
+      System.out.println("Skipping test: " + setup.suite.asString("name") + " " + setup.test.asString("name") + " reason: " + reason);
+    }
   }
 
   public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
