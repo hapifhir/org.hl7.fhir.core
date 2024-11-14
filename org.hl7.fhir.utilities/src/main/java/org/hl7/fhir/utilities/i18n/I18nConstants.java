@@ -1126,4 +1126,20 @@ public class I18nConstants {
   public static final String SD_PATH_SLICING_DEPRECATED = "SD_PATH_SLICING_DEPRECATED";
   public static final String SD_PATH_NOT_VALID = "SD_PATH_NOT_VALID";
   public static final String SD_PATH_ERROR = "SD_PATH_ERROR";
+  public static final String VIEWDEFINITION_SHOULD_HAVE_NAME = null;
+  public static final String VIEWDEFINITION_NAME_INVALID = null;
+  public static final String VIEWDEFINITION_CONSTANT_NAME_INVALID = null;
+  public static final String VIEWDEFINITION_PATH_ERROR = null;
+  public static final String VIEWDEFINITION_PATH_WRONG_RETURN = null;
+  public static final String VIEWDEFINITION_PATH_WARNING = null;
+  public static final String VIEWDEFINITION_UNKNOWN_RESOURCE = null;
+  public static final String VIEWDEFINITION_DUPL_COL_NAME = null;
+  public static final String VIEWDEFINITION_NAME_ILLEGAL = null;
+  public static final String VIEWDEFINITION_NAME_REQUIRED = null;
+  public static final String VIEWDEFINITION_COLLECTION_NOT_NEEDED = null;
+  public static final String VIEWDEFINITION_COLLECTION_NOT_ALWAYS = null;
+  public static final String VIEWDEFINITION_COLLECTION_NEEDED = null;
+  public static final String VIEWDEFINITION_TYPE_MISMATCH = null;
+  public static final String VIEWDEFINITION_UNABLE_TO_TYPE = null;
+  public static final String VIEWDEFINITION_COMPLEX_TYPE = null;
 }
