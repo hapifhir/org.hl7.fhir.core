@@ -242,4 +242,9 @@ public class ResourceWrapperR4 extends ResourceWrapper {
     return null;
   }
 
+  @Override
+  public boolean hasUserData(String name) {
+    return element.hasUserData(name);
+  }
+
 }

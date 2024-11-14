@@ -10,6 +10,7 @@ import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -143,7 +144,7 @@ public class ResourceWrapperNative extends ResourceWrapper {
   public void setNarrative(XhtmlNode x, String status, boolean multiLangMode, Locale locale, boolean isPretty) {
     if (element instanceof DomainResource) {
       DomainResource r = (DomainResource) element;    
-      r.getText().setUserData("renderer.generated", true);
+      r.getText().setUserData(UserDataNames.renderer_is_generated, true);
       if (!r.hasText() || !r.getText().hasDiv()) {
         r.setText(new Narrative());
         r.getText().setStatusAsString(status);      
@@ -229,6 +230,11 @@ public class ResourceWrapperNative extends ResourceWrapper {
       return ((Enumeration<?>) element).getSystem();
     }
     return null;
+  }
+
+  @Override
+  public boolean hasUserData(String name) {
+    return element.hasUserData(name);
   }
 
 }
