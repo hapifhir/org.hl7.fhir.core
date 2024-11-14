@@ -13,7 +13,7 @@ public class Column {
     super();
   }
 
-  protected Column(String name, boolean isColl, String type, ColumnKind kind) {
+  public Column(String name, boolean isColl, String type, ColumnKind kind) {
     super();
     this.name = name;
     this.isColl = isColl;
