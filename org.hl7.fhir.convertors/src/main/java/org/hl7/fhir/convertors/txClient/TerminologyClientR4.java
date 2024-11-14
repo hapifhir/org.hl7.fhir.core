@@ -64,7 +64,7 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
   
   public FhirPublication getActualVersion() {
-    return FhirPublication.STU3;
+    return FhirPublication.R4;
   }
   
   
@@ -175,6 +175,11 @@ public class TerminologyClientR4 implements ITerminologyClient {
   @Override
   public CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException {
     return (CapabilityStatement) VersionConvertorFactory_40_50.convertResource(client.getCapabilitiesStatementQuick());
+  }
+
+  @Override
+  public CapabilityStatement getCapabilitiesStatement() throws FHIRException {
+    return (CapabilityStatement) VersionConvertorFactory_40_50.convertResource(client.getCapabilitiesStatement());
   }
 
   @Override

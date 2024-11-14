@@ -729,7 +729,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException {
     try {
-      HTTPResult res = ManagedWebAccess.get(source);
+      HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source);
       res.checkThrowException();
       return new ByteArrayInputStream(res.getContent());
     } catch (Exception e) {
@@ -862,8 +862,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private void loadFromBuildServer() throws IOException {
-
-    HTTPResult res = ManagedWebAccess.get("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), "https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
     res.checkThrowException();
 
     buildInfo = (JsonArray) JsonParser.parse(TextFile.bytesToString(res.getContent()));

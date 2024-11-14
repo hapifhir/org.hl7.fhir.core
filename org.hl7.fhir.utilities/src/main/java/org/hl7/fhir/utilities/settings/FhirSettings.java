@@ -222,25 +222,17 @@ public class FhirSettings {
 
   public static boolean isIgnoreDefaultPackageServers() {
     getInstance();
-    if (instance.fhirSettings.getPackageManagement() == null || instance.fhirSettings.getPackageManagement().getIgnoreDefaultServers() == null) {
+    if (instance.fhirSettings.getIgnoreDefaultPackageServers() == null) {
       return false;
     }
-    return instance.fhirSettings.getPackageManagement().getIgnoreDefaultServers();
+    return instance.fhirSettings.getIgnoreDefaultPackageServers();
   }
 
-  public static List<ServerDetailsPOJO> getPackageServers() {
+  public static List<ServerDetailsPOJO> getServers() {
     getInstance();
-    if (instance.fhirSettings.getPackageManagement() == null) {
+    if (instance.fhirSettings.getServers() == null) {
       return Collections.emptyList();
     }
-    return Arrays.asList(instance.fhirSettings.getPackageManagement().getServers().toArray(new ServerDetailsPOJO[]{}));
-  }
-
-  public static List<ServerDetailsPOJO> getTerminologyServers() {
-    getInstance();
-    if (instance.fhirSettings.getTerminologyServers() == null) {
-      return Collections.emptyList();
-    }
-    return Arrays.asList(instance.fhirSettings.getTerminologyServers().getServers().toArray(new ServerDetailsPOJO[]{}));
+    return Arrays.asList(instance.fhirSettings.getServers().toArray(new ServerDetailsPOJO[]{}));
   }
 }

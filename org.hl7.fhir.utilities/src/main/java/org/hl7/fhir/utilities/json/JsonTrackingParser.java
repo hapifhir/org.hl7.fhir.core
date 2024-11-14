@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Stack;
 
@@ -724,13 +725,13 @@ public class JsonTrackingParser {
   }
   
   public static JsonObject fetchJson(String source) throws IOException {
-    HTTPResult res = ManagedWebAccess.get(source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
     res.checkThrowException();
     return parseJson(res.getContent());
   }
   
   public static JsonArray fetchJsonArray(String source) throws IOException {
-    HTTPResult res = ManagedWebAccess.get(source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"),source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
     res.checkThrowException();
     return parseJsonArray(res.getContent());
   }

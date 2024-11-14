@@ -385,7 +385,7 @@ public class Property {
     ElementDefinition ed = definition;
     StructureDefinition sd = structure;
     boolean isCDA = isCDAElement(structure);
-    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed);
+    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed, false);
     String url = null;
     if (children.getList().isEmpty() || isElementWithOnlyExtension(ed, children.getList())) {
       // ok, find the right definitions
@@ -459,7 +459,7 @@ public class Property {
         sd = context.fetchResource(StructureDefinition.class, url);        
         if (sd == null)
           throw new DefinitionException("Unable to find definition '"+url+"' for type '"+t+"' for name '"+elementName+"' on property "+definition.getPath());
-        children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElement().get(0));
+        children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElement().get(0), false);
       }
     }
     List<Property> properties = new ArrayList<Property>();
@@ -493,7 +493,7 @@ public class Property {
   protected List<Property> getChildProperties(TypeDetails type) throws DefinitionException {
     ElementDefinition ed = definition;
     StructureDefinition sd = structure;
-    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed);
+    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed, false);
     if (children.getList().isEmpty()) {
       // ok, find the right definitions
       String t = null;
@@ -519,7 +519,7 @@ public class Property {
         sd = context.fetchResource(StructureDefinition.class, t);
         if (sd == null)
           throw new DefinitionException("Unable to find class '"+t+"' for name '"+ed.getPath()+"' on property "+definition.getPath());
-        children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElement().get(0));
+        children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElement().get(0), false);
       }
     }
     List<Property> properties = new ArrayList<Property>();

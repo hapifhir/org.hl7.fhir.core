@@ -71,7 +71,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   @Setter
   private ResourceFormat preferredResourceFormat;
   private int maxResultSetSize = -1;// _count
-  private CapabilityStatement capabilities;
   @Getter
   @Setter
   private Client client = new Client();
@@ -100,13 +99,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     this.maxResultSetSize = -1;
   }
 
-  private void checkCapabilities() {
-    try {
-      capabilities = getCapabilitiesStatementQuick();
-    } catch (Throwable e) {
-    }
-  }
-
   public String getPreferredResourceFormat() {
     return preferredResourceFormat.getHeader();
   }
@@ -130,10 +122,10 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return capabilities;
   }
 
-  public CapabilityStatement getCapabilitiesStatement() {
+  public CapabilityStatement getCapabilitiesStatementQuick() {
     CapabilityStatement conformance = null;
     try {
-      conformance = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(false),
+      conformance = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
           withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false), "CapabilitiesStatement", timeoutNormal).getReference();
     } catch (Exception e) {
       throw new FHIRException("Error fetching the server's conformance statement", e);
@@ -141,18 +133,15 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return conformance;
   }
 
-  public CapabilityStatement getCapabilitiesStatementQuick() throws EFhirClientException {
-     if (capabilities != null)
-      return capabilities;
-    try {
-      capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false), "CapabilitiesStatement-Quick", timeoutNormal)
-          .getReference();
-    } catch (Exception e) {
-      throw new FHIRException("Error fetching the server's capability statement: " + e.getMessage(), e);
-    }
-    return capabilities;
-  }
+  public CapabilityStatement getCapabilitiesStatement() throws EFhirClientException {
+   try {
+     return (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(false),
+         withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false), "CapabilitiesStatement-Quick", timeoutNormal)
+         .getReference();
+   } catch (Exception e) {
+     throw new FHIRException("Error fetching the server's capability statement: " + e.getMessage(), e);
+   }
+ }
 
   public Resource read(String resourceClass, String id) {// TODO Change this to AddressableResource
     recordUse();
@@ -562,8 +551,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public String getServerVersion() {
-    checkCapabilities();
-    return capabilities == null ? null : capabilities.getSoftware().getVersion();
+    return getCapabilitiesStatementQuick().getSoftware().getVersion();
   }
 
   public Bundle search(String type, String criteria) {

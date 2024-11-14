@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.cli.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.TextFile;
@@ -25,7 +26,7 @@ public class ProfileLoader {
 
   private static byte[] loadProfileFromUrl(String src) throws FHIRException {
     try {
-      HTTPResult res = ManagedWebAccess.get(src + "?nocache=" + System.currentTimeMillis());
+      HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), src + "?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       return res.getContent();
     } catch (Exception e) {

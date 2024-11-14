@@ -99,7 +99,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if (sd == null)
       return "unknown resource " +res.fhirType();
     else {
-      SourcedChildDefinitions childDefs = context.getProfileUtilities().getChildMap(sd, ed);
+      SourcedChildDefinitions childDefs = context.getProfileUtilities().getChildMap(sd, ed, true);
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("; ");
       for (NamedResourceWrapperList p : res.childrenInGroups()) {
         ElementDefinition pDefn = getElementDefinition(childDefs, p); 
