@@ -125,6 +125,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.Termi
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -1022,8 +1023,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (ValueSetUtilities.isServerSide(inc.getSystem()) || (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT))) {
         doServerIncludeCodes(inc, heirarchical, exp, imports, expParams, extensions, noInactive, valueSet.getExpansion().getProperty());
       } else {
-        if (cs.hasUserData("supplements.installed")) {
-          for (String s : cs.getUserString("supplements.installed").split("\\,")) {
+        if (cs.hasUserData(UserDataNames.tx_known_supplements)) {
+          for (String s : cs.getUserString(UserDataNames.tx_known_supplements).split("\\,")) {
             requiredSupplements.remove(s);
           }
         }
@@ -1090,8 +1091,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
       UriType u = new UriType(cs.getUrl() + (cs.hasVersion() ? "|"+cs.getVersion() : ""));
       if (!existsInParams(exp.getParameter(), "used-codesystem", u))
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-codesystem").setValue(u));
-      if (cs.hasUserData("supplements.installed")) {
-        for (String s : cs.getUserString("supplements.installed").split("\\,")) {
+      if (cs.hasUserData(UserDataNames.tx_known_supplements)) {
+        for (String s : cs.getUserString(UserDataNames.tx_known_supplements).split("\\,")) {
           u = new UriType(s);
           if (!existsInParams(exp.getParameter(), "used-supplement", u)) {
             exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-supplement").setValue(u));

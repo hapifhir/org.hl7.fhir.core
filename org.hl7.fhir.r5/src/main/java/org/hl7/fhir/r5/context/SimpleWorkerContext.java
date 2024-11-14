@@ -72,6 +72,7 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminolog
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.R5Hacker;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.MagicResources;
@@ -620,7 +621,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   public List<String> getResourceNames() {
     Set<String> result = new HashSet<String>();
     for (StructureDefinition sd : listStructures()) {
-      if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.hasUserData("old.load.mode"))
+      if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.hasUserData(UserDataNames.loader_urls_patched))
         result.add(sd.getName());
     }
     return Utilities.sorted(result);
