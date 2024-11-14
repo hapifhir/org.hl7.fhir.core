@@ -6368,7 +6368,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     
     // get the list of direct defined children, including slices
-    SourcedChildDefinitions childDefinitions = profileUtilities.getChildMap(profile, definition);
+    SourcedChildDefinitions childDefinitions = profileUtilities.getChildMap(profile, definition, false);
     if (childDefinitions.getList().isEmpty()) {
       if (actualType == null) {
         vi.setValid(false);
@@ -6457,7 +6457,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_ACTUAL_TYPE_, actualType));
     trackUsage(dt, valContext, element);
 
-    childDefinitions = profileUtilities.getChildMap(dt, dt.getSnapshot().getElement().get(0));
+    childDefinitions = profileUtilities.getChildMap(dt, dt.getSnapshot().getElement().get(0), false);
     return childDefinitions;
   }
 
@@ -6998,7 +6998,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (ed.hasFixedCoding() && "http://loinc.org".equals(ed.getFixedCoding().getSystem())) {
       return ed.getFixedCoding().getCode();      
     }
-    SourcedChildDefinitions children = profileUtilities.getChildMap(profile, ed);
+    SourcedChildDefinitions children = profileUtilities.getChildMap(profile, ed, true);
     if (children != null) {
       for (ElementDefinition t : children.getList()) {
         if (t.getPath().endsWith(".code") && t.hasFixed()) {

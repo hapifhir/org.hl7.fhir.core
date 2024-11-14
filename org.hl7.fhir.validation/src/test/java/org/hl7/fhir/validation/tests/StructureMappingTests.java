@@ -121,11 +121,11 @@ public class StructureMappingTests {
       fail(e.getMessage());
     }
     if (output.endsWith("json")) {
-      msg = CompareUtilities.checkJsonSrcIsSame(name, s.toString(), outputJson, null);
+      msg = new CompareUtilities().checkJsonSrcIsSame(name, s.toString(), outputJson);
     } else {
       TextFile.bytesToFile(s.toByteArray(), fileOutputRes);
       TextFile.bytesToFile(outputJson.getBytes(), fileOutputResOrig);
-      msg = CompareUtilities.checkXMLIsSame(name, ManagedFileAccess.inStream(fileOutputResOrig), ManagedFileAccess.inStream(fileOutputRes));
+      msg = new CompareUtilities().checkXMLIsSame(name, ManagedFileAccess.inStream(fileOutputResOrig), ManagedFileAccess.inStream(fileOutputRes));
     }
     if (!Utilities.noString(msg)) {
       System.out.print(s.toString());

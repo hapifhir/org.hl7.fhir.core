@@ -154,6 +154,11 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
+  public CapabilityStatement getCapabilitiesStatement() throws FHIRException {
+    return (CapabilityStatement) VersionConvertorFactory_30_50.convertResource(client.getCapabilitiesStatement());
+  }
+
+  @Override
   public Parameters lookupCode(Map<String, String> params) throws FHIRException {
     return (Parameters) VersionConvertorFactory_30_50.convertResource(client.lookupCode(params));
   }

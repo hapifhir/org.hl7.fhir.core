@@ -245,7 +245,7 @@ public class ComparisonTests {
     String en = Utilities.path("[tmp]", "comparison", Utilities.changeFileExt(name, ".expected.html"));
     TextFile.stringToFile(expected, en);
     
-    String msg = CompareUtilities.checkXMLIsSame(id, en, an);
+    String msg = new CompareUtilities().checkXMLIsSame(id, en, an);
     Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
     
   }
