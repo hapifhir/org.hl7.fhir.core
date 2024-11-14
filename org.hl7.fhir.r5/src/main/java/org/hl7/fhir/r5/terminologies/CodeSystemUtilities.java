@@ -67,6 +67,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.utils.CanonicalResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -590,11 +591,11 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       if (ss == null || ss.isLowerThan(status)) 
         ToolingExtensions.setStandardsStatus(cs, status, normativeVersion);
       if (pckage != null) {
-        if (!cs.hasUserData("ballot.package"))
-          cs.setUserData("ballot.package", pckage);
-        else if (!pckage.equals(cs.getUserString("ballot.package")))
-          if (!"infrastructure".equals(cs.getUserString("ballot.package")))
-            System.out.println("Code System "+cs.getUrl()+": ownership clash "+pckage+" vs "+cs.getUserString("ballot.package"));
+        if (!cs.hasUserData(UserDataNames.kindling_ballot_package))
+          cs.setUserData(UserDataNames.kindling_ballot_package, pckage);
+        else if (!pckage.equals(cs.getUserString(UserDataNames.kindling_ballot_package)))
+          if (!"infrastructure".equals(cs.getUserString(UserDataNames.kindling_ballot_package)))
+            System.out.println("Code System "+cs.getUrl()+": ownership clash "+pckage+" vs "+cs.getUserString(UserDataNames.kindling_ballot_package));
       }
       if (status == StandardsStatus.NORMATIVE) {
         cs.setExperimental(false);
@@ -842,7 +843,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     for (CodeSystem sup : supplements) {
       b.append(sup.getVersionedUrl());      
     }
-    ret.setUserData("supplements.installed", b.toString());
+    ret.setUserData(UserDataNames.tx_known_supplements, b.toString());
 
     for (ConceptDefinitionComponent t : ret.getConcept()) {
       mergeSupplements(ret, t, supplements);

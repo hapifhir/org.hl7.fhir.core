@@ -41,6 +41,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -870,12 +871,12 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
           ex.setProfile(null);
         } else {
           // both have profiles. Is one derived from the other? 
-          StructureDefinition sdex = ((IWorkerContext) ex.getUserData("ctxt")).fetchResource(StructureDefinition.class, ex.getProfile().get(0).getValue(), nwSource);
+          StructureDefinition sdex = ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)).fetchResource(StructureDefinition.class, ex.getProfile().get(0).getValue(), nwSource);
           StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class, nw.getProfile().get(0).getValue(), nwSource);
           if (sdex != null && sdnw != null) {
             if (sdex.getUrl().equals(sdnw.getUrl())) {
               pfound = true;
-            } else if (derivesFrom(sdex, sdnw, ((IWorkerContext) ex.getUserData("ctxt")))) {
+            } else if (derivesFrom(sdex, sdnw, ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)))) {
               ex.setProfile(nw.getProfile());
               pfound = true;
             } else if (derivesFrom(sdnw, sdex, ctxt)) {
@@ -898,12 +899,12 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
           ex.setTargetProfile(null);
         } else {
           // both have profiles. Is one derived from the other? 
-          StructureDefinition sdex = ((IWorkerContext) ex.getUserData("ctxt")).fetchResource(StructureDefinition.class, ex.getTargetProfile().get(0).getValue(), nwSource);
+          StructureDefinition sdex = ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)).fetchResource(StructureDefinition.class, ex.getTargetProfile().get(0).getValue(), nwSource);
           StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class, nw.getTargetProfile().get(0).getValue(), nwSource);
           if (sdex != null && sdnw != null) {
             if (matches(sdex, sdnw)) {
               tfound = true;
-            } else if (derivesFrom(sdex, sdnw, ((IWorkerContext) ex.getUserData("ctxt")))) {
+            } else if (derivesFrom(sdex, sdnw, ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)))) {
               ex.setTargetProfile(nw.getTargetProfile());
               tfound = true;
             } else if (derivesFrom(sdnw, sdex, ctxt)) {
@@ -925,7 +926,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       }
     }
     if (!tfound || !pfound) {
-      nw.setUserData("ctxt", ctxt);
+      nw.setUserData(UserDataNames.COMP_CONTEXT, ctxt);
       results.add(nw);      
     }
   }

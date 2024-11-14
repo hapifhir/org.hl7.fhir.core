@@ -35,6 +35,7 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -409,7 +410,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   }
 
   private boolean conceptsHaveVersion(ConceptDefinitionComponent c) {
-    if (c.hasUserData("cs.version.notes"))
+    if (c.hasUserData(UserDataNames.tx_cs_version_notes))
       return true;
     for (ConceptDefinitionComponent g : c.getConcept())
       if (conceptsHaveVersion(g))
@@ -567,8 +568,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     if (version) {
       td = tr.td();
-      if (c.hasUserData("cs.version.notes"))
-        td.addText(c.getUserString("cs.version.notes"));
+      if (c.hasUserData(UserDataNames.tx_cs_version_notes)) { // todo: this is never set
+        td.addText(c.getUserString(UserDataNames.tx_cs_version_notes));
+      }
     }
     if (properties != null) {
       for (PropertyComponent pc : properties) {
