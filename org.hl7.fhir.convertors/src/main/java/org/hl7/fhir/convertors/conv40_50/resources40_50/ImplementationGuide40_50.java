@@ -18,6 +18,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Url40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r4.model.MarkdownType;
 import org.hl7.fhir.r4.model.UrlType;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ImplementationGuide;
@@ -59,6 +60,7 @@ public class ImplementationGuide40_50 {
   static final String EXT_IG_DEFINITION_PARAM_URL_EXT = "http://hl7.org/fhir/tools/CodeSystem/ig-parameters";
   static final String EXT_IG_DEFINITION_PARAM_URL_BASE = "http://hl7.org/fhir/guide-parameter-code";
   static final String EXT_IG_DEFINITION_RESOURCE_PROFILE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.definition.resource.profile";
+  static final String EXT_IG_DEPENDSON_REASON = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.dependsOn.reason";
 
   public static org.hl7.fhir.r5.model.ImplementationGuide convertImplementationGuide(org.hl7.fhir.r4.model.ImplementationGuide src) throws FHIRException {
     if (src == null)
@@ -187,6 +189,9 @@ public class ImplementationGuide40_50 {
       tgt.setPackageIdElement(Id40_50.convertId(src.getPackageIdElement()));
     if (src.hasVersion())
       tgt.setVersionElement(String40_50.convertString(src.getVersionElement()));
+    if (src.hasExtension(EXT_IG_DEPENDSON_REASON))
+      tgt.setReasonElement(MarkDown40_50.convertMarkdown((org.hl7.fhir.r4.model.MarkdownType)src.getExtensionByUrl(EXT_IG_DEPENDSON_REASON).getValue()));
+    tgt.removeExtension(EXT_IG_DEPENDSON_REASON);
     return tgt;
   }
 
@@ -201,6 +206,8 @@ public class ImplementationGuide40_50 {
       tgt.setPackageIdElement(Id40_50.convertId(src.getPackageIdElement()));
     if (src.hasVersion())
       tgt.setVersionElement(String40_50.convertString(src.getVersionElement()));
+    if (src.hasReason())
+      tgt.addExtension(EXT_IG_DEPENDSON_REASON, MarkDown40_50.convertMarkdown(src.getReasonElement()));
     return tgt;
   }
 
