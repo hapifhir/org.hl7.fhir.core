@@ -187,7 +187,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
     loadPackage("hl7.fhir.r4.core#4.0.1", false);
     loadPackage("hl7.fhir.r4b.core#4.3.0", false);
     
-    validator = new InstanceValidator(context, null, null);
+    validator = new InstanceValidator(context, null, null, null);
     validator.setSuppressLoincSnomedMessages(true);
     validator.setResourceIdRule(IdStatus.REQUIRED);
     validator.setBestPracticeWarningLevel(BestPracticeWarningLevel.Warning);

@@ -10,6 +10,7 @@ import org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.CodeValidationRule;
@@ -21,8 +22,8 @@ public class CodeSystemBasedChecker extends CodeSystemChecker {
 
   private CodeSystem cs;
 
-  public CodeSystemBasedChecker(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, List<ValidationMessage> errors, CodeSystem cs) {
-    super(context, xverManager, debug, errors);
+  public CodeSystemBasedChecker(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, List<ValidationMessage> errors, CodeSystem cs, ValidatorSession session) {
+    super(context, xverManager, debug, errors, session);
     this.cs = cs;
   }
 
