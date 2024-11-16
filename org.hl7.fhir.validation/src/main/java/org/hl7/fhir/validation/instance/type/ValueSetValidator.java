@@ -132,21 +132,21 @@ public class ValueSetValidator extends BaseValidator {
 
   private CodeSystemChecker getSystemValidator(String system, List<ValidationMessage> errors) {
     if (system == null) {
-      return new GeneralCodeSystemChecker(context, xverManager, debug, errors);
+      return new GeneralCodeSystemChecker(context, xverManager, debug, errors, session);
     }
     switch (system) {
-    case "http://snomed.info/sct" :return new SnomedCTChecker(context, xverManager, debug, errors);
-    case "http://loinc.org": return new LoincChecker(context, xverManager, debug, errors);
-    case "http://www.nlm.nih.gov/research/umls/rxnorm": return new RxNormChecker(context, xverManager, debug, errors); 
-    case "http://unitsofmeasure.org": return new UcumChecker(context, xverManager, debug, errors); 
-    case "http://www.ama-assn.org/go/cpt": return new CPTChecker(context, xverManager, debug, errors); 
-    case "urn:ietf:bcp:47": return new BCP47Checker(context, xverManager, debug, errors);  
+    case "http://snomed.info/sct" :return new SnomedCTChecker(context, xverManager, debug, errors, session);
+    case "http://loinc.org": return new LoincChecker(context, xverManager, debug, errors, session);
+    case "http://www.nlm.nih.gov/research/umls/rxnorm": return new RxNormChecker(context, xverManager, debug, errors, session); 
+    case "http://unitsofmeasure.org": return new UcumChecker(context, xverManager, debug, errors, session); 
+    case "http://www.ama-assn.org/go/cpt": return new CPTChecker(context, xverManager, debug, errors, session); 
+    case "urn:ietf:bcp:47": return new BCP47Checker(context, xverManager, debug, errors, session);  
     default: 
       CodeSystem cs = context.fetchCodeSystem(system);
       if (cs != null) {
-        return new CodeSystemBasedChecker(context, xverManager, debug, errors, cs);
+        return new CodeSystemBasedChecker(context, xverManager, debug, errors, cs, session);
       } else {
-        return new GeneralCodeSystemChecker(context, xverManager, debug, errors);
+        return new GeneralCodeSystemChecker(context, xverManager, debug, errors, session);
       }
     }
   }

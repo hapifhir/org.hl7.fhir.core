@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -33,8 +34,8 @@ public class CodingsObserver extends BaseValidator {
     }
   }
 
-  public CodingsObserver(@Nonnull IWorkerContext context, @Nonnull XVerExtensionManager xverManager, boolean debug) {
-    super(context, xverManager, debug);
+  public CodingsObserver(@Nonnull IWorkerContext context, @Nonnull XVerExtensionManager xverManager, boolean debug, ValidatorSession session) {
+    super(context, xverManager, debug, session);
     this.context = context;
   }
 

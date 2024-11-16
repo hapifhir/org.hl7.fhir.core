@@ -71,6 +71,7 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.r5.utils.R5Hacker;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
@@ -140,8 +141,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   public interface IValidatorFactory {
-    IResourceValidator makeValidator(IWorkerContext ctxt) throws FHIRException;
-    IResourceValidator makeValidator(IWorkerContext ctxts, XVerExtensionManager xverManager) throws FHIRException;
+    IResourceValidator makeValidator(IWorkerContext ctxt, ValidatorSession session) throws FHIRException;
+    IResourceValidator makeValidator(IWorkerContext ctxts, XVerExtensionManager xverManager, ValidatorSession session) throws FHIRException;
   }
 
 	private Questionnaire questionnaire;
@@ -611,7 +612,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	public IResourceValidator newValidator() throws FHIRException {
 	  if (validatorFactory == null)
 	    throw new Error(formatMessage(I18nConstants.NO_VALIDATOR_CONFIGURED));
-	  return validatorFactory.makeValidator(this, xverManager).setJurisdiction(JurisdictionUtilities.getJurisdictionCodingFromLocale(Locale.getDefault().getCountry()));
+	  return validatorFactory.makeValidator(this, xverManager, null).setJurisdiction(JurisdictionUtilities.getJurisdictionCodingFromLocale(Locale.getDefault().getCountry()));
 	}
 
 
