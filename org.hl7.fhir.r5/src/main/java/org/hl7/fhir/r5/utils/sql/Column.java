@@ -6,14 +6,15 @@ public class Column {
   private int length;
   private String type;
   private ColumnKind kind;
-  private boolean isColl;
+  private Boolean isColl;
   private boolean duplicateReported;
+  private String notes;
   
   protected Column() {
     super();
   }
 
-  public Column(String name, boolean isColl, String type, ColumnKind kind) {
+  public Column(String name, Boolean isColl, String type, ColumnKind kind) {
     super();
     this.name = name;
     this.isColl = isColl;
@@ -51,11 +52,11 @@ public class Column {
     this.type = type;
   }
 
-  public boolean isColl() {
+  public Boolean isColl() {
     return isColl;
   }
 
-  public void setColl(boolean isColl) {
+  public void setColl(Boolean isColl) {
     this.isColl = isColl;
   }
 
@@ -94,6 +95,18 @@ public class Column {
     return "Column [name=" + name + ", length=" + length + ", type=" + type + ", kind=" + kind + ", isColl=" + isColl
         + "]";
   }
+
+  public String getNotes() {
+    return notes;
+  }
+
+  public void setNotes(String notes) {
+    this.notes = notes;
+  }
   
+
+  public void addNote(String note) {
+    this.notes = notes == null ? note : notes+"; "+note;
+  }
   
 }
