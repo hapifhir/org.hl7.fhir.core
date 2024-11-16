@@ -1876,7 +1876,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), tail(ed.getElement().getPath()), ed.getElement().getPath())); 
         } else { 
           c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_SEE)+" ", null)); 
-          c.getPieces().add(gen.new Piece(pfx(corePath, ed.getSource().getWebPath())+"#"+ed.getElement().getPath(), tail(ed.getElement().getPath())+" ("+ed.getSource().getTypeName()+")", ed.getElement().getPath())); 
+          c.getPieces().add(gen.new Piece(typePath(corePath, ed.getSource())+"#"+ed.getElement().getPath(), tail(ed.getElement().getPath())+" ("+ed.getSource().getTypeName()+")", ed.getElement().getPath())); 
         } 
       } 
       return c; 
@@ -2055,6 +2055,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
  
+  private String typePath(String cp, StructureDefinition source) {
+    if (source.hasUserData(UserDataNames.loader_custom_resource)) {
+      return source.getWebPath();
+    } else {
+      return pfx(cp, source.getWebPath());
+    }
+  }
+
   private boolean hasMultipleVersions(List<? extends CanonicalResource> list) { 
     Set<String> vl = new HashSet<>(); 
     for (CanonicalResource cr : list) { 
