@@ -274,6 +274,11 @@ public class ResourceWrapperModel extends ResourceWrapper {
   public boolean hasUserData(String name) {
     return model.hasUserData(name);
   }
+  
+  @Override
+  public Object getUserData(String name) {
+    return model.getUserData(name);
+  }
 
 
 }
