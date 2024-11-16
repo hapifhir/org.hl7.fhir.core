@@ -1,5 +1,12 @@
 package org.hl7.fhir.r5.utils;
 
+// other than render_src_package, all these are intended to be made consistent in format, using
+// the standard format scope-name-name where scope is one of 
+//  lib - core library (most of them)
+//  validator - validator CLI or web functionality
+//  pub - IG publisher functionality
+//  kindling - kindling related functionality 
+
 public class UserDataNames {
   public static final String loader_urls_patched = "old.load.mode";
   public static final String loader_custom_resource = "loader-custom-resource";
@@ -34,7 +41,7 @@ public class UserDataNames {
   public static final String render_external_link = "External.Link";
   public static final String render_dict_generator_anchors = "dict.generator.anchors";
   public static final String render_presentation = "presentation";
-  public static final String render_src_package = "package";
+  public static final String render_src_package = "package"; // <--- this value is reused by HAPI and can't change without consultation
   public static final String renderer_is_generated = "renderer.generated";
 
   public static final String keyview_elementSupported = "elementSupported";
