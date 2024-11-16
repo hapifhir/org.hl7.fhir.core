@@ -523,6 +523,7 @@ public abstract class ResourceWrapper {
   public abstract String primitiveValue();
   public abstract boolean isResource();
   public abstract boolean hasUserData(String name);
+  public abstract Object getUserData(String name);
 
 
 }
