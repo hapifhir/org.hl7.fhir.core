@@ -5,7 +5,6 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,7 +16,6 @@ import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +30,6 @@ import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r4b.context.TextClientLogger;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.OperationOutcome;
@@ -43,6 +40,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
+import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPHeader;
@@ -64,7 +62,7 @@ public class TxTester {
   private ITxTesterLoader loader;
   private String error;
   private String output;
-  private ITerminologyClient tx;
+  private ITerminologyClient terminologyClient;
   private boolean tight;
   private JsonObject externals;
   private String software;
@@ -113,7 +111,7 @@ public class TxTester {
     json.add("date", new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(Calendar.getInstance().getTime()) + timezone());
     try {
       JsonObject tests = loadTests();
-      tx = connectToServer(modes);
+      terminologyClient = connectToServer(modes);
       boolean ok = checkClient();
       for (JsonObject suite : tests.getJsonObjects("suites")) {
         if ((!suite.has("mode") || modes.contains(suite.asString("mode")))) {
@@ -160,11 +158,11 @@ public class TxTester {
   }
 
   private boolean checkClient() {
-    cstmt = tx.getCapabilitiesStatement();
+    cstmt = terminologyClient.getCapabilitiesStatement();
     if (cstmt.hasSoftware()) {
       software = cstmt.getSoftware().getName()+" v"+cstmt.getSoftware().getVersion();
     }
-    tc = tx.getTerminologyCapabilities();
+    tc = terminologyClient.getTerminologyCapabilities();
     return true;
   }
 
@@ -205,8 +203,8 @@ public class TxTester {
 
   public String executeTest(JsonObject suite, JsonObject test, List<String> modes) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
     error = null;
-    if (tx == null) {
-      tx = connectToServer(modes);
+    if (terminologyClient == null) {
+      terminologyClient = connectToServer(modes);
       checkClient();
     }
     List<Resource> setup = loadSetupResources(suite);
@@ -255,7 +253,7 @@ public class TxTester {
           JsonObject hdr = test.getJsonObject("header");
           if (hdr.has("mode") && modes.contains(hdr.asString("mode"))) {
             header = new HTTPHeader(hdr.asString("name"), hdr.asString("value"));
-            tx.getClientHeaders().addHeader(header);
+            terminologyClient.setClientHeaders(new ClientHeaders(List.of(header)));
           }
         }
 
@@ -302,7 +300,7 @@ public class TxTester {
           outputT.add("message", msg);
         }
         if (header != null) {
-          tx.getClientHeaders().removeHeader(header);
+          terminologyClient.setClientHeaders(new ClientHeaders());
         }
         return msg == null;
       } catch (Exception e) {
@@ -312,7 +310,7 @@ public class TxTester {
         error = e.getMessage();
         e.printStackTrace();
         if (header != null) {
-          tx.getClientHeaders().removeHeader(header);
+          terminologyClient.setClientHeaders(new ClientHeaders());
         }
         return false;
       }
@@ -383,12 +381,12 @@ public class TxTester {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
-    tx.setContentLanguage(lang);
+    terminologyClient.setContentLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
     int code = 0;
     String pj;
     try {
-      Parameters po = tx.lookupCode(p);
+      Parameters po = terminologyClient.lookupCode(p);
       TxTesterScrubbers.scrubParams(po);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
@@ -414,12 +412,12 @@ public class TxTester {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
-    tx.setContentLanguage(lang);
+    terminologyClient.setContentLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
     int code = 0;
     String pj;
     try {
-      Parameters po = tx.translate(p);
+      Parameters po = terminologyClient.translate(p);
       TxTesterScrubbers.scrubParams(po);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
@@ -445,12 +443,12 @@ public class TxTester {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
-    tx.setContentLanguage(lang);
+    terminologyClient.setContentLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
     int code = 0;
     String vsj;
     try {
-      ValueSet vs = tx.expandValueset(null, p);
+      ValueSet vs = terminologyClient.expandValueset(null, p);
       TxTesterScrubbers.scrubVS(vs, tight);
       TxTesterSorters.sortValueSet(vs);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vs);
@@ -488,11 +486,11 @@ public class TxTester {
       p.addParameter().setName("tx-resource").setResource(r);
     }
     p.getParameter().addAll(profile.getParameter());
-    tx.setContentLanguage(lang);
+    terminologyClient.setContentLanguage(lang);
     int code = 0;
     String pj;
     try {
-      Parameters po = tx.validateVS(p);
+      Parameters po = terminologyClient.validateVS(p);
       TxTesterScrubbers.scrubParams(po);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
@@ -520,11 +518,11 @@ public class TxTester {
       p.addParameter().setName("tx-resource").setResource(r);
     }
     p.getParameter().addAll(profile.getParameter());
-    tx.setContentLanguage(lang);
+    terminologyClient.setContentLanguage(lang);
     int code = 0;
     String pj;
     try {
-      Parameters po = tx.validateCS(p);
+      Parameters po = terminologyClient.validateCS(p);
       TxTesterScrubbers.scrubParams(po);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
@@ -549,7 +547,7 @@ public class TxTester {
 
   private Map<String, String> vars() {
     Map<String, String> vars = new HashMap<String, String>();
-    vars.put("version", tx.getActualVersion().toCode());
+    vars.put("version", terminologyClient.getActualVersion().toCode());
     return vars;
     
   }
