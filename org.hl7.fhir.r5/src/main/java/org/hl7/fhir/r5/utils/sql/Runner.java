@@ -8,6 +8,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
@@ -429,12 +430,23 @@ public class Runner implements IEvaluationContext {
   @Override
   public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
     if (explicitConstant) {
-      JsonObject vd = (JsonObject) appContext;
-      JsonObject constant = findConstant(vd, name.substring(1));
-      if (constant != null) {
-        Base b = (Base) constant.getUserData(UserDataNames.db_value);
-        if (b != null) {
-          return new TypeDetails(CollectionStatus.SINGLETON, b.fhirType());
+      if (appContext instanceof JsonObject) {
+        JsonObject vd = (JsonObject) appContext;
+        JsonObject constant = findConstant(vd, name.substring(1));
+        if (constant != null) {
+          Base b = (Base) constant.getUserData(UserDataNames.db_value);
+          if (b != null) {
+            return new TypeDetails(CollectionStatus.SINGLETON, b.fhirType());
+          }
+        }
+      } else if (appContext instanceof Element) {
+        Element vd = (Element) appContext;
+        Element constant = findConstant(vd, name.substring(1));
+        if (constant != null) {
+          Element v = constant.getNamedChild("value");
+          if (v != null) {
+            return new TypeDetails(CollectionStatus.SINGLETON, v.fhirType());
+          }
         }
       }
     }
@@ -449,6 +461,16 @@ public class Runner implements IEvaluationContext {
     }
     return null;
   }
+
+  private Element findConstant(Element vd, String name) {
+    for (Element o : vd.getChildren("constant")) {
+      if (name.equals(o.getNamedChildValue("name"))) {
+        return o;
+      }
+    }
+    return null;
+  }
+  
   @Override
   public boolean log(String argument, List<Base> focus) {
     throw new Error("Not implemented yet: log");
