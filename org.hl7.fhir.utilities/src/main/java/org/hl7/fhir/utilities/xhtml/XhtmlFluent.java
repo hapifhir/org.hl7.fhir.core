@@ -119,6 +119,10 @@ public abstract class XhtmlFluent {
     return addTag("ul");
   }
 
+  public XhtmlNode ol() {
+    return addTag("ol");
+  }
+
   public XhtmlNode li() {
     return addTag("li");
   }

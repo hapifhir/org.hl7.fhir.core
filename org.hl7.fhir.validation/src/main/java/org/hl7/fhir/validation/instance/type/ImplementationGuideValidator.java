@@ -29,6 +29,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
+import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -53,8 +54,8 @@ import ca.uhn.fhir.util.ObjectUtil;
 
 public class ImplementationGuideValidator extends BaseValidator {
 
-  public ImplementationGuideValidator(IWorkerContext context, XVerExtensionManager xverManager, boolean debug) {
-    super(context, xverManager, debug);
+  public ImplementationGuideValidator(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, ValidatorSession session) {
+    super(context, xverManager, debug, session);
   }
 
   public boolean validateImplementationGuide(ValidationContext valContext, List<ValidationMessage> errors, Element ig, NodeStack stack) {

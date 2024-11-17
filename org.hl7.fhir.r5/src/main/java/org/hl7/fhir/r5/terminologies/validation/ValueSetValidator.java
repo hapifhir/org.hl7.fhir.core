@@ -92,6 +92,7 @@ import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -240,8 +241,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (!options.isMembershipOnly()) {
       int i = 0;
       for (Coding c : code.getCoding()) {
-        if (!c.hasSystem() && !c.hasUserData("val.sys.error")) {
-          c.setUserData("val.sys.error", true);
+        if (!c.hasSystem() && !c.hasUserData(UserDataNames.tx_val_sys_error)) {
+          c.setUserData(UserDataNames.tx_val_sys_error, true);
           info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".coding["+i+"]", context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE), OpIssueCode.InvalidData, null));
         } else {
           VersionInfo vi = new VersionInfo(this);
@@ -278,7 +279,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
               }
             }
           } else {
-            c.setUserData("cs", cs);
+            c.setUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM, cs);
 
             checkCanonical(info.getIssues(), path, cs, valueset);
             res = validateCode(path+".coding["+i+"]", c, cs, vcc, info);
@@ -361,7 +362,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         cd.setDisplay(lookupDisplay(foundCoding));
         res.setDefinition(cd);
         res.setSystem(foundCoding.getSystem());
-        res.setVersion(foundCoding.hasVersion() ? foundCoding.getVersion() : foundCoding.hasUserData("cs") ? ((CodeSystem) foundCoding.getUserData("cs")).getVersion() : null);
+        res.setVersion(foundCoding.hasVersion() ? foundCoding.getVersion() : foundCoding.hasUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM) ? ((CodeSystem) foundCoding.getUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM)).getVersion() : null);
         res.setDisplay(cd.getDisplay());
       }
       if (info.getErr() != null) {
@@ -463,8 +464,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private String getVersion(Coding c) {
     if (c.hasVersion()) {
       return c.getVersion();
-    } else if (c.hasUserData("cs")) {
-      return ((CodeSystem) c.getUserData("cs")).getVersion();
+    } else if (c.hasUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM)) {
+      return ((CodeSystem) c.getUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM)).getVersion();
     } else {
       return null;
     }
@@ -562,8 +563,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
       if (!code.hasSystem()) {
         res = new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE), null);
-        if (!code.hasUserData("val.sys.error")) {
-          code.setUserData("val.sys.error", true);
+        if (!code.hasUserData(UserDataNames.tx_val_sys_error)) {
+          code.setUserData(UserDataNames.tx_val_sys_error, true);
           res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path, context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE), OpIssueCode.InvalidData, null));
         }
       } else {
@@ -831,7 +832,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if ("urn:ietf:rfc:3986".equals(system)) {
       CodeSystem cs = new CodeSystem();
       cs.setUrl(system);
-      cs.setUserData("tx.cs.special", new URICodeSystem());
+      cs.setUserData(UserDataNames.tx_cs_special, new URICodeSystem());
       cs.setContent(CodeSystemContentMode.COMPLETE);
       return cs; 
     }
@@ -886,7 +887,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private ValidationResult validateCode(String path, Coding code, CodeSystem cs, CodeableConcept vcc, ValidationProcessInfo info) {
-    ConceptDefinitionComponent cc = cs.hasUserData("tx.cs.special") ? ((SpecialCodeSystem) cs.getUserData("tx.cs.special")).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode(), cs.getCaseSensitive(), allAltCodes);
+    ConceptDefinitionComponent cc = cs.hasUserData(UserDataNames.tx_cs_special) ? ((SpecialCodeSystem) cs.getUserData(UserDataNames.tx_cs_special)).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode(), cs.getCaseSensitive(), allAltCodes);
     if (cc == null) {
       cc = findSpecialConcept(code, cs);
     }
@@ -1592,8 +1593,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   public boolean validateCodeInConceptList(String code, CodeSystem def, List<ConceptDefinitionComponent> list, AlternateCodesProcessingRules altCodeRules) {
     opContext.deadCheck("validateCodeInConceptList");
-    if (def.hasUserData("tx.cs.special")) {
-      return ((SpecialCodeSystem) def.getUserData("tx.cs.special")).findConcept(new Coding().setCode(code)) != null; 
+    if (def.hasUserData(UserDataNames.tx_cs_special)) {
+      return ((SpecialCodeSystem) def.getUserData(UserDataNames.tx_cs_special)).findConcept(new Coding().setCode(code)) != null; 
     } else if (def.getCaseSensitive()) {
       for (ConceptDefinitionComponent cc : list) {
         if (cc.getCode().equals(code)) { 

@@ -66,6 +66,10 @@ public abstract class ResourceRenderer extends DataRenderer {
     return this;
   }
 
+  public boolean renderingUsesValidation() {
+    return false;
+  }
+  
   /**
    * Just build the narrative that would go in the resource (per @renderResource()), but don't put it in the resource
    * @param dr
