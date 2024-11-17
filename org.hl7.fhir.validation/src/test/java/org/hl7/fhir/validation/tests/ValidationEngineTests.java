@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -89,6 +90,7 @@ public class ValidationEngineTests {
         } catch (Exception e) {
           e.printStackTrace();
           System.err.println("Thread " + index + " failed");
+          outcomes[index] = OperationOutcomeUtilities.outcomeFromTextError(e.getMessage());
         }
       });
       t.start();

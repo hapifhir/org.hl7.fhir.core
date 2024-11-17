@@ -28,6 +28,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
@@ -59,11 +60,6 @@ public class LanguageUtils {
 
   public static final List<String> TRANSLATION_SUPPLEMENT_RESOURCE_TYPES = Arrays.asList("CodeSystem", "StructureDefinition", "Questionnaire");
 
-  private static final String ORPHAN_TRANSLATIONS_NAME = "translations.orphans";
-
-  private static final String SUPPLEMENT_SOURCE_RESOURCE = "translations.supplemented";
-  private static final String SUPPLEMENT_SOURCE_TRANSLATIONS = "translations.source-list";
-  
   IWorkerContext context;
   private List<String> crlist;
   
@@ -401,8 +397,8 @@ public class LanguageUtils {
   }
 
   public void fillSupplement(CodeSystem csSrc, CodeSystem csDst, List<TranslationUnit> list) {
-    csDst.setUserData(SUPPLEMENT_SOURCE_RESOURCE, csSrc);
-    csDst.setUserData(SUPPLEMENT_SOURCE_TRANSLATIONS, list);
+    csDst.setUserData(UserDataNames.LANGUTILS_SOURCE_SUPPLEMENT, csSrc);
+    csDst.setUserData(UserDataNames.LANGUTILS_SOURCE_TRANSLATIONS, list);
     for (TranslationUnit tu : list) {
       String code = tu.getId();
       String subCode = null;
@@ -458,10 +454,10 @@ public class LanguageUtils {
   }
 
   private void addOrphanTranslation(CodeSystem cs, TranslationUnit tu) {
-    List<TranslationUnit> list = (List<TranslationUnit>) cs.getUserData(ORPHAN_TRANSLATIONS_NAME);
+    List<TranslationUnit> list = (List<TranslationUnit>) cs.getUserData(UserDataNames.LANGUTILS_ORPHAN);
     if (list == null) {
       list = new ArrayList<>();
-      cs.setUserData(ORPHAN_TRANSLATIONS_NAME, list);
+      cs.setUserData(UserDataNames.LANGUTILS_ORPHAN, list);
     }
     list.add(tu);
   }
@@ -489,7 +485,7 @@ public class LanguageUtils {
   }
 
   public boolean handlesAsResource(Resource resource) {
-    return (resource instanceof CodeSystem && resource.hasUserData(SUPPLEMENT_SOURCE_RESOURCE)) || (resource instanceof StructureDefinition);
+    return (resource instanceof CodeSystem && resource.hasUserData(UserDataNames.LANGUTILS_SOURCE_SUPPLEMENT)) || (resource instanceof StructureDefinition);
   }
 
   public boolean handlesAsElement(Element element) {
@@ -501,20 +497,20 @@ public class LanguageUtils {
     if (res instanceof StructureDefinition) {
       StructureDefinition sd = (StructureDefinition) res;
       generateTranslations(list, sd, lang);
-      if (res.hasUserData(ORPHAN_TRANSLATIONS_NAME)) {
-        List<TranslationUnit> orphans = (List<TranslationUnit>) res.getUserData(ORPHAN_TRANSLATIONS_NAME);
+      if (res.hasUserData(UserDataNames.LANGUTILS_ORPHAN)) {
+        List<TranslationUnit> orphans = (List<TranslationUnit>) res.getUserData(UserDataNames.LANGUTILS_ORPHAN);
         for (TranslationUnit t : orphans) {
           list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext1(), t.getSrcText(), t.getTgtText()));
         }
       }
     } else {
-      CodeSystem cs = (CodeSystem) res.getUserData(SUPPLEMENT_SOURCE_RESOURCE);
-      List<TranslationUnit> inputs = res.hasUserData(SUPPLEMENT_SOURCE_TRANSLATIONS) ? (List<TranslationUnit>) res.getUserData(SUPPLEMENT_SOURCE_TRANSLATIONS) : new ArrayList<>();
+      CodeSystem cs = (CodeSystem) res.getUserData(UserDataNames.LANGUTILS_SOURCE_SUPPLEMENT);
+      List<TranslationUnit> inputs = res.hasUserData(UserDataNames.LANGUTILS_SOURCE_TRANSLATIONS) ? (List<TranslationUnit>) res.getUserData(UserDataNames.LANGUTILS_SOURCE_TRANSLATIONS) : new ArrayList<>();
       for (ConceptDefinitionComponent cd : cs.getConcept()) {
         generateTranslations(list, cd, lang, inputs);
       }
-      if (cs.hasUserData(ORPHAN_TRANSLATIONS_NAME)) {
-        List<TranslationUnit> orphans = (List<TranslationUnit>) cs.getUserData(ORPHAN_TRANSLATIONS_NAME);
+      if (cs.hasUserData(UserDataNames.LANGUTILS_ORPHAN)) {
+        List<TranslationUnit> orphans = (List<TranslationUnit>) cs.getUserData(UserDataNames.LANGUTILS_ORPHAN);
         for (TranslationUnit t : orphans) {
           list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext1(), t.getSrcText(), t.getTgtText()));
         }

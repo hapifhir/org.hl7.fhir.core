@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
@@ -65,7 +66,7 @@ public class ObligationsRenderer extends Renderer {
       for (Extension eid : ext.getExtensionsByUrl("elementId")) {
         this.elementIds.add(eid.getValue().primitiveValue());
       }
-      this.isUnchanged = ext.hasUserData(ProfileUtilities.UD_DERIVATION_EQUALS);
+      this.isUnchanged = ext.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS);
     }
     
     private String getKey() {

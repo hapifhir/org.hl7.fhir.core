@@ -75,7 +75,7 @@ import org.hl7.fhir.utilities.npm.ToolsVersion;
 public class NPMPackageGenerator {
 
   public enum Category {
-    RESOURCE, EXAMPLE, OPENAPI, SCHEMATRON, RDF, OTHER, TOOL, TEMPLATE, JEKYLL, TEST;
+    RESOURCE, EXAMPLE, OPENAPI, SCHEMATRON, RDF, OTHER, TOOL, TEMPLATE, JEKYLL, TEST, CUSTOM;
 
     private String getDirectory() {
       switch (this) {
@@ -89,6 +89,7 @@ public class NPMPackageGenerator {
       case JEKYLL: return "package/jekyll/";      
       case TEST: return "package/tests/"; 
       case TOOL: return "package/bin/";      
+      case CUSTOM: return "package/custom/";      
       }
       return "/";
     }

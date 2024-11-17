@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.NamingSystem;
@@ -278,7 +279,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       for (String err : errors) {
         msgs.add(new ValidationMessage(Source.ProfileValidator, IssueType.EXCEPTION, p.getWebPath(), "Error sorting Differential: "+err, ValidationMessage.IssueSeverity.ERROR));
       }
-      pu.generateSnapshot(sd, p, p.getUrl(), sd.getUserString("webroot"), p.getName());
+      pu.generateSnapshot(sd, p, p.getUrl(), sd.getUserString(UserDataNames.render_webroot), p.getName());
       for (ValidationMessage msg : msgs) {
         if ((!ProfileUtilities.isSuppressIgnorableExceptions() && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL) {
           if (!msg.isIgnorableError()) {
@@ -298,9 +299,9 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
 
   // work around the fact that some Implementation guides were published with old snapshot generators that left invalid snapshots behind.
   private boolean isProfileNeedsRegenerate(StructureDefinition p) {
-    boolean needs = !p.hasUserData("hack.regnerated") && Utilities.existsInList(p.getUrl(), "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaireresponse");
+    boolean needs = !p.hasUserData(UserDataNames.SNAPSHOT_regeneration_tracker) && Utilities.existsInList(p.getUrl(), "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaireresponse");
     if (needs) {
-      p.setUserData("hack.regnerated", "yes");
+      p.setUserData(UserDataNames.SNAPSHOT_regeneration_tracker, "yes");
     }
     return needs;
   }

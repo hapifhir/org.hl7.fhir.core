@@ -55,6 +55,7 @@ import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -159,7 +160,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 //    String url = "";
 //    ValueSet vsr = context.getWorker().findTxResource(ValueSet.class, ((Reference) a.getTarget()).getReference());
 //    if (vsr != null)
-//      url = (String) vsr.getUserData("filename");
+//      url = (String) vsr.getUserData(UserDataNames.filename);
 //    mymaps.put(a, url);
 //  }
 //    Map<ConceptMap, String> mymaps = new HashMap<ConceptMap, String>();
@@ -167,7 +168,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 //    String url = "";
 //    ValueSet vsr = context.getWorker().fetchResource(ValueSet.class, ((Reference) a.getTarget()).getReference());
 //    if (vsr != null)
-//      url = (String) vsr.getUserData("filename");
+//      url = (String) vsr.getUserData(UserDataNames.filename);
 //    mymaps.put(a, url);
 //  }
     // also, look in the contained resources for a concept map
@@ -178,7 +179,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 //          String url = "";
 //          ValueSet vsr = context.getWorker().findTxResource(ValueSet.class, ((Reference) cm.getTarget()).getReference());
 //          if (vsr != null)
-//              url = (String) vsr.getUserData("filename");
+//              url = (String) vsr.getUserData(UserDataNames.filename);
 //        mymaps.put(cm, url);
 //        }
 //      }
@@ -753,7 +754,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     String ref = cs.getWebPath();
     if (ref == null) {
-      ref = cs.getUserString("filename");
+      ref = cs.getUserString(UserDataNames.render_filename);
     }
     return ref == null ? null : ref.replace("\\", "/");
   }

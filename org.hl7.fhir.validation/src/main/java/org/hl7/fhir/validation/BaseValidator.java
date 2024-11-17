@@ -65,12 +65,14 @@ import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
+import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
@@ -168,7 +170,6 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   protected final String BUNDLE = "Bundle";
   protected final String LAST_UPDATED = "lastUpdated";
 
-  protected String sessionId;
   protected BaseValidator parent;
   protected IWorkerContext context;
   protected ValidationTimeTracker timeTracker = new ValidationTimeTracker();
@@ -183,6 +184,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   // don't repeatedly raise the same warnings all the time
   protected Set<String> statusWarnings = new HashSet<>();  
   
+  protected ValidatorSession session;
   protected Source source; // @configuration
   protected ValidationLevel level = ValidationLevel.HINTS; // @configuration
   protected Coding jurisdiction; // @configuration
@@ -194,15 +196,18 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   protected List<UsageContext> usageContexts = new ArrayList<UsageContext>(); // @configuration
   protected ValidationOptions baseOptions = new ValidationOptions(FhirPublication.R5); // @configuration
 
-  public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager, boolean debug) {
+  public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, ValidatorSession session) {
     super();
     this.context = context;
+    this.session = session;
+    if (this.session == null) {
+      this.session = new ValidatorSession();
+    }
     this.xverManager = xverManager;
     if (this.xverManager == null) {
       this.xverManager = new XVerExtensionManager(context);
     }
     this.debug = debug;
-    sessionId = Utilities.makeUuidLC();
     policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID);
     urlRegex = Constants.URI_REGEX_XVER.replace("$$", CommaSeparatedStringBuilder.join("|", context.getResourceNames()));
   }
@@ -210,6 +215,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   public BaseValidator(BaseValidator parent) {
     super();
     this.parent = parent;
+    this.session = parent.session;
     this.context = parent.context;
     this.xverManager = parent.xverManager;
     this.debug = parent.debug;
@@ -228,7 +234,6 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     this.usageContexts.addAll(parent.usageContexts);
     this.baseOptions = parent.baseOptions;
     this.fetcher = parent.fetcher;
-    this.sessionId = parent.sessionId;
     this.policyAdvisor = parent.policyAdvisor;
   }
   
@@ -1022,16 +1027,16 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
 
   protected Element resolveInBundle(Element bundle, List<Element> entries, String ref, String fullUrl, String type, String id, NodeStack stack, List<ValidationMessage> errors, String name, Element source, boolean isWarning, boolean isNLLink) {
     @SuppressWarnings("unchecked")
-    Map<String, List<Element>> map = (Map<String, List<Element>>) bundle.getUserData("validator.entrymap");
+    Map<String, List<Element>> map = (Map<String, List<Element>>) bundle.getUserData(UserDataNames.validator_entry_map);
     @SuppressWarnings("unchecked")
-    Map<String, List<Element>> relMap = (Map<String, List<Element>>) bundle.getUserData("validator.entrymapR");
+    Map<String, List<Element>> relMap = (Map<String, List<Element>>) bundle.getUserData(UserDataNames.validator_entry_map_reverse);
     List<Element> list = null;
 
     if (map == null) {
       map = new HashMap<>();
-      bundle.setUserData("validator.entrymap", map);
+      bundle.setUserData(UserDataNames.validator_entry_map, map);
       relMap = new HashMap<>();
-      bundle.setUserData("validator.entrymapR", relMap);
+      bundle.setUserData(UserDataNames.validator_entry_map_reverse, relMap);
       for (Element entry : entries) {
         String fu = entry.getNamedChildValue(FULL_URL, false);
         list = map.get(fu);
@@ -1075,8 +1080,8 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
           String tt = extractResourceType(ref);
           ok = VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(tt);
         }
-        if (!ok && stack != null && !sessionId.equals(source.getUserString("bundle.error.noted"))) {
-          source.setUserData("bundle.error.noted", sessionId);          
+        if (!ok && stack != null && !session.getSessionId().equals(source.getUserString(UserDataNames.validation_bundle_error))) {
+          source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());          
           hintOrError(!isWarning, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, ref, name);
         }
         return null;
@@ -1084,17 +1089,17 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         if (fragment != null) {
           int i = countFragmentMatches(el.get(0), fragment);
           if (i == 0) {
-            source.setUserData("bundle.error.noted", sessionId);
+            source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
             hintOrError(isNLLink, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT, ref, fragment, name);            
           } else if (i > 1) {
-            source.setUserData("bundle.error.noted", sessionId);
+            source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
             rule(errors, "2023-11-15", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE_FRAGMENT, i, ref, fragment, name);            
           }
         }
         return el.get(0);
       } else {
-        if (stack != null && !sessionId.equals(source.getUserString("bundle.error.noted"))) {
-          source.setUserData("bundle.error.noted", sessionId);
+        if (stack != null && !session.getSessionId().equals(source.getUserString(UserDataNames.validation_bundle_error))) {
+          source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
           rule(errors, "2023-11-15", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE, el.size(), ref, name);
         }
         return null;
@@ -1110,8 +1115,8 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         if (el.size() == 1) {
           return el.get(0);
         } else {
-          if (stack != null && !sessionId.equals(source.getUserString("bundle.error.noted"))) {
-            source.setUserData("bundle.error.noted", sessionId);
+          if (stack != null && !session.getSessionId().equals(source.getUserString(UserDataNames.validation_bundle_error))) {
+            source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
             rule(errors, "2023-11-15", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE, el.size(), ref, name);
           }
           return null;
@@ -1132,17 +1137,17 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
               if (!VersionUtilities.isR4Plus(context.getVersion())) {
                 if (el.size() == 1) {
                   return el.get(0);
-                } else if (stack != null && !sessionId.equals(source.getUserString("bundle.error.noted"))) {
-                  source.setUserData("bundle.error.noted", sessionId);
+                } else if (stack != null && !session.getSessionId().equals(source.getUserString(UserDataNames.validation_bundle_error))) {
+                  source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
                   rulePlural(errors, "2023-11-15", IssueType.INVALID, stack, false, el.size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT, ref, name, CommaSeparatedStringBuilder.join(",", Utilities.sorted(tl)));
                 }
-              } else if (stack != null && !sessionId.equals(source.getUserString("bundle.error.noted"))) {
-                source.setUserData("bundle.error.noted", sessionId);
+              } else if (stack != null && !session.getSessionId().equals(source.getUserString(UserDataNames.validation_bundle_error))) {
+                source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
                 rulePlural(errors, "2023-11-15", IssueType.INVALID, stack, false, el.size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT, ref, name, CommaSeparatedStringBuilder.join(",", Utilities.sorted(tl)));
               }
             } else {
-              if (stack != null && !sessionId.equals(source.getUserString("bundle.error.noted"))) {
-                source.setUserData("bundle.error.noted", sessionId);
+              if (stack != null && !session.getSessionId().equals(source.getUserString(UserDataNames.validation_bundle_error))) {
+                source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
                 hintOrError(!isWarning, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, ref, name);
               }            
             }
