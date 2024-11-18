@@ -845,7 +845,7 @@ public class PECodeGenerator {
 
   private PEGenClass genClass(PEDefinition source) {
     PEGenClass cls = new PEGenClass();
-    cls.name = source.getProfile().getName();
+    cls.name = Utilities.javaTokenize(source.getProfile().getName(), true);
     cls.base = source.getProfile().getType();
     cls.doco = source.documentation();
     cls.url = source.getProfile().getVersionedUrl();
