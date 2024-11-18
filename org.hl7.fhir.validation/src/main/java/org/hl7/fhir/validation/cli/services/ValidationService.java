@@ -44,6 +44,7 @@ import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.InternalLogEvent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.SystemExitManager;
@@ -606,6 +607,7 @@ public class ValidationService {
     validationEngine.setForPublication(cliContext.isForPublication());
     validationEngine.setShowTimes(cliContext.isShowTimes());
     validationEngine.setAllowExampleUrls(cliContext.isAllowExampleUrls());
+    ReferenceValidationPolicy refpol = ReferenceValidationPolicy.CHECK_VALID;
     if (!cliContext.isDisableDefaultResourceFetcher()) {
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validationEngine.getPcm(), validationEngine.getContext(), validationEngine);
       validationEngine.setFetcher(fetcher);
@@ -614,6 +616,7 @@ public class ValidationService {
     } else {
       DisabledValidationPolicyAdvisor fetcher = new DisabledValidationPolicyAdvisor();
       validationEngine.setPolicyAdvisor(fetcher);
+      refpol = ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS;
     }
     if (cliContext.getAdvisorFile() != null) {
       if (cliContext.getAdvisorFile().endsWith(".json")) {
@@ -622,7 +625,7 @@ public class ValidationService {
         validationEngine.getPolicyAdvisor().setPolicyAdvisor(new TextDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), new File(cliContext.getAdvisorFile())));          
       }
     } else {
-      validationEngine.getPolicyAdvisor().setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(validationEngine.getPolicyAdvisor().getReferencePolicy()));
+      validationEngine.getPolicyAdvisor().setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(validationEngine.getPolicyAdvisor() == null ? refpol : validationEngine.getPolicyAdvisor().getReferencePolicy()));
     }
     validationEngine.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
     validationEngine.setJurisdiction(CodeSystemUtilities.readCoding(cliContext.getJurisdiction()));
