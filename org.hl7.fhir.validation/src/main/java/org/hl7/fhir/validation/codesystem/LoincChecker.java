@@ -214,8 +214,12 @@ public class LoincChecker extends CodeSystemChecker {
 
       if (Utilities.existsInList(property, 
         "concept")) {
-        return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, addToOps(ops, PropertyOperation.IsA));      
+        return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, addToOps(ops, PropertyOperation.Equals, PropertyOperation.IsA, PropertyOperation.IsNotA));      
       }
+      if (Utilities.existsInList(property, 
+          "code")) {
+          return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, addToOps(ops, PropertyOperation.Equals, PropertyOperation.IsA, PropertyOperation.IsNotA));      
+        }
       return null;
   }
 }

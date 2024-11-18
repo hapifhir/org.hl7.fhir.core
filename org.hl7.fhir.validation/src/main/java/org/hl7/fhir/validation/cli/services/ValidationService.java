@@ -44,6 +44,7 @@ import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.InternalLogEvent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TextFile;
@@ -72,6 +73,7 @@ import org.hl7.fhir.validation.cli.renderers.ValidationOutputRenderer;
 import org.hl7.fhir.validation.cli.utils.Common;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
+import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.advisor.JsonDrivenPolicyAdvisor;
 import org.hl7.fhir.validation.instance.advisor.TextDrivenPolicyAdvisor;
 
@@ -609,13 +611,18 @@ public class ValidationService {
       validationEngine.setFetcher(fetcher);
       validationEngine.getContext().setLocator(fetcher);
       validationEngine.setPolicyAdvisor(fetcher);
-      if (cliContext.getAdvisorFile() != null) {
-        if (cliContext.getAdvisorFile().endsWith(".json")) {
-          fetcher.setPolicyAdvisor(new JsonDrivenPolicyAdvisor(fetcher.getPolicyAdvisor(), new File(cliContext.getAdvisorFile())));
-        } else {
-          fetcher.setPolicyAdvisor(new TextDrivenPolicyAdvisor(fetcher.getPolicyAdvisor(), new File(cliContext.getAdvisorFile())));          
-        }
+    } else {
+      DisabledValidationPolicyAdvisor fetcher = new DisabledValidationPolicyAdvisor();
+      validationEngine.setPolicyAdvisor(fetcher);
+    }
+    if (cliContext.getAdvisorFile() != null) {
+      if (cliContext.getAdvisorFile().endsWith(".json")) {
+        validationEngine.getPolicyAdvisor().setPolicyAdvisor(new JsonDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), new File(cliContext.getAdvisorFile())));
+      } else {
+        validationEngine.getPolicyAdvisor().setPolicyAdvisor(new TextDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), new File(cliContext.getAdvisorFile())));          
       }
+    } else {
+      validationEngine.getPolicyAdvisor().setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(validationEngine.getPolicyAdvisor().getReferencePolicy()));
     }
     validationEngine.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
     validationEngine.setJurisdiction(CodeSystemUtilities.readCoding(cliContext.getJurisdiction()));

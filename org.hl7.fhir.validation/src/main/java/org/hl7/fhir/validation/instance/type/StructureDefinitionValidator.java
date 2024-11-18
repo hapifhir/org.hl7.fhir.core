@@ -562,7 +562,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
     if (typeMustSupport) {
       if (snapshot) {
-        ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_SNAPSHOT, path) && ok;
+        warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_SNAPSHOT, path);
       } else {
         hint(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), hasSnapshot || "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_DIFF, path);        
       }
