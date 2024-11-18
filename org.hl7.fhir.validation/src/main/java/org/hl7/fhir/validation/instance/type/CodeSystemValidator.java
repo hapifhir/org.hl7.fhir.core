@@ -14,7 +14,6 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.CanonicalPair;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -294,9 +293,6 @@ public class CodeSystemValidator extends BaseValidator {
     }    
     if (code != null) {
       boolean pcok = properties.containsKey(code);
-      if (pcok) {
-        DebugUtilities.breakpoint();
-      }
       if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), !pcok, I18nConstants.CODESYSTEM_PROPERTY_DUPLICATE_CODE, code)) {         
         properties.put(code, pd);
       } else {
