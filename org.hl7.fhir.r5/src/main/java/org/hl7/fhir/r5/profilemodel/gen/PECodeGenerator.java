@@ -343,6 +343,7 @@ public class PECodeGenerator {
       }
       return null;
     }
+    
     private void defineField(PEDefinition source, PEDefinition field) {
       if (field.types().size() == 1) {
         StructureDefinition sd = workerContext.fetchTypeDefinition(field.types().get(0).getUrl());
@@ -846,7 +847,7 @@ public class PECodeGenerator {
 
   private PEGenClass genClass(PEDefinition source) {
     PEGenClass cls = new PEGenClass();
-    cls.name = source.getProfile().getName();
+    cls.name = Utilities.javaTokenize(source.getProfile().getName(), true);
     cls.base = source.getProfile().getType();
     cls.doco = source.documentation();
     cls.url = source.getProfile().getVersionedUrl();
