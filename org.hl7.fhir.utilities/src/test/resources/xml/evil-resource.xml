@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE foo [<!ENTITY example SYSTEM "jackpot.xml"> ]>
+<Patient xmlns="http://hl7.org/fhir">
+    <id value="example"/>
+    <text> <status value="generated"/> &example;</text>
+</Patient>

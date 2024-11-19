@@ -4,5 +4,7 @@
         "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
-
+    <suppress id="transformerFactoryNewInstance" files="/src/main/java/org/hl7/fhir/utilities/xml/XMLUtil.java" lines="508"/>
+    <suppress id="documentBuilderFactoryNewInstance" files="/src/main/java/org/hl7/fhir/utilities/xml/XMLUtil.java" lines="515"/>
+    <suppress id="saxParserFactoryNewInstance" files="/src/main/java/org/hl7/fhir/utilities/xml/XMLUtil.java" lines="522"/>
 </suppressions>

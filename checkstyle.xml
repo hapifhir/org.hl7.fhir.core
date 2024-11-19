@@ -11,17 +11,32 @@
     <module name="TreeWalker">
         <!--
         <module name="TodoComment">-->
-            <!-- The (?i) below means Case Insensitive -->
+        <!-- The (?i) below means Case Insensitive -->
         <!--<property name="format" value="(?i)FIXME"/>
 -->
-  <module name="RegexpSinglelineJava">
-      <property name="format" value="org\.jetbrains\.annotations\.NotNull"/>
-  </module>
-  <module name="RegexpSinglelineJava">
-      <property name="format" value="org\.jetbrains\.annotations\.Nullable"/>
-  </module>
-  <module name="RegexpSinglelineJava">
-      <property name="format" value="org\.jetbrains\.annotations\.\*"/>
-  </module>
-</module>
+        <module name="RegexpSinglelineJava">
+            <property name="format" value="org\.jetbrains\.annotations\.NotNull"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <property name="format" value="org\.jetbrains\.annotations\.Nullable"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <property name="format" value="org\.jetbrains\.annotations\.\*"/>
+        </module>
+    </module>
+    <module name="RegexpMultiline">
+        <property name="id" value="transformerFactoryNewInstance"/>
+        <property name="matchAcrossLines" value="true"/>
+        <property name="format" value="TransformerFactory\.newInstance\("/>
+    </module>
+    <module name="RegexpMultiline">
+        <property name="id" value="documentBuilderFactoryNewInstance"/>
+        <property name="matchAcrossLines" value="true"/>
+        <property name="format" value="DocumentBuilderFactory\.newInstance\("/>
+    </module>
+    <module name="RegexpMultiline">
+        <property name="id" value="saxParserFactoryNewInstance"/>
+        <property name="matchAcrossLines" value="true"/>
+        <property name="format" value="SAXParserFactory\.newInstance\("/>
+    </module>
 </module>

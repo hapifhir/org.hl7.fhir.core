@@ -522,6 +522,7 @@ public class XMLUtil {
     final SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setFeature(SAX_FEATURES_EXTERNAL_GENERAL_ENTITIES, false);
     spf.setFeature(APACHE_XML_FEATURES_DISALLOW_DOCTYPE_DECL, true);
+
     return spf;
   }
 
