@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 
 public class TypeManager {
@@ -55,7 +56,7 @@ public class TypeManager {
         typeDefinitions.put(type, types);
       }
       types.add(sd);
-      if (sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/")) {
+      if (sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/") || "true".equals(sd.getUserString(UserDataNames.loader_custom_resource))) {
         types = fhirTypeDefinitions.get(type);
         if (types == null) {
           types = new HashSet<>();

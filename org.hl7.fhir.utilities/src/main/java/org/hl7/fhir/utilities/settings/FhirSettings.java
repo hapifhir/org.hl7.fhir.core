@@ -78,6 +78,11 @@ public class FhirSettings {
     return instance.fhirSettings.getRubyPath();
   }
 
+  public static String getGemPath() {
+    getInstance();
+    return instance.fhirSettings.getGemPath();
+  }
+
   public static boolean hasFhirTestCasesPath() {
     getInstance();
     return instance.fhirSettings.getFhirTestCasesPath() != null;

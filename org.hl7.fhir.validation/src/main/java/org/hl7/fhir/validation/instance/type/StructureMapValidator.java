@@ -29,6 +29,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ConceptMapUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.structuremap.ResolvedGroup;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -355,9 +356,9 @@ public class StructureMapValidator extends BaseValidator {
       fired = false;
       cc = 0;
       for (Element group : groups) {
-        if (!group.hasUserData("structuremap.validated")) {
-          if (hasInputTypes(group) || group.hasUserData("structuremap.parameters")) {
-            group.setUserData("structuremap.validated", true);
+        if (!group.hasUserData(UserDataNames.map_validated)) {
+          if (hasInputTypes(group) || group.hasUserData(UserDataNames.map_parameters)) {
+            group.setUserData(UserDataNames.map_validated, true);
             fired = true;
             ok = validateGroup(valContext, errors, src, group, stack.push(group, cc, null, null), grpNames) && ok;
           }
@@ -368,7 +369,7 @@ public class StructureMapValidator extends BaseValidator {
     
     cc = 0;
     for (Element group : groups) {
-      if (!group.hasUserData("structuremap.validated")) {
+      if (!group.hasUserData(UserDataNames.map_validated)) {
         hint(errors, "2023-03-01", IssueType.INFORMATIONAL, group.line(), group.col(), stack.push(group, cc, null, null).getLiteralPath(), ok, I18nConstants.SM_ORPHAN_GROUP, group.getChildValue("name"));
         ok = validateGroup(valContext, errors, src, group, stack.push(group, cc, null, null), grpNames) && ok;
       }
@@ -421,7 +422,7 @@ public class StructureMapValidator extends BaseValidator {
     }
     
     VariableSet variables = new VariableSet(); 
-    VariableSet pvars = (VariableSet) group.getUserData("structuremap.parameters");
+    VariableSet pvars = (VariableSet) group.getUserData(UserDataNames.map_parameters);
 
     // first, load all the inputs
     List<Element> inputs = group.getChildrenByName("input");
@@ -466,7 +467,7 @@ public class StructureMapValidator extends BaseValidator {
 
   private StructureMapGroupComponent makeGroupComponent(Element group) {
     StructureMapGroupComponent grp = new StructureMapGroupComponent();
-    grp.setUserData("element.source", group);
+    grp.setUserData(UserDataNames.map_source, group);
     grp.setName(group.getChildValue("name"));
     List<Element> inputs = group.getChildrenByName("input");
     for (Element input : inputs) {
@@ -1274,13 +1275,13 @@ public class StructureMapValidator extends BaseValidator {
             }
             cc++;
           }
-          if (ok && grp.getTargetGroup().hasUserData("element.source")) {
-            Element g = (Element) grp.getTargetGroup().getUserData("element.source");
-            if (g.hasUserData("structuremap.parameters")) {
-              VariableSet pvars = (VariableSet) g.getUserData("structuremap.parameters");
+          if (ok && grp.getTargetGroup().hasUserData(UserDataNames.map_source)) {
+            Element g = (Element) grp.getTargetGroup().getUserData(UserDataNames.map_source);
+            if (g.hasUserData(UserDataNames.map_parameters)) {
+              VariableSet pvars = (VariableSet) g.getUserData(UserDataNames.map_parameters);
               warning(errors, "2023-03-01", IssueType.INVALID, dependent.line(), dependent.col(), stack.getLiteralPath(), pvars.matches(lvars), I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE, grp.getTargetGroup().getName(), pvars.summary(), lvars.summary());
             } else {
-              g.setUserData("structuremap.parameters", lvars);
+              g.setUserData(UserDataNames.map_parameters, lvars);
             }
           }
         }

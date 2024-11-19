@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
@@ -87,7 +88,7 @@ public class Renderer  {
     if (b == null || context.getChangeVersion() == null) {
       return x;
     }
-    VersionComparisonAnnotation vca = (VersionComparisonAnnotation) b.getUserData(VersionComparisonAnnotation.USER_DATA_NAME);
+    VersionComparisonAnnotation vca = (VersionComparisonAnnotation) b.getUserData(UserDataNames.COMP_VERSION_ANNOTATION);
     if (vca == null) {
       return x;
     }
@@ -119,7 +120,7 @@ public class Renderer  {
     if (b == null || context.getChangeVersion() == null) {
       return x;
     }
-    VersionComparisonAnnotation vca = (VersionComparisonAnnotation) b.getUserData(VersionComparisonAnnotation.USER_DATA_NAME);
+    VersionComparisonAnnotation vca = (VersionComparisonAnnotation) b.getUserData(UserDataNames.COMP_VERSION_ANNOTATION);
     if (vca == null) {
       return x;
     }
@@ -152,7 +153,7 @@ public class Renderer  {
     if (b == null || context.getChangeVersion() == null) {
       return tr.td();
     }
-    VersionComparisonAnnotation vca = (VersionComparisonAnnotation) b.getUserData(VersionComparisonAnnotation.USER_DATA_NAME);
+    VersionComparisonAnnotation vca = (VersionComparisonAnnotation) b.getUserData(UserDataNames.COMP_VERSION_ANNOTATION);
     if (vca == null) {
       return tr.td();
     }
@@ -191,8 +192,8 @@ public class Renderer  {
   }
 
   public static void renderStatusSummary(RenderingContext context, Base base, XhtmlNode x, String version, String... metadataFields) {
-    if (base.hasUserData(VersionComparisonAnnotation.USER_DATA_NAME)) {
-      VersionComparisonAnnotation self = (VersionComparisonAnnotation) base.getUserData(VersionComparisonAnnotation.USER_DATA_NAME);
+    if (base.hasUserData(UserDataNames.COMP_VERSION_ANNOTATION)) {
+      VersionComparisonAnnotation self = (VersionComparisonAnnotation) base.getUserData(UserDataNames.COMP_VERSION_ANNOTATION);
       switch (self.getType()) {
       case Added:
         XhtmlNode spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", context.formatPhrase(RenderingContext.REND_SINCE_ADDED, version));

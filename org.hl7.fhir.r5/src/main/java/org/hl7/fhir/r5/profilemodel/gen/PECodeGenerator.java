@@ -53,6 +53,7 @@ import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.profilemodel.PEDefinition;
 import org.hl7.fhir.r5.profilemodel.PEInstance;
 import org.hl7.fhir.r5.profilemodel.PEType;
@@ -261,14 +262,14 @@ public class PECodeGenerator {
                 if (cc.getAbstract()) {
                   code = "_"+code;
                 }
-                cc.setUserData("java.code", code);
+                cc.setUserData(UserDataNames.java_code, code);
                 w(enums, "    "+code+(i < vse.getValueset().getExpansion().getContains().size() - 1 ? "," : ";")+" // \""+cc.getDisplay()+"\" = "+cc.getSystem()+"#"+cc.getCode());
               }
               w(enums, "");
               w(enums, "    public static "+name+" fromCode(String s) {");
               w(enums, "      switch (s) {");
               for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
-                w(enums, "      case \""+cc.getCode()+"\": return "+cc.getUserString("java.code")+";");                
+                w(enums, "      case \""+cc.getCode()+"\": return "+cc.getUserString(UserDataNames.java_code)+";");                
               }
               w(enums, "      default: return null;");
               w(enums, "      }");
@@ -281,7 +282,7 @@ public class PECodeGenerator {
                 } else {
                   w(enums, "      if (\""+cc.getSystem()+"\".equals(c.getSystem()) && \""+cc.getCode()+"\".equals(c.getCode())) {");
                 }
-                w(enums, "        return "+cc.getUserString("java.code")+";");                
+                w(enums, "        return "+cc.getUserString(UserDataNames.java_code)+";");                
                 w(enums, "      }");
               }
               w(enums, "      return null;");
@@ -301,7 +302,7 @@ public class PECodeGenerator {
               w(enums, "    public String toDisplay() {");
               w(enums, "      switch (this) {");
               for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
-                w(enums, "      case "+cc.getUserString("java.code")+": return \""+Utilities.escapeJava(cc.getDisplay())+"\";");                
+                w(enums, "      case "+cc.getUserString(UserDataNames.java_code)+": return \""+Utilities.escapeJava(cc.getDisplay())+"\";");                
               }
               w(enums, "      default: return null;");
               w(enums, "      }");
@@ -311,7 +312,7 @@ public class PECodeGenerator {
               w(enums, "    public String toCode() {");
               w(enums, "      switch (this) {");
               for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
-                w(enums, "      case "+cc.getUserString("java.code")+": return \""+cc.getCode()+"\";");                
+                w(enums, "      case "+cc.getUserString(UserDataNames.java_code)+": return \""+cc.getCode()+"\";");                
               }
               w(enums, "      default: return null;");
               w(enums, "      }");
@@ -321,9 +322,9 @@ public class PECodeGenerator {
               w(enums, "      switch (this) {");
               for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
                 if (cc.hasVersion()) {
-                  w(enums, "      case "+cc.getUserString("java.code")+": return new Coding().setSystem(\""+cc.getSystem()+"\").setVersion(\""+cc.getVersion()+"\").setCode()\""+cc.getCode()+"\";");
+                  w(enums, "      case "+cc.getUserString(UserDataNames.java_code)+": return new Coding().setSystem(\""+cc.getSystem()+"\").setVersion(\""+cc.getVersion()+"\").setCode()\""+cc.getCode()+"\";");
                 } else {
-                  w(enums, "      case "+cc.getUserString("java.code")+": return new Coding().setSystem(\""+cc.getSystem()+"\").setCode(\""+cc.getCode()+"\");");
+                  w(enums, "      case "+cc.getUserString(UserDataNames.java_code)+": return new Coding().setSystem(\""+cc.getSystem()+"\").setCode(\""+cc.getCode()+"\");");
                 }
               }
               w(enums, "      default: return null;");
@@ -342,6 +343,7 @@ public class PECodeGenerator {
       }
       return null;
     }
+    
     private void defineField(PEDefinition source, PEDefinition field) {
       if (field.types().size() == 1) {
         StructureDefinition sd = workerContext.fetchTypeDefinition(field.types().get(0).getUrl());
@@ -845,7 +847,7 @@ public class PECodeGenerator {
 
   private PEGenClass genClass(PEDefinition source) {
     PEGenClass cls = new PEGenClass();
-    cls.name = source.getProfile().getName();
+    cls.name = Utilities.javaTokenize(source.getProfile().getName(), true);
     cls.base = source.getProfile().getType();
     cls.doco = source.documentation();
     cls.url = source.getProfile().getVersionedUrl();

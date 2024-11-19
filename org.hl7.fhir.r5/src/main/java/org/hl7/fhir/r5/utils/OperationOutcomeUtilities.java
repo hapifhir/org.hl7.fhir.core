@@ -52,7 +52,7 @@ public class OperationOutcomeUtilities {
 
   public static OperationOutcomeIssueComponent convertToIssue(ValidationMessage message, OperationOutcome op) {
     OperationOutcomeIssueComponent issue = new OperationOutcome.OperationOutcomeIssueComponent();
-    issue.setUserData("source.vm", message);   
+    issue.setUserData(UserDataNames.validator_source_vm, message);   
     issue.setCode(convert(message.getType()));
     
     if (message.getLocation() != null) {
@@ -76,7 +76,7 @@ public class OperationOutcomeUtilities {
     if (message.getMessageId() != null) {
       issue.getExtension().add(ToolingExtensions.makeIssueMessageId(message.getMessageId()));
     }
-    issue.setUserData("source.msg", message);
+    issue.setUserData(UserDataNames.validator_source_msg, message);
     return issue;
   }
 
@@ -152,7 +152,7 @@ public class OperationOutcomeUtilities {
 
   public static OperationOutcomeIssueComponent convertToIssueSimple(ValidationMessage message, OperationOutcome op) {
     OperationOutcomeIssueComponent issue = new OperationOutcome.OperationOutcomeIssueComponent();
-    issue.setUserData("source.vm", message);   
+    issue.setUserData(UserDataNames.validator_source_vm, message);   
     issue.setCode(convert(message.getType()));
     
     if (message.getLocation() != null) {

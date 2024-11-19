@@ -208,6 +208,9 @@ public class ConceptMap40_50 {
       if (t.getEquivalence() == org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.UNMATCHED) {
         tgt.setNoMap(true);
         if (t.hasComment()) {
+          if (tgt.hasExtension("http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.comment")) {
+            throw new FHIRException("A source can only have one 'unmatched' relationship. Consider using 'disjoint' ");
+          }
           tgt.addExtension("http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.comment", ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getCommentElement()));
         }
       } else {

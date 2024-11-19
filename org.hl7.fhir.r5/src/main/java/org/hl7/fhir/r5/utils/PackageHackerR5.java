@@ -97,12 +97,14 @@ public class PackageHackerR5 {
      StructureDefinition sd = (StructureDefinition) r.getResource();
      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
        if (ed.getType().removeIf(tr -> Utilities.existsInList(tr.getCode(), "integer64", "CodeableReference", "RatioRange", "Availability", "ExtendedContactDetail"))) {
-         sd.setUserData("fixed-by-loader", true);
+         // sd.setUserData(UserDataNames.fixed_by_loader, true);
+         // don't need to track this (for now)
        }
      }
      for (ElementDefinition ed : sd.getDifferential().getElement()) {
        if (ed.getType().removeIf(tr -> Utilities.existsInList(tr.getCode(), "integer64", "CodeableReference", "RatioRange", "Availability", "ExtendedContactDetail"))) {
-         sd.setUserData("fixed-by-loader", true);
+         // sd.setUserData(UserDataNames.fixed_by_loader, true);
+         // don't need to track this (for now)
        }
      }
    }

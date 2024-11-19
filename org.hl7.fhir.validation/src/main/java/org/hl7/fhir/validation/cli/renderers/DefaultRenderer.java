@@ -5,6 +5,7 @@ import java.io.File;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
@@ -35,7 +36,7 @@ public class DefaultRenderer extends ValidationOutputRenderer {
     dst.println((error == 0 ? "Success" : "*FAILURE*") + ": " + Integer.toString(error) + " errors, " + Integer.toString(warn) + " warnings, " + Integer.toString(info) + " notes");
     for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
       dst.println(getIssueSummary(issue)+renderMessageId(issue));
-      ValidationMessage vm = (ValidationMessage) issue.getUserData("source.msg");
+      ValidationMessage vm = (ValidationMessage) issue.getUserData(UserDataNames.validator_source_msg);
       if (vm != null && vm.sliceText != null && (crumbTrails || vm.isCriticalSignpost())) {
         for (String s : vm.sliceText) {
           dst.println("    slice info: "+s);          

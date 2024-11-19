@@ -16,6 +16,10 @@ import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 
 public interface IValidationPolicyAdvisor {
 
+
+  public IValidationPolicyAdvisor getPolicyAdvisor();
+  public IValidationPolicyAdvisor setPolicyAdvisor(IValidationPolicyAdvisor policyAdvisor);
+  
   /** 
    * Internal use, for chaining advisors
    * 

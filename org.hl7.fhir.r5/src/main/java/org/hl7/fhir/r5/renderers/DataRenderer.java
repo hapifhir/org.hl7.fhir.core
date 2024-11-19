@@ -50,6 +50,7 @@ import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -148,7 +149,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
           } 
           url = p.getWebPath(); 
           if (url == null) { 
-            url = p.getUserString("filename"); 
+            url = p.getUserString(UserDataNames.render_filename); 
           } 
         } else { 
           throw new DefinitionException(context.formatPhrase(RenderingContext.DATA_REND_MKDWN_LNK, link) + " "); 
@@ -261,8 +262,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
   private String crPresent(CanonicalResource cr) { 
-    if (cr.hasUserData("presentation")) { 
-      return cr.getUserString("presentation"); 
+    if (cr.hasUserData(UserDataNames.render_presentation)) { 
+      return cr.getUserString(UserDataNames.render_presentation); 
     } 
     if (cr.hasTitle()) 
       return context.getTranslated(cr.getTitleElement()); 
