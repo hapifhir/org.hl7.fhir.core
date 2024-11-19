@@ -530,16 +530,25 @@ public class ValueSetValidator extends BaseValidator {
         ok = rule(errors, "2024-05-12", IssueType.INVALID, stack.getLiteralPath(), rules.getCodeList().contains(value), I18nConstants.VALUESET_BAD_FILTER_VALUE_DATETIME, property, value) && ok;
         break;        
       case DateTime:
+        if (value != null && Utilities.startsWithInList(value, "eq", "ne", "gt", "lt", "ge", "le", "sa", "eb", "ap")) {
+          value = value.substring(2);
+        }  
         ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(),
             value.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"), 
             I18nConstants.VALUESET_BAD_FILTER_VALUE_DATETIME, property, value) && ok;
         break;
       case Decimal:
+        if (value != null && Utilities.startsWithInList(value, "eq", "ne", "gt", "lt", "ge", "le", "sa", "eb", "ap")) {
+          value = value.substring(2);
+        }  
         ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(),
             Utilities.isDecimal(value, true), 
             I18nConstants.VALUESET_BAD_FILTER_VALUE_DECIMAL, property, value) && ok;
         break;
       case Integer:
+        if (value != null && Utilities.startsWithInList(value, "eq", "ne", "gt", "lt", "ge", "le", "sa", "eb", "ap")) {
+          value = value.substring(2);
+        }  
         ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(),
             Utilities.isInteger(value), 
             I18nConstants.VALUESET_BAD_FILTER_VALUE_INTEGER, property, value) && ok;
