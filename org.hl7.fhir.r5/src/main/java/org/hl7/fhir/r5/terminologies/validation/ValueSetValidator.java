@@ -96,7 +96,6 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -195,9 +194,6 @@ public class ValueSetValidator extends ValueSetProcessBase {
           if (inc.hasSystem()) {
             checkCodeSystemResolves(inc);
           }
-        }
-        if (!requiredSupplements.isEmpty()) {
-          DebugUtilities.breakpoint();
         }
       }
     } else {
