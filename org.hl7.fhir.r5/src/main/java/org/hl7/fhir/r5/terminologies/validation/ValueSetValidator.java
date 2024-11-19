@@ -96,6 +96,7 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -183,6 +184,22 @@ public class ValueSetValidator extends ValueSetProcessBase {
       for (Extension s : valueset.getExtensionsByUrl(ExtensionConstants.EXT_VSSUPPLEMENT)) {
         requiredSupplements.add(s.getValue().primitiveValue());
       }
+
+      if (!requiredSupplements.isEmpty()) {
+        for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
+          if (inc.hasSystem()) {
+            checkCodeSystemResolves(inc);
+          }
+        }
+        for (ConceptSetComponent inc : valueset.getCompose().getExclude()) {
+          if (inc.hasSystem()) {
+            checkCodeSystemResolves(inc);
+          }
+        }
+        if (!requiredSupplements.isEmpty()) {
+          DebugUtilities.breakpoint();
+        }
+      }
     } else {
       opContext.note("vs = null");
     }
@@ -200,6 +217,15 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     }
     opContext.note("analysed");
+  }
+
+  private void checkCodeSystemResolves(ConceptSetComponent c) {
+    VersionInfo vi = new VersionInfo(this);
+    CodeSystem cs = resolveCodeSystem(c.getSystem(), vi.getVersion(c.getSystem(), c.getVersion()));
+    if (cs == null) {
+      // well, it doesn't really matter at this point. Mainly we're triggering the supplement analysis to happen 
+      opContext.note("Unable to resolve "+c.getSystem()+"#"+vi.getVersion(c.getSystem(), c.getVersion()));
+    }
   }
 
   private void analyseComponent(ConceptSetComponent i, String name) {
@@ -446,7 +472,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private boolean checkRequiredSupplements(ValidationProcessInfo info) {
     if (!requiredSupplements.isEmpty()) {
-      String msg= context.formatMessagePlural(requiredSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(requiredSupplements));
+      String msg = context.formatMessagePlural(requiredSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(requiredSupplements));
       throw new TerminologyServiceProtectionException(msg, TerminologyServiceErrorClass.BUSINESS_RULE, IssueType.NOTFOUND);
     }
     return requiredSupplements.isEmpty();
@@ -491,6 +517,17 @@ public class ValueSetValidator extends ValueSetProcessBase {
     CodeSystem cs = context.fetchSupplementedCodeSystem(system, version);
     if (cs == null) {
       cs = findSpecialCodeSystem(system, version);
+    }
+    if (cs != null) {
+      if (cs.hasUserData("supplements.installed")) {
+        for (String s : cs.getUserString("supplements.installed").split("\\,")) {
+          requiredSupplements.remove(s);
+          if (s.contains("|")) {
+            s = s.substring(0, s.indexOf("|"));
+            requiredSupplements.remove(s);
+          }
+        }
+      }
     }
     return cs;
   }

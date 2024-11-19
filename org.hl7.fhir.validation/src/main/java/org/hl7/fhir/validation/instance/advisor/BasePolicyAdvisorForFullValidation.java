@@ -25,6 +25,14 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvisor {
   
   private ReferenceValidationPolicy refpol = ReferenceValidationPolicy.CHECK_VALID;
+
+  public IValidationPolicyAdvisor getPolicyAdvisor() {
+    return null;
+  }
+
+  public IValidationPolicyAdvisor setPolicyAdvisor(IValidationPolicyAdvisor policyAdvisor) {
+    throw new Error("This policy advisor is the end of the chain");
+  }
   
   public BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy refpol) {
     super();
