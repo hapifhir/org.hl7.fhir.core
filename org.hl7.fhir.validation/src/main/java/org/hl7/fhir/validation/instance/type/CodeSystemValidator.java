@@ -638,7 +638,7 @@ public class CodeSystemValidator extends BaseValidator {
 
   private boolean validateSupplementConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String supp, ValidationOptions options) {
     String code = concept.getChildValue("code");
-    if (!Utilities.noString(code)) {
+    if (!Utilities.noString(code) && !noTerminologyChecks) {
       var canonical = new CanonicalPair(supp);
       org.hl7.fhir.r5.terminologies.utilities.ValidationResult res = context.validateCode(options, canonical.getUrl(), canonical.getVersion(), code, null);
       return rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), res.isOk(), I18nConstants.CODESYSTEM_CS_SUPP_INVALID_CODE, supp, code);
