@@ -8,6 +8,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -76,8 +77,20 @@ public abstract class CodeSystemChecker extends BaseValidator {
 
   public PropertyValidationRules rulesForFilter(String property, EnumSet<PropertyOperation> ops) {
     switch (property) {
-    case "concept" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf, PropertyOperation.DescendentLeaf, PropertyOperation.IsNotA, PropertyOperation.NotIn));
-    case "code" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.Equals, PropertyOperation.RegEx));
+    case "concept" :
+      return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, 
+          VersionUtilities.isR5Plus(context.getVersion()) ?
+            addToOps(ops, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,  
+              PropertyOperation.DescendentLeaf, PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.ChildOf, PropertyOperation.NotIn) :      
+            addToOps(ops, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,   
+              PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.NotIn));
+    case "code" : 
+      return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, 
+          VersionUtilities.isR5Plus(context.getVersion()) ?
+            addToOps(ops, PropertyOperation.RegEx, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,  
+              PropertyOperation.DescendentLeaf, PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.ChildOf, PropertyOperation.NotIn) :      
+            addToOps(ops, PropertyOperation.RegEx, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,   
+              PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.NotIn));
     case "status" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, ops);
     case "inactive" : return new PropertyValidationRules(PropertyFilterType.Boolean,null,  ops);
     case "effectiveDate" : return new PropertyValidationRules(PropertyFilterType.DateTime, null, ops);

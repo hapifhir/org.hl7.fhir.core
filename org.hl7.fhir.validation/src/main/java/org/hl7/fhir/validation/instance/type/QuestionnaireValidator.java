@@ -767,20 +767,22 @@ public class QuestionnaireValidator extends BaseValidator {
           }
         }
 
-        long t = System.nanoTime();
-        ValidationContextCarrier vc = makeValidationContext(errors, qSrc);
-        ValidationResult res = context.validateCode(new ValidationOptions(FhirPublication.R5, stack.getWorkingLang()), c, vs, vc);
-        timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
-        if (!res.isOk()) {
-          if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
-            txWarning(errors, NO_RULE_DATE, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_BADOPTION_CS, c.getSystem(), c.getCode(), vs.present());
-          } else {
-            ok = txRule(errors, NO_RULE_DATE, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_BADOPTION, c.getSystem(), c.getCode(), vs.present(), res.getMessage()) && ok;
+        if (!noTerminologyChecks) {
+          long t = System.nanoTime();
+          ValidationContextCarrier vc = makeValidationContext(errors, qSrc);
+          ValidationResult res = context.validateCode(new ValidationOptions(FhirPublication.R5, stack.getWorkingLang()), c, vs, vc);
+          timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
+          if (!res.isOk()) {
+            if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+              txWarning(errors, NO_RULE_DATE, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_BADOPTION_CS, c.getSystem(), c.getCode(), vs.present());
+            } else {
+              ok = txRule(errors, NO_RULE_DATE, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_BADOPTION, c.getSystem(), c.getCode(), vs.present(), res.getMessage()) && ok;
+            }
+          } else if (res.getSeverity() != null) {
+            super.addValidationMessage(errors, NO_RULE_DATE, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), res.getMessage(), res.getSeverity(), Source.TerminologyEngine, null);
+          } else if (res.getMessage() != null) {
+            super.addValidationMessage(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, value.line(), value.col(), stack.getLiteralPath(), res.getMessage(), res.getSeverity() == null ? IssueSeverity.INFORMATION : res.getSeverity(), Source.TerminologyEngine, null);          
           }
-        } else if (res.getSeverity() != null) {
-          super.addValidationMessage(errors, NO_RULE_DATE, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), res.getMessage(), res.getSeverity(), Source.TerminologyEngine, null);
-        } else if (res.getMessage() != null) {
-          super.addValidationMessage(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, value.line(), value.col(), stack.getLiteralPath(), res.getMessage(), res.getSeverity() == null ? IssueSeverity.INFORMATION : res.getSeverity(), Source.TerminologyEngine, null);          
         }
       } catch (Exception e) {
         warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_CODING, e.getMessage());

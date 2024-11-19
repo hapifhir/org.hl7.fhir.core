@@ -5,6 +5,7 @@ import java.io.PrintStream;
 
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -41,11 +42,14 @@ public class TxTestsTask extends StandaloneTask{
   @Override
   public void executeTask(CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
       final String source = Params.getParam(args, Params.SOURCE);
-      final String output = Params.getParam(args, Params.OUTPUT);
+      String output = Params.getParam(args, Params.OUTPUT);
       final String version = Params.getParam(args, Params.VERSION);
       final String tx = Params.getParam(args, Params.TERMINOLOGY);
       final String filter = Params.getParam(args, Params.FILTER);
       final String externals = Params.getParam(args, Params.EXTERNALS);
+      if (output == null ) {
+        output = Utilities.path("[tmp]");
+      }
       boolean ok = new TxTester(new TxTester.InternalTxLoader(source, output), tx, false, loadExternals(externals)).setOutput(output).execute(version, cliContext.getModeParams(), filter);
       SystemExitManager.setError(ok ? 1 : 0);
       SystemExitManager.finish();
