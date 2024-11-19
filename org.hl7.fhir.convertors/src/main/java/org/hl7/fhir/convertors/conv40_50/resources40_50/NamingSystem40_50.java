@@ -54,7 +54,7 @@ public class NamingSystem40_50 {
     org.hl7.fhir.r5.model.NamingSystem tgt = new org.hl7.fhir.r5.model.NamingSystem();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_NAMINGSYSTEM_URL, VersionConvertorConstants.EXT_NAMINGSYSTEM_VERSION, VersionConvertorConstants.EXT_NAMINGSYSTEM_TITLE);
 
-    if (src.hasExtension(VersionConvertorConstants.EXT_NAMINGSYSTEM_URL)) {
+    if (src.getExtensionsByUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_URL).size() == 1) {
       tgt.setUrlElement(Uri40_50.convertUri((UriType) src.getExtensionByUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_URL).getValue()));
     }
     if (src.hasExtension(VersionConvertorConstants.EXT_NAMINGSYSTEM_VERSION)) {

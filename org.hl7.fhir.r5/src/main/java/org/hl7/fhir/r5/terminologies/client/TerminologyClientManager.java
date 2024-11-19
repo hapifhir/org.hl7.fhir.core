@@ -31,6 +31,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedCodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
@@ -241,8 +242,8 @@ public class TerminologyClientManager {
 
     // no agreement? Then what we do depends     
     if (vs != null) {
-      if (vs.hasUserData("External.Link")) {
-        String el = vs.getUserString("External.Link");
+      if (vs.hasUserData(UserDataNames.render_external_link)) {
+        String el = vs.getUserString(UserDataNames.render_external_link);
         if ("https://vsac.nlm.nih.gov".equals(el)) {
           el = getMaster().getAddress();
         }

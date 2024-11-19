@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -201,7 +202,7 @@ public class ProfilePathProcessor {
 //    int i = 0;
 //    List<ElementDefinition> list = getDifferential().getElement();
 //    for (ElementDefinition ed : list) {
-//      boolean assigned = ed.hasUserData("derived.pointer");
+//      boolean assigned = ed.hasUserData(UserDataNames.UD_DERIVATION_POINTER);
 //      if (i < cursors.diffCursor) {
 //        if (!assigned) {
 //          throw new Error("what?");
@@ -295,7 +296,7 @@ public class ProfilePathProcessor {
 
       if (!diffMatches.get(0).hasSlicing()) {
         outcome.setSlicing(profileUtilities.makeExtensionSlicing());
-        outcome.setUserData("auto-added-slicing", true);
+        outcome.setUserData(UserDataNames.SNAPSHOT_auto_added_slicing, true);
       } else {
         outcome.setSlicing(diffMatches.get(0).getSlicing().copy());
         for (int i = 1; i < diffMatches.size(); i++) {
@@ -1041,9 +1042,9 @@ public class ProfilePathProcessor {
       profileUtilities.updateFromDefinition(outcome, diffMatches.get(0), getProfileName(), closed, getUrl(), getSourceStructureDefinition(), getDerived(), diffPath(diffMatches.get(0)), mapHelper); // if there's no slice, we don't want to update the unsliced description
       profileUtilities.removeStatusExtensions(outcome);
     } else if (!diffMatches.get(0).hasSliceName()) {
-      diffMatches.get(0).setUserData(profileUtilities.UD_GENERATED_IN_SNAPSHOT, outcome); // because of updateFromDefinition isn't called
+      diffMatches.get(0).setUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT, outcome); // because of updateFromDefinition isn't called
     } else {
-      outcome.setUserData("auto-added-slicing", true);
+      outcome.setUserData(UserDataNames.SNAPSHOT_auto_added_slicing, true);
     }
 
     debugCheck(outcome);
@@ -1143,8 +1144,8 @@ public class ProfilePathProcessor {
           outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
           if (!outcome.getPath().startsWith(cursors.resultPathBase))
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.ADDING_WRONG_PATH));
-          outcome.setUserData(profileUtilities.UD_BASE_PATH, outcome.getPath());
-          outcome.setUserData(profileUtilities.UD_BASE_MODEL, getSourceStructureDefinition().getUrl());
+          outcome.setUserData(UserDataNames.SNAPSHOT_BASE_PATH, outcome.getPath());
+          outcome.setUserData(UserDataNames.SNAPSHOT_BASE_MODEL, getSourceStructureDefinition().getUrl());
           debugCheck(outcome);
           getResult().getElement().add(outcome);
           cursors.baseCursor++;
@@ -1463,8 +1464,8 @@ public class ProfilePathProcessor {
           throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.ADDING_WRONG_PATH_IN_PROFILE___VS_, getProfileName(), outcome.getPath(), cursors.resultPathBase));
         debugCheck(outcome);
         getResult().getElement().add(outcome); // so we just copy it in
-        outcome.setUserData(profileUtilities.UD_BASE_MODEL, getSourceStructureDefinition().getUrl());
-        outcome.setUserData(profileUtilities.UD_BASE_PATH, cursors.resultPathBase);
+        outcome.setUserData(UserDataNames.SNAPSHOT_BASE_MODEL, getSourceStructureDefinition().getUrl());
+        outcome.setUserData(UserDataNames.SNAPSHOT_BASE_PATH, cursors.resultPathBase);
         cursors.baseCursor++;
       }
     }

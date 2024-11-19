@@ -8,6 +8,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
@@ -23,6 +24,7 @@ import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
@@ -150,7 +152,7 @@ public class Runner implements IEvaluationContext {
     validator.dump();
     validator.check();
     resourceName = validator.getResourceName();
-    wc.store = storage.createStore(wc.vd.asString("name"), (List<Column>) wc.vd.getUserData("columns"));
+    wc.store = storage.createStore(wc.vd.asString("name"), (List<Column>) wc.vd.getUserData(UserDataNames.db_columns));
     return wc;
   }
   
@@ -200,7 +202,7 @@ public class Runner implements IEvaluationContext {
 
       focus.addAll(executeForEachOrNull(vd, select, b));  
       if (focus.isEmpty()) {
-        List<Column> columns = (List<Column>) select.getUserData("columns");
+        List<Column> columns = (List<Column>) select.getUserData(UserDataNames.db_columns);
         for (List<Cell> row : rows) {
           for (Column c : columns) {
             Cell cell = cell(row, c.getName());
@@ -272,26 +274,26 @@ public class Runner implements IEvaluationContext {
   }
 
   private List<Base> executeForEach(JsonObject vd, JsonObject focus, Base b) {
-    ExpressionNode n = (ExpressionNode) focus.getUserData("forEach");
+    ExpressionNode n = (ExpressionNode) focus.getUserData(UserDataNames.db_forEach);
     List<Base> result = new ArrayList<>();
     result.addAll(fpe.evaluate(vd, b, n));
     return result;  
   }
 
   private List<Base> executeForEachOrNull(JsonObject vd, JsonObject focus, Base b) {
-    ExpressionNode n = (ExpressionNode) focus.getUserData("forEachOrNull");
+    ExpressionNode n = (ExpressionNode) focus.getUserData(UserDataNames.db_forEachOrNull);
     List<Base> result = new ArrayList<>();
     result.addAll(fpe.evaluate(vd, b, n));
     return result;  
   }
 
   private void executeColumn(JsonObject vd, JsonObject column, Base b, List<List<Cell>> rows) {
-    ExpressionNode n = (ExpressionNode) column.getUserData("path");
+    ExpressionNode n = (ExpressionNode) column.getUserData(UserDataNames.db_path);
     List<Base> bl2 = new ArrayList<>();
     if (b != null) {
       bl2.addAll(fpe.evaluate(vd, b, n));
     }
-    Column col = (Column) column.getUserData("column");
+    Column col = (Column) column.getUserData(UserDataNames.db_column);
     if (col == null) {
       System.out.println("Error");
     } else {
@@ -416,7 +418,7 @@ public class Runner implements IEvaluationContext {
       JsonObject vd = (JsonObject) appContext;
       JsonObject constant = findConstant(vd, name);
       if (constant != null) {
-        Base b = (Base) constant.getUserData("value");
+        Base b = (Base) constant.getUserData(UserDataNames.db_value);
         if (b != null) {
           list.add(b);
         }
@@ -428,12 +430,23 @@ public class Runner implements IEvaluationContext {
   @Override
   public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
     if (explicitConstant) {
-      JsonObject vd = (JsonObject) appContext;
-      JsonObject constant = findConstant(vd, name.substring(1));
-      if (constant != null) {
-        Base b = (Base) constant.getUserData("value");
-        if (b != null) {
-          return new TypeDetails(CollectionStatus.SINGLETON, b.fhirType());
+      if (appContext instanceof JsonObject) {
+        JsonObject vd = (JsonObject) appContext;
+        JsonObject constant = findConstant(vd, name.substring(1));
+        if (constant != null) {
+          Base b = (Base) constant.getUserData(UserDataNames.db_value);
+          if (b != null) {
+            return new TypeDetails(CollectionStatus.SINGLETON, b.fhirType());
+          }
+        }
+      } else if (appContext instanceof Element) {
+        Element vd = (Element) appContext;
+        Element constant = findConstant(vd, name.substring(1));
+        if (constant != null) {
+          Element v = constant.getNamedChild("value");
+          if (v != null) {
+            return new TypeDetails(CollectionStatus.SINGLETON, v.fhirType());
+          }
         }
       }
     }
@@ -448,6 +461,16 @@ public class Runner implements IEvaluationContext {
     }
     return null;
   }
+
+  private Element findConstant(Element vd, String name) {
+    for (Element o : vd.getChildren("constant")) {
+      if (name.equals(o.getNamedChildValue("name"))) {
+        return o;
+      }
+    }
+    return null;
+  }
+  
   @Override
   public boolean log(String argument, List<Base> focus) {
     throw new Error("Not implemented yet: log");
@@ -483,15 +506,15 @@ public class Runner implements IEvaluationContext {
     List<Base> base = new ArrayList<Base>();
     if (focus.size() == 1) {
       Base res = focus.get(0);
-      if (!res.hasUserData("Storage.key")) {
+      if (!res.hasUserData(UserDataNames.Storage_key)) {
         String key = storage.getKeyForSourceResource(res);
         if (key == null) {
           throw new FHIRException("Unidentified resource: "+res.fhirType()+"/"+res.getIdBase());
         } else {
-          res.setUserData("Storage.key", key);
+          res.setUserData(UserDataNames.Storage_key, key);
         }
       }
-      base.add(new StringType(res.getUserString("Storage.key")));
+      base.add(new StringType(res.getUserString(UserDataNames.Storage_key)));
     }
     return base;
   }
@@ -518,15 +541,15 @@ public class Runner implements IEvaluationContext {
       if (ref !=  null) {
         Base target = provider.resolveReference(rootResource, ref, rt);
         if (target != null) {
-          if (!res.hasUserData("Storage.key")) {
+          if (!res.hasUserData(UserDataNames.Storage_key)) {
             String key = storage.getKeyForTargetResource(target);
             if (key == null) {
               throw new FHIRException("Unidentified resource: "+res.fhirType()+"/"+res.getIdBase());
             } else {
-              res.setUserData("Storage.key", key);
+              res.setUserData(UserDataNames.Storage_key, key);
             }
           }
-          base.add(new StringType(res.getUserString("Storage.key")));
+          base.add(new StringType(res.getUserString(UserDataNames.Storage_key)));
         }
       }
     }

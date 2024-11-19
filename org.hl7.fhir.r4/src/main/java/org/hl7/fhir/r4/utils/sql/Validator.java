@@ -430,7 +430,7 @@ public class Validator {
   }
 
   private boolean isSimpleType(String type) {
-    return Utilities.existsInList(type, "dateTime", "boolean", "integer", "decimal", "string", "base64Binary", "id", "code", "date", "time", "canonical");
+    return Utilities.existsInList(type, "dateTime", "boolean", "integer", "decimal", "string", "base64Binary", "id", "code", "date", "time", "canonical", "uri", "url");
   }
 
   private String simpleType(String type) {

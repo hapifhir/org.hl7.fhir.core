@@ -348,8 +348,9 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
     return policyAdvisor;
   }
 
-  public void setPolicyAdvisor(IValidationPolicyAdvisor policyAdvisor) {
+  public IValidationPolicyAdvisor setPolicyAdvisor(IValidationPolicyAdvisor policyAdvisor) {
     this.policyAdvisor = policyAdvisor;
+    return this;
   }
 
 }

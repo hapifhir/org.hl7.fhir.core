@@ -67,6 +67,7 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionCompon
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptStatus;
 import org.hl7.fhir.r5.utils.CanonicalResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -167,7 +168,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
   }
 
   public static void markStatus(ValueSet vs, String wg, StandardsStatus status, String pckage, String fmm, IWorkerContext context, String normativeVersion) throws FHIRException {
-    if (vs.hasUserData("external.url"))
+    if (vs.hasUserData(UserDataNames.render_external_link))
       return;
     
     if (wg != null) {
@@ -181,11 +182,11 @@ public class ValueSetUtilities extends TerminologyUtilities {
       if (ss == null || ss.isLowerThan(status)) 
         ToolingExtensions.setStandardsStatus(vs, status, normativeVersion);
       if (pckage != null) {
-        if (!vs.hasUserData("ballot.package"))        
-          vs.setUserData("ballot.package", pckage);
-        else if (!pckage.equals(vs.getUserString("ballot.package")))
-          if (!"infrastructure".equals(vs.getUserString("ballot.package")))
-          System.out.println("Value Set "+vs.getUrl()+": ownership clash "+pckage+" vs "+vs.getUserString("ballot.package"));
+        if (!vs.hasUserData(UserDataNames.kindling_ballot_package))        
+          vs.setUserData(UserDataNames.kindling_ballot_package, pckage);
+        else if (!pckage.equals(vs.getUserString(UserDataNames.kindling_ballot_package)))
+          if (!"infrastructure".equals(vs.getUserString(UserDataNames.kindling_ballot_package)))
+          System.out.println("Value Set "+vs.getUrl()+": ownership clash "+pckage+" vs "+vs.getUserString(UserDataNames.kindling_ballot_package));
       }
       if (status == StandardsStatus.NORMATIVE) {
         vs.setExperimental(false);
@@ -201,8 +202,8 @@ public class ValueSetUtilities extends TerminologyUtilities {
         vs.setExperimental(true);
       }
     }
-    if (vs.hasUserData("cs"))
-      CodeSystemUtilities.markStatus((CodeSystem) vs.getUserData("cs"), wg, status, pckage, fmm, normativeVersion);
+    if (vs.hasUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM))
+      CodeSystemUtilities.markStatus((CodeSystem) vs.getUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM), wg, status, pckage, fmm, normativeVersion);
     else if (status == StandardsStatus.NORMATIVE && context != null) {
       for (ConceptSetComponent csc : vs.getCompose().getInclude()) {
         if (csc.hasSystem()) {

@@ -50,7 +50,7 @@ public class PackageHacker {
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/hl7.terminology.r4b.tgz");
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/1.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/1.0.0/hl7.terminology.r4b.tgz");
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/2.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/2.0.0/hl7.terminology.r4b.tgz");
-    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/2.1.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/2.1.0/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/2.1.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/2.1.0/hl7.terminology.r4b.tgz");
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/3.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/3.0.0/hl7.terminology.r4b.tgz");
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/3.1.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/3.1.0/hl7.terminology.r4b.tgz");
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/4.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/4.0.0/hl7.terminology.r4b.tgz");
@@ -62,7 +62,15 @@ public class PackageHacker {
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/5.5.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/5.5.0/hl7.terminology.r4b.tgz");
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/6.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/6.0.0/hl7.terminology.r4b.tgz");
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/6.0.1/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/6.0.1/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/6.0.2/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/6.0.2/hl7.terminology.r4b.tgz");    
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/6.0.2/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/6.0.2/hl7.terminology.r4b.tgz");  
+    self.packFolder("/Users/grahamegrieve/web/hl7.org/fhir/us/core/v610/package");
+    
+  }
+
+  private void packFolder(String src) throws FileNotFoundException, IOException {
+    NpmPackage npm = NpmPackage.fromFolder(src);
+    npm.save(new FileOutputStream(src+".tgz"));
+    
   }
 
   private void cloneToR4B(String src, String dst) throws IOException {

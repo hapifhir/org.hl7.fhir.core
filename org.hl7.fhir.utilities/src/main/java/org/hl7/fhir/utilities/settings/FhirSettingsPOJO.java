@@ -26,6 +26,8 @@ public class FhirSettingsPOJO {
   private String npmPath;
 
   private String rubyPath;
+  
+  private String gemPath;
 
   private String fhirTestCasesPath;
 
@@ -49,6 +51,7 @@ public class FhirSettingsPOJO {
     apiKeys = null;
     npmPath = null;
     rubyPath = null;
+    gemPath = null;
     fhirTestCasesPath = null;
     diffToolPath = null;
     tempPath = null;
