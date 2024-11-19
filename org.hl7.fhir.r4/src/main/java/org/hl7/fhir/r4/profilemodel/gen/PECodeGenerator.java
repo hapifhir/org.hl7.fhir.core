@@ -364,7 +364,7 @@ public class PECodeGenerator {
             type = Utilities.capitalize(field.types().get(0).getName()+"Type");
             ptype = getPrimitiveType(sd);
           } else {
-            type = field.types().get(0).getName();
+            type = Utilities.javaTokenize(field.types().get(0).getName(), true);
           }
           String ltype = type;
           if (field.isList()) {
