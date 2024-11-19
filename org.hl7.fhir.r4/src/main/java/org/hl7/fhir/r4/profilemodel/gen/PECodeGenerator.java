@@ -3,19 +3,19 @@ package org.hl7.fhir.r4.profilemodel.gen;
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
+
   Redistribution and use in source and binary forms, with or without modification, \
   are permitted provided that the following conditions are met:
-  
+
    * Redistributions of source code must retain the above copyright notice, this \
      list of conditions and the following disclaimer.
    * Redistributions in binary form must reproduce the above copyright notice, \
      this list of conditions and the following disclaimer in the documentation \
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
-     endorse or promote products derived from this software without specific 
+   * Neither the name of HL7 nor the names of its contributors may be used to
+     endorse or promote products derived from this software without specific
      prior written permission.
-  
+
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
@@ -28,7 +28,6 @@ package org.hl7.fhir.r4.profilemodel.gen;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -39,48 +38,44 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 
+import com.google.common.base.Strings;
 import org.hl7.fhir.r4.context.IWorkerContext;
-import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.ElementDefinition;
 import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.Type;
 import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r4.profilemodel.PEBuilder;
 import org.hl7.fhir.r4.profilemodel.PEBuilder.PEElementPropertiesPolicy;
-import org.hl7.fhir.r4.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.profilemodel.PEDefinition;
-import org.hl7.fhir.r4.profilemodel.PEInstance;
 import org.hl7.fhir.r4.profilemodel.PEType;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
 /**
- * 
+ *
  * The easiest way to generate code is to use the FHIR Validator, which can generate java classes for profiles
  * using this code. Parameters:
- * 
+ *
  *   -codegen -version r4 -ig hl7.fhir.dk.core#3.2.0 -profiles http://hl7.dk/fhir/core/StructureDefinition/dk-core-gln-identifier,http://hl7.dk/fhir/core/StructureDefinition/dk-core-patient -output /Users/grahamegrieve/temp/codegen -package-name org.hl7.fhir.test
- * 
+ *
  * Parameter Documentation:
  *   -codegen: tells the validator to generate code
- *   -version {r4|5}: which version to generate for 
+ *   -version {r4|5}: which version to generate for
  *   -ig {name}: loads an IG (and it's dependencies) - see -ig documentation for the validator
- *   -profiles {list}: a comma separated list of profile URLs to generate code for 
+ *   -profiles {list}: a comma separated list of profile URLs to generate code for
  *   -output {folder}: the folder where to generate the output java class source code
  *   -package-name {name}: the name of the java package to generate in
- *      
+ *
  * options
  *   -option {name}: a code generation option, one of:
- *   
+ *
  *     narrative: generate code for the resource narrative (recommended: don't - leave that for the native resource level)
  *     meta: generate code the what's in meta
- *     contained: generate code for contained resources 
+ *     contained: generate code for contained resources
  *     all-elements: generate code for all elements, not just the key elements (makes the code verbose)
  */
 
@@ -92,12 +87,12 @@ public class PECodeGenerator {
     sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
     return sdf.format(new Date());
   }
-  
-  
+
+
   public enum ExtensionPolicy {
     None, Complexes, Primitives;
   }
-  
+
   private class PEGenClass {
     private String name;
     private String base;
@@ -106,7 +101,7 @@ public class PECodeGenerator {
     private boolean isResource;
     private Set<String> unfixed = new HashSet<>();
     private Set<String> enumNames = new HashSet<>();
-    
+
     private StringBuilder inits = new StringBuilder();
     private StringBuilder fields = new StringBuilder();
     private StringBuilder enums = new StringBuilder();
@@ -119,7 +114,7 @@ public class PECodeGenerator {
     public void genId() {
       if (isResource) {
         genField(true, "id", "String", "id", "", false, "", 0, 1, null);
-        genAccessors(true, false, "id", "id", "String", "", "String", "String", "Id", "Ids", false, "", false, false, null);   
+        genAccessors(true, false, "id", "id", "String", "", "String", "String", "Id", "Ids", false, "", false, false, null);
         genLoad(true, false, "id", "id", "id", "IdType", "", "String", "String", "Id", "Ids", false, false, null, false);
         genSave(true, false, "id", "id", "id", "IdType", "", "String", "String", "Id", "Ids", false, false, false, null, false);
         genClear(false, "id", "String");
@@ -133,14 +128,14 @@ public class PECodeGenerator {
         w(b, " */");
         w(b);
       }
-      w(b, "// Generated by the HAPI Java Profile Generator, "+genDate);      
-      w(b);      
+      w(b, "// Generated by the HAPI Java Profile Generator, "+genDate);
+      w(b);
       jdoc(b, doco, 0, true);
       w(b, "public class "+name+" extends PEGeneratedBase {");
       w(b);
       if (url != null) {
         w(b, "  public static final String CANONICAL_URL = \""+url+"\";");
-        w(b);        
+        w(b);
       }
       if (enums.length() > 0) {
         w(b, enums.toString());
@@ -177,7 +172,7 @@ public class PECodeGenerator {
         w(b, "    PEInstance src = builder.buildPEInstance(CANONICAL_URL, source);");
         w(b, "    theThing.load(src);");
         w(b, "    return theThing;");
-        w(b, "  }");  
+        w(b, "  }");
         w(b);
       } else {
         jdoc(b, "Used when loading other models ", 2, true);
@@ -186,13 +181,13 @@ public class PECodeGenerator {
         w(b, "    theThing.workerContext = source.getContext();");
         w(b, "    theThing.load(source);");
         w(b, "    return theThing;");
-        w(b, "  }");  
+        w(b, "  }");
       }
       w(b);
       w(b, "  public void load(PEInstance src) {");
       w(b, "    clear();");
       w(b, load.toString());
-      w(b, "  }");  
+      w(b, "  }");
       w(b);
 
       if (isResource) {
@@ -206,7 +201,7 @@ public class PECodeGenerator {
         w(b, "  public "+base+" build() {");
         w(b, "    "+base+" theThing = new "+base+"();");
         w(b, "    PEBuilder builder = new PEBuilder(workerContext, PEElementPropertiesPolicy.EXTENSION, true);");
-        w(b, "    PEInstance tgt = builder.buildPEInstance(CANONICAL_URL, theThing);");      
+        w(b, "    PEInstance tgt = builder.buildPEInstance(CANONICAL_URL, theThing);");
         w(b, "    save(tgt, false);");
         w(b, "    return theThing;");
         w(b, "  }");
@@ -222,21 +217,21 @@ public class PECodeGenerator {
       }
       w(b, "  public void save(PEInstance tgt, boolean nulls) {");
       w(b, save.toString());
-      w(b, "  }");  
+      w(b, "  }");
       w(b);
       if (inits.length() > 0) {
         w(b, "  private void initFixedValues() {");
         w(b, inits.toString());
-        w(b, "  }");  
+        w(b, "  }");
         w(b);
       }
       w(b, accessors.toString());
       w(b);
       w(b, "  public void clear() {");
       w(b, clear.toString());
-      w(b, "  }");  
+      w(b, "  }");
       w(b);
-      w(b, "}");  
+      w(b, "}");
     }
 
     private String generateEnum(PEDefinition source, PEDefinition field) {
@@ -268,7 +263,7 @@ public class PECodeGenerator {
               w(enums, "    public static "+name+" fromCode(String s) {");
               w(enums, "      switch (s) {");
               for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
-                w(enums, "      case \""+cc.getCode()+"\": return "+cc.getUserString("java.code")+";");                
+                w(enums, "      case \""+cc.getCode()+"\": return "+cc.getUserString("java.code")+";");
               }
               w(enums, "      default: return null;");
               w(enums, "      }");
@@ -277,11 +272,11 @@ public class PECodeGenerator {
               w(enums, "    public static "+name+" fromCoding(Coding c) {");
               for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
                 if (cc.hasVersion()) {
-                  w(enums, "      if (\""+cc.getSystem()+"\".equals(c.getSystem()) && \""+cc.getCode()+"\".equals(c.getCode()) && (!c.hasVersion() || \""+cc.getVersion()+"\".equals(c.getVersion()))) {");                  
+                  w(enums, "      if (\""+cc.getSystem()+"\".equals(c.getSystem()) && \""+cc.getCode()+"\".equals(c.getCode()) && (!c.hasVersion() || \""+cc.getVersion()+"\".equals(c.getVersion()))) {");
                 } else {
                   w(enums, "      if (\""+cc.getSystem()+"\".equals(c.getSystem()) && \""+cc.getCode()+"\".equals(c.getCode())) {");
                 }
-                w(enums, "        return "+cc.getUserString("java.code")+";");                
+                w(enums, "        return "+cc.getUserString("java.code")+";");
                 w(enums, "      }");
               }
               w(enums, "      return null;");
@@ -293,7 +288,7 @@ public class PECodeGenerator {
               w(enums, "        if (v != null) {");
               w(enums, "          return v;");
               w(enums, "        }");
-              w(enums, "      }");              
+              w(enums, "      }");
               w(enums, "      return null;");
               w(enums, "    }");
               w(enums, "");
@@ -301,17 +296,17 @@ public class PECodeGenerator {
               w(enums, "    public String toDisplay() {");
               w(enums, "      switch (this) {");
               for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
-                w(enums, "      case "+cc.getUserString("java.code")+": return \""+Utilities.escapeJava(cc.getDisplay())+"\";");                
+                w(enums, "      case "+cc.getUserString("java.code")+": return \""+Utilities.escapeJava(cc.getDisplay())+"\";");
               }
               w(enums, "      default: return null;");
               w(enums, "      }");
               w(enums, "    }");
               w(enums, "");
-              
+
               w(enums, "    public String toCode() {");
               w(enums, "      switch (this) {");
               for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
-                w(enums, "      case "+cc.getUserString("java.code")+": return \""+cc.getCode()+"\";");                
+                w(enums, "      case "+cc.getUserString("java.code")+": return \""+cc.getCode()+"\";");
               }
               w(enums, "      default: return null;");
               w(enums, "      }");
@@ -382,8 +377,8 @@ public class PECodeGenerator {
           if (isPrim && field.hasFixedValue()) {
             genFixed(name, ptype, field.getFixedValue());
           }
-          genAccessors(isPrim, isAbstract, name, field.name(), type, init, ptype, ltype, cname, csname, field.isList(), field.documentation(), field.hasFixedValue(), isEnum, field.definition());   
-          genLoad(isPrim, isAbstract, name, sname, field.name(), type, init, ptype, ltype, cname, csname, field.isList(), field.hasFixedValue(), field.types().get(0), isEnum); 
+          genAccessors(isPrim, isAbstract, name, field.name(), type, init, ptype, ltype, cname, csname, field.isList(), field.documentation(), field.hasFixedValue(), isEnum, field.definition());
+          genLoad(isPrim, isAbstract, name, sname, field.name(), type, init, ptype, ltype, cname, csname, field.isList(), field.hasFixedValue(), field.types().get(0), isEnum);
           genSave(isPrim, isAbstract, name, sname, field.name(), type, init, ptype, ltype, cname, csname, field.isList(), field.hasFixedValue(), isExtension, field.types().get(0), isEnum);
           genClear(field.isList(), name, ptype);
         }
@@ -391,10 +386,10 @@ public class PECodeGenerator {
         // ignoring polymorphics for now
       }
     }
-    
+
     private void genClear(boolean list, String name, String ptype) {
       if (list) {
-        w(clear, "    "+name+".clear();");        
+        w(clear, "    "+name+".clear();");
       } else if ("boolean".equals(ptype)) {
         w(clear, "    "+name+" = false;");
       } else if ("int".equals(ptype)) {
@@ -403,14 +398,16 @@ public class PECodeGenerator {
         w(clear, "    "+name+" = null;");
       }
     }
-    
+
     private void genLoad(boolean isPrim, boolean isAbstract, String name, String sname, String fname, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, boolean isFixed, PEType typeInfo, boolean isEnum) {
       if (isList) {
         w(load, "    for (PEInstance item : src.children(\""+fname+"\")) {");
         if ("BackboneElement".equals(type)) {
-          w(load, "      "+name+".add(("+type+") item.asElement());");          
-        } else {
+          w(load, "      "+name+".add(("+type+") item.asElement());");
+        } else if (!Strings.isNullOrEmpty(typeInfo.getUrl()) && typeInfo.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition")) {
           w(load, "      "+name+".add(("+type+") item.asDataType());");
+        } else {
+          w(load, "      "+name+".add("+type+".fromSource(item));");
         }
         w(load, "    }");
       } else if (isEnum) {
@@ -421,23 +418,23 @@ public class PECodeGenerator {
           w(load, "      "+name+" = "+type+".fromCoding((Coding) src.child(\""+fname+"\").asDataType());");
         } else {
           w(load, "      "+name+" = "+type+".fromCode(src.child(\""+fname+"\").asDataType().primitiveValue());");
-        }  
-        w(load, "    }");      
+        }
+        w(load, "    }");
       } else if (isPrim) {
         w(load, "    if (src.hasChild(\""+fname+"\")) {");
         if ("CodeType".equals(type)) {
-          // might be code or enum 
+          // might be code or enum
           w(load, "      "+name+" = src.child(\""+fname+"\").asDataType().primitiveValue();");
         } else {
           w(load, "      "+name+" = (("+type+") src.child(\""+fname+"\").asDataType()).getValue();");
         }
-        w(load, "    }");      
+        w(load, "    }");
       } else if (typeInfo != null && typeInfo.getUrl() != null && !typeInfo.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition")) {
         w(load, "    if (src.hasChild(\""+fname+"\")) {");
         w(load, "      "+name+" = "+type+".fromSource(src.child(\""+fname+"\"));");
         w(load, "    }");
       } else {
-        w(load, "    if (src.hasChild(\""+fname+"\")) {");      
+        w(load, "    if (src.hasChild(\""+fname+"\")) {");
         if ("BackboneElement".equals(type)) {
           w(load, "      "+name+" = ("+type+") src.child(\""+fname+"\").asElement();");
         } else if (Utilities.existsInList(type, workerContext.getResourceNames())) {
@@ -453,8 +450,10 @@ public class PECodeGenerator {
       w(save, "    tgt.clear(\""+fname+"\");");
       if (isList) {
         w(save, "    for ("+type+" item : "+name+") {");
-        if (isExtension) {
-          w(save, "      tgt.makeChild(\""+fname+"\").data().setProperty(\"value[x]\", item);");          
+        if (isExtension && !Strings.isNullOrEmpty(typeInfo.getUrl()) && typeInfo.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition")) {
+          w(save, "      tgt.makeChild(\""+fname+"\").data().setProperty(\"value[x]\", item);");
+        } else if (isExtension) {
+          w(save, "      tgt.makeChild(\""+fname+"\").data().setProperty(\"value[x]\", item.getData());");
         } else {
           w(save, "      tgt.addChild(\""+fname+"\", item);");
         }
@@ -467,8 +466,8 @@ public class PECodeGenerator {
           w(save, "      tgt.addChild(\""+fname+"\", "+name+".toCoding());");
         } else {
           w(save, "      tgt.addChild(\""+fname+"\", "+name+".toCode());");
-        }  
-        w(save, "    }");      
+        }
+        w(save, "    }");
       } else if (isPrim) {
         if ("boolean".equals(ptype)) {
           w(save, "    if (true) { // for now, at least");
@@ -480,7 +479,7 @@ public class PECodeGenerator {
         if (isExtension) {
           w(save, "      tgt.makeChild(\""+fname+"\").data().setProperty(\"value[x]\", new "+type+"("+name+"));");
         } else if (Utilities.existsInList(type, "DateType", "InstantType", "DateTimeType")) {
-          w(save, "      tgt.addChild(\""+fname+"\", new "+type+"("+name+"));");          
+          w(save, "      tgt.addChild(\""+fname+"\", new "+type+"("+name+"));");
         } else {
           w(save, "      tgt.makeChild(\""+fname+"\").data().setProperty(\"value\", new "+type+"("+name+"));");
         }
@@ -512,7 +511,7 @@ public class PECodeGenerator {
         if (isFixed) {
           w(accessors, "  public boolean has"+cname+"() {");
           w(accessors, "    return true;");
-          w(accessors, "  }");  
+          w(accessors, "  }");
         } else {
           w(accessors, "  public "+this.name+" set"+cname+"("+ptype+" value) {");
           w(accessors, "    this."+name+" = value;");
@@ -521,13 +520,13 @@ public class PECodeGenerator {
           w(accessors);
           w(accessors, "  public boolean has"+cname+"() {");
           if ("boolean".equals(ptype)) {
-            w(accessors, "    return true; // not "+name+" != false ?");             
+            w(accessors, "    return true; // not "+name+" != false ?");
           } else if ("int".equals(ptype)) {
-            w(accessors, "    return "+name+" != 0;");            
+            w(accessors, "    return "+name+" != 0;");
           } else {
             w(accessors, "    return "+name+" != null;");
           }
-          w(accessors, "  }");  
+          w(accessors, "  }");
         }
       } else {
         if (isPrim && !isList) {
@@ -560,18 +559,18 @@ public class PECodeGenerator {
             w(accessors, "    get"+cname+"().add(theThing);");
             w(accessors, "    return theThing;");
             w(accessors, "  }");
-            w(accessors); 
+            w(accessors);
           }
           w(accessors, "  public boolean has"+csname+"("+type+" item) {");
           w(accessors, "    return has"+cname+"() && "+name+".contains(item);");
           w(accessors, "  }");
-          w(accessors);        
+          w(accessors);
           w(accessors, "  public void remove"+csname+"("+type+" item) {");
           w(accessors, "    if (has"+csname+"(item)) {");
           w(accessors, "      "+name+".remove(item);");
           w(accessors, "    }");
           w(accessors, "  }");
-          w(accessors);        
+          w(accessors);
         } else if (isPrim) {
           if (!isFixed) {
             w(accessors, "  public "+this.name+" set"+cname+"("+ptype+" value) {");
@@ -587,7 +586,7 @@ public class PECodeGenerator {
           w(accessors, "  public boolean has"+cname+"() {");
           w(accessors, "    return "+name+" != null && "+name+".hasValue();");
           w(accessors, "  }");
-          w(accessors); 
+          w(accessors);
         } else {
           if (!isFixed) {
             w(accessors, "  public "+this.name+" set"+cname+"("+type+" value) {");
@@ -611,7 +610,7 @@ public class PECodeGenerator {
           w(fields, "  @BindingStrength(\""+ed.getBinding().getStrength().toCode()+"\") @ValueSet(\""+ed.getBinding().getValueSet()+"\")");
         }
         if (ed.getMustSupport()) {
-          w(fields, "  @MustSupport(true)");          
+          w(fields, "  @MustSupport(true)");
         }
         if (ed.hasLabel() || ed.hasDefinition()) {
           String s = "";
@@ -621,7 +620,7 @@ public class PECodeGenerator {
           if (ed.hasDefinition()) {
             s = s + " @Definition(\""+Utilities.escapeJava(ed.getDefinition())+"\")";
           }
-          w(fields, " "+s);          
+          w(fields, " "+s);
         }
       }
       if (isPrim && extensionPolicy != ExtensionPolicy.Primitives && !isList) {
@@ -629,7 +628,7 @@ public class PECodeGenerator {
       } else if (isList) {
         w(fields, "  private "+ltype+" "+name+" = new ArrayList<>();"+nn+"  // "+shortDoco);
       } else {
-        w(fields, "  private "+ltype+" "+name+";"+nn+"  // "+shortDoco);             
+        w(fields, "  private "+ltype+" "+name+";"+nn+"  // "+shortDoco);
       }
       w(fields, "");
     }
@@ -637,7 +636,7 @@ public class PECodeGenerator {
 
     private void genFixed(String name, String pType, Type fixedValue) {
       if ("String".equals(pType)) {
-        w(inits, "    "+name+" = \""+Utilities.escapeJava(fixedValue.primitiveValue())+"\";");                     
+        w(inits, "    "+name+" = \""+Utilities.escapeJava(fixedValue.primitiveValue())+"\";");
       } else {
         unfixed.add(name);
         System.out.println("Unable to handle the fixed value for "+name+" of type "+pType+" = "+fixedValue.toString());
@@ -650,7 +649,7 @@ public class PECodeGenerator {
   private String canonical;
   private String pkgName;
   private String version = "r4";
-  
+
   // options:
   private ExtensionPolicy extensionPolicy;
   private boolean narrative;
@@ -760,12 +759,12 @@ public class PECodeGenerator {
   private StringBuilder imports = new StringBuilder();
 
   /**
-   * @throws IOException 
-   * 
+   * @throws IOException
+   *
    */
   public String execute() throws IOException {
     imports = new StringBuilder();
-    
+
     PEDefinition source = new PEBuilder(workerContext, PEElementPropertiesPolicy.EXTENSION, true).buildPEDefinition(canonical);
     w(imports, "import java.util.List;");
     w(imports, "import java.util.ArrayList;");
@@ -786,8 +785,8 @@ public class PECodeGenerator {
     w(imports, "import org.hl7.fhir."+version+".profilemodel.gen.ValueSet;");
     w(imports, "import org.hl7.fhir."+version+".profilemodel.gen.MustSupport;");
     w(imports, "import org.hl7.fhir."+version+".profilemodel.gen.Definition;");
-      
-      
+
+
     PEGenClass cls = genClass(source);
     StringBuilder b = new StringBuilder();
     w(b, "package "+pkgName+";");
@@ -811,7 +810,7 @@ public class PECodeGenerator {
         w(b, pfx+" *");
       }
       w(b, pfx+" */");
-    }    
+    }
   }
 
   private List<String> naturalLines(String line) {
@@ -840,7 +839,7 @@ public class PECodeGenerator {
 
   private void w(StringBuilder b, String line) {
     b.append(line);
-    w(b);    
+    w(b);
   }
 
   private PEGenClass genClass(PEDefinition source) {
@@ -855,7 +854,7 @@ public class PECodeGenerator {
       if (genForField(source, child)) {
         cls.defineField(source, child);
       }
-    }    
+    }
     return cls;
   }
 
