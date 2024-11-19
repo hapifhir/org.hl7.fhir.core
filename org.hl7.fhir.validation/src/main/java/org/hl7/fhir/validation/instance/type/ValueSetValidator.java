@@ -390,7 +390,7 @@ public class ValueSetValidator extends BaseValidator {
     String display = concept.getChildValue("display");
     slv.checkConcept(code, display);
 
-    if (!!noTerminologyChecks) {
+    if (!noTerminologyChecks) {
       if (version == null) {
         ValidationResult vv = context.validateCode(ValidationOptions.defaults().withExampleOK(), new Coding(system, code, null), null);
         if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
