@@ -176,6 +176,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   protected XVerExtensionManager xverManager;
   protected IValidatorResourceFetcher fetcher;
   protected IValidationPolicyAdvisor policyAdvisor;
+  protected boolean noTerminologyChecks;
   
   // these two related to removing warnings on extensible bindings in structures that have derivatives that replace their bindings
   protected List<TrackedLocationRelatedMessage> trackedMessages = new ArrayList<>();   
@@ -235,6 +236,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     this.baseOptions = parent.baseOptions;
     this.fetcher = parent.fetcher;
     this.policyAdvisor = parent.policyAdvisor;
+    this.noTerminologyChecks = parent.noTerminologyChecks;
   }
   
   private boolean doingLevel(IssueSeverity error) {

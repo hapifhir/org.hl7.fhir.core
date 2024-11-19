@@ -635,10 +635,14 @@ public class TxTester {
     @Override
     public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
       Resource res = new org.hl7.fhir.r5.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, filename)));
-      org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_40_50.convertResource(res);
-      String p = Utilities.path(folder, "r4", filename);
-      Utilities.createDirectory(Utilities.getDirectoryForFile(p));
-      new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(p), r4);
+      try {
+        org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_40_50.convertResource(res);
+        String p = Utilities.path(folder, "r4", filename);
+        Utilities.createDirectory(Utilities.getDirectoryForFile(p));
+        new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(p), r4);
+      } catch (Exception e) {
+        // nothing...
+      }      
       return res;
     }
 
