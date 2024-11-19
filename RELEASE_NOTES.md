@@ -5,7 +5,6 @@
 * make HL7 WG validation rule publication dependent
 * Fix for illegal names in profiles when code generating
 * Handle search syntax in value set filter
-* Add GEM path to fhir-settings.json for Jekyll on some systems
 
 ## Other code changes
 
@@ -13,3 +12,4 @@
 * Add support for validator session for internal cache management
 * Support ViewDefinition as a custom resource
 * refactor UserData names to use constants and expose user data through ResourceWrapper
+* Add GEM path to fhir-settings.json for Jekyll on some systems
