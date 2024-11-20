@@ -504,6 +504,14 @@ public class XMLUtil {
     return e == null ? null : e.getAttribute(aname);
   }
 
+  /**
+   * This method is used to create a new TransformerFactory instance with external processing features configured
+   * securely.
+   * <p/>
+   * <b>IMPORTANT</b> This method should be the only place where TransformerFactory is instantiated in this project.
+   *
+   * @return A TransformerFactory instance external processing features configured securely.
+   */
   public static TransformerFactory newXXEProtectedTransformerFactory() {
     final TransformerFactory transformerFactory = TransformerFactory.newInstance();
     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
@@ -511,6 +519,15 @@ public class XMLUtil {
     return transformerFactory;
   }
 
+  /**
+   * This method is used to create a new DocumentBuilderFactory instance with external processing features configured
+   * securely.
+   * <p/>
+   * <b>IMPORTANT</b> This method should be the only place where DocumentBuilderFactory is instantiated in this project.
+   *
+   * @return A DocumentBuilderFactory instance external processing features configured securely.
+   * @throws ParserConfigurationException If a DocumentBuilder cannot be configured with the requested features.
+   */
   public static DocumentBuilderFactory newXXEProtectedDocumentBuilderFactory() throws ParserConfigurationException {
     final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
     documentBuilderFactory.setFeature(APACHE_XML_FEATURES_DISALLOW_DOCTYPE_DECL, true);
@@ -518,6 +535,18 @@ public class XMLUtil {
     return documentBuilderFactory;
   }
 
+  /**
+   * This method is used to create a new SAXParserFactory instance with external processing features configured
+   * securely.
+   * <p/>
+   * <b>IMPORTANT</b> This method should be the only place where SAXParserFactory is instantiated in this project.
+   *
+   * @return A SAXParserFactory instance external processing features configured securely.
+   * @throws SAXNotSupportedException When the underlying XMLReader recognizes the property name but doesn't support
+   * the property.
+   * @throws SAXNotRecognizedException When the underlying XMLReader does not recognize the property name.
+   * @throws ParserConfigurationException If a SAXParser cannot be configured with the requested features.
+   */
   public static SAXParserFactory newXXEProtectedSaxParserFactory() throws SAXNotSupportedException, SAXNotRecognizedException, ParserConfigurationException {
     final SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setFeature(SAX_FEATURES_EXTERNAL_GENERAL_ENTITIES, false);
@@ -526,6 +555,15 @@ public class XMLUtil {
     return spf;
   }
 
+  /**
+   * This method is used to create a new XMLReader instance from a passed SAXParserFactory with external processing
+   * features configured securely.
+   *
+   * @param spf The SAXParserFactory to create the XMLReader from.
+   * @return A XMLReader instance external processing features configured securely.
+   * @throws ParserConfigurationException If a SAXParser cannot be configured with the requested features.
+   * @throws SAXException If any SAX exceptions occur during the creation of the XMLReader.
+   */
   public static XMLReader getXXEProtectedXMLReader(SAXParserFactory spf) throws ParserConfigurationException, SAXException {
     final SAXParser saxParser = spf.newSAXParser();
     final XMLReader xmlReader = saxParser.getXMLReader();

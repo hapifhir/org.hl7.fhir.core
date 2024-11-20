@@ -28,15 +28,32 @@
         <property name="id" value="transformerFactoryNewInstance"/>
         <property name="matchAcrossLines" value="true"/>
         <property name="format" value="TransformerFactory\.newInstance\("/>
+        <property name="message"
+                  value="Usage of TransformerFactory.newInstance() is only allowed in XMLUtil.newXXEProtectedTransformerFactory(). If the location of this call in XMLUtil has changed, please modify the expected line number in org.hl7.fhir.utilities/checkstyle_suppressions.xml"
+        />
     </module>
     <module name="RegexpMultiline">
         <property name="id" value="documentBuilderFactoryNewInstance"/>
         <property name="matchAcrossLines" value="true"/>
         <property name="format" value="DocumentBuilderFactory\.newInstance\("/>
+        <property name="message"
+                  value="Usage of DocumentBuilderFactory.newInstance() is only allowed in XMLUtil.newXXEProtectedDocumentBuilderFactory(). If the location of this call in XMLUtil has changed, please modify the expected line number in org.hl7.fhir.utilities/checkstyle_suppressions.xml"
+        />
     </module>
     <module name="RegexpMultiline">
         <property name="id" value="saxParserFactoryNewInstance"/>
         <property name="matchAcrossLines" value="true"/>
         <property name="format" value="SAXParserFactory\.newInstance\("/>
+        <property name="message"
+                  value="Usage of SAXParserFactory.newInstance() is only allowed in XMLUtil.newXXEProtectedSaxParserFactory(). If the location of this call in XMLUtil has changed, please modify the expected line number in org.hl7.fhir.utilities/checkstyle_suppressions.xml"
+        />
+    </module>
+    <module name="RegexpMultiline">
+        <property name="id" value="getXMLReader"/>
+        <property name="matchAcrossLines" value="true"/>
+        <property name="format" value="\.getXMLReader\("/>
+        <property name="message"
+                  value="Usage of SAXParserFactory.getXMLReader() is only allowed in XMLUtil.getXXEProtectedXMLReader(...). If the location of this call in XMLUtil has changed, please modify the expected line number in org.hl7.fhir.utilities/checkstyle_suppressions.xml"
+        />
     </module>
 </module>

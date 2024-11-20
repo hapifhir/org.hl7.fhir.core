@@ -76,4 +76,12 @@ public class XMLUtilTests {
     SAXParseException e = assertThrows(SAXParseException.class, () -> xmlReader.parse(new StreamSource(templateFile).getSystemId()));
     assertThat(e.getMessage()).contains("DOCTYPE is disallowed");
   }
+
+  @Test
+  public void testXMLReaderThrowsExceptionForExternalEntity() throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    SAXParserFactory spf = SAXParserFactory.newInstance();
+
+    IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> XMLUtil.getXXEProtectedXMLReader(spf));
+    assertThat(e.getMessage()).contains("SAXParserFactory has insecure feature setting");
+  }
 }
