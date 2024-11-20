@@ -269,7 +269,7 @@ public class TxTester {
         }
         JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
 
-        String lang = test.asString("Content-Language");
+        String lang = test.asString("Accept-Language");
         String msg = null;
         if (test.asString("operation").equals("metadata")) {
           msg = metadata(test.str("name"), setup, resp, fp, lang, profile, ext);
@@ -381,7 +381,7 @@ public class TxTester {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
-    terminologyClient.setContentLanguage(lang);
+    terminologyClient.setAcceptLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
     int code = 0;
     String pj;
@@ -412,7 +412,7 @@ public class TxTester {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
-    terminologyClient.setContentLanguage(lang);
+    terminologyClient.setAcceptLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
     int code = 0;
     String pj;
@@ -443,7 +443,7 @@ public class TxTester {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
-    terminologyClient.setContentLanguage(lang);
+    terminologyClient.setAcceptLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
     int code = 0;
     String vsj;
@@ -486,7 +486,7 @@ public class TxTester {
       p.addParameter().setName("tx-resource").setResource(r);
     }
     p.getParameter().addAll(profile.getParameter());
-    terminologyClient.setContentLanguage(lang);
+    terminologyClient.setAcceptLanguage(lang);
     int code = 0;
     String pj;
     try {
@@ -518,7 +518,7 @@ public class TxTester {
       p.addParameter().setName("tx-resource").setResource(r);
     }
     p.getParameter().addAll(profile.getParameter());
-    terminologyClient.setContentLanguage(lang);
+    terminologyClient.setAcceptLanguage(lang);
     int code = 0;
     String pj;
     try {
