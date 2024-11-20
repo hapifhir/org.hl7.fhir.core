@@ -4,7 +4,8 @@
         "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
-    <suppress id="transformerFactoryNewInstance" files="/src/main/java/org/hl7/fhir/utilities/xml/XMLUtil.java" lines="508"/>
-    <suppress id="documentBuilderFactoryNewInstance" files="/src/main/java/org/hl7/fhir/utilities/xml/XMLUtil.java" lines="515"/>
-    <suppress id="saxParserFactoryNewInstance" files="/src/main/java/org/hl7/fhir/utilities/xml/XMLUtil.java" lines="522"/>
+    <suppress id="transformerFactoryNewInstance" files="/src/main/java/org/hl7/fhir/utilities/xml/XMLUtil.java" lines="516"/>
+    <suppress id="documentBuilderFactoryNewInstance" files="/src/main/java/org/hl7/fhir/utilities/xml/XMLUtil.java" lines="532"/>
+    <suppress id="saxParserFactoryNewInstance" files="/src/main/java/org/hl7/fhir/utilities/xml/XMLUtil.java" lines="551"/>
+    <suppress id="getXMLReader" files="/src/main/java/org/hl7/fhir/utilities/xml/XMLUtil.java" lines="569"/>
 </suppressions>
