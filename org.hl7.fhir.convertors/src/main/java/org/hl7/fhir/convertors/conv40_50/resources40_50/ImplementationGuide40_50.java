@@ -182,7 +182,7 @@ public class ImplementationGuide40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, EXT_IG_DEPENDSON_REASON);
     if (src.hasUri())
       tgt.setUriElement(Canonical40_50.convertCanonical(src.getUriElement()));
     if (src.hasPackageId())
@@ -191,7 +191,6 @@ public class ImplementationGuide40_50 {
       tgt.setVersionElement(String40_50.convertString(src.getVersionElement()));
     if (src.hasExtension(EXT_IG_DEPENDSON_REASON))
       tgt.setReasonElement(MarkDown40_50.convertMarkdown((org.hl7.fhir.r4.model.MarkdownType)src.getExtensionByUrl(EXT_IG_DEPENDSON_REASON).getValue()));
-    tgt.removeExtension(EXT_IG_DEPENDSON_REASON);
     return tgt;
   }
 
