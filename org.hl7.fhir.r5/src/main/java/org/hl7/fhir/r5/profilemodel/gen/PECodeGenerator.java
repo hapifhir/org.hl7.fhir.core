@@ -247,6 +247,8 @@ public class PECodeGenerator {
           org.hl7.fhir.r5.model.ValueSet vs = workerContext.fetchResource(org.hl7.fhir.r5.model.ValueSet.class, binding.getValueSet(), field.getProfile());
           if (vs != null) {
             ValueSetExpansionOutcome vse = workerContext.expandVS(vs, false, false);
+            Set<String> codes = new HashSet<>();
+            boolean hasDups = false;
             if (vse.isOk()) {
               String baseName = Utilities.nmtokenize(Utilities.singularise(vs.getName()));
               String name = baseName;
@@ -259,22 +261,36 @@ public class PECodeGenerator {
               for (int i = 0; i < vse.getValueset().getExpansion().getContains().size(); i++) {
                 ValueSetExpansionContainsComponent cc = vse.getValueset().getExpansion().getContains().get(i);
                 String code = Utilities.javaTokenize(cc.getCode(), true).toUpperCase();
+                if (Utilities.isInteger(code)) {
+                  code = "C_"+code;
+                }
                 if (cc.getAbstract()) {
                   code = "_"+code;
                 }
+                if (codes.contains(code)) {
+                  char sfx = 'A';
+                  while (codes.contains(code+sfx)) {
+                    sfx++;
+                  }
+                  code = code + sfx;
+                  hasDups = true;
+                }
+                codes.add(code);
                 cc.setUserData(UserDataNames.java_code, code);
                 w(enums, "    "+code+(i < vse.getValueset().getExpansion().getContains().size() - 1 ? "," : ";")+" // \""+cc.getDisplay()+"\" = "+cc.getSystem()+"#"+cc.getCode());
               }
               w(enums, "");
-              w(enums, "    public static "+name+" fromCode(String s) {");
-              w(enums, "      switch (s) {");
-              for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
-                w(enums, "      case \""+cc.getCode()+"\": return "+cc.getUserString(UserDataNames.java_code)+";");                
+              if (!hasDups) {
+                w(enums, "    public static "+name+" fromCode(String s) {");
+                w(enums, "      switch (s) {");
+                for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
+                  w(enums, "      case \""+cc.getCode()+"\": return "+cc.getUserString(UserDataNames.java_code)+";");                
+                }
+                w(enums, "      default: return null;");
+                w(enums, "      }");
+                w(enums, "    }");
+                w(enums, "");
               }
-              w(enums, "      default: return null;");
-              w(enums, "      }");
-              w(enums, "    }");
-              w(enums, "");
               w(enums, "    public static "+name+" fromCoding(Coding c) {");
               for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
                 if (cc.hasVersion()) {
@@ -309,15 +325,17 @@ public class PECodeGenerator {
               w(enums, "    }");
               w(enums, "");
               
-              w(enums, "    public String toCode() {");
-              w(enums, "      switch (this) {");
-              for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
-                w(enums, "      case "+cc.getUserString(UserDataNames.java_code)+": return \""+cc.getCode()+"\";");                
+              if (!hasDups) {
+                w(enums, "    public String toCode() {");
+                w(enums, "      switch (this) {");
+                for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
+                  w(enums, "      case "+cc.getUserString(UserDataNames.java_code)+": return \""+cc.getCode()+"\";");                
+                }
+                w(enums, "      default: return null;");
+                w(enums, "      }");
+                w(enums, "    }");
+                w(enums, "");
               }
-              w(enums, "      default: return null;");
-              w(enums, "      }");
-              w(enums, "    }");
-              w(enums, "");
               w(enums, "    public Coding toCoding() {");
               w(enums, "      switch (this) {");
               for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
@@ -366,7 +384,7 @@ public class PECodeGenerator {
             type = Utilities.capitalize(field.types().get(0).getName()+"Type");
             ptype = getPrimitiveType(sd);
           } else {
-            type = field.types().get(0).getName();
+            type = Utilities.javaTokenize(field.types().get(0).getName(), true);
           }
           String ltype = type;
           if (field.isList()) {
