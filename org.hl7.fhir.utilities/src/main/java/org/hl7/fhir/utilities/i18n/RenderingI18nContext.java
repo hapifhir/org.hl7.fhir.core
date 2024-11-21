@@ -185,8 +185,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONC_MAP_FROM = "CONC_MAP_FROM";
   public static final String CONC_MAP_GRP = "CONC_MAP_GRP";
   public static final String CONC_MAP_NOT_SPEC = "CONC_MAP_NOT_SPEC";
-  public static final String CONC_MAP_NO_PROD_USE = "CONC_MAP_NO_PROD_USE";
-  public static final String CONC_MAP_PUB_ON = "CONC_MAP_PUB_ON"; 
   public static final String CONC_MAP_REL = "CONC_MAP_REL";
   public static final String CONC_MAP_SOURCE = "CONC_MAP_SOURCE";
   public static final String CONC_MAP_SRC_DET = "CONC_MAP_SRC_DET";
@@ -300,7 +298,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String EX_SCEN_TIME = "EX_SCEN_TIME";
   public static final String EX_SCEN_UN = "EX_SCEN_UN";
   public static final String EX_SCEN_UN_ACT = "EX_SCEN_UN_ACT";
-  public static final String EX_SCEN_UN_INST = "EX_SCEN_UN_INST";
   public static final String GENERAL_VER_LOW = "GENERAL_VER_LOW";
   public static final String IMP_GUIDE_URL = "IMP_GUIDE_URL";
   public static final String LIB_REND_ART = "LIB_REND_ART";
