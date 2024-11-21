@@ -861,6 +861,7 @@ public class ValidationService {
       System.out.println("Must provide an output directory (-output)");
       ok = false;
     }
+    Utilities.createDirectory(cliContext.getOutput());
     if (ok) {
       PECodeGenerator gen = new PECodeGenerator(validationEngine.getContext());
       gen.setFolder(cliContext.getOutput());
