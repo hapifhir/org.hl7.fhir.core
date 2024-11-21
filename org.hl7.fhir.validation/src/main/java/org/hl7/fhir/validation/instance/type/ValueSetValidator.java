@@ -243,7 +243,7 @@ public class ValueSetValidator extends BaseValidator {
       if (vs == null) {
         NodeStack ns = stack.push(ve, i, ve.getProperty().getDefinition(), ve.getProperty().getDefinition());
 
-        Resource rs = context.fetchResource(Resource.class, v);
+        Resource rs = context.findTxResource(Resource.class, v);
         if (rs != null) {
           warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE, v, rs.fhirType());                      
         } else { 

@@ -2718,18 +2718,24 @@ public class ProfileUtilities {
       // profiles cannot change : isModifier, defaultValue, meaningWhenMissing
       // but extensions can change isModifier
       if (isExtension) {
-        if (derived.hasIsModifierElement() && !(base.hasIsModifierElement() && Base.compareDeep(derived.getIsModifierElement(), base.getIsModifierElement(), false)))
+        if (derived.hasIsModifierElement() && !(base.hasIsModifierElement() && Base.compareDeep(derived.getIsModifierElement(), base.getIsModifierElement(), false))) {
           base.setIsModifierElement(derived.getIsModifierElement().copy());
-        else if (trimDifferential)
+        } else if (trimDifferential) {
           derived.setIsModifierElement(null);
-        else if (derived.hasIsModifierElement())
+        } else if (derived.hasIsModifierElement()) {
           derived.getIsModifierElement().setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, true);
-        if (derived.hasIsModifierReasonElement() && !(base.hasIsModifierReasonElement() && Base.compareDeep(derived.getIsModifierReasonElement(), base.getIsModifierReasonElement(), false)))
+        }
+        if (derived.hasIsModifierReasonElement() && !(base.hasIsModifierReasonElement() && Base.compareDeep(derived.getIsModifierReasonElement(), base.getIsModifierReasonElement(), false))) {
           base.setIsModifierReasonElement(derived.getIsModifierReasonElement().copy());
-        else if (trimDifferential)
+        } else if (trimDifferential) {
           derived.setIsModifierReasonElement(null);
-        else if (derived.hasIsModifierReasonElement())
+        } else if (derived.hasIsModifierReasonElement()) {
           derived.getIsModifierReasonElement().setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, true);
+        }
+        if (base.getIsModifier() && !base.hasIsModifierReason()) {
+          // we get here because modifier extensions don't get a modifier reason from the type
+          base.setIsModifierReason("Modifier extensions are labelled as such because they modify the meaning or interpretation of the resource or element that contains them");
+        }
       }
 
       boolean hasBinding = derived.hasBinding();
