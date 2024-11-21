@@ -276,6 +276,7 @@ public class ToolingExtensions {
   public static final String EXT_TYPE_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/type-parameter";
   public static final String EXT_ALTERNATE_CANONICAL = "http://hl7.org/fhir/StructureDefinition/alternate-canonical";
   public static final String EXT_SUPPRESSED = "http://hl7.org/fhir/StructureDefinition/elementdefinition-suppress";
+  public static final String EXT_SUPPRESS_RESOURCE_TYPE = "http://hl7.org/fhir/tools/StructureDefinition/json-suppress-resourcetype";
   
   // specific extension helpers
 
