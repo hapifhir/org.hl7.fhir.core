@@ -96,6 +96,7 @@ public class POGenerator {
       generate(source, "rendering-phrases.properties",  "rendering-phrases-de.po",    "rendering-phrases_de.properties", 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-es.po",    "rendering-phrases_es.properties", 3);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-ja.po",    "rendering-phrases_ja.properties", 2);
+      generate(source, "rendering-phrases.properties",  "rendering-phrases-fr.po",    "rendering-phrases_fr.properties", 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-nl.po",    "rendering-phrases_nl.properties", 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-pt_BR.po", "rendering-phrases_pt-BR.properties", 2);
 
@@ -103,6 +104,7 @@ public class POGenerator {
       generate(source, "Messages.properties", "validator-messages-de.po",    "Messages_de.properties", 2);
       generate(source, "Messages.properties", "validator-messages-es.po",    "Messages_es.properties", 3);
       generate(source, "Messages.properties", "validator-messages-ja.po",    "Messages_ja.properties", 2);
+      generate(source, "Messages.properties", "validator-messages-fr.po",    "Messages_fr.properties", 2);
       generate(source, "Messages.properties", "validator-messages-nl.po",    "Messages_nl.properties", 2);
       generate(source, "Messages.properties", "validator-messages-pt_BR.po", "Messages_pt-BR.properties", 2);
 
@@ -321,7 +323,13 @@ public class POGenerator {
     // load the source file 
     // update the destination object set for changes from the source file
     // save the destination file 
-    List<POObject> objects = loadPOFile(Utilities.path(source, "source", dest));
+    String fn = Utilities.path(source, "source", dest);
+    List<POObject> objects;
+    if (new File(fn).exists()) {
+      objects = loadPOFile(fn);
+    } else {
+      objects = new ArrayList<POGenerator.POObject>();
+    }
     List<PropertyValue> props = loadProperties(Utilities.path(source, src), false);
     for (PropertyValue e : props) {
       String name = e.getName();
