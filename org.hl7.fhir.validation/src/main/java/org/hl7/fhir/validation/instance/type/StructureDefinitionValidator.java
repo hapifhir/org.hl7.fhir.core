@@ -468,7 +468,11 @@ public class StructureDefinitionValidator extends BaseValidator {
       for (Element discriminator : slicing.getChildren("discriminator")) {
         NodeStack dStack = sStack.push(discriminator, i, null, null);
         String type = discriminator.getNamedChildValue("type");        
-        warning(errors, "2024-11-06", IssueType.BUSINESSRULE, dStack, !"pattern".equals(type), I18nConstants.SD_PATH_SLICING_DEPRECATED, type);  
+        if (VersionUtilities.isR5Plus(context.getVersion())) {
+          warning(errors, "2024-11-06", IssueType.BUSINESSRULE, dStack, !"pattern".equals(type), I18nConstants.SD_PATH_SLICING_DEPRECATED_R5, type);
+        } else {
+          hint(errors, "2024-11-06", IssueType.BUSINESSRULE, dStack, ! !"pattern".equals(type), I18nConstants.SD_PATH_SLICING_DEPRECATED, type);
+        }
         String pathExp = discriminator.getNamedChildValue("path");
         if (ted != null) {
           TypeDetails td = getTypesForElement(elements, element, tn, tsd.getUrl());
