@@ -7,6 +7,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import com.google.gson.annotations.SerializedName;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
@@ -25,182 +26,322 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CliContext {
 
   @JsonProperty("baseEngine")
-  private String baseEngine = null;
+  @SerializedName("baseEngine")
+  private
+  String baseEngine = null;
   @JsonProperty("doNative")
-  private boolean doNative = false;
+  @SerializedName("doNative")
+  private
+  boolean doNative = false;
   @JsonProperty("hintAboutNonMustSupport")
-  private boolean hintAboutNonMustSupport = false;
+  @SerializedName("hintAboutNonMustSupport")
+  private
+  boolean hintAboutNonMustSupport = false;
   @JsonProperty("recursive")
-  private boolean recursive = false;
+  @SerializedName("recursive")
+  private
+  boolean recursive = false;
   @JsonProperty("showMessagesFromReferences")
-  private boolean showMessagesFromReferences = false;
+  @SerializedName("showMessagesFromReferences")
+  private
+  boolean showMessagesFromReferences = false;
   @JsonProperty("doDebug")
-  private boolean doDebug = false;
+  @SerializedName("doDebug")
+  private
+  boolean doDebug = false;
   @JsonProperty("assumeValidRestReferences")
-  private boolean assumeValidRestReferences = false;
+  @SerializedName("assumeValidRestReferences")
+  private
+  boolean assumeValidRestReferences = false;
   @JsonProperty("canDoNative")
-  private boolean canDoNative = false;
+  @SerializedName("canDoNative")
+  private
+  boolean canDoNative = false;
   @JsonProperty("noInternalCaching")
-  private boolean noInternalCaching = false; // internal, for when debugging terminology validation
+  @SerializedName("noInternalCaching")
+  private
+  boolean noInternalCaching = false; // internal, for when debugging terminology validation
   @JsonProperty("noExtensibleBindingMessages")
-  private boolean noExtensibleBindingMessages = false;
+  @SerializedName("noExtensibleBindingMessages")
+  private
+  boolean noExtensibleBindingMessages = false;
   @JsonProperty("noUnicodeBiDiControlChars")
-  private boolean noUnicodeBiDiControlChars = false;
+  @SerializedName("noUnicodeBiDiControlChars")
+  private
+  boolean noUnicodeBiDiControlChars = false;
   @JsonProperty("noInvariants")
-  private boolean noInvariants = false;
+  @SerializedName("noInvariants")
+  private
+  boolean noInvariants = false;
   @JsonProperty("displayWarnings")
-  private boolean displayWarnings = false;
+  @SerializedName("displayWarnings")
+  private
+  boolean displayWarnings = false;
   @JsonProperty("wantInvariantsInMessages")
-  private boolean wantInvariantsInMessages = false;
+  @SerializedName("wantInvariantsInMessages")
+  private
+  boolean wantInvariantsInMessages = false;
   @JsonProperty("doImplicitFHIRPathStringConversion")
-  private boolean doImplicitFHIRPathStringConversion = false;
+  @SerializedName("doImplicitFHIRPathStringConversion")
+  private
+  boolean doImplicitFHIRPathStringConversion = false;
   @JsonProperty("htmlInMarkdownCheck")
-  private HtmlInMarkdownCheck htmlInMarkdownCheck = HtmlInMarkdownCheck.WARNING;
-  @JsonProperty("allowDoubleQuotesInFHIRPath")  
-  private boolean allowDoubleQuotesInFHIRPath = false;
+  @SerializedName("htmlInMarkdownCheck")
+  private
+  HtmlInMarkdownCheck htmlInMarkdownCheck = HtmlInMarkdownCheck.WARNING;
+  @JsonProperty("allowDoubleQuotesInFHIRPath")
+  @SerializedName("allowDoubleQuotesInFHIRPath")
+  private
+  boolean allowDoubleQuotesInFHIRPath = false;
   @JsonProperty("disableDefaultResourceFetcher")
-  private boolean disableDefaultResourceFetcher = false;
-  @JsonProperty("checkIPSCodes")  
-  private boolean checkIPSCodes;
+  @SerializedName("disableDefaultResourceFetcher")
+  private
+  boolean disableDefaultResourceFetcher = false;
+  @JsonProperty("checkIPSCodes")
+  @SerializedName("checkIPSCodes")
+  private
+  boolean checkIPSCodes;
   @JsonProperty("langTransform")
-  private String langTransform = null;
+  @SerializedName("langTransform")
+  private
+  String langTransform = null;
   @JsonProperty("map")
-  private String map = null;
+  @SerializedName("map")
+  private
+  String map = null;
   @JsonProperty("output")
-  private String output = null;
+  @SerializedName("output")
+  private
+  String output = null;
   @JsonProperty("outputSuffix")
-  private String outputSuffix;
+  @SerializedName("outputSuffix")
+  private
+  String outputSuffix;
   @JsonProperty("htmlOutput")
-  private String htmlOutput = null;
+  @SerializedName("htmlOutput")
+  private
+  String htmlOutput = null;
   @JsonProperty("txServer")
-  private String txServer = FhirSettings.getTxFhirProduction();
+  @SerializedName("txServer")
+  private
+  String txServer = FhirSettings.getTxFhirProduction();
   @JsonProperty("sv")
-  private String sv = null;
+  @SerializedName("sv")
+  private
+  String sv = null;
   @JsonProperty("txLog")
-  private String txLog = null;
+  @SerializedName("txLog")
+  private
+  String txLog = null;
   @JsonProperty("txCache")
-  private String txCache = null;
+  @SerializedName("txCache")
+  private
+  String txCache = null;
   @JsonProperty("mapLog")
-  private String mapLog = null;
+  @SerializedName("mapLog")
+  private
+  String mapLog = null;
   @JsonProperty("lang")
-  private String lang = null;
+  @SerializedName("lang")
+  private
+  String lang = null;
   @JsonProperty("fhirpath")
-  private String fhirpath = null;
+  @SerializedName("fhirpath")
+  private
+  String fhirpath = null;
   @JsonProperty("snomedCT")
-  private String snomedCT = "900000000000207008";
+  @SerializedName("snomedCT")
+  private
+  String snomedCT = "900000000000207008";
   @JsonProperty("targetVer")
-  private String targetVer = null;
+  @SerializedName("targetVer")
+  private
+  String targetVer = null;
   @JsonProperty("packageName")
-  private String packageName = null;
+  @SerializedName("packageName")
+  private
+  String packageName = null;
   @JsonProperty("noEcosystem")
-  private boolean noEcosystem = false;
+  @SerializedName("noEcosystem")
+  private
+  boolean noEcosystem = false;
 
   @JsonProperty("extensions")
-  private List<String> extensions = new ArrayList<String>();
+  @SerializedName("extensions")
+  private
+  List<String> extensions = new ArrayList<String>();
   @JsonProperty("igs")
-  private List<String> igs = new ArrayList<String>();
+  @SerializedName("igs")
+  private
+  List<String> igs = new ArrayList<String>();
   @JsonProperty("questionnaire")
-  private QuestionnaireMode questionnaireMode = QuestionnaireMode.CHECK;
+  @SerializedName("questionnaire")
+  private
+  QuestionnaireMode questionnaireMode = QuestionnaireMode.CHECK;
   @JsonProperty("level")
-  private ValidationLevel level = ValidationLevel.HINTS;
+  @SerializedName("level")
+  private
+  ValidationLevel level = ValidationLevel.HINTS;
   @JsonProperty("options")
-  private List<String> options = new ArrayList<String>();
-  
+  @SerializedName("options")
+  private
+  List<String> options = new ArrayList<String>();
+
   @JsonProperty("profiles")
-  private List<String> profiles = new ArrayList<String>();
+  @SerializedName("profiles")
+  private
+  List<String> profiles = new ArrayList<String>();
   @JsonProperty("sources")
-  private List<String> sources = new ArrayList<String>();
+  @SerializedName("sources")
+  private
+  List<String> sources = new ArrayList<String>();
   @JsonProperty("inputs")
-  private List<String> inputs = new ArrayList<String>();
+  @SerializedName("inputs")
+  private
+  List<String> inputs = new ArrayList<String>();
   @JsonProperty("modeParams")
-  private List<String> modeParams = new ArrayList<String>();
+  @SerializedName("modeParams")
+  private
+  List<String> modeParams = new ArrayList<String>();
 
   @JsonProperty("mode")
-  private EngineMode mode = EngineMode.VALIDATION;
+  @SerializedName("mode")
+  private
+  EngineMode mode = EngineMode.VALIDATION;
 
   @JsonProperty("securityChecks")
-  private boolean securityChecks = false;
-  
+  @SerializedName("securityChecks")
+  private
+  boolean securityChecks = false;
+
   @JsonProperty("crumbTrails")
-  private boolean crumbTrails = false;
-  
+  @SerializedName("crumbTrails")
+  private
+  boolean crumbTrails = false;
+
   @JsonProperty("showMessageIds")
-  private boolean showMessageIds = false;
-  
+  @SerializedName("showMessageIds")
+  private
+  boolean showMessageIds = false;
+
   @JsonProperty("forPublication")
-  private boolean forPublication = false;
-  
+  @SerializedName("forPublication")
+  private
+  boolean forPublication = false;
+
   @JsonProperty("allowExampleUrls")
-  private boolean allowExampleUrls = false;
-  
+  @SerializedName("allowExampleUrls")
+  private
+  boolean allowExampleUrls = false;
+
   @JsonProperty("showTimes")
-  private boolean showTimes = false;
-  
+  @SerializedName("showTimes")
+  private
+  boolean showTimes = false;
+
   @JsonProperty("showTerminologyRouting")
-  private boolean showTerminologyRouting = false;  
-  
+  @SerializedName("showTerminologyRouting")
+  private
+  boolean showTerminologyRouting = false;
+
   @JsonProperty("clearTxCache")
-  private boolean clearTxCache = false;  
-  
+  @SerializedName("clearTxCache")
+  private
+  boolean clearTxCache = false;
+
   @JsonProperty("locale")
-  private String locale = Locale.ENGLISH.toLanguageTag();
+  @SerializedName("locale")
+  private
+  String locale = Locale.ENGLISH.toLanguageTag();
 
   @JsonProperty("locations")
-  private Map<String, String> locations = new HashMap<String, String>();
+  @SerializedName("locations")
+  private
+  Map<String, String> locations = new HashMap<String, String>();
 
   @JsonProperty("outputStyle")
-  private String outputStyle = null;
+  @SerializedName("outputStyle")
+  private
+  String outputStyle = null;
 
   @JsonProperty("bundleValidationRules")
-  private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
+  @SerializedName("bundleValidationRules")
+  private
+  List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
 
   @JsonProperty("jurisdiction")
-  private String jurisdiction = JurisdictionUtilities.getJurisdictionFromLocale(Locale.getDefault().getCountry());
+  @SerializedName("jurisdiction")
+  private
+  String jurisdiction = JurisdictionUtilities.getJurisdictionFromLocale(Locale.getDefault().getCountry());
   @JsonProperty("srcLang")
-  private String srcLang = null;
+  @SerializedName("srcLang")
+  private
+  String srcLang = null;
   @JsonProperty("tgtLang")
-  private String tgtLang = null;
+  @SerializedName("tgtLang")
+  private
+  String tgtLang = null;
 
   @JsonProperty("fhirSettingsFile")
-  private String fhirSettingsFile;
+  @SerializedName("fhirSettingsFile")
+  private
+  String fhirSettingsFile;
 
   @JsonProperty("watchMode")
-  private ValidatorWatchMode watchMode = ValidatorWatchMode.NONE;
-  
+  @SerializedName("watchMode")
+  private
+  ValidatorWatchMode watchMode = ValidatorWatchMode.NONE;
+
   @JsonProperty("watchScanDelay")
-  private int watchScanDelay = 1000;
-  
+  @SerializedName("watchScanDelay")
+  private
+  int watchScanDelay = 1000;
+
   @JsonProperty("watchSettleTime")
-  private int watchSettleTime = 100;
-  
+  @SerializedName("watchSettleTime")
+  private
+  int watchSettleTime = 100;
+
   @JsonProperty("bestPracticeLevel")
-  private BestPracticeWarningLevel bestPracticeLevel = BestPracticeWarningLevel.Warning;
+  @SerializedName("bestPracticeLevel")
+  private
+  BestPracticeWarningLevel bestPracticeLevel = BestPracticeWarningLevel.Warning;
 
   @JsonProperty("unknownCodeSystemsCauseErrors")
-  private boolean unknownCodeSystemsCauseErrors;
+  @SerializedName("unknownCodeSystemsCauseErrors")
+  private
+  boolean unknownCodeSystemsCauseErrors;
 
   @JsonProperty("noExperimentalContent")
-  private boolean noExperimentalContent;
-  
+  @SerializedName("noExperimentalContent")
+  private
+  boolean noExperimentalContent;
+
   @JsonProperty("advisorFile")
-  private String advisorFile;
-  
+  @SerializedName("advisorFile")
+  private
+  String advisorFile;
+
+  @SerializedName("baseEngine")
   @JsonProperty("baseEngine")
   public String getBaseEngine() {
     return baseEngine;
   }
 
+  @SerializedName("baseEngine")
   @JsonProperty("baseEngine")
   public CliContext setBaseEngine(String baseEngine) {
     this.baseEngine = baseEngine;
     return this;
   }
 
+  @SerializedName("map")
   @JsonProperty("map")
   public String getMap() {
     return map;
   }
 
+  @SerializedName("map")
   @JsonProperty("map")
   public CliContext setMap(String map) {
     this.map = map;
@@ -208,32 +349,39 @@ public class CliContext {
   }
 
 
+  @SerializedName("langTransform")
   @JsonProperty("langTransform")
   public String getLangTransform() {
     return langTransform;
   }
 
+  @SerializedName("langTransform")
   @JsonProperty("langTransform")
   public CliContext setLangTransform(String langTransform) {
     this.langTransform = langTransform;
     return this;
   }
+
+  @SerializedName("igs")
   @JsonProperty("igs")
   public List<String> getIgs() {
     return igs;
   }
 
+  @SerializedName("igs")
   @JsonProperty("igs")
   public CliContext setIgs(List<String> igs) {
     this.igs = igs;
     return this;
   }
 
+  @SerializedName("bundleValidationRules")
   @JsonProperty("bundleValidationRules")
   public List<BundleValidationRule> getBundleValidationRules() {
-   return bundleValidationRules;
+    return bundleValidationRules;
   }
 
+  @SerializedName("bundleValidationRules")
   @JsonProperty("bundleValidationRules")
   public CliContext setBundleValidationRules(List<BundleValidationRule> bundleValidationRules) {
     this.bundleValidationRules = bundleValidationRules;
@@ -248,151 +396,179 @@ public class CliContext {
     return this;
   }
 
+  @SerializedName("questionnaire")
   @JsonProperty("questionnaire")
   public QuestionnaireMode getQuestionnaireMode() {
     return questionnaireMode;
   }
 
+  @SerializedName("questionnaire")
   @JsonProperty("questionnaire")
   public CliContext setQuestionnaireMode(QuestionnaireMode questionnaireMode) {
     this.questionnaireMode = questionnaireMode;
     return this;
   }
 
+  @SerializedName("level")
   @JsonProperty("level")
   public ValidationLevel getLevel() {
     return level;
   }
 
+  @SerializedName("level")
   @JsonProperty("level")
   public CliContext setLevel(ValidationLevel level) {
     this.level = level;
     return this;
   }
 
+  @SerializedName("txServer")
   @JsonProperty("txServer")
   public String getTxServer() {
     return txServer;
   }
 
+  @SerializedName("txServer")
   @JsonProperty("txServer")
   public CliContext setTxServer(String txServer) {
     this.txServer = txServer;
     return this;
   }
 
+  @SerializedName("noEcosystem")
   @JsonProperty("noEcosystem")
   public boolean getNoEcosystem() {
     return noEcosystem;
   }
 
+  @SerializedName("noEcosystem")
   @JsonProperty("noEcosystem")
   public CliContext setNoEcosystem(boolean noEcosystem) {
     this.noEcosystem = noEcosystem;
     return this;
   }
 
+  @SerializedName("doNative")
   @JsonProperty("doNative")
   public boolean isDoNative() {
     return doNative;
   }
 
+  @SerializedName("doNative")
   @JsonProperty("doNative")
   public CliContext setDoNative(boolean doNative) {
     this.doNative = doNative;
     return this;
   }
 
+  @SerializedName("extensions")
   @JsonProperty("extensions")
   public List<String> getExtensions() {
     return extensions;
   }
 
+  @SerializedName("extensions")
   @JsonProperty("extensions")
   public CliContext setExtensions(List<String> extensions) {
     this.extensions = extensions;
     return this;
   }
 
+  @SerializedName("hintAboutNonMustSupport")
   @JsonProperty("hintAboutNonMustSupport")
   public boolean isHintAboutNonMustSupport() {
     return hintAboutNonMustSupport;
   }
 
+  @SerializedName("hintAboutNonMustSupport")
   @JsonProperty("hintAboutNonMustSupport")
   public CliContext setHintAboutNonMustSupport(boolean hintAboutNonMustSupport) {
     this.hintAboutNonMustSupport = hintAboutNonMustSupport;
     return this;
   }
 
+  @SerializedName("recursive")
   @JsonProperty("recursive")
   public boolean isRecursive() {
     return recursive;
   }
 
+  @SerializedName("recursive")
   @JsonProperty("recursive")
   public CliContext setRecursive(boolean recursive) {
     this.recursive = recursive;
     return this;
   }
 
+  @SerializedName("showMessagesFromReferences")
   @JsonProperty("showMessagesFromReferences")
   public boolean isShowMessagesFromReferences() {
     return showMessagesFromReferences;
   }
 
+  @SerializedName("showMessagesFromReferences")
   @JsonProperty("showMessagesFromReferences")
   public CliContext setShowMessagesFromReferences(boolean showMessagesFromReferences) {
     this.showMessagesFromReferences = showMessagesFromReferences;
     return this;
   }
 
+  @SerializedName("doImplicitFHIRPathStringConversion")
   @JsonProperty("doImplicitFHIRPathStringConversion")
   public boolean isDoImplicitFHIRPathStringConversion() {
     return doImplicitFHIRPathStringConversion;
   }
 
+  @SerializedName("doImplicitFHIRPathStringConversion")
   @JsonProperty("doImplicitFHIRPathStringConversion")
   public void setDoImplicitFHIRPathStringConversion(boolean doImplicitFHIRPathStringConversion) {
     this.doImplicitFHIRPathStringConversion = doImplicitFHIRPathStringConversion;
   }
 
+  @SerializedName("htmlInMarkdownCheck")
   @JsonProperty("htmlInMarkdownCheck")
   public HtmlInMarkdownCheck getHtmlInMarkdownCheck() {
     return htmlInMarkdownCheck;
   }
 
+  @SerializedName("htmlInMarkdownCheck")
   @JsonProperty("htmlInMarkdownCheck")
   public void setHtmlInMarkdownCheck(HtmlInMarkdownCheck htmlInMarkdownCheck) {
     this.htmlInMarkdownCheck = htmlInMarkdownCheck;
   }
 
-  @JsonProperty("allowDoubleQuotesInFHIRPath")  
+  @SerializedName("allowDoubleQuotesInFHIRPath")
+  @JsonProperty("allowDoubleQuotesInFHIRPath")
   public boolean isAllowDoubleQuotesInFHIRPath() {
     return allowDoubleQuotesInFHIRPath;
   }
 
-  @JsonProperty("allowDoubleQuotesInFHIRPath")  
+  @SerializedName("allowDoubleQuotesInFHIRPath")
+  @JsonProperty("allowDoubleQuotesInFHIRPath")
   public void setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
     this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
   }
 
+  @SerializedName("disableDefaultResourceFetcher")
   @JsonProperty("disableDefaultResourceFetcher")
   public boolean isDisableDefaultResourceFetcher() {
     return disableDefaultResourceFetcher;
   }
 
+  @SerializedName("disableDefaultResourceFetcher")
   @JsonProperty("disableDefaultResourceFetcher")
   public CliContext setDisableDefaultResourceFetcher(boolean disableDefaultResourceFetcher) {
     this.disableDefaultResourceFetcher = disableDefaultResourceFetcher;
     return this;
   }
 
+  @SerializedName("checkIPSCodes")
   @JsonProperty("checkIPSCodes")
   public boolean isCheckIPSCodes() {
     return checkIPSCodes;
   }
 
+  @SerializedName("checkIPSCodes")
   @JsonProperty("checkIPSCodes")
   public CliContext setCheckIPSCodes(boolean checkIPSCodes) {
     this.checkIPSCodes = checkIPSCodes;
@@ -400,6 +576,7 @@ public class CliContext {
   }
 
 
+  @SerializedName("locale")
   @JsonProperty("locale")
   public String getLanguageCode() {
     return locale;
@@ -409,6 +586,7 @@ public class CliContext {
     return Locale.forLanguageTag(this.locale);
   }
 
+  @SerializedName("locale")
   @JsonProperty("locale")
   public CliContext setLocale(String languageString) {
     this.locale = languageString;
@@ -420,11 +598,13 @@ public class CliContext {
     return this;
   }
 
+  @SerializedName("profiles")
   @JsonProperty("profiles")
   public List<String> getProfiles() {
     return profiles;
   }
 
+  @SerializedName("profiles")
   @JsonProperty("profiles")
   public CliContext setProfiles(List<String> profiles) {
     this.profiles = profiles;
@@ -439,11 +619,13 @@ public class CliContext {
     return this;
   }
 
+  @SerializedName("options")
   @JsonProperty("options")
   public List<String> getOptions() {
     return options;
   }
 
+  @SerializedName("options")
   @JsonProperty("options")
   public CliContext setOptions(List<String> options) {
     this.options = options;
@@ -458,77 +640,91 @@ public class CliContext {
     return this;
   }
 
+  @SerializedName("mode")
   @JsonProperty("mode")
   public EngineMode getMode() {
     return mode;
   }
 
+  @SerializedName("mode")
   @JsonProperty("mode")
   public CliContext setMode(EngineMode mode) {
     this.mode = mode;
     return this;
   }
 
+  @SerializedName("output")
   @JsonProperty("output")
   public String getOutput() {
     return output;
   }
 
+  @SerializedName("output")
   @JsonProperty("output")
   public CliContext setOutput(String output) {
     this.output = output;
     return this;
   }
 
+  @SerializedName("outputSuffix")
   @JsonProperty("outputSuffix")
   public String getOutputSuffix() {
     return outputSuffix;
   }
 
+  @SerializedName("outputSuffix")
   @JsonProperty("outputSuffix")
   public CliContext setOutputSuffix(String outputSuffix) {
     this.outputSuffix = outputSuffix;
     return this;
   }
 
+  @SerializedName("htmlOutput")
   @JsonProperty("htmlOutput")
   public String getHtmlOutput() {
     return htmlOutput;
   }
 
+  @SerializedName("htmlOutput")
   @JsonProperty("htmlOutput")
   public CliContext setHtmlOutput(String htmlOutput) {
     this.htmlOutput = htmlOutput;
     return this;
   }
 
+  @SerializedName("canDoNative")
   @JsonProperty("canDoNative")
   public boolean getCanDoNative() {
     return canDoNative;
   }
 
+  @SerializedName("canDoNative")
   @JsonProperty("canDoNative")
   public CliContext setCanDoNative(boolean canDoNative) {
     this.canDoNative = canDoNative;
     return this;
   }
 
+  @SerializedName("sources")
   @JsonProperty("sources")
   public List<String> getSources() {
     return sources;
   }
 
+  @SerializedName("inputs")
   @JsonProperty("inputs")
   public List<String> getInputs() {
     return inputs;
   }
-  
 
+
+  @SerializedName("modeParams")
   @JsonProperty("modeParams")
   public List<String> getModeParams() {
     return modeParams;
   }
 
+  @SerializedName("sources")
   @JsonProperty("sources")
   public CliContext setSources(List<String> sources) {
     this.sources = sources;
@@ -543,11 +739,13 @@ public class CliContext {
     return this;
   }
 
+  @SerializedName("locations")
   @JsonProperty("locations")
   public Map<String, String> getLocations() {
     return locations;
   }
 
+  @SerializedName("locations")
   @JsonProperty("locations")
   public CliContext setLocations(Map<String, String> locations) {
     this.locations = locations;
@@ -559,11 +757,13 @@ public class CliContext {
     return this;
   }
 
+  @SerializedName("sv")
   @JsonProperty("sv")
   public String getSv() {
     return sv;
   }
 
+  @SerializedName("sv")
   @JsonProperty("sv")
   public CliContext setSv(String sv) {
     if (sv != null && (sv.startsWith("R") || sv.startsWith("r"))) {
@@ -574,55 +774,65 @@ public class CliContext {
     return this;
   }
 
+  @SerializedName("txLog")
   @JsonProperty("txLog")
   public String getTxLog() {
     return txLog;
   }
 
+  @SerializedName("txLog")
   @JsonProperty("txLog")
   public CliContext setTxLog(String txLog) {
     this.txLog = txLog;
     return this;
   }
 
+  @SerializedName("txCache")
   @JsonProperty("txCache")
   public String getTxCache() {
     return txCache;
   }
 
+  @SerializedName("txCache")
   @JsonProperty("txCache")
   public CliContext setTxCache(String txCache) {
     this.txCache = txCache;
     return this;
   }
 
+  @SerializedName("mapLog")
   @JsonProperty("mapLog")
   public String getMapLog() {
     return mapLog;
   }
 
+  @SerializedName("mapLog")
   @JsonProperty("mapLog")
   public CliContext setMapLog(String mapLog) {
     this.mapLog = mapLog;
     return this;
   }
 
+  @SerializedName("lang")
   @JsonProperty("lang")
   public String getLang() {
     return lang;
   }
 
+  @SerializedName("lang")
   @JsonProperty("lang")
   public CliContext setLang(String lang) {
     this.lang = lang;
     return this;
   }
 
+  @SerializedName("fhirpath")
   @JsonProperty("fhirpath")
   public String getFhirpath() {
     return fhirpath;
   }
 
+  @SerializedName("fhirpath")
   @JsonProperty("fhirpath")
   public CliContext setFhirpath(String fhirpath) {
     this.fhirpath = fhirpath;
@@ -630,6 +840,7 @@ public class CliContext {
   }
 
 
+  @SerializedName("snomedCT")
   @JsonProperty("snomedCT")
   public String getSnomedCTCode() {
     if ("intl".equals(snomedCT)) return "900000000000207008";
@@ -644,114 +855,135 @@ public class CliContext {
     return snomedCT;
   }
 
+  @SerializedName("snomedCT")
   @JsonProperty("snomedCT")
   public CliContext setSnomedCT(String snomedCT) {
     this.snomedCT = snomedCT;
     return this;
   }
 
+  @SerializedName("targetVer")
   @JsonProperty("targetVer")
   public String getTargetVer() {
     return targetVer;
   }
 
+  @SerializedName("targetVer")
   @JsonProperty("targetVer")
   public CliContext setTargetVer(String targetVer) {
     this.targetVer = targetVer;
     return this;
   }
 
+  @SerializedName("packageName")
   @JsonProperty("packageName")
   public String getPackageName() {
     return packageName;
   }
 
+  @SerializedName("packageName")
   @JsonProperty("packageName")
   public CliContext setPackageName(String packageName) {
     this.packageName = packageName;
     return this;
   }
 
+  @SerializedName("doDebug")
   @JsonProperty("doDebug")
   public boolean isDoDebug() {
     return doDebug;
   }
 
+  @SerializedName("doDebug")
   @JsonProperty("doDebug")
   public CliContext setDoDebug(boolean doDebug) {
     this.doDebug = doDebug;
     return this;
   }
 
+  @SerializedName("assumeValidRestReferences")
   @JsonProperty("assumeValidRestReferences")
   public boolean isAssumeValidRestReferences() {
     return assumeValidRestReferences;
   }
 
+  @SerializedName("assumeValidRestReferences")
   @JsonProperty("assumeValidRestReferences")
   public CliContext setAssumeValidRestReferences(boolean assumeValidRestReferences) {
     this.assumeValidRestReferences = assumeValidRestReferences;
     return this;
   }
 
+  @SerializedName("noInternalCaching")
   @JsonProperty("noInternalCaching")
   public boolean isNoInternalCaching() {
     return noInternalCaching;
   }
 
+  @SerializedName("noInternalCaching")
   @JsonProperty("noInternalCaching")
   public CliContext setNoInternalCaching(boolean noInternalCaching) {
     this.noInternalCaching = noInternalCaching;
     return this;
   }
 
+  @SerializedName("noExtensibleBindingMessages")
   @JsonProperty("noExtensibleBindingMessages")
   public boolean isNoExtensibleBindingMessages() {
     return noExtensibleBindingMessages;
   }
 
+  @SerializedName("noExtensibleBindingMessages")
   @JsonProperty("noExtensibleBindingMessages")
   public CliContext setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
     this.noExtensibleBindingMessages = noExtensibleBindingMessages;
     return this;
   }
-  
+
+  @SerializedName("noInvariants")
   @JsonProperty("noInvariants")
   public boolean isNoInvariants() {
     return noInvariants;
   }
 
+  @SerializedName("noInvariants")
   @JsonProperty("noInvariants")
   public void setNoInvariants(boolean noInvariants) {
     this.noInvariants = noInvariants;
   }
 
+  @SerializedName("displayWarnings")
   @JsonProperty("displayWarnings")
   public boolean isDisplayWarnings() {
     return displayWarnings;
   }
 
+  @SerializedName("displayWarnings")
   @JsonProperty("displayWarnings")
   public void setDisplayWarnings(boolean displayWarnings) {
     this.displayWarnings = displayWarnings;
   }
 
+  @SerializedName("wantInvariantsInMessages")
   @JsonProperty("wantInvariantsInMessages")
   public boolean isWantInvariantsInMessages() {
     return wantInvariantsInMessages;
   }
 
+  @SerializedName("wantInvariantsInMessages")
   @JsonProperty("wantInvariantsInMessages")
   public void setWantInvariantsInMessages(boolean wantInvariantsInMessages) {
     this.wantInvariantsInMessages = wantInvariantsInMessages;
   }
 
-  @JsonProperty("securityChecks")  
+  @SerializedName("securityChecks")
+  @JsonProperty("securityChecks")
   public boolean isSecurityChecks() {
     return securityChecks;
   }
 
-  @JsonProperty("securityChecks")  
+  @SerializedName("securityChecks")
+  @JsonProperty("securityChecks")
   public CliContext setSecurityChecks(boolean securityChecks) {
     this.securityChecks = securityChecks;
     return this;
@@ -837,7 +1069,7 @@ public class CliContext {
     this.jurisdiction = jurisdiction;
   }
 
-  
+
   public String getSrcLang() {
     return srcLang;
   }
@@ -900,7 +1132,7 @@ public class CliContext {
       Objects.equals(sources, that.sources) &&
       Objects.equals(crumbTrails, that.crumbTrails) &&
       Objects.equals(showMessageIds, that.showMessageIds) &&
-      Objects.equals(forPublication, that.forPublication)&&
+      Objects.equals(forPublication, that.forPublication) &&
       Objects.equals(allowExampleUrls, that.allowExampleUrls) &&
       Objects.equals(showTimes, that.showTimes) &&
       mode == that.mode &&
@@ -914,15 +1146,15 @@ public class CliContext {
       Objects.equals(unknownCodeSystemsCauseErrors, that.unknownCodeSystemsCauseErrors) &&
       Objects.equals(noExperimentalContent, that.noExperimentalContent) &&
       Objects.equals(advisorFile, that.advisorFile) &&
-      Objects.equals(watchSettleTime, that.watchSettleTime) ;
+      Objects.equals(watchSettleTime, that.watchSettleTime);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(baseEngine, doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching,
-            noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
-            targetVer, packageName, igs, questionnaireMode, level, profiles, options, sources, inputs, mode, locale, locations, crumbTrails, showMessageIds, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
-            watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, advisorFile, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
+      noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
+      targetVer, packageName, igs, questionnaireMode, level, profiles, options, sources, inputs, mode, locale, locations, crumbTrails, showMessageIds, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
+      watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, advisorFile, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
   }
 
   @Override
@@ -990,54 +1222,64 @@ public class CliContext {
       '}';
   }
 
+  @SerializedName("fhirSettingsFile")
   @JsonProperty("fhirSettingsFile")
   public CliContext setFhirSettingsFile(String fhirSettingsFile) {
     this.fhirSettingsFile = fhirSettingsFile;
     return this;
   }
 
+  @SerializedName("fhirSettingsFile")
   @JsonProperty("fhirSettingsFile")
   public String getFhirSettingsFile() {
     return fhirSettingsFile;
   }
 
+  @SerializedName("watchMode")
   @JsonProperty("watchMode")
   public ValidatorWatchMode getWatchMode() {
     return watchMode;
   }
 
+  @SerializedName("watchMode")
   @JsonProperty("watchMode")
   public CliContext setWatchMode(ValidatorWatchMode watchMode) {
     this.watchMode = watchMode;
     return this;
   }
 
+  @SerializedName("watchScanDelay")
   @JsonProperty("watchScanDelay")
   public int getWatchScanDelay() {
     return watchScanDelay;
   }
 
+  @SerializedName("watchScanDelay")
   @JsonProperty("watchScanDelay")
   public void setWatchScanDelay(int watchScanDelay) {
     this.watchScanDelay = watchScanDelay;
   }
 
+  @SerializedName("watchSettleTime")
   @JsonProperty("watchSettleTime")
   public int getWatchSettleTime() {
     return watchSettleTime;
   }
 
+  @SerializedName("watchSettleTime")
   @JsonProperty("watchSettleTime")
   public void setWatchSettleTime(int watchSettleTime) {
     this.watchSettleTime = watchSettleTime;
   }
-  
 
+
+  @SerializedName("bestPracticeLevel")
   @JsonProperty("bestPracticeLevel")
   public BestPracticeWarningLevel getBestPracticeLevel() {
     return bestPracticeLevel;
   }
 
+  @SerializedName("bestPracticeLevel")
   @JsonProperty("bestPracticeLevel")
   public CliContext setBestPracticeLevel(BestPracticeWarningLevel bestPracticeLevel) {
     this.bestPracticeLevel = bestPracticeLevel;
@@ -1045,37 +1287,43 @@ public class CliContext {
   }
 
 
+  @SerializedName("unknownCodeSystemsCauseErrors")
   @JsonProperty("unknownCodeSystemsCauseErrors")
   public boolean isUnknownCodeSystemsCauseErrors() {
     return unknownCodeSystemsCauseErrors;
   }
 
 
+  @SerializedName("unknownCodeSystemsCauseErrors")
   @JsonProperty("unknownCodeSystemsCauseErrors")
   public void setUnknownCodeSystemsCauseErrors(boolean unknownCodeSystemsCauseErrors) {
     this.unknownCodeSystemsCauseErrors = unknownCodeSystemsCauseErrors;
   }
 
+  @SerializedName("noExperimentalContent")
   @JsonProperty("noExperimentalContent")
   public boolean isNoExperimentalContent() {
     return noExperimentalContent;
   }
 
 
+  @SerializedName("noExperimentalContent")
   @JsonProperty("noExperimentalContent")
   public void setNoExperimentalContent(boolean noExperimentalContent) {
     this.noExperimentalContent = noExperimentalContent;
   }
 
+  @SerializedName("advisorFile")
   @JsonProperty("advisorFile")
   public String getAdvisorFile() {
     return advisorFile;
   }
 
+  @SerializedName("advisorFile")
   @JsonProperty("advisorFile")
   public void setAdvisorFile(String advisorFile) {
     this.advisorFile = advisorFile;
   }
 
-  
+
 }

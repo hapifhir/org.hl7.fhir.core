@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.cli.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,9 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ValidationOutcome {
 
   @JsonProperty("fileInfo")
-  private FileInfo fileInfo;
+  @SerializedName("fileInfo")
+  private
+  FileInfo fileInfo;
+
   @JsonProperty("issues")
-  private List<ValidationMessage> messages = new ArrayList<>();
+  @SerializedName("issues")
+  private
+  List<ValidationMessage> messages = new ArrayList<>();
 
   public ValidationOutcome() {
   }
@@ -22,22 +28,26 @@ public class ValidationOutcome {
     this.messages = issues;
   }
 
+  @SerializedName("fileInfo")
   @JsonProperty("fileInfo")
   public FileInfo getFileInfo() {
     return fileInfo;
   }
 
+  @SerializedName("fileInfo")
   @JsonProperty("fileInfo")
   public ValidationOutcome setFileInfo(FileInfo fileInfo) {
     this.fileInfo = fileInfo;
     return this;
   }
 
+  @SerializedName("issues")
   @JsonProperty("issues")
   public List<ValidationMessage> getMessages() {
     return messages;
   }
 
+  @SerializedName("issues")
   @JsonProperty("issues")
   public ValidationOutcome setMessages(List<ValidationMessage> issues) {
     this.messages = issues;
