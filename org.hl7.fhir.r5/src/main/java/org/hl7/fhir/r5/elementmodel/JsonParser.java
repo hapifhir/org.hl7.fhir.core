@@ -788,8 +788,9 @@ public class JsonParser extends ParserBase {
     }
     checkComposeComments(e);
     json.beginObject();
-//    if (!isSuppressResourceType())
+    if (!isSuppressResourceType(e.getProperty())) {
       prop("resourceType", e.getType(), null);
+    }
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
       compose(e.getName(), e, done, child);
@@ -797,6 +798,15 @@ public class JsonParser extends ParserBase {
     json.endObject();
     json.finish();
     osw.flush();
+  }
+
+  private boolean isSuppressResourceType(Property property) {
+    StructureDefinition sd = property.getStructure();
+    if (sd != null && sd.hasExtension(ToolingExtensions.EXT_SUPPRESS_RESOURCE_TYPE)) {
+      return ToolingExtensions.readBoolExtension(sd, ToolingExtensions.EXT_SUPPRESS_RESOURCE_TYPE);
+    } else {
+      return false;
+    }
   }
 
   private void checkComposeComments(Element e) {
@@ -814,8 +824,9 @@ public class JsonParser extends ParserBase {
     checkComposeComments(e);
     json.beginObject();
 
-//    if (!isSuppressResourceType())
+    if (!isSuppressResourceType(e.getProperty())) {
       prop("resourceType", e.getType(), linkResolver == null ? null : linkResolver.resolveProperty(e.getProperty()));
+    }
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
       compose(e.getName(), e, done, child);
@@ -931,7 +942,7 @@ public class JsonParser extends ParserBase {
           json.elide();
         else if (item.hasChildren()) {
           open(null,null);
-          if (item.getProperty().isResource()) {
+          if (item.getProperty().isResource() && !isSuppressResourceType(item.getProperty())) {
             prop("resourceType", item.getType(), linkResolver == null ? null : linkResolver.resolveType(item.getType()));
           }
           if (linkResolver != null && item.getProperty().isReference()) {
@@ -987,7 +998,7 @@ public class JsonParser extends ParserBase {
     }
     if (element.hasChildren()) {
       open(name, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()));
-      if (element.getProperty().isResource()) {
+      if (element.getProperty().isResource() && !isSuppressResourceType(element.getProperty())) {
         prop("resourceType", element.getType(), linkResolver == null ? null : linkResolver.resolveType(element.getType()));
       }
       if (linkResolver != null && element.getProperty().isReference()) {

@@ -69,9 +69,19 @@ msgstr "Intento de utilizar el servidor terminológico pero no hay ninguno dispo
 msgid "Attempt to use a snapshot on profile ''{0}'' as {1} before it is generated"
 msgstr "Intento de usar un snapshot en el perfil ''{0}'' como {1} antes que se genere"
 
-# BINDING_ADDITIONAL
-#: BINDING_ADDITIONAL
+# BINDING_ADDITIONAL_D
+#: BINDING_ADDITIONAL_D
 msgid "{0} specified in an additional binding"
+msgstr ""
+
+# BINDING_ADDITIONAL_UC
+#: BINDING_ADDITIONAL_UC
+msgid "{0} specified in an additional binding which applies because {1}"
+msgstr ""
+
+# BINDING_ADDITIONAL_USAGE
+#: BINDING_ADDITIONAL_USAGE
+msgid "{0} = {1}"
 msgstr ""
 
 # BINDING_MAX
@@ -402,6 +412,11 @@ msgstr "El valor [(type = ''document'') implica (meta.lastUpdated.hasValue())]"
 msgid "Expected {0} but found {1} event elements"
 msgstr "Se esperaban {0} pero se encontraron {1} elementos event"
 
+# CANONICAL_MULTIPLE_VERSIONS_KNOWN
+#: CANONICAL_MULTIPLE_VERSIONS_KNOWN
+msgid "The version {2} for the {0} {1} is not known. These versions are known: {3}"
+msgstr ""
+
 # CDATA_is_not_allowed
 #: CDATA_is_not_allowed
 msgid "CDATA is not allowed"
@@ -415,6 +430,11 @@ msgstr ""
 # CDA_UNKNOWN_TEMPLATE_EXT
 #: CDA_UNKNOWN_TEMPLATE_EXT
 msgid "The CDA Template {0} / {1} is not known"
+msgstr ""
+
+# CODESYSTEM_CS_COMPLETE_AND_EMPTY
+#: CODESYSTEM_CS_COMPLETE_AND_EMPTY
+msgid "When a CodeSystem has content = ''complete'', it doesn't make sense for there to be no concepts defined"
 msgstr ""
 
 # CODESYSTEM_CS_COUNT_COMPLETE_WRONG
@@ -497,6 +517,11 @@ msgstr ""
 msgid "CodeSystem {0} cannot be found, so can''t check if concepts are valid"
 msgstr "CodeSystem {0} no se pudo encontrar, por lo que no puede verificarse la validez de los conceptos"
 
+# CODESYSTEM_CS_SUPP_HIERARCHY_MEANING
+#: CODESYSTEM_CS_SUPP_HIERARCHY_MEANING
+msgid "The supplement declares a heirarchyMeaning of ''{0}'' that doesn''t match that in the base code system ''{1}''"
+msgstr ""
+
 # CODESYSTEM_CS_SUPP_INVALID_CODE
 #: CODESYSTEM_CS_SUPP_INVALID_CODE
 msgid "The code ''{1}'' is not declared in the base CodeSystem {0} so is not valid in the supplement"
@@ -530,6 +555,11 @@ msgstr ""
 # CODESYSTEM_NOT_CONTAINED
 #: CODESYSTEM_NOT_CONTAINED
 msgid "CodeSystems are referred to directly from Coding.system, so it''s generally best for them not to be contained resources"
+msgstr ""
+
+# CODESYSTEM_PROPERTY_ABSOLUTE_URI
+#: CODESYSTEM_PROPERTY_ABSOLUTE_URI
+msgid "A property URI must be an absolute URI, but ''{0}'' is not"
 msgstr ""
 
 # CODESYSTEM_PROPERTY_BAD_HL7_URI
@@ -752,6 +782,11 @@ msgstr ""
 msgid "The code ''{1}'' comes from the system {0} which could not be found, so it''s not known whether it''s valid in the value set ''{2}''"
 msgstr ""
 
+# CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM_VERSION
+#: CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM_VERSION
+msgid "The code ''{1}'' comes from the system {0} version {3} which could not be found, so it''s not known whether it''s valid in the value set ''{2}''"
+msgstr ""
+
 # CONCEPTMAP_VS_INVALID_CONCEPT_CODE
 #: CONCEPTMAP_VS_INVALID_CONCEPT_CODE
 msgid "The code ''{1}'' in the system {0} is not valid in the value set ''{2}''"
@@ -882,8 +917,8 @@ msgstr "No se encontró el tipo raiz : {0}"
 
 # Differential_does_not_have_a_slice__b_of_____in_profile_
 #: Differential_does_not_have_a_slice__b_of_____in_profile_
-msgid "Differential in profile {5} does not have a slice at {6} (on  {0}, position {1} of {2} / {3} / {4})"
-msgstr "El diferencian en el perfil {5} no tiene una partición en {6} (en {0}, posición {1} de {2} / {3} / {4})"
+msgid "Differential in profile {5} does not have a slice at {6} (on {0}, position {1} of {2} / {3} / {4})"
+msgstr "!!El diferencian en el perfil {5} no tiene una partición en {6} (en {0}, posición {1} de {2} / {3} / {4})"
 
 # Differential_walks_into____but_the_base_does_not_and_there_is_not_a_single_fixed_type_The_type_is__This_is_not_handled_yet
 #: Differential_walks_into____but_the_base_does_not_and_there_is_not_a_single_fixed_type_The_type_is__This_is_not_handled_yet
@@ -894,15 +929,6 @@ msgstr "La recorrida del diferencial llega a  ''{0} (@ {1})'', pero el recurso b
 #: Discriminator__is_based_on_element_existence_but_slice__neither_sets_min1_or_max0
 msgid "Discriminator ({0}) is based on element existence, but slice {1} neither sets min>=1 or max=0"
 msgstr "El discriminador ({0}) está basado en la existencia de un elemento, pero la partición {1} no define cardinalidad  min>=1 o max=0"
-
-# Discriminator__is_based_on_type_but_slice__in__has_multiple_types
-#: Discriminator__is_based_on_type_but_slice__in__has_multiple_types
-msgctxt "Discriminator__is_based_on_type_but_slice__in__has_multiple_types"
-msgid "-- no content: do not translate #23 --"
-msgid_plural "Discriminator ({1}) is based on type, but slice {2} in {3} has {0} types: {4}"
-msgstr[0] ""
-msgstr[1] "El discriminador ({1}) está basado en tipos, pero la partición {2} en {3} tiene {0} tipos: {4}"
-msgstr[2] "El discriminador ({1}) está basado en tipos, pero la partición {2} en {3} tiene {0} tipos: {4}"
 
 # Discriminator__is_based_on_type_but_slice__in__has_no_types
 #: Discriminator__is_based_on_type_but_slice__in__has_no_types
@@ -1363,7 +1389,7 @@ msgstr "Imposible resolver el discriminador{0} en {2} encontrado en las definici
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
-msgid "-- no content: do not translate #24 --"
+msgid "-- no content: do not translate #19 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
 msgstr[1] "Error en el discriminador en {1}: no tiene hijos, {0} perfiles de tipo"
@@ -1372,7 +1398,7 @@ msgstr[2] "Error en el discriminador en {1}: no tiene hijos, {0} perfiles de tip
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #25 --"
+msgid "-- no content: do not translate #20 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
 msgstr[1] "Error en el discriminador en {1}: no tiene hijos , {0} tipos"
@@ -1396,7 +1422,7 @@ msgstr "Uso ilegal de ofType() en el discriminador - Type no tiene codigo en {0}
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #26 --"
+msgid "-- no content: do not translate #21 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] "Uso Ilegal de resolve() en el discriminador - {0} tipos posibles en {1} (puede ser uno solo)"
@@ -1420,7 +1446,7 @@ msgstr "Uso ilegal de ofType() en el discriminador - no hay tipo en el elemento 
 # FHIRPATH_FOCUS
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
-msgid "-- no content: do not translate #27 --"
+msgid "-- no content: do not translate #22 --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "Error evaluando la expresión FHIRPath: el foco para {0} puede tener solo un valor, pero tiene {0} valores"
@@ -1439,7 +1465,7 @@ msgstr ""
 # FHIRPATH_LEFT_VALUE
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid "-- no content: do not translate #28 --"
+msgid "-- no content: do not translate #23 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "Error evaluando la expresión FHIRPath: el operando a la izquierda de {1} puede tener solo 1 valor pero tiene {0} valores"
@@ -1523,7 +1549,7 @@ msgstr "Problema con el uso de resolve() - el perfil {0} en {1} no pudo ser resu
 # FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid "-- no content: do not translate #29 --"
+msgid "-- no content: do not translate #24 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] "Uso Ilegal de resolve() en el discriminador - {0} perfiles destino posibles de tipo en {1} (solo puede ser uno)"
@@ -1532,7 +1558,7 @@ msgstr[2] "Uso Ilegal de resolve() en el discriminador - {0} perfiles destino po
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid "-- no content: do not translate #30 --"
+msgid "-- no content: do not translate #25 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "Error evaluando la expresión FHIRPath: el operando a la derecha de {1} puede tener solo 1 valor pero tiene {0} valores"
@@ -1622,6 +1648,26 @@ msgstr "Esperados {0} pero encontrados {1} elementos suffix"
 #: Found__items_for__resolving_discriminator__from_
 msgid "Found {0} items for {1} resolving discriminator {2} from {3}"
 msgstr "Se han encontrado {0} items para {1} resolviendo el discriminator {2} de {3}"
+
+# HTA_LOINC_DESC
+#: HTA_LOINC_DESC
+msgid "LOINC"
+msgstr ""
+
+# HTA_LOINC_MESSAGE
+#: HTA_LOINC_MESSAGE
+msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgstr ""
+
+# HTA_SCT_DESC
+#: HTA_SCT_DESC
+msgid "SNOMED Clinical Terms&reg; (SNOMED CT&reg;)"
+msgstr ""
+
+# HTA_SCT_MESSAGE
+#: HTA_SCT_MESSAGE
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgstr ""
 
 # IG_DEPENDENCY_CLASH_CANONICAL
 #: IG_DEPENDENCY_CLASH_CANONICAL
@@ -1740,8 +1786,8 @@ msgstr "Tipo de valor fijo no gestionado {0}"
 
 # Internal_error___type_not_known_
 #: Internal_error___type_not_known_
-msgid "Internal error -  type not known {0}"
-msgstr "Error interno - tipo desconocido {0}"
+msgid "Internal error - type not known {0}"
+msgstr "!!Error interno - tipo desconocido {0}"
 
 # Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist
 #: Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist
@@ -1908,10 +1954,35 @@ msgstr "Ninguno de los códigos provistos se puede utilizar para comparar - nece
 msgid "The code provided ({0}) does not match the code specified in the measure report ({1})"
 msgstr "El codigo provisto ({0}) no coincide con el codigo definido para el reporte ({1})"
 
+# MEASURE_MR_GRP_POP_COUNT_CANT_CHECK
+#: MEASURE_MR_GRP_POP_COUNT_CANT_CHECK
+msgid "Unable to check the stated count {0} because the subject list cannot be fully processed ({1})"
+msgstr ""
+
 # MEASURE_MR_GRP_POP_COUNT_MISMATCH
 #: MEASURE_MR_GRP_POP_COUNT_MISMATCH
 msgid "Mismatch between count {0} and number of subjects {1}"
 msgstr "Discordania entre count {0} y la cantidad de pacientes {1}"
+
+# MEASURE_MR_GRP_POP_COUNT_NO_REF
+#: MEASURE_MR_GRP_POP_COUNT_NO_REF
+msgid "Subject reference has no actual reference"
+msgstr ""
+
+# MEASURE_MR_GRP_POP_COUNT_NO_REF_RES
+#: MEASURE_MR_GRP_POP_COUNT_NO_REF_RES
+msgid "Subject reference {0} could not be resolved, and so could not be processed"
+msgstr ""
+
+# MEASURE_MR_GRP_POP_COUNT_REF_UNPROCESSIBLE
+#: MEASURE_MR_GRP_POP_COUNT_REF_UNPROCESSIBLE
+msgid "Subject reference {0} resolved to a {1}, which could not be processed"
+msgstr ""
+
+# MEASURE_MR_GRP_POP_COUNT_UNRESOLVED
+#: MEASURE_MR_GRP_POP_COUNT_UNRESOLVED
+msgid "Subject reference {0} could not be resolved, and the apparent type is {1} which could not be processed"
+msgstr ""
 
 # MEASURE_MR_GRP_POP_DUPL_CODE
 #: MEASURE_MR_GRP_POP_DUPL_CODE
@@ -2176,7 +2247,7 @@ msgstr ""
 # MULTIPLE_LOGICAL_MODELS
 #: MULTIPLE_LOGICAL_MODELS
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid "-- no content: do not translate #31 --"
+msgid "-- no content: do not translate #26 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
 msgstr[1] "{0} Modelos Lógicos encontrados en los perfiles provistos, asi que es imposible analizar el modelo lógico(puede ser solo uno, se encontraron {1})"
@@ -2207,6 +2278,11 @@ msgstr "El elemento {0} no está marcado como ''mustSupport'' en el perfil {1}. 
 msgid "The NDJSON source contains an empty line. This may not be accepted by some processors"
 msgstr ""
 
+# NO_VALID_DISPLAY_AT_ALL
+#: NO_VALID_DISPLAY_AT_ALL
+msgid "Cannot validate display Name ''{0}'' for {1}#{2}: No displays are known"
+msgstr ""
+
 # NO_VALID_DISPLAY_FOUND
 #: NO_VALID_DISPLAY_FOUND
 msgid "No valid Display Names found for {1}#{2} in the language {4}"
@@ -2214,6 +2290,32 @@ msgid_plural "No valid Display Names found for {1}#{2} in the languages {4}"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+
+# NO_VALID_DISPLAY_FOUND_LANG_NONE
+#: NO_VALID_DISPLAY_FOUND_LANG_NONE
+msgid "''{5}'' is the default display; the code system {1} has no Display Names for the language {4}"
+msgid_plural "''{5}'' is the default display; the code system {1} has no Display Names found for the language {4}"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+# NO_VALID_DISPLAY_FOUND_LANG_SOME
+#: NO_VALID_DISPLAY_FOUND_LANG_SOME
+msgid "''{5}'' is the default display; no valid Display Names found for {1}#{2} in the language {4}"
+msgid_plural "''{5}'' is the default display; no valid Display Names found for {1}#{2} in the language {4}"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+# NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR
+#: NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR
+msgid "Wrong Display Name ''{0}'' for {1}#{2}. There are no valid display names found for language(s) ''{3}''. Default display is ''{4}''"
+msgstr ""
+
+# NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK
+#: NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK
+msgid "There are no valid display names found for the code {1}#{2} for language(s) ''{3}''. The display is ''{4}'' the default language display"
+msgstr ""
 
 # Named_items_are_out_of_order_in_the_slice
 #: Named_items_are_out_of_order_in_the_slice
@@ -2358,6 +2460,11 @@ msgstr "El patrón [{0}] definido en el perfil {1} no fue encontrado. Problemas:
 msgid "The element definition ``{0}`` in the profile ''{1}'' requires that a value be present in this element"
 msgstr ""
 
+# PRIMITIVE_TOO_SHORT
+#: PRIMITIVE_TOO_SHORT
+msgid "Value ''{0}'' is shorter than permitted minimum length of {1}"
+msgstr ""
+
 # PRIMITIVE_VALUE_ALTERNATIVES_MESSAGE
 #: PRIMITIVE_VALUE_ALTERNATIVES_MESSAGE
 msgid "The element definition ``{0}`` in the profile ''{1}'' requires that if a value is not present, the extension ''{2}'' must be present"
@@ -2431,18 +2538,14 @@ msgstr "Los discriminadores basados en perfiles deben tener un tipo ({0} en el p
 msgid "Profile based discriminators must have a type with a profile ({0} in profile {1})"
 msgstr "Los discriminadores basados en perfiles deben tener un tipo con un perfil ({0} en el perfil {1})"
 
-# Profile_based_discriminators_must_have_only_one_type__in_profile
-#: Profile_based_discriminators_must_have_only_one_type__in_profile
-msgctxt "Profile_based_discriminators_must_have_only_one_type__in_profile"
-msgid "-- no content: do not translate #32 --"
-msgid_plural "Profile based discriminators must have only one type ({1} in profile {2}) but found {0} types"
-msgstr[0] ""
-msgstr[1] "Los discriminadores basados en perfiles deben tener un solo tipo ({1} en el perfil {2}) pero se han encontrado {0} tipos"
-msgstr[2] "Los discriminadores basados en perfiles deben tener un solo tipo ({1} en el perfil {2}) pero se han encontrado {0} tipos"
-
 # QUESTIONNAIRE_QR_ITEM_BADOPTION_CS
 #: QUESTIONNAIRE_QR_ITEM_BADOPTION_CS
 msgid "The code provided {1} cannot be validated in the options value set ({2}) in the questionnaire because the system {0} could not be found"
+msgstr ""
+
+# QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING
+#: QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING
+msgid "The string value ''{0}'' matches an entry in the list of valid Codings, so this is probably an error"
 msgstr ""
 
 # QUESTIONNAIRE_Q_DERIVATION_TYPE_IGNORED
@@ -2663,7 +2766,7 @@ msgstr "Solo un item con respuesta se permite para items que tengan este linkId"
 # Questionnaire_QR_Item_OnlyOneI
 #: Questionnaire_QR_Item_OnlyOneI
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid "-- no content: do not translate #33 --"
+msgid "-- no content: do not translate #27 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] ""
 msgstr[1] "Solo una respuesta permitida para el linkID {1} pero se encontraron {0} items"
@@ -2747,6 +2850,11 @@ msgstr "La sintaxis de la referencia ''{0}'' parece incorrecta y debe ser verifi
 msgid "The type ''{2}'' is not a valid Target for the element {0} (must be {1})"
 msgstr "El tipo ''{2}'' no es un destino válido para el elemento {0} (debe ser {1})"
 
+# REQUEST_TOO_COSTLY_TIME
+#: REQUEST_TOO_COSTLY_TIME
+msgid "Request took too long to process (>{0}sec)"
+msgstr ""
+
 # RESOURCETYPE_PROPERTY_WRONG_TYPE
 #: RESOURCETYPE_PROPERTY_WRONG_TYPE
 msgid "The JSON element ''resourceType'' has the wrong JSON type: {0}"
@@ -2789,13 +2897,13 @@ msgstr "Incapaz de resolver el perfil con la referencia ''{0}''"
 
 # Reference_REF_Format1
 #: Reference_REF_Format1
-msgid "Relative URLs must be of the format [ResourceName]/[id], or a search URL is allowed ([type]?parameters.  Encountered {0})"
-msgstr "Las URLs relativas deben tener el formato [ResourceName]/[id], o se permite una URL de búsqueda ([tipo]?parámetros.  Encontrado {0})"
+msgid "Relative URLs must be of the format [ResourceName]/[id], or a search URL is allowed ([type]?parameters. Encountered {0})"
+msgstr "!!Las URLs relativas deben tener el formato [ResourceName]/[id], o se permite una URL de búsqueda ([tipo]?parámetros.  Encontrado {0})"
 
 # Reference_REF_Format2
 #: Reference_REF_Format2
-msgid "Relative URLs must be of the format [ResourceName]/[id].  Encountered {0}"
-msgstr "Las URLs relativas deben tener el formato [ResourceName]/[id]. Encontrado {0}"
+msgid "Relative URLs must be of the format [ResourceName]/[id]. Encountered {0}"
+msgstr "!!Las URLs relativas deben tener el formato [ResourceName]/[id]. Encontrado {0}"
 
 # Reference_REF_MultipleMatches
 #: Reference_REF_MultipleMatches
@@ -2867,6 +2975,11 @@ msgstr "Tipo de recurso no coincidente para {0} / {1}"
 msgid "Not validated against the Machine Readable Concept Model (MRCM)"
 msgstr ""
 
+# SD_BASE_EXPERIMENTAL
+#: SD_BASE_EXPERIMENTAL
+msgid "The definition builds on ''{0}'' which is experimental, but this definition is not labeled as experimental"
+msgstr ""
+
 # SD_CONSTRAINED_KIND_NO_MATCH
 #: SD_CONSTRAINED_KIND_NO_MATCH
 msgid "The kind {0} must be the same as the kind {1} in the base structure {3} (base type = {2})"
@@ -2892,6 +3005,21 @@ msgstr ""
 msgid "The structure definition constrains a kind of {0}, but has a different kind ({1})"
 msgstr "La definición de estructura restringe una clase de {0}, pero hay una diferente ({1})"
 
+# SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_ELEMENT
+#: SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_ELEMENT
+msgid "The Usage Context {0}#{1} is a reference to an element that does not exist"
+msgstr ""
+
+# SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_TYPE
+#: SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_TYPE
+msgid "The Usage Context value must be of type {1} not {0}"
+msgstr ""
+
+# SD_ED_ADDITIONAL_BINDING_USAGE_UNKNOWN
+#: SD_ED_ADDITIONAL_BINDING_USAGE_UNKNOWN
+msgid "The Usage Context {0}#{1} is not recognized so cannot be validated"
+msgstr ""
+
 # SD_ED_BIND_MULTIPLE_TYPES
 #: SD_ED_BIND_MULTIPLE_TYPES
 msgid "The element {0} has a binding, and has multiple types subject to bindings ({1}). The binding will apply to all the types"
@@ -2911,6 +3039,11 @@ msgstr "El elemento {0} tiene una vinculación, pero no se encuentran tipos vinc
 #: SD_ED_BIND_UNKNOWN_VS
 msgid "The valueSet reference {1} on element {0} could not be resolved"
 msgstr "La referencia al ValueSet {1} en el elemento {0} no pudo ser resuelta"
+
+# SD_ED_EXPERIMENTAL_BINDING
+#: SD_ED_EXPERIMENTAL_BINDING
+msgid "The definition for the element ''{0}'' binds to the value set ''{1}'' which is experimental, but this structure is not labeled as experimental"
+msgstr ""
 
 # SD_ED_SHOULD_BIND
 #: SD_ED_SHOULD_BIND
@@ -2975,9 +3108,14 @@ msgstr ""
 msgid "The element definition for {1} has a property {0} which is not allowed in a profile"
 msgstr ""
 
+# SD_ELEMENT_PATTERN_NO_FIXED
+#: SD_ELEMENT_PATTERN_NO_FIXED
+msgid "The base element has a pattern type of ''{0}'', so this element must have a fixed value but it doesn''t"
+msgstr ""
+
 # SD_ELEMENT_PATTERN_WRONG_TYPE
 #: SD_ELEMENT_PATTERN_WRONG_TYPE
-msgid "The base element has a pattern type of ''{0}'', so this element must have a pattern value of the same type, not ''{1}''"
+msgid "The base element has a pattern type of ''{0}'', so this element must have a fixed value of the same type, not ''{1}''"
 msgstr ""
 
 # SD_ELEMENT_REASON_DERIVED
@@ -3103,6 +3241,31 @@ msgstr ""
 # SD_OBGLIGATION_PROFILE_UNMATCHED
 #: SD_OBGLIGATION_PROFILE_UNMATCHED
 msgid "The element ''{0}'' has no equivalent in the profile ''{1}'' on which this Obligation Profile is based"
+msgstr ""
+
+# SD_PATH_ERROR
+#: SD_PATH_ERROR
+msgid "The discriminator path ''{0}'' does not appear to be valid for the element that is being sliced ''{1}'': {2}"
+msgstr ""
+
+# SD_PATH_NOT_VALID
+#: SD_PATH_NOT_VALID
+msgid "The discriminator path ''{0}'' does not appear to be valid for the element that is being sliced ''{1}''"
+msgstr ""
+
+# SD_PATH_NO_SLICING
+#: SD_PATH_NO_SLICING
+msgid "Slicing is not allowed at ''{0}''"
+msgstr ""
+
+# SD_PATH_SLICING_DEPRECATED
+#: SD_PATH_SLICING_DEPRECATED
+msgid "The discriminator type ''{0}'' is been deprecated in R5+. For future compatibility, you could consider using type=value with a pattern[x] instead (if this is not an inherited slicing)"
+msgstr ""
+
+# SD_PATH_SLICING_DEPRECATED_R5
+#: SD_PATH_SLICING_DEPRECATED_R5
+msgid "The discriminator type ''{0}'' has been deprecated. Use type=value with a pattern[x] instead (if this is not an inherited slicing)"
 msgstr ""
 
 # SD_PATH_TYPE_MISMATCH
@@ -3237,7 +3400,7 @@ msgstr ""
 
 # SM_DEPENDENT_PARAM_NOT_FOUND
 #: SM_DEPENDENT_PARAM_NOT_FOUND
-msgid "The {1} parameter ''{0}''  was not found"
+msgid "The {1} parameter ''{0}'' was not found. Known variables: {2}"
 msgstr ""
 
 # SM_DEPENDENT_PARAM_TYPE_MISMATCH
@@ -3510,6 +3673,11 @@ msgstr ""
 msgid "No target type was found, so the default group for this implied dependent rule could not be determined"
 msgstr ""
 
+# SM_TARGET_TYPE_UNKNOWN
+#: SM_TARGET_TYPE_UNKNOWN
+msgid "The type of the target variable is not known: {0}"
+msgstr ""
+
 # SNAPSHOT_EXISTING_PROBLEM
 #: SNAPSHOT_EXISTING_PROBLEM
 msgid "The generated snapshot has a different number of elements {1} than the originally provided snapshot {0}"
@@ -3623,6 +3791,11 @@ msgstr ""
 # TX_GENERAL_CC_ERROR_MESSAGE
 #: TX_GENERAL_CC_ERROR_MESSAGE
 msgid "No valid coding was found for the value set ''{0}''"
+msgstr ""
+
+# TX_SERVER_NOT_READY
+#: TX_SERVER_NOT_READY
+msgid "The full data set is only {0}% loaded ({1} of {2}) for searching - repeat this query in a few minutes (max ~15min)');"
 msgstr ""
 
 # TX_SERVER_NO_BATCH_RESPONSE
@@ -3900,9 +4073,29 @@ msgstr ""
 msgid "Example URLs are not allowed in this context ({0})"
 msgstr "No se permiten URLs de ejemplo en este contexto ({0})"
 
+# TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
+#: TYPE_SPECIFIC_CHECKS_DT_XHTML_ACTIVE_HREF
+msgid "Hyperlink scheme ''{3}'' in ''{0}'' at ''{1}'' for ''{2}'' has active content, which is a security risk and not allowed"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_XHTML_EMPTY_HREF
+#: TYPE_SPECIFIC_CHECKS_DT_XHTML_EMPTY_HREF
+msgid "Hyperlink at ''{0}'' for ''{1}'' is empty"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_XHTML_LITERAL_HREF
+#: TYPE_SPECIFIC_CHECKS_DT_XHTML_LITERAL_HREF
+msgid "Hyperlink scheme ''{3}'' in ''{0}'' at ''{1}'' for ''{2}'' is not a valid hyperlinkable scheme"
+msgstr ""
+
 # TYPE_SPECIFIC_CHECKS_DT_XHTML_MULTIPLE_MATCHES
 #: TYPE_SPECIFIC_CHECKS_DT_XHTML_MULTIPLE_MATCHES
 msgid "Hyperlink ''{0}'' at ''{1}'' for ''{2}'' resolves to multiple targets ({3})"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_XHTML_UNKNOWN_HREF
+#: TYPE_SPECIFIC_CHECKS_DT_XHTML_UNKNOWN_HREF
+msgid "Hyperlink scheme ''{3}'' in ''{0}'' at ''{1}'' for ''{2}'' is not a widely supported protocol and should be checked"
 msgstr ""
 
 # TYPE_SPECIFIER_ABSTRACT_TYPE
@@ -4222,8 +4415,8 @@ msgstr "Esta propiedad debe ser una URI o bnode, no {0}"
 
 # This_property_must_be_an_Array_not_
 #: This_property_must_be_an_Array_not_
-msgid "The property {1}  must be a JSON Array, not {0} (at {2})"
-msgstr "!!Esta propiedad debe ser un Array, no {0}"
+msgid "The property {1} must be a JSON Array, not {0} (at {2})"
+msgstr "!!!!Esta propiedad debe ser un Array, no {0}"
 
 # This_property_must_be_an_object_not_
 #: This_property_must_be_an_object_not_
@@ -4510,8 +4703,8 @@ msgstr ""
 
 # UNKNOWN_CODE_IN_FRAGMENT
 #: UNKNOWN_CODE_IN_FRAGMENT
-msgid "Unknown Code ''{0}'' in the system ''{1}'' version ''{2}'' - note that the code system is labeled as a fragment, so the code may be valid in some other fragment"
-msgstr "Código desconocido {0} en {1} - note que el sistema de codificación está etiquetado como fragmento, así que el código puede ser válido mas allá del fragmento"
+msgid "Unknown Code ''{0}'' in the CodeSystem ''{1}'' version ''{2}'' - note that the code system is labeled as a fragment, so the code may be valid in some other fragment"
+msgstr "!!Código desconocido {0} en {1} - note que el sistema de codificación está etiquetado como fragmento, así que el código puede ser válido mas allá del fragmento"
 
 # UNRECOGNISED_PROPERTY_TYPE
 #: UNRECOGNISED_PROPERTY_TYPE
@@ -4838,6 +5031,11 @@ msgstr ""
 msgid "When HL7 is publishing a resource, the publisher must be provided, and for WG ''{0}'' it should be ''{1}''"
 msgstr ""
 
+# VALIDATION_HL7_PUBLISHER_MULTIPLE_WGS
+#: VALIDATION_HL7_PUBLISHER_MULTIPLE_WGS
+msgid "This resource has more than workgroup extension (http://hl7.org/fhir/StructureDefinition/structuredefinition-wg)"
+msgstr ""
+
 # VALIDATION_HL7_WG_NEEDED
 #: VALIDATION_HL7_WG_NEEDED
 msgid "When HL7 is publishing a resource, the owning committee must be stated using the {0} extension"
@@ -4851,6 +5049,11 @@ msgstr ""
 # VALIDATION_HL7_WG_URL
 #: VALIDATION_HL7_WG_URL
 msgid "The nominated WG ''{0}'' means that the contact url should be ''{1}'' but it was not found"
+msgstr ""
+
+# VALIDATION_NO_EXPERIMENTAL_CONTENT
+#: VALIDATION_NO_EXPERIMENTAL_CONTENT
+msgid "Experimental content is not allowed in this context"
 msgstr ""
 
 # VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN
@@ -4948,6 +5151,11 @@ msgstr ""
 msgid "The resource status ''{0}'' and the standards status ''{1}'' may not be consistent and should be reviewed"
 msgstr ""
 
+# VALIDATION_VAL_VERSION_NOHASH
+#: VALIDATION_VAL_VERSION_NOHASH
+msgid "Version ''{0}'' contains a ''#'', which as this character is used in some URLs to separate the version and the fragment id. When version does include '#', systems will not be able to parse the URL"
+msgstr ""
+
 # VALUESET_BAD_FILTER_OP
 #: VALUESET_BAD_FILTER_OP
 msgid "The operation ''{0}'' is not allowed for property ''{1}'' in system ''{3}''. Allowed ops: {2}"
@@ -5025,7 +5233,7 @@ msgstr ""
 
 # VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
 #: VALUESET_CONCEPT_DISPLAY_SCT_TAG_MIXED
-msgid "This SNOMED-CT based include has some concepts with semantic tags (FSN terms) and some without (preferred terms) - check that this is what is intended  (examples for FSN: {0} and examples for no FSN: {1})"
+msgid "This SNOMED-CT based include has some concepts with semantic tags (FSN terms) and some without (preferred terms) - check that this is what is intended (examples for FSN: {0} and examples for no FSN: {1})"
 msgstr ""
 
 # VALUESET_EXAMPLE_SYSTEM_ERROR
@@ -5168,7 +5376,7 @@ msgstr ""
 
 # VALUESET_TOO_COSTLY_TIME
 #: VALUESET_TOO_COSTLY_TIME
-msgid "The value set ''{0}'' expansion took too long to process (>{1}sec)"
+msgid "The value set ''{0}'' {2} took too long to process (>{1}sec)"
 msgstr ""
 
 # VALUESET_UNC_SYSTEM_WARNING
@@ -5189,6 +5397,86 @@ msgstr ""
 # VALUESET_UNKNOWN_FILTER_PROPERTY_NO_CS
 #: VALUESET_UNKNOWN_FILTER_PROPERTY_NO_CS
 msgid "No definition can be found for the system {1}, and the property ''{0}'' is not a generally known property, so the property might not be valid, or understood by the terminology ecosystem. In case it''s useful, the list of generally known properties for all systems is {2}"
+msgstr ""
+
+# VIEWDEFINITION_COLLECTION_NEEDED1
+#: VIEWDEFINITION_COLLECTION_NEEDED1
+msgid "This column is not defined as a collection, but the path statement ''{0}'' might return multiple values for the column ''{1}'' for some inputs{2}"
+msgstr ""
+
+# VIEWDEFINITION_COLLECTION_NEEDED2
+#: VIEWDEFINITION_COLLECTION_NEEDED2
+msgid "This column is defined to be not a collection, but the path statement ''{0}'' might return multiple values for the column ''{1}'' for some inputs{2}"
+msgstr ""
+
+# VIEWDEFINITION_COLLECTION_NOT_ALWAYS
+#: VIEWDEFINITION_COLLECTION_NOT_ALWAYS
+msgid "The column ''{0}'' is defined as a collection, but collections are not supported in all execution contexts"
+msgstr ""
+
+# VIEWDEFINITION_COLLECTION_NOT_NEEDED
+#: VIEWDEFINITION_COLLECTION_NOT_NEEDED
+msgid "collection is true, but the path statement ''{0}'' can only return single values for the column ''{1}''{2}"
+msgstr ""
+
+# VIEWDEFINITION_COMPLEX_TYPE
+#: VIEWDEFINITION_COMPLEX_TYPE
+msgid "Column from path ''{0}'' is a complex type (''{1}''){2}. This is not supported in some Runners"
+msgstr ""
+
+# VIEWDEFINITION_DUPL_COL_NAME
+#: VIEWDEFINITION_DUPL_COL_NAME
+msgid "Duplicate Column Name ''{0}''"
+msgstr ""
+
+# VIEWDEFINITION_NAME_INVALID
+#: VIEWDEFINITION_NAME_INVALID
+msgid "The {0} name ''{1}'' is not valid"
+msgstr ""
+
+# VIEWDEFINITION_NAME_REQUIRED
+#: VIEWDEFINITION_NAME_REQUIRED
+msgid "A column name is required"
+msgstr ""
+
+# VIEWDEFINITION_NAME_REQUIRED_HINT
+#: VIEWDEFINITION_NAME_REQUIRED_HINT
+msgid "A column name is required. The natural name to chose is ''{0}'' (from the path)"
+msgstr ""
+
+# VIEWDEFINITION_PATH_ERROR
+#: VIEWDEFINITION_PATH_ERROR
+msgid "Expression Error: {0}{1}"
+msgstr ""
+
+# VIEWDEFINITION_PATH_WARNING
+#: VIEWDEFINITION_PATH_WARNING
+msgid "Expression Warning: {0}"
+msgstr ""
+
+# VIEWDEFINITION_PATH_WRONG_RETURN
+#: VIEWDEFINITION_PATH_WRONG_RETURN
+msgid "A where path must return a boolean, but the expression ''{0}'' returns a ''{1}''"
+msgstr ""
+
+# VIEWDEFINITION_SHOULD_HAVE_NAME
+#: VIEWDEFINITION_SHOULD_HAVE_NAME
+msgid "No name provided. A name is required in many contexts where a ViewDefinition is used"
+msgstr ""
+
+# VIEWDEFINITION_TYPE_MISMATCH
+#: VIEWDEFINITION_TYPE_MISMATCH
+msgid "The path expression ''{0}'' does not return a value of the type ''{1}'' - found ''{2}''{3}"
+msgstr ""
+
+# VIEWDEFINITION_UNABLE_TO_TYPE
+#: VIEWDEFINITION_UNABLE_TO_TYPE
+msgid "Unable to determine a type (found ''{0}''){1}"
+msgstr ""
+
+# VIEWDEFINITION_UNKNOWN_RESOURCE
+#: VIEWDEFINITION_UNKNOWN_RESOURCE
+msgid "The name ''{0}'' is not a valid resource{1}"
 msgstr ""
 
 # Validation_BUNDLE_Message
@@ -5382,6 +5670,11 @@ msgstr[0] "La URL contiene Caracteres Inválidos ({1})"
 msgstr[1] "La URL contiene {0} Caracteres Inválidos ({1})"
 msgstr[2] "La URL contiene {0} Caracteres Inválidos ({1})"
 
+# XHTML_XHTML_ATTRIBUTE_XML_SPACE
+#: XHTML_XHTML_ATTRIBUTE_XML_SPACE
+msgid "The attribute 'xml:space' is legal but has a fixed value of 'preserve'. It''s use is discouraged"
+msgstr ""
+
 # XHTML_XHTML_Attribute_Illegal
 #: XHTML_XHTML_Attribute_Illegal
 msgid "Invalid attribute name in the XHTML (''{0}'' on ''{1}'')"
@@ -5434,8 +5727,8 @@ msgstr ""
 
 # _DT_Fixed_Wrong
 #: _DT_Fixed_Wrong
-msgid "Value is ''{0}'' but must be ''{1}''{2}"
-msgstr "!!El valor es ''{0}'' but debe ser ''{1}''"
+msgid "Value is ''{0}'' but is fixed to ''{1}'' in the profile {2}"
+msgstr "!!!!El valor es ''{0}'' but debe ser ''{1}''"
 
 # _has_children__and_multiple_types__in_profile_
 #: _has_children__and_multiple_types__in_profile_

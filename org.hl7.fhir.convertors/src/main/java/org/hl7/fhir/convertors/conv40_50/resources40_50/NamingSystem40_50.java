@@ -97,9 +97,10 @@ public class NamingSystem40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.NamingSystem tgt = new org.hl7.fhir.r4.model.NamingSystem();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
-    if (src.hasUrlElement()) 
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_NAMINGSYSTEM_URL);
+    if (src.hasUrlElement()) {
       tgt.getExtension().add(new Extension().setUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_URL).setValue(Uri40_50.convertUri(src.getUrlElement())));
+    }
     if (src.hasVersionElement()) 
       tgt.getExtension().add(new Extension().setUrl(VersionConvertorConstants.EXT_NAMINGSYSTEM_VERSION).setValue(String40_50.convertString(src.getVersionElement())));
     if (src.hasName())
