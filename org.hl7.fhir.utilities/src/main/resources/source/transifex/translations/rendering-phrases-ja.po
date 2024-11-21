@@ -294,6 +294,21 @@ msgstr ""
 msgid "DELETE a resource (delete interaction)"
 msgstr ""
 
+# CAPABILITY_DOCUMENT_CAPS
+#: CAPABILITY_DOCUMENT_CAPS
+msgid "FHIR Document Capabilities"
+msgstr ""
+
+# CAPABILITY_ENDPOINTS
+#: CAPABILITY_ENDPOINTS
+msgid "Endpoint(s)"
+msgstr ""
+
+# CAPABILITY_ERR_DET
+#: CAPABILITY_ERR_DET
+msgid "Error detected"
+msgstr ""
+
 # CAPABILITY_EXT_OP
 #: CAPABILITY_EXT_OP
 msgid "Extended Operations"
@@ -344,6 +359,26 @@ msgstr ""
 msgid "Interaction summary"
 msgstr ""
 
+# CAPABILITY_MAY_SUPP
+#: CAPABILITY_MAY_SUPP
+msgid "MAY Support the Following Implementation Guides"
+msgstr ""
+
+# CAPABILITY_MESSAGING_CAP
+#: CAPABILITY_MESSAGING_CAP
+msgid "Messaging Capability"
+msgstr ""
+
+# CAPABILITY_MESSAGING_CAPS
+#: CAPABILITY_MESSAGING_CAPS
+msgid "FHIR Messaging Capabilities"
+msgstr ""
+
+# CAPABILITY_MULT_EXT
+#: CAPABILITY_MULT_EXT
+msgid "this mark indicates that there are more than one expectation extensions present"
+msgstr ""
+
 # CAPABILITY_NOTE_CAP
 #: CAPABILITY_NOTE_CAP
 msgid "Note to Implementers: FHIR Capabilities"
@@ -377,6 +412,11 @@ msgstr ""
 # CAPABILITY_PROF_MAP
 #: CAPABILITY_PROF_MAP
 msgid "Profile Mapping"
+msgstr ""
+
+# CAPABILITY_PROF_RES_DOC
+#: CAPABILITY_PROF_RES_DOC
+msgid "Document Resource Profile"
 msgstr ""
 
 # CAPABILITY_PUB_BY
@@ -489,9 +529,19 @@ msgstr ""
 msgid "Supports"
 msgstr ""
 
+# CAPABILITY_SUPPS_THE
+#: CAPABILITY_SUPPS_THE
+msgid "Supports the"
+msgstr ""
+
 # CAPABILITY_SUPP_FORM
 #: CAPABILITY_SUPP_FORM
 msgid "Supported Formats:"
+msgstr ""
+
+# CAPABILITY_SUPP_MSGS
+#: CAPABILITY_SUPP_MSGS
+msgid "Supported Message(s)"
 msgstr ""
 
 # CAPABILITY_SUPP_PATCH_FORM
@@ -506,7 +556,7 @@ msgstr ""
 
 # CAPABILITY_SUPP_THE
 #: CAPABILITY_SUPP_THE
-msgid "Supports the"
+msgid "support the"
 msgstr ""
 
 # CAPABILITY_TYPS
@@ -704,16 +754,6 @@ msgstr ""
 msgid "(not specified)"
 msgstr ""
 
-# CONC_MAP_NO_PROD_USE
-#: CONC_MAP_NO_PROD_USE
-msgid "(not intended for production usage)."
-msgstr ""
-
-# CONC_MAP_PUB_ON
-#: CONC_MAP_PUB_ON
-msgid "Published on {0}"
-msgstr ""
-
 # CONC_MAP_REL
 #: CONC_MAP_REL
 msgid "Relationship"
@@ -845,6 +885,11 @@ msgstr ""
 msgid "Count {0}"
 msgstr ""
 
+# DATA_REND_CURRENCY
+#: DATA_REND_CURRENCY
+msgid "{1} {0}"
+msgstr ""
+
 # DATA_REND_DATA
 #: DATA_REND_DATA
 msgid "Data: {0}"
@@ -857,7 +902,12 @@ msgstr ""
 
 # DATA_REND_DETAILS_STATED
 #: DATA_REND_DETAILS_STATED
-msgid "(Details: {0} code {1} {2} {3} '', stated as '' {4} {5}"
+msgid "(Details: {0} code {1} = ''{2}'')"
+msgstr ""
+
+# DATA_REND_DETAILS_STATED_ND
+#: DATA_REND_DETAILS_STATED_ND
+msgid "(Details: {0} code {1})"
 msgstr ""
 
 # DATA_REND_DICOM
@@ -1236,9 +1286,9 @@ msgstr ""
 msgid "Unable to find referenced actor {0}"
 msgstr ""
 
-# EX_SCEN_UN_INST
-#: EX_SCEN_UN_INST
-msgid "Unable to find referenced instance {0}"
+# FMM_TABLE
+#: FMM_TABLE
+msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
 msgstr ""
 
 # GENERAL_ADD_LANG
@@ -1249,6 +1299,16 @@ msgstr ""
 # GENERAL_BINDING
 #: GENERAL_BINDING
 msgid "Binding"
+msgstr ""
+
+# GENERAL_BINDING_NO_DESC
+#: GENERAL_BINDING_NO_DESC
+msgid "No description provided"
+msgstr ""
+
+# GENERAL_BINDING_NO_VS
+#: GENERAL_BINDING_NO_VS
+msgid "Binding Description (No ValueSet)"
 msgstr ""
 
 # GENERAL_BIND_MIN_ALLOW
@@ -1392,6 +1452,11 @@ msgstr ""
 msgid "Max Length:"
 msgstr ""
 
+# GENERAL_MIN_LENGTH
+#: GENERAL_MIN_LENGTH
+msgid "Min Length:"
+msgstr ""
+
 # GENERAL_MODIFIERS
 #: GENERAL_MODIFIERS
 msgid "Modifiers"
@@ -1400,6 +1465,11 @@ msgstr ""
 # GENERAL_NAME
 #: GENERAL_NAME
 msgid "Name"
+msgstr ""
+
+# GENERAL_NCI_THES
+#: GENERAL_NCI_THES
+msgid "NCI Thesaurus"
 msgstr ""
 
 # GENERAL_NOTE
@@ -1491,6 +1561,7 @@ msgstr ""
 
 # GENERAL_STATUS
 #: GENERAL_STATUS
+msgctxt "GENERAL_STATUS"
 msgid "Status"
 msgstr ""
 
@@ -1567,6 +1638,36 @@ msgstr ""
 # IMP_GUIDE_URL
 #: IMP_GUIDE_URL
 msgid "The official URL for this implementation guide is:"
+msgstr ""
+
+# IP_INTRO
+#: IP_INTRO
+msgid "This {0} includes IP covered under the following statements."
+msgstr ""
+
+# IP_NONE
+#: IP_NONE
+msgid "No use of external IP"
+msgstr ""
+
+# IP_NONE_EXT
+#: IP_NONE_EXT
+msgid "No use of external IP (other than from the FHIR specification)"
+msgstr ""
+
+# KIND_EXTENSION
+#: KIND_EXTENSION
+msgid "extension"
+msgstr ""
+
+# KIND_LOGICAL
+#: KIND_LOGICAL
+msgid "logical model"
+msgstr ""
+
+# KIND_PROFILE
+#: KIND_PROFILE
+msgid "profile"
 msgstr ""
 
 # LIB_REND_ART
@@ -1698,6 +1799,27 @@ msgstr ""
 # MAP_DEFAULT_COMMENT
 #: MAP_DEFAULT_COMMENT
 msgid "This element was not defined prior to R5"
+msgstr ""
+
+# MATURITY_MATURITY
+#: MATURITY_MATURITY
+msgid "Maturity Level: {0}"
+msgstr ""
+
+# MATURITY_PUBLISHER
+#: MATURITY_PUBLISHER
+msgid "Publisher: {0}"
+msgstr ""
+
+# MATURITY_STATUS
+#: MATURITY_STATUS
+msgctxt "MATURITY_STATUS"
+msgid "Status"
+msgstr ""
+
+# MATURITY_STDS_STATUS
+#: MATURITY_STDS_STATUS
+msgid "Standards Status: {0}"
 msgstr ""
 
 # NAME_SYS_IDEN
@@ -4543,5 +4665,10 @@ msgstr ""
 # VS_ABSTRACT_CODE_HINT
 #: VS_ABSTRACT_CODE_HINT
 msgid "This code is not selectable (''Abstract'')"
+msgstr ""
+
+# _NA
+#: _NA
+msgid "n/a"
 msgstr ""
 
