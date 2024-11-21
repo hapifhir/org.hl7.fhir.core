@@ -471,7 +471,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (VersionUtilities.isR5Plus(context.getVersion())) {
           warning(errors, "2024-11-06", IssueType.BUSINESSRULE, dStack, !"pattern".equals(type), I18nConstants.SD_PATH_SLICING_DEPRECATED_R5, type);
         } else {
-          hint(errors, "2024-11-06", IssueType.BUSINESSRULE, dStack, ! !"pattern".equals(type), I18nConstants.SD_PATH_SLICING_DEPRECATED, type);
+          hint(errors, "2024-11-06", IssueType.BUSINESSRULE, dStack, !"pattern".equals(type), I18nConstants.SD_PATH_SLICING_DEPRECATED, type);
         }
         String pathExp = discriminator.getNamedChildValue("path");
         if (ted != null) {
