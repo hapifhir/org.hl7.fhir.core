@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* no changes
+* fix pattern discriminator validation rule
 
 ## Other code changes
 
