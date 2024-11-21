@@ -1123,6 +1123,7 @@ public class I18nConstants {
   public static final String PRIMITIVE_TOO_SHORT = "PRIMITIVE_TOO_SHORT";
   public static final String CANONICAL_MULTIPLE_VERSIONS_KNOWN = "CANONICAL_MULTIPLE_VERSIONS_KNOWN";
   public static final String SD_PATH_NO_SLICING = "SD_PATH_NO_SLICING";
+  public static final String SD_PATH_SLICING_DEPRECATED_R5 = "SD_PATH_SLICING_DEPRECATED_R5";
   public static final String SD_PATH_SLICING_DEPRECATED = "SD_PATH_SLICING_DEPRECATED";
   public static final String SD_PATH_NOT_VALID = "SD_PATH_NOT_VALID";
   public static final String SD_PATH_ERROR = "SD_PATH_ERROR";
@@ -1144,4 +1145,8 @@ public class I18nConstants {
   public static final String VIEWDEFINITION_COMPLEX_TYPE = "VIEWDEFINITION_COMPLEX_TYPE";
   public static final String CODESYSTEM_PROPERTY_ABSOLUTE_URI = "CODESYSTEM_PROPERTY_ABSOLUTE_URI";
   public static final String CODESYSTEM_CS_SUPP_HIERARCHY_MEANING = "CODESYSTEM_CS_SUPP_HIERARCHY_MEANING";
+  public static final String HTA_SCT_DESC = "HTA_SCT_DESC";
+  public static final String HTA_SCT_MESSAGE = "HTA_SCT_MESSAGE";
+  public static final String HTA_LOINC_DESC = "HTA_LOINC_DESC";
+  public static final String HTA_LOINC_MESSAGE = "HTA_LOINC_MESSAGE";
 }
