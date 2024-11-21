@@ -6572,8 +6572,13 @@ public class FHIRPathEngine {
   }
 
   private ElementDefinitionMatch getElementDefinitionById(StructureDefinition sd, String ref) {
-    if (ref.startsWith(sd.getUrl()+"#")) {
-      ref = ref.replace(sd.getUrl()+"#", "#"); 
+    StructureDefinition sdt = sd; 
+    while (sdt != null) {
+      if (ref.startsWith(sdt.getUrl()+"#")) {
+        ref = ref.replace(sdt.getUrl()+"#", "#");
+        break;
+      }
+      sdt = worker.fetchResource(StructureDefinition.class, sdt.getBaseDefinition());
     }
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ref.equals("#"+ed.getId())) {
