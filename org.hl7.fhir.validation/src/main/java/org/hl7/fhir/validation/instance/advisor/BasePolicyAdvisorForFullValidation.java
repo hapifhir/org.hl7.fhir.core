@@ -13,10 +13,6 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.AdditionalBindingPurpose;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.CodedContentValidationAction;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ElementValidationAction;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ResourceValidationAction;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
@@ -29,6 +25,14 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvisor {
   
   private ReferenceValidationPolicy refpol = ReferenceValidationPolicy.CHECK_VALID;
+
+  public IValidationPolicyAdvisor getPolicyAdvisor() {
+    return null;
+  }
+
+  public IValidationPolicyAdvisor setPolicyAdvisor(IValidationPolicyAdvisor policyAdvisor) {
+    throw new Error("This policy advisor is the end of the chain");
+  }
   
   public BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy refpol) {
     super();
@@ -167,6 +171,16 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
       }
     }
     return false;
+  }
+
+  @Override
+  public boolean isSuppressMessageId(String path, String messageId) {
+    return false;
+  }
+
+  @Override
+  public ReferenceValidationPolicy getReferencePolicy() {
+    return refpol;
   }
 
   

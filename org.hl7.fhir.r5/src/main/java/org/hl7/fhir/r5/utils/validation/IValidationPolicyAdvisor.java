@@ -16,6 +16,25 @@ import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 
 public interface IValidationPolicyAdvisor {
 
+
+  public IValidationPolicyAdvisor getPolicyAdvisor();
+  public IValidationPolicyAdvisor setPolicyAdvisor(IValidationPolicyAdvisor policyAdvisor);
+  
+  /** 
+   * Internal use, for chaining advisors
+   * 
+   * @return
+   */
+  ReferenceValidationPolicy getReferencePolicy();
+  
+  /**
+   * 
+   * @param path - the current path of the element
+   * @param messageId - the message id (from messages.properties)
+   * @return true if the validator should ignore the message
+   */
+  boolean isSuppressMessageId(String path, String messageId);
+  
   /**
    *
    * @param validator
@@ -169,5 +188,6 @@ public interface IValidationPolicyAdvisor {
                                                         boolean valid,
                                                         IMessagingServices msgServices,
                                                         List<ValidationMessage> messages);
+
   
 }

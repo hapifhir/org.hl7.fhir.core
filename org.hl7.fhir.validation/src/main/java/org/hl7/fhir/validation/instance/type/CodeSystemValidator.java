@@ -26,7 +26,7 @@ import org.hl7.fhir.validation.instance.type.CodeSystemValidator.PropertyDef;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
-public class CodeSystemValidator  extends BaseValidator {
+public class CodeSystemValidator extends BaseValidator {
 
   public enum KnownProperty {
     Status, Inactive, EffectiveDate, DeprecationDate, RetirementDate, NotSelectable, Parent, Child, PartOf, Synonym, Comment, ItemWeight;
@@ -159,9 +159,19 @@ public class CodeSystemValidator  extends BaseValidator {
       }
     } // todo... try getting the value set the other way...
 
+    CodeSystem csSupp = null;
     if ("supplement".equals(content) || supp != null) {      
       if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), !Utilities.noString(supp), I18nConstants.CODESYSTEM_CS_SUPP_NO_SUPP)) {
         if (context.supportsSystem(supp, options.getFhirVersion())) {
+          csSupp = context.fetchCodeSystem(supp);
+          if (csSupp != null) {
+            if (csSupp.hasHierarchyMeaningElement() && cs.hasChild("hierarchyMeaning")) {
+              String hm = cs.getNamedChildValue("hierarchyMeaning");
+              ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), hm.equals(csSupp.getHierarchyMeaning().toCode()), I18nConstants.CODESYSTEM_CS_SUPP_HIERARCHY_MEANING, hm, csSupp.getHierarchyMeaning().toCode()) & ok;
+            }
+              
+              
+          }
           List<Element> concepts = cs.getChildrenByName("concept");
           int ce = 0;
           for (Element concept : concepts) {
@@ -227,58 +237,63 @@ public class CodeSystemValidator  extends BaseValidator {
     PropertyDef pd = new PropertyDef(uri, code, type);
     KnownProperty ukp = null;
     KnownProperty ckp = null;
-    
+
     if (uri != null) {
-      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), !properties.containsKey(uri), I18nConstants.CODESYSTEM_PROPERTY_DUPLICATE_URI, uri)) {         
-        properties.put(uri, pd);
+      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), Utilities.isAbsoluteUrl(uri), I18nConstants.CODESYSTEM_PROPERTY_ABSOLUTE_URI, uri)) {
+        if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), !properties.containsKey(uri), I18nConstants.CODESYSTEM_PROPERTY_DUPLICATE_URI, uri)) {         
+          properties.put(uri, pd);
+        } else {
+          ok = false;
+        }
+        if (uri.contains("hl7.org/fhir")) {
+          switch (uri) {
+          case "http://hl7.org/fhir/concept-properties#status" :
+            ukp = KnownProperty.Status;
+            break;
+          case "http://hl7.org/fhir/concept-properties#inactive" :
+            ukp = KnownProperty.Inactive;
+            break;
+          case "http://hl7.org/fhir/concept-properties#effectiveDate" :
+            ukp = KnownProperty.EffectiveDate;
+            break;
+          case "http://hl7.org/fhir/concept-properties#deprecationDate" :
+            ukp = KnownProperty.DeprecationDate;
+            break;
+          case "http://hl7.org/fhir/concept-properties#retirementDate" :
+            ukp = KnownProperty.RetirementDate;
+            break;
+          case "http://hl7.org/fhir/concept-properties#notSelectable" :
+            ukp = KnownProperty.NotSelectable;
+            break;
+          case "http://hl7.org/fhir/concept-properties#parent" :
+            ukp = KnownProperty.Parent;
+            break;
+          case "http://hl7.org/fhir/concept-properties#child" :
+            ukp = KnownProperty.Child;
+            break;
+          case "http://hl7.org/fhir/concept-properties#partOf" :
+            ukp = KnownProperty.PartOf;
+            break;
+          case "http://hl7.org/fhir/concept-properties#synonym" :
+            ukp = KnownProperty.Synonym;
+            break;
+          case "http://hl7.org/fhir/concept-properties#comment" :
+            ukp = KnownProperty.Comment;
+            break;
+          case "http://hl7.org/fhir/concept-properties#itemWeight" :
+            ukp = KnownProperty.ItemWeight;
+            break;
+          default:
+            ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), isBaseSpec(cs.getNamedChildValue("url")) || isSelfRef(cs.getNamedChildValue("url"), uri), I18nConstants.CODESYSTEM_PROPERTY_BAD_HL7_URI, uri);
+          }
+        }
       } else {
         ok = false;
       }
-      if (uri.contains("hl7.org/fhir")) {
-        switch (uri) {
-        case "http://hl7.org/fhir/concept-properties#status" :
-          ukp = KnownProperty.Status;
-          break;
-        case "http://hl7.org/fhir/concept-properties#inactive" :
-          ukp = KnownProperty.Inactive;
-          break;
-        case "http://hl7.org/fhir/concept-properties#effectiveDate" :
-          ukp = KnownProperty.EffectiveDate;
-          break;
-        case "http://hl7.org/fhir/concept-properties#deprecationDate" :
-          ukp = KnownProperty.DeprecationDate;
-          break;
-        case "http://hl7.org/fhir/concept-properties#retirementDate" :
-          ukp = KnownProperty.RetirementDate;
-          break;
-        case "http://hl7.org/fhir/concept-properties#notSelectable" :
-          ukp = KnownProperty.NotSelectable;
-          break;
-        case "http://hl7.org/fhir/concept-properties#parent" :
-          ukp = KnownProperty.Parent;
-          break;
-        case "http://hl7.org/fhir/concept-properties#child" :
-          ukp = KnownProperty.Child;
-          break;
-        case "http://hl7.org/fhir/concept-properties#partOf" :
-          ukp = KnownProperty.PartOf;
-          break;
-        case "http://hl7.org/fhir/concept-properties#synonym" :
-          ukp = KnownProperty.Synonym;
-          break;
-        case "http://hl7.org/fhir/concept-properties#comment" :
-          ukp = KnownProperty.Comment;
-          break;
-        case "http://hl7.org/fhir/concept-properties#itemWeight" :
-          ukp = KnownProperty.ItemWeight;
-          break;
-        default:
-          ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), isBaseSpec(cs.getNamedChildValue("url")) || isSelfRef(cs.getNamedChildValue("url"), uri), I18nConstants.CODESYSTEM_PROPERTY_BAD_HL7_URI, uri);
-        }
-      }
     }    
     if (code != null) {
-      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), !properties.containsKey(code), I18nConstants.CODESYSTEM_PROPERTY_DUPLICATE_CODE, code)) {         
+      boolean pcok = properties.containsKey(code);
+      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), !pcok, I18nConstants.CODESYSTEM_PROPERTY_DUPLICATE_CODE, code)) {         
         properties.put(code, pd);
       } else {
         ok = false;
@@ -523,10 +538,11 @@ public class CodeSystemValidator  extends BaseValidator {
         NodeStack s = stack.push(cs.getNamedChild("caseSensitive", false), -1, null, null);
         rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL, "caseSensitive");
       }
-      if (!Utilities.noString(hierarchyMeaning)) {
-        NodeStack s = stack.push(cs.getNamedChild("hierarchyMeaning", false), -1, null, null);
-        rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL, "hierarchyMeaning");
-      }
+      // can't run this test because of csd-2/csd-3
+//      if (!Utilities.noString(hierarchyMeaning)) {
+//        NodeStack s = stack.push(cs.getNamedChild("hierarchyMeaning", false), -1, null, null);
+//        rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL, "hierarchyMeaning");
+//      }
 
     } else {
       boolean isHL7 = url != null && (url.contains("hl7.org") || url.contains("fhir.org"));
@@ -622,7 +638,7 @@ public class CodeSystemValidator  extends BaseValidator {
 
   private boolean validateSupplementConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String supp, ValidationOptions options) {
     String code = concept.getChildValue("code");
-    if (!Utilities.noString(code)) {
+    if (!Utilities.noString(code) && !noTerminologyChecks) {
       var canonical = new CanonicalPair(supp);
       org.hl7.fhir.r5.terminologies.utilities.ValidationResult res = context.validateCode(options, canonical.getUrl(), canonical.getVersion(), code, null);
       return rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), res.isOk(), I18nConstants.CODESYSTEM_CS_SUPP_INVALID_CODE, supp, code);

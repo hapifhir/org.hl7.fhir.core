@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -126,11 +127,11 @@ public class CKMImporter {
 
   private Document loadXml(String address) throws Exception {
 
-    HTTPResult res = ManagedWebAccess.get(address, "application/xml");
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), address, "application/xml");
     res.checkThrowException();
     InputStream xml = new ByteArrayInputStream(res.getContent());
 
-    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory dbf = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     DocumentBuilder db = dbf.newDocumentBuilder();
     return db.parse(xml);
   }

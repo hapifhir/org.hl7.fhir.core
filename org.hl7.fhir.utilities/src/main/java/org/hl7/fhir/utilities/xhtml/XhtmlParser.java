@@ -586,7 +586,6 @@ public class XhtmlParser {
     if (t.length() > 0)
     {
       lastText = t;
-      // System.out.println(t);
       node.addText(t).setLocation(markLocation());
       s.setLength(0);
     }

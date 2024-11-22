@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -54,9 +55,9 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
   public void setPath(Resource r) {
     String path = lkp.getResourcePath(r);
     if (lkp.getWebRoot() != null) { 
-      r.setUserData("webroot", lkp.getWebRoot());
+      r.setUserData(UserDataNames.render_webroot, lkp.getWebRoot());
     } else {
-      r.setUserData("webroot", "");      
+      r.setUserData(UserDataNames.render_webroot, "");      
     }
     if (path != null) {
       r.setWebPath(path);
@@ -116,7 +117,7 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
   // and we only patch URLs to support version transforms
   // so we just patch sd/od -> vs -> cs
   protected void doPatchUrls(Resource resource) {
-    resource.setUserData("old.load.mode", true);
+    resource.setUserData(UserDataNames.loader_urls_patched, true);
     if (resource instanceof CanonicalResource) {
       CanonicalResource cr = (CanonicalResource) resource;
       cr.setUrl(patchUrl(cr.getUrl(), cr.fhirType()));

@@ -8,6 +8,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
@@ -23,19 +24,58 @@ import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 
+/**
+ * How to use the Runner:
+ * 
+ * create a resource, and fill out:
+ *   the context (supports the FHIRPathEngine)
+ *   a store that handles the output 
+ *   a tracker - if you want
+ *   
+ * Once it's created, you either run it as a batch, or in trickle mode
+ * 
+ *   (1) Batch Mode
+ *   
+ *    * provide a provider 
+ *    * call execute() with a ViewDefinition
+ *    * wait... (watch with an observer if you want to track progress)
+ *   
+ *   (2) Trickle Mode
+ *    * call 'prepare', and keep the WorkContext that's returned
+ *    * each time there's a resource to process, call processResource and pass in the workContext and the resource
+ *    * when done, call finish(WorkContext)
+ */
+
 public class Runner implements IEvaluationContext {
+  
+  public interface IRunnerObserver {
+    public void handleRow(Base resource, int total, int cursor);
+  }
+  
+  public class WorkContext {
+    private JsonObject vd;
+    private Store store;
+    protected WorkContext(JsonObject vd) {
+      super();
+      this.vd = vd;
+    }
+    
+  }
   private IWorkerContext context;
   private Provider provider;
   private Storage storage;
+  private IRunnerObserver observer;
   private List<String> prohibitedNames = new ArrayList<String>();
   private FHIRPathEngine fpe;
 
   private String resourceName;
   private List<ValidationMessage> issues;
+  private int resCount;
 
 
   public IWorkerContext getContext() {
@@ -44,7 +84,6 @@ public class Runner implements IEvaluationContext {
   public void setContext(IWorkerContext context) {
     this.context = context;
   }
-
 
   public Provider getProvider() {
     return provider;
@@ -69,6 +108,29 @@ public class Runner implements IEvaluationContext {
   }
 
   public void execute(String path, JsonObject viewDefinition) {
+    WorkContext wc = prepare(path, viewDefinition);
+    try {
+      evaluate(wc);
+    } finally {
+      finish(wc);
+    }
+  }
+
+  private void evaluate(WorkContext wc) {
+    List<Base> data = provider.fetch(resourceName);
+
+    int i = 0;
+    for (Base b : data) {
+      if (observer != null) {
+        observer.handleRow(b, data.size(), i);
+      }
+      processResource(wc.vd, wc.store, b);
+      i++;
+    }
+  }
+
+  public WorkContext prepare(String path, JsonObject viewDefinition) {
+    WorkContext wc = new WorkContext(viewDefinition);
     if (context == null) {
       throw new FHIRException("No context provided");
     }
@@ -90,50 +152,57 @@ public class Runner implements IEvaluationContext {
     validator.dump();
     validator.check();
     resourceName = validator.getResourceName();
-    evaluate(viewDefinition);
-  }
-
-  private void evaluate(JsonObject vd) {
-    Store store = storage.createStore(vd.asString("name"), (List<Column>) vd.getUserData("columns"));
-
-    List<Base> data = provider.fetch(resourceName);
-
-    for (Base b : data) {
-      boolean ok = true;
-      for (JsonObject w : vd.getJsonObjects("where")) {
-        String expr = w.asString("path");
-        ExpressionNode node = fpe.parse(expr);
-        boolean pass = fpe.evaluateToBoolean(vd, b, b, b, node);
-        if (!pass) {
-          ok = false;
-          break;
-        }  
-      }
-      if (ok) {
-        List<List<Cell>> rows = new ArrayList<>();
-        rows.add(new ArrayList<Cell>());
-
-        for (JsonObject select : vd.getJsonObjects("select")) {
-          executeSelect(vd, select, b, rows);
-        }
-        for (List<Cell> row : rows) {
-          storage.addRow(store, row);
-        }
-      }
-    }
-    storage.finish(store);
+    wc.store = storage.createStore(wc.vd.asString("name"), (List<Column>) wc.vd.getUserData(UserDataNames.db_columns));
+    return wc;
   }
   
+  public void processResource(WorkContext wc, Base b) {
+    if (observer != null) {
+      observer.handleRow(b, -1, resCount);
+    }
+    processResource(wc.vd, wc.store, b);
+    resCount++;
+    wc.store.flush();
+  }
+  
+  private void processResource(JsonObject vd, Store store, Base b) {
+    boolean ok = true;
+    for (JsonObject w : vd.getJsonObjects("where")) {
+      String expr = w.asString("path");
+      ExpressionNode node = fpe.parse(expr);
+      boolean pass = fpe.evaluateToBoolean(vd, b, b, b, node);
+      if (!pass) {
+        ok = false;
+        break;
+      }  
+    }
+    if (ok) {
+      List<List<Cell>> rows = new ArrayList<>();
+      rows.add(new ArrayList<Cell>());
+
+      for (JsonObject select : vd.getJsonObjects("select")) {
+        executeSelect(vd, select, b, rows);
+      }
+      for (List<Cell> row : rows) {
+        storage.addRow(store, row);
+      }
+    }
+  }
+  
+  public void finish(WorkContext wc) {
+    storage.finish(wc.store);
+  }
+
   private void executeSelect(JsonObject vd, JsonObject select, Base b, List<List<Cell>> rows) {
     List<Base> focus = new ArrayList<>();
-    
+
     if (select.has("forEach")) {
       focus.addAll(executeForEach(vd, select, b));
     } else if (select.has("forEachOrNull")) {
-      
+
       focus.addAll(executeForEachOrNull(vd, select, b));  
       if (focus.isEmpty()) {
-        List<Column> columns = (List<Column>) select.getUserData("columns");
+        List<Column> columns = (List<Column>) select.getUserData(UserDataNames.db_columns);
         for (List<Cell> row : rows) {
           for (Column c : columns) {
             Cell cell = cell(row, c.getName());
@@ -148,8 +217,8 @@ public class Runner implements IEvaluationContext {
       focus.add(b);
     }
 
-//  } else if (select.has("unionAll")) {
-//    focus.addAll(executeUnion(select, b));
+    //  } else if (select.has("unionAll")) {
+    //    focus.addAll(executeUnion(select, b));
 
     List<List<Cell>> tempRows = new ArrayList<>();
     tempRows.addAll(rows);
@@ -165,9 +234,9 @@ public class Runner implements IEvaluationContext {
       for (JsonObject sub : select.getJsonObjects("select")) {
         executeSelect(vd, sub, f, rowsToAdd);
       }
-      
+
       executeUnionAll(vd, select.getJsonObjects("unionAll"), f, rowsToAdd);
-      
+
       rows.addAll(rowsToAdd);
     }
   }
@@ -195,7 +264,7 @@ public class Runner implements IEvaluationContext {
     }
     return list;
   }
-  
+
   private List<Cell> cloneRow(List<Cell> cells) {
     List<Cell> list = new ArrayList<>();
     for (Cell cell : cells) {
@@ -205,26 +274,26 @@ public class Runner implements IEvaluationContext {
   }
 
   private List<Base> executeForEach(JsonObject vd, JsonObject focus, Base b) {
-    ExpressionNode n = (ExpressionNode) focus.getUserData("forEach");
+    ExpressionNode n = (ExpressionNode) focus.getUserData(UserDataNames.db_forEach);
     List<Base> result = new ArrayList<>();
     result.addAll(fpe.evaluate(vd, b, n));
     return result;  
   }
 
   private List<Base> executeForEachOrNull(JsonObject vd, JsonObject focus, Base b) {
-    ExpressionNode n = (ExpressionNode) focus.getUserData("forEachOrNull");
+    ExpressionNode n = (ExpressionNode) focus.getUserData(UserDataNames.db_forEachOrNull);
     List<Base> result = new ArrayList<>();
     result.addAll(fpe.evaluate(vd, b, n));
     return result;  
   }
 
   private void executeColumn(JsonObject vd, JsonObject column, Base b, List<List<Cell>> rows) {
-    ExpressionNode n = (ExpressionNode) column.getUserData("path");
+    ExpressionNode n = (ExpressionNode) column.getUserData(UserDataNames.db_path);
     List<Base> bl2 = new ArrayList<>();
     if (b != null) {
       bl2.addAll(fpe.evaluate(vd, b, n));
     }
-    Column col = (Column) column.getUserData("column");
+    Column col = (Column) column.getUserData(UserDataNames.db_column);
     if (col == null) {
       System.out.println("Error");
     } else {
@@ -323,7 +392,7 @@ public class Runner implements IEvaluationContext {
       throw new FHIRException("Attempt to add a type "+b.fhirType()+" to an unknown column type for column "+column.getName());
     }
   }
-  
+
   private Column column(String columnName, List<Column> columns) {
     for (Column t : columns) {
       if (t.getName().equalsIgnoreCase(columnName)) {
@@ -341,7 +410,7 @@ public class Runner implements IEvaluationContext {
     }
     return null;
   }
-  
+
   @Override
   public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
     List<Base> list = new ArrayList<Base>();
@@ -349,7 +418,7 @@ public class Runner implements IEvaluationContext {
       JsonObject vd = (JsonObject) appContext;
       JsonObject constant = findConstant(vd, name);
       if (constant != null) {
-        Base b = (Base) constant.getUserData("value");
+        Base b = (Base) constant.getUserData(UserDataNames.db_value);
         if (b != null) {
           list.add(b);
         }
@@ -361,12 +430,23 @@ public class Runner implements IEvaluationContext {
   @Override
   public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
     if (explicitConstant) {
-      JsonObject vd = (JsonObject) appContext;
-      JsonObject constant = findConstant(vd, name.substring(1));
-      if (constant != null) {
-        Base b = (Base) constant.getUserData("value");
-        if (b != null) {
-          return new TypeDetails(CollectionStatus.SINGLETON, b.fhirType());
+      if (appContext instanceof JsonObject) {
+        JsonObject vd = (JsonObject) appContext;
+        JsonObject constant = findConstant(vd, name.substring(1));
+        if (constant != null) {
+          Base b = (Base) constant.getUserData(UserDataNames.db_value);
+          if (b != null) {
+            return new TypeDetails(CollectionStatus.SINGLETON, b.fhirType());
+          }
+        }
+      } else if (appContext instanceof Element) {
+        Element vd = (Element) appContext;
+        Element constant = findConstant(vd, name.substring(1));
+        if (constant != null) {
+          Element v = constant.getNamedChild("value");
+          if (v != null) {
+            return new TypeDetails(CollectionStatus.SINGLETON, v.fhirType());
+          }
         }
       }
     }
@@ -381,6 +461,16 @@ public class Runner implements IEvaluationContext {
     }
     return null;
   }
+
+  private Element findConstant(Element vd, String name) {
+    for (Element o : vd.getChildren("constant")) {
+      if (name.equals(o.getNamedChildValue("name"))) {
+        return o;
+      }
+    }
+    return null;
+  }
+  
   @Override
   public boolean log(String argument, List<Base> focus) {
     throw new Error("Not implemented yet: log");
@@ -416,19 +506,19 @@ public class Runner implements IEvaluationContext {
     List<Base> base = new ArrayList<Base>();
     if (focus.size() == 1) {
       Base res = focus.get(0);
-      if (!res.hasUserData("Storage.key")) {
+      if (!res.hasUserData(UserDataNames.Storage_key)) {
         String key = storage.getKeyForSourceResource(res);
         if (key == null) {
           throw new FHIRException("Unidentified resource: "+res.fhirType()+"/"+res.getIdBase());
         } else {
-          res.setUserData("Storage.key", key);
+          res.setUserData(UserDataNames.Storage_key, key);
         }
       }
-      base.add(new StringType(res.getUserString("Storage.key")));
+      base.add(new StringType(res.getUserString(UserDataNames.Storage_key)));
     }
     return base;
   }
-  
+
   private List<Base> executeReferenceKey(Base rootResource, List<Base> focus, List<List<Base>> parameters) {
     String rt = null;
     if (parameters.size() > 0) {
@@ -451,15 +541,15 @@ public class Runner implements IEvaluationContext {
       if (ref !=  null) {
         Base target = provider.resolveReference(rootResource, ref, rt);
         if (target != null) {
-          if (!res.hasUserData("Storage.key")) {
+          if (!res.hasUserData(UserDataNames.Storage_key)) {
             String key = storage.getKeyForTargetResource(target);
             if (key == null) {
               throw new FHIRException("Unidentified resource: "+res.fhirType()+"/"+res.getIdBase());
             } else {
-              res.setUserData("Storage.key", key);
+              res.setUserData(UserDataNames.Storage_key, key);
             }
           }
-          base.add(new StringType(res.getUserString("Storage.key")));
+          base.add(new StringType(res.getUserString(UserDataNames.Storage_key)));
         }
       }
     }
@@ -473,7 +563,7 @@ public class Runner implements IEvaluationContext {
     }
     return null;
   }
-  
+
   @Override
   public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
     throw new Error("Not implemented yet: resolveReference");

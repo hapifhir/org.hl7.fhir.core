@@ -7,6 +7,7 @@ import java.util.List;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -23,8 +24,8 @@ public class SnomedCTChecker extends CodeSystemChecker {
   private boolean hasTag = false;
   private List<String> tags = new ArrayList<>();
   
-  public SnomedCTChecker(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, List<ValidationMessage> errors) {
-    super(context, xverManager, debug, errors);
+  public SnomedCTChecker(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, List<ValidationMessage> errors, ValidatorSession session) {
+    super(context, xverManager, debug, errors, session);
   }
   
   public void checkConcept(String code, String display) {

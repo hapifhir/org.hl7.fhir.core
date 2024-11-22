@@ -1,10 +1,13 @@
 package org.hl7.fhir.validation.special;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,30 +17,33 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.hl7.fhir.convertors.conv40_50.VersionConvertor_40_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -56,9 +62,13 @@ public class TxTester {
   private ITxTesterLoader loader;
   private String error;
   private String output;
-  private ITerminologyClient tx;
+  private ITerminologyClient terminologyClient;
   private boolean tight;
   private JsonObject externals;
+  private String software;
+  private List<String> fails = new ArrayList<>();
+  private CapabilityStatement cstmt;
+  private TerminologyCapabilities tc;
   
 
   public TxTester(ITxTesterLoader loader, String server, boolean tight, JsonObject externals) {
@@ -81,6 +91,12 @@ public class TxTester {
     System.out.println("Run terminology service Tests");
     System.out.println("  Source for tests: "+loader.describe());
     System.out.println("  Output Directory: "+output);
+    if (!new File(output).exists()) {
+      Utilities.createDirectory(output);
+    }
+    if (!new File(output).exists()) {
+      throw new IOException("Unable to create output directory "+output);
+    }
     System.out.println("  Term Service Url: "+server);
     System.out.println("  External Strings: "+(externals != null));
     System.out.println("  Test  Exec Modes: "+modes.toString());
@@ -95,25 +111,33 @@ public class TxTester {
     json.add("date", new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(Calendar.getInstance().getTime()) + timezone());
     try {
       JsonObject tests = loadTests();
-      ITerminologyClient tx = connectToServer();
-      boolean ok = checkClient(tx);
+      terminologyClient = connectToServer(modes);
+      boolean ok = checkClient();
       for (JsonObject suite : tests.getJsonObjects("suites")) {
         if ((!suite.has("mode") || modes.contains(suite.asString("mode")))) {
           if (suite.asBoolean("disabled")) {
             // ok = true;
           } else {
-            ok = runSuite(suite, tx, modes, filter, json.forceArray("suites")) && ok;
+            ok = runSuite(suite, modes, filter, json.forceArray("suites")) && ok;
           }
         }
       }
       TextFile.stringToFile(JsonParser.compose(json, true), Utilities.path(output, "test-results.json"));
-      if (ok) {
-        System.out.println("Terminology Service Tests all passed");
-        return true;
+
+      if (filter == null) {
+        String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join(";", modes);
+        if (ok) {
+          System.out.println(software+" passed all HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+          return true;
+        } else {
+          System.out.println(software+" did not pass all HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+          System.out.println("Failed Tests: "+ CommaSeparatedStringBuilder.join(",", fails ));
+          return false;
+        }        
       } else {
-        System.out.println("Terminology Service Tests did not all pass");
-        return false;
-      }        
+        System.out.println(software+" "+(ok ? "Passed the tests" : "did not pass the tests")+" '"+filter+"'");
+        return ok;
+      }
     } catch (Exception e) {
       System.out.println("Exception running Terminology Service Tests: "+e.getMessage());
       e.printStackTrace();
@@ -133,9 +157,12 @@ public class TxTester {
     return offset;
   }
 
-  private boolean checkClient(ITerminologyClient tx) {
-    tx.getCapabilitiesStatementQuick();
-    tx.getTerminologyCapabilities();
+  private boolean checkClient() {
+    cstmt = terminologyClient.getCapabilitiesStatement();
+    if (cstmt.hasSoftware()) {
+      software = cstmt.getSoftware().getName()+" v"+cstmt.getSoftware().getVersion();
+    }
+    tc = terminologyClient.getTerminologyCapabilities();
     return true;
   }
 
@@ -143,28 +170,53 @@ public class TxTester {
     System.out.println("Load Tests from "+loader.describe());
     return JsonParser.parseObject(loader.loadContent("test-cases.json"));
   }
+  
+  private String loadVersion() throws JsonException, IOException {
+    return processHistoryMarkdown(loader.loadContent("history.md"));
+  }
 
-  private ITerminologyClient connectToServer() throws URISyntaxException {
+  public static String processHistoryMarkdown(byte[] content) throws IOException {
+    DataInputStream in = new DataInputStream(new ByteArrayInputStream(content));
+    BufferedReader br = new BufferedReader(new InputStreamReader(in));
+    try {
+      String strLine;
+      //Read File Line By Line
+      while ((strLine = br.readLine()) != null)   {
+        if (strLine.startsWith("## ")) {
+          return strLine.substring(3).trim();
+        }
+      }
+    } finally {
+      br.close();
+      in.close();
+    }
+    return "<1.6.0";
+  }
+
+  private ITerminologyClient connectToServer(List<String> modes) throws URISyntaxException, IOException {
     System.out.println("Connect to "+server);
-    return new TerminologyClientFactory(FhirPublication.R4).makeClient("Test-Server", server, "Tools/Java", null);  
+    software = server;
+    ITerminologyClient client = new TerminologyClientFactory(FhirPublication.R4).makeClient("Test-Server", server, "Tools/Java", null);
+    return client;  
   }
 
 
   public String executeTest(JsonObject suite, JsonObject test, List<String> modes) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
     error = null;
-    if (tx == null) {
-      tx = connectToServer();
-      checkClient(tx);
+    if (terminologyClient == null) {
+      terminologyClient = connectToServer(modes);
+      checkClient();
     }
     List<Resource> setup = loadSetupResources(suite);
-    if (runTest(test, tx, setup, modes, "*", null)) {
+
+    if (runTest(suite, test, setup, modes, "*", null)) {
       return null;      
     } else {
       return error;
     }
   }
   
-  private boolean runSuite(JsonObject suite, ITerminologyClient tx, List<String> modes, String filter, JsonArray output) throws FHIRFormatError, FileNotFoundException, IOException {
+  private boolean runSuite(JsonObject suite, List<String> modes, String filter, JsonArray output) throws FHIRFormatError, FileNotFoundException, IOException {
     System.out.println("Group "+suite.asString("name"));
     JsonObject outputS = new JsonObject();
     if (output != null) {
@@ -174,16 +226,18 @@ public class TxTester {
     List<Resource> setup = loadSetupResources(suite);
     boolean ok = true;
     for (JsonObject test : suite.getJsonObjects("tests")) {
-      if (test.asBoolean("disabled")) {
-        ok = true;
-      } else {
-        ok = runTest(test, tx, setup, modes, filter, outputS.forceArray("tests")) && ok;
+      if ((!test.has("mode") || modes.contains(test.asString("mode")))) {
+        if (test.asBoolean("disabled")) {
+          ok = true;
+        } else {
+          ok = runTest(suite, test, setup, modes, filter, outputS.forceArray("tests")) && ok;
+        }
       }
     }
     return ok;
   }
 
-  private boolean runTest(JsonObject test, ITerminologyClient tx, List<Resource> setup, List<String> modes, String filter, JsonArray output) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
+  private boolean runTest(JsonObject suite, JsonObject test, List<Resource> setup, List<String> modes, String filter, JsonArray output) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
     JsonObject outputT = new JsonObject();
     if (output != null) {
       output.add(outputT);
@@ -193,30 +247,44 @@ public class TxTester {
     outputT.add("name", test.asString("name"));
     if (Utilities.noString(filter) || filter.equals("*") || test.asString("name").contains(filter)) {
       System.out.print("  Test "+test.asString("name")+": ");
+      HTTPHeader header = null;
       try {
-        Parameters req = (Parameters) loader.loadResource(chooseParam(test, "request", modes));
+        if (test.has("header")) {
+          JsonObject hdr = test.getJsonObject("header");
+          if (hdr.has("mode") && modes.contains(hdr.asString("mode"))) {
+            header = new HTTPHeader(hdr.asString("name"), hdr.asString("value"));
+            terminologyClient.setClientHeaders(new ClientHeaders(List.of(header)));
+          }
+        }
+
+        String reqFile = chooseParam(test, "request", modes);
+        Parameters req = reqFile == null ? null : (Parameters) loader.loadResource(reqFile);
 
         String fn = chooseParam(test, "response", modes);
         String resp = TextFile.bytesToString(loader.loadContent(fn));
-        String fp = Utilities.path("[tmp]", serverId(), fn);
+        String fp = this.output == null ?  Utilities.path("[tmp]", serverId(), fn) : Utilities.path(this.output, fn);
         File fo = ManagedFileAccess.file(fp);
         if (fo.exists()) {
           fo.delete();
         }
         JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
 
-        String lang = test.asString("Content-Language");
+        String lang = test.asString("Accept-Language");
         String msg = null;
-        if (test.asString("operation").equals("expand")) {
-          msg = expand(test.str("name"), tx, setup, req, resp, fp, lang, profile, ext);
+        if (test.asString("operation").equals("metadata")) {
+          msg = metadata(test.str("name"), setup, resp, fp, lang, profile, ext);
+        } else if (test.asString("operation").equals("term-caps")) {
+          msg = termcaps(test.str("name"), setup, resp, fp, lang, profile, ext);
+        } else if (test.asString("operation").equals("expand")) {
+          msg = expand(test.str("name"), setup, req, resp, fp, lang, profile, ext, getResponseCode(test));
         } else if (test.asString("operation").equals("validate-code")) {
-          msg = validate(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
+          msg = validate(test.str("name"), setup, req, resp, fp, lang, profile, ext, getResponseCode(test));      
         } else if (test.asString("operation").equals("cs-validate-code")) {
-          msg = validateCS(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
+          msg = validateCS(test.str("name"), setup, req, resp, fp, lang, profile, ext, getResponseCode(test));      
         } else if (test.asString("operation").equals("lookup")) {
-          msg = lookup(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
+          msg = lookup(test.str("name"), setup, req, resp, fp, lang, profile, ext, getResponseCode(test));      
         } else if (test.asString("operation").equals("translate")) {
-          msg = translate(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
+          msg = translate(test.str("name"), setup, req, resp, fp, lang, profile, ext, getResponseCode(test));      
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -225,22 +293,66 @@ public class TxTester {
         if (msg != null) {
           System.out.println("    "+msg);
           error = msg;
+          fails.add(suite.asString("name")+"/"+test.asString("name"));
         }  
         outputT.add("status", msg == null ? "pass" : "fail");
         if (msg != null) {
           outputT.add("message", msg);
         }
+        if (header != null) {
+          terminologyClient.setClientHeaders(new ClientHeaders());
+        }
         return msg == null;
       } catch (Exception e) {
         System.out.println("  ... Exception: "+e.getMessage());
         System.out.print("    ");
+        fails.add(suite.asString("name")+"/"+test.asString("name"));
         error = e.getMessage();
         e.printStackTrace();
+        if (header != null) {
+          terminologyClient.setClientHeaders(new ClientHeaders());
+        }
         return false;
       }
     } else {
       outputT.add("status", "ignored");
       return true;
+    }
+  }
+
+  private String metadata(String id, List<Resource> setup, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+    CapabilityStatement cs = cstmt.copy();
+    TxTesterScrubbers.scrubCapStmt(cs, tight);
+    TxTesterSorters.sortCapStmt(cs);
+    String csj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(cs);
+
+    String diff = new CompareUtilities(ext, vars()).setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
+    if (diff != null) {
+      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
+      TextFile.stringToFile(csj, fp);        
+    }
+    return diff;
+  }
+
+  private String termcaps(String id, List<Resource> setup, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+    TerminologyCapabilities cs = tc.copy();
+    TxTesterScrubbers.scrubTermCaps(cs, tight);
+    TxTesterSorters.sortTermCaps(cs);
+    String csj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(cs);
+
+    String diff = new CompareUtilities(ext, vars()).setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
+    if (diff != null) {
+      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
+      TextFile.stringToFile(csj, fp);        
+    }
+    return diff;
+  }
+
+  private String getResponseCode(JsonObject test) {
+    if (test.has("http-code")) {
+      return test.asString("http-code");
+    } else {
+      return "2xx";
     }
   }
 
@@ -265,24 +377,30 @@ public class TxTester {
     return new URI(server).getHost();
   }
 
-  private String lookup(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+  private String lookup(String id, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
-    tx.setContentLanguage(lang);
+    terminologyClient.setAcceptLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
+    int code = 0;
     String pj;
     try {
-      Parameters po = tx.lookupCode(p);
+      Parameters po = terminologyClient.lookupCode(p);
       TxTesterScrubbers.scrubParams(po);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+      code = 200;
     } catch (EFhirClientException e) {
+      code = e.getCode();
       OperationOutcome oo = e.getServerError(); 
       TxTesterScrubbers.scrubOO(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, pj, false, ext);
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    }
+    String diff = new CompareUtilities(ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(pj, fp);        
@@ -290,24 +408,30 @@ public class TxTester {
     return diff;
   }
 
-  private String translate(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+  private String translate(String id, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
-    tx.setContentLanguage(lang);
+    terminologyClient.setAcceptLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
+    int code = 0;
     String pj;
     try {
-      Parameters po = tx.translate(p);
+      Parameters po = terminologyClient.translate(p);
       TxTesterScrubbers.scrubParams(po);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+      code = 200;
     } catch (EFhirClientException e) {
+      code = e.getCode();
       OperationOutcome oo = e.getServerError(); 
       TxTesterScrubbers.scrubOO(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, pj, false, ext);
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    }
+    String diff = new CompareUtilities(ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(pj, fp);        
@@ -315,24 +439,30 @@ public class TxTester {
     return diff;
   }
 
-  private String expand(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+  private String expand(String id, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
-    tx.setContentLanguage(lang);
+    terminologyClient.setAcceptLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
+    int code = 0;
     String vsj;
     try {
-      ValueSet vs = tx.expandValueset(null, p);
+      ValueSet vs = terminologyClient.expandValueset(null, p);
       TxTesterScrubbers.scrubVS(vs, tight);
       TxTesterSorters.sortValueSet(vs);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vs);
+      code = 200;
     } catch (EFhirClientException e) {
+      code = e.getCode();
       OperationOutcome oo = e.getServerError(); 
       TxTesterScrubbers.scrubOO(oo, tight);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, vsj, false, ext);
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    }
+    String diff = new CompareUtilities(ext, vars()).checkJsonSrcIsSame(id, resp, vsj, false);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(vsj, fp);        
@@ -340,24 +470,42 @@ public class TxTester {
     return diff;
   }
 
-  private String validate(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+  private boolean httpCodeOk(String tcode, int code) {
+    switch (tcode) {
+    case "2xx" : return code >= 200 && code < 300;
+    case "3xx" : return code >= 300 && code < 400;
+    case "4xx" : return code >= 400 && code < 500;
+    case "5xx" : return code >= 500 && code < 600;
+    default:
+      throw new Error("unknown code string "+tcode);
+    }
+  }
+
+  private String validate(String id, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
     p.getParameter().addAll(profile.getParameter());
-    tx.setContentLanguage(lang);
+    terminologyClient.setAcceptLanguage(lang);
+    int code = 0;
     String pj;
     try {
-      Parameters po = tx.validateVS(p);
+      Parameters po = terminologyClient.validateVS(p);
       TxTesterScrubbers.scrubParams(po);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+      code = 200;
     } catch (EFhirClientException e) {
+      code = e.getCode();
       OperationOutcome oo = e.getServerError(); 
+      TxTesterScrubbers.scrubOO(oo, tight);
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, pj, false, ext);
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    }
+    String diff = new CompareUtilities(ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(pj, fp);        
@@ -365,24 +513,30 @@ public class TxTester {
     return diff;
   }
   
-  private String validateCS(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+  private String validateCS(String id, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext, String tcode) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
     p.getParameter().addAll(profile.getParameter());
-    tx.setContentLanguage(lang);
+    terminologyClient.setAcceptLanguage(lang);
+    int code = 0;
     String pj;
     try {
-      Parameters po = tx.validateCS(p);
+      Parameters po = terminologyClient.validateCS(p);
       TxTesterScrubbers.scrubParams(po);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+      code = 200;
     } catch (EFhirClientException e) {
+      code = e.getCode();
       OperationOutcome oo = e.getServerError(); 
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, pj, false, ext);
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    }
+    String diff = new CompareUtilities(ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(pj, fp);        
@@ -390,6 +544,13 @@ public class TxTester {
     return diff;
   }
 
+
+  private Map<String, String> vars() {
+    Map<String, String> vars = new HashMap<String, String>();
+    vars.put("version", terminologyClient.getActualVersion().toCode());
+    return vars;
+    
+  }
 
   private List<Resource> loadSetupResources(JsonObject suite) throws FHIRFormatError, FileNotFoundException, IOException {
     List<Resource> res = new ArrayList<>();
@@ -474,10 +635,14 @@ public class TxTester {
     @Override
     public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
       Resource res = new org.hl7.fhir.r5.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, filename)));
-      org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_40_50.convertResource(res);
-      String p = Utilities.path(folder, "r4", filename);
-      Utilities.createDirectory(Utilities.getDirectoryForFile(p));
-      new org.hl7.fhir.r4.formats.JsonParser().compose(ManagedFileAccess.outStream(p), r4);
+      try {
+        org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_40_50.convertResource(res);
+        String p = Utilities.path(folder, "r4", filename);
+        Utilities.createDirectory(Utilities.getDirectoryForFile(p));
+        new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(p), r4);
+      } catch (Exception e) {
+        // nothing...
+      }      
       return res;
     }
 

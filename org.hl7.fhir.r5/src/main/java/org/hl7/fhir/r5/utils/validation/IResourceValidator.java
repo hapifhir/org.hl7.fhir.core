@@ -80,7 +80,7 @@ public interface IResourceValidator {
   IResourceValidator setFetcher(IValidatorResourceFetcher value);
 
   IValidationPolicyAdvisor getPolicyAdvisor();
-  IResourceValidator setPolicyAdvisor(IValidationPolicyAdvisor advisor);
+  void setPolicyAdvisor(IValidationPolicyAdvisor advisor);
 
   IValidationProfileUsageTracker getTracker();
   IResourceValidator setTracker(IValidationProfileUsageTracker value);

@@ -20,7 +20,9 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.tests.TestConfig;
@@ -81,6 +83,7 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
     for (String id : names) {
       objects.add(new Object[]{id, examples.get(id)});
     }
+    objects.add(new Object[]{"final", null});
     return objects;
   }
 
@@ -90,6 +93,7 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   private String version = "5.0.0";
   private static TxTester tester;
   private List<String> modes = new ArrayList<>();
+  private boolean error = false;
 
   public LocalTerminologyServiceTests(String name, JsonObjectPair setup) {
     this.setup = setup;
@@ -107,19 +111,33 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
       logTestSkip("No local terminology server available.");
       return;
     }
-    if (SERVER != null) {
-      if (tester == null) {
-        tester = new TxTester(this, SERVER, true, externals);
+    if (setup == null) {
+      if (!error) {
+      System.out.println("tx.fhir.org passed all HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
       }
-      String err = tester.executeTest(setup.suite, setup.test, modes);
-      Assertions.assertTrue(err == null, err);
+      Assertions.assertTrue(!error);
     } else {
-      Assertions.assertTrue(true);
+      if (SERVER != null) {
+        if (tester == null) {
+          tester = new TxTester(this, SERVER, true, externals);
+        }
+        String err = tester.executeTest(setup.suite, setup.test, modes);
+        error = error || err != null; 
+        Assertions.assertTrue(err == null, err);
+      } else {
+        Assertions.assertTrue(true);
+      }
     }
   }
 
+  private String loadVersion() throws JsonException, IOException {
+    return TxTester.processHistoryMarkdown(TestingUtilities.loadTestResourceBytes("tx", "history.md"));
+  }
+
   private void logTestSkip(String reason) {
-    System.out.println("Skipping test: " + setup.suite.asString("name") + " " + setup.test.asString("name") + " reason: " + reason);
+    if (setup != null) {
+      System.out.println("Skipping test: " + setup.suite.asString("name") + " " + setup.test.asString("name") + " reason: " + reason);
+    }
   }
 
   public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {

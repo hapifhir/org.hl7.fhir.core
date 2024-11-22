@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -47,7 +48,7 @@ public class MappingAssistant {
     for (StructureDefinitionMappingComponent m : derived.getMapping()) {
       masterList.add(m);
       if (!isSuppressed(m)) {
-        m.setUserData("private-marked-as-derived", true);
+        m.setUserData(UserDataNames.mappings_inherited, true);
       }
     }
     
@@ -127,7 +128,7 @@ public class MappingAssistant {
     
     derived.getMapping().clear();
     for (StructureDefinitionMappingComponent t : masterList) {
-      if (usedList.contains(t) || t.hasUserData("private-marked-as-derived")) {
+      if (usedList.contains(t) || t.hasUserData(UserDataNames.mappings_inherited)) {
         derived.getMapping().add(t);
       }
     }
@@ -163,7 +164,7 @@ public class MappingAssistant {
           for (ElementDefinitionMappingComponent d : destination) {
             if (compareMaps(name, s, d)) {
               found = true;
-              d.setUserData(ProfileUtilities.UD_DERIVATION_EQUALS, true);
+              d.setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, true);
               break;
             }
           }

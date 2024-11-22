@@ -178,7 +178,6 @@ public class I18nConstants {
   public static final String DIFFERENTIAL_WALKS_INTO____BUT_THE_BASE_DOES_NOT_AND_THERE_IS_NOT_A_SINGLE_FIXED_TYPE_THE_TYPE_IS__THIS_IS_NOT_HANDLED_YET = "Differential_walks_into____but_the_base_does_not_and_there_is_not_a_single_fixed_type_The_type_is__This_is_not_handled_yet";
   public static final String DISCRIMINATOR_BAD_PATH = "DISCRIMINATOR_BAD_PATH";
   public static final String DISCRIMINATOR__IS_BASED_ON_ELEMENT_EXISTENCE_BUT_SLICE__NEITHER_SETS_MIN1_OR_MAX0 = "Discriminator__is_based_on_element_existence_but_slice__neither_sets_min1_or_max0";
-  public static final String DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_MULTIPLE_TYPES = "Discriminator__is_based_on_type_but_slice__in__has_multiple_types";
   public static final String DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES = "Discriminator__is_based_on_type_but_slice__in__has_no_types";
   public static final String DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF = "Display_Name_for__should_be_one_of__instead_of";
   public static final String DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF = "Display_Name_WS_for__should_be_one_of__instead_of";
@@ -475,7 +474,6 @@ public class I18nConstants {
   public static final String PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__ = "Problem_processing_expression__in_profile__path__";
   public static final String PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE_WITH_A_PROFILE__IN_PROFILE_ = "Profile_based_discriminators_must_have_a_type_with_a_profile__in_profile_";
   public static final String PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE__IN_PROFILE_ = "Profile_based_discriminators_must_have_a_type__in_profile_";
-  public static final String PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_ONLY_ONE_TYPE__IN_PROFILE = "Profile_based_discriminators_must_have_only_one_type__in_profile";
   public static final String PROFILE_EXT_NOT_HERE = "Profile_EXT_Not_Here";
   public static final String PROFILE_VAL_MISSINGELEMENT = "Profile_VAL_MissingElement";
   public static final String PROFILE_VAL_NOTALLOWED = "Profile_VAL_NotAllowed";
@@ -514,6 +512,7 @@ public class I18nConstants {
   public static final String QUESTIONNAIRE_QR_ITEM_ONLYONEI = "Questionnaire_QR_Item_OnlyOneI";
   public static final String QUESTIONNAIRE_QR_ITEM_ORDER = "Questionnaire_QR_Item_Order";
   public static final String QUESTIONNAIRE_QR_ITEM_STRINGNOOPTIONS = "Questionnaire_QR_Item_StringNoOptions";
+  public static final String QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING = "QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING";
   public static final String QUESTIONNAIRE_QR_ITEM_TEXT = "Questionnaire_QR_Item_Text";
   public static final String QUESTIONNAIRE_QR_ITEM_TIMENOOPTIONS = "Questionnaire_QR_Item_TimeNoOptions";
   public static final String QUESTIONNAIRE_QR_ITEM_WRONGTYPE = "Questionnaire_QR_Item_WrongType";
@@ -590,6 +589,7 @@ public class I18nConstants {
   public static final String SD_ELEMENT_FIXED_WRONG_TYPE = "SD_ELEMENT_FIXED_WRONG_TYPE";
   public static final String SD_ELEMENT_NOT_IN_CONSTRAINT = "SD_ELEMENT_NOT_IN_CONSTRAINT";
   public static final String SD_ELEMENT_PATTERN_WRONG_TYPE = "SD_ELEMENT_PATTERN_WRONG_TYPE";
+  public static final String SD_ELEMENT_PATTERN_NO_FIXED = "SD_ELEMENT_PATTERN_NO_FIXED";
   public static final String SD_ELEMENT_REASON_DERIVED = "SD_ELEMENT_REASON_DERIVED";
   public static final String SD_EXTENSION_URL_MISMATCH = "SD_EXTENSION_URL_MISMATCH";
   public static final String SD_EXTENSION_URL_MISSING = "SD_EXTENSION_URL_MISSING";
@@ -1117,4 +1117,34 @@ public class I18nConstants {
   public static final String SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_ELEMENT = "SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_ELEMENT";
   public static final String SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_TYPE = "SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_TYPE";
   public static final String CODESYSTEM_CS_COMPLETE_AND_EMPTY = "CODESYSTEM_CS_COMPLETE_AND_EMPTY";
+  public static final String VALIDATION_VAL_VERSION_NOHASH = "VALIDATION_VAL_VERSION_NOHASH";
+  public static final String PRIMITIVE_TOO_SHORT = "PRIMITIVE_TOO_SHORT";
+  public static final String CANONICAL_MULTIPLE_VERSIONS_KNOWN = "CANONICAL_MULTIPLE_VERSIONS_KNOWN";
+  public static final String SD_PATH_NO_SLICING = "SD_PATH_NO_SLICING";
+  public static final String SD_PATH_SLICING_DEPRECATED_R5 = "SD_PATH_SLICING_DEPRECATED_R5";
+  public static final String SD_PATH_SLICING_DEPRECATED = "SD_PATH_SLICING_DEPRECATED";
+  public static final String SD_PATH_NOT_VALID = "SD_PATH_NOT_VALID";
+  public static final String SD_PATH_ERROR = "SD_PATH_ERROR";
+  public static final String VIEWDEFINITION_SHOULD_HAVE_NAME = "VIEWDEFINITION_SHOULD_HAVE_NAME";
+  public static final String VIEWDEFINITION_NAME_INVALID = "VIEWDEFINITION_NAME_INVALID";
+  public static final String VIEWDEFINITION_PATH_ERROR = "VIEWDEFINITION_PATH_ERROR";
+  public static final String VIEWDEFINITION_PATH_WRONG_RETURN = "VIEWDEFINITION_PATH_WRONG_RETURN";
+  public static final String VIEWDEFINITION_PATH_WARNING = "VIEWDEFINITION_PATH_WARNING";
+  public static final String VIEWDEFINITION_UNKNOWN_RESOURCE = "VIEWDEFINITION_UNKNOWN_RESOURCE";
+  public static final String VIEWDEFINITION_DUPL_COL_NAME = "VIEWDEFINITION_DUPL_COL_NAME";
+  public static final String VIEWDEFINITION_NAME_REQUIRED = "VIEWDEFINITION_NAME_REQUIRED";
+  public static final String VIEWDEFINITION_NAME_REQUIRED_HINT = "VIEWDEFINITION_NAME_REQUIRED_HINT";
+  public static final String VIEWDEFINITION_COLLECTION_NOT_NEEDED = "VIEWDEFINITION_COLLECTION_NOT_NEEDED";
+  public static final String VIEWDEFINITION_COLLECTION_NOT_ALWAYS = "VIEWDEFINITION_COLLECTION_NOT_ALWAYS";
+  public static final String VIEWDEFINITION_COLLECTION_NEEDED1 = "VIEWDEFINITION_COLLECTION_NEEDED1";
+  public static final String VIEWDEFINITION_COLLECTION_NEEDED2 = "VIEWDEFINITION_COLLECTION_NEEDED2";
+  public static final String VIEWDEFINITION_TYPE_MISMATCH = "VIEWDEFINITION_TYPE_MISMATCH";
+  public static final String VIEWDEFINITION_UNABLE_TO_TYPE = "VIEWDEFINITION_UNABLE_TO_TYPE";
+  public static final String VIEWDEFINITION_COMPLEX_TYPE = "VIEWDEFINITION_COMPLEX_TYPE";
+  public static final String CODESYSTEM_PROPERTY_ABSOLUTE_URI = "CODESYSTEM_PROPERTY_ABSOLUTE_URI";
+  public static final String CODESYSTEM_CS_SUPP_HIERARCHY_MEANING = "CODESYSTEM_CS_SUPP_HIERARCHY_MEANING";
+  public static final String HTA_SCT_DESC = "HTA_SCT_DESC";
+  public static final String HTA_SCT_MESSAGE = "HTA_SCT_MESSAGE";
+  public static final String HTA_LOINC_DESC = "HTA_LOINC_DESC";
+  public static final String HTA_LOINC_MESSAGE = "HTA_LOINC_MESSAGE";
 }

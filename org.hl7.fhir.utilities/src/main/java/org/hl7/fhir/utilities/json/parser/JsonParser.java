@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 import org.hl7.fhir.utilities.TextFile;
@@ -692,7 +693,7 @@ public class JsonParser {
 
   private static byte[] fetch(String source) throws IOException {
     String murl = source.contains("?") ? source+"&nocache=" + System.currentTimeMillis() : source+"?nocache=" + System.currentTimeMillis();
-    HTTPResult res = ManagedWebAccess.get(murl, "application/json, application/fhir+json");
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), murl, "application/json, application/fhir+json");
     res.checkThrowException();
     return res.getContent();
   }

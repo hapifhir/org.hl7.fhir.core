@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.CodeValidationRule;
@@ -14,8 +15,8 @@ import org.hl7.fhir.validation.instance.type.ValueSetValidator.PropertyValidatio
 
 public class LoincChecker extends CodeSystemChecker {
 
-  public LoincChecker(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, List<ValidationMessage> errors) {
-    super(context, xverManager, debug, errors);
+  public LoincChecker(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, List<ValidationMessage> errors, ValidatorSession session) {
+    super(context, xverManager, debug, errors, session);
   }
   
 
@@ -213,8 +214,12 @@ public class LoincChecker extends CodeSystemChecker {
 
       if (Utilities.existsInList(property, 
         "concept")) {
-        return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, addToOps(ops, PropertyOperation.IsA));      
+        return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, addToOps(ops, PropertyOperation.Equals, PropertyOperation.IsA, PropertyOperation.IsNotA));      
       }
+      if (Utilities.existsInList(property, 
+          "code")) {
+          return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, addToOps(ops, PropertyOperation.Equals, PropertyOperation.IsA, PropertyOperation.IsNotA));      
+        }
       return null;
   }
 }

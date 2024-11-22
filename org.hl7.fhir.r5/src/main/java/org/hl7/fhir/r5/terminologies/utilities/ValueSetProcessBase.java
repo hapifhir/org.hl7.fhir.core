@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -181,8 +182,8 @@ public class ValueSetProcessBase {
     List<OperationOutcomeIssueComponent> iss = makeIssue(IssueSeverity.INFORMATION, IssueType.BUSINESSRULE, null, context.formatMessage(msg, resource.getVersionedUrl(), null, resource.fhirType()), OpIssueCode.StatusCheck, null);
 
     // this is a testing hack - see TerminologyServiceTests
-    iss.get(0).setUserData("status-msg-name", "warning-"+id);
-    iss.get(0).setUserData("status-msg-value", new UriType(resource.getVersionedUrl()));
+    iss.get(0).setUserData(UserDataNames.tx_status_msg_name, "warning-"+id);
+    iss.get(0).setUserData(UserDataNames.tx_status_msg_value, new UriType(resource.getVersionedUrl()));
     ToolingExtensions.setStringExtension(iss.get(0), ToolingExtensions.EXT_ISSUE_MSG_ID, msg);
     
     return iss;

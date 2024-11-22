@@ -24,6 +24,7 @@ import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 
 public class TerminologyClientR4 implements ITerminologyClient {
 
@@ -64,7 +65,7 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
   
   public FhirPublication getActualVersion() {
-    return FhirPublication.STU3;
+    return FhirPublication.R4;
   }
   
   
@@ -87,9 +88,9 @@ public class TerminologyClientR4 implements ITerminologyClient {
       return (ValueSet) VersionConvertorFactory_40_50.convertResource(vs2);
     } catch (org.hl7.fhir.r4.utils.client.EFhirClientException e) {
       if (e.getServerErrors().size() > 0) {
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), (org.hl7.fhir.r5.model.OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0)));
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), (org.hl7.fhir.r5.model.OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0)));
       } else {
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage());        
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage());        
       }
     }
   }
@@ -103,9 +104,9 @@ public class TerminologyClientR4 implements ITerminologyClient {
     } catch (EFhirClientException e) {
       if (e.getServerErrors().size() == 1) {
         OperationOutcome op =  (OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0));
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), op, e);
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), e);        
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);        
       }
     } catch (IOException e) {
       throw new FHIRException(e);
@@ -122,9 +123,9 @@ public class TerminologyClientR4 implements ITerminologyClient {
     } catch (EFhirClientException e) {
       if (e.getServerErrors().size() == 1) {
         OperationOutcome op =  (OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0));
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), op, e);
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), e);        
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);        
       }
     } catch (IOException e) {
       throw new FHIRException(e);
@@ -140,9 +141,9 @@ public class TerminologyClientR4 implements ITerminologyClient {
     } catch (EFhirClientException e) {
       if (e.getServerErrors().size() == 1) {
         OperationOutcome op =  (OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0));
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), op, e);
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), e);        
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);        
       }
     } catch (IOException e) {
       throw new FHIRException(e);
@@ -175,6 +176,11 @@ public class TerminologyClientR4 implements ITerminologyClient {
   @Override
   public CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException {
     return (CapabilityStatement) VersionConvertorFactory_40_50.convertResource(client.getCapabilitiesStatementQuick());
+  }
+
+  @Override
+  public CapabilityStatement getCapabilitiesStatement() throws FHIRException {
+    return (CapabilityStatement) VersionConvertorFactory_40_50.convertResource(client.getCapabilitiesStatement());
   }
 
   @Override
@@ -221,8 +227,8 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
 
   @Override
-  public ClientHeaders getClientHeaders() {
-    return clientHeaders;
+  public Iterable<HTTPHeader> getClientHeaders() {
+    return clientHeaders.headers();
   }
 
   @Override

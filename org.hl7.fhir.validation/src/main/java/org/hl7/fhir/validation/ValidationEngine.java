@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
@@ -72,12 +71,10 @@ import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.AdditionalBindingPurpose;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.CodedContentValidationAction;
+import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
-import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
@@ -208,7 +205,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private String version;
   @Getter @Setter private String language;
   @Setter private FilesystemPackageCacheManager pcm;
-  @Getter @Setter private PrintWriter mapLog;
+  @Getter private PrintWriter mapLog;
   @Getter @Setter private boolean debug = false;
   @Getter @Setter private IValidatorResourceFetcher fetcher;
   @Getter @Setter private IValidationPolicyAdvisor policyAdvisor;
@@ -869,7 +866,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public InstanceValidator getValidator(FhirFormat format) throws FHIRException, IOException {
-    InstanceValidator validator = new InstanceValidator(context, null, null);
+    InstanceValidator validator = new InstanceValidator(context, null, null, new ValidatorSession());
     context.getTxClientManager().setUsage("validation");
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
@@ -942,7 +939,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (output.startsWith("http://")) {
       ByteArrayOutputStream bs = new ByteArrayOutputStream();
       handleOutputToStream(r, output, bs, version);
-      HTTPResult res = ManagedWebAccess.post(output, bs.toByteArray(), "application/fhir+xml", "application/fhir+xml");
+      HTTPResult res = ManagedWebAccess.post(Arrays.asList("web"), output, bs.toByteArray(), "application/fhir+xml", "application/fhir+xml");
       res.checkThrowException();
     } else {
       FileOutputStream s = ManagedFileAccess.outStream(output);
@@ -1099,7 +1096,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   @Override
   public byte[] fetchRaw(IResourceValidator validator, String source) throws IOException {
-    HTTPResult res = ManagedWebAccess.get(source);
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source);
     res.checkThrowException();
     return res.getContent();
   }
@@ -1286,6 +1283,16 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       IMessagingServices msgServices, List<ValidationMessage> messages) {
     return new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID).getImpliedProfilesForResource(validator, appContext, stackPath, 
           definition, structure, resource, valid, msgServices, messages);
+  }
+
+  @Override
+  public boolean isSuppressMessageId(String path, String messageId) {
+    return policyAdvisor.isSuppressMessageId(path, messageId);
+  }
+
+  @Override
+  public ReferenceValidationPolicy getReferencePolicy() {
+    return ReferenceValidationPolicy.IGNORE;
   }
 
 }

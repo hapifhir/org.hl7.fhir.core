@@ -2,7 +2,6 @@ package org.hl7.fhir.r5.terminologies.client;
 
 import java.net.URISyntaxException;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Map;
 
 /*
@@ -41,18 +40,16 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5.TerminologyClientR5Factory;
 import org.hl7.fhir.r5.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 
 public class TerminologyClientR5 implements ITerminologyClient {
 
@@ -170,6 +167,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
+  public CapabilityStatement getCapabilitiesStatement() {
+    return client.getCapabilitiesStatement();
+  }
+
+  @Override
   public Parameters lookupCode(Map<String, String> params) {
     return client.lookupCode(params);
   }
@@ -214,8 +216,8 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
-  public ClientHeaders getClientHeaders() {
-    return clientHeaders;
+  public Iterable<HTTPHeader> getClientHeaders() {
+    return clientHeaders.headers();
   }
 
   @Override
