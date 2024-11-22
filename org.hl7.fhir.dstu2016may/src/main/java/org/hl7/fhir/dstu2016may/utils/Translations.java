@@ -70,7 +70,7 @@ public class Translations {
    */
   public void load(String filename)
       throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     DocumentBuilder builder = factory.newDocumentBuilder();
     loadMessages(builder.parse(new CSFileInputStream(filename)));
   }

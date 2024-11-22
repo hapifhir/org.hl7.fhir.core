@@ -58,17 +58,20 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 public class EFhirClientException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	private OperationOutcome error = null;
+  private int code;
 	 
-	public EFhirClientException(String message) {
+	public EFhirClientException(int code, String message) {
 		super(message);
+		this.code = code;
 	}
 	
 	public EFhirClientException(Exception cause) {
 		super(cause);
 	}
 	
-	public EFhirClientException(String message, Exception cause) {
+	public EFhirClientException(int code, String message, Exception cause) {
 		super(message, cause);
+    this.code = code;
 	}
 	
 	/**
@@ -78,8 +81,9 @@ public class EFhirClientException extends RuntimeException {
 	 * @param message
 	 * @param serverError
 	 */
-	public EFhirClientException(String message, OperationOutcome serverError) {
+	public EFhirClientException(int code, String message, OperationOutcome serverError) {
 	  super(message);
+    this.code = code;
 	  error = serverError;
 	}
 
@@ -91,8 +95,9 @@ public class EFhirClientException extends RuntimeException {
 	 * @param message
 	 * @param serverError
 	 */
-	public EFhirClientException(String message, OperationOutcome serverError, Exception cause) {
+	public EFhirClientException(int code, String message, OperationOutcome serverError, Exception cause) {
 	  super(message, cause);
+    this.code = code;
     error = serverError;
 	}
 
@@ -105,8 +110,9 @@ public class EFhirClientException extends RuntimeException {
 	 * 
 	 * @param serverError
 	 */
-	public EFhirClientException(OperationOutcome serverError) {
+	public EFhirClientException(int code, OperationOutcome serverError) {
 		super("Error on the server: "+serverError.getText().getDiv().allText()+". Refer to e.getServerErrors() for additional details.");
+    this.code = code;
     error = serverError;
 	}
 	
@@ -122,5 +128,9 @@ public class EFhirClientException extends RuntimeException {
 	public boolean hasServerError() {
 		return error != null;
 	}
+
+  public int getCode() {
+    return code;
+  }
 
 }

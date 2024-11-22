@@ -35,12 +35,16 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator;
+import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
 import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.InternalLogEvent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TextFile;
@@ -69,6 +73,11 @@ import org.hl7.fhir.validation.cli.renderers.ValidationOutputRenderer;
 import org.hl7.fhir.validation.cli.utils.Common;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
+import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
+import org.hl7.fhir.validation.instance.advisor.JsonDrivenPolicyAdvisor;
+import org.hl7.fhir.validation.instance.advisor.TextDrivenPolicyAdvisor;
+
+import kotlin.NotImplementedError;
 
 public class ValidationService {
 
@@ -155,6 +164,7 @@ public class ValidationService {
         if (request.getCliContext().isShowTimes()) {
           response.getValidationTimes().put(fileToValidate.getFileName(), validatedFragments.getValidationTime());
         }
+        
       }
     }
 
@@ -288,6 +298,19 @@ public class ValidationService {
           String html = new HTMLOutputGenerator(records).generate(System.currentTimeMillis() - start);
           TextFile.stringToFile(html, cliContext.getHtmlOutput());
           System.out.println("HTML Summary in " + cliContext.getHtmlOutput());
+        }
+
+        if (cliContext.isShowTerminologyRouting()) {
+          System.out.println("");
+          System.out.println("Terminology Routing Dump ---------------------------------------");
+          if (validator.getContext().getTxClientManager().getInternalLog().isEmpty()) {
+            System.out.println("(nothing happened)");            
+          } else {
+            for (InternalLogEvent log : validator.getContext().getTxClientManager().getInternalLog()) {
+              System.out.println(log.getMessage()+" -> "+log.getServer()+" (for VS "+log.getVs()+" with systems '"+log.getSystems()+"', choices = '"+log.getChoices()+"')");
+            }
+          }
+          validator.getContext().getTxClientManager().getInternalLog().clear();
         }
       }
       if (watch != ValidatorWatchMode.NONE) {
@@ -545,6 +568,10 @@ public class ValidationService {
       System.out.println("  No Terminology Cache");      
     } else {
       System.out.println("  Terminology Cache at "+validationEngine.getContext().getTxCache().getFolder());
+      if (cliContext.isClearTxCache()) {
+        System.out.println("  Terminology Cache Entries Cleaned out");
+        validationEngine.getContext().getTxCache().clear();
+      }
     }
     System.out.print("  Get set... ");
     validationEngine.setQuestionnaireMode(cliContext.getQuestionnaireMode());
@@ -579,11 +606,25 @@ public class ValidationService {
     validationEngine.setForPublication(cliContext.isForPublication());
     validationEngine.setShowTimes(cliContext.isShowTimes());
     validationEngine.setAllowExampleUrls(cliContext.isAllowExampleUrls());
+    ReferenceValidationPolicy refpol = ReferenceValidationPolicy.CHECK_VALID;
     if (!cliContext.isDisableDefaultResourceFetcher()) {
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validationEngine.getPcm(), validationEngine.getContext(), validationEngine);
       validationEngine.setFetcher(fetcher);
       validationEngine.getContext().setLocator(fetcher);
       validationEngine.setPolicyAdvisor(fetcher);
+    } else {
+      DisabledValidationPolicyAdvisor fetcher = new DisabledValidationPolicyAdvisor();
+      validationEngine.setPolicyAdvisor(fetcher);
+      refpol = ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS;
+    }
+    if (cliContext.getAdvisorFile() != null) {
+      if (cliContext.getAdvisorFile().endsWith(".json")) {
+        validationEngine.getPolicyAdvisor().setPolicyAdvisor(new JsonDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), new File(cliContext.getAdvisorFile())));
+      } else {
+        validationEngine.getPolicyAdvisor().setPolicyAdvisor(new TextDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), new File(cliContext.getAdvisorFile())));          
+      }
+    } else {
+      validationEngine.getPolicyAdvisor().setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(validationEngine.getPolicyAdvisor() == null ? refpol : validationEngine.getPolicyAdvisor().getReferencePolicy()));
     }
     validationEngine.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
     validationEngine.setJurisdiction(CodeSystemUtilities.readCoding(cliContext.getJurisdiction()));
@@ -796,6 +837,66 @@ public class ValidationService {
           validator.handleOutput(sd, filename, validator.getVersion());
         }
       }
+    }
+  }
+
+  public void codeGen(CliContext cliContext, ValidationEngine validationEngine) throws IOException {
+    boolean ok = true;
+    if (cliContext.getProfiles().isEmpty()) {
+      System.out.println("Must specify at least one profile to generate code for with -profile or -profiles ");
+      ok = false;
+    }
+    if (cliContext.getPackageName() == null) {
+      System.out.println("Must provide a Java package name (-package-name)");
+      ok = false;
+    }
+    if (cliContext.getSv() == null) {
+      System.out.println("Must specify a version (-version)");
+      ok = false;
+    } else if (!VersionUtilities.isR4Ver(cliContext.getSv()) && !VersionUtilities.isR5Ver(cliContext.getSv())) {      
+      System.out.println("Only versions 4 and 5 are supported (-version)");
+      ok = false;
+    }
+    if (cliContext.getOutput() == null) {
+      System.out.println("Must provide an output directory (-output)");
+      ok = false;
+    }
+    Utilities.createDirectory(cliContext.getOutput());
+    if (ok) {
+      PECodeGenerator gen = new PECodeGenerator(validationEngine.getContext());
+      gen.setFolder(cliContext.getOutput());
+      gen.setExtensionPolicy(ExtensionPolicy.Complexes);
+      gen.setNarrative(cliContext.getOptions().contains("narrative"));
+      gen.setMeta(cliContext.getOptions().contains("meta"));
+      gen.setLanguage(Locale.getDefault().toLanguageTag());
+      gen.setContained(cliContext.getOptions().contains("contained"));
+      gen.setKeyElementsOnly(!cliContext.getOptions().contains("all-elements"));
+      gen.setGenDate(new SimpleDateFormat().format(new Date()));
+      gen.setPkgName(cliContext.getPackageName());
+      if (VersionUtilities.isR4Ver(cliContext.getSv())) {
+        gen.setVersion("r4");
+      } else {
+        gen.setVersion("r5");
+      }
+
+      for (String profile : cliContext.getProfiles()) {
+        if (profile.endsWith("*")) {
+          for (StructureDefinition sd : validationEngine.getContext().fetchResourcesByType(StructureDefinition.class)) {
+            if (sd.getUrl().startsWith(profile.replace("*", ""))) {
+              gen.setCanonical(sd.getUrl());
+              System.out.print("Generate for "+sd.getUrl());
+              String s = gen.execute();
+              System.out.println(": "+s);
+            }
+          }
+        } else {
+          gen.setCanonical(profile);
+          System.out.print("Generate for "+profile);
+          String s = gen.execute();
+          System.out.println(": "+s);
+        }
+      }
+      System.out.println("Done");
     }
   }
 

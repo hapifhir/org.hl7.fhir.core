@@ -1,11 +1,15 @@
 package org.hl7.fhir.validation.special;
 
+import org.hl7.fhir.r5.model.CapabilityStatement;
+import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.ElementVisitor;
 import org.hl7.fhir.r5.utils.ElementVisitor.ElementVisitorInstruction;
@@ -90,6 +94,19 @@ public class TxTesterScrubbers {
   public static void scrubOO(OperationOutcome po, boolean tight) {
     scrubDR(po, tight);
     po.getIssue().removeIf(i -> i.hasDiagnostics() & !i.hasDetails());
+    for (OperationOutcomeIssueComponent iss : po.getIssue()) {
+      if (iss.hasDiagnostics() && !iss.getDiagnostics().toLowerCase().contains("x-request-id")) {
+        iss.setDiagnostics(null);
+      }
+    }
+  }
+
+  public static void scrubCapStmt(CapabilityStatement cs, boolean tight) {
+    // nothing yet?
+  }
+
+  public static void scrubTermCaps(TerminologyCapabilities cs, boolean tight) {
+    // nothing yet? 
   }
 
 }

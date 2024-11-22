@@ -364,7 +364,7 @@ public class TerminologyCache {
     csCache.clear();
   }
   
-  private void clear() throws IOException {
+  public void clear() throws IOException {
     if (folder != null) {
       Utilities.clearDirectory(folder);
     }

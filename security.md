@@ -1,5 +1,9 @@
 # Introduction
 
+# Reporting Vulnerabilities
+
+Please report all potential security vulnerabilities using the [Report a vulnerability](../../security/advisories/new) button in the [Security](../../security) section of this repository. 
+
 # Local Filesystem
 
 The main use of the local file system for the core library (other than the validator - see below) is for the 

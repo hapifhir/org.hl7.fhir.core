@@ -42,6 +42,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -54,8 +55,8 @@ public class ProfileValidator extends BaseValidator {
   private boolean allowDoubleQuotesInFHIRPath = false;
   private FHIRPathEngine fpe;
 
-  public ProfileValidator(IWorkerContext context, XVerExtensionManager xverManager) {
-    super(context, xverManager, false);
+  public ProfileValidator(IWorkerContext context, XVerExtensionManager xverManager, ValidatorSession session) {
+    super(context, xverManager, false, session);
     fpe = new FHIRPathEngine(context);
     fpe.setAllowDoubleQuotes(allowDoubleQuotesInFHIRPath);
   }

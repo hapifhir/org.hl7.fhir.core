@@ -161,7 +161,7 @@ public class ConceptMapValidator  extends BaseValidator {
     if (!batch.isEmpty()) {
       if (batch.size() > TOO_MANY_CODES_TO_VALIDATE) {
         ok = hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CONCEPTMAP_VS_TOO_MANY_CODES, batch.size()) && ok;
-      } else {
+      } else if (!noTerminologyChecks) {
         try {
           long t = System.currentTimeMillis();
           context.validateCodeBatch(ValidationOptions.defaults(), batch, null);
@@ -313,7 +313,7 @@ public class ConceptMapValidator  extends BaseValidator {
           if (display != null) {
             warning(errors, "2023-03-05", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), CodeSystemUtilities.checkDisplay(ctxt.source.cs, cd, display.getValue()), I18nConstants.CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID, display.getValue(), CommaSeparatedStringBuilder.joinWrapped(", ", "'", "'", CodeSystemUtilities.getDisplays(ctxt.source.cs, cd)), ctxt.source.cs.getVersionedUrl()+"#"+cd.getCode());
           }
-          if (ctxt.hasSourceVS() && ctxt.source != null) {
+          if (!noTerminologyChecks && ctxt.hasSourceVS() && ctxt.source != null) {
             ValidationResult vr = context.validateCode(options.withCheckValueSetOnly().withNoServer(), ctxt.source.url, ctxt.source.version, c, null, ctxt.sourceScope.vs);
             if (!warningOrError(ctxt.source.cs.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-09-06", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS, c, ctxt.sourceScope.vs.getVersionedUrl())) {
               ok = (ctxt.source.cs.getContent() != CodeSystemContentMode.COMPLETE) & ok;
@@ -350,7 +350,7 @@ public class ConceptMapValidator  extends BaseValidator {
           if (display != null) {          
             warning(errors, "2023-03-05", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), CodeSystemUtilities.checkDisplay(ctxt.target.cs, cd, display.getValue()), I18nConstants.CONCEPTMAP_GROUP_TARGET_DISPLAY_INVALID, display.getValue(), CommaSeparatedStringBuilder.joinWrapped(", ", "'", "'", CodeSystemUtilities.getDisplays(ctxt.target.cs, cd)), ctxt.target.cs.getVersionedUrl()+"#"+cd.getCode());
           }
-          if (ctxt.hasTargetVS() && ctxt.target != null) {
+          if (!noTerminologyChecks && ctxt.hasTargetVS() && ctxt.target != null) {
             ValidationResult vr = context.validateCode(options.withCheckValueSetOnly().withNoServer(), ctxt.target.url, ctxt.target.version, c, null, ctxt.targetScope.vs);
             if (!warningOrError(ctxt.target.cs.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-09-06", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_TARGET_CODE_INVALID_VS, c, ctxt.targetScope.vs.getVersionedUrl())) {
               ok = (ctxt.target.cs.getContent() != CodeSystemContentMode.COMPLETE) && ok;

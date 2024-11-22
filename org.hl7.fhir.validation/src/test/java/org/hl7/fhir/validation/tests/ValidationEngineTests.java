@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -53,54 +54,55 @@ public class ValidationEngineTests {
     }
 
     final String[] testInputs = {
-      INPUT_1,
-      INPUT_1,
-      INPUT_2,
-      INPUT_3,
-      INPUT_1,
-      INPUT_2,
-      INPUT_3,
-      INPUT_1,
-      INPUT_2,
-      INPUT_3
+        INPUT_1,
+        INPUT_1,
+        INPUT_2,
+        INPUT_3,
+        INPUT_1,
+        INPUT_2,
+        INPUT_3,
+        INPUT_1,
+        INPUT_2,
+        INPUT_3
     };
     // Pick 3 validation cases
     final String[][] testCodes = {
-      ISSUE_CODES_1,
-      ISSUE_CODES_1,
-      ISSUE_CODES_2,
-      ISSUE_CODES_3,
-      ISSUE_CODES_1,
-      ISSUE_CODES_2,
-      ISSUE_CODES_3,
-      ISSUE_CODES_1,
-      ISSUE_CODES_2,
-      ISSUE_CODES_3
+        ISSUE_CODES_1,
+        ISSUE_CODES_1,
+        ISSUE_CODES_2,
+        ISSUE_CODES_3,
+        ISSUE_CODES_1,
+        ISSUE_CODES_2,
+        ISSUE_CODES_3,
+        ISSUE_CODES_1,
+        ISSUE_CODES_2,
+        ISSUE_CODES_3
     };
 
 
     List<Thread> threads = new ArrayList<>();
     for (int i = 0; i < validationEngines.length; i++) {
       final int index = i;
-    Thread t = new Thread(() -> {
+      Thread t = new Thread(() -> {
+        try {
+          final String testInput = testInputs[index];
+          outcomes[index] = validationEngines[index].validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator",  testInput), null);
+        } catch (Exception e) {
+          e.printStackTrace();
+          System.err.println("Thread " + index + " failed");
+          outcomes[index] = OperationOutcomeUtilities.outcomeFromTextError(e.getMessage());
+        }
+      });
+      t.start();
+      threads.add(t);
+    }
+    threads.forEach(t -> {
       try {
-        final String testInput = testInputs[index];
-         outcomes[index] = validationEngines[index].validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator",  testInput), null);
-      } catch (Exception e) {
-        e.printStackTrace();
-        System.err.println("Thread " + index + " failed");
+        t.join();
+      } catch (InterruptedException e) {
+
       }
     });
-    t.start();
-    threads.add(t);
-  }
-    threads.forEach(t -> {
-    try {
-      t.join();
-    } catch (InterruptedException e) {
-
-    }
-  });
 
     for (int i = 0; i < outcomes.length; i++) {
       assertEquals(testCodes[i].length, outcomes[i].getIssue().size());

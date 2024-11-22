@@ -53,6 +53,7 @@ import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 
 public class TerminologyClientR3 implements ITerminologyClient {
 
@@ -154,6 +155,11 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
+  public CapabilityStatement getCapabilitiesStatement() throws FHIRException {
+    return (CapabilityStatement) VersionConvertorFactory_30_50.convertResource(client.getCapabilitiesStatement());
+  }
+
+  @Override
   public Parameters lookupCode(Map<String, String> params) throws FHIRException {
     return (Parameters) VersionConvertorFactory_30_50.convertResource(client.lookupCode(params));
   }
@@ -196,8 +202,8 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
-  public ClientHeaders getClientHeaders() {
-    return clientHeaders;
+  public Iterable<HTTPHeader> getClientHeaders() {
+    return clientHeaders.headers();
   }
 
   @Override

@@ -714,7 +714,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException {
     try {
-      HTTPResult res = ManagedWebAccess.get(source);
+      HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source);
       res.checkThrowException();
       return new ByteArrayInputStream(res.getContent());
     } catch (Exception e) {
@@ -840,12 +840,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private void checkCIServerQueried() {
     if (System.currentTimeMillis() - ciQueryTimeStamp > ciQueryInterval) {
       try {
-        queryCIServer();
+        loadFromBuildServer();
       } catch (Exception e) {
         try {
           // we always pause a second and try again - the most common reason to be here is that the file was being changed on the server
           Thread.sleep(1000);
-          queryCIServer();
+          loadFromBuildServer();
         } catch (Exception e2) {
           log("Error connecting to build server - running without build (" + e2.getMessage() + ")");
         }
@@ -853,9 +853,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
   }
 
-  private void queryCIServer() throws IOException {
-
-    HTTPResult res = ManagedWebAccess.get("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
+  private void loadFromBuildServer() throws IOException {
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), "https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
     res.checkThrowException();
 
     ciBuildInfo = (JsonArray) JsonParser.parse(TextFile.bytesToString(res.getContent()));

@@ -93,7 +93,7 @@ public class ObjectConverter  {
     if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) 
       res.setValue(((PrimitiveType) base).asStringValue());
 
-    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep()); 
+    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep(), true); 
     for (ElementDefinition child : children.getList()) {
       String n = tail(child.getPath());
       if (sd.getKind() != StructureDefinitionKind.PRIMITIVETYPE || !"value".equals(n)) {

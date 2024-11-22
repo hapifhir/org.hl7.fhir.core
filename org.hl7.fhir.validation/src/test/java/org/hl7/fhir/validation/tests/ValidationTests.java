@@ -8,17 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
@@ -858,7 +849,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   @Override
   public byte[] fetchRaw(IResourceValidator validator, String source) throws MalformedURLException, IOException {
-    HTTPResult res = ManagedWebAccess.get(source);
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source);
     res.checkThrowException();
     return res.getContent();
   }
@@ -920,4 +911,23 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       return null;
     }
   }
+
+  @Override
+  public boolean isSuppressMessageId(String path, String messageId) {
+    return false;
+  }
+
+  @Override
+  public ReferenceValidationPolicy getReferencePolicy() {
+    return ReferenceValidationPolicy.IGNORE;
+  }
+
+  public IValidationPolicyAdvisor getPolicyAdvisor() {
+    return null;
+  }
+
+  public IValidationPolicyAdvisor setPolicyAdvisor(IValidationPolicyAdvisor policyAdvisor) {
+    throw new Error("This policy advisor is the test advisor");
+  }
+  
 }

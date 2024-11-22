@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.MarkDown40_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDetail43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
@@ -55,6 +56,7 @@ public class ImplementationGuide43_50 {
 
   static final String EXT_IG_DEFINITION_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/ig-parameter";
   static final String EXT_IG_DEFINITION_RESOURCE_PROFILE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.definition.resource.profile";
+  static final String EXT_IG_DEPENDSON_REASON = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.dependsOn.reason";
 
   public static org.hl7.fhir.r5.model.ImplementationGuide convertImplementationGuide(org.hl7.fhir.r4b.model.ImplementationGuide src) throws FHIRException {
     if (src == null)
@@ -176,13 +178,15 @@ public class ImplementationGuide43_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt, EXT_IG_DEPENDSON_REASON);
     if (src.hasUri())
       tgt.setUriElement(Canonical43_50.convertCanonical(src.getUriElement()));
     if (src.hasPackageId())
       tgt.setPackageIdElement(Id43_50.convertId(src.getPackageIdElement()));
     if (src.hasVersion())
       tgt.setVersionElement(String43_50.convertString(src.getVersionElement()));
+    if (src.hasExtension(EXT_IG_DEPENDSON_REASON))
+      tgt.setReasonElement(MarkDown43_50.convertMarkdown((org.hl7.fhir.r4b.model.MarkdownType)src.getExtensionByUrl(EXT_IG_DEPENDSON_REASON).getValue()));
     return tgt;
   }
 
@@ -197,6 +201,8 @@ public class ImplementationGuide43_50 {
       tgt.setPackageIdElement(Id43_50.convertId(src.getPackageIdElement()));
     if (src.hasVersion())
       tgt.setVersionElement(String43_50.convertString(src.getVersionElement()));
+    if (src.hasReason())
+      tgt.addExtension(EXT_IG_DEPENDSON_REASON, MarkDown43_50.convertMarkdown(src.getReasonElement()));
     return tgt;
   }
 

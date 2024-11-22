@@ -13,5 +13,6 @@ public enum EngineMode {
   FHIRPATH,
   VERSION,
   RUN_TESTS,
-  INSTALL
+  INSTALL,
+  CODEGEN
 }

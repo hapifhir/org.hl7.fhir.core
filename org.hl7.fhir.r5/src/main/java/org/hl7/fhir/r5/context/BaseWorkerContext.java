@@ -136,6 +136,7 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.utils.PackageHackerR5;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -499,7 +500,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             if (!oidCacheManual.containsKey(s)) {
               oidCacheManual.put(s, new HashSet<>());
             }
-            oidCacheManual.get(s).add(new OIDDefinition(r.fhirType(), s, url, ((CanonicalResource) r).getVersion(), null));
+            oidCacheManual.get(s).add(new OIDDefinition(r.fhirType(), s, url, ((CanonicalResource) r).getVersion(), null, null));
           }
         }
       }
@@ -1116,7 +1117,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         } else {
           be.getRequest().setUrl("CodeSystem/$validate-code");
         }
-        be.setUserData("source", codingValidationRequest);
+        be.setUserData(UserDataNames.TX_REQUEST, codingValidationRequest);
         systems.add(codingValidationRequest.getCoding().getSystem());
         findRelevantSystems(systems, codingValidationRequest.getCoding());
       }
@@ -1126,7 +1127,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
       Bundle resp = processBatch(tc, batch, systems);      
       for (int i = 0; i < batch.getEntry().size(); i++) {
-        CodingValidationRequest t = (CodingValidationRequest) batch.getEntry().get(i).getUserData("source");
+        CodingValidationRequest t = (CodingValidationRequest) batch.getEntry().get(i).getUserData(UserDataNames.TX_REQUEST);
         BundleEntryComponent r = resp.getEntry().get(i);
 
         if (r.getResource() instanceof Parameters) {
@@ -1224,7 +1225,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         } else {
           be.getRequest().setUrl("CodeSystem/$validate-code");
         }
-        be.setUserData("source", codingValidationRequest);
+        be.setUserData(UserDataNames.TX_REQUEST, codingValidationRequest);
         systems.add(codingValidationRequest.getCoding().getSystem());
       }
     }
@@ -1233,7 +1234,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (batch.getEntry().size() > 0) {
       Bundle resp = processBatch(tc, batch, systems);      
       for (int i = 0; i < batch.getEntry().size(); i++) {
-        CodingValidationRequest t = (CodingValidationRequest) batch.getEntry().get(i).getUserData("source");
+        CodingValidationRequest t = (CodingValidationRequest) batch.getEntry().get(i).getUserData(UserDataNames.TX_REQUEST);
         BundleEntryComponent r = resp.getEntry().get(i);
 
         if (r.getResource() instanceof Parameters) {
@@ -1764,6 +1765,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else if (options.getVsAsUrl()){
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()));
       } else {
+        if (vs.hasCompose() && vs.hasExpansion()) {
+          vs = vs.copy();
+          vs.setExpansion(null);
+        }
         pin.addParameter().setName("valueSet").setResource(vs);
         if (vs.getUrl() != null) {
           terminologyClientContext.getCached().add(vs.getUrl()+"|"+ vs.getVersion());
@@ -2187,10 +2192,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           return (T) transforms.get(uri, version, pvlist);
         } 
         if (actors.has(uri)) {
-          return (T) transforms.get(uri, version, pvlist);
+          return (T) actors.get(uri, version, pvlist);
         } 
         if (requirements.has(uri)) {
-          return (T) transforms.get(uri, version, pvlist);
+          return (T) requirements.get(uri, version, pvlist);
         } 
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version, pvlist);
@@ -2449,6 +2454,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return (T) valueSets.get(uri, version);
       } else if ("CodeSystem".equals(cls)) {
         return (T) codeSystems.get(uri, version);
+      } else if ("NamingSystem".equals(cls)) {
+        return (T) systems.get(uri, version);
       } else if ("ConceptMap".equals(cls)) {
         return (T) maps.get(uri, version);
       } else if ("PlanDefinition".equals(cls)) {
@@ -2456,9 +2463,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else if ("OperationDefinition".equals(cls)) {
         OperationDefinition od = operations.get(uri, version);
         return (T) od;
-      } else if ("Questionnaire.class".equals(cls)) {
+      } else if ("Questionnaire".equals(cls)) {
         return (T) questionnaires.get(uri, version);
-      } else if ("SearchParameter.class".equals(cls)) {
+      } else if ("SearchParameter".equals(cls)) {
         SearchParameter res = searchParameters.get(uri, version);
         return (T) res;
       }
@@ -3185,7 +3192,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
                 String rt = rs.getString(1);
                 String url = rs.getString(2);
                 String version = rs.getString(3);
-                summary.addOID(new OIDDefinition(rt, oid, url, version, os.pid));
+                String status = rs.getString(4);
+                summary.addOID(new OIDDefinition(rt, oid, url, version, os.pid, status));
               }
             }
           } catch (Exception e) {
@@ -3197,13 +3205,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   
       switch (oid) {
       case "2.16.840.1.113883.6.1" :
-        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.1", "http://loinc.org", null, null));
+        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.1", "http://loinc.org", null, null, null));
         break;
       case "2.16.840.1.113883.6.8" :
-        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.8", "http://unitsofmeasure.org", null, null));
+        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.8", "http://unitsofmeasure.org", null, null, null));
         break;
       case "2.16.840.1.113883.6.96" :
-        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.96", "http://snomed.info/sct", null, null));
+        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.96", "http://snomed.info/sct", null, null, null));
         break;
       default:
       }
@@ -3268,7 +3276,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           web = Utilities.pathURL(svs.getServer(), "ValueSet", svs.getVs().getIdBase());
         }
         svs.getVs().setWebPath(web);
-        svs.getVs().setUserData("External.Link", svs.getServer()); // so we can render it differently
+        svs.getVs().setUserData(UserDataNames.render_external_link, svs.getServer()); // so we can render it differently
       }      
       if (svs == null) {
         return null;
@@ -3290,7 +3298,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           web = Utilities.pathURL(scs.getServer(), "ValueSet", scs.getCs().getIdBase());
         }
         scs.getCs().setWebPath(web);
-        scs.getCs().setUserData("External.Link", scs.getServer()); // so we can render it differently
+        scs.getCs().setUserData(UserDataNames.render_external_link, scs.getServer()); // so we can render it differently
       }      
       if (scs == null) {
         return null;

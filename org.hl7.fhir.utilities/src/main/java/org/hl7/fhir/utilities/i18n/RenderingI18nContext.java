@@ -185,8 +185,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONC_MAP_FROM = "CONC_MAP_FROM";
   public static final String CONC_MAP_GRP = "CONC_MAP_GRP";
   public static final String CONC_MAP_NOT_SPEC = "CONC_MAP_NOT_SPEC";
-  public static final String CONC_MAP_NO_PROD_USE = "CONC_MAP_NO_PROD_USE";
-  public static final String CONC_MAP_PUB_ON = "CONC_MAP_PUB_ON"; 
   public static final String CONC_MAP_REL = "CONC_MAP_REL";
   public static final String CONC_MAP_SOURCE = "CONC_MAP_SOURCE";
   public static final String CONC_MAP_SRC_DET = "CONC_MAP_SRC_DET";
@@ -251,6 +249,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_TIMING = "DATA_REND_TIMING";
   public static final String DATA_REND_TO_DO = "DATA_REND_TO_DO";
   public static final String GENERAL_UCUM = "GENERAL_UCUM";
+  public static final String GENERAL_NCI_THES = "GENERAL_NCI_THES";
   public static final String DATA_REND_UNKNWN = "DATA_REND_UNKNWN";
   public static final String DATA_REND_UNRD_EX = "DATA_REND_UNRD_EX";
   public static final String DATA_REND_UNTIL = "DATA_REND_UNTIL";
@@ -299,7 +298,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String EX_SCEN_TIME = "EX_SCEN_TIME";
   public static final String EX_SCEN_UN = "EX_SCEN_UN";
   public static final String EX_SCEN_UN_ACT = "EX_SCEN_UN_ACT";
-  public static final String EX_SCEN_UN_INST = "EX_SCEN_UN_INST";
   public static final String GENERAL_VER_LOW = "GENERAL_VER_LOW";
   public static final String IMP_GUIDE_URL = "IMP_GUIDE_URL";
   public static final String LIB_REND_ART = "LIB_REND_ART";
@@ -442,6 +440,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String QUEST_LINKID = "QUEST_LINKID";
   public static final String QUEST_MAND = "QUEST_MAND";
   public static final String GENERAL_MAX_LENGTH = "GENERAL_MAX_LENGTH";
+  public static final String GENERAL_MIN_LENGTH = "GENERAL_MIN_LENGTH";
   public static final String QUEST_MAX_LENGTH = "QUEST_MAX_LENGTH";
   public static final String QUEST_NLM = "QUEST_NLM";
   public static final String QUEST_NONE_SPEC = "QUEST_NONE_SPEC";

@@ -30,6 +30,7 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -273,6 +274,7 @@ class ValidationServiceTests {
 
     final ValidationEngine mockValidationEngine = mock(ValidationEngine.class);
     when(mockValidationEngine.getContext()).thenReturn(workerContext);
+    when(mockValidationEngine.getPolicyAdvisor()).thenReturn(mock(IValidationPolicyAdvisor.class));
 
     final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);
     final ValidationService validationService = createFakeValidationService(mockValidationEngineBuilder, mockValidationEngine);
@@ -291,7 +293,7 @@ class ValidationServiceTests {
 
     final ValidationEngine mockValidationEngine = mock(ValidationEngine.class);
     when(mockValidationEngine.getContext()).thenReturn(workerContext);
-
+    when(mockValidationEngine.getPolicyAdvisor()).thenReturn(mock(IValidationPolicyAdvisor.class));
     final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);
     final ValidationService validationService = createFakeValidationService(mockValidationEngineBuilder, mockValidationEngine);
 

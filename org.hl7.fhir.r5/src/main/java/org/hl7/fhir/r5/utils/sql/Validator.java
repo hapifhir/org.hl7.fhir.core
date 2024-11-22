@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
@@ -32,6 +34,8 @@ import org.hl7.fhir.r5.model.UnsignedIntType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.UuidType;
+import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.r5.utils.sql.Validator.TrueFalseOrUnknown;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
 import org.hl7.fhir.utilities.Utilities;
@@ -47,27 +51,33 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
+// see also org.hl7.fhir.validation.instance.type.ViewDefinitionValidator
+
 public class Validator {
+
+  public enum TrueFalseOrUnknown {
+    TRUE, FALSE, UNKNOWN
+  }
 
   private IWorkerContext context;
   private FHIRPathEngine fpe;
   private List<String> prohibitedNames = new ArrayList<String>();
   private List<ValidationMessage> issues = new ArrayList<ValidationMessage>();
-  private Boolean arrays;
-  private Boolean complexTypes;
-  private Boolean needsName;
+  private TrueFalseOrUnknown supportsArrays;
+  private TrueFalseOrUnknown supportsComplexTypes;
+  private TrueFalseOrUnknown supportsNeedsName;
 
   private String resourceName;
   private String name;
 
-  public Validator(IWorkerContext context, FHIRPathEngine fpe, List<String> prohibitedNames, Boolean arrays, Boolean complexTypes, Boolean needsName) {
+  public Validator(IWorkerContext context, FHIRPathEngine fpe, List<String> prohibitedNames, @Nonnull TrueFalseOrUnknown supportsArrays, @Nonnull TrueFalseOrUnknown supportsComplexTypes, @Nonnull TrueFalseOrUnknown supportsNeedsName) {
     super();
     this.context = context;
     this.fpe = fpe;
     this.prohibitedNames = prohibitedNames;
-    this.arrays = arrays;
-    this.complexTypes = complexTypes;
-    this.needsName = needsName;
+    this.supportsArrays = supportsArrays;
+    this.supportsComplexTypes = supportsComplexTypes;
+    this.supportsNeedsName = supportsNeedsName;
   }
 
   public String getResourceName() {
@@ -80,9 +90,9 @@ public class Validator {
     
     JsonElement nameJ = viewDefinition.get("name");
     if (nameJ == null) {
-      if (needsName == null) {
+      if (supportsNeedsName == null) {
         hint(path, viewDefinition, "No name provided. A name is required in many contexts where a ViewDefinition is used");        
-      } else if (needsName) {
+      } else if (supportsNeedsName == TrueFalseOrUnknown.TRUE) {
         error(path, viewDefinition, "No name provided", IssueType.REQUIRED);
       }
     } else if (!(nameJ instanceof JsonString)) {
@@ -98,7 +108,7 @@ public class Validator {
     }
 
     List<Column> columns = new ArrayList<>();    
-    viewDefinition.setUserData("columns", columns);
+    viewDefinition.setUserData(UserDataNames.db_columns, columns);
     
     JsonElement resourceNameJ = viewDefinition.get("resource");
     if (resourceNameJ == null) {
@@ -142,7 +152,7 @@ public class Validator {
 
   private List<Column> checkSelect(JsonObject vd, String path, JsonObject select, TypeDetails t) {
     List<Column> columns = new ArrayList<>();
-    select.setUserData("columns", columns);
+    select.setUserData(UserDataNames.db_columns, columns);
     checkProperties(select, path, "column", "select", "forEach", "forEachOrNull", "unionAll");
 
     if (select.has("forEach")) {
@@ -239,7 +249,7 @@ public class Validator {
             error(path+".unionAll["+i+"]", ((JsonArray) a).get(ic), "unionAll["+i+"] column definitions do not match: "+diff, IssueType.INVALID);            
           }
         }
-        a.setUserData("colunms", columns);
+        a.setUserData(UserDataNames.db_columns, columns);
         return columns;
       }
     }     
@@ -280,7 +290,7 @@ public class Validator {
         ExpressionNode node = null;
         try {
           node = fpe.parse(expr);
-          column.setUserData("path", node);
+          column.setUserData(UserDataNames.db_path, node);
           td = fpe.checkOnTypes(vd, resourceName, t, node, warnings);
         } catch (Exception e) {
           error(path, expression, e.getMessage(), IssueType.INVALID);
@@ -316,7 +326,7 @@ public class Validator {
           }
           // ok, name is sorted!
           if (columnName != null) {
-            column.setUserData("name", columnName);
+            column.setUserData(UserDataNames.db_name, columnName);
             boolean isColl = false;
             if (column.has("collection")) {
               JsonElement collectionJ = column.get("collection");
@@ -331,16 +341,20 @@ public class Validator {
             }
             if (isColl) {
               if (td.getCollectionStatus() == CollectionStatus.SINGLETON) {
-                hint(path, column, "collection is true, but the path statement(s) can only return single values for the column '"+columnName+"'");
+                hint(path, column, "collection is true, but the path statement(s) ('"+expr+"') can only return single values for the column '"+columnName+"'");
+              }
+              if (supportsArrays == TrueFalseOrUnknown.UNKNOWN) {
+                warning(path, expression, "The column '"+columnName+"' is defined as a collection, but collections are not supported in all execution contexts");
+              } else if (supportsArrays == TrueFalseOrUnknown.FALSE) {
+                if (td.getCollectionStatus() == CollectionStatus.SINGLETON) {
+                  warning(path, expression, "The column '"+columnName+"' is defined as a collection, but this is not allowed in the current execution context. Note that the path '"+expr+"' can only return a single value");
+                } else {
+                  warning(path, expression, "The column '"+columnName+"' is defined as a collection, but this is not allowed in the current execution context. Note that the path '"+expr+"' can return a collection of values");                  
+                }
               }
             } else {
-              if (arrays == null) {
-                warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path. Collections are not supported in all execution contexts");
-              } else if (!arrays) {
-                warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path, but this is not allowed in the current execution context");
-              }
               if (td.getCollectionStatus() != CollectionStatus.SINGLETON) {
-                warning(path, column, "collection is not true, but the path statement(s) might return multiple values for the column '"+columnName+"' for some inputs");
+                warning(path, column, "This column is not defined as a collection, but the path statement '"+expr+"' might return multiple values for the column '"+columnName+"' for some inputs");
               }
             }
             Set<String> types = new HashSet<>();
@@ -357,7 +371,7 @@ public class Validator {
                 if (typeJ instanceof JsonString) {
                   String type = typeJ.asString();
                   if (!td.hasType(type)) {
-                    error(path+".type", typeJ, "The path expression does not return a value of the type '"+type+"' - found "+td.describe(), IssueType.VALUE);
+                    error(path+".type", typeJ, "The path expression ('"+expr+"') does not return a value of the type '"+type+"' - found "+td.describe(), IssueType.VALUE);
                   } else {
                     types.clear();
                     types.add(simpleType(type));
@@ -373,10 +387,10 @@ public class Validator {
               String type = types.iterator().next();
               boolean ok = false;
               if (!isSimpleType(type) && !"null".equals(type)) {
-                if (complexTypes) {
-                  warning(path, expression, "Column is a complex type. This is not supported in some Runners");
-                } else if (!complexTypes) {            
-                  error(path, expression, "Column is a complex type but this is not allowed in this context", IssueType.BUSINESSRULE);
+                if (supportsComplexTypes == TrueFalseOrUnknown.UNKNOWN) {
+                  warning(path, expression, "Column from path '"+expr+"' is a complex type ('"+type+"'). This is not supported in some Runners");
+                } else if (supportsComplexTypes == TrueFalseOrUnknown.FALSE) {            
+                  error(path, expression, "Column from path '"+expr+"' is a complex type ('"+type+"') but this is not allowed in this context", IssueType.BUSINESSRULE);
                 } else {
                   ok = true;
                 }
@@ -385,7 +399,7 @@ public class Validator {
               }
               if (ok) {
                 Column col = new Column(columnName, isColl, type, kindForType(type));
-                column.setUserData("column", col);
+                column.setUserData(UserDataNames.db_column, col);
                 return col;
               }
             }
@@ -404,6 +418,11 @@ public class Validator {
     case "integer": return ColumnKind.Integer;
     case "decimal": return ColumnKind.Decimal;
     case "string": return ColumnKind.String;
+    case "canonical": return ColumnKind.String;
+    case "url": return ColumnKind.String;
+    case "uri": return ColumnKind.String;
+    case "oid": return ColumnKind.String;
+    case "uuid": return ColumnKind.String;
     case "id": return ColumnKind.String;
     case "code": return ColumnKind.String;
     case "base64Binary": return ColumnKind.Binary;
@@ -413,7 +432,7 @@ public class Validator {
   }
 
   private boolean isSimpleType(String type) {
-    return Utilities.existsInList(type, "dateTime", "boolean", "integer", "decimal", "string", "base64Binary", "id", "code", "date", "time");
+    return Utilities.existsInList(type, "dateTime", "boolean", "integer", "decimal", "string", "base64Binary", "id", "code", "date", "time", "canonical", "uri", "url");
   }
 
   private String simpleType(String type) {
@@ -453,7 +472,7 @@ public class Validator {
       TypeDetails td = null;
       try {
         ExpressionNode n = fpe.parse(expr);
-        focus.setUserData("forEach", n);
+        focus.setUserData(UserDataNames.db_forEach, n);
         td = fpe.checkOnTypes(vd, resourceName, t, n, warnings);
       } catch (Exception e) {
         error(path, expression, e.getMessage(), IssueType.INVALID);
@@ -478,7 +497,7 @@ public class Validator {
       TypeDetails td = null;
       try {
         ExpressionNode n = fpe.parse(expr);
-        focus.setUserData("forEachOrNull", n);
+        focus.setUserData(UserDataNames.db_forEachOrNull, n);
         td = fpe.checkOnTypes(vd, resourceName, t, n, warnings);
       } catch (Exception e) {
         error(path, expression, e.getMessage(), IssueType.INVALID);
@@ -554,7 +573,7 @@ public class Validator {
       error(path+"."+name, j, name+" must be a string", IssueType.INVALID);
     } else {
       value.setValueAsString(j.asString());
-      constant.setUserData("value", value);
+      constant.setUserData(UserDataNames.db_value, value);
     }
   }
 
@@ -564,7 +583,7 @@ public class Validator {
       error(path+"."+name, j, name+" must be a boolean", IssueType.INVALID);
     } else {
       value.setValueAsString(j.asString());
-      constant.setUserData("value", value);
+      constant.setUserData(UserDataNames.db_value, value);
     }
   }
 
@@ -574,7 +593,7 @@ public class Validator {
       error(path+"."+name, j, name+" must be a number", IssueType.INVALID);
     } else {
       value.setValueAsString(j.asString());
-      constant.setUserData("value", value);
+      constant.setUserData(UserDataNames.db_value, value);
     }
   }
   
@@ -591,7 +610,7 @@ public class Validator {
     TypeDetails td = null;
     try {
       ExpressionNode n = fpe.parse(expr);
-      where.setUserData("path", n);
+      where.setUserData(UserDataNames.db_path, n);
       td = fpe.checkOnTypes(vd, resourceName, types, n, warnings);
     } catch (Exception e) {
       error(path, where.get("path"), e.getMessage(), IssueType.INVALID);

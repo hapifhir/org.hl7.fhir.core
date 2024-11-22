@@ -31,22 +31,16 @@ package org.hl7.fhir.utilities.http;
 
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import org.hl7.fhir.utilities.Utilities;
+import lombok.Getter;
+import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 /**
- * see security.md - manages access to the local file system by the FHIR HAPI Core library
- * 
+ * see security.md - manages web access by the FHIR HAPI Core library
+ * <p/>
  * By using accessPolicy, allowedDomains and accessor, a host java application can control 
  * whether this library has direct access to the web (and which domains it is allowed to access),
  * or whether the host application provides controlled access, or whether no access is allowed at all
@@ -56,11 +50,15 @@ import org.hl7.fhir.utilities.Utilities;
  *
  */
 public class ManagedWebAccess {
-  
+
   public interface IWebAccessor {
-    HTTPResult get(String url, String accept, Map<String, String> headers) throws IOException;
-    HTTPResult post(String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
-    HTTPResult put(String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
+    HTTPResult get(Iterable<String> serverTypes, String url, String accept, Map<String, String> headers) throws IOException;
+    HTTPResult post(Iterable<String> serverTypes, String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
+    HTTPResult put(Iterable<String> serverTypes, String url, byte[] bytes, String contentType, String accept, Map<String, String> headers) throws IOException;
+  }
+
+  public interface IFhirWebAccessor {
+    HTTPResult httpCall(HTTPRequest httpRequest);
   }
 
   public enum WebAccessPolicy {
@@ -70,11 +68,18 @@ public class ManagedWebAccess {
   }
 
   private static WebAccessPolicy accessPolicy = WebAccessPolicy.DIRECT; // for legacy reasons
+  //TODO get this from fhir settings
   private static List<String> allowedDomains = new ArrayList<>();
+  @Getter
   private static IWebAccessor accessor;
+
+  @Getter
+  private static IFhirWebAccessor fhirWebAccessor;
+
+  @Getter
   private static String userAgent;
-  
-  
+  private static List<ServerDetailsPOJO> serverAuthDetails;
+
   public static WebAccessPolicy getAccessPolicy() {
     return accessPolicy;
   }
@@ -95,37 +100,49 @@ public class ManagedWebAccess {
     return false;
   }
 
-  public static String getUserAgent() {
-    return userAgent;
-  }
-
   public static void setUserAgent(String userAgent) {
     ManagedWebAccess.userAgent = userAgent;
   }
 
-  public static IWebAccessor getAccessor() {
-    return accessor;
+  public static ManagedWebAccessor accessor(Iterable<String> serverTypes) {
+    return new ManagedWebAccessor(serverTypes, userAgent, serverAuthDetails);
   }
 
-  public static ManagedWebAccessBuilder builder() {
-    return new ManagedWebAccessBuilder(userAgent);
+  public static ManagedFhirWebAccessor fhirAccessor() {
+    return new ManagedFhirWebAccessor(userAgent, serverAuthDetails);
   }
 
-  public static HTTPResult get(String url) throws IOException {
-    return builder().get(url);
+  public static HTTPResult get(Iterable<String> serverTypes, String url) throws IOException {
+    return accessor(serverTypes).get(url);
   }
 
-  public static HTTPResult get(String url, String accept) throws IOException {
-    return builder().withAccept(accept).get(url);
+  public static HTTPResult get(Iterable<String> serverTypes, String url, String accept) throws IOException {
+    return accessor(serverTypes).get(url, accept);
   }
 
-  public static HTTPResult post(String url, byte[] content, String contentType, String accept) throws IOException {
-    return builder().withAccept(accept).post(url, content, contentType);
-  }
-  
-
-  public static HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
-    return builder().withAccept(accept).put(url, content, contentType);
+  public static HTTPResult post(Iterable<String> serverTypes, String url, byte[] content, String contentType, String accept) throws IOException {
+    return accessor(serverTypes).post(url, content, contentType, accept);
   }
 
+  public static HTTPResult put(Iterable<String> serverTypes, String url, byte[] content, String contentType, String accept) throws IOException {
+    return accessor(serverTypes).put(url, content, contentType, accept);
+  }
+
+  public static HTTPResult httpCall(HTTPRequest httpRequest) throws IOException {
+    return fhirAccessor().httpCall(httpRequest);
+  }
+
+  public static void loadFromFHIRSettings() {
+    setAccessPolicy(FhirSettings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
+    setUserAgent("hapi-fhir-tooling-client");
+    serverAuthDetails = new ArrayList<>();
+    serverAuthDetails.addAll(FhirSettings.getServers());
+  }
+
+  public static void loadFromFHIRSettings(FhirSettings settings) {
+    setAccessPolicy(settings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
+    setUserAgent("hapi-fhir-tooling-client");
+    serverAuthDetails = new ArrayList<>();
+    serverAuthDetails.addAll(settings.getServers());
+  }
 }

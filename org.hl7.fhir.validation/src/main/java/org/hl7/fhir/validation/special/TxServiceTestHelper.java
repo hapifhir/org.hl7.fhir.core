@@ -108,7 +108,7 @@ public class TxServiceTestHelper {
 
       writeDiffToFileSystem( name, expectedResponse, actualResponse);
 
-      String diff = CompareUtilities.checkJsonSrcIsSame(id, expectedResponse, actualResponse, externals);
+      String diff = new CompareUtilities(externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null) {
         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
         TextFile.stringToFile(actualResponse, fp);
@@ -182,7 +182,7 @@ public class TxServiceTestHelper {
 
       writeDiffToFileSystem(name, expectedResponse, actualResponse);
 
-      String diff = CompareUtilities.checkJsonSrcIsSame(id, expectedResponse, actualResponse, externals);
+      String diff = new CompareUtilities(externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null) {
          Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
         TextFile.stringToFile(actualResponse, fp);

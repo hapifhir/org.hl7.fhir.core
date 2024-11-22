@@ -249,7 +249,7 @@ public class QuestionnaireBuilder {
       QuestionnaireResponse.QuestionnaireResponseItemComponent item = new QuestionnaireResponse.QuestionnaireResponseItemComponent();
       response.addItem(item);
       item.setLinkId("meta");
-      item.setUserData("object", resource);
+      item.setUserData(UserDataNames.questionnaire_object, resource);
     }
 
   }
@@ -353,12 +353,12 @@ public class QuestionnaireBuilder {
   private void processExisting(String path, List<QuestionnaireResponse.QuestionnaireResponseItemComponent> answerGroups, QuestionnaireItemComponent item, List<QuestionnaireResponse.QuestionnaireResponseItemComponent> nResponse) throws FHIRException {
     // processing existing data
     for (QuestionnaireResponse.QuestionnaireResponseItemComponent ag : answerGroups) {
-      List<Base> children = ((Element) ag.getUserData("object")).listChildrenByName(tail(path));
+      List<Base> children = ((Element) ag.getUserData(UserDataNames.questionnaire_object)).listChildrenByName(tail(path));
       for (Base child : children) {
         if (child != null) {
           QuestionnaireResponse.QuestionnaireResponseItemComponent ans = ag.addItem();
           ag.setLinkId(item.getLinkId());
-          ans.setUserData("object", child);
+          ans.setUserData(UserDataNames.questionnaire_object, child);
           nResponse.add(ans);
         }
       }
@@ -393,13 +393,13 @@ public class QuestionnaireBuilder {
           for (TypeRefComponent t : types) {
             Questionnaire.QuestionnaireItemComponent sub = q.addItem();
             sub.setType(QuestionnaireItemType.GROUP);
-            sub.setLinkId(element.getPath()+"._"+t.getUserData("text"));
-            sub.setText((String) t.getUserData("text"));
+            sub.setLinkId(element.getPath()+"._"+t.getUserData(UserDataNames.questionnaire_text));
+            sub.setText((String) t.getUserData(UserDataNames.questionnaire_text));
             // always optional, never repeats
 
             List<QuestionnaireResponse.QuestionnaireResponseItemComponent> selected = new ArrayList<QuestionnaireResponse.QuestionnaireResponseItemComponent>();
             selectTypes(profile, sub, t, answerGroups, selected);
-            processDataType(profile, sub, element, element.getPath()+"._"+t.getUserData("text"), t, selected, parents);
+            processDataType(profile, sub, element, element.getPath()+"._"+t.getUserData(UserDataNames.questionnaire_text), t, selected, parents);
           }
       } else
         // now we have to build the question panel for each different data type
@@ -483,7 +483,7 @@ public class QuestionnaireBuilder {
     List<QuestionnaireResponse.QuestionnaireResponseItemComponent> temp = new ArrayList<QuestionnaireResponse.QuestionnaireResponseItemComponent>();
 
     for (QuestionnaireResponse.QuestionnaireResponseItemComponent g : source)
-      if (instanceOf(t, (Element) g.getUserData("object"))) 
+      if (instanceOf(t, (Element) g.getUserData(UserDataNames.questionnaire_object))) 
         temp.add(g);
     for (QuestionnaireResponse.QuestionnaireResponseItemComponent g : temp)
       source.remove(g);
@@ -526,7 +526,7 @@ public class QuestionnaireBuilder {
       dest.add(subg);
       subg.setLinkId(sub.getLinkId());
       subg.setText(sub.getText());
-      subg.setUserData("object", g.getUserData("object"));
+      subg.setUserData(UserDataNames.questionnaire_object, g.getUserData(UserDataNames.questionnaire_object));
     }
   }
 
@@ -590,7 +590,7 @@ public class QuestionnaireBuilder {
         List<Base> children = new ArrayList<Base>(); 
 
         QuestionnaireResponse.QuestionnaireResponseItemComponent aq = null;
-        Element obj = (Element) ag.getUserData("object");
+        Element obj = (Element) ag.getUserData(UserDataNames.questionnaire_object);
         if (isPrimitive((TypeRefComponent) obj))
           children.add(obj);
         else if (obj instanceof Enumeration) {
