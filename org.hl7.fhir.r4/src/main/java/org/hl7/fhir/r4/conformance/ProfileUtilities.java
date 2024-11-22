@@ -797,7 +797,6 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (diffMatches.get(0).hasSliceName())
             outcome.setSliceName(diffMatches.get(0).getSliceName());
           updateFromDefinition(outcome, diffMatches.get(0), profileName, trimDifferential, url, srcSD);
-          removeStatusExtensions(outcome);
 //          if (outcome.getPath().endsWith("[x]") && outcome.getType().size() == 1 && !outcome.getType().get(0).getCode().equals("*") && !diffMatches.get(0).hasSlicing()) // if the base profile allows multiple types, but the profile only allows one, rename it
 //            outcome.setPath(outcome.getPath().substring(0, outcome.getPath().length()-3)+Utilities.capitalize(outcome.getType().get(0).getCode()));
           outcome.setSlicing(null);
@@ -1049,7 +1048,6 @@ public class ProfileUtilities extends TranslatingUtilities {
             // Else we'll treat it as the base definition of the slice.
             if (!diffMatches.get(0).hasSliceName()) {
               updateFromDefinition(outcome, diffMatches.get(0), profileName, trimDifferential, url, srcSD);
-              removeStatusExtensions(outcome);
               if (!outcome.hasContentReference() && !outcome.hasType()) {
                 throw new DefinitionException("not done yet");
               }
@@ -1139,7 +1137,6 @@ public class ProfileUtilities extends TranslatingUtilities {
                                                                                                 // we don't want to
                                                                                                 // update the unsliced
                                                                                                 // description
-            removeStatusExtensions(outcome);
           } else if (!diffMatches.get(0).hasSliceName())
             diffMatches.get(0).setUserData(GENERATED_IN_SNAPSHOT, outcome); // because of updateFromDefinition isn't
                                                                             // called
@@ -1239,7 +1236,6 @@ public class ProfileUtilities extends TranslatingUtilities {
                 throw new DefinitionException("Adding wrong path");
               result.getElement().add(outcome);
               updateFromDefinition(outcome, diffItem, profileName, trimDifferential, url, srcSD);
-              removeStatusExtensions(outcome);
               // --- LM Added this
               diffCursor = differential.getElement().indexOf(diffItem) + 1;
               if (!outcome.getType().isEmpty()
@@ -1330,13 +1326,6 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new Error("null min");
     }
     return res;
-  }
-
-  private void removeStatusExtensions(ElementDefinition outcome) {
-    outcome.removeExtension(ToolingExtensions.EXT_FMM_LEVEL);
-    outcome.removeExtension(ToolingExtensions.EXT_STANDARDS_STATUS);
-    outcome.removeExtension(ToolingExtensions.EXT_NORMATIVE_VERSION);
-    outcome.removeExtension(ToolingExtensions.EXT_WORKGROUP);
   }
 
   private String descED(List<ElementDefinition> list, int index) {
