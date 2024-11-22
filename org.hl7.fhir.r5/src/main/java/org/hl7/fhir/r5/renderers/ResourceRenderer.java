@@ -846,22 +846,26 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (!Utilities.noString(r.getId())) {
       if (!context.isSecondaryLang()) {
         String sid = r.getScopedId();
-        if (!context.hasAnchor(sid)) {
-          context.addAnchor(sid);
-          x.an(context.prefixAnchor(sid));
-        }
-        sid = "hc"+sid;
-        if (!context.hasAnchor(sid)) {
-          context.addAnchor(sid);
-          x.an(context.prefixAnchor(sid));
+        if (sid != null) {
+          if (!context.hasAnchor(sid)) {
+            context.addAnchor(sid);
+            x.an(context.prefixAnchor(sid));
+          }
+          sid = "hc"+sid;
+          if (!context.hasAnchor(sid)) {
+            context.addAnchor(sid);
+            x.an(context.prefixAnchor(sid));
+          }
         }
       }
       if (context.getLocale() != null) {
         String langSuffix = "-"+context.getLocale().toLanguageTag();
-        String sid = r.getScopedId()+langSuffix;
-        if (!context.hasAnchor(sid)) {
-          context.addAnchor(sid);
-          x.an(context.prefixAnchor(sid));
+        if (r.getScopedId() != null) {
+          String sid = r.getScopedId()+langSuffix;
+          if (!context.hasAnchor(sid)) {
+            context.addAnchor(sid);
+            x.an(context.prefixAnchor(sid));
+          }
         }
       }
     }

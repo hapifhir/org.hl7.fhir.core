@@ -289,7 +289,7 @@ public class BundleRenderer extends ResourceRenderer {
   
   public static boolean allEntriesAreHistoryProvenance(List<ResourceWrapper> entries) throws UnsupportedEncodingException, FHIRException, IOException {
     for (ResourceWrapper be : entries) {
-      if (!"Provenance".equals(be.child("resource").fhirType())) {
+      if (!be.has("child") || !"Provenance".equals(be.child("resource").fhirType())) {
         return false;
       }
     }
