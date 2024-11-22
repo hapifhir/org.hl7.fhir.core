@@ -1071,6 +1071,9 @@ public class ToolingExtensions {
   }
 
   private static IssueSeverity mapSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity severity) {
+    if (severity == null) {
+      return null;
+    }
     switch (severity) {
     case ERROR: return IssueSeverity.ERROR;
     case FATAL: return IssueSeverity.FATAL;
