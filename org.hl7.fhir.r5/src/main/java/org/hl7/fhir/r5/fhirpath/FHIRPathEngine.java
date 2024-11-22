@@ -6522,15 +6522,15 @@ public class FHIRPathEngine {
       }
       if (ed.hasContentReference() && path.startsWith(ed.getPath()+".")) {
         ElementDefinitionMatch m = getElementDefinitionById(sd, ed.getContentReference());
-        List<ElementDefinitionMatch> res = getElementDefinition(sd, m.definition.getPath()+path.substring(ed.getPath().length()), allowTypedName, expr);
-        if (res.size() == 0) {
-          throw new Error("Unable to find "+ed.getContentReference());
+        if (m == null) {
+          throw new Error("Unable to find path "+path+" with a content reference of "+ed.getContentReference());          
         } else {
+          List<ElementDefinitionMatch> res = getElementDefinition(sd, m.definition.getPath()+path.substring(ed.getPath().length()), allowTypedName, expr);
           for (ElementDefinitionMatch item : res) {
             item.sourceDefinition = ed;
           }
+          return res;
         }
-        return res;
       }
     }
     return ml(null);
@@ -6572,8 +6572,13 @@ public class FHIRPathEngine {
   }
 
   private ElementDefinitionMatch getElementDefinitionById(StructureDefinition sd, String ref) {
-    if (ref.startsWith(sd.getUrl()+"#")) {
-      ref = ref.replace(sd.getUrl()+"#", "#"); 
+    StructureDefinition sdt = sd; 
+    while (sdt != null) {
+      if (ref.startsWith(sdt.getUrl()+"#")) {
+        ref = ref.replace(sdt.getUrl()+"#", "#");
+        break;
+      }
+      sdt = worker.fetchResource(StructureDefinition.class, sdt.getBaseDefinition());
     }
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ref.equals("#"+ed.getId())) {

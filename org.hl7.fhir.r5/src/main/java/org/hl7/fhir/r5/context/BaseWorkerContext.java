@@ -3307,7 +3307,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return (T) scs.getCs();
       }
     } else {
-      throw new Error("Not supported");
+      throw new Error("Not supported: doFindTxResource with type of "+class_.getName());
     }
   }
 
