@@ -1,28 +1,30 @@
+# This translation has been made in french from France, any improvements are welcome
+
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
 msgid "Actor: {0}"
-msgstr ""
+msgstr "Acteur: {0}"
 
 # ACTOR_DEF_CAP
 #: ACTOR_DEF_CAP
 msgid "Capabilities:"
-msgstr ""
+msgstr "Capacités :"
 
 # ACTOR_DEF_DER
 #: ACTOR_DEF_DER
 msgid "Derived from:"
-msgstr ""
+msgstr "Dérivé de :"
 
 # ACTOR_DEF_TYP
 #: ACTOR_DEF_TYP
 msgid "Type: {0}"
-msgstr ""
+msgstr "Type : "
 
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
 msgid "Additional Bindings"
-msgstr ""
+msgstr "Bindings Additionnels"
 
 # ADD_BIND_ALL_REP
 #: ADD_BIND_ALL_REP
@@ -48,23 +50,24 @@ msgstr ""
 # ADD_BIND_DESIG_SYS
 #: ADD_BIND_DESIG_SYS
 msgid "This value set is a good set of codes to start with when designing your system"
-msgstr ""
+msgstr "Ce jeu de valeurs (ValueSet) constitue un bon ensemble de codes pour commencer lors de la conception de votre système.
+"
 
 # ADD_BIND_EXT_PREF
 #: ADD_BIND_EXT_PREF
 msgid "A required binding, for use when the binding strength is ''extensible'' or ''preferred''"
-msgstr ""
+msgstr "Un binding requis, à utiliser lorsque la force de binding est ''extensible'' ou ''preferred''"
 
 # ADD_BIND_EX_BIND
 #: ADD_BIND_EX_BIND
 msgctxt "ADD_BIND_EX_BIND"
 msgid "Extensible"
-msgstr ""
+msgstr "Extensible"
 
 # ADD_BIND_GIVEN_CONT
 #: ADD_BIND_GIVEN_CONT
 msgid "This value set is provided to user look up in a given context"
-msgstr ""
+msgstr "Ce jeu de valeurs (ValueSet) est fourni à l'utilisateur pour rechercher dans un contexte donné"
 
 # ADD_BIND_MAX
 #: ADD_BIND_MAX
@@ -79,24 +82,24 @@ msgstr ""
 # ADD_BIND_NEW_REC
 #: ADD_BIND_NEW_REC
 msgid "New records are required to use this value set, but legacy records may use other codes"
-msgstr ""
+msgstr "Les nouveaux enregistrements doivent utilise ce jeu de valeurs (ValueSet), mais les enregistrements existants peuvent utiliser d'autres codes"
 
 # ADD_BIND_PREF_BIND
 #: ADD_BIND_PREF_BIND
 msgctxt "ADD_BIND_PREF_BIND"
 msgid "Preferred"
-msgstr ""
+msgstr "Préféré"
 
 # ADD_BIND_RECOM_VALUE_SET
 #: ADD_BIND_RECOM_VALUE_SET
 msgid "This is the value set that is recommended (documentation should explain why)"
-msgstr ""
+msgstr "C'est le jeu de valeur (ValueSet) recommandé (la documentation doit expliquer pourquoi)"
 
 # ADD_BIND_REQ_BIND
 #: ADD_BIND_REQ_BIND
 msgctxt "ADD_BIND_REQ_BIND"
 msgid "Required"
-msgstr ""
+msgstr "Requis"
 
 # ADD_BIND_UI
 #: ADD_BIND_UI
@@ -117,12 +120,12 @@ msgstr ""
 # ADD_BIND_VALID_EXT
 #: ADD_BIND_VALID_EXT
 msgid "Validators will check this binding (strength = extensible)"
-msgstr ""
+msgstr "Les validateurs vont vérifier ce binding (strength = extensible)"
 
 # ADD_BIND_VALID_REQ
 #: ADD_BIND_VALID_REQ
 msgid "Validators will check this binding (strength = required)"
-msgstr ""
+msgstr "Les validateurs vont vérifier ce binding (strength = requis)"
 
 # ADD_BIND_VALUE_COMP
 #: ADD_BIND_VALUE_COMP
@@ -232,7 +235,7 @@ msgstr ""
 # CANON_REND_COMMITTEE
 #: CANON_REND_COMMITTEE
 msgid "Committee"
-msgstr ""
+msgstr "Comité"
 
 # CANON_REND_JSON
 #: CANON_REND_JSON
@@ -242,7 +245,7 @@ msgstr ""
 # CANON_REND_MATURITY
 #: CANON_REND_MATURITY
 msgid "Maturity"
-msgstr ""
+msgstr "Maturité"
 
 # CANON_REND_PUBLISHER
 #: CANON_REND_PUBLISHER
@@ -262,7 +265,7 @@ msgstr ""
 # CAPABILITY_ADD_SUPP_PROF
 #: CAPABILITY_ADD_SUPP_PROF
 msgid "Additional supported profiles:"
-msgstr ""
+msgstr "Profils additionnels supportés : "
 
 # CAPABILITY_BASE_SYS
 #: CAPABILITY_BASE_SYS
@@ -272,7 +275,7 @@ msgstr ""
 # CAPABILITY_COMB_SEARCH_PAR
 #: CAPABILITY_COMB_SEARCH_PAR
 msgid "Combined Search Parameters"
-msgstr ""
+msgstr "Paramètres de recherche combinés"
 
 # CAPABILITY_CORS_NO
 #: CAPABILITY_CORS_NO
@@ -287,12 +290,12 @@ msgstr ""
 # CAPABILITY_CREATE_INT
 #: CAPABILITY_CREATE_INT
 msgid "POST a new resource (create interaction)"
-msgstr ""
+msgstr "POST d'une nouvelle ressource (interaction create)"
 
 # CAPABILITY_DELETE_INT
 #: CAPABILITY_DELETE_INT
 msgid "DELETE a resource (delete interaction)"
-msgstr ""
+msgstr "DELETE d'une nouvelle ressource (interaction delete)"
 
 # CAPABILITY_DOCUMENT_CAPS
 #: CAPABILITY_DOCUMENT_CAPS
@@ -307,7 +310,7 @@ msgstr ""
 # CAPABILITY_ERR_DET
 #: CAPABILITY_ERR_DET
 msgid "Error detected"
-msgstr ""
+msgstr "Erreur détectée"
 
 # CAPABILITY_EXT_OP
 #: CAPABILITY_EXT_OP
@@ -322,7 +325,7 @@ msgstr ""
 # CAPABILITY_FHIR_VER
 #: CAPABILITY_FHIR_VER
 msgid "FHIR Version: {0}"
-msgstr ""
+msgstr "Version de FHIR : {0}"
 
 # CAPABILITY_HISTORY_INT
 #: CAPABILITY_HISTORY_INT
@@ -337,7 +340,7 @@ msgstr ""
 # CAPABILITY_IMP_VER
 #: CAPABILITY_IMP_VER
 msgid "Implementation Guide Version: {0}"
-msgstr ""
+msgstr "Version du guide d'implémentation : {0}"
 
 # CAPABILITY_INT
 #: CAPABILITY_INT
@@ -357,7 +360,7 @@ msgstr ""
 # CAPABILITY_INT_SUMM
 #: CAPABILITY_INT_SUMM
 msgid "Interaction summary"
-msgstr ""
+msgstr "Résumé des interactions"
 
 # CAPABILITY_MAY_SUPP
 #: CAPABILITY_MAY_SUPP
@@ -387,12 +390,12 @@ msgstr ""
 # CAPABILITY_OP
 #: CAPABILITY_OP
 msgid "Operations"
-msgstr ""
+msgstr "Opérations"
 
 # CAPABILITY_OPER
 #: CAPABILITY_OPER
 msgid "Operation"
-msgstr ""
+msgstr "Opération"
 
 # CAPABILITY_OTH_RES_ENB
 #: CAPABILITY_OTH_RES_ENB
@@ -422,17 +425,17 @@ msgstr ""
 # CAPABILITY_PUB_BY
 #: CAPABILITY_PUB_BY
 msgid "Published by: {0}"
-msgstr ""
+msgstr "Publié par : {0}"
 
 # CAPABILITY_PUB_ON
 #: CAPABILITY_PUB_ON
 msgid "Published on: {0}"
-msgstr ""
+msgstr "Publié sur : {0}"
 
 # CAPABILITY_READ_INT
 #: CAPABILITY_READ_INT
 msgid "GET a resource (read interaction)"
-msgstr ""
+msgstr "GET d'une ressource (interaction read)"
 
 # CAPABILITY_REF_PROF
 #: CAPABILITY_REF_PROF
@@ -442,7 +445,7 @@ msgstr ""
 # CAPABILITY_REQ_RECOM
 #: CAPABILITY_REQ_RECOM
 msgid "Required and recommended search parameters"
-msgstr ""
+msgstr "Paramètres de recherche requis et recommandés"
 
 # CAPABILITY_REST_CAPS
 #: CAPABILITY_REST_CAPS
@@ -502,12 +505,12 @@ msgstr ""
 # CAPABILITY_SEARCH_PARS
 #: CAPABILITY_SEARCH_PARS
 msgid "Search Parameters"
-msgstr ""
+msgstr "Paramètres de recherche"
 
 # CAPABILITY_SHOULD_SUPP
 #: CAPABILITY_SHOULD_SUPP
 msgid "SHOULD Support the Following Implementation Guides"
-msgstr ""
+msgstr "Doit (SHOULD) supporter les guides d'implémentation suivants"
 
 # CAPABILITY_SUMM_RES
 #: CAPABILITY_SUMM_RES
@@ -1490,18 +1493,18 @@ msgstr ""
 # GENERAL_PAR
 #: GENERAL_PAR
 msgid "Parameter"
-msgstr ""
+msgstr "Paramètre"
 
 # GENERAL_PARS
 #: GENERAL_PARS
 msgid "Parameters"
-msgstr ""
+msgstr "Paramètres"
 
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
 msgctxt "GENERAL_PREFERRED"
 msgid "Preferred"
-msgstr ""
+msgstr "Préféré"
 
 # GENERAL_PROF
 #: GENERAL_PROF
@@ -1638,7 +1641,7 @@ msgstr ""
 # IMP_GUIDE_URL
 #: IMP_GUIDE_URL
 msgid "The official URL for this implementation guide is:"
-msgstr ""
+msgstr "L'URL officielle pour ce guide d'implémentation est :"
 
 # IP_INTRO
 #: IP_INTRO
@@ -1648,12 +1651,12 @@ msgstr ""
 # IP_NONE
 #: IP_NONE
 msgid "No use of external IP"
-msgstr ""
+msgstr "Pas d'usage de PI externe"
 
 # IP_NONE_EXT
 #: IP_NONE_EXT
 msgid "No use of external IP (other than from the FHIR specification)"
-msgstr ""
+msgstr "Pas d'usage de PI externe (autre que celles de la spécification FHIR)"
 
 # KIND_EXTENSION
 #: KIND_EXTENSION
@@ -1663,32 +1666,32 @@ msgstr ""
 # KIND_LOGICAL
 #: KIND_LOGICAL
 msgid "logical model"
-msgstr ""
+msgstr "modèle logique"
 
 # KIND_PROFILE
 #: KIND_PROFILE
 msgid "profile"
-msgstr ""
+msgstr "profil"
 
 # LIB_REND_ART
 #: LIB_REND_ART
 msgid "Related Artifacts"
-msgstr ""
+msgstr "Artefacts associés"
 
 # LIB_REND_AUT
 #: LIB_REND_AUT
 msgid "Author"
-msgstr ""
+msgstr "Auteur"
 
 # LIB_REND_CONT
 #: LIB_REND_CONT
 msgid "Contents"
-msgstr ""
+msgstr "Contenus"
 
 # LIB_REND_ED
 #: LIB_REND_ED
 msgid "Editor"
-msgstr ""
+msgstr "Editeur"
 
 # LIB_REND_END
 #: LIB_REND_END
@@ -1988,26 +1991,26 @@ msgstr ""
 #: PAT_LANG
 msgid "Language:"
 msgid_plural "Languages:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Langue :"
+msgstr[1] "Langues :"
 
 # PAT_LANG_HINT
 #: PAT_LANG_HINT
 msgid "Language spoken"
 msgid_plural "Languages spoken"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Langue parlée"
+msgstr[1] "Langues parlées"
 
 # PAT_LANG_PREFERRED
 #: PAT_LANG_PREFERRED
 msgid "(preferred)"
-msgstr ""
+msgstr "(préféré)"
 
 # PAT_LINKS
 #: PAT_LINKS
 msgctxt "PAT_LINKS"
 msgid "Links:"
-msgstr ""
+msgstr "Liens :"
 
 # PAT_LINKS_HINT
 #: PAT_LINKS_HINT
@@ -3224,7 +3227,7 @@ msgstr ""
 # STRUC_DEF_DERIVED_PROFILE
 #: STRUC_DEF_DERIVED_PROFILE
 msgid "In this IG, the following structures are derived from this profile:"
-msgstr ""
+msgstr "Dans cet IG, les structures suivantes dérivent de ce profil : "
 
 # STRUC_DEF_DESCRIM
 #: STRUC_DEF_DESCRIM
@@ -3234,7 +3237,7 @@ msgstr ""
 # STRUC_DEF_DESC_PROF
 #: STRUC_DEF_DESC_PROF
 msgid "Description of the profile"
-msgstr ""
+msgstr "Description du profil"
 
 # STRUC_DEF_DISCUSSION
 #: STRUC_DEF_DISCUSSION
@@ -3244,7 +3247,7 @@ msgstr ""
 # STRUC_DEF_ELE
 #: STRUC_DEF_ELE
 msgid "This primitive element must have a value"
-msgstr ""
+msgstr "Cet élément primitif doit avoir une valeur"
 
 # STRUC_DEF_ELEMENT
 #: STRUC_DEF_ELEMENT
@@ -3289,7 +3292,7 @@ msgstr ""
 # STRUC_DEF_EXAM
 #: STRUC_DEF_EXAM
 msgid "example"
-msgstr ""
+msgstr "exemple"
 
 # STRUC_DEF_EXT
 #: STRUC_DEF_EXT
@@ -3325,7 +3328,7 @@ msgstr ""
 # STRUC_DEF_EX_DESC
 #: STRUC_DEF_EX_DESC
 msgid "Instances are not expected or even encouraged to draw from the specified value set. The value set merely provides examples of the types of concepts intended to be included."
-msgstr ""
+msgstr "Il n'est pas attendu, ni même encouragé, que les instances s'appuient sur les jeux de valeurs spécifiés. Le jeu de valeurs fournit simplement des exemples des types de concepts destinés à être inclus"
 
 # STRUC_DEF_EX_TYPE
 #: STRUC_DEF_EX_TYPE
@@ -3881,12 +3884,12 @@ msgstr ""
 # STRUC_DEF_SLICE_FOR
 #: STRUC_DEF_SLICE_FOR
 msgid "Slices for {0}"
-msgstr ""
+msgstr "Slices pour {0}"
 
 # STRUC_DEF_SLICE_NAME
 #: STRUC_DEF_SLICE_NAME
 msgid "Slice Name"
-msgstr ""
+msgstr "Nom de la slice"
 
 # STRUC_DEF_SLICE_PAR
 #: STRUC_DEF_SLICE_PAR
@@ -4257,37 +4260,37 @@ msgstr ""
 # TEXT_ICON_DATATYPE
 #: TEXT_ICON_DATATYPE
 msgid "Data Type"
-msgstr ""
+msgstr "Type de donnée"
 
 # TEXT_ICON_ELEMENT
 #: TEXT_ICON_ELEMENT
 msgid "Element"
-msgstr ""
+msgstr "Element"
 
 # TEXT_ICON_EXTENSION_COMPLEX
 #: TEXT_ICON_EXTENSION_COMPLEX
 msgid "Complex Extension"
-msgstr ""
+msgstr "Extension complexe"
 
 # TEXT_ICON_EXTENSION_SIMPLE
 #: TEXT_ICON_EXTENSION_SIMPLE
 msgid "Simple Extension"
-msgstr ""
+msgstr "Extension simple"
 
 # TEXT_ICON_KEY
 #: TEXT_ICON_KEY
 msgid "JSON Key Value"
-msgstr ""
+msgstr "Clé valeur JSON"
 
 # TEXT_ICON_OBJECT_BOX
 #: TEXT_ICON_OBJECT_BOX
 msgid "Object"
-msgstr ""
+msgstr "Objet"
 
 # TEXT_ICON_PRIMITIVE
 #: TEXT_ICON_PRIMITIVE
 msgid "Primitive Data Type"
-msgstr ""
+msgstr "Type de donnée primitif"
 
 # TEXT_ICON_REFERENCE
 #: TEXT_ICON_REFERENCE
@@ -4322,58 +4325,58 @@ msgstr ""
 # VALUE_SET_ALL_CODE
 #: VALUE_SET_ALL_CODE
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"
-msgstr ""
+msgstr "Cet include spécifie une hiérarchie à utiliser lorsque les jeux de valeurs (ValueSet) sont générés à destination des interfaces graphiques. Cette expension contient tous les codes, et également la structure :"
 
 # VALUE_SET_ALL_CODES_DEF
 #: VALUE_SET_ALL_CODES_DEF
 msgid "all codes defined in"
-msgstr ""
+msgstr "tous les codes définis dans"
 
 # VALUE_SET_AND
 #: VALUE_SET_AND
 msgctxt "VALUE_SET_AND"
 msgid "and"
-msgstr ""
+msgstr "et"
 
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
 msgid "Australian"
-msgstr ""
+msgstr "Australien"
 
 # VALUE_SET_CODES_FROM
 #: VALUE_SET_CODES_FROM
 msgid "codes from"
-msgstr ""
+msgstr "codes provenant de"
 
 # VALUE_SET_CODE_ITEM
 #: VALUE_SET_CODE_ITEM
 msgid "The code for the item"
-msgstr ""
+msgstr "Le code pour l'object"
 
 # VALUE_SET_CODE_SELEC
 #: VALUE_SET_CODE_SELEC
 msgid "This value set cannot be fully expanded, but a selection ({0} codes) of the whole set of codes is shown here."
-msgstr ""
+msgstr "Ce jeu de valeur (ValueSet) ne peut pas être totalement étendu, mais une sélection ({0} codes) de l'ensemble des codes est affiché ici."
 
 # VALUE_SET_COMMA
 #: VALUE_SET_COMMA
 msgid ","
-msgstr ""
+msgstr ","
 
 # VALUE_SET_CONT
 #: VALUE_SET_CONT
 msgid "Value Set Contents"
-msgstr ""
+msgstr "Contenu du jeu de valeurs (ValueSet)"
 
 # VALUE_SET_CONTAINS
 #: VALUE_SET_CONTAINS
 msgid "This value set contains {0} concepts"
-msgstr ""
+msgstr "Ce jeu de valeur (ValueSet) contient {0} concepts"
 
 # VALUE_SET_CONTAINS_AT_LEAST
 #: VALUE_SET_CONTAINS_AT_LEAST
 msgid "This value set contains at least {0} concepts"
-msgstr ""
+msgstr "Ce jeu de valeur (ValueSet) contient au moins {0} concepts"
 
 # VALUE_SET_CONT_STRUC
 #: VALUE_SET_CONT_STRUC
@@ -4383,7 +4386,7 @@ msgstr ""
 # VALUE_SET_DANISH
 #: VALUE_SET_DANISH
 msgid "Danish"
-msgstr ""
+msgstr "Danois"
 
 # VALUE_SET_DESCENDENTOF
 #: VALUE_SET_DESCENDENTOF
@@ -4398,22 +4401,22 @@ msgstr ""
 # VALUE_SET_DISPLAY_ITEM
 #: VALUE_SET_DISPLAY_ITEM
 msgid "The display for the item"
-msgstr ""
+msgstr "Le display de l'objet"
 
 # VALUE_SET_DOESNT_EXIST
 #: VALUE_SET_DOESNT_EXIST
 msgid "doesn''t exist"
-msgstr ""
+msgstr "n'existe pas"
 
 # VALUE_SET_DUTCH
 #: VALUE_SET_DUTCH
 msgid "Dutch"
-msgstr ""
+msgstr "Néerlandais"
 
 # VALUE_SET_EQUAL
 #: VALUE_SET_EQUAL
 msgid "="
-msgstr ""
+msgstr "="
 
 # VALUE_SET_ERROR
 #: VALUE_SET_ERROR
@@ -4463,34 +4466,34 @@ msgstr ""
 # VALUE_SET_HAS
 #: VALUE_SET_HAS
 msgid "This value set has {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
-msgstr ""
+msgstr "Ce jeu de valeurs (ValueSet) a {0} codes. Pour garder la publication gérable, seulement une selection ({1} codes) de l'ensemble des codes est affiché."
 
 # VALUE_SET_HAS_AT_LEAST
 #: VALUE_SET_HAS_AT_LEAST
 msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
-msgstr ""
+msgstr "Ce jeu de valeurs (ValueSet) a au moins {0} codes. Pour garder la publication gérable, seulement une selection ({1} codes) de l'ensemble des codes est affiché."
 
 # VALUE_SET_IMPORT
 #: VALUE_SET_IMPORT
 msgid "Import all the codes that are contained in"
 msgid_plural "Import all the codes that are contained in the intersection of"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Importe tous les codes contenu dans"
+msgstr[1] "Importe tous les codes contenus dans l'intersection de"
 
 # VALUE_SET_IN
 #: VALUE_SET_IN
 msgid "in"
-msgstr ""
+msgstr "dans"
 
 # VALUE_SET_INACT
 #: VALUE_SET_INACT
 msgid "inactive"
-msgstr ""
+msgstr "inactif"
 
 # VALUE_SET_INACTIVE
 #: VALUE_SET_INACTIVE
 msgid "Inactive"
-msgstr ""
+msgstr "Inactif"
 
 # VALUE_SET_INC
 #: VALUE_SET_INC
@@ -4570,7 +4573,7 @@ msgstr ""
 # VALUE_SET_NUMBER_CONCEPTS
 #: VALUE_SET_NUMBER_CONCEPTS
 msgid "This value set expansion contains {0} concepts."
-msgstr ""
+msgstr "L'expension de ce jeu de valeurs (ValueSet) contient {0} concepts."
 
 # VALUE_SET_REGEX
 #: VALUE_SET_REGEX
@@ -4580,17 +4583,17 @@ msgstr ""
 # VALUE_SET_RULES_EXC
 #: VALUE_SET_RULES_EXC
 msgid "This value set excludes codes based on the following rules:"
-msgstr ""
+msgstr "Ce jeu de valeur (ValueSet) exclut les codes selon les règles suivantes :"
 
 # VALUE_SET_RULES_INC
 #: VALUE_SET_RULES_INC
 msgid "This value set includes codes based on the following rules:"
-msgstr ""
+msgstr "Ce jeu de valeur (ValueSet) inclut les codes selon les règles suivantes :"
 
 # VALUE_SET_SEL
 #: VALUE_SET_SEL
 msgid "This value set has >1000 codes in it. In order to keep the publication size manageable, only a selection (1000 codes) of the whole set of codes is shown"
-msgstr ""
+msgstr "Ce jeu de valeur (ValueSet) est composé de plus de 1000 codes. Dans le but de garder la publication gérable, seulement une sélection (1000 codes) de l'ensemble des concepts est affiché"
 
 # VALUE_SET_SNOMED
 #: VALUE_SET_SNOMED
@@ -4605,7 +4608,7 @@ msgstr ""
 # VALUE_SET_SPAN
 #: VALUE_SET_SPAN
 msgid "Spanish"
-msgstr ""
+msgstr "Espagnol"
 
 # VALUE_SET_SPEC_NAME
 #: VALUE_SET_SPEC_NAME
@@ -4615,37 +4618,37 @@ msgstr ""
 # VALUE_SET_SWEDISH
 #: VALUE_SET_SWEDISH
 msgid "Swedish"
-msgstr ""
+msgstr "Suédois"
 
 # VALUE_SET_SYNONYM
 #: VALUE_SET_SYNONYM
 msgid "Synonym"
-msgstr ""
+msgstr "Synonyme"
 
 # VALUE_SET_SYSTEM
 #: VALUE_SET_SYSTEM
 msgid "System"
-msgstr ""
+msgstr "Système"
 
 # VALUE_SET_THESE_CODES_DEF
 #: VALUE_SET_THESE_CODES_DEF
 msgid "these codes as defined in"
-msgstr ""
+msgstr "ces codes sont définis dans"
 
 # VALUE_SET_TOO_COSTLY
 #: VALUE_SET_TOO_COSTLY
 msgid "This value set cannot be expanded because the terminology server(s) deemed it too costly to do so"
-msgstr ""
+msgstr "Ce jeu de valeur (ValueSet) ne peut pas être étendu car le ou les serveurs de terminologie ont jugé cela trop coûteux"
 
 # VALUE_SET_UK
 #: VALUE_SET_UK
 msgid "United Kingdom"
-msgstr ""
+msgstr "Royaume-Uni"
 
 # VALUE_SET_US
 #: VALUE_SET_US
 msgid "United States"
-msgstr ""
+msgstr "Etats-Unis"
 
 # VALUE_SET_USED_ELSEWHERE
 #: VALUE_SET_USED_ELSEWHERE
@@ -4655,7 +4658,7 @@ msgstr ""
 # VALUE_SET_WHERE
 #: VALUE_SET_WHERE
 msgid "where"
-msgstr ""
+msgstr "où"
 
 # VALUE_SET_WHERE_CODES
 #: VALUE_SET_WHERE_CODES
@@ -4670,5 +4673,5 @@ msgstr ""
 # _NA
 #: _NA
 msgid "n/a"
-msgstr ""
+msgstr "n/a"
 
