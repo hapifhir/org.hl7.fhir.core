@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.utils.structuremap;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
 
@@ -10,7 +11,7 @@ public interface ITransformerServices {
   //    public boolean validateByValueSet(Coding code, String valuesetId);
   public void log(String message); // log internal progress
 
-  public Base createType(Object appInfo, String name) throws FHIRException;
+  public Base createType(Object appInfo, String name, ProfileUtilities profileUtilities) throws FHIRException;
 
   public Base createResource(Object appInfo, Base res, boolean atRootofTransform); // an already created resource is provided; this is to identify/store it
 
