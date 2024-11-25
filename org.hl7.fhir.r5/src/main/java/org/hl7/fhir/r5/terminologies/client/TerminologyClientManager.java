@@ -15,6 +15,7 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.CanonicalResourceManager;
+import org.hl7.fhir.r5.context.ILoggingService;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -27,6 +28,7 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.TerminologyClientContextUseType;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ServerOptionList;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5.TerminologyClientR5Factory;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedCodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
@@ -86,11 +88,14 @@ public class TerminologyClientManager {
   }
   
   public class InternalLogEvent {
+    private boolean error;
     private String message;
     private String server;
     private String vs;
     private String systems;
     private String choices;
+    private String context;
+    private String request;
     protected InternalLogEvent(String message, String server, String vs, String systems, String choices) {
       super();
       this.message = message;
@@ -99,9 +104,12 @@ public class TerminologyClientManager {
       this.systems = systems;
       this.choices = choices;
     }
-    protected InternalLogEvent(String message) {
+    protected InternalLogEvent(String message, String ctxt, String request) {
       super();
+      error = true;
       this.message = message;
+      this.context = ctxt;
+      this.request = request;
     }
     public String getMessage() {
       return message;
@@ -118,7 +126,15 @@ public class TerminologyClientManager {
     public String getServer() {
       return server;
     }
-    
+    public boolean isError() {
+      return error;
+    }
+    public String getContext() {
+      return context;
+    }
+    public String getRequest() {
+      return request;
+    }
   }
 
   public static final String UNRESOLVED_VALUESET = "--unknown--";
@@ -142,10 +158,13 @@ public class TerminologyClientManager {
 
   private boolean useEcosystem;
 
-  public TerminologyClientManager(ITerminologyClientFactory factory, String cacheId) {
+  private ILoggingService logger;
+
+  public TerminologyClientManager(ITerminologyClientFactory factory, String cacheId, ILoggingService logger) {
     super();
     this.factory = factory;
     this.cacheId = cacheId;
+    this.logger = logger;
   }
   
   public String getCacheId() {
@@ -346,11 +365,11 @@ public class TerminologyClientManager {
       }
       return ret;
     } catch (Exception e) {
-      String msg = "Error resolving system "+url+": "+e.getMessage()+" ("+request+")";
+      String msg = "Error resolving system "+url+": "+e.getMessage();
       if (!hasMessage(msg)) {
-        internalLog.add(new InternalLogEvent(msg));
+        internalLog.add(new InternalLogEvent(msg, url, request));
       }
-      if (!monitorServiceURL.contains("tx.fhir.org")) {
+      if (logger.isDebugLogging()) {
         e.printStackTrace();
       }
     }
@@ -571,12 +590,13 @@ public class TerminologyClientManager {
       ValueSet vs = (ValueSet) client.getClient().read("ValueSet", rid);
       return new SourcedValueSet(server, vs);
     } catch (Exception e) {
-      e.printStackTrace();
-      String msg = "Error resolving valueSet "+canonical+": "+e.getMessage()+" ("+request+")";
+      String msg = "Error resolving valueSet "+canonical+": "+e.getMessage();
       if (!hasMessage(msg)) {
-        internalLog.add(new InternalLogEvent(msg));
+        internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
-      e.printStackTrace();
+      if (logger.isDebugLogging()) {
+        e.printStackTrace();
+      }
       return null;
     }
   }
@@ -651,12 +671,13 @@ public class TerminologyClientManager {
       CodeSystem vs = (CodeSystem) client.getClient().read("CodeSystem", rid);
       return new SourcedCodeSystem(server, vs);
     } catch (Exception e) {
-      e.printStackTrace();
-      String msg = "Error resolving valueSet "+canonical+": "+e.getMessage()+" ("+request+")";
+      String msg = "Error resolving CodeSystem "+canonical+": "+e.getMessage();
       if (!hasMessage(msg)) {
-        internalLog.add(new InternalLogEvent(msg));
+        internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
-      e.printStackTrace();
+      if (logger.isDebugLogging()) {
+        e.printStackTrace();
+      }
       return null;
     }
   }
@@ -673,4 +694,14 @@ public class TerminologyClientManager {
   public List<InternalLogEvent> getInternalLog() {
     return internalLog;
   }
+
+  public ILoggingService getLogger() {
+    return logger;
+  }
+
+  public void setLogger(ILoggingService logger) {
+    this.logger = logger;
+  }
+
+  
 }

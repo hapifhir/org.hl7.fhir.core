@@ -149,7 +149,7 @@ public class FilesystemPackageCacheManagerLocks {
             channel.close();
             throw new IOException("Lock file exists, but is not locked by a process: " + lockFile.getName());
           }
-          System.out.println("File is locked.");
+          System.out.println("File is locked ('"+lockFile.getAbsolutePath()+"').");
         }
       }
       try {

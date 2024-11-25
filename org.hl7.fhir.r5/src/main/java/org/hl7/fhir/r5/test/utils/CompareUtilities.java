@@ -112,6 +112,7 @@ public class CompareUtilities extends BaseTestingUtilities {
         case "$url$": return "\"A URL\"";
         case "$token$": return "\"A Token\"";
         case "$version$": return variables.containsKey("version") ? variables.get("version") : "(anything)";
+        case "$semver$": return "A semver"; 
         default: return "Unhandled template: "+expected;
         }
       }
@@ -558,6 +559,7 @@ public class CompareUtilities extends BaseTestingUtilities {
         case "$id$": return actualJsonString.matches("[A-Za-z0-9\\-\\.]{1,64}");
         case "$url$": return actualJsonString.matches("(https?://|www\\.)[-a-zA-Z0-9+&@#/%?=~_|!:.;]*[-a-zA-Z0-9+&@#/%=~_|]");
         case "$token$": return actualJsonString.matches("[0-9a-zA-Z_][0-9a-zA-Z_\\.\\-]*");
+        case "$semver$": return actualJsonString.matches("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$");
         case "$version$": return matchesVariable(actualJsonString, "version");
         default: 
           throw new Error("Unhandled template: "+expectedJsonString);
