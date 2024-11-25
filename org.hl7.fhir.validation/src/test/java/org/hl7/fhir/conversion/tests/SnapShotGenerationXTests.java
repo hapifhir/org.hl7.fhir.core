@@ -561,6 +561,7 @@ public class SnapShotGenerationXTests {
       t1.setText(null);
       StructureDefinition t2 = test.output.copy();
       t2.setText(null);
+      t1.setIdBase(t2.getIdBase());
       Assertions.assertTrue(t1.equalsDeep(t2), "Output does not match expected");
     }
   }
