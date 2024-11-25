@@ -20,6 +20,7 @@ import org.hl7.fhir.r4.utils.client.EFhirClientException;
 import org.hl7.fhir.r4.utils.client.ResourceFormat;
 import org.hl7.fhir.utilities.MimeType;
 import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.*;
 import org.hl7.fhir.utilities.xhtml.XhtmlUtils;
 
@@ -179,7 +180,11 @@ public class FhirRequestBuilder {
     boolean ok = code >= 200 && code < 300;
     if (response.getContent() == null) {
       if (!ok) {
-        throw new EFhirClientException(response.getMessage());
+        if (Utilities.noString(response.getMessage())) {
+          throw new EFhirClientException(response.getMessagefromCode());
+        } else {
+          throw new EFhirClientException(response.getMessage());
+        }
       } else {
         return null;
       }
