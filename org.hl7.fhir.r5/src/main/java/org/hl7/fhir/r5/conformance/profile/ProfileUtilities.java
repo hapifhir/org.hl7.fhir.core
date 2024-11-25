@@ -794,6 +794,19 @@ public class ProfileUtilities {
           }
         }
 
+        for (int i = 0; i < derived.getSnapshot().getElement().size(); i++) {
+          ElementDefinition ed = derived.getSnapshot().getElement().get(i);
+          if (ed.getType().size() > 1) {
+            List<TypeRefComponent> toRemove = new ArrayList<ElementDefinition.TypeRefComponent>();
+            for (TypeRefComponent tr : ed.getType()) {
+              ElementDefinition typeSlice = findTypeSlice(derived.getSnapshot().getElement(), i, ed.getPath(), tr.getWorkingCode());
+              if (typeSlice != null && typeSlice.prohibited()) {
+                toRemove.add(tr);
+              }
+            }
+            ed.getType().removeAll(toRemove);
+          }
+        }
         if (derived.getKind() != StructureDefinitionKind.LOGICAL && !derived.getSnapshot().getElementFirstRep().getType().isEmpty())
           throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_SNAPSHOT_ELEMENT_FOR__IN__FROM_, derived.getSnapshot().getElementFirstRep().getPath(), derived.getUrl(), base.getUrl()));
         mappingDetails.update();
@@ -991,6 +1004,34 @@ public class ProfileUtilities {
     derived.setUserData(UserDataNames.SNAPSHOT_GENERATED_MESSAGES, messages); // used by the publisher
   }
 
+
+  private ElementDefinition findTypeSlice(List<ElementDefinition> list, int i, String path, String typeCode) {
+    for (int j = i+1; j < list.size(); j++) {
+      ElementDefinition ed = list.get(j);
+      if (pathMatches(path, ed) && typeMatches(ed, typeCode)) {
+        return ed;
+      }
+    }
+    return null;
+  }
+
+  private boolean pathMatches(String path, ElementDefinition ed) {
+    String p = ed.getPath();
+    if (path.equals(p)) {
+      return true;
+    }
+    if (path.endsWith("[x]")) { // it should
+      path = path.substring(0, path.length()-3);
+      if (p.startsWith(path) && p.length() > path.length() && !p.substring(path.length()).contains(".")) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean typeMatches(ElementDefinition ed, String typeCode) {
+    return ed.getType().size() == 1 && typeCode.equals(ed.getTypeFirstRep().getWorkingCode());
+  }
 
   private void checkTypeParameters(StructureDefinition base, StructureDefinition derived) {
     String bt = ToolingExtensions.readStringExtension(base, ToolingExtensions.EXT_TYPE_PARAMETER);
