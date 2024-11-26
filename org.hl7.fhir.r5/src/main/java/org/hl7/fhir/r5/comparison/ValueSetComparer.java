@@ -165,7 +165,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
         intersection.getInclude().add(csI);
         StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r);
         res.getIncludes().getChildren().add(sm);
-        def = compareDefinitions("ValueSet.compose.exclude["+right.getInclude().indexOf(r)+"]", l, r, sm, csM, csI, res) || def;
+        def = compareDefinitions("ValueSet.compose.include["+right.getInclude().indexOf(r)+"]", l, r, sm, csM, csI, res) || def;
       }
     }
     for (ConceptSetComponent r : right.getInclude()) {
@@ -341,7 +341,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
           intersection.getFilter().add(ci);
           StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r);
           combined.getChildren().add(sm);
-          if (!compareFilters(l, r, sm, cu, ci)) {
+          if (compareFilters(l, r, sm, cu, ci)) {
             res.updateContentState(true);       
             session.markChanged(r, l);
           }
@@ -420,7 +420,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
       cu.setOp(l.getOp());
       cu.setValue(l.getValue());
     }
-    return !l.getProperty().equals(r.getProperty());
+    return !l.getValue().equals(r.getValue());
   }
   
   private CanonicalType findInList(List<CanonicalType> matches, CanonicalType item, List<CanonicalType> source) {
