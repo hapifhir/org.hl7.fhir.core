@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
@@ -103,6 +104,7 @@ public class SnapShotGenerationXTests {
     private StructureDefinition included;
     private StructureDefinition expected;
     private StructureDefinition output;
+    public boolean outputIsJson;
 
     public TestDetails(Element test) {
       super();
@@ -181,8 +183,13 @@ public class SnapShotGenerationXTests {
         source = (StructureDefinition) XVersionLoader.loadJson(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-input.json"));
       else
         source = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-input.xml"));
-      if (!fail)
-        expected = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-output.xml"));
+      if (!fail) {
+        if (TestingUtilities.findTestResource("rX", "snapshot-generation", id + "-output.json")) {
+          outputIsJson = true;
+          expected = (StructureDefinition) XVersionLoader.loadJson(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-output.json"));
+        } else
+          expected = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-output.xml"));
+      }
       if (!Utilities.noString(include))
         included = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", include + ".xml"));
       if (!Utilities.noString(register)) {
@@ -556,7 +563,11 @@ public class SnapShotGenerationXTests {
       File dst = ManagedFileAccess.file(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output.xml"));
       if (dst.exists())
         dst.delete();
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output.xml")), output);
+      if (test.outputIsJson) {
+        XVersionLoader.saveJson(version, output, ManagedFileAccess.outStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output.json")));
+      } else {
+        XVersionLoader.saveXml(version, output, ManagedFileAccess.outStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output.json")));
+     }
       StructureDefinition t1 = test.expected.copy();
       t1.setText(null);
       StructureDefinition t2 = test.output.copy();
