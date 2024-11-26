@@ -58,7 +58,6 @@ import org.hl7.fhir.r5.profilemodel.PEDefinition;
 import org.hl7.fhir.r5.profilemodel.PEInstance;
 import org.hl7.fhir.r5.profilemodel.PEType;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -812,10 +811,6 @@ public class PECodeGenerator {
    */
   public String execute() throws IOException {
     imports = new StringBuilder();
-    
-    if ("http://ehealth.sundhed.dk/fhir/StructureDefinition/ehealth-appointment".equals(canonical)) {
-      DebugUtilities.breakpoint();
-    }
     
     PEDefinition source = new PEBuilder(workerContext, PEElementPropertiesPolicy.EXTENSION, true).buildPEDefinition(canonical);
     w(imports, "import java.util.List;");
