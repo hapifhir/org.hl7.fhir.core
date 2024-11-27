@@ -320,13 +320,22 @@ public class TerminologyClientManager {
       serverList = decideWhichServer(s);
       // testing support
       try {
-        serverList.replace("tx.fhir.org", new URL(getMasterClient().getAddress()).getHost());
+        serverList.replace("tx.fhir.org", host());
       } catch (MalformedURLException e) {
       }
-      resMap.put(s, serverList);
+      // resMap.put(s, serverList);
       save();
     }
     return serverList;
+  }
+
+  private String host() throws MalformedURLException {
+    URL url = new URL(getMasterClient().getAddress());
+    if (url.getPort() != 0) {
+      return url.getHost()+":"+url.getPort();
+    } else {
+      return url.getHost();
+    }
   }
 
   private ServerOptionList decideWhichServer(String url) {
@@ -545,7 +554,7 @@ public class TerminologyClientManager {
         }
         if (server.contains("://tx.fhir.org")) {
           try {
-            server = server.replace("tx.fhir.org", new URL(getMasterClient().getAddress()).getHost());
+            server = server.replace("tx.fhir.org", host());
           } catch (MalformedURLException e) {
           }
         }
@@ -627,7 +636,7 @@ public class TerminologyClientManager {
       }
       if (server.contains("://tx.fhir.org")) {
         try {
-          server = server.replace("tx.fhir.org", new URL(getMasterClient().getAddress()).getHost());
+          server = server.replace("tx.fhir.org", host());
         } catch (MalformedURLException e) {
         }
       }
