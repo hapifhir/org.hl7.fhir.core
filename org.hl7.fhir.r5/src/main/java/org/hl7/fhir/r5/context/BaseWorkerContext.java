@@ -2208,6 +2208,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
               if (version == null || version == r.getResource().getMeta().getVersionId()) {
                 return (T) r.getResource();
               }
+            } else if(uri.equals(r.getResource() != null ? r.getResource().getResourceType().name() + "/" + r.getResource().getId() : null)) {
+                return (T) r.getResource();
             }
           }            
         }
