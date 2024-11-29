@@ -4,7 +4,7 @@
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
 msgid "Actor: {0}"
-msgstr "Acteur: {0}"
+msgstr "Acteur : {0}"
 
 # ACTOR_DEF_CAP
 #: ACTOR_DEF_CAP
@@ -19,7 +19,7 @@ msgstr "Dérivé de :"
 # ACTOR_DEF_TYP
 #: ACTOR_DEF_TYP
 msgid "Type: {0}"
-msgstr "Type : "
+msgstr "Type :"
 
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
@@ -50,8 +50,7 @@ msgstr ""
 # ADD_BIND_DESIG_SYS
 #: ADD_BIND_DESIG_SYS
 msgid "This value set is a good set of codes to start with when designing your system"
-msgstr "Ce jeu de valeurs (ValueSet) constitue un bon ensemble de codes pour commencer lors de la conception de votre système.
-"
+msgstr "Ce jeu de valeurs (ValueSet) constitue un bon ensemble de codes pour commencer lors de la conception de votre système."
 
 # ADD_BIND_EXT_PREF
 #: ADD_BIND_EXT_PREF
@@ -72,12 +71,12 @@ msgstr "Ce jeu de valeurs (ValueSet) est fourni à l'utilisateur pour rechercher
 # ADD_BIND_MAX
 #: ADD_BIND_MAX
 msgid "Max Binding"
-msgstr ""
+msgstr "Binding Max"
 
 # ADD_BIND_MIN
 #: ADD_BIND_MIN
 msgid "Min Binding"
-msgstr ""
+msgstr "Binding Min"
 
 # ADD_BIND_NEW_REC
 #: ADD_BIND_NEW_REC
@@ -190,17 +189,17 @@ msgstr ""
 # BUNDLE_REQUEST
 #: BUNDLE_REQUEST
 msgid "Request:"
-msgstr ""
+msgstr "Requête : "
 
 # BUNDLE_RESOURCE
 #: BUNDLE_RESOURCE
 msgid "Resource {0}:"
-msgstr ""
+msgstr "Ressource {0} :"
 
 # BUNDLE_RESPONSE
 #: BUNDLE_RESPONSE
 msgid "Response:"
-msgstr ""
+msgstr "Réponse :"
 
 # BUNDLE_REV_EXCP
 #: BUNDLE_REV_EXCP
@@ -210,7 +209,7 @@ msgstr ""
 # BUNDLE_SEARCH
 #: BUNDLE_SEARCH
 msgid "Search:"
-msgstr ""
+msgstr "Recherche :"
 
 # BUNDLE_SEARCH_MODE
 #: BUNDLE_SEARCH_MODE
@@ -220,7 +219,7 @@ msgstr ""
 # BUNDLE_SEARCH_SCORE
 #: BUNDLE_SEARCH_SCORE
 msgid "Score = {0}"
-msgstr ""
+msgstr "Score = {0}"
 
 # BUNDLE_SUMMARY
 #: BUNDLE_SUMMARY
@@ -240,7 +239,7 @@ msgstr "Comité"
 # CANON_REND_JSON
 #: CANON_REND_JSON
 msgid "JSON"
-msgstr ""
+msgstr "JSON"
 
 # CANON_REND_MATURITY
 #: CANON_REND_MATURITY
@@ -320,7 +319,7 @@ msgstr ""
 # CAPABILITY_FHIR
 #: CAPABILITY_FHIR
 msgid "Core FHIR Resource"
-msgstr ""
+msgstr "Ressource FHIR coeur"
 
 # CAPABILITY_FHIR_VER
 #: CAPABILITY_FHIR_VER
@@ -345,17 +344,17 @@ msgstr "Version du guide d'implémentation : {0}"
 # CAPABILITY_INT
 #: CAPABILITY_INT
 msgid "interaction."
-msgstr ""
+msgstr "interaction."
 
 # CAPABILITY_INTER_SUPP
 #: CAPABILITY_INTER_SUPP
 msgid "The interactions supported by each resource ("
-msgstr ""
+msgstr "Les interactions supportées par chaque ressource ("
 
 # CAPABILITY_INT_DESC
 #: CAPABILITY_INT_DESC
 msgid "interaction described as follows:"
-msgstr ""
+msgstr "Les interactions sont décrites comme suit :"
 
 # CAPABILITY_INT_SUMM
 #: CAPABILITY_INT_SUMM
@@ -380,12 +379,12 @@ msgstr ""
 # CAPABILITY_MULT_EXT
 #: CAPABILITY_MULT_EXT
 msgid "this mark indicates that there are more than one expectation extensions present"
-msgstr ""
+msgstr "Cette marque indique qu'il y a plus d'une extension présente attendue"
 
 # CAPABILITY_NOTE_CAP
 #: CAPABILITY_NOTE_CAP
 msgid "Note to Implementers: FHIR Capabilities"
-msgstr ""
+msgstr "Note aux implémenteurs : capacités FHIR"
 
 # CAPABILITY_OP
 #: CAPABILITY_OP
@@ -410,12 +409,12 @@ msgstr ""
 # CAPABILITY_PROF_CONF
 #: CAPABILITY_PROF_CONF
 msgid "Profile Conformance"
-msgstr ""
+msgstr "Conformité au Profil"
 
 # CAPABILITY_PROF_MAP
 #: CAPABILITY_PROF_MAP
 msgid "Profile Mapping"
-msgstr ""
+msgstr "Mapping du Profil"
 
 # CAPABILITY_PROF_RES_DOC
 #: CAPABILITY_PROF_RES_DOC
@@ -480,7 +479,7 @@ msgstr ""
 # CAPABILITY_RES_TYP
 #: CAPABILITY_RES_TYP
 msgid "Resource Type"
-msgstr ""
+msgstr "Type de Ressource"
 
 # CAPABILITY_REV_PROF
 #: CAPABILITY_REV_PROF
@@ -490,7 +489,7 @@ msgstr ""
 # CAPABILITY_SEARCHES
 #: CAPABILITY_SEARCHES
 msgid "Searches"
-msgstr ""
+msgstr "Recherches"
 
 # CAPABILITY_SEARCH_INT
 #: CAPABILITY_SEARCH_INT
@@ -625,7 +624,7 @@ msgstr ""
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
 msgid "Deprecated"
-msgstr ""
+msgstr "Déprécié"
 
 # CODESYSTEM_FILTERS
 #: CODESYSTEM_FILTERS
@@ -640,37 +639,37 @@ msgstr ""
 # CODESYSTEM_PROPS_DESC
 #: CODESYSTEM_PROPS_DESC
 msgid "This code system defines the following properties for its concepts"
-msgstr ""
+msgstr "Cette terminologie de référence (CodeSystem) définit les propriétés suivantes pour ses concepts"
 
 # CODE_SYS_CODE_NOT_HERE
 #: CODE_SYS_CODE_NOT_HERE
 msgid "This CodeSystem is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr ""
+msgstr "Cette terminologie de référence (CodeSystem) n'est pas utilisée ici; elle peut être utilisée ailleurs (par exemple spécifications et/ou implémentations qui utilisent ce contenu)"
 
 # CODE_SYS_COMPLETE
 #: CODE_SYS_COMPLETE
 msgid "All the concepts defined by the code system are included in the code system resource"
-msgstr ""
+msgstr "Tous les concepts définis par la terminologie de référence (CodeSystem) sont inclus dans la ressource CodeSystem"
 
 # CODE_SYS_COPY
 #: CODE_SYS_COPY
 msgid "Copy"
-msgstr ""
+msgstr "Copie"
 
 # CODE_SYS_DISP
 #: CODE_SYS_DISP
 msgid "displays"
-msgstr ""
+msgstr "labels"
 
 # CODE_SYS_DISP_PROP
 #: CODE_SYS_DISP_PROP
 msgid "displays and properties"
-msgstr ""
+msgstr "labels et propriétés"
 
 # CODE_SYS_EXAMPLE
 #: CODE_SYS_EXAMPLE
 msgid "A few representative concepts are included in the code system resource"
-msgstr ""
+msgstr "Quelques concepts représentatifs sont inclus dans la ressource du système de code"
 
 # CODE_SYS_FEAT
 #: CODE_SYS_FEAT
@@ -685,7 +684,7 @@ msgstr ""
 # CODE_SYS_FRAGMENT
 #: CODE_SYS_FRAGMENT
 msgid "A subset of the code system concepts are included in the code system resource"
-msgstr ""
+msgstr "Un sous-ensemble des concepts de la terminologie de référence (CodeSystem) est inclus dans la ressource CodeSystem"
 
 # CODE_SYS_IN_A_HIERARCHY
 #: CODE_SYS_IN_A_HIERARCHY
@@ -695,17 +694,17 @@ msgstr ""
 # CODE_SYS_NOTPRESENT
 #: CODE_SYS_NOTPRESENT
 msgid "None of the concepts defined by the code system are included in the code system resource"
-msgstr ""
+msgstr "Aucun des concepts définis par la terminologie de référence (CodeSystem) n'est inclus dans la ressource CodeSystem"
 
 # CODE_SYS_PROP
 #: CODE_SYS_PROP
 msgid "properties"
-msgstr ""
+msgstr "propriétés"
 
 # CODE_SYS_REPLACED_BY
 #: CODE_SYS_REPLACED_BY
 msgid "(replaced by"
-msgstr ""
+msgstr "(remplacé par"
 
 # CODE_SYS_SUPPLEMENT
 #: CODE_SYS_SUPPLEMENT
@@ -730,7 +729,7 @@ msgstr ""
 # CONC_MAP_CODES
 #: CONC_MAP_CODES
 msgid "Codes"
-msgstr ""
+msgstr "Codes"
 
 # CONC_MAP_CODE_SYS_UNSPEC
 #: CONC_MAP_CODE_SYS_UNSPEC
@@ -755,12 +754,12 @@ msgstr ""
 # CONC_MAP_NOT_SPEC
 #: CONC_MAP_NOT_SPEC
 msgid "(not specified)"
-msgstr ""
+msgstr "(non spécifié)"
 
 # CONC_MAP_REL
 #: CONC_MAP_REL
 msgid "Relationship"
-msgstr ""
+msgstr "relation"
 
 # CONC_MAP_SOURCE
 #: CONC_MAP_SOURCE
@@ -790,48 +789,48 @@ msgstr ""
 # DATA_REND_AFTRBKFST
 #: DATA_REND_AFTRBKFST
 msgid "after breakfast"
-msgstr ""
+msgstr "après le petit déjeuner"
 
 # DATA_REND_AFTRDINR
 #: DATA_REND_AFTRDINR
 msgid "after dinner"
-msgstr ""
+msgstr "après le dîner"
 
 # DATA_REND_AFTRLUNCH
 #: DATA_REND_AFTRLUNCH
 msgid "after lunch"
-msgstr ""
+msgstr "après le déjeuner"
 
 # DATA_REND_AFTRMEALS
 #: DATA_REND_AFTRMEALS
 msgid "after meals"
-msgstr ""
+msgstr "après les repas"
 
 # DATA_REND_AFTRWKNG
 #: DATA_REND_AFTRWKNG
 msgid "after waking"
-msgstr ""
+msgstr "au réveil"
 
 # DATA_REND_ATBKFST
 #: DATA_REND_ATBKFST
 msgid "at breakfast"
-msgstr ""
+msgstr "au petit déjeuner"
 
 # DATA_REND_ATDINR
 #: DATA_REND_ATDINR
 msgid "at dinner"
-msgstr ""
+msgstr "au dîner"
 
 # DATA_REND_ATLUNCH
 #: DATA_REND_ATLUNCH
 msgid "at lunch"
-msgstr ""
+msgstr "au déjeuner"
 
 # DATA_REND_ATT_DATA
 #: DATA_REND_ATT_DATA
 msgctxt "DATA_REND_ATT_DATA"
 msgid "{0}: {1}"
-msgstr ""
+msgstr "{0} : {1}"
 
 # DATA_REND_ATT_URL
 #: DATA_REND_ATT_URL
@@ -846,27 +845,27 @@ msgstr ""
 # DATA_REND_BFBKFST
 #: DATA_REND_BFBKFST
 msgid "before breakfast"
-msgstr ""
+msgstr "avant le petit-déjeuner"
 
 # DATA_REND_BFDINR
 #: DATA_REND_BFDINR
 msgid "before dinner"
-msgstr ""
+msgstr "avant le dîner"
 
 # DATA_REND_BFLUNCH
 #: DATA_REND_BFLUNCH
 msgid "before lunch"
-msgstr ""
+msgstr "avant le déjeuner"
 
 # DATA_REND_BFMEALS
 #: DATA_REND_BFMEALS
 msgid "before meals"
-msgstr ""
+msgstr "avant les repas"
 
 # DATA_REND_BFSLEEP
 #: DATA_REND_BFSLEEP
 msgid "before sleeping"
-msgstr ""
+msgstr "avant le coucher"
 
 # DATA_REND_BY
 #: DATA_REND_BY
@@ -916,7 +915,7 @@ msgstr ""
 # DATA_REND_DICOM
 #: DATA_REND_DICOM
 msgid "DICOM"
-msgstr ""
+msgstr "DICOM"
 
 # DATA_REND_DIM
 #: DATA_REND_DIM
@@ -926,17 +925,17 @@ msgstr ""
 # DATA_REND_DURATION
 #: DATA_REND_DURATION
 msgid "Duration {0}"
-msgstr ""
+msgstr "Durée {0}"
 
 # DATA_REND_ERROR
 #: DATA_REND_ERROR
 msgid "Error: {0}"
-msgstr ""
+msgstr "Erreur : {0}"
 
 # DATA_REND_EVENTS
 #: DATA_REND_EVENTS
 msgid "Events: {0}"
-msgstr ""
+msgstr "Evenements : {0}"
 
 # DATA_REND_EXCEPTION
 #: DATA_REND_EXCEPTION
@@ -961,22 +960,22 @@ msgstr ""
 # DATA_REND_ICD
 #: DATA_REND_ICD
 msgid "ICD-9"
-msgstr ""
+msgstr "CIM-9"
 
 # DATA_REND_INT
 #: DATA_REND_INT
 msgid "Interval: {0}"
-msgstr ""
+msgstr "Intervalle : {0}"
 
 # DATA_REND_LIMIT
 #: DATA_REND_LIMIT
 msgid "Limit"
-msgstr ""
+msgstr "Limite"
 
 # DATA_REND_LOINC
 #: DATA_REND_LOINC
 msgid "LOINC"
-msgstr ""
+msgstr "LOINC"
 
 # DATA_REND_LOWER
 #: DATA_REND_LOWER
@@ -986,12 +985,12 @@ msgstr ""
 # DATA_REND_MEALS
 #: DATA_REND_MEALS
 msgid "at meals"
-msgstr ""
+msgstr "aux repas"
 
 # DATA_REND_MKDWN_LNK
 #: DATA_REND_MKDWN_LNK
 msgid "Unable to resolve markdown link"
-msgstr ""
+msgstr "Impossible de résoudre le lien markdown"
 
 # DATA_REND_NOT_STAT
 #: DATA_REND_NOT_STAT
@@ -1026,17 +1025,17 @@ msgstr ""
 # DATA_REND_PERIOD
 #: DATA_REND_PERIOD
 msgid "period:"
-msgstr ""
+msgstr "période :"
 
 # DATA_REND_PHONE
 #: DATA_REND_PHONE
 msgid "Phone: {0}"
-msgstr ""
+msgstr "Téléphone : {0}"
 
 # DATA_REND_RXNORM
 #: DATA_REND_RXNORM
 msgid "RxNorm"
-msgstr ""
+msgstr "RxNorm"
 
 # DATA_REND_SEARCH
 #: DATA_REND_SEARCH
@@ -1046,7 +1045,7 @@ msgstr ""
 # DATA_REND_SNOMED
 #: DATA_REND_SNOMED
 msgid "SNOMED CT"
-msgstr ""
+msgstr "SNOMED CT"
 
 # DATA_REND_SORT
 #: DATA_REND_SORT
@@ -1056,7 +1055,7 @@ msgstr ""
 # DATA_REND_SOURCE
 #: DATA_REND_SOURCE
 msgid "source"
-msgstr ""
+msgstr "source"
 
 # DATA_REND_STARTING
 #: DATA_REND_STARTING
@@ -1066,7 +1065,7 @@ msgstr ""
 # DATA_REND_THESE_CODES
 #: DATA_REND_THESE_CODES
 msgid "One of these codes:"
-msgstr ""
+msgstr "Un de ces codes :"
 
 # DATA_REND_TIMING
 #: DATA_REND_TIMING
@@ -1081,7 +1080,7 @@ msgstr ""
 # DATA_REND_UNKNWN
 #: DATA_REND_UNKNWN
 msgid "unknown"
-msgstr ""
+msgstr "inconnu"
 
 # DATA_REND_UNRD_EX
 #: DATA_REND_UNRD_EX
@@ -1126,7 +1125,7 @@ msgstr ""
 # DIAG_REP_REND_ERR
 #: DIAG_REP_REND_ERR
 msgid "Error:"
-msgstr ""
+msgstr "Erreur :"
 
 # DIAG_REP_REND_FOR
 #: DIAG_REP_REND_FOR
@@ -1136,17 +1135,17 @@ msgstr ""
 # DIAG_REP_REND_IDENTIFIER
 #: DIAG_REP_REND_IDENTIFIER
 msgid "Identifier"
-msgstr ""
+msgstr "Identifiant"
 
 # DIAG_REP_REND_NOTRES
 #: DIAG_REP_REND_NOTRES
 msgid "The observation ''{0}'' could not be resolved"
-msgstr ""
+msgstr "L'observation  ''{0}'' n'a pas pu être résolue"
 
 # DIAG_REP_REND_OBS
 #: DIAG_REP_REND_OBS
 msgid "Observation"
-msgstr ""
+msgstr "Observation"
 
 # DIAG_REP_REND_PER
 #: DIAG_REP_REND_PER
@@ -1171,7 +1170,7 @@ msgstr ""
 # DIAG_REP_REND_UNABLE
 #: DIAG_REP_REND_UNABLE
 msgid "Unable to get Patient Details"
-msgstr ""
+msgstr "Impossible d'obtenir les détails du patient"
 
 # DIAG_REP_REND_WHEN
 #: DIAG_REP_REND_WHEN
@@ -1297,7 +1296,7 @@ msgstr ""
 # GENERAL_ADD_LANG
 #: GENERAL_ADD_LANG
 msgid "Additional Language Displays"
-msgstr ""
+msgstr "Affichages en langues supplémentaires"
 
 # GENERAL_BINDING
 #: GENERAL_BINDING
@@ -1322,68 +1321,68 @@ msgstr ""
 # GENERAL_CARD
 #: GENERAL_CARD
 msgid "Card."
-msgstr ""
+msgstr "Card."
 
 # GENERAL_CARDINALITY
 #: GENERAL_CARDINALITY
 msgid "Cardinality"
-msgstr ""
+msgstr "Cardinalité"
 
 # GENERAL_CODE
 #: GENERAL_CODE
 msgid "Code"
-msgstr ""
+msgstr "Code"
 
 # GENERAL_COMMENT
 #: GENERAL_COMMENT
 msgid "Comment"
-msgstr ""
+msgstr "Commentaire"
 
 # GENERAL_COMMENTS
 #: GENERAL_COMMENTS
 msgid "Comments"
-msgstr ""
+msgstr "Commentaires"
 
 # GENERAL_COMPARATORS
 #: GENERAL_COMPARATORS
 msgid "Comparators"
-msgstr ""
+msgstr "Comparateurs"
 
 # GENERAL_COMPONENT
 #: GENERAL_COMPONENT
 msgid "Component"
-msgstr ""
+msgstr "Composant"
 
 # GENERAL_CONFORMANCE
 #: GENERAL_CONFORMANCE
 msgid "Conformance"
-msgstr ""
+msgstr "Conformité"
 
 # GENERAL_CONTACT
 #: GENERAL_CONTACT
 msgid "Contact:"
-msgstr ""
+msgstr "Contact :"
 
 # GENERAL_CONTENT
 #: GENERAL_CONTENT
 msgid "Content"
-msgstr ""
+msgstr "Contenu"
 
 # GENERAL_COPYRIGHT
 #: GENERAL_COPYRIGHT
 msgid "Copyright"
-msgstr ""
+msgstr "Copyright"
 
 # GENERAL_CRIT
 #: GENERAL_CRIT
 msgid "Criteria"
-msgstr ""
+msgstr "Critère"
 
 # GENERAL_DATA_DISPLAY_PROPERTY
 #: GENERAL_DATA_DISPLAY_PROPERTY
 msgctxt "GENERAL_DATA_DISPLAY_PROPERTY"
 msgid "{0}: {1}"
-msgstr ""
+msgstr "{0} : {1}"
 
 # GENERAL_DEFINING_URL
 #: GENERAL_DEFINING_URL
@@ -1393,72 +1392,72 @@ msgstr ""
 # GENERAL_DEFINITION
 #: GENERAL_DEFINITION
 msgid "Definition"
-msgstr ""
+msgstr "Définition"
 
 # GENERAL_DEFINITION_COLON
 #: GENERAL_DEFINITION_COLON
 msgid "Definition:"
-msgstr ""
+msgstr "Definition :"
 
 # GENERAL_DESC
 #: GENERAL_DESC
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 # GENERAL_DESC_CONST
 #: GENERAL_DESC_CONST
 msgid "Description & Constraints"
-msgstr ""
+msgstr "Description et contraintes"
 
 # GENERAL_DETAILS
 #: GENERAL_DETAILS
 msgid "Details"
-msgstr ""
+msgstr "Détails"
 
 # GENERAL_DOCUMENTATION
 #: GENERAL_DOCUMENTATION
 msgid "Documentation"
-msgstr ""
+msgstr "Documentation"
 
 # GENERAL_EXAMPLE
 #: GENERAL_EXAMPLE
 msgid "Example"
-msgstr ""
+msgstr "Exemple"
 
 # GENERAL_EXPER
 #: GENERAL_EXPER
 msgid "Experimental"
-msgstr ""
+msgstr "Expérimental"
 
 # GENERAL_FILTER
 #: GENERAL_FILTER
 msgid "Filter"
-msgstr ""
+msgstr "Filtre"
 
 # GENERAL_FLAGS
 #: GENERAL_FLAGS
 msgid "Flags"
-msgstr ""
+msgstr "Drapeaux"
 
 # GENERAL_LOCATION
 #: GENERAL_LOCATION
 msgid "Location"
-msgstr ""
+msgstr "Localisation"
 
 # GENERAL_LOGICAL_NAME
 #: GENERAL_LOGICAL_NAME
 msgid "The logical name of the element"
-msgstr ""
+msgstr "Le nom logique de l'élément"
 
 # GENERAL_MAX_LENGTH
 #: GENERAL_MAX_LENGTH
 msgid "Max Length:"
-msgstr ""
+msgstr "Longueur maximale :"
 
 # GENERAL_MIN_LENGTH
 #: GENERAL_MIN_LENGTH
 msgid "Min Length:"
-msgstr ""
+msgstr "Longueur minimales :"
 
 # GENERAL_MODIFIERS
 #: GENERAL_MODIFIERS
@@ -1468,27 +1467,27 @@ msgstr ""
 # GENERAL_NAME
 #: GENERAL_NAME
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 # GENERAL_NCI_THES
 #: GENERAL_NCI_THES
 msgid "NCI Thesaurus"
-msgstr ""
+msgstr "Thesaurus NCI"
 
 # GENERAL_NOTE
 #: GENERAL_NOTE
 msgid "Note"
-msgstr ""
+msgstr "Note"
 
 # GENERAL_OBLIG
 #: GENERAL_OBLIG
 msgid "Obligations"
-msgstr ""
+msgstr "Obligations"
 
 # GENERAL_OID
 #: GENERAL_OID
 msgid "OID"
-msgstr ""
+msgstr "OID"
 
 # GENERAL_PAR
 #: GENERAL_PAR
@@ -1509,53 +1508,53 @@ msgstr "Préféré"
 # GENERAL_PROF
 #: GENERAL_PROF
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 # GENERAL_PROPS
 #: GENERAL_PROPS
 msgid "Properties"
-msgstr ""
+msgstr "Propriétés"
 
 # GENERAL_PURPOSE
 #: GENERAL_PURPOSE
 msgid "Purpose"
-msgstr ""
+msgstr "But"
 
 # GENERAL_REFS
 #: GENERAL_REFS
 msgid "References:"
-msgstr ""
+msgstr "Références : "
 
 # GENERAL_REMOVED_SINCE
 #: GENERAL_REMOVED_SINCE
 msgid "This content has been removed since {0}"
-msgstr ""
+msgstr "Ce contenu a été supprimé depuis {0}"
 
 # GENERAL_REQUEST
 #: GENERAL_REQUEST
 msgid "Request"
-msgstr ""
+msgstr "Requête"
 
 # GENERAL_REQUIRED
 #: GENERAL_REQUIRED
 msgctxt "GENERAL_REQUIRED"
 msgid "Required"
-msgstr ""
+msgstr "Requis"
 
 # GENERAL_RESOURCE
 #: GENERAL_RESOURCE
 msgid "Resource"
-msgstr ""
+msgstr "Ressource"
 
 # GENERAL_SECURITY_LABEL
 #: GENERAL_SECURITY_LABEL
 msgid "Security Label"
-msgstr ""
+msgstr "Label de sécurité"
 
 # GENERAL_SRC
 #: GENERAL_SRC
 msgid "Source:"
-msgstr ""
+msgstr "Source "
 
 # GENERAL_STARTER
 #: GENERAL_STARTER
@@ -1566,77 +1565,77 @@ msgstr ""
 #: GENERAL_STATUS
 msgctxt "GENERAL_STATUS"
 msgid "Status"
-msgstr ""
+msgstr "Statut"
 
 # GENERAL_SUBJ
 #: GENERAL_SUBJ
 msgid "Subject"
-msgstr ""
+msgstr "Sujet"
 
 # GENERAL_SUMM
 #: GENERAL_SUMM
 msgid "Summary"
-msgstr ""
+msgstr "Résumé"
 
 # GENERAL_TITLE
 #: GENERAL_TITLE
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
 # GENERAL_TODO
 #: GENERAL_TODO
 msgid "Not done yet"
-msgstr ""
+msgstr "Pas encore fait"
 
 # GENERAL_TYPE
 #: GENERAL_TYPE
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 # GENERAL_UCUM
 #: GENERAL_UCUM
 msgid "UCUM"
-msgstr ""
+msgstr "UCUM"
 
 # GENERAL_URI
 #: GENERAL_URI
 msgid "URI"
-msgstr ""
+msgstr "URI"
 
 # GENERAL_URL
 #: GENERAL_URL
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 # GENERAL_USAGE
 #: GENERAL_USAGE
 msgid "Usage"
-msgstr ""
+msgstr "Usage"
 
 # GENERAL_VALUE
 #: GENERAL_VALUE
 msgid "Value"
-msgstr ""
+msgstr "Valeur"
 
 # GENERAL_VALUESET
 #: GENERAL_VALUESET
 msgid "Value Set"
-msgstr ""
+msgstr "Jeu de valeurs (Value Set)"
 
 # GENERAL_VER
 #: GENERAL_VER
 msgid "Version"
-msgstr ""
+msgstr "Version"
 
 # GENERAL_VER_LOW
 #: GENERAL_VER_LOW
 msgid "version"
-msgstr ""
+msgstr "version"
 
 # GENERAL_XML
 #: GENERAL_XML
 msgid "XML"
-msgstr ""
+msgstr "XML"
 
 # IMP_GUIDE_URL
 #: IMP_GUIDE_URL
@@ -1646,7 +1645,7 @@ msgstr "L'URL officielle pour ce guide d'implémentation est :"
 # IP_INTRO
 #: IP_INTRO
 msgid "This {0} includes IP covered under the following statements."
-msgstr ""
+msgstr "Ce • cet {0} inclut la propriété intellectuelle couverte par les déclarations suivantes."
 
 # IP_NONE
 #: IP_NONE
@@ -1661,7 +1660,7 @@ msgstr "Pas d'usage de PI externe (autre que celles de la spécification FHIR)"
 # KIND_EXTENSION
 #: KIND_EXTENSION
 msgid "extension"
-msgstr ""
+msgstr "extension"
 
 # KIND_LOGICAL
 #: KIND_LOGICAL
@@ -1701,12 +1700,12 @@ msgstr ""
 # LIB_REND_NOCONT
 #: LIB_REND_NOCONT
 msgid "No Content"
-msgstr ""
+msgstr "Pas de contenu"
 
 # LIB_REND_PAR
 #: LIB_REND_PAR
 msgid "Participants"
-msgstr ""
+msgstr "Participants"
 
 # LIB_REND_REQ
 #: LIB_REND_REQ
@@ -1736,17 +1735,17 @@ msgstr ""
 # LIST_REND_DAT
 #: LIST_REND_DAT
 msgid "Date"
-msgstr ""
+msgstr "Date"
 
 # LIST_REND_DATE
 #: LIST_REND_DATE
 msgid "Date: {0}"
-msgstr ""
+msgstr "Date : {0}"
 
 # LIST_REND_DEL
 #: LIST_REND_DEL
 msgid "Deleted"
-msgstr ""
+msgstr "Supprimé"
 
 # LIST_REND_ENC
 #: LIST_REND_ENC
@@ -1756,7 +1755,7 @@ msgstr ""
 # LIST_REND_FLAG
 #: LIST_REND_FLAG
 msgid "Flag"
-msgstr ""
+msgstr "Drapeau"
 
 # LIST_REND_ITEM
 #: LIST_REND_ITEM
@@ -1766,48 +1765,48 @@ msgstr ""
 # LIST_REND_MODE
 #: LIST_REND_MODE
 msgid "Mode: {0}"
-msgstr ""
+msgstr "Mode : {0}"
 
 # LIST_REND_ORD
 #: LIST_REND_ORD
 msgid "Order: {0}"
-msgstr ""
+msgstr "Ordre : {0}"
 
 # LIST_REND_STAT
 #: LIST_REND_STAT
 msgid "Status: {0}"
-msgstr ""
+msgstr "Statut : {0}"
 
 # LIST_REND_SUB
 #: LIST_REND_SUB
 msgid "Subject:"
-msgstr ""
+msgstr "Sujet :"
 
 # LIST_SUMMARY
 #: LIST_SUMMARY
 msgid "List for ''{0}'' for ''{1}''"
-msgstr ""
+msgstr "Liste pour ''{0}'' pour ''{1}''"
 
 # LIST_UNSPECIFIED_CODE
 #: LIST_UNSPECIFIED_CODE
 msgid "Unspecified List Type"
-msgstr ""
+msgstr "Type de Liste non spécifiée"
 
 # LIST_UNSPECIFIED_SUBJECT
 #: LIST_UNSPECIFIED_SUBJECT
 msgctxt "LIST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr ""
+msgstr "Sujet Non Soécifié"
 
 # MAP_DEFAULT_COMMENT
 #: MAP_DEFAULT_COMMENT
 msgid "This element was not defined prior to R5"
-msgstr ""
+msgstr "Cet élément n'était pas défini avant R5"
 
 # MATURITY_MATURITY
 #: MATURITY_MATURITY
 msgid "Maturity Level: {0}"
-msgstr ""
+msgstr "Niveau de maturité : {0}"
 
 # MATURITY_PUBLISHER
 #: MATURITY_PUBLISHER
@@ -1818,7 +1817,7 @@ msgstr ""
 #: MATURITY_STATUS
 msgctxt "MATURITY_STATUS"
 msgid "Status"
-msgstr ""
+msgstr "Statut"
 
 # MATURITY_STDS_STATUS
 #: MATURITY_STDS_STATUS
@@ -1828,22 +1827,22 @@ msgstr ""
 # NAME_SYS_IDEN
 #: NAME_SYS_IDEN
 msgid "Identifiers"
-msgstr ""
+msgstr "Identifiants"
 
 # NAME_SYS_PER
 #: NAME_SYS_PER
 msgid "Period"
-msgstr ""
+msgstr "Période"
 
 # OBLIG_ACT
 #: OBLIG_ACT
 msgid "Actor"
-msgstr ""
+msgstr "Acteur"
 
 # OBLIG_ELE
 #: OBLIG_ELE
 msgid "Elements"
-msgstr ""
+msgstr "Elements"
 
 # OP_DEF_INPAR
 #: OP_DEF_INPAR
@@ -1853,7 +1852,7 @@ msgstr ""
 # OP_DEF_OFFIC
 #: OP_DEF_OFFIC
 msgid "The official URL for this operation definition is:"
-msgstr ""
+msgstr "L'URL officielle pour cette operation definition est :"
 
 # OP_DEF_OUTPAR
 #: OP_DEF_OUTPAR
@@ -1863,17 +1862,17 @@ msgstr ""
 # OP_DEF_SCO
 #: OP_DEF_SCO
 msgid "Scope"
-msgstr ""
+msgstr "Périmètre"
 
 # OP_DEF_URL
 #: OP_DEF_URL
 msgid "URL: [base]/{0}"
-msgstr ""
+msgstr "URL : [base]/{0}"
 
 # OP_DEF_URLS
 #: OP_DEF_URLS
 msgid "URL: [base]/${0}"
-msgstr ""
+msgstr "URL : [base]/${0}"
 
 # OP_DEF_USE
 #: OP_DEF_USE
@@ -1883,7 +1882,7 @@ msgstr ""
 # OP_OUT_DIAG
 #: OP_OUT_DIAG
 msgid "Diagnostics"
-msgstr ""
+msgstr "Diagnostics"
 
 # OP_OUT_OK
 #: OP_OUT_OK
@@ -1918,12 +1917,12 @@ msgstr ""
 # PARS_SUMMARY_LIST
 #: PARS_SUMMARY_LIST
 msgid "Parameters: {0}"
-msgstr ""
+msgstr "Paramètres : {0}"
 
 # PARS_SUMMARY_SIZE
 #: PARS_SUMMARY_SIZE
 msgid "Parameters ({0} parameters)"
-msgstr ""
+msgstr "Paramètres ({0} paramètres)"
 
 # PAT_ACTIVE
 #: PAT_ACTIVE
@@ -1938,12 +1937,12 @@ msgstr ""
 # PAT_ALT_NAME
 #: PAT_ALT_NAME
 msgid "Alt. Name:"
-msgstr ""
+msgstr "Nom alternatif :"
 
 # PAT_ALT_NAME_HINT
 #: PAT_ALT_NAME_HINT
 msgid "Alternate names (see the one above)"
-msgstr ""
+msgstr "Noms alternatifs (voir plus bas)"
 
 # PAT_CONTACT
 #: PAT_CONTACT
@@ -1953,39 +1952,39 @@ msgstr ""
 # PAT_CONTACT_HINT
 #: PAT_CONTACT_HINT
 msgid "Ways to contact the Patient"
-msgstr ""
+msgstr "Moyens de contacter le Patient"
 
 # PAT_CONTAINED
 #: PAT_CONTAINED
 msgid "Contained Resource"
 msgid_plural "Contained Resources"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ressource contenue"
+msgstr[1] "Ressources contenues"
 
 # PAT_DECEASED
 #: PAT_DECEASED
 msgid "Deceased:"
-msgstr ""
+msgstr "Décédé :"
 
 # PAT_DECEASED_HINT
 #: PAT_DECEASED_HINT
 msgid "Known status of Patient"
-msgstr ""
+msgstr "Statut connu du patient"
 
 # PAT_DOB
 #: PAT_DOB
 msgid "DoB: {0}"
-msgstr ""
+msgstr "Date de Naissance :{0}"
 
 # PAT_GENDER
 #: PAT_GENDER
 msgid "Gender: {0}"
-msgstr ""
+msgstr "Sexe : {0}"
 
 # PAT_GP
 #: PAT_GP
 msgid "General Practitioner"
-msgstr ""
+msgstr "Médecin Généraliste"
 
 # PAT_LANG
 #: PAT_LANG
@@ -2035,17 +2034,17 @@ msgstr ""
 # PAT_LINK_SEE
 #: PAT_LINK_SEE
 msgid "Also see"
-msgstr ""
+msgstr "Voir aussi"
 
 # PAT_MARITAL
 #: PAT_MARITAL
 msgid "Marital Status:"
-msgstr ""
+msgstr "Statut Marital : "
 
 # PAT_MARITAL_HINT
 #: PAT_MARITAL_HINT
 msgid "Known Marital status of Patient"
-msgstr ""
+msgstr "Statut Marital connu du Patient"
 
 # PAT_MO
 #: PAT_MO
@@ -2055,7 +2054,7 @@ msgstr ""
 # PAT_MUL_BIRTH
 #: PAT_MUL_BIRTH
 msgid "Multiple Birth:"
-msgstr ""
+msgstr "Naissance Multiple :"
 
 # PAT_MUL_BIRTH_HINT
 #: PAT_MUL_BIRTH_HINT
@@ -2075,7 +2074,7 @@ msgstr ""
 # PAT_NO_DOB
 #: PAT_NO_DOB
 msgid "DoB Unknown"
-msgstr ""
+msgstr "Date de Naissance inconnue"
 
 # PAT_NO_GENDER
 #: PAT_NO_GENDER
@@ -2085,7 +2084,7 @@ msgstr ""
 # PAT_NO_NAME
 #: PAT_NO_NAME
 msgid "Anonymous Patient"
-msgstr ""
+msgstr "Patient Anonyme"
 
 # PAT_ORG
 #: PAT_ORG
@@ -2109,17 +2108,17 @@ msgstr[1] ""
 # PAT_PERIOD
 #: PAT_PERIOD
 msgid "Valid Period:"
-msgstr ""
+msgstr "Période valide :"
 
 # PAT_PHOTO
 #: PAT_PHOTO
 msgid "Patient Photo"
-msgstr ""
+msgstr "Photo du Patient"
 
 # PAT_RELN
 #: PAT_RELN
 msgid "Relationships:"
-msgstr ""
+msgstr "Relations :"
 
 # PROF_DRIV_ERR_GEN_NARR
 #: PROF_DRIV_ERR_GEN_NARR
@@ -2150,7 +2149,7 @@ msgstr ""
 #: PROF_DRIV_SUMM
 msgctxt "PROF_DRIV_SUMM"
 msgid "{0}: {1}"
-msgstr ""
+msgstr "{0} : {1}"
 
 # PROF_DRIV_SUMM_PROP
 #: PROF_DRIV_SUMM_PROP
@@ -2160,7 +2159,7 @@ msgstr ""
 # PROV_ACT
 #: PROV_ACT
 msgid "Activity"
-msgstr ""
+msgstr "Activité"
 
 # PROV_AGE
 #: PROV_AGE
