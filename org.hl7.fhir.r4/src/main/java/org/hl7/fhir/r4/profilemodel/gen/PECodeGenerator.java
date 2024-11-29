@@ -603,7 +603,7 @@ public class PECodeGenerator {
               w(accessors, "  }");
               w(accessors); 
             } else {
-              w(accessors, "  public " + this.name + " add"+name+"("+type+" theThing) {");
+              w(accessors, "  public " + this.name + " add"+csname+"("+type+" theThing) {");
               w(accessors, "    get"+cname+"().add(theThing);");
               w(accessors, "    return this;");
               w(accessors, "  }");
