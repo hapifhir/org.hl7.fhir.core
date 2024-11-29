@@ -35,6 +35,14 @@ public class CapabilityStatementUtilities {
    * @param importedUrls - Keeps track of what CapabilityStatements have already been merged so that if the same CS appears more
    *    than once in the hierarchy, we only process it once.  Also keeps track of what 'strength' the import is.
    * @throws FHIRException - If there's an issue resolving any of the imports
+   *
+   * When processing imports, an imported CapabilityStatement can itself declare a conformance expectation.  If an import is a SHOULD or a MAY,
+   * then even if the imported CS asserts something as a SHALL, the highest effective level of conformance for the imported statements is the
+   * conformance level for the import itself.  And that cascades.  So if a MAY import points to a SHOULD import, the max conformance is 'MAY'.
+   *
+   * The merge process also tackles most of the semantically-significant extensions on CababilityStatement.
+   *
+   * Metadata is not merged - so things like description, publisher, etc. are taken only from the root importing CS.
    */
   public CapabilityStatement resolveImports(CapabilityStatement targetCS, Map<String, String> importedUrls, String conformance) throws FHIRException {
     if (!targetCS.hasImports())
@@ -60,7 +68,34 @@ public class CapabilityStatementUtilities {
   }
 
   /*
-    Merges the
+   * Merges the details of an imported capability statement into the 'target' capability statement (which is a copy of the importing CS)
+   * The general import rules are as follows:
+   * - If the importing CS has something and the imported doesn't, grab what the importing does.
+   * - If the imported CS has something and the importing doesn't, grab what the imported does.
+   * - If both do something, combine the functionality and set the conformance expectation to the highest of the two
+   *
+   * Additional rules:
+   *  - CS allows you to specify separate messaging repetitions with different combinations of recipients.  That gets miserable to try to merge
+   *    because the potential recipients can be overlapping.  It's also super-rare to do that.  So this algorithm only handles merging if there's
+   *    a maximum of one messaging element (though that one element can list lots of supported messages)
+   *  - If there's non-repeating elements with different values, grab the one with the highest conformance expectation.  If the conformance levels
+   *    are the same, then fail due to the conflict.  For example, if one says SHOULD security.cors = true and the other says SHALL security.cors = false,
+   *    then the SHALL takes precedence.  On the other hand, if both say SHOULD with different values, that's conflict and will trigger an exception.
+   *  - For certain 'coded' elements there's a hierarchy.  versioned-update implies versioned.  So if you have SHOULD:versioned and SHOULD:versioned-update,
+   *    that's *not* a conflict and you'll end up with SHOULD:versioned-update.  (Hierarchies are handled by the weightForEnum function.)
+   *  - For numeric values, will take the strictest.  So for timeout values, if there is a SHOULD:5seconds and SHOULD:10 seconds, you'll get SHOULD:5 seconds
+   *  - For coded values, a match means all codings match (code, system, and version if present) and text matches.  Display names are ignored
+   *  - It's also a conflict if:
+   *    - the same operation 'code' is associated with different operation definitions
+   *    - the same search parameter 'code' is associated with different search parameter definitions
+   *    - the same rest.resource is tied to different profiles.  (We could try to be smart and figure out if the imported profile is a proper subset of the
+   *      importing profile, but that was too hard to take on at this point)
+   *    - An imported search combination has more 'optional' elements than the importing search combination
+   *  - The following are additional limitations
+   *    - Can't handle endpoints on an imported CS.  (That's a super-weird situation and couldn't decide what to do about it.)  Same is true for importing
+   *      a CS with messages that declare endpoints
+   *
+   *
    */
   protected void mergeCS(CapabilityStatement targetCS, CapabilityStatement importedCS, String maxConformance) {
     merge(targetCS.getFormat(), importedCS.getFormat(), maxConformance, "format");
