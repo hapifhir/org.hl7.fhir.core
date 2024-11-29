@@ -594,13 +594,20 @@ public class PECodeGenerator {
           w(accessors, "    return "+name+" != null && !"+name+".isEmpty();");
           w(accessors, "  }");
           w(accessors);
-          if (!isAbstract && !isEnum) {
-            w(accessors, "  public "+type+" add"+csname+"() {");
-            w(accessors, "    "+type+" theThing = new "+type+"();");
-            w(accessors, "    get"+cname+"().add(theThing);");
-            w(accessors, "    return theThing;");
-            w(accessors, "  }");
-            w(accessors); 
+          if (!isAbstract) { 
+            if (!isEnum) {
+              w(accessors, "  public "+type+" add"+csname+"() {");
+              w(accessors, "    "+type+" theThing = new "+type+"();");
+              w(accessors, "    get"+cname+"().add(theThing);");
+              w(accessors, "    return theThing;");
+              w(accessors, "  }");
+              w(accessors); 
+            } else {
+              w(accessors, "  public void add"+csname+"("+type+" theThing) {");
+              w(accessors, "    get"+cname+"().add(theThing);");
+              w(accessors, "  }");
+              w(accessors); 
+            }
           }
           w(accessors, "  public boolean has"+csname+"("+type+" item) {");
           w(accessors, "    return has"+cname+"() && "+name+".contains(item);");
