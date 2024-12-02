@@ -30,15 +30,14 @@ package org.hl7.fhir.r4.profilemodel.gen;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 
-import com.google.common.base.Strings;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.model.ElementDefinition;
 import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent;
@@ -48,9 +47,9 @@ import org.hl7.fhir.r4.model.Type;
 import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r4.profilemodel.PEBuilder;
 import org.hl7.fhir.r4.profilemodel.PEBuilder.PEElementPropertiesPolicy;
-import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.profilemodel.PEDefinition;
 import org.hl7.fhir.r4.profilemodel.PEType;
+import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -470,6 +469,10 @@ public class PECodeGenerator {
           w(load, "      "+name+" = ("+type+") src.child(\""+fname+"\").asElement();");
         } else if (Utilities.existsInList(type, workerContext.getResourceNames())) {
           w(load, "      "+name+" = ("+type+") src.child(\""+fname+"\").asResource();");
+        } else if("Reference".equals(type)) {
+          w(load, "      "+type+" ref = ("+type+") src.child(\""+fname+"\").asDataType();");
+          w(load, "      if(!ref.isEmpty())");
+          w(load, "        "+name+" = ref;");
         } else {
           w(load, "      "+name+" = ("+type+") src.child(\""+fname+"\").asDataType();");
         }
