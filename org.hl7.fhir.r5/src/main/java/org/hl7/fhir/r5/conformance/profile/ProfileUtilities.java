@@ -2450,7 +2450,10 @@ public class ProfileUtilities {
         }      
       }
     }
+    
     // Before applying changes, apply them to what's in the profile
+    // but only if it's an extension or a resource
+
     StructureDefinition profile = null;
     boolean msg = true;
     if (base.hasSliceName()) {
@@ -2482,7 +2485,7 @@ public class ProfileUtilities {
         msg = false;
       }
     }
-    if (profile != null) {
+    if (profile != null && (profile.getKind() == StructureDefinitionKind.RESOURCE || "Extension".equals(profile.getType()))) {
       if (profile.getSnapshot().getElement().isEmpty()) {
         throw new DefinitionException(context.formatMessage(I18nConstants.SNAPSHOT_IS_EMPTY, profile.getVersionedUrl()));
       }
