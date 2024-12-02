@@ -51,6 +51,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   protected XVerExtensionManager xverManager;
   protected boolean multiLangMode;
+  protected boolean inner;
   
   
   public ResourceRenderer(RenderingContext context) {
@@ -70,6 +71,15 @@ public abstract class ResourceRenderer extends DataRenderer {
     return false;
   }
   
+  public boolean isInner() {
+    return inner;
+  }
+
+  public ResourceRenderer setInner(boolean inner) {
+    this.inner = inner;
+    return this;
+  }
+
   /**
    * Just build the narrative that would go in the resource (per @renderResource()), but don't put it in the resource
    * @param dr
@@ -837,9 +847,9 @@ public abstract class ResourceRenderer extends DataRenderer {
     XhtmlNode p = x.para().attribute("class", "res-header-id");
     String ft = context.getTranslatedCode(r.fhirType(), "http://hl7.org/fhir/fhir-types");
     if (desc == null) { 
-      p.b().tx(context.formatPhrase(context.isTechnicalMode() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, ""));      
+      p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, ""));      
     } else {
-      p.b().tx(context.formatPhrase(context.isTechnicalMode() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, desc));
+      p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, desc));
     }
 
     // first thing we do is lay down the resource anchors. 
@@ -1464,7 +1474,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         context.addAnchor(id);
         x.an(context.prefixAnchor(id));
       }
-      RendererFactory.factory(c, context.forContained()).buildNarrative(status, x, c);
+      RendererFactory.factory(c, context.forContained()).setInner(true).buildNarrative(status, x, c);
     }
   }
 
