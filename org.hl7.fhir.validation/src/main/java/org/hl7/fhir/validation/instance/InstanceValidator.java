@@ -38,19 +38,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 
@@ -1731,52 +1719,69 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = true;
     if (vr != null) {
       for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-        if (!iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-in-vs")
-            && !iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "this-code-not-in-vs")
-            && !(ignoreCantInfer || iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "cannot-infer"))) {
-          OperationOutcomeIssueComponent i = iss.copy();
-          if (i.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found")) {
-            String msg = iss.getDetails().getText();
-            boolean isHL7 = msg == null ? false : msg.contains("http://hl7.org/fhir") || msg.contains("http://terminology.hl7.org");
-            org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity notFoundLevel = null;
-            String notFoundNote = null;
-            if (bs == null) {
-              notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
-              notFoundNote = null; // "binding=null";
-            } else if (bs == BindingStrength.REQUIRED && isHL7) {
-              notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR;
-              notFoundNote = "error because this is a required binding to an HL7 code system";
-            } else if (bs == BindingStrength.REQUIRED && unknownCodeSystemsCauseErrors) {
-              notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR;
-              notFoundNote = "error because this is a required binding";              
-            } else if (bs == BindingStrength.REQUIRED) {
-              notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
-              notFoundNote = null; // "binding=required";              
-            } else if (bs == BindingStrength.EXTENSIBLE) {
-              notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
-              notFoundNote = null; // "binding=extensible";
-            } else {
-              notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
-              notFoundNote = null; // "binding="+bs.toCode();
-            }
-            if (notFoundLevel != null && i.getSeverity().isHigherThan(notFoundLevel)) { // && (vsurl != null && i.getDetails().getText().contains(vsurl))) {
-              i.setSeverity(notFoundLevel);
-              if (notFoundNote != null) {
-                i.getDetails().setText(i.getDetails().getText()+" ("+notFoundNote+")");
-              }
+          Optional<OperationOutcomeIssueComponent> processedTxIssue = processTxIssue(iss, ignoreCantInfer, bs);
+          if (processedTxIssue.isPresent()) {
+            var vmsg = txIssue(errors, null, vr.getTxLink(), element.line(), element.col(), path, processedTxIssue.get());
+            if (vmsg.isError()) {
+              ok = false;
             }
           }
-          if (baseOptions.isDisplayWarningMode() && i.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR && i.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-display")) {
-            i.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING);
-          }
-          var vmsg = txIssue(errors, null, vr.getTxLink(), element.line(), element.col(), path, i);
-          if (vmsg.isError()) {
-            ok = false;
-          }
-        }
       }
     }
     return ok;
+  }
+
+  private Optional<OperationOutcomeIssueComponent> processTxIssue(OperationOutcomeIssueComponent iss, boolean ignoreCantInfer, BindingStrength bs) {
+    if (iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-in-vs"))
+    {
+      return Optional.empty();
+    }
+    if (iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "this-code-not-in-vs"))
+    {
+      return Optional.empty();
+    }
+    if (ignoreCantInfer || iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "cannot-infer"))
+    {
+      return Optional.empty();
+    }
+
+      OperationOutcomeIssueComponent i = iss.copy();
+      if (i.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found")) {
+        String msg = iss.getDetails().getText();
+        boolean isHL7 = msg == null ? false : msg.contains("http://hl7.org/fhir") || msg.contains("http://terminology.hl7.org");
+        org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity notFoundLevel = null;
+        String notFoundNote = null;
+        if (bs == null) {
+          notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
+          notFoundNote = null; // "binding=null";
+        } else if (bs == BindingStrength.REQUIRED && isHL7) {
+          notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR;
+          notFoundNote = "error because this is a required binding to an HL7 code system";
+        } else if (bs == BindingStrength.REQUIRED && unknownCodeSystemsCauseErrors) {
+          notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR;
+          notFoundNote = "error because this is a required binding";
+        } else if (bs == BindingStrength.REQUIRED) {
+          notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
+          notFoundNote = null; // "binding=required";
+        } else if (bs == BindingStrength.EXTENSIBLE) {
+          notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
+          notFoundNote = null; // "binding=extensible";
+        } else {
+          notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
+          notFoundNote = null; // "binding="+bs.toCode();
+        }
+        if (notFoundLevel != null && i.getSeverity().isHigherThan(notFoundLevel)) { // && (vsurl != null && i.getDetails().getText().contains(vsurl))) {
+          i.setSeverity(notFoundLevel);
+          if (notFoundNote != null) {
+            i.getDetails().setText(i.getDetails().getText()+" ("+notFoundNote+")");
+          }
+        }
+      }
+      if (baseOptions.isDisplayWarningMode() && i.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR && i.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-display")) {
+        i.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING);
+      }
+      return Optional.of(i);
+
   }
 
   public boolean checkBindings(List<ValidationMessage> errors, String path, Element element, NodeStack stack, ValueSet valueset, Coding nextCoding) {
