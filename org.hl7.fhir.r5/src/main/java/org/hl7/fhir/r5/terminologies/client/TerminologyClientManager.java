@@ -331,7 +331,7 @@ public class TerminologyClientManager {
 
   private String host() throws MalformedURLException {
     URL url = new URL(getMasterClient().getAddress());
-    if (url.getPort() != 0) {
+    if (url.getPort() > 0) {
       return url.getHost()+":"+url.getPort();
     } else {
       return url.getHost();
