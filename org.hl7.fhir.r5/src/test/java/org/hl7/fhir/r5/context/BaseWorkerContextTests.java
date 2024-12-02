@@ -418,7 +418,7 @@ public class BaseWorkerContextTests {
 
     Mockito.verify(valueSetCheckerSimple).validateCode("CodeableConcept", codeableConcept);
     Mockito.verify(terminologyCache).cacheValidation(eq(cacheToken), same(createdValidationResult), eq(false));
-    Mockito.verify(context, times(0)).validateOnServer(any(), any(), any(), any());
+    Mockito.verify(context, times(0)).validateOnServer2(any(), any(), any(), any(), any());
   }
 
 
