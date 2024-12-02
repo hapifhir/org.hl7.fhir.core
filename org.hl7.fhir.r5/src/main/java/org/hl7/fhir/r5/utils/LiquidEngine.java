@@ -49,7 +49,9 @@ import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Tuple;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -68,7 +70,8 @@ public class LiquidEngine implements IEvaluationContext {
   private FHIRPathEngine engine;
   private ILiquidEngineIncludeResolver includeResolver;
   private ILiquidRenderingSupport renderingSupport;
-
+  private MarkDownProcessor processor = new MarkDownProcessor(Dialect.COMMON_MARK);
+  
   private class LiquidEngineContext {
     private Object externalContext;
     private Map<String, Base> loopVars = new HashMap<>();
@@ -162,11 +165,23 @@ public class LiquidEngine implements IEvaluationContext {
   }
   
   private enum LiquidFilter {
-    PREPEND;
+    PREPEND,
+    MARKDOWNIFY,
+    UPCASE,
+    DOWNCASE;
     
     public static LiquidFilter fromCode(String code) {
       if ("prepend".equals(code)) {
         return PREPEND;
+      }
+      if ("markdownify".equals(code)) {
+        return MARKDOWNIFY;
+      }
+      if ("upcase".equals(code)) {
+        return UPCASE;
+      }
+      if ("downcase".equals(code)) {
+        return DOWNCASE;
       }
       return null;
     }
@@ -221,10 +236,23 @@ public class LiquidEngine implements IEvaluationContext {
         } else switch (i.filter) {
         case PREPEND:
           t = stmtToString(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)) + t;
+          break; 
+        case MARKDOWNIFY:
+          t = processMarkdown(t);
+          break;
+        case UPCASE:
+          t = t.toUpperCase();
+          break;
+        case DOWNCASE:
+          t = t.toLowerCase();
           break;
         }
       }
       b.append(t);
+    }
+
+    private String processMarkdown(String t) {
+      return processor.process(t, "liquid");
     }
 
     private String stmtToString(LiquidEngineContext ctxt, List<Base> items) {
@@ -489,6 +517,9 @@ public class LiquidEngine implements IEvaluationContext {
 
     public LiquidParser(String source) {
       this.source = source;
+      if (source == null) {
+        throw new FHIRException("No Liquid source to parse");
+      }
       cursor = 0;
     }
 

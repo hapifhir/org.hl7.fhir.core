@@ -75,7 +75,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         first = false;
       }
       x.hr();
-      RendererFactory.factory(cont, context.forContained()).buildNarrative(status, x, cont);
+      RendererFactory.factory(cont, context.forContained()).setInner(true).buildNarrative(status, x, cont);
     }
   } 
 
@@ -565,7 +565,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (i.has("answerValueSet")) { 
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br")); 
       defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.QUEST_VALUE)+" "), null)); 
-      if (Utilities.noString(i.primitiveValue("answerValueSet")) && i.primitiveValue("answerValueSet").startsWith("#")) { 
+      if (Utilities.noString(i.primitiveValue("answerValueSet")) && i.primitiveValue("answerValueSet").startsWith("#")) {
         ResourceWrapper vs = q.getContained(i.primitiveValue("answerValueSet").substring(1)); 
         if (vs == null) { 
           defn.getPieces().add(gen.new Piece(null, i.primitiveValue("answerValueSet"), null));                     
