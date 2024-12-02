@@ -178,8 +178,9 @@ public class HierarchicalTableGenerator {
       return style;
     }
 
-    public void setTag(String tag) {
+    public Piece setTag(String tag) {
       this.tag = tag;
+      return this;
     }
 
     public Piece setText(String text) {
