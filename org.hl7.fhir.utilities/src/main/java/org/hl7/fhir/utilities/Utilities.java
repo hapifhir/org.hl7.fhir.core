@@ -628,9 +628,11 @@ public class Utilities {
 
   public static String padRight(String src, char c, int len) {
     StringBuilder s = new StringBuilder();
-    s.append(src);
-    for (int i = 0; i < len - src.length(); i++)
-      s.append(c);
+    if (src != null) {
+      s.append(src);
+      for (int i = 0; i < len - src.length(); i++)
+        s.append(c);
+    }
     return s.toString();
   }
 
