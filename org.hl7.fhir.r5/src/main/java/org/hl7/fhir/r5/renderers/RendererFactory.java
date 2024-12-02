@@ -76,6 +76,7 @@ public class RendererFactory {
     case "Patient": return new PatientRenderer(context);
     case "Provenance": return new ProvenanceRenderer(context);
     case "Parameters": return new ParametersRenderer(context);
+    case "Questionnaire": return new QuestionnaireRenderer(context);
     case "QuestionnaireResponse": return new QuestionnaireResponseRenderer(context);
     }
     if (resource.isDirect()) {

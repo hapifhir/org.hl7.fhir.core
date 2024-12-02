@@ -188,4 +188,11 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   public byte[] loadContent(String filename) throws FileNotFoundException, IOException {
     return TestingUtilities.loadTestResourceBytes("tx", filename);
   }
+
+
+
+  @Override
+  public boolean hasContent(String filename) throws IOException {
+    return TestingUtilities.findTestResource("tx", filename);
+  }
 }

@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.comparison.CodeSystemComparer.CodeSystemComparison;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Element;
@@ -16,10 +18,18 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.renderers.CodeSystemRenderer;
+import org.hl7.fhir.r5.renderers.ValueSetRenderer;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
@@ -165,7 +175,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
         intersection.getInclude().add(csI);
         StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r);
         res.getIncludes().getChildren().add(sm);
-        def = compareDefinitions("ValueSet.compose.exclude["+right.getInclude().indexOf(r)+"]", l, r, sm, csM, csI, res) || def;
+        def = compareDefinitions("ValueSet.compose.include["+right.getInclude().indexOf(r)+"]", l, r, sm, csM, csI, res) || def;
       }
     }
     for (ConceptSetComponent r : right.getInclude()) {
@@ -341,7 +351,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
           intersection.getFilter().add(ci);
           StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r);
           combined.getChildren().add(sm);
-          if (!compareFilters(l, r, sm, cu, ci)) {
+          if (compareFilters(l, r, sm, cu, ci)) {
             res.updateContentState(true);       
             session.markChanged(r, l);
           }
@@ -420,7 +430,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
       cu.setOp(l.getOp());
       cu.setValue(l.getValue());
     }
-    return !l.getProperty().equals(r.getProperty());
+    return !l.getValue().equals(r.getValue());
   }
   
   private CanonicalType findInList(List<CanonicalType> matches, CanonicalType item, List<CanonicalType> source) {
@@ -904,4 +914,15 @@ public class ValueSetComparer extends CanonicalResourceComparer {
     return false;
   }
 
+
+  public XhtmlNode renderUnion(ValueSetComparison comp, String id, String prefix, String corePath) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
+    ValueSetRenderer vsr = new ValueSetRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+    return vsr.buildNarrative(ResourceWrapper.forResource(vsr.getContext(), comp.union));
+  }
+
+  public XhtmlNode renderIntersection(ValueSetComparison comp, String id, String prefix, String corePath) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
+    ValueSetRenderer vsr = new ValueSetRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+    return vsr.buildNarrative(ResourceWrapper.forResource(vsr.getContext(), comp.intersection));
+  }
+  
 }
