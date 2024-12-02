@@ -471,7 +471,15 @@ public class PECodeGenerator {
         } else if (Utilities.existsInList(type, workerContext.getResourceNames())) {
           w(load, "      "+name+" = ("+type+") src.child(\""+fname+"\").asResource();");
         } else {
-          w(load, "      "+name+" = ("+type+") src.child(\""+fname+"\").asDataType();");
+          //1..1 reference cardinality
+          if("Reference".equals(type))
+          {
+            w(load, "      "+type+" ref = ("+type+") src.child(\""+fname+"\").asDataType();");
+            w(load, "      if(!ref.isEmpty())");
+            w(load, "        "+name+" = ref;");
+          }
+          else
+            w(load, "      "+name+" = ("+type+") src.child(\""+fname+"\").asDataType();");
         }
         w(load, "    }");
       }
