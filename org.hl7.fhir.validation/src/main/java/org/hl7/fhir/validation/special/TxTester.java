@@ -56,6 +56,7 @@ public class TxTester {
     public String describe();
     public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException;
     public byte[] loadContent(String filename) throws FileNotFoundException, IOException;
+    public boolean hasContent(String filename) throws IOException;
   }
   
   private String server;
@@ -172,7 +173,16 @@ public class TxTester {
   }
   
   private String loadVersion() throws JsonException, IOException {
-    return processHistoryMarkdown(loader.loadContent("history.md"));
+    if (loader.hasContent("history.json")) {
+      return readHistory(loader.loadContent("history.json")); 
+    } else {
+      return processHistoryMarkdown(loader.loadContent("history.md"));
+    }
+  }
+
+  private String readHistory(byte[] content) throws JsonException, IOException {
+    JsonObject json = JsonParser.parseObject(content);
+    return json.getJsonObjects("versions").get(0).asString("version");
   }
 
   public static String processHistoryMarkdown(byte[] content) throws IOException {
@@ -649,6 +659,11 @@ public class TxTester {
     @Override
     public byte[] loadContent(String filename) throws FileNotFoundException, IOException {
       return TextFile.fileToBytes(Utilities.path(folder, filename));
+    }
+
+    @Override
+    public boolean hasContent(String filename) throws IOException {
+      return new File(Utilities.path(folder, filename)).exists();
     }
   }
 
