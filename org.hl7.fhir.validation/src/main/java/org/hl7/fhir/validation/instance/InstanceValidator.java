@@ -1716,19 +1716,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 //  }
 
   private boolean calculateSeverityForIssuesAndUpdateErrors(List<ValidationMessage> errors, ValidationResult validationResult, Element element, String path, boolean ignoreCantInfer, String vsurl, BindingStrength bindingStrength) {
+    if (validationResult == null) {
+      return true;
+    }
     boolean noErrorsFound = true;
-    if (validationResult != null) {
-      for (OperationOutcomeIssueComponent issue : validationResult.getIssues()) {
-          if (!isIgnoredTxIssueType(issue, ignoreCantInfer)) {
-            OperationOutcomeIssueComponent issueWithCalculatedSeverity = getTxIssueWithCalculatedSeverity(issue, ignoreCantInfer, bindingStrength);
-            var validationMessage = buildValidationMessage(validationResult.getTxLink(), element.line(), element.col(), path, issueWithCalculatedSeverity);
-            if (!isSuppressedValidationMessage(path, validationMessage.getMessageId())) {
-              errors.add(validationMessage);
-              if (validationMessage.isError()) {
-                noErrorsFound = false;
-              }
-            }
+    for (OperationOutcomeIssueComponent issue : validationResult.getIssues()) {
+      if (!isIgnoredTxIssueType(issue, ignoreCantInfer)) {
+        OperationOutcomeIssueComponent issueWithCalculatedSeverity = getTxIssueWithCalculatedSeverity(issue, ignoreCantInfer, bindingStrength);
+        var validationMessage = buildValidationMessage(validationResult.getTxLink(), element.line(), element.col(), path, issueWithCalculatedSeverity);
+        if (!isSuppressedValidationMessage(path, validationMessage.getMessageId())) {
+          errors.add(validationMessage);
+          if (validationMessage.isError()) {
+            noErrorsFound = false;
           }
+        }
       }
     }
     return noErrorsFound;
@@ -1748,8 +1749,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private OperationOutcomeIssueComponent getTxIssueWithCalculatedSeverity(OperationOutcomeIssueComponent issueComponent, boolean ignoreCantInfer, BindingStrength bindingStrength) {
-    OperationOutcomeIssueComponent outIssueComponent = issueComponent.copy();
-    if (outIssueComponent.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found")) {
+    OperationOutcomeIssueComponent newIssueComponent = issueComponent.copy();
+    if (newIssueComponent.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found")) {
       String text = issueComponent.getDetails().getText();
       boolean isHL7 = text == null ? false : text.contains("http://hl7.org/fhir") || text.contains("http://terminology.hl7.org");
       org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity notFoundLevel = null;
@@ -1773,17 +1774,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
         notFoundNote = null; // "binding="+bs.toCode();
       }
-      if (notFoundLevel != null && outIssueComponent.getSeverity().isHigherThan(notFoundLevel)) { // && (vsurl != null && i.getDetails().getText().contains(vsurl))) {
-        outIssueComponent.setSeverity(notFoundLevel);
+      if (notFoundLevel != null && newIssueComponent.getSeverity().isHigherThan(notFoundLevel)) { // && (vsurl != null && i.getDetails().getText().contains(vsurl))) {
+        newIssueComponent.setSeverity(notFoundLevel);
         if (notFoundNote != null) {
-          outIssueComponent.getDetails().setText(outIssueComponent.getDetails().getText() + " (" + notFoundNote + ")");
+          newIssueComponent.getDetails().setText(newIssueComponent.getDetails().getText() + " (" + notFoundNote + ")");
         }
       }
     }
-    if (outIssueComponent.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-display") && baseOptions.isDisplayWarningMode() && outIssueComponent.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR) {
-      outIssueComponent.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING);
+    if (newIssueComponent.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-display") && baseOptions.isDisplayWarningMode() && newIssueComponent.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR) {
+      newIssueComponent.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING);
     }
-    return outIssueComponent;
+    return newIssueComponent;
   }
 
   public boolean checkBindings(List<ValidationMessage> errors, String path, Element element, NodeStack stack, ValueSet valueset, Coding nextCoding) {
