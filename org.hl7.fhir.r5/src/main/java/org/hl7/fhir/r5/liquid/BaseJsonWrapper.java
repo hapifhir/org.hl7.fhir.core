@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.utils;
+package org.hl7.fhir.r5.liquid;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Base;
@@ -83,5 +83,15 @@ public class BaseJsonWrapper extends Base {
     }
   }
   
-  
+
+  @Override  
+  public boolean isPrimitive() {
+    return j.isJsonPrimitive();
+  }
+
+
+  @Override 
+  public String primitiveValue() {
+    return toString();
+  }
 }

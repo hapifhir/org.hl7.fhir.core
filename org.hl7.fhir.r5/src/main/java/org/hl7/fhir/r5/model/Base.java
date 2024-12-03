@@ -36,7 +36,7 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBase;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -629,4 +629,10 @@ public abstract class Base implements Serializable, IBase, IElement {
   }
 
   public abstract FhirPublication getFHIRPublicationVersion();
+  
+  public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+    return new ArrayList<>();
+  }
+
+  
 }
