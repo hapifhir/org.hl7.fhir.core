@@ -4320,7 +4320,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     Collections.sort(list, new StructureDefinitionSorterByUrl());
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (StructureDefinition sd : list) {
-      b.append(sd.getUrl());
+      b.append(sd.getVersionedUrl());
     }
     return b.toString();
   }
