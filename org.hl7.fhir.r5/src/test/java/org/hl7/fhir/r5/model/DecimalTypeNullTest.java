@@ -3,8 +3,22 @@ package org.hl7.fhir.r5.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 class DecimalTypeNullTest {
+
+  public static Stream<Arguments> provideEmptyOrNullStringsConstructor() {
+    return Stream.of(
+      Arguments.of((String)null),
+      Arguments.of(""),
+      Arguments.of("  ")
+    );
+  }
 
   @Test
   @DisplayName("Test null value toString()")
@@ -43,5 +57,20 @@ class DecimalTypeNullTest {
     DecimalType nullDecimal = new DecimalType();
     DecimalType copyDecimal = (DecimalType) nullDecimal.typedCopy();
     Assertions.assertNull(copyDecimal.getValue());
+  }
+
+  @ParameterizedTest
+  @MethodSource("provideEmptyOrNullStringsConstructor")
+  void testNullValue(String theStringValue) {
+    DecimalType nullDecimal = new DecimalType();
+    Assertions.assertNull(nullDecimal.getValue());
+    Assertions.assertNull(nullDecimal.asStringValue());
+
+    DecimalType anotherNullDecimal = new DecimalType(theStringValue);
+    Assertions.assertNull(anotherNullDecimal.getValue());
+    Assertions.assertNull(anotherNullDecimal.asStringValue());
+
+    Assertions.assertTrue(nullDecimal.equalsDeep(anotherNullDecimal));
+    Assertions.assertTrue(nullDecimal.equalsShallow(anotherNullDecimal));
   }
 }
