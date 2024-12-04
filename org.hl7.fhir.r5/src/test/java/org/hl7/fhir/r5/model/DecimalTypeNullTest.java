@@ -12,14 +12,6 @@ import java.util.stream.Stream;
 
 class DecimalTypeNullTest {
 
-  public static Stream<Arguments> provideEmptyOrNullStringsConstructor() {
-    return Stream.of(
-      Arguments.of((String)null),
-      Arguments.of(""),
-      Arguments.of("  ")
-    );
-  }
-
   @Test
   @DisplayName("Test null value toString()")
   void testToString() {
@@ -57,6 +49,14 @@ class DecimalTypeNullTest {
     DecimalType nullDecimal = new DecimalType();
     DecimalType copyDecimal = (DecimalType) nullDecimal.typedCopy();
     Assertions.assertNull(copyDecimal.getValue());
+  }
+
+  public static Stream<Arguments> provideEmptyOrNullStringsConstructor() {
+    return Stream.of(
+      Arguments.of((String)null),
+      Arguments.of(""),
+      Arguments.of("  ")
+    );
   }
 
   @ParameterizedTest
