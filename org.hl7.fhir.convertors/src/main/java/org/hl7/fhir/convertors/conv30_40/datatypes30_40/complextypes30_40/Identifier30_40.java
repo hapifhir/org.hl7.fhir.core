@@ -5,6 +5,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Uri30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Identifier;
 
 public class Identifier30_40 {
   public static org.hl7.fhir.r4.model.Identifier convertIdentifier(org.hl7.fhir.dstu3.model.Identifier src) throws FHIRException {
@@ -40,23 +41,23 @@ public class Identifier30_40 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case USUAL:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.USUAL);
-          break;
-        case OFFICIAL:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.OFFICIAL);
-          break;
-        case TEMP:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.TEMP);
-          break;
-        case SECONDARY:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.SECONDARY);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case USUAL:
+                    tgt.setValue(Identifier.IdentifierUse.USUAL);
+                    break;
+                case OFFICIAL:
+                    tgt.setValue(Identifier.IdentifierUse.OFFICIAL);
+                    break;
+                case TEMP:
+                    tgt.setValue(Identifier.IdentifierUse.TEMP);
+                    break;
+                case SECONDARY:
+                    tgt.setValue(Identifier.IdentifierUse.SECONDARY);
+                    break;
+                default:
+                    tgt.setValue(Identifier.IdentifierUse.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -68,26 +69,26 @@ public class Identifier30_40 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case USUAL:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.USUAL);
-          break;
-        case OFFICIAL:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.OFFICIAL);
-          break;
-        case TEMP:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.TEMP);
-          break;
-        case OLD:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.SECONDARY);
-          break;
-        case SECONDARY:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.SECONDARY);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case USUAL:
+                    tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.USUAL);
+                    break;
+                case OFFICIAL:
+                    tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.OFFICIAL);
+                    break;
+                case TEMP:
+                    tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.TEMP);
+                    break;
+                case OLD:
+                    tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.SECONDARY);
+                    break;
+                case SECONDARY:
+                    tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.SECONDARY);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.NULL);
+                    break;
+       }
 }
     return tgt;
   }

@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
 import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.SupplyRequest;
 
 public class SupplyRequest10_40 {
 
@@ -27,23 +28,23 @@ public class SupplyRequest10_40 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case REQUESTED:
-          tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.ACTIVE);
-          break;
-        case COMPLETED:
-          tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.COMPLETED);
-          break;
-        case FAILED:
-          tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.CANCELLED);
-          break;
-        case CANCELLED:
-          tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.CANCELLED);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestStatus.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case REQUESTED:
+                    tgt.setValue(SupplyRequest.SupplyRequestStatus.ACTIVE);
+                    break;
+                case COMPLETED:
+                    tgt.setValue(SupplyRequest.SupplyRequestStatus.COMPLETED);
+                    break;
+                case FAILED:
+                    tgt.setValue(SupplyRequest.SupplyRequestStatus.CANCELLED);
+                    break;
+                case CANCELLED:
+                    tgt.setValue(SupplyRequest.SupplyRequestStatus.CANCELLED);
+                    break;
+                default:
+                    tgt.setValue(SupplyRequest.SupplyRequestStatus.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -55,20 +56,20 @@ public class SupplyRequest10_40 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case ACTIVE:
-          tgt.setValue(org.hl7.fhir.dstu2.model.SupplyRequest.SupplyRequestStatus.REQUESTED);
-          break;
-        case COMPLETED:
-          tgt.setValue(org.hl7.fhir.dstu2.model.SupplyRequest.SupplyRequestStatus.COMPLETED);
-          break;
-        case CANCELLED:
-          tgt.setValue(org.hl7.fhir.dstu2.model.SupplyRequest.SupplyRequestStatus.CANCELLED);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.SupplyRequest.SupplyRequestStatus.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case ACTIVE:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.SupplyRequest.SupplyRequestStatus.REQUESTED);
+                    break;
+                case COMPLETED:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.SupplyRequest.SupplyRequestStatus.COMPLETED);
+                    break;
+                case CANCELLED:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.SupplyRequest.SupplyRequestStatus.CANCELLED);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.SupplyRequest.SupplyRequestStatus.NULL);
+                    break;
+       }
 }
     return tgt;
   }

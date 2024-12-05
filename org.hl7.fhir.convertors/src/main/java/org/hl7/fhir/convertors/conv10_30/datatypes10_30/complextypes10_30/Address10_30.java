@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30;
 
 import org.hl7.fhir.convertors.context.ConversionContext10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.String10_30;
+import org.hl7.fhir.dstu3.model.Address;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Address10_30 {
@@ -46,23 +47,23 @@ public class Address10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case HOME:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Address.AddressUse.HOME);
-          break;
-        case WORK:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Address.AddressUse.WORK);
-          break;
-        case TEMP:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Address.AddressUse.TEMP);
-          break;
-        case OLD:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Address.AddressUse.OLD);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Address.AddressUse.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case HOME:
+                    tgt.setValue(Address.AddressUse.HOME);
+                    break;
+                case WORK:
+                    tgt.setValue(Address.AddressUse.WORK);
+                    break;
+                case TEMP:
+                    tgt.setValue(Address.AddressUse.TEMP);
+                    break;
+                case OLD:
+                    tgt.setValue(Address.AddressUse.OLD);
+                    break;
+                default:
+                    tgt.setValue(Address.AddressUse.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -74,23 +75,23 @@ public class Address10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case HOME:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressUse.HOME);
-          break;
-        case WORK:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressUse.WORK);
-          break;
-        case TEMP:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressUse.TEMP);
-          break;
-        case OLD:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressUse.OLD);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressUse.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case HOME:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressUse.HOME);
+                    break;
+                case WORK:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressUse.WORK);
+                    break;
+                case TEMP:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressUse.TEMP);
+                    break;
+                case OLD:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressUse.OLD);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressUse.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -102,20 +103,20 @@ public class Address10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case POSTAL:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Address.AddressType.POSTAL);
-          break;
-        case PHYSICAL:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Address.AddressType.PHYSICAL);
-          break;
-        case BOTH:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Address.AddressType.BOTH);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Address.AddressType.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case POSTAL:
+                    tgt.setValue(Address.AddressType.POSTAL);
+                    break;
+                case PHYSICAL:
+                    tgt.setValue(Address.AddressType.PHYSICAL);
+                    break;
+                case BOTH:
+                    tgt.setValue(Address.AddressType.BOTH);
+                    break;
+                default:
+                    tgt.setValue(Address.AddressType.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -127,20 +128,20 @@ public class Address10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case POSTAL:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressType.POSTAL);
-          break;
-        case PHYSICAL:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressType.PHYSICAL);
-          break;
-        case BOTH:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressType.BOTH);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressType.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case POSTAL:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressType.POSTAL);
+                    break;
+                case PHYSICAL:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressType.PHYSICAL);
+                    break;
+                case BOTH:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressType.BOTH);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Address.AddressType.NULL);
+                    break;
+       }
 }
     return tgt;
   }

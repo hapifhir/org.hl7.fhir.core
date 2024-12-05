@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Contributor;
 
 public class Contributor43_50 {
   public static org.hl7.fhir.r5.model.Contributor convertContributor(org.hl7.fhir.r4b.model.Contributor src) throws FHIRException {
@@ -34,23 +35,23 @@ public class Contributor43_50 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case AUTHOR:
-          tgt.setValue(org.hl7.fhir.r5.model.Contributor.ContributorType.AUTHOR);
-          break;
-        case EDITOR:
-          tgt.setValue(org.hl7.fhir.r5.model.Contributor.ContributorType.EDITOR);
-          break;
-        case REVIEWER:
-          tgt.setValue(org.hl7.fhir.r5.model.Contributor.ContributorType.REVIEWER);
-          break;
-        case ENDORSER:
-          tgt.setValue(org.hl7.fhir.r5.model.Contributor.ContributorType.ENDORSER);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r5.model.Contributor.ContributorType.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case AUTHOR:
+                    tgt.setValue(Contributor.ContributorType.AUTHOR);
+                    break;
+                case EDITOR:
+                    tgt.setValue(Contributor.ContributorType.EDITOR);
+                    break;
+                case REVIEWER:
+                    tgt.setValue(Contributor.ContributorType.REVIEWER);
+                    break;
+                case ENDORSER:
+                    tgt.setValue(Contributor.ContributorType.ENDORSER);
+                    break;
+                default:
+                    tgt.setValue(Contributor.ContributorType.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -62,23 +63,23 @@ public class Contributor43_50 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case AUTHOR:
-          tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.AUTHOR);
-          break;
-        case EDITOR:
-          tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.EDITOR);
-          break;
-        case REVIEWER:
-          tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.REVIEWER);
-          break;
-        case ENDORSER:
-          tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.ENDORSER);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case AUTHOR:
+                    tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.AUTHOR);
+                    break;
+                case EDITOR:
+                    tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.EDITOR);
+                    break;
+                case REVIEWER:
+                    tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.REVIEWER);
+                    break;
+                case ENDORSER:
+                    tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.ENDORSER);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.NULL);
+                    break;
+       }
 }
     return tgt;
   }

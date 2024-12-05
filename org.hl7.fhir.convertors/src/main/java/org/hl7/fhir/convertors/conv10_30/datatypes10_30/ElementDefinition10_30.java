@@ -14,6 +14,7 @@ import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Stri
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
 import org.hl7.fhir.dstu3.conformance.ProfileUtilities;
 import org.hl7.fhir.dstu3.model.ElementDefinition;
+import org.hl7.fhir.dstu3.model.Enumerations;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class ElementDefinition10_30 {
@@ -126,14 +127,14 @@ public class ElementDefinition10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case XMLATTR:
-          tgt.setValue(ElementDefinition.PropertyRepresentation.XMLATTR);
-          break;
-        default:
-          tgt.setValue(ElementDefinition.PropertyRepresentation.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case XMLATTR:
+            tgt.setValue(ElementDefinition.PropertyRepresentation.XMLATTR);
+            break;
+          default:
+            tgt.setValue(ElementDefinition.PropertyRepresentation.NULL);
+            break;
+       }
 }
     return tgt;
   }
@@ -145,14 +146,14 @@ public class ElementDefinition10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case XMLATTR:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.PropertyRepresentation.XMLATTR);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.PropertyRepresentation.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case XMLATTR:
+            tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.PropertyRepresentation.XMLATTR);
+            break;
+          default:
+            tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.PropertyRepresentation.NULL);
+            break;
+       }
 }
     return tgt;
   }
@@ -188,20 +189,20 @@ public class ElementDefinition10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case CLOSED:
-          tgt.setValue(ElementDefinition.SlicingRules.CLOSED);
-          break;
-        case OPEN:
-          tgt.setValue(ElementDefinition.SlicingRules.OPEN);
-          break;
-        case OPENATEND:
-          tgt.setValue(ElementDefinition.SlicingRules.OPENATEND);
-          break;
-        default:
-          tgt.setValue(ElementDefinition.SlicingRules.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case CLOSED:
+            tgt.setValue(ElementDefinition.SlicingRules.CLOSED);
+            break;
+          case OPEN:
+            tgt.setValue(ElementDefinition.SlicingRules.OPEN);
+            break;
+          case OPENATEND:
+            tgt.setValue(ElementDefinition.SlicingRules.OPENATEND);
+            break;
+          default:
+            tgt.setValue(ElementDefinition.SlicingRules.NULL);
+            break;
+       }
 }
     return tgt;
   }
@@ -213,20 +214,20 @@ public class ElementDefinition10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case CLOSED:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.SlicingRules.CLOSED);
-          break;
-        case OPEN:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.SlicingRules.OPEN);
-          break;
-        case OPENATEND:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.SlicingRules.OPENATEND);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.SlicingRules.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case CLOSED:
+            tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.SlicingRules.CLOSED);
+            break;
+          case OPEN:
+            tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.SlicingRules.OPEN);
+            break;
+          case OPENATEND:
+            tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.SlicingRules.OPENATEND);
+            break;
+          default:
+            tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.SlicingRules.NULL);
+            break;
+       }
 }
     return tgt;
   }
@@ -282,20 +283,20 @@ public class ElementDefinition10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case CONTAINED:
-          tgt.setValue(ElementDefinition.AggregationMode.CONTAINED);
-          break;
-        case REFERENCED:
-          tgt.setValue(ElementDefinition.AggregationMode.REFERENCED);
-          break;
-        case BUNDLED:
-          tgt.setValue(ElementDefinition.AggregationMode.BUNDLED);
-          break;
-        default:
-          tgt.setValue(ElementDefinition.AggregationMode.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case CONTAINED:
+            tgt.setValue(ElementDefinition.AggregationMode.CONTAINED);
+            break;
+          case REFERENCED:
+            tgt.setValue(ElementDefinition.AggregationMode.REFERENCED);
+            break;
+          case BUNDLED:
+            tgt.setValue(ElementDefinition.AggregationMode.BUNDLED);
+            break;
+          default:
+            tgt.setValue(ElementDefinition.AggregationMode.NULL);
+            break;
+       }
 }
     return tgt;
   }
@@ -307,20 +308,20 @@ public class ElementDefinition10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case CONTAINED:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.AggregationMode.CONTAINED);
-          break;
-        case REFERENCED:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.AggregationMode.REFERENCED);
-          break;
-        case BUNDLED:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.AggregationMode.BUNDLED);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.AggregationMode.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case CONTAINED:
+            tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.AggregationMode.CONTAINED);
+            break;
+          case REFERENCED:
+            tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.AggregationMode.REFERENCED);
+            break;
+          case BUNDLED:
+            tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.AggregationMode.BUNDLED);
+            break;
+          default:
+            tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.AggregationMode.NULL);
+            break;
+       }
 }
     return tgt;
   }
@@ -361,17 +362,17 @@ public class ElementDefinition10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case ERROR:
-          tgt.setValue(ElementDefinition.ConstraintSeverity.ERROR);
-          break;
-        case WARNING:
-          tgt.setValue(ElementDefinition.ConstraintSeverity.WARNING);
-          break;
-        default:
-          tgt.setValue(ElementDefinition.ConstraintSeverity.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case ERROR:
+            tgt.setValue(ElementDefinition.ConstraintSeverity.ERROR);
+            break;
+          case WARNING:
+            tgt.setValue(ElementDefinition.ConstraintSeverity.WARNING);
+            break;
+          default:
+            tgt.setValue(ElementDefinition.ConstraintSeverity.NULL);
+            break;
+       }
 }
     return tgt;
   }
@@ -383,17 +384,17 @@ public class ElementDefinition10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case ERROR:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.ConstraintSeverity.ERROR);
-          break;
-        case WARNING:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.ConstraintSeverity.WARNING);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.ConstraintSeverity.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case ERROR:
+            tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.ConstraintSeverity.ERROR);
+            break;
+          case WARNING:
+            tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.ConstraintSeverity.WARNING);
+            break;
+          default:
+            tgt.setValue(org.hl7.fhir.dstu2.model.ElementDefinition.ConstraintSeverity.NULL);
+            break;
+       }
 }
     return tgt;
   }
@@ -427,23 +428,23 @@ public class ElementDefinition10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case REQUIRED:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.BindingStrength.REQUIRED);
-          break;
-        case EXTENSIBLE:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.BindingStrength.EXTENSIBLE);
-          break;
-        case PREFERRED:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.BindingStrength.PREFERRED);
-          break;
-        case EXAMPLE:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.BindingStrength.EXAMPLE);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.BindingStrength.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case REQUIRED:
+            tgt.setValue(Enumerations.BindingStrength.REQUIRED);
+            break;
+          case EXTENSIBLE:
+            tgt.setValue(Enumerations.BindingStrength.EXTENSIBLE);
+            break;
+          case PREFERRED:
+            tgt.setValue(Enumerations.BindingStrength.PREFERRED);
+            break;
+          case EXAMPLE:
+            tgt.setValue(Enumerations.BindingStrength.EXAMPLE);
+            break;
+          default:
+            tgt.setValue(Enumerations.BindingStrength.NULL);
+            break;
+       }
 }
     return tgt;
   }
@@ -455,23 +456,23 @@ public class ElementDefinition10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case REQUIRED:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.BindingStrength.REQUIRED);
-          break;
-        case EXTENSIBLE:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.BindingStrength.EXTENSIBLE);
-          break;
-        case PREFERRED:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.BindingStrength.PREFERRED);
-          break;
-        case EXAMPLE:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.BindingStrength.EXAMPLE);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.BindingStrength.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case REQUIRED:
+            tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.BindingStrength.REQUIRED);
+            break;
+          case EXTENSIBLE:
+            tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.BindingStrength.EXTENSIBLE);
+            break;
+          case PREFERRED:
+            tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.BindingStrength.PREFERRED);
+            break;
+          case EXAMPLE:
+            tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.BindingStrength.EXAMPLE);
+            break;
+          default:
+            tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.BindingStrength.NULL);
+            break;
+       }
 }
     return tgt;
   }

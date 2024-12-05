@@ -5,6 +5,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Identifier;
 
 public class Identifier40_50 {
   public static org.hl7.fhir.r5.model.Identifier convertIdentifier(org.hl7.fhir.r4.model.Identifier src) throws FHIRException {
@@ -40,26 +41,26 @@ public class Identifier40_50 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case USUAL:
-          tgt.setValue(org.hl7.fhir.r5.model.Identifier.IdentifierUse.USUAL);
-          break;
-        case OFFICIAL:
-          tgt.setValue(org.hl7.fhir.r5.model.Identifier.IdentifierUse.OFFICIAL);
-          break;
-        case TEMP:
-          tgt.setValue(org.hl7.fhir.r5.model.Identifier.IdentifierUse.TEMP);
-          break;
-        case SECONDARY:
-          tgt.setValue(org.hl7.fhir.r5.model.Identifier.IdentifierUse.SECONDARY);
-          break;
-        case OLD:
-          tgt.setValue(org.hl7.fhir.r5.model.Identifier.IdentifierUse.OLD);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r5.model.Identifier.IdentifierUse.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case USUAL:
+                    tgt.setValue(Identifier.IdentifierUse.USUAL);
+                    break;
+                case OFFICIAL:
+                    tgt.setValue(Identifier.IdentifierUse.OFFICIAL);
+                    break;
+                case TEMP:
+                    tgt.setValue(Identifier.IdentifierUse.TEMP);
+                    break;
+                case SECONDARY:
+                    tgt.setValue(Identifier.IdentifierUse.SECONDARY);
+                    break;
+                case OLD:
+                    tgt.setValue(Identifier.IdentifierUse.OLD);
+                    break;
+                default:
+                    tgt.setValue(Identifier.IdentifierUse.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -71,26 +72,26 @@ public class Identifier40_50 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case USUAL:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.USUAL);
-          break;
-        case OFFICIAL:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.OFFICIAL);
-          break;
-        case TEMP:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.TEMP);
-          break;
-        case SECONDARY:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.SECONDARY);
-          break;
-        case OLD:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.OLD);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case USUAL:
+                    tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.USUAL);
+                    break;
+                case OFFICIAL:
+                    tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.OFFICIAL);
+                    break;
+                case TEMP:
+                    tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.TEMP);
+                    break;
+                case SECONDARY:
+                    tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.SECONDARY);
+                    break;
+                case OLD:
+                    tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.OLD);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.NULL);
+                    break;
+       }
 }
     return tgt;
   }

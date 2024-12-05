@@ -7,6 +7,8 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.ParameterDefinition;
+import org.hl7.fhir.r5.model.Enumerations;
 
 public class ParameterDefinition40_50 {
   public static org.hl7.fhir.r5.model.ParameterDefinition convertParameterDefinition(org.hl7.fhir.r4.model.ParameterDefinition src) throws FHIRException {
@@ -48,17 +50,17 @@ public class ParameterDefinition40_50 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case IN:
-          tgt.setValue(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.IN);
-          break;
-        case OUT:
-          tgt.setValue(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.OUT);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case IN:
+                    tgt.setValue(Enumerations.OperationParameterUse.IN);
+                    break;
+                case OUT:
+                    tgt.setValue(Enumerations.OperationParameterUse.OUT);
+                    break;
+                default:
+                    tgt.setValue(Enumerations.OperationParameterUse.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -70,17 +72,17 @@ public class ParameterDefinition40_50 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case IN:
-          tgt.setValue(org.hl7.fhir.r4.model.ParameterDefinition.ParameterUse.IN);
-          break;
-        case OUT:
-          tgt.setValue(org.hl7.fhir.r4.model.ParameterDefinition.ParameterUse.OUT);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4.model.ParameterDefinition.ParameterUse.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case IN:
+                    tgt.setValue(ParameterDefinition.ParameterUse.IN);
+                    break;
+                case OUT:
+                    tgt.setValue(ParameterDefinition.ParameterUse.OUT);
+                    break;
+                default:
+                    tgt.setValue(ParameterDefinition.ParameterUse.NULL);
+                    break;
+       }
 }
     return tgt;
   }

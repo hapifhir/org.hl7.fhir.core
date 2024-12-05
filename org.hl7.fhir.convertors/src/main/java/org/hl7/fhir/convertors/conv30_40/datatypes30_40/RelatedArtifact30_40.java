@@ -4,6 +4,7 @@ import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Attachment30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.RelatedArtifact;
 
 public class RelatedArtifact30_40 {
   public static org.hl7.fhir.r4.model.RelatedArtifact convertRelatedArtifact(org.hl7.fhir.dstu3.model.RelatedArtifact src) throws FHIRException {
@@ -39,35 +40,35 @@ public class RelatedArtifact30_40 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case DOCUMENTATION:
-          tgt.setValue(org.hl7.fhir.r4.model.RelatedArtifact.RelatedArtifactType.DOCUMENTATION);
-          break;
-        case JUSTIFICATION:
-          tgt.setValue(org.hl7.fhir.r4.model.RelatedArtifact.RelatedArtifactType.JUSTIFICATION);
-          break;
-        case CITATION:
-          tgt.setValue(org.hl7.fhir.r4.model.RelatedArtifact.RelatedArtifactType.CITATION);
-          break;
-        case PREDECESSOR:
-          tgt.setValue(org.hl7.fhir.r4.model.RelatedArtifact.RelatedArtifactType.PREDECESSOR);
-          break;
-        case SUCCESSOR:
-          tgt.setValue(org.hl7.fhir.r4.model.RelatedArtifact.RelatedArtifactType.SUCCESSOR);
-          break;
-        case DERIVEDFROM:
-          tgt.setValue(org.hl7.fhir.r4.model.RelatedArtifact.RelatedArtifactType.DERIVEDFROM);
-          break;
-        case DEPENDSON:
-          tgt.setValue(org.hl7.fhir.r4.model.RelatedArtifact.RelatedArtifactType.DEPENDSON);
-          break;
-        case COMPOSEDOF:
-          tgt.setValue(org.hl7.fhir.r4.model.RelatedArtifact.RelatedArtifactType.COMPOSEDOF);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4.model.RelatedArtifact.RelatedArtifactType.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case DOCUMENTATION:
+            tgt.setValue(RelatedArtifact.RelatedArtifactType.DOCUMENTATION);
+            break;
+          case JUSTIFICATION:
+            tgt.setValue(RelatedArtifact.RelatedArtifactType.JUSTIFICATION);
+            break;
+          case CITATION:
+            tgt.setValue(RelatedArtifact.RelatedArtifactType.CITATION);
+            break;
+          case PREDECESSOR:
+            tgt.setValue(RelatedArtifact.RelatedArtifactType.PREDECESSOR);
+            break;
+          case SUCCESSOR:
+            tgt.setValue(RelatedArtifact.RelatedArtifactType.SUCCESSOR);
+            break;
+          case DERIVEDFROM:
+            tgt.setValue(RelatedArtifact.RelatedArtifactType.DERIVEDFROM);
+            break;
+          case DEPENDSON:
+            tgt.setValue(RelatedArtifact.RelatedArtifactType.DEPENDSON);
+            break;
+          case COMPOSEDOF:
+            tgt.setValue(RelatedArtifact.RelatedArtifactType.COMPOSEDOF);
+            break;
+          default:
+            tgt.setValue(RelatedArtifact.RelatedArtifactType.NULL);
+            break;
+       }
 }
     return tgt;
   }
@@ -79,35 +80,35 @@ public class RelatedArtifact30_40 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case DOCUMENTATION:
-          tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.DOCUMENTATION);
-          break;
-        case JUSTIFICATION:
-          tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.JUSTIFICATION);
-          break;
-        case CITATION:
-          tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.CITATION);
-          break;
-        case PREDECESSOR:
-          tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.PREDECESSOR);
-          break;
-        case SUCCESSOR:
-          tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.SUCCESSOR);
-          break;
-        case DERIVEDFROM:
-          tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.DERIVEDFROM);
-          break;
-        case DEPENDSON:
-          tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.DEPENDSON);
-          break;
-        case COMPOSEDOF:
-          tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.COMPOSEDOF);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case DOCUMENTATION:
+            tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.DOCUMENTATION);
+            break;
+          case JUSTIFICATION:
+            tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.JUSTIFICATION);
+            break;
+          case CITATION:
+            tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.CITATION);
+            break;
+          case PREDECESSOR:
+            tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.PREDECESSOR);
+            break;
+          case SUCCESSOR:
+            tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.SUCCESSOR);
+            break;
+          case DERIVEDFROM:
+            tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.DERIVEDFROM);
+            break;
+          case DEPENDSON:
+            tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.DEPENDSON);
+            break;
+          case COMPOSEDOF:
+            tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.COMPOSEDOF);
+            break;
+          default:
+            tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.NULL);
+            break;
+       }
 }
     return tgt;
   }

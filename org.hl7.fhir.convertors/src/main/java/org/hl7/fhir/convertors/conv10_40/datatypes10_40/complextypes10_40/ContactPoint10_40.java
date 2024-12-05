@@ -4,6 +4,7 @@ import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.PositiveInt10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.ContactPoint;
 
 public class ContactPoint10_40 {
   public static org.hl7.fhir.r4.model.ContactPoint convertContactPoint(org.hl7.fhir.dstu2.model.ContactPoint src) throws FHIRException {
@@ -37,26 +38,26 @@ public class ContactPoint10_40 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case PHONE:
-          tgt.setValue(org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem.PHONE);
-          break;
-        case FAX:
-          tgt.setValue(org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem.FAX);
-          break;
-        case EMAIL:
-          tgt.setValue(org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem.EMAIL);
-          break;
-        case PAGER:
-          tgt.setValue(org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem.PAGER);
-          break;
-        case OTHER:
-          tgt.setValue(org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem.OTHER);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case PHONE:
+                    tgt.setValue(ContactPoint.ContactPointSystem.PHONE);
+                    break;
+                case FAX:
+                    tgt.setValue(ContactPoint.ContactPointSystem.FAX);
+                    break;
+                case EMAIL:
+                    tgt.setValue(ContactPoint.ContactPointSystem.EMAIL);
+                    break;
+                case PAGER:
+                    tgt.setValue(ContactPoint.ContactPointSystem.PAGER);
+                    break;
+                case OTHER:
+                    tgt.setValue(ContactPoint.ContactPointSystem.OTHER);
+                    break;
+                default:
+                    tgt.setValue(ContactPoint.ContactPointSystem.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -68,29 +69,29 @@ public class ContactPoint10_40 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case PHONE:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointSystem.PHONE);
-          break;
-        case FAX:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointSystem.FAX);
-          break;
-        case EMAIL:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointSystem.EMAIL);
-          break;
-        case PAGER:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointSystem.PAGER);
-          break;
-        case OTHER:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointSystem.OTHER);
-          break;
-        case URL:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointSystem.OTHER);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointSystem.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case PHONE:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointSystem.PHONE);
+                    break;
+                case FAX:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointSystem.FAX);
+                    break;
+                case EMAIL:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointSystem.EMAIL);
+                    break;
+                case PAGER:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointSystem.PAGER);
+                    break;
+                case OTHER:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointSystem.OTHER);
+                    break;
+                case URL:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointSystem.OTHER);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointSystem.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -102,26 +103,26 @@ public class ContactPoint10_40 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case HOME:
-          tgt.setValue(org.hl7.fhir.r4.model.ContactPoint.ContactPointUse.HOME);
-          break;
-        case WORK:
-          tgt.setValue(org.hl7.fhir.r4.model.ContactPoint.ContactPointUse.WORK);
-          break;
-        case TEMP:
-          tgt.setValue(org.hl7.fhir.r4.model.ContactPoint.ContactPointUse.TEMP);
-          break;
-        case OLD:
-          tgt.setValue(org.hl7.fhir.r4.model.ContactPoint.ContactPointUse.OLD);
-          break;
-        case MOBILE:
-          tgt.setValue(org.hl7.fhir.r4.model.ContactPoint.ContactPointUse.MOBILE);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4.model.ContactPoint.ContactPointUse.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case HOME:
+                    tgt.setValue(ContactPoint.ContactPointUse.HOME);
+                    break;
+                case WORK:
+                    tgt.setValue(ContactPoint.ContactPointUse.WORK);
+                    break;
+                case TEMP:
+                    tgt.setValue(ContactPoint.ContactPointUse.TEMP);
+                    break;
+                case OLD:
+                    tgt.setValue(ContactPoint.ContactPointUse.OLD);
+                    break;
+                case MOBILE:
+                    tgt.setValue(ContactPoint.ContactPointUse.MOBILE);
+                    break;
+                default:
+                    tgt.setValue(ContactPoint.ContactPointUse.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -133,26 +134,26 @@ public class ContactPoint10_40 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case HOME:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointUse.HOME);
-          break;
-        case WORK:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointUse.WORK);
-          break;
-        case TEMP:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointUse.TEMP);
-          break;
-        case OLD:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointUse.OLD);
-          break;
-        case MOBILE:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointUse.MOBILE);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointUse.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case HOME:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointUse.HOME);
+                    break;
+                case WORK:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointUse.WORK);
+                    break;
+                case TEMP:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointUse.TEMP);
+                    break;
+                case OLD:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointUse.OLD);
+                    break;
+                case MOBILE:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointUse.MOBILE);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.ContactPoint.ContactPointUse.NULL);
+                    break;
+       }
 }
     return tgt;
   }

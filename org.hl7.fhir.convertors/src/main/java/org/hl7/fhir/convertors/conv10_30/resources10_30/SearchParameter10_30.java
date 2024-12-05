@@ -7,7 +7,10 @@ import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Code
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.DateTime10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.String10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Uri10_30;
+import org.hl7.fhir.dstu2.model.Enumerations;
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
+import org.hl7.fhir.dstu3.model.Enumeration;
+import org.hl7.fhir.dstu3.model.SearchParameter;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class SearchParameter10_30 {
@@ -137,31 +140,35 @@ public class SearchParameter10_30 {
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType> convertXPathUsageType(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.SearchParameter.XPathUsageType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageTypeEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case NORMAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NORMAL);
-        break;
-      case PHONETIC:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.PHONETIC);
-        break;
-      case NEARBY:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NEARBY);
-        break;
-      case DISTANCE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.DISTANCE);
-        break;
-      case OTHER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.OTHER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<SearchParameter.XPathUsageType> tgt = new Enumeration<>(new SearchParameter.XPathUsageTypeEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case NORMAL:
+                  tgt.setValue(SearchParameter.XPathUsageType.NORMAL);
+                  break;
+              case PHONETIC:
+                  tgt.setValue(SearchParameter.XPathUsageType.PHONETIC);
+                  break;
+              case NEARBY:
+                  tgt.setValue(SearchParameter.XPathUsageType.NEARBY);
+                  break;
+              case DISTANCE:
+                  tgt.setValue(SearchParameter.XPathUsageType.DISTANCE);
+                  break;
+              case OTHER:
+                  tgt.setValue(SearchParameter.XPathUsageType.OTHER);
+                  break;
+              default:
+                  tgt.setValue(SearchParameter.XPathUsageType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Enumerations.SearchParamType> convertSearchParamType(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Enumerations.SearchParamType> src) throws FHIRException {
@@ -202,35 +209,35 @@ public class SearchParameter10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case NUMBER:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.SearchParamType.NUMBER);
-          break;
-        case DATE:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.SearchParamType.DATE);
-          break;
-        case STRING:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.SearchParamType.STRING);
-          break;
-        case TOKEN:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.SearchParamType.TOKEN);
-          break;
-        case REFERENCE:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.SearchParamType.REFERENCE);
-          break;
-        case COMPOSITE:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.SearchParamType.COMPOSITE);
-          break;
-        case QUANTITY:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.SearchParamType.QUANTITY);
-          break;
-        case URI:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.SearchParamType.URI);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.SearchParamType.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case NUMBER:
+                    tgt.setValue(Enumerations.SearchParamType.NUMBER);
+                    break;
+                case DATE:
+                    tgt.setValue(Enumerations.SearchParamType.DATE);
+                    break;
+                case STRING:
+                    tgt.setValue(Enumerations.SearchParamType.STRING);
+                    break;
+                case TOKEN:
+                    tgt.setValue(Enumerations.SearchParamType.TOKEN);
+                    break;
+                case REFERENCE:
+                    tgt.setValue(Enumerations.SearchParamType.REFERENCE);
+                    break;
+                case COMPOSITE:
+                    tgt.setValue(Enumerations.SearchParamType.COMPOSITE);
+                    break;
+                case QUANTITY:
+                    tgt.setValue(Enumerations.SearchParamType.QUANTITY);
+                    break;
+                case URI:
+                    tgt.setValue(Enumerations.SearchParamType.URI);
+                    break;
+                default:
+                    tgt.setValue(Enumerations.SearchParamType.NULL);
+                    break;
+       }
 }
     return tgt;
   }

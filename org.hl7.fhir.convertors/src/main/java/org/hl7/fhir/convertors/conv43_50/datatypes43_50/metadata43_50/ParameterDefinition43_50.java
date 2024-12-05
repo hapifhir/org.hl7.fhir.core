@@ -7,6 +7,7 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Integer43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumerations;
 
 public class ParameterDefinition43_50 {
   public static org.hl7.fhir.r5.model.ParameterDefinition convertParameterDefinition(org.hl7.fhir.r4b.model.ParameterDefinition src) throws FHIRException {
@@ -48,17 +49,17 @@ public class ParameterDefinition43_50 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case IN:
-          tgt.setValue(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.IN);
-          break;
-        case OUT:
-          tgt.setValue(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.OUT);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case IN:
+                    tgt.setValue(Enumerations.OperationParameterUse.IN);
+                    break;
+                case OUT:
+                    tgt.setValue(Enumerations.OperationParameterUse.OUT);
+                    break;
+                default:
+                    tgt.setValue(Enumerations.OperationParameterUse.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -70,17 +71,17 @@ public class ParameterDefinition43_50 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case IN:
-          tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.IN);
-          break;
-        case OUT:
-          tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.OUT);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case IN:
+                    tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.IN);
+                    break;
+                case OUT:
+                    tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.OUT);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.NULL);
+                    break;
+       }
 }
     return tgt;
   }

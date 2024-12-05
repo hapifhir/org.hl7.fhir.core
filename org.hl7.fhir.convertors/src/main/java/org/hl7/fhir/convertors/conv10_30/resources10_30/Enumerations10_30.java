@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv10_30.resources10_30;
 
 import org.hl7.fhir.convertors.context.ConversionContext10_30;
+import org.hl7.fhir.dstu3.model.Enumerations;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Enumerations10_30 {
@@ -11,20 +12,20 @@ public class Enumerations10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case DRAFT:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus.DRAFT);
-          break;
-        case ACTIVE:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus.ACTIVE);
-          break;
-        case RETIRED:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus.RETIRED);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case DRAFT:
+                    tgt.setValue(Enumerations.PublicationStatus.DRAFT);
+                    break;
+                case ACTIVE:
+                    tgt.setValue(Enumerations.PublicationStatus.ACTIVE);
+                    break;
+                case RETIRED:
+                    tgt.setValue(Enumerations.PublicationStatus.RETIRED);
+                    break;
+                default:
+                    tgt.setValue(Enumerations.PublicationStatus.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -36,20 +37,20 @@ public class Enumerations10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case DRAFT:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.ConformanceResourceStatus.DRAFT);
-          break;
-        case ACTIVE:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.ConformanceResourceStatus.ACTIVE);
-          break;
-        case RETIRED:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.ConformanceResourceStatus.RETIRED);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.ConformanceResourceStatus.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case DRAFT:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.ConformanceResourceStatus.DRAFT);
+                    break;
+                case ACTIVE:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.ConformanceResourceStatus.ACTIVE);
+                    break;
+                case RETIRED:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.ConformanceResourceStatus.RETIRED);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.ConformanceResourceStatus.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -61,23 +62,23 @@ public class Enumerations10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case MALE:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender.MALE);
-          break;
-        case FEMALE:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender.FEMALE);
-          break;
-        case OTHER:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender.OTHER);
-          break;
-        case UNKNOWN:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender.UNKNOWN);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case MALE:
+                    tgt.setValue(Enumerations.AdministrativeGender.MALE);
+                    break;
+                case FEMALE:
+                    tgt.setValue(Enumerations.AdministrativeGender.FEMALE);
+                    break;
+                case OTHER:
+                    tgt.setValue(Enumerations.AdministrativeGender.OTHER);
+                    break;
+                case UNKNOWN:
+                    tgt.setValue(Enumerations.AdministrativeGender.UNKNOWN);
+                    break;
+                default:
+                    tgt.setValue(Enumerations.AdministrativeGender.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -89,23 +90,23 @@ public class Enumerations10_30 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case MALE:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.AdministrativeGender.MALE);
-          break;
-        case FEMALE:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.AdministrativeGender.FEMALE);
-          break;
-        case OTHER:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.AdministrativeGender.OTHER);
-          break;
-        case UNKNOWN:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.AdministrativeGender.UNKNOWN);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.AdministrativeGender.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case MALE:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.AdministrativeGender.MALE);
+                    break;
+                case FEMALE:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.AdministrativeGender.FEMALE);
+                    break;
+                case OTHER:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.AdministrativeGender.OTHER);
+                    break;
+                case UNKNOWN:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.AdministrativeGender.UNKNOWN);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.AdministrativeGender.NULL);
+                    break;
+       }
 }
     return tgt;
   }

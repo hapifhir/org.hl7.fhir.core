@@ -12,6 +12,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Date43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Patient;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -211,52 +213,60 @@ public class Patient43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Patient.LinkType> convertLinkType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Patient.LinkType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Patient.LinkType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Patient.LinkTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REPLACEDBY:
-        tgt.setValue(org.hl7.fhir.r5.model.Patient.LinkType.REPLACEDBY);
-        break;
-      case REPLACES:
-        tgt.setValue(org.hl7.fhir.r5.model.Patient.LinkType.REPLACES);
-        break;
-      case REFER:
-        tgt.setValue(org.hl7.fhir.r5.model.Patient.LinkType.REFER);
-        break;
-      case SEEALSO:
-        tgt.setValue(org.hl7.fhir.r5.model.Patient.LinkType.SEEALSO);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Patient.LinkType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Patient.LinkType> tgt = new Enumeration<>(new Patient.LinkTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case REPLACEDBY:
+                  tgt.setValue(Patient.LinkType.REPLACEDBY);
+                  break;
+              case REPLACES:
+                  tgt.setValue(Patient.LinkType.REPLACES);
+                  break;
+              case REFER:
+                  tgt.setValue(Patient.LinkType.REFER);
+                  break;
+              case SEEALSO:
+                  tgt.setValue(Patient.LinkType.SEEALSO);
+                  break;
+              default:
+                  tgt.setValue(Patient.LinkType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Patient.LinkType> convertLinkType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Patient.LinkType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Patient.LinkType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Patient.LinkTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REPLACEDBY:
-        tgt.setValue(org.hl7.fhir.r4b.model.Patient.LinkType.REPLACEDBY);
-        break;
-      case REPLACES:
-        tgt.setValue(org.hl7.fhir.r4b.model.Patient.LinkType.REPLACES);
-        break;
-      case REFER:
-        tgt.setValue(org.hl7.fhir.r4b.model.Patient.LinkType.REFER);
-        break;
-      case SEEALSO:
-        tgt.setValue(org.hl7.fhir.r4b.model.Patient.LinkType.SEEALSO);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Patient.LinkType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Patient.LinkType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Patient.LinkTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case REPLACEDBY:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Patient.LinkType.REPLACEDBY);
+                  break;
+              case REPLACES:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Patient.LinkType.REPLACES);
+                  break;
+              case REFER:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Patient.LinkType.REFER);
+                  break;
+              case SEEALSO:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Patient.LinkType.SEEALSO);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Patient.LinkType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

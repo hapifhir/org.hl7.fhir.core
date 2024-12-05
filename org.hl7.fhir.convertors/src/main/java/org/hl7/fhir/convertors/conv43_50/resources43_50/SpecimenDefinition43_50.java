@@ -9,6 +9,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.SimpleQuant
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.SpecimenDefinition;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -130,41 +132,49 @@ public class SpecimenDefinition43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference> convertSpecimenContainedPreference(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SpecimenDefinition.SpecimenContainedPreference> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreferenceEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PREFERRED:
-        tgt.setValue(org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference.PREFERRED);
-        break;
-      case ALTERNATE:
-        tgt.setValue(org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference.ALTERNATE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<SpecimenDefinition.SpecimenContainedPreference> tgt = new Enumeration<>(new SpecimenDefinition.SpecimenContainedPreferenceEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PREFERRED:
+                  tgt.setValue(SpecimenDefinition.SpecimenContainedPreference.PREFERRED);
+                  break;
+              case ALTERNATE:
+                  tgt.setValue(SpecimenDefinition.SpecimenContainedPreference.ALTERNATE);
+                  break;
+              default:
+                  tgt.setValue(SpecimenDefinition.SpecimenContainedPreference.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SpecimenDefinition.SpecimenContainedPreference> convertSpecimenContainedPreference(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenContainedPreference> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SpecimenDefinition.SpecimenContainedPreference> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.SpecimenDefinition.SpecimenContainedPreferenceEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PREFERRED:
-        tgt.setValue(org.hl7.fhir.r4b.model.SpecimenDefinition.SpecimenContainedPreference.PREFERRED);
-        break;
-      case ALTERNATE:
-        tgt.setValue(org.hl7.fhir.r4b.model.SpecimenDefinition.SpecimenContainedPreference.ALTERNATE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.SpecimenDefinition.SpecimenContainedPreference.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SpecimenDefinition.SpecimenContainedPreference> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.SpecimenDefinition.SpecimenContainedPreferenceEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PREFERRED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.SpecimenDefinition.SpecimenContainedPreference.PREFERRED);
+                  break;
+              case ALTERNATE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.SpecimenDefinition.SpecimenContainedPreference.ALTERNATE);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.SpecimenDefinition.SpecimenContainedPreference.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerComponent convertSpecimenDefinitionTypeTestedContainerComponent(org.hl7.fhir.r4b.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerComponent src) throws FHIRException {

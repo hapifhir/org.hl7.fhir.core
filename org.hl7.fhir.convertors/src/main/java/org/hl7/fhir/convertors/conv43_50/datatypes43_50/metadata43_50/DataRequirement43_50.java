@@ -7,6 +7,7 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.PositiveInt43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.DataRequirement;
 
 public class DataRequirement43_50 {
   public static org.hl7.fhir.r5.model.DataRequirement convertDataRequirement(org.hl7.fhir.r4b.model.DataRequirement src) throws FHIRException {
@@ -124,17 +125,17 @@ public class DataRequirement43_50 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case ASCENDING:
-          tgt.setValue(org.hl7.fhir.r5.model.DataRequirement.SortDirection.ASCENDING);
-          break;
-        case DESCENDING:
-          tgt.setValue(org.hl7.fhir.r5.model.DataRequirement.SortDirection.DESCENDING);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r5.model.DataRequirement.SortDirection.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case ASCENDING:
+                    tgt.setValue(DataRequirement.SortDirection.ASCENDING);
+                    break;
+                case DESCENDING:
+                    tgt.setValue(DataRequirement.SortDirection.DESCENDING);
+                    break;
+                default:
+                    tgt.setValue(DataRequirement.SortDirection.NULL);
+                    break;
+       }
 }
     return tgt;
   }
@@ -146,17 +147,17 @@ public class DataRequirement43_50 {
     if (src.getValue() == null) {
     tgt.setValue(null);
 } else {
-  switch(src.getValue()) {
-   case ASCENDING:
-          tgt.setValue(org.hl7.fhir.r4b.model.DataRequirement.SortDirection.ASCENDING);
-          break;
-        case DESCENDING:
-          tgt.setValue(org.hl7.fhir.r4b.model.DataRequirement.SortDirection.DESCENDING);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4b.model.DataRequirement.SortDirection.NULL);
-          break;
-  }
+      switch(src.getValue()) {
+        case ASCENDING:
+                    tgt.setValue(org.hl7.fhir.r4b.model.DataRequirement.SortDirection.ASCENDING);
+                    break;
+                case DESCENDING:
+                    tgt.setValue(org.hl7.fhir.r4b.model.DataRequirement.SortDirection.DESCENDING);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.r4b.model.DataRequirement.SortDirection.NULL);
+                    break;
+       }
 }
     return tgt;
   }
