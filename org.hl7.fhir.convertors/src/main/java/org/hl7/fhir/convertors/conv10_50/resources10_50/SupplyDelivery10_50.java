@@ -99,10 +99,10 @@ public class SupplyDelivery10_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatusEnumFactory());
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.NULL);
-    } else {
-      switch (src.getValue()) {
-        case REQUESTED:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case REQUESTED:
           tgt.setValue(org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.ACTIVE);
           break;
         case COMPLETED:
@@ -117,8 +117,8 @@ public class SupplyDelivery10_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestStatus.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -127,10 +127,10 @@ public class SupplyDelivery10_50 {
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.SupplyRequest.SupplyRequestStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.SupplyRequest.SupplyRequestStatusEnumFactory());
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2.model.SupplyRequest.SupplyRequestStatus.NULL);
-    } else {
-      switch (src.getValue()) {
-        case ACTIVE:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case ACTIVE:
           tgt.setValue(org.hl7.fhir.dstu2.model.SupplyRequest.SupplyRequestStatus.REQUESTED);
           break;
         case COMPLETED:
@@ -142,8 +142,8 @@ public class SupplyDelivery10_50 {
         default:
           tgt.setValue(org.hl7.fhir.dstu2.model.SupplyRequest.SupplyRequestStatus.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

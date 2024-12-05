@@ -378,10 +378,10 @@ public class ValueSet30_40 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ValueSet.FilterOperator> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ValueSet.FilterOperatorEnumFactory());
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4.model.ValueSet.FilterOperator.NULL);
-    } else {
-      switch (src.getValue()) {
-        case EQUAL:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case EQUAL:
           tgt.setValue(org.hl7.fhir.r4.model.ValueSet.FilterOperator.EQUAL);
           break;
         case ISA:
@@ -411,8 +411,8 @@ public class ValueSet30_40 {
         default:
           tgt.setValue(org.hl7.fhir.r4.model.ValueSet.FilterOperator.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -421,10 +421,10 @@ public class ValueSet30_40 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ValueSet.FilterOperator> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ValueSet.FilterOperatorEnumFactory());
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.NULL);
-    } else {
-      switch (src.getValue()) {
-        case EQUAL:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case EQUAL:
           tgt.setValue(org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.EQUAL);
           break;
         case ISA:
@@ -454,8 +454,8 @@ public class ValueSet30_40 {
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.ValueSet.FilterOperator.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

@@ -200,10 +200,10 @@ public class SearchParameter10_30 {
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Enumerations.SearchParamType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Enumerations.SearchParamTypeEnumFactory());
     ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.SearchParamType.NULL);
-    } else {
-      switch (src.getValue()) {
-        case NUMBER:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case NUMBER:
           tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.SearchParamType.NUMBER);
           break;
         case DATE:
@@ -230,8 +230,8 @@ public class SearchParameter10_30 {
         default:
           tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.SearchParamType.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

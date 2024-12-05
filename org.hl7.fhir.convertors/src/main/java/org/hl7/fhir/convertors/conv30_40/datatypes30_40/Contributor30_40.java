@@ -32,10 +32,10 @@ public class Contributor30_40 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Contributor.ContributorType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Contributor.ContributorTypeEnumFactory());
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4.model.Contributor.ContributorType.NULL);
-    } else {
-      switch (src.getValue()) {
-        case AUTHOR:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case AUTHOR:
           tgt.setValue(org.hl7.fhir.r4.model.Contributor.ContributorType.AUTHOR);
           break;
         case EDITOR:
@@ -50,8 +50,8 @@ public class Contributor30_40 {
         default:
           tgt.setValue(org.hl7.fhir.r4.model.Contributor.ContributorType.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -60,10 +60,10 @@ public class Contributor30_40 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Contributor.ContributorType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Contributor.ContributorTypeEnumFactory());
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.Contributor.ContributorType.NULL);
-    } else {
-      switch (src.getValue()) {
-        case AUTHOR:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case AUTHOR:
           tgt.setValue(org.hl7.fhir.dstu3.model.Contributor.ContributorType.AUTHOR);
           break;
         case EDITOR:
@@ -78,8 +78,8 @@ public class Contributor30_40 {
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.Contributor.ContributorType.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

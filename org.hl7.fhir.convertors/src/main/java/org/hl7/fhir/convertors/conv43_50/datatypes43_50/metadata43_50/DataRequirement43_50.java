@@ -122,10 +122,10 @@ public class DataRequirement43_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DataRequirement.SortDirection> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.DataRequirement.SortDirectionEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.DataRequirement.SortDirection.NULL);
-    } else {
-      switch (src.getValue()) {
-        case ASCENDING:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case ASCENDING:
           tgt.setValue(org.hl7.fhir.r5.model.DataRequirement.SortDirection.ASCENDING);
           break;
         case DESCENDING:
@@ -134,8 +134,8 @@ public class DataRequirement43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.DataRequirement.SortDirection.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -144,10 +144,10 @@ public class DataRequirement43_50 {
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DataRequirement.SortDirection> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.DataRequirement.SortDirectionEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4b.model.DataRequirement.SortDirection.NULL);
-    } else {
-      switch (src.getValue()) {
-        case ASCENDING:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case ASCENDING:
           tgt.setValue(org.hl7.fhir.r4b.model.DataRequirement.SortDirection.ASCENDING);
           break;
         case DESCENDING:
@@ -156,8 +156,8 @@ public class DataRequirement43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r4b.model.DataRequirement.SortDirection.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

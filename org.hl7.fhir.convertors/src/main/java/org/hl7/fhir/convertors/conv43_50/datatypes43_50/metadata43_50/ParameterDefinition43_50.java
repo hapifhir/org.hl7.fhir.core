@@ -46,10 +46,10 @@ public class ParameterDefinition43_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.OperationParameterUse> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.OperationParameterUseEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.NULL);
-    } else {
-      switch (src.getValue()) {
-        case IN:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case IN:
           tgt.setValue(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.IN);
           break;
         case OUT:
@@ -58,8 +58,8 @@ public class ParameterDefinition43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -68,10 +68,10 @@ public class ParameterDefinition43_50 {
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.OperationParameterUseEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.NULL);
-    } else {
-      switch (src.getValue()) {
-        case IN:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case IN:
           tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.IN);
           break;
         case OUT:
@@ -80,8 +80,8 @@ public class ParameterDefinition43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

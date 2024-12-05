@@ -37,10 +37,10 @@ public class Quantity10_40 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Quantity.QuantityComparator> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Quantity.QuantityComparatorEnumFactory());
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4.model.Quantity.QuantityComparator.NULL);
-    } else {
-      switch (src.getValue()) {
-        case LESS_THAN:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case LESS_THAN:
           tgt.setValue(org.hl7.fhir.r4.model.Quantity.QuantityComparator.LESS_THAN);
           break;
         case LESS_OR_EQUAL:
@@ -55,8 +55,8 @@ public class Quantity10_40 {
         default:
           tgt.setValue(org.hl7.fhir.r4.model.Quantity.QuantityComparator.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -65,10 +65,10 @@ public class Quantity10_40 {
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Quantity.QuantityComparator> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Quantity.QuantityComparatorEnumFactory());
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2.model.Quantity.QuantityComparator.NULL);
-    } else {
-      switch (src.getValue()) {
-        case LESS_THAN:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case LESS_THAN:
           tgt.setValue(org.hl7.fhir.dstu2.model.Quantity.QuantityComparator.LESS_THAN);
           break;
         case LESS_OR_EQUAL:
@@ -83,8 +83,8 @@ public class Quantity10_40 {
         default:
           tgt.setValue(org.hl7.fhir.dstu2.model.Quantity.QuantityComparator.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

@@ -60,10 +60,10 @@ public class Slot10_40 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Slot.SlotStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Slot.SlotStatusEnumFactory());
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4.model.Slot.SlotStatus.NULL);
-    } else {
-      switch (src.getValue()) {
-        case BUSY:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case BUSY:
           tgt.setValue(org.hl7.fhir.r4.model.Slot.SlotStatus.BUSY);
           break;
         case FREE:
@@ -78,8 +78,8 @@ public class Slot10_40 {
         default:
           tgt.setValue(org.hl7.fhir.r4.model.Slot.SlotStatus.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -88,10 +88,10 @@ public class Slot10_40 {
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Slot.SlotStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Slot.SlotStatusEnumFactory());
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2.model.Slot.SlotStatus.NULL);
-    } else {
-      switch (src.getValue()) {
-        case BUSY:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case BUSY:
           tgt.setValue(org.hl7.fhir.dstu2.model.Slot.SlotStatus.BUSY);
           break;
         case FREE:
@@ -106,8 +106,8 @@ public class Slot10_40 {
         default:
           tgt.setValue(org.hl7.fhir.dstu2.model.Slot.SlotStatus.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

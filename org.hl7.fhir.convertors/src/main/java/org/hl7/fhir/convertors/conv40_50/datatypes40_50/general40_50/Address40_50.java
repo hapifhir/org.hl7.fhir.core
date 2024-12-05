@@ -44,10 +44,10 @@ public class Address40_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Address.AddressUse> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Address.AddressUseEnumFactory());
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.Address.AddressUse.NULL);
-    } else {
-      switch (src.getValue()) {
-        case HOME:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case HOME:
           tgt.setValue(org.hl7.fhir.r5.model.Address.AddressUse.HOME);
           break;
         case WORK:
@@ -65,8 +65,8 @@ public class Address40_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.Address.AddressUse.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -75,10 +75,10 @@ public class Address40_50 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Address.AddressUse> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Address.AddressUseEnumFactory());
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4.model.Address.AddressUse.NULL);
-    } else {
-      switch (src.getValue()) {
-        case HOME:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case HOME:
           tgt.setValue(org.hl7.fhir.r4.model.Address.AddressUse.HOME);
           break;
         case WORK:
@@ -96,8 +96,8 @@ public class Address40_50 {
         default:
           tgt.setValue(org.hl7.fhir.r4.model.Address.AddressUse.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -106,10 +106,10 @@ public class Address40_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Address.AddressType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Address.AddressTypeEnumFactory());
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.Address.AddressType.NULL);
-    } else {
-      switch (src.getValue()) {
-        case POSTAL:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case POSTAL:
           tgt.setValue(org.hl7.fhir.r5.model.Address.AddressType.POSTAL);
           break;
         case PHYSICAL:
@@ -121,8 +121,8 @@ public class Address40_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.Address.AddressType.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -131,10 +131,10 @@ public class Address40_50 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Address.AddressType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Address.AddressTypeEnumFactory());
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4.model.Address.AddressType.NULL);
-    } else {
-      switch (src.getValue()) {
-        case POSTAL:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case POSTAL:
           tgt.setValue(org.hl7.fhir.r4.model.Address.AddressType.POSTAL);
           break;
         case PHYSICAL:
@@ -146,8 +146,8 @@ public class Address40_50 {
         default:
           tgt.setValue(org.hl7.fhir.r4.model.Address.AddressType.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

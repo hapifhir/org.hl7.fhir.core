@@ -596,10 +596,10 @@ public class TestScript30_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TestScript.AssertionDirectionType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.TestScript.AssertionDirectionTypeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionDirectionType.NULL);
-    } else {
-      switch (src.getValue()) {
-        case RESPONSE:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case RESPONSE:
           tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionDirectionType.RESPONSE);
           break;
         case REQUEST:
@@ -608,8 +608,8 @@ public class TestScript30_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionDirectionType.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -618,10 +618,10 @@ public class TestScript30_50 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionTypeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType.NULL);
-    } else {
-      switch (src.getValue()) {
-        case RESPONSE:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case RESPONSE:
           tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType.RESPONSE);
           break;
         case REQUEST:
@@ -630,8 +630,8 @@ public class TestScript30_50 {
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionDirectionType.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -640,10 +640,10 @@ public class TestScript30_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TestScript.AssertionOperatorType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.TestScript.AssertionOperatorTypeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionOperatorType.NULL);
-    } else {
-      switch (src.getValue()) {
-        case EQUALS:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case EQUALS:
           tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionOperatorType.EQUALS);
           break;
         case NOTEQUALS:
@@ -679,8 +679,8 @@ public class TestScript30_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionOperatorType.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -689,10 +689,10 @@ public class TestScript30_50 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorTypeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.NULL);
-    } else {
-      switch (src.getValue()) {
-        case EQUALS:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case EQUALS:
           tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.EQUALS);
           break;
         case NOTEQUALS:
@@ -728,8 +728,8 @@ public class TestScript30_50 {
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionOperatorType.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -738,10 +738,10 @@ public class TestScript30_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TestScript.TestScriptRequestMethodCode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.TestScript.TestScriptRequestMethodCodeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.TestScript.TestScriptRequestMethodCode.NULL);
-    } else {
-      switch (src.getValue()) {
-        case DELETE:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case DELETE:
           tgt.setValue(org.hl7.fhir.r5.model.TestScript.TestScriptRequestMethodCode.DELETE);
           break;
         case GET:
@@ -762,8 +762,8 @@ public class TestScript30_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.TestScript.TestScriptRequestMethodCode.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -772,10 +772,10 @@ public class TestScript30_50 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.TestScriptRequestMethodCode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.TestScript.TestScriptRequestMethodCodeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.TestScriptRequestMethodCode.NULL);
-    } else {
-      switch (src.getValue()) {
-        case DELETE:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case DELETE:
           tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.TestScriptRequestMethodCode.DELETE);
           break;
         case GET:
@@ -796,8 +796,8 @@ public class TestScript30_50 {
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.TestScriptRequestMethodCode.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -806,10 +806,10 @@ public class TestScript30_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TestScript.AssertionResponseTypes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.TestScript.AssertionResponseTypesEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionResponseTypes.NULL);
-    } else {
-      switch (src.getValue()) {
-        case OKAY:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case OKAY:
           tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionResponseTypes.OKAY);
           break;
         case CREATED:
@@ -848,8 +848,8 @@ public class TestScript30_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.TestScript.AssertionResponseTypes.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -858,10 +858,10 @@ public class TestScript30_50 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypesEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.NULL);
-    } else {
-      switch (src.getValue()) {
-        case OKAY:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case OKAY:
           tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.OKAY);
           break;
         case CREATED:
@@ -900,8 +900,8 @@ public class TestScript30_50 {
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.TestScript.AssertionResponseTypes.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 

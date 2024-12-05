@@ -38,10 +38,10 @@ public class HumanName43_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.HumanName.NameUse> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.HumanName.NameUseEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.HumanName.NameUse.NULL);
-    } else {
-      switch (src.getValue()) {
-        case USUAL:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case USUAL:
           tgt.setValue(org.hl7.fhir.r5.model.HumanName.NameUse.USUAL);
           break;
         case OFFICIAL:
@@ -65,8 +65,8 @@ public class HumanName43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.HumanName.NameUse.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -75,10 +75,10 @@ public class HumanName43_50 {
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.HumanName.NameUse> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.HumanName.NameUseEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4b.model.HumanName.NameUse.NULL);
-    } else {
-      switch (src.getValue()) {
-        case USUAL:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case USUAL:
           tgt.setValue(org.hl7.fhir.r4b.model.HumanName.NameUse.USUAL);
           break;
         case OFFICIAL:
@@ -102,8 +102,8 @@ public class HumanName43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r4b.model.HumanName.NameUse.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

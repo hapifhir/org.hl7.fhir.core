@@ -146,10 +146,10 @@ public class PractitionerRole30_40 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeekEnumFactory());
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek.NULL);
-    } else {
-      switch (src.getValue()) {
-        case MON:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case MON:
           tgt.setValue(org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek.MON);
           break;
         case TUE:
@@ -173,8 +173,8 @@ public class PractitionerRole30_40 {
         default:
           tgt.setValue(org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -183,10 +183,10 @@ public class PractitionerRole30_40 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeekEnumFactory());
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.NULL);
-    } else {
-      switch (src.getValue()) {
-        case MON:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case MON:
           tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.MON);
           break;
         case TUE:
@@ -210,8 +210,8 @@ public class PractitionerRole30_40 {
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

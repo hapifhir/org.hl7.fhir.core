@@ -37,10 +37,10 @@ public class RelatedArtifact30_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.RelatedArtifact.RelatedArtifactType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.RelatedArtifact.RelatedArtifactTypeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.RelatedArtifact.RelatedArtifactType.NULL);
-    } else {
-      switch (src.getValue()) {
-        case DOCUMENTATION:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case DOCUMENTATION:
           tgt.setValue(org.hl7.fhir.r5.model.RelatedArtifact.RelatedArtifactType.DOCUMENTATION);
           break;
         case JUSTIFICATION:
@@ -67,8 +67,8 @@ public class RelatedArtifact30_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.RelatedArtifact.RelatedArtifactType.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -77,10 +77,10 @@ public class RelatedArtifact30_50 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactTypeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.NULL);
-    } else {
-      switch (src.getValue()) {
-        case DOCUMENTATION:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case DOCUMENTATION:
           tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.DOCUMENTATION);
           break;
         case JUSTIFICATION:
@@ -107,8 +107,8 @@ public class RelatedArtifact30_50 {
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

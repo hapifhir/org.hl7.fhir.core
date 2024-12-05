@@ -35,10 +35,10 @@ public class ContactPoint43_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ContactPoint.ContactPointSystemEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem.NULL);
-    } else {
-      switch (src.getValue()) {
-        case PHONE:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case PHONE:
           tgt.setValue(org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem.PHONE);
           break;
         case FAX:
@@ -62,8 +62,8 @@ public class ContactPoint43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -72,10 +72,10 @@ public class ContactPoint43_50 {
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ContactPoint.ContactPointSystem> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.ContactPoint.ContactPointSystemEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4b.model.ContactPoint.ContactPointSystem.NULL);
-    } else {
-      switch (src.getValue()) {
-        case PHONE:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case PHONE:
           tgt.setValue(org.hl7.fhir.r4b.model.ContactPoint.ContactPointSystem.PHONE);
           break;
         case FAX:
@@ -99,8 +99,8 @@ public class ContactPoint43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r4b.model.ContactPoint.ContactPointSystem.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -109,10 +109,10 @@ public class ContactPoint43_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ContactPoint.ContactPointUse> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ContactPoint.ContactPointUseEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.ContactPoint.ContactPointUse.NULL);
-    } else {
-      switch (src.getValue()) {
-        case HOME:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case HOME:
           tgt.setValue(org.hl7.fhir.r5.model.ContactPoint.ContactPointUse.HOME);
           break;
         case WORK:
@@ -130,8 +130,8 @@ public class ContactPoint43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.ContactPoint.ContactPointUse.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -140,10 +140,10 @@ public class ContactPoint43_50 {
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ContactPoint.ContactPointUse> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.ContactPoint.ContactPointUseEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4b.model.ContactPoint.ContactPointUse.NULL);
-    } else {
-      switch (src.getValue()) {
-        case HOME:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case HOME:
           tgt.setValue(org.hl7.fhir.r4b.model.ContactPoint.ContactPointUse.HOME);
           break;
         case WORK:
@@ -161,8 +161,8 @@ public class ContactPoint43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r4b.model.ContactPoint.ContactPointUse.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

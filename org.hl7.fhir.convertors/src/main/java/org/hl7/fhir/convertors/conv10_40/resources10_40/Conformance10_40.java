@@ -902,10 +902,10 @@ public class Conformance10_40 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityModeEnumFactory());
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityMode.NULL);
-    } else {
-      switch (src.getValue()) {
-        case SENDER:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case SENDER:
           tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityMode.SENDER);
           break;
         case RECEIVER:
@@ -914,8 +914,8 @@ public class Conformance10_40 {
         default:
           tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityMode.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -924,10 +924,10 @@ public class Conformance10_40 {
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Conformance.ConformanceEventMode> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Conformance.ConformanceEventModeEnumFactory());
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2.model.Conformance.ConformanceEventMode.NULL);
-    } else {
-      switch (src.getValue()) {
-        case SENDER:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case SENDER:
           tgt.setValue(org.hl7.fhir.dstu2.model.Conformance.ConformanceEventMode.SENDER);
           break;
         case RECEIVER:
@@ -936,8 +936,8 @@ public class Conformance10_40 {
         default:
           tgt.setValue(org.hl7.fhir.dstu2.model.Conformance.ConformanceEventMode.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

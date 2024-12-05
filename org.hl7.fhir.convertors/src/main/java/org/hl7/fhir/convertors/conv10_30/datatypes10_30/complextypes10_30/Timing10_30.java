@@ -75,10 +75,10 @@ public class Timing10_30 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Timing.UnitsOfTime> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Timing.UnitsOfTimeEnumFactory());
     ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.Timing.UnitsOfTime.NULL);
-    } else {
-      switch (src.getValue()) {
-        case S:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case S:
           tgt.setValue(org.hl7.fhir.dstu3.model.Timing.UnitsOfTime.S);
           break;
         case MIN:
@@ -102,8 +102,8 @@ public class Timing10_30 {
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.Timing.UnitsOfTime.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -112,10 +112,10 @@ public class Timing10_30 {
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Timing.UnitsOfTime> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Timing.UnitsOfTimeEnumFactory());
     ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2.model.Timing.UnitsOfTime.NULL);
-    } else {
-      switch (src.getValue()) {
-        case S:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case S:
           tgt.setValue(org.hl7.fhir.dstu2.model.Timing.UnitsOfTime.S);
           break;
         case MIN:
@@ -139,8 +139,8 @@ public class Timing10_30 {
         default:
           tgt.setValue(org.hl7.fhir.dstu2.model.Timing.UnitsOfTime.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -149,10 +149,10 @@ public class Timing10_30 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Timing.EventTiming> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Timing.EventTimingEnumFactory());
     ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.Timing.EventTiming.NULL);
-    } else {
-      switch (src.getValue()) {
-        case HS:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case HS:
           tgt.setValue(org.hl7.fhir.dstu3.model.Timing.EventTiming.HS);
           break;
         case WAKE:
@@ -197,8 +197,8 @@ public class Timing10_30 {
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.Timing.EventTiming.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -207,10 +207,10 @@ public class Timing10_30 {
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Timing.EventTiming> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Timing.EventTimingEnumFactory());
     ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2.model.Timing.EventTiming.NULL);
-    } else {
-      switch (src.getValue()) {
-        case HS:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case HS:
           tgt.setValue(org.hl7.fhir.dstu2.model.Timing.EventTiming.HS);
           break;
         case WAKE:
@@ -255,8 +255,8 @@ public class Timing10_30 {
         default:
           tgt.setValue(org.hl7.fhir.dstu2.model.Timing.EventTiming.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

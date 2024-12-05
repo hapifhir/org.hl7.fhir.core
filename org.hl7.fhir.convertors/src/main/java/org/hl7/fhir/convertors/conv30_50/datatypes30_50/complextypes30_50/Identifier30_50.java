@@ -38,10 +38,10 @@ public class Identifier30_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Identifier.IdentifierUse> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Identifier.IdentifierUseEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.Identifier.IdentifierUse.NULL);
-    } else {
-      switch (src.getValue()) {
-        case USUAL:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case USUAL:
           tgt.setValue(org.hl7.fhir.r5.model.Identifier.IdentifierUse.USUAL);
           break;
         case OFFICIAL:
@@ -56,8 +56,8 @@ public class Identifier30_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.Identifier.IdentifierUse.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -66,10 +66,10 @@ public class Identifier30_50 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Identifier.IdentifierUse> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Identifier.IdentifierUseEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.NULL);
-    } else {
-      switch (src.getValue()) {
-        case USUAL:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case USUAL:
           tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.USUAL);
           break;
         case OFFICIAL:
@@ -87,8 +87,8 @@ public class Identifier30_50 {
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

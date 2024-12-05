@@ -27,10 +27,10 @@ public class Narrative43_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Narrative.NarrativeStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Narrative.NarrativeStatusEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.Narrative.NarrativeStatus.NULL);
-    } else {
-      switch (src.getValue()) {
-        case GENERATED:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case GENERATED:
           tgt.setValue(org.hl7.fhir.r5.model.Narrative.NarrativeStatus.GENERATED);
           break;
         case EXTENSIONS:
@@ -45,8 +45,8 @@ public class Narrative43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.Narrative.NarrativeStatus.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -55,10 +55,10 @@ public class Narrative43_50 {
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Narrative.NarrativeStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Narrative.NarrativeStatusEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4b.model.Narrative.NarrativeStatus.NULL);
-    } else {
-      switch (src.getValue()) {
-        case GENERATED:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case GENERATED:
           tgt.setValue(org.hl7.fhir.r4b.model.Narrative.NarrativeStatus.GENERATED);
           break;
         case EXTENSIONS:
@@ -73,8 +73,8 @@ public class Narrative43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r4b.model.Narrative.NarrativeStatus.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

@@ -28,10 +28,10 @@ public class ProcessRequest10_30 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcessRequest.ActionList> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ProcessRequest.ActionListEnumFactory());
     ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.ProcessRequest.ActionList.NULL);
-    } else {
-      switch (src.getValue()) {
-        case CANCEL:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case CANCEL:
           tgt.setValue(org.hl7.fhir.dstu3.model.ProcessRequest.ActionList.CANCEL);
           break;
         case POLL:
@@ -46,8 +46,8 @@ public class ProcessRequest10_30 {
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.ProcessRequest.ActionList.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -56,10 +56,10 @@ public class ProcessRequest10_30 {
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ProcessRequest.ActionList> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.ProcessRequest.ActionListEnumFactory());
     ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2.model.ProcessRequest.ActionList.NULL);
-    } else {
-      switch (src.getValue()) {
-        case CANCEL:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case CANCEL:
           tgt.setValue(org.hl7.fhir.dstu2.model.ProcessRequest.ActionList.CANCEL);
           break;
         case POLL:
@@ -74,8 +74,8 @@ public class ProcessRequest10_30 {
         default:
           tgt.setValue(org.hl7.fhir.dstu2.model.ProcessRequest.ActionList.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

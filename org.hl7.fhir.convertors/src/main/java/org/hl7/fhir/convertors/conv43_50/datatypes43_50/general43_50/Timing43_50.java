@@ -88,10 +88,10 @@ public class Timing43_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.UnitsOfTime> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Timing.UnitsOfTimeEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.Timing.UnitsOfTime.NULL);
-    } else {
-      switch (src.getValue()) {
-        case S:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case S:
           tgt.setValue(org.hl7.fhir.r5.model.Timing.UnitsOfTime.S);
           break;
         case MIN:
@@ -115,8 +115,8 @@ public class Timing43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.Timing.UnitsOfTime.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -125,10 +125,10 @@ public class Timing43_50 {
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Timing.UnitsOfTime> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Timing.UnitsOfTimeEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4b.model.Timing.UnitsOfTime.NULL);
-    } else {
-      switch (src.getValue()) {
-        case S:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case S:
           tgt.setValue(org.hl7.fhir.r4b.model.Timing.UnitsOfTime.S);
           break;
         case MIN:
@@ -152,8 +152,8 @@ public class Timing43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r4b.model.Timing.UnitsOfTime.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -162,10 +162,10 @@ public class Timing43_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.DaysOfWeekEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.NULL);
-    } else {
-      switch (src.getValue()) {
-        case MON:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case MON:
           tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.MON);
           break;
         case TUE:
@@ -189,8 +189,8 @@ public class Timing43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -199,10 +199,10 @@ public class Timing43_50 {
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.DaysOfWeekEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.NULL);
-    } else {
-      switch (src.getValue()) {
-        case MON:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case MON:
           tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.MON);
           break;
         case TUE:
@@ -226,8 +226,8 @@ public class Timing43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -236,10 +236,10 @@ public class Timing43_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.EventTiming> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Timing.EventTimingEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.NULL);
-    } else {
-      switch (src.getValue()) {
-        case MORN:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case MORN:
           tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.MORN);
           break;
         case MORN_EARLY:
@@ -320,8 +320,8 @@ public class Timing43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -330,10 +330,10 @@ public class Timing43_50 {
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Timing.EventTiming> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Timing.EventTimingEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4b.model.Timing.EventTiming.NULL);
-    } else {
-      switch (src.getValue()) {
-        case MORN:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case MORN:
           tgt.setValue(org.hl7.fhir.r4b.model.Timing.EventTiming.MORN);
           break;
         case MORN_EARLY:
@@ -414,8 +414,8 @@ public class Timing43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r4b.model.Timing.EventTiming.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

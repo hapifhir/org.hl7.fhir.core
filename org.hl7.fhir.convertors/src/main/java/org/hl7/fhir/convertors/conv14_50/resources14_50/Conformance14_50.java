@@ -897,10 +897,10 @@ public class Conformance14_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.EventCapabilityMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CapabilityStatement.EventCapabilityModeEnumFactory());
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.EventCapabilityMode.NULL);
-    } else {
-      switch (src.getValue()) {
-        case SENDER:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case SENDER:
           tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.EventCapabilityMode.SENDER);
           break;
         case RECEIVER:
@@ -909,8 +909,8 @@ public class Conformance14_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.EventCapabilityMode.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -919,10 +919,10 @@ public class Conformance14_50 {
     org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Conformance.ConformanceEventMode> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceEventModeEnumFactory());
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2016may.model.Conformance.ConformanceEventMode.NULL);
-    } else {
-      switch (src.getValue()) {
-        case SENDER:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case SENDER:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.Conformance.ConformanceEventMode.SENDER);
           break;
         case RECEIVER:
@@ -931,8 +931,8 @@ public class Conformance14_50 {
         default:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.Conformance.ConformanceEventMode.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

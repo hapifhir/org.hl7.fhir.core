@@ -500,10 +500,10 @@ public class CodeSystem30_50 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CodeSystem.FilterOperator> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CodeSystem.FilterOperatorEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.CodeSystem.FilterOperator.NULL);
-    } else {
-      switch (src.getValue()) {
-        case EQUAL:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case EQUAL:
           tgt.setValue(org.hl7.fhir.dstu3.model.CodeSystem.FilterOperator.EQUAL);
           break;
         case ISA:
@@ -533,8 +533,8 @@ public class CodeSystem30_50 {
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.CodeSystem.FilterOperator.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }

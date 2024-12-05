@@ -359,10 +359,10 @@ public class TestReport30_40 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TestReport.TestReportActionResult> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TestReport.TestReportActionResultEnumFactory());
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.NULL);
-    } else {
-      switch (src.getValue()) {
-        case PASS:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case PASS:
           tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.PASS);
           break;
         case SKIP:
@@ -380,8 +380,8 @@ public class TestReport30_40 {
         default:
           tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -390,10 +390,10 @@ public class TestReport30_40 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestReport.TestReportActionResult> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.TestReport.TestReportActionResultEnumFactory());
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportActionResult.NULL);
-    } else {
-      switch (src.getValue()) {
-        case PASS:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case PASS:
           tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportActionResult.PASS);
           break;
         case SKIP:
@@ -411,8 +411,8 @@ public class TestReport30_40 {
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportActionResult.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 

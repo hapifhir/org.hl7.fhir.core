@@ -120,26 +120,26 @@ public class ElementDefinition14_30 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ElementDefinition.PropertyRepresentation> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ElementDefinition.PropertyRepresentationEnumFactory());
     ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.ElementDefinition.PropertyRepresentation.NULL);
-    } else {
-      switch (src.getValue()) {
-        case XMLATTR:
-          tgt.setValue(org.hl7.fhir.dstu3.model.ElementDefinition.PropertyRepresentation.XMLATTR);
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case XMLATTR:
+          tgt.setValue(ElementDefinition.PropertyRepresentation.XMLATTR);
           break;
         case XMLTEXT:
-          tgt.setValue(org.hl7.fhir.dstu3.model.ElementDefinition.PropertyRepresentation.XMLTEXT);
+          tgt.setValue(ElementDefinition.PropertyRepresentation.XMLTEXT);
           break;
         case TYPEATTR:
-          tgt.setValue(org.hl7.fhir.dstu3.model.ElementDefinition.PropertyRepresentation.TYPEATTR);
+          tgt.setValue(ElementDefinition.PropertyRepresentation.TYPEATTR);
           break;
         case CDATEXT:
-          tgt.setValue(org.hl7.fhir.dstu3.model.ElementDefinition.PropertyRepresentation.CDATEXT);
+          tgt.setValue(ElementDefinition.PropertyRepresentation.CDATEXT);
           break;
         default:
-          tgt.setValue(org.hl7.fhir.dstu3.model.ElementDefinition.PropertyRepresentation.NULL);
+          tgt.setValue(ElementDefinition.PropertyRepresentation.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -148,10 +148,10 @@ public class ElementDefinition14_30 {
     org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.PropertyRepresentation> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.ElementDefinition.PropertyRepresentationEnumFactory());
     ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.PropertyRepresentation.NULL);
-    } else {
-      switch (src.getValue()) {
-        case XMLATTR:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case XMLATTR:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.PropertyRepresentation.XMLATTR);
           break;
         case XMLTEXT:
@@ -166,8 +166,8 @@ public class ElementDefinition14_30 {
         default:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.PropertyRepresentation.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -200,10 +200,10 @@ public class ElementDefinition14_30 {
     org.hl7.fhir.dstu3.model.Enumeration<ElementDefinition.SlicingRules> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new ElementDefinition.SlicingRulesEnumFactory());
     ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(ElementDefinition.SlicingRules.NULL);
-    } else {
-      switch (src.getValue()) {
-        case CLOSED:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case CLOSED:
           tgt.setValue(ElementDefinition.SlicingRules.CLOSED);
           break;
         case OPEN:
@@ -215,8 +215,8 @@ public class ElementDefinition14_30 {
         default:
           tgt.setValue(ElementDefinition.SlicingRules.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -225,10 +225,10 @@ public class ElementDefinition14_30 {
     org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.SlicingRules> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.ElementDefinition.SlicingRulesEnumFactory());
     ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.SlicingRules.NULL);
-    } else {
-      switch (src.getValue()) {
-        case CLOSED:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case CLOSED:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.SlicingRules.CLOSED);
           break;
         case OPEN:
@@ -240,8 +240,8 @@ public class ElementDefinition14_30 {
         default:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.SlicingRules.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -310,10 +310,10 @@ public class ElementDefinition14_30 {
     org.hl7.fhir.dstu3.model.Enumeration<ElementDefinition.AggregationMode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new ElementDefinition.AggregationModeEnumFactory());
     ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(ElementDefinition.AggregationMode.NULL);
-    } else {
-      switch (src.getValue()) {
-        case CONTAINED:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case CONTAINED:
           tgt.setValue(ElementDefinition.AggregationMode.CONTAINED);
           break;
         case REFERENCED:
@@ -325,8 +325,8 @@ public class ElementDefinition14_30 {
         default:
           tgt.setValue(ElementDefinition.AggregationMode.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -335,10 +335,10 @@ public class ElementDefinition14_30 {
     org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.AggregationMode> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.ElementDefinition.AggregationModeEnumFactory());
     ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.AggregationMode.NULL);
-    } else {
-      switch (src.getValue()) {
-        case CONTAINED:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case CONTAINED:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.AggregationMode.CONTAINED);
           break;
         case REFERENCED:
@@ -350,8 +350,8 @@ public class ElementDefinition14_30 {
         default:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.AggregationMode.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -360,10 +360,10 @@ public class ElementDefinition14_30 {
     org.hl7.fhir.dstu3.model.Enumeration<ElementDefinition.ReferenceVersionRules> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new ElementDefinition.ReferenceVersionRulesEnumFactory());
     ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(ElementDefinition.ReferenceVersionRules.NULL);
-    } else {
-      switch (src.getValue()) {
-        case EITHER:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case EITHER:
           tgt.setValue(ElementDefinition.ReferenceVersionRules.EITHER);
           break;
         case INDEPENDENT:
@@ -375,8 +375,8 @@ public class ElementDefinition14_30 {
         default:
           tgt.setValue(ElementDefinition.ReferenceVersionRules.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -385,10 +385,10 @@ public class ElementDefinition14_30 {
     org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.ReferenceVersionRules> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.ElementDefinition.ReferenceVersionRulesEnumFactory());
     ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.ReferenceVersionRules.NULL);
-    } else {
-      switch (src.getValue()) {
-        case EITHER:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case EITHER:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.ReferenceVersionRules.EITHER);
           break;
         case INDEPENDENT:
@@ -400,8 +400,8 @@ public class ElementDefinition14_30 {
         default:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.ReferenceVersionRules.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -436,10 +436,10 @@ public class ElementDefinition14_30 {
     org.hl7.fhir.dstu3.model.Enumeration<ElementDefinition.ConstraintSeverity> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new ElementDefinition.ConstraintSeverityEnumFactory());
     ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(ElementDefinition.ConstraintSeverity.NULL);
-    } else {
-      switch (src.getValue()) {
-        case ERROR:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case ERROR:
           tgt.setValue(ElementDefinition.ConstraintSeverity.ERROR);
           break;
         case WARNING:
@@ -448,8 +448,8 @@ public class ElementDefinition14_30 {
         default:
           tgt.setValue(ElementDefinition.ConstraintSeverity.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -458,10 +458,10 @@ public class ElementDefinition14_30 {
     org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.ElementDefinition.ConstraintSeverity> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.ElementDefinition.ConstraintSeverityEnumFactory());
     ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.ConstraintSeverity.NULL);
-    } else {
-      switch (src.getValue()) {
-        case ERROR:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case ERROR:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.ConstraintSeverity.ERROR);
           break;
         case WARNING:
@@ -470,8 +470,8 @@ public class ElementDefinition14_30 {
         default:
           tgt.setValue(org.hl7.fhir.dstu2016may.model.ElementDefinition.ConstraintSeverity.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 

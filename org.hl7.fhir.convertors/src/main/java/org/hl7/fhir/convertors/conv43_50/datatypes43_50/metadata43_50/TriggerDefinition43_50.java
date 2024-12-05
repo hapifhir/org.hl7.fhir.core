@@ -38,10 +38,10 @@ public class TriggerDefinition43_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TriggerDefinition.TriggerType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.TriggerDefinition.TriggerTypeEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.TriggerDefinition.TriggerType.NULL);
-    } else {
-      switch (src.getValue()) {
-        case NAMEDEVENT:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case NAMEDEVENT:
           tgt.setValue(org.hl7.fhir.r5.model.TriggerDefinition.TriggerType.NAMEDEVENT);
           break;
         case PERIODIC:
@@ -68,8 +68,8 @@ public class TriggerDefinition43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r5.model.TriggerDefinition.TriggerType.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 
@@ -78,10 +78,10 @@ public class TriggerDefinition43_50 {
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.TriggerDefinition.TriggerType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.TriggerDefinition.TriggerTypeEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4b.model.TriggerDefinition.TriggerType.NULL);
-    } else {
-      switch (src.getValue()) {
-        case NAMEDEVENT:
+    tgt.setValue(null);
+} else {
+  switch(src.getValue()) {
+   case NAMEDEVENT:
           tgt.setValue(org.hl7.fhir.r4b.model.TriggerDefinition.TriggerType.NAMEDEVENT);
           break;
         case PERIODIC:
@@ -108,8 +108,8 @@ public class TriggerDefinition43_50 {
         default:
           tgt.setValue(org.hl7.fhir.r4b.model.TriggerDefinition.TriggerType.NULL);
           break;
-      }
-    }
+  }
+}
     return tgt;
   }
 }
