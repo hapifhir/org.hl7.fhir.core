@@ -32,13 +32,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class BaseWorkerContextTests {
@@ -374,7 +374,7 @@ public class BaseWorkerContextTests {
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
-    Mockito.doReturn(createdValidationResult).when(context).validateOnServer(terminologyClientContext, valueSet, pIn, validationOptions);
+    Mockito.doReturn(createdValidationResult).when(context).validateOnServer2(same(terminologyClientContext), same(valueSet), same(pIn), same(validationOptions), eq(Collections.emptySet()));
 
     ValidationContextCarrier ctxt = mock(ValidationContextCarrier.class);
 
@@ -418,12 +418,12 @@ public class BaseWorkerContextTests {
 
     Mockito.verify(valueSetCheckerSimple).validateCode("CodeableConcept", codeableConcept);
     Mockito.verify(terminologyCache).cacheValidation(eq(cacheToken), same(createdValidationResult), eq(false));
-    Mockito.verify(context, times(0)).validateOnServer(any(), any(), any(), any());
+    Mockito.verify(context, times(0)).validateOnServer2(any(), any(), any(), any(), any());
   }
 
 
   @Test
-  public void testValidateCodableConceptWithServer() throws IOException {
+  public void testValidateCodeableConceptWithServer() throws IOException {
 
     CodeableConcept codeableConcept = new CodeableConcept();
     ValueSet valueSet = new ValueSet();
@@ -433,7 +433,7 @@ public class BaseWorkerContextTests {
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
-    Mockito.doReturn(createdValidationResult).when(context).validateOnServer(terminologyClientContext, valueSet, pIn, validationOptions);
+    Mockito.doReturn(createdValidationResult).when(context).validateOnServer2(same(terminologyClientContext), same(valueSet), same(pIn),same(validationOptions), eq(Collections.emptySet()));
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, codeableConcept, valueSet, expParameters);
 
@@ -443,7 +443,7 @@ public class BaseWorkerContextTests {
 
     Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("CodeableConcept", codeableConcept);
     Mockito.verify(terminologyCache).cacheValidation(eq(cacheToken), same(createdValidationResult), eq(true));
-    Mockito.verify(context).validateOnServer(terminologyClientContext, valueSet, pIn, validationOptions);
+    Mockito.verify(context).validateOnServer2(same(terminologyClientContext), same(valueSet), same(pIn), same(validationOptions), eq(Collections.emptySet()));
   }
 
   @Test

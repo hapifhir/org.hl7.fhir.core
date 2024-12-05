@@ -237,7 +237,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private Object lock = new Object(); // used as a lock for the data that follows
   protected String version; // although the internal resources are all R5, the version of FHIR they describe may not be 
 
-  protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClientR5.TerminologyClientR5Factory(), UUID.randomUUID().toString());
   private boolean minimalMemory = false;
 
   private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
@@ -279,6 +278,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected boolean noTerminologyServer;
   private int expandCodesLimit = 1000;
   protected org.hl7.fhir.r5.context.ILoggingService logger = new SystemOutLoggingService();
+  protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClientR5.TerminologyClientR5Factory(), UUID.randomUUID().toString(), logger);
   protected Parameters expParameters;
   private Map<String, PackageInformation> packages = new HashMap<>();
 
@@ -1375,7 +1375,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     try {
       Parameters pIn = constructParameters(options, code);
-      res = validateOnServer(tc, vs, pIn, options);
+      res = validateOnServer2(tc, vs, pIn, options, systems);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage(), null).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
     }
@@ -1645,7 +1645,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     txLog("$validate "+txCache.summary(code)+" for "+ txCache.summary(vs)+" on "+tc.getAddress());
     try {
       Parameters pIn = constructParameters(options, code);
-      res = validateOnServer(tc, vs, pIn, options);
+      res = validateOnServer2(tc, vs, pIn, options, systems);
     } catch (Exception e) {
       issues.clear();
       OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXCEPTION);
@@ -1727,6 +1727,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected ValidationResult validateOnServer(TerminologyClientContext tc, ValueSet vs, Parameters pin, ValidationOptions options) throws FHIRException {
+    return  validateOnServer2(tc, vs, pin, options, null);
+  }
+  
+  protected ValidationResult validateOnServer2(TerminologyClientContext tc, ValueSet vs, Parameters pin, ValidationOptions options, Set<String> systems) throws FHIRException {
 
     if (vs != null) {
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
@@ -1737,7 +1741,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
 
-    addServerValidationParameters(tc, vs, pin, options);
+    addServerValidationParameters(tc, vs, pin, options, systems);
 
     if (txLog != null) {
       txLog.clearLastId();
@@ -1755,6 +1759,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected void addServerValidationParameters(TerminologyClientContext terminologyClientContext, ValueSet vs, Parameters pin, ValidationOptions options) {
+    addServerValidationParameters(terminologyClientContext, vs, pin, options, null);
+  }
+  
+  protected void addServerValidationParameters(TerminologyClientContext terminologyClientContext, ValueSet vs, Parameters pin, ValidationOptions options, Set<String> systems) {
     boolean cache = false;
     if (vs != null) {
       if (terminologyClientContext != null && terminologyClientContext.isTxCaching() && terminologyClientContext.getCacheId() != null && vs.getUrl() != null && terminologyClientContext.getCached().contains(vs.getUrl()+"|"+ vs.getVersion())) {
@@ -1776,6 +1784,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       cache = true;
       addDependentResources(terminologyClientContext, pin, vs);
+    }
+    if (systems != null) {
+      for (String s : systems) {
+        cache = addDependentCodeSystem(terminologyClientContext, pin, s, null) || cache;
+      }
     }
     pin.addParameter().setName("cache-id").setValue(new IdType(terminologyClientManager.getCacheId()));
     for (ParametersParameterComponent pp : pin.getParameter()) {
@@ -1823,13 +1836,20 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
       }
     }
-    CodeSystem cs = fetchResource(CodeSystem.class, inc.getSystem(), src);
+    String sys = inc.getSystem();
+    cache = addDependentCodeSystem(tc, pin, sys, src) || cache;
+    return cache;
+  }
+
+  public boolean addDependentCodeSystem(TerminologyClientContext tc, Parameters pin, String sys, Resource src) {
+    boolean cache = false;
+    CodeSystem cs = fetchResource(CodeSystem.class, sys, src);
     if (cs != null && !hasCanonicalResource(pin, "tx-resource", cs.getVUrl()) && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
       cache = checkAddToParams(tc, pin, cs) || cache;
     }
     for (CodeSystem supp : codeSystems.getSupplements(cs)) {
       //if (supp.getContent() == CodeSystemContentMode.SUPPLEMENT && supp.getSupplements().equals(inc.getSystem())) {
-      assert supp.getContent() == CodeSystemContentMode.SUPPLEMENT && supp.getSupplements().equals(inc.getSystem());
+      assert supp.getContent() == CodeSystemContentMode.SUPPLEMENT && supp.getSupplements().equals(sys);
         cache = checkAddToParams(tc, pin, supp) || cache;
       //}
     }
@@ -2031,6 +2051,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void setLogger(@Nonnull org.hl7.fhir.r5.context.ILoggingService logger) {
     this.logger = logger;
+    getTxClientManager().setLogger(logger);
   }
 
   public Parameters getExpansionParameters() {

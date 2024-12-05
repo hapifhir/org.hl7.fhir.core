@@ -1788,7 +1788,7 @@ public class StructureMapUtilities {
               }
             }
           }
-          Base res = services != null ? services.createType(context.getAppInfo(), tn) : typeFactory(tn);
+          Base res = services != null ? services.createType(context.getAppInfo(), tn, profileUtilities) : typeFactory(tn);
           if (res.isResource() && !res.fhirType().equals("Parameters")) {
 //	        res.setIdBase(tgt.getParameter().size() > 1 ? getParamString(vars, tgt.getParameter().get(0)) : UUID.randomUUID().toString().toLowerCase());
             if (services != null)
@@ -1929,7 +1929,7 @@ public class StructureMapUtilities {
       if (sd == null) {
         throw new FHIRException("Unable to create type "+tn);
       } else {
-        return Manager.build(worker, sd);
+        return Manager.build(worker, sd, profileUtilities);
       }
     } else {
       return ResourceFactory.createResourceOrType(tn);

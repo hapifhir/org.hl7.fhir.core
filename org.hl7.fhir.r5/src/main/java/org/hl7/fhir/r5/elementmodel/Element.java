@@ -476,7 +476,7 @@ public class Element extends Base implements NamedItem {
         } else {
           Element ne = new Element(child).setFormat(format);
           children.add(ne);
-          numberChildren();
+          ne.index = children.getSizeByName(ne.getListName()) - 1;
           childForValue = ne;
           break;
         }
@@ -564,7 +564,7 @@ public class Element extends Base implements NamedItem {
         } else {
           Element ne = new Element(child).setFormat(format);
           children.add(ne);
-          numberChildren();
+          ne.index = children.getSizeByName(ne.getListName()) - 1;
           return ne;
         }
       }
@@ -574,6 +574,7 @@ public class Element extends Base implements NamedItem {
       if (p.getName().equals(name)) {
         Element ne = new Element(name, p).setFormat(format);
         children.add(ne);
+        ne.index = children.getSizeByName(ne.getListName()) - 1;
         return ne;
       } else if (p.getDefinition().isChoice() && name.startsWith(p.getName().replace("[x]", ""))) {
         String type = name.substring(p.getName().length()-3);
@@ -583,6 +584,7 @@ public class Element extends Base implements NamedItem {
         Element ne = new Element(name, p).setFormat(format);
         ne.setType(type);
         children.add(ne);
+        ne.index = children.getSizeByName(ne.getListName()) - 1;
         return ne;
         
       }
@@ -606,6 +608,7 @@ public class Element extends Base implements NamedItem {
       if (p.getName().equals(name)) {
         Element ne = new Element(name, p).setFormat(format);
         children.add(ne);
+        ne.index = children.getSizeByName(ne.getListName()) - 1;
         return ne;
       }
     }

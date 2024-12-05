@@ -256,7 +256,7 @@ public class ResourceWrapperModel extends ResourceWrapper {
   }
 
   public String getWebPath() {
-    return null;
+    return model.getWebPath();
   }
 
   public String getCodeSystemUri() {

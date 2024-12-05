@@ -189,6 +189,13 @@ public class FHIRPathEngine {
   // the application can implement them by providing a constant resolver 
   public interface IEvaluationContext {
 
+    public abstract class FunctionDefinition {
+      public abstract String name();
+      public abstract FunctionDetails details();
+      public abstract TypeDetails check(FHIRPathEngine engine, Object appContext, TypeDetails focus, List<TypeDetails> parameters);
+      public abstract List<Base> execute(FHIRPathEngine engine, Object appContext, List<Base> focus, List<List<Base>> parameters);
+    }
+    
     /**
      * A constant reference - e.g. a reference to a name that must be resolved in context.
      * The % will be removed from the constant name before this is invoked.
