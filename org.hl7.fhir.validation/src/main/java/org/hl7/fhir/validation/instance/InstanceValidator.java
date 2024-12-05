@@ -2478,22 +2478,26 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       if (ctxt.getType() == ExtensionContextType.ELEMENT) {
         String en = ctxt.getExpression();
-        contexts.append("e:" + en);
         String pu = null;
-        if (en.contains("#")) {
-          pu = en.substring(0, en.indexOf("#"));
-          en = en.substring(en.indexOf("#")+1);          
+        if (en == null) {
+          // nothing? It's an error in the extension definition, but that's properly reported elsewhere 
         } else {
-          //pu = en;
-        }
-        if (Utilities.existsInList(en, "Element", "Any")) {
-          ok = true;
-        } else if (en.equals("Resource") && container.isResource()) {
-          ok = true;
-        } else if (en.equals("CanonicalResource") && containsAny(VersionUtilities.getExtendedCanonicalResourceNames(context.getVersion()), plist)) {
-          ok = true;
-        } else if (hasElementName(plist, en) && pu == null) {
-          ok = true;
+          contexts.append("e:" + en);
+          if (en.contains("#")) {
+            pu = en.substring(0, en.indexOf("#"));
+            en = en.substring(en.indexOf("#")+1);          
+          } else {
+            //pu = en;
+          }
+          if (Utilities.existsInList(en, "Element", "Any")) {
+            ok = true;
+          } else if (en.equals("Resource") && container.isResource()) {
+            ok = true;
+          } else if (en.equals("CanonicalResource") && containsAny(VersionUtilities.getExtendedCanonicalResourceNames(context.getVersion()), plist)) {
+            ok = true;
+          } else if (hasElementName(plist, en) && pu == null) {
+            ok = true;
+          }
         }
         
         if (!ok) {
@@ -4316,7 +4320,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     Collections.sort(list, new StructureDefinitionSorterByUrl());
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (StructureDefinition sd : list) {
-      b.append(sd.getUrl());
+      b.append(sd.getVersionedUrl());
     }
     return b.toString();
   }

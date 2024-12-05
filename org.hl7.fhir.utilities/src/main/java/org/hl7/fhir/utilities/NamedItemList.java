@@ -53,12 +53,12 @@ public class NamedItemList<T extends org.hl7.fhir.utilities.NamedItemList.NamedI
 
   @Override
   public boolean add(T e) {
-    map = null;  
+    addToMap(e);
     return list.add(e);
   }
   public void add(int index, T e) {
+    addToMap(e);
     list.add(index, e);
-    map = null;  
   }
 
   @Override
@@ -74,7 +74,9 @@ public class NamedItemList<T extends org.hl7.fhir.utilities.NamedItemList.NamedI
 
   @Override
   public boolean addAll(Collection<? extends T> c) {
-    map = null;  
+    for(T e : c) {
+      addToMap(e);
+    }
     return list.addAll(c);
   }
 
@@ -115,6 +117,14 @@ public class NamedItemList<T extends org.hl7.fhir.utilities.NamedItemList.NamedI
     }
     return res;
   }
+  
+  public int getSizeByName(String name) {
+    if (map == null) {
+      buildMap();
+    }
+    List<T> l = map.get(name);
+    return l == null ? 0 : l.size();
+  }
 
   public T get(int c) {
     return list.get(c);
@@ -123,14 +133,22 @@ public class NamedItemList<T extends org.hl7.fhir.utilities.NamedItemList.NamedI
   private void buildMap() {
     map = new HashMap<>();
     for (T child : list) {
-      String n = child.getListName();
-      List<T> l = map.get(n);
-      if (l == null) {
-        l = new ArrayList<>();
-        map.put(n,l);
-      }
-      l.add(child);         
+      addToMap(child);
     }
+  }
+  
+  private void addToMap(T child) {
+    if (map == null) {
+      // map will be re-built anyway in next call to getByName
+      return;
+    }
+    String n = child.getListName();
+    List<T> l = map.get(n);
+    if (l == null) {
+      l = new ArrayList<>();
+      map.put(n,l);
+    }
+    l.add(child);
   }
 
   public void sort(Comparator<? super T> sorter) {

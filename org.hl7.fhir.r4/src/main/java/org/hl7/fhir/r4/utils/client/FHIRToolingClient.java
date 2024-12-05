@@ -383,7 +383,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       feed = client.issueGetFeedRequest(new URI(url), withVer(getPreferredResourceFormat(), "4.0"), timeoutLong);
     } catch (Exception e) {
-      handleException(0, "An error has occurred while trying to retrieve history since last update", e);
+      handleException(0, "An error has occurred while trying to read a bundle", e);
     }
     return feed;
   }

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.utils;
+package org.hl7.fhir.r5.liquid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,19 +42,113 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRLexer;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.ExpressionNodeWithOffset;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
+import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.IntegerType;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.Tuple;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class LiquidEngine implements IEvaluationContext {
+
+  public static class LiquidForLoopObject extends Base {
+
+    private static final long serialVersionUID = 6951452522873320076L;
+    private boolean first;
+    private int index;
+    private int index0;
+    private int rindex;
+    private int rindex0;
+    private boolean last;
+    private int length;
+    private LiquidForLoopObject parentLoop;
+    
+    
+    public LiquidForLoopObject(int size, int i, int offset, int limit, LiquidForLoopObject parentLoop) {
+      super();
+      this.parentLoop = parentLoop;
+      if (offset == -1) {
+        offset = 0;
+      }
+      if (limit == -1) {
+        limit = size;
+      }
+      
+      first = i == offset;
+      index = i+1-offset;
+      index0 = i-offset;
+      rindex = (limit-offset) - 1 - i;
+      rindex0 = (limit-offset) - i;
+      length = limit-offset;
+      last = i == (limit-offset)-1;                
+    }
+    
+
+    @Override
+    public String getIdBase() {
+      return null;
+    }
+
+    @Override
+    public void setIdBase(String value) {
+      throw new Error("forLoop is read only");
+    }
+
+    @Override
+    public Base copy() {
+      throw new Error("forLoop is read only");
+    }
+
+    @Override
+    public FhirPublication getFHIRPublicationVersion() {
+      return FhirPublication.R5;
+    }
+
+    public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+      switch (name) {
+      case "parentLoop" : return wrap(parentLoop);
+      case "first" : return wrap(new BooleanType(first));
+      case "last" : return wrap(new BooleanType(last));
+      case "index" : return wrap(new IntegerType(index));
+      case "index0" : return wrap(new IntegerType(index0));
+      case "rindex" : return wrap(new IntegerType(rindex));
+      case "rindex0" : return wrap(new IntegerType(rindex0));
+      case "length" : return wrap(new IntegerType(length));
+      }
+
+      return super.getProperty(hash, name, checkValid);
+    }
+
+    private Base[] wrap(Base b) {
+      Base[] l = new Base[1];
+      l[0] = b;
+      return l;
+    }
+
+
+    @Override
+    public String toString() {
+      return "forLoop";
+    }
+
+
+    @Override
+    public String fhirType() {
+      return "ForLoop";
+    }
+    
+  }
 
   public interface ILiquidRenderingSupport {
     String renderForLiquid(Object appContext, Base i) throws FHIRException;
@@ -68,16 +162,19 @@ public class LiquidEngine implements IEvaluationContext {
   private FHIRPathEngine engine;
   private ILiquidEngineIncludeResolver includeResolver;
   private ILiquidRenderingSupport renderingSupport;
-
+  private MarkDownProcessor processor = new MarkDownProcessor(Dialect.COMMON_MARK);
+  private Map<String, Base> vars = new HashMap<>();
+  
   private class LiquidEngineContext {
     private Object externalContext;
     private Map<String, Base> loopVars = new HashMap<>();
     private Map<String, Base> globalVars = new HashMap<>();
 
-    public LiquidEngineContext(Object externalContext) {
+    public LiquidEngineContext(Object externalContext, Map<String, Base> vars) {
       super();
       this.externalContext = externalContext;
       globalVars = new HashMap<>();
+      globalVars.putAll(vars);
     }
 
     public LiquidEngineContext(Object externalContext, LiquidEngineContext existing) {
@@ -119,13 +216,17 @@ public class LiquidEngine implements IEvaluationContext {
     this.renderingSupport = renderingSupport;
   }
 
+  public Map<String, Base> getVars() {
+    return vars;
+  }
+
   public LiquidDocument parse(String source, String sourceName) throws FHIRException {
     return new LiquidParser(source).parse(sourceName);
   }
 
   public String evaluate(LiquidDocument document, Base resource, Object appContext) throws FHIRException {
     StringBuilder b = new StringBuilder();
-    LiquidEngineContext ctxt = new LiquidEngineContext(appContext);
+    LiquidEngineContext ctxt = new LiquidEngineContext(appContext, vars );
     for (LiquidNode n : document.body) {
       n.evaluate(b, resource, ctxt);
     }
@@ -162,11 +263,23 @@ public class LiquidEngine implements IEvaluationContext {
   }
   
   private enum LiquidFilter {
-    PREPEND;
+    PREPEND,
+    MARKDOWNIFY,
+    UPCASE,
+    DOWNCASE;
     
     public static LiquidFilter fromCode(String code) {
       if ("prepend".equals(code)) {
         return PREPEND;
+      }
+      if ("markdownify".equals(code)) {
+        return MARKDOWNIFY;
+      }
+      if ("upcase".equals(code)) {
+        return UPCASE;
+      }
+      if ("downcase".equals(code)) {
+        return DOWNCASE;
       }
       return null;
     }
@@ -221,10 +334,23 @@ public class LiquidEngine implements IEvaluationContext {
         } else switch (i.filter) {
         case PREPEND:
           t = stmtToString(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)) + t;
+          break; 
+        case MARKDOWNIFY:
+          t = processMarkdown(t);
+          break;
+        case UPCASE:
+          t = t.toUpperCase();
+          break;
+        case DOWNCASE:
+          t = t.toLowerCase();
           break;
         }
       }
       b.append(t);
+    }
+
+    private String processMarkdown(String t) {
+      return processor.process(t, "liquid");
     }
 
     private String stmtToString(LiquidEngineContext ctxt, List<Base> items) {
@@ -375,6 +501,7 @@ public class LiquidEngine implements IEvaluationContext {
           Collections.reverse(list);
         }
         int i = 0;
+        LiquidForLoopObject parentLoop = (LiquidForLoopObject) lctxt.globalVars.get("forLoop");
         for (Base o : list) {
           if (offset >= 0 && i < offset) {
             i++;
@@ -383,6 +510,8 @@ public class LiquidEngine implements IEvaluationContext {
           if (limit >= 0 && i == limit) {
             break;
           }          
+          LiquidForLoopObject forloop = new LiquidForLoopObject(list.size(), i, offset, limit, parentLoop);
+          lctxt.globalVars.put("forLoop", forloop);
           if (lctxt.globalVars.containsKey(varName)) {
             throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_VARIABLE_ALREADY_ASSIGNED, varName));
           }
@@ -403,6 +532,7 @@ public class LiquidEngine implements IEvaluationContext {
           }
           i++;
         }
+        lctxt.globalVars.put("forLoop", parentLoop);
       }
     }
 
@@ -449,6 +579,20 @@ public class LiquidEngine implements IEvaluationContext {
     }
   }
 
+  private class LiquidCapture extends LiquidNode {
+    private String varName;
+    private List<LiquidNode> body = new ArrayList<>();
+
+    @Override
+    public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
+      StringBuilder bc = new StringBuilder();
+      for (LiquidNode n : body) {
+        n.evaluate(bc, resource, ctxt);
+      }
+      ctxt.globalVars.put(varName, new StringType(bc.toString()));
+    }
+  }
+
   private class LiquidInclude extends LiquidNode {
     private String page;
     private Map<String, ExpressionNode> params = new HashMap<>();
@@ -489,6 +633,9 @@ public class LiquidEngine implements IEvaluationContext {
 
     public LiquidParser(String source) {
       this.source = source;
+      if (source == null) {
+        throw new FHIRException("No Liquid source to parse");
+      }
       cursor = 0;
     }
 
@@ -569,6 +716,8 @@ public class LiquidEngine implements IEvaluationContext {
               list.add(parseInclude(cnt.substring(7).trim()));
             else if (cnt.startsWith("assign "))
               list.add(parseAssign(cnt.substring(6).trim()));
+            else if (cnt.startsWith("capture "))
+              list.add(parseCapture(cnt.substring(7).trim()));
             else
               throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNKNOWN_FLOW_STMT,name, cnt));
           } else { // next2() == '{'
@@ -694,6 +843,16 @@ public class LiquidEngine implements IEvaluationContext {
       if ("else".equals(term)) {
         parseList(res.elseBody, false, new String[] { "endfor" });
       }
+      return res;
+    }
+
+    private LiquidNode parseCapture(String cnt) throws FHIRException {
+      int i = 0;
+      while (i < cnt.length() && !Character.isWhitespace(cnt.charAt(i)))
+        i++;
+      LiquidCapture res = new LiquidCapture();
+      res.varName = cnt.substring(0, i);
+      parseList(res.body, true, new String[] { "endcapture" });
       return res;
     }
 
