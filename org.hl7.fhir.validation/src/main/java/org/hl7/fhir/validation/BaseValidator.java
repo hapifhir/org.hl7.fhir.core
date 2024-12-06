@@ -168,6 +168,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   protected final String TYPE = "type";
   protected final String BUNDLE = "Bundle";
   protected final String LAST_UPDATED = "lastUpdated";
+  protected final String VERSION_ID = "versionId";
 
   protected BaseValidator parent;
   protected IWorkerContext context;
@@ -1054,6 +1055,16 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
             if (list == null) {
               list = new ArrayList<Element>();
               relMap.put(rl, list);
+              boolean versionIdPresent = resource.hasChild(META, false)
+                && resource.getNamedChild(META, false).hasChild(VERSION_ID, false)
+                && resource.getNamedChild(META, false).getNamedChild(VERSION_ID, false).hasValue();
+              if (versionIdPresent){
+                String versionId = resource.getNamedChild(META).getNamedChild(VERSION_ID).getValue();
+                String fullUrlVersioned = fu + "/_history/" + versionId;
+                String relativePathVersioned = rl + "/_history/" + versionId;
+                relMap.put(relativePathVersioned, list);
+                map.put(fullUrlVersioned, list);
+              }
             }
             list.add(entry);
           }
