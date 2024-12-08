@@ -479,7 +479,7 @@ public class StructureDefinitionValidator extends BaseValidator {
           if (!td.isEmpty()) {
             List<IssueMessage> warnings = new ArrayList<IssueMessage>();
             try {
-              TypeDetails eval = fpe.checkOnTypes(this, tn, td, fpe.parse(pathExp), warnings, true);
+              TypeDetails eval = fpe.checkOnTypes(this, "Resource", tn, td, fpe.parse(pathExp), warnings, true);
               if (eval.isEmpty()) {
                 ok = rule(errors, "2024-11-06", IssueType.INVALID, dStack, false, I18nConstants.SD_PATH_NOT_VALID, pathExp, path) && ok;
               } 
@@ -744,16 +744,16 @@ public class StructureDefinitionValidator extends BaseValidator {
                 List<IssueMessage> warnings = new ArrayList<>();
                 ValidationContext vc = new ValidationContext(invariant);
                 if (Utilities.existsInList(rootPath, context.getResourceNames())) {
-                  fpe.checkOnTypes(vc, rootPath, types, fpe.parse(exp), warnings);
+                  fpe.checkOnTypes(vc, "Resource", rootPath, types, fpe.parse(exp), warnings);
                 } else {
                   StructureDefinition sd = context.fetchTypeDefinition(rootPath);
                   if (sd != null && sd.getKind() == StructureDefinitionKind.RESOURCE) {
-                    fpe.checkOnTypes(vc, rootPath, types, fpe.parse(exp), warnings);
+                    fpe.checkOnTypes(vc, "Resource", rootPath, types, fpe.parse(exp), warnings);
                   } else if (sd != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
                     String tn = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_LOGICAL_CONTAINER);
-                    fpe.checkOnTypes(vc, tn == null ? rootPath : tn, types, fpe.parse(exp), warnings);
+                    fpe.checkOnTypes(vc, "Resource", tn == null ? rootPath : tn, types, fpe.parse(exp), warnings);
                   } else {
-                    fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
+                    fpe.checkOnTypes(vc, "Resource", "DomainResource", types, fpe.parse(exp), warnings);
                   }
                 }
                 for (IssueMessage s : warnings) {
@@ -790,7 +790,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         try {
           List<IssueMessage> warnings = new ArrayList<>();
           ValidationContext vc = new ValidationContext(invariant);
-          fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
+          fpe.checkOnTypes(vc, "Resource", "DomainResource", types, fpe.parse(exp), warnings);
           for (IssueMessage s : warnings) {
             warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, s.getId(), false, s.getMessage());
           }

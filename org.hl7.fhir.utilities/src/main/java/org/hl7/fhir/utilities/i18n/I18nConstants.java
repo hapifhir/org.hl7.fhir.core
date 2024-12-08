@@ -1147,4 +1147,20 @@ public class I18nConstants {
   public static final String HTA_SCT_MESSAGE = "HTA_SCT_MESSAGE";
   public static final String HTA_LOINC_DESC = "HTA_LOINC_DESC";
   public static final String HTA_LOINC_MESSAGE = "HTA_LOINC_MESSAGE";
+  public static final String VS_EXP_IMPORT_CS_PINNED = "VS_EXP_IMPORT_CS_PINNED";
+  public static final String VS_EXP_IMPORT_CS = "VS_EXP_IMPORT_CS";
+  public static final String VS_EXP_IMPORT_UNK_PINNED = "VS_EXP_IMPORT_UNK_PINNED";
+  public static final String VS_EXP_IMPORT_UNK = "VS_EXP_IMPORT_UNK";
+  public static final String VS_EXP_IMPORT_NULL = "VS_EXP_IMPORT_NULL";
+  public static final String VS_EXP_IMPORT_ERROR = "VS_EXP_IMPORT_ERROR";
+  public static final String VS_EXP_IMPORT_FAIL = "VS_EXP_IMPORT_FAIL";
+  public static final String VS_EXP_IMPORT_NULL_X = "VS_EXP_IMPORT_NULL_X";
+  public static final String VS_EXP_IMPORT_CS_PINNED_X = "VS_EXP_IMPORT_CS_PINNED_X";
+  public static final String VS_EXP_IMPORT_CS_X = "VS_EXP_IMPORT_CS_X";
+  public static final String VS_EXP_IMPORT_UNK_PINNED_X = "VS_EXP_IMPORT_UNK_PINNED_X";
+  public static final String VS_EXP_IMPORT_UNK_X = "VS_EXP_IMPORT_UNK_X";
+  public static final String VS_EXP_IMPORT_ERROR_X = "VS_EXP_IMPORT_ERROR_X";
+  public static final String VS_EXP_IMPORT_FAIL_X = "VS_EXP_IMPORT_FAIL_X";
+  public static final String VS_EXP_FILTER_UNK = "VS_EXP_FILTER_UNK";
+  public static final String NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR = "NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR";
 }
