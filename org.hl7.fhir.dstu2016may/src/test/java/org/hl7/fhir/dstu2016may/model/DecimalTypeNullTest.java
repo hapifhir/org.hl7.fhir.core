@@ -1,4 +1,4 @@
-package org.hl7.fhir.dstu2.model;
+package org.hl7.fhir.dstu2016may.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
