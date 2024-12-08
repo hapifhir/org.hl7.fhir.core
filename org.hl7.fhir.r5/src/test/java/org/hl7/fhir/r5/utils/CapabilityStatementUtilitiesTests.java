@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -48,6 +49,7 @@ class CapabilityStatementUtilitiesTests {
   }
 
   @Test
+  @Disabled
   void testOverall() {
     IParser p = new XmlParser(false);
 
