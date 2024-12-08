@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.model;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,11 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.google.gson.annotations.SerializedName;
+
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
@@ -321,6 +327,16 @@ public class CliContext {
   @SerializedName("advisorFile")
   private
   String advisorFile;
+
+  @JsonProperty("expansionParameters")
+  @SerializedName("expansionParameters")
+  private
+  String expansionParameters;
+
+  @JsonProperty("format")
+  @SerializedName("format")
+  private
+  FhirFormat format;
 
   @SerializedName("baseEngine")
   @JsonProperty("baseEngine")
@@ -1146,6 +1162,8 @@ public class CliContext {
       Objects.equals(unknownCodeSystemsCauseErrors, that.unknownCodeSystemsCauseErrors) &&
       Objects.equals(noExperimentalContent, that.noExperimentalContent) &&
       Objects.equals(advisorFile, that.advisorFile) &&
+      Objects.equals(expansionParameters, that.expansionParameters) &&
+      Objects.equals(format, that.format) &&
       Objects.equals(watchSettleTime, that.watchSettleTime);
   }
 
@@ -1154,7 +1172,7 @@ public class CliContext {
     return Objects.hash(baseEngine, doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching,
       noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
       targetVer, packageName, igs, questionnaireMode, level, profiles, options, sources, inputs, mode, locale, locations, crumbTrails, showMessageIds, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
-      watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, advisorFile, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
+      watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, advisorFile, expansionParameters, format, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
   }
 
   @Override
@@ -1219,6 +1237,8 @@ public class CliContext {
       ", unknownCodeSystemsCauseErrors=" + unknownCodeSystemsCauseErrors +
       ", noExperimentalContent=" + noExperimentalContent +
       ", advisorFile=" + advisorFile +
+      ", expansionParameters=" + expansionParameters +
+      ", format=" + format +
       '}';
   }
 
@@ -1325,5 +1345,28 @@ public class CliContext {
     this.advisorFile = advisorFile;
   }
 
+  @SerializedName("expansionParameters")
+  @JsonProperty("expansionParameters")
+  public String getExpansionParameters() {
+    return expansionParameters;
+  }
+
+  @SerializedName("expansionParameters")
+  @JsonProperty("expansionParameters")
+  public void setExpansionParameters(String expansionParameters) {
+    this.expansionParameters = expansionParameters;
+  }
+
+  @SerializedName("format")
+  @JsonProperty("format")
+  public FhirFormat getFormat() {
+    return format;
+  }
+
+  @SerializedName("format")
+  @JsonProperty("format")
+  public void setFormat(FhirFormat format) {
+    this.format = format;
+  }
 
 }
