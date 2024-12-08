@@ -1,0 +1,103 @@
+{
+  "resourceType" : "ValueSet",
+  "id" : "VSPHQ9",
+  "url" : "http://example.org/ValueSet/VSPHQ9",
+  "name" : "VSPHQ9",
+  "status" : "active",
+  "immutable" : true,
+  "compose" : {
+    "include" : [{
+      "system" : "http://example.org/CodeSystem/CSPHQ9",
+      "concept" : [{
+        "code" : "Not-at-all",
+        "display" : "Not at all"
+      },
+        {
+          "code" : "Several-days",
+          "display" : "Several days"
+        },
+        {
+          "code" : "More than half the days",
+          "display" : "More than half the days"
+        },
+        {
+          "code" : "Nearly every day",
+          "display" : "Nearly every day"
+        }]
+    }]
+  },
+  "expansion" : {
+    "extension" : [{
+      "extension" : [{
+        "url" : "code",
+        "valueCode" : "itemWeight"
+      },
+        {
+          "url" : "uri",
+          "valueUri" : "http://hl7.org/fhir/concept-properties#itemWeight"
+        }],
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.property"
+    }],
+    "timestamp" : "2024-12-06T22:52:00-07:00",
+    "contains" : [{
+      "extension" : [{
+        "extension" : [{
+          "url" : "code",
+          "valueCode" : "itemWeight"
+        },
+          {
+            "url" : "value[x]",
+            "valueDecimal" : 0
+          }],
+        "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property"
+      }],
+      "code" : "not-at-all",
+      "display" : "Not at all"
+    },
+    {
+      "extension" : [{
+        "extension" : [{
+          "url" : "code",
+          "valueCode" : "itemWeight"
+        },
+          {
+            "url" : "value[x]",
+            "valueDecimal" : 1
+          }],
+        "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property"
+      }],
+      "code" : "Several-days",
+      "display" : "Several days"
+    },
+    {
+      "extension" : [{
+        "extension" : [{
+          "url" : "code",
+          "valueCode" : "itemWeight"
+        },
+          {
+            "url" : "value[x]",
+            "valueDecimal" : 2
+          }],
+        "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property"
+      }],
+      "code" : "More than half the days",
+      "display" : "More than half the days"
+    },
+    {
+      "extension" : [{
+        "extension" : [{
+          "url" : "code",
+          "valueCode" : "itemWeight"
+        },
+          {
+            "url" : "value[x]",
+            "valueDecimal" : 4
+          }],
+        "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property"
+      }],
+      "code" : "Nearly every day",
+      "display" : "Nearly every day"
+    }]
+  }
+}
