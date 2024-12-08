@@ -363,4 +363,19 @@ public class ComparisonRenderer implements IEvaluationContext {
     return false;
   }
 
+  public void loadTemplates(IWorkerContext context) {
+    getTemplates().put("CapabilityStatement", new String(context.getBinaryForKey("template-comparison-CapabilityStatement.html")));
+    getTemplates().put("CodeSystem-Intersection", new String(context.getBinaryForKey("template-comparison-CodeSystem-Intersection.html")));
+    getTemplates().put("CodeSystem-Union", new String(context.getBinaryForKey("template-comparison-CodeSystem-Union.html")));
+    getTemplates().put("CodeSystem", new String(context.getBinaryForKey("template-comparison-CodeSystem.html")));
+    getTemplates().put("Index", new String(context.getBinaryForKey("template-comparison-index.html")));
+    getTemplates().put("Profile-Intersection", new String(context.getBinaryForKey("template-comparison-Profile-Intersection.html")));
+    getTemplates().put("Profile-Union", new String(context.getBinaryForKey("template-comparison-Profile-Union.html")));
+    getTemplates().put("Profile", new String(context.getBinaryForKey("template-comparison-Profile.html")));
+    getTemplates().put("ValueSet-Intersection", new String(context.getBinaryForKey("template-comparison-ValueSet-Intersection.html")));
+    getTemplates().put("ValueSet-Union", new String(context.getBinaryForKey("template-comparison-ValueSet-Union.html")));
+    getTemplates().put("ValueSet", new String(context.getBinaryForKey("template-comparison-ValueSet.html")));
+    
+  }
+
 }
