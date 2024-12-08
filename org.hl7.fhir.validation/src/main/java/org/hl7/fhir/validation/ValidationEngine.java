@@ -2,6 +2,7 @@ package org.hl7.fhir.validation;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -1293,6 +1294,26 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Override
   public ReferenceValidationPolicy getReferencePolicy() {
     return ReferenceValidationPolicy.IGNORE;
+  }
+
+  public void loadExpansionParameters(String expansionParameters) {
+    System.out.println("Load Expansion Parameters: "+expansionParameters);
+    Parameters p = null;
+    try {
+      p = (Parameters) new XmlParser().parse(new FileInputStream(expansionParameters));
+    } catch (Exception e) {
+    }
+    if (p == null) {
+      try {
+        p = (Parameters) new JsonParser().parse(new FileInputStream(expansionParameters));
+      } catch (Exception e) {
+        System.out.println("Unable to load expansion parameters '"+expansionParameters+"' as either xml or json: "+e.getMessage());
+        throw new FHIRException("Unable to load expansion parameters '"+expansionParameters+"' as either xml or json: "+e.getMessage());
+      }
+    }
+    context.setExpansionParameters(p);
+
+
   }
 
 }

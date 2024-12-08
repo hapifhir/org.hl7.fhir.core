@@ -51,6 +51,10 @@ public class ValidateTask extends ValidationEngineTask {
 
   @Override
   public void executeTask(ValidationService validationService, ValidationEngine validationEngine, CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+    if (cliContext.getExpansionParameters() != null) {
+      validationEngine.loadExpansionParameters(cliContext.getExpansionParameters());
+    }
+    
     for (String s : cliContext.getProfiles()) {
       if (!validationEngine.getContext().hasResource(StructureDefinition.class, s) && !validationEngine.getContext().hasResource(ImplementationGuide.class, s)) {
         System.out.println("  Fetch Profile from " + s);
