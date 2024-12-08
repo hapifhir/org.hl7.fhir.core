@@ -196,10 +196,12 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   protected BestPracticeWarningLevel bpWarnings = BestPracticeWarningLevel.Warning; // @configuration
   protected List<UsageContext> usageContexts = new ArrayList<UsageContext>(); // @configuration
   protected ValidationOptions baseOptions = new ValidationOptions(FhirPublication.R5); // @configuration
+  protected ContextUtilities cu;
 
   public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, ValidatorSession session) {
     super();
     this.context = context;
+    cu = new ContextUtilities(context);
     this.session = session;
     if (this.session == null) {
       this.session = new ValidatorSession();
@@ -218,6 +220,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     this.parent = parent;
     this.session = parent.session;
     this.context = parent.context;
+    this.cu = parent.cu;
     this.xverManager = parent.xverManager;
     this.debug = parent.debug;
     this.source = parent.source;
@@ -963,6 +966,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         }
         return null;
       } else {
+        reference = cu.pinValueSet(reference);
         long t = System.nanoTime();
         ValueSet fr = context.findTxResource(ValueSet.class, reference, src);
         if (fr == null) {
@@ -1168,9 +1172,11 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       if (bnd != null) {
         // in this case, we look into the parent - if there is one - and if it's a bundle, we look at the entries (but not in them)
         for (Element be : bnd.getChildrenByName("entry")) {
-          String id = be.getIdBase();
-          if (fragment.equals(id)) {
-            count++;
+          if (be.hasChild("resource")) {
+            String id = be.getNamedChild("resource").getIdBase();
+            if (fragment.equals(id)) {
+              count++;
+            }
           }
         }
       }
