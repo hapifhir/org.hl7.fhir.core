@@ -289,7 +289,7 @@ public class Validator {
         try {
           node = fpe.parse(expr);
           column.setUserData("path", node);
-          td = fpe.checkOnTypes(vd, resourceName, t, node, warnings);
+          td = fpe.checkOnTypes(vd, "Resource", resourceName, t, node, warnings);
         } catch (Exception e) {
           error(path, expression, e.getMessage(), IssueType.INVALID);
         }
@@ -471,7 +471,7 @@ public class Validator {
       try {
         ExpressionNode n = fpe.parse(expr);
         focus.setUserData("forEach", n);
-        td = fpe.checkOnTypes(vd, resourceName, t, n, warnings);
+        td = fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
       } catch (Exception e) {
         error(path, expression, e.getMessage(), IssueType.INVALID);
       }
@@ -496,7 +496,7 @@ public class Validator {
       try {
         ExpressionNode n = fpe.parse(expr);
         focus.setUserData("forEachOrNull", n);
-        td = fpe.checkOnTypes(vd, resourceName, t, n, warnings);
+        td = fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
       } catch (Exception e) {
         error(path, expression, e.getMessage(), IssueType.INVALID);
       }
@@ -607,7 +607,7 @@ public class Validator {
     try {
       ExpressionNode n = fpe.parse(expr);
       where.setUserData("path", n);
-      td = fpe.checkOnTypes(vd, resourceName, types, n, warnings);
+      td = fpe.checkOnTypes(vd, "Resource", resourceName, types, n, warnings);
     } catch (Exception e) {
       error(path, where.get("path"), e.getMessage(), IssueType.INVALID);
     }
