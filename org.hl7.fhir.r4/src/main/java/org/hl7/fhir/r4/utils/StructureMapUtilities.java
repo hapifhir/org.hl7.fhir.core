@@ -2904,7 +2904,7 @@ public class StructureMapUtilities {
         expr = fpe.parse(getParamString(vars, tgt.getParameter().get(tgt.getParameter().size() - 1)));
         tgt.setUserData(MAP_WHERE_EXPRESSION, expr);
       }
-      return fpe.check(vars, null, expr);
+      return fpe.check(vars, "Resource", null, expr);
 
 ////case TRUNCATE : 
 ////  String src = getParamString(vars, tgt.getParameter().get(0));

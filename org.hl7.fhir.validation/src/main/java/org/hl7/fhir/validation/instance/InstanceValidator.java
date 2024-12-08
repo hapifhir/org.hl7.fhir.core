@@ -532,7 +532,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         return null;
       }
-      return context.findTxResource(ValueSet.class, url);
+      return context.findTxResource(ValueSet.class, cu.pinValueSet(url));
     }
 
     @Override
@@ -602,7 +602,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public boolean testMode;
   private boolean example ;
   private IDigitalSignatureServices signatureServices;
-  private ContextUtilities cu;
   private boolean unknownCodeSystemsCauseErrors;
   private boolean noExperimentalContent;
 
@@ -611,7 +610,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     start = System.currentTimeMillis();
     this.externalHostServices = hostServices;
     this.profileUtilities = new ProfileUtilities(theContext, null, null);
-    cu = new ContextUtilities(theContext);
     fpe = new FHIRPathEngine(context);
     validatorServices = new ValidatorHostServices();
     fpe.setHostServices(validatorServices);
@@ -7739,7 +7737,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   n = fpe.parse(FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey(), context.getVersion()));
                   inv.setUserData(UserDataNames.validator_expression_cache, n);
                 }
-                fpe.check(null, sd.getKind() == StructureDefinitionKind.RESOURCE ? sd.getType() : "DomainResource", ed.getPath(), n);
+                fpe.check(null, "Resource", sd.getKind() == StructureDefinitionKind.RESOURCE ? sd.getType() : "DomainResource", ed.getPath(), n);
               } catch (Exception e) {
                 System.out.println("Error processing structure [" + sd.getId() + "] path " + ed.getPath() + ":" + inv.getKey() + " ('" + inv.getExpression() + "'): " + e.getMessage());
               }

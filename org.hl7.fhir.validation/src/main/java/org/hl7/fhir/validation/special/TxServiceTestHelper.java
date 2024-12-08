@@ -5,6 +5,7 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
@@ -65,6 +66,11 @@ public class TxServiceTestHelper {
       }
       if (p.hasParameter("activeOnly") && "true".equals(p.getParameterString("activeOnly"))) {
         options = options.setActiveOnly(true);
+      }
+      for (ParametersParameterComponent pp : p.getParameter()) {
+        if (Utilities.existsInList(pp.getName(), "valueset-version", "system-version", "force-system-version", "default-system-version")) {
+          context.getExpansionParameters().getParameter().add(pp);
+        }
       }
       context.getExpansionParameters().clearParameters("includeAlternateCodes");
       for (Parameters.ParametersParameterComponent pp : p.getParameter()) {

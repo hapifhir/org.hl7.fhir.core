@@ -33,7 +33,6 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
 
 public class QuestionnaireRenderer extends TerminologyRenderer { 
-  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-questionnaire.item.type"; 
 
   public QuestionnaireRenderer(RenderingContext context) { 
     super(context); 
@@ -289,9 +288,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     String txt = (i.has("prefix") ? i.primitiveValue("prefix") + ". " : "") + i.primitiveValue("text"); 
     r.getCells().add(gen.new Cell(null, null, txt, null, null)); 
     r.getCells().add(gen.new Cell(null, null, ("true".equals(i.primitiveValue("required")) ? "1" : "0")+".."+("true".equals(i.primitiveValue("repeats")) ? "*" : "1"), null, null)); 
-    if (i.child("type").hasExtension(EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL)) { 
+    if (i.child("type").hasExtension(ToolingExtensions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL)) { 
       status.setExtensions(true);
-      String t = i.child("type").extensionString(EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL); 
+      String t = i.child("type").extensionString(ToolingExtensions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL); 
       r.getCells().add(gen.new Cell(null, context.getLink(KnownLinkType.SPEC)+"codesystem-item-type.html#item-type-"+t, t, null, null)); 
     } else { 
       r.getCells().add(gen.new Cell(null, context.getLink(KnownLinkType.SPEC)+"codesystem-item-type.html#item-type-"+type, type, null, null)); 
