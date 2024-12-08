@@ -26,7 +26,6 @@ import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceReferenceKind;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
@@ -603,6 +602,10 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (v.startsWith("mailto:")) { 
         x.ah(v).addText(v.substring(7)); 
       } else { 
+        String link = getLinkForCode(v, null, null);
+        if (link != null) {  
+          x.ah(context.prefixLocalHref(link)).addText(v);
+        } else {
         ResourceWithReference rr = local ? resolveReference(uri.resource(), v, true) : resolveReference(uri);
         if (rr != null) {
           if (rr.getResource() == null) {
@@ -628,6 +631,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           } 
         }
       } 
+      }
     }
   } 
 

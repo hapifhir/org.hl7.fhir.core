@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.terminologies.utilities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
@@ -48,6 +49,7 @@ public class ValueSetProcessBase {
     }
   }
   protected IWorkerContext context;
+  private ContextUtilities cu;
   protected TerminologyOperationContext opContext;
   protected List<String> requiredSupplements = new ArrayList<>();
   
@@ -236,6 +238,14 @@ public class ValueSetProcessBase {
   }
 
                          
+  public ContextUtilities getCu() {
+    if (cu == null) {
+      cu = new ContextUtilities(context);
+    }
+    return cu;
+  }
+
+
   protected AlternateCodesProcessingRules altCodeParams = new AlternateCodesProcessingRules(false);
   protected AlternateCodesProcessingRules allAltCodes = new AlternateCodesProcessingRules(true);
 }
