@@ -33,6 +33,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IBaseDecimalDatatype;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
@@ -150,8 +151,13 @@ public class DecimalType extends PrimitiveType<BigDecimal> implements Comparable
   }
 
   public void setValueAsString(String theString) {
-    setValue(new BigDecimal(theString));
-    setRepresentation(theString);
+    if (StringUtils.isBlank(theString)) {
+      setValue((BigDecimal) null);
+      setRepresentation(null);
+    } else {
+      setValue(new BigDecimal(theString));
+      setRepresentation(theString);
+    }
   }
 
   /**

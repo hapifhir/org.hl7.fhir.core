@@ -1,0 +1,11 @@
+You can use the validator to generate a package containing all the terminology resources for 
+an Implementation Guide. To do this, you must provide a specific parameter:
+
+ -tx-pack {package-id}
+
+-tx-pack requires the parameter -output. All parameters:
+
+- output {file|folder}: a named file or folder. If it's a file, it must end with .tgz or .zip
+- format xml may be used to specify xml instead of json.
+- scope ig|igs|all - which to include value sets etc from dependent IGs or core as well
+- expansion-parameters {file} - specifies the expansion parameters to use - this can supply fixed versions for code systems and value sets

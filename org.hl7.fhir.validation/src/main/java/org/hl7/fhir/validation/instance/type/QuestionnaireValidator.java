@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -241,7 +242,11 @@ public class QuestionnaireValidator extends BaseValidator {
         Element e = item.getNamedChild("type", false);
         if (e != null) {
           NodeStack ne = ns.push(e, -1, e.getProperty().getDefinition(), e.getProperty().getDefinition());
-          ok = rule(errors, "2023-06-15", IssueType.BUSINESSRULE, ne, qi.getType().toCode().equals(e.primitiveValue()), I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_NC_TYPE, derivation.questionnaire.getUrl(), linkId, qi.getType().toCode(), e.primitiveValue()) && ok;
+          String myType = qi.getType().toCode();
+          if (qi.getTypeElement().hasExtension(ToolingExtensions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL)) {
+            myType = qi.getTypeElement().getExtensionString(ToolingExtensions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL);
+          }
+          ok = rule(errors, "2023-06-15", IssueType.BUSINESSRULE, ne, myType.equals(e.primitiveValue()), I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_NC_TYPE, derivation.questionnaire.getUrl(), linkId, qi.getType().toCode(), e.primitiveValue()) && ok;
         }
       }
 

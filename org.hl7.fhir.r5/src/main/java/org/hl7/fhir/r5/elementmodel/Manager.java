@@ -111,6 +111,14 @@ public class Manager {
       }
       return null;
     }
+
+    public static FhirFormat fromCode(String code) {
+      FhirFormat fmt = getFhirFormat(code);
+      if (fmt == null) {
+        fmt = readFromMimeType(code);
+      } 
+      return fmt;
+    }
   }
   
   public static List<ValidatedFragment> parse(IWorkerContext context, InputStream source, FhirFormat inputFormat) throws FHIRFormatError, DefinitionException, IOException, FHIRException {

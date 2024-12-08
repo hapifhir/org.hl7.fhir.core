@@ -41,7 +41,6 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
