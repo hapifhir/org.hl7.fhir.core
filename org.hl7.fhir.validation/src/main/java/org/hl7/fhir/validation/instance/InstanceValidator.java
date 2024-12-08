@@ -38,19 +38,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 
@@ -1128,7 +1116,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
       if (s == null)
         return true;
-      ok = processTxIssues(errors, s, element, path, false, null, null) & ok;
+      ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, s, element, path, false, null, null) & ok;
 
       if (s.isOk()) {
         if (s.getMessage() != null && !s.messageIsInIssues()) {
@@ -1385,7 +1373,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (cc.hasCoding()) {
           long t = System.nanoTime();
           ValidationResult vr = checkCodeOnServer(stack, null, cc);
-          bh.see(processTxIssues(errors, vr, element, path, false, null, null));
+          bh.see(calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, null, null));
           timeTracker.tx(t, "vc " + cc.toString());
         }
       } catch (CheckCodeOnServerException e) {
@@ -1630,7 +1618,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           } else {
             checked.set(true);
             ValidationResult vr = checkCodeOnServer(stack, valueset, cc);
-            bh.see(processTxIssues(errors, vr, element, path, false, vsRef, strength));
+            bh.see(calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, vsRef, strength));
             if (!vr.isOk()) {
               bindingsOk = false;
               if (vr.getErrorClass() != null && vr.getErrorClass() == TerminologyServiceErrorClass.NOSERVICE) { 
@@ -1725,63 +1713,126 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 //    }
 //  }
 
-  private boolean processTxIssues(List<ValidationMessage> errors, ValidationResult vr, Element element, String path, boolean ignoreCantInfer, String vsurl, BindingStrength bs) {
-    boolean ok = true;
-    if (vr != null) {
-      for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-        if (!iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-in-vs")
-            && !iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "this-code-not-in-vs")
-            && !(ignoreCantInfer || iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "cannot-infer"))) {
-          OperationOutcomeIssueComponent i = iss.copy();
-          if (i.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found")) {
-            String msg = iss.getDetails().getText();
-            boolean isHL7 = msg == null ? false : msg.contains("http://hl7.org/fhir") || msg.contains("http://terminology.hl7.org");
-            org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity notFoundLevel = null;
-            String notFoundNote = null;
-            if (bs == null) {
-              notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
-              notFoundNote = null; // "binding=null";
-            } else if (bs == BindingStrength.REQUIRED && isHL7) {
-              notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR;
-              notFoundNote = "error because this is a required binding to an HL7 code system";
-            } else if (bs == BindingStrength.REQUIRED && unknownCodeSystemsCauseErrors) {
-              notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR;
-              notFoundNote = "error because this is a required binding";              
-            } else if (bs == BindingStrength.REQUIRED) {
-              notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
-              notFoundNote = null; // "binding=required";              
-            } else if (bs == BindingStrength.EXTENSIBLE) {
-              notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
-              notFoundNote = null; // "binding=extensible";
-            } else {
-              notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
-              notFoundNote = null; // "binding="+bs.toCode();
-            }
-            if (notFoundLevel != null && i.getSeverity().isHigherThan(notFoundLevel)) { // && (vsurl != null && i.getDetails().getText().contains(vsurl))) {
-              i.setSeverity(notFoundLevel);
-              if (notFoundNote != null) {
-                i.getDetails().setText(i.getDetails().getText()+" ("+notFoundNote+")");
-              }
-            }
-          }
-          if (baseOptions.isDisplayWarningMode() && i.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR && i.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-display")) {
-            i.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING);
-          }
-          var vmsg = txIssue(errors, null, vr.getTxLink(), element.line(), element.col(), path, i);
-          if (vmsg.isError()) {
-            ok = false;
+  /**
+   * For each issue in the validationResult, determine first if it should be ignored, and if not, calculate its severity
+   * and add it to the errors list.
+   *
+   * @param errors a list of validation messages that are errors
+   * @param validationResult the validation result containing terminology issues to be evaluated
+   * @param element the element being validated
+   * @param path the path of the element being validated
+   * @param ignoreCantInfer if true, the element will be ignored
+   * @param vsurl the value set url
+   * @param bindingStrength the binding strength of the code/codeable concept
+   * @return true if no errors were added to the errors list, false otherwise
+   */
+  private boolean calculateSeverityForTxIssuesAndUpdateErrors(List<ValidationMessage> errors, ValidationResult validationResult, Element element, String path, boolean ignoreCantInfer, String vsurl, BindingStrength bindingStrength) {
+    if (validationResult == null) {
+      return true;
+    }
+    boolean noErrorsFound = true;
+    for (OperationOutcomeIssueComponent issue : validationResult.getIssues()) {
+      if (!isIgnoredTxIssueType(issue, ignoreCantInfer)) {
+        OperationOutcomeIssueComponent issueWithCalculatedSeverity = getTxIssueWithCalculatedSeverity(issue, bindingStrength);
+        var validationMessage = buildValidationMessage(validationResult.getTxLink(), element.line(), element.col(), path, issueWithCalculatedSeverity);
+        if (!isSuppressedValidationMessage(path, validationMessage.getMessageId())) {
+          errors.add(validationMessage);
+          if (validationMessage.isError()) {
+            noErrorsFound = false;
           }
         }
       }
     }
-    return ok;
+    return noErrorsFound;
+  }
+
+  /**
+   * Check if the issueComponent should not be included when evaluating if terminology issues contain errors.
+   * <p/>
+   * The following tx-issue-types are ignored:
+   * <ul>
+   * <li>not-in-vs</li>
+   * <li>this-code-not-in-vs</li>
+   * <li>cannot-infer</li>
+   * </ul>
+   * Note that cannot-infer is only ignored if ignoreCantInfer is true.
+   *
+   * @param issueComponent the issue
+   * @param ignoreCantInfer if true, ignore
+   * @return true if the issue should be ignored when evaluating if terminology issues contain errors, false otherwise
+   */
+  private boolean isIgnoredTxIssueType(OperationOutcomeIssueComponent issueComponent, boolean ignoreCantInfer) {
+    if (issueComponent.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-in-vs")) {
+      return true;
+    }
+    if (issueComponent.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "this-code-not-in-vs")) {
+      return true;
+    }
+    if (issueComponent.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "cannot-infer") || ignoreCantInfer) {
+        return true;
+    }
+    return false;
+  }
+
+  /**
+   * Derive a new issue from the passed issueComponent with appropriate severity.
+   * <p/>
+   * If the issueComponent has a tx-issue-type of "not-found", the returned value will have an appropriate severity
+   * based on bindingStrength. The issueComponent text will also be updated to include the reason for error level
+   * severity.
+   * <p/>
+   * If the issueComponent has a tx-issue-type of "invalid-display" the returned value will have an appropriate severity
+   * based on displayWarningMode.
+   * <p/>
+   * All other issues will be returned unchanged.
+   * @param issueComponent the issue component
+   * @param bindingStrength the binding strength of the code/codeable concept
+   * @return the new issue component with appropriate severity
+   */
+  private OperationOutcomeIssueComponent getTxIssueWithCalculatedSeverity(OperationOutcomeIssueComponent issueComponent, BindingStrength bindingStrength) {
+    OperationOutcomeIssueComponent newIssueComponent = issueComponent.copy();
+    if (newIssueComponent.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found")) {
+      String text = issueComponent.getDetails().getText();
+      boolean isHL7 = text == null ? false : text.contains("http://hl7.org/fhir") || text.contains("http://terminology.hl7.org");
+      org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity notFoundLevel = null;
+      String notFoundNote = null;
+      if (bindingStrength == null) {
+        notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
+        notFoundNote = null; // "binding=null";
+      } else if (bindingStrength == BindingStrength.REQUIRED && isHL7) {
+        notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR;
+        notFoundNote = "error because this is a required binding to an HL7 code system";
+      } else if (bindingStrength == BindingStrength.REQUIRED && unknownCodeSystemsCauseErrors) {
+        notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR;
+        notFoundNote = "error because this is a required binding";
+      } else if (bindingStrength == BindingStrength.REQUIRED) {
+        notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
+        notFoundNote = null; // "binding=required";
+      } else if (bindingStrength == BindingStrength.EXTENSIBLE) {
+        notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
+        notFoundNote = null; // "binding=extensible";
+      } else {
+        notFoundLevel = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
+        notFoundNote = null; // "binding="+bs.toCode();
+      }
+      if (notFoundLevel != null && newIssueComponent.getSeverity().isHigherThan(notFoundLevel)) { // && (vsurl != null && i.getDetails().getText().contains(vsurl))) {
+        newIssueComponent.setSeverity(notFoundLevel);
+        if (notFoundNote != null) {
+          newIssueComponent.getDetails().setText(newIssueComponent.getDetails().getText() + " (" + notFoundNote + ")");
+        }
+      }
+    }
+    if (newIssueComponent.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-display") && baseOptions.isDisplayWarningMode() && newIssueComponent.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR) {
+      newIssueComponent.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING);
+    }
+    return newIssueComponent;
   }
 
   public boolean checkBindings(List<ValidationMessage> errors, String path, Element element, NodeStack stack, ValueSet valueset, Coding nextCoding) {
     boolean ok = true;
     if (isNotBlank(nextCoding.getCode()) && isNotBlank(nextCoding.getSystem()) && context.supportsSystem(nextCoding.getSystem(), baseOptions.getFhirVersion())) {
       ValidationResult vr = checkCodeOnServer(stack, valueset, nextCoding);
-      ok = processTxIssues(errors, vr, element, path, false, null, null) && ok;
+      ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, null, null) && ok;
 
       if (vr.getSeverity() != null && !vr.messageIsInIssues()) {
         if (vr.getSeverity() == IssueSeverity.INFORMATION) {
@@ -1912,7 +1963,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (strength == BindingStrength.REQUIRED) {
           removeTrackedMessagesForLocation(errors, element, path);
         }
-        ok = processTxIssues(errors, vr, element, path, false, vsRef, strength) && ok;
+        ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, vsRef, strength) && ok;
         timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
         if (vr != null && !vr.isOk()) {
           if (vr.IsNoService())
@@ -2057,7 +2108,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, cc);
-        ok = processTxIssues(errors, vr, element, path, false, maxVSUrl, null) && ok;
+        ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, maxVSUrl, null) && ok;
         timeTracker.tx(t, "vc "+cc.toString());
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -2096,7 +2147,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, c);
-        ok = processTxIssues(errors, vr, element, path, false, maxVSUrl, null) && ok;
+        ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, maxVSUrl, null) && ok;
 
         timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
         if (!vr.isOk()) {
@@ -2127,7 +2178,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, value, baseOptions);
-        ok = processTxIssues(errors, vr, element, path, false, maxVSUrl, null) && ok;
+        ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, maxVSUrl, null) && ok;
         timeTracker.tx(t, "vc "+value);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -2262,7 +2313,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         checked.set(true);
         vr = checkCodeOnServer(stack, valueset, c);
       }
-      ok = processTxIssues(errors, vr, element, path, strength == BindingStrength.EXTENSIBLE, vsRef, strength) && ok;
+      ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, strength == BindingStrength.EXTENSIBLE, vsRef, strength) && ok;
 
       timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
       if (strength == BindingStrength.REQUIRED) {
@@ -3083,7 +3134,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (type.equals("integer") || type.equals("unsignedInt") || type.equals("positiveInt")) {
       if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isInteger(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_VALID, e.primitiveValue())) {
-        Integer v = new Integer(e.getValue()).intValue();
+        Integer v = Integer.valueOf(e.getValue());
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueIntegerType() || !context.getMaxValueIntegerType().hasValue() || (context.getMaxValueIntegerType().getValue() >= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_GT, (context.hasMaxValueIntegerType() ? context.getMaxValueIntegerType() : "")) && ok;
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueIntegerType() || !context.getMinValueIntegerType().hasValue() || (context.getMinValueIntegerType().getValue() <= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT, (context.hasMinValueIntegerType() ? context.getMinValueIntegerType() : "")) && ok;
         if (type.equals("unsignedInt"))
@@ -3096,7 +3147,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (type.equals("integer64")) {
       if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isLong(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER64_VALID, e.primitiveValue())) {
-        Long v = new Long(e.getValue()).longValue();
+        Long v = Long.valueOf(e.getValue());
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueInteger64Type() || !context.getMaxValueInteger64Type().hasValue() || (context.getMaxValueInteger64Type().getValue() >= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_GT, (context.hasMaxValueInteger64Type() ? context.getMaxValueInteger64Type() : "")) && ok;
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueInteger64Type() || !context.getMinValueInteger64Type().hasValue() || (context.getMinValueInteger64Type().getValue() <= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT, (context.hasMinValueInteger64Type() ? context.getMinValueInteger64Type() : "")) && ok;
         if (type.equals("unsignedInt"))
@@ -3737,7 +3788,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
             vr = checkCodeOnServer(stack, vs, value, options);
           }
-          ok = processTxIssues(errors, vr, element, path, binding.getStrength() != BindingStrength.REQUIRED, binding.getValueSet(), binding.getStrength()) && ok;
+          ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, binding.getStrength() != BindingStrength.REQUIRED, binding.getValueSet(), binding.getStrength()) && ok;
 
           timeTracker.tx(t, "vc "+value+"");
           if (binding.getStrength() == BindingStrength.REQUIRED) {
