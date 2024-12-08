@@ -5,6 +5,8 @@ import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Reference10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.CodeableConcept10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.DateTime10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.String10_30;
+import org.hl7.fhir.dstu3.model.ClinicalImpression;
+import org.hl7.fhir.dstu3.model.Enumeration;
 import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -93,46 +95,54 @@ public class ClinicalImpression10_30 {
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus> convertClinicalImpressionStatus(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatusEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case INPROGRESS:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus.DRAFT);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<ClinicalImpression.ClinicalImpressionStatus> tgt = new Enumeration<>(new ClinicalImpression.ClinicalImpressionStatusEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case INPROGRESS:
+                  tgt.setValue(ClinicalImpression.ClinicalImpressionStatus.DRAFT);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(ClinicalImpression.ClinicalImpressionStatus.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(ClinicalImpression.ClinicalImpressionStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(ClinicalImpression.ClinicalImpressionStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionStatus> convertClinicalImpressionStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionStatusEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionStatus.INPROGRESS);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionStatus.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionStatusEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case DRAFT:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionStatus.INPROGRESS);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionStatus.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ClinicalImpression.ClinicalImpressionStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

@@ -9,8 +9,11 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Codeab
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Boolean30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
+import org.hl7.fhir.dstu3.model.ProcedureRequest;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Enumeration;
 import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.ServiceRequest;
 
 public class ProcedureRequest30_40 {
 
@@ -212,197 +215,221 @@ public class ProcedureRequest30_40 {
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent> convertProcedureRequestIntent(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntentEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case FILLERORDER:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent.FILLERORDER);
-        break;
-      case INSTANCEORDER:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent.INSTANCEORDER);
-        break;
-      case OPTION:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent.OPTION);
-        break;
-      case ORDER:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent.ORDER);
-        break;
-      case ORIGINALORDER:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent.ORIGINALORDER);
-        break;
-      case PLAN:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent.PLAN);
-        break;
-      case PROPOSAL:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent.PROPOSAL);
-        break;
-      case REFLEXORDER:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent.REFLEXORDER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<ServiceRequest.ServiceRequestIntent> tgt = new Enumeration<>(new ServiceRequest.ServiceRequestIntentEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case FILLERORDER:
+                  tgt.setValue(ServiceRequest.ServiceRequestIntent.FILLERORDER);
+                  break;
+              case INSTANCEORDER:
+                  tgt.setValue(ServiceRequest.ServiceRequestIntent.INSTANCEORDER);
+                  break;
+              case OPTION:
+                  tgt.setValue(ServiceRequest.ServiceRequestIntent.OPTION);
+                  break;
+              case ORDER:
+                  tgt.setValue(ServiceRequest.ServiceRequestIntent.ORDER);
+                  break;
+              case ORIGINALORDER:
+                  tgt.setValue(ServiceRequest.ServiceRequestIntent.ORIGINALORDER);
+                  break;
+              case PLAN:
+                  tgt.setValue(ServiceRequest.ServiceRequestIntent.PLAN);
+                  break;
+              case PROPOSAL:
+                  tgt.setValue(ServiceRequest.ServiceRequestIntent.PROPOSAL);
+                  break;
+              case REFLEXORDER:
+                  tgt.setValue(ServiceRequest.ServiceRequestIntent.REFLEXORDER);
+                  break;
+              default:
+                  tgt.setValue(ServiceRequest.ServiceRequestIntent.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent> convertProcedureRequestIntent(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntentEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case DIRECTIVE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent.NULL);
-        break;
-      case FILLERORDER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent.FILLERORDER);
-        break;
-      case INSTANCEORDER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent.INSTANCEORDER);
-        break;
-      case OPTION:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent.OPTION);
-        break;
-      case ORDER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent.ORDER);
-        break;
-      case ORIGINALORDER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent.ORIGINALORDER);
-        break;
-      case PLAN:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent.PLAN);
-        break;
-      case PROPOSAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent.PROPOSAL);
-        break;
-      case REFLEXORDER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent.REFLEXORDER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<ProcedureRequest.ProcedureRequestIntent> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new ProcedureRequest.ProcedureRequestIntentEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case DIRECTIVE:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestIntent.NULL);
+                  break;
+              case FILLERORDER:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestIntent.FILLERORDER);
+                  break;
+              case INSTANCEORDER:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestIntent.INSTANCEORDER);
+                  break;
+              case OPTION:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestIntent.OPTION);
+                  break;
+              case ORDER:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestIntent.ORDER);
+                  break;
+              case ORIGINALORDER:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestIntent.ORIGINALORDER);
+                  break;
+              case PLAN:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestIntent.PLAN);
+                  break;
+              case PROPOSAL:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestIntent.PROPOSAL);
+                  break;
+              case REFLEXORDER:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestIntent.REFLEXORDER);
+                  break;
+              default:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestIntent.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority> convertProcedureRequestPriority(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriorityEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ASAP:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.ASAP);
-        break;
-      case ROUTINE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.ROUTINE);
-        break;
-      case STAT:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.STAT);
-        break;
-      case URGENT:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.URGENT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<ProcedureRequest.ProcedureRequestPriority> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new ProcedureRequest.ProcedureRequestPriorityEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ASAP:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestPriority.ASAP);
+                  break;
+              case ROUTINE:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestPriority.ROUTINE);
+                  break;
+              case STAT:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestPriority.STAT);
+                  break;
+              case URGENT:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestPriority.URGENT);
+                  break;
+              default:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestPriority.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority> convertProcedureRequestPriority(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriorityEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ASAP:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority.ASAP);
-        break;
-      case ROUTINE:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority.ROUTINE);
-        break;
-      case STAT:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority.STAT);
-        break;
-      case URGENT:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority.URGENT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<ServiceRequest.ServiceRequestPriority> tgt = new Enumeration<>(new ServiceRequest.ServiceRequestPriorityEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ASAP:
+                  tgt.setValue(ServiceRequest.ServiceRequestPriority.ASAP);
+                  break;
+              case ROUTINE:
+                  tgt.setValue(ServiceRequest.ServiceRequestPriority.ROUTINE);
+                  break;
+              case STAT:
+                  tgt.setValue(ServiceRequest.ServiceRequestPriority.STAT);
+                  break;
+              case URGENT:
+                  tgt.setValue(ServiceRequest.ServiceRequestPriority.URGENT);
+                  break;
+              default:
+                  tgt.setValue(ServiceRequest.ServiceRequestPriority.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus> convertProcedureRequestStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.ACTIVE);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.COMPLETED);
-        break;
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.DRAFT);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.ENTEREDINERROR);
-        break;
-      case ONHOLD:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.SUSPENDED);
-        break;
-      case REVOKED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.CANCELLED);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<ProcedureRequest.ProcedureRequestStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new ProcedureRequest.ProcedureRequestStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestStatus.ACTIVE);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestStatus.COMPLETED);
+                  break;
+              case DRAFT:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestStatus.DRAFT);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestStatus.ENTEREDINERROR);
+                  break;
+              case ONHOLD:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestStatus.SUSPENDED);
+                  break;
+              case REVOKED:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestStatus.CANCELLED);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(ProcedureRequest.ProcedureRequestStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus> convertProcedureRequestStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus.ACTIVE);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus.REVOKED);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus.COMPLETED);
-        break;
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus.DRAFT);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus.ENTEREDINERROR);
-        break;
-      case SUSPENDED:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus.ONHOLD);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<ServiceRequest.ServiceRequestStatus> tgt = new Enumeration<>(new ServiceRequest.ServiceRequestStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(ServiceRequest.ServiceRequestStatus.ACTIVE);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(ServiceRequest.ServiceRequestStatus.REVOKED);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(ServiceRequest.ServiceRequestStatus.COMPLETED);
+                  break;
+              case DRAFT:
+                  tgt.setValue(ServiceRequest.ServiceRequestStatus.DRAFT);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(ServiceRequest.ServiceRequestStatus.ENTEREDINERROR);
+                  break;
+              case SUSPENDED:
+                  tgt.setValue(ServiceRequest.ServiceRequestStatus.ONHOLD);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(ServiceRequest.ServiceRequestStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(ServiceRequest.ServiceRequestStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

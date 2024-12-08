@@ -12,8 +12,7 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.model.UnsignedIntType;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.*;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -170,89 +169,97 @@ public class Appointment43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Appointment.AppointmentStatus> convertAppointmentStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Appointment.AppointmentStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Appointment.AppointmentStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Appointment.AppointmentStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PROPOSED:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.AppointmentStatus.PROPOSED);
-        break;
-      case PENDING:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.AppointmentStatus.PENDING);
-        break;
-      case BOOKED:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.AppointmentStatus.BOOKED);
-        break;
-      case ARRIVED:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.AppointmentStatus.ARRIVED);
-        break;
-      case FULFILLED:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.AppointmentStatus.FULFILLED);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.AppointmentStatus.CANCELLED);
-        break;
-      case NOSHOW:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.AppointmentStatus.NOSHOW);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.AppointmentStatus.ENTEREDINERROR);
-        break;
-      case CHECKEDIN:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.AppointmentStatus.CHECKEDIN);
-        break;
-      case WAITLIST:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.AppointmentStatus.WAITLIST);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.AppointmentStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Appointment.AppointmentStatus> tgt = new Enumeration<>(new Appointment.AppointmentStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PROPOSED:
+                  tgt.setValue(Appointment.AppointmentStatus.PROPOSED);
+                  break;
+              case PENDING:
+                  tgt.setValue(Appointment.AppointmentStatus.PENDING);
+                  break;
+              case BOOKED:
+                  tgt.setValue(Appointment.AppointmentStatus.BOOKED);
+                  break;
+              case ARRIVED:
+                  tgt.setValue(Appointment.AppointmentStatus.ARRIVED);
+                  break;
+              case FULFILLED:
+                  tgt.setValue(Appointment.AppointmentStatus.FULFILLED);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(Appointment.AppointmentStatus.CANCELLED);
+                  break;
+              case NOSHOW:
+                  tgt.setValue(Appointment.AppointmentStatus.NOSHOW);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Appointment.AppointmentStatus.ENTEREDINERROR);
+                  break;
+              case CHECKEDIN:
+                  tgt.setValue(Appointment.AppointmentStatus.CHECKEDIN);
+                  break;
+              case WAITLIST:
+                  tgt.setValue(Appointment.AppointmentStatus.WAITLIST);
+                  break;
+              default:
+                  tgt.setValue(Appointment.AppointmentStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Appointment.AppointmentStatus> convertAppointmentStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Appointment.AppointmentStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Appointment.AppointmentStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Appointment.AppointmentStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PROPOSED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.PROPOSED);
-        break;
-      case PENDING:
-        tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.PENDING);
-        break;
-      case BOOKED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.BOOKED);
-        break;
-      case ARRIVED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.ARRIVED);
-        break;
-      case FULFILLED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.FULFILLED);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.CANCELLED);
-        break;
-      case NOSHOW:
-        tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.NOSHOW);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.ENTEREDINERROR);
-        break;
-      case CHECKEDIN:
-        tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.CHECKEDIN);
-        break;
-      case WAITLIST:
-        tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.WAITLIST);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Appointment.AppointmentStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Appointment.AppointmentStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PROPOSED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.PROPOSED);
+                  break;
+              case PENDING:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.PENDING);
+                  break;
+              case BOOKED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.BOOKED);
+                  break;
+              case ARRIVED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.ARRIVED);
+                  break;
+              case FULFILLED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.FULFILLED);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.CANCELLED);
+                  break;
+              case NOSHOW:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.NOSHOW);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.ENTEREDINERROR);
+                  break;
+              case CHECKEDIN:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.CHECKEDIN);
+                  break;
+              case WAITLIST:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.WAITLIST);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Appointment.AppointmentStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.Appointment.AppointmentParticipantComponent convertAppointmentParticipantComponent(org.hl7.fhir.r4b.model.Appointment.AppointmentParticipantComponent src) throws FHIRException {
@@ -292,24 +299,28 @@ public class Appointment43_50 {
   }
 
   static public org.hl7.fhir.r5.model.BooleanType convertParticipantRequired(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Appointment.ParticipantRequired> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.BooleanType tgt = new org.hl7.fhir.r5.model.BooleanType();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REQUIRED:
-        tgt.setValue(true);
-        break;
-      case OPTIONAL:
-        tgt.setValue(false);
-        break;
-      case INFORMATIONONLY:
-        tgt.setValue(false);
-        break;
-      default:
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      BooleanType tgt = new BooleanType();
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case REQUIRED:
+                  tgt.setValue(true);
+                  break;
+              case OPTIONAL:
+                  tgt.setValue(false);
+                  break;
+              case INFORMATIONONLY:
+                  tgt.setValue(false);
+                  break;
+              default:
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Appointment.ParticipantRequired> convertParticipantRequired(org.hl7.fhir.r5.model.BooleanType src) throws FHIRException {
@@ -326,52 +337,60 @@ public class Appointment43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Appointment.ParticipationStatus> convertParticipationStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.ParticipationStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Appointment.ParticipationStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Appointment.ParticipationStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACCEPTED:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.ParticipationStatus.ACCEPTED);
-        break;
-      case DECLINED:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.ParticipationStatus.DECLINED);
-        break;
-      case TENTATIVE:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.ParticipationStatus.TENTATIVE);
-        break;
-      case NEEDSACTION:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.ParticipationStatus.NEEDSACTION);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.ParticipationStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Appointment.ParticipationStatus> tgt = new Enumeration<>(new Appointment.ParticipationStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACCEPTED:
+                  tgt.setValue(Appointment.ParticipationStatus.ACCEPTED);
+                  break;
+              case DECLINED:
+                  tgt.setValue(Appointment.ParticipationStatus.DECLINED);
+                  break;
+              case TENTATIVE:
+                  tgt.setValue(Appointment.ParticipationStatus.TENTATIVE);
+                  break;
+              case NEEDSACTION:
+                  tgt.setValue(Appointment.ParticipationStatus.NEEDSACTION);
+                  break;
+              default:
+                  tgt.setValue(Appointment.ParticipationStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.ParticipationStatus> convertParticipationStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Appointment.ParticipationStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.ParticipationStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.ParticipationStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACCEPTED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.ParticipationStatus.ACCEPTED);
-        break;
-      case DECLINED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.ParticipationStatus.DECLINED);
-        break;
-      case TENTATIVE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.ParticipationStatus.TENTATIVE);
-        break;
-      case NEEDSACTION:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.ParticipationStatus.NEEDSACTION);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.ParticipationStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.ParticipationStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.ParticipationStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACCEPTED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.ParticipationStatus.ACCEPTED);
+                  break;
+              case DECLINED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.ParticipationStatus.DECLINED);
+                  break;
+              case TENTATIVE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.ParticipationStatus.TENTATIVE);
+                  break;
+              case NEEDSACTION:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.ParticipationStatus.NEEDSACTION);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.ParticipationStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

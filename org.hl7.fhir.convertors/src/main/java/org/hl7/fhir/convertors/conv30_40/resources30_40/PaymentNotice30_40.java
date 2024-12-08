@@ -7,6 +7,8 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identi
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Date30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Enumeration;
+import org.hl7.fhir.r4.model.PaymentNotice;
 
 public class PaymentNotice30_40 {
 
@@ -63,52 +65,60 @@ public class PaymentNotice30_40 {
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus> convertPaymentNoticeStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.ACTIVE);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.CANCELLED);
-        break;
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.DRAFT);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<PaymentNotice.PaymentNoticeStatus> tgt = new Enumeration<>(new PaymentNotice.PaymentNoticeStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(PaymentNotice.PaymentNoticeStatus.ACTIVE);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(PaymentNotice.PaymentNoticeStatus.CANCELLED);
+                  break;
+              case DRAFT:
+                  tgt.setValue(PaymentNotice.PaymentNoticeStatus.DRAFT);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(PaymentNotice.PaymentNoticeStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(PaymentNotice.PaymentNoticeStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus> convertPaymentNoticeStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus.ACTIVE);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus.CANCELLED);
-        break;
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus.DRAFT);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus.ACTIVE);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus.CANCELLED);
+                  break;
+              case DRAFT:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus.DRAFT);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

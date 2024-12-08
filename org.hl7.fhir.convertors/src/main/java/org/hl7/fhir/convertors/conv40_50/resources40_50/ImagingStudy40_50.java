@@ -11,9 +11,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.UnsignedInt40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.CodeableReference;
-import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.*;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -143,59 +141,67 @@ public class ImagingStudy40_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyStatus> convertImagingStudyStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REGISTERED:
-        tgt.setValue(org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyStatus.REGISTERED);
-        break;
-      case AVAILABLE:
-        tgt.setValue(org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyStatus.AVAILABLE);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyStatus.CANCELLED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<ImagingStudy.ImagingStudyStatus> tgt = new Enumeration<>(new ImagingStudy.ImagingStudyStatusEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case REGISTERED:
+                  tgt.setValue(ImagingStudy.ImagingStudyStatus.REGISTERED);
+                  break;
+              case AVAILABLE:
+                  tgt.setValue(ImagingStudy.ImagingStudyStatus.AVAILABLE);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(ImagingStudy.ImagingStudyStatus.CANCELLED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(ImagingStudy.ImagingStudyStatus.ENTEREDINERROR);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(ImagingStudy.ImagingStudyStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(ImagingStudy.ImagingStudyStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus> convertImagingStudyStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REGISTERED:
-        tgt.setValue(org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus.REGISTERED);
-        break;
-      case AVAILABLE:
-        tgt.setValue(org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus.AVAILABLE);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus.CANCELLED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatusEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case REGISTERED:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus.REGISTERED);
+                  break;
+              case AVAILABLE:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus.AVAILABLE);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus.CANCELLED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus.ENTEREDINERROR);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImagingStudy.ImagingStudyStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesComponent convertImagingStudySeriesComponent(org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesComponent src) throws FHIRException {

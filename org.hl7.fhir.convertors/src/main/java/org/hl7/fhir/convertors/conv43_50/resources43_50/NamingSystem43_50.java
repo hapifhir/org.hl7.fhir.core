@@ -13,6 +13,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.model.Extension;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.NamingSystem;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -132,47 +134,55 @@ public class NamingSystem43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.NamingSystem.NamingSystemType> convertNamingSystemType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.NamingSystem.NamingSystemType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.NamingSystem.NamingSystemType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.NamingSystem.NamingSystemTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case CODESYSTEM:
-        tgt.setValue(org.hl7.fhir.r5.model.NamingSystem.NamingSystemType.CODESYSTEM);
-        break;
-      case IDENTIFIER:
-        tgt.setValue(org.hl7.fhir.r5.model.NamingSystem.NamingSystemType.IDENTIFIER);
-        break;
-      case ROOT:
-        tgt.setValue(org.hl7.fhir.r5.model.NamingSystem.NamingSystemType.ROOT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.NamingSystem.NamingSystemType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<NamingSystem.NamingSystemType> tgt = new Enumeration<>(new NamingSystem.NamingSystemTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case CODESYSTEM:
+                  tgt.setValue(NamingSystem.NamingSystemType.CODESYSTEM);
+                  break;
+              case IDENTIFIER:
+                  tgt.setValue(NamingSystem.NamingSystemType.IDENTIFIER);
+                  break;
+              case ROOT:
+                  tgt.setValue(NamingSystem.NamingSystemType.ROOT);
+                  break;
+              default:
+                  tgt.setValue(NamingSystem.NamingSystemType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.NamingSystem.NamingSystemType> convertNamingSystemType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.NamingSystem.NamingSystemType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.NamingSystem.NamingSystemType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.NamingSystem.NamingSystemTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case CODESYSTEM:
-        tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemType.CODESYSTEM);
-        break;
-      case IDENTIFIER:
-        tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemType.IDENTIFIER);
-        break;
-      case ROOT:
-        tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemType.ROOT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.NamingSystem.NamingSystemType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.NamingSystem.NamingSystemTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case CODESYSTEM:
+                  tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemType.CODESYSTEM);
+                  break;
+              case IDENTIFIER:
+                  tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemType.IDENTIFIER);
+                  break;
+              case ROOT:
+                  tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemType.ROOT);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent convertNamingSystemUniqueIdComponent(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemUniqueIdComponent src) throws FHIRException {
@@ -212,52 +222,60 @@ public class NamingSystem43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType> convertNamingSystemIdentifierType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case OID:
-        tgt.setValue(org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType.OID);
-        break;
-      case UUID:
-        tgt.setValue(org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType.UUID);
-        break;
-      case URI:
-        tgt.setValue(org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType.URI);
-        break;
-      case OTHER:
-        tgt.setValue(org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType.OTHER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<NamingSystem.NamingSystemIdentifierType> tgt = new Enumeration<>(new NamingSystem.NamingSystemIdentifierTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case OID:
+                  tgt.setValue(NamingSystem.NamingSystemIdentifierType.OID);
+                  break;
+              case UUID:
+                  tgt.setValue(NamingSystem.NamingSystemIdentifierType.UUID);
+                  break;
+              case URI:
+                  tgt.setValue(NamingSystem.NamingSystemIdentifierType.URI);
+                  break;
+              case OTHER:
+                  tgt.setValue(NamingSystem.NamingSystemIdentifierType.OTHER);
+                  break;
+              default:
+                  tgt.setValue(NamingSystem.NamingSystemIdentifierType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierType> convertNamingSystemIdentifierType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case OID:
-        tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierType.OID);
-        break;
-      case UUID:
-        tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierType.UUID);
-        break;
-      case URI:
-        tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierType.URI);
-        break;
-      case OTHER:
-        tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierType.OTHER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case OID:
+                  tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierType.OID);
+                  break;
+              case UUID:
+                  tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierType.UUID);
+                  break;
+              case URI:
+                  tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierType.URI);
+                  break;
+              case OTHER:
+                  tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierType.OTHER);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.NamingSystem.NamingSystemIdentifierType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

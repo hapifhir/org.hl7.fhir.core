@@ -8,6 +8,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Url43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.MessageHeader;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -195,46 +197,54 @@ public class MessageHeader43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageHeader.ResponseType> convertResponseType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MessageHeader.ResponseType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageHeader.ResponseType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MessageHeader.ResponseTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case OK:
-        tgt.setValue(org.hl7.fhir.r5.model.MessageHeader.ResponseType.OK);
-        break;
-      case TRANSIENTERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.MessageHeader.ResponseType.TRANSIENTERROR);
-        break;
-      case FATALERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.MessageHeader.ResponseType.FATALERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.MessageHeader.ResponseType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<MessageHeader.ResponseType> tgt = new Enumeration<>(new MessageHeader.ResponseTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case OK:
+                  tgt.setValue(MessageHeader.ResponseType.OK);
+                  break;
+              case TRANSIENTERROR:
+                  tgt.setValue(MessageHeader.ResponseType.TRANSIENTERROR);
+                  break;
+              case FATALERROR:
+                  tgt.setValue(MessageHeader.ResponseType.FATALERROR);
+                  break;
+              default:
+                  tgt.setValue(MessageHeader.ResponseType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MessageHeader.ResponseType> convertResponseType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageHeader.ResponseType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MessageHeader.ResponseType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.MessageHeader.ResponseTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case OK:
-        tgt.setValue(org.hl7.fhir.r4b.model.MessageHeader.ResponseType.OK);
-        break;
-      case TRANSIENTERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.MessageHeader.ResponseType.TRANSIENTERROR);
-        break;
-      case FATALERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.MessageHeader.ResponseType.FATALERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.MessageHeader.ResponseType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MessageHeader.ResponseType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.MessageHeader.ResponseTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case OK:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MessageHeader.ResponseType.OK);
+                  break;
+              case TRANSIENTERROR:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MessageHeader.ResponseType.TRANSIENTERROR);
+                  break;
+              case FATALERROR:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MessageHeader.ResponseType.FATALERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MessageHeader.ResponseType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

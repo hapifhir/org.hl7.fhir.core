@@ -8,6 +8,8 @@ import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Date
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Oid10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.String10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.UnsignedInt10_30;
+import org.hl7.fhir.dstu2.model.Enumeration;
+import org.hl7.fhir.dstu2.model.ImagingStudy;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class ImagingStudy10_30 {
@@ -171,52 +173,60 @@ public class ImagingStudy10_30 {
   }
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ImagingStudy.InstanceAvailability> convertInstanceAvailability(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailability> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ImagingStudy.InstanceAvailability> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.ImagingStudy.InstanceAvailabilityEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ONLINE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImagingStudy.InstanceAvailability.ONLINE);
-        break;
-      case OFFLINE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImagingStudy.InstanceAvailability.OFFLINE);
-        break;
-      case NEARLINE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImagingStudy.InstanceAvailability.NEARLINE);
-        break;
-      case UNAVAILABLE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImagingStudy.InstanceAvailability.UNAVAILABLE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImagingStudy.InstanceAvailability.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<ImagingStudy.InstanceAvailability> tgt = new Enumeration<>(new ImagingStudy.InstanceAvailabilityEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ONLINE:
+                  tgt.setValue(ImagingStudy.InstanceAvailability.ONLINE);
+                  break;
+              case OFFLINE:
+                  tgt.setValue(ImagingStudy.InstanceAvailability.OFFLINE);
+                  break;
+              case NEARLINE:
+                  tgt.setValue(ImagingStudy.InstanceAvailability.NEARLINE);
+                  break;
+              case UNAVAILABLE:
+                  tgt.setValue(ImagingStudy.InstanceAvailability.UNAVAILABLE);
+                  break;
+              default:
+                  tgt.setValue(ImagingStudy.InstanceAvailability.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailability> convertInstanceAvailability(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ImagingStudy.InstanceAvailability> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailability> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailabilityEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ONLINE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailability.ONLINE);
-        break;
-      case OFFLINE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailability.OFFLINE);
-        break;
-      case NEARLINE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailability.NEARLINE);
-        break;
-      case UNAVAILABLE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailability.UNAVAILABLE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailability.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailability> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailabilityEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ONLINE:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailability.ONLINE);
+                  break;
+              case OFFLINE:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailability.OFFLINE);
+                  break;
+              case NEARLINE:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailability.NEARLINE);
+                  break;
+              case UNAVAILABLE:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailability.UNAVAILABLE);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.ImagingStudy.InstanceAvailability.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

@@ -4,6 +4,8 @@ import org.hl7.fhir.convertors.context.ConversionContext10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Reference10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.CodeableConcept10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Identifier10_30;
+import org.hl7.fhir.dstu2.model.Condition;
+import org.hl7.fhir.dstu2.model.Enumeration;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Condition10_30 {
@@ -134,64 +136,72 @@ public class Condition10_30 {
   }
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Condition.ConditionVerificationStatus> convertConditionVerificationStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Condition.ConditionVerificationStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Condition.ConditionVerificationStatusEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PROVISIONAL:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Condition.ConditionVerificationStatus.PROVISIONAL);
-        break;
-      case DIFFERENTIAL:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Condition.ConditionVerificationStatus.DIFFERENTIAL);
-        break;
-      case CONFIRMED:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Condition.ConditionVerificationStatus.CONFIRMED);
-        break;
-      case REFUTED:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Condition.ConditionVerificationStatus.REFUTED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Condition.ConditionVerificationStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Condition.ConditionVerificationStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Condition.ConditionVerificationStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Condition.ConditionVerificationStatus> tgt = new Enumeration<>(new Condition.ConditionVerificationStatusEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PROVISIONAL:
+                  tgt.setValue(Condition.ConditionVerificationStatus.PROVISIONAL);
+                  break;
+              case DIFFERENTIAL:
+                  tgt.setValue(Condition.ConditionVerificationStatus.DIFFERENTIAL);
+                  break;
+              case CONFIRMED:
+                  tgt.setValue(Condition.ConditionVerificationStatus.CONFIRMED);
+                  break;
+              case REFUTED:
+                  tgt.setValue(Condition.ConditionVerificationStatus.REFUTED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Condition.ConditionVerificationStatus.ENTEREDINERROR);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(Condition.ConditionVerificationStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(Condition.ConditionVerificationStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus> convertConditionVerificationStatus(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Condition.ConditionVerificationStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatusEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PROVISIONAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.PROVISIONAL);
-        break;
-      case DIFFERENTIAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.DIFFERENTIAL);
-        break;
-      case CONFIRMED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.CONFIRMED);
-        break;
-      case REFUTED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.REFUTED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatusEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PROVISIONAL:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.PROVISIONAL);
+                  break;
+              case DIFFERENTIAL:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.DIFFERENTIAL);
+                  break;
+              case CONFIRMED:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.CONFIRMED);
+                  break;
+              case REFUTED:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.REFUTED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.ENTEREDINERROR);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Condition.ConditionVerificationStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

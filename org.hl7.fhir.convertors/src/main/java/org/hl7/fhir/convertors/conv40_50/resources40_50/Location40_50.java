@@ -10,8 +10,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Decimal40
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.ContactPoint;
-import org.hl7.fhir.r5.model.ExtendedContactDetail;
+import org.hl7.fhir.r5.model.*;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -126,85 +125,101 @@ public class Location40_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Location.LocationStatus> convertLocationStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Location.LocationStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Location.LocationStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r5.model.Location.LocationStatus.ACTIVE);
-        break;
-      case SUSPENDED:
-        tgt.setValue(org.hl7.fhir.r5.model.Location.LocationStatus.SUSPENDED);
-        break;
-      case INACTIVE:
-        tgt.setValue(org.hl7.fhir.r5.model.Location.LocationStatus.INACTIVE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Location.LocationStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Location.LocationStatus> tgt = new Enumeration<>(new Location.LocationStatusEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(Location.LocationStatus.ACTIVE);
+                  break;
+              case SUSPENDED:
+                  tgt.setValue(Location.LocationStatus.SUSPENDED);
+                  break;
+              case INACTIVE:
+                  tgt.setValue(Location.LocationStatus.INACTIVE);
+                  break;
+              default:
+                  tgt.setValue(Location.LocationStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationStatus> convertLocationStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Location.LocationStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Location.LocationStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.LocationStatus.ACTIVE);
-        break;
-      case SUSPENDED:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.LocationStatus.SUSPENDED);
-        break;
-      case INACTIVE:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.LocationStatus.INACTIVE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.LocationStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Location.LocationStatusEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.LocationStatus.ACTIVE);
+                  break;
+              case SUSPENDED:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.LocationStatus.SUSPENDED);
+                  break;
+              case INACTIVE:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.LocationStatus.INACTIVE);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.LocationStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Location.LocationMode> convertLocationMode(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationMode> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Location.LocationMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Location.LocationModeEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case INSTANCE:
-        tgt.setValue(org.hl7.fhir.r5.model.Location.LocationMode.INSTANCE);
-        break;
-      case KIND:
-        tgt.setValue(org.hl7.fhir.r5.model.Location.LocationMode.KIND);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Location.LocationMode.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Location.LocationMode> tgt = new Enumeration<>(new Location.LocationModeEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case INSTANCE:
+                  tgt.setValue(Location.LocationMode.INSTANCE);
+                  break;
+              case KIND:
+                  tgt.setValue(Location.LocationMode.KIND);
+                  break;
+              default:
+                  tgt.setValue(Location.LocationMode.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationMode> convertLocationMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Location.LocationMode> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Location.LocationModeEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case INSTANCE:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.LocationMode.INSTANCE);
-        break;
-      case KIND:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.LocationMode.KIND);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.LocationMode.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Location.LocationModeEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case INSTANCE:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.LocationMode.INSTANCE);
+                  break;
+              case KIND:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.LocationMode.KIND);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.LocationMode.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.Location.LocationPositionComponent convertLocationPositionComponent(org.hl7.fhir.r4.model.Location.LocationPositionComponent src) throws FHIRException {
@@ -270,70 +285,78 @@ public class Location40_50 {
 //  }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> convertDaysOfWeek(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.DaysOfWeek> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.DaysOfWeekEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case MON:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.MON);
-        break;
-      case TUE:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.TUE);
-        break;
-      case WED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.WED);
-        break;
-      case THU:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.THU);
-        break;
-      case FRI:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.FRI);
-        break;
-      case SAT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.SAT);
-        break;
-      case SUN:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.SUN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Enumerations.DaysOfWeek> tgt = new Enumeration<>(new Enumerations.DaysOfWeekEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case MON:
+                  tgt.setValue(Enumerations.DaysOfWeek.MON);
+                  break;
+              case TUE:
+                  tgt.setValue(Enumerations.DaysOfWeek.TUE);
+                  break;
+              case WED:
+                  tgt.setValue(Enumerations.DaysOfWeek.WED);
+                  break;
+              case THU:
+                  tgt.setValue(Enumerations.DaysOfWeek.THU);
+                  break;
+              case FRI:
+                  tgt.setValue(Enumerations.DaysOfWeek.FRI);
+                  break;
+              case SAT:
+                  tgt.setValue(Enumerations.DaysOfWeek.SAT);
+                  break;
+              case SUN:
+                  tgt.setValue(Enumerations.DaysOfWeek.SUN);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.DaysOfWeek.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.DaysOfWeek> convertDaysOfWeek(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.DaysOfWeek> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Location.DaysOfWeekEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case MON:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.MON);
-        break;
-      case TUE:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.TUE);
-        break;
-      case WED:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.WED);
-        break;
-      case THU:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.THU);
-        break;
-      case FRI:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.FRI);
-        break;
-      case SAT:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.SAT);
-        break;
-      case SUN:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.SUN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.DaysOfWeek> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Location.DaysOfWeekEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case MON:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.MON);
+                  break;
+              case TUE:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.TUE);
+                  break;
+              case WED:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.WED);
+                  break;
+              case THU:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.THU);
+                  break;
+              case FRI:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.FRI);
+                  break;
+              case SAT:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.SAT);
+                  break;
+              case SUN:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.SUN);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.Location.DaysOfWeek.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

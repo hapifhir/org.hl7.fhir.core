@@ -14,7 +14,9 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Url40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeType;
+import org.hl7.fhir.r4.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Enumerations.CommonLanguages;
 import org.hl7.fhir.r5.model.Enumerations.CommonLanguagesEnumFactory;
 
@@ -162,85 +164,101 @@ public class TerminologyCapabilities40_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind> convertCapabilityStatementKind(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKindEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case INSTANCE:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.INSTANCE);
-        break;
-      case CAPABILITY:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.CAPABILITY);
-        break;
-      case REQUIREMENTS:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.REQUIREMENTS);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Enumerations.CapabilityStatementKind> tgt = new Enumeration<>(new Enumerations.CapabilityStatementKindEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case INSTANCE:
+                  tgt.setValue(Enumerations.CapabilityStatementKind.INSTANCE);
+                  break;
+              case CAPABILITY:
+                  tgt.setValue(Enumerations.CapabilityStatementKind.CAPABILITY);
+                  break;
+              case REQUIREMENTS:
+                  tgt.setValue(Enumerations.CapabilityStatementKind.REQUIREMENTS);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.CapabilityStatementKind.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind> convertCapabilityStatementKind(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKindEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case INSTANCE:
-        tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind.INSTANCE);
-        break;
-      case CAPABILITY:
-        tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind.CAPABILITY);
-        break;
-      case REQUIREMENTS:
-        tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind.REQUIREMENTS);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CapabilityStatementKind.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<TerminologyCapabilities.CapabilityStatementKind> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new TerminologyCapabilities.CapabilityStatementKindEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case INSTANCE:
+                  tgt.setValue(TerminologyCapabilities.CapabilityStatementKind.INSTANCE);
+                  break;
+              case CAPABILITY:
+                  tgt.setValue(TerminologyCapabilities.CapabilityStatementKind.CAPABILITY);
+                  break;
+              case REQUIREMENTS:
+                  tgt.setValue(TerminologyCapabilities.CapabilityStatementKind.REQUIREMENTS);
+                  break;
+              default:
+                  tgt.setValue(TerminologyCapabilities.CapabilityStatementKind.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport> convertCodeSearchSupport(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupportEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case EXPLICIT:
-        tgt.setValue(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.INCOMPOSE);
-        break;
-      case ALL:
-        tgt.setValue(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.INCOMPOSEOREXPANSION);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport> tgt = new Enumeration<>(new org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupportEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case EXPLICIT:
+                  tgt.setValue(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.INCOMPOSE);
+                  break;
+              case ALL:
+                  tgt.setValue(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.INCOMPOSEOREXPANSION);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport> convertCodeSearchSupport(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupportEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case INCOMPOSE:
-        tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport.EXPLICIT);
-        break;
-      case INCOMPOSEOREXPANSION:
-        tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport.ALL);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<TerminologyCapabilities.CodeSearchSupport> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new TerminologyCapabilities.CodeSearchSupportEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case INCOMPOSE:
+                  tgt.setValue(TerminologyCapabilities.CodeSearchSupport.EXPLICIT);
+                  break;
+              case INCOMPOSEOREXPANSION:
+                  tgt.setValue(TerminologyCapabilities.CodeSearchSupport.ALL);
+                  break;
+              default:
+                  tgt.setValue(TerminologyCapabilities.CodeSearchSupport.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesSoftwareComponent convertTerminologyCapabilitiesSoftwareComponent(org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesSoftwareComponent src) throws FHIRException {

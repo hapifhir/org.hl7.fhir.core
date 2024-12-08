@@ -7,52 +7,62 @@ import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Codeab
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Identifier10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.PositiveInt10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.UnsignedInt10_30;
+import org.hl7.fhir.dstu2.model.Enumeration;
+import org.hl7.fhir.dstu2.model.Media;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Media10_30 {
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Media.DigitalMediaType> convertDigitalMediaType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Media.DigitalMediaType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Media.DigitalMediaType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Media.DigitalMediaTypeEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PHOTO:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Media.DigitalMediaType.PHOTO);
-        break;
-      case VIDEO:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Media.DigitalMediaType.VIDEO);
-        break;
-      case AUDIO:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Media.DigitalMediaType.AUDIO);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Media.DigitalMediaType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Media.DigitalMediaType> tgt = new Enumeration<>(new Media.DigitalMediaTypeEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PHOTO:
+                  tgt.setValue(Media.DigitalMediaType.PHOTO);
+                  break;
+              case VIDEO:
+                  tgt.setValue(Media.DigitalMediaType.VIDEO);
+                  break;
+              case AUDIO:
+                  tgt.setValue(Media.DigitalMediaType.AUDIO);
+                  break;
+              default:
+                  tgt.setValue(Media.DigitalMediaType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Media.DigitalMediaType> convertDigitalMediaType(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Media.DigitalMediaType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Media.DigitalMediaType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Media.DigitalMediaTypeEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PHOTO:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Media.DigitalMediaType.PHOTO);
-        break;
-      case VIDEO:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Media.DigitalMediaType.VIDEO);
-        break;
-      case AUDIO:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Media.DigitalMediaType.AUDIO);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Media.DigitalMediaType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Media.DigitalMediaType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Media.DigitalMediaTypeEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PHOTO:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Media.DigitalMediaType.PHOTO);
+                  break;
+              case VIDEO:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Media.DigitalMediaType.VIDEO);
+                  break;
+              case AUDIO:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Media.DigitalMediaType.AUDIO);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Media.DigitalMediaType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.dstu2.model.Media convertMedia(org.hl7.fhir.dstu3.model.Media src) throws FHIRException {

@@ -7,7 +7,10 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.DeviceUseStatement;
 import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.DeviceUsage;
+import org.hl7.fhir.r5.model.Enumeration;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -107,64 +110,72 @@ public class DeviceUseStatement40_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus> convertDeviceUseStatementStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.ACTIVE);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.ENTEREDINERROR);
-        break;
-      case INTENDED:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.INTENDED);
-        break;
-      case STOPPED:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.STOPPED);
-        break;
-      case ONHOLD:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.ONHOLD);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<DeviceUsage.DeviceUsageStatus> tgt = new Enumeration<>(new DeviceUsage.DeviceUsageStatusEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(DeviceUsage.DeviceUsageStatus.ACTIVE);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(DeviceUsage.DeviceUsageStatus.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(DeviceUsage.DeviceUsageStatus.ENTEREDINERROR);
+                  break;
+              case INTENDED:
+                  tgt.setValue(DeviceUsage.DeviceUsageStatus.INTENDED);
+                  break;
+              case STOPPED:
+                  tgt.setValue(DeviceUsage.DeviceUsageStatus.STOPPED);
+                  break;
+              case ONHOLD:
+                  tgt.setValue(DeviceUsage.DeviceUsageStatus.ONHOLD);
+                  break;
+              default:
+                  tgt.setValue(DeviceUsage.DeviceUsageStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus> convertDeviceUseStatementStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.ACTIVE);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.ENTEREDINERROR);
-        break;
-      case INTENDED:
-        tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.INTENDED);
-        break;
-      case STOPPED:
-        tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.STOPPED);
-        break;
-      case ONHOLD:
-        tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.ONHOLD);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<DeviceUseStatement.DeviceUseStatementStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new DeviceUseStatement.DeviceUseStatementStatusEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(DeviceUseStatement.DeviceUseStatementStatus.ACTIVE);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(DeviceUseStatement.DeviceUseStatementStatus.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(DeviceUseStatement.DeviceUseStatementStatus.ENTEREDINERROR);
+                  break;
+              case INTENDED:
+                  tgt.setValue(DeviceUseStatement.DeviceUseStatementStatus.INTENDED);
+                  break;
+              case STOPPED:
+                  tgt.setValue(DeviceUseStatement.DeviceUseStatementStatus.STOPPED);
+                  break;
+              case ONHOLD:
+                  tgt.setValue(DeviceUseStatement.DeviceUseStatementStatus.ONHOLD);
+                  break;
+              default:
+                  tgt.setValue(DeviceUseStatement.DeviceUseStatementStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

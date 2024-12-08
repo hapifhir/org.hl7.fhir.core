@@ -9,6 +9,8 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identi
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Period30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Endpoint;
+import org.hl7.fhir.r4.model.Enumeration;
 
 public class Endpoint30_40 {
 
@@ -69,64 +71,72 @@ public class Endpoint30_40 {
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Endpoint.EndpointStatus> convertEndpointStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Endpoint.EndpointStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Endpoint.EndpointStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ACTIVE);
-        break;
-      case SUSPENDED:
-        tgt.setValue(org.hl7.fhir.r4.model.Endpoint.EndpointStatus.SUSPENDED);
-        break;
-      case ERROR:
-        tgt.setValue(org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ERROR);
-        break;
-      case OFF:
-        tgt.setValue(org.hl7.fhir.r4.model.Endpoint.EndpointStatus.OFF);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4.model.Endpoint.EndpointStatus.ENTEREDINERROR);
-        break;
-      case TEST:
-        tgt.setValue(org.hl7.fhir.r4.model.Endpoint.EndpointStatus.TEST);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.Endpoint.EndpointStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Endpoint.EndpointStatus> tgt = new Enumeration<>(new Endpoint.EndpointStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(Endpoint.EndpointStatus.ACTIVE);
+                  break;
+              case SUSPENDED:
+                  tgt.setValue(Endpoint.EndpointStatus.SUSPENDED);
+                  break;
+              case ERROR:
+                  tgt.setValue(Endpoint.EndpointStatus.ERROR);
+                  break;
+              case OFF:
+                  tgt.setValue(Endpoint.EndpointStatus.OFF);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Endpoint.EndpointStatus.ENTEREDINERROR);
+                  break;
+              case TEST:
+                  tgt.setValue(Endpoint.EndpointStatus.TEST);
+                  break;
+              default:
+                  tgt.setValue(Endpoint.EndpointStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus> convertEndpointStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Endpoint.EndpointStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Endpoint.EndpointStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.ACTIVE);
-        break;
-      case SUSPENDED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.SUSPENDED);
-        break;
-      case ERROR:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.ERROR);
-        break;
-      case OFF:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.OFF);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.ENTEREDINERROR);
-        break;
-      case TEST:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.TEST);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Endpoint.EndpointStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.ACTIVE);
+                  break;
+              case SUSPENDED:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.SUSPENDED);
+                  break;
+              case ERROR:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.ERROR);
+                  break;
+              case OFF:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.OFF);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.ENTEREDINERROR);
+                  break;
+              case TEST:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.TEST);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

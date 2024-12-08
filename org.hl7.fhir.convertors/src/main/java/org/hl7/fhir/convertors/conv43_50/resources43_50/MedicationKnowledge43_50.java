@@ -10,6 +10,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown4
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4b.model.Enumeration;
+import org.hl7.fhir.r4b.model.MedicationKnowledge;
 import org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgePackagingComponent;
 import org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodesEnumFactory;
 
@@ -147,47 +149,55 @@ public class MedicationKnowledge43_50 {
   }
 
   private static org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MedicationKnowledge.MedicationKnowledgeStatusCodes> convertMedicationKnowledgeStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes> src) {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MedicationKnowledge.MedicationKnowledgeStatusCodes> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.MedicationKnowledge.MedicationKnowledgeStatusCodesEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.ACTIVE);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.ENTEREDINERROR);
-        break;
-      case INACTIVE:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.INACTIVE);
-        break;
-      case NULL:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null)
+          return null;
+      Enumeration<MedicationKnowledge.MedicationKnowledgeStatusCodes> tgt = new Enumeration<>(new MedicationKnowledge.MedicationKnowledgeStatusCodesEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(MedicationKnowledge.MedicationKnowledgeStatusCodes.ACTIVE);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(MedicationKnowledge.MedicationKnowledgeStatusCodes.ENTEREDINERROR);
+                  break;
+              case INACTIVE:
+                  tgt.setValue(MedicationKnowledge.MedicationKnowledgeStatusCodes.INACTIVE);
+                  break;
+              case NULL:
+                  tgt.setValue(MedicationKnowledge.MedicationKnowledgeStatusCodes.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes> convertMedicationKnowledgeStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MedicationKnowledge.MedicationKnowledgeStatusCodes> src) {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new MedicationKnowledgeStatusCodesEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.ACTIVE);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.ENTEREDINERROR);
-        break;
-      case INACTIVE:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.INACTIVE);
-        break;
-      case NULL:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null)
+          return null;
+      org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new MedicationKnowledgeStatusCodesEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.ACTIVE);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.ENTEREDINERROR);
+                  break;
+              case INACTIVE:
+                  tgt.setValue(org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.INACTIVE);
+                  break;
+              case NULL:
+                  tgt.setValue(org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
 

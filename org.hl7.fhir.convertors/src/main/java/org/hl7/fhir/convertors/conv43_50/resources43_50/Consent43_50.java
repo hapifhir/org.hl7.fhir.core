@@ -10,6 +10,9 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Consent;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -113,59 +116,67 @@ public class Consent43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentState> convertConsentState(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentState> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentState> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Consent.ConsentStateEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentState.DRAFT);
-        break;
-      case PROPOSED:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentState.DRAFT);
-        break;
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentState.ACTIVE);
-        break;
-      case REJECTED:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentState.INACTIVE);
-        break;
-      case INACTIVE:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentState.INACTIVE);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentState.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentState.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Consent.ConsentState> tgt = new Enumeration<>(new Consent.ConsentStateEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case DRAFT:
+                  tgt.setValue(Consent.ConsentState.DRAFT);
+                  break;
+              case PROPOSED:
+                  tgt.setValue(Consent.ConsentState.DRAFT);
+                  break;
+              case ACTIVE:
+                  tgt.setValue(Consent.ConsentState.ACTIVE);
+                  break;
+              case REJECTED:
+                  tgt.setValue(Consent.ConsentState.INACTIVE);
+                  break;
+              case INACTIVE:
+                  tgt.setValue(Consent.ConsentState.INACTIVE);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Consent.ConsentState.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(Consent.ConsentState.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentState> convertConsentState(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentState> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentState> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Consent.ConsentStateEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentState.DRAFT);
-        break;
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentState.ACTIVE);
-        break;
-      case INACTIVE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentState.INACTIVE);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentState.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentState.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentState> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Consent.ConsentStateEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case DRAFT:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentState.DRAFT);
+                  break;
+              case ACTIVE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentState.ACTIVE);
+                  break;
+              case INACTIVE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentState.INACTIVE);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentState.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentState.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
 //  public static org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent convertConsentPolicyComponent(org.hl7.fhir.r4b.model.Consent.ConsentPolicyComponent src) throws FHIRException {
@@ -275,41 +286,49 @@ public class Consent43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType> convertConsentProvisionType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentProvisionType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ConsentProvisionTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case DENY:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType.DENY);
-        break;
-      case PERMIT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType.PERMIT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Enumerations.ConsentProvisionType> tgt = new Enumeration<>(new Enumerations.ConsentProvisionTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case DENY:
+                  tgt.setValue(Enumerations.ConsentProvisionType.DENY);
+                  break;
+              case PERMIT:
+                  tgt.setValue(Enumerations.ConsentProvisionType.PERMIT);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.ConsentProvisionType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentProvisionType> convertConsentProvisionType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentProvisionType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Consent.ConsentProvisionTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case DENY:
-        tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentProvisionType.DENY);
-        break;
-      case PERMIT:
-        tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentProvisionType.PERMIT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentProvisionType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentProvisionType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Consent.ConsentProvisionTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case DENY:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentProvisionType.DENY);
+                  break;
+              case PERMIT:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentProvisionType.PERMIT);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentProvisionType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.Consent.ProvisionActorComponent convertprovisionActorComponent(org.hl7.fhir.r4b.model.Consent.ProvisionActorComponent src) throws FHIRException {
@@ -361,52 +380,60 @@ public class Consent43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning> convertConsentDataMeaning(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaningEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case INSTANCE:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.INSTANCE);
-        break;
-      case RELATED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.RELATED);
-        break;
-      case DEPENDENTS:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.DEPENDENTS);
-        break;
-      case AUTHOREDBY:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.AUTHOREDBY);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Enumerations.ConsentDataMeaning> tgt = new Enumeration<>(new Enumerations.ConsentDataMeaningEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case INSTANCE:
+                  tgt.setValue(Enumerations.ConsentDataMeaning.INSTANCE);
+                  break;
+              case RELATED:
+                  tgt.setValue(Enumerations.ConsentDataMeaning.RELATED);
+                  break;
+              case DEPENDENTS:
+                  tgt.setValue(Enumerations.ConsentDataMeaning.DEPENDENTS);
+                  break;
+              case AUTHOREDBY:
+                  tgt.setValue(Enumerations.ConsentDataMeaning.AUTHOREDBY);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.ConsentDataMeaning.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning> convertConsentDataMeaning(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Consent.ConsentDataMeaningEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case INSTANCE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning.INSTANCE);
-        break;
-      case RELATED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning.RELATED);
-        break;
-      case DEPENDENTS:
-        tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning.DEPENDENTS);
-        break;
-      case AUTHOREDBY:
-        tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning.AUTHOREDBY);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Consent.ConsentDataMeaningEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case INSTANCE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning.INSTANCE);
+                  break;
+              case RELATED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning.RELATED);
+                  break;
+              case DEPENDENTS:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning.DEPENDENTS);
+                  break;
+              case AUTHOREDBY:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning.AUTHOREDBY);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

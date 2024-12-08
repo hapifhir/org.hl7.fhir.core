@@ -11,120 +11,138 @@ import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Date
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Id10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.String10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Uri10_30;
+import org.hl7.fhir.dstu3.model.Enumeration;
+import org.hl7.fhir.dstu3.model.ImplementationGuide;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class ImplementationGuide10_30 {
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ImplementationGuide.GuideDependencyType> convertGuideDependencyType(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ImplementationGuide.GuideDependencyType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ImplementationGuide.GuideDependencyType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ImplementationGuide.GuideDependencyTypeEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REFERENCE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImplementationGuide.GuideDependencyType.REFERENCE);
-        break;
-      case INCLUSION:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImplementationGuide.GuideDependencyType.INCLUSION);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImplementationGuide.GuideDependencyType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<ImplementationGuide.GuideDependencyType> tgt = new Enumeration<>(new ImplementationGuide.GuideDependencyTypeEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case REFERENCE:
+                  tgt.setValue(ImplementationGuide.GuideDependencyType.REFERENCE);
+                  break;
+              case INCLUSION:
+                  tgt.setValue(ImplementationGuide.GuideDependencyType.INCLUSION);
+                  break;
+              default:
+                  tgt.setValue(ImplementationGuide.GuideDependencyType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ImplementationGuide.GuideDependencyType> convertGuideDependencyType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ImplementationGuide.GuideDependencyType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ImplementationGuide.GuideDependencyType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.ImplementationGuide.GuideDependencyTypeEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REFERENCE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuideDependencyType.REFERENCE);
-        break;
-      case INCLUSION:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuideDependencyType.INCLUSION);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuideDependencyType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ImplementationGuide.GuideDependencyType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.ImplementationGuide.GuideDependencyTypeEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case REFERENCE:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuideDependencyType.REFERENCE);
+                  break;
+              case INCLUSION:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuideDependencyType.INCLUSION);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuideDependencyType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ImplementationGuide.GuidePageKind> convertGuidePageKind(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ImplementationGuide.GuidePageKind> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ImplementationGuide.GuidePageKindEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PAGE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImplementationGuide.GuidePageKind.PAGE);
-        break;
-      case EXAMPLE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImplementationGuide.GuidePageKind.EXAMPLE);
-        break;
-      case LIST:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImplementationGuide.GuidePageKind.LIST);
-        break;
-      case INCLUDE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImplementationGuide.GuidePageKind.INCLUDE);
-        break;
-      case DIRECTORY:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImplementationGuide.GuidePageKind.DIRECTORY);
-        break;
-      case DICTIONARY:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImplementationGuide.GuidePageKind.DICTIONARY);
-        break;
-      case TOC:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImplementationGuide.GuidePageKind.TOC);
-        break;
-      case RESOURCE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImplementationGuide.GuidePageKind.RESOURCE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ImplementationGuide.GuidePageKind.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<ImplementationGuide.GuidePageKind> tgt = new Enumeration<>(new ImplementationGuide.GuidePageKindEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PAGE:
+                  tgt.setValue(ImplementationGuide.GuidePageKind.PAGE);
+                  break;
+              case EXAMPLE:
+                  tgt.setValue(ImplementationGuide.GuidePageKind.EXAMPLE);
+                  break;
+              case LIST:
+                  tgt.setValue(ImplementationGuide.GuidePageKind.LIST);
+                  break;
+              case INCLUDE:
+                  tgt.setValue(ImplementationGuide.GuidePageKind.INCLUDE);
+                  break;
+              case DIRECTORY:
+                  tgt.setValue(ImplementationGuide.GuidePageKind.DIRECTORY);
+                  break;
+              case DICTIONARY:
+                  tgt.setValue(ImplementationGuide.GuidePageKind.DICTIONARY);
+                  break;
+              case TOC:
+                  tgt.setValue(ImplementationGuide.GuidePageKind.TOC);
+                  break;
+              case RESOURCE:
+                  tgt.setValue(ImplementationGuide.GuidePageKind.RESOURCE);
+                  break;
+              default:
+                  tgt.setValue(ImplementationGuide.GuidePageKind.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind> convertGuidePageKind(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ImplementationGuide.GuidePageKind> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKindEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PAGE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.PAGE);
-        break;
-      case EXAMPLE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.EXAMPLE);
-        break;
-      case LIST:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.LIST);
-        break;
-      case INCLUDE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.INCLUDE);
-        break;
-      case DIRECTORY:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.DIRECTORY);
-        break;
-      case DICTIONARY:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.DICTIONARY);
-        break;
-      case TOC:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.TOC);
-        break;
-      case RESOURCE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.RESOURCE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKindEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PAGE:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.PAGE);
+                  break;
+              case EXAMPLE:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.EXAMPLE);
+                  break;
+              case LIST:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.LIST);
+                  break;
+              case INCLUDE:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.INCLUDE);
+                  break;
+              case DIRECTORY:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.DIRECTORY);
+                  break;
+              case DICTIONARY:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.DICTIONARY);
+                  break;
+              case TOC:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.TOC);
+                  break;
+              case RESOURCE:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.RESOURCE);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.ImplementationGuide.GuidePageKind.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.dstu3.model.ImplementationGuide convertImplementationGuide(org.hl7.fhir.dstu2.model.ImplementationGuide src) throws FHIRException {

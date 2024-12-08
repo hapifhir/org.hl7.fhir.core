@@ -11,6 +11,9 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown4
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4b.model.ExampleScenario;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -160,41 +163,49 @@ public class ExampleScenario43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ExampleScenarioActorType> convertExampleScenarioActorType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ExampleScenarioActorType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ExampleScenarioActorTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PERSON:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ExampleScenarioActorType.PERSON);
-        break;
-      case ENTITY:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ExampleScenarioActorType.SYSTEM);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ExampleScenarioActorType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Enumerations.ExampleScenarioActorType> tgt = new Enumeration<>(new Enumerations.ExampleScenarioActorTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PERSON:
+                  tgt.setValue(Enumerations.ExampleScenarioActorType.PERSON);
+                  break;
+              case ENTITY:
+                  tgt.setValue(Enumerations.ExampleScenarioActorType.SYSTEM);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.ExampleScenarioActorType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorType> convertExampleScenarioActorType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ExampleScenarioActorType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PERSON:
-        tgt.setValue(org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorType.PERSON);
-        break;
-      case SYSTEM:
-        tgt.setValue(org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorType.ENTITY);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<ExampleScenario.ExampleScenarioActorType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new ExampleScenario.ExampleScenarioActorTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PERSON:
+                  tgt.setValue(ExampleScenario.ExampleScenarioActorType.PERSON);
+                  break;
+              case SYSTEM:
+                  tgt.setValue(ExampleScenario.ExampleScenarioActorType.ENTITY);
+                  break;
+              default:
+                  tgt.setValue(ExampleScenario.ExampleScenarioActorType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceComponent convertExampleScenarioInstanceComponent(org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioInstanceComponent src) throws FHIRException {

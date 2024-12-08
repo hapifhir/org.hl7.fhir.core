@@ -6,6 +6,7 @@ import org.hl7.fhir.convertors.context.ConversionContext14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Decimal14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.UnsignedInt14_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Timing;
 
 public class Timing14_50 {
   public static org.hl7.fhir.r5.model.Timing convertTiming(org.hl7.fhir.dstu2016may.model.Timing src) throws FHIRException {
@@ -75,35 +76,35 @@ public class Timing14_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.UnitsOfTime> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Timing.UnitsOfTimeEnumFactory());
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.Timing.UnitsOfTime.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case S:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.UnitsOfTime.S);
-          break;
-        case MIN:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.UnitsOfTime.MIN);
-          break;
-        case H:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.UnitsOfTime.H);
-          break;
-        case D:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.UnitsOfTime.D);
-          break;
-        case WK:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.UnitsOfTime.WK);
-          break;
-        case MO:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.UnitsOfTime.MO);
-          break;
-        case A:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.UnitsOfTime.A);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.UnitsOfTime.NULL);
-          break;
-      }
-    }
+            tgt.setValue(Timing.UnitsOfTime.S);
+            break;
+          case MIN:
+            tgt.setValue(Timing.UnitsOfTime.MIN);
+            break;
+          case H:
+            tgt.setValue(Timing.UnitsOfTime.H);
+            break;
+          case D:
+            tgt.setValue(Timing.UnitsOfTime.D);
+            break;
+          case WK:
+            tgt.setValue(Timing.UnitsOfTime.WK);
+            break;
+          case MO:
+            tgt.setValue(Timing.UnitsOfTime.MO);
+            break;
+          case A:
+            tgt.setValue(Timing.UnitsOfTime.A);
+            break;
+          default:
+            tgt.setValue(Timing.UnitsOfTime.NULL);
+            break;
+       }
+}
     return tgt;
   }
 
@@ -112,35 +113,35 @@ public class Timing14_50 {
     org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTimeEnumFactory());
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case S:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.S);
-          break;
-        case MIN:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.MIN);
-          break;
-        case H:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.H);
-          break;
-        case D:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.D);
-          break;
-        case WK:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.WK);
-          break;
-        case MO:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.MO);
-          break;
-        case A:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.A);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.NULL);
-          break;
-      }
-    }
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.S);
+            break;
+          case MIN:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.MIN);
+            break;
+          case H:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.H);
+            break;
+          case D:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.D);
+            break;
+          case WK:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.WK);
+            break;
+          case MO:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.MO);
+            break;
+          case A:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.A);
+            break;
+          default:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.NULL);
+            break;
+       }
+}
     return tgt;
   }
 
@@ -149,56 +150,56 @@ public class Timing14_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.EventTiming> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Timing.EventTimingEnumFactory());
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case HS:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.HS);
-          break;
-        case WAKE:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.WAKE);
-          break;
-        case C:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.C);
-          break;
-        case CM:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.CM);
-          break;
-        case CD:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.CD);
-          break;
-        case CV:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.CV);
-          break;
-        case AC:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.AC);
-          break;
-        case ACM:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.ACM);
-          break;
-        case ACD:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.ACD);
-          break;
-        case ACV:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.ACV);
-          break;
-        case PC:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.PC);
-          break;
-        case PCM:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.PCM);
-          break;
-        case PCD:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.PCD);
-          break;
-        case PCV:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.PCV);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.NULL);
-          break;
-      }
-    }
+            tgt.setValue(Timing.EventTiming.HS);
+            break;
+          case WAKE:
+            tgt.setValue(Timing.EventTiming.WAKE);
+            break;
+          case C:
+            tgt.setValue(Timing.EventTiming.C);
+            break;
+          case CM:
+            tgt.setValue(Timing.EventTiming.CM);
+            break;
+          case CD:
+            tgt.setValue(Timing.EventTiming.CD);
+            break;
+          case CV:
+            tgt.setValue(Timing.EventTiming.CV);
+            break;
+          case AC:
+            tgt.setValue(Timing.EventTiming.AC);
+            break;
+          case ACM:
+            tgt.setValue(Timing.EventTiming.ACM);
+            break;
+          case ACD:
+            tgt.setValue(Timing.EventTiming.ACD);
+            break;
+          case ACV:
+            tgt.setValue(Timing.EventTiming.ACV);
+            break;
+          case PC:
+            tgt.setValue(Timing.EventTiming.PC);
+            break;
+          case PCM:
+            tgt.setValue(Timing.EventTiming.PCM);
+            break;
+          case PCD:
+            tgt.setValue(Timing.EventTiming.PCD);
+            break;
+          case PCV:
+            tgt.setValue(Timing.EventTiming.PCV);
+            break;
+          default:
+            tgt.setValue(Timing.EventTiming.NULL);
+            break;
+       }
+}
     return tgt;
   }
 
@@ -207,56 +208,56 @@ public class Timing14_50 {
     org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Timing.EventTiming> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Timing.EventTimingEnumFactory());
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case HS:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.HS);
-          break;
-        case WAKE:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.WAKE);
-          break;
-        case C:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.C);
-          break;
-        case CM:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.CM);
-          break;
-        case CD:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.CD);
-          break;
-        case CV:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.CV);
-          break;
-        case AC:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.AC);
-          break;
-        case ACM:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.ACM);
-          break;
-        case ACD:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.ACD);
-          break;
-        case ACV:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.ACV);
-          break;
-        case PC:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.PC);
-          break;
-        case PCM:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.PCM);
-          break;
-        case PCD:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.PCD);
-          break;
-        case PCV:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.PCV);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.NULL);
-          break;
-      }
-    }
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.HS);
+            break;
+          case WAKE:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.WAKE);
+            break;
+          case C:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.C);
+            break;
+          case CM:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.CM);
+            break;
+          case CD:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.CD);
+            break;
+          case CV:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.CV);
+            break;
+          case AC:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.AC);
+            break;
+          case ACM:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.ACM);
+            break;
+          case ACD:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.ACD);
+            break;
+          case ACV:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.ACV);
+            break;
+          case PC:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.PC);
+            break;
+          case PCM:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.PCM);
+            break;
+          case PCD:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.PCD);
+            break;
+          case PCV:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.PCV);
+            break;
+          default:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.NULL);
+            break;
+       }
+}
     return tgt;
   }
 }

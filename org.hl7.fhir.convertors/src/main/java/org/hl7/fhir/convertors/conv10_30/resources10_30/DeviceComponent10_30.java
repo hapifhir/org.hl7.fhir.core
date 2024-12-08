@@ -6,6 +6,8 @@ import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Codeab
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Identifier10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Instant10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.String10_30;
+import org.hl7.fhir.dstu3.model.DeviceComponent;
+import org.hl7.fhir.dstu3.model.Enumeration;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class DeviceComponent10_30 {
@@ -95,94 +97,102 @@ public class DeviceComponent10_30 {
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple> convertMeasmntPrinciple(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrincipleEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case OTHER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple.OTHER);
-        break;
-      case CHEMICAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple.CHEMICAL);
-        break;
-      case ELECTRICAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple.ELECTRICAL);
-        break;
-      case IMPEDANCE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple.IMPEDANCE);
-        break;
-      case NUCLEAR:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple.NUCLEAR);
-        break;
-      case OPTICAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple.OPTICAL);
-        break;
-      case THERMAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple.THERMAL);
-        break;
-      case BIOLOGICAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple.BIOLOGICAL);
-        break;
-      case MECHANICAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple.MECHANICAL);
-        break;
-      case ACOUSTICAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple.ACOUSTICAL);
-        break;
-      case MANUAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple.MANUAL);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<DeviceComponent.MeasmntPrinciple> tgt = new Enumeration<>(new DeviceComponent.MeasmntPrincipleEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case OTHER:
+                  tgt.setValue(DeviceComponent.MeasmntPrinciple.OTHER);
+                  break;
+              case CHEMICAL:
+                  tgt.setValue(DeviceComponent.MeasmntPrinciple.CHEMICAL);
+                  break;
+              case ELECTRICAL:
+                  tgt.setValue(DeviceComponent.MeasmntPrinciple.ELECTRICAL);
+                  break;
+              case IMPEDANCE:
+                  tgt.setValue(DeviceComponent.MeasmntPrinciple.IMPEDANCE);
+                  break;
+              case NUCLEAR:
+                  tgt.setValue(DeviceComponent.MeasmntPrinciple.NUCLEAR);
+                  break;
+              case OPTICAL:
+                  tgt.setValue(DeviceComponent.MeasmntPrinciple.OPTICAL);
+                  break;
+              case THERMAL:
+                  tgt.setValue(DeviceComponent.MeasmntPrinciple.THERMAL);
+                  break;
+              case BIOLOGICAL:
+                  tgt.setValue(DeviceComponent.MeasmntPrinciple.BIOLOGICAL);
+                  break;
+              case MECHANICAL:
+                  tgt.setValue(DeviceComponent.MeasmntPrinciple.MECHANICAL);
+                  break;
+              case ACOUSTICAL:
+                  tgt.setValue(DeviceComponent.MeasmntPrinciple.ACOUSTICAL);
+                  break;
+              case MANUAL:
+                  tgt.setValue(DeviceComponent.MeasmntPrinciple.MANUAL);
+                  break;
+              default:
+                  tgt.setValue(DeviceComponent.MeasmntPrinciple.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple> convertMeasmntPrinciple(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrincipleEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case OTHER:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.OTHER);
-        break;
-      case CHEMICAL:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.CHEMICAL);
-        break;
-      case ELECTRICAL:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.ELECTRICAL);
-        break;
-      case IMPEDANCE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.IMPEDANCE);
-        break;
-      case NUCLEAR:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.NUCLEAR);
-        break;
-      case OPTICAL:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.OPTICAL);
-        break;
-      case THERMAL:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.THERMAL);
-        break;
-      case BIOLOGICAL:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.BIOLOGICAL);
-        break;
-      case MECHANICAL:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.MECHANICAL);
-        break;
-      case ACOUSTICAL:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.ACOUSTICAL);
-        break;
-      case MANUAL:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.MANUAL);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrincipleEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case OTHER:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.OTHER);
+                  break;
+              case CHEMICAL:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.CHEMICAL);
+                  break;
+              case ELECTRICAL:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.ELECTRICAL);
+                  break;
+              case IMPEDANCE:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.IMPEDANCE);
+                  break;
+              case NUCLEAR:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.NUCLEAR);
+                  break;
+              case OPTICAL:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.OPTICAL);
+                  break;
+              case THERMAL:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.THERMAL);
+                  break;
+              case BIOLOGICAL:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.BIOLOGICAL);
+                  break;
+              case MECHANICAL:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.MECHANICAL);
+                  break;
+              case ACOUSTICAL:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.ACOUSTICAL);
+                  break;
+              case MANUAL:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.MANUAL);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

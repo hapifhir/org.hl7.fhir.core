@@ -5,6 +5,7 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Reference10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Uri10_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Identifier;
 
 public class Identifier10_40 {
   public static org.hl7.fhir.r4.model.Identifier convertIdentifier(org.hl7.fhir.dstu2.model.Identifier src) throws FHIRException {
@@ -38,26 +39,26 @@ public class Identifier10_40 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Identifier.IdentifierUse> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Identifier.IdentifierUseEnumFactory());
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case USUAL:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.USUAL);
-          break;
-        case OFFICIAL:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.OFFICIAL);
-          break;
-        case TEMP:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.TEMP);
-          break;
-        case SECONDARY:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.SECONDARY);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4.model.Identifier.IdentifierUse.NULL);
-          break;
-      }
-    }
+                    tgt.setValue(Identifier.IdentifierUse.USUAL);
+                    break;
+                case OFFICIAL:
+                    tgt.setValue(Identifier.IdentifierUse.OFFICIAL);
+                    break;
+                case TEMP:
+                    tgt.setValue(Identifier.IdentifierUse.TEMP);
+                    break;
+                case SECONDARY:
+                    tgt.setValue(Identifier.IdentifierUse.SECONDARY);
+                    break;
+                default:
+                    tgt.setValue(Identifier.IdentifierUse.NULL);
+                    break;
+       }
+}
     return tgt;
   }
 
@@ -66,26 +67,26 @@ public class Identifier10_40 {
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Identifier.IdentifierUse> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Identifier.IdentifierUseEnumFactory());
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2.model.Identifier.IdentifierUse.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case USUAL:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Identifier.IdentifierUse.USUAL);
-          break;
-        case OFFICIAL:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Identifier.IdentifierUse.OFFICIAL);
-          break;
-        case TEMP:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Identifier.IdentifierUse.TEMP);
-          break;
-        case SECONDARY:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Identifier.IdentifierUse.SECONDARY);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.Identifier.IdentifierUse.NULL);
-          break;
-      }
-    }
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Identifier.IdentifierUse.USUAL);
+                    break;
+                case OFFICIAL:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Identifier.IdentifierUse.OFFICIAL);
+                    break;
+                case TEMP:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Identifier.IdentifierUse.TEMP);
+                    break;
+                case SECONDARY:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Identifier.IdentifierUse.SECONDARY);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.Identifier.IdentifierUse.NULL);
+                    break;
+       }
+}
     return tgt;
   }
 }

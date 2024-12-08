@@ -19,6 +19,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.Contract;
+import org.hl7.fhir.r5.model.Enumeration;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -188,119 +190,127 @@ public class Contract43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes> convertContractStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodesEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case AMENDED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.AMENDED);
-        break;
-      case APPENDED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.APPENDED);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.CANCELLED);
-        break;
-      case DISPUTED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.DISPUTED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.ENTEREDINERROR);
-        break;
-      case EXECUTABLE:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.EXECUTABLE);
-        break;
-      case EXECUTED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.EXECUTED);
-        break;
-      case NEGOTIABLE:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.NEGOTIABLE);
-        break;
-      case OFFERED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.OFFERED);
-        break;
-      case POLICY:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.POLICY);
-        break;
-      case REJECTED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.REJECTED);
-        break;
-      case RENEWED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.RENEWED);
-        break;
-      case REVOKED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.REVOKED);
-        break;
-      case RESOLVED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.RESOLVED);
-        break;
-      case TERMINATED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.TERMINATED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Contract.ContractResourceStatusCodes> tgt = new Enumeration<>(new Contract.ContractResourceStatusCodesEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case AMENDED:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.AMENDED);
+                  break;
+              case APPENDED:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.APPENDED);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.CANCELLED);
+                  break;
+              case DISPUTED:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.DISPUTED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.ENTEREDINERROR);
+                  break;
+              case EXECUTABLE:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.EXECUTABLE);
+                  break;
+              case EXECUTED:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.EXECUTED);
+                  break;
+              case NEGOTIABLE:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.NEGOTIABLE);
+                  break;
+              case OFFERED:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.OFFERED);
+                  break;
+              case POLICY:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.POLICY);
+                  break;
+              case REJECTED:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.REJECTED);
+                  break;
+              case RENEWED:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.RENEWED);
+                  break;
+              case REVOKED:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.REVOKED);
+                  break;
+              case RESOLVED:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.RESOLVED);
+                  break;
+              case TERMINATED:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.TERMINATED);
+                  break;
+              default:
+                  tgt.setValue(Contract.ContractResourceStatusCodes.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes> convertContractStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Contract.ContractResourceStatusCodes> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodesEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case AMENDED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.AMENDED);
-        break;
-      case APPENDED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.APPENDED);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.CANCELLED);
-        break;
-      case DISPUTED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.DISPUTED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.ENTEREDINERROR);
-        break;
-      case EXECUTABLE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.EXECUTABLE);
-        break;
-      case EXECUTED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.EXECUTED);
-        break;
-      case NEGOTIABLE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.NEGOTIABLE);
-        break;
-      case OFFERED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.OFFERED);
-        break;
-      case POLICY:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.POLICY);
-        break;
-      case REJECTED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.REJECTED);
-        break;
-      case RENEWED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.RENEWED);
-        break;
-      case REVOKED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.REVOKED);
-        break;
-      case RESOLVED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.RESOLVED);
-        break;
-      case TERMINATED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.TERMINATED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodesEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case AMENDED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.AMENDED);
+                  break;
+              case APPENDED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.APPENDED);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.CANCELLED);
+                  break;
+              case DISPUTED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.DISPUTED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.ENTEREDINERROR);
+                  break;
+              case EXECUTABLE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.EXECUTABLE);
+                  break;
+              case EXECUTED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.EXECUTED);
+                  break;
+              case NEGOTIABLE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.NEGOTIABLE);
+                  break;
+              case OFFERED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.OFFERED);
+                  break;
+              case POLICY:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.POLICY);
+                  break;
+              case REJECTED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.REJECTED);
+                  break;
+              case RENEWED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.RENEWED);
+                  break;
+              case REVOKED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.REVOKED);
+                  break;
+              case RESOLVED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.RESOLVED);
+                  break;
+              case TERMINATED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.TERMINATED);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourceStatusCodes.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.Contract.ContentDefinitionComponent convertContentDefinitionComponent(org.hl7.fhir.r4b.model.Contract.ContentDefinitionComponent src) throws FHIRException {
@@ -344,119 +354,127 @@ public class Contract43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes> convertContractPublicationStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodesEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case AMENDED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.AMENDED);
-        break;
-      case APPENDED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.APPENDED);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.CANCELLED);
-        break;
-      case DISPUTED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.DISPUTED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.ENTEREDINERROR);
-        break;
-      case EXECUTABLE:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.EXECUTABLE);
-        break;
-      case EXECUTED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.EXECUTED);
-        break;
-      case NEGOTIABLE:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.NEGOTIABLE);
-        break;
-      case OFFERED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.OFFERED);
-        break;
-      case POLICY:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.POLICY);
-        break;
-      case REJECTED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.REJECTED);
-        break;
-      case RENEWED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.RENEWED);
-        break;
-      case REVOKED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.REVOKED);
-        break;
-      case RESOLVED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.RESOLVED);
-        break;
-      case TERMINATED:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.TERMINATED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Contract.ContractResourcePublicationStatusCodes> tgt = new Enumeration<>(new Contract.ContractResourcePublicationStatusCodesEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case AMENDED:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.AMENDED);
+                  break;
+              case APPENDED:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.APPENDED);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.CANCELLED);
+                  break;
+              case DISPUTED:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.DISPUTED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.ENTEREDINERROR);
+                  break;
+              case EXECUTABLE:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.EXECUTABLE);
+                  break;
+              case EXECUTED:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.EXECUTED);
+                  break;
+              case NEGOTIABLE:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.NEGOTIABLE);
+                  break;
+              case OFFERED:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.OFFERED);
+                  break;
+              case POLICY:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.POLICY);
+                  break;
+              case REJECTED:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.REJECTED);
+                  break;
+              case RENEWED:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.RENEWED);
+                  break;
+              case REVOKED:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.REVOKED);
+                  break;
+              case RESOLVED:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.RESOLVED);
+                  break;
+              case TERMINATED:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.TERMINATED);
+                  break;
+              default:
+                  tgt.setValue(Contract.ContractResourcePublicationStatusCodes.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes> convertContractPublicationStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Contract.ContractResourcePublicationStatusCodes> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodesEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case AMENDED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.AMENDED);
-        break;
-      case APPENDED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.APPENDED);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.CANCELLED);
-        break;
-      case DISPUTED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.DISPUTED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.ENTEREDINERROR);
-        break;
-      case EXECUTABLE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.EXECUTABLE);
-        break;
-      case EXECUTED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.EXECUTED);
-        break;
-      case NEGOTIABLE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.NEGOTIABLE);
-        break;
-      case OFFERED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.OFFERED);
-        break;
-      case POLICY:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.POLICY);
-        break;
-      case REJECTED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.REJECTED);
-        break;
-      case RENEWED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.RENEWED);
-        break;
-      case REVOKED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.REVOKED);
-        break;
-      case RESOLVED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.RESOLVED);
-        break;
-      case TERMINATED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.TERMINATED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodesEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case AMENDED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.AMENDED);
+                  break;
+              case APPENDED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.APPENDED);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.CANCELLED);
+                  break;
+              case DISPUTED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.DISPUTED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.ENTEREDINERROR);
+                  break;
+              case EXECUTABLE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.EXECUTABLE);
+                  break;
+              case EXECUTED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.EXECUTED);
+                  break;
+              case NEGOTIABLE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.NEGOTIABLE);
+                  break;
+              case OFFERED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.OFFERED);
+                  break;
+              case POLICY:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.POLICY);
+                  break;
+              case REJECTED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.REJECTED);
+                  break;
+              case RENEWED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.RENEWED);
+                  break;
+              case REVOKED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.REVOKED);
+                  break;
+              case RESOLVED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.RESOLVED);
+                  break;
+              case TERMINATED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.TERMINATED);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Contract.ContractResourcePublicationStatusCodes.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.Contract.TermComponent convertTermComponent(org.hl7.fhir.r4b.model.Contract.TermComponent src) throws FHIRException {

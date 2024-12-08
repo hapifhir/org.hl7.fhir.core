@@ -7,6 +7,8 @@ import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Code
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.DateTime14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.String14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Uri14_40;
+import org.hl7.fhir.dstu2016may.model.CompartmentDefinition;
+import org.hl7.fhir.dstu2016may.model.Enumeration;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class CompartmentDefinition14_40 {
@@ -126,58 +128,66 @@ public class CompartmentDefinition14_40 {
   }
 
   static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType> convertCompartmentType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentTypeEnumFactory());
-    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PATIENT:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.PATIENT);
-        break;
-      case ENCOUNTER:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.ENCOUNTER);
-        break;
-      case RELATEDPERSON:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.RELATEDPERSON);
-        break;
-      case PRACTITIONER:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.PRACTITIONER);
-        break;
-      case DEVICE:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.DEVICE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<CompartmentDefinition.CompartmentType> tgt = new Enumeration<>(new CompartmentDefinition.CompartmentTypeEnumFactory());
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PATIENT:
+                  tgt.setValue(CompartmentDefinition.CompartmentType.PATIENT);
+                  break;
+              case ENCOUNTER:
+                  tgt.setValue(CompartmentDefinition.CompartmentType.ENCOUNTER);
+                  break;
+              case RELATEDPERSON:
+                  tgt.setValue(CompartmentDefinition.CompartmentType.RELATEDPERSON);
+                  break;
+              case PRACTITIONER:
+                  tgt.setValue(CompartmentDefinition.CompartmentType.PRACTITIONER);
+                  break;
+              case DEVICE:
+                  tgt.setValue(CompartmentDefinition.CompartmentType.DEVICE);
+                  break;
+              default:
+                  tgt.setValue(CompartmentDefinition.CompartmentType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType> convertCompartmentType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.CompartmentDefinition.CompartmentType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentTypeEnumFactory());
-    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PATIENT:
-        tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.PATIENT);
-        break;
-      case ENCOUNTER:
-        tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.ENCOUNTER);
-        break;
-      case RELATEDPERSON:
-        tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.RELATEDPERSON);
-        break;
-      case PRACTITIONER:
-        tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.PRACTITIONER);
-        break;
-      case DEVICE:
-        tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.DEVICE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentTypeEnumFactory());
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PATIENT:
+                  tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.PATIENT);
+                  break;
+              case ENCOUNTER:
+                  tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.ENCOUNTER);
+                  break;
+              case RELATEDPERSON:
+                  tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.RELATEDPERSON);
+                  break;
+              case PRACTITIONER:
+                  tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.PRACTITIONER);
+                  break;
+              case DEVICE:
+                  tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.DEVICE);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

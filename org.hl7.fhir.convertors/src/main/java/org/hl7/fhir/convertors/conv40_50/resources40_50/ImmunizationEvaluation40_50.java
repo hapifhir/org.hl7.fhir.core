@@ -7,6 +7,8 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.ImmunizationEvaluation;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -108,40 +110,48 @@ public class ImmunizationEvaluation40_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes> convertImmunizationEvaluationStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodesEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<ImmunizationEvaluation.ImmunizationEvaluationStatusCodes> tgt = new Enumeration<>(new ImmunizationEvaluation.ImmunizationEvaluationStatusCodesEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case COMPLETED:
+                  tgt.setValue(ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus> convertImmunizationEvaluationStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImmunizationEvaluation.ImmunizationEvaluationStatusCodes> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatusEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case COMPLETED:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImmunizationEvaluation.ImmunizationEvaluationStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

@@ -6,6 +6,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier4
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Period43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.EpisodeOfCare;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -99,71 +101,79 @@ public class EpisodeOfCare43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatus> convertEpisodeOfCareStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PLANNED:
-        tgt.setValue(org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatus.PLANNED);
-        break;
-      case WAITLIST:
-        tgt.setValue(org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatus.WAITLIST);
-        break;
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatus.ACTIVE);
-        break;
-      case ONHOLD:
-        tgt.setValue(org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatus.ONHOLD);
-        break;
-      case FINISHED:
-        tgt.setValue(org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatus.FINISHED);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatus.CANCELLED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<EpisodeOfCare.EpisodeOfCareStatus> tgt = new Enumeration<>(new EpisodeOfCare.EpisodeOfCareStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PLANNED:
+                  tgt.setValue(EpisodeOfCare.EpisodeOfCareStatus.PLANNED);
+                  break;
+              case WAITLIST:
+                  tgt.setValue(EpisodeOfCare.EpisodeOfCareStatus.WAITLIST);
+                  break;
+              case ACTIVE:
+                  tgt.setValue(EpisodeOfCare.EpisodeOfCareStatus.ACTIVE);
+                  break;
+              case ONHOLD:
+                  tgt.setValue(EpisodeOfCare.EpisodeOfCareStatus.ONHOLD);
+                  break;
+              case FINISHED:
+                  tgt.setValue(EpisodeOfCare.EpisodeOfCareStatus.FINISHED);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(EpisodeOfCare.EpisodeOfCareStatus.CANCELLED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(EpisodeOfCare.EpisodeOfCareStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(EpisodeOfCare.EpisodeOfCareStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus> convertEpisodeOfCareStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PLANNED:
-        tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.PLANNED);
-        break;
-      case WAITLIST:
-        tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.WAITLIST);
-        break;
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.ACTIVE);
-        break;
-      case ONHOLD:
-        tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.ONHOLD);
-        break;
-      case FINISHED:
-        tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.FINISHED);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.CANCELLED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PLANNED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.PLANNED);
+                  break;
+              case WAITLIST:
+                  tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.WAITLIST);
+                  break;
+              case ACTIVE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.ACTIVE);
+                  break;
+              case ONHOLD:
+                  tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.ONHOLD);
+                  break;
+              case FINISHED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.FINISHED);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.CANCELLED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent convertEpisodeOfCareStatusHistoryComponent(org.hl7.fhir.r4b.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent src) throws FHIRException {

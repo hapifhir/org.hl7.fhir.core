@@ -21,6 +21,7 @@ import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.MarkdownType;
 import org.hl7.fhir.r4.model.UrlType;
 import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -415,53 +416,61 @@ public class ImplementationGuide40_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration> convertGuidePageGeneration(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGenerationEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case HTML:
-        tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.HTML);
-        break;
-      case MARKDOWN:
-        tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.MARKDOWN);
-        break;
-      case XML:
-        tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.XML);
-        break;
-      case GENERATED:
-        tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.GENERATED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<ImplementationGuide.GuidePageGeneration> tgt = new Enumeration<>(new ImplementationGuide.GuidePageGenerationEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case HTML:
+                  tgt.setValue(ImplementationGuide.GuidePageGeneration.HTML);
+                  break;
+              case MARKDOWN:
+                  tgt.setValue(ImplementationGuide.GuidePageGeneration.MARKDOWN);
+                  break;
+              case XML:
+                  tgt.setValue(ImplementationGuide.GuidePageGeneration.XML);
+                  break;
+              case GENERATED:
+                  tgt.setValue(ImplementationGuide.GuidePageGeneration.GENERATED);
+                  break;
+              default:
+                  tgt.setValue(ImplementationGuide.GuidePageGeneration.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration> convertGuidePageGeneration(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGenerationEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case HTML:
-        tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.HTML);
-        break;
-      case MARKDOWN:
-        tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.MARKDOWN);
-        break;
-      case XML:
-        tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.XML);
-        break;
-      case GENERATED:
-        tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.GENERATED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGenerationEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case HTML:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.HTML);
+                  break;
+              case MARKDOWN:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.MARKDOWN);
+                  break;
+              case XML:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.XML);
+                  break;
+              case GENERATED:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.GENERATED);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent convertImplementationGuideDefinitionParameterComponent(org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent src) throws FHIRException {

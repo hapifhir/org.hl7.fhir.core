@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50;
 import org.hl7.fhir.convertors.context.ConversionContext10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.HumanName;
 
 public class HumanName10_50 {
   public static org.hl7.fhir.r5.model.HumanName convertHumanName(org.hl7.fhir.dstu2.model.HumanName src) throws FHIRException {
@@ -38,35 +39,35 @@ public class HumanName10_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.HumanName.NameUse> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.HumanName.NameUseEnumFactory());
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.HumanName.NameUse.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case USUAL:
-          tgt.setValue(org.hl7.fhir.r5.model.HumanName.NameUse.USUAL);
-          break;
-        case OFFICIAL:
-          tgt.setValue(org.hl7.fhir.r5.model.HumanName.NameUse.OFFICIAL);
-          break;
-        case TEMP:
-          tgt.setValue(org.hl7.fhir.r5.model.HumanName.NameUse.TEMP);
-          break;
-        case NICKNAME:
-          tgt.setValue(org.hl7.fhir.r5.model.HumanName.NameUse.NICKNAME);
-          break;
-        case ANONYMOUS:
-          tgt.setValue(org.hl7.fhir.r5.model.HumanName.NameUse.ANONYMOUS);
-          break;
-        case OLD:
-          tgt.setValue(org.hl7.fhir.r5.model.HumanName.NameUse.OLD);
-          break;
-        case MAIDEN:
-          tgt.setValue(org.hl7.fhir.r5.model.HumanName.NameUse.MAIDEN);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r5.model.HumanName.NameUse.NULL);
-          break;
-      }
-    }
+                    tgt.setValue(HumanName.NameUse.USUAL);
+                    break;
+                case OFFICIAL:
+                    tgt.setValue(HumanName.NameUse.OFFICIAL);
+                    break;
+                case TEMP:
+                    tgt.setValue(HumanName.NameUse.TEMP);
+                    break;
+                case NICKNAME:
+                    tgt.setValue(HumanName.NameUse.NICKNAME);
+                    break;
+                case ANONYMOUS:
+                    tgt.setValue(HumanName.NameUse.ANONYMOUS);
+                    break;
+                case OLD:
+                    tgt.setValue(HumanName.NameUse.OLD);
+                    break;
+                case MAIDEN:
+                    tgt.setValue(HumanName.NameUse.MAIDEN);
+                    break;
+                default:
+                    tgt.setValue(HumanName.NameUse.NULL);
+                    break;
+       }
+}
     return tgt;
   }
 
@@ -75,35 +76,35 @@ public class HumanName10_50 {
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.HumanName.NameUse> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.HumanName.NameUseEnumFactory());
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case USUAL:
-          tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.USUAL);
-          break;
-        case OFFICIAL:
-          tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.OFFICIAL);
-          break;
-        case TEMP:
-          tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.TEMP);
-          break;
-        case NICKNAME:
-          tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.NICKNAME);
-          break;
-        case ANONYMOUS:
-          tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.ANONYMOUS);
-          break;
-        case OLD:
-          tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.OLD);
-          break;
-        case MAIDEN:
-          tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.MAIDEN);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.NULL);
-          break;
-      }
-    }
+                    tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.USUAL);
+                    break;
+                case OFFICIAL:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.OFFICIAL);
+                    break;
+                case TEMP:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.TEMP);
+                    break;
+                case NICKNAME:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.NICKNAME);
+                    break;
+                case ANONYMOUS:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.ANONYMOUS);
+                    break;
+                case OLD:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.OLD);
+                    break;
+                case MAIDEN:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.MAIDEN);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.dstu2.model.HumanName.NameUse.NULL);
+                    break;
+       }
+}
     return tgt;
   }
 }

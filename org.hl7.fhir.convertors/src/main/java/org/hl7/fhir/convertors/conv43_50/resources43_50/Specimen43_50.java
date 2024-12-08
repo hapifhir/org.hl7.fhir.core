@@ -10,6 +10,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime4
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Specimen;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -105,53 +107,61 @@ public class Specimen43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Specimen.SpecimenStatus> convertSpecimenStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Specimen.SpecimenStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Specimen.SpecimenStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Specimen.SpecimenStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case AVAILABLE:
-        tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.AVAILABLE);
-        break;
-      case UNAVAILABLE:
-        tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.UNAVAILABLE);
-        break;
-      case UNSATISFACTORY:
-        tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.UNSATISFACTORY);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Specimen.SpecimenStatus> tgt = new Enumeration<>(new Specimen.SpecimenStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case AVAILABLE:
+                  tgt.setValue(Specimen.SpecimenStatus.AVAILABLE);
+                  break;
+              case UNAVAILABLE:
+                  tgt.setValue(Specimen.SpecimenStatus.UNAVAILABLE);
+                  break;
+              case UNSATISFACTORY:
+                  tgt.setValue(Specimen.SpecimenStatus.UNSATISFACTORY);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Specimen.SpecimenStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(Specimen.SpecimenStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Specimen.SpecimenStatus> convertSpecimenStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Specimen.SpecimenStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Specimen.SpecimenStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Specimen.SpecimenStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case AVAILABLE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Specimen.SpecimenStatus.AVAILABLE);
-        break;
-      case UNAVAILABLE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Specimen.SpecimenStatus.UNAVAILABLE);
-        break;
-      case UNSATISFACTORY:
-        tgt.setValue(org.hl7.fhir.r4b.model.Specimen.SpecimenStatus.UNSATISFACTORY);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.Specimen.SpecimenStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Specimen.SpecimenStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Specimen.SpecimenStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Specimen.SpecimenStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case AVAILABLE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Specimen.SpecimenStatus.AVAILABLE);
+                  break;
+              case UNAVAILABLE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Specimen.SpecimenStatus.UNAVAILABLE);
+                  break;
+              case UNSATISFACTORY:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Specimen.SpecimenStatus.UNSATISFACTORY);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Specimen.SpecimenStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Specimen.SpecimenStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.Specimen.SpecimenCollectionComponent convertSpecimenCollectionComponent(org.hl7.fhir.r4b.model.Specimen.SpecimenCollectionComponent src) throws FHIRException {

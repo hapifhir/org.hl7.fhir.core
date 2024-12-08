@@ -6,6 +6,8 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Codeab
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Decimal30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
+import org.hl7.fhir.dstu3.model.Enumeration;
+import org.hl7.fhir.dstu3.model.RiskAssessment;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class RiskAssessment30_40 {
@@ -136,76 +138,84 @@ public class RiskAssessment30_40 {
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus> convertRiskAssessmentStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REGISTERED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.REGISTERED);
-        break;
-      case PRELIMINARY:
-        tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.PRELIMINARY);
-        break;
-      case FINAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.FINAL);
-        break;
-      case AMENDED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.AMENDED);
-        break;
-      case CORRECTED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.CORRECTED);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.CANCELLED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<RiskAssessment.RiskAssessmentStatus> tgt = new Enumeration<>(new RiskAssessment.RiskAssessmentStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case REGISTERED:
+                  tgt.setValue(RiskAssessment.RiskAssessmentStatus.REGISTERED);
+                  break;
+              case PRELIMINARY:
+                  tgt.setValue(RiskAssessment.RiskAssessmentStatus.PRELIMINARY);
+                  break;
+              case FINAL:
+                  tgt.setValue(RiskAssessment.RiskAssessmentStatus.FINAL);
+                  break;
+              case AMENDED:
+                  tgt.setValue(RiskAssessment.RiskAssessmentStatus.AMENDED);
+                  break;
+              case CORRECTED:
+                  tgt.setValue(RiskAssessment.RiskAssessmentStatus.CORRECTED);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(RiskAssessment.RiskAssessmentStatus.CANCELLED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(RiskAssessment.RiskAssessmentStatus.ENTEREDINERROR);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(RiskAssessment.RiskAssessmentStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(RiskAssessment.RiskAssessmentStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus> convertRiskAssessmentStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.RiskAssessment.RiskAssessmentStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REGISTERED:
-        tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.REGISTERED);
-        break;
-      case PRELIMINARY:
-        tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.PRELIMINARY);
-        break;
-      case FINAL:
-        tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.FINAL);
-        break;
-      case AMENDED:
-        tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.AMENDED);
-        break;
-      case CORRECTED:
-        tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.CORRECTED);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.CANCELLED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case REGISTERED:
+                  tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.REGISTERED);
+                  break;
+              case PRELIMINARY:
+                  tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.PRELIMINARY);
+                  break;
+              case FINAL:
+                  tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.FINAL);
+                  break;
+              case AMENDED:
+                  tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.AMENDED);
+                  break;
+              case CORRECTED:
+                  tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.CORRECTED);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.CANCELLED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.ENTEREDINERROR);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

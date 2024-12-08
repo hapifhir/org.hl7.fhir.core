@@ -8,6 +8,8 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Deci
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.MarkDown30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Uri30_40;
+import org.hl7.fhir.dstu3.model.Enumeration;
+import org.hl7.fhir.dstu3.model.TestReport;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class TestReport30_40 {
@@ -105,91 +107,107 @@ public class TestReport30_40 {
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestReport.TestReportParticipantType> convertTestReportParticipantType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TestReport.TestReportParticipantType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestReport.TestReportParticipantType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.TestReport.TestReportParticipantTypeEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case TESTENGINE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportParticipantType.TESTENGINE);
-        break;
-      case CLIENT:
-        tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportParticipantType.CLIENT);
-        break;
-      case SERVER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportParticipantType.SERVER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportParticipantType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<TestReport.TestReportParticipantType> tgt = new Enumeration<>(new TestReport.TestReportParticipantTypeEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case TESTENGINE:
+                  tgt.setValue(TestReport.TestReportParticipantType.TESTENGINE);
+                  break;
+              case CLIENT:
+                  tgt.setValue(TestReport.TestReportParticipantType.CLIENT);
+                  break;
+              case SERVER:
+                  tgt.setValue(TestReport.TestReportParticipantType.SERVER);
+                  break;
+              default:
+                  tgt.setValue(TestReport.TestReportParticipantType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TestReport.TestReportParticipantType> convertTestReportParticipantType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestReport.TestReportParticipantType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TestReport.TestReportParticipantType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TestReport.TestReportParticipantTypeEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case TESTENGINE:
-        tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportParticipantType.TESTENGINE);
-        break;
-      case CLIENT:
-        tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportParticipantType.CLIENT);
-        break;
-      case SERVER:
-        tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportParticipantType.SERVER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportParticipantType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TestReport.TestReportParticipantType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TestReport.TestReportParticipantTypeEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case TESTENGINE:
+                  tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportParticipantType.TESTENGINE);
+                  break;
+              case CLIENT:
+                  tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportParticipantType.CLIENT);
+                  break;
+              case SERVER:
+                  tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportParticipantType.SERVER);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportParticipantType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TestReport.TestReportResult> convertTestReportResult(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestReport.TestReportResult> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TestReport.TestReportResult> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TestReport.TestReportResultEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PASS:
-        tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportResult.PASS);
-        break;
-      case FAIL:
-        tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportResult.FAIL);
-        break;
-      case PENDING:
-        tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportResult.PENDING);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportResult.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TestReport.TestReportResult> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TestReport.TestReportResultEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PASS:
+                  tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportResult.PASS);
+                  break;
+              case FAIL:
+                  tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportResult.FAIL);
+                  break;
+              case PENDING:
+                  tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportResult.PENDING);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportResult.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestReport.TestReportResult> convertTestReportResult(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TestReport.TestReportResult> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestReport.TestReportResult> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.TestReport.TestReportResultEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PASS:
-        tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportResult.PASS);
-        break;
-      case FAIL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportResult.FAIL);
-        break;
-      case PENDING:
-        tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportResult.PENDING);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportResult.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<TestReport.TestReportResult> tgt = new Enumeration<>(new TestReport.TestReportResultEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PASS:
+                  tgt.setValue(TestReport.TestReportResult.PASS);
+                  break;
+              case FAIL:
+                  tgt.setValue(TestReport.TestReportResult.FAIL);
+                  break;
+              case PENDING:
+                  tgt.setValue(TestReport.TestReportResult.PENDING);
+                  break;
+              default:
+                  tgt.setValue(TestReport.TestReportResult.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r4.model.TestReport.TestReportSetupComponent convertTestReportSetupComponent(org.hl7.fhir.dstu3.model.TestReport.TestReportSetupComponent src) throws FHIRException {
@@ -213,59 +231,67 @@ public class TestReport30_40 {
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TestReport.TestReportStatus> convertTestReportStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestReport.TestReportStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TestReport.TestReportStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TestReport.TestReportStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportStatus.COMPLETED);
-        break;
-      case INPROGRESS:
-        tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportStatus.INPROGRESS);
-        break;
-      case WAITING:
-        tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportStatus.WAITING);
-        break;
-      case STOPPED:
-        tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportStatus.STOPPED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TestReport.TestReportStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TestReport.TestReportStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case COMPLETED:
+                  tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportStatus.COMPLETED);
+                  break;
+              case INPROGRESS:
+                  tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportStatus.INPROGRESS);
+                  break;
+              case WAITING:
+                  tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportStatus.WAITING);
+                  break;
+              case STOPPED:
+                  tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportStatus.STOPPED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestReport.TestReportStatus> convertTestReportStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TestReport.TestReportStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestReport.TestReportStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.TestReport.TestReportStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportStatus.COMPLETED);
-        break;
-      case INPROGRESS:
-        tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportStatus.INPROGRESS);
-        break;
-      case WAITING:
-        tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportStatus.WAITING);
-        break;
-      case STOPPED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportStatus.STOPPED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<TestReport.TestReportStatus> tgt = new Enumeration<>(new TestReport.TestReportStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case COMPLETED:
+                  tgt.setValue(TestReport.TestReportStatus.COMPLETED);
+                  break;
+              case INPROGRESS:
+                  tgt.setValue(TestReport.TestReportStatus.INPROGRESS);
+                  break;
+              case WAITING:
+                  tgt.setValue(TestReport.TestReportStatus.WAITING);
+                  break;
+              case STOPPED:
+                  tgt.setValue(TestReport.TestReportStatus.STOPPED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(TestReport.TestReportStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(TestReport.TestReportStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r4.model.TestReport.TestReportTeardownComponent convertTestReportTeardownComponent(org.hl7.fhir.dstu3.model.TestReport.TestReportTeardownComponent src) throws FHIRException {
@@ -359,29 +385,29 @@ public class TestReport30_40 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TestReport.TestReportActionResult> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TestReport.TestReportActionResultEnumFactory());
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case PASS:
-          tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.PASS);
-          break;
-        case SKIP:
-          tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.SKIP);
-          break;
-        case FAIL:
-          tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.FAIL);
-          break;
-        case WARNING:
-          tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.WARNING);
-          break;
-        case ERROR:
-          tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.ERROR);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.NULL);
-          break;
-      }
-    }
+                    tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.PASS);
+                    break;
+                case SKIP:
+                    tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.SKIP);
+                    break;
+                case FAIL:
+                    tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.FAIL);
+                    break;
+                case WARNING:
+                    tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.WARNING);
+                    break;
+                case ERROR:
+                    tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.ERROR);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.r4.model.TestReport.TestReportActionResult.NULL);
+                    break;
+       }
+}
     return tgt;
   }
 
@@ -390,29 +416,29 @@ public class TestReport30_40 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.TestReport.TestReportActionResult> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.TestReport.TestReportActionResultEnumFactory());
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportActionResult.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case PASS:
-          tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportActionResult.PASS);
-          break;
-        case SKIP:
-          tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportActionResult.SKIP);
-          break;
-        case FAIL:
-          tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportActionResult.FAIL);
-          break;
-        case WARNING:
-          tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportActionResult.WARNING);
-          break;
-        case ERROR:
-          tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportActionResult.ERROR);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu3.model.TestReport.TestReportActionResult.NULL);
-          break;
-      }
-    }
+                    tgt.setValue(TestReport.TestReportActionResult.PASS);
+                    break;
+                case SKIP:
+                    tgt.setValue(TestReport.TestReportActionResult.SKIP);
+                    break;
+                case FAIL:
+                    tgt.setValue(TestReport.TestReportActionResult.FAIL);
+                    break;
+                case WARNING:
+                    tgt.setValue(TestReport.TestReportActionResult.WARNING);
+                    break;
+                case ERROR:
+                    tgt.setValue(TestReport.TestReportActionResult.ERROR);
+                    break;
+                default:
+                    tgt.setValue(TestReport.TestReportActionResult.NULL);
+                    break;
+       }
+}
     return tgt;
   }
 

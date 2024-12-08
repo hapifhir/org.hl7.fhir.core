@@ -8,6 +8,8 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Period
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Boolean10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.UnsignedInt10_40;
+import org.hl7.fhir.dstu2.model.Enumeration;
+import org.hl7.fhir.dstu2.model.Group;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Group10_40 {
@@ -121,64 +123,72 @@ public class Group10_40 {
   }
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Group.GroupType> convertGroupType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Group.GroupType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Group.GroupType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Group.GroupTypeEnumFactory());
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PERSON:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Group.GroupType.PERSON);
-        break;
-      case ANIMAL:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Group.GroupType.ANIMAL);
-        break;
-      case PRACTITIONER:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Group.GroupType.PRACTITIONER);
-        break;
-      case DEVICE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Group.GroupType.DEVICE);
-        break;
-      case MEDICATION:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Group.GroupType.MEDICATION);
-        break;
-      case SUBSTANCE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Group.GroupType.SUBSTANCE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Group.GroupType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Group.GroupType> tgt = new Enumeration<>(new Group.GroupTypeEnumFactory());
+      ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PERSON:
+                  tgt.setValue(Group.GroupType.PERSON);
+                  break;
+              case ANIMAL:
+                  tgt.setValue(Group.GroupType.ANIMAL);
+                  break;
+              case PRACTITIONER:
+                  tgt.setValue(Group.GroupType.PRACTITIONER);
+                  break;
+              case DEVICE:
+                  tgt.setValue(Group.GroupType.DEVICE);
+                  break;
+              case MEDICATION:
+                  tgt.setValue(Group.GroupType.MEDICATION);
+                  break;
+              case SUBSTANCE:
+                  tgt.setValue(Group.GroupType.SUBSTANCE);
+                  break;
+              default:
+                  tgt.setValue(Group.GroupType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Group.GroupType> convertGroupType(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Group.GroupType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Group.GroupType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Group.GroupTypeEnumFactory());
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PERSON:
-        tgt.setValue(org.hl7.fhir.r4.model.Group.GroupType.PERSON);
-        break;
-      case ANIMAL:
-        tgt.setValue(org.hl7.fhir.r4.model.Group.GroupType.ANIMAL);
-        break;
-      case PRACTITIONER:
-        tgt.setValue(org.hl7.fhir.r4.model.Group.GroupType.PRACTITIONER);
-        break;
-      case DEVICE:
-        tgt.setValue(org.hl7.fhir.r4.model.Group.GroupType.DEVICE);
-        break;
-      case MEDICATION:
-        tgt.setValue(org.hl7.fhir.r4.model.Group.GroupType.MEDICATION);
-        break;
-      case SUBSTANCE:
-        tgt.setValue(org.hl7.fhir.r4.model.Group.GroupType.SUBSTANCE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.Group.GroupType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Group.GroupType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Group.GroupTypeEnumFactory());
+      ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PERSON:
+                  tgt.setValue(org.hl7.fhir.r4.model.Group.GroupType.PERSON);
+                  break;
+              case ANIMAL:
+                  tgt.setValue(org.hl7.fhir.r4.model.Group.GroupType.ANIMAL);
+                  break;
+              case PRACTITIONER:
+                  tgt.setValue(org.hl7.fhir.r4.model.Group.GroupType.PRACTITIONER);
+                  break;
+              case DEVICE:
+                  tgt.setValue(org.hl7.fhir.r4.model.Group.GroupType.DEVICE);
+                  break;
+              case MEDICATION:
+                  tgt.setValue(org.hl7.fhir.r4.model.Group.GroupType.MEDICATION);
+                  break;
+              case SUBSTANCE:
+                  tgt.setValue(org.hl7.fhir.r4.model.Group.GroupType.SUBSTANCE);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.Group.GroupType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

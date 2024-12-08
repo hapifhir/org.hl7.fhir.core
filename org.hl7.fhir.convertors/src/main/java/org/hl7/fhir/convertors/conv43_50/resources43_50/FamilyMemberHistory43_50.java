@@ -12,6 +12,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.FamilyMemberHistory;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -133,53 +135,61 @@ public class FamilyMemberHistory43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus> convertFamilyHistoryStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PARTIAL:
-        tgt.setValue(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.ENTEREDINERROR);
-        break;
-      case HEALTHUNKNOWN:
-        tgt.setValue(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.HEALTHUNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<FamilyMemberHistory.FamilyHistoryStatus> tgt = new Enumeration<>(new FamilyMemberHistory.FamilyHistoryStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PARTIAL:
+                  tgt.setValue(FamilyMemberHistory.FamilyHistoryStatus.PARTIAL);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(FamilyMemberHistory.FamilyHistoryStatus.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(FamilyMemberHistory.FamilyHistoryStatus.ENTEREDINERROR);
+                  break;
+              case HEALTHUNKNOWN:
+                  tgt.setValue(FamilyMemberHistory.FamilyHistoryStatus.HEALTHUNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(FamilyMemberHistory.FamilyHistoryStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatus> convertFamilyHistoryStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PARTIAL:
-        tgt.setValue(org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatus.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatus.ENTEREDINERROR);
-        break;
-      case HEALTHUNKNOWN:
-        tgt.setValue(org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatus.HEALTHUNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PARTIAL:
+                  tgt.setValue(org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatus.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatus.ENTEREDINERROR);
+                  break;
+              case HEALTHUNKNOWN:
+                  tgt.setValue(org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatus.HEALTHUNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyHistoryStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent convertFamilyMemberHistoryConditionComponent(org.hl7.fhir.r4b.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent src) throws FHIRException {

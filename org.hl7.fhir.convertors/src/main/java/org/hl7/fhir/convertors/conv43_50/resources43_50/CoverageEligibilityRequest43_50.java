@@ -13,6 +13,9 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.PositiveI
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CoverageEligibilityRequest;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -120,103 +123,119 @@ public class CoverageEligibilityRequest43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> convertEligibilityRequestStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodes> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodesEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED);
-        break;
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Enumerations.FinancialResourceStatusCodes> tgt = new Enumeration<>(new Enumerations.FinancialResourceStatusCodesEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(Enumerations.FinancialResourceStatusCodes.ACTIVE);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(Enumerations.FinancialResourceStatusCodes.CANCELLED);
+                  break;
+              case DRAFT:
+                  tgt.setValue(Enumerations.FinancialResourceStatusCodes.DRAFT);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.FinancialResourceStatusCodes.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodes> convertEligibilityRequestStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodes> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodesEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodes.ACTIVE);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodes.CANCELLED);
-        break;
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodes.DRAFT);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodes.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodes> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodesEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodes.ACTIVE);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodes.CANCELLED);
+                  break;
+              case DRAFT:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodes.DRAFT);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.FinancialResourceStatusCodes.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestPurpose> convertEligibilityRequestPurpose(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurpose> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestPurpose> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestPurposeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case AUTHREQUIREMENTS:
-        tgt.setValue(org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestPurpose.AUTHREQUIREMENTS);
-        break;
-      case BENEFITS:
-        tgt.setValue(org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestPurpose.BENEFITS);
-        break;
-      case DISCOVERY:
-        tgt.setValue(org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestPurpose.DISCOVERY);
-        break;
-      case VALIDATION:
-        tgt.setValue(org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestPurpose.VALIDATION);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestPurpose.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<CoverageEligibilityRequest.EligibilityRequestPurpose> tgt = new Enumeration<>(new CoverageEligibilityRequest.EligibilityRequestPurposeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case AUTHREQUIREMENTS:
+                  tgt.setValue(CoverageEligibilityRequest.EligibilityRequestPurpose.AUTHREQUIREMENTS);
+                  break;
+              case BENEFITS:
+                  tgt.setValue(CoverageEligibilityRequest.EligibilityRequestPurpose.BENEFITS);
+                  break;
+              case DISCOVERY:
+                  tgt.setValue(CoverageEligibilityRequest.EligibilityRequestPurpose.DISCOVERY);
+                  break;
+              case VALIDATION:
+                  tgt.setValue(CoverageEligibilityRequest.EligibilityRequestPurpose.VALIDATION);
+                  break;
+              default:
+                  tgt.setValue(CoverageEligibilityRequest.EligibilityRequestPurpose.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurpose> convertEligibilityRequestPurpose(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CoverageEligibilityRequest.EligibilityRequestPurpose> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurpose> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurposeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case AUTHREQUIREMENTS:
-        tgt.setValue(org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurpose.AUTHREQUIREMENTS);
-        break;
-      case BENEFITS:
-        tgt.setValue(org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurpose.BENEFITS);
-        break;
-      case DISCOVERY:
-        tgt.setValue(org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurpose.DISCOVERY);
-        break;
-      case VALIDATION:
-        tgt.setValue(org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurpose.VALIDATION);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurpose.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurpose> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurposeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case AUTHREQUIREMENTS:
+                  tgt.setValue(org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurpose.AUTHREQUIREMENTS);
+                  break;
+              case BENEFITS:
+                  tgt.setValue(org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurpose.BENEFITS);
+                  break;
+              case DISCOVERY:
+                  tgt.setValue(org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurpose.DISCOVERY);
+                  break;
+              case VALIDATION:
+                  tgt.setValue(org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurpose.VALIDATION);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.CoverageEligibilityRequest.EligibilityRequestPurpose.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.CoverageEligibilityRequest.SupportingInformationComponent convertSupportingInformationComponent(org.hl7.fhir.r4b.model.CoverageEligibilityRequest.SupportingInformationComponent src) throws FHIRException {

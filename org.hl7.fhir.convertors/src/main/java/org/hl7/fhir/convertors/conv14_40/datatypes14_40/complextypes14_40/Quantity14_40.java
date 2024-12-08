@@ -6,6 +6,7 @@ import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Deci
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.String14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Uri14_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Quantity;
 
 public class Quantity14_40 {
   public static org.hl7.fhir.r4.model.Quantity convertQuantity(org.hl7.fhir.dstu2016may.model.Quantity src) throws FHIRException {
@@ -37,26 +38,26 @@ public class Quantity14_40 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Quantity.QuantityComparator> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Quantity.QuantityComparatorEnumFactory());
     ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4.model.Quantity.QuantityComparator.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case LESS_THAN:
-          tgt.setValue(org.hl7.fhir.r4.model.Quantity.QuantityComparator.LESS_THAN);
-          break;
-        case LESS_OR_EQUAL:
-          tgt.setValue(org.hl7.fhir.r4.model.Quantity.QuantityComparator.LESS_OR_EQUAL);
-          break;
-        case GREATER_OR_EQUAL:
-          tgt.setValue(org.hl7.fhir.r4.model.Quantity.QuantityComparator.GREATER_OR_EQUAL);
-          break;
-        case GREATER_THAN:
-          tgt.setValue(org.hl7.fhir.r4.model.Quantity.QuantityComparator.GREATER_THAN);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4.model.Quantity.QuantityComparator.NULL);
-          break;
-      }
-    }
+            tgt.setValue(Quantity.QuantityComparator.LESS_THAN);
+            break;
+          case LESS_OR_EQUAL:
+            tgt.setValue(Quantity.QuantityComparator.LESS_OR_EQUAL);
+            break;
+          case GREATER_OR_EQUAL:
+            tgt.setValue(Quantity.QuantityComparator.GREATER_OR_EQUAL);
+            break;
+          case GREATER_THAN:
+            tgt.setValue(Quantity.QuantityComparator.GREATER_THAN);
+            break;
+          default:
+            tgt.setValue(Quantity.QuantityComparator.NULL);
+            break;
+       }
+}
     return tgt;
   }
 
@@ -65,26 +66,26 @@ public class Quantity14_40 {
     org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparatorEnumFactory());
     ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case LESS_THAN:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator.LESS_THAN);
-          break;
-        case LESS_OR_EQUAL:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator.LESS_OR_EQUAL);
-          break;
-        case GREATER_OR_EQUAL:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator.GREATER_OR_EQUAL);
-          break;
-        case GREATER_THAN:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator.GREATER_THAN);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator.NULL);
-          break;
-      }
-    }
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator.LESS_THAN);
+            break;
+          case LESS_OR_EQUAL:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator.LESS_OR_EQUAL);
+            break;
+          case GREATER_OR_EQUAL:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator.GREATER_OR_EQUAL);
+            break;
+          case GREATER_THAN:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator.GREATER_THAN);
+            break;
+          default:
+            tgt.setValue(org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator.NULL);
+            break;
+       }
+}
     return tgt;
   }
 }

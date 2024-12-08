@@ -9,6 +9,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -170,77 +172,85 @@ public class Procedure43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> convertProcedureStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.EventStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.EventStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PREPARATION:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.PREPARATION);
-        break;
-      case INPROGRESS:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.INPROGRESS);
-        break;
-      case NOTDONE:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.NOTDONE);
-        break;
-      case ONHOLD:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.ONHOLD);
-        break;
-      case STOPPED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.STOPPED);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Enumerations.EventStatus> tgt = new Enumeration<>(new Enumerations.EventStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PREPARATION:
+                  tgt.setValue(Enumerations.EventStatus.PREPARATION);
+                  break;
+              case INPROGRESS:
+                  tgt.setValue(Enumerations.EventStatus.INPROGRESS);
+                  break;
+              case NOTDONE:
+                  tgt.setValue(Enumerations.EventStatus.NOTDONE);
+                  break;
+              case ONHOLD:
+                  tgt.setValue(Enumerations.EventStatus.ONHOLD);
+                  break;
+              case STOPPED:
+                  tgt.setValue(Enumerations.EventStatus.STOPPED);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(Enumerations.EventStatus.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Enumerations.EventStatus.ENTEREDINERROR);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(Enumerations.EventStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.EventStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.EventStatus> convertProcedureStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.EventStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.EventStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PREPARATION:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.PREPARATION);
-        break;
-      case INPROGRESS:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.INPROGRESS);
-        break;
-      case NOTDONE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.NOTDONE);
-        break;
-      case ONHOLD:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.ONHOLD);
-        break;
-      case STOPPED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.STOPPED);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.EventStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.EventStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PREPARATION:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.PREPARATION);
+                  break;
+              case INPROGRESS:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.INPROGRESS);
+                  break;
+              case NOTDONE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.NOTDONE);
+                  break;
+              case ONHOLD:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.ONHOLD);
+                  break;
+              case STOPPED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.STOPPED);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.ENTEREDINERROR);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.EventStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.Procedure.ProcedurePerformerComponent convertProcedurePerformerComponent(org.hl7.fhir.r4b.model.Procedure.ProcedurePerformerComponent src) throws FHIRException {

@@ -12,6 +12,8 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Period
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Boolean10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Date10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Patient;
 
 public class Patient10_50 {
 
@@ -89,50 +91,58 @@ public class Patient10_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Patient.LinkType> convertLinkType(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Patient.LinkType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Patient.LinkType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Patient.LinkTypeEnumFactory());
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REPLACE:
-        tgt.setValue(org.hl7.fhir.r5.model.Patient.LinkType.REPLACEDBY);
-        break;
-      case REFER:
-        tgt.setValue(org.hl7.fhir.r5.model.Patient.LinkType.REFER);
-        break;
-      case SEEALSO:
-        tgt.setValue(org.hl7.fhir.r5.model.Patient.LinkType.SEEALSO);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Patient.LinkType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Patient.LinkType> tgt = new Enumeration<>(new Patient.LinkTypeEnumFactory());
+      ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case REPLACE:
+                  tgt.setValue(Patient.LinkType.REPLACEDBY);
+                  break;
+              case REFER:
+                  tgt.setValue(Patient.LinkType.REFER);
+                  break;
+              case SEEALSO:
+                  tgt.setValue(Patient.LinkType.SEEALSO);
+                  break;
+              default:
+                  tgt.setValue(Patient.LinkType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Patient.LinkType> convertLinkType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Patient.LinkType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Patient.LinkType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Patient.LinkTypeEnumFactory());
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REPLACEDBY:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.REPLACE);
-        break;
-      case REPLACES:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.REPLACE);
-        break;
-      case REFER:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.REFER);
-        break;
-      case SEEALSO:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.SEEALSO);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Patient.LinkType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Patient.LinkTypeEnumFactory());
+      ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case REPLACEDBY:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.REPLACE);
+                  break;
+              case REPLACES:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.REPLACE);
+                  break;
+              case REFER:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.REFER);
+                  break;
+              case SEEALSO:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.SEEALSO);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.Patient convertPatient(org.hl7.fhir.dstu2.model.Patient src) throws FHIRException {

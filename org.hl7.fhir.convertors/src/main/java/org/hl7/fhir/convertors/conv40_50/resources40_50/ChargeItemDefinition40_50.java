@@ -17,6 +17,8 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.ChargeItemDefinition;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.MonetaryComponent;
 
 /*
@@ -239,64 +241,72 @@ public class ChargeItemDefinition40_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MonetaryComponent.PriceComponentType> convertChargeItemDefinitionPriceComponentType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPriceComponentType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MonetaryComponent.PriceComponentType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MonetaryComponent.PriceComponentTypeEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case BASE:
-        tgt.setValue(org.hl7.fhir.r5.model.MonetaryComponent.PriceComponentType.BASE);
-        break;
-      case SURCHARGE:
-        tgt.setValue(org.hl7.fhir.r5.model.MonetaryComponent.PriceComponentType.SURCHARGE);
-        break;
-      case DEDUCTION:
-        tgt.setValue(org.hl7.fhir.r5.model.MonetaryComponent.PriceComponentType.DEDUCTION);
-        break;
-      case DISCOUNT:
-        tgt.setValue(org.hl7.fhir.r5.model.MonetaryComponent.PriceComponentType.DISCOUNT);
-        break;
-      case TAX:
-        tgt.setValue(org.hl7.fhir.r5.model.MonetaryComponent.PriceComponentType.TAX);
-        break;
-      case INFORMATIONAL:
-        tgt.setValue(org.hl7.fhir.r5.model.MonetaryComponent.PriceComponentType.INFORMATIONAL);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.MonetaryComponent.PriceComponentType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<MonetaryComponent.PriceComponentType> tgt = new Enumeration<>(new MonetaryComponent.PriceComponentTypeEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case BASE:
+                  tgt.setValue(MonetaryComponent.PriceComponentType.BASE);
+                  break;
+              case SURCHARGE:
+                  tgt.setValue(MonetaryComponent.PriceComponentType.SURCHARGE);
+                  break;
+              case DEDUCTION:
+                  tgt.setValue(MonetaryComponent.PriceComponentType.DEDUCTION);
+                  break;
+              case DISCOUNT:
+                  tgt.setValue(MonetaryComponent.PriceComponentType.DISCOUNT);
+                  break;
+              case TAX:
+                  tgt.setValue(MonetaryComponent.PriceComponentType.TAX);
+                  break;
+              case INFORMATIONAL:
+                  tgt.setValue(MonetaryComponent.PriceComponentType.INFORMATIONAL);
+                  break;
+              default:
+                  tgt.setValue(MonetaryComponent.PriceComponentType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPriceComponentType> convertChargeItemDefinitionPriceComponentType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MonetaryComponent.PriceComponentType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPriceComponentType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPriceComponentTypeEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case BASE:
-        tgt.setValue(org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPriceComponentType.BASE);
-        break;
-      case SURCHARGE:
-        tgt.setValue(org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPriceComponentType.SURCHARGE);
-        break;
-      case DEDUCTION:
-        tgt.setValue(org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPriceComponentType.DEDUCTION);
-        break;
-      case DISCOUNT:
-        tgt.setValue(org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPriceComponentType.DISCOUNT);
-        break;
-      case TAX:
-        tgt.setValue(org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPriceComponentType.TAX);
-        break;
-      case INFORMATIONAL:
-        tgt.setValue(org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPriceComponentType.INFORMATIONAL);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.ChargeItemDefinition.ChargeItemDefinitionPriceComponentType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<ChargeItemDefinition.ChargeItemDefinitionPriceComponentType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new ChargeItemDefinition.ChargeItemDefinitionPriceComponentTypeEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case BASE:
+                  tgt.setValue(ChargeItemDefinition.ChargeItemDefinitionPriceComponentType.BASE);
+                  break;
+              case SURCHARGE:
+                  tgt.setValue(ChargeItemDefinition.ChargeItemDefinitionPriceComponentType.SURCHARGE);
+                  break;
+              case DEDUCTION:
+                  tgt.setValue(ChargeItemDefinition.ChargeItemDefinitionPriceComponentType.DEDUCTION);
+                  break;
+              case DISCOUNT:
+                  tgt.setValue(ChargeItemDefinition.ChargeItemDefinitionPriceComponentType.DISCOUNT);
+                  break;
+              case TAX:
+                  tgt.setValue(ChargeItemDefinition.ChargeItemDefinitionPriceComponentType.TAX);
+                  break;
+              case INFORMATIONAL:
+                  tgt.setValue(ChargeItemDefinition.ChargeItemDefinitionPriceComponentType.INFORMATIONAL);
+                  break;
+              default:
+                  tgt.setValue(ChargeItemDefinition.ChargeItemDefinitionPriceComponentType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

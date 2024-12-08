@@ -9,6 +9,8 @@ import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Code
 import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.DateTime14_30;
 import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.String14_30;
 import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Uri14_30;
+import org.hl7.fhir.dstu2016may.model.Enumeration;
+import org.hl7.fhir.dstu2016may.model.SearchParameter;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class SearchParameter14_30 {
@@ -124,58 +126,66 @@ public class SearchParameter14_30 {
   }
 
   static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType> convertXPathUsageType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageTypeEnumFactory());
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case NORMAL:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.NORMAL);
-        break;
-      case PHONETIC:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.PHONETIC);
-        break;
-      case NEARBY:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.NEARBY);
-        break;
-      case DISTANCE:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.DISTANCE);
-        break;
-      case OTHER:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.OTHER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<SearchParameter.XPathUsageType> tgt = new Enumeration<>(new SearchParameter.XPathUsageTypeEnumFactory());
+      ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case NORMAL:
+                  tgt.setValue(SearchParameter.XPathUsageType.NORMAL);
+                  break;
+              case PHONETIC:
+                  tgt.setValue(SearchParameter.XPathUsageType.PHONETIC);
+                  break;
+              case NEARBY:
+                  tgt.setValue(SearchParameter.XPathUsageType.NEARBY);
+                  break;
+              case DISTANCE:
+                  tgt.setValue(SearchParameter.XPathUsageType.DISTANCE);
+                  break;
+              case OTHER:
+                  tgt.setValue(SearchParameter.XPathUsageType.OTHER);
+                  break;
+              default:
+                  tgt.setValue(SearchParameter.XPathUsageType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType> convertXPathUsageType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageTypeEnumFactory());
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case NORMAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NORMAL);
-        break;
-      case PHONETIC:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.PHONETIC);
-        break;
-      case NEARBY:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NEARBY);
-        break;
-      case DISTANCE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.DISTANCE);
-        break;
-      case OTHER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.OTHER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageTypeEnumFactory());
+      ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case NORMAL:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NORMAL);
+                  break;
+              case PHONETIC:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.PHONETIC);
+                  break;
+              case NEARBY:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NEARBY);
+                  break;
+              case DISTANCE:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.DISTANCE);
+                  break;
+              case OTHER:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.OTHER);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.SearchParameter.XPathUsageType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

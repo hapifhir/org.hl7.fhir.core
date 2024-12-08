@@ -7,6 +7,8 @@ import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Identi
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Period10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.String10_30;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
+import org.hl7.fhir.dstu2.model.Enumeration;
+import org.hl7.fhir.dstu2.model.ReferralRequest;
 import org.hl7.fhir.dstu3.model.ReferralRequest.ReferralPriority;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -114,64 +116,72 @@ public class ReferralRequest10_30 {
   }
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ReferralRequest.ReferralStatus> convertReferralStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ReferralRequest.ReferralStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.ReferralRequest.ReferralStatusEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ReferralRequest.ReferralStatus.DRAFT);
-        break;
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ReferralRequest.ReferralStatus.ACTIVE);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ReferralRequest.ReferralStatus.CANCELLED);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ReferralRequest.ReferralStatus.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ReferralRequest.ReferralStatus.REJECTED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.ReferralRequest.ReferralStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<ReferralRequest.ReferralStatus> tgt = new Enumeration<>(new ReferralRequest.ReferralStatusEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case DRAFT:
+                  tgt.setValue(ReferralRequest.ReferralStatus.DRAFT);
+                  break;
+              case ACTIVE:
+                  tgt.setValue(ReferralRequest.ReferralStatus.ACTIVE);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(ReferralRequest.ReferralStatus.CANCELLED);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(ReferralRequest.ReferralStatus.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(ReferralRequest.ReferralStatus.REJECTED);
+                  break;
+              default:
+                  tgt.setValue(ReferralRequest.ReferralStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus> convertReferralStatus(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ReferralRequest.ReferralStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatusEnumFactory());
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.DRAFT);
-        break;
-      case REQUESTED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.DRAFT);
-        break;
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.ACTIVE);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.CANCELLED);
-        break;
-      case ACCEPTED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.ACTIVE);
-        break;
-      case REJECTED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.ENTEREDINERROR);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.COMPLETED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatusEnumFactory());
+      ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case DRAFT:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.DRAFT);
+                  break;
+              case REQUESTED:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.DRAFT);
+                  break;
+              case ACTIVE:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.ACTIVE);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.CANCELLED);
+                  break;
+              case ACCEPTED:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.ACTIVE);
+                  break;
+              case REJECTED:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.ENTEREDINERROR);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.COMPLETED);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

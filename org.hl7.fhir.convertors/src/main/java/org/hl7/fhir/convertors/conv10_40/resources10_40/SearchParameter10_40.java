@@ -7,6 +7,8 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Code
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.DateTime10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Uri10_40;
+import org.hl7.fhir.dstu2.model.Enumeration;
+import org.hl7.fhir.dstu2.model.SearchParameter;
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -137,30 +139,34 @@ public class SearchParameter10_40 {
   }
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.SearchParameter.XPathUsageType> convertXPathUsageType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.XPathUsageType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.SearchParameter.XPathUsageTypeEnumFactory());
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case NORMAL:
-        tgt.setValue(org.hl7.fhir.dstu2.model.SearchParameter.XPathUsageType.NORMAL);
-        break;
-      case PHONETIC:
-        tgt.setValue(org.hl7.fhir.dstu2.model.SearchParameter.XPathUsageType.PHONETIC);
-        break;
-      case NEARBY:
-        tgt.setValue(org.hl7.fhir.dstu2.model.SearchParameter.XPathUsageType.NEARBY);
-        break;
-      case DISTANCE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.SearchParameter.XPathUsageType.DISTANCE);
-        break;
-      case OTHER:
-        tgt.setValue(org.hl7.fhir.dstu2.model.SearchParameter.XPathUsageType.OTHER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.SearchParameter.XPathUsageType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<SearchParameter.XPathUsageType> tgt = new Enumeration<>(new SearchParameter.XPathUsageTypeEnumFactory());
+      ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case NORMAL:
+                  tgt.setValue(SearchParameter.XPathUsageType.NORMAL);
+                  break;
+              case PHONETIC:
+                  tgt.setValue(SearchParameter.XPathUsageType.PHONETIC);
+                  break;
+              case NEARBY:
+                  tgt.setValue(SearchParameter.XPathUsageType.NEARBY);
+                  break;
+              case DISTANCE:
+                  tgt.setValue(SearchParameter.XPathUsageType.DISTANCE);
+                  break;
+              case OTHER:
+                  tgt.setValue(SearchParameter.XPathUsageType.OTHER);
+                  break;
+              default:
+                  tgt.setValue(SearchParameter.XPathUsageType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

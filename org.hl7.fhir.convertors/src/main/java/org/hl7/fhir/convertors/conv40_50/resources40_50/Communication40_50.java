@@ -9,9 +9,12 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Communication;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -145,127 +148,143 @@ public class Communication40_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> convertCommunicationStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Communication.CommunicationStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.EventStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PREPARATION:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.PREPARATION);
-        break;
-      case INPROGRESS:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.INPROGRESS);
-        break;
-      case NOTDONE:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.NOTDONE);
-        break;
-      case ONHOLD:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.ONHOLD);
-        break;
-      case STOPPED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.STOPPED);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Enumerations.EventStatus> tgt = new Enumeration<>(new Enumerations.EventStatusEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PREPARATION:
+                  tgt.setValue(Enumerations.EventStatus.PREPARATION);
+                  break;
+              case INPROGRESS:
+                  tgt.setValue(Enumerations.EventStatus.INPROGRESS);
+                  break;
+              case NOTDONE:
+                  tgt.setValue(Enumerations.EventStatus.NOTDONE);
+                  break;
+              case ONHOLD:
+                  tgt.setValue(Enumerations.EventStatus.ONHOLD);
+                  break;
+              case STOPPED:
+                  tgt.setValue(Enumerations.EventStatus.STOPPED);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(Enumerations.EventStatus.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Enumerations.EventStatus.ENTEREDINERROR);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(Enumerations.EventStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.EventStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Communication.CommunicationStatus> convertCommunicationStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Communication.CommunicationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Communication.CommunicationStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PREPARATION:
-        tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationStatus.PREPARATION);
-        break;
-      case INPROGRESS:
-        tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationStatus.INPROGRESS);
-        break;
-      case NOTDONE:
-        tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationStatus.NOTDONE);
-        break;
-      case ONHOLD:
-        tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationStatus.ONHOLD);
-        break;
-      case STOPPED:
-        tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationStatus.STOPPED);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationStatus.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<Communication.CommunicationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new Communication.CommunicationStatusEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PREPARATION:
+                  tgt.setValue(Communication.CommunicationStatus.PREPARATION);
+                  break;
+              case INPROGRESS:
+                  tgt.setValue(Communication.CommunicationStatus.INPROGRESS);
+                  break;
+              case NOTDONE:
+                  tgt.setValue(Communication.CommunicationStatus.NOTDONE);
+                  break;
+              case ONHOLD:
+                  tgt.setValue(Communication.CommunicationStatus.ONHOLD);
+                  break;
+              case STOPPED:
+                  tgt.setValue(Communication.CommunicationStatus.STOPPED);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(Communication.CommunicationStatus.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Communication.CommunicationStatus.ENTEREDINERROR);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(Communication.CommunicationStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(Communication.CommunicationStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> convertCommunicationPriority(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Communication.CommunicationPriority> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestPriorityEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ROUTINE:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE);
-        break;
-      case URGENT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT);
-        break;
-      case ASAP:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP);
-        break;
-      case STAT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Enumerations.RequestPriority> tgt = new Enumeration<>(new Enumerations.RequestPriorityEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ROUTINE:
+                  tgt.setValue(Enumerations.RequestPriority.ROUTINE);
+                  break;
+              case URGENT:
+                  tgt.setValue(Enumerations.RequestPriority.URGENT);
+                  break;
+              case ASAP:
+                  tgt.setValue(Enumerations.RequestPriority.ASAP);
+                  break;
+              case STAT:
+                  tgt.setValue(Enumerations.RequestPriority.STAT);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.RequestPriority.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Communication.CommunicationPriority> convertCommunicationPriority(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Communication.CommunicationPriority> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Communication.CommunicationPriorityEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ROUTINE:
-        tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationPriority.ROUTINE);
-        break;
-      case URGENT:
-        tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationPriority.URGENT);
-        break;
-      case ASAP:
-        tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationPriority.ASAP);
-        break;
-      case STAT:
-        tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationPriority.STAT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationPriority.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<Communication.CommunicationPriority> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new Communication.CommunicationPriorityEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ROUTINE:
+                  tgt.setValue(Communication.CommunicationPriority.ROUTINE);
+                  break;
+              case URGENT:
+                  tgt.setValue(Communication.CommunicationPriority.URGENT);
+                  break;
+              case ASAP:
+                  tgt.setValue(Communication.CommunicationPriority.ASAP);
+                  break;
+              case STAT:
+                  tgt.setValue(Communication.CommunicationPriority.STAT);
+                  break;
+              default:
+                  tgt.setValue(Communication.CommunicationPriority.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.Communication.CommunicationPayloadComponent convertCommunicationPayloadComponent(org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent src) throws FHIRException {
