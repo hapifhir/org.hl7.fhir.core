@@ -40,3 +40,4 @@
 * Apply null pointer check to all switch(Enumeration) statements in version conversion code
 * Remove mysql dependency
 * Fix bug in DecimalType on null Bigdecimal ()] all versions)
+* Fix bad URL in inter-version extension conversion of ValueSet for ValueSet property
