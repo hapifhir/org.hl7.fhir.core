@@ -11,6 +11,8 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.PositiveI
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Invoice;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -122,59 +124,67 @@ public class Invoice40_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Invoice.InvoiceStatus> convertInvoiceStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Invoice.InvoiceStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Invoice.InvoiceStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Invoice.InvoiceStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.r5.model.Invoice.InvoiceStatus.DRAFT);
-        break;
-      case ISSUED:
-        tgt.setValue(org.hl7.fhir.r5.model.Invoice.InvoiceStatus.ISSUED);
-        break;
-      case BALANCED:
-        tgt.setValue(org.hl7.fhir.r5.model.Invoice.InvoiceStatus.BALANCED);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r5.model.Invoice.InvoiceStatus.CANCELLED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.Invoice.InvoiceStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Invoice.InvoiceStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Invoice.InvoiceStatus> tgt = new Enumeration<>(new Invoice.InvoiceStatusEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case DRAFT:
+                  tgt.setValue(Invoice.InvoiceStatus.DRAFT);
+                  break;
+              case ISSUED:
+                  tgt.setValue(Invoice.InvoiceStatus.ISSUED);
+                  break;
+              case BALANCED:
+                  tgt.setValue(Invoice.InvoiceStatus.BALANCED);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(Invoice.InvoiceStatus.CANCELLED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Invoice.InvoiceStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(Invoice.InvoiceStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Invoice.InvoiceStatus> convertInvoiceStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Invoice.InvoiceStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Invoice.InvoiceStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Invoice.InvoiceStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.DRAFT);
-        break;
-      case ISSUED:
-        tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.ISSUED);
-        break;
-      case BALANCED:
-        tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.BALANCED);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.CANCELLED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Invoice.InvoiceStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Invoice.InvoiceStatusEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case DRAFT:
+                  tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.DRAFT);
+                  break;
+              case ISSUED:
+                  tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.ISSUED);
+                  break;
+              case BALANCED:
+                  tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.BALANCED);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.CANCELLED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.Invoice.InvoiceStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.Invoice.InvoiceParticipantComponent convertInvoiceParticipantComponent(org.hl7.fhir.r4.model.Invoice.InvoiceParticipantComponent src) throws FHIRException {

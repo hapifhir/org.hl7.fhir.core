@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Contributor;
 
 public class Contributor43_50 {
   public static org.hl7.fhir.r5.model.Contributor convertContributor(org.hl7.fhir.r4b.model.Contributor src) throws FHIRException {
@@ -32,26 +33,26 @@ public class Contributor43_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Contributor.ContributorType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Contributor.ContributorTypeEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.Contributor.ContributorType.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case AUTHOR:
-          tgt.setValue(org.hl7.fhir.r5.model.Contributor.ContributorType.AUTHOR);
-          break;
-        case EDITOR:
-          tgt.setValue(org.hl7.fhir.r5.model.Contributor.ContributorType.EDITOR);
-          break;
-        case REVIEWER:
-          tgt.setValue(org.hl7.fhir.r5.model.Contributor.ContributorType.REVIEWER);
-          break;
-        case ENDORSER:
-          tgt.setValue(org.hl7.fhir.r5.model.Contributor.ContributorType.ENDORSER);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r5.model.Contributor.ContributorType.NULL);
-          break;
-      }
-    }
+                    tgt.setValue(Contributor.ContributorType.AUTHOR);
+                    break;
+                case EDITOR:
+                    tgt.setValue(Contributor.ContributorType.EDITOR);
+                    break;
+                case REVIEWER:
+                    tgt.setValue(Contributor.ContributorType.REVIEWER);
+                    break;
+                case ENDORSER:
+                    tgt.setValue(Contributor.ContributorType.ENDORSER);
+                    break;
+                default:
+                    tgt.setValue(Contributor.ContributorType.NULL);
+                    break;
+       }
+}
     return tgt;
   }
 
@@ -60,26 +61,26 @@ public class Contributor43_50 {
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Contributor.ContributorType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Contributor.ContributorTypeEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case AUTHOR:
-          tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.AUTHOR);
-          break;
-        case EDITOR:
-          tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.EDITOR);
-          break;
-        case REVIEWER:
-          tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.REVIEWER);
-          break;
-        case ENDORSER:
-          tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.ENDORSER);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.NULL);
-          break;
-      }
-    }
+                    tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.AUTHOR);
+                    break;
+                case EDITOR:
+                    tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.EDITOR);
+                    break;
+                case REVIEWER:
+                    tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.REVIEWER);
+                    break;
+                case ENDORSER:
+                    tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.ENDORSER);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.r4b.model.Contributor.ContributorType.NULL);
+                    break;
+       }
+}
     return tgt;
   }
 }

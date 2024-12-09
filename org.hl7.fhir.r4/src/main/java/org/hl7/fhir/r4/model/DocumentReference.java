@@ -174,7 +174,6 @@ public class DocumentReference extends DomainResource {
   public static class ReferredDocumentStatusEnumFactory implements EnumFactory<ReferredDocumentStatus> {
     public ReferredDocumentStatus fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
-        if (codeString == null || "".equals(codeString))
           return null;
       if ("preliminary".equals(codeString))
         return ReferredDocumentStatus.PRELIMINARY;
