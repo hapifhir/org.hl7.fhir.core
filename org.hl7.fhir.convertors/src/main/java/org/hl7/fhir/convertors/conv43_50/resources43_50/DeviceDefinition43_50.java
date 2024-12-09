@@ -13,6 +13,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionClassificationComponent;
 import org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionVersionComponent;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -192,50 +194,58 @@ public class DeviceDefinition43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DeviceNameType> convertDeviceNameType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.DeviceNameType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DeviceNameType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.DeviceNameTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case USERFRIENDLYNAME:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.USERFRIENDLYNAME);
-        break;
-      case PATIENTREPORTEDNAME:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.PATIENTREPORTEDNAME);
-        break;
-      case MANUFACTURERNAME:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.REGISTEREDNAME);
-        break;
-      case MODELNAME:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.USERFRIENDLYNAME);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DeviceNameType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Enumerations.DeviceNameType> tgt = new Enumeration<>(new Enumerations.DeviceNameTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case USERFRIENDLYNAME:
+                  tgt.setValue(Enumerations.DeviceNameType.USERFRIENDLYNAME);
+                  break;
+              case PATIENTREPORTEDNAME:
+                  tgt.setValue(Enumerations.DeviceNameType.PATIENTREPORTEDNAME);
+                  break;
+              case MANUFACTURERNAME:
+                  tgt.setValue(Enumerations.DeviceNameType.REGISTEREDNAME);
+                  break;
+              case MODELNAME:
+                  tgt.setValue(Enumerations.DeviceNameType.USERFRIENDLYNAME);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.DeviceNameType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.DeviceNameType> convertDeviceNameType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DeviceNameType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.DeviceNameType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.DeviceNameTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case USERFRIENDLYNAME:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DeviceNameType.USERFRIENDLYNAME);
-        break;
-      case PATIENTREPORTEDNAME:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DeviceNameType.PATIENTREPORTEDNAME);
-        break;
-      case REGISTEREDNAME:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DeviceNameType.MANUFACTURERNAME);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DeviceNameType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.DeviceNameType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.DeviceNameTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case USERFRIENDLYNAME:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DeviceNameType.USERFRIENDLYNAME);
+                  break;
+              case PATIENTREPORTEDNAME:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DeviceNameType.PATIENTREPORTEDNAME);
+                  break;
+              case REGISTEREDNAME:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DeviceNameType.MANUFACTURERNAME);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DeviceNameType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 //
 //  public static org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionSpecializationComponent convertDeviceDefinitionSpecializationComponent(org.hl7.fhir.r4b.model.DeviceDefinition.DeviceDefinitionSpecializationComponent src) throws FHIRException {

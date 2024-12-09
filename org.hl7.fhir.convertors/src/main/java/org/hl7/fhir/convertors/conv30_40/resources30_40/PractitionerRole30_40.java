@@ -12,6 +12,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Bool
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Time30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.PractitionerRole;
 
 public class PractitionerRole30_40 {
 
@@ -146,35 +147,35 @@ public class PractitionerRole30_40 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeekEnumFactory());
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case MON:
-          tgt.setValue(org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek.MON);
-          break;
-        case TUE:
-          tgt.setValue(org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek.TUE);
-          break;
-        case WED:
-          tgt.setValue(org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek.WED);
-          break;
-        case THU:
-          tgt.setValue(org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek.THU);
-          break;
-        case FRI:
-          tgt.setValue(org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek.FRI);
-          break;
-        case SAT:
-          tgt.setValue(org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek.SAT);
-          break;
-        case SUN:
-          tgt.setValue(org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek.SUN);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4.model.PractitionerRole.DaysOfWeek.NULL);
-          break;
-      }
-    }
+                    tgt.setValue(PractitionerRole.DaysOfWeek.MON);
+                    break;
+                case TUE:
+                    tgt.setValue(PractitionerRole.DaysOfWeek.TUE);
+                    break;
+                case WED:
+                    tgt.setValue(PractitionerRole.DaysOfWeek.WED);
+                    break;
+                case THU:
+                    tgt.setValue(PractitionerRole.DaysOfWeek.THU);
+                    break;
+                case FRI:
+                    tgt.setValue(PractitionerRole.DaysOfWeek.FRI);
+                    break;
+                case SAT:
+                    tgt.setValue(PractitionerRole.DaysOfWeek.SAT);
+                    break;
+                case SUN:
+                    tgt.setValue(PractitionerRole.DaysOfWeek.SUN);
+                    break;
+                default:
+                    tgt.setValue(PractitionerRole.DaysOfWeek.NULL);
+                    break;
+       }
+}
     return tgt;
   }
 
@@ -183,35 +184,35 @@ public class PractitionerRole30_40 {
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeekEnumFactory());
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case MON:
-          tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.MON);
-          break;
-        case TUE:
-          tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.TUE);
-          break;
-        case WED:
-          tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.WED);
-          break;
-        case THU:
-          tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.THU);
-          break;
-        case FRI:
-          tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.FRI);
-          break;
-        case SAT:
-          tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.SAT);
-          break;
-        case SUN:
-          tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.SUN);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.NULL);
-          break;
-      }
-    }
+                    tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.MON);
+                    break;
+                case TUE:
+                    tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.TUE);
+                    break;
+                case WED:
+                    tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.WED);
+                    break;
+                case THU:
+                    tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.THU);
+                    break;
+                case FRI:
+                    tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.FRI);
+                    break;
+                case SAT:
+                    tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.SAT);
+                    break;
+                case SUN:
+                    tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.SUN);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.NULL);
+                    break;
+       }
+}
     return tgt;
   }
 }

@@ -16,6 +16,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Stri
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Uri30_40;
 import org.hl7.fhir.dstu3.model.Device;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Enumeration;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -156,114 +157,130 @@ public class Device30_40 {
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.FHIRDeviceStatus> convertFHIRDeviceStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.FHIRDeviceStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Device.FHIRDeviceStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.ACTIVE);
-        break;
-      case INACTIVE:
-        tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.INACTIVE);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<org.hl7.fhir.r4.model.Device.FHIRDeviceStatus> tgt = new Enumeration<>(new org.hl7.fhir.r4.model.Device.FHIRDeviceStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.ACTIVE);
+                  break;
+              case INACTIVE:
+                  tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.INACTIVE);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.ENTEREDINERROR);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.Device.FHIRDeviceStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus> convertFHIRDeviceStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.FHIRDeviceStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus.ACTIVE);
-        break;
-      case INACTIVE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus.INACTIVE);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Device.FHIRDeviceStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<Device.FHIRDeviceStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new Device.FHIRDeviceStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(Device.FHIRDeviceStatus.ACTIVE);
+                  break;
+              case INACTIVE:
+                  tgt.setValue(Device.FHIRDeviceStatus.INACTIVE);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Device.FHIRDeviceStatus.ENTEREDINERROR);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(Device.FHIRDeviceStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(Device.FHIRDeviceStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.UDIEntryType> convertUDIEntryType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Device.UDIEntryType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.UDIEntryType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Device.UDIEntryTypeEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case BARCODE:
-        tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.BARCODE);
-        break;
-      case RFID:
-        tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.RFID);
-        break;
-      case MANUAL:
-        tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.MANUAL);
-        break;
-      case CARD:
-        tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.CARD);
-        break;
-      case SELFREPORTED:
-        tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.SELFREPORTED);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<org.hl7.fhir.r4.model.Device.UDIEntryType> tgt = new Enumeration<>(new org.hl7.fhir.r4.model.Device.UDIEntryTypeEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case BARCODE:
+                  tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.BARCODE);
+                  break;
+              case RFID:
+                  tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.RFID);
+                  break;
+              case MANUAL:
+                  tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.MANUAL);
+                  break;
+              case CARD:
+                  tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.CARD);
+                  break;
+              case SELFREPORTED:
+                  tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.SELFREPORTED);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.Device.UDIEntryType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Device.UDIEntryType> convertUDIEntryType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Device.UDIEntryType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Device.UDIEntryType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Device.UDIEntryTypeEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case BARCODE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Device.UDIEntryType.BARCODE);
-        break;
-      case RFID:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Device.UDIEntryType.RFID);
-        break;
-      case MANUAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Device.UDIEntryType.MANUAL);
-        break;
-      case CARD:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Device.UDIEntryType.CARD);
-        break;
-      case SELFREPORTED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Device.UDIEntryType.SELFREPORTED);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Device.UDIEntryType.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Device.UDIEntryType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<Device.UDIEntryType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new Device.UDIEntryTypeEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case BARCODE:
+                  tgt.setValue(Device.UDIEntryType.BARCODE);
+                  break;
+              case RFID:
+                  tgt.setValue(Device.UDIEntryType.RFID);
+                  break;
+              case MANUAL:
+                  tgt.setValue(Device.UDIEntryType.MANUAL);
+                  break;
+              case CARD:
+                  tgt.setValue(Device.UDIEntryType.CARD);
+                  break;
+              case SELFREPORTED:
+                  tgt.setValue(Device.UDIEntryType.SELFREPORTED);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(Device.UDIEntryType.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(Device.UDIEntryType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

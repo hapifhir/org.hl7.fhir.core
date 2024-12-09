@@ -6,6 +6,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier4
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Instant43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.DeviceMetric;
+import org.hl7.fhir.r5.model.Enumeration;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -95,53 +97,61 @@ public class DeviceMetric43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricOperationalStatus> convertDeviceMetricOperationalStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricOperationalStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricOperationalStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ON:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricOperationalStatus.ON);
-        break;
-      case OFF:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricOperationalStatus.OFF);
-        break;
-      case STANDBY:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricOperationalStatus.STANDBY);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricOperationalStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricOperationalStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<DeviceMetric.DeviceMetricOperationalStatus> tgt = new Enumeration<>(new DeviceMetric.DeviceMetricOperationalStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ON:
+                  tgt.setValue(DeviceMetric.DeviceMetricOperationalStatus.ON);
+                  break;
+              case OFF:
+                  tgt.setValue(DeviceMetric.DeviceMetricOperationalStatus.OFF);
+                  break;
+              case STANDBY:
+                  tgt.setValue(DeviceMetric.DeviceMetricOperationalStatus.STANDBY);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(DeviceMetric.DeviceMetricOperationalStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(DeviceMetric.DeviceMetricOperationalStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatus> convertDeviceMetricOperationalStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricOperationalStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ON:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatus.ON);
-        break;
-      case OFF:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatus.OFF);
-        break;
-      case STANDBY:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatus.STANDBY);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ON:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatus.ON);
+                  break;
+              case OFF:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatus.OFF);
+                  break;
+              case STANDBY:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatus.STANDBY);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricOperationalStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r5.model.CodeType convertDeviceMetricColor(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricColor> src) throws FHIRException {
@@ -191,53 +201,61 @@ public class DeviceMetric43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCategory> convertDeviceMetricCategory(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategory> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCategory> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCategoryEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case MEASUREMENT:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCategory.MEASUREMENT);
-        break;
-      case SETTING:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCategory.SETTING);
-        break;
-      case CALCULATION:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCategory.CALCULATION);
-        break;
-      case UNSPECIFIED:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCategory.UNSPECIFIED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCategory.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<DeviceMetric.DeviceMetricCategory> tgt = new Enumeration<>(new DeviceMetric.DeviceMetricCategoryEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case MEASUREMENT:
+                  tgt.setValue(DeviceMetric.DeviceMetricCategory.MEASUREMENT);
+                  break;
+              case SETTING:
+                  tgt.setValue(DeviceMetric.DeviceMetricCategory.SETTING);
+                  break;
+              case CALCULATION:
+                  tgt.setValue(DeviceMetric.DeviceMetricCategory.CALCULATION);
+                  break;
+              case UNSPECIFIED:
+                  tgt.setValue(DeviceMetric.DeviceMetricCategory.UNSPECIFIED);
+                  break;
+              default:
+                  tgt.setValue(DeviceMetric.DeviceMetricCategory.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategory> convertDeviceMetricCategory(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCategory> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategory> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategoryEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case MEASUREMENT:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategory.MEASUREMENT);
-        break;
-      case SETTING:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategory.SETTING);
-        break;
-      case CALCULATION:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategory.CALCULATION);
-        break;
-      case UNSPECIFIED:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategory.UNSPECIFIED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategory.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategory> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategoryEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case MEASUREMENT:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategory.MEASUREMENT);
+                  break;
+              case SETTING:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategory.SETTING);
+                  break;
+              case CALCULATION:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategory.CALCULATION);
+                  break;
+              case UNSPECIFIED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategory.UNSPECIFIED);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCategory.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationComponent convertDeviceMetricCalibrationComponent(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationComponent src) throws FHIRException {
@@ -269,102 +287,118 @@ public class DeviceMetric43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationType> convertDeviceMetricCalibrationType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case UNSPECIFIED:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationType.UNSPECIFIED);
-        break;
-      case OFFSET:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationType.OFFSET);
-        break;
-      case GAIN:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationType.GAIN);
-        break;
-      case TWOPOINT:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationType.TWOPOINT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<DeviceMetric.DeviceMetricCalibrationType> tgt = new Enumeration<>(new DeviceMetric.DeviceMetricCalibrationTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case UNSPECIFIED:
+                  tgt.setValue(DeviceMetric.DeviceMetricCalibrationType.UNSPECIFIED);
+                  break;
+              case OFFSET:
+                  tgt.setValue(DeviceMetric.DeviceMetricCalibrationType.OFFSET);
+                  break;
+              case GAIN:
+                  tgt.setValue(DeviceMetric.DeviceMetricCalibrationType.GAIN);
+                  break;
+              case TWOPOINT:
+                  tgt.setValue(DeviceMetric.DeviceMetricCalibrationType.TWOPOINT);
+                  break;
+              default:
+                  tgt.setValue(DeviceMetric.DeviceMetricCalibrationType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationType> convertDeviceMetricCalibrationType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case UNSPECIFIED:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationType.UNSPECIFIED);
-        break;
-      case OFFSET:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationType.OFFSET);
-        break;
-      case GAIN:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationType.GAIN);
-        break;
-      case TWOPOINT:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationType.TWOPOINT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationTypeEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case UNSPECIFIED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationType.UNSPECIFIED);
+                  break;
+              case OFFSET:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationType.OFFSET);
+                  break;
+              case GAIN:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationType.GAIN);
+                  break;
+              case TWOPOINT:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationType.TWOPOINT);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationState> convertDeviceMetricCalibrationState(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationState> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationState> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationStateEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case NOTCALIBRATED:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationState.NOTCALIBRATED);
-        break;
-      case CALIBRATIONREQUIRED:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationState.CALIBRATIONREQUIRED);
-        break;
-      case CALIBRATED:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationState.CALIBRATED);
-        break;
-      case UNSPECIFIED:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationState.UNSPECIFIED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationState.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<DeviceMetric.DeviceMetricCalibrationState> tgt = new Enumeration<>(new DeviceMetric.DeviceMetricCalibrationStateEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case NOTCALIBRATED:
+                  tgt.setValue(DeviceMetric.DeviceMetricCalibrationState.NOTCALIBRATED);
+                  break;
+              case CALIBRATIONREQUIRED:
+                  tgt.setValue(DeviceMetric.DeviceMetricCalibrationState.CALIBRATIONREQUIRED);
+                  break;
+              case CALIBRATED:
+                  tgt.setValue(DeviceMetric.DeviceMetricCalibrationState.CALIBRATED);
+                  break;
+              case UNSPECIFIED:
+                  tgt.setValue(DeviceMetric.DeviceMetricCalibrationState.UNSPECIFIED);
+                  break;
+              default:
+                  tgt.setValue(DeviceMetric.DeviceMetricCalibrationState.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationState> convertDeviceMetricCalibrationState(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceMetric.DeviceMetricCalibrationState> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationState> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationStateEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case NOTCALIBRATED:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationState.NOTCALIBRATED);
-        break;
-      case CALIBRATIONREQUIRED:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationState.CALIBRATIONREQUIRED);
-        break;
-      case CALIBRATED:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationState.CALIBRATED);
-        break;
-      case UNSPECIFIED:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationState.UNSPECIFIED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationState.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationState> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationStateEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case NOTCALIBRATED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationState.NOTCALIBRATED);
+                  break;
+              case CALIBRATIONREQUIRED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationState.CALIBRATIONREQUIRED);
+                  break;
+              case CALIBRATED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationState.CALIBRATED);
+                  break;
+              case UNSPECIFIED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationState.UNSPECIFIED);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.DeviceMetric.DeviceMetricCalibrationState.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }
