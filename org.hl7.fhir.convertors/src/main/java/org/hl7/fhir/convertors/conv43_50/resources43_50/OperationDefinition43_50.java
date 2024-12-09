@@ -15,8 +15,10 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
 import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAllEnumFactory;
+import org.hl7.fhir.r5.model.OperationDefinition;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -168,41 +170,49 @@ public class OperationDefinition43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationDefinition.OperationKind> convertOperationKind(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.OperationDefinition.OperationKind> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationDefinition.OperationKind> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.OperationDefinition.OperationKindEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case OPERATION:
-        tgt.setValue(org.hl7.fhir.r5.model.OperationDefinition.OperationKind.OPERATION);
-        break;
-      case QUERY:
-        tgt.setValue(org.hl7.fhir.r5.model.OperationDefinition.OperationKind.QUERY);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.OperationDefinition.OperationKind.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<OperationDefinition.OperationKind> tgt = new Enumeration<>(new OperationDefinition.OperationKindEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case OPERATION:
+                  tgt.setValue(OperationDefinition.OperationKind.OPERATION);
+                  break;
+              case QUERY:
+                  tgt.setValue(OperationDefinition.OperationKind.QUERY);
+                  break;
+              default:
+                  tgt.setValue(OperationDefinition.OperationKind.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.OperationDefinition.OperationKind> convertOperationKind(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationDefinition.OperationKind> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.OperationDefinition.OperationKind> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.OperationDefinition.OperationKindEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case OPERATION:
-        tgt.setValue(org.hl7.fhir.r4b.model.OperationDefinition.OperationKind.OPERATION);
-        break;
-      case QUERY:
-        tgt.setValue(org.hl7.fhir.r4b.model.OperationDefinition.OperationKind.QUERY);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.OperationDefinition.OperationKind.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.OperationDefinition.OperationKind> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.OperationDefinition.OperationKindEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case OPERATION:
+                  tgt.setValue(org.hl7.fhir.r4b.model.OperationDefinition.OperationKind.OPERATION);
+                  break;
+              case QUERY:
+                  tgt.setValue(org.hl7.fhir.r4b.model.OperationDefinition.OperationKind.QUERY);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.OperationDefinition.OperationKind.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent convertOperationDefinitionParameterComponent(org.hl7.fhir.r4b.model.OperationDefinition.OperationDefinitionParameterComponent src) throws FHIRException {
@@ -268,41 +278,49 @@ public class OperationDefinition43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.OperationParameterUse> convertOperationParameterUse(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.OperationParameterUse> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.OperationParameterUseEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case IN:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.IN);
-        break;
-      case OUT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.OUT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Enumerations.OperationParameterUse> tgt = new Enumeration<>(new Enumerations.OperationParameterUseEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case IN:
+                  tgt.setValue(Enumerations.OperationParameterUse.IN);
+                  break;
+              case OUT:
+                  tgt.setValue(Enumerations.OperationParameterUse.OUT);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.OperationParameterUse.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse> convertOperationParameterUse(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.OperationParameterUse> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.OperationParameterUseEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case IN:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.IN);
-        break;
-      case OUT:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.OUT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.OperationParameterUseEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case IN:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.IN);
+                  break;
+              case OUT:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.OUT);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.OperationParameterUse.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterBindingComponent convertOperationDefinitionParameterBindingComponent(org.hl7.fhir.r4b.model.OperationDefinition.OperationDefinitionParameterBindingComponent src) throws FHIRException {

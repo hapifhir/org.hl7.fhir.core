@@ -5,6 +5,8 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.SimpleQuantity30_50;
+import org.hl7.fhir.dstu3.model.Enumeration;
+import org.hl7.fhir.dstu3.model.SupplyDelivery;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class SupplyDelivery30_50 {
@@ -64,53 +66,61 @@ public class SupplyDelivery30_50 {
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SupplyDelivery.SupplyDeliveryStatus> convertSupplyDeliveryStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SupplyDelivery.SupplyDeliveryStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.SupplyDelivery.SupplyDeliveryStatusEnumFactory());
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case INPROGRESS:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SupplyDelivery.SupplyDeliveryStatus.INPROGRESS);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SupplyDelivery.SupplyDeliveryStatus.COMPLETED);
-        break;
-      case ABANDONED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SupplyDelivery.SupplyDeliveryStatus.ABANDONED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SupplyDelivery.SupplyDeliveryStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.SupplyDelivery.SupplyDeliveryStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<SupplyDelivery.SupplyDeliveryStatus> tgt = new Enumeration<>(new SupplyDelivery.SupplyDeliveryStatusEnumFactory());
+      ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case INPROGRESS:
+                  tgt.setValue(SupplyDelivery.SupplyDeliveryStatus.INPROGRESS);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(SupplyDelivery.SupplyDeliveryStatus.COMPLETED);
+                  break;
+              case ABANDONED:
+                  tgt.setValue(SupplyDelivery.SupplyDeliveryStatus.ABANDONED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(SupplyDelivery.SupplyDeliveryStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(SupplyDelivery.SupplyDeliveryStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus> convertSupplyDeliveryStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.SupplyDelivery.SupplyDeliveryStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatusEnumFactory());
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case INPROGRESS:
-        tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.INPROGRESS);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.COMPLETED);
-        break;
-      case ABANDONED:
-        tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.ABANDONED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatusEnumFactory());
+      ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case INPROGRESS:
+                  tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.INPROGRESS);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.COMPLETED);
+                  break;
+              case ABANDONED:
+                  tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.ABANDONED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent convertSupplyDeliverySuppliedItemComponent(org.hl7.fhir.dstu3.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent src) throws FHIRException {

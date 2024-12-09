@@ -17,7 +17,9 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime4
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
+import org.hl7.fhir.r4b.model.Enumeration;
 import org.hl7.fhir.r4b.model.SubscriptionTopic;
+import org.hl7.fhir.r5.model.Enumerations;
 
 public class SubscriptionTopic43_50 {
 
@@ -154,38 +156,62 @@ public class SubscriptionTopic43_50 {
     return srcList.stream().map(SubscriptionTopic43_50::convertR5ComparatorToR4BModifier).filter(x -> x != null).collect(Collectors.toList());
   }
 
-  private static org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier> convertR5ComparatorToR4BModifier(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchComparator> src){
-    org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifierEnumFactory enumFactory = new org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifierEnumFactory();
-    switch(src.getValue()) {
-      case NULL: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.NULL);
-      case EQ: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.EQ);
-      case NE: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.NE);
-      case GT: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.GT);
-      case LT: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.LT);
-      case GE: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.GE);
-      case LE: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.LE);
-      case SA: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.SA);
-      case EB: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.EB);
-      case AP: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.AP);
-    }
-    return null;
+  private static org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier> convertR5ComparatorToR4BModifier(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchComparator> src) {
+      SubscriptionTopic.SubscriptionSearchModifierEnumFactory enumFactory = new SubscriptionTopic.SubscriptionSearchModifierEnumFactory();
+      if (src.getValue() == null) {
+          return null;
+      } else {
+          switch (src.getValue()) {
+              case NULL:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.NULL);
+              case EQ:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.EQ);
+              case NE:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.NE);
+              case GT:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.GT);
+              case LT:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.LT);
+              case GE:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.GE);
+              case LE:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.LE);
+              case SA:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.SA);
+              case EB:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.EB);
+              case AP:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.AP);
+          }
+      }
+      return null;
   }
 
   private static List<org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier>> convertR5ModifierToR4BModifier(List<org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchModifierCode>> srcList) {
     return srcList.stream().map(SubscriptionTopic43_50::convertR5ModifierToR4BModifier).filter(x -> x != null).collect(Collectors.toList());
   }
 
-  private static org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier> convertR5ModifierToR4BModifier(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchModifierCode> src){
-    org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifierEnumFactory enumFactory = new org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifierEnumFactory();
-    switch(src.getValue()) {
-      case NULL: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.NULL);
-      case IN: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.IN);
-      case NOTIN: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.NOTIN);
-      case BELOW: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.BELOW);
-      case ABOVE: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.ABOVE);
-      case OFTYPE: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier.OFTYPE);
-    }
-    return null;
+  private static org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier> convertR5ModifierToR4BModifier(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchModifierCode> src) {
+      SubscriptionTopic.SubscriptionSearchModifierEnumFactory enumFactory = new SubscriptionTopic.SubscriptionSearchModifierEnumFactory();
+      if (src.getValue() == null) {
+          return null;
+      } else {
+          switch (src.getValue()) {
+              case NULL:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.NULL);
+              case IN:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.IN);
+              case NOTIN:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.NOTIN);
+              case BELOW:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.BELOW);
+              case ABOVE:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.ABOVE);
+              case OFTYPE:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.SubscriptionSearchModifier.OFTYPE);
+          }
+      }
+      return null;
   }
   private static org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicResourceTriggerComponent convertResourceTrigger(org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicResourceTriggerComponent src) {
     org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicResourceTriggerComponent tgt = new org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicResourceTriggerComponent();
@@ -233,13 +259,20 @@ public class SubscriptionTopic43_50 {
   }
 
   private static org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior> convertCriteriaNotExistsBehavior(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior> src) {
-    org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehaviorEnumFactory enumFactory = new org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehaviorEnumFactory();
-    switch(src.getValue()) {
-      case TESTFAILS: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTFAILS);
-      case TESTPASSES: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTPASSES);
-      case NULL: return new org.hl7.fhir.r4b.model.Enumeration<>(enumFactory, org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior.NULL);
-    }
-    return null;
+      SubscriptionTopic.CriteriaNotExistsBehaviorEnumFactory enumFactory = new SubscriptionTopic.CriteriaNotExistsBehaviorEnumFactory();
+      if (src.getValue() == null) {
+          return null;
+      } else {
+          switch (src.getValue()) {
+              case TESTFAILS:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.CriteriaNotExistsBehavior.TESTFAILS);
+              case TESTPASSES:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.CriteriaNotExistsBehavior.TESTPASSES);
+              case NULL:
+                  return new Enumeration<>(enumFactory, SubscriptionTopic.CriteriaNotExistsBehavior.NULL);
+          }
+      }
+      return null;
   }
 
   private static org.hl7.fhir.r4b.model.SubscriptionTopic.InteractionTrigger convertInteractionTrigger(org.hl7.fhir.r5.model.SubscriptionTopic.InteractionTrigger value) {
@@ -381,20 +414,34 @@ public class SubscriptionTopic43_50 {
 
 
   private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchComparator> convertR4BModifierToR5Comparator(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier> src) {
-    org.hl7.fhir.r5.model.Enumerations.SearchComparatorEnumFactory enumFactory = new org.hl7.fhir.r5.model.Enumerations.SearchComparatorEnumFactory();
-    switch(src.getValue()) {
-      case NULL: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchComparator.NULL);
-      case EQ: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchComparator.EQ);
-      case NE: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchComparator.NE);
-      case GT: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchComparator.GT);
-      case LT: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchComparator.LT);
-      case GE: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchComparator.GE);
-      case LE: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchComparator.LE);
-      case SA: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchComparator.SA);
-      case EB: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchComparator.EB);
-      case AP: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchComparator.AP);
-    }
-    return null;
+      Enumerations.SearchComparatorEnumFactory enumFactory = new Enumerations.SearchComparatorEnumFactory();
+      if (src.getValue() == null) {
+          return null;
+      } else {
+          switch (src.getValue()) {
+              case NULL:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchComparator.NULL);
+              case EQ:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchComparator.EQ);
+              case NE:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchComparator.NE);
+              case GT:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchComparator.GT);
+              case LT:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchComparator.LT);
+              case GE:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchComparator.GE);
+              case LE:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchComparator.LE);
+              case SA:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchComparator.SA);
+              case EB:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchComparator.EB);
+              case AP:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchComparator.AP);
+          }
+      }
+      return null;
   }
 
   private static List<org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchModifierCode>> convertR4BModifierToR5Modifier(
@@ -403,22 +450,26 @@ public class SubscriptionTopic43_50 {
     return srcList.stream().map(SubscriptionTopic43_50::convertR4BModifierToR5Modifier).filter(x -> x != null).collect(Collectors.toList());
   }
   private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchModifierCode> convertR4BModifierToR5Modifier(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionSearchModifier> src) {
-    org.hl7.fhir.r5.model.Enumerations.SearchModifierCodeEnumFactory enumFactory = new org.hl7.fhir.r5.model.Enumerations.SearchModifierCodeEnumFactory();
-    switch(src.getValue()) {
-      case NULL:
-        return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.NULL);
-      case IN:
-        return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.IN);
-      case NOTIN:
-        return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.NOTIN);
-      case BELOW:
-        return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.BELOW);
-      case ABOVE:
-        return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.ABOVE);
-      case OFTYPE:
-        return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.Enumerations.SearchModifierCode.OFTYPE);
-    }
-    return null;
+      Enumerations.SearchModifierCodeEnumFactory enumFactory = new Enumerations.SearchModifierCodeEnumFactory();
+      if (src.getValue() == null) {
+          return null;
+      } else {
+          switch (src.getValue()) {
+              case NULL:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchModifierCode.NULL);
+              case IN:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchModifierCode.IN);
+              case NOTIN:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchModifierCode.NOTIN);
+              case BELOW:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchModifierCode.BELOW);
+              case ABOVE:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchModifierCode.ABOVE);
+              case OFTYPE:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, Enumerations.SearchModifierCode.OFTYPE);
+          }
+      }
+      return null;
   }
 
   private static org.hl7.fhir.r5.model.SubscriptionTopic.SubscriptionTopicResourceTriggerComponent convertResourceTrigger(org.hl7.fhir.r4b.model.SubscriptionTopic.SubscriptionTopicResourceTriggerComponent src) {
@@ -467,14 +518,20 @@ public class SubscriptionTopic43_50 {
   }
 
   private static org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior> convertCriteriaNotExistsBehavior(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.SubscriptionTopic.CriteriaNotExistsBehavior> src) {
-    org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehaviorEnumFactory enumFactory = new org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehaviorEnumFactory();
-    switch(src.getValue()) {
-
-      case TESTFAILS: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTFAILS);
-      case TESTPASSES: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTPASSES);
-      case NULL: return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior.NULL);
-    }
-    return null;
+      org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehaviorEnumFactory enumFactory = new org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehaviorEnumFactory();
+      if (src.getValue() == null) {
+          return null;
+      } else {
+          switch (src.getValue()) {
+              case TESTFAILS:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTFAILS);
+              case TESTPASSES:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior.TESTPASSES);
+              case NULL:
+                  return new org.hl7.fhir.r5.model.Enumeration<>(enumFactory, org.hl7.fhir.r5.model.SubscriptionTopic.CriteriaNotExistsBehavior.NULL);
+          }
+      }
+      return null;
   }
 
   private static org.hl7.fhir.r5.model.SubscriptionTopic.InteractionTrigger convertInteractionTrigger(org.hl7.fhir.r4b.model.SubscriptionTopic.InteractionTrigger value) {

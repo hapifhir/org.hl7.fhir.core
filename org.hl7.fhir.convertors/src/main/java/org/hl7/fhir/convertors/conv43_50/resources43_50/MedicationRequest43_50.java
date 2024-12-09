@@ -13,6 +13,9 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.UnsignedI
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Dosage43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations;
+import org.hl7.fhir.r5.model.MedicationRequest;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -194,201 +197,225 @@ public class MedicationRequest43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus> convertMedicationRequestStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.ACTIVE);
-        break;
-      case ONHOLD:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.ONHOLD);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.CANCELLED);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.ENTEREDINERROR);
-        break;
-      case STOPPED:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.STOPPED);
-        break;
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.DRAFT);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<MedicationRequest.MedicationrequestStatus> tgt = new Enumeration<>(new MedicationRequest.MedicationrequestStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(MedicationRequest.MedicationrequestStatus.ACTIVE);
+                  break;
+              case ONHOLD:
+                  tgt.setValue(MedicationRequest.MedicationrequestStatus.ONHOLD);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(MedicationRequest.MedicationrequestStatus.CANCELLED);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(MedicationRequest.MedicationrequestStatus.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(MedicationRequest.MedicationrequestStatus.ENTEREDINERROR);
+                  break;
+              case STOPPED:
+                  tgt.setValue(MedicationRequest.MedicationrequestStatus.STOPPED);
+                  break;
+              case DRAFT:
+                  tgt.setValue(MedicationRequest.MedicationrequestStatus.DRAFT);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(MedicationRequest.MedicationrequestStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(MedicationRequest.MedicationrequestStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus> convertMedicationRequestStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationRequest.MedicationrequestStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.ACTIVE);
-        break;
-      case ONHOLD:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.ONHOLD);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.CANCELLED);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.COMPLETED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.ENTEREDINERROR);
-        break;
-      case STOPPED:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.STOPPED);
-        break;
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.DRAFT);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ACTIVE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.ACTIVE);
+                  break;
+              case ONHOLD:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.ONHOLD);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.CANCELLED);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.COMPLETED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.ENTEREDINERROR);
+                  break;
+              case STOPPED:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.STOPPED);
+                  break;
+              case DRAFT:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.DRAFT);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationrequestStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent> convertMedicationRequestIntent(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntentEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PROPOSAL:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.PROPOSAL);
-        break;
-      case PLAN:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.PLAN);
-        break;
-      case ORDER:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.ORDER);
-        break;
-      case ORIGINALORDER:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.ORIGINALORDER);
-        break;
-      case REFLEXORDER:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.REFLEXORDER);
-        break;
-      case FILLERORDER:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.FILLERORDER);
-        break;
-      case INSTANCEORDER:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.INSTANCEORDER);
-        break;
-      case OPTION:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.OPTION);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<MedicationRequest.MedicationRequestIntent> tgt = new Enumeration<>(new MedicationRequest.MedicationRequestIntentEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PROPOSAL:
+                  tgt.setValue(MedicationRequest.MedicationRequestIntent.PROPOSAL);
+                  break;
+              case PLAN:
+                  tgt.setValue(MedicationRequest.MedicationRequestIntent.PLAN);
+                  break;
+              case ORDER:
+                  tgt.setValue(MedicationRequest.MedicationRequestIntent.ORDER);
+                  break;
+              case ORIGINALORDER:
+                  tgt.setValue(MedicationRequest.MedicationRequestIntent.ORIGINALORDER);
+                  break;
+              case REFLEXORDER:
+                  tgt.setValue(MedicationRequest.MedicationRequestIntent.REFLEXORDER);
+                  break;
+              case FILLERORDER:
+                  tgt.setValue(MedicationRequest.MedicationRequestIntent.FILLERORDER);
+                  break;
+              case INSTANCEORDER:
+                  tgt.setValue(MedicationRequest.MedicationRequestIntent.INSTANCEORDER);
+                  break;
+              case OPTION:
+                  tgt.setValue(MedicationRequest.MedicationRequestIntent.OPTION);
+                  break;
+              default:
+                  tgt.setValue(MedicationRequest.MedicationRequestIntent.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent> convertMedicationRequestIntent(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestIntent> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntentEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PROPOSAL:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.PROPOSAL);
-        break;
-      case PLAN:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.PLAN);
-        break;
-      case ORDER:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.ORDER);
-        break;
-      case ORIGINALORDER:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.ORIGINALORDER);
-        break;
-      case REFLEXORDER:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.REFLEXORDER);
-        break;
-      case FILLERORDER:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.FILLERORDER);
-        break;
-      case INSTANCEORDER:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.INSTANCEORDER);
-        break;
-      case OPTION:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.OPTION);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntentEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PROPOSAL:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.PROPOSAL);
+                  break;
+              case PLAN:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.PLAN);
+                  break;
+              case ORDER:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.ORDER);
+                  break;
+              case ORIGINALORDER:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.ORIGINALORDER);
+                  break;
+              case REFLEXORDER:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.REFLEXORDER);
+                  break;
+              case FILLERORDER:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.FILLERORDER);
+                  break;
+              case INSTANCEORDER:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.INSTANCEORDER);
+                  break;
+              case OPTION:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.OPTION);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestIntent.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> convertMedicationRequestPriority(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.RequestPriority> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestPriorityEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ROUTINE:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE);
-        break;
-      case URGENT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.URGENT);
-        break;
-      case ASAP:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ASAP);
-        break;
-      case STAT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.STAT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Enumerations.RequestPriority> tgt = new Enumeration<>(new Enumerations.RequestPriorityEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ROUTINE:
+                  tgt.setValue(Enumerations.RequestPriority.ROUTINE);
+                  break;
+              case URGENT:
+                  tgt.setValue(Enumerations.RequestPriority.URGENT);
+                  break;
+              case ASAP:
+                  tgt.setValue(Enumerations.RequestPriority.ASAP);
+                  break;
+              case STAT:
+                  tgt.setValue(Enumerations.RequestPriority.STAT);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.RequestPriority.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.RequestPriority> convertMedicationRequestPriority(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.RequestPriority> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.RequestPriorityEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ROUTINE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.RequestPriority.ROUTINE);
-        break;
-      case URGENT:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.RequestPriority.URGENT);
-        break;
-      case ASAP:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.RequestPriority.ASAP);
-        break;
-      case STAT:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.RequestPriority.STAT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.RequestPriority.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.RequestPriority> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.RequestPriorityEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case ROUTINE:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.RequestPriority.ROUTINE);
+                  break;
+              case URGENT:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.RequestPriority.URGENT);
+                  break;
+              case ASAP:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.RequestPriority.ASAP);
+                  break;
+              case STAT:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.RequestPriority.STAT);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.RequestPriority.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestComponent convertMedicationRequestDispenseRequestComponent(org.hl7.fhir.r4b.model.MedicationRequest.MedicationRequestDispenseRequestComponent src) throws FHIRException {

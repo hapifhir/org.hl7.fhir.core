@@ -8,8 +8,11 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier4
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Period43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4b.model.Encounter;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Encounter.ReasonComponent;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -151,74 +154,82 @@ public class Encounter43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EncounterStatus> convertEncounterStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Encounter.EncounterStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EncounterStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.EncounterStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PLANNED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.PLANNED);
-        break;
-      case ARRIVED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.INPROGRESS);
-        break;
-      case TRIAGED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.INPROGRESS);
-        break;
-      case INPROGRESS:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.INPROGRESS);
-        break;
-      case ONLEAVE:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.INPROGRESS);
-        break;
-      case FINISHED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.COMPLETED);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.CANCELLED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EncounterStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Enumerations.EncounterStatus> tgt = new Enumeration<>(new Enumerations.EncounterStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PLANNED:
+                  tgt.setValue(Enumerations.EncounterStatus.PLANNED);
+                  break;
+              case ARRIVED:
+                  tgt.setValue(Enumerations.EncounterStatus.INPROGRESS);
+                  break;
+              case TRIAGED:
+                  tgt.setValue(Enumerations.EncounterStatus.INPROGRESS);
+                  break;
+              case INPROGRESS:
+                  tgt.setValue(Enumerations.EncounterStatus.INPROGRESS);
+                  break;
+              case ONLEAVE:
+                  tgt.setValue(Enumerations.EncounterStatus.INPROGRESS);
+                  break;
+              case FINISHED:
+                  tgt.setValue(Enumerations.EncounterStatus.COMPLETED);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(Enumerations.EncounterStatus.CANCELLED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Enumerations.EncounterStatus.ENTEREDINERROR);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(Enumerations.EncounterStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.EncounterStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Encounter.EncounterStatus> convertEncounterStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EncounterStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Encounter.EncounterStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Encounter.EncounterStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PLANNED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Encounter.EncounterStatus.PLANNED);
-        break;
-      case INPROGRESS:
-        tgt.setValue(org.hl7.fhir.r4b.model.Encounter.EncounterStatus.INPROGRESS);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Encounter.EncounterStatus.CANCELLED);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Encounter.EncounterStatus.FINISHED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4b.model.Encounter.EncounterStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r4b.model.Encounter.EncounterStatus.UNKNOWN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Encounter.EncounterStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<Encounter.EncounterStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new Encounter.EncounterStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PLANNED:
+                  tgt.setValue(Encounter.EncounterStatus.PLANNED);
+                  break;
+              case INPROGRESS:
+                  tgt.setValue(Encounter.EncounterStatus.INPROGRESS);
+                  break;
+              case CANCELLED:
+                  tgt.setValue(Encounter.EncounterStatus.CANCELLED);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(Encounter.EncounterStatus.FINISHED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Encounter.EncounterStatus.ENTEREDINERROR);
+                  break;
+              case UNKNOWN:
+                  tgt.setValue(Encounter.EncounterStatus.UNKNOWN);
+                  break;
+              default:
+                  tgt.setValue(Encounter.EncounterStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 //
 //  public static org.hl7.fhir.r5.model.Encounter.StatusHistoryComponent convertStatusHistoryComponent(org.hl7.fhir.r4b.model.Encounter.StatusHistoryComponent src) throws FHIRException {
@@ -410,52 +421,60 @@ public class Encounter43_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus> convertEncounterLocationStatus(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Encounter.EncounterLocationStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Encounter.EncounterLocationStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PLANNED:
-        tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.PLANNED);
-        break;
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.ACTIVE);
-        break;
-      case RESERVED:
-        tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.RESERVED);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.COMPLETED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus> tgt = new Enumeration<>(new org.hl7.fhir.r5.model.Encounter.EncounterLocationStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PLANNED:
+                  tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.PLANNED);
+                  break;
+              case ACTIVE:
+                  tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.ACTIVE);
+                  break;
+              case RESERVED:
+                  tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.RESERVED);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.COMPLETED);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Encounter.EncounterLocationStatus> convertEncounterLocationStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Encounter.EncounterLocationStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Encounter.EncounterLocationStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Encounter.EncounterLocationStatusEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PLANNED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Encounter.EncounterLocationStatus.PLANNED);
-        break;
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Encounter.EncounterLocationStatus.ACTIVE);
-        break;
-      case RESERVED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Encounter.EncounterLocationStatus.RESERVED);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Encounter.EncounterLocationStatus.COMPLETED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Encounter.EncounterLocationStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4b.model.Enumeration<Encounter.EncounterLocationStatus> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new Encounter.EncounterLocationStatusEnumFactory());
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PLANNED:
+                  tgt.setValue(Encounter.EncounterLocationStatus.PLANNED);
+                  break;
+              case ACTIVE:
+                  tgt.setValue(Encounter.EncounterLocationStatus.ACTIVE);
+                  break;
+              case RESERVED:
+                  tgt.setValue(Encounter.EncounterLocationStatus.RESERVED);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(Encounter.EncounterLocationStatus.COMPLETED);
+                  break;
+              default:
+                  tgt.setValue(Encounter.EncounterLocationStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

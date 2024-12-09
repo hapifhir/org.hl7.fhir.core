@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.TriggerDefinition;
 
 public class TriggerDefinition40_50 {
   public static org.hl7.fhir.r5.model.TriggerDefinition convertTriggerDefinition(org.hl7.fhir.r4.model.TriggerDefinition src) throws FHIRException {
@@ -38,38 +39,38 @@ public class TriggerDefinition40_50 {
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TriggerDefinition.TriggerType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.TriggerDefinition.TriggerTypeEnumFactory());
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.TriggerDefinition.TriggerType.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case NAMEDEVENT:
-          tgt.setValue(org.hl7.fhir.r5.model.TriggerDefinition.TriggerType.NAMEDEVENT);
-          break;
-        case PERIODIC:
-          tgt.setValue(org.hl7.fhir.r5.model.TriggerDefinition.TriggerType.PERIODIC);
-          break;
-        case DATACHANGED:
-          tgt.setValue(org.hl7.fhir.r5.model.TriggerDefinition.TriggerType.DATACHANGED);
-          break;
-        case DATAADDED:
-          tgt.setValue(org.hl7.fhir.r5.model.TriggerDefinition.TriggerType.DATAADDED);
-          break;
-        case DATAMODIFIED:
-          tgt.setValue(org.hl7.fhir.r5.model.TriggerDefinition.TriggerType.DATAMODIFIED);
-          break;
-        case DATAREMOVED:
-          tgt.setValue(org.hl7.fhir.r5.model.TriggerDefinition.TriggerType.DATAREMOVED);
-          break;
-        case DATAACCESSED:
-          tgt.setValue(org.hl7.fhir.r5.model.TriggerDefinition.TriggerType.DATAACCESSED);
-          break;
-        case DATAACCESSENDED:
-          tgt.setValue(org.hl7.fhir.r5.model.TriggerDefinition.TriggerType.DATAACCESSENDED);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r5.model.TriggerDefinition.TriggerType.NULL);
-          break;
-      }
-    }
+                    tgt.setValue(TriggerDefinition.TriggerType.NAMEDEVENT);
+                    break;
+                case PERIODIC:
+                    tgt.setValue(TriggerDefinition.TriggerType.PERIODIC);
+                    break;
+                case DATACHANGED:
+                    tgt.setValue(TriggerDefinition.TriggerType.DATACHANGED);
+                    break;
+                case DATAADDED:
+                    tgt.setValue(TriggerDefinition.TriggerType.DATAADDED);
+                    break;
+                case DATAMODIFIED:
+                    tgt.setValue(TriggerDefinition.TriggerType.DATAMODIFIED);
+                    break;
+                case DATAREMOVED:
+                    tgt.setValue(TriggerDefinition.TriggerType.DATAREMOVED);
+                    break;
+                case DATAACCESSED:
+                    tgt.setValue(TriggerDefinition.TriggerType.DATAACCESSED);
+                    break;
+                case DATAACCESSENDED:
+                    tgt.setValue(TriggerDefinition.TriggerType.DATAACCESSENDED);
+                    break;
+                default:
+                    tgt.setValue(TriggerDefinition.TriggerType.NULL);
+                    break;
+       }
+}
     return tgt;
   }
 
@@ -78,38 +79,38 @@ public class TriggerDefinition40_50 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TriggerDefinition.TriggerType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TriggerDefinition.TriggerTypeEnumFactory());
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.NULL);
-    } else {
-      switch (src.getValue()) {
+    tgt.setValue(null);
+} else {
+      switch(src.getValue()) {
         case NAMEDEVENT:
-          tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.NAMEDEVENT);
-          break;
-        case PERIODIC:
-          tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.PERIODIC);
-          break;
-        case DATACHANGED:
-          tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.DATACHANGED);
-          break;
-        case DATAADDED:
-          tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.DATAADDED);
-          break;
-        case DATAMODIFIED:
-          tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.DATAMODIFIED);
-          break;
-        case DATAREMOVED:
-          tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.DATAREMOVED);
-          break;
-        case DATAACCESSED:
-          tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.DATAACCESSED);
-          break;
-        case DATAACCESSENDED:
-          tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.DATAACCESSENDED);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.NULL);
-          break;
-      }
-    }
+                    tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.NAMEDEVENT);
+                    break;
+                case PERIODIC:
+                    tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.PERIODIC);
+                    break;
+                case DATACHANGED:
+                    tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.DATACHANGED);
+                    break;
+                case DATAADDED:
+                    tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.DATAADDED);
+                    break;
+                case DATAMODIFIED:
+                    tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.DATAMODIFIED);
+                    break;
+                case DATAREMOVED:
+                    tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.DATAREMOVED);
+                    break;
+                case DATAACCESSED:
+                    tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.DATAACCESSED);
+                    break;
+                case DATAACCESSENDED:
+                    tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.DATAACCESSENDED);
+                    break;
+                default:
+                    tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.NULL);
+                    break;
+       }
+}
     return tgt;
   }
 }

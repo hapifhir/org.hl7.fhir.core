@@ -16,6 +16,8 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Mark
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.UnsignedInt30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Uri30_40;
+import org.hl7.fhir.dstu3.model.CapabilityStatement;
+import org.hl7.fhir.dstu3.model.Enumeration;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class CapabilityStatement30_40 {
@@ -202,47 +204,55 @@ public class CapabilityStatement30_40 {
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementKind> convertCapabilityStatementKind(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementKind> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementKindEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case INSTANCE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementKind.INSTANCE);
-        break;
-      case CAPABILITY:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementKind.CAPABILITY);
-        break;
-      case REQUIREMENTS:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementKind.REQUIREMENTS);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementKind.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<CapabilityStatement.CapabilityStatementKind> tgt = new Enumeration<>(new CapabilityStatement.CapabilityStatementKindEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case INSTANCE:
+                  tgt.setValue(CapabilityStatement.CapabilityStatementKind.INSTANCE);
+                  break;
+              case CAPABILITY:
+                  tgt.setValue(CapabilityStatement.CapabilityStatementKind.CAPABILITY);
+                  break;
+              case REQUIREMENTS:
+                  tgt.setValue(CapabilityStatement.CapabilityStatementKind.REQUIREMENTS);
+                  break;
+              default:
+                  tgt.setValue(CapabilityStatement.CapabilityStatementKind.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind> convertCapabilityStatementKind(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementKind> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKindEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case INSTANCE:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind.INSTANCE);
-        break;
-      case CAPABILITY:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind.CAPABILITY);
-        break;
-      case REQUIREMENTS:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind.REQUIREMENTS);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKindEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case INSTANCE:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind.INSTANCE);
+                  break;
+              case CAPABILITY:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind.CAPABILITY);
+                  break;
+              case REQUIREMENTS:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind.REQUIREMENTS);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementKind.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementMessagingComponent convertCapabilityStatementMessagingComponent(org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementMessagingComponent src) throws FHIRException {
@@ -601,229 +611,269 @@ public class CapabilityStatement30_40 {
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalDeleteStatus> convertConditionalDeleteStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ConditionalDeleteStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalDeleteStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalDeleteStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case NOTSUPPORTED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalDeleteStatus.NOTSUPPORTED);
-        break;
-      case SINGLE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalDeleteStatus.SINGLE);
-        break;
-      case MULTIPLE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalDeleteStatus.MULTIPLE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalDeleteStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<CapabilityStatement.ConditionalDeleteStatus> tgt = new Enumeration<>(new CapabilityStatement.ConditionalDeleteStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case NOTSUPPORTED:
+                  tgt.setValue(CapabilityStatement.ConditionalDeleteStatus.NOTSUPPORTED);
+                  break;
+              case SINGLE:
+                  tgt.setValue(CapabilityStatement.ConditionalDeleteStatus.SINGLE);
+                  break;
+              case MULTIPLE:
+                  tgt.setValue(CapabilityStatement.ConditionalDeleteStatus.MULTIPLE);
+                  break;
+              default:
+                  tgt.setValue(CapabilityStatement.ConditionalDeleteStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ConditionalDeleteStatus> convertConditionalDeleteStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalDeleteStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ConditionalDeleteStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.ConditionalDeleteStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case NOTSUPPORTED:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalDeleteStatus.NOTSUPPORTED);
-        break;
-      case SINGLE:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalDeleteStatus.SINGLE);
-        break;
-      case MULTIPLE:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalDeleteStatus.MULTIPLE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalDeleteStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ConditionalDeleteStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.ConditionalDeleteStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case NOTSUPPORTED:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalDeleteStatus.NOTSUPPORTED);
+                  break;
+              case SINGLE:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalDeleteStatus.SINGLE);
+                  break;
+              case MULTIPLE:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalDeleteStatus.MULTIPLE);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalDeleteStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalReadStatus> convertConditionalReadStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalReadStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalReadStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case NOTSUPPORTED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalReadStatus.NOTSUPPORTED);
-        break;
-      case MODIFIEDSINCE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalReadStatus.MODIFIEDSINCE);
-        break;
-      case NOTMATCH:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalReadStatus.NOTMATCH);
-        break;
-      case FULLSUPPORT:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalReadStatus.FULLSUPPORT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalReadStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<CapabilityStatement.ConditionalReadStatus> tgt = new Enumeration<>(new CapabilityStatement.ConditionalReadStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case NOTSUPPORTED:
+                  tgt.setValue(CapabilityStatement.ConditionalReadStatus.NOTSUPPORTED);
+                  break;
+              case MODIFIEDSINCE:
+                  tgt.setValue(CapabilityStatement.ConditionalReadStatus.MODIFIEDSINCE);
+                  break;
+              case NOTMATCH:
+                  tgt.setValue(CapabilityStatement.ConditionalReadStatus.NOTMATCH);
+                  break;
+              case FULLSUPPORT:
+                  tgt.setValue(CapabilityStatement.ConditionalReadStatus.FULLSUPPORT);
+                  break;
+              default:
+                  tgt.setValue(CapabilityStatement.ConditionalReadStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatus> convertConditionalReadStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.ConditionalReadStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case NOTSUPPORTED:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatus.NOTSUPPORTED);
-        break;
-      case MODIFIEDSINCE:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatus.MODIFIEDSINCE);
-        break;
-      case NOTMATCH:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatus.NOTMATCH);
-        break;
-      case FULLSUPPORT:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatus.FULLSUPPORT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case NOTSUPPORTED:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatus.NOTSUPPORTED);
+                  break;
+              case MODIFIEDSINCE:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatus.MODIFIEDSINCE);
+                  break;
+              case NOTMATCH:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatus.NOTMATCH);
+                  break;
+              case FULLSUPPORT:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatus.FULLSUPPORT);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ConditionalReadStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.DocumentMode> convertDocumentMode(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.DocumentMode> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.DocumentMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.DocumentModeEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PRODUCER:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.DocumentMode.PRODUCER);
-        break;
-      case CONSUMER:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.DocumentMode.CONSUMER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.DocumentMode.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.DocumentMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.DocumentModeEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PRODUCER:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.DocumentMode.PRODUCER);
+                  break;
+              case CONSUMER:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.DocumentMode.CONSUMER);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.DocumentMode.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.DocumentMode> convertDocumentMode(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.DocumentMode> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.DocumentMode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CapabilityStatement.DocumentModeEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PRODUCER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.DocumentMode.PRODUCER);
-        break;
-      case CONSUMER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.DocumentMode.CONSUMER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.DocumentMode.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<CapabilityStatement.DocumentMode> tgt = new Enumeration<>(new CapabilityStatement.DocumentModeEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PRODUCER:
+                  tgt.setValue(CapabilityStatement.DocumentMode.PRODUCER);
+                  break;
+              case CONSUMER:
+                  tgt.setValue(CapabilityStatement.DocumentMode.CONSUMER);
+                  break;
+              default:
+                  tgt.setValue(CapabilityStatement.DocumentMode.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.EventCapabilityMode> convertEventCapabilityMode(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityMode> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.EventCapabilityMode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CapabilityStatement.EventCapabilityModeEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case SENDER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.EventCapabilityMode.SENDER);
-        break;
-      case RECEIVER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.EventCapabilityMode.RECEIVER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.EventCapabilityMode.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<CapabilityStatement.EventCapabilityMode> tgt = new Enumeration<>(new CapabilityStatement.EventCapabilityModeEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case SENDER:
+                  tgt.setValue(CapabilityStatement.EventCapabilityMode.SENDER);
+                  break;
+              case RECEIVER:
+                  tgt.setValue(CapabilityStatement.EventCapabilityMode.RECEIVER);
+                  break;
+              default:
+                  tgt.setValue(CapabilityStatement.EventCapabilityMode.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityMode> convertEventCapabilityMode(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.EventCapabilityMode> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityModeEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case SENDER:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityMode.SENDER);
-        break;
-      case RECEIVER:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityMode.RECEIVER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityMode.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityModeEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case SENDER:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityMode.SENDER);
+                  break;
+              case RECEIVER:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityMode.RECEIVER);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.EventCapabilityMode.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy> convertReferenceHandlingPolicy(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.ReferenceHandlingPolicy> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicyEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case LITERAL:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy.LITERAL);
-        break;
-      case LOGICAL:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy.LOGICAL);
-        break;
-      case RESOLVES:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy.RESOLVES);
-        break;
-      case ENFORCED:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy.ENFORCED);
-        break;
-      case LOCAL:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy.LOCAL);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicyEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case LITERAL:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy.LITERAL);
+                  break;
+              case LOGICAL:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy.LOGICAL);
+                  break;
+              case RESOLVES:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy.RESOLVES);
+                  break;
+              case ENFORCED:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy.ENFORCED);
+                  break;
+              case LOCAL:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy.LOCAL);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.ReferenceHandlingPolicy> convertReferenceHandlingPolicy(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ReferenceHandlingPolicy> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.ReferenceHandlingPolicy> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CapabilityStatement.ReferenceHandlingPolicyEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case LITERAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ReferenceHandlingPolicy.LITERAL);
-        break;
-      case LOGICAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ReferenceHandlingPolicy.LOGICAL);
-        break;
-      case RESOLVES:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ReferenceHandlingPolicy.RESOLVES);
-        break;
-      case ENFORCED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ReferenceHandlingPolicy.ENFORCED);
-        break;
-      case LOCAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ReferenceHandlingPolicy.LOCAL);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ReferenceHandlingPolicy.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<CapabilityStatement.ReferenceHandlingPolicy> tgt = new Enumeration<>(new CapabilityStatement.ReferenceHandlingPolicyEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case LITERAL:
+                  tgt.setValue(CapabilityStatement.ReferenceHandlingPolicy.LITERAL);
+                  break;
+              case LOGICAL:
+                  tgt.setValue(CapabilityStatement.ReferenceHandlingPolicy.LOGICAL);
+                  break;
+              case RESOLVES:
+                  tgt.setValue(CapabilityStatement.ReferenceHandlingPolicy.RESOLVES);
+                  break;
+              case ENFORCED:
+                  tgt.setValue(CapabilityStatement.ReferenceHandlingPolicy.ENFORCED);
+                  break;
+              case LOCAL:
+                  tgt.setValue(CapabilityStatement.ReferenceHandlingPolicy.LOCAL);
+                  break;
+              default:
+                  tgt.setValue(CapabilityStatement.ReferenceHandlingPolicy.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.dstu3.model.CapabilityStatement.ResourceInteractionComponent convertResourceInteractionComponent(org.hl7.fhir.r4.model.CapabilityStatement.ResourceInteractionComponent src) throws FHIRException {
@@ -851,85 +901,101 @@ public class CapabilityStatement30_40 {
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ResourceVersionPolicy> convertResourceVersionPolicy(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.ResourceVersionPolicy> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ResourceVersionPolicy> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.ResourceVersionPolicyEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case NOVERSION:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ResourceVersionPolicy.NOVERSION);
-        break;
-      case VERSIONED:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ResourceVersionPolicy.VERSIONED);
-        break;
-      case VERSIONEDUPDATE:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ResourceVersionPolicy.VERSIONEDUPDATE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ResourceVersionPolicy.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ResourceVersionPolicy> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.ResourceVersionPolicyEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case NOVERSION:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ResourceVersionPolicy.NOVERSION);
+                  break;
+              case VERSIONED:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ResourceVersionPolicy.VERSIONED);
+                  break;
+              case VERSIONEDUPDATE:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ResourceVersionPolicy.VERSIONEDUPDATE);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.ResourceVersionPolicy.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.ResourceVersionPolicy> convertResourceVersionPolicy(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.ResourceVersionPolicy> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.ResourceVersionPolicy> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CapabilityStatement.ResourceVersionPolicyEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case NOVERSION:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ResourceVersionPolicy.NOVERSION);
-        break;
-      case VERSIONED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ResourceVersionPolicy.VERSIONED);
-        break;
-      case VERSIONEDUPDATE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ResourceVersionPolicy.VERSIONEDUPDATE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.ResourceVersionPolicy.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<CapabilityStatement.ResourceVersionPolicy> tgt = new Enumeration<>(new CapabilityStatement.ResourceVersionPolicyEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case NOVERSION:
+                  tgt.setValue(CapabilityStatement.ResourceVersionPolicy.NOVERSION);
+                  break;
+              case VERSIONED:
+                  tgt.setValue(CapabilityStatement.ResourceVersionPolicy.VERSIONED);
+                  break;
+              case VERSIONEDUPDATE:
+                  tgt.setValue(CapabilityStatement.ResourceVersionPolicy.VERSIONEDUPDATE);
+                  break;
+              default:
+                  tgt.setValue(CapabilityStatement.ResourceVersionPolicy.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.RestfulCapabilityMode> convertRestfulCapabilityMode(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityMode> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.RestfulCapabilityMode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CapabilityStatement.RestfulCapabilityModeEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case CLIENT:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.RestfulCapabilityMode.CLIENT);
-        break;
-      case SERVER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.RestfulCapabilityMode.SERVER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.RestfulCapabilityMode.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<CapabilityStatement.RestfulCapabilityMode> tgt = new Enumeration<>(new CapabilityStatement.RestfulCapabilityModeEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case CLIENT:
+                  tgt.setValue(CapabilityStatement.RestfulCapabilityMode.CLIENT);
+                  break;
+              case SERVER:
+                  tgt.setValue(CapabilityStatement.RestfulCapabilityMode.SERVER);
+                  break;
+              default:
+                  tgt.setValue(CapabilityStatement.RestfulCapabilityMode.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityMode> convertRestfulCapabilityMode(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.RestfulCapabilityMode> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityModeEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case CLIENT:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityMode.CLIENT);
-        break;
-      case SERVER:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityMode.SERVER);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityMode.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityModeEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case CLIENT:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityMode.CLIENT);
+                  break;
+              case SERVER:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityMode.SERVER);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.RestfulCapabilityMode.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.dstu3.model.CapabilityStatement.SystemInteractionComponent convertSystemInteractionComponent(org.hl7.fhir.r4.model.CapabilityStatement.SystemInteractionComponent src) throws FHIRException {
@@ -957,132 +1023,148 @@ public class CapabilityStatement30_40 {
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.SystemRestfulInteraction> convertSystemRestfulInteraction(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.SystemRestfulInteraction> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CapabilityStatement.SystemRestfulInteractionEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case TRANSACTION:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.SystemRestfulInteraction.TRANSACTION);
-        break;
-      case BATCH:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.SystemRestfulInteraction.BATCH);
-        break;
-      case SEARCHSYSTEM:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.SystemRestfulInteraction.SEARCHSYSTEM);
-        break;
-      case HISTORYSYSTEM:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.SystemRestfulInteraction.HISTORYSYSTEM);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.SystemRestfulInteraction.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<CapabilityStatement.SystemRestfulInteraction> tgt = new Enumeration<>(new CapabilityStatement.SystemRestfulInteractionEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case TRANSACTION:
+                  tgt.setValue(CapabilityStatement.SystemRestfulInteraction.TRANSACTION);
+                  break;
+              case BATCH:
+                  tgt.setValue(CapabilityStatement.SystemRestfulInteraction.BATCH);
+                  break;
+              case SEARCHSYSTEM:
+                  tgt.setValue(CapabilityStatement.SystemRestfulInteraction.SEARCHSYSTEM);
+                  break;
+              case HISTORYSYSTEM:
+                  tgt.setValue(CapabilityStatement.SystemRestfulInteraction.HISTORYSYSTEM);
+                  break;
+              default:
+                  tgt.setValue(CapabilityStatement.SystemRestfulInteraction.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction> convertSystemRestfulInteraction(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.SystemRestfulInteraction> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteractionEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case TRANSACTION:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction.TRANSACTION);
-        break;
-      case BATCH:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction.BATCH);
-        break;
-      case SEARCHSYSTEM:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction.SEARCHSYSTEM);
-        break;
-      case HISTORYSYSTEM:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction.HISTORYSYSTEM);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteractionEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case TRANSACTION:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction.TRANSACTION);
+                  break;
+              case BATCH:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction.BATCH);
+                  break;
+              case SEARCHSYSTEM:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction.SEARCHSYSTEM);
+                  break;
+              case HISTORYSYSTEM:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction.HISTORYSYSTEM);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.SystemRestfulInteraction.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.TypeRestfulInteraction> convertTypeRestfulInteraction(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.TypeRestfulInteraction> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CapabilityStatement.TypeRestfulInteractionEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case READ:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.TypeRestfulInteraction.READ);
-        break;
-      case VREAD:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.TypeRestfulInteraction.VREAD);
-        break;
-      case UPDATE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.TypeRestfulInteraction.UPDATE);
-        break;
-      case PATCH:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.TypeRestfulInteraction.PATCH);
-        break;
-      case DELETE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.TypeRestfulInteraction.DELETE);
-        break;
-      case HISTORYINSTANCE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.TypeRestfulInteraction.HISTORYINSTANCE);
-        break;
-      case HISTORYTYPE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.TypeRestfulInteraction.HISTORYTYPE);
-        break;
-      case CREATE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.TypeRestfulInteraction.CREATE);
-        break;
-      case SEARCHTYPE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.TypeRestfulInteraction.SEARCHTYPE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.CapabilityStatement.TypeRestfulInteraction.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<CapabilityStatement.TypeRestfulInteraction> tgt = new Enumeration<>(new CapabilityStatement.TypeRestfulInteractionEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case READ:
+                  tgt.setValue(CapabilityStatement.TypeRestfulInteraction.READ);
+                  break;
+              case VREAD:
+                  tgt.setValue(CapabilityStatement.TypeRestfulInteraction.VREAD);
+                  break;
+              case UPDATE:
+                  tgt.setValue(CapabilityStatement.TypeRestfulInteraction.UPDATE);
+                  break;
+              case PATCH:
+                  tgt.setValue(CapabilityStatement.TypeRestfulInteraction.PATCH);
+                  break;
+              case DELETE:
+                  tgt.setValue(CapabilityStatement.TypeRestfulInteraction.DELETE);
+                  break;
+              case HISTORYINSTANCE:
+                  tgt.setValue(CapabilityStatement.TypeRestfulInteraction.HISTORYINSTANCE);
+                  break;
+              case HISTORYTYPE:
+                  tgt.setValue(CapabilityStatement.TypeRestfulInteraction.HISTORYTYPE);
+                  break;
+              case CREATE:
+                  tgt.setValue(CapabilityStatement.TypeRestfulInteraction.CREATE);
+                  break;
+              case SEARCHTYPE:
+                  tgt.setValue(CapabilityStatement.TypeRestfulInteraction.SEARCHTYPE);
+                  break;
+              default:
+                  tgt.setValue(CapabilityStatement.TypeRestfulInteraction.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction> convertTypeRestfulInteraction(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CapabilityStatement.TypeRestfulInteraction> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteractionEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case READ:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.READ);
-        break;
-      case VREAD:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.VREAD);
-        break;
-      case UPDATE:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.UPDATE);
-        break;
-      case PATCH:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.PATCH);
-        break;
-      case DELETE:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.DELETE);
-        break;
-      case HISTORYINSTANCE:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.HISTORYINSTANCE);
-        break;
-      case HISTORYTYPE:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.HISTORYTYPE);
-        break;
-      case CREATE:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.CREATE);
-        break;
-      case SEARCHTYPE:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.SEARCHTYPE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteractionEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case READ:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.READ);
+                  break;
+              case VREAD:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.VREAD);
+                  break;
+              case UPDATE:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.UPDATE);
+                  break;
+              case PATCH:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.PATCH);
+                  break;
+              case DELETE:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.DELETE);
+                  break;
+              case HISTORYINSTANCE:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.HISTORYINSTANCE);
+                  break;
+              case HISTORYTYPE:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.HISTORYTYPE);
+                  break;
+              case CREATE:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.CREATE);
+                  break;
+              case SEARCHTYPE:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.SEARCHTYPE);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.CapabilityStatement.TypeRestfulInteraction.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

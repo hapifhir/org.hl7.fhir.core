@@ -5,8 +5,11 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Reference10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.CodeableConcept10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Identifier10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.DateTime10_50;
+import org.hl7.fhir.dstu2.model.CommunicationRequest;
+import org.hl7.fhir.dstu2.model.Enumeration;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.Enumerations;
 
 public class CommunicationRequest10_50 {
 
@@ -103,71 +106,79 @@ public class CommunicationRequest10_50 {
   }
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.CommunicationRequest.CommunicationRequestStatus> convertCommunicationRequestStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.CommunicationRequest.CommunicationRequestStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.CommunicationRequest.CommunicationRequestStatusEnumFactory());
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case DRAFT:
-        tgt.setValue(org.hl7.fhir.dstu2.model.CommunicationRequest.CommunicationRequestStatus.PROPOSED);
-        break;
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.CommunicationRequest.CommunicationRequestStatus.INPROGRESS);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.dstu2.model.CommunicationRequest.CommunicationRequestStatus.COMPLETED);
-        break;
-      case ONHOLD:
-        tgt.setValue(org.hl7.fhir.dstu2.model.CommunicationRequest.CommunicationRequestStatus.SUSPENDED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu2.model.CommunicationRequest.CommunicationRequestStatus.REJECTED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.CommunicationRequest.CommunicationRequestStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<CommunicationRequest.CommunicationRequestStatus> tgt = new Enumeration<>(new CommunicationRequest.CommunicationRequestStatusEnumFactory());
+      ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case DRAFT:
+                  tgt.setValue(CommunicationRequest.CommunicationRequestStatus.PROPOSED);
+                  break;
+              case ACTIVE:
+                  tgt.setValue(CommunicationRequest.CommunicationRequestStatus.INPROGRESS);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(CommunicationRequest.CommunicationRequestStatus.COMPLETED);
+                  break;
+              case ONHOLD:
+                  tgt.setValue(CommunicationRequest.CommunicationRequestStatus.SUSPENDED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(CommunicationRequest.CommunicationRequestStatus.REJECTED);
+                  break;
+              default:
+                  tgt.setValue(CommunicationRequest.CommunicationRequestStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> convertCommunicationRequestStatus(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.CommunicationRequest.CommunicationRequestStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestStatusEnumFactory());
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PROPOSED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.DRAFT);
-        break;
-      case PLANNED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE);
-        break;
-      case REQUESTED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE);
-        break;
-      case RECEIVED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE);
-        break;
-      case ACCEPTED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE);
-        break;
-      case INPROGRESS:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ACTIVE);
-        break;
-      case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.COMPLETED);
-        break;
-      case SUSPENDED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ONHOLD);
-        break;
-      case REJECTED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r5.model.Enumeration<Enumerations.RequestStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new Enumerations.RequestStatusEnumFactory());
+      ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case PROPOSED:
+                  tgt.setValue(Enumerations.RequestStatus.DRAFT);
+                  break;
+              case PLANNED:
+                  tgt.setValue(Enumerations.RequestStatus.ACTIVE);
+                  break;
+              case REQUESTED:
+                  tgt.setValue(Enumerations.RequestStatus.ACTIVE);
+                  break;
+              case RECEIVED:
+                  tgt.setValue(Enumerations.RequestStatus.ACTIVE);
+                  break;
+              case ACCEPTED:
+                  tgt.setValue(Enumerations.RequestStatus.ACTIVE);
+                  break;
+              case INPROGRESS:
+                  tgt.setValue(Enumerations.RequestStatus.ACTIVE);
+                  break;
+              case COMPLETED:
+                  tgt.setValue(Enumerations.RequestStatus.COMPLETED);
+                  break;
+              case SUSPENDED:
+                  tgt.setValue(Enumerations.RequestStatus.ONHOLD);
+                  break;
+              case REJECTED:
+                  tgt.setValue(Enumerations.RequestStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.RequestStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r5.model.Enumerations.RequestPriority convertPriorityCode(org.hl7.fhir.dstu2.model.CodeableConcept priority) {
