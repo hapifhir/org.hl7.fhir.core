@@ -9,10 +9,13 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Period
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.MarkDown10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
+import org.hl7.fhir.dstu2.model.Enumerations;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DocumentReference;
 import org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceAttesterComponent;
+import org.hl7.fhir.r5.model.Enumeration;
 
 public class DocumentReference10_50 {
 
@@ -227,72 +230,84 @@ public class DocumentReference10_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatus> convertDocumentReferenceStatus(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatusEnumFactory());
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-    case CURRENT:
-      tgt.setValue(org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatus.CURRENT);
-      break;
-    case SUPERSEDED:
-      tgt.setValue(org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatus.SUPERSEDED);
-      break;
-    case ENTEREDINERROR:
-      tgt.setValue(org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatus.ENTEREDINERROR);
-      break;
-    default:
-      tgt.setValue(org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatus.NULL);
-      break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<DocumentReference.DocumentReferenceStatus> tgt = new Enumeration<>(new DocumentReference.DocumentReferenceStatusEnumFactory());
+      ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case CURRENT:
+                  tgt.setValue(DocumentReference.DocumentReferenceStatus.CURRENT);
+                  break;
+              case SUPERSEDED:
+                  tgt.setValue(DocumentReference.DocumentReferenceStatus.SUPERSEDED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(DocumentReference.DocumentReferenceStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(DocumentReference.DocumentReferenceStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus> convertDocumentReferenceStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatusEnumFactory());
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-    case CURRENT:
-      tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus.CURRENT);
-      break;
-    case SUPERSEDED:
-      tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus.SUPERSEDED);
-      break;
-    case ENTEREDINERROR:
-      tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus.ENTEREDINERROR);
-      break;
-    default:
-      tgt.setValue(org.hl7.fhir.dstu2.model.Enumerations.DocumentReferenceStatus.NULL);
-      break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu2.model.Enumeration<Enumerations.DocumentReferenceStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new Enumerations.DocumentReferenceStatusEnumFactory());
+      ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case CURRENT:
+                  tgt.setValue(Enumerations.DocumentReferenceStatus.CURRENT);
+                  break;
+              case SUPERSEDED:
+                  tgt.setValue(Enumerations.DocumentReferenceStatus.SUPERSEDED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Enumerations.DocumentReferenceStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.DocumentReferenceStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r5.model.CodeableConcept convertDocumentRelationshipType(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.CodeableConcept tgt = new org.hl7.fhir.r5.model.CodeableConcept();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-    case REPLACES:
-      tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("replaces");
-      break;
-    case TRANSFORMS:
-      tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("transforms");
-      break;
-    case SIGNS:
-      tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("signs");
-      break;
-    case APPENDS:
-      tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("appends");
-      break;
-    default:
-      break;
-    }
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r5.model.CodeableConcept tgt = new org.hl7.fhir.r5.model.CodeableConcept();
+      ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+        // Add nothing
+      } else {
+          switch (src.getValue()) {
+              case REPLACES:
+                  tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("replaces");
+                  break;
+              case TRANSFORMS:
+                  tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("transforms");
+                  break;
+              case SIGNS:
+                  tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("signs");
+                  break;
+              case APPENDS:
+                  tgt.addCoding().setSystem("http://hl7.org/fhir/document-relationship-type").setCode("appends");
+                  break;
+              default:
+                  break;
+          }
+      }
 
-    return tgt;
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DocumentReference.DocumentRelationshipType> convertDocumentRelationshipType(org.hl7.fhir.r5.model.CodeableConcept src) throws FHIRException {

@@ -8,7 +8,10 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identi
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
+import org.hl7.fhir.dstu3.model.ListResource;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations;
 
 public class List30_50 {
 
@@ -111,90 +114,106 @@ public class List30_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ListMode> convertListMode(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ListResource.ListMode> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ListMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ListModeEnumFactory());
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case WORKING:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ListMode.WORKING);
-        break;
-      case SNAPSHOT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ListMode.SNAPSHOT);
-        break;
-      case CHANGES:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ListMode.CHANGES);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ListMode.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Enumerations.ListMode> tgt = new Enumeration<>(new Enumerations.ListModeEnumFactory());
+      ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case WORKING:
+                  tgt.setValue(Enumerations.ListMode.WORKING);
+                  break;
+              case SNAPSHOT:
+                  tgt.setValue(Enumerations.ListMode.SNAPSHOT);
+                  break;
+              case CHANGES:
+                  tgt.setValue(Enumerations.ListMode.CHANGES);
+                  break;
+              default:
+                  tgt.setValue(Enumerations.ListMode.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ListResource.ListMode> convertListMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ListMode> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ListResource.ListMode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ListResource.ListModeEnumFactory());
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case WORKING:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ListResource.ListMode.WORKING);
-        break;
-      case SNAPSHOT:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ListResource.ListMode.SNAPSHOT);
-        break;
-      case CHANGES:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ListResource.ListMode.CHANGES);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ListResource.ListMode.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<ListResource.ListMode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new ListResource.ListModeEnumFactory());
+      ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case WORKING:
+                  tgt.setValue(ListResource.ListMode.WORKING);
+                  break;
+              case SNAPSHOT:
+                  tgt.setValue(ListResource.ListMode.SNAPSHOT);
+                  break;
+              case CHANGES:
+                  tgt.setValue(ListResource.ListMode.CHANGES);
+                  break;
+              default:
+                  tgt.setValue(ListResource.ListMode.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ListResource.ListStatus> convertListStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ListResource.ListStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ListResource.ListStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ListResource.ListStatusEnumFactory());
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case CURRENT:
-        tgt.setValue(org.hl7.fhir.r5.model.ListResource.ListStatus.CURRENT);
-        break;
-      case RETIRED:
-        tgt.setValue(org.hl7.fhir.r5.model.ListResource.ListStatus.RETIRED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.ListResource.ListStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.ListResource.ListStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<org.hl7.fhir.r5.model.ListResource.ListStatus> tgt = new Enumeration<>(new org.hl7.fhir.r5.model.ListResource.ListStatusEnumFactory());
+      ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case CURRENT:
+                  tgt.setValue(org.hl7.fhir.r5.model.ListResource.ListStatus.CURRENT);
+                  break;
+              case RETIRED:
+                  tgt.setValue(org.hl7.fhir.r5.model.ListResource.ListStatus.RETIRED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.r5.model.ListResource.ListStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r5.model.ListResource.ListStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ListResource.ListStatus> convertListStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ListResource.ListStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ListResource.ListStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ListResource.ListStatusEnumFactory());
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case CURRENT:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ListResource.ListStatus.CURRENT);
-        break;
-      case RETIRED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ListResource.ListStatus.RETIRED);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ListResource.ListStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ListResource.ListStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<ListResource.ListStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new ListResource.ListStatusEnumFactory());
+      ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case CURRENT:
+                  tgt.setValue(ListResource.ListStatus.CURRENT);
+                  break;
+              case RETIRED:
+                  tgt.setValue(ListResource.ListStatus.RETIRED);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(ListResource.ListStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(ListResource.ListStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }
