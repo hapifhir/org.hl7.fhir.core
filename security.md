@@ -20,6 +20,11 @@ to particular sub-directories. See ManagedFileAccess for details.
 Note that libraries that this library depends on still access the filesystem directly. Review
 of the use of these libraries is ongoing.
 
+Dependency Notes:
+ SQLite: This library uses the SQLite library for database access. SQLite accesses the files directly, 
+   but the file is always touched using ManagedFileAccess to ensure that access is not denied before 
+   being used 
+   
 Validator: The validator CLI also accesses local files as specified in the command line parameters, 
 and runs in the user context. TODO: we are considering whether to support a command line parameter 
 restricting path access to particular directories.
