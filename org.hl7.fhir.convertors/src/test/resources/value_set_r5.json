@@ -1,0 +1,68 @@
+{
+  "resourceType" : "ValueSet",
+  "id" : "VSPHQ9",
+  "url" : "http://example.org/ValueSet/VSPHQ9",
+  "name" : "VSPHQ9",
+  "status" : "active",
+  "immutable" : true,
+  "compose" : {
+    "include" : [{
+      "system" : "http://example.org/CodeSystem/CSPHQ9",
+      "concept" : [{
+        "code" : "Not-at-all",
+        "display" : "Not at all"
+      },
+        {
+          "code" : "Several-days",
+          "display" : "Several days"
+        },
+        {
+          "code" : "More than half the days",
+          "display" : "More than half the days"
+        },
+        {
+          "code" : "Nearly every day",
+          "display" : "Nearly every day"
+        }]
+    }]
+  },
+  "expansion" : {
+    "timestamp" : "2024-12-06T22:52:00-07:00",
+    "property" : [{
+      "code" : "itemWeight",
+      "uri" : "http://hl7.org/fhir/concept-properties#itemWeight"
+    }],
+    "contains" : [{
+      "code" : "not-at-all",
+      "display" : "Not at all",
+      "property" : [{
+        "code" : "itemWeight",
+        "valueDecimal" : 0
+      }]
+    },
+      {
+        "code" : "Several-days",
+        "display" : "Several days",
+        "property" : [{
+          "code" : "itemWeight",
+          "valueDecimal" : 1
+        }]
+      },
+      {
+        "code" : "More than half the days",
+        "display" : "More than half the days",
+        "property" : [{
+          "code" : "itemWeight",
+          "valueDecimal" : 2
+        }]
+      },
+      {
+        "code" : "Nearly every day",
+        "display" : "Nearly every day",
+        "property" : [{
+          "code" : "itemWeight",
+          "valueDecimal" : 4
+        }]
+      }]
+  }
+}

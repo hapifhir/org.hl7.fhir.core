@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Coding43_50;
@@ -16,6 +17,7 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown4
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.ValueSet;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -372,7 +374,7 @@ public class ValueSet43_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent tgt = new org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt, "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.property");
     if (src.hasIdentifier())
       tgt.setIdentifierElement(Uri43_50.convertUri(src.getIdentifierElement()));
     if (src.hasTimestamp())
@@ -383,6 +385,11 @@ public class ValueSet43_50 {
       tgt.setOffsetElement(Integer43_50.convertInteger(src.getOffsetElement()));
     for (org.hl7.fhir.r4b.model.ValueSet.ValueSetExpansionParameterComponent t : src.getParameter())
       tgt.addParameter(convertValueSetExpansionParameterComponent(t));
+    for (org.hl7.fhir.r4b.model.Extension t : src.getExtension()) {
+      if ("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.property".equals(t.getUrl())) {
+        tgt.addProperty().setCode(t.getExtensionString("code")).setUri(t.getExtensionString("uri"));
+      }
+    }
     for (org.hl7.fhir.r4b.model.ValueSet.ValueSetExpansionContainsComponent t : src.getContains())
       tgt.addContains(convertValueSetExpansionContainsComponent(t));
     return tgt;
@@ -403,6 +410,11 @@ public class ValueSet43_50 {
       tgt.setOffsetElement(Integer43_50.convertInteger(src.getOffsetElement()));
     for (org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent t : src.getParameter())
       tgt.addParameter(convertValueSetExpansionParameterComponent(t));
+    for (ValueSet.ValueSetExpansionPropertyComponent t : src.getProperty()) {
+      org.hl7.fhir.r4b.model.Extension ext = tgt.addExtension().setUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.property");
+      ext.addExtension().setUrl("code").setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getCodeElement()));
+      ext.addExtension().setUrl("uri").setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getUriElement()));
+    }
     for (org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent t : src.getContains())
       tgt.addContains(convertValueSetExpansionContainsComponent(t));
     return tgt;
@@ -451,6 +463,15 @@ public class ValueSet43_50 {
       tgt.setDisplayElement(String43_50.convertString(src.getDisplayElement()));
     for (org.hl7.fhir.r4b.model.ValueSet.ConceptReferenceDesignationComponent t : src.getDesignation())
       tgt.addDesignation(convertConceptReferenceDesignationComponent(t));
+    for (org.hl7.fhir.r4b.model.Extension t : src.getExtension()) {
+      if ("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property".equals(t.getUrl())) {
+        ValueSet.ConceptPropertyComponent prop = tgt.addProperty();
+        ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(t, prop, "code", "value[x]");
+        prop.setCode(t.getExtensionString("code"));
+        prop.setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getExtensionByUrl("value[x]").getValue()));
+
+      }
+    }
     for (org.hl7.fhir.r4b.model.ValueSet.ValueSetExpansionContainsComponent t : src.getContains())
       tgt.addContains(convertValueSetExpansionContainsComponent(t));
     return tgt;
@@ -475,6 +496,12 @@ public class ValueSet43_50 {
       tgt.setDisplayElement(String43_50.convertString(src.getDisplayElement()));
     for (org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent t : src.getDesignation())
       tgt.addDesignation(convertConceptReferenceDesignationComponent(t));
+    for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent t : src.getProperty()) {
+      org.hl7.fhir.r4b.model.Extension ext = tgt.addExtension().setUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property");
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(t, ext, "code", "value[x]");
+      ext.addExtension().setUrl("code").setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getCodeElement()));
+      ext.addExtension().setUrl("value[x]").setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getValue()));
+    }
     for (org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent t : src.getContains())
       tgt.addContains(convertValueSetExpansionContainsComponent(t));
     return tgt;
