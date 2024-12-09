@@ -1,5 +1,8 @@
 ## Validator Changes
 
+* Add support for valueset-version 
+* Add support for terminology extraction 
+* Add support for expansion parameters when validating
 * fix NPE in validator around Extension context
 * Handle secondary terminology server errors properly
 * Fix questionnaire response status checking
@@ -7,6 +10,12 @@
 * hide API-Key from appearing on the tx log
 * Add supplements for used systems as well as for value set systems when validating on server
 * fix missing port from server when doing tx-registry redirections
+* Fix problem not finding current version of extensions pack for non-R5 versions
+* Fix validation of displays when language is unknown
+* fix issue missing idrefs validating IPS documents
+* Update FHIRPath validation to handle rootResource type properly
+* Fix obscure error on contentReference in profiles in FHIRPath engine
+* Fix version conversion issue for validating derived questionnaires
 
 ## Other code changes
 
@@ -25,3 +34,10 @@
 * Fix version issues in snapshot generation tests
 * Eliminate id from snapshot generation test case comparison
 * Change rules around stripping extensions when generating snapshots
+* fix bug using wrong reference on uri in liquid renderer
+* add translations for expansion errors
+* fix issue with comparison template missing
+* Apply null pointer check to all switch(Enumeration) statements in version conversion code
+* Remove mysql dependency
+* Fix bug in DecimalType on null Bigdecimal ()] all versions)
+* Fix bad URL in inter-version extension conversion of ValueSet for ValueSet property

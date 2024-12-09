@@ -8,7 +8,9 @@ Please report all potential security vulnerabilities using the [Report a vulnera
 
 The main use of the local file system for the core library (other than the validator - see below) is for the 
 [NPM package cache](https://confluence.hl7.org/display/FHIR/FHIR+Package+Cache). The default location and content
-is as specified in the FHIR specification, but you can choose where this goes if you want, or provide your own NPM package cache manager. However there are other uses of the local file system scattered throughout the code, particularly in the test cases.
+is as specified in the FHIR specification, but you can choose where this goes if you want, or provide your own 
+NPM package cache manager. However there are other uses of the local file system scattered throughout the code, 
+particularly in the test cases.
 
 All access to the local file system runs through the class ManagedFileAccess. You can 
 set the static features of this class to completely cut the library off from the 
@@ -25,10 +27,10 @@ restricting path access to particular directories.
 # Network access
 
 The library will access the web to download needed collateral, or to access terminology resources or servers.
-All access is by http(s) using base java http library, and is controlled by the class ManagedWebAccess. You can 
-set the static features of this class to completely cut the library off from the 
-web, or provide your own web accessor, or limit the web resources accessed
-to particular domains or sub-domains. See ManagedWebAccess for details.
+All access is by http(s) using the httpok library, and is controlled by the class ManagedWebAccess. You can 
+set the static features of this class to completely cut the library off from the  web, or provide your own 
+web accessor, or limit the web resources accessed to particular domains or sub-domains. See ManagedWebAccess 
+for details.
 
 Note that for legacy reasons, network access can also be prohibited using 
 FhirSettings.setProhibitNetworkAccess(), but this is deprecated.

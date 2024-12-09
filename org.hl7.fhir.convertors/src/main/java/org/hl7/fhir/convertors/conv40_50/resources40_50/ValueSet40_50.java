@@ -477,9 +477,9 @@ public class ValueSet40_50 {
     for (org.hl7.fhir.r4.model.Extension t : src.getExtension()) {
       if ("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property".equals(t.getUrl())) {
         ConceptPropertyComponent prop = tgt.addProperty();
-        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(t, prop, "code", "value");        
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(t, prop, "code", "value[x]");
         prop.setCode(t.getExtensionString("code"));
-        prop.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getExtensionByUrl("value").getValue()));
+        prop.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getExtensionByUrl("value[x]").getValue()));
           
       }
     }
@@ -509,9 +509,9 @@ public class ValueSet40_50 {
       tgt.addDesignation(convertConceptReferenceDesignationComponent(t));
     for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent t : src.getProperty()) {
       org.hl7.fhir.r4.model.Extension ext = tgt.addExtension().setUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property");
-      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(t, ext, "code", "value");
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(t, ext, "code", "value[x]");
       ext.addExtension().setUrl("code").setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getCodeElement()));
-      ext.addExtension().setUrl("value").setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getValue()));
+      ext.addExtension().setUrl("value[x]").setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getValue()));
     }
     for (org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent t : src.getContains())
       tgt.addContains(convertValueSetExpansionContainsComponent(t));
