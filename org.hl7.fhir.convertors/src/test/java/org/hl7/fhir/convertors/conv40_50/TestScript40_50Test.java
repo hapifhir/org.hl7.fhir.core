@@ -13,7 +13,7 @@ public class TestScript40_50Test {
 
 
   @Test
-  @DisplayName("Test TestScript R4 <-> R5 with resoutce scope extension")
+  @DisplayName("Test TestScript R4 <-> R5 with resource scope extension")
   public void testValueExpressionConversion40_10() throws IOException {
     InputStream r4_stream = this.getClass().getResourceAsStream("/test_script_r4.json");
     org.hl7.fhir.r4.model.TestScript r4_input = (org.hl7.fhir.r4.model.TestScript) new org.hl7.fhir.r4.formats.JsonParser().parse(r4_stream);

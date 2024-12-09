@@ -19,7 +19,10 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri3
 import org.hl7.fhir.dstu3.model.ContactDetail;
 import org.hl7.fhir.dstu3.model.Contributor.ContributorType;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.ActivityDefinition;
 import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations;
 
 public class ActivityDefinition30_50 {
 
@@ -238,57 +241,61 @@ public class ActivityDefinition30_50 {
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes> convertActivityDefinitionKind(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypesEnumFactory());
+    Enumeration<ActivityDefinition.RequestResourceTypes> tgt = new Enumeration<>(new ActivityDefinition.RequestResourceTypesEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case APPOINTMENT:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.APPOINTMENT);
-        break;
-      case APPOINTMENTRESPONSE:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.APPOINTMENTRESPONSE);
-        break;
-      case CAREPLAN:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.CAREPLAN);
-        break;
-      case CLAIM:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.CLAIM);
-        break;
-      case COMMUNICATIONREQUEST:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.COMMUNICATIONREQUEST);
-        break;
-      case DEVICEREQUEST:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.DEVICEREQUEST);
-        break;
-      case ENROLLMENTREQUEST:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.ENROLLMENTREQUEST);
-        break;
-      case IMMUNIZATIONRECOMMENDATION:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.IMMUNIZATIONRECOMMENDATION);
-        break;
-      case MEDICATIONREQUEST:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.MEDICATIONREQUEST);
-        break;
-      case NUTRITIONORDER:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.NUTRITIONORDER);
-        break;
-      case PROCEDUREREQUEST:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.SERVICEREQUEST);
-        break;
-      case REFERRALREQUEST:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.SERVICEREQUEST);
-        break;
-      case SUPPLYREQUEST:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.SUPPLYREQUEST);
-        break;
+    if (src.getValue() == null) {
+      tgt.setValue(null);
+    } else {
+      switch (src.getValue()) {
+        case APPOINTMENT:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.APPOINTMENT);
+          break;
+        case APPOINTMENTRESPONSE:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.APPOINTMENTRESPONSE);
+          break;
+        case CAREPLAN:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.CAREPLAN);
+          break;
+        case CLAIM:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.CLAIM);
+          break;
+        case COMMUNICATIONREQUEST:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.COMMUNICATIONREQUEST);
+          break;
+        case DEVICEREQUEST:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.DEVICEREQUEST);
+          break;
+        case ENROLLMENTREQUEST:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.ENROLLMENTREQUEST);
+          break;
+        case IMMUNIZATIONRECOMMENDATION:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.IMMUNIZATIONRECOMMENDATION);
+          break;
+        case MEDICATIONREQUEST:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.MEDICATIONREQUEST);
+          break;
+        case NUTRITIONORDER:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.NUTRITIONORDER);
+          break;
+        case PROCEDUREREQUEST:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.SERVICEREQUEST);
+          break;
+        case REFERRALREQUEST:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.SERVICEREQUEST);
+          break;
+        case SUPPLYREQUEST:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.SUPPLYREQUEST);
+          break;
 //      case TASK:
 //        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.TASK);
 //        break;
-      case VISIONPRESCRIPTION:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.VISIONPRESCRIPTION);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.NULL);
-        break;
+        case VISIONPRESCRIPTION:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.VISIONPRESCRIPTION);
+          break;
+        default:
+          tgt.setValue(ActivityDefinition.RequestResourceTypes.NULL);
+          break;
+      }
     }
     return tgt;
   }
@@ -298,52 +305,56 @@ public class ActivityDefinition30_50 {
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKindEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case APPOINTMENT:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.APPOINTMENT);
-        break;
-      case APPOINTMENTRESPONSE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.APPOINTMENTRESPONSE);
-        break;
-      case CAREPLAN:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.CAREPLAN);
-        break;
-      case CLAIM:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.CLAIM);
-        break;
-      case COMMUNICATIONREQUEST:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.COMMUNICATIONREQUEST);
-        break;
-      case DEVICEREQUEST:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.DEVICEREQUEST);
-        break;
-      case ENROLLMENTREQUEST:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.ENROLLMENTREQUEST);
-        break;
-      case IMMUNIZATIONRECOMMENDATION:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.IMMUNIZATIONRECOMMENDATION);
-        break;
-      case MEDICATIONREQUEST:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.MEDICATIONREQUEST);
-        break;
-      case NUTRITIONORDER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.NUTRITIONORDER);
-        break;
-      case SERVICEREQUEST:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.PROCEDUREREQUEST);
-        break;
-      case SUPPLYREQUEST:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.SUPPLYREQUEST);
-        break;
+    if (src.getValue() == null) {
+      tgt.setValue(null);
+    } else {
+      switch (src.getValue()) {
+        case APPOINTMENT:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.APPOINTMENT);
+          break;
+        case APPOINTMENTRESPONSE:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.APPOINTMENTRESPONSE);
+          break;
+        case CAREPLAN:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.CAREPLAN);
+          break;
+        case CLAIM:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.CLAIM);
+          break;
+        case COMMUNICATIONREQUEST:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.COMMUNICATIONREQUEST);
+          break;
+        case DEVICEREQUEST:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.DEVICEREQUEST);
+          break;
+        case ENROLLMENTREQUEST:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.ENROLLMENTREQUEST);
+          break;
+        case IMMUNIZATIONRECOMMENDATION:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.IMMUNIZATIONRECOMMENDATION);
+          break;
+        case MEDICATIONREQUEST:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.MEDICATIONREQUEST);
+          break;
+        case NUTRITIONORDER:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.NUTRITIONORDER);
+          break;
+        case SERVICEREQUEST:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.PROCEDUREREQUEST);
+          break;
+        case SUPPLYREQUEST:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.SUPPLYREQUEST);
+          break;
 //      case TASK:
 //        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.TASK);
 //        break;
-      case VISIONPRESCRIPTION:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.VISIONPRESCRIPTION);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.NULL);
-        break;
+        case VISIONPRESCRIPTION:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.VISIONPRESCRIPTION);
+          break;
+        default:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.NULL);
+          break;
+      }
     }
     return tgt;
   }
@@ -375,21 +386,25 @@ public class ActivityDefinition30_50 {
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionParticipantType> convertActivityParticipantType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityParticipantType> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ActionParticipantType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ActionParticipantTypeEnumFactory());
+    Enumeration<Enumerations.ActionParticipantType> tgt = new Enumeration<>(new Enumerations.ActionParticipantTypeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PATIENT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.PATIENT);
-        break;
-      case PRACTITIONER:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.PRACTITIONER);
-        break;
-      case RELATEDPERSON:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.RELATEDPERSON);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ActionParticipantType.NULL);
-        break;
+    if (src.getValue() == null) {
+      tgt.setValue(null);
+    } else {
+      switch (src.getValue()) {
+        case PATIENT:
+          tgt.setValue(Enumerations.ActionParticipantType.PATIENT);
+          break;
+        case PRACTITIONER:
+          tgt.setValue(Enumerations.ActionParticipantType.PRACTITIONER);
+          break;
+        case RELATEDPERSON:
+          tgt.setValue(Enumerations.ActionParticipantType.RELATEDPERSON);
+          break;
+        default:
+          tgt.setValue(Enumerations.ActionParticipantType.NULL);
+          break;
+      }
     }
     return tgt;
   }
@@ -399,19 +414,23 @@ public class ActivityDefinition30_50 {
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityParticipantType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityParticipantTypeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PATIENT:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityParticipantType.PATIENT);
-        break;
-      case PRACTITIONER:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityParticipantType.PRACTITIONER);
-        break;
-      case RELATEDPERSON:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityParticipantType.RELATEDPERSON);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityParticipantType.NULL);
-        break;
+    if (src.getValue() == null) {
+      tgt.setValue(null);
+    } else {
+      switch (src.getValue()) {
+        case PATIENT:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityParticipantType.PATIENT);
+          break;
+        case PRACTITIONER:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityParticipantType.PRACTITIONER);
+          break;
+        case RELATEDPERSON:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityParticipantType.RELATEDPERSON);
+          break;
+        default:
+          tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityParticipantType.NULL);
+          break;
+      }
     }
     return tgt;
   }

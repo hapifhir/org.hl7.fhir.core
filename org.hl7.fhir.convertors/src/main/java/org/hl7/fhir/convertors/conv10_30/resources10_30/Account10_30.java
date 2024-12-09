@@ -7,6 +7,8 @@ import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Identi
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Money10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Period10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.String10_30;
+import org.hl7.fhir.dstu3.model.Account;
+import org.hl7.fhir.dstu3.model.Enumeration;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Account10_30 {
@@ -66,18 +68,22 @@ public class Account10_30 {
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Account.AccountStatus> convertAccountStatus(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Account.AccountStatus> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Account.AccountStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Account.AccountStatusEnumFactory());
+    Enumeration<Account.AccountStatus> tgt = new Enumeration<>(new Account.AccountStatusEnumFactory());
     ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Account.AccountStatus.ACTIVE);
-        break;
-      case INACTIVE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Account.AccountStatus.INACTIVE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Account.AccountStatus.NULL);
-        break;
+    if (src.getValue() == null) {
+      tgt.setValue(null);
+    } else {
+      switch (src.getValue()) {
+        case ACTIVE:
+          tgt.setValue(Account.AccountStatus.ACTIVE);
+          break;
+        case INACTIVE:
+          tgt.setValue(Account.AccountStatus.INACTIVE);
+          break;
+        default:
+          tgt.setValue(Account.AccountStatus.NULL);
+          break;
+      }
     }
     return tgt;
   }
@@ -87,16 +93,20 @@ public class Account10_30 {
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Account.AccountStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Account.AccountStatusEnumFactory());
     ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ACTIVE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Account.AccountStatus.ACTIVE);
-        break;
-      case INACTIVE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Account.AccountStatus.INACTIVE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Account.AccountStatus.NULL);
-        break;
+    if (src.getValue() == null) {
+      tgt.setValue(null);
+    } else {
+      switch (src.getValue()) {
+        case ACTIVE:
+          tgt.setValue(org.hl7.fhir.dstu2.model.Account.AccountStatus.ACTIVE);
+          break;
+        case INACTIVE:
+          tgt.setValue(org.hl7.fhir.dstu2.model.Account.AccountStatus.INACTIVE);
+          break;
+        default:
+          tgt.setValue(org.hl7.fhir.dstu2.model.Account.AccountStatus.NULL);
+          break;
+      }
     }
     return tgt;
   }
