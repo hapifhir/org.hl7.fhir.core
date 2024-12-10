@@ -43,6 +43,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.FmlParser;
 import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.elementmodel.Property;
 import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
@@ -632,9 +633,6 @@ public class StructureMapUtilities {
 
   public StructureMap parse(String text, String srcName) throws FHIRException {
     IWorkerContext context = this.getWorker();
-    if (!(context.getVersion().equals("5.0.0"))) {
-      throw new FHIRException("FHIR version needs to be 5.0.0");
-    }
     FmlParser fp = new FmlParser(context);
     fp.setupValidation(ValidationPolicy.EVERYTHING);     
     List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
@@ -643,15 +641,7 @@ public class StructureMapUtilities {
       Log.error(errors.toString());
       throw new FHIRException("Unable to parse Map Source for "+srcName + " Details "+errors.toString());
     }
-    ByteArrayOutputStream boas = new ByteArrayOutputStream();
-    try {
-     new org.hl7.fhir.r5.elementmodel.JsonParser(this.getWorker()).compose(res, boas,
-        IParser.OutputStyle.PRETTY,
-        null);
-        return (StructureMap) new org.hl7.fhir.r5.formats.JsonParser().parse( new ByteArrayInputStream(boas.toByteArray()));				
-      } catch (IOException e) {
-      throw new FHIRException(e.getMessage(), e);
-    }    
+    return (StructureMap) new ObjectConverter(context).convert(res);
   }
 
   public StructureDefinition getTargetType(StructureMap map) throws FHIRException {
