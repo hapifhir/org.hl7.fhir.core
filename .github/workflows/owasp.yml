@@ -17,10 +17,16 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - run: |
+    - env:
+        NVD_API_KEY:
+          ${{ secrets.NVD_API_KEY }}
+      run: |
         mvn -DskipTests install -P OWASP_CHECK
 
-    - run: |
+    - env:
+        NVD_API_KEY:
+          ${{ secrets.NVD_API_KEY }}
+      run: |
         mvn -DskipTests dependency-check:aggregate -P OWASP_CHECK
 
     - name: Upload SARIF file
