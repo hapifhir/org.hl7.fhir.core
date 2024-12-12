@@ -478,8 +478,11 @@ public class ValueSet43_50 {
         ValueSet.ConceptPropertyComponent prop = tgt.addProperty();
         ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(t, prop, "code", "value[x]");
         prop.setCode(t.getExtensionString("code"));
-        prop.setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getExtensionByUrl("value[x]").getValue()));
-
+        if (t.hasExtension("value")) {
+          prop.setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getExtensionByUrl("value").getValue()));
+        } else if (t.hasExtension("value[x]")) {
+          prop.setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getExtensionByUrl("value[x]").getValue()));
+        }
       }
     }
     for (org.hl7.fhir.r4b.model.ValueSet.ValueSetExpansionContainsComponent t : src.getContains())
