@@ -479,7 +479,11 @@ public class ValueSet40_50 {
         ConceptPropertyComponent prop = tgt.addProperty();
         ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(t, prop, "code", "value[x]");
         prop.setCode(t.getExtensionString("code"));
-        prop.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getExtensionByUrl("value[x]").getValue()));
+        if (t.hasExtension("value")) {
+          prop.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getExtensionByUrl("value").getValue()));          
+        } else if (t.hasExtension("value[x]")) {
+          prop.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getExtensionByUrl("value[x]").getValue()));          
+        }
           
       }
     }
