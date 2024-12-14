@@ -1046,30 +1046,32 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (!renderPrimitiveWithNoValue(status, x, uri)) {
       String v = uri.primitiveValue();
 
-      if (context.getContextUtilities().isResource(v)) {
-        v = "http://hl7.org/fhir/"+v;
-      }
-      if (v.startsWith("mailto:")) { 
-        x.ah(v).addText(v.substring(7)); 
-      } else { 
-        Resource r = context.getContext().fetchResource(Resource.class, v); 
-        if (r != null && r.getWebPath() != null) { 
-          if (r instanceof CanonicalResource) { 
-            x.ah(context.prefixLocalHref(r.getWebPath())).addText(crPresent((CanonicalResource) r));           
-          } else { 
-            x.ah(context.prefixLocalHref(r.getWebPath())).addText(v);           
-          } 
+      if (v != null) {
+        if (context.getContextUtilities().isResource(v)) {
+          v = "http://hl7.org/fhir/"+v;
+        }
+        if (v.startsWith("mailto:")) { 
+          x.ah(v).addText(v.substring(7)); 
         } else { 
-          String url = context.getResolver() != null ? context.getResolver().resolveUri(context, v) : null; 
-          if (url != null) {           
-            x.ah(context.prefixLocalHref(url)).addText(v); 
-          } else if (Utilities.isAbsoluteUrlLinkable(v) && !uri.fhirType().equals("id")) { 
-            x.ah(context.prefixLocalHref(v)).addText(v); 
+          Resource r = context.getContext().fetchResource(Resource.class, v); 
+          if (r != null && r.getWebPath() != null) { 
+            if (r instanceof CanonicalResource) { 
+              x.ah(context.prefixLocalHref(r.getWebPath())).addText(crPresent((CanonicalResource) r));           
+            } else { 
+              x.ah(context.prefixLocalHref(r.getWebPath())).addText(v);           
+            } 
           } else { 
-            x.addText(v); 
+            String url = context.getResolver() != null ? context.getResolver().resolveUri(context, v) : null; 
+            if (url != null) {           
+              x.ah(context.prefixLocalHref(url)).addText(v); 
+            } else if (Utilities.isAbsoluteUrlLinkable(v) && !uri.fhirType().equals("id")) { 
+              x.ah(context.prefixLocalHref(v)).addText(v); 
+            } else { 
+              x.addText(v); 
+            } 
           } 
         } 
-      } 
+      }
     }      
     checkRenderExtensions(status, x, uri);
   } 
