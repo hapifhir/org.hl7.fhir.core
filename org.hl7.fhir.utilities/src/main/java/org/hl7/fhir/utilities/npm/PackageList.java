@@ -176,6 +176,14 @@ public class PackageList {
       setDate(date);
     }
 
+    public List<String> languages() {
+      return json.forceArray("languages").asStrings();
+    }
+    
+    public PackageListEntry addLang(String langCode) {
+      json.forceArray("languages").add(langCode);
+      return this;
+    }
   }
   
   private String source;
