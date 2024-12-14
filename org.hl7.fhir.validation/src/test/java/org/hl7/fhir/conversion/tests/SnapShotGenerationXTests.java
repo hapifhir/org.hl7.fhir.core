@@ -572,9 +572,9 @@ public class SnapShotGenerationXTests {
       if (dst.exists())
         dst.delete();
       if (test.outputIsJson) {
-        XVersionLoader.saveJson(version, output, ManagedFileAccess.outStream(dst.getAbsolutePath()));
+        XVersionLoader.saveJson("5.0", output, ManagedFileAccess.outStream(dst.getAbsolutePath()));
       } else {
-        XVersionLoader.saveXml(version, output, ManagedFileAccess.outStream(dst.getAbsolutePath()));
+        XVersionLoader.saveXml("5.0", output, ManagedFileAccess.outStream(dst.getAbsolutePath()));
       }
       if (test.outputIsJson) {
         XVersionLoader.saveJson(version, test.expected, ManagedFileAccess.outStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected" + (test.outputIsJson ? ".json" : ".xml"))));

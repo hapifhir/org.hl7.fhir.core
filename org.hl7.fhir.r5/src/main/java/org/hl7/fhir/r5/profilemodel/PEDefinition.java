@@ -41,6 +41,7 @@ import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.profilemodel.PEDefinition.PEDefinitionElementMode;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -391,6 +392,19 @@ public abstract class PEDefinition {
 
   public boolean isExtension() {
     return false;
+  }
+
+
+  public ValueSet valueSet() {
+    if (definition.getBinding().hasValueSet()) {
+      return builder.getContext().fetchResource(ValueSet.class, definition.getBinding().getValueSet());
+    }
+    return null;
+  }
+
+
+  public PEBuilder getBuilder() {
+    return builder;
   }
 
 }

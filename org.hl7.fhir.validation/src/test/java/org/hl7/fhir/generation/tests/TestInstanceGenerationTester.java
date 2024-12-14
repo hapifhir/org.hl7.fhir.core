@@ -18,7 +18,9 @@ public class TestInstanceGenerationTester {
   @Test
   public void testBasic() throws IOException {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-    SimpleWorkerContext context = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(pcm.loadPackage("hl7.fhir.r4.core"));
+    SimpleWorkerContext context = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withDefaultParams().fromPackage(pcm.loadPackage("hl7.fhir.r4.core"));
+    context.loadFromPackage(pcm.loadPackage("us.nlm.vsac#0.21.0"), new R4ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),
+        new NullLoaderKnowledgeProviderR5(), context.getVersion()));
     context.loadFromPackage(pcm.loadPackage("hl7.fhir.us.core#6.0.0"), new R4ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),
         new NullLoaderKnowledgeProviderR5(), context.getVersion()));
     

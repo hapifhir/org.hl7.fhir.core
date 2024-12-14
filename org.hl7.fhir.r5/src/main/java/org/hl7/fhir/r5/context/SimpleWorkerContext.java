@@ -217,6 +217,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
     @With
     private final org.hl7.fhir.r5.context.ILoggingService loggingService;
+    private boolean defaultExpParams;
 
     public SimpleWorkerContextBuilder() {
       cacheTerminologyClientErrors = false;
@@ -247,6 +248,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       context.setUserAgent(userAgent);
       context.setLogger(loggingService);
       context.cacheResource(new org.hl7.fhir.r5.formats.JsonParser().parse(MagicResources.spdxCodesAsData()));
+      if (defaultExpParams) {
+        context.setExpansionParameters(makeExpProfile());
+      }
       return context;
     }
 
@@ -257,6 +261,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       context.loadFromPackage(pi, null);
       return build(context);
     }
+    
+    private Parameters makeExpProfile() {
+      Parameters ep = new Parameters();
+      ep.addParameter("cache-id", UUID.randomUUID().toString().toLowerCase());
+      return ep;
+    }
 
     public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader, boolean genSnapshots) throws IOException, FHIRException {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
@@ -265,6 +275,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       context.terminologyClientManager.setFactory(loader.txFactory());
       context.loadFromPackage(pi, loader);
       context.finishLoading(genSnapshots);
+      if (defaultExpParams) {
+        context.setExpansionParameters(makeExpProfile());
+      }
       return build(context);
     }
 
@@ -320,6 +333,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
     public SimpleWorkerContext fromNothing() throws FHIRException, IOException  {
       return build();
+    }
+
+    public SimpleWorkerContextBuilder withDefaultParams() {
+      defaultExpParams = true;
+      return this;
     }
   }
 
