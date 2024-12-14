@@ -57,6 +57,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 /**
@@ -155,7 +156,7 @@ public class PEBuilder {
     if (!profile.hasSnapshot()) {
       throw new DefinitionException("Profile '"+profile.getVersionedUrl()+"' does not have a snapshot");      
     }
-    return new PEDefinitionResource(this, profile, profile.getName());
+    return new PEDefinitionResource(this, profile, null);
   }
   
   /**
@@ -342,6 +343,10 @@ public class PEBuilder {
 
   protected List<PEDefinition> listChildren(boolean allFixed, PEDefinition parent, StructureDefinition profileStructure, ElementDefinition definition, String url, String... omitList) {
     StructureDefinition profile = profileStructure;
+    boolean inExtension = profile.getDerivation() == TypeDerivationRule.CONSTRAINT && "Extension".equals(profile.getType());
+    if (inExtension) {
+      DebugUtilities.breakpoint();
+    }
     List<ElementDefinition> list = pu.getChildList(profile, definition);
     if (definition.getType().size() == 1 || (!definition.getPath().contains(".")) || list.isEmpty()) {
       assert url == null || checkType(definition, url);
@@ -359,7 +364,7 @@ public class PEBuilder {
         while (i < list.size()) {
           ElementDefinition defn = list.get(i);
           if (!defn.getMax().equals("0") && (allFixed || include(defn))) {
-            if (passElementPropsCheck(defn) && !Utilities.existsInList(defn.getName(), omitList)) {
+            if (passElementPropsCheck(defn, inExtension) && !Utilities.existsInList(defn.getName(), omitList)) {
               if (defn.getType().size() > 1) {
                 // Debug/Utilities.breakpoint();
                 i++;
@@ -434,7 +439,10 @@ public class PEBuilder {
     return pe;
   }
 
-  private boolean passElementPropsCheck(ElementDefinition bdefn) {
+  private boolean passElementPropsCheck(ElementDefinition bdefn, boolean inExtension) {
+    if (inExtension) {
+      return !Utilities.existsInList(bdefn.getBase().getPath(), "Element.id");      
+    }
     switch (elementProps) {
     case EXTENSION:
       return !Utilities.existsInList(bdefn.getBase().getPath(), "Element.id");
@@ -678,5 +686,9 @@ public class PEBuilder {
 
   public boolean isResource(String name) {
     return cu.isResource(name);
+  }
+
+  public ContextUtilities getContextUtilities() {
+    return cu;
   }
 }

@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
@@ -647,6 +648,14 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
         setDisplay(theDisplay);
       }      
 // end addition
+
+      public Coding(ValueSetExpansionContainsComponent cc) {
+        super();
+        setSystem(cc.getSystem());
+        setVersion(cc.getVersion());
+        setCode(cc.getCode());
+        setDisplay(cc.getDisplay());
+      }
 
       public String getVersionedSystem() {
         return hasVersion() ? getSystem()+"|"+getVersion() : getSystem();
