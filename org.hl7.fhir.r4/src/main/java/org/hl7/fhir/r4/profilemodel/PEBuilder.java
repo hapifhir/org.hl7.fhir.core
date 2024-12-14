@@ -361,7 +361,7 @@ public class PEBuilder {
           if (!defn.getMax().equals("0") && (allFixed || include(defn))) {
             if (passElementPropsCheck(defn) && !Utilities.existsInList(defn.getName(), omitList)) {
               if (defn.getType().size() > 1) {
-                // DebugUtilities.breakpoint();
+                // Debug/Utilities.breakpoint();
                 i++;
               } else {
                 String name = uniquefy(names, defn.getName());

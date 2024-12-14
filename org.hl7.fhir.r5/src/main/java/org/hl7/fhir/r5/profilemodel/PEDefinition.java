@@ -85,7 +85,7 @@ public abstract class PEDefinition {
     this.name = name;
     this.profile = profile;
     this.definition = definition;
-    this.path = path == null ? name : ppath+"."+name;
+    this.path = ppath == null ? name : ppath+"."+name;
   }
 
 
