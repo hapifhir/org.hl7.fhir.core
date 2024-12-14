@@ -506,7 +506,12 @@ public class JsonParserTests {
     Assertions.assertEquals("-1.2e10", JsonParser.compose(e));
     Assertions.assertEquals("// comment\n-1.2e10\n", JsonParser.compose(e, true));
   }
-  
+
+  @Test
+  public void testDecimal() throws IOException, JsonException {
+    JsonObject o = JsonParser.parseObject("{ \"n\" : 0.00001 }");
+    Assertions.assertEquals("0.00001", o.getJsonNumber("n").asString());
+  }
   @Test
   public void testElementString() throws IOException, JsonException {
     JsonElement e = JsonParser.parse("\"str\\ning\"");
