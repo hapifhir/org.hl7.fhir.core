@@ -477,7 +477,7 @@ public class ValueSet40_50 {
     for (org.hl7.fhir.r4.model.Extension t : src.getExtension()) {
       if ("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property".equals(t.getUrl())) {
         ConceptPropertyComponent prop = tgt.addProperty();
-        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(t, prop, "code", "value[x]");
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(t, prop, "code", "value[x]", "value");
         prop.setCode(t.getExtensionString("code"));
         if (t.hasExtension("value")) {
           prop.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(t.getExtensionByUrl("value").getValue()));
