@@ -40,7 +40,7 @@ public abstract class LanguageFileProducer {
      * Additional language that helps establish the context
      * @return
      */
-    public String getContext1() {
+    public String getContext() {
       return context;
     }
 
