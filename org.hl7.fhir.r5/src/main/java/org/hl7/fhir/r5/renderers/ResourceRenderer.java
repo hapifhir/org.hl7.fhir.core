@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
@@ -354,7 +355,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       ResourceWithReference rr = resolveReference(actual);
       if (rr == null) {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : actual.primitiveValue();
-        if (Utilities.isAbsoluteUrl(actual.primitiveValue()) || !context.isUnknownLocalReferencesNotLinks()) {
+        if (Utilities.isAbsoluteUrlLinkable(actual.primitiveValue()) || (isLocalReference(actual.primitiveValue()) && !context.isUnknownLocalReferencesNotLinks())) {
           x.ah(context.prefixLocalHref(actual.primitiveValue())).tx(disp);
         } else {
           x.code().tx(disp);
@@ -386,6 +387,21 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
   
  
+  private boolean isLocalReference(String url) {
+    if (url == null) {
+      return false;
+    }
+    if (url.contains("/_history")) {
+      url = url.substring(0, url.indexOf("/_hist"));
+    }
+    
+    if (url.matches(Constants.LOCAL_REF_REGEX)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public void renderReference(ResourceWrapper res, HierarchicalTableGenerator gen, List<Piece> pieces, Reference r, boolean allowLinks) throws UnsupportedEncodingException, IOException {
     if (r == null) { 
       pieces.add(gen.new Piece(null, "null!", null));
@@ -844,7 +860,7 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   protected XhtmlNode renderResourceTechDetails(ResourceWrapper r, XhtmlNode x) throws UnsupportedEncodingException, FHIRException, IOException {
-    return renderResourceTechDetails(r, x, (context.isContained() ? " #"+r.getId() : r.getId()));
+    return renderResourceTechDetails(r, x, (context.isContained() && r.getId() != null ? "#"+r.getId() : r.getId()));
   }
   
   protected XhtmlNode renderResourceTechDetails(ResourceWrapper r, XhtmlNode x, String desc) throws UnsupportedEncodingException, FHIRException, IOException {
