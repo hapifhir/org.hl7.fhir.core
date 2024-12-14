@@ -57,14 +57,14 @@ public class XVersionLoader {
 
   public static void saveXml(String version, Resource resource, OutputStream stream) throws FHIRFormatError, IOException {
     if (Utilities.noString(version)) {
-      new org.hl7.fhir.r5.formats.XmlParser().compose(stream, resource, true);
+      new org.hl7.fhir.r5.formats.XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(stream, resource);
     }
     switch (VersionUtilities.getMajMin(version)) {
       case "1.0":
         new org.hl7.fhir.dstu2.formats.XmlParser().compose(stream, VersionConvertorFactory_10_50.convertResource(resource), true);
         return;
       case "1.4":
-        new org.hl7.fhir.dstu2016may.formats.XmlParser().compose(stream, VersionConvertorFactory_14_50.convertResource(resource), true);
+        new org.hl7.fhir.dstu2016may.formats.XmlParser(true, true).compose(stream, VersionConvertorFactory_14_50.convertResource(resource), true);
         return;
       case "3.0":
         new org.hl7.fhir.dstu3.formats.XmlParser().compose(stream, VersionConvertorFactory_30_50.convertResource(resource), true);
@@ -73,7 +73,7 @@ public class XVersionLoader {
         new org.hl7.fhir.r4.formats.XmlParser().compose(stream, VersionConvertorFactory_40_50.convertResource(resource), true);
         return;
       case "5.0":
-        new org.hl7.fhir.r5.formats.XmlParser().compose(stream, resource, true);
+        new org.hl7.fhir.r5.formats.XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(stream, resource);
         return;
     }
     throw new FHIRException("Unknown version " + version + " loading resource");
