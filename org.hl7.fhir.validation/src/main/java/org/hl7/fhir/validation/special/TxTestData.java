@@ -2,7 +2,12 @@ package org.hl7.fhir.validation.special;
 
 import lombok.Getter;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 
 import java.io.IOException;
 import java.util.*;
@@ -17,16 +22,22 @@ public class TxTestData {
 
   @Getter
   private final List<Object[]> testData;
+  
+  private final NpmPackage npm;
 
-  private TxTestData(List<Object[]> testData, JsonObject manifest, JsonObject externals) throws IOException {
+  private TxTestData(List<Object[]> testData, JsonObject manifest, JsonObject externals, NpmPackage npm) throws IOException {
     this.testData = testData;
     this.manifest = manifest;
     this.externals = externals;
+    this.npm = npm;
   }
 
-  public static TxTestData loadTestDataFromDefaultClassPath() throws IOException {
-    String contents = TestingUtilities.loadTestResource("tx", "test-cases.json");
-    String externalSource = TestingUtilities.loadTestResource("tx", "messages-tx.fhir.org.json");
+  public static TxTestData loadTestDataFromPackage(String version) throws IOException {
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
+    NpmPackage npm = pcm.loadPackage("hl7.fhir.uv.tx-ecosystem", version);
+    
+    String contents = TextFile.streamToString(npm.load("tests", "test-cases.json"));
+    String externalSource = TextFile.streamToString(npm.load("tests", "messages-tx.fhir.org.json"));
     JsonObject externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(externalSource);
 
     Map<String, TxTestSetup> examples = new HashMap<String, TxTestSetup>();
@@ -50,6 +61,33 @@ public class TxTestData {
       testData.add(new Object[]{id, examples.get(id)});
     }
 
-    return new TxTestData(testData, manifest, externals);
+    return new TxTestData(testData, manifest, externals, npm);
   }
+
+  public String load(String fn) throws IOException {
+    return TextFile.streamToString(npm.load("tests", fn)); 
+  }
+
+  public byte[] loadBytes(String fn) throws IOException {
+    return TextFile.streamToBytes(npm.load("tests", fn)); 
+  }
+
+  public boolean hasFile(String filename) throws IOException {
+    return npm.hasFile("tests", filename);
+  }
+
+  public String loadVersion() throws JsonException, IOException {
+    return readHistory(loadBytes("history.json")); 
+  }
+
+  private String readHistory(byte[] content) throws JsonException, IOException {
+    JsonObject json = JsonParser.parseObject(content);
+    return json.getJsonObjects("versions").get(0).asString("version");
+  }
+
+  public String describe() {
+    return npm.name()+"#"+npm.version();
+  }
+
+  
 }
