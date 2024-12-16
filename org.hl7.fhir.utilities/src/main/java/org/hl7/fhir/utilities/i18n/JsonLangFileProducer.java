@@ -80,8 +80,8 @@ public class JsonLangFileProducer extends LanguageFileProducer {
       JsonObject entry = new JsonObject();
       json.forceArray("entries").add(entry);
       entry.add("id", unit.getId());
-      if (unit.getContext1() != null) {
-        entry.add("context", unit.getContext1());
+      if (unit.getContext() != null) {
+        entry.add("context", unit.getContext());
       }
       entry.add("source", unit.getSrcText());
       entry.add("target", unit.getTgtText());
@@ -127,8 +127,8 @@ public class JsonLangFileProducer extends LanguageFileProducer {
       JsonObject entry = new JsonObject();
       lj.forceArray("entries").add(entry);
       entry.add("id", tu.getId());
-      if (tu.getContext1() != null) { 
-        entry.add("context", tu.getContext1());
+      if (tu.getContext() != null) { 
+        entry.add("context", tu.getContext());
       }
       if (tu.getOriginal() != null) {
         entry.add("original", tu.getOriginal());

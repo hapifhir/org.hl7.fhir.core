@@ -324,7 +324,7 @@ public class ValueSetValidator extends BaseValidator {
         List<VSCodingValidationRequest> batch = new ArrayList<>();
         boolean first = true;
         if (concepts.size() > TOO_MANY_CODES_TO_VALIDATE) {
-          hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_TOO_MANY_CODES, batch.size());
+          hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_TOO_MANY_CODES, concepts.size());
         } else {        
           if (((InstanceValidator) parent).isValidateValueSetCodesOnTxServer() && !context.isNoTerminologyServer()) {
             try {

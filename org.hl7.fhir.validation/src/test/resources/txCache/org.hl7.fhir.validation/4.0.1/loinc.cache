@@ -11179,7 +11179,6 @@ v: {
   "error" : "Wrong Display Name 'O2 % BldC Oximetry' for http://loinc.org#59408-5. Valid display is one of 3 choices: 'Oxygen saturation in Arterial blood by Pulse oximetry' (en-US), 'Oxygen saturation in Arterial blood by Pulse oximetry' (en-US) or 'SaO2 % BldA PulseOx' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11222,7 +11221,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.78",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -11251,7 +11249,6 @@ v: {
   "error" : "Wrong Display Name 'Flow Rate' for http://loinc.org#3151-8. Valid display is one of 4 choices: 'Inhaled oxygen flow rate' (en-US), 'Inhaled oxygen flow rate' (en-US), 'Inhaled O2 flow rate' (en-US) or 'Inhaled oxygen' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11271,6 +11268,53 @@ v: {
     "location" : ["CodeableConcept.coding[0].display"],
     "expression" : ["CodeableConcept.coding[0].display"]
   }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "18776-5",
+  "display" : "Plan of care note"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Plan of care note",
+  "code" : "18776-5",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "18776-5"
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Plan of care note",
+  "code" : "18776-5",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
 }
 
 }
