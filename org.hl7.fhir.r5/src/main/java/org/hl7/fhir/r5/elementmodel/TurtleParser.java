@@ -424,7 +424,7 @@ public class TurtleParser extends ParserBase {
 	  } else {
 	    t = ctxt.linkedPredicate("fhir:"+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
 	  }
-	if (element.getProperty().getName().endsWith("[x]") && !element.hasValue()) {
+	if (element.getProperty().getName().endsWith("[x]")) {
 	  t.linkedPredicate("a", "fhir:" + element.fhirType(), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
 	}
     if (element.getSpecial() != null)
