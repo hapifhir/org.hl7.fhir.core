@@ -48,6 +48,7 @@ import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 
 public class TxTester {
 
@@ -81,10 +82,10 @@ public class TxTester {
   }
 
   public static void main(String[] args) throws Exception {
-    new TxTester(new InternalTxLoader(args[0]), args[1], "true".equals(args[2]), args.length == 5 ? JsonParser.parseObjectFromFile(args[4]) : null).execute(args[2], new ArrayList<>(), args[3]);
+    new TxTester(new InternalTxLoader(args[0]), args[1], "true".equals(args[2]), args.length == 5 ? JsonParser.parseObjectFromFile(args[4]) : null).execute(new ArrayList<>(), args[3]);
   }
   
-  public boolean execute(String version, List<String> modes, String filter) throws IOException, URISyntaxException {
+  public boolean execute(List<String> modes, String filter) throws IOException, URISyntaxException {
     if (output == null) {
       output = Utilities.path("[tmp]", serverId());
     }
@@ -101,9 +102,7 @@ public class TxTester {
     System.out.println("  Term Service Url: "+server);
     System.out.println("  External Strings: "+(externals != null));
     System.out.println("  Test  Exec Modes: "+modes.toString());
-    if (version != null) {
-      System.out.println("  Tx  FHIR Version: "+version);
-    }
+
     if (filter != null) {
       System.out.println("  Filter Parameter: "+filter);
     }
@@ -172,35 +171,17 @@ public class TxTester {
     return JsonParser.parseObject(loader.loadContent("test-cases.json"));
   }
   
-  private String loadVersion() throws JsonException, IOException {
+  public String loadVersion() throws JsonException, IOException {
     if (loader.hasContent("history.json")) {
       return readHistory(loader.loadContent("history.json")); 
     } else {
-      return processHistoryMarkdown(loader.loadContent("history.md"));
+      throw new Error("history.md is no longer supported");
     }
   }
 
   private String readHistory(byte[] content) throws JsonException, IOException {
     JsonObject json = JsonParser.parseObject(content);
     return json.getJsonObjects("versions").get(0).asString("version");
-  }
-
-  public static String processHistoryMarkdown(byte[] content) throws IOException {
-    DataInputStream in = new DataInputStream(new ByteArrayInputStream(content));
-    BufferedReader br = new BufferedReader(new InputStreamReader(in));
-    try {
-      String strLine;
-      //Read File Line By Line
-      while ((strLine = br.readLine()) != null)   {
-        if (strLine.startsWith("## ")) {
-          return strLine.substring(3).trim();
-        }
-      }
-    } finally {
-      br.close();
-      in.close();
-    }
-    return "<1.6.0";
   }
 
   private ITerminologyClient connectToServer(List<String> modes) throws URISyntaxException, IOException {
@@ -580,90 +561,44 @@ public class TxTester {
   }
 
   public static class InternalTxLoader implements ITxTesterLoader {
-
-    private String folder;
     
-    public InternalTxLoader(String folder) {
-      this.folder = folder;
+    TxTestData txtests;
+    
+    public InternalTxLoader(String version) throws IOException {
+      load(version);
     }
     
-    public InternalTxLoader(String source, String local) throws IOException {
-      if (source.startsWith("http://") || source.startsWith("https://")) {
-        this.folder = Utilities.path(local, "source");
-
-        URL url = new URL(zipUrl(source));
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        InputStream zip = connection.getInputStream();
-        unzip(zip); 
-      } else {
-        this.folder = source;
-      }
-    }
-
-    public void unzip(InputStream is) throws IOException {
-      try (ZipInputStream zipIn = new ZipInputStream(is)) {
-        for (ZipEntry ze; (ze = zipIn.getNextEntry()) != null; ) {
-          if (ze.getName().startsWith("fhir-test-cases-master/tx/")) {
-            Path path = Path.of(Utilities.path(this.folder, ze.getName().substring(26))).normalize();
-            String pathString = ManagedFileAccess.fromPath(path).getAbsolutePath();
-            if (!path.startsWith(Path.of(this.folder).normalize())) {
-              // see: https://snyk.io/research/zip-slip-vulnerability
-              throw new RuntimeException("Entry with an illegal path: " + ze.getName());
-            }
-            if (ze.isDirectory()) {
-              Utilities.createDirectory(pathString);
-            } else {
-              Utilities.createDirectory(Utilities.getDirectoryForFile(pathString));
-              TextFile.streamToFileNoClose(zipIn, pathString);
-            }
-          }
-        }
-      }
+    private void load(String version) throws IOException {
+      txtests = TxTestData.loadTestDataFromPackage(version);
     }
 
 
-    private String zipUrl(String template) {
-      if (!template.startsWith("https://github.")) {
-        throw new FHIRException("Cannot refer to source by URL unless referring to a github repository: "+template);
-      } else if (Utilities.charCount(template, '/') == 4) {
-        return Utilities.pathURL(template, "archive", "master.zip");      
-      } else if (Utilities.charCount(template, '/') == 6) {
-        String[] p = template.split("\\/");
-        return Utilities.pathURL("https://"+p[2], p[3], p[4], "archive", p[6]+".zip");      
-      } else {
-        throw new FHIRException("Source syntax in URL referring to a github repository was not understood: "+template);
-      }
-    }
-
-    
     @Override
     public String describe() {
-      return folder;
+      return txtests.describe();
     }
 
     @Override
     public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
-      Resource res = new org.hl7.fhir.r5.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, filename)));
-      try {
-        org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_40_50.convertResource(res);
-        String p = Utilities.path(folder, "r4", filename);
-        Utilities.createDirectory(Utilities.getDirectoryForFile(p));
-        new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(p), r4);
-      } catch (Exception e) {
-        // nothing...
-      }      
+      Resource res = new org.hl7.fhir.r5.formats.JsonParser().parse(txtests.load(filename));
+//        org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_40_50.convertResource(res);
+//        String p = Utilities.path(folder, "r4", filename);
+//        Utilities.createDirectory(Utilities.getDirectoryForFile(p));
+//        new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(p), r4);
+//      } catch (Exception e) {
+//        // nothing...
+//      }      
       return res;
     }
 
     @Override
     public byte[] loadContent(String filename) throws FileNotFoundException, IOException {
-      return TextFile.fileToBytes(Utilities.path(folder, filename));
+      return txtests.loadBytes(filename);
     }
 
     @Override
     public boolean hasContent(String filename) throws IOException {
-      return new File(Utilities.path(folder, filename)).exists();
+      return txtests.hasFile(filename);
     }
   }
 
