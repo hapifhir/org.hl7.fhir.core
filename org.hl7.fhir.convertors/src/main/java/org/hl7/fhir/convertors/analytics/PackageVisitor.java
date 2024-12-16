@@ -68,7 +68,7 @@ public class PackageVisitor {
     public void alreadyVisited(String pid) throws FHIRException, IOException, EOperationOutcome;
   }
 
-  private List<String> resourceTypes = new ArrayList<>();
+  private Set<String> resourceTypes = new HashSet<>();
   private List<String> versions = new ArrayList<>();
   private boolean corePackages;
   private boolean oldVersions;
@@ -79,16 +79,16 @@ public class PackageVisitor {
   private String cache;  
   private int step;
 
-  public List<String> getResourceTypes() {
+  public Set<String> getResourceTypes() {
     return resourceTypes;
   }
 
-  public void setResourceTypes(List<String> resourceTypes) {
+  public void setResourceTypes(Set<String> resourceTypes) {
     this.resourceTypes = resourceTypes;
   }
 
   public void setResourceTypes(String... resourceTypes) {
-    this.resourceTypes = new ArrayList<String>();
+    this.resourceTypes = new HashSet<String>();
     for (String s : resourceTypes) {
       this.resourceTypes.add(s);
     }

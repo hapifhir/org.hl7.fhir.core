@@ -972,18 +972,19 @@ public class JsonParser extends ParserBase {
       json.name(name);
     }
     String type = item.getType();
-    if (Utilities.existsInList(type, "boolean"))
+    if (Utilities.existsInList(type, "boolean")) {
       json.value(item.getValue().trim().equals("true") ? new Boolean(true) : new Boolean(false));
-    else if (Utilities.existsInList(type, "integer", "unsignedInt", "positiveInt"))
+    } else if (Utilities.existsInList(type, "integer", "unsignedInt", "positiveInt")) {
       json.value(new Integer(item.getValue()));
-    else if (Utilities.existsInList(type, "decimal"))
+    } else if (Utilities.existsInList(type, "decimal")) {
       try {
         json.value(new BigDecimal(item.getValue()));
       } catch (Exception e) {
         throw new NumberFormatException(context.formatMessage(I18nConstants.ERROR_WRITING_NUMBER__TO_JSON, item.getValue()));
       }
-    else
+    } else {
       json.value(item.getValue());
+    }
   }
 
   private void compose(String path, Element element) throws IOException {
