@@ -41,7 +41,6 @@ public class TxTestsTask extends StandaloneTask{
 
   @Override
   public void executeTask(CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
-      final String source = Params.getParam(args, Params.SOURCE);
       String output = Params.getParam(args, Params.OUTPUT);
       final String version = Params.getParam(args, Params.VERSION);
       final String tx = Params.getParam(args, Params.TERMINOLOGY);
@@ -50,7 +49,7 @@ public class TxTestsTask extends StandaloneTask{
       if (output == null ) {
         output = Utilities.path("[tmp]");
       }
-      boolean ok = new TxTester(new TxTester.InternalTxLoader(source, output), tx, false, loadExternals(externals)).setOutput(output).execute(version, cliContext.getModeParams(), filter);
+      boolean ok = new TxTester(new TxTester.InternalTxLoader(version), tx, false, loadExternals(externals)).setOutput(output).execute(cliContext.getModeParams(), filter);
       SystemExitManager.setError(ok ? 1 : 0);
       SystemExitManager.finish();
   }
