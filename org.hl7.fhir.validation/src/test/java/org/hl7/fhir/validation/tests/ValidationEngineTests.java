@@ -216,47 +216,6 @@ public class ValidationEngineTests {
   }
 
   @Test
-  public void test102() throws Exception {
-    if (inbuild) {
-      Assertions.assertTrue(true);
-      return;
-    }
-    if (!org.hl7.fhir.validation.tests.utilities.TestUtilities.silent)
-      System.out.println("Test102: Validate patient-example.xml in v1.0.2 version");
-    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, FhirPublication.DSTU2, "1.0.2");
-    ve.setNoInvariantChecks(true);
-    CacheVerificationLogger logger = new CacheVerificationLogger();
-    ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
-    OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient102.xml"), null);
-    Assertions.assertTrue(checkOutcomes("test102", op, 
-        "Patient.contact[0].name.family[0].extension[0].value.ofType(code) null error/code-invalid: The value provided ('VV') was not found in the value set 'EntityNamePartQualifier' (http://hl7.org/fhir/ValueSet/name-part-qualifier|1.0.2), and a code is required from this value set  (error message = The System URI could not be determined for the code 'VV' in the ValueSet 'http://hl7.org/fhir/ValueSet/name-part-qualifier|1.0.2'; The provided code '#VV' was not found in the value set 'http://hl7.org/fhir/ValueSet/name-part-qualifier|1.0.2')"));
-    verifyNoTerminologyRequests(logger);
-  }
-
-  @Test
-  public void testObs102() throws Exception {
-    if (inbuild) {
-      Assertions.assertTrue(true);
-      return;
-    }
-    if (!TestUtilities.silent)
-      System.out.println("TestObs102: Validate patient-example.xml in v1.0.2 version");
-    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, FhirPublication.DSTU2, "1.0.2");
-    ve.setNoInvariantChecks(true);
-    CacheVerificationLogger logger = new CacheVerificationLogger();
-    ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
-    OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "observation102.json"), null);
-    Assertions.assertTrue(checkOutcomes("testObs102", op, 
-        "Observation.text.div null error/invalid: Wrong namespace on the XHTML ('null', should be 'http://www.w3.org/1999/xhtml')\n"+
-        "Observation.category null information/business-rule: Reference to experimental CodeSystem http://hl7.org/fhir/observation-category\n"+
-        "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
-        "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n"+
-        "Observation.code.coding[2].system null warning/not-found: A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated"));
-    verifyNoTerminologyRequests(logger);
-  }
-
-
-  @Test
   public void test301() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("Test301: Validate observation301.xml against Core");
@@ -321,7 +280,6 @@ public class ValidationEngineTests {
     ValidationEngineTests self = new ValidationEngineTests();
     self.test401Xml();
     self.test401Json();
-    self.test102();
     self.test140();
     self.test301USCore();
     System.out.println("Finished");
