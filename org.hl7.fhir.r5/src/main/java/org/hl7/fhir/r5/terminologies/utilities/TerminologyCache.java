@@ -528,6 +528,13 @@ public class TerminologyCache {
     ct.key = String.valueOf(hashJson(ct.request));
     return ct;
   }
+  
+  public CacheToken generateExpandToken(String url, boolean hierarchical) {
+    CacheToken ct = new CacheToken();
+    ct.request = "{\"hierarchical\" : "+(hierarchical ? "true" : "false")+", \"url\": \""+Utilities.escapeJson(url)+"\"}\r\n";      
+    ct.key = String.valueOf(hashJson(ct.request));
+    return ct;
+  }
 
   public void nameCacheToken(ValueSet vs, CacheToken ct) {
     if (vs != null) {
