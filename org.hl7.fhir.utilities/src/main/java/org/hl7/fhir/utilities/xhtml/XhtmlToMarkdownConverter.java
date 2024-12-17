@@ -1,6 +1,5 @@
 package org.hl7.fhir.utilities.xhtml;
 
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 public class XhtmlToMarkdownConverter {
@@ -121,7 +120,6 @@ public class XhtmlToMarkdownConverter {
   }
 
   private void convertDL(StringBuilder b, XhtmlNode c) {
-    DebugUtilities.breakpoint();   
   }
 
   private void convertIFrame(StringBuilder b, XhtmlNode c) {
