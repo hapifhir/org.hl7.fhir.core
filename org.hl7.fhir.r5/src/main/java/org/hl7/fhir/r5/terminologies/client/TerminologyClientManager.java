@@ -291,6 +291,37 @@ public class TerminologyClientManager {
     }
   }
 
+  public TerminologyClientContext chooseServer(String vs, boolean expand) throws TerminologyServiceException {
+    if (serverList.isEmpty()) {
+      return null;
+    }
+    if (IGNORE_TX_REGISTRY || !useEcosystem) {
+      return findClient(getMasterClient().getAddress(), null, expand);
+    }
+    String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+Utilities.URLEncode(vs));
+    if (usage != null) {
+      request = request + "&usage="+usage;
+    } 
+    try {
+      JsonObject json = JsonParser.parseObjectFromUrl(request);
+      for (JsonObject item : json.getJsonObjects("authoritative")) {
+        return findClient(item.asString("url"), null, expand);
+      }
+      for (JsonObject item : json.getJsonObjects("candidates")) {
+        return findClient(item.asString("url"), null, expand);
+      }
+    } catch (Exception e) {
+      String msg = "Error resolving valueSet "+vs+": "+e.getMessage();
+      if (!hasMessage(msg)) {
+        internalLog.add(new InternalLogEvent(msg, vs, request));
+      }
+      if (logger.isDebugLogging()) {
+        e.printStackTrace();
+      }
+    }
+    return null; 
+  }
+
   private void log(ValueSet vs, String server, Set<String> systems, List<ServerOptionList> choices, String message) {
     String svs = (vs == null ? "null" : vs.getVersionedUrl());
     String sys = systems.isEmpty() ? "--" : systems.size() == 1 ? systems.iterator().next() : systems.toString();
@@ -550,7 +581,7 @@ public class TerminologyClientManager {
           }
         }
         if (server == null) {
-          return null;
+          server = getMasterClient().getAddress();
         }
         if (server.contains("://tx.fhir.org")) {
           try {

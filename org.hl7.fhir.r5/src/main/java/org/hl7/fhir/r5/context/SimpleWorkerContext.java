@@ -244,6 +244,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
 
     private SimpleWorkerContext build(SimpleWorkerContext context) throws IOException {
+      if (VersionUtilities.isR2Ver(context.getVersion()) || VersionUtilities.isR2Ver(context.getVersion())) {
+        System.out.println("As of end 2024, FHIR R2 (version "+context.getVersion()+") is no longer officially supported.");
+      }
       context.initTxCache(terminologyCachePath);
       context.setUserAgent(userAgent);
       context.setLogger(loggingService);
