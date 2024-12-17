@@ -906,6 +906,54 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
+  public ValueSetExpansionOutcome expandVS(String url, boolean cacheOk, boolean hierarchical, int count) {
+    if (expParameters == null)
+      throw new Error(formatMessage(I18nConstants.NO_EXPANSION_PARAMETERS_PROVIDED));
+    if (noTerminologyServer) {
+      return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, null, false);
+    }
+
+    Parameters p = expParameters.copy(); 
+    p.addParameter("count", count);
+    p.addParameter("url", new UriType(url));
+    p.setParameter("_limit",new IntegerType("10000"));
+    p.setParameter("_incomplete", new BooleanType("true"));
+
+    CacheToken cacheToken = txCache.generateExpandToken(url, hierarchical);
+    ValueSetExpansionOutcome res;
+    if (cacheOk) {
+      res = txCache.getExpansion(cacheToken);
+      if (res != null) {
+        return res;
+      }
+    }
+    p.setParameter("excludeNested", !hierarchical);
+    List<String> allErrors = new ArrayList<>();
+
+    p.addParameter().setName("cache-id").setValue(new IdType(terminologyClientManager.getCacheId()));
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(url, true);
+    
+    txLog("$expand "+url+" on "+tc.getAddress());
+    
+    try {
+      ValueSet result = tc.getClient().expandValueset(null, p);
+      if (result != null) {
+        if (!result.hasUrl()) {
+          result.setUrl(url);
+        }
+        if (!result.hasUrl()) {
+          throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
+        }
+      }
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
+    } catch (Exception e) {
+      res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), TerminologyServiceErrorClass.UNKNOWN, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
+    }
+    txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
+    return res;
+  }
+
+  @Override
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical, boolean incompleteOk) {
     if (expParameters == null)
       throw new Error(formatMessage(I18nConstants.NO_EXPANSION_PARAMETERS_PROVIDED));

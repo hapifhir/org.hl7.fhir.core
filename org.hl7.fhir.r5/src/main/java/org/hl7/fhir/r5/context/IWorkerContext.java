@@ -493,6 +493,8 @@ public interface IWorkerContext {
    */
   public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical, boolean incompleteOk);
 
+  public ValueSetExpansionOutcome expandVS(String uri, boolean cacheOk, boolean heiarchical, int count); // set to 0 to just check existence
+  
   /**
    * ValueSet Expansion - see $expand, but resolves the binding first
    *  
