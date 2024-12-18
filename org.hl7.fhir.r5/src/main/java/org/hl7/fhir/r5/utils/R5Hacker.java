@@ -27,7 +27,7 @@ public class R5Hacker {
   }
 
   private static void fix(ElementDefinition ed) {
-    if (ed.hasDefinition()) {
+    if (ed.hasDefinition() && ed.getDefinition() != null) {
       ed.setDefinition(ed.getDefinition().replace("http://hl7.org/fhir/5.0.0-snapshot3/", "http://hl7.org/fhir/R5/"));
     }
     if (ed.hasBinding() && ed.getBinding().hasExtension(ToolingExtensions.EXT_BINDING_DEFINITION)) {
