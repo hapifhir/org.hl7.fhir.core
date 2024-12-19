@@ -296,7 +296,7 @@ public class BaseWorkerContextTests {
   public void testAddServerValidationParametersDisplayWarning() throws IOException {
     BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
     Parameters pin = new Parameters();
-    baseWorkerContext.addServerValidationParameters(baseWorkerContext.getTxClientManager().getMaster(), new ValueSet(), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())).setDisplayWarningMode(true));
+    baseWorkerContext.addServerValidationParameters(null, baseWorkerContext.getTxClientManager().getMaster(), new ValueSet(), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())).setDisplayWarningMode(true));
     assertEquals("lenient-display-validation", pin.getParameter("mode").getValue().primitiveValue());
   }
 
@@ -304,7 +304,7 @@ public class BaseWorkerContextTests {
   public void testAddServerValidationParametersVsAsUrl() throws IOException {
     BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
     Parameters pin = new Parameters();
-    baseWorkerContext.addServerValidationParameters(baseWorkerContext.getTxClientManager().getMaster(), new ValueSet().setUrl("http://dummy.org/vs"), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())).setVsAsUrl(true));
+    baseWorkerContext.addServerValidationParameters(null, baseWorkerContext.getTxClientManager().getMaster(), new ValueSet().setUrl("http://dummy.org/vs"), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())).setVsAsUrl(true));
     assertEquals("uri", pin.getParameter("url").getValue().fhirType());
     assertEquals("http://dummy.org/vs", pin.getParameter("url").getValue().primitiveValue());
   }
@@ -314,7 +314,7 @@ public class BaseWorkerContextTests {
     BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
 
     Parameters pin = new Parameters();
-    baseWorkerContext.addServerValidationParameters(baseWorkerContext.getTxClientManager().getMaster(), new ValueSet(), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())));
+    baseWorkerContext.addServerValidationParameters(null, baseWorkerContext.getTxClientManager().getMaster(), new ValueSet(), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())));
     assertNull(pin.getParameter("mode"));
   }
 
@@ -460,7 +460,7 @@ public class BaseWorkerContextTests {
     Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),eq(true));
     Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
-    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true, false);
+    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(null, inc, true, false);
 
     assertEquals(expectedExpansionResult, actualExpansionResult);
 
@@ -484,14 +484,14 @@ public class BaseWorkerContextTests {
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
-    Mockito.doReturn(expParameters).when(context).constructParameters(argThat(new TerminologyClientContextMatcher(terminologyClientContext)),argThat(new ValueSetMatcher(vs)), eq(true));
+    Mockito.doReturn(expParameters).when(context).constructParameters(argThat(null), argThat(new TerminologyClientContextMatcher(terminologyClientContext)),argThat(new ValueSetMatcher(vs)), eq(true));
 
     ValueSet expectedValueSet = new ValueSet();
 
     Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(argThat(new ValueSetMatcher(vs)),
       argThat(new ParametersMatcher(pInWithDependentResources)));
 
-    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true, false);
+    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(null, inc, true, false);
 
     assertEquals(expectedValueSet, actualExpansionResult.getValueset());
 
