@@ -652,13 +652,15 @@ public class ProfilePathProcessor {
             }
           }
         }
-        template = src.copy().setPath(currentBase.getPath());
-        template.setSliceName(null);
-        // temporary work around
-        if (!"Extension".equals(diffMatches.get(0).getType().get(0).getCode())) {
-          template.setMin(currentBase.getMin());
-          template.setMax(currentBase.getMax());
-        }
+        if (Utilities.existsInList(currentBase.typeSummary(), "Extension", "Resource")) {
+          template = src.copy().setPath(currentBase.getPath());
+          template.setSliceName(null);
+          // temporary work around
+          if (!"Extension".equals(diffMatches.get(0).getType().get(0).getCode())) {
+            template.setMin(currentBase.getMin());
+            template.setMax(currentBase.getMax());
+          }
+        } 
       }
     }
     if (template == null)
