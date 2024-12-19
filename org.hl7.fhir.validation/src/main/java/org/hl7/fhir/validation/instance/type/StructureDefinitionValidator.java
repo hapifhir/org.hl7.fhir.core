@@ -17,6 +17,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r4.model.Expression;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -54,10 +55,33 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.instance.type.StructureDefinitionValidator.SourcedInvariant;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
 public class StructureDefinitionValidator extends BaseValidator {
+
+  public class SourcedInvariant {
+
+    private String sd;
+    private String ed;
+    private String inv;
+    protected SourcedInvariant(String sd, String ed, String inv) {
+      super();
+      this.sd = sd;
+      this.ed = ed;
+      this.inv = inv;
+    }
+    public String getSd() {
+      return sd;
+    }
+    public String getEd() {
+      return ed;
+    }
+    public String getInv() {
+      return inv;
+    }
+  }
 
   public class FhirPathSorter implements Comparator<ExpressionNode> {
 
@@ -418,7 +442,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   }
 
   private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, String rootPath, String profileUrl, String profileType, StructureDefinition base, boolean experimental) {
-    Map<String, String> invariantMap = new HashMap<>();
+    Map<String, SourcedInvariant> invariantMap = new HashMap<>();
     boolean ok = true;
     List<Element> elements = elementList.getChildrenByName("element");
     int cc = 0;
@@ -429,7 +453,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, String> invariantMap, String rootPath, String profileUrl, String profileType, StructureDefinition base, boolean experimental) {
+  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, SourcedInvariant> invariantMap, String rootPath, String profileUrl, String profileType, StructureDefinition base, boolean experimental) {
     boolean ok = true;
     boolean typeMustSupport = false;
     String path = element.getNamedChildValue("path", false);
@@ -707,7 +731,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ed;
   }
 
-  private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, String> invariantMap, List<Element> elements, Element element, 
+  private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, SourcedInvariant> invariantMap, List<Element> elements, Element element, 
       String path, String rootPath, String profileUrl, String profileType, boolean snapshot, StructureDefinition base) {
     boolean ok = true;
     String key = invariant.getNamedChildValue("key", false); 
@@ -719,9 +743,9 @@ public class StructureDefinitionValidator extends BaseValidator {
           if (!Utilities.noString(expression)) {
             if (invariantMap.containsKey(key)) {
               // it's legal - and common - for a list of elements to contain the same invariant more than once, but it's not valid if it's not always the same 
-              ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)) || "ele-1".equals(key), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));
+              ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key).getInv()) || "ele-1".equals(key), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key).getInv());
             } else {
-              invariantMap.put(key, expression);
+              invariantMap.put(key, new SourcedInvariant(profileUrl, path, expression));
             }
             if (Utilities.noString(source) || (source.equals(profileUrl))) { // no need to revalidate FHIRPath from elsewhere 
               try {
@@ -741,6 +765,7 @@ public class StructureDefinitionValidator extends BaseValidator {
                   // we got to the root before finding anything typed
                   types.addType(elements.get(0).getNamedChildValue("path", false));
                 }
+        
                 List<IssueMessage> warnings = new ArrayList<>();
                 ValidationContext vc = new ValidationContext(invariant);
                 if (Utilities.existsInList(rootPath, context.getResourceNames())) {
@@ -767,9 +792,23 @@ public class StructureDefinitionValidator extends BaseValidator {
               }         
             }        
           }
-        } else {          
-          ok = rule(errors, "2023-07-27", IssueType.INVALID, stack, source == null || source.equals(profileUrl), I18nConstants.ED_INVARIANT_DIFF_NO_SOURCE, key, source) &&
-              rule(errors, "2023-07-27", IssueType.INVALID, stack, !haseHasInvariant(base, key), I18nConstants.ED_INVARIANT_KEY_ALREADY_USED, key, base.getVersionedUrl());
+        } else {   
+          if (rule(errors, "2023-07-27", IssueType.INVALID, stack, source == null || source.equals(profileUrl), I18nConstants.ED_INVARIANT_DIFF_NO_SOURCE, key, source)) {
+            SourcedInvariant inv = findInvariantInBase(base, key);
+            if (rule(errors, "2023-07-27", IssueType.INVALID, stack, inv == null || inv.getInv().equals(expression), I18nConstants.ED_INVARIANT_KEY_ALREADY_USED, key, inv == null ? "??" : inv.getSd(), inv == null  ? "??" : inv.getInv())) {
+              if (invariantMap.containsKey(key)) { 
+                SourcedInvariant src = invariantMap.get(key);
+                ok = rule(errors, "2023-07-27", IssueType.INVALID, stack, expression.equals(src.getInv()), I18nConstants.ED_INVARIANT_KEY_ALREADY_USED, key, src.getEd(), src.getInv()) && ok;
+                
+              } else {
+                invariantMap.put(key, new SourcedInvariant(profileUrl, path, expression));
+              }
+            } else {
+              ok = false;
+            }
+          } else {
+            ok = false;
+          }
 
         }
       }
@@ -832,15 +871,33 @@ public class StructureDefinitionValidator extends BaseValidator {
     return types;
   }
 
-  private boolean haseHasInvariant(StructureDefinition base, String key) {
+  private SourcedInvariant findInvariantInBase(StructureDefinition base, String key) {
     for (ElementDefinition ed : base.getSnapshot().getElement()) {
       for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
         if (key.equals(inv.getKey())) {
-          return true;
+          return new SourcedInvariant(base.getVersionedUrl(), ed.getPath(), inv.getExpression());
         }
       }
     }
-    return false;
+    for (StructureDefinition sd : cu.allBaseStructures()) {
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+          if (key.equals(inv.getKey())) {
+            return new SourcedInvariant(sd.getVersionedUrl(), ed.getPath(), inv.getExpression());
+          }
+        }
+      }   
+    }
+    return null;
+  }
+
+
+  private boolean typesHaveInvariant(Map<String, String> invMap, String key, String expression) {
+    if (invMap.containsKey(key)) {
+      return !expression.equals(invMap.get(key));
+    } else {
+      return false;
+    }
   }
 
   private String tail(Element te, Element newte) {
