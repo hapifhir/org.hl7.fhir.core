@@ -120,6 +120,7 @@ import org.hl7.fhir.r5.terminologies.providers.CodeSystemProvider;
 import org.hl7.fhir.r5.terminologies.providers.CodeSystemProviderExtension;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
+import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase.TerminologyOperationDetails;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -609,7 +610,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (exc.hasSystem()) {
       CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem());
       if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.supportsSystem(exc.getSystem(), opContext.getOptions().getFhirVersion())) {
-        ValueSetExpansionOutcome vse = context.expandVS(exc, false, false);
+        ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), exc, false, false);
         ValueSet valueset = vse.getValueset();
         if (valueset == null)
           throw failTSE("Error Expanding ValueSet: "+vse.getError());
@@ -655,7 +656,6 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   public ValueSetExpansionOutcome expand(ValueSet source, Parameters expParams) {
-    
     allErrors.clear();
     try {
       opContext.seeContext(source.getVersionedUrl());
@@ -1050,7 +1050,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       return;
     }
     
-    ValueSetExpansionOutcome vso = context.expandVS(inc, heirarchical, noInactive);
+    ValueSetExpansionOutcome vso = context.expandVS(new TerminologyOperationDetails(requiredSupplements), inc, heirarchical, noInactive);
     if (vso.getError() != null) {
       throw failTSE("Unable to expand imported value set: " + vso.getError());
     }
