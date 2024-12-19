@@ -1291,7 +1291,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
             sys.add(vsi.getSystem());
           } else {
             // ok, we'll try to expand this one then 
-            ValueSetExpansionOutcome vse = context.expandVS(vsi, false, false);
+            ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), vsi, false, false);
             if (vse.isOk()) {
               if (!checkSystems(vse.getValueset().getExpansion().getContains(), code, sys, problems)) {
                 return false;
