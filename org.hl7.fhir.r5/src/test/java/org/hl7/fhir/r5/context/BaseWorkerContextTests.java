@@ -484,7 +484,7 @@ public class BaseWorkerContextTests {
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
-    Mockito.doReturn(expParameters).when(context).constructParameters(argThat(null), argThat(new TerminologyClientContextMatcher(terminologyClientContext)),argThat(new ValueSetMatcher(vs)), eq(true));
+    Mockito.doReturn(expParameters).when(context).constructParameters(any(), argThat(new TerminologyClientContextMatcher(terminologyClientContext)),argThat(new ValueSetMatcher(vs)), eq(true));
 
     ValueSet expectedValueSet = new ValueSet();
 
