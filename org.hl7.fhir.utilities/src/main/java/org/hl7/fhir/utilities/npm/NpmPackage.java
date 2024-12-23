@@ -164,6 +164,39 @@ public class NpmPackage {
     }
   }
 
+  public static class PackagedResourceFile {
+    private String folder;
+    private String filename;
+    private String resourceType;
+    protected PackagedResourceFile(String folder, String filename, String resourceType) {
+      super();
+      this.folder = folder;
+      this.filename = filename;
+      this.resourceType = resourceType;
+    }
+    public String getFolder() {
+      return folder;
+    }
+    public String getFilename() {
+      return filename;
+    }
+    public String getResourceType() {
+      return resourceType;
+    }
+    public static class Sorter implements Comparator<PackagedResourceFile> {
+
+      @Override
+      public int compare(PackagedResourceFile o1, PackagedResourceFile o2) {
+        int res = o1.folder.compareTo(o2.folder);
+        if (res == 0) {
+          res = o1.filename.compareTo(o2.filename);
+        }
+        return res;
+      }
+      
+    }
+  }
+  
   public static boolean isValidName(String pid) {
     return pid.matches("^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9\\-]*)+$");
   }
@@ -780,14 +813,14 @@ public class NpmPackage {
     return res;
   }
 
-  public List<StringPair> listAllResources(List<String> types) throws IOException {
-    List<StringPair> res = new ArrayList<StringPair>();
+  public List<PackagedResourceFile> listAllResources(Collection<String> types) throws IOException {
+    List<PackagedResourceFile> res = new ArrayList<PackagedResourceFile>();
     for (NpmPackageFolder folder : folders.values()) {
       if (types.size() == 0) {
         for (String s : folder.types.keySet()) {
           if (folder.types.containsKey(s)) {
             for (String n : folder.types.get(s)) {
-              res.add(new StringPair(folder.folderName, n));
+              res.add(new PackagedResourceFile(folder.folderName, n, s));
             }
           }
         }
@@ -795,13 +828,13 @@ public class NpmPackage {
         for (String s : types) {
           if (folder.types.containsKey(s)) {
             for (String n : folder.types.get(s)) {
-              res.add(new StringPair(folder.folderName, n));
+              res.add(new PackagedResourceFile(folder.folderName, n, s));
             }
           }
         }
       }
     }
-    Collections.sort(res, new StringPair.Sorter());
+    Collections.sort(res, new PackagedResourceFile.Sorter());
     return res;
   }
 

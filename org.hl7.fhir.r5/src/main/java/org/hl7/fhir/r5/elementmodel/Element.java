@@ -30,15 +30,18 @@ import java.io.PrintStream;
   POSSIBILITY OF SUCH DAMAGE.
   
  */
-
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.elementmodel.Element.SliceDefinition;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.extensions.ExtensionsUtils;
 import org.hl7.fhir.r5.model.Base;
@@ -1223,6 +1226,12 @@ public class Element extends Base implements NamedItem {
 
   public void removeChild(String name) {
     if (children.removeIf(n -> name.equals(n.getName()))) {
+      children.clearMap();
+    }
+  }
+
+  public void removeChild(Element child) {
+    if (children.removeIf(n -> n == child)) {
       children.clearMap();
     }
   }

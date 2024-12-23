@@ -155,7 +155,7 @@ public class PEBuilder {
     if (!profile.hasSnapshot()) {
       throw new DefinitionException("Profile '"+profile.getVersionedUrl()+"' does not have a snapshot");      
     }
-    return new PEDefinitionResource(this, profile, profile.getName());
+    return new PEDefinitionResource(this, profile, null);
   }
   
   /**
@@ -342,6 +342,7 @@ public class PEBuilder {
 
   protected List<PEDefinition> listChildren(boolean allFixed, PEDefinition parent, StructureDefinition profileStructure, ElementDefinition definition, String url, String... omitList) {
     StructureDefinition profile = profileStructure;
+    boolean inExtension = profile.getDerivation() == TypeDerivationRule.CONSTRAINT && "Extension".equals(profile.getType());
     List<ElementDefinition> list = pu.getChildList(profile, definition);
     if (definition.getType().size() == 1 || (!definition.getPath().contains(".")) || list.isEmpty()) {
       assert url == null || checkType(definition, url);
@@ -359,43 +360,38 @@ public class PEBuilder {
         while (i < list.size()) {
           ElementDefinition defn = list.get(i);
           if (!defn.getMax().equals("0") && (allFixed || include(defn))) {
-            if (passElementPropsCheck(defn) && !Utilities.existsInList(defn.getName(), omitList)) {
-              if (defn.getType().size() > 1) {
-                // Debug/Utilities.breakpoint();
-                i++;
-              } else {
-                String name = uniquefy(names, defn.getName());
-                PEDefinitionElement pe = new PEDefinitionElement(this, name, profile, defn, parent.path());
-                pe.setRecursing(definition == defn || (profile.getDerivation() == TypeDerivationRule.SPECIALIZATION && profile.getType().equals("Extension")));
-                if (context.isPrimitiveType(definition.getTypeFirstRep().getWorkingCode()) && "value".equals(pe.name())) {
-                  pe.setMustHaveValue(definition.getMustHaveValue());
-                }
-                pe.setInFixedValue(definition.hasFixed() || definition.hasPattern() || parent.isInFixedValue());
-                if (defn.hasSlicing()) {
-                  if (defn.getSlicing().getRules() != SlicingRules.CLOSED) {
-                    res.add(pe);
-                    pe.setSlicer(true);
-                  }
-                  i++;
-                  while (i < list.size() && list.get(i).getPath().equals(defn.getPath())) {
-                    StructureDefinition ext = getExtensionDefinition(list.get(i));
-                    if (ext != null) {
-                      res.add(new PEDefinitionExtension(this, uniquefy(names, list.get(i).getSliceName()), profile, list.get(i), defn, ext, parent.path()));
-                    } else if (isTypeSlicing(defn)) {
-                      res.add(new PEDefinitionTypeSlice(this, uniquefy(names, list.get(i).getSliceName()), profile, list.get(i), defn, parent.path()));
-                    } else {
-                      if (ProfileUtilities.isComplexExtension(profile) && defn.getPath().endsWith(".extension")) {
-                        res.add(new PEDefinitionSubExtension(this, profile, list.get(i), parent.path()));
-                      } else {
-                        res.add(new PEDefinitionSlice(this, uniquefy(names, list.get(i).getSliceName()), profile, list.get(i), defn, parent.path()));
-                      }
-                    }
-                    i++;
-                  }
-                } else {
+            if (passElementPropsCheck(defn, inExtension) && !Utilities.existsInList(defn.getName(), omitList)) {
+              String name = uniquefy(names, defn.getName());
+              PEDefinitionElement pe = new PEDefinitionElement(this, name, profile, defn, parent.path());
+              pe.setRecursing(definition == defn || (profile.getDerivation() == TypeDerivationRule.SPECIALIZATION && profile.getType().equals("Extension")));
+              if (context.isPrimitiveType(definition.getTypeFirstRep().getWorkingCode()) && "value".equals(pe.name())) {
+                pe.setMustHaveValue(definition.getMustHaveValue());
+              }
+              pe.setInFixedValue(definition.hasFixed() || definition.hasPattern() || parent.isInFixedValue());
+              if (defn.hasSlicing()) {
+                if (defn.getSlicing().getRules() != SlicingRules.CLOSED) {
                   res.add(pe);
+                  pe.setSlicer(true);
+                }
+                i++;
+                while (i < list.size() && list.get(i).getPath().equals(defn.getPath())) {
+                  StructureDefinition ext = getExtensionDefinition(list.get(i));
+                  if (ext != null) {
+                    res.add(new PEDefinitionExtension(this, uniquefy(names, list.get(i).getSliceName()), profile, list.get(i), defn, ext, parent.path()));
+                  } else if (isTypeSlicing(defn)) {
+                    res.add(new PEDefinitionTypeSlice(this, uniquefy(names, list.get(i).getSliceName()), profile, list.get(i), defn, parent.path()));
+                  } else {
+                    if (ProfileUtilities.isComplexExtension(profile) && defn.getPath().endsWith(".extension")) {
+                      res.add(new PEDefinitionSubExtension(this, profile, list.get(i), parent.path()));
+                    } else {
+                      res.add(new PEDefinitionSlice(this, uniquefy(names, list.get(i).getSliceName()), profile, list.get(i), defn, parent.path()));
+                    }
+                  }
                   i++;
                 }
+              } else {
+                res.add(pe);
+                i++;
               }
             } else {
               i++;
@@ -434,7 +430,10 @@ public class PEBuilder {
     return pe;
   }
 
-  private boolean passElementPropsCheck(ElementDefinition bdefn) {
+  private boolean passElementPropsCheck(ElementDefinition bdefn, boolean inExtension) {
+    if (inExtension) {
+      return !Utilities.existsInList(bdefn.getBase().getPath(), "Element.id");      
+    }
     switch (elementProps) {
     case EXTENSION:
       return !Utilities.existsInList(bdefn.getBase().getPath(), "Element.id");

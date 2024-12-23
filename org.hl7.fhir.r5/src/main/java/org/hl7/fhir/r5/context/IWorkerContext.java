@@ -490,6 +490,8 @@ public interface IWorkerContext {
    */
   public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical);
 
+  public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical, int count);
+
   /**
    * ValueSet Expansion - see $expand
    *  
