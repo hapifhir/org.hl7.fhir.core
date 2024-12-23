@@ -33,16 +33,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.All;
 import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.profilemodel.PEDefinition.PEDefinitionElementMode;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
 public abstract class PEDefinition {
@@ -394,6 +391,9 @@ public abstract class PEDefinition {
     return false;
   }
 
+  public String getExtensionUrl() {
+    return null;
+  }
 
   public ValueSet valueSet() {
     if (definition.getBinding().hasValueSet()) {
@@ -405,6 +405,19 @@ public abstract class PEDefinition {
 
   public PEBuilder getBuilder() {
     return builder;
+  }
+
+  public String typeSummary() {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (PEType t : types()) {
+      b.append(t.getName());
+    }       
+    return b.toString();
+  }
+
+
+  public boolean isSlice() {
+    return definition.hasSliceName();
   }
 
 }

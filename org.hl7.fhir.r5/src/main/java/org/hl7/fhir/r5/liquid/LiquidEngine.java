@@ -1020,4 +1020,10 @@ public class LiquidEngine implements IEvaluationContext {
   public boolean paramIsType(String name, int index) {
     return false;
   }
+
+  public FHIRPathEngine getEngine() {
+    return engine;
+  }
+  
+  
 }
