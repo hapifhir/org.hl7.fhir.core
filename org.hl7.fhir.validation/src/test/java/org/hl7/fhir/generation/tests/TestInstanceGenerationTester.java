@@ -82,7 +82,7 @@ public class TestInstanceGenerationTester {
     for (JsonObject fact : json.forceArray("factories").asJsonObjects()) {
       TestDataFactory tdf = new TestDataFactory(context, fact, liquid, fpe, "http://hl7.org/fhir/test", path, log);
       tdf.setTesting(true); // no randomness
-      System.out.println("Execute Test Data Factory '"+tdf.getName()+"'. Output in "+tdf.statedLog());
+      System.out.println("Execute Test Data Factory '"+tdf.getName()+"'. Log in "+tdf.statedLog());
       tdf.execute();
     }
     
