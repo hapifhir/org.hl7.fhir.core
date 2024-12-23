@@ -123,7 +123,12 @@ private static TxTestData testData;
 
   private void expand(String id, ValidationEngine engine, Resource req, String resp, String lang, String fp, JsonObject ext) throws IOException {
     org.hl7.fhir.r5.model.Parameters p = ( org.hl7.fhir.r5.model.Parameters) req;
-    ValueSet vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
+    ValueSet vs;
+    if (p.hasParameter("valueSetVersion")) {      
+      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), p.getParameterValue("valueSetVersion").primitiveValue());
+    } else {
+      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
+    }
     boolean hierarchical = p.hasParameter("excludeNested") ? p.getParameterBool("excludeNested") == false : true;
     Assertions.assertNotNull(vs);
     if (lang != null && !p.hasParameter("displayLanguage")) {
