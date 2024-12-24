@@ -197,10 +197,10 @@
             <artifactId>poi-ooxml</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.poi</groupId>
-            <artifactId>ooxml-schemas</artifactId>
+            <artifactId>poi-ooxml-full</artifactId>
             <scope>test</scope>
         </dependency>
         <!-- JUnit Jupiter -->
