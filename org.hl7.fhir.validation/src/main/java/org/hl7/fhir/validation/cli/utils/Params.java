@@ -52,6 +52,7 @@ public class Params {
   public static final String NO_NATIVE = "-no-native";
   public static final String COMPILE = "-compile";
   public static final String CODEGEN = "-codegen";
+  public static final String FACTORY = "-factory";
   public static final String TRANSFORM = "-transform";
   public static final String FORMAT = "-format";
   public static final String LANG_TRANSFORM = "-lang-transform";
@@ -356,6 +357,9 @@ public class Params {
         cliContext.setMode(EngineMode.COMPILE);
       } else if (args[i].equals(CODEGEN)) {
         cliContext.setMode(EngineMode.CODEGEN);
+      } else if (args[i].equals(FACTORY)) {
+        cliContext.setMode(EngineMode.FACTORY);
+        cliContext.setSource(args[++i]);
       } else if (args[i].equals(NARRATIVE)) {
         cliContext.setMode(EngineMode.NARRATIVE);
       } else if (args[i].equals(SPREADSHEET)) {

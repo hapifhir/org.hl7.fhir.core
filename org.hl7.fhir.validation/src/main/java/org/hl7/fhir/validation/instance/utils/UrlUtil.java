@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.instance.utils.Base64Util;
 
@@ -50,7 +51,11 @@ public class UrlUtil {
       if (invalidChars.isEmpty()) {
         return null;
       } else {
-        return context.formatMessagePlural(c, I18nConstants.XHTML_URL_INVALID_CHARS, invalidChars.toString());
+        Set<String> ss = new HashSet<>();
+        for (Character ch : invalidChars) {
+          ss.add("'"+ch.toString()+"'");
+        }
+        return context.formatMessagePlural(c, I18nConstants.XHTML_URL_INVALID_CHARS, CommaSeparatedStringBuilder.join(",", Utilities.sorted(ss)));
       }
     }
   }

@@ -115,6 +115,10 @@ public class CliContext {
   @SerializedName("map")
   private
   String map = null;
+  @JsonProperty("source")
+  @SerializedName("source")
+  private
+  String source = null;
   @JsonProperty("output")
   @SerializedName("output")
   private
@@ -361,6 +365,19 @@ public class CliContext {
   @JsonProperty("map")
   public CliContext setMap(String map) {
     this.map = map;
+    return this;
+  }
+
+  @SerializedName("source")
+  @JsonProperty("source")
+  public String getSource() {
+    return source;
+  }
+
+  @SerializedName("source")
+  @JsonProperty("source")
+  public CliContext setSource(String source) {
+    this.source = source;
     return this;
   }
 
