@@ -1014,7 +1014,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
 
-    if (!noLimits) {
+    if (!noLimits && !p.hasParameter("count")) {
       p.addParameter("count", expandCodesLimit);
       p.addParameter("offset", 0);
     }
