@@ -430,6 +430,11 @@ public class ProfileBasedFactory {
     ValueSetExpansionOutcome vse = fpe.getWorker().expandVS(vs, true, false, 100);
     if (vse.isOk()) {
       ls.others.add("ValueSet "+vs.getVersionedUrl()+" "+ValueSetUtilities.countExpansion(vse.getValueset().getExpansion().getContains())+" concepts");
+      if (testing) {
+        for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
+          ls.others.add(cc.getSystem()+"#"+cc.getCode()+" : \""+cc.getDisplay()+"\" ("+cc.hasContains()+")");   
+        }
+      }
       return pickRandomConcept(vse.getValueset().getExpansion().getContains());
     } else {
       ls.others.add("ValueSet "+vs.getVersionedUrl()+": error = "+vse.getError());
