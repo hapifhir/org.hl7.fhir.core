@@ -114,5 +114,9 @@ public class PEDefinitionExtension extends PEDefinition {
     return true;
   }
 
-  
+
+  public String getExtensionUrl() {
+    return extension.getUrl();
+  }
+
 }

@@ -18,7 +18,17 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.convertors.analytics.PackageVisitor.IPackageVisitorProcessor;
 import org.hl7.fhir.convertors.analytics.PackageVisitor.PackageContext;
+import org.hl7.fhir.convertors.loaders.loaderR5.ILoaderKnowledgeProviderR5;
+import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
+import org.hl7.fhir.convertors.loaders.loaderR5.R2016MayToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R2ToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R3ToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R4BToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R5ToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R6ToR5Loader;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IContextResourceLoader;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.SimpleWorkerContextBuilder;
@@ -37,6 +47,7 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.NpmPackage.PackagedResourceFile;
 import org.xml.sax.SAXException;
 
 public class TestGenerationDataGenerator implements IPackageVisitorProcessor {
@@ -67,6 +78,7 @@ public class TestGenerationDataGenerator implements IPackageVisitorProcessor {
 
   @Override
   public Object startPackage(PackageContext ctxt) {
+    System.out.println("Process Package "+ctxt.getPid()+"#"+ctxt.getVersion()+" ("+ctxt.getNpm().fhirVersion()+")");
     return null;
   }
 
@@ -77,22 +89,45 @@ public class TestGenerationDataGenerator implements IPackageVisitorProcessor {
     if (worker == null) {
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(version));
-      SimpleWorkerContext swc = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm);
+      IContextResourceLoader loader = makeLoader(ctxt.getNpm().fhirVersion(), new NullLoaderKnowledgeProviderR5());
+      SimpleWorkerContext swc = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm, loader, true);
       contexts.put(version, swc);
       worker = swc;
     }
     List<ValidatedFragment> res = Manager.parse(worker, new ByteArrayInputStream(content), FhirFormat.JSON);
     if (res.size() > 0) {
       try {
-        processElement(res.get(0).getElement());
+        processElement(res.get(0).getElement(), null);
       } catch (SQLException e) {
         throw new FHIRException(e);
       }
     }
   }
 
-  private void processElement(Element element) throws SQLException {
-    String id = element.getProperty().getDefinition().getId();
+  private IContextResourceLoader makeLoader(String version, ILoaderKnowledgeProviderR5 loader) {
+    if (VersionUtilities.isR2Ver(version)) { 
+      return new R2ToR5Loader(Utilities.strings("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
+    } 
+    if (VersionUtilities.isR2BVer(version)) {
+      return new R2016MayToR5Loader(Utilities.strings("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader); // special case
+    }
+    if (VersionUtilities.isR3Ver(version)) {
+      return new R3ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
+    }
+    if (VersionUtilities.isR4Ver(version)) {
+      return new R4ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
+    }
+    if (VersionUtilities.isR4BVer(version)) {
+      return new R4BToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
+    }
+    if (VersionUtilities.isR6Ver(version)) {
+      return new R6ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
+    }
+    return new R5ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
+  }
+
+  private void processElement(Element element, String path) throws SQLException {
+    String id = path != null ? path : element.getProperty().getDefinition().getId();
     switch (element.fhirType()) {
     case "Address":
       recordValue(id, "Address", getValues(element, "use", "type", "text", "line", "city", "district", "state", "postalCode", "country"));
@@ -161,12 +196,23 @@ public class TestGenerationDataGenerator implements IPackageVisitorProcessor {
       break;
     default:
       if (element.isPrimitive()) {
-        recordValue(id, element.fhirType(), element.primitiveValue());
+        if (!element.getProperty().getDefinition().getId().equals("Extension.url")) {
+          recordValue(id, element.fhirType(), element.primitiveValue());
+        }
       } else {
         for (Element child : element.getChildren()) {
-          if (!child.fhirType().equals("Extension") && !child.getPath().endsWith(".id") && !child.getPath().endsWith(".linkId")) {
+          if (child.fhirType().equals("Extension")) {
+            String url = child.getChildValue("url");
+            String npath;
+            if (Utilities.isAbsoluteUrl(url) || path == null) {
+              npath = url;
+            } else {
+              npath = path+"."+url;
+            }
+            processElement(child, npath);                
+          } else if (!child.getPath().endsWith(".id") && !child.getPath().endsWith(".linkId")) {
             if (!child.isResource() || !Utilities.existsInList(child.fhirType(), "Bundle", "CapabilityStatement", "CodeSystem", "ConceptMap", "GraphDefinition", "ImplementationGuide", "MessageHeader", "NamingSystem", "OperationDefinition", "OperationOutcome", "Parameters", "SearchParameter", "StructureDefinition", "StructureMap", "TerminologyCapabilities", "ValueSet")) {
-              processElement(child);
+              processElement(child, path);
             }
           }
         }
@@ -325,9 +371,9 @@ public class TestGenerationDataGenerator implements IPackageVisitorProcessor {
       for (String type : resourceTypes) {
         List<String> rt = new ArrayList<String>();
         rt.add(type);
-        for (StringPair s : npm.listAllResources(rt)) {
+        for (PackagedResourceFile s : npm.listAllResources(rt)) {
           c++;
-          processResource(ctxt, context, type, s.getName(), TextFile.streamToBytes(npm.load(s.getName(), s.getValue())));
+          processResource(ctxt, context, type, s.getFilename(), TextFile.streamToBytes(npm.load(s.getFolder(), s.getFilename())));
         }
       }
     }    

@@ -9,7 +9,14 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
@@ -24,14 +31,20 @@ import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ValidatedFragment;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.liquid.BaseTableWrapper;
+import org.hl7.fhir.r5.liquid.GlobalObject.GlobalObjectRandomFunction;
+import org.hl7.fhir.r5.liquid.LiquidEngine;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -44,6 +57,8 @@ import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.InternalLogEvent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.r5.testfactory.TestDataFactory;
+import org.hl7.fhir.r5.testfactory.TestDataHostServices;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.SystemExitManager;
@@ -58,12 +73,23 @@ import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerSession;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
 import org.hl7.fhir.utilities.i18n.PoGetTextProducer;
 import org.hl7.fhir.utilities.i18n.XLIFFProducer;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.validation.*;
+import org.hl7.fhir.validation.IgLoader;
+import org.hl7.fhir.validation.ResourceChecker;
+import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.ValidationRecord;
+import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
-import org.hl7.fhir.validation.cli.model.*;
+import org.hl7.fhir.validation.cli.model.CliContext;
+import org.hl7.fhir.validation.cli.model.FileInfo;
+import org.hl7.fhir.validation.cli.model.ValidatedFragments;
+import org.hl7.fhir.validation.cli.model.ValidationOutcome;
+import org.hl7.fhir.validation.cli.model.ValidationRequest;
+import org.hl7.fhir.validation.cli.model.ValidationResponse;
 import org.hl7.fhir.validation.cli.renderers.CSVRenderer;
 import org.hl7.fhir.validation.cli.renderers.CompactRenderer;
 import org.hl7.fhir.validation.cli.renderers.DefaultRenderer;
@@ -76,8 +102,6 @@ import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.advisor.JsonDrivenPolicyAdvisor;
 import org.hl7.fhir.validation.instance.advisor.TextDrivenPolicyAdvisor;
-
-import kotlin.NotImplementedError;
 
 public class ValidationService {
 
@@ -896,6 +920,45 @@ public class ValidationService {
           System.out.println(": "+s);
         }
       }
+      System.out.println("Done");
+    }
+  }
+
+  public void instanceFactory(CliContext cliContext, ValidationEngine validationEngine) throws IOException {
+    boolean ok = true;
+    if (cliContext.getSource() == null) {
+      System.out.println("Must specify a source (-version)");
+      ok = false;
+    } else if (!new File(cliContext.getSource()).exists()) {      
+      System.out.println("Factory source '"+cliContext.getSource()+"' not found");
+      ok = false;
+    }
+
+    if (ok) {
+      System.out.println("Preparing to execute");
+              
+      FHIRPathEngine fpe = new FHIRPathEngine(validationEngine.getContext());
+      TestDataHostServices hs = new TestDataHostServices(validationEngine.getContext(), new DateTimeType(new Date()), new StringType(VersionUtilities.getSpecUrl(validationEngine.getContext().getVersion())));
+      hs.registerFunction(new GlobalObjectRandomFunction());
+      hs.registerFunction(new BaseTableWrapper.TableColumnFunction());
+      hs.registerFunction(new BaseTableWrapper.TableDateColumnFunction());
+      hs.registerFunction(new TestDataFactory.CellLookupFunction());
+      hs.registerFunction(new TestDataFactory.TableLookupFunction());
+      fpe.setHostServices(hs);
+      LiquidEngine liquid = new LiquidEngine(validationEngine.getContext(), hs);
+      
+      String path = Utilities.getDirectoryForFile(cliContext.getSource());
+      String log = Utilities.path(path, "log");
+      Utilities.createDirectory(log);
+                  
+      JsonObject json = JsonParser.parseObjectFromFile(cliContext.getSource());
+      for (JsonObject fact : json.forceArray("factories").asJsonObjects()) {
+        TestDataFactory tdf = new TestDataFactory(validationEngine.getContext(), fact, liquid, fpe, "http://hl7.org/fhir/test", path, log);
+        tdf.setTesting(true); // no randomness
+        System.out.println("Execute Test Data Factory '"+tdf.getName()+"'. Log in "+Utilities.path(log, tdf.statedLog()));
+        tdf.execute();
+      }
+
       System.out.println("Done");
     }
   }

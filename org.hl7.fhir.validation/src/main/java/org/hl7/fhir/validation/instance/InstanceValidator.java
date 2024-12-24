@@ -326,8 +326,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       case "slice": return new FunctionDetails("Returns the given slice as defined in the given structure definition. If in an invariant, First parameter can be %profile - current profile", 2, 2);
       case "getResourceKey" : return new FunctionDetails("Unique Key for resource", 0, 0);
       case "getReferenceKey" : return new FunctionDetails("Unique Key for resource that is the target of the reference", 0, 1);
-      default: return null;
-      }      
+      default:
+        if (externalHostServices != null) {
+          return externalHostServices.resolveFunction(engine, functionName);
+        } else {
+          return null;
+        } 
+      }
     }
 
     @Override
@@ -340,7 +345,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
       case "getResourceKey" : return new TypeDetails(CollectionStatus.SINGLETON, "string");
       case "getReferenceKey" : return new TypeDetails(CollectionStatus.SINGLETON, "string");
-      default: throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESCHECKFUNCTION));
+      default: 
+        if (externalHostServices != null) {
+          return externalHostServices.checkFunction(engine, appContext, functionName, focus, parameters);
+        } else {
+          throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESCHECKFUNCTION));
+        }
       }
     }
 
@@ -349,7 +359,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       switch (functionName) {
       case "slice": return executeSlice(engine, appContext, focus, parameters);case "getResourceKey" : return executeResourceKey(focus);
       case "getReferenceKey" : return executeReferenceKey(null, focus, parameters);
-      default: throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESEXECUTEFUNCTION));
+      default: 
+        if (externalHostServices != null) {
+          return externalHostServices.executeFunction(engine, appContext, focus, functionName, parameters);
+        } else {
+          throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESEXECUTEFUNCTION));
+        }
       }
     }
 
