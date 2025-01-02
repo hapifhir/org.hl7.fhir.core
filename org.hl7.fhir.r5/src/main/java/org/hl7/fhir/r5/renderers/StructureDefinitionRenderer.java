@@ -1580,20 +1580,18 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
           if (profile.getKind() == StructureDefinitionKind.LOGICAL) { 
             Extension lt = ToolingExtensions.getExtension(profile, ToolingExtensions.EXT_LOGICAL_TARGET); 
-            if (lt == null || !lt.hasValueBooleanType()) { 
+            List<Extension> tc = ToolingExtensions.getExtensions(profile, ToolingExtensions.EXT_TYPE_CHARACTERISTICS);
+            Boolean canBeTarget = checkCanBeTarget(lt, tc);
+            if (canBeTarget == null) {
+              // don't say anything
+            } else if (canBeTarget) {
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_NOT_MARK), null).addStyle("font-weight:bold"));  ;         
-            } else if (lt.getValue().hasExtension(ToolingExtensions.EXT_DAR)) {                  
-            } else if (!lt.getValueBooleanType().hasValue()) { 
-                if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-                c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_CAN_TARGET), null).addStyle("font-weight:bold"));  ;         
-            } else if (lt.getValueBooleanType().booleanValue()) { 
+              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_CAN_TARGET), null).addStyle("font-weight:bold"));                       
+            } else {
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_CAN_TARGET), null).addStyle("font-weight:bold"));         
-            } else { 
-              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_CAN_TARGET), null).addStyle("font-weight:bold"));   
-            }             
+              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_NOT_MARK), null).addStyle("font-weight:bold"));                       
+            }
+            
             String ps = ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_PROFILE_STYLE); 
             if (ps != null) { 
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
@@ -1765,6 +1763,27 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return c; 
   } 
  
+  private Boolean checkCanBeTarget(Extension lt, List<Extension> tc) {
+    Boolean res = null;
+    if (lt == null || !lt.hasValueBooleanType() || lt.getValue().hasExtension(ToolingExtensions.EXT_DAR)) {                  
+    } else if (!lt.getValueBooleanType().hasValue()) {
+      res = null; // GDG Dec-2024: this is true, but changed to null
+    } else if (lt.getValueBooleanType().booleanValue()) {
+      res = true;
+    } else {
+      res = false; // GDG Dec 2024- this was true, but evidently should be false, so fixed
+    }             
+    if (res == null && !tc.isEmpty()) {
+      res = false;
+      for (Extension t : tc) {
+        if (t.hasValueCodeType() && "can-be-target".equals(t.getValueCodeType().primitiveValue())) {
+          res = true;
+        }    
+      }
+    }
+    return res;
+  }
+
   private boolean isAbstractBaseProfile(String source) { 
     StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, source); 
     return (sd != null) && sd.getAbstract() && sd.hasUrl() && sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/"); 

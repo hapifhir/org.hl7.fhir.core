@@ -500,5 +500,15 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return value;
   }
 
+  public List<StructureDefinition> allBaseStructures() {
+    List<StructureDefinition> res = new ArrayList<>();
+    for (StructureDefinition sd : allStructures()) {
+      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
+        res.add(sd);
+      }
+    }
+    return res;
+  }
+
 }
 
