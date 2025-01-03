@@ -526,7 +526,7 @@ public class CodeSystemValidator extends BaseValidator {
   }
   
   private void metaChecks(List<ValidationMessage> errors, Element cs, NodeStack stack, String url,  String content, String caseSensitive, String hierarchyMeaning, boolean isSupplement, int count, String supp) {
-    if (forPublication && (url.contains("hl7.org"))) {
+    if (forPublication && url != null && (url.contains("hl7.org"))) {
       hint(errors, "2024-03-07", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), url.contains("terminology.hl7.org") || url.contains("hl7.org/cda/stds/core"), I18nConstants.CODESYSTEM_THO_CHECK);
     }
     if (isSupplement) {
