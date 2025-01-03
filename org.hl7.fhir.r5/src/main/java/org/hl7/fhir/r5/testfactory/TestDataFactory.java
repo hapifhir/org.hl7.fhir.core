@@ -82,6 +82,17 @@ public class TestDataFactory {
       return FhirPublication.R5;
     }
 
+    public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+      if (rows != null && "rows".equals(name)) {
+        Base[] l = new Base[rows.size()];
+        for (int i = 0; i < rows.size(); i++) {
+          l[i] = BaseTableWrapper.forRow(columns, rows.get(i));
+        }
+        return l;      
+      }
+      return super.getProperty(hash, name, checkValid);
+    }
+    
     public String cell(int row, String col) {
       if (row >= 0 && row < rows.size()) {
         List<String> r = rows.get(row);
