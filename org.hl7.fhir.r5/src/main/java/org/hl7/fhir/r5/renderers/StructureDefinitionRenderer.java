@@ -65,6 +65,18 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingCompo
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.renderers.utils.ElementTable;
+import org.hl7.fhir.r5.renderers.utils.ElementTable.ElementTableGrouping;
+import org.hl7.fhir.r5.renderers.utils.ElementTable.ElementTableGroupingEngine;
+import org.hl7.fhir.r5.renderers.utils.ElementTable.ElementTableGroupingState;
+import org.hl7.fhir.r5.renderers.utils.ElementTable.HintDrivenGroupingEngine;
+import org.hl7.fhir.r5.renderers.utils.ElementTable.JsonDrivenGroupingEngine;
+import org.hl7.fhir.r5.renderers.utils.ElementTable.TableElement;
+import org.hl7.fhir.r5.renderers.utils.ElementTable.TableElementConstraint;
+import org.hl7.fhir.r5.renderers.utils.ElementTable.TableElementConstraintType;
+import org.hl7.fhir.r5.renderers.utils.ElementTable.TableElementDefinition;
+import org.hl7.fhir.r5.renderers.utils.ElementTable.TableElementDefinitionType;
+import org.hl7.fhir.r5.renderers.utils.ElementTable.TableGroup;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.FixedValueFormat;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
@@ -83,6 +95,9 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
+import org.hl7.fhir.utilities.json.JsonException;
+import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
@@ -91,7 +106,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableGenerationMo
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.hl7.fhir.utilities.xhtml.XhtmlParser; 
+import org.hl7.fhir.utilities.xhtml.XhtmlParser;
  
 public class StructureDefinitionRenderer extends ResourceRenderer { 
  
@@ -372,7 +387,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private final boolean ADD_REFERENCE_TO_TABLE = true; 
  
   private boolean useTableForFixedValues = true; 
-  private String corePath; 
+  private String corePath;
+  private JsonObject resourceGroupings; 
  
   public static class UnusedTracker { 
     private boolean used; 
@@ -703,6 +719,24 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return model; 
   } 
  
+
+  public TableModel initElementTable(HierarchicalTableGenerator gen, String prefix, boolean alternating, String id, boolean isActive, TableGenerationMode mode) throws IOException {
+    TableModel model = gen.new TableModel(id, isActive);
+    
+    model.setAlternating(alternating);
+    if (mode == TableGenerationMode.XML) {
+      model.setDocoImg(HierarchicalTableGenerator.help16AsData());     
+    } else {
+      model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
+    }
+    model.setDocoRef(Utilities.pathURL("https://build.fhir.org/ig/FHIR/ig-guidance", "readingIgs.html#table-views"));
+    // these need to be defined, but they're never going to be shown
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingI18nContext.GENERAL_NAME), context.formatPhrase(RenderingI18nContext.GENERAL_LOGICAL_NAME), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingI18nContext.GENERAL_DESC_CONST), context.formatPhrase(RenderingI18nContext.SD_HEAD_DESC_DESC), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingI18nContext.GENERAL_TYPE), context.formatPhrase(RenderingI18nContext.SD_GRID_HEAD_TYPE_DESC), null, 0));
+    return model;
+  }
+  
   private Row genElement(RenderingStatus status, String defPath, HierarchicalTableGenerator gen, List<Row> rows, ElementDefinition element, List<ElementDefinition> all, List<StructureDefinition> profiles, boolean showMissing, String profileBaseFileName, Boolean extensions,  
       boolean snapshot, String corePath, String imagePath, boolean root, boolean logicalModel, boolean isConstraintMode, boolean allInvariants, Row slicingRow, boolean mustSupport, RenderingContext rc, String anchorPrefix, Resource srcSD, List<Column> columns, ResourceWrapper res) throws IOException, FHIRException { 
     Row originalRow = slicingRow; 
@@ -4931,4 +4965,325 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return "<a title=\"" + cs.present() + "\" href=\"" + Utilities.escapeXml(cs.getWebPath()) + "#" + cs.getId() + "-" + coding.getCode() + "\">" + coding.getCode() + "</a>" + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")"); 
   } 
  
+  public XhtmlNode buildElementTable(RenderingStatus status, String defFile, StructureDefinition profile, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, 
+      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res) throws IOException {
+    // in order to build this, we need to know the base type of the profile 
+    ElementTableGroupingEngine groupings = getElementTableGroupings(profile.getType());
+    if (groupings == null) {
+      XhtmlNode node = new XhtmlNode(NodeType.Element, "div");
+      node.para().tx("This view is not supported for this profile because it is of an unsupported type");
+      return node;
+    } else if (profile.getSnapshot().getElement().isEmpty()) {
+      XhtmlNode node = new XhtmlNode(NodeType.Element, "div");
+      node.para().tx("This view is not supported for this profile because it doesn't have a snapshot");
+      return node;
+    } else {
+      List<ElementTable.TableGroup> groups = new ArrayList<ElementTable.TableGroup>();
+      List<ElementDefinition> children = context.getProfileUtilities().getChildList(profile, profile.getSnapshot().getElementFirstRep());
+      buildElementTableRows(profile, groupings, groups, children);
+      
+      HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
+      gen.setTreelines(false);
+      TableModel model = initElementTable(gen, corePath, true, profile.getId()+"e", true, TableGenerationMode.XHTML);
+      new ElementTable(context, groups, this).build(gen, model);
+          
+      try { 
+        return gen.generate(model, imagePath, 0, outputTracker); 
+      } catch (org.hl7.fhir.exceptions.FHIRException e) { 
+        throw new FHIRException(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()), e); 
+      }
+    }
+  }
+
+  private void buildElementTableRows(StructureDefinition profile, ElementTableGroupingEngine groupings, List<TableGroup> groups, List<ElementDefinition> elements) {
+    for (ElementDefinition ed : elements) {
+      ElementTableGroupingState state = groupings.groupState(ed);
+      ElementTable.TableGroup group = getOrMakeGroup(groupings, groups, ed);
+      if (group != null) {
+        boolean isLeaf = isLeaf(ed);
+        if (isLeaf) {
+          if (hasAnyDiff(profile, ed) && !ed.isProhibited()) {
+            group.getElements().add(makeElement(profile, null, ed, true));
+          }
+        } else if (state == ElementTableGroupingState.DEFINES_GROUP) {
+          List<ElementDefinition> children = context.getProfileUtilities().getChildList(profile, ed);
+          buildElementTableRows(profile, group, children, ed);             
+        } else if (hasAnyDiff(profile, ed) && !ed.isProhibited()) {
+          TableElement e = makeElement(profile, null, ed, false);
+          group.getElements().add(e);
+          List<ElementDefinition> children = context.getProfileUtilities().getChildList(profile, ed);
+          buildElementTableRows(profile, e, children); 
+        }
+      } else if (!ed.isProhibited()) {
+        // walk the children without creating anything. Will only do anything in a logical model 
+        List<ElementDefinition> children = context.getProfileUtilities().getChildList(profile, ed);
+        buildElementTableRows(profile, groupings, groups, children);
+      }
+    }          
+  }
+
+
+  private void buildElementTableRows(StructureDefinition profile, ElementTable.TableGroup group, List<ElementDefinition> elements, ElementDefinition parent) {
+    for (ElementDefinition ed : elements) {
+      if (hasAnyDiff(profile, ed) && !ed.isProhibited()) {
+        boolean isLeaf = isLeaf(ed);
+        if (isLeaf) {
+          if (useParent(ed) ) {
+            group.getElements().add(makeElement(profile, parent, ed, true));
+          } else {
+            group.getElements().add(makeElement(profile, null, ed, true));
+          }
+        } else {
+          List<ElementDefinition> children = context.getProfileUtilities().getChildList(profile, ed);
+          buildElementTableRows(profile, group, children, ed);  
+        }
+      }
+    }          
+  }
+
+
+  private boolean useParent(ElementDefinition ed) {
+    for (TypeRefComponent t : ed.getType()) {
+      StructureDefinition sd = context.getContext().fetchTypeDefinition(t.getWorkingCode());
+      if (sd != null && sd.hasExtension(ToolingExtensions.EXT_PROFILE_VIEW_HINT)) {
+        for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_VIEW_HINT)) {
+          if (ext.hasValue()) {
+            String v = ext.getValue().primitiveValue();
+            if ("element-view-defns-parent".equals(v)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  private void buildElementTableRows(StructureDefinition profile, TableElement parent, List<ElementDefinition> elements) {
+    for (ElementDefinition ed : elements) {
+      if (hasAnyDiff(profile, ed) && !ed.isProhibited()) {
+        boolean isLeaf = isLeaf(ed);
+        if (isLeaf) {
+          parent.getChildElements().add(makeElement(profile, null, ed, true));
+        } else {
+          TableElement e = makeElement(profile, null, ed, false);
+          parent.getChildElements().add(e);
+          List<ElementDefinition> children = context.getProfileUtilities().getChildList(profile, ed);
+          buildElementTableRows(profile, e, children);  
+        }
+      }
+    }          
+  }
+
+  private boolean isLeaf(ElementDefinition element) {
+    for (TypeRefComponent t : element.getType()) {
+      if (context.getContextUtilities().isDatatype(t.getWorkingCode()) && !Utilities.existsInList(t.getWorkingCode(), "Element", "BackboneElement")) {
+        return true;
+      }
+      StructureDefinition sd = context.getContext().fetchTypeDefinition(t.getWorkingCode());
+      if (sd != null && sd.hasExtension(ToolingExtensions.EXT_PROFILE_VIEW_HINT)) {
+        for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_VIEW_HINT)) {
+          if (ext.hasValue()) {
+            String v = ext.getValue().primitiveValue();
+            if ("element-view-as-leaf".equals(v)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  private boolean hasAnyDiff(StructureDefinition profile, ElementDefinition e) {
+    if (e.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_DIFF)) {
+      ElementDefinition diff = (ElementDefinition) e.getUserData(UserDataNames.SNAPSHOT_DERIVATION_DIFF);
+      return hasDefinitionalMaterial(diff);
+    }
+    for (ElementDefinition child : context.getProfileUtilities().getChildList(profile, e.getPath(), e.getId(), false, false)) {
+      if (hasAnyDiff(profile, child)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean hasDefinitionalMaterial(ElementDefinition diff) {
+    return diff.hasShort() || diff.hasDefinition() || diff.hasComment() || diff.hasRequirements() || 
+        diff.hasBinding() || diff.hasFixed() || diff.hasPattern() || diff.hasMin() || diff.hasMax() ||
+        diff.hasMinValue() || diff.hasMaxValue() || diff.hasConstraint() || diff.hasType() || diff.hasMaxLength();
+  }
+
+  private ElementTableGroupingEngine getElementTableGroupings(String type) throws JsonException, IOException {
+    StructureDefinition sd = context.getContext().fetchTypeDefinition(type);
+    if (sd == null) {
+      return null;
+    }
+    if (sd.hasExtension(ToolingExtensions.EXT_PROFILE_VIEW_HINT) && "element-view-ready".equals(ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_PROFILE_VIEW_HINT))) {
+      return new HintDrivenGroupingEngine(context.getProfileUtilities().getChildList(sd, sd.getSnapshot().getElementFirstRep()));
+    }
+    if (resourceGroupings == null) {
+      byte[] cnt = context.getContext().getBinaryForKey("resource-groupings.json");
+       if (cnt != null) {
+         resourceGroupings = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(cnt, true);
+       }
+    }
+    if (resourceGroupings != null && resourceGroupings.has(type)) {
+      return new JsonDrivenGroupingEngine(resourceGroupings.getJsonArray(type));
+    } else {
+      return null;
+    }
+  }
+
+  private TableGroup getOrMakeGroup(ElementTableGroupingEngine groupings, List<TableGroup> groups, ElementDefinition element) {
+    ElementTableGrouping grouping = groupings.getGroup(element);
+    if (grouping == null) {
+      return null;
+    }
+    for (TableGroup g : groups) {
+      if (g.getDefinition().getKey() == grouping.getKey()) {
+        return g;
+      }
+    }
+    TableGroup g = new TableGroup(groups.size()+1, grouping);
+    groups.add(g);
+    return g;
+  }
+  
+  private TableElement makeElement(StructureDefinition profile, ElementDefinition parentDefn, ElementDefinition snapDefn, boolean lookAtChildren) {
+    ElementDefinition working = parentDefn != null ? parentDefn : snapDefn;
+    ElementDefinition diffDefn = (ElementDefinition) snapDefn.getUserData(UserDataNames.SNAPSHOT_DERIVATION_DIFF);
+    ElementDefinition diffParentDefn = parentDefn == null ? null : (ElementDefinition) parentDefn.getUserData(UserDataNames.SNAPSHOT_DERIVATION_DIFF);
+    ElementDefinition workingDiff = diffParentDefn != null ? diffParentDefn : diffDefn;
+    
+    
+    TableElement e = new TableElement(working.getPath(), working.getShort(), Integer.toString(working.getMin()), working.getMax());
+    
+    if (snapDefn.getType().size() > 1) {
+      List<String> list = new ArrayList<String>();
+      for (TypeRefComponent tr : snapDefn.getType()) {
+        StructureDefinition sd = context.getContext().fetchTypeDefinition(tr.getWorkingCode());
+        list.add(sd == null ? tr.getWorkingCode() : sd.present());
+      }
+      e.setType("Choice", null, "Choice of "+CommaSeparatedStringBuilder.join(",", list), "icon_choice.gif");     
+      e.getConstraints().add(TableElementConstraint.makeTypes(TableElementConstraintType.CHOICE, null, snapDefn.getType()));      
+    } else {
+      StructureDefinition sd = context.getContext().fetchTypeDefinition(snapDefn.getTypeFirstRep().getWorkingCode());
+      if (sd == null) {
+        e.setType(snapDefn.getTypeFirstRep().getWorkingCode(), null, "Unknown Type", "icon_element.gif");        
+      } else if (Utilities.existsInList(sd.getType(), "Element", "BackboneElement")) {
+        e.setType("Group", sd.getWebPath(), sd.present(), chooseIcon(profile, snapDefn, snapDefn.getTypeFirstRep()));
+      } else {
+        e.setType(sd.present(), sd.getWebPath(), sd.present(), chooseIcon(profile, snapDefn, snapDefn.getTypeFirstRep()));
+      }
+      if (snapDefn.getTypeFirstRep().hasProfile()) {
+        e.getConstraints().add(TableElementConstraint.makeList(TableElementConstraintType.PROFILE, null, snapDefn.getTypeFirstRep().getProfile()));      
+      }
+      if (snapDefn.getTypeFirstRep().hasTargetProfile()) {
+        e.getConstraints().add(TableElementConstraint.makeList(TableElementConstraintType.TARGET, null, snapDefn.getTypeFirstRep().getTargetProfile()));      
+      }
+    }
+
+    if (working.hasDefinition()) {
+      e.getDefinitions().add(new TableElementDefinition(TableElementDefinitionType.DEFINITION, working.getDefinition()));
+    } else if (snapDefn.hasDefinition()) {
+      e.getDefinitions().add(new TableElementDefinition(TableElementDefinitionType.DEFINITION, snapDefn.getDefinition()));
+    } 
+    if (workingDiff != null && workingDiff.hasComment()) {
+      e.getDefinitions().add(new TableElementDefinition(TableElementDefinitionType.COMMENT, workingDiff.getComment()));
+    } else if (diffDefn != null && diffDefn.hasComment()) {
+      e.getDefinitions().add(new TableElementDefinition(TableElementDefinitionType.COMMENT, diffDefn.getComment()));
+    }
+    if (workingDiff != null && workingDiff.hasRequirements()) {
+      e.getDefinitions().add(new TableElementDefinition(TableElementDefinitionType.REQUIREMENTS, workingDiff.getRequirements()));
+    } else if (diffDefn != null && diffDefn.hasRequirements()) {
+      e.getDefinitions().add(new TableElementDefinition(TableElementDefinitionType.REQUIREMENTS, diffDefn.getRequirements()));
+    }
+    
+    checkValueDomainConstraints(snapDefn, diffDefn, null, e, false);
+    if (lookAtChildren) {
+      List<ElementDefinition> children = context.getProfileUtilities().getChildList(profile, snapDefn);
+      for (ElementDefinition child : children) {
+        checkValueDomainConstraints(child, (ElementDefinition) child.getUserData(UserDataNames.SNAPSHOT_DERIVATION_DIFF), child.getName(), e, true);
+      }
+    }
+    return e;
+  }
+
+  public void checkValueDomainConstraints(ElementDefinition defn, ElementDefinition diffDefn, String path, TableElement e, boolean cardinality) {
+    if (cardinality) {
+      if (defn.getBase().getMin() != defn.getMin() || !defn.getBase().getMax().equals(defn.getMax())) {
+        e.getConstraints().add(TableElementConstraint.makeRange(TableElementConstraintType.CARDINALITY, path, defn.getMinElement(), defn.getMaxElement()));
+      }
+    }
+    // ok, now we collect constraints on the value domain, which maybe in sub-elements, though at some point we give up 
+    if (defn.hasFixed()) {
+      e.getConstraints().add(TableElementConstraint.makeValue(TableElementConstraintType.FIXED, path, defn.getFixed()));
+    }
+    if (defn.hasPattern()) {
+      e.getConstraints().add(TableElementConstraint.makeValue(TableElementConstraintType.PATTERN, path, defn.getPattern()));
+    }
+    if (defn.hasMinValue() || defn.hasMaxValue()) {
+      e.getConstraints().add(TableElementConstraint.makeRange(TableElementConstraintType.RANGE, path, defn.getMinValue(), defn.getMaxValue()));
+    }
+    if (defn.hasMaxLength()) {
+      e.getConstraints().add(TableElementConstraint.makeValue(TableElementConstraintType.MAXLENGTH, path, defn.getMaxLengthElement()));
+    }
+    if (defn.hasBinding() && defn.getBinding().hasValueSet() && (!cardinality || (diffDefn != null && diffDefn.hasBinding())) && !defn.hasFixed()) {
+      e.getConstraints().add(TableElementConstraint.makeBinding(TableElementConstraintType.BINDING, path, defn.getBinding().getStrength(), defn.getBinding().getValueSet()));      
+    }
+  }
+
+  private String chooseIcon(StructureDefinition profile, ElementDefinition element, TypeRefComponent tr) {
+
+    if (tail(element.getPath()).equals("extension") && isExtension(element)) { 
+      if (element.hasType() && element.getType().get(0).hasProfile() && extensionIsComplex(element.getType().get(0).getProfile().get(0).getValue())) 
+        return "icon_extension_complex.png"; 
+      else 
+        return "icon_extension_simple.png"; 
+    } else if (tail(element.getPath()).equals("modifierExtension")) { 
+      if (element.hasType() && element.getType().get(0).hasProfile() && extensionIsComplex(element.getType().get(0).getProfile().get(0).getValue())) 
+        return "icon_modifier_extension_complex.png"; 
+      else 
+        return "icon_modifier_extension_simple.png"; 
+    } else if (element.getType().size() == 0) { 
+      if (profile != null && context.getWorker().getResourceNames().contains(profile.getType())) { 
+        return "icon_resource.png"; 
+      } else if (element.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) { 
+        return "icon-object-box.png"; 
+      } else { 
+        return "icon_element.gif"; 
+      } 
+    } else if (element.getType().size() > 1) { 
+      if (allAreReference(element.getType())) { 
+        return "icon_reference.png"; 
+      } else if (element.hasExtension(ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) { 
+        return "icon_choice.gif"; 
+      } else { 
+        return "icon_choice.gif"; 
+      } 
+    } else if (element.getType().get(0).getWorkingCode() != null && element.getType().get(0).getWorkingCode().startsWith("@")) { 
+      return "icon_reuse.png"; 
+    } else if (context.getContext().isPrimitiveType(element.getType().get(0).getWorkingCode())) { 
+      if (keyRows.contains(element.getId())) { 
+        return "icon-key.png"; 
+      } else { 
+        return "icon_primitive.png"; 
+      } 
+    } else if (element.getType().get(0).hasTarget()) { 
+      return "icon_reference.png"; 
+    } else if (Utilities.existsInList(element.getType().get(0).getWorkingCode(), "Element", "BackboneElement")) { 
+      return "icon_group.png"; 
+    } else if (Utilities.existsInList(element.getType().get(0).getWorkingCode(), "Base", "Element", "BackboneElement")) { 
+      return "icon_element.gif"; 
+    } else if (context.getContext().isDataType(element.getType().get(0).getWorkingCode())) { 
+      return "icon_datatype.gif"; 
+    } else if (element.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) { 
+      return "icon-object-box.png"; 
+    } else { 
+      return "icon_resource.png"; 
+    } 
+    
+  }
+  
 } 
