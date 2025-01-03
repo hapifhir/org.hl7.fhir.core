@@ -162,6 +162,19 @@ public class StructureDefinitionValidator extends BaseValidator {
         warning(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), !base.getExperimental() || experimental, I18nConstants.SD_BASE_EXPERIMENTAL, sd.getBaseDefinition());
       }
 
+      String abstractV = src.getNamedChildValue("abstract");
+      if ("true".equals(abstractV)) {
+        String burl = src.getNamedChildValue("url");
+        if  (burl != null) {
+          boolean bok = false;
+          for (StructureDefinition sdb : context.fetchResourcesByType(StructureDefinition.class)) {
+            if (burl.equals(sdb.getBaseDefinition())) {
+              bok = true;
+            }
+          }
+          warning(errors, "2024-12-31", IssueType.NOTFOUND, stack.getLiteralPath(), bok, I18nConstants.SD_DERIVATION_NO_CONCRETE, typeName);
+        }
+      }
       List<Element> differentials = src.getChildrenByName("differential");
       List<Element> snapshots = src.getChildrenByName("snapshot");
       boolean logical = "logical".equals(src.getNamedChildValue("kind", false));
@@ -684,33 +697,37 @@ public class StructureDefinitionValidator extends BaseValidator {
           boolean found = false;
           for (Element e : extensions) {
             if (ToolingExtensions.EXT_TYPE_PARAMETER.equals(e.getNamedChildValue("url"))) {
-              String ename = e.getExtensionValue("name").primitiveValue();
-              if (name.equals(ename)) {
-                found = true;
-                String etype = e.getExtensionValue("type").primitiveValue();
-                for (Extension ex : sd.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_PARAMETER)) {
-                  String tn = ex.getExtensionString("name");
-                  if (tn != null && tn.equals(etype)) {
-                    etype = ex.getExtensionString("type");
-                    break;
-                  }
-                }
-                StructureDefinition esd = context.fetchTypeDefinition(etype);
-                if (rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), esd != null, I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, tc, etype)) {
-                  StructureDefinition t = esd;
-                  while (t != null && t != psd) {
-                    t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
-                  }
-                  ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_INVALID_REF, tc, etype, tsd.getVersionedUrl(), name, type) & ok;
-                  if (t != null) {
-                    if (!sd.getAbstract() && esd.getAbstract()) {
-                      warning(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_ABSTRACT_WARNING, tc, etype, tsd.getVersionedUrl(), name, type);
+              if (!e.hasExtension("name")) {
+                rule(errors, "2024-12-31", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, tc, "no name");
+              } else {
+                String ename = e.getExtensionValue("name").primitiveValue();
+                if (name.equals(ename)) {
+                  found = true;
+                  String etype = e.getExtensionValue("type").primitiveValue();
+                  for (Extension ex : sd.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+                    String tn = ex.getExtensionString("name");
+                    if (tn != null && tn.equals(etype)) {
+                      etype = ex.getExtensionString("type");
+                      break;
                     }
                   }
-                } else {
-                  ok = false;
-                }
-              }              
+                  StructureDefinition esd = context.fetchTypeDefinition(etype);
+                  if (rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), esd != null, I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, tc, etype)) {
+                    StructureDefinition t = esd;
+                    while (t != null && t != psd) {
+                      t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
+                    }
+                    ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_INVALID_REF, tc, etype, tsd.getVersionedUrl(), name, type) & ok;
+                    if (t != null) {
+                      if (!sd.getAbstract() && esd.getAbstract()) {
+                        warning(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_ABSTRACT_WARNING, tc, etype, tsd.getVersionedUrl(), name, type);
+                      }
+                    }
+                  } else {
+                    ok = false;
+                  }
+                }              
+              }
             }
           }
           ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), found, I18nConstants.SD_TYPE_PARAM_NOT_SPECIFIED, tc, tsd.getVersionedUrl(), name, path) && ok;
