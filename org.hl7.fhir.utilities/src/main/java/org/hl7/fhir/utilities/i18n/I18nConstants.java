@@ -1163,4 +1163,6 @@ public class I18nConstants {
   public static final String VS_EXP_IMPORT_FAIL_X = "VS_EXP_IMPORT_FAIL_X";
   public static final String VS_EXP_FILTER_UNK = "VS_EXP_FILTER_UNK";
   public static final String NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR = "NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR";
+  public static final String CONCEPTMAP_VS_NOT_A_VS = "CONCEPTMAP_VS_NOT_A_VS";
+  public static final String SD_DERIVATION_NO_CONCRETE = "SD_DERIVATION_NO_CONCRETE";
 }
