@@ -43,6 +43,8 @@
         <maven.compiler.testTarget>11</maven.compiler.testTarget>
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
+        <logback-classic.version>1.5.15</logback-classic.version>
+        <logback.version>1.5.15</logback.version>
     </properties>
 
     <name>HL7 Core Artifacts</name>
@@ -313,13 +315,13 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.2.13</version>
+                <version>${logback-classic.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
-                <version>1.2.13</version>
+                <version>${logback.version}</version>
             </dependency>
 
             <dependency>
