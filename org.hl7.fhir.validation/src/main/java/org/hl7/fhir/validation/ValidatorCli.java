@@ -204,6 +204,9 @@ public class ValidatorCli {
   }
 
   public static void main(String[] args) throws Exception {
+    // Prevents SLF4J(I) from printing unnecessary info to the console.
+    System.setProperty("slf4j.internal.verbosity", "WARN");
+
     final ValidatorCli validatorCli = new ValidatorCli(validationService);
 
     args = addAdditionalParamsForIpsParam(args);
