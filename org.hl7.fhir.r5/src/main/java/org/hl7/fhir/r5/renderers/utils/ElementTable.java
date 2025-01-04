@@ -225,6 +225,16 @@ public class ElementTable {
       return self;
     }
 
+    public static TableElementConstraint makeValueVS(TableElementConstraintType type, String path, DataType value, BindingStrength strength, String valueSet) {
+      TableElementConstraint self = new TableElementConstraint();
+      self.type = type;
+      self.path = path;
+      self.value = value;
+      self.strength = strength;
+      self.valueSet = valueSet;
+      return self;
+    }
+
     public static TableElementConstraint makeRange(TableElementConstraintType type, String path, DataType value, DataType value2) {
       TableElementConstraint self = new TableElementConstraint();
       self.type = type;
@@ -597,12 +607,16 @@ public class ElementTable {
   private void renderBindingConstraint(XhtmlNode x, TableElementConstraint c) {
     String name = c.path == null ? "value" : c.path;
     x.code().tx(name);
+    renderBinding(x, c, " is bound to "); 
+  }
+
+  private void renderBinding(XhtmlNode x, TableElementConstraint c, String phrase) {
     ValueSet vs = context.getContext().findTxResource(ValueSet.class, c.valueSet);
     if (vs == null) {
-      x.tx(" is bound to an unknown valueset ");
+      x.tx(phrase+"an unknown valueset ");
       x.code().tx(c.valueSet);      
     } else {
-      x.tx(" is bound to ");
+      x.tx(phrase);
       x.ah(vs.getWebPath()).tx(vs.present());
       try {      
         ValueSetExpansionOutcome exp = context.getContext().expandVS(vs, true, false);
@@ -688,6 +702,9 @@ public class ElementTable {
       break;
     }
     renderValue(x, c.value);
+    if (c.strength != null && c.valueSet != null) {
+      renderBinding(x, c, " from ");
+    }
   }
 
   public void renderValue(XhtmlNode x, DataType v) throws IOException {

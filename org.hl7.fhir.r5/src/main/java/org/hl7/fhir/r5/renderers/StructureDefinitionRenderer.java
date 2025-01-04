@@ -5218,10 +5218,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     // ok, now we collect constraints on the value domain, which maybe in sub-elements, though at some point we give up 
     if (defn.hasFixed()) {
-      e.getConstraints().add(TableElementConstraint.makeValue(TableElementConstraintType.FIXED, path, defn.getFixed()));
+      e.getConstraints().add(TableElementConstraint.makeValueVS(TableElementConstraintType.FIXED, path, defn.getFixed(), defn.getBinding().getStrength(), defn.getBinding().getValueSet()));
     }
     if (defn.hasPattern()) {
-      e.getConstraints().add(TableElementConstraint.makeValue(TableElementConstraintType.PATTERN, path, defn.getPattern()));
+      e.getConstraints().add(TableElementConstraint.makeValueVS(TableElementConstraintType.PATTERN, path, defn.getPattern(), defn.getBinding().getStrength(), defn.getBinding().getValueSet()));
     }
     if (defn.hasMinValue() || defn.hasMaxValue()) {
       e.getConstraints().add(TableElementConstraint.makeRange(TableElementConstraintType.RANGE, path, defn.getMinValue(), defn.getMaxValue()));
@@ -5229,7 +5229,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (defn.hasMaxLength()) {
       e.getConstraints().add(TableElementConstraint.makeValue(TableElementConstraintType.MAXLENGTH, path, defn.getMaxLengthElement()));
     }
-    if (defn.hasBinding() && defn.getBinding().hasValueSet() && (!cardinality || (diffDefn != null && diffDefn.hasBinding())) && !defn.hasFixed()) {
+    if (defn.hasBinding() && defn.getBinding().hasValueSet() && (!cardinality || (diffDefn != null && diffDefn.hasBinding())) && !defn.hasFixedOrPattern()) {
       e.getConstraints().add(TableElementConstraint.makeBinding(TableElementConstraintType.BINDING, path, defn.getBinding().getStrength(), defn.getBinding().getValueSet()));      
     }
   }
