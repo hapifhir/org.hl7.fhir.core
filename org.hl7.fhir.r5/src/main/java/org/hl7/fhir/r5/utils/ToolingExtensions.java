@@ -278,6 +278,8 @@ public class ToolingExtensions {
   public static final String EXT_ALTERNATE_CANONICAL = "http://hl7.org/fhir/StructureDefinition/alternate-canonical";
   public static final String EXT_SUPPRESSED = "http://hl7.org/fhir/StructureDefinition/elementdefinition-suppress";
   public static final String EXT_SUPPRESS_RESOURCE_TYPE = "http://hl7.org/fhir/tools/StructureDefinition/json-suppress-resourcetype";
+  public static final String EXT_PROFILE_VIEW_HINT = "http://hl7.org/fhir/tools/StructureDefinition/view-hint";
+  public static final String EXT_SNAPSHOT_BEHAVIOR = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-behavior";
   
   // specific extension helpers
 
@@ -474,8 +476,33 @@ public class ToolingExtensions {
     }
     return null;
   }
+  
   public static String readStringExtension(DomainResource c, String uri) {
     Extension ex = getExtension(c, uri);
+    if (ex == null)
+      return null;
+    if ((ex.getValue() instanceof StringType))
+      return ((StringType) ex.getValue()).getValue();
+    if ((ex.getValue() instanceof UriType))
+      return ((UriType) ex.getValue()).getValue();
+    if (ex.getValue() instanceof CodeType)
+      return ((CodeType) ex.getValue()).getValue();
+    if (ex.getValue() instanceof IntegerType)
+      return ((IntegerType) ex.getValue()).asStringValue();
+    if (ex.getValue() instanceof Integer64Type)
+      return ((Integer64Type) ex.getValue()).asStringValue();
+    if (ex.getValue() instanceof DecimalType)
+      return ((DecimalType) ex.getValue()).asStringValue();
+    if ((ex.getValue() instanceof MarkdownType))
+      return ((MarkdownType) ex.getValue()).getValue();
+    return null;
+  }
+
+  public static String readStringSubExtension(DomainResource c, String uri, String name) {
+    Extension ex = getExtension(c, uri);
+    if (ex == null)
+      return null;
+    ex = getExtension(ex, name);
     if (ex == null)
       return null;
     if ((ex.getValue() instanceof StringType))

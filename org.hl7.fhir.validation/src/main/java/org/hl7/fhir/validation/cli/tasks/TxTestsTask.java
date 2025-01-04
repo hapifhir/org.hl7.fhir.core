@@ -50,7 +50,7 @@ public class TxTestsTask extends StandaloneTask{
         output = Utilities.path("[tmp]");
       }
       boolean ok = new TxTester(new TxTester.InternalTxLoader(version), tx, false, loadExternals(externals)).setOutput(output).execute(cliContext.getModeParams(), filter);
-      SystemExitManager.setError(ok ? 1 : 0);
+      SystemExitManager.setError(ok ? 0 : 1);
       SystemExitManager.finish();
   }
 

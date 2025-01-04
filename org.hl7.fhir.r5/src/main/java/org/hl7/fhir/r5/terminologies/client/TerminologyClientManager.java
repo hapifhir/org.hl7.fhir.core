@@ -160,6 +160,8 @@ public class TerminologyClientManager {
 
   private ILoggingService logger;
 
+  private int ecosystemfailCount;
+
   public TerminologyClientManager(ITerminologyClientFactory factory, String cacheId, ILoggingService logger) {
     super();
     this.factory = factory;
@@ -566,28 +568,45 @@ public class TerminologyClientManager {
       if (!useEcosystem) {
         server = getMasterClient().getAddress();
       } else {
-        if (usage != null) {
-          request = request + "&usage="+usage;
-        }
-        JsonObject json = JsonParser.parseObjectFromUrl(request);
-        for (JsonObject item : json.getJsonObjects("authoritative")) {
-          if (server == null) {
-            server = item.asString("url");
+        ecosystemfailCount = 0; 
+        try {
+          if (usage != null) {
+            request = request + "&usage="+usage;
           }
-        }
-        for (JsonObject item : json.getJsonObjects("candidates")) {
-          if (server == null) {
-            server = item.asString("url");
+          JsonObject json = JsonParser.parseObjectFromUrl(request);
+          for (JsonObject item : json.getJsonObjects("authoritative")) {
+            if (server == null) {
+              server = item.asString("url");
+            }
           }
-        }
-        if (server == null) {
+          for (JsonObject item : json.getJsonObjects("candidates")) {
+            if (server == null) {
+              server = item.asString("url");
+            }
+          }
+          if (server == null) {
+            server = getMasterClient().getAddress();
+          }
+          if (server.contains("://tx.fhir.org")) {
+            try {
+              server = server.replace("tx.fhir.org", host());
+            } catch (MalformedURLException e) {
+            }
+          }
+        } catch (Exception e) {
+          // the ecosystem cal failed, so we're just going to fall back to 
+          String msg = "Error resolving valueSet "+canonical+": "+e.getMessage();
+          if (!hasMessage(msg)) {
+            internalLog.add(new InternalLogEvent(msg, canonical, request));
+          }
+          if (logger.isDebugLogging()) {
+            e.printStackTrace();
+          }
+          ecosystemfailCount++;
+          if (ecosystemfailCount > 3) {
+            useEcosystem = false;
+          }
           server = getMasterClient().getAddress();
-        }
-        if (server.contains("://tx.fhir.org")) {
-          try {
-            server = server.replace("tx.fhir.org", host());
-          } catch (MalformedURLException e) {
-          }
         }
       }
       TerminologyClientContext client = serverMap.get(server);

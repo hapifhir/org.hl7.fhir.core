@@ -292,7 +292,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return b.toString(); 
   } 
 
-  private String lookupCode(String system, String version, String code) { 
+  public String lookupCode(String system, String version, String code) { 
     if (JurisdictionUtilities.isJurisdiction(system)) { 
       return JurisdictionUtilities.displayJurisdiction(system+"#"+code); 
     } 
@@ -924,7 +924,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   }
 
   /** 
-   * this is overriden in ResourceRenderer where a better rendering is performed
+   * this is overridden in ResourceRenderer where a better rendering is performed
    * @param status
    * @param x
    * @param ref
@@ -1136,7 +1136,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return s; 
   } 
 
-  private String displayCodeSource(String system, String version) { 
+  public String displayCodeSource(String system, String version) { 
     String s = displaySystem(system); 
     if (version != null) { 
       s = s + "["+describeVersion(version)+"]"; 
@@ -1212,7 +1212,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  private String getLinkForSystem(String system, String version) { 
+  public String getLinkForSystem(String system, String version) { 
     if ("http://snomed.info/sct".equals(system)) {
       return "https://browser.ihtsdotools.org/";
     } else if ("http://loinc.org".equals(system)) { 
@@ -1234,7 +1234,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
   } 
 
-  protected String getLinkForCode(String system, String version, String code) { 
+  public String getLinkForCode(String system, String version, String code) { 
     if ("http://snomed.info/sct".equals(system)) { 
       return SnomedUtilities.getSctLink(version, code, context.getContext().getExpansionParameters());
     } else if ("http://loinc.org".equals(system)) { 
@@ -2097,36 +2097,39 @@ public class DataRenderer extends Renderer implements CodeResolver {
       if (rep.has("count")) 
         b.append(context.formatPhrase(RenderingContext.DATA_REND_COUNT, rep.primitiveValue("count")) + " " + " times"); 
       if (rep.has("duration")) 
-        b.append(context.formatPhrase(RenderingContext.DATA_REND_DURATION, rep.primitiveValue("duration")+displayTimeUnits(rep.primitiveValue("periodUnit"))) + " "); 
+        b.append(context.formatPhrase(RenderingContext.DATA_REND_DURATION, rep.primitiveValue("duration")+displayTimeUnits(rep.primitiveValue("periodUnit"), "1".equals(rep.primitiveValue("duration")))) + " "); 
 
-      if (rep.has("when")) { 
-        String st = ""; 
-        if (rep.has("offset")) { 
-          st = rep.primitiveValue("offset")+"min "; 
-        } 
-        b.append(st); 
-        for (ResourceWrapper wh : rep.children("when"))  {
-          b.append(displayEventCode(wh.primitiveValue()));
-        }
-      } else { 
-        String st = ""; 
-        if (!rep.has("frequency") || (!rep.has("frequencyMax") && rep.primitiveValue("frequency").equals("1"))) { 
-          st = context.formatPhrase(RenderingContext.DATA_REND_ONCE); 
-        } else { 
-          st = rep.primitiveValue("frequency"); 
-          if (rep.has("frequencyMax")) 
-            st = st + "-"+rep.primitiveValue("frequencyMax"); 
-        } 
-        if (rep.has("period")) { 
-          st = st + " "+ (context.formatPhrase(RenderingContext.DATA_REND_PER))+" "+rep.primitiveValue("period"); 
-          if (rep.has("periodMax")) 
-            st = st + "-"+rep.primitiveValue("periodMax"); 
-          st = st + " "+displayTimeUnits(rep.primitiveValue("periodUnit")); 
-        } 
-        b.append(st); 
+      String st = ""; 
+      if (rep.has("offset")) { 
+        st = rep.primitiveValue("offset")+"min "; 
       } 
-      if (rep.has("boundsPeriod") && rep.child("boundsPeriod").has("end")) 
-        b.append(context.formatPhrase(RenderingContext.DATA_REND_UNTIL, displayDateTime(rep.child("boundsPeriod").child("end"))) + " "); 
+      if (!Utilities.noString(st)) {
+        b.append(st); 
+      }
+      for (ResourceWrapper wh : rep.children("when"))  {
+        b.append(displayEventCode(wh.primitiveValue()));
+      }
+      st = ""; 
+      if (!rep.has("frequency") || (!rep.has("frequencyMax") && rep.primitiveValue("frequency").equals("1"))) { 
+        st = context.formatPhrase(RenderingContext.DATA_REND_ONCE); 
+      } else { 
+        st = rep.primitiveValue("frequency"); 
+        if (rep.has("frequencyMax")) 
+          st = st + "-"+rep.primitiveValue("frequencyMax"); 
+      } 
+      if (rep.has("period")) { 
+        st = st + " "+ (context.formatPhrase(RenderingContext.DATA_REND_PER))+" "+rep.primitiveValue("period"); 
+        if (rep.has("periodMax")) {
+          st = st + "-"+rep.primitiveValue("periodMax");
+        }
+        st = st + " "+displayTimeUnits(rep.primitiveValue("periodUnit"), "1".equals(rep.primitiveValue("period"))); 
+      } 
+      if (!Utilities.noString(st)) {
+        b.append(st);
+      }
+      if (rep.has("boundsPeriod") && rep.child("boundsPeriod").has("end")) { 
+        b.append(context.formatPhrase(RenderingContext.DATA_REND_UNTIL, displayDateTime(rep.child("boundsPeriod").child("end"))) + " ");
+      }
     } 
     return b.toString(); 
   } 
@@ -2141,7 +2144,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
   private String displayEventCode(String when) { 
-    switch (when) { 
+    if (when == null) 
+      return "??"; 
+    switch (when.toLowerCase()) { 
     case "c": return (context.formatPhrase(RenderingContext.DATA_REND_MEALS)); 
     case "cd": return (context.formatPhrase(RenderingContext.DATA_REND_ATLUNCH)); 
     case "cm": return (context.formatPhrase(RenderingContext.DATA_REND_ATBKFST)); 
@@ -2156,22 +2161,36 @@ public class DataRenderer extends Renderer implements CodeResolver {
     case "pcm": return (context.formatPhrase(RenderingContext.DATA_REND_AFTRBKFST)); 
     case "pcv": return (context.formatPhrase(RenderingContext.DATA_REND_AFTRDINR)); 
     case "wake": return (context.formatPhrase(RenderingContext.DATA_REND_AFTRWKNG)); 
-    default: return "?ngen-6?"; 
+    case "morn": return (context.formatPhrase(RenderingContext.DATA_REND_MORNING));  
+    case "morn.early": return (context.formatPhrase(RenderingContext.DATA_REND_MORNING_EARLY)); 
+    case "morn.late": return (context.formatPhrase(RenderingContext.DATA_REND_MORNING_LATE)); 
+    case "noon": return (context.formatPhrase(RenderingContext.DATA_REND_NOON));   
+    case "aft": return (context.formatPhrase(RenderingContext.DATA_REND_AFTERNOON));  
+    case "aft.early": return (context.formatPhrase(RenderingContext.DATA_REND_AFTERNOON_EARLY));  
+    case "aft.late": return (context.formatPhrase(RenderingContext.DATA_REND_AFTERNOON_LATE));  
+    case "eve": return (context.formatPhrase(RenderingContext.DATA_REND_EVENING));   
+    case "eve.early": return (context.formatPhrase(RenderingContext.DATA_REND_EVENING_EARLY)); 
+    case "eve.late": return (context.formatPhrase(RenderingContext.DATA_REND_EVENING_LATE));  
+    case "night": return (context.formatPhrase(RenderingContext.DATA_REND_NIGHT));   
+    case "phs": return (context.formatPhrase(RenderingContext.DATA_REND_AFTER_SLEEP)); 
+    case "imd": return (context.formatPhrase(RenderingContext.DATA_REND_IMMEDIATE));  
+    
+    default: return "?"+when+"?"; 
     } 
   } 
 
-  private String displayTimeUnits(String units) { 
+  private String displayTimeUnits(String units, boolean singular) { 
     if (units == null) 
-      return "?ngen-7?"; 
+      return "??"; 
     switch (units) { 
-    case "a": return "years"; 
-    case "d": return "days"; 
-    case "h": return "hours"; 
-    case "min": return "minutes"; 
-    case "mo": return "months"; 
-    case "s": return "seconds"; 
-    case "wk": return "weeks"; 
-    default: return "?ngen-8?"; 
+    case "a": return singular ? "year" : "years"; 
+    case "d": return singular ? "day" : "days"; 
+    case "h": return singular ? "hour" : "hours"; 
+    case "min": return singular ? "minute" : "minutes"; 
+    case "mo": return singular ? "month" : "months"; 
+    case "s": return singular ? "second" : "seconds"; 
+    case "wk": return singular ? "week" : "weeks"; 
+    default: return "?"+units+"?"; 
     } 
   } 
 
