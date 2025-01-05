@@ -468,11 +468,13 @@ public class ElementTable {
   private RenderingContext context;
   private List<TableGroup> groups;
   private DataRenderer dr;
+  private boolean replaceCardinality;
   
-  public ElementTable(RenderingContext context, List<TableGroup> groups, DataRenderer dr) {
+  public ElementTable(RenderingContext context, List<TableGroup> groups, DataRenderer dr, boolean replaceCardinality) {
     this.context = context;
     this.groups = groups;
     this.dr = dr;
+    this.replaceCardinality = replaceCardinality;
   }
 
   public void build(HierarchicalTableGenerator gen, TableModel table) throws FHIRFormatError, DefinitionException, IOException {
@@ -542,7 +544,9 @@ public class ElementTable {
     cell.setInnerTable(true);
     cell.addText(e.getName()).addStyle("font-weight: bold");
     cell.addPiece(gen.new Piece("br"));
-    if ("1".equals(e.min) && "1".equals(e.max)) {
+    if (!replaceCardinality) {
+      cell.addText("Cardinality: "+e.min+".."+e.max);  
+    } else if ("1".equals(e.min) && "1".equals(e.max)) {
       cell.addText("Required");
     } else if ("0".equals(e.min) && "*".equals(e.max)) {
       cell.addText("Optional, Repeating");
@@ -790,7 +794,9 @@ public class ElementTable {
     x.code().tx(name);
     String min = c.value.primitiveValue();
     String max = c.value2.primitiveValue(); 
-    if ("1".equals(min) && "1".equals(max)) {
+    if (!replaceCardinality) {
+      x.tx("has cardinality: "+min+".."+max);  
+    } else if ("1".equals(min) && "1".equals(max)) {
       x.tx("is required");
     } else if ("0".equals(min) && "*".equals(max)) {
       x.tx("is Optional and repeats");
