@@ -99,6 +99,7 @@ import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
@@ -1234,6 +1235,15 @@ public class ToolingExtensions {
       }
     }
     return res;
+  }
+
+  public static boolean hasExtensionValue(StructureDefinition src, String url, String value) {
+    for (Extension ext : src.getExtension()) {
+      if (url.equals(ext.getUrl()) && ext.hasValue() && value.equals(ext.getValue().primitiveValue())) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

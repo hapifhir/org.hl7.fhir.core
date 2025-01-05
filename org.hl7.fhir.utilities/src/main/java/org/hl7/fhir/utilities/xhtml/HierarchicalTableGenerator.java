@@ -819,7 +819,9 @@ public class HierarchicalTableGenerator {
   public XhtmlNode generate(TableModel model, String imagePath, int border, Set<String> outputTracker) throws IOException, FHIRException  {
     checkModel(model);
     XhtmlNode table = new XhtmlNode(NodeType.Element, "table").setAttribute("border", Integer.toString(border)).setAttribute("cellspacing", "0").setAttribute("cellpadding", "0");
-    table.setAttribute("fhir", "generated-heirarchy");
+    if (model.active) {
+      table.setAttribute("fhir", "generated-heirarchy");
+    }
     if (model.isActive()) {      
       table.setAttribute("id", model.getId());
     }
@@ -830,7 +832,9 @@ public class HierarchicalTableGenerator {
     }
     if (model.isShowHeadings()) {
       XhtmlNode tr = table.addTag("tr");
-      tr.setAttribute("fhir", "generated-heirarchy");
+      if (model.active) {
+        tr.setAttribute("fhir", "generated-heirarchy");
+      }
       tr.setAttribute("style", "border: " + Integer.toString(1 + border) + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top");
       XhtmlNode tc = null;
       for (Title t : model.getTitles()) {
@@ -856,7 +860,9 @@ public class HierarchicalTableGenerator {
     }
     if (model.getDocoRef() != null) {
       XhtmlNode tr = table.addTag("tr");
-      tr.setAttribute("fhir", "generated-heirarchy");
+      if (model.active) {
+        tr.setAttribute("fhir", "generated-heirarchy");
+      }
       XhtmlNode tc = tr.addTag("td");
       tc.setAttribute("class", "hierarchy");
       tc.setAttribute("colspan", Integer.toString(model.getTitles().size()));
@@ -875,7 +881,9 @@ public class HierarchicalTableGenerator {
       counter.row();
     }
     XhtmlNode tr = table.addTag("tr");
-    tr.setAttribute("fhir", "generated-heirarchy");
+    if (model.active) {
+      tr.setAttribute("fhir", "generated-heirarchy");
+    }
     
     String color = "white";
     if (r.getColor() != null)
