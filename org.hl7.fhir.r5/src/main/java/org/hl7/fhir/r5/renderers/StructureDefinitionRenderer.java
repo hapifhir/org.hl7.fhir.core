@@ -4985,7 +4985,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
       gen.setTreelines(false);
       TableModel model = initElementTable(gen, corePath, true, profile.getId()+"e", true, TableGenerationMode.XHTML);
-      new ElementTable(context, groups, this).build(gen, model);
+      new ElementTable(context, groups, this, ToolingExtensions.hasExtensionValue(profile, ToolingExtensions.EXT_PROFILE_VIEW_HINT, "element-view-replace-cardinality")).build(gen, model);
           
       try { 
         return gen.generate(model, imagePath, 0, outputTracker); 
