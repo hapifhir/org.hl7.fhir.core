@@ -1,7 +1,7 @@
 ## Validator Changes
 
-* no changes
+* No changes
 
 ## Other code changes
 
-* no changes
+* Fix cardinality generation in Element Table
