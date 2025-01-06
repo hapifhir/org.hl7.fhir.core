@@ -113,5 +113,8 @@ public class PEDefinitionSubExtension extends PEDefinition {
     return true;
   }
 
+  public String getExtensionUrl() {
+    return ued.getFixed().primitiveValue();
+  }
 
 }

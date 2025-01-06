@@ -99,6 +99,7 @@ import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
@@ -237,6 +238,7 @@ public class ToolingExtensions {
   public static final String EXT_JSON_PRIMITIVE_CHOICE = "http://hl7.org/fhir/tools/StructureDefinition/json-primitive-choice";
   public static final String EXT_SUMMARY = "http://hl7.org/fhir/StructureDefinition/structuredefinition-summary";
   public static final String EXT_BINDING_DEFINITION = "http://hl7.org/fhir/tools/StructureDefinition/binding-definition";
+  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-questionnaire.item.type"; 
 
 
   // unregistered? - don't know what these are used for 
@@ -277,6 +279,8 @@ public class ToolingExtensions {
   public static final String EXT_ALTERNATE_CANONICAL = "http://hl7.org/fhir/StructureDefinition/alternate-canonical";
   public static final String EXT_SUPPRESSED = "http://hl7.org/fhir/StructureDefinition/elementdefinition-suppress";
   public static final String EXT_SUPPRESS_RESOURCE_TYPE = "http://hl7.org/fhir/tools/StructureDefinition/json-suppress-resourcetype";
+  public static final String EXT_PROFILE_VIEW_HINT = "http://hl7.org/fhir/tools/StructureDefinition/view-hint";
+  public static final String EXT_SNAPSHOT_BEHAVIOR = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-behavior";
   
   // specific extension helpers
 
@@ -473,8 +477,33 @@ public class ToolingExtensions {
     }
     return null;
   }
+  
   public static String readStringExtension(DomainResource c, String uri) {
     Extension ex = getExtension(c, uri);
+    if (ex == null)
+      return null;
+    if ((ex.getValue() instanceof StringType))
+      return ((StringType) ex.getValue()).getValue();
+    if ((ex.getValue() instanceof UriType))
+      return ((UriType) ex.getValue()).getValue();
+    if (ex.getValue() instanceof CodeType)
+      return ((CodeType) ex.getValue()).getValue();
+    if (ex.getValue() instanceof IntegerType)
+      return ((IntegerType) ex.getValue()).asStringValue();
+    if (ex.getValue() instanceof Integer64Type)
+      return ((Integer64Type) ex.getValue()).asStringValue();
+    if (ex.getValue() instanceof DecimalType)
+      return ((DecimalType) ex.getValue()).asStringValue();
+    if ((ex.getValue() instanceof MarkdownType))
+      return ((MarkdownType) ex.getValue()).getValue();
+    return null;
+  }
+
+  public static String readStringSubExtension(DomainResource c, String uri, String name) {
+    Extension ex = getExtension(c, uri);
+    if (ex == null)
+      return null;
+    ex = getExtension(ex, name);
     if (ex == null)
       return null;
     if ((ex.getValue() instanceof StringType))
@@ -1071,6 +1100,9 @@ public class ToolingExtensions {
   }
 
   private static IssueSeverity mapSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity severity) {
+    if (severity == null) {
+      return null;
+    }
     switch (severity) {
     case ERROR: return IssueSeverity.ERROR;
     case FATAL: return IssueSeverity.FATAL;
@@ -1203,6 +1235,15 @@ public class ToolingExtensions {
       }
     }
     return res;
+  }
+
+  public static boolean hasExtensionValue(StructureDefinition src, String url, String value) {
+    for (Extension ext : src.getExtension()) {
+      if (url.equals(ext.getUrl()) && ext.hasValue() && value.equals(ext.getValue().primitiveValue())) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

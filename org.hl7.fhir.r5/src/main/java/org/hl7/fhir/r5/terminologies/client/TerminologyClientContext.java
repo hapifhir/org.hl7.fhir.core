@@ -85,8 +85,10 @@ public class TerminologyClientContext {
   }
 
   public void seeUse(Set<String> systems, TerminologyClientContextUseType useType) {
-    for (String s : systems) {
-      seeUse(s, useType);
+    if (systems != null) {
+      for (String s : systems) {
+        seeUse(s, useType);
+      }
     }
   }
   

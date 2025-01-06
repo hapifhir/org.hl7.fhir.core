@@ -58,8 +58,16 @@ public class PoGetTextProducer extends LanguageFileProducer {
     public POGetTextLanguageProducerLanguageSession(String id, String baseLang, String targetLang) {
       super(id, baseLang, targetLang);
       po = new StringBuilder();
+      ln("msgid \"\"");
+      ln("msgstr \"\"");
+      ln("\"Language: pt\\n\"");
+      ln("\"X-Generator: Poedit 3.5\\n\"");
+      ln("");
       ln("# "+baseLang+" -> "+targetLang);
       ln("");
+      ln("\"Language: pt\\n\"");
+      ln("");
+      
     }
 
     protected void ln(String line) {
@@ -74,10 +82,10 @@ public class PoGetTextProducer extends LanguageFileProducer {
 
     @Override
     public void entry(TextUnit unit) {
-      ln("#: "+unit.getId());
-      if (unit.getContext1() != null) {
-        ln("#. "+unit.getContext1());
+      if (unit.getContext() != null) {
+        ln("#. "+unit.getContext());
       }
+      ln("msgctxt \""+unit.getId()+"\"");
       ln("msgid \""+unit.getSrcText()+"\"");
       ln("msgstr \""+(unit.getTgtText() == null ? "" : unit.getTgtText())+"\"");
       ln("");
@@ -160,16 +168,21 @@ public class PoGetTextProducer extends LanguageFileProducer {
   @Override
   public void produce(String id, String baseLang, String targetLang, List<TranslationUnit> translations, String filename) throws IOException {
     StringBuilder po = new StringBuilder();
+    ln(po, "msgid \"\"");
+    ln(po, "msgstr \"\"");
+    ln(po, "\"Language: "+targetLang+"\\n\"");
+    ln(po, "\"X-Generator: Poedit 3.5\\n\"");
+    ln(po, "");
     ln(po, "# "+baseLang+" -> "+targetLang);
     ln(po, "");
     for (TranslationUnit tu : translations) {
-      ln(po, "#: "+tu.getId());
-      if (tu.getContext1() != null) {
-        ln(po, "#. "+tu.getContext1());
+      if (tu.getContext() != null) {
+        ln(po, "#. "+tu.getContext());
       }
       if (tu.getOriginal() != null) {
         ln(po, "#| "+tu.getOriginal());
       }
+      ln(po, "msgctxt \""+tu.getId()+"\"");
       ln(po, "msgid \""+stripEoln(tu.getSrcText())+"\"");
       ln(po, "msgstr \""+(tu.getTgtText() == null ? "" : stripEoln(tu.getTgtText()))+"\"");
       ln(po, "");

@@ -10,6 +10,8 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Bool
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Instant30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.AuditEvent;
+import org.hl7.fhir.r4.model.Enumeration;
 
 public class AuditEvent30_40 {
 
@@ -68,59 +70,67 @@ public class AuditEvent30_40 {
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventAction> convertAuditEventAction(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventAction> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.AuditEvent.AuditEventActionEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case C:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAction.C);
-        break;
-      case R:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAction.R);
-        break;
-      case U:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAction.U);
-        break;
-      case D:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAction.D);
-        break;
-      case E:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAction.E);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAction.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<AuditEvent.AuditEventAction> tgt = new Enumeration<>(new AuditEvent.AuditEventActionEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case C:
+                  tgt.setValue(AuditEvent.AuditEventAction.C);
+                  break;
+              case R:
+                  tgt.setValue(AuditEvent.AuditEventAction.R);
+                  break;
+              case U:
+                  tgt.setValue(AuditEvent.AuditEventAction.U);
+                  break;
+              case D:
+                  tgt.setValue(AuditEvent.AuditEventAction.D);
+                  break;
+              case E:
+                  tgt.setValue(AuditEvent.AuditEventAction.E);
+                  break;
+              default:
+                  tgt.setValue(AuditEvent.AuditEventAction.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction> convertAuditEventAction(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventAction> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventActionEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case C:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction.C);
-        break;
-      case R:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction.R);
-        break;
-      case U:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction.U);
-        break;
-      case D:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction.D);
-        break;
-      case E:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction.E);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventActionEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case C:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction.C);
+                  break;
+              case R:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction.R);
+                  break;
+              case U:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction.U);
+                  break;
+              case D:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction.D);
+                  break;
+              case E:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction.E);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentComponent convertAuditEventAgentComponent(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentComponent src) throws FHIRException {
@@ -208,59 +218,67 @@ public class AuditEvent30_40 {
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType> convertAuditEventAgentNetworkType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkTypeEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case _1:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType._1);
-        break;
-      case _2:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType._2);
-        break;
-      case _3:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType._3);
-        break;
-      case _4:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType._4);
-        break;
-      case _5:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType._5);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkTypeEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case _1:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType._1);
+                  break;
+              case _2:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType._2);
+                  break;
+              case _3:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType._3);
+                  break;
+              case _4:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType._4);
+                  break;
+              case _5:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType._5);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType> convertAuditEventAgentNetworkType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkTypeEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case _1:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType._1);
-        break;
-      case _2:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType._2);
-        break;
-      case _3:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType._3);
-        break;
-      case _4:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType._4);
-        break;
-      case _5:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType._5);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<AuditEvent.AuditEventAgentNetworkType> tgt = new Enumeration<>(new AuditEvent.AuditEventAgentNetworkTypeEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case _1:
+                  tgt.setValue(AuditEvent.AuditEventAgentNetworkType._1);
+                  break;
+              case _2:
+                  tgt.setValue(AuditEvent.AuditEventAgentNetworkType._2);
+                  break;
+              case _3:
+                  tgt.setValue(AuditEvent.AuditEventAgentNetworkType._3);
+                  break;
+              case _4:
+                  tgt.setValue(AuditEvent.AuditEventAgentNetworkType._4);
+                  break;
+              case _5:
+                  tgt.setValue(AuditEvent.AuditEventAgentNetworkType._5);
+                  break;
+              default:
+                  tgt.setValue(AuditEvent.AuditEventAgentNetworkType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r4.model.AuditEvent.AuditEventEntityComponent convertAuditEventEntityComponent(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityComponent src) throws FHIRException {
@@ -346,53 +364,61 @@ public class AuditEvent30_40 {
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcome> convertAuditEventOutcome(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcome> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcomeEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case _0:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcome._0);
-        break;
-      case _4:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcome._4);
-        break;
-      case _8:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcome._8);
-        break;
-      case _12:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcome._12);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcome.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcome> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcomeEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case _0:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcome._0);
+                  break;
+              case _4:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcome._4);
+                  break;
+              case _8:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcome._8);
+                  break;
+              case _12:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcome._12);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcome.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome> convertAuditEventOutcome(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AuditEvent.AuditEventOutcome> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcomeEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case _0:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome._0);
-        break;
-      case _4:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome._4);
-        break;
-      case _8:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome._8);
-        break;
-      case _12:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome._12);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<AuditEvent.AuditEventOutcome> tgt = new Enumeration<>(new AuditEvent.AuditEventOutcomeEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case _0:
+                  tgt.setValue(AuditEvent.AuditEventOutcome._0);
+                  break;
+              case _4:
+                  tgt.setValue(AuditEvent.AuditEventOutcome._4);
+                  break;
+              case _8:
+                  tgt.setValue(AuditEvent.AuditEventOutcome._8);
+                  break;
+              case _12:
+                  tgt.setValue(AuditEvent.AuditEventOutcome._12);
+                  break;
+              default:
+                  tgt.setValue(AuditEvent.AuditEventOutcome.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.dstu3.model.AuditEvent.AuditEventSourceComponent convertAuditEventSourceComponent(org.hl7.fhir.r4.model.AuditEvent.AuditEventSourceComponent src) throws FHIRException {

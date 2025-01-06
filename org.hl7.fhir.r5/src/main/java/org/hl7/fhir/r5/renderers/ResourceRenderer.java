@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
@@ -26,7 +27,6 @@ import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceReferenceKind;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
@@ -51,6 +51,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   protected XVerExtensionManager xverManager;
   protected boolean multiLangMode;
+  protected boolean inner;
   
   
   public ResourceRenderer(RenderingContext context) {
@@ -70,6 +71,15 @@ public abstract class ResourceRenderer extends DataRenderer {
     return false;
   }
   
+  public boolean isInner() {
+    return inner;
+  }
+
+  public ResourceRenderer setInner(boolean inner) {
+    this.inner = inner;
+    return this;
+  }
+
   /**
    * Just build the narrative that would go in the resource (per @renderResource()), but don't put it in the resource
    * @param dr
@@ -345,7 +355,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       ResourceWithReference rr = resolveReference(actual);
       if (rr == null) {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : actual.primitiveValue();
-        if (Utilities.isAbsoluteUrl(actual.primitiveValue()) || !context.isUnknownLocalReferencesNotLinks()) {
+        if (Utilities.isAbsoluteUrlLinkable(actual.primitiveValue()) || (isLocalReference(actual.primitiveValue()) && !context.isUnknownLocalReferencesNotLinks())) {
           x.ah(context.prefixLocalHref(actual.primitiveValue())).tx(disp);
         } else {
           x.code().tx(disp);
@@ -377,6 +387,21 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
   
  
+  private boolean isLocalReference(String url) {
+    if (url == null) {
+      return false;
+    }
+    if (url.contains("/_history")) {
+      url = url.substring(0, url.indexOf("/_hist"));
+    }
+    
+    if (url.matches(Constants.LOCAL_REF_REGEX)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public void renderReference(ResourceWrapper res, HierarchicalTableGenerator gen, List<Piece> pieces, Reference r, boolean allowLinks) throws UnsupportedEncodingException, IOException {
     if (r == null) { 
       pieces.add(gen.new Piece(null, "null!", null));
@@ -593,6 +618,10 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (v.startsWith("mailto:")) { 
         x.ah(v).addText(v.substring(7)); 
       } else { 
+        String link = getLinkForCode(v, null, null);
+        if (link != null) {  
+          x.ah(context.prefixLocalHref(link)).addText(v);
+        } else {
         ResourceWithReference rr = local ? resolveReference(uri.resource(), v, true) : resolveReference(uri);
         if (rr != null) {
           if (rr.getResource() == null) {
@@ -618,6 +647,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           } 
         }
       } 
+      }
     }
   } 
 
@@ -830,38 +860,42 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   protected XhtmlNode renderResourceTechDetails(ResourceWrapper r, XhtmlNode x) throws UnsupportedEncodingException, FHIRException, IOException {
-    return renderResourceTechDetails(r, x, (context.isContained() ? " #"+r.getId() : r.getId()));
+    return renderResourceTechDetails(r, x, (context.isContained() && r.getId() != null ? "#"+r.getId() : r.getId()));
   }
   
   protected XhtmlNode renderResourceTechDetails(ResourceWrapper r, XhtmlNode x, String desc) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode p = x.para().attribute("class", "res-header-id");
     String ft = context.getTranslatedCode(r.fhirType(), "http://hl7.org/fhir/fhir-types");
     if (desc == null) { 
-      p.b().tx(context.formatPhrase(context.isTechnicalMode() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, ""));      
+      p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, ""));      
     } else {
-      p.b().tx(context.formatPhrase(context.isTechnicalMode() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, desc));
+      p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, desc));
     }
 
     // first thing we do is lay down the resource anchors. 
     if (!Utilities.noString(r.getId())) {
       if (!context.isSecondaryLang()) {
         String sid = r.getScopedId();
-        if (!context.hasAnchor(sid)) {
-          context.addAnchor(sid);
-          x.an(context.prefixAnchor(sid));
-        }
-        sid = "hc"+sid;
-        if (!context.hasAnchor(sid)) {
-          context.addAnchor(sid);
-          x.an(context.prefixAnchor(sid));
+        if (sid != null) {
+          if (!context.hasAnchor(sid)) {
+            context.addAnchor(sid);
+            x.an(context.prefixAnchor(sid));
+          }
+          sid = "hc"+sid;
+          if (!context.hasAnchor(sid)) {
+            context.addAnchor(sid);
+            x.an(context.prefixAnchor(sid));
+          }
         }
       }
       if (context.getLocale() != null) {
         String langSuffix = "-"+context.getLocale().toLanguageTag();
-        String sid = r.getScopedId()+langSuffix;
-        if (!context.hasAnchor(sid)) {
-          context.addAnchor(sid);
-          x.an(context.prefixAnchor(sid));
+        if (r.getScopedId() != null) {
+          String sid = r.getScopedId()+langSuffix;
+          if (!context.hasAnchor(sid)) {
+            context.addAnchor(sid);
+            x.an(context.prefixAnchor(sid));
+          }
         }
       }
     }
@@ -1460,7 +1494,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         context.addAnchor(id);
         x.an(context.prefixAnchor(id));
       }
-      RendererFactory.factory(c, context.forContained()).buildNarrative(status, x, c);
+      RendererFactory.factory(c, context.forContained()).setInner(true).buildNarrative(status, x, c);
     }
   }
 

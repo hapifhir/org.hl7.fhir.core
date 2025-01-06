@@ -115,6 +115,7 @@ public class SnapShotGenerationTests {
     private StructureDefinition expected;
     private StructureDefinition output;
     public AllowUnknownProfile allow;
+    private boolean json;
 
     public TestDetails(Element test) {
       super();
@@ -202,8 +203,14 @@ public class SnapShotGenerationTests {
         source = (StructureDefinition) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", id + "-input.json"));
       else
         source = (StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", id + "-input.xml"));
-      if (!fail)
-        expected = (StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", id + "-expected.xml"));
+      if (!fail) {
+        if (TestingUtilities.findTestResource("r5", "snapshot-generation", id + "-expected.json")) {
+          json = true;
+          expected = (StructureDefinition) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", id + "-expected.json"));
+        } else {
+          expected = (StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", id + "-expected.xml"));
+        }
+      }
       if (!Utilities.noString(include))
         included.add((StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", include + ".xml")));
       if (!Utilities.noString(register)) {
@@ -589,12 +596,16 @@ public class SnapShotGenerationTests {
     if (!fail) {
       test.output = output;
       TestingUtilities.getSharedWorkerContext().cacheResource(output);
-      File dst = ManagedFileAccess.file(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml"));
-      if (dst.exists())
+      File dst = ManagedFileAccess.file(TestingUtilities.tempFile("snapshot", test.getId() + "-expected" + (test.json ? ".json" : ".xml")));
+      if (dst.exists()) {
         dst.delete();
+      }
 //      IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId() + "-expected.xml"), ManagedFileAccess.outStream(dst));
-      String actualFilePath = TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml");
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(actualFilePath), output);
+      if (test.json) {
+        new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst.getAbsolutePath()), output);        
+      } else {
+        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst.getAbsolutePath()), output);
+      }
       StructureDefinition t1 = test.expected.copy();
       t1.setText(null);
       StructureDefinition t2 = test.output.copy();

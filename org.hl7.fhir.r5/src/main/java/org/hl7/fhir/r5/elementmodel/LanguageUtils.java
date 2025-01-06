@@ -2,8 +2,10 @@ package org.hl7.fhir.r5.elementmodel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.checkerframework.checker.units.qual.cd;
@@ -60,6 +62,18 @@ public class LanguageUtils {
 
   public static final List<String> TRANSLATION_SUPPLEMENT_RESOURCE_TYPES = Arrays.asList("CodeSystem", "StructureDefinition", "Questionnaire");
 
+  public static class TranslationUnitCollection {
+    List<TranslationUnit> list= new ArrayList<>();
+    Map<String, TranslationUnit> map = new HashMap<>();
+    public void add(TranslationUnit tu) {
+      String key = tu.getId()+"||"+tu.getSrcText();
+      if (!map.containsKey(key)) {
+        map.put(key, tu);
+        list.add(tu);
+      }
+      
+    }
+  }
   IWorkerContext context;
   private List<String> crlist;
   
@@ -70,24 +84,25 @@ public class LanguageUtils {
   }
 
   public void generateTranslations(Element resource, LanguageProducerLanguageSession session) {
-    translate(null, resource, session);
+    translate(null, resource, session, resource.fhirType());
   }
   
   
-  private void translate(Element parent, Element element, LanguageProducerLanguageSession langSession) {
+  private void translate(Element parent, Element element, LanguageProducerLanguageSession langSession, String path) {
+    String npath = pathForElement(path, element);
     if (element.isPrimitive() && isTranslatable(element)) {
       String base = element.primitiveValue();
       if (base != null) {
-        String translation = getSpecialTranslation(parent, element, langSession.getTargetLang());
+        String translation = getSpecialTranslation(path, parent, element, langSession.getTargetLang());
         if (translation == null) {
           translation = element.getTranslation(langSession.getTargetLang());
         }
-        langSession.entry(new TextUnit(pathForElement(element), contextForElement(element), base, translation));
+        langSession.entry(new TextUnit(npath, contextForElement(element), base, translation));
       }
     }
     for (Element c: element.getChildren()) {
       if (!c.getName().equals("designation")) {
-        translate(element, c, langSession);
+        translate(element, c, langSession, npath);
       }
     }
   }
@@ -96,17 +111,18 @@ public class LanguageUtils {
     throw new Error("Not done yet");
   }
 
-  private String getSpecialTranslation(Element parent, Element element, String targetLang) {
+  private String getSpecialTranslation(String path, Element parent, Element element, String targetLang) {
     if (parent == null) {
       return null;
     }
-    if (Utilities.existsInList(pathForElement(parent), "CodeSystem.concept", "CodeSystem.concept.concept") && "CodeSystem.concept.display".equals(pathForElement(element))) {
+    String npath = parent.getBasePath();
+    if (Utilities.existsInList(npath, "CodeSystem.concept", "CodeSystem.concept.concept") && "CodeSystem.concept.display".equals(element.getBasePath())) {
       return getDesignationTranslation(parent, targetLang);
     }
-    if (Utilities.existsInList(pathForElement(parent), "ValueSet.compose.include.concept") && "ValueSet.compose.include.concept.display".equals(pathForElement(element))) {
+    if (Utilities.existsInList(npath, "ValueSet.compose.include.concept") && "ValueSet.compose.include.concept.display".equals(element.getBasePath())) {
       return getDesignationTranslation(parent, targetLang);
     }
-    if (Utilities.existsInList(pathForElement(parent), "ValueSet.expansion.contains", "ValueSet.expansion.contains.contains") && "ValueSet.expansion.contains.display".equals(pathForElement(element))) {
+    if (Utilities.existsInList(npath, "ValueSet.expansion.contains", "ValueSet.expansion.contains.contains") && "ValueSet.expansion.contains.display".equals(element.getBasePath())) {
       return getDesignationTranslation(parent, targetLang);
     }
     return null;
@@ -126,9 +142,13 @@ public class LanguageUtils {
     return element.getProperty().isTranslatable();
   }
 
-  private String pathForElement(Element element) {
-    String bp = element.getBasePath();
-    return pathForElement(bp, element.getProperty().getStructure().getType());
+  private String pathForElement(String path, Element element) {
+    if (element.getSpecial() != null) {
+      String bp = element.getBasePath();
+      return pathForElement(bp, element.getProperty().getStructure().getType());
+    } else {
+      return (path == null ? element.getName() : path+"."+element.getName());
+    }
   }
   
   private String pathForElement(String path, String type) {
@@ -151,7 +171,7 @@ public class LanguageUtils {
   
   
   public int importFromTranslations(Element resource, List<TranslationUnit> translations) {
-    return importFromTranslations(null, resource, translations, new HashSet<>());
+    return importFromTranslations(resource.fhirType(), null, resource, translations, new HashSet<>());
   }
   
   public int importFromTranslations(Element resource, List<TranslationUnit> translations, List<ValidationMessage> messages) {
@@ -160,7 +180,7 @@ public class LanguageUtils {
     if (resource.fhirType().equals("StructureDefinition")) {
       r = importFromTranslationsForSD(null, resource, translations, usedUnits);
     } else {
-     r = importFromTranslations(null, resource, translations, usedUnits);
+     r = importFromTranslations(null, null, resource, translations, usedUnits);
     }
     for (TranslationUnit t : translations) {
       if (!usedUnits.contains(t)) {
@@ -282,13 +302,13 @@ public class LanguageUtils {
     return Utilities.existsInList(element.fhirType(), "string", "markdown");
   }
 
-  private int importFromTranslations(Element parent, Element element, List<TranslationUnit> translations, Set<TranslationUnit> usedUnits) {
+  private int importFromTranslations(String path, Element parent, Element element, List<TranslationUnit> translations, Set<TranslationUnit> usedUnits) {
+    String npath = pathForElement(path, element);
     int t = 0;
     if (element.isPrimitive() && isTranslatable(element)) {
       String base = element.primitiveValue();
       if (base != null) {
-        String path = pathForElement(element);
-        Set<TranslationUnit> tlist = findTranslations(path, base, translations);
+        Set<TranslationUnit> tlist = findTranslations(npath, base, translations);
         for (TranslationUnit translation : tlist) {
           t++;
           if (!handleAsSpecial(parent, element, translation)) {
@@ -302,7 +322,7 @@ public class LanguageUtils {
     List<Element> childrenCopy = List.copyOf(element.getChildren());
     for (Element c : childrenCopy) {
       if (!c.getName().equals("designation")) {
-        t = t + importFromTranslations(element, c, translations, usedUnits);
+        t = t + importFromTranslations(npath, element, c, translations, usedUnits);
       }
     }
     return t;
@@ -312,13 +332,13 @@ public class LanguageUtils {
     if (parent == null) {
       return false;
     }
-    if (Utilities.existsInList(pathForElement(parent), "CodeSystem.concept", "CodeSystem.concept.concept") && "CodeSystem.concept.display".equals(pathForElement(element))) {
+    if (Utilities.existsInList(parent.getBasePath(), "CodeSystem.concept", "CodeSystem.concept.concept") && "CodeSystem.concept.display".equals(element.getBasePath())) {
       return setDesignationTranslation(parent, translation.getLanguage(), translation.getTgtText());
     }
-    if (Utilities.existsInList(pathForElement(parent), "ValueSet.compose.include.concept") && "ValueSet.compose.include.concept.display".equals(pathForElement(element))) {
+    if (Utilities.existsInList(parent.getBasePath(), "ValueSet.compose.include.concept") && "ValueSet.compose.include.concept.display".equals(element.getBasePath())) {
       return setDesignationTranslation(parent, translation.getLanguage(), translation.getTgtText());
     }
-    if (Utilities.existsInList(pathForElement(parent), "ValueSet.expansion.contains", "ValueSet.expansion.contains.contains") && "ValueSet.expansion.contains.display".equals(pathForElement(element))) {
+    if (Utilities.existsInList(parent.getBasePath(), "ValueSet.expansion.contains", "ValueSet.expansion.contains.contains") && "ValueSet.expansion.contains.display".equals(element.getBasePath())) {
       return setDesignationTranslation(parent, translation.getLanguage(), translation.getTgtText());
     }
     return false;
@@ -500,7 +520,7 @@ public class LanguageUtils {
       if (res.hasUserData(UserDataNames.LANGUTILS_ORPHAN)) {
         List<TranslationUnit> orphans = (List<TranslationUnit>) res.getUserData(UserDataNames.LANGUTILS_ORPHAN);
         for (TranslationUnit t : orphans) {
-          list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext1(), t.getSrcText(), t.getTgtText()));
+          list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext(), t.getSrcText(), t.getTgtText()));
         }
       }
     } else {
@@ -512,7 +532,7 @@ public class LanguageUtils {
       if (cs.hasUserData(UserDataNames.LANGUTILS_ORPHAN)) {
         List<TranslationUnit> orphans = (List<TranslationUnit>) cs.getUserData(UserDataNames.LANGUTILS_ORPHAN);
         for (TranslationUnit t : orphans) {
-          list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext1(), t.getSrcText(), t.getTgtText()));
+          list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext(), t.getSrcText(), t.getTgtText()));
         }
       }
     }
@@ -601,14 +621,15 @@ public class LanguageUtils {
   }
 
   public List<TranslationUnit> generateTranslations(Element e, String lang) {
-    List<TranslationUnit> list = new ArrayList<>();
-    generateTranslations(e, lang, list);
-    return list;
+    TranslationUnitCollection list = new TranslationUnitCollection();
+    generateTranslations(e, lang, list, e.fhirType());
+    return list.list;
   }
 
-  private void generateTranslations(Element e, String lang, List<TranslationUnit> list) {
+  private void generateTranslations(Element e, String lang, TranslationUnitCollection list, String path) {
+    String npath = pathForElement(path, e);
     if (e.getProperty().isTranslatable()) {
-      String id = pathForElement(e); // .getProperty().getDefinition().getPath();
+      String id = npath; // .getProperty().getDefinition().getPath();
       String context = e.getProperty().getDefinition().getDefinition();
       String src = e.primitiveValue();
       String tgt = getTranslation(e, lang);
@@ -616,7 +637,7 @@ public class LanguageUtils {
     }
     if (e.hasChildren()) {
       for (Element c : e.getChildren()) {
-        generateTranslations(c, lang, list);
+        generateTranslations(c, lang, list, npath);
       }
     }
     

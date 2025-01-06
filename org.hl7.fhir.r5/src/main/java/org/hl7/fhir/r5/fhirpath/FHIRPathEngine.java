@@ -189,6 +189,13 @@ public class FHIRPathEngine {
   // the application can implement them by providing a constant resolver 
   public interface IEvaluationContext {
 
+    public abstract class FunctionDefinition {
+      public abstract String name();
+      public abstract FunctionDetails details();
+      public abstract TypeDetails check(FHIRPathEngine engine, Object appContext, TypeDetails focus, List<TypeDetails> parameters);
+      public abstract List<Base> execute(FHIRPathEngine engine, Object appContext, List<Base> focus, List<List<Base>> parameters);
+    }
+    
     /**
      * A constant reference - e.g. a reference to a name that must be resolved in context.
      * The % will be removed from the constant name before this is invoked.
@@ -478,8 +485,8 @@ public class FHIRPathEngine {
    * @throws PathEngineException 
    * @if the path is not valid
    */
-  public TypeDetails check(Object appContext, String resourceType, String context, ExpressionNode expr) throws FHIRLexerException, PathEngineException, DefinitionException {
-    return check(appContext, resourceType, context, expr, null);
+  public TypeDetails check(Object appContext, String rootResourceType, String resourceType, String context, ExpressionNode expr) throws FHIRLexerException, PathEngineException, DefinitionException {
+    return check(appContext, rootResourceType, resourceType, context, expr, null);
   }
 
   /**
@@ -494,7 +501,7 @@ public class FHIRPathEngine {
    * @throws PathEngineException 
    * @if the path is not valid
    */
-  public TypeDetails check(Object appContext, String resourceType, String context, ExpressionNode expr, Set<ElementDefinition> elementDependencies) throws FHIRLexerException, PathEngineException, DefinitionException {
+  public TypeDetails check(Object appContext, String rootResourceType, String resourceType, String context, ExpressionNode expr, Set<ElementDefinition> elementDependencies) throws FHIRLexerException, PathEngineException, DefinitionException {
 
     // if context is a path that refers to a type, do that conversion now 
     TypeDetails types; 
@@ -535,7 +542,7 @@ public class FHIRPathEngine {
       }
     }
 
-    return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, elementDependencies, true, false, expr);
+    return executeType(new ExecutionTypeContext(appContext, rootResourceType, resourceType, types, types), types, expr, elementDependencies, true, false, expr);
   }
   
   /**
@@ -550,7 +557,7 @@ public class FHIRPathEngine {
    * @throws PathEngineException 
    * @if the path is not valid
    */
-  public TypeDetails checkOnTypes(Object appContext, String resourceType, List<String> typeList, ExpressionNode expr, List<IssueMessage> warnings) throws FHIRLexerException, PathEngineException, DefinitionException {
+  public TypeDetails checkOnTypes(Object appContext, String rootResourceType, String resourceType, List<String> typeList, ExpressionNode expr, List<IssueMessage> warnings) throws FHIRLexerException, PathEngineException, DefinitionException {
     typeWarnings.clear();
 
     // if context is a path that refers to a type, do that conversion now 
@@ -600,21 +607,21 @@ public class FHIRPathEngine {
         }
       }
     }
-    TypeDetails res = executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, false, expr);
+    TypeDetails res = executeType(new ExecutionTypeContext(appContext, rootResourceType, resourceType, types, types), types, expr, null, true, false, expr);
     warnings.addAll(typeWarnings);
     return res;
   }
 
-  public TypeDetails checkOnTypes(Object appContext, String resourceType, TypeDetails types, ExpressionNode expr, List<IssueMessage> warnings) throws FHIRLexerException, PathEngineException, DefinitionException {
+  public TypeDetails checkOnTypes(Object appContext, String rootResourceType, String resourceType, TypeDetails types, ExpressionNode expr, List<IssueMessage> warnings) throws FHIRLexerException, PathEngineException, DefinitionException {
     typeWarnings.clear();
-    TypeDetails res = executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, false, expr);
+    TypeDetails res = executeType(new ExecutionTypeContext(appContext, rootResourceType, resourceType, types, types), types, expr, null, true, false, expr);
     warnings.addAll(typeWarnings);
     return res;
   }
   
-  public TypeDetails checkOnTypes(Object appContext, String resourceType, TypeDetails types, ExpressionNode expr, List<IssueMessage> warnings, boolean canBeNone) throws FHIRLexerException, PathEngineException, DefinitionException {
+  public TypeDetails checkOnTypes(Object appContext, String rootResourceType, String resourceType, TypeDetails types, ExpressionNode expr, List<IssueMessage> warnings, boolean canBeNone) throws FHIRLexerException, PathEngineException, DefinitionException {
     typeWarnings.clear();
-    TypeDetails res = executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, canBeNone, expr);
+    TypeDetails res = executeType(new ExecutionTypeContext(appContext, rootResourceType, resourceType, types, types), types, expr, null, true, canBeNone, expr);
     warnings.addAll(typeWarnings);
     return res;
   }
@@ -630,7 +637,7 @@ public class FHIRPathEngine {
    * @throws PathEngineException 
    * @if the path is not valid
    */
-  public TypeDetails check(Object appContext, String resourceType, List<String> resourceTypes, ExpressionNode expr, Set<ElementDefinition> elementDependencies) throws FHIRLexerException, PathEngineException, DefinitionException {
+  public TypeDetails check(Object appContext, String rootResourceType, String resourceType, List<String> resourceTypes, ExpressionNode expr, Set<ElementDefinition> elementDependencies) throws FHIRLexerException, PathEngineException, DefinitionException {
 
     // if context is a path that refers to a type, do that conversion now 
     TypeDetails types = null;
@@ -642,7 +649,7 @@ public class FHIRPathEngine {
       }
     }
 
-    return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, elementDependencies, true, false, expr);
+    return executeType(new ExecutionTypeContext(appContext, rootResourceType, resourceType, types, types), types, expr, elementDependencies, true, false, expr);
   }
 
   private FHIRException makeExceptionPlural(Integer num, ExpressionNode holder, String constName, Object... args) {
@@ -669,7 +676,7 @@ public class FHIRPathEngine {
     }
   }
 
-  public TypeDetails check(Object appContext, StructureDefinition sd, String context, ExpressionNode expr) throws FHIRLexerException, PathEngineException, DefinitionException {
+  public TypeDetails check(Object appContext, String rootResourceType, StructureDefinition sd, String context, ExpressionNode expr) throws FHIRLexerException, PathEngineException, DefinitionException {
     // if context is a path that refers to a type, do that conversion now 
     TypeDetails types; 
     if (!context.contains(".")) {
@@ -695,17 +702,17 @@ public class FHIRPathEngine {
       }
     }
 
-    return executeType(new ExecutionTypeContext(appContext, sd.getUrl(), types, types), types, expr, null, true, false, expr);
+    return executeType(new ExecutionTypeContext(appContext, rootResourceType, sd.getUrl(), types, types), types, expr, null, true, false, expr);
   }
 
-  public TypeDetails check(Object appContext, StructureDefinition sd, ExpressionNode expr) throws FHIRLexerException, PathEngineException, DefinitionException {
+  public TypeDetails check(Object appContext, String rootResourceType, StructureDefinition sd, ExpressionNode expr) throws FHIRLexerException, PathEngineException, DefinitionException {
     // if context is a path that refers to a type, do that conversion now 
     TypeDetails types = null; // this is a special case; the first path reference will have to resolve to something in the context
-    return executeType(new ExecutionTypeContext(appContext, sd == null ? null : sd.getUrl(), null, types), types, expr, null, true, false, expr);
+    return executeType(new ExecutionTypeContext(appContext, rootResourceType, sd == null ? null : sd.getUrl(), null, types), types, expr, null, true, false, expr);
   }
 
-  public TypeDetails check(Object appContext, String resourceType, String context, String expr) throws FHIRLexerException, PathEngineException, DefinitionException {
-    return check(appContext, resourceType, context, parse(expr));
+  public TypeDetails check(Object appContext, String rootResourceType, String resourceType, String context, String expr) throws FHIRLexerException, PathEngineException, DefinitionException {
+    return check(appContext, rootResourceType, resourceType, context, parse(expr));
   }
 
   private Integer compareDateTimeElements(Base theL, Base theR, boolean theEquivalenceTest) {
@@ -1102,10 +1109,12 @@ public class FHIRPathEngine {
     private TypeDetails thisItem;
     private TypeDetails total;
     private Map<String, TypeDetails> definedVariables;
+    private String rootResource;
 
-    public ExecutionTypeContext(Object appInfo, String resource, TypeDetails context, TypeDetails thisItem) {
+    public ExecutionTypeContext(Object appInfo, String rootResource, String resource, TypeDetails context, TypeDetails thisItem) {
       super();
       this.appInfo = appInfo;
+      this.rootResource = rootResource;
       this.resource = resource;
       this.context = context;
       this.thisItem = thisItem;
@@ -3217,10 +3226,10 @@ public class FHIRPathEngine {
       }
       return new TypeDetails(CollectionStatus.SINGLETON, context.resource);
     } else if (s.equals("%rootResource")) {
-      if (context.resource == null) {
+      if (context.rootResource == null) {
         throw makeException(expr, I18nConstants.FHIRPATH_CANNOT_USE, "%rootResource", "no focus rootResource");
       }
-      return new TypeDetails(CollectionStatus.SINGLETON, context.resource);
+      return new TypeDetails(CollectionStatus.SINGLETON, context.rootResource);
     } else if (s.equals("%context")) {
       return context.context;
     } else if (s.equals("%map-codes")) {
@@ -3856,6 +3865,18 @@ public class FHIRPathEngine {
   }
 
   private boolean typeCastIsImpossible(TypeDetails focus, String tn) {
+    for (ProfiledType pt : focus.getProfiledTypes()) {
+      if (!pt.hasProfiles()) { // get back to this later
+        String purl = tn;
+        while (purl != null && !purl.equals(pt.getUri())) {
+          StructureDefinition sd = worker.fetchResource(StructureDefinition.class, purl);
+          purl = sd == null ? null : sd.getBaseDefinition();
+        }
+        if (purl != null) {
+          return false;
+        }
+      }
+    }
     return !focus.hasType(tn);
   }
 
@@ -4799,7 +4820,7 @@ public class FHIRPathEngine {
   }
 
   private ExecutionTypeContext changeThis(ExecutionTypeContext context, TypeDetails newThis) {
-    ExecutionTypeContext newContext = new ExecutionTypeContext(context.appInfo, context.resource, context.context, newThis);
+    ExecutionTypeContext newContext = new ExecutionTypeContext(context.appInfo, context.rootResource, context.resource, context.context, newThis);
     // append all of the defined variables from the context into the new context
     if (context.definedVariables != null) {
       for (String s : context.definedVariables.keySet()) {
@@ -4810,7 +4831,7 @@ public class FHIRPathEngine {
   }
 
   private ExecutionTypeContext contextForParameter(ExecutionTypeContext context) {
-    ExecutionTypeContext newContext = new ExecutionTypeContext(context.appInfo, context.resource, context.context, context.thisItem);
+    ExecutionTypeContext newContext = new ExecutionTypeContext(context.appInfo, context.rootResource, context.resource, context.context, context.thisItem);
     // append all of the defined variables from the context into the new context
     if (context.definedVariables != null) {
       for (String s : context.definedVariables.keySet()) {
@@ -6307,6 +6328,12 @@ public class FHIRPathEngine {
             if (ed.getPath().startsWith(path)) {
               if (ed.hasContentReference()) {
                 String cpath = ed.getContentReference();
+                if (!cpath.startsWith("#")) {
+                  if (!cpath.contains("#")) {
+                    throw new Error("ContentReference doesn't contain a #: "+cpath);
+                  }
+                  cpath = cpath.substring(cpath.indexOf("#"));
+                }
                 String tn = sdi.getType()+cpath;
                 if (!result.hasType(worker, tn)) {
                   if (elementDependencies != null) {
@@ -6522,15 +6549,15 @@ public class FHIRPathEngine {
       }
       if (ed.hasContentReference() && path.startsWith(ed.getPath()+".")) {
         ElementDefinitionMatch m = getElementDefinitionById(sd, ed.getContentReference());
-        List<ElementDefinitionMatch> res = getElementDefinition(sd, m.definition.getPath()+path.substring(ed.getPath().length()), allowTypedName, expr);
-        if (res.size() == 0) {
-          throw new Error("Unable to find "+ed.getContentReference());
+        if (m == null) {
+          throw new Error("Unable to find path "+path+" with a content reference of "+ed.getContentReference());          
         } else {
+          List<ElementDefinitionMatch> res = getElementDefinition(sd, m.definition.getPath()+path.substring(ed.getPath().length()), allowTypedName, expr);
           for (ElementDefinitionMatch item : res) {
             item.sourceDefinition = ed;
           }
+          return res;
         }
-        return res;
       }
     }
     return ml(null);

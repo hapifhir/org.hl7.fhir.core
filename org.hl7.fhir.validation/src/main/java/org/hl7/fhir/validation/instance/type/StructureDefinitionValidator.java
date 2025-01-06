@@ -17,6 +17,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r4.model.Expression;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -54,10 +55,33 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.instance.type.StructureDefinitionValidator.SourcedInvariant;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
 public class StructureDefinitionValidator extends BaseValidator {
+
+  public class SourcedInvariant {
+
+    private String sd;
+    private String ed;
+    private String inv;
+    protected SourcedInvariant(String sd, String ed, String inv) {
+      super();
+      this.sd = sd;
+      this.ed = ed;
+      this.inv = inv;
+    }
+    public String getSd() {
+      return sd;
+    }
+    public String getEd() {
+      return ed;
+    }
+    public String getInv() {
+      return inv;
+    }
+  }
 
   public class FhirPathSorter implements Comparator<ExpressionNode> {
 
@@ -138,6 +162,19 @@ public class StructureDefinitionValidator extends BaseValidator {
         warning(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), !base.getExperimental() || experimental, I18nConstants.SD_BASE_EXPERIMENTAL, sd.getBaseDefinition());
       }
 
+      String abstractV = src.getNamedChildValue("abstract");
+      if ("true".equals(abstractV)) {
+        String burl = src.getNamedChildValue("url");
+        if  (burl != null) {
+          boolean bok = false;
+          for (StructureDefinition sdb : context.fetchResourcesByType(StructureDefinition.class)) {
+            if (burl.equals(sdb.getBaseDefinition())) {
+              bok = true;
+            }
+          }
+          warning(errors, "2024-12-31", IssueType.NOTFOUND, stack.getLiteralPath(), bok, I18nConstants.SD_DERIVATION_NO_CONCRETE, typeName);
+        }
+      }
       List<Element> differentials = src.getChildrenByName("differential");
       List<Element> snapshots = src.getChildrenByName("snapshot");
       boolean logical = "logical".equals(src.getNamedChildValue("kind", false));
@@ -418,7 +455,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   }
 
   private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, String rootPath, String profileUrl, String profileType, StructureDefinition base, boolean experimental) {
-    Map<String, String> invariantMap = new HashMap<>();
+    Map<String, SourcedInvariant> invariantMap = new HashMap<>();
     boolean ok = true;
     List<Element> elements = elementList.getChildrenByName("element");
     int cc = 0;
@@ -429,7 +466,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, String> invariantMap, String rootPath, String profileUrl, String profileType, StructureDefinition base, boolean experimental) {
+  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, SourcedInvariant> invariantMap, String rootPath, String profileUrl, String profileType, StructureDefinition base, boolean experimental) {
     boolean ok = true;
     boolean typeMustSupport = false;
     String path = element.getNamedChildValue("path", false);
@@ -471,7 +508,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (VersionUtilities.isR5Plus(context.getVersion())) {
           warning(errors, "2024-11-06", IssueType.BUSINESSRULE, dStack, !"pattern".equals(type), I18nConstants.SD_PATH_SLICING_DEPRECATED_R5, type);
         } else {
-          hint(errors, "2024-11-06", IssueType.BUSINESSRULE, dStack, ! !"pattern".equals(type), I18nConstants.SD_PATH_SLICING_DEPRECATED, type);
+          hint(errors, "2024-11-06", IssueType.BUSINESSRULE, dStack, !"pattern".equals(type), I18nConstants.SD_PATH_SLICING_DEPRECATED, type);
         }
         String pathExp = discriminator.getNamedChildValue("path");
         if (ted != null) {
@@ -479,7 +516,7 @@ public class StructureDefinitionValidator extends BaseValidator {
           if (!td.isEmpty()) {
             List<IssueMessage> warnings = new ArrayList<IssueMessage>();
             try {
-              TypeDetails eval = fpe.checkOnTypes(this, tn, td, fpe.parse(pathExp), warnings, true);
+              TypeDetails eval = fpe.checkOnTypes(this, "Resource", tn, td, fpe.parse(pathExp), warnings, true);
               if (eval.isEmpty()) {
                 ok = rule(errors, "2024-11-06", IssueType.INVALID, dStack, false, I18nConstants.SD_PATH_NOT_VALID, pathExp, path) && ok;
               } 
@@ -660,33 +697,37 @@ public class StructureDefinitionValidator extends BaseValidator {
           boolean found = false;
           for (Element e : extensions) {
             if (ToolingExtensions.EXT_TYPE_PARAMETER.equals(e.getNamedChildValue("url"))) {
-              String ename = e.getExtensionValue("name").primitiveValue();
-              if (name.equals(ename)) {
-                found = true;
-                String etype = e.getExtensionValue("type").primitiveValue();
-                for (Extension ex : sd.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_PARAMETER)) {
-                  String tn = ex.getExtensionString("name");
-                  if (tn != null && tn.equals(etype)) {
-                    etype = ex.getExtensionString("type");
-                    break;
-                  }
-                }
-                StructureDefinition esd = context.fetchTypeDefinition(etype);
-                if (rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), esd != null, I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, tc, etype)) {
-                  StructureDefinition t = esd;
-                  while (t != null && t != psd) {
-                    t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
-                  }
-                  ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_INVALID_REF, tc, etype, tsd.getVersionedUrl(), name, type) & ok;
-                  if (t != null) {
-                    if (!sd.getAbstract() && esd.getAbstract()) {
-                      warning(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_ABSTRACT_WARNING, tc, etype, tsd.getVersionedUrl(), name, type);
+              if (!e.hasExtension("name")) {
+                rule(errors, "2024-12-31", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, tc, "no name");
+              } else {
+                String ename = e.getExtensionValue("name").primitiveValue();
+                if (name.equals(ename)) {
+                  found = true;
+                  String etype = e.getExtensionValue("type").primitiveValue();
+                  for (Extension ex : sd.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+                    String tn = ex.getExtensionString("name");
+                    if (tn != null && tn.equals(etype)) {
+                      etype = ex.getExtensionString("type");
+                      break;
                     }
                   }
-                } else {
-                  ok = false;
-                }
-              }              
+                  StructureDefinition esd = context.fetchTypeDefinition(etype);
+                  if (rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), esd != null, I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, tc, etype)) {
+                    StructureDefinition t = esd;
+                    while (t != null && t != psd) {
+                      t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
+                    }
+                    ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_INVALID_REF, tc, etype, tsd.getVersionedUrl(), name, type) & ok;
+                    if (t != null) {
+                      if (!sd.getAbstract() && esd.getAbstract()) {
+                        warning(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_ABSTRACT_WARNING, tc, etype, tsd.getVersionedUrl(), name, type);
+                      }
+                    }
+                  } else {
+                    ok = false;
+                  }
+                }              
+              }
             }
           }
           ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), found, I18nConstants.SD_TYPE_PARAM_NOT_SPECIFIED, tc, tsd.getVersionedUrl(), name, path) && ok;
@@ -707,7 +748,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ed;
   }
 
-  private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, String> invariantMap, List<Element> elements, Element element, 
+  private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, SourcedInvariant> invariantMap, List<Element> elements, Element element, 
       String path, String rootPath, String profileUrl, String profileType, boolean snapshot, StructureDefinition base) {
     boolean ok = true;
     String key = invariant.getNamedChildValue("key", false); 
@@ -719,9 +760,9 @@ public class StructureDefinitionValidator extends BaseValidator {
           if (!Utilities.noString(expression)) {
             if (invariantMap.containsKey(key)) {
               // it's legal - and common - for a list of elements to contain the same invariant more than once, but it's not valid if it's not always the same 
-              ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)) || "ele-1".equals(key), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));
+              ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key).getInv()) || "ele-1".equals(key), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key).getInv());
             } else {
-              invariantMap.put(key, expression);
+              invariantMap.put(key, new SourcedInvariant(profileUrl, path, expression));
             }
             if (Utilities.noString(source) || (source.equals(profileUrl))) { // no need to revalidate FHIRPath from elsewhere 
               try {
@@ -741,19 +782,20 @@ public class StructureDefinitionValidator extends BaseValidator {
                   // we got to the root before finding anything typed
                   types.addType(elements.get(0).getNamedChildValue("path", false));
                 }
+        
                 List<IssueMessage> warnings = new ArrayList<>();
                 ValidationContext vc = new ValidationContext(invariant);
                 if (Utilities.existsInList(rootPath, context.getResourceNames())) {
-                  fpe.checkOnTypes(vc, rootPath, types, fpe.parse(exp), warnings);
+                  fpe.checkOnTypes(vc, "Resource", rootPath, types, fpe.parse(exp), warnings);
                 } else {
                   StructureDefinition sd = context.fetchTypeDefinition(rootPath);
                   if (sd != null && sd.getKind() == StructureDefinitionKind.RESOURCE) {
-                    fpe.checkOnTypes(vc, rootPath, types, fpe.parse(exp), warnings);
+                    fpe.checkOnTypes(vc, "Resource", rootPath, types, fpe.parse(exp), warnings);
                   } else if (sd != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
                     String tn = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_LOGICAL_CONTAINER);
-                    fpe.checkOnTypes(vc, tn == null ? rootPath : tn, types, fpe.parse(exp), warnings);
+                    fpe.checkOnTypes(vc, "Resource", tn == null ? rootPath : tn, types, fpe.parse(exp), warnings);
                   } else {
-                    fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
+                    fpe.checkOnTypes(vc, "Resource", "DomainResource", types, fpe.parse(exp), warnings);
                   }
                 }
                 for (IssueMessage s : warnings) {
@@ -767,9 +809,23 @@ public class StructureDefinitionValidator extends BaseValidator {
               }         
             }        
           }
-        } else {          
-          ok = rule(errors, "2023-07-27", IssueType.INVALID, stack, source == null || source.equals(profileUrl), I18nConstants.ED_INVARIANT_DIFF_NO_SOURCE, key, source) &&
-              rule(errors, "2023-07-27", IssueType.INVALID, stack, !haseHasInvariant(base, key), I18nConstants.ED_INVARIANT_KEY_ALREADY_USED, key, base.getVersionedUrl());
+        } else {   
+          if (rule(errors, "2023-07-27", IssueType.INVALID, stack, source == null || source.equals(profileUrl), I18nConstants.ED_INVARIANT_DIFF_NO_SOURCE, key, source)) {
+            SourcedInvariant inv = findInvariantInBase(base, key);
+            if (rule(errors, "2023-07-27", IssueType.INVALID, stack, inv == null || inv.getInv().equals(expression), I18nConstants.ED_INVARIANT_KEY_ALREADY_USED, key, inv == null ? "??" : inv.getSd(), inv == null  ? "??" : inv.getInv())) {
+              if (invariantMap.containsKey(key)) { 
+                SourcedInvariant src = invariantMap.get(key);
+                ok = rule(errors, "2023-07-27", IssueType.INVALID, stack, expression.equals(src.getInv()), I18nConstants.ED_INVARIANT_KEY_ALREADY_USED, key, src.getEd(), src.getInv()) && ok;
+                
+              } else {
+                invariantMap.put(key, new SourcedInvariant(profileUrl, path, expression));
+              }
+            } else {
+              ok = false;
+            }
+          } else {
+            ok = false;
+          }
 
         }
       }
@@ -790,7 +846,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         try {
           List<IssueMessage> warnings = new ArrayList<>();
           ValidationContext vc = new ValidationContext(invariant);
-          fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
+          fpe.checkOnTypes(vc, "Resource", "DomainResource", types, fpe.parse(exp), warnings);
           for (IssueMessage s : warnings) {
             warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, s.getId(), false, s.getMessage());
           }
@@ -832,15 +888,33 @@ public class StructureDefinitionValidator extends BaseValidator {
     return types;
   }
 
-  private boolean haseHasInvariant(StructureDefinition base, String key) {
+  private SourcedInvariant findInvariantInBase(StructureDefinition base, String key) {
     for (ElementDefinition ed : base.getSnapshot().getElement()) {
       for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
         if (key.equals(inv.getKey())) {
-          return true;
+          return new SourcedInvariant(base.getVersionedUrl(), ed.getPath(), inv.getExpression());
         }
       }
     }
-    return false;
+    for (StructureDefinition sd : cu.allBaseStructures()) {
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+          if (key.equals(inv.getKey())) {
+            return new SourcedInvariant(sd.getVersionedUrl(), ed.getPath(), inv.getExpression());
+          }
+        }
+      }   
+    }
+    return null;
+  }
+
+
+  private boolean typesHaveInvariant(Map<String, String> invMap, String key, String expression) {
+    if (invMap.containsKey(key)) {
+      return !expression.equals(invMap.get(key));
+    } else {
+      return false;
+    }
   }
 
   private String tail(Element te, Element newte) {

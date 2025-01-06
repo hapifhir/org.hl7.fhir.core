@@ -75,7 +75,7 @@ import org.hl7.fhir.utilities.npm.ToolsVersion;
 public class NPMPackageGenerator {
 
   public enum Category {
-    RESOURCE, EXAMPLE, OPENAPI, SCHEMATRON, RDF, OTHER, TOOL, TEMPLATE, JEKYLL, TEST, CUSTOM;
+    RESOURCE, EXAMPLE, OPENAPI, SCHEMATRON, RDF, OTHER, TOOL, TEMPLATE, JEKYLL, TEST, ADL, CUSTOM;
 
     private String getDirectory() {
       switch (this) {
@@ -84,7 +84,8 @@ public class NPMPackageGenerator {
       case OPENAPI: return "package/openapi/";
       case SCHEMATRON: return "package/xml/";
       case RDF: return "package/rdf/";      
-      case OTHER: return "package/other/";      
+      case OTHER: return "package/other/";  
+      case ADL: return "package/adl/";      
       case TEMPLATE: return "package/other/";      
       case JEKYLL: return "package/jekyll/";      
       case TEST: return "package/tests/"; 

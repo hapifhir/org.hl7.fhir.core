@@ -22,6 +22,7 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
@@ -30,6 +31,7 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.NamingSystem;
+import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.Utilities;
@@ -477,6 +479,35 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   public String getCanonicalForDefaultContext() {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  public String pinValueSet(String valueSet) {
+    return pinValueSet(valueSet, context.getExpansionParameters());
+  }
+
+  public String pinValueSet(String value, Parameters expParams) {
+    if (value.contains("|")) {
+      return value;
+    }
+    for (ParametersParameterComponent p : expParams.getParameter()) {
+      if ("valueset-version".equals(p.getName())) {
+        String s = p.getValue().primitiveValue();
+        if (s.startsWith(value+"|")) {
+          return s;
+        }
+      }
+    }
+    return value;
+  }
+
+  public List<StructureDefinition> allBaseStructures() {
+    List<StructureDefinition> res = new ArrayList<>();
+    for (StructureDefinition sd : allStructures()) {
+      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
+        res.add(sd);
+      }
+    }
+    return res;
   }
 
 }

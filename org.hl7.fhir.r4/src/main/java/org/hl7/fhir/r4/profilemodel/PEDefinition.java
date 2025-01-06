@@ -40,7 +40,9 @@ import org.hl7.fhir.r4.model.ElementDefinition;
 import org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.Type;
+import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.profilemodel.PEDefinition.PEDefinitionElementMode;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
 public abstract class PEDefinition {
@@ -84,7 +86,7 @@ public abstract class PEDefinition {
     this.name = name;
     this.profile = profile;
     this.definition = definition;
-    this.path = path == null ? name : ppath+"."+name;
+    this.path = ppath == null ? name : ppath+"."+name;
   }
 
 
@@ -392,6 +394,34 @@ public abstract class PEDefinition {
     return false;
   }
 
+  public String getExtensionUrl() {
+    return null;
+  }
+
+  public ValueSet valueSet() {
+    if (definition.getBinding().hasValueSet()) {
+      return builder.getContext().fetchResource(ValueSet.class, definition.getBinding().getValueSet());
+    }
+    return null;
+  }
+
+
+  public PEBuilder getBuilder() {
+    return builder;
+  }
+
+  public String typeSummary() {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (PEType t : types()) {
+      b.append(t.getName());
+    }       
+    return b.toString();
+  }
+
+
+  public boolean isSlice() {
+    return definition.hasSliceName();
+  }
 }
 
 

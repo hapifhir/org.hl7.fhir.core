@@ -3,9 +3,12 @@ package org.hl7.fhir.r5.terminologies.utilities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.IWorkerContext.ITerminologyOperationDetails;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
@@ -26,6 +29,22 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 public class ValueSetProcessBase {
 
+  public static class TerminologyOperationDetails implements ITerminologyOperationDetails {
+
+    private List<String> supplements;
+
+    public TerminologyOperationDetails(List<String> supplements) {
+      super();
+      this.supplements = supplements;
+    }
+
+    @Override
+    public void seeSupplement(CodeSystem supp) {
+      supplements.remove(supp.getUrl());
+      supplements.remove(supp.getVersionedUrl());
+    }
+  }
+  
   public enum OpIssueCode {
     NotInVS, ThisNotInVS, InvalidCode, Display, DisplayComment, NotFound, CodeRule, VSProcessing, InferFailed, StatusCheck, InvalidData;
     
@@ -48,6 +67,7 @@ public class ValueSetProcessBase {
     }
   }
   protected IWorkerContext context;
+  private ContextUtilities cu;
   protected TerminologyOperationContext opContext;
   protected List<String> requiredSupplements = new ArrayList<>();
   
@@ -236,6 +256,14 @@ public class ValueSetProcessBase {
   }
 
                          
+  public ContextUtilities getCu() {
+    if (cu == null) {
+      cu = new ContextUtilities(context);
+    }
+    return cu;
+  }
+
+
   protected AlternateCodesProcessingRules altCodeParams = new AlternateCodesProcessingRules(false);
   protected AlternateCodesProcessingRules allAltCodes = new AlternateCodesProcessingRules(true);
 }

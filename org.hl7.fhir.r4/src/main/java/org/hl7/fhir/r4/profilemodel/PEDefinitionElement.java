@@ -42,6 +42,10 @@ public class PEDefinitionElement extends PEDefinition {
     super(builder, definition.getName(), profile, definition, ppath);
   }
 
+  public PEDefinitionElement(PEBuilder builder, String name, StructureDefinition profile, ElementDefinition definition, String ppath) {
+    super(builder, name, profile, definition, ppath);
+  }
+
   @Override
   public void listTypes(List<PEType> types) {
     for (TypeRefComponent t : definition.getType()) {

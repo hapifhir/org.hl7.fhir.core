@@ -49,6 +49,14 @@ public class XmlParser extends XmlParserBase {
     setAllowUnknownContent(allowUnknownContent);
   }
 
+  public XmlParser(boolean allowUnknownContent, boolean pretty) {
+    super();
+    setAllowUnknownContent(allowUnknownContent);
+    if (pretty) {
+      setOutputStyle(OutputStyle.PRETTY);
+    }
+  }
+
   protected boolean parseElementContent(int eventType, XmlPullParser xpp, Element res)
       throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("extension"))

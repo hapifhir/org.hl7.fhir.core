@@ -29,7 +29,9 @@ package org.hl7.fhir.r4.profilemodel;
   */
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -153,7 +155,7 @@ public class PEBuilder {
     if (!profile.hasSnapshot()) {
       throw new DefinitionException("Profile '"+profile.getVersionedUrl()+"' does not have a snapshot");      
     }
-    return new PEDefinitionResource(this, profile, profile.getName());
+    return new PEDefinitionResource(this, profile, null);
   }
   
   /**
@@ -340,6 +342,7 @@ public class PEBuilder {
 
   protected List<PEDefinition> listChildren(boolean allFixed, PEDefinition parent, StructureDefinition profileStructure, ElementDefinition definition, String url, String... omitList) {
     StructureDefinition profile = profileStructure;
+    boolean inExtension = profile.getDerivation() == TypeDerivationRule.CONSTRAINT && "Extension".equals(profile.getType());
     List<ElementDefinition> list = pu.getChildList(profile, definition);
     if (definition.getType().size() == 1 || (!definition.getPath().contains(".")) || list.isEmpty()) {
       assert url == null || checkType(definition, url);
@@ -352,46 +355,43 @@ public class PEBuilder {
         list = pu.getChildList(profile, profile.getSnapshot().getElementFirstRep());
       }
       if (list.size() > 0) {
+        Set<String> names = new HashSet<>();
         int i = 0;
         while (i < list.size()) {
           ElementDefinition defn = list.get(i);
           if (!defn.getMax().equals("0") && (allFixed || include(defn))) {
-            if (passElementPropsCheck(defn) && !Utilities.existsInList(defn.getName(), omitList)) {
-              if (defn.getType().size() > 1) {
-                // DebugUtilities.breakpoint();
-                i++;
-              } else {
-                PEDefinitionElement pe = new PEDefinitionElement(this, profile, defn, parent.path());
-                pe.setRecursing(definition == defn || (profile.getDerivation() == TypeDerivationRule.SPECIALIZATION && profile.getType().equals("Extension")));
-                if (context.isPrimitiveType(definition.getTypeFirstRep().getWorkingCode()) && "value".equals(pe.name())) {
-                  pe.setMustHaveValue(definition.getMustHaveValue());
-                }
-                pe.setInFixedValue(definition.hasFixed() || definition.hasPattern() || parent.isInFixedValue());
-                if (defn.hasSlicing()) {
-                  if (defn.getSlicing().getRules() != SlicingRules.CLOSED) {
-                    res.add(pe);
-                    pe.setSlicer(true);
-                  }
-                  i++;
-                  while (i < list.size() && list.get(i).getPath().equals(defn.getPath())) {
-                    StructureDefinition ext = getExtensionDefinition(list.get(i));
-                    if (ext != null) {
-                      res.add(new PEDefinitionExtension(this, list.get(i).getSliceName(), profile, list.get(i), defn, ext, parent.path()));
-                    } else if (isTypeSlicing(defn)) {
-                      res.add(new PEDefinitionTypeSlice(this, list.get(i).getSliceName(), profile, list.get(i), defn, parent.path()));
-                    } else {
-                      if (ProfileUtilities.isComplexExtension(profile) && defn.getPath().endsWith(".extension")) {
-                        res.add(new PEDefinitionSubExtension(this, profile, list.get(i), parent.path()));
-                      } else {
-                        res.add(new PEDefinitionSlice(this, list.get(i).getSliceName(), profile, list.get(i), defn, parent.path()));
-                      }
-                    }
-                    i++;
-                  }
-                } else {
+            if (passElementPropsCheck(defn, inExtension) && !Utilities.existsInList(defn.getName(), omitList)) {
+              String name = uniquefy(names, defn.getName());
+              PEDefinitionElement pe = new PEDefinitionElement(this, name, profile, defn, parent.path());
+              pe.setRecursing(definition == defn || (profile.getDerivation() == TypeDerivationRule.SPECIALIZATION && profile.getType().equals("Extension")));
+              if (context.isPrimitiveType(definition.getTypeFirstRep().getWorkingCode()) && "value".equals(pe.name())) {
+                pe.setMustHaveValue(definition.getMustHaveValue());
+              }
+              pe.setInFixedValue(definition.hasFixed() || definition.hasPattern() || parent.isInFixedValue());
+              if (defn.hasSlicing()) {
+                if (defn.getSlicing().getRules() != SlicingRules.CLOSED) {
                   res.add(pe);
+                  pe.setSlicer(true);
+                }
+                i++;
+                while (i < list.size() && list.get(i).getPath().equals(defn.getPath())) {
+                  StructureDefinition ext = getExtensionDefinition(list.get(i));
+                  if (ext != null) {
+                    res.add(new PEDefinitionExtension(this, uniquefy(names, list.get(i).getSliceName()), profile, list.get(i), defn, ext, parent.path()));
+                  } else if (isTypeSlicing(defn)) {
+                    res.add(new PEDefinitionTypeSlice(this, uniquefy(names, list.get(i).getSliceName()), profile, list.get(i), defn, parent.path()));
+                  } else {
+                    if (ProfileUtilities.isComplexExtension(profile) && defn.getPath().endsWith(".extension")) {
+                      res.add(new PEDefinitionSubExtension(this, profile, list.get(i), parent.path()));
+                    } else {
+                      res.add(new PEDefinitionSlice(this, uniquefy(names, list.get(i).getSliceName()), profile, list.get(i), defn, parent.path()));
+                    }
+                  }
                   i++;
                 }
+              } else {
+                res.add(pe);
+                i++;
               }
             } else {
               i++;
@@ -409,6 +409,18 @@ public class PEBuilder {
     }
   }
 
+  private String uniquefy(Set<String> names, String name) {
+    if (names.contains(name)) {
+      int i = 0;
+      while (names.contains(name+i)) {
+        i++;
+      }
+      name = name+i;
+    }
+    names.add(name);
+    return name;
+  }
+
   protected PEDefinition makeChild(PEDefinition parent, StructureDefinition profileStructure, ElementDefinition definition) {
     PEDefinitionElement pe = new PEDefinitionElement(this, profileStructure, definition, parent.path());
     if (context.isPrimitiveType(definition.getTypeFirstRep().getWorkingCode()) && "value".equals(pe.name())) {
@@ -418,7 +430,10 @@ public class PEBuilder {
     return pe;
   }
 
-  private boolean passElementPropsCheck(ElementDefinition bdefn) {
+  private boolean passElementPropsCheck(ElementDefinition bdefn, boolean inExtension) {
+    if (inExtension) {
+      return !Utilities.existsInList(bdefn.getBase().getPath(), "Element.id");      
+    }
     switch (elementProps) {
     case EXTENSION:
       return !Utilities.existsInList(bdefn.getBase().getPath(), "Element.id");

@@ -71,10 +71,12 @@ public class RendererFactory {
     case "DiagnosticReport": return new DiagnosticReportRenderer(context);
     case "Library": return new LibraryRenderer(context);
     case "ViewDefinition": return new ViewDefinitionRenderer(context);
+    case "FeatureDefinition": return new FeatureDefinitionRenderer(context);
     case "List": return new ListRenderer(context);
     case "Patient": return new PatientRenderer(context);
     case "Provenance": return new ProvenanceRenderer(context);
     case "Parameters": return new ParametersRenderer(context);
+    case "Questionnaire": return new QuestionnaireRenderer(context);
     case "QuestionnaireResponse": return new QuestionnaireResponseRenderer(context);
     }
     if (resource.isDirect()) {

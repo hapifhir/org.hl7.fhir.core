@@ -202,7 +202,7 @@ public class ResourceComparer {
         s = s + "<td><a href=\""+getId()+".html\">Failed<a></td>";
         color = COLOR_ISSUE;
       }
-      s = s + "<td>"+(e != null ? Utilities.escapeXml(e.getMessage()) : "")+"</td>";
+      s = s + "<td colspan=\"3\">"+(e != null ? Utilities.escapeXml(e.getMessage()) : "")+"</td>";
       return "<tr style=\"background-color: "+color+"\">"+s+"</tr>\r\n";
     }
 

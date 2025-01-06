@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
@@ -45,13 +46,17 @@ public class Params {
   public static final String EXTENSION = "-extension";
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
   public static final String TO_VERSION = "-to-version";
+  public static final String TX_PACK = "-tx-pack";
   public static final String PACKAGE_NAME = "-package-name";
   public static final String DO_NATIVE = "-do-native";
   public static final String NO_NATIVE = "-no-native";
   public static final String COMPILE = "-compile";
   public static final String CODEGEN = "-codegen";
+  public static final String FACTORY = "-factory";
   public static final String TRANSFORM = "-transform";
+  public static final String FORMAT = "-format";
   public static final String LANG_TRANSFORM = "-lang-transform";
+  public static final String EXP_PARAMS = "-expansion-parameters";
   public static final String NARRATIVE = "-narrative";
   public static final String SNAPSHOT = "-snapshot";
   public static final String INSTALL = "-install";
@@ -330,6 +335,9 @@ public class Params {
       } else if (args[i].equals(PACKAGE_NAME)) {
         cliContext.setPackageName(args[++i]);
         cliContext.setMode(EngineMode.CODEGEN);
+      } else if (args[i].equals(TX_PACK)) {
+        cliContext.setPackageName(args[++i]);
+        cliContext.setMode(EngineMode.TX_PACK);
       } else if (args[i].equals(DO_NATIVE)) {
         cliContext.setCanDoNative(true);
       } else if (args[i].equals(NO_NATIVE)) {
@@ -337,14 +345,21 @@ public class Params {
       } else if (args[i].equals(TRANSFORM)) {
         cliContext.setMap(args[++i]);
         cliContext.setMode(EngineMode.TRANSFORM);
+      } else if (args[i].equals(FORMAT)) {
+        cliContext.setFormat(FhirFormat.fromCode(args[++i]));
       } else if (args[i].equals(LANG_TRANSFORM)) {
         cliContext.setLangTransform(args[++i]);
         cliContext.setMode(EngineMode.LANG_TRANSFORM);
+      } else if (args[i].equals(EXP_PARAMS)) {
+        cliContext.setExpansionParameters(args[++i]);
       } else if (args[i].equals(COMPILE)) {
         cliContext.setMap(args[++i]);
         cliContext.setMode(EngineMode.COMPILE);
       } else if (args[i].equals(CODEGEN)) {
         cliContext.setMode(EngineMode.CODEGEN);
+      } else if (args[i].equals(FACTORY)) {
+        cliContext.setMode(EngineMode.FACTORY);
+        cliContext.setSource(args[++i]);
       } else if (args[i].equals(NARRATIVE)) {
         cliContext.setMode(EngineMode.NARRATIVE);
       } else if (args[i].equals(SPREADSHEET)) {

@@ -794,6 +794,19 @@ public class ProfileUtilities {
           }
         }
 
+        for (int i = 0; i < derived.getSnapshot().getElement().size(); i++) {
+          ElementDefinition ed = derived.getSnapshot().getElement().get(i);
+          if (ed.getType().size() > 1) {
+            List<TypeRefComponent> toRemove = new ArrayList<ElementDefinition.TypeRefComponent>();
+            for (TypeRefComponent tr : ed.getType()) {
+              ElementDefinition typeSlice = findTypeSlice(derived.getSnapshot().getElement(), i, ed.getPath(), tr.getWorkingCode());
+              if (typeSlice != null && typeSlice.prohibited()) {
+                toRemove.add(tr);
+              }
+            }
+            ed.getType().removeAll(toRemove);
+          }
+        }
         if (derived.getKind() != StructureDefinitionKind.LOGICAL && !derived.getSnapshot().getElementFirstRep().getType().isEmpty())
           throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_SNAPSHOT_ELEMENT_FOR__IN__FROM_, derived.getSnapshot().getElementFirstRep().getPath(), derived.getUrl(), base.getUrl()));
         mappingDetails.update();
@@ -830,6 +843,9 @@ public class ProfileUtilities {
               String msg = "No match found for "+e.getId()+" in the generated snapshot: check that the path and definitions are legal in the differential (including order)";
               addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, "StructureDefinition.differential.element["+i+"]", msg, ValidationMessage.IssueSeverity.ERROR));
             }
+          } else {
+            ElementDefinition sed = (ElementDefinition) e.getUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT);
+            sed.setUserData(UserDataNames.SNAPSHOT_DERIVATION_DIFF, e); // note: this means diff/snapshot are cross-linked
           }
           i++;
         }
@@ -992,12 +1008,40 @@ public class ProfileUtilities {
   }
 
 
+  private ElementDefinition findTypeSlice(List<ElementDefinition> list, int i, String path, String typeCode) {
+    for (int j = i+1; j < list.size(); j++) {
+      ElementDefinition ed = list.get(j);
+      if (pathMatches(path, ed) && typeMatches(ed, typeCode)) {
+        return ed;
+      }
+    }
+    return null;
+  }
+
+  private boolean pathMatches(String path, ElementDefinition ed) {
+    String p = ed.getPath();
+    if (path.equals(p)) {
+      return true;
+    }
+    if (path.endsWith("[x]")) { // it should
+      path = path.substring(0, path.length()-3);
+      if (p.startsWith(path) && p.length() > path.length() && !p.substring(path.length()).contains(".")) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean typeMatches(ElementDefinition ed, String typeCode) {
+    return ed.getType().size() == 1 && typeCode.equals(ed.getTypeFirstRep().getWorkingCode());
+  }
+
   private void checkTypeParameters(StructureDefinition base, StructureDefinition derived) {
-    String bt = ToolingExtensions.readStringExtension(base, ToolingExtensions.EXT_TYPE_PARAMETER);
+    String bt = ToolingExtensions.readStringSubExtension(base, ToolingExtensions.EXT_TYPE_PARAMETER, "type");
     if (!derived.hasExtension(ToolingExtensions.EXT_TYPE_PARAMETER)) {
       throw new DefinitionException(context.formatMessage(I18nConstants.SD_TYPE_PARAMETER_MISSING, base.getVersionedUrl(), bt, derived.getVersionedUrl()));
     }
-    String dt = ToolingExtensions.readStringExtension(derived, ToolingExtensions.EXT_TYPE_PARAMETER);
+    String dt = ToolingExtensions.readStringSubExtension(derived, ToolingExtensions.EXT_TYPE_PARAMETER, "type");
     StructureDefinition bsd = context.fetchTypeDefinition(bt);
     StructureDefinition dsd = context.fetchTypeDefinition(dt);
     if (bsd == null) {
@@ -1060,20 +1104,39 @@ public class ProfileUtilities {
     }
   }
 
-
   private void copyInheritedExtensions(StructureDefinition base, StructureDefinition derived, String webUrl) {
     for (Extension ext : base.getExtension()) {
-      if (!Utilities.existsInList(ext.getUrl(), NON_INHERITED_ED_URLS) && !derived.hasExtension(ext.getUrl())) {
-        Extension next = ext.copy();
-        if (ext.hasValueMarkdownType()) {
-          MarkdownType md = ext.getValueMarkdownType();
-          md.setValue(processRelativeUrls(md.getValue(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+      if (!Utilities.existsInList(ext.getUrl(), NON_INHERITED_ED_URLS)) {
+        String action = getExtensionAction(ext.getUrl());
+        if (!"ignore".equals(action)) {
+          boolean exists = derived.hasExtension(ext.getUrl());
+          if ("add".equals(action) || !exists) {
+            Extension next = ext.copy();
+            if (next.hasValueMarkdownType()) {
+              MarkdownType md = next.getValueMarkdownType();
+              md.setValue(processRelativeUrls(md.getValue(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+            }
+            derived.getExtension().add(next);            
+          } else if ("overwrite".equals(action)) {
+            Extension oext = derived.getExtensionByUrl(ext.getUrl());
+            Extension next = ext.copy();
+            if (next.hasValueMarkdownType()) {
+              MarkdownType md = next.getValueMarkdownType();
+              md.setValue(processRelativeUrls(md.getValue(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, localFileNames, false));
+            }
+            oext.setValue(next.getValue());  
+          }
         }
-        derived.getExtension().add(next);
-
       }
     }
-    
+  }
+
+  private String getExtensionAction(String url) {
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+    if (sd != null && sd.hasExtension(ToolingExtensions.EXT_SNAPSHOT_BEHAVIOR)) {
+      return ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_SNAPSHOT_BEHAVIOR);
+    }
+    return "defer";
   }
 
   private void addInheritedElementsForSpecialization(StructureDefinitionSnapshotComponent snapshot, ElementDefinition focus, String type, String path, String url, String weburl) {
@@ -1449,17 +1512,18 @@ public class ProfileUtilities {
   }
 
   protected boolean isMatchingType(StructureDefinition sd, List<TypeRefComponent> types, String inner) {
-    while (sd != null) {
+    StructureDefinition tsd = sd;
+    while (tsd != null) {
       for (TypeRefComponent tr : types) {
-        if (sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition") && sd.getType().equals(tr.getCode())) {
+        if (tsd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition") && tsd.getType().equals(tr.getCode())) {
           return true;
         }
-        if (inner == null && sd.getUrl().equals(tr.getCode())) {
+        if (inner == null && tsd.getUrl().equals(tr.getCode())) {
           return true;
         }
         if (inner != null) {
           ElementDefinition ed = null;
-          for (ElementDefinition t : sd.getSnapshot().getElement()) {
+          for (ElementDefinition t : tsd.getSnapshot().getElement()) {
             if (inner.equals(t.getId())) {
               ed = t;
             }
@@ -1469,7 +1533,7 @@ public class ProfileUtilities {
           }
         }
       }
-      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);    
+      tsd = context.fetchResource(StructureDefinition.class, tsd.getBaseDefinition(), tsd);    
     }
     return false;
   }
@@ -1583,16 +1647,6 @@ public class ProfileUtilities {
     } else {  
       return webUrl;
     }
-  }
-
-  protected void removeStatusExtensions(ElementDefinition outcome) {
-    outcome.removeExtension(ToolingExtensions.EXT_FMM_LEVEL);
-    outcome.removeExtension(ToolingExtensions.EXT_FMM_SUPPORT);
-    outcome.removeExtension(ToolingExtensions.EXT_STANDARDS_STATUS);
-    outcome.removeExtension(ToolingExtensions.EXT_NORMATIVE_VERSION);
-    outcome.removeExtension(ToolingExtensions.EXT_WORKGROUP);    
-    outcome.removeExtension(ToolingExtensions.EXT_FMM_SUPPORT);
-    outcome.removeExtension(ToolingExtensions.EXT_FMM_DERIVED);
   }
 
   protected String descED(List<ElementDefinition> list, int index) {
@@ -2230,6 +2284,13 @@ public class ProfileUtilities {
     return (e.hasSlicing() && e.hasMaxElement() && e.getMax().equals("1"));
   }
 
+  protected boolean isTypeSlicing(ElementDefinition e) {
+    return (e.hasSlicing() && e.getSlicing().getDiscriminator().size() == 1 && 
+        e.getSlicing().getDiscriminatorFirstRep().getType() == DiscriminatorType.TYPE &&
+        "$this".equals(e.getSlicing().getDiscriminatorFirstRep().getPath()));
+  }
+
+  
   protected ElementDefinitionSlicingComponent makeExtensionSlicing() {
   	ElementDefinitionSlicingComponent slice = new ElementDefinitionSlicingComponent();
     slice.addDiscriminator().setPath("url").setType(DiscriminatorType.VALUE);
@@ -2419,7 +2480,10 @@ public class ProfileUtilities {
         }      
       }
     }
+    
     // Before applying changes, apply them to what's in the profile
+    // but only if it's an extension or a resource
+
     StructureDefinition profile = null;
     boolean msg = true;
     if (base.hasSliceName()) {
@@ -2451,7 +2515,7 @@ public class ProfileUtilities {
         msg = false;
       }
     }
-    if (profile != null) {
+    if (profile != null && (profile.getKind() == StructureDefinitionKind.RESOURCE || "Extension".equals(profile.getType()))) {
       if (profile.getSnapshot().getElement().isEmpty()) {
         throw new DefinitionException(context.formatMessage(I18nConstants.SNAPSHOT_IS_EMPTY, profile.getVersionedUrl()));
       }
@@ -2494,7 +2558,7 @@ public class ProfileUtilities {
       if (derived.hasSliceName()) {
         base.setSliceName(derived.getSliceName());
       }
-      
+
       if (derived.hasShortElement()) {
         if (!Base.compareDeep(derived.getShortElement(), base.getShortElement(), false))
           base.setShortElement(derived.getShortElement().copy());
@@ -3073,6 +3137,10 @@ public class ProfileUtilities {
       }
       StructureDefinition sd = context.fetchTypeDefinition(tr.getCode());
       if (sd != null && sd.hasExtension(ToolingExtensions.EXT_BINDING_STYLE)) {
+        return true;
+      }
+      if (sd != null && sd.hasExtension(ToolingExtensions.EXT_TYPE_CHARACTERISTICS) &&
+          "can-bind".equals(ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_TYPE_CHARACTERISTICS))) {
         return true;
       }
     }

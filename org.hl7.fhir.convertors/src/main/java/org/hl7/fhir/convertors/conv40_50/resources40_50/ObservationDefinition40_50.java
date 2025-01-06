@@ -9,6 +9,8 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.ObservationDefinition;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -115,95 +117,103 @@ public class ObservationDefinition40_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType> convertObservationDataType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataTypeEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case QUANTITY:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType.QUANTITY);
-        break;
-      case CODEABLECONCEPT:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType.CODEABLECONCEPT);
-        break;
-      case STRING:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType.STRING);
-        break;
-      case BOOLEAN:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType.BOOLEAN);
-        break;
-      case INTEGER:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType.INTEGER);
-        break;
-      case RANGE:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType.RANGE);
-        break;
-      case RATIO:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType.RATIO);
-        break;
-      case SAMPLEDDATA:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType.SAMPLEDDATA);
-        break;
-      case TIME:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType.TIME);
-        break;
-      case DATETIME:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType.DATETIME);
-        break;
-      case PERIOD:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType.PERIOD);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<ObservationDefinition.ObservationDataType> tgt = new Enumeration<>(new ObservationDefinition.ObservationDataTypeEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case QUANTITY:
+                  tgt.setValue(ObservationDefinition.ObservationDataType.QUANTITY);
+                  break;
+              case CODEABLECONCEPT:
+                  tgt.setValue(ObservationDefinition.ObservationDataType.CODEABLECONCEPT);
+                  break;
+              case STRING:
+                  tgt.setValue(ObservationDefinition.ObservationDataType.STRING);
+                  break;
+              case BOOLEAN:
+                  tgt.setValue(ObservationDefinition.ObservationDataType.BOOLEAN);
+                  break;
+              case INTEGER:
+                  tgt.setValue(ObservationDefinition.ObservationDataType.INTEGER);
+                  break;
+              case RANGE:
+                  tgt.setValue(ObservationDefinition.ObservationDataType.RANGE);
+                  break;
+              case RATIO:
+                  tgt.setValue(ObservationDefinition.ObservationDataType.RATIO);
+                  break;
+              case SAMPLEDDATA:
+                  tgt.setValue(ObservationDefinition.ObservationDataType.SAMPLEDDATA);
+                  break;
+              case TIME:
+                  tgt.setValue(ObservationDefinition.ObservationDataType.TIME);
+                  break;
+              case DATETIME:
+                  tgt.setValue(ObservationDefinition.ObservationDataType.DATETIME);
+                  break;
+              case PERIOD:
+                  tgt.setValue(ObservationDefinition.ObservationDataType.PERIOD);
+                  break;
+              default:
+                  tgt.setValue(ObservationDefinition.ObservationDataType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType> convertObservationDataType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ObservationDefinition.ObservationDataType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataTypeEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case QUANTITY:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.QUANTITY);
-        break;
-      case CODEABLECONCEPT:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.CODEABLECONCEPT);
-        break;
-      case STRING:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.STRING);
-        break;
-      case BOOLEAN:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.BOOLEAN);
-        break;
-      case INTEGER:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.INTEGER);
-        break;
-      case RANGE:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.RANGE);
-        break;
-      case RATIO:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.RATIO);
-        break;
-      case SAMPLEDDATA:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.SAMPLEDDATA);
-        break;
-      case TIME:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.TIME);
-        break;
-      case DATETIME:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.DATETIME);
-        break;
-      case PERIOD:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.PERIOD);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataTypeEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case QUANTITY:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.QUANTITY);
+                  break;
+              case CODEABLECONCEPT:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.CODEABLECONCEPT);
+                  break;
+              case STRING:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.STRING);
+                  break;
+              case BOOLEAN:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.BOOLEAN);
+                  break;
+              case INTEGER:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.INTEGER);
+                  break;
+              case RANGE:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.RANGE);
+                  break;
+              case RATIO:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.RATIO);
+                  break;
+              case SAMPLEDDATA:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.SAMPLEDDATA);
+                  break;
+              case TIME:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.TIME);
+                  break;
+              case DATETIME:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.DATETIME);
+                  break;
+              case PERIOD:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.PERIOD);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDataType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
 
@@ -254,46 +264,54 @@ public class ObservationDefinition40_50 {
 //    }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ObservationDefinition.ObservationRangeCategory> convertObservationRangeCategory(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategory> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ObservationDefinition.ObservationRangeCategory> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ObservationDefinition.ObservationRangeCategoryEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REFERENCE:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationRangeCategory.REFERENCE);
-        break;
-      case CRITICAL:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationRangeCategory.CRITICAL);
-        break;
-      case ABSOLUTE:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationRangeCategory.ABSOLUTE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.ObservationDefinition.ObservationRangeCategory.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<ObservationDefinition.ObservationRangeCategory> tgt = new Enumeration<>(new ObservationDefinition.ObservationRangeCategoryEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case REFERENCE:
+                  tgt.setValue(ObservationDefinition.ObservationRangeCategory.REFERENCE);
+                  break;
+              case CRITICAL:
+                  tgt.setValue(ObservationDefinition.ObservationRangeCategory.CRITICAL);
+                  break;
+              case ABSOLUTE:
+                  tgt.setValue(ObservationDefinition.ObservationRangeCategory.ABSOLUTE);
+                  break;
+              default:
+                  tgt.setValue(ObservationDefinition.ObservationRangeCategory.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategory> convertObservationRangeCategory(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ObservationDefinition.ObservationRangeCategory> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategory> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategoryEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REFERENCE:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategory.REFERENCE);
-        break;
-      case CRITICAL:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategory.CRITICAL);
-        break;
-      case ABSOLUTE:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategory.ABSOLUTE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategory.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategory> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategoryEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case REFERENCE:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategory.REFERENCE);
+                  break;
+              case CRITICAL:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategory.CRITICAL);
+                  break;
+              case ABSOLUTE:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategory.ABSOLUTE);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategory.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

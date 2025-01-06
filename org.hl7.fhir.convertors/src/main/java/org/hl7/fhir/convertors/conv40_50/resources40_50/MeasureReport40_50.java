@@ -10,6 +10,8 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.MeasureReport;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -103,97 +105,113 @@ public class MeasureReport40_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MeasureReport.MeasureReportStatus> convertMeasureReportStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MeasureReport.MeasureReportStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MeasureReport.MeasureReportStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MeasureReport.MeasureReportStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case COMPLETE:
-        tgt.setValue(org.hl7.fhir.r5.model.MeasureReport.MeasureReportStatus.COMPLETE);
-        break;
-      case PENDING:
-        tgt.setValue(org.hl7.fhir.r5.model.MeasureReport.MeasureReportStatus.PENDING);
-        break;
-      case ERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.MeasureReport.MeasureReportStatus.ERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.MeasureReport.MeasureReportStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<MeasureReport.MeasureReportStatus> tgt = new Enumeration<>(new MeasureReport.MeasureReportStatusEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case COMPLETE:
+                  tgt.setValue(MeasureReport.MeasureReportStatus.COMPLETE);
+                  break;
+              case PENDING:
+                  tgt.setValue(MeasureReport.MeasureReportStatus.PENDING);
+                  break;
+              case ERROR:
+                  tgt.setValue(MeasureReport.MeasureReportStatus.ERROR);
+                  break;
+              default:
+                  tgt.setValue(MeasureReport.MeasureReportStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MeasureReport.MeasureReportStatus> convertMeasureReportStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MeasureReport.MeasureReportStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MeasureReport.MeasureReportStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MeasureReport.MeasureReportStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case COMPLETE:
-        tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportStatus.COMPLETE);
-        break;
-      case PENDING:
-        tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportStatus.PENDING);
-        break;
-      case ERROR:
-        tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportStatus.ERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MeasureReport.MeasureReportStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MeasureReport.MeasureReportStatusEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case COMPLETE:
+                  tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportStatus.COMPLETE);
+                  break;
+              case PENDING:
+                  tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportStatus.PENDING);
+                  break;
+              case ERROR:
+                  tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportStatus.ERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MeasureReport.MeasureReportType> convertMeasureReportType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MeasureReport.MeasureReportType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MeasureReport.MeasureReportType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MeasureReport.MeasureReportTypeEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case INDIVIDUAL:
-        tgt.setValue(org.hl7.fhir.r5.model.MeasureReport.MeasureReportType.INDIVIDUAL);
-        break;
-      case SUBJECTLIST:
-        tgt.setValue(org.hl7.fhir.r5.model.MeasureReport.MeasureReportType.SUBJECTLIST);
-        break;
-      case SUMMARY:
-        tgt.setValue(org.hl7.fhir.r5.model.MeasureReport.MeasureReportType.SUMMARY);
-        break;
-      case DATACOLLECTION:
-        tgt.setValue(org.hl7.fhir.r5.model.MeasureReport.MeasureReportType.DATAEXCHANGE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.MeasureReport.MeasureReportType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<MeasureReport.MeasureReportType> tgt = new Enumeration<>(new MeasureReport.MeasureReportTypeEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case INDIVIDUAL:
+                  tgt.setValue(MeasureReport.MeasureReportType.INDIVIDUAL);
+                  break;
+              case SUBJECTLIST:
+                  tgt.setValue(MeasureReport.MeasureReportType.SUBJECTLIST);
+                  break;
+              case SUMMARY:
+                  tgt.setValue(MeasureReport.MeasureReportType.SUMMARY);
+                  break;
+              case DATACOLLECTION:
+                  tgt.setValue(MeasureReport.MeasureReportType.DATAEXCHANGE);
+                  break;
+              default:
+                  tgt.setValue(MeasureReport.MeasureReportType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MeasureReport.MeasureReportType> convertMeasureReportType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MeasureReport.MeasureReportType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MeasureReport.MeasureReportType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MeasureReport.MeasureReportTypeEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case INDIVIDUAL:
-        tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportType.INDIVIDUAL);
-        break;
-      case SUBJECTLIST:
-        tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportType.SUBJECTLIST);
-        break;
-      case SUMMARY:
-        tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportType.SUMMARY);
-        break;
-      case DATAEXCHANGE:
-        tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportType.DATACOLLECTION);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MeasureReport.MeasureReportType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MeasureReport.MeasureReportTypeEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case INDIVIDUAL:
+                  tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportType.INDIVIDUAL);
+                  break;
+              case SUBJECTLIST:
+                  tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportType.SUBJECTLIST);
+                  break;
+              case SUMMARY:
+                  tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportType.SUMMARY);
+                  break;
+              case DATAEXCHANGE:
+                  tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportType.DATACOLLECTION);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.MeasureReport.MeasureReportType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupComponent convertMeasureReportGroupComponent(org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupComponent src) throws FHIRException {

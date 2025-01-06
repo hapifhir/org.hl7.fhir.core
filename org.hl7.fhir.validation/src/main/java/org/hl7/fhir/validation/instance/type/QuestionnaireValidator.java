@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -241,7 +242,11 @@ public class QuestionnaireValidator extends BaseValidator {
         Element e = item.getNamedChild("type", false);
         if (e != null) {
           NodeStack ne = ns.push(e, -1, e.getProperty().getDefinition(), e.getProperty().getDefinition());
-          ok = rule(errors, "2023-06-15", IssueType.BUSINESSRULE, ne, qi.getType().toCode().equals(e.primitiveValue()), I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_NC_TYPE, derivation.questionnaire.getUrl(), linkId, qi.getType().toCode(), e.primitiveValue()) && ok;
+          String myType = qi.getType().toCode();
+          if (qi.getTypeElement().hasExtension(ToolingExtensions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL)) {
+            myType = qi.getTypeElement().getExtensionString(ToolingExtensions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL);
+          }
+          ok = rule(errors, "2023-06-15", IssueType.BUSINESSRULE, ne, myType.equals(e.primitiveValue()), I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_NC_TYPE, derivation.questionnaire.getUrl(), linkId, qi.getType().toCode(), e.primitiveValue()) && ok;
         }
       }
 
@@ -476,14 +481,14 @@ public class QuestionnaireValidator extends BaseValidator {
         qok = warning(errors, NO_RULE_DATE, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
       }
       if (qok) {
-        boolean inProgress = "in-progress".equals(element.getNamedChildValue("status", false));
-        ok = validateQuestionannaireResponseItems(hostContext, qsrc, qsrc.q().getItem(), errors, element, stack, inProgress, element, new QStack(qsrc, element)) && ok;
+        boolean notCompleted = !Utilities.existsInList(element.getNamedChildValue("status", false), "completed", "amended");
+        ok = validateQuestionannaireResponseItems(hostContext, qsrc, qsrc.q().getItem(), errors, element, stack, notCompleted, element, new QStack(qsrc, element)) && ok;
       }
     }
     return ok;
   }
 
-  private boolean validateQuestionnaireResponseItem(ValidationContext hostContext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+  private boolean validateQuestionnaireResponseItem(ValidationContext hostContext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean notCompleted, Element questionnaireResponseRoot, QStack qstack) {
     BooleanHolder ok = new BooleanHolder();
     
     String text = element.getNamedChildValue("text", false);
@@ -491,7 +496,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
     List<Element> answers = new ArrayList<Element>();
     element.getNamedChildren("answer", answers);
-    if (inProgress)
+    if (notCompleted)
       warning(errors, NO_RULE_DATE, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), isAnswerRequirementFulfilled(qItem, answers), I18nConstants.QUESTIONNAIRE_QR_ITEM_MISSING, qItem.getLinkId());
     else if (myEnableWhenEvaluator.isQuestionEnabled(hostContext, qItem, qstack, fpe)) {
       ok.see(rule(errors, NO_RULE_DATE, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), isAnswerRequirementFulfilled(qItem, answers), I18nConstants.QUESTIONNAIRE_QR_ITEM_MISSING, qItem.getLinkId()));
@@ -586,7 +591,7 @@ public class QuestionnaireValidator extends BaseValidator {
       }
       if (qItem.getType() != QuestionnaireItemType.GROUP) {
         // if it's a group, we already have an error before getting here, so no need to hammer away on that 
-        ok.see(validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, answer, stack, inProgress, questionnaireResponseRoot, qstack));
+        ok.see(validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, answer, stack, notCompleted, questionnaireResponseRoot, qstack));
       }
       i++;
     }
@@ -601,7 +606,7 @@ public class QuestionnaireValidator extends BaseValidator {
       element.getNamedChildren("item", items);
       ok.see(rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), items.isEmpty(), I18nConstants.QUESTIONNAIRE_QR_ITEM_GROUP_ANSWER, qItem.getLinkId()));
     } else {
-      ok.see(validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, element, stack, inProgress, questionnaireResponseRoot, qstack));
+      ok.see(validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, element, stack, notCompleted, questionnaireResponseRoot, qstack));
     }
     return ok.ok();
   }
@@ -610,14 +615,14 @@ public class QuestionnaireValidator extends BaseValidator {
     return !answers.isEmpty() || !qItem.getRequired() || qItem.getType() == QuestionnaireItemType.GROUP;
   }
 
-  private boolean validateQuestionnaireResponseItem(ValidationContext hostcontext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<ElementWithIndex> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+  private boolean validateQuestionnaireResponseItem(ValidationContext hostcontext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<ElementWithIndex> elements, NodeStack stack, boolean notCompleted, Element questionnaireResponseRoot, QStack qstack) {
     boolean ok = true;
     if (elements.size() > 1) {
       ok = rulePlural(errors, NO_RULE_DATE, IssueType.INVALID, elements.get(1).getElement().line(), elements.get(1).getElement().col(), stack.getLiteralPath(), qItem.getRepeats(), elements.size(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEI, qItem.getLinkId()) && ok;
     }
     for (ElementWithIndex element : elements) {
       NodeStack ns = stack.push(element.getElement(), element.getIndex(), null, null);
-      ok = validateQuestionnaireResponseItem(hostcontext, qsrc, qItem, errors, element.getElement(), ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, element.getElement())) && ok;
+      ok = validateQuestionnaireResponseItem(hostcontext, qsrc, qItem, errors, element.getElement(), ns, notCompleted, questionnaireResponseRoot, qstack.push(qItem, element.getElement())) && ok;
     }
     return ok;
   }
@@ -630,7 +635,7 @@ public class QuestionnaireValidator extends BaseValidator {
     return -1;
   }
 
-  private boolean validateQuestionannaireResponseItems(ValidationContext hostContext, QuestionnaireWithContext qsrc, List<QuestionnaireItemComponent> qItems, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+  private boolean validateQuestionannaireResponseItems(ValidationContext hostContext, QuestionnaireWithContext qsrc, List<QuestionnaireItemComponent> qItems, List<ValidationMessage> errors, Element element, NodeStack stack, boolean notCompleted, Element questionnaireResponseRoot, QStack qstack) {
     boolean ok = true;
     List<Element> items = new ArrayList<Element>();
     element.getNamedChildren("item", items);
@@ -647,7 +652,7 @@ public class QuestionnaireValidator extends BaseValidator {
           if (qItem != null) {
             ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, item.line(), item.col(), stack.getLiteralPath(), index > -1, misplacedItemError(qItem)) && ok;
             NodeStack ns = stack.push(item, counter, null, null);
-            ok = validateQuestionnaireResponseItem(hostContext, qsrc, qItem, errors, item, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, item)) && ok;
+            ok = validateQuestionnaireResponseItem(hostContext, qsrc, qItem, errors, item, ns, notCompleted, questionnaireResponseRoot, qstack.push(qItem, item)) && ok;
           } else
             ok = rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, item.line(), item.col(), stack.getLiteralPath(), index > -1, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTFOUND, linkId) && ok;
         } else {
@@ -670,12 +675,12 @@ public class QuestionnaireValidator extends BaseValidator {
     // ok, now we have a list of known items, grouped by linkId. We've made an error for anything out of order
     for (QuestionnaireItemComponent qItem : qItems) {
       List<ElementWithIndex> mapItem = map.get(qItem.getLinkId());
-      ok = validateQuestionnaireResponseItem(hostContext, qsrc, errors, element, stack, inProgress, questionnaireResponseRoot, qItem, mapItem, qstack) && ok;
+      ok = validateQuestionnaireResponseItem(hostContext, qsrc, errors, element, stack, notCompleted, questionnaireResponseRoot, qItem, mapItem, qstack) && ok;
     }
     return ok;
   }
 
-  public boolean validateQuestionnaireResponseItem(ValidationContext hostContext, QuestionnaireWithContext qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<ElementWithIndex> mapItem, QStack qstack) {
+  public boolean validateQuestionnaireResponseItem(ValidationContext hostContext, QuestionnaireWithContext qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean notCompleted, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<ElementWithIndex> mapItem, QStack qstack) {
     boolean ok = true;
     boolean enabled = myEnableWhenEvaluator.isQuestionEnabled(hostContext, qItem, qstack, fpe);
     if (mapItem != null) {
@@ -687,14 +692,14 @@ public class QuestionnaireValidator extends BaseValidator {
       }
 
       // Recursively validate child items
-      ok = validateQuestionnaireResponseItem(hostContext, qsrc, qItem, errors, mapItem, stack, inProgress, questionnaireResponseRoot, qstack) && ok;
+      ok = validateQuestionnaireResponseItem(hostContext, qsrc, qItem, errors, mapItem, stack, notCompleted, questionnaireResponseRoot, qstack) && ok;
 
     } else {
 
       // item is missing, is the question enabled?
       if (enabled && qItem.getRequired()) {
         String message = context.formatMessage(I18nConstants.QUESTIONNAIRE_QR_ITEM_MISSING, qItem.getLinkId());
-        if (inProgress) {
+        if (notCompleted) {
           warning(errors, NO_RULE_DATE, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, message);
         } else {
           ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, message) && ok;

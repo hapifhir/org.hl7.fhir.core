@@ -43,7 +43,7 @@ public class LiquidEngineTests implements ILiquidEngineIncludeResolver {
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {
     testdoc = (JsonObject) new com.google.gson.JsonParser()
-        .parse(TestingUtilities.loadTestResource("r5", "liquid", "liquid-tests.json"));
+        .parse(TestingUtilities.loadTestResource("r4b", "liquid", "liquid-tests.json"));
     JsonArray tests = testdoc.getAsJsonArray("tests");
     List<Arguments> objects = new ArrayList<>();
     for (JsonElement n : tests) {

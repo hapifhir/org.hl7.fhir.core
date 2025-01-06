@@ -11,6 +11,8 @@ import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Date
 import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Id14_30;
 import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.String14_30;
 import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Uri14_30;
+import org.hl7.fhir.dstu3.model.DataElement;
+import org.hl7.fhir.dstu3.model.Enumeration;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class DataElement14_30 {
@@ -150,64 +152,72 @@ public class DataElement14_30 {
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.DataElement.DataElementStringency> convertDataElementStringency(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.DataElement.DataElementStringency> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.DataElement.DataElementStringencyEnumFactory());
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case COMPARABLE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DataElement.DataElementStringency.COMPARABLE);
-        break;
-      case FULLYSPECIFIED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DataElement.DataElementStringency.FULLYSPECIFIED);
-        break;
-      case EQUIVALENT:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DataElement.DataElementStringency.EQUIVALENT);
-        break;
-      case CONVERTABLE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DataElement.DataElementStringency.CONVERTABLE);
-        break;
-      case SCALEABLE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DataElement.DataElementStringency.SCALEABLE);
-        break;
-      case FLEXIBLE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DataElement.DataElementStringency.FLEXIBLE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DataElement.DataElementStringency.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<DataElement.DataElementStringency> tgt = new Enumeration<>(new DataElement.DataElementStringencyEnumFactory());
+      ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case COMPARABLE:
+                  tgt.setValue(DataElement.DataElementStringency.COMPARABLE);
+                  break;
+              case FULLYSPECIFIED:
+                  tgt.setValue(DataElement.DataElementStringency.FULLYSPECIFIED);
+                  break;
+              case EQUIVALENT:
+                  tgt.setValue(DataElement.DataElementStringency.EQUIVALENT);
+                  break;
+              case CONVERTABLE:
+                  tgt.setValue(DataElement.DataElementStringency.CONVERTABLE);
+                  break;
+              case SCALEABLE:
+                  tgt.setValue(DataElement.DataElementStringency.SCALEABLE);
+                  break;
+              case FLEXIBLE:
+                  tgt.setValue(DataElement.DataElementStringency.FLEXIBLE);
+                  break;
+              default:
+                  tgt.setValue(DataElement.DataElementStringency.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency> convertDataElementStringency(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.DataElement.DataElementStringency> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringencyEnumFactory());
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case COMPARABLE:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency.COMPARABLE);
-        break;
-      case FULLYSPECIFIED:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency.FULLYSPECIFIED);
-        break;
-      case EQUIVALENT:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency.EQUIVALENT);
-        break;
-      case CONVERTABLE:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency.CONVERTABLE);
-        break;
-      case SCALEABLE:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency.SCALEABLE);
-        break;
-      case FLEXIBLE:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency.FLEXIBLE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringencyEnumFactory());
+      ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case COMPARABLE:
+                  tgt.setValue(org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency.COMPARABLE);
+                  break;
+              case FULLYSPECIFIED:
+                  tgt.setValue(org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency.FULLYSPECIFIED);
+                  break;
+              case EQUIVALENT:
+                  tgt.setValue(org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency.EQUIVALENT);
+                  break;
+              case CONVERTABLE:
+                  tgt.setValue(org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency.CONVERTABLE);
+                  break;
+              case SCALEABLE:
+                  tgt.setValue(org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency.SCALEABLE);
+                  break;
+              case FLEXIBLE:
+                  tgt.setValue(org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency.FLEXIBLE);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu2016may.model.DataElement.DataElementStringency.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

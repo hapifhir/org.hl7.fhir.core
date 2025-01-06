@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
@@ -241,15 +242,19 @@ public class ValueSetValidator extends BaseValidator {
       String v = ve.getValue();
       ValueSet vs = context.findTxResource(ValueSet.class, v);
       if (vs == null) {
-        NodeStack ns = stack.push(ve, i, ve.getProperty().getDefinition(), ve.getProperty().getDefinition());
+        // we couldn't find it, but it might be an implicit value set 
+        ValueSetExpansionOutcome vse = context.expandVS(v, true, false, 0);
+        if (!vse.isOk() ) {
+          NodeStack ns = stack.push(ve, i, ve.getProperty().getDefinition(), ve.getProperty().getDefinition());
 
-        Resource rs = context.findTxResource(Resource.class, v);
-        if (rs != null) {
-          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE, v, rs.fhirType());                      
-        } else { 
-          // todo: it's possible, at this point, that the txx server knows the value set, but it's not in scope
-          // should we handle this case?
-          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_UNKNOWN, v);            
+          Resource rs = context.fetchResource(Resource.class, v);
+          if (rs != null) {
+            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE, v, rs.fhirType());                      
+          } else { 
+            // todo: it's possible, at this point, that the txx server knows the value set, but it's not in scope
+            // should we handle this case?
+            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_UNKNOWN, v);            
+          }
         }
       }
       i++;
@@ -324,7 +329,7 @@ public class ValueSetValidator extends BaseValidator {
         List<VSCodingValidationRequest> batch = new ArrayList<>();
         boolean first = true;
         if (concepts.size() > TOO_MANY_CODES_TO_VALIDATE) {
-          hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_TOO_MANY_CODES, batch.size());
+          hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_TOO_MANY_CODES, concepts.size());
         } else {        
           if (((InstanceValidator) parent).isValidateValueSetCodesOnTxServer() && !context.isNoTerminologyServer()) {
             try {

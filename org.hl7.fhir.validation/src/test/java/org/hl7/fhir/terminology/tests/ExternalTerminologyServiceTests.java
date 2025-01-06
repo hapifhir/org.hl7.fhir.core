@@ -21,9 +21,9 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.validation.special.TxTestData;
 import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
 import org.junit.Test;
@@ -52,8 +52,10 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
 
-    String contents = TestingUtilities.loadTestResource("tx", "test-cases.json");
-    externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(TestingUtilities.loadTestResource("tx", "messages-tx.fhir.org.json"));
+    txtests = TxTestData.loadTestDataFromPackage("dev");
+    
+    String contents = txtests.load("test-cases.json");
+    externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(txtests.load("messages-tx.fhir.org.json"));
 
     Map<String, JsonObjectPair> examples = new HashMap<String, JsonObjectPair>();
     manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
@@ -82,6 +84,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   private String version = "5.0.0";
   private static TxTester tester;
   private List<String> modes = new ArrayList<>();
+  private static TxTestData txtests;
 
   public ExternalTerminologyServiceTests(String name, JsonObjectPair setup) {
     this.setup = setup;
@@ -106,7 +109,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   }
   
   public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
-    String contents = TestingUtilities.loadTestResource("tx", filename);
+    String contents = txtests.load(filename);
     try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
       if (filename.contains(".json")) {
         if (Constants.VERSION.equals(version) || "5.0".equals(version))
@@ -145,6 +148,11 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
 
   @Override
   public byte[] loadContent(String filename) throws FileNotFoundException, IOException {
-    return TestingUtilities.loadTestResourceBytes("tx", filename);
+    return txtests.loadBytes(filename);
+  }
+
+  @Override
+  public boolean hasContent(String filename) throws IOException {
+    return txtests.hasFile(filename);
   }
 }
