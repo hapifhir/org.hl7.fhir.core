@@ -1676,4 +1676,13 @@ public class Element extends Base implements NamedItem {
     return this.elided;
   }
   
+  public void stripLocations() {
+    line = -1;
+    col = -1;
+    if (children != null) {
+      for (Element child : children) {
+        child.stripLocations();
+      }
+    }
+  }
 }

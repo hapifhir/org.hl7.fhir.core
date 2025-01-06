@@ -57,6 +57,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.BaseWorkerContext.IByteProvider;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.context.IWorkerContext.ITerminologyOperationDetails;
@@ -141,6 +142,7 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
@@ -148,6 +150,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -158,6 +161,58 @@ import javax.annotation.Nonnull;
 
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
+  public interface IByteProvider {
+    byte[] bytes() throws IOException;
+  }
+
+  public class BytesProvider implements IByteProvider {
+
+    private byte[] bytes;
+
+    protected BytesProvider(byte[] bytes) {
+      super();
+      this.bytes = bytes;
+    }
+
+    @Override
+    public byte[] bytes() throws IOException {
+      return bytes;
+    }
+
+  }
+
+  public class BytesFromPackageProvider implements IByteProvider {
+
+    private NpmPackage pi;
+    private String name;
+
+    public BytesFromPackageProvider(NpmPackage pi, String name) {
+      this.pi = pi;
+      this.name = name;
+    }
+
+    @Override
+    public byte[] bytes() throws IOException {
+      return TextFile.streamToBytes(pi.load("other", name));
+    }
+
+  }
+  
+  public class BytesFromFileProvider implements IByteProvider {
+
+    private String name;
+
+    public BytesFromFileProvider(String name) {
+      this.name = name;
+    }
+
+    @Override
+    public byte[] bytes() throws IOException {
+      return TextFile.streamToBytes(ManagedFileAccess.inStream(name));
+    }
+
+  }
+  
   class OIDSource {
     private String folder;
     private Connection db;
@@ -265,7 +320,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   
   private UcumService ucumService;
-  protected Map<String, byte[]> binaries = new HashMap<String, byte[]>();
+  protected Map<String, IByteProvider> binaries = new HashMap<String, IByteProvider>();
   protected Map<String, Set<OIDDefinition>> oidCacheManual = new HashMap<>();
   protected List<OIDSource> oidSources = new ArrayList<>();
 
@@ -3137,7 +3192,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public byte[] getBinaryForKey(String binaryKey) {
-    return binaries.get(binaryKey);
+    IByteProvider bp = binaries.get(binaryKey);
+    try {
+      return bp == null ? null : bp.bytes();
+    } catch (Exception e) {
+      throw new FHIRException(e);
+    }
   }
 
   public void finishLoading(boolean genSnapshots) {
