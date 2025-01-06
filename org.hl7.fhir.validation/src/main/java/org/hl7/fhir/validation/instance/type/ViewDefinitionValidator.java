@@ -259,7 +259,7 @@ public class ViewDefinitionValidator extends BaseValidator {
         List<IssueMessage> warnings = new ArrayList<>();
         TypeDetails td = null;
         try {
-          td = vec.fpe.checkOnTypes(vd, resourceName, t, n, warnings);
+          td = vec.fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
         } catch (Exception e) {
           rule(errors, "2024-11-14", IssueType.EXCEPTION, stack, false, I18nConstants.VIEWDEFINITION_PATH_ERROR, e.getMessage(), vdesc);
           ok = false;
@@ -422,7 +422,7 @@ public class ViewDefinitionValidator extends BaseValidator {
         List<IssueMessage> warnings = new ArrayList<>();
         TypeDetails td = null;
         try {
-          td = vec.fpe.checkOnTypes(vd, resourceName, t, n, warnings);
+          td = vec.fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
         } catch (Exception e) {        
           rule(errors, "2024-11-14", IssueType.EXCEPTION, stack, false, I18nConstants.VIEWDEFINITION_PATH_ERROR, e.getMessage(), vdesc);
           return null;
@@ -448,7 +448,7 @@ public class ViewDefinitionValidator extends BaseValidator {
         List<IssueMessage> warnings = new ArrayList<>();
         TypeDetails td = null;
         try {
-          td = vec.fpe.checkOnTypes(vd, resourceName, t, n, warnings);
+          td = vec.fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
         } catch (Exception e) {     
           rule(errors, "2024-11-14", IssueType.EXCEPTION, stack, false, I18nConstants.VIEWDEFINITION_PATH_ERROR, e.getMessage(), vdesc);
           return null;
@@ -482,7 +482,7 @@ public class ViewDefinitionValidator extends BaseValidator {
         types.add(resourceName);
         TypeDetails td = null;
         try {
-          td = vec.fpe.checkOnTypes(vd, resourceName, types, n, warnings);} 
+          td = vec.fpe.checkOnTypes(vd, "Resource", resourceName, types, n, warnings);} 
         catch (Exception e) {
           rule(errors, "2024-11-14", IssueType.EXCEPTION, stack, false, I18nConstants.VIEWDEFINITION_PATH_ERROR, e.getMessage(), vdesc);
           ok = false;

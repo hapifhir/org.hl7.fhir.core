@@ -34,6 +34,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IBaseDecimalDatatype;
 
 /**
@@ -78,7 +79,7 @@ public class DecimalType extends PrimitiveType<BigDecimal> implements Comparable
    * Constructor
    */
   public DecimalType(String theValue) {
-    setValue(new BigDecimal(theValue));
+    setValueAsString(theValue);
   }
 
   @Override
@@ -146,6 +147,14 @@ public class DecimalType extends PrimitiveType<BigDecimal> implements Comparable
    */
   public void setValueAsInteger(int theValue) {
     setValue(new BigDecimal(theValue));
+  }
+
+  public void setValueAsString(String theString) {
+    if (StringUtils.isBlank(theString)) {
+      setValue((BigDecimal) null);
+    } else {
+      setValue(new BigDecimal(theString));
+    }
   }
 
   @Override

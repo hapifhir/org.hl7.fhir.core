@@ -27,7 +27,6 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -60,7 +59,7 @@ private static TxTestData testData;
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
-    testData = TxTestData.loadTestDataFromDefaultClassPath();
+    testData = TxTestData.loadTestDataFromPackage("dev");
     return testData.getTestData();
   }
 
@@ -95,7 +94,7 @@ private static TxTestData testData;
     String reqFile = setup.getTest().asString("request");
     Resource req = reqFile == null ? null : loadResource(reqFile);
     String fn = setup.getTest().has("response:tx.fhir.org") ? setup.getTest().asString("response:tx.fhir.org") : setup.getTest().asString("response");
-    String resp = TestingUtilities.loadTestResource("tx", fn);
+    String resp = testData.load(fn);
     String fp = Utilities.path("[tmp]", "tx", fn);
     JsonObject ext = testData.getExternals() == null ? null : testData.getExternals().getJsonObject(fn);
     File fo = ManagedFileAccess.file(fp);
@@ -124,7 +123,12 @@ private static TxTestData testData;
 
   private void expand(String id, ValidationEngine engine, Resource req, String resp, String lang, String fp, JsonObject ext) throws IOException {
     org.hl7.fhir.r5.model.Parameters p = ( org.hl7.fhir.r5.model.Parameters) req;
-    ValueSet vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
+    ValueSet vs;
+    if (p.hasParameter("valueSetVersion")) {      
+      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), p.getParameterValue("valueSetVersion").primitiveValue());
+    } else {
+      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
+    }
     boolean hierarchical = p.hasParameter("excludeNested") ? p.getParameterBool("excludeNested") == false : true;
     Assertions.assertNotNull(vs);
     if (lang != null && !p.hasParameter("displayLanguage")) {
@@ -211,7 +215,7 @@ private static TxTestData testData;
 
 
   public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
-    String contents = TestingUtilities.loadTestResource("tx", filename);
+    String contents = testData.load(filename);
     try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
       if (filename.contains(".json")) {
         if (Constants.VERSION.equals(version) || "5.0".equals(version))

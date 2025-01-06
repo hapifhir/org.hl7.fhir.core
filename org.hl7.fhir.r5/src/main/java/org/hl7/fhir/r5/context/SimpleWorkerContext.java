@@ -217,6 +217,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
     @With
     private final org.hl7.fhir.r5.context.ILoggingService loggingService;
+    private boolean defaultExpParams;
 
     public SimpleWorkerContextBuilder() {
       cacheTerminologyClientErrors = false;
@@ -243,10 +244,16 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
 
     private SimpleWorkerContext build(SimpleWorkerContext context) throws IOException {
+      if (VersionUtilities.isR2Ver(context.getVersion()) || VersionUtilities.isR2Ver(context.getVersion())) {
+        System.out.println("As of end 2024, FHIR R2 (version "+context.getVersion()+") is no longer officially supported.");
+      }
       context.initTxCache(terminologyCachePath);
       context.setUserAgent(userAgent);
       context.setLogger(loggingService);
       context.cacheResource(new org.hl7.fhir.r5.formats.JsonParser().parse(MagicResources.spdxCodesAsData()));
+      if (defaultExpParams) {
+        context.setExpansionParameters(makeExpProfile());
+      }
       return context;
     }
 
@@ -257,6 +264,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       context.loadFromPackage(pi, null);
       return build(context);
     }
+    
+    private Parameters makeExpProfile() {
+      Parameters ep = new Parameters();
+      ep.addParameter("cache-id", UUID.randomUUID().toString().toLowerCase());
+      return ep;
+    }
 
     public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader, boolean genSnapshots) throws IOException, FHIRException {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
@@ -265,6 +278,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       context.terminologyClientManager.setFactory(loader.txFactory());
       context.loadFromPackage(pi, loader);
       context.finishLoading(genSnapshots);
+      if (defaultExpParams) {
+        context.setExpansionParameters(makeExpProfile());
+      }
       return build(context);
     }
 
@@ -321,6 +337,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     public SimpleWorkerContext fromNothing() throws FHIRException, IOException  {
       return build();
     }
+
+    public SimpleWorkerContextBuilder withDefaultParams() {
+      defaultExpParams = true;
+      return this;
+    }
   }
 
   private void loadDefinitionItem(String name, InputStream stream, IContextResourceLoader loader, ILoadFilter filter, PackageInformation pi) throws IOException, FHIRException {
@@ -331,7 +352,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     else if (name.equals("version.info"))
       readVersionInfo(stream);
     else
-      loadBytes(name, stream);
+      binaries.put(name, new BytesProvider(TextFile.streamToBytesNoClose(stream)));
   }
 
   public void connectToTSServer(ITerminologyClientFactory factory, ITerminologyClient client, boolean useEcosystem) {
@@ -551,7 +572,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       }
     }
 	  for (String s : pi.list("other")) {
-	    binaries.put(s, TextFile.streamToBytes(pi.load("other", s)));
+	    binaries.put(s, new BytesFromPackageProvider(pi, s));
 	  }
 	  if (version == null) {
 	    version = pi.version();
@@ -585,7 +606,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   private void readVersionInfo(InputStream stream) throws IOException, DefinitionException {
     byte[] bytes = IOUtils.toByteArray(stream);
-    binaries.put("version.info", bytes);
+    binaries.put("version.info", new BytesProvider(bytes));
 
     String[] vi = new String(bytes).split("\\r?\\n");
     for (String s : vi) {
@@ -601,11 +622,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       if (s.startsWith("date="))
         date = s.substring(5);
     }
-  }
-
-	private void loadBytes(String name, InputStream stream) throws IOException {
-    byte[] bytes = IOUtils.toByteArray(stream);
-	  binaries.put(name, bytes);
   }
 
 	@Override
@@ -641,13 +657,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   public void loadBinariesFromFolder(String folder) throws IOException {
     for (String n : ManagedFileAccess.file(folder).list()) {
-      loadBytes(n, ManagedFileAccess.inStream(Utilities.path(folder, n)));
+      binaries.put(n, new BytesFromFileProvider(Utilities.path(folder, n)));
     }
   }
   
   public void loadBinariesFromFolder(NpmPackage pi) throws IOException {
     for (String n : pi.list("other")) {
-      loadBytes(n, pi.load("other", n));
+      binaries.put(n, new BytesFromPackageProvider(pi, n));
     }
   }
   

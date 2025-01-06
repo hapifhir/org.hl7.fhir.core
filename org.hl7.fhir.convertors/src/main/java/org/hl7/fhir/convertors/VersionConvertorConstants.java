@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors;
 
 import org.hl7.fhir.r5.renderers.QuestionnaireRenderer;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -43,7 +44,7 @@ public class VersionConvertorConstants {
   public final static String IG_CONFORMANCE_MESSAGE_EVENT = "http://hl7.org/fhir/1.0/StructureDefinition/extension-Conformance.messaging.event";
   public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
   public static final String EXT_ACTUAL_RESOURCE_NAME = "http://hl7.org/fhir/tools/StructureDefinition/original-resource-name";
-  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = QuestionnaireRenderer.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL;
+  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = ToolingExtensions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL;
   public static final String EXT_NAMINGSYSTEM_TITLE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.title";
   public static final String EXT_NAMINGSYSTEM_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url";
   public static final String EXT_NAMINGSYSTEM_VERSION = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version";

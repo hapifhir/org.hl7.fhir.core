@@ -261,7 +261,7 @@ public class ProfilePathProcessor {
 
   private void processSimplePathDefault(ElementDefinition currentBase, String currentBasePath, List<ElementDefinition> diffMatches, ProfilePathProcessorState cursors, MappingAssistant mapHelper) {
     // ok, the differential slices the item. Let's check our pre-conditions to ensure that this is correct
-    if (!profileUtilities.unbounded(currentBase) && !profileUtilities.isSlicedToOneOnly(diffMatches.get(0)))
+    if (!profileUtilities.unbounded(currentBase) && !(profileUtilities.isSlicedToOneOnly(diffMatches.get(0)) || profileUtilities.isTypeSlicing(diffMatches.get(0))))
       // you can only slice an element that doesn't repeat if the sum total of your slices is limited to 1
       // (but you might do that in order to split up constraints by type)
       throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.ATTEMPT_TO_A_SLICE_AN_ELEMENT_THAT_DOES_NOT_REPEAT__FROM__IN_, currentBase.getPath(), currentBase.getPath(), cursors.contextName, diffMatches.get(0).getId(), profileUtilities.sliceNames(diffMatches)));
@@ -325,7 +325,6 @@ public class ProfilePathProcessor {
       // differential - if the first one in the list has a name, we'll process it. Else we'll treat it as the base definition of the slice.
       if (!diffMatches.get(0).hasSliceName()) {
         profileUtilities.updateFromDefinition(outcome, diffMatches.get(0), getProfileName(), isTrimDifferential(), getUrl(),getSourceStructureDefinition(), getDerived(), diffPath(diffMatches.get(0)), mapHelper);
-        profileUtilities.removeStatusExtensions(outcome);
         if (!outcome.hasContentReference() && !outcome.hasType() && outcome.getPath().contains(".")) {
           throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.NOT_DONE_YET));
         }
@@ -615,8 +614,10 @@ public class ProfilePathProcessor {
         }
       }
       if (firstTypeStructureDefinition != null) {
-        if (!profileUtilities.isMatchingType(firstTypeStructureDefinition, diffMatches.get(0).getType(), firstTypeProfile.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT))) {
-          throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE2, firstTypeStructureDefinition.getUrl(), diffMatches.get(0).getPath(), firstTypeStructureDefinition.getType(), firstTypeProfile.getValue(), diffMatches.get(0).getType().get(0).getWorkingCode()));
+        if (!profileUtilities.isGenerating(firstTypeStructureDefinition)) { // can't do this check while generating
+          if (!profileUtilities.isMatchingType(firstTypeStructureDefinition, diffMatches.get(0).getType(), firstTypeProfile.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT))) {
+            throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE2, firstTypeStructureDefinition.getUrl(), diffMatches.get(0).getPath(), firstTypeStructureDefinition.getType(), firstTypeProfile.getValue(), diffMatches.get(0).getType().get(0).getWorkingCode()));
+          }
         }
         if (profileUtilities.isGenerating(firstTypeStructureDefinition)) {
           // this is a special case, because we're only going to access the first element, and we can rely on the fact that it's already populated.
@@ -639,8 +640,13 @@ public class ProfilePathProcessor {
             if (eid.equals(t.getId()))
               src = t;
           }
-          if (src == null)
-            throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT__IN_, eid, firstTypeProfile.getValue()));
+          if (src == null) {
+            if (profileUtilities.isGenerating(firstTypeStructureDefinition)) {
+              System.out.println("At this time the reference to "+eid+" cannot be handled - consult Grahame Grieve"); 
+            } else if (Utilities.existsInList(currentBase.typeSummary(), "Extension", "Resource")) {
+              throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT__IN_, eid, firstTypeProfile.getValue()));
+            }
+          }
         } else {
           if (firstTypeStructureDefinition.getSnapshot().getElement().isEmpty()) {
             throw new FHIRException(profileUtilities.getContext().formatMessage(I18nConstants.SNAPSHOT_IS_EMPTY, firstTypeStructureDefinition.getVersionedUrl(), "Source for first element"));
@@ -653,13 +659,15 @@ public class ProfilePathProcessor {
             }
           }
         }
-        template = src.copy().setPath(currentBase.getPath());
-        template.setSliceName(null);
-        // temporary work around
-        if (!"Extension".equals(diffMatches.get(0).getType().get(0).getCode())) {
-          template.setMin(currentBase.getMin());
-          template.setMax(currentBase.getMax());
-        }
+        if (Utilities.existsInList(currentBase.typeSummary(), "Extension", "Resource")) {
+          template = src.copy().setPath(currentBase.getPath());
+          template.setSliceName(null);
+          // temporary work around
+          if (!"Extension".equals(diffMatches.get(0).getType().get(0).getCode())) {
+            template.setMin(currentBase.getMin());
+            template.setMax(currentBase.getMax());
+          }
+        } 
       }
     }
     if (template == null)
@@ -687,7 +695,6 @@ public class ProfilePathProcessor {
       }
     }
     profileUtilities.updateFromDefinition(outcome, diffMatches.get(0), getProfileName(), isTrimDifferential(), getUrl(), getSourceStructureDefinition(), getDerived(), diffPath(diffMatches.get(0)), mapHelper);
-    profileUtilities.removeStatusExtensions(outcome);
 //          if (outcome.getPath().endsWith("[x]") && outcome.getType().size() == 1 && !outcome.getType().get(0).getCode().equals("*") && !diffMatches.get(0).hasSlicing()) // if the base profile allows multiple types, but the profile only allows one, rename it
 //            outcome.setPath(outcome.getPath().substring(0, outcome.getPath().length()-3)+Utilities.capitalize(outcome.getType().get(0).getCode()));
     outcome.setSlicing(null);
@@ -1040,7 +1047,6 @@ public class ProfilePathProcessor {
     if (diffMatches.get(0).hasSlicing() || !diffMatches.get(0).hasSliceName()) {
       profileUtilities.updateFromSlicing(outcome.getSlicing(), diffMatches.get(0).getSlicing());
       profileUtilities.updateFromDefinition(outcome, diffMatches.get(0), getProfileName(), closed, getUrl(), getSourceStructureDefinition(), getDerived(), diffPath(diffMatches.get(0)), mapHelper); // if there's no slice, we don't want to update the unsliced description
-      profileUtilities.removeStatusExtensions(outcome);
     } else if (!diffMatches.get(0).hasSliceName()) {
       diffMatches.get(0).setUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT, outcome); // because of updateFromDefinition isn't called
     } else {
@@ -1178,7 +1184,6 @@ public class ProfilePathProcessor {
         debugCheck(outcome);
         getResult().getElement().add(outcome);
         profileUtilities.updateFromDefinition(outcome, diffItem, getProfileName(), isTrimDifferential(), getUrl(), getSourceStructureDefinition(), getDerived(), diffPath(diffItem), mapHelper);
-        profileUtilities.removeStatusExtensions(outcome);
         // --- LM Added this
         cursors.diffCursor = getDifferential().getElement().indexOf(diffItem) + 1;
         if (!outcome.getType().isEmpty() && (/*outcome.getType().get(0).getCode().equals("Extension") || */getDifferential().getElement().size() > cursors.diffCursor) && outcome.getPath().contains(".")/* && isDataType(outcome.getType())*/) {  // don't want to do this for the root, since that's base, and we're already processing it

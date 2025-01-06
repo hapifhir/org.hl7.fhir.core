@@ -32,13 +32,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class BaseWorkerContextTests {
@@ -296,7 +296,7 @@ public class BaseWorkerContextTests {
   public void testAddServerValidationParametersDisplayWarning() throws IOException {
     BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
     Parameters pin = new Parameters();
-    baseWorkerContext.addServerValidationParameters(baseWorkerContext.getTxClientManager().getMaster(), new ValueSet(), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())).setDisplayWarningMode(true));
+    baseWorkerContext.addServerValidationParameters(null, baseWorkerContext.getTxClientManager().getMaster(), new ValueSet(), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())).setDisplayWarningMode(true));
     assertEquals("lenient-display-validation", pin.getParameter("mode").getValue().primitiveValue());
   }
 
@@ -304,7 +304,7 @@ public class BaseWorkerContextTests {
   public void testAddServerValidationParametersVsAsUrl() throws IOException {
     BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
     Parameters pin = new Parameters();
-    baseWorkerContext.addServerValidationParameters(baseWorkerContext.getTxClientManager().getMaster(), new ValueSet().setUrl("http://dummy.org/vs"), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())).setVsAsUrl(true));
+    baseWorkerContext.addServerValidationParameters(null, baseWorkerContext.getTxClientManager().getMaster(), new ValueSet().setUrl("http://dummy.org/vs"), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())).setVsAsUrl(true));
     assertEquals("uri", pin.getParameter("url").getValue().fhirType());
     assertEquals("http://dummy.org/vs", pin.getParameter("url").getValue().primitiveValue());
   }
@@ -314,7 +314,7 @@ public class BaseWorkerContextTests {
     BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
 
     Parameters pin = new Parameters();
-    baseWorkerContext.addServerValidationParameters(baseWorkerContext.getTxClientManager().getMaster(), new ValueSet(), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())));
+    baseWorkerContext.addServerValidationParameters(null, baseWorkerContext.getTxClientManager().getMaster(), new ValueSet(), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())));
     assertNull(pin.getParameter("mode"));
   }
 
@@ -374,7 +374,7 @@ public class BaseWorkerContextTests {
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
-    Mockito.doReturn(createdValidationResult).when(context).validateOnServer(terminologyClientContext, valueSet, pIn, validationOptions);
+    Mockito.doReturn(createdValidationResult).when(context).validateOnServer2(same(terminologyClientContext), same(valueSet), same(pIn), same(validationOptions), eq(Collections.emptySet()));
 
     ValidationContextCarrier ctxt = mock(ValidationContextCarrier.class);
 
@@ -418,12 +418,12 @@ public class BaseWorkerContextTests {
 
     Mockito.verify(valueSetCheckerSimple).validateCode("CodeableConcept", codeableConcept);
     Mockito.verify(terminologyCache).cacheValidation(eq(cacheToken), same(createdValidationResult), eq(false));
-    Mockito.verify(context, times(0)).validateOnServer(any(), any(), any(), any());
+    Mockito.verify(context, times(0)).validateOnServer2(any(), any(), any(), any(), any());
   }
 
 
   @Test
-  public void testValidateCodableConceptWithServer() throws IOException {
+  public void testValidateCodeableConceptWithServer() throws IOException {
 
     CodeableConcept codeableConcept = new CodeableConcept();
     ValueSet valueSet = new ValueSet();
@@ -433,7 +433,7 @@ public class BaseWorkerContextTests {
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
-    Mockito.doReturn(createdValidationResult).when(context).validateOnServer(terminologyClientContext, valueSet, pIn, validationOptions);
+    Mockito.doReturn(createdValidationResult).when(context).validateOnServer2(same(terminologyClientContext), same(valueSet), same(pIn),same(validationOptions), eq(Collections.emptySet()));
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, codeableConcept, valueSet, expParameters);
 
@@ -443,7 +443,7 @@ public class BaseWorkerContextTests {
 
     Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("CodeableConcept", codeableConcept);
     Mockito.verify(terminologyCache).cacheValidation(eq(cacheToken), same(createdValidationResult), eq(true));
-    Mockito.verify(context).validateOnServer(terminologyClientContext, valueSet, pIn, validationOptions);
+    Mockito.verify(context).validateOnServer2(same(terminologyClientContext), same(valueSet), same(pIn), same(validationOptions), eq(Collections.emptySet()));
   }
 
   @Test
@@ -460,7 +460,7 @@ public class BaseWorkerContextTests {
     Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),eq(true));
     Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
-    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true, false);
+    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(null, inc, true, false);
 
     assertEquals(expectedExpansionResult, actualExpansionResult);
 
@@ -484,14 +484,14 @@ public class BaseWorkerContextTests {
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
-    Mockito.doReturn(expParameters).when(context).constructParameters(argThat(new TerminologyClientContextMatcher(terminologyClientContext)),argThat(new ValueSetMatcher(vs)), eq(true));
+    Mockito.doReturn(expParameters).when(context).constructParameters(any(), argThat(new TerminologyClientContextMatcher(terminologyClientContext)),argThat(new ValueSetMatcher(vs)), eq(true));
 
     ValueSet expectedValueSet = new ValueSet();
 
     Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(argThat(new ValueSetMatcher(vs)),
       argThat(new ParametersMatcher(pInWithDependentResources)));
 
-    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true, false);
+    ValueSetExpansionOutcome actualExpansionResult = context.expandVS(null, inc, true, false);
 
     assertEquals(expectedValueSet, actualExpansionResult.getValueset());
 

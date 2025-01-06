@@ -29,6 +29,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -664,9 +666,11 @@ public class Utilities {
 
   public static String padRight(String src, char c, int len) {
     StringBuilder s = new StringBuilder();
-    s.append(src);
-    for (int i = 0; i < len - src.length(); i++)
-      s.append(c);
+    if (src != null) {
+      s.append(src);
+      for (int i = 0; i < len - src.length(); i++)
+        s.append(c);
+    }
     return s.toString();
   }
 
@@ -2437,6 +2441,17 @@ public class Utilities {
       }
     }
     return false;
+  }
+
+  public static String extractByRegex(String input, String regex) {
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(input);
+
+    StringBuilder result = new StringBuilder();
+    while (matcher.find()) {
+      result.append(matcher.group(1)); 
+    }
+    return result.length() == 0 ? null : result.toString(); 
   }
 
 }

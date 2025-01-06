@@ -219,9 +219,9 @@ public class FHIRPathTests {
       if (!skipStaticCheck) {
         try {
           if (Utilities.noString(input)) {
-            fp.check(null, null, node);
+            fp.check(null, null, null, node);
           } else {
-            fp.check(res, res.fhirType(), res.fhirType(), node);
+            fp.check(res, res.fhirType(), res.fhirType(), res.fhirType(), node);
           }
           Assertions.assertTrue(fail != TestResultType.SEMANTICS, String.format("Expected exception didn't occur checking %s", expression));
         } catch (Exception e) {

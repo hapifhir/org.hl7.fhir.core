@@ -14,7 +14,7 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.4.4-SNAPSHOT</version>
+    <version>6.5.5-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -23,7 +23,7 @@
         <commons_io_version>2.17.0</commons_io_version>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.6.7</validator_test_case_version>
+        <validator_test_case_version>1.7.5-SNAPSHOT</validator_test_case_version>
         <jackson_version>2.17.0</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
@@ -43,6 +43,8 @@
         <maven.compiler.testTarget>11</maven.compiler.testTarget>
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
+        <logback-classic.version>1.5.15</logback-classic.version>
+        <logback.version>1.5.15</logback.version>
     </properties>
 
     <name>HL7 Core Artifacts</name>
@@ -185,13 +187,7 @@
             <dependency>
                 <groupId>org.fhir</groupId>
                 <artifactId>ucum</artifactId>
-                <version>1.0.8</version>
-            </dependency>
-
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>8.0.30</version>
+                <version>1.0.9</version>
             </dependency>
 
             <!-- Apache POI -->
@@ -319,13 +315,13 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.2.13</version>
+                <version>${logback-classic.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
-                <version>1.2.13</version>
+                <version>${logback.version}</version>
             </dependency>
 
             <dependency>
@@ -390,8 +386,9 @@
                 <plugin>
                     <groupId>org.owasp</groupId>
                     <artifactId>dependency-check-maven</artifactId>
-                    <version>8.2.1</version>
+                    <version>11.1.1</version>
                     <configuration>
+                        <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
                         <suppressionFiles>
                             <suppressionFile>cve-suppression.xml</suppressionFile>
                         </suppressionFiles>

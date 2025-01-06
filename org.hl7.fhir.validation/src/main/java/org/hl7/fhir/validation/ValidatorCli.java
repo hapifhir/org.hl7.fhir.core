@@ -137,6 +137,8 @@ public class ValidatorCli {
       new TransformTask(),
       new VersionTask(),
       new CodeGenTask(),
+      new TxPackTask(),
+      new InstanceFactoryTask(),
       defaultCliTask);
   }
 
@@ -202,6 +204,9 @@ public class ValidatorCli {
   }
 
   public static void main(String[] args) throws Exception {
+    // Prevents SLF4J(I) from printing unnecessary info to the console.
+    System.setProperty("slf4j.internal.verbosity", "WARN");
+
     final ValidatorCli validatorCli = new ValidatorCli(validationService);
 
     args = addAdditionalParamsForIpsParam(args);
@@ -287,19 +292,6 @@ public class ValidatorCli {
         res.add("-bundle");
         res.add("Composition:0");
         res.add("http://hl7.org.au/fhir/ips/StructureDefinition/Composition-au-ips");
-      } else if (a.equals("-ips:nz")) {
-        res.add("-version");
-        res.add("4.0");
-        res.add("-check-ips-codes");
-        res.add("-ig");
-        res.add("tewhatuora.fhir.nzps#current");
-        res.add("-profile");
-        res.add("https://standards.digital.health.nz/fhir/StructureDefinition/nzps-bundle");
-        res.add("-extension");
-        res.add("any");
-        res.add("-bundle");
-        res.add("Composition:0");
-        res.add("https://standards.digital.health.nz/fhir/StructureDefinition/nzps-composition");
       } else if (a.equals("-ips#")) {
         res.add("-version");
         res.add("4.0");

@@ -8,6 +8,8 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Contac
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.MessageHeader;
 
 public class MessageHeader10_50 {
 
@@ -154,46 +156,54 @@ public class MessageHeader10_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageHeader.ResponseType> convertResponseType(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.MessageHeader.ResponseType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageHeader.ResponseType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MessageHeader.ResponseTypeEnumFactory());
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case OK:
-        tgt.setValue(org.hl7.fhir.r5.model.MessageHeader.ResponseType.OK);
-        break;
-      case TRANSIENTERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.MessageHeader.ResponseType.TRANSIENTERROR);
-        break;
-      case FATALERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.MessageHeader.ResponseType.FATALERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.MessageHeader.ResponseType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<MessageHeader.ResponseType> tgt = new Enumeration<>(new MessageHeader.ResponseTypeEnumFactory());
+      ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case OK:
+                  tgt.setValue(MessageHeader.ResponseType.OK);
+                  break;
+              case TRANSIENTERROR:
+                  tgt.setValue(MessageHeader.ResponseType.TRANSIENTERROR);
+                  break;
+              case FATALERROR:
+                  tgt.setValue(MessageHeader.ResponseType.FATALERROR);
+                  break;
+              default:
+                  tgt.setValue(MessageHeader.ResponseType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.MessageHeader.ResponseType> convertResponseType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageHeader.ResponseType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.MessageHeader.ResponseType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.MessageHeader.ResponseTypeEnumFactory());
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case OK:
-        tgt.setValue(org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.OK);
-        break;
-      case TRANSIENTERROR:
-        tgt.setValue(org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.TRANSIENTERROR);
-        break;
-      case FATALERROR:
-        tgt.setValue(org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.FATALERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.MessageHeader.ResponseType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.MessageHeader.ResponseTypeEnumFactory());
+      ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case OK:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.OK);
+                  break;
+              case TRANSIENTERROR:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.TRANSIENTERROR);
+                  break;
+              case FATALERROR:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.FATALERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu2.model.MessageHeader.ResponseType.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

@@ -354,7 +354,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public String getLatestVersion(String id) throws IOException {
     for (PackageServer nextPackageServer : getPackageServers()) {
       // special case:
-      if (!(Utilities.existsInList(id, CommonPackages.ID_PUBPACK, "hl7.terminology.r5") && PackageServer.PRIMARY_SERVER.equals(nextPackageServer.getUrl()))) {
+      if (!(Utilities.existsInList(id, CommonPackages.ID_PUBPACK, "hl7.terminology.r5") && PackageServer.SECONDARY_SERVER.equals(nextPackageServer.getUrl()))) {
         PackageClient pc = new PackageClient(nextPackageServer);
         try {
           return pc.getLatestVersion(id);
@@ -743,6 +743,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     } else if (id.startsWith("hl7.fhir.r6")) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("https://build.fhir.org", id + ".tgz"), false);
       return new InputStreamWithSrc(stream, Utilities.pathURL("https://build.fhir.org", id + ".tgz"), "current");
+    } else if (id.startsWith("hl7.fhir.uv.extensions.")) {
+      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("https://build.fhir.org/ig/HL7/fhir-extensions/", id + ".tgz"), false);
+      return new InputStreamWithSrc(stream, Utilities.pathURL("https://build.fhir.org/ig/HL7/fhir-extensions/", id + ".tgz"), "current");
     } else {
       throw new FHIRException("The package '" + id + "' has no entry on the current build server (" + ciPackageList + ")");
     }

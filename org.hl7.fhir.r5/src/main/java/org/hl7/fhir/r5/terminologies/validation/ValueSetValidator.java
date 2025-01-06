@@ -133,7 +133,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private ValidationOptions options;
   private ValidationContextCarrier localContext;
   private List<CodeSystem> localSystems = new ArrayList<>();
-  protected Parameters expansionProfile;
+  protected Parameters expansionParameters;
   private TerminologyClientManager tcm;
   private Set<String> unknownSystems;
   private Set<String> unknownValueSets = new HashSet<>();
@@ -143,7 +143,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     super(context, opContext);
     this.valueset = source;
     this.options = options;
-    this.expansionProfile = expansionProfile;
+    this.expansionParameters = expansionProfile;
     this.tcm = tcm;
     analyseValueSet();
   }
@@ -154,7 +154,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     this.options = options.copy();
     this.options.setEnglishOk(true);
     this.localContext = ctxt;
-    this.expansionProfile = expansionProfile;
+    this.expansionParameters = expansionProfile;
     this.tcm = tcm;
     analyseValueSet();
   }
@@ -200,7 +200,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       opContext.note("vs = null");
     }
 
-    altCodeParams.seeParameters(expansionProfile);
+    altCodeParams.seeParameters(expansionParameters);
     altCodeParams.seeValueSet(valueset);
     if (localContext != null) {
       if (valueset != null) {
@@ -456,7 +456,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private int checkValueSetLoad(ConceptSetComponent inc, ValidationProcessInfo info) {
     int serverCount = 0;
     for (UriType uri : inc.getValueSet()) {
-      ValueSetValidator vsv = getVs(uri.getValue(), info);
+      String url = getCu().pinValueSet(uri.getValue(), expansionParameters);
+      ValueSetValidator vsv = getVs(url, info);
       serverCount += vsv.getServerLoad(info);
     }
     CodeSystem cs = resolveCodeSystem(inc.getSystem(), inc.getVersion());
@@ -1005,6 +1006,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
       String msg = context.formatMessagePlural(options.getLanguages().getLangs().size(), none ? I18nConstants.NO_VALID_DISPLAY_FOUND_LANG_NONE : I18nConstants.NO_VALID_DISPLAY_FOUND_LANG_SOME, code.getSystem(), code.getCode(), code.getDisplay(), options.langSummary(), code.getDisplay());
       String n = null;
       return new ValidationResult(IssueSeverity.INFORMATION, n, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.INFORMATION, IssueType.INVALID, path+".display", msg, OpIssueCode.DisplayComment, null)).setStatus(inactive, status);      
+    } else if (!code.getDisplay().equals(vc.getDisplay())) {
+      String msg = context.formatMessage(I18nConstants.NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR, code.getDisplay(), code.getSystem(), code.getCode(), options.langSummary(), vc.getDisplay());
+      return new ValidationResult(IssueSeverity.ERROR, msg, code.getSystem(), cs.getVersion(), cc, cc.getDisplay(), makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path+".display", msg, OpIssueCode.Display, null)).setStatus(inactive, status).setErrorIsDisplayIssue(true);      
     } else {
       String msg = context.formatMessagePlural(options.getLanguages().getLangs().size(), I18nConstants.NO_VALID_DISPLAY_FOUND, code.getSystem(), code.getCode(), code.getDisplay(), options.langSummary());
       return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, cc.getDisplay(), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg, OpIssueCode.Display, null)).setStatus(inactive, status);      
@@ -1108,7 +1112,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
       }
       for (CanonicalType url : inc.getValueSet()) {
-        ConceptReferencePair cc = getVs(url.asStringValue(), null).findValueSetRef(system, code);
+        ConceptReferencePair cc = getVs(getCu().pinValueSet(url.asStringValue(), expansionParameters), null).findValueSetRef(system, code);
         if (cc != null) {
           return cc;
         }
@@ -1221,7 +1225,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private boolean scanForCodeInValueSetInclude(String code, Set<String> sys, List<StringWithCode> problems, int i, ConceptSetComponent vsi) {
     if (vsi.hasValueSet()) {
       for (CanonicalType u : vsi.getValueSet()) {
-        if (!checkForCodeInValueSet(code, u.getValue(), sys, problems)) {
+        if (!checkForCodeInValueSet(code, getCu().pinValueSet(u.getValue(), expansionParameters), sys, problems)) {
           return false;
         }
       }
@@ -1287,7 +1291,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
             sys.add(vsi.getSystem());
           } else {
             // ok, we'll try to expand this one then 
-            ValueSetExpansionOutcome vse = context.expandVS(vsi, false, false);
+            ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), vsi, false, false);
             if (vse.isOk()) {
               if (!checkSystems(vse.getValueset().getExpansion().getContains(), code, sys, problems)) {
                 return false;
@@ -1379,19 +1383,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (isValueSetUnionImports()) {
         ok = false;
         for (UriType uri : vsi.getValueSet()) {
-          if (inImport(path, uri.getValue(), system, version, code, info)) {
+          if (inImport(path, getCu().pinValueSet(uri.getValue(), expansionParameters), system, version, code, info)) {
             return true;
           }
         }
       } else {
-        Boolean bok = inImport(path, vsi.getValueSet().get(0).getValue(), system, version, code, info);
+        Boolean bok = inImport(path, getCu().pinValueSet(vsi.getValueSet().get(0).getValue(), expansionParameters), system, version, code, info);
         if (bok == null) {
           return bok;
         }
         ok = bok;
         for (int i = 1; i < vsi.getValueSet().size(); i++) {
           UriType uri = vsi.getValueSet().get(i);
-          ok = ok && inImport(path, uri.getValue(), system, version, code, info); 
+          ok = ok && inImport(path, getCu().pinValueSet(uri.getValue(), expansionParameters), system, version, code, info); 
         }
       }
     }
@@ -1662,7 +1666,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       unknownValueSets.add(url);
       info.addIssue(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, null, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, url), OpIssueCode.NotFound, null));
     }
-    ValueSetValidator vsc = new ValueSetValidator(context, opContext.copy(), options, vs, localContext, expansionProfile, tcm);
+    ValueSetValidator vsc = new ValueSetValidator(context, opContext.copy(), options, vs, localContext, expansionParameters, tcm);
     vsc.setThrowToServer(throwToServer);
     inner.put(url, vsc);
     return vsc;

@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
@@ -144,8 +145,10 @@ public class ConceptMapValidator  extends BaseValidator {
         }
       }
     }
-    VSReference sourceScope = readVSReference(cm, "sourceScope", "source");
-    VSReference targetScope = readVSReference(cm, "targetScope", "target");
+    BooleanHolder bh = new BooleanHolder();
+    VSReference sourceScope = readVSReference(errors, stack, bh, cm, "sourceScope", "source");
+    VSReference targetScope = readVSReference(errors, stack, bh, cm, "targetScope", "target");
+    ok = ok && bh.ok();
 
     List<Element> groups = cm.getChildrenByName("group");
     int ci = 0;
@@ -191,7 +194,7 @@ public class ConceptMapValidator  extends BaseValidator {
   }
 
 
-  private VSReference readVSReference(Element cm, String... names) {
+  private VSReference readVSReference(List<ValidationMessage> errors, NodeStack stack,BooleanHolder bok, Element cm, String... names) {
     for (String n : names) {
       if (cm.hasChild(n, false)) {
         Element e = cm.getNamedChild(n, false);
@@ -206,10 +209,32 @@ public class ConceptMapValidator  extends BaseValidator {
           if (ref.contains("|")) {
             res.url = ref.substring(0, ref.indexOf("|"));
             res.version = ref.substring(ref.indexOf("|")+1);
-            res.vs = context.findTxResource(ValueSet.class, res.url, res.version);            
+            Resource r = context.fetchResource(Resource.class, res.url, res.version);
+            if (r != null) {
+              if (r instanceof ValueSet) {
+                res.vs = (ValueSet) r;
+              } else {
+                bok.fail();
+                rule(errors, "2025-12-31", IssueType.INVALID, stack.getLiteralPath()+"."+n, false, I18nConstants.CONCEPTMAP_VS_NOT_A_VS, r.fhirType());
+              }
+            } 
+            if (res.vs == null) {
+              res.vs = context.findTxResource(ValueSet.class, res.url, res.version);            
+            }
           } else {
             res.url = ref;
-            res.vs = context.findTxResource(ValueSet.class, res.url);
+            Resource r = context.fetchResource(Resource.class, res.url);
+            if (r != null) {
+              if (r instanceof ValueSet) {
+                res.vs = (ValueSet) r;
+              } else {
+                bok.fail();
+                rule(errors, "2025-12-31", IssueType.INVALID, stack.getLiteralPath()+"."+n, false, I18nConstants.CONCEPTMAP_VS_NOT_A_VS, r.fhirType());
+              }
+            } 
+            if (res.vs == null) {
+              res.vs = context.findTxResource(ValueSet.class, res.url);
+            }
           }
           return res;
         }

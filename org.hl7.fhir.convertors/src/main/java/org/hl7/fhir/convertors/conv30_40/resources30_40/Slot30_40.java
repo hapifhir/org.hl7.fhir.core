@@ -8,6 +8,8 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Bool
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Instant30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Enumeration;
+import org.hl7.fhir.r4.model.Slot;
 
 public class Slot30_40 {
 
@@ -72,58 +74,66 @@ public class Slot30_40 {
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Slot.SlotStatus> convertSlotStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Slot.SlotStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Slot.SlotStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Slot.SlotStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case BUSY:
-        tgt.setValue(org.hl7.fhir.r4.model.Slot.SlotStatus.BUSY);
-        break;
-      case FREE:
-        tgt.setValue(org.hl7.fhir.r4.model.Slot.SlotStatus.FREE);
-        break;
-      case BUSYUNAVAILABLE:
-        tgt.setValue(org.hl7.fhir.r4.model.Slot.SlotStatus.BUSYUNAVAILABLE);
-        break;
-      case BUSYTENTATIVE:
-        tgt.setValue(org.hl7.fhir.r4.model.Slot.SlotStatus.BUSYTENTATIVE);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r4.model.Slot.SlotStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.Slot.SlotStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<Slot.SlotStatus> tgt = new Enumeration<>(new Slot.SlotStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case BUSY:
+                  tgt.setValue(Slot.SlotStatus.BUSY);
+                  break;
+              case FREE:
+                  tgt.setValue(Slot.SlotStatus.FREE);
+                  break;
+              case BUSYUNAVAILABLE:
+                  tgt.setValue(Slot.SlotStatus.BUSYUNAVAILABLE);
+                  break;
+              case BUSYTENTATIVE:
+                  tgt.setValue(Slot.SlotStatus.BUSYTENTATIVE);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(Slot.SlotStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(Slot.SlotStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Slot.SlotStatus> convertSlotStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Slot.SlotStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Slot.SlotStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Slot.SlotStatusEnumFactory());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case BUSY:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Slot.SlotStatus.BUSY);
-        break;
-      case FREE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Slot.SlotStatus.FREE);
-        break;
-      case BUSYUNAVAILABLE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Slot.SlotStatus.BUSYUNAVAILABLE);
-        break;
-      case BUSYTENTATIVE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Slot.SlotStatus.BUSYTENTATIVE);
-        break;
-      case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Slot.SlotStatus.ENTEREDINERROR);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Slot.SlotStatus.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Slot.SlotStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Slot.SlotStatusEnumFactory());
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case BUSY:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Slot.SlotStatus.BUSY);
+                  break;
+              case FREE:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Slot.SlotStatus.FREE);
+                  break;
+              case BUSYUNAVAILABLE:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Slot.SlotStatus.BUSYUNAVAILABLE);
+                  break;
+              case BUSYTENTATIVE:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Slot.SlotStatus.BUSYTENTATIVE);
+                  break;
+              case ENTEREDINERROR:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Slot.SlotStatus.ENTEREDINERROR);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.dstu3.model.Slot.SlotStatus.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 }

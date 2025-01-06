@@ -63,8 +63,9 @@ public class CSVReader extends InputStreamReader {
   private boolean multiline;
   private boolean doingQuotes = true;
   
-	public void readHeaders() throws IOException, FHIRException {
+	public String[] readHeaders() throws IOException, FHIRException {
     cols = parseLine();  
+    return cols;
 	}
 
   public boolean line() throws IOException, FHIRException {
@@ -246,6 +247,10 @@ public class CSVReader extends InputStreamReader {
 
   public void setDoingQuotes(boolean doingQuotes) {
     this.doingQuotes = doingQuotes;
+  }
+
+  public String[] getCells() {
+    return cells;
   }
 
 
