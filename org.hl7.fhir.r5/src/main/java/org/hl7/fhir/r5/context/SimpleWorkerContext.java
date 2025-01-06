@@ -352,7 +352,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     else if (name.equals("version.info"))
       readVersionInfo(stream);
     else
-      binaries.put(name, new BytesProvider(TextFile.streamToBytes(stream)));
+      binaries.put(name, new BytesProvider(TextFile.streamToBytesNoClose(stream)));
   }
 
   public void connectToTSServer(ITerminologyClientFactory factory, ITerminologyClient client, boolean useEcosystem) {
