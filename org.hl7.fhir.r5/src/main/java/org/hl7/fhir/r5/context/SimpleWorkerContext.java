@@ -352,7 +352,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     else if (name.equals("version.info"))
       readVersionInfo(stream);
     else
-      loadBytes(name, stream);
+      binaries.put(name, new BytesProvider(TextFile.streamToBytesNoClose(stream)));
   }
 
   public void connectToTSServer(ITerminologyClientFactory factory, ITerminologyClient client, boolean useEcosystem) {
@@ -572,7 +572,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       }
     }
 	  for (String s : pi.list("other")) {
-	    binaries.put(s, TextFile.streamToBytes(pi.load("other", s)));
+	    binaries.put(s, new BytesFromPackageProvider(pi, s));
 	  }
 	  if (version == null) {
 	    version = pi.version();
@@ -606,7 +606,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   private void readVersionInfo(InputStream stream) throws IOException, DefinitionException {
     byte[] bytes = IOUtils.toByteArray(stream);
-    binaries.put("version.info", bytes);
+    binaries.put("version.info", new BytesProvider(bytes));
 
     String[] vi = new String(bytes).split("\\r?\\n");
     for (String s : vi) {
@@ -622,11 +622,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       if (s.startsWith("date="))
         date = s.substring(5);
     }
-  }
-
-	private void loadBytes(String name, InputStream stream) throws IOException {
-    byte[] bytes = IOUtils.toByteArray(stream);
-	  binaries.put(name, bytes);
   }
 
 	@Override
@@ -662,13 +657,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   public void loadBinariesFromFolder(String folder) throws IOException {
     for (String n : ManagedFileAccess.file(folder).list()) {
-      loadBytes(n, ManagedFileAccess.inStream(Utilities.path(folder, n)));
+      binaries.put(n, new BytesFromFileProvider(Utilities.path(folder, n)));
     }
   }
   
   public void loadBinariesFromFolder(NpmPackage pi) throws IOException {
     for (String n : pi.list("other")) {
-      loadBytes(n, pi.load("other", n));
+      binaries.put(n, new BytesFromPackageProvider(pi, n));
     }
   }
   
