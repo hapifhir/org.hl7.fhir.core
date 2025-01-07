@@ -177,7 +177,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (r.has("id")) {
       return r.primitiveValue("id");
     }
-    return "??";
+    return "?title?";
   }
   
   public void describe(XhtmlNode x, ResourceWrapper r) throws UnsupportedEncodingException, IOException {
@@ -283,7 +283,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     } else if (id != null) {
       return "id: "+displayIdentifier(id);
     } else {
-      return "??";
+      return "?ref?";
     }
   }
 
@@ -361,13 +361,13 @@ public abstract class ResourceRenderer extends DataRenderer {
           x.code().tx(disp);
         }
       } else if (rr.getResource() == null) {
-        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : "??";
+        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : rr.getUrlReference();
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(disp);
       } else if (rr.getResource() != null) {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(disp);
       } else {
-        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : "??";
+        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : "?rref2?";
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(disp);
       }
     } else if (display != null && id != null) {
@@ -381,7 +381,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx("Identifier: ");
       renderIdentifier(status, x, id);
     } else {
-      x.tx("??");
+      x.tx("?rref?");
     }
     checkRenderExtensions(status, x, type);
   }
@@ -436,7 +436,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else if (r.hasIdentifier()) {
         text.append(displayIdentifier(wrapWC(res, r.getIdentifier())));
       } else {
-        text.append("??");        
+        text.append("?r-ref?");        
       }
     } else if (context.isTechnicalMode()) {
       text.append(r.getReference());
@@ -511,7 +511,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else if (r.has("identifier")) {
         text.append(displayIdentifier(r.child("identifier")));
       } else {
-        text.append("??");        
+        text.append("?r-ref2?");        
       }
     } else if (context.isTechnicalMode()) {
       text.append(r.primitiveValue("reference"));
@@ -693,7 +693,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     return container;
   }
 
-  private ResourceWithReference resolveOutside(ResourceWrapper resource, String url, String version, boolean followLinks) {
+  private ResourceWithReference resolveOutside(ResourceWrapper resource, String url, String version, boolean followLinks) throws IOException {
     ResourceWrapper container = findContainer(resource);
     if (container != null) {
       while (container != null) {
@@ -746,7 +746,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     return null;
   }
 
-  protected ResourceWithReference resolveReference(ResourceWrapper resource, String url, boolean followLinks) {
+  protected ResourceWithReference resolveReference(ResourceWrapper resource, String url, boolean followLinks) throws IOException {
     if (url == null) {
       return null;
     }
@@ -766,16 +766,23 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   protected ResourceWithReference resolveReference(ResourceWrapper reference) {
-    if (reference.fhirType().equals("CodeableReference")) {
-      if (reference.has("reference")) {
-        return resolveReference(reference.child("reference"));
+    try {
+      if (reference.fhirType().equals("CodeableReference")) {
+        if (reference.has("reference")) {
+          return resolveReference(reference.child("reference"));
+        } else {
+          return null;
+        }
+      } else if (reference.fhirType().equals("Reference")) {
+        return resolveReference(reference.getResourceWrapper(), reference.primitiveValue("reference"), true);
       } else {
-        return null;
+        return resolveReference(reference.getResourceWrapper(), reference.primitiveValue(), true);
       }
-    } else if (reference.fhirType().equals("Reference")) {
-      return resolveReference(reference.getResourceWrapper(), reference.primitiveValue("reference"), true);
-    } else {
-      return resolveReference(reference.getResourceWrapper(), reference.primitiveValue(), true);
+    } catch (IOException e) {
+      if (context.isDebug()) {
+        e.printStackTrace();        
+      }
+      return null;
     }
   }
   

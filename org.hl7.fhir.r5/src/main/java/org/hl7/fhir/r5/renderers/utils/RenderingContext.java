@@ -304,6 +304,7 @@ public class RenderingContext extends RenderingI18nContext {
   private Set<String> anchors = new HashSet<>();
   private boolean unknownLocalReferencesNotLinks;
   private IResourceLinkResolver resolveLinkResolver;
+  private boolean debug;
   
   /**
    * 
@@ -374,6 +375,7 @@ public class RenderingContext extends RenderingI18nContext {
     }
     res.unknownLocalReferencesNotLinks = unknownLocalReferencesNotLinks;
     res.resolveLinkResolver = resolveLinkResolver;
+    res.debug = debug;
     return res;
   }
   
@@ -1081,6 +1083,14 @@ public class RenderingContext extends RenderingI18nContext {
 
   public void setResolveLinkResolver(IResourceLinkResolver resolveLinkResolver) {
     this.resolveLinkResolver = resolveLinkResolver;
+  }
+
+  public boolean isDebug() {
+    return debug;
+  }
+
+  public void setDebug(boolean debug) {
+    this.debug = debug;
   }
 
 }
