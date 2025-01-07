@@ -252,7 +252,7 @@ public class ResourceComparer {
 
   public XhtmlNode renderErrors(ResourceComparison csc) {
     XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
-    XhtmlNode tbl = div.table("grid");
+    XhtmlNode tbl = div.table("grid", false);
     for (ValidationMessage vm : csc.messages) {
       XhtmlNode tr = tbl.tr();
       tr.style("background-color: "+colorForLevel(vm.getLevel()));

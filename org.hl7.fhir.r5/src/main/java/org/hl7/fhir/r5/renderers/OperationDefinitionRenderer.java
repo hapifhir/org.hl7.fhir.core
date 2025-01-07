@@ -90,7 +90,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
 
     x.h3().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
     //x.para().tx(context.formatPhrase(RenderingContext.GENERAL_PARS)); 
-    XhtmlNode tbl = x.table( "grid"); 
+    XhtmlNode tbl = x.table( "grid", false); 
     XhtmlNode tr = tbl.tr(); 
     tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_USE)); 
     tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_NAME)); 

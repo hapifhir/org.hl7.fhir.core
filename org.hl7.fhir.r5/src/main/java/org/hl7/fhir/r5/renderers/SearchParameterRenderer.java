@@ -66,7 +66,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     p.code().tx(spd.getType().toCode());
     addMarkdown(x, spd.getDescription());
 
-    XhtmlNode tbl = x.table("grid");
+    XhtmlNode tbl = x.table("grid", false);
     XhtmlNode tr = tbl.tr();
     tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.GENERAL_RESOURCE), spd.getBase().size()));
     XhtmlNode td = tr.td();
@@ -162,7 +162,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     
     if (spd.hasComponent()) {
       x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMPARATORS));
-      tbl = x.table("grid");
+      tbl = x.table("grid", false);
       for (SearchParameterComponentComponent t : spd.getComponent()) {
         tr = tbl.tr();
         SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), spd);

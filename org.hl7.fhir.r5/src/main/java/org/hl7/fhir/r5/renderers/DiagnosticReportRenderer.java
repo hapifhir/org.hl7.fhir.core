@@ -48,7 +48,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       } 
       h2.tx(") "); 
     } 
-    XhtmlNode tbl = x.table("grid"); 
+    XhtmlNode tbl = x.table("grid", false); 
     XhtmlNode tr; 
     if (dr.has("subject")) { 
       tr = tbl.tr(); 
@@ -178,7 +178,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
   } 
 
   private void buildObservationsTable(RenderingStatus status, XhtmlNode root, List<ObservationNode> observations, ResourceWrapper eff, ResourceWrapper iss) throws UnsupportedEncodingException, FHIRException, IOException { 
-    XhtmlNode tbl = root.table("grid"); 
+    XhtmlNode tbl = root.table("grid", false); 
     boolean refRange = scanObsForRefRange(observations); 
     boolean flags = scanObsForFlags(observations);  
     boolean note = scanObsForNote(observations); 
