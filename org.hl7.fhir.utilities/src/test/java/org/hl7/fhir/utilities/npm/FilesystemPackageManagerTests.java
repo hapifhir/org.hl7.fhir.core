@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
+import okhttp3.mockwebserver.MockWebServer;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;
@@ -31,6 +32,7 @@ import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 
 public class FilesystemPackageManagerTests {
 
@@ -51,8 +53,12 @@ public class FilesystemPackageManagerTests {
   );
 
   @Test
-  public void testCheckCurrentPackage() {
+  public void testCheckCIServerOnFirstPackageLoad() throws IOException {
+    FilesystemPackageCacheManager filesystemPackageCacheManager = Mockito.spy(new FilesystemPackageCacheManager.Builder().build());
+    MockWebServer server = new MockWebServer();
 
+    PackageServer dummyPackageServer = new PackageServer("https://dummy.org");
+    filesystemPackageCacheManager.loadPackage("dummy.package", "current");
   }
 
   @Test

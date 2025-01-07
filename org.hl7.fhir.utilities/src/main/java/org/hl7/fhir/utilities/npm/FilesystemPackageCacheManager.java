@@ -2,9 +2,6 @@ package org.hl7.fhir.utilities.npm;
 
 import java.io.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import java.util.*;
 
 import javax.annotation.Nonnull;
@@ -22,8 +19,6 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
-import org.hl7.fhir.utilities.json.model.JsonArray;
-import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.PackageList.PackageListEntry;
@@ -95,18 +90,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private static final Logger ourLog = LoggerFactory.getLogger(FilesystemPackageCacheManager.class);
   private static final String CACHE_VERSION = "3"; // second version - see wiki page
 
+  @Getter
+  private final CIBuildClient ciBuildClient;
+
   @Nonnull
   private final File cacheFolder;
 
   private final List<NpmPackage> temporaryPackages = new ArrayList<>();
-  private long ciQueryTimeStamp = 0;
-  private final long ciQueryInterval;
-  private static final long DEFAULT_CI_QUERY_INTERVAL = 1000 * 60 * 60 * 24;
 
-  /** key = packageId
-   * value = url of built package on https://build.fhir.org/ig/ */
-  private final Map<String, String> ciPackageList = new HashMap<>();
-  private JsonArray ciBuildInfo;
   private boolean suppressErrors;
 
   @Setter
@@ -124,7 +115,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     @With
     @Getter
-    private final long ciQueryInterval;
+    private final CIBuildClient ciBuildClient;
 
     @With
     @Getter
@@ -134,13 +125,13 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       this.cacheFolder = getUserCacheFolder();
       this.packageServers = getPackageServersFromFHIRSettings();
       this.lockParameters = null;
-      this.ciQueryInterval = FilesystemPackageCacheManager.DEFAULT_CI_QUERY_INTERVAL;
+      this.ciBuildClient = new CIBuildClient();
     }
 
-    private Builder(File cacheFolder, List<PackageServer> packageServers, long ciQueryInterval, FilesystemPackageCacheManagerLocks.LockParameters lockParameters) {
+    private Builder(File cacheFolder, List<PackageServer> packageServers, CIBuildClient ciBuildClient, FilesystemPackageCacheManagerLocks.LockParameters lockParameters) {
       this.cacheFolder = cacheFolder;
       this.packageServers = packageServers;
-      this.ciQueryInterval = ciQueryInterval;
+      this.ciBuildClient = ciBuildClient;
       this.lockParameters = lockParameters;
     }
 
@@ -174,7 +165,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       if (!cacheFolder.exists()) {
         throw new FHIRException("The folder '" + cacheFolder + "' could not be found");
       }
-      return new Builder(cacheFolder, this.packageServers, this.ciQueryInterval, this.lockParameters);
+      return new Builder(cacheFolder, this.packageServers, this.ciBuildClient, this.lockParameters);
     }
 
     public Builder withSystemCacheFolder() throws IOException {
@@ -184,11 +175,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       } else {
         systemCacheFolder = ManagedFileAccess.file(Utilities.path("/var", "lib", ".fhir", "packages"));
       }
-      return new Builder(systemCacheFolder,  this.packageServers, this.ciQueryInterval, this.lockParameters);
+      return new Builder(systemCacheFolder,  this.packageServers, this.ciBuildClient, this.lockParameters);
     }
 
     public Builder withTestingCacheFolder() throws IOException {
-      return new Builder(ManagedFileAccess.file(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers, this.ciQueryInterval, this.lockParameters);
+      return new Builder(ManagedFileAccess.file(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers, this.ciBuildClient, this.lockParameters);
     }
 
     public FilesystemPackageCacheManager build() throws IOException {
@@ -202,14 +193,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           throw e;
         }
       }
-      return new FilesystemPackageCacheManager(cacheFolder, packageServers, ciQueryInterval, locks, lockParameters);
+      return new FilesystemPackageCacheManager(cacheFolder, packageServers, ciBuildClient, locks, lockParameters);
     }
   }
 
-  private FilesystemPackageCacheManager(@Nonnull File cacheFolder, @Nonnull List<PackageServer> packageServers, long ciQueryInterval,@Nonnull FilesystemPackageCacheManagerLocks locks, @Nullable FilesystemPackageCacheManagerLocks.LockParameters lockParameters) throws IOException {
+  private FilesystemPackageCacheManager(@Nonnull File cacheFolder, @Nonnull List<PackageServer> packageServers, CIBuildClient ciBuildClient, @Nonnull FilesystemPackageCacheManagerLocks locks, @Nullable FilesystemPackageCacheManagerLocks.LockParameters lockParameters) throws IOException {
     super(packageServers);
     this.cacheFolder = cacheFolder;
-    this.ciQueryInterval = ciQueryInterval;
+    this.ciBuildClient = ciBuildClient;
     this.locks = locks;
     this.lockParameters = lockParameters;
     prepareCacheFolder();
@@ -622,9 +613,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public String getPackageUrl(String packageId) throws IOException {
     String result = super.getPackageUrl(packageId);
     if (result == null) {
-      result = getPackageUrlFromBuildList(packageId);
+      result = ciBuildClient.getPackageUrl(packageId);
     }
-
     return result;
   }
 
@@ -673,7 +663,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     NpmPackage p = loadPackageFromCacheOnly(id, version);
     if (p != null) {
       if ("current".equals(version)) {
-        p = checkCurrency(id, p);
+        p = nullIfNotCurrentPackage(id, p);
       }
       if (p != null)
         return p;
@@ -681,7 +671,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     if ("dev".equals(version)) {
       p = loadPackageFromCacheOnly(id, "current");
-      p = checkCurrency(id, p);
+      p = nullIfNotCurrentPackage(id, p);
       if (p != null)
         return p;
       version = "current";
@@ -698,7 +688,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       source = fetchSourceFromUrlSpecific(version);
     } else if ("current".equals(version) || (version != null && version.startsWith("current$"))) {
       // special case - fetch from ci-build server
-      source = loadFromCIBuild(id, version.startsWith("current$") ? version.substring(8) : null);
+      source = ciBuildClient.loadFromCIBuild(id, version.startsWith("current$") ? version.substring(8) : null);
     } else {
       source = loadFromPackageServer(id, version);
     }
@@ -725,41 +715,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
   }
 
-  private InputStreamWithSrc loadFromCIBuild(String id, String branch) throws IOException {
-    checkCIServerQueried();
-    if (ciPackageList.containsKey(id)) {
-      if (branch == null) {
-        InputStream stream;
-        try {
-          stream = fetchFromUrlSpecific(Utilities.pathURL(ciPackageList.get(id), "package.tgz"), false);
-        } catch (Exception e) {
-          stream = fetchFromUrlSpecific(Utilities.pathURL(ciPackageList.get(id), "branches", "main", "package.tgz"), false);
-        }
-        return new InputStreamWithSrc(stream, Utilities.pathURL(ciPackageList.get(id), "package.tgz"), "current");
-      } else {
-        InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciPackageList.get(id), "branches", branch, "package.tgz"), false);
-        return new InputStreamWithSrc(stream, Utilities.pathURL(ciPackageList.get(id), "branches", branch, "package.tgz"), "current$" + branch);
-      }
-    } else if (id.startsWith("hl7.fhir.r6")) {
-      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("https://build.fhir.org", id + ".tgz"), false);
-      return new InputStreamWithSrc(stream, Utilities.pathURL("https://build.fhir.org", id + ".tgz"), "current");
-    } else if (id.startsWith("hl7.fhir.uv.extensions.")) {
-      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("https://build.fhir.org/ig/HL7/fhir-extensions/", id + ".tgz"), false);
-      return new InputStreamWithSrc(stream, Utilities.pathURL("https://build.fhir.org/ig/HL7/fhir-extensions/", id + ".tgz"), "current");
-    } else {
-      throw new FHIRException("The package '" + id + "' has no entry on the current build server (" + ciPackageList + ")");
-    }
-  }
 
-  private String getPackageUrlFromBuildList(String packageId) throws IOException {
-    checkCIServerQueried();
-    for (JsonObject o : ciBuildInfo.asJsonObjects()) {
-      if (packageId.equals(o.asString("package-id"))) {
-        return o.asString("url");
-      }
-    }
-    return null;
-  }
 
   @Override
   public String getPackageId(String canonicalUrl) throws IOException {
@@ -770,7 +726,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     if (retVal == null) {
-      retVal = getPackageIdFromBuildList(canonicalUrl);
+      retVal = ciBuildClient.getPackageId(canonicalUrl);
     }
 
     return retVal;
@@ -794,28 +750,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   // ========================= Package Mgmt API =======================================================================
 
-  private String getPackageIdFromBuildList(String canonical) {
-    if (canonical == null) {
-      return null;
-    }
-    checkCIServerQueried();
-    if (ciBuildInfo != null) {
-      for (JsonElement n : ciBuildInfo) {
-        JsonObject o = (JsonObject) n;
-        if (canonical.equals(o.asString("url"))) {
-          return o.asString("package-id");
-        }
-      }
-      for (JsonElement n : ciBuildInfo) {
-        JsonObject o = (JsonObject) n;
-        if (o.asString("url").startsWith(canonical + "/ImplementationGuide/")) {
-          return o.asString("package-id");
-        }
-      }
-    }
-    return null;
-  }
-
   /**
    * Checks https://
    *
@@ -823,78 +757,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * @param npmPackage
    * @return
    */
-  private NpmPackage checkCurrency(String id, NpmPackage npmPackage) {
-    checkCIServerQueried();
+  private NpmPackage nullIfNotCurrentPackage(String id, NpmPackage npmPackage) {
     // special case: current versions roll over, and we have to check their currency
     try {
-      String packageManifestUrl = ciPackageList.get(id);
-      JsonObject packageManifestJson = JsonParser.parseObjectFromUrl(Utilities.pathURL(packageManifestUrl, "package.manifest.json"));
-      String currentDate = packageManifestJson.asString("date");
-      String packageDate = npmPackage.date();
-      if (!currentDate.equals(packageDate)) {
-        return null; // nup, we need a new copy
-      }
+      return ciBuildClient.isCurrent(id, npmPackage) ? npmPackage : null;
     } catch (Exception e) {
       log("Unable to check package currency: " + id + ": " + id);
     }
     return npmPackage;
-  }
-
-  private void checkCIServerQueried() {
-    if (System.currentTimeMillis() - ciQueryTimeStamp > ciQueryInterval) {
-      try {
-        loadFromBuildServer();
-      } catch (Exception e) {
-        try {
-          // we always pause a second and try again - the most common reason to be here is that the file was being changed on the server
-          Thread.sleep(1000);
-          loadFromBuildServer();
-        } catch (Exception e2) {
-          log("Error connecting to build server - running without build (" + e2.getMessage() + ")");
-        }
-      }
-    }
-  }
-
-  private void loadFromBuildServer() throws IOException {
-    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), "https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
-    res.checkThrowException();
-
-    ciBuildInfo = (JsonArray) JsonParser.parse(TextFile.bytesToString(res.getContent()));
-
-    List<BuildRecord> builds = new ArrayList<>();
-
-    for (JsonElement n : ciBuildInfo) {
-      JsonObject j = (JsonObject) n;
-      if (j.has("url") && j.has("package-id") && j.asString("package-id").contains(".")) {
-        String packageUrl = j.asString("url");
-        if (packageUrl.contains("/ImplementationGuide/"))
-          packageUrl = packageUrl.substring(0, packageUrl.indexOf("/ImplementationGuide/"));
-        builds.add(new BuildRecord(packageUrl, j.asString("package-id"), getRepo(j.asString("repo")), readDate(j.asString("date"))));
-      }
-    }
-    Collections.sort(builds, new BuildRecordSorter());
-    for (BuildRecord build : builds) {
-      if (!ciPackageList.containsKey(build.getPackageId())) {
-        ciPackageList.put(build.getPackageId(), "https://build.fhir.org/ig/" + build.getRepo());
-      }
-    }
-    ciQueryTimeStamp = System.currentTimeMillis();
-  }
-
-  private String getRepo(String path) {
-    String[] p = path.split("\\/");
-    return p[0] + "/" + p[1];
-  }
-
-  private Date readDate(String s) {
-    SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM, yyyy HH:mm:ss Z", new Locale("en", "US"));
-    try {
-      return sdf.parse(s);
-    } catch (ParseException e) {
-      e.printStackTrace();
-      return new Date();
-    }
   }
 
   // ----- the old way, from before package server, while everything gets onto the package server
@@ -902,7 +772,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     String url = getUrlForPackage(id);
     if (url == null) {
       try {
-        url = getPackageUrlFromBuildList(id);
+        url = ciBuildClient.getPackageUrl(id);
       } catch (Exception ignored) {
 
       }
@@ -946,7 +816,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     String url = getUrlForPackage(id);
     if (url == null) {
       try {
-        url = getPackageUrlFromBuildList(id);
+        url = ciBuildClient.getPackageUrl(id);
       } catch (Exception e) {
         url = null;
       }
@@ -987,46 +857,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     T get() throws IOException;
   }
 
-  public class BuildRecordSorter implements Comparator<BuildRecord> {
 
-    @Override
-    public int compare(BuildRecord arg0, BuildRecord arg1) {
-      return arg1.date.compareTo(arg0.date);
-    }
-  }
 
-  public class BuildRecord {
 
-    private final String url;
-    private final String packageId;
-    private final String repo;
-    private final Date date;
-
-    public BuildRecord(String url, String packageId, String repo, Date date) {
-      super();
-      this.url = url;
-      this.packageId = packageId;
-      this.repo = repo;
-      this.date = date;
-    }
-
-    public String getUrl() {
-      return url;
-    }
-
-    public String getPackageId() {
-      return packageId;
-    }
-
-    public String getRepo() {
-      return repo;
-    }
-
-    public Date getDate() {
-      return date;
-    }
-
-  }
 
   public boolean packageExists(String id, String ver) throws IOException {
     if (packageInstalled(id, ver)) {
