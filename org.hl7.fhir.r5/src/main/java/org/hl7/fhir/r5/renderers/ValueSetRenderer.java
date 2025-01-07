@@ -254,7 +254,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     boolean doInactive = checkDoInactive(vs.getExpansion().getContains());    
     boolean doDefinition = checkDoDefinition(vs.getExpansion().getContains());
     
-    XhtmlNode t = x.table( "codes");
+    XhtmlNode t = x.table("codes", false);
     XhtmlNode tr = t.tr();
     if (doLevel)
       tr.td().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_LEVEL));
@@ -313,7 +313,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       } else {
         x.para().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_ADD_DESIG));
       }
-      t = x.table("codes");
+      t = x.table("codes", false);
       tr = t.tr();
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       for (String url : designations.keySet()) {
@@ -630,23 +630,36 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private String describeModule(String module) {
-    if ("900000000000207008".equals(module))
-      return context.formatPhrase(RenderingContext.VALUE_SET_INT);
-    if ("731000124108".equals(module))
-      return context.formatPhrase(RenderingContext.VALUE_SET_US);
-    if ("32506021000036107".equals(module))
-      return context.formatPhrase(RenderingContext.VALUE_SET_AUS);
-    if ("449081005".equals(module))
-      return context.formatPhrase(RenderingContext.VALUE_SET_SPAN);
-    if ("554471000005108".equals(module))
-      return context.formatPhrase(RenderingContext.VALUE_SET_DANISH);
-    if ("11000146104".equals(module))
-      return context.formatPhrase(RenderingContext.VALUE_SET_DUTCH);
-    if ("45991000052106".equals(module))
-      return context.formatPhrase(RenderingContext.VALUE_SET_SWEDISH);
-    if ("999000041000000102".equals(module))
-      return context.formatPhrase(RenderingContext.VALUE_SET_UK);
-    return module;
+    switch (module) {
+    case "900000000000207008" : context.formatPhrase(RenderingContext.VALUE_SET_INT);
+    case "449081005" : context.formatPhrase(RenderingContext.VALUE_SET_SPAN);  
+    case "11000221109" : context.formatPhrase(RenderingContext.VALUE_SET_AR);
+    case "32506021000036107" : context.formatPhrase(RenderingContext.VALUE_SET_AUS);
+    case "11000234105" : context.formatPhrase(RenderingContext.VALUE_SET_AT);
+    case "11000172109" : context.formatPhrase(RenderingContext.VALUE_SET_BE);
+    case "20621000087109" : context.formatPhrase(RenderingContext.VALUE_SET_CA_EN);
+    case "20611000087101" : context.formatPhrase(RenderingContext.VALUE_SET_CA_FR);
+    case "554471000005108" : context.formatPhrase(RenderingContext.VALUE_SET_DANISH);
+    case "11000181102 " : context.formatPhrase(RenderingContext.VALUE_SET_EE);
+    case "11000229106" : context.formatPhrase(RenderingContext.VALUE_SET_FI);
+    case "11000274103" : context.formatPhrase(RenderingContext.VALUE_SET_DE);
+    case "1121000189102" : context.formatPhrase(RenderingContext.VALUE_SET_IN);
+    case "11000220105" : context.formatPhrase(RenderingContext.VALUE_SET_IE);
+    case "11000146104" : context.formatPhrase(RenderingContext.VALUE_SET_DUTCH);
+    case "21000210109" : context.formatPhrase(RenderingContext.VALUE_SET_NZ);
+    case "51000202101 " : context.formatPhrase(RenderingContext.VALUE_SET_NO);
+    case "11000267109" : context.formatPhrase(RenderingContext.VALUE_SET_KR);
+    case "900000001000122104" : context.formatPhrase(RenderingContext.VALUE_ES_ES);
+    case "45991000052106" : context.formatPhrase(RenderingContext.VALUE_SET_SWEDISH); 
+    case "2011000195101" : context.formatPhrase(RenderingContext.VALUE_SET_CH);
+    case "83821000000107" : context.formatPhrase(RenderingContext.VALUE_SET_UK);
+    case "999000021000000109" : context.formatPhrase(RenderingContext.VALUE_SET_UK_CLIN);
+    case "5631000179106" : context.formatPhrase(RenderingContext.VALUE_SET_UY);  
+    case "731000124108" : context.formatPhrase(RenderingContext.VALUE_SET_US);
+    case "5991000124107" : context.formatPhrase(RenderingContext.VALUE_SET_US_ICD10CM);
+    default:
+      return module;
+    }
   }
 
   private boolean hasVersionParameter(ValueSetExpansionComponent expansion) {
@@ -1001,7 +1014,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       } else {
         x.para().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_ADD_DESIG));
       }
-      XhtmlNode t = x.table("codes");
+      XhtmlNode t = x.table("codes", false);
       XhtmlNode tr = t.tr();
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       for (String url : designations.keySet()) {
@@ -1194,7 +1207,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           definitions = getConceptsForCodes(e, inc, vsRes, index);
 
           
-          XhtmlNode t = li.table("none");
+          XhtmlNode t = li.table("none", false);
           boolean hasComments = false;
           boolean hasDefinition = false;
           for (ConceptReferenceComponent c : inc.getConcept()) {

@@ -220,13 +220,29 @@ public class DataRenderer extends Renderer implements CodeResolver {
       case "900000000000207008": return "Intl"+dt;  
       case "731000124108": return "US"+dt;  
       case "32506021000036107": return "AU"+dt;  
-      case "449081005": return "ES"+dt;  
+      case "449081005": return "ES/Intl"+dt;  
       case "554471000005108": return "DK"+dt;  
       case "11000146104": return "NL"+dt;  
       case "45991000052106": return "SE"+dt;  
-      case "999000041000000102": return "UK"+dt;  
-      case "20611000087101": return "CA"+dt;  
+      case "83821000000107": return "UK"+dt; 
       case "11000172109": return "BE"+dt;  
+      case "11000221109" : return "AR"+dt;      
+      case "11000234105" : return "AT"+dt;  
+      case "20621000087109" : return "CA-EN"+dt; 
+      case "20611000087101" : return "CA-FR"+dt;
+      case "11000181102 " : return "EE"+dt;
+      case "11000229106" : return "FI"+dt;
+      case "11000274103" : return "DE"+dt;
+      case "1121000189102" : return "IN"+dt;
+      case "11000220105" : return "IE"+dt;
+      case "21000210109" : return "NZ"+dt; 
+      case "51000202101 " : return "NO"+dt;
+      case "11000267109" : return "KR"+dt;
+      case "900000001000122104" : return "ES-ES"+dt;
+      case "2011000195101" : return "CH"+dt;
+      case "999000021000000109" : return "UK+Clinical"+dt;  
+      case "5631000179106" : return "UY"+dt;
+      case "5991000124107" : return "US+ICD10CM"+dt;
       default: return "??"+dt;  
       }       
     } else { 
@@ -1946,7 +1962,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         renderExpression(status, x, td.child("condition")); 
       }     
     } else { 
-      XhtmlNode tbl = x.table("grid"); 
+      XhtmlNode tbl = x.table("grid", false); 
 
       XhtmlNode tr = tbl.tr();   
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_TYPE)); 
@@ -1976,7 +1992,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
   public void renderDataRequirement(RenderingStatus status, XhtmlNode x, ResourceWrapper dr) throws FHIRFormatError, DefinitionException, IOException { 
-    XhtmlNode tbl = x.table("grid"); 
+    XhtmlNode tbl = x.table("grid", false); 
     XhtmlNode tr = tbl.tr();     
     XhtmlNode td = tr.td().colspan("2"); 
     td.b().tx(context.formatPhrase(RenderingContext.GENERAL_TYPE)); 
