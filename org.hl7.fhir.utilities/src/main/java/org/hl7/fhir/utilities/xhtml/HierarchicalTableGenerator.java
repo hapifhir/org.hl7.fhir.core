@@ -932,7 +932,7 @@ public class HierarchicalTableGenerator {
     XhtmlNode itc = tc;
     XhtmlNode itr = null;
     if (c.innerTable) {
-      itr = tc.table("none").tr();
+      itr = tc.table("none", true).tr();
       itc = itr.td();
     }
 

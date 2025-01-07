@@ -940,7 +940,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
   } 
 
   private void renderDefns(RenderingStatus status, XhtmlNode x, ResourceWrapper q) throws IOException { 
-    XhtmlNode tbl = x.table("dict"); 
+    XhtmlNode tbl = x.table("dict", false); 
     renderRootDefinition(status, tbl, q, new ArrayList<>()); 
     for (ResourceWrapper qi : q.children("item")) { 
       renderDefinition(status, tbl, q, qi, new ArrayList<>()); 
