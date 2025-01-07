@@ -1,10 +1,12 @@
 package org.hl7.fhir.r5.renderers.utils;
 
+import java.io.IOException;
+
 public class Resolver {
 
 
   public interface IReferenceResolver {
-    ResourceWithReference resolve(RenderingContext context, String url, String version);
+    ResourceWithReference resolve(RenderingContext context, String url, String version) throws IOException;
     
     /**
      * returns the correct literal URL for the specified logical uri
