@@ -2536,6 +2536,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     Collections.sort(plist); // logical paths are a set, but we want a predictable order for error messages
 
+    if (definition.hasExtension(ToolingExtensions.EXT_EARLIEST_FHIR_VERSION) || definition.hasExtension(ToolingExtensions.EXT_LATEST_FHIR_VERSION)) {
+      if (definition.hasExtension(ToolingExtensions.EXT_EARLIEST_FHIR_VERSION)) {
+        String v = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_EARLIEST_FHIR_VERSION);
+        ok = rule(errors, "2025-01-07", IssueType.BUSINESSRULE, container.line(), container.col(), stack.getLiteralPath(), 
+            VersionUtilities.compareVersions(VersionUtilities.getMajMin(context.getVersion()), v) >= 0,
+            I18nConstants.EXTENSION_FHIR_VERSION_EARLIEST, extUrl, VersionUtilities.getNameForVersion(v), v, VersionUtilities.getNameForVersion(context.getVersion()), context.getVersion()) && ok;
+      }
+      if (definition.hasExtension(ToolingExtensions.EXT_LATEST_FHIR_VERSION)) {
+        String v = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_LATEST_FHIR_VERSION);
+        ok = rule(errors, "2025-01-07", IssueType.BUSINESSRULE, container.line(), container.col(), stack.getLiteralPath(), 
+            VersionUtilities.compareVersions(VersionUtilities.getMajMin(context.getVersion()), v) <= 0,
+            I18nConstants.EXTENSION_FHIR_VERSION_LATEST, extUrl, VersionUtilities.getNameForVersion(v), v, VersionUtilities.getNameForVersion(context.getVersion()), context.getVersion()) && ok;
+      }
+    }
     for (StructureDefinitionContextComponent ctxt : fixContexts(extUrl, definition.getContext())) {
       if (ok) {
         break;
