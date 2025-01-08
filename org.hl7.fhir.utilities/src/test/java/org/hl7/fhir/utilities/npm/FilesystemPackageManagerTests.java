@@ -338,7 +338,18 @@ public class FilesystemPackageManagerTests {
       // Check that only packages.ini is in the cache.
       assertThat(files).hasSize(1);
     }
+  }
 
+  @Test
+  public void generatesIndexWhenMissing() throws IOException {
+    String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
+
+    final FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
+
+    Assertions.assertTrue(pcm.listPackages().isEmpty());
+
+    NpmPackage npmPackage = pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package-no-index.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
+    assertThat(npmPackage.isIndexed());
 
   }
 
