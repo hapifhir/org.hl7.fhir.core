@@ -21,7 +21,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
-import okhttp3.mockwebserver.MockWebServer;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;

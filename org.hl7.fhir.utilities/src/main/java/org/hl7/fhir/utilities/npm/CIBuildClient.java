@@ -33,16 +33,22 @@ public class CIBuildClient {
   @Getter
   private final String rootUrl;
 
-  /** key = packageId
-   * value = url of built package on https://build.fhir.org/ig/ */
+  /**
+   * key = packageId
+   * value = url of built package on https://build.fhir.org/ig/
+   **/
   private final Map<String, String> ciPackageUrls = new HashMap<>();
 
   private final boolean silent;
 
   public CIBuildClient() {
-    rootUrl = DEFAULT_ROOT_URL;
-    ciQueryInterval = DEFAULT_CI_QUERY_INTERVAL;
-    silent = false;
+   this(DEFAULT_ROOT_URL, DEFAULT_CI_QUERY_INTERVAL, false);
+  }
+
+  public CIBuildClient(String rootUrl, long ciQueryInterval, boolean silent) {
+    this.rootUrl = rootUrl;
+    this.ciQueryInterval = ciQueryInterval;
+    this.silent = silent;
   }
 
   String getPackageId(String canonical) {
@@ -67,10 +73,6 @@ public class CIBuildClient {
     return null;
   }
 
-  public boolean hasPackage(String packageId) {
-    return ciPackageUrls.containsKey(packageId);
-  }
-
   String getPackageUrl(String packageId) {
     checkCIServerQueried();
     for (JsonObject o : ciBuildInfo.asJsonObjects()) {
@@ -81,13 +83,9 @@ public class CIBuildClient {
     return null;
   }
 
-  String getCIPackageUrl(String packageId) {
-    return ciPackageUrls.get(packageId);
-  }
-
   public boolean isCurrent(String id, NpmPackage npmPackage) throws IOException {
     checkCIServerQueried();
-    String packageManifestUrl = getCIPackageUrl(id);
+    String packageManifestUrl = ciPackageUrls.get(id);
     JsonObject packageManifestJson = JsonParser.parseObjectFromUrl(Utilities.pathURL(packageManifestUrl, "package.manifest.json"));
     String currentDate = packageManifestJson.asString("date");
     String packageDate = npmPackage.date();
@@ -97,8 +95,8 @@ public class CIBuildClient {
   BasePackageCacheManager.InputStreamWithSrc loadFromCIBuild(String id, String branch) {
     checkCIServerQueried();
 
-    if (hasPackage(id)) {
-      String packageBaseUrl = getCIPackageUrl(id);
+    if (ciPackageUrls.containsKey(id)) {
+      String packageBaseUrl = ciPackageUrls.get(id);
       if (branch == null) {
         InputStream stream;
         try {
@@ -113,7 +111,7 @@ public class CIBuildClient {
       }
     } else if (id.startsWith("hl7.fhir.r6")) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(rootUrl, id + ".tgz"));
-      return new BasePackageCacheManager.InputStreamWithSrc(stream, Utilities.pathURL("https://build.fhir.org", id + ".tgz"), "current");
+      return new BasePackageCacheManager.InputStreamWithSrc(stream, Utilities.pathURL(rootUrl, id + ".tgz"), "current");
     } else if (id.startsWith("hl7.fhir.uv.extensions.")) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(rootUrl + "/ig/HL7/fhir-extensions/", id + ".tgz"));
       return new BasePackageCacheManager.InputStreamWithSrc(stream, Utilities.pathURL(rootUrl + "/ig/HL7/fhir-extensions/", id + ".tgz"), "current");
@@ -132,7 +130,7 @@ public class CIBuildClient {
     }
   }
 
-  void checkCIServerQueried() {
+  private void checkCIServerQueried() {
     if (System.currentTimeMillis() - ciLastQueriedTimeStamp > ciQueryInterval) {
       try {
         updateFromCIServer();
