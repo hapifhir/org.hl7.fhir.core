@@ -71,7 +71,7 @@ public class CIBuildClient {
     return ciPackageUrls.containsKey(packageId);
   }
 
-  String getPackageUrl(String packageId) throws IOException {
+  String getPackageUrl(String packageId) {
     checkCIServerQueried();
     for (JsonObject o : ciBuildInfo.asJsonObjects()) {
       if (packageId.equals(o.asString("package-id"))) {
@@ -94,7 +94,7 @@ public class CIBuildClient {
     return currentDate.equals(packageDate); // nup, we need a new copy
   }
 
-  BasePackageCacheManager.InputStreamWithSrc loadFromCIBuild(String id, String branch) throws IOException {
+  BasePackageCacheManager.InputStreamWithSrc loadFromCIBuild(String id, String branch) {
     checkCIServerQueried();
 
     if (hasPackage(id)) {
@@ -177,7 +177,7 @@ public class CIBuildClient {
   }
 
   private String getRepo(String path) {
-    String[] p = path.split("\\/");
+    String[] p = path.split("/");
     return p[0] + "/" + p[1];
   }
 
@@ -191,7 +191,7 @@ public class CIBuildClient {
     }
   }
 
-  public class BuildRecord {
+  public static class BuildRecord {
 
     private final String url;
     private final String packageId;
@@ -224,7 +224,7 @@ public class CIBuildClient {
 
   }
 
-  public class BuildRecordSorter implements Comparator<BuildRecord> {
+  public static class BuildRecordSorter implements Comparator<BuildRecord> {
 
     @Override
     public int compare(BuildRecord arg0, BuildRecord arg1) {

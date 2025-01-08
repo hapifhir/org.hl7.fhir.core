@@ -546,7 +546,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
       }
 
-      NpmPackage npmPackage = null;
+      NpmPackage npmPackage;
       String packageRoot = Utilities.path(cacheFolder, id + "#" + version);
       try {
         if (!id.equals(extractedNpm.getNpm().asString("name")) || !version.equals(extractedNpm.getNpm().asString("version"))) {
