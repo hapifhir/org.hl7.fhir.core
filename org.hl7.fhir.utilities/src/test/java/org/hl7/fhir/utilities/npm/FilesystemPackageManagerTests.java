@@ -53,15 +53,6 @@ public class FilesystemPackageManagerTests {
   );
 
   @Test
-  public void testCheckCIServerOnFirstPackageLoad() throws IOException {
-    FilesystemPackageCacheManager filesystemPackageCacheManager = Mockito.spy(new FilesystemPackageCacheManager.Builder().build());
-    MockWebServer server = new MockWebServer();
-
-    PackageServer dummyPackageServer = new PackageServer("https://dummy.org");
-    filesystemPackageCacheManager.loadPackage("dummy.package", "current");
-  }
-
-  @Test
   public void testDefaultServers() throws IOException {
     FilesystemPackageCacheManager filesystemPackageCacheManager = getFilesystemPackageCacheManager(false);
 
