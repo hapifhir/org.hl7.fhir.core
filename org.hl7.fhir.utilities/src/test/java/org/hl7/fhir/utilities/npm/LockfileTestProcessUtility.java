@@ -105,7 +105,7 @@ public class LockfileTestProcessUtility {
         System.out.println("File "+lockFileName+" is locked. Waiting for " + seconds + " seconds to release. ");
         Thread.sleep(seconds * 1000L);
 
-        lockFile.renameTo(File.createTempFile(lockFile.getName(), ".lock-renamed"));
+        lockFile.renameTo(File.createTempFile(lockFile.getName(), ".lock-renamed", lockFile.getParentFile()));
 
         fileLock.release();
         channel.close();
