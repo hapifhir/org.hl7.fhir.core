@@ -1140,7 +1140,9 @@ public class StructureDefinitionValidator extends BaseValidator {
           if (vs != null) {
             if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs instanceof ValueSet, I18nConstants.SD_ED_BIND_NOT_VS, path, ref, vs.fhirType())) {              
               ValueSet vsr = (ValueSet) vs;
-              warning(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), !vsr.getExperimental() || experimental, I18nConstants.SD_ED_EXPERIMENTAL_BINDING, path, ref);
+              if (!"example".equals(binding.getNamedChildValue("strength"))) {
+                warning(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), !vsr.getExperimental() || experimental, I18nConstants.SD_ED_EXPERIMENTAL_BINDING, path, ref);
+              }
             } else {
               ok = false;
             }
