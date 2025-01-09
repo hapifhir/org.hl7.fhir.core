@@ -43,7 +43,7 @@ public class ParametersRenderer extends ResourceRenderer {
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     renderResourceTechDetails(r, x);
     x.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
-    XhtmlNode tbl = x.table("grid");
+    XhtmlNode tbl = x.table("grid", false);
     params(status, tbl, r.children("parameter"), 0);
   }
 

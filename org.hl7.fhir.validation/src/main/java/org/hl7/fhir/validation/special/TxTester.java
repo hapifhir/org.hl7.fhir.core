@@ -49,9 +49,24 @@ import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.validation.special.TxTester.IntHolder;
 
 public class TxTester {
 
+
+  public class IntHolder {
+
+    private int count;
+    
+    public void count() {
+      count++;
+    }
+
+    public int total() {
+      return count;
+    }
+
+  }
 
   public interface ITxTesterLoader {
     public String describe();
@@ -107,6 +122,7 @@ public class TxTester {
       System.out.println("  Filter Parameter: "+filter);
     }
     
+    IntHolder counter = new IntHolder();
     JsonObject json = new JsonObject();
     json.add("date", new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(Calendar.getInstance().getTime()) + timezone());
     try {
@@ -118,7 +134,7 @@ public class TxTester {
           if (suite.asBoolean("disabled")) {
             // ok = true;
           } else {
-            ok = runSuite(suite, modes, filter, json.forceArray("suites")) && ok;
+            ok = runSuite(suite, modes, filter, json.forceArray("suites"), counter) && ok;
           }
         }
       }
@@ -127,10 +143,10 @@ public class TxTester {
       if (filter == null) {
         String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join(";", modes);
         if (ok) {
-          System.out.println(software+" passed all HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+          System.out.println(software+" passed all "+counter.total()+" HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
           return true;
         } else {
-          System.out.println(software+" did not pass all HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+          System.out.println(software+" did not pass all "+counter.total()+" HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
           System.out.println("Failed Tests: "+ CommaSeparatedStringBuilder.join(",", fails ));
           return false;
         }        
@@ -200,14 +216,14 @@ public class TxTester {
     }
     List<Resource> setup = loadSetupResources(suite);
 
-    if (runTest(suite, test, setup, modes, "*", null)) {
+    if (runTest(suite, test, setup, modes, "*", null, new IntHolder())) {
       return null;      
     } else {
       return error;
     }
   }
   
-  private boolean runSuite(JsonObject suite, List<String> modes, String filter, JsonArray output) throws FHIRFormatError, FileNotFoundException, IOException {
+  private boolean runSuite(JsonObject suite, List<String> modes, String filter, JsonArray output, IntHolder counter) throws FHIRFormatError, FileNotFoundException, IOException {
     System.out.println("Group "+suite.asString("name"));
     JsonObject outputS = new JsonObject();
     if (output != null) {
@@ -221,14 +237,14 @@ public class TxTester {
         if (test.asBoolean("disabled")) {
           ok = true;
         } else {
-          ok = runTest(suite, test, setup, modes, filter, outputS.forceArray("tests")) && ok;
+          ok = runTest(suite, test, setup, modes, filter, outputS.forceArray("tests"), counter) && ok;
         }
       }
     }
     return ok;
   }
 
-  private boolean runTest(JsonObject suite, JsonObject test, List<Resource> setup, List<String> modes, String filter, JsonArray output) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
+  private boolean runTest(JsonObject suite, JsonObject test, List<Resource> setup, List<String> modes, String filter, JsonArray output, IntHolder counter) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
     JsonObject outputT = new JsonObject();
     if (output != null) {
       output.add(outputT);
@@ -240,6 +256,7 @@ public class TxTester {
       System.out.print("  Test "+test.asString("name")+": ");
       HTTPHeader header = null;
       try {
+        counter.count();
         if (test.has("header")) {
           JsonObject hdr = test.getJsonObject("header");
           if (hdr.has("mode") && modes.contains(hdr.asString("mode"))) {

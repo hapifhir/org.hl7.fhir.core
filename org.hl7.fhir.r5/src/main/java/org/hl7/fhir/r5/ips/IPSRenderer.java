@@ -63,7 +63,7 @@ public class IPSRenderer {
   private void generate(XhtmlNode x, Bundle document) {
     Composition cmp = (Composition) document.getEntryFirstRep().getResource();
     int sectionDepth = findSectionDepth(cmp.getSection());
-    XhtmlNode table = x.table("grid");
+    XhtmlNode table = x.table("grid", false);
     
     // row 1: header
     XhtmlNode tr = table.tr();

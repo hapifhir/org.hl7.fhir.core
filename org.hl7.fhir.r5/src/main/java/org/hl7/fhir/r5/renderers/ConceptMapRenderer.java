@@ -406,7 +406,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       String display;
       if (ok) {
         // simple
-        XhtmlNode tbl = x.table( "grid");
+        XhtmlNode tbl = x.table( "grid", false);
         XhtmlNode tr = tbl.tr();
         tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SOURCE));
         tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_REL));
@@ -456,7 +456,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           }
         }
         
-        XhtmlNode tbl = x.table( "grid");
+        XhtmlNode tbl = x.table("grid", false);
         XhtmlNode tr = tbl.tr();
         XhtmlNode td;
         tr.td().colspan(Integer.toString(1+sources.size())).b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SRC_DET));
@@ -743,7 +743,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       Collections.sort(rowSets, new MultipleMappingRowSorter(advisor.sortPolicy(rmmContext) == RenderMultiRowSortPolicy.FIRST_COL));
     }
     XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
-    XhtmlNode tbl = div.table("none").style("text-align: left; border-spacing: 0; padding: 5px");
+    XhtmlNode tbl = div.table("none", false).style("text-align: left; border-spacing: 0; padding: 5px");
     XhtmlNode tr = tbl.tr();
     styleCell(tr.td(), false, true, 5).b().tx(start);
     for (ConceptMap map : maps) {

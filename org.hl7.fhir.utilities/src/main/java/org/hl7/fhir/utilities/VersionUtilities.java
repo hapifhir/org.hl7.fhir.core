@@ -87,6 +87,8 @@ public class VersionUtilities {
     private int compareInteger(String s1, String s2) {
       if (s1 == null) {
         return s2 == null ? 0 : 1;
+      } else if (s2 == null) {
+        return -1;
       } else {
         return Integer.compare(Integer.parseInt(s1), Integer.parseInt(s2));
       }
@@ -329,7 +331,7 @@ public class VersionUtilities {
     if (Utilities.noString(version)) {
       return false;
     }
-    return version.matches("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-\\+]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-\\+][0-9a-zA-Z-\\+]*))*))?$");
+    return version.matches("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-\\+]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-\\+][0-9a-zA-Z-\\+]*))*))?)?$");
   }
 
   /** 

@@ -54,7 +54,7 @@ public class FeatureDefinitionRenderer extends ResourceRenderer {
     renderResourceTechDetails(fd, x);
     genSummaryTable(status, x, fd);
     
-    XhtmlNode tbl = x.table("grid");
+    XhtmlNode tbl = x.table("grid", false);
     
     XhtmlNode td = tbl.tr().td();
     td.tx("Feature ");
@@ -93,7 +93,7 @@ public class FeatureDefinitionRenderer extends ResourceRenderer {
     if (fd.has("qualifier")) {
       td.b().tx("Qualifiers");
 
-      XhtmlNode tbl2 = td.table("lines");
+      XhtmlNode tbl2 = td.table("lines", false);
       XhtmlNode tr = tbl2.tr();
       tr.td().b().tx("Name");
       tr.td().b().tx("Type");

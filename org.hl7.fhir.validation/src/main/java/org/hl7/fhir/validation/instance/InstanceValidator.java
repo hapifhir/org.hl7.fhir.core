@@ -2536,96 +2536,130 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     Collections.sort(plist); // logical paths are a set, but we want a predictable order for error messages
 
+    if (definition.hasExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE)) {
+      Extension ext = definition.getExtensionByUrl(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE);
+      if (ext.hasExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_START)) {
+        String v = ToolingExtensions.readStringExtension(ext, ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_START);
+        ok = rule(errors, "2025-01-07", IssueType.BUSINESSRULE, container.line(), container.col(), stack.getLiteralPath(), 
+            VersionUtilities.compareVersions(VersionUtilities.getMajMin(context.getVersion()), v) >= 0,
+            I18nConstants.EXTENSION_FHIR_VERSION_EARLIEST, extUrl, VersionUtilities.getNameForVersion(v), v, VersionUtilities.getNameForVersion(context.getVersion()), context.getVersion()) && ok;
+      }
+      if (ext.hasExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_END)) {
+        String v = ToolingExtensions.readStringExtension(ext, ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_END);
+        ok = rule(errors, "2025-01-07", IssueType.BUSINESSRULE, container.line(), container.col(), stack.getLiteralPath(), 
+            VersionUtilities.compareVersions(VersionUtilities.getMajMin(context.getVersion()), v) <= 0,
+            I18nConstants.EXTENSION_FHIR_VERSION_LATEST, extUrl, VersionUtilities.getNameForVersion(v), v, VersionUtilities.getNameForVersion(context.getVersion()), context.getVersion()) && ok;
+      }
+    }
+    boolean vv = false;
     for (StructureDefinitionContextComponent ctxt : fixContexts(extUrl, definition.getContext())) {
       if (ok) {
         break;
       }
-      if (ctxt.getType() == ExtensionContextType.ELEMENT) {
-        String en = ctxt.getExpression();
-        String pu = null;
-        if (en == null) {
-          // nothing? It's an error in the extension definition, but that's properly reported elsewhere 
-        } else {
-          contexts.append("e:" + en);
-          if (en.contains("#")) {
-            pu = en.substring(0, en.indexOf("#"));
-            en = en.substring(en.indexOf("#")+1);          
-          } else {
-            //pu = en;
-          }
-          if (Utilities.existsInList(en, "Element", "Any")) {
-            ok = true;
-          } else if (en.equals("Resource") && container.isResource()) {
-            ok = true;
-          } else if (en.equals("CanonicalResource") && containsAny(VersionUtilities.getExtendedCanonicalResourceNames(context.getVersion()), plist)) {
-            ok = true;
-          } else if (hasElementName(plist, en) && pu == null) {
-            ok = true;
-          }
+      boolean cok = true;
+      if (ctxt.hasExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE)) {
+        Extension ext = ctxt.getExtensionByUrl(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE);
+        vv = true;
+        if (ext.hasExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_START)) {
+          String v = ToolingExtensions.readStringExtension(ext, ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_START);
+          cok = VersionUtilities.compareVersions(VersionUtilities.getMajMin(context.getVersion()), v) >= 0 && cok;
         }
-        
-        if (!ok) {
-          if (checkConformsToProfile(appContext, errors, resource, container, stack, extUrl, ctxt.getExpression(), pu)) {
-            for (String p : plist) {
-              if (ok) {
-                break;
-              }
-              if (p.equals(en)) {
-                ok = true;
-              } else {
-                String pn = p;
-                String pt = "";
-                if (p.contains(".")) {
-                  pn = p.substring(0, p.indexOf("."));
-                  pt = p.substring(p.indexOf("."));
+        if (ext.hasExtension(ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_END)) {
+          String v = ToolingExtensions.readStringExtension(ext, ToolingExtensions.EXT_FHIRVERSION_SPECIFIC_USE_END);
+          cok = VersionUtilities.compareVersions(VersionUtilities.getMajMin(context.getVersion()), v) <= 0 && cok;
+        }
+      }
+      if (cok) {
+        if (ctxt.getType() == ExtensionContextType.ELEMENT) {
+          String en = ctxt.getExpression();
+          String pu = null;
+          if (en == null) {
+            // nothing? It's an error in the extension definition, but that's properly reported elsewhere 
+          } else {
+            contexts.append("e:" + en);
+            if (en.contains("#")) {
+              pu = en.substring(0, en.indexOf("#"));
+              en = en.substring(en.indexOf("#")+1);          
+            } else {
+              //pu = en;
+            }
+            if (Utilities.existsInList(en, "Element", "Any")) {
+              ok = true;
+            } else if (en.equals("Resource") && container.isResource()) {
+              ok = true;
+            } else if (en.equals("CanonicalResource") && containsAny(VersionUtilities.getExtendedCanonicalResourceNames(context.getVersion()), plist)) {
+              ok = true;
+            } else if (hasElementName(plist, en) && pu == null) {
+              ok = true;
+            }
+          }
+
+          if (!ok) {
+            if (checkConformsToProfile(appContext, errors, resource, container, stack, extUrl, ctxt.getExpression(), pu)) {
+              for (String p : plist) {
+                if (ok) {
+                  break;
                 }
-                StructureDefinition sd = context.fetchTypeDefinition(pn);
-                while (sd != null) {
-                  if ((sd.getType() + pt).equals(en)) {
-                    ok = true;
-                    break;
+                if (p.equals(en)) {
+                  ok = true;
+                } else {
+                  String pn = p;
+                  String pt = "";
+                  if (p.contains(".")) {
+                    pn = p.substring(0, p.indexOf("."));
+                    pt = p.substring(p.indexOf("."));
                   }
-                  if (sd.getBaseDefinition() != null) {
-                    sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
-                  } else {
-                    sd = null;
+                  StructureDefinition sd = context.fetchTypeDefinition(pn);
+                  while (sd != null) {
+                    if ((sd.getType() + pt).equals(en)) {
+                      ok = true;
+                      break;
+                    }
+                    if (sd.getBaseDefinition() != null) {
+                      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+                    } else {
+                      sd = null;
+                    }
                   }
                 }
               }
             }
           }
-        }
-      } else if (ctxt.getType() == ExtensionContextType.EXTENSION) {
-        contexts.append("x:" + ctxt.getExpression());
-        String ext = null;
-        if (stack.getElement().getName().startsWith("value")) {
-          NodeStack estack = stack.getParent();
-          if (estack != null && estack.getElement().fhirType().equals("Extension")) {
-            ext = estack.getElement().getNamedChildValue("url", false);
+        } else if (ctxt.getType() == ExtensionContextType.EXTENSION) {
+          contexts.append("x:" + ctxt.getExpression());
+          String ext = null;
+          if (stack.getElement().getName().startsWith("value")) {
+            NodeStack estack = stack.getParent();
+            if (estack != null && estack.getElement().fhirType().equals("Extension")) {
+              ext = estack.getElement().getNamedChildValue("url", false);
+            }
+          } else {
+            ext = stack.getElement().getNamedChildValue("url", false);
+          }
+          if (ctxt.getExpression().equals(ext)) {
+            ok = true;
+          } else if (ext != null) {
+            plist.add(ext);
+          }
+        } else if (ctxt.getType() == ExtensionContextType.FHIRPATH) {
+          contexts.append("p:" + ctxt.getExpression());
+          // The context is all elements that match the FHIRPath query found in the expression.
+          List<Base> res = fpe.evaluate(valContext, resource, valContext.getRootResource(), resource, fpe.parse(ctxt.getExpression()));
+          if (res.contains(container)) {
+            ok = true;
           }
         } else {
-          ext = stack.getElement().getNamedChildValue("url", false);
+          throw new Error(context.formatMessage(I18nConstants.UNRECOGNISED_EXTENSION_CONTEXT_, ctxt.getTypeElement().asStringValue()));
         }
-        if (ctxt.getExpression().equals(ext)) {
-          ok = true;
-        } else if (ext != null) {
-          plist.add(ext);
-        }
-      } else if (ctxt.getType() == ExtensionContextType.FHIRPATH) {
-        contexts.append("p:" + ctxt.getExpression());
-        // The context is all elements that match the FHIRPath query found in the expression.
-        List<Base> res = fpe.evaluate(valContext, resource, valContext.getRootResource(), resource, fpe.parse(ctxt.getExpression()));
-        if (res.contains(container)) {
-          ok = true;
-        }
-      } else {
-        throw new Error(context.formatMessage(I18nConstants.UNRECOGNISED_EXTENSION_CONTEXT_, ctxt.getTypeElement().asStringValue()));
       }
     }
     if (!ok) {
       if (definition.hasUserData(XVerExtensionManager.XVER_EXT_MARKER)) {
         warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
             modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_XVER : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_XVER, extUrl, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER));
+      } else if (vv) {
+        rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
+            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_VER : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_VER, extUrl, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER), context.getVersion());        
       } else {
         rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
             modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG, extUrl, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER));        
@@ -6857,7 +6891,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
         }
       } else {
-        warningPlural(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), false, goodProfiles.size(), I18nConstants.VALIDATION_VAL_PROFILE_MULTIPLEMATCHES, ResourceUtilities.listStrings(goodProfiles.keySet()));
+        warningPlural(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), false, goodProfiles.size(), I18nConstants.VALIDATION_VAL_PROFILE_MULTIPLEMATCHES, ResourceUtilities.listStrings(goodProfiles.keySet(), true));
         for (String m : goodProfiles.keySet()) {
           p = this.context.fetchResource(StructureDefinition.class, m);
           for (ValidationMessage message : goodProfiles.get(m)) {
@@ -7469,9 +7503,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (!Utilities.noString(msg)) {
         msg = msg + " (log: " + msg + ")";
       }
+      String msgId = null;
       if (inv.hasSource()) {
-        msg = context.formatMessage(I18nConstants.INV_FAILED_SOURCE, inv.getKey() + ": '" + inv.getHuman()+"'", inv.getSource())+msg;        
+        msg = context.formatMessage(I18nConstants.INV_FAILED_SOURCE, inv.getKey() + ": '" + inv.getHuman()+"'", inv.getSource())+msg;
+        msgId = inv.getSource()+"#"+inv.getKey();
       } else {
+        msgId = profile.getUrl()+"#"+inv.getKey();
         msg = context.formatMessage(I18nConstants.INV_FAILED, inv.getKey() + ": '" + inv.getHuman()+"'")+msg;
       }
       String invId = (inv.hasSource() ? inv.getSource() : profile.getUrl()) + "#"+inv.getKey();
@@ -7480,15 +7517,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ToolingExtensions.readBooleanExtension(inv, ToolingExtensions.EXT_BEST_PRACTICE)) {
         msg = msg +" (Best Practice Recommendation)";
         if (bpWarnings == BestPracticeWarningLevel.Hint)
-          hintInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId);
+          hintInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId, msgId);
         else if (/*bpWarnings == null || */ bpWarnings == BestPracticeWarningLevel.Warning)
-          warningInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId);
+          warningInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId, msgId);
         else if (bpWarnings == BestPracticeWarningLevel.Error)
-          ok = ruleInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId) && ok;
+          ok = ruleInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId, msgId) && ok;
       } else if (inv.getSeverity() == ConstraintSeverity.ERROR) {
-        ok = ruleInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId) && ok;
+        ok = ruleInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId, msgId) && ok;
       } else if (inv.getSeverity() == ConstraintSeverity.WARNING) {
-        warningInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId);
+        warningInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId, msgId);
       }
     }
     return ok;
