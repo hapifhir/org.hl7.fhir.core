@@ -80,14 +80,19 @@ import org.hl7.fhir.validation.cli.utils.Display;
 import org.hl7.fhir.validation.cli.utils.Params;
 
 /**
- * A executable class that will validate one or more FHIR resources against
- * the specification
- * <p>
- * todo: schema validation (w3c xml, json schema, shex?)
- * <p>
- * if you want to host validation inside a process, skip this class, and look at
- * ValidationEngine
- * <p>
+ * A executable providing a Command Line Interface primarily for validating one or more FHIR resources against
+ * the specification.
+ * <p/>
+ * The CLI also supports other functionality, as documented in the CLI help:
+ * <code>src/main/resources/help/help.txt</code>
+ * <p/>
+ * Alternatively, the <a href="https://github.com/hapifhir/org.hl7.fhir.validator-wrapper.git">validator-wrapper</a>
+ * project provides similar functionality via a web-hosted service.
+ * <p/>
+ * For lower level use of FHIR validation in your own code, @ValidationEngine can be used directly. See the
+ * <a href="https://github.com/FHIR/fhir-core-examples">fhir-core-examples</a>  project for examples of this. Note that
+ * this is not the recommended path, and we are not able to guarantee support for this use case.
+ * <p/>
  * todo: find a home for this:
  *
  * @author Grahame
