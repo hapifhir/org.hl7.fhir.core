@@ -935,8 +935,9 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     return invId;
   }
 
-  public void setInvId(String invId) {
+  public ValidationMessage setInvId(String invId) {
     this.invId = invId;
+    return this;
   }
 
   public String getComment() {
