@@ -260,10 +260,10 @@ public class CodeSystemValidator extends BaseValidator {
             String pcode = uri.substring(uri.indexOf("#")+1);
             CodeSystem pcs = context.findTxResource(CodeSystem.class, base);
             if (pcs == null) {
-              warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_URI_UNKNOWN_BASE, base);
+              warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_URI_UNKNOWN_BASE, base, code);
             } else {
               ConceptDefinitionComponent cc = CodeSystemUtilities.findCode(pcs.getConcept(), pcode);              
-              if (rule(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), cc != null, I18nConstants.CODESYSTEM_PROPERTY_URI_INVALID, pcode, base, pcs.present())) {
+              if (warning(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), cc != null, I18nConstants.CODESYSTEM_PROPERTY_URI_INVALID, pcode, base, pcs.present(), uri, code)) {
                 foundPropDefn = true;
                 if ("code".equals(type)) {
                   ConceptPropertyComponent ccp = CodeSystemUtilities.getProperty(cc, "binding");
@@ -275,7 +275,6 @@ public class CodeSystemValidator extends BaseValidator {
                   }
                 }
               } else {
-                ok = false;
                 if ("code".equals(type)) {
                   ruleFromUri = CodeValidationRule.INTERNAL_CODE_WARNING;
                 }
@@ -414,7 +413,7 @@ public class CodeSystemValidator extends BaseValidator {
         hint(errors, "2024-03-18", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), ukp != null && type.equals(ukp.getType()), I18nConstants.CODESYSTEM_PROPERTY_CODE_WARNING);
       } else {
         pd.setCodeValidationRules(ruleFromUri, null);
-        hint(errors, "2025-01-09", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_CODE_DEFAULT_WARNING); 
+        hint(errors, "2025-01-09", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_CODE_DEFAULT_WARNING, "code"); 
       }
     } else if ("Coding".equals(pd.getType()) && property.hasExtension("http://hl7.org/fhir/StructureDefinition/codesystem-property-valueset", "http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet")) {
       pd.setCodeValidationRules(CodeValidationRule.VS_ERROR, findVS(errors, cs, stack, property.getExtensionValue("http://hl7.org/fhir/StructureDefinition/codesystem-property-valueset", "http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet").primitiveValue(), I18nConstants.CODESYSTEM_PROPERTY_VALUESET_NOT_FOUND));
@@ -458,6 +457,11 @@ public class CodeSystemValidator extends BaseValidator {
     String code = concept.getNamedChildValue("code");
     String display = concept.getNamedChildValue("display");
 
+    if (codes.contains(code)) {
+      ok = rule(errors, "2025-01-09", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_DUPLICATE_CODE, code) && ok;             
+    }
+    codes.add(code);
+    
     if (csB != null && !Utilities.noString(display)) {
       ConceptDefinitionComponent b = CodeSystemUtilities.findCode(csB.getConcept(), code);
       if (b != null && !b.getDisplay().equalsIgnoreCase(display)) {
