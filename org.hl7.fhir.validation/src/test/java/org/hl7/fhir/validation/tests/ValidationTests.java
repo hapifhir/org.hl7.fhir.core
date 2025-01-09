@@ -298,6 +298,18 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         }
       }
     }
+    if (content.has("supporting5")) {
+      for (JsonElement e : content.getAsJsonArray("supporting5")) {
+        String filename = e.getAsString();
+        String contents = TestingUtilities.loadTestResource("validator", filename);
+        CanonicalResource mr = (CanonicalResource) loadResource(filename, contents, "5.0.0");
+        logOutput("load resource "+mr.getUrl());
+        val.getContext().cacheResource(mr);
+        if (mr instanceof ImplementationGuide) {
+          val.getImplementationGuides().add((ImplementationGuide) mr);
+        }
+      }
+    }
     val.getBundleValidationRules().clear();
     if (content.has("bundle-param")) {
       val.getBundleValidationRules().add(new BundleValidationRule().setRule(content.getAsJsonObject("bundle-param").get("rule").getAsString()).setProfile( content.getAsJsonObject("bundle-param").get("profile").getAsString()));
@@ -520,6 +532,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   public Resource loadResource(String filename, String contents) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
+    return loadResource(filename, contents, version);
+  }
+  
+  public Resource loadResource(String filename, String contents, String version) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {  
     try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
       if (filename.contains(".json")) {
         if (Constants.VERSION.equals(version) || "5.0".equals(version))

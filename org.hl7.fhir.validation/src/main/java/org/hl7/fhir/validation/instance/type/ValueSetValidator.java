@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.TerminologyUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
@@ -303,6 +304,7 @@ public class ValueSetValidator extends BaseValidator {
         // can we get it from a terminology server? 
         cs = context.findTxResource(CodeSystem.class, system, version);
       }
+      boolean validateConcepts = true;
       if (cs != null) { // if it's null, we can't analyse this
         if (cs.getContent() == null) {
           warning(errors, "2024-03-06", IssueType.INVALID, stack, false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_CONTENT : I18nConstants.VALUESET_INCLUDE_CSVER_CONTENT, system, "null", version);             
@@ -315,15 +317,29 @@ public class ValueSetValidator extends BaseValidator {
             hint(errors, "2024-03-06", IssueType.INVALID, stack, false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_CONTENT : I18nConstants.VALUESET_INCLUDE_CSVER_CONTENT, system, cs.getContent().toCode(), version);             
             break;
           case SUPPLEMENT:
+            validateConcepts = false;
             ok = rule(errors, "2024-03-06", IssueType.INVALID, stack, false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_SUPPLEMENT : I18nConstants.VALUESET_INCLUDE_CSVER_SUPPLEMENT, system, cs.getSupplements(), version) && ok;             
             break;
           default:
             break;
           }
         }
-      } 
+      } else {
+        ValueSet vs = context.findTxResource(ValueSet.class, system, version);
+        if (vs != null) {
+          validateConcepts = false;
+          List<String> systems = TerminologyUtilities.listSystems(vs);
+          if (systems.size() == 0) {
+            ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, false, I18nConstants.VALUESET_INCLUDE_WRONG_VS, system) && ok;
+          } else if (systems.size() == 1) {
+            ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, false, I18nConstants.VALUESET_INCLUDE_WRONG_VS_HINT, system, systems.get(0)) && ok;
+          } else { 
+            ok = rule(errors, "2025-01-09", IssueType.INVALID, stack, false, I18nConstants.VALUESET_INCLUDE_WRONG_VS_MANY, system, CommaSeparatedStringBuilder.join(", ", systems)) && ok;
+          }
+        }
+      }
 
-      if (!noTerminologyChecks) {
+      if (!noTerminologyChecks && validateConcepts) {
         boolean systemOk = true;
         int cc = 0;
         List<VSCodingValidationRequest> batch = new ArrayList<>();
@@ -336,7 +352,7 @@ public class ValueSetValidator extends BaseValidator {
               for (Element concept : concepts) {
                 // we treat the first differently because we want to know if the system is worth validating. if it is, then we batch the rest
                 if (first) {
-                  systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version, csChecker);
+                  systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version, csChecker, cs != null);
                   first = false;
                 } else if (systemOk) {
                   batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version, csChecker));
@@ -390,7 +406,7 @@ public class ValueSetValidator extends BaseValidator {
   }
 
 
-  private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stackInc, NodeStack stack, String system, String version, CodeSystemChecker slv) {
+  private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stackInc, NodeStack stack, String system, String version, CodeSystemChecker slv, boolean locallyKnownCodeSystem) {
     String code = concept.getChildValue("code");
     String display = concept.getChildValue("display");
     slv.checkConcept(code, display);

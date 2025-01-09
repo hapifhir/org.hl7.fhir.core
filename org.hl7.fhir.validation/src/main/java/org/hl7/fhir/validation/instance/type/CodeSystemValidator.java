@@ -8,11 +8,14 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.codesystems.CodesystemAltcodeKind;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.CanonicalPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -21,6 +24,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.cli.model.ValidationOutcome;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator.KnownProperty;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator.PropertyDef;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
@@ -60,7 +64,7 @@ public class CodeSystemValidator extends BaseValidator {
   }
 
   public enum CodeValidationRule {
-    NO_VALIDATION, INTERNAL_CODE, VS_ERROR, VS_WARNING
+    NO_VALIDATION, INTERNAL_CODE, INTERNAL_CODE_WARNING, VS_ERROR, VS_WARNING
   }
   
   public class PropertyDef {
@@ -69,7 +73,7 @@ public class CodeSystemValidator extends BaseValidator {
     private String type;
     
     private CodeValidationRule rule;
-    private String valueset;
+    private ValueSet valueset;
     
     protected PropertyDef(String uri, String code, String type) {
       super();
@@ -78,7 +82,7 @@ public class CodeSystemValidator extends BaseValidator {
       this.type = type;
     }
     
-    public void setCodeValidationRules(CodeValidationRule rule, String valueset) {
+    public void setCodeValidationRules(CodeValidationRule rule, ValueSet valueset) {
       this.rule = rule;
       this.valueset = valueset;
     }
@@ -92,13 +96,18 @@ public class CodeSystemValidator extends BaseValidator {
     public String getType() {
       return type;
     }
-    public String getValueset() {
+    public ValueSet getValueset() {
       return valueset;
+    }
+
+    public CodeValidationRule getRule() {
+      return rule;
     }
 
   }
 
   private static final String VS_PROP_STATUS = null;
+  private Set<String> propertyCodes = new HashSet<String>();
 
   public CodeSystemValidator(BaseValidator parent) {
     super(parent);
@@ -237,11 +246,48 @@ public class CodeSystemValidator extends BaseValidator {
     PropertyDef pd = new PropertyDef(uri, code, type);
     KnownProperty ukp = null;
     KnownProperty ckp = null;
+    boolean foundPropDefn = false;
+    CodeValidationRule ruleFromUri = CodeValidationRule.INTERNAL_CODE_WARNING;
+    String valuesetFromUri = null;
+    
 
     if (uri != null) {
       if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), Utilities.isAbsoluteUrl(uri), I18nConstants.CODESYSTEM_PROPERTY_ABSOLUTE_URI, uri)) {
         if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), !properties.containsKey(uri), I18nConstants.CODESYSTEM_PROPERTY_DUPLICATE_URI, uri)) {         
           properties.put(uri, pd);
+          if (uri.contains("#")) {
+            String base = uri.substring(0, uri.indexOf("#"));
+            String pcode = uri.substring(uri.indexOf("#")+1);
+            CodeSystem pcs = context.findTxResource(CodeSystem.class, base);
+            if (pcs == null) {
+              warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_URI_UNKNOWN_BASE, base);
+            } else {
+              ConceptDefinitionComponent cc = CodeSystemUtilities.findCode(pcs.getConcept(), pcode);              
+              if (rule(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), cc != null, I18nConstants.CODESYSTEM_PROPERTY_URI_INVALID, pcode, base, pcs.present())) {
+                foundPropDefn = true;
+                if ("code".equals(type)) {
+                  ConceptPropertyComponent ccp = CodeSystemUtilities.getProperty(cc, "binding");
+                  if (ccp != null && ccp.hasValue() && ccp.getValue().hasPrimitiveValue()) {
+                    ruleFromUri = CodeValidationRule.VS_ERROR;
+                    valuesetFromUri = ccp.getValue().primitiveValue();
+                  } else {
+                    ruleFromUri = CodeValidationRule.INTERNAL_CODE_WARNING;                    
+                  }
+                }
+              } else {
+                ok = false;
+                if ("code".equals(type)) {
+                  ruleFromUri = CodeValidationRule.INTERNAL_CODE_WARNING;
+                }
+              }
+            }
+          } else {
+            if ("code".equals(type)) {
+              warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_URI_UNKNOWN_TYPE, uri);
+            } else {
+              hint(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_URI_UNKNOWN, uri);              
+            }
+          }
         } else {
           ok = false;
         }
@@ -352,21 +398,26 @@ public class CodeSystemValidator extends BaseValidator {
         pd.setCodeValidationRules(CodeValidationRule.INTERNAL_CODE, null);
         break;
       case Status:
-        pd.setCodeValidationRules(CodeValidationRule.VS_WARNING, VS_PROP_STATUS);
+        pd.setCodeValidationRules(CodeValidationRule.VS_WARNING, findVS(errors, cs, stack, VS_PROP_STATUS, I18nConstants.CODESYSTEM_PROPERTY_VALUESET_NOT_FOUND));
         break;
       default:
         break;
       }
     } else if ("code".equals(pd.getType())) { 
-      if (property.hasExtension("http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet")) {
-        pd.setCodeValidationRules(CodeValidationRule.VS_ERROR, property.getExtensionValue("http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet").primitiveValue());
+      if (property.hasExtension("http://hl7.org/fhir/StructureDefinition/codesystem-property-valueset", "http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet")) {
+        pd.setCodeValidationRules(CodeValidationRule.VS_ERROR, findVS(errors, cs, stack, 
+            property.getExtensionValue("http://hl7.org/fhir/StructureDefinition/codesystem-property-valueset", "http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet").primitiveValue(), 
+            I18nConstants.CODESYSTEM_PROPERTY_VALUESET_NOT_FOUND));
+      } else if (foundPropDefn && valuesetFromUri != null) {
+        pd.setCodeValidationRules(ruleFromUri, findVS(errors, cs, stack, valuesetFromUri, I18nConstants.CODESYSTEM_PROPERTY_VALUESET_NOT_FOUND));
       } else if (VersionUtilities.isR6Plus(context.getVersion())) {
         hint(errors, "2024-03-18", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), ukp != null && type.equals(ukp.getType()), I18nConstants.CODESYSTEM_PROPERTY_CODE_WARNING);
       } else {
-        
+        pd.setCodeValidationRules(ruleFromUri, null);
+        hint(errors, "2025-01-09", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_CODE_DEFAULT_WARNING); 
       }
-    } else if ("Coding".equals(pd.getType()) && property.hasExtension("http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet")) {
-      pd.setCodeValidationRules(CodeValidationRule.VS_ERROR, property.getExtensionValue("http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet").primitiveValue());
+    } else if ("Coding".equals(pd.getType()) && property.hasExtension("http://hl7.org/fhir/StructureDefinition/codesystem-property-valueset", "http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet")) {
+      pd.setCodeValidationRules(CodeValidationRule.VS_ERROR, findVS(errors, cs, stack, property.getExtensionValue("http://hl7.org/fhir/StructureDefinition/codesystem-property-valueset", "http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet").primitiveValue(), I18nConstants.CODESYSTEM_PROPERTY_VALUESET_NOT_FOUND));
     }
   
     if (uri == null) {
@@ -380,6 +431,18 @@ public class CodeSystemValidator extends BaseValidator {
       }
     }
     return ok;
+  }
+
+  private ValueSet findVS(List<ValidationMessage> errors, Element cs, NodeStack stack, String url, String message) {
+    if (url == null) {
+      return null;
+    } else {
+      ValueSet vs = context.findTxResource(ValueSet.class, url);
+      if (vs != null) {        
+        warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, message, url);
+      }
+      return vs;
+    }
   }
 
   private boolean isBaseSpec(String url) {
@@ -480,7 +543,9 @@ public class CodeSystemValidator extends BaseValidator {
       if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), defn != null, I18nConstants.CODESYSTEM_PROPERTY_UNDEFINED, code) &&
           rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value != null, I18nConstants.CODESYSTEM_PROPERTY_NO_VALUE, code) &&
           rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value.fhirType().equals(defn.type), I18nConstants.CODESYSTEM_PROPERTY_WRONG_TYPE, code, value.fhirType(), defn.type)) {
-            // nothing?
+        if ("code".equals(value.fhirType())) {
+          checkCodeProperty(errors, cs, stack, defn, value.primitiveValue(), codes);
+        }
       } else {
         ok = false;
       }
@@ -490,6 +555,43 @@ public class CodeSystemValidator extends BaseValidator {
       }
     }
     return ok;
+  }
+
+  private void checkCodeProperty(List<ValidationMessage> errors, Element cs, NodeStack stack, PropertyDef defn, String code, Set<String> codes) {
+    switch (defn.getRule()) {
+    case INTERNAL_CODE:
+      if (!isSeenPropertyCode(defn, code)) {
+        rule(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), codes.contains(code), I18nConstants.CODESYSTEM_PROPERTY_BAD_INTERNAL_REFERENCE, code);
+      }
+      break;
+    case INTERNAL_CODE_WARNING:
+      if (!isSeenPropertyCode(defn, code)) {
+        warning(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), codes.contains(code), I18nConstants.CODESYSTEM_PROPERTY_BAD_INTERNAL_REFERENCE, code);
+      }
+      break;
+    case VS_ERROR:
+      if (defn.getValueset() != null && !isSeenPropertyCode(defn, code)) {
+        ValidationResult vo = context.validateCode(baseOptions, code, defn.getValueset());
+        rule(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), vo.isOk(), I18nConstants.CODESYSTEM_PROPERTY_BAD_PROPERTY_CODE, code);
+      }
+      break;
+    case VS_WARNING:
+      if (defn.getValueset() != null && !isSeenPropertyCode(defn, code)) {
+        ValidationResult vo = context.validateCode(baseOptions, code, defn.getValueset());
+        warning(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), vo.isOk(), I18nConstants.CODESYSTEM_PROPERTY_BAD_PROPERTY_CODE, code, defn.getValueset().getVersionedUrl());
+      }
+      break;
+    default:
+    case NO_VALIDATION:
+      break;
+    }
+  }
+
+  private boolean isSeenPropertyCode(PropertyDef defn, String code) {
+    String key = defn.getValueset() != null ? defn.getValueset().getVersionedUrl()+"#"+code : "null#"+code;
+    boolean isnew = propertyCodes.contains(key);
+    propertyCodes.add(key);
+    return isnew;
   }
 
   private boolean checkShareableCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack) {

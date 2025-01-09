@@ -652,7 +652,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     if(msg.hasEndpoint())
     {
       body.h(nextLevel+1,"msg_end_"+Integer.toString(index)).addText(context.formatPhrase(RenderingContext.CAPABILITY_ENDPOINTS));
-      table = body.table("table table-condensed table-hover");
+      table = body.table("table table-condensed table-hover", false);
       tr = table.addTag("thead").tr();
       tr.th().addText("Protocol");
       tr.th().addText("Address");
@@ -670,7 +670,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     if(msg.hasSupportedMessage())
     {
       body.h(nextLevel+1,"msg_end_"+Integer.toString(index)).addText(context.formatPhrase(RenderingContext.CAPABILITY_SUPP_MSGS));
-      table = body.table("table table-condensed table-hover");
+      table = body.table("table table-condensed table-hover", false);
       tr = table.addTag("thead").tr();
       tr.th().addText("Mode");
       tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_DEFINITION));
@@ -697,7 +697,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     XhtmlNode tbody;
     XhtmlNode tr;
 
-    table = x.table("table table-condensed table-hover");
+    table = x.table("table table-condensed table-hover", false);
     tr = table.addTag("thead").tr();
     tr.th().addText("Mode");
     tr.th().addText(context.formatPhrase(RenderingContext.CAPABILITY_PROF_RES_DOC));
@@ -879,7 +879,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   }
 
   private void addSummaryTable(RenderingStatus status, ResourceWrapper res, XhtmlNode x, CapabilityStatement.CapabilityStatementRestComponent rest, boolean hasVRead, boolean hasPatch, boolean hasDelete, boolean hasHistory, boolean hasUpdates, int count) throws IOException {
-    XhtmlNode t = x.div().attribute("class","table-responsive").table("table table-condensed table-hover");
+    XhtmlNode t = x.div().attribute("class","table-responsive").table("table table-condensed table-hover", false);
     XhtmlNode tr = t.addTag("thead").tr();
     tr.th().b().tx(context.formatPhrase(RenderingContext.CAPABILITY_RES_TYP));
     tr.th().b().tx(context.formatPhrase(RenderingContext.GENERAL_PROF));
@@ -986,7 +986,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     if (r.hasExtension(ToolingExtensions.EXT_PROFILE_MAPPING)) {
       profCell.br();
       profCell.b().tx(context.formatPhrase(RenderingContext.CAPABILITY_PROF_MAP));
-      XhtmlNode tbl = profCell.table("grid");
+      XhtmlNode tbl = profCell.table("grid", false);
       boolean doco = false;
       for (Extension ext : r.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_MAPPING)) {
         doco = doco || ext.hasExtension("documentation");
@@ -1239,7 +1239,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     row = body.div().attribute("class", "row");
     cell = row.div().attribute("class", "col-12");
     addLead(cell, context.formatPhrase(RenderingContext.CAPABILITY_EXT_OP));
-    table = cell.table("table table-condensed table-hover");
+    table = cell.table("table table-condensed table-hover", false);
     tr = table.addTag("thead").tr();
     tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_CONFORMANCE));
     tr.th().addText(context.formatPhrase(RenderingContext.CAPABILITY_OPER));
@@ -1369,7 +1369,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     row = body.div().attribute("class", "row");
     cell = row.div().attribute("class", "col-lg-7");
     addLead(cell, context.formatPhrase(RenderingContext.CAPABILITY_SEARCH_PARS));
-    table = cell.table("table table-condensed table-hover");
+    table = cell.table("table table-condensed table-hover", false);
     tr = table.addTag("thead").tr();
     tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_CONFORMANCE));
     tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_PAR));
@@ -1385,7 +1385,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     cell = row.div().attribute("class", "col-lg-5");
     if (!isCombinedEmpty(comboMap)) {
       addLead(cell, context.formatPhrase(RenderingContext.CAPABILITY_COMB_SEARCH_PAR));
-      table = cell.table("table table-condensed table-hover");
+      table = cell.table("table table-condensed table-hover", false);
       tr = table.addTag("thead").tr();
       tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_CONFORMANCE));
       tr.th().addText(context.formatPhrase(RenderingContext.GENERAL_PARS));
