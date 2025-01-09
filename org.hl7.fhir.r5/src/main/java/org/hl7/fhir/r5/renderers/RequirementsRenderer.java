@@ -80,7 +80,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         p.ah(context.prefixLocalHref(c.primitiveValue())).tx(url);
       }
     }
-    XhtmlNode tbl = x.table("grid");
+    XhtmlNode tbl = x.table("grid", false);
 
     for (ResourceWrapper stmt : req.children("statement")) {
       XhtmlNode tr = tbl.tr();

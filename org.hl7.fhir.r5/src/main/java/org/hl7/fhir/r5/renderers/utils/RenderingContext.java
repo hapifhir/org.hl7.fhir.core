@@ -24,7 +24,9 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.IResourceLinkResolver;
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -71,6 +73,10 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  * 
  */
 public class RenderingContext extends RenderingI18nContext {
+
+  public interface IResourceLinkResolver {
+    public <T extends Resource> T findLinkableResource(Class<T> class_, String uri) throws IOException;
+  }
 
   public static class RenderingContextLangs {
     
@@ -297,6 +303,8 @@ public class RenderingContext extends RenderingI18nContext {
   private String uniqueLocalPrefix;
   private Set<String> anchors = new HashSet<>();
   private boolean unknownLocalReferencesNotLinks;
+  private IResourceLinkResolver resolveLinkResolver;
+  private boolean debug;
   
   /**
    * 
@@ -366,6 +374,8 @@ public class RenderingContext extends RenderingI18nContext {
        res.anchors = anchors;
     }
     res.unknownLocalReferencesNotLinks = unknownLocalReferencesNotLinks;
+    res.resolveLinkResolver = resolveLinkResolver;
+    res.debug = debug;
     return res;
   }
   
@@ -1058,4 +1068,29 @@ public class RenderingContext extends RenderingI18nContext {
   public void setUnknownLocalReferencesNotLinks(boolean unknownLocalReferencesNotLinks) {
     this.unknownLocalReferencesNotLinks = unknownLocalReferencesNotLinks;
   }
+  
+  public <T extends Resource> T findLinkableResource(Class<T> class_, String uri) throws IOException {
+    if (resolveLinkResolver == null) {
+      return null;          
+    } else {
+      return resolveLinkResolver.findLinkableResource(class_, uri);
+    }
+  }
+
+  public IResourceLinkResolver getResolveLinkResolver() {
+    return resolveLinkResolver;
+  }
+
+  public void setResolveLinkResolver(IResourceLinkResolver resolveLinkResolver) {
+    this.resolveLinkResolver = resolveLinkResolver;
+  }
+
+  public boolean isDebug() {
+    return debug;
+  }
+
+  public void setDebug(boolean debug) {
+    this.debug = debug;
+  }
+
 }

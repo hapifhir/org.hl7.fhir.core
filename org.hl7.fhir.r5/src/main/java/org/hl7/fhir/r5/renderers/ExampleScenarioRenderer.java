@@ -250,7 +250,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
   }
 
   public boolean renderActors(RenderingStatus status, ResourceWrapper res, XhtmlNode x, ExampleScenario scen) throws IOException {
-    XhtmlNode tbl = x.table("table-striped table-bordered");
+    XhtmlNode tbl = x.table("table-striped table-bordered", false);
     XhtmlNode thead = tbl.tr();
     thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));
     thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
@@ -267,7 +267,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
   }
 
   public boolean renderInstances(RenderingStatus status, ResourceWrapper res, XhtmlNode x, ExampleScenario scen) throws IOException {
-    XhtmlNode tbl = x.table("table-striped table-bordered");
+    XhtmlNode tbl = x.table("table-striped table-bordered", false);
     XhtmlNode thead = tbl.tr();
     thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));
     thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
@@ -398,7 +398,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       div.para().b().i().tx(context.formatPhrase(RenderingContext.EX_SCEN_POSTCON));
       addMarkdown(div, process.getPostConditions());
     }
-    XhtmlNode tbl = div.table("table-striped table-bordered").style("width:100%");
+    XhtmlNode tbl = div.table("table-striped table-bordered", false).style("width:100%");
     XhtmlNode thead = tbl.tr();
     thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_STEP));
     thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));

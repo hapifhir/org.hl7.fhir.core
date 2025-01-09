@@ -102,7 +102,7 @@ public class IPSBuilder {
     sct.getCode().addCoding().setSystem("http://loinc.org").setCode("10160-0");
     sct.getText().setStatus(NarrativeStatus.GENERATED);
     var x = sct.getText().getDiv();
-    var tbl = x.table("grid");
+    var tbl = x.table("grid", false);
     var tr = tbl.tr();
     tr.th().tx("Medication");
     tr.th().tx("Category");
@@ -229,7 +229,7 @@ public class IPSBuilder {
     sct.getCode().addCoding().setSystem("http://loinc.org").setCode("11450-4");
     sct.getText().setStatus(NarrativeStatus.GENERATED);
     var x = sct.getText().getDiv();
-    var tbl = x.table("grid");
+    var tbl = x.table("grid", false);
     var tr = tbl.tr();
     tr.th().tx("Code");
     tr.th().tx("Category");

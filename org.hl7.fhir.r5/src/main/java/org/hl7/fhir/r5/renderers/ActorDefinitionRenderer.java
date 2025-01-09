@@ -35,7 +35,7 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
   }
 
   public void render(RenderingStatus status, XhtmlNode x, ResourceWrapper acd) throws FHIRFormatError, DefinitionException, IOException {
-    XhtmlNode tbl = x.table("grid");
+    XhtmlNode tbl = x.table("grid", false);
     XhtmlNode tr = tbl.tr();
     tr.td().b().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_ACT, context.getTranslated(acd.child("name")))  + " ");
     tr.td().tx(context.getTranslated(acd.child("title")));
