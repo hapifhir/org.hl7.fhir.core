@@ -5,6 +5,7 @@
 * Make sure all validation messages have a message id
 * Validator enforce version-set-specific value for Extension and Extension context
 * Specific Error when ValueSet.compose.include.system refers to a ValueSet
+* Fix NPE processing code system supplements
 
 ## Other code changes
 
