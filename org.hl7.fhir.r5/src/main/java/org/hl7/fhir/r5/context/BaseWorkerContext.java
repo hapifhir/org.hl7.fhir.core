@@ -1966,20 +1966,27 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       cache = checkAddToParams(tc, pin, cs) || cache;
     }
     for (CodeSystem supp : codeSystems.getSupplements(cs)) {
-      opCtxt.seeSupplement(supp);
+      if (opCtxt != null) {
+        opCtxt.seeSupplement(supp);
+      }
       cache = checkAddToParams(tc, pin, supp) || cache;
     }
     if (sys != null) {
       // we also have to look at this by version because the resource might not be versioned or we might not have a copy
       for (CodeSystem supp : codeSystems.getSupplements(sys)) {
-        opCtxt.seeSupplement(supp);
+
+        if (opCtxt != null) {
+          opCtxt.seeSupplement(supp);
+        }
         cache = checkAddToParams(tc, pin, supp) || cache;
       }
       if (!sys.contains("!")) {
         sys = getFixedVersion(sys, pin);
         if (sys != null) {
           for (CodeSystem supp : codeSystems.getSupplements(sys)) {
-            opCtxt.seeSupplement(supp);
+            if (opCtxt != null) {
+              opCtxt.seeSupplement(supp);
+            }
             cache = checkAddToParams(tc, pin, supp) || cache;
           }
         }
