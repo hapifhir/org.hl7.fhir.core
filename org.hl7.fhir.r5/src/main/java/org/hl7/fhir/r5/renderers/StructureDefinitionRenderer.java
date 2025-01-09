@@ -126,7 +126,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       StructureDefinition sd = (StructureDefinition) r.getBase();
       genSummaryTable(status, x, sd);
       if (context.getStructureMode() == StructureDefinitionRendererMode.DATA_DICT) { 
-        renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict"), false, GEN_MODE_DIFF, "", r); 
+        renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict", false), false, GEN_MODE_DIFF, "", r); 
       } else { 
         x.addChildNode(generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,  
             context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r)); 
@@ -1851,7 +1851,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
  
-  private void addCanonicalListExt(HierarchicalTableGenerator gen, Cell c, List<Extension> list, String start, boolean bold) { 
+  private void addCanonicalListExt(HierarchicalTableGenerator gen, Cell c, List<Extension> list, String start, boolean bold) throws IOException { 
     List<CanonicalType> clist = new ArrayList<>(); 
     for (Extension ext : list) { 
       if (ext.hasValueCanonicalType()) { 
@@ -1861,7 +1861,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     addCanonicalList(gen, c, clist, start, bold); 
   } 
    
-  private void addCanonicalList(HierarchicalTableGenerator gen, Cell c, List<CanonicalType> list, String start, boolean bold) { 
+  private void addCanonicalList(HierarchicalTableGenerator gen, Cell c, List<CanonicalType> list, String start, boolean bold) throws IOException { 
     if (!list.isEmpty()) { 
  
       if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
@@ -1880,6 +1880,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } 
         String iu = ct.primitiveValue(); 
         StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, iu); 
+        if (sd == null) {
+          sd = context.findLinkableResource(StructureDefinition.class, iu);
+        }
         if (sd == null) { 
           p = gen.new Piece(null, iu, null).addStyle("font-weight:bold"); 
           c.addPiece(p);                       
@@ -1896,7 +1899,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.addPiece(p);                       
           } 
         } 
-        if (bold) p.addStyle("font-weight:bold"); 
+        if (bold) {
+          p.addStyle("font-weight:bold"); 
+        } 
       } 
     }     
   } 
@@ -4146,7 +4151,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } 
       } 
       if (obr.hasObligations()) { 
-        XhtmlNode tbl = ret.table("grid"); 
+        XhtmlNode tbl = ret.table("grid", false); 
         obr.renderTable(status, res, tbl.getChildNodes(), true, defPath, anchorPrefix, inScopeElements);
         if (tbl.isEmpty()) { 
           ret.remove(tbl); 
@@ -4719,7 +4724,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
  
       if (abr.hasBindings()) { 
-        var tbl = x.table("grid"); 
+        var tbl = x.table("grid", false); 
         abr.render(tbl.getChildNodes(), true); 
       } 
       return x; 

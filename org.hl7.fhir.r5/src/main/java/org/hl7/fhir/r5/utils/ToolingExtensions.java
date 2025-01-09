@@ -281,6 +281,9 @@ public class ToolingExtensions {
   public static final String EXT_SUPPRESS_RESOURCE_TYPE = "http://hl7.org/fhir/tools/StructureDefinition/json-suppress-resourcetype";
   public static final String EXT_PROFILE_VIEW_HINT = "http://hl7.org/fhir/tools/StructureDefinition/view-hint";
   public static final String EXT_SNAPSHOT_BEHAVIOR = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-behavior";
+  public static final String EXT_FHIRVERSION_SPECIFIC_USE = "http://hl7.org/fhir/StructureDefinition/version-specific-use";
+  public static final String EXT_FHIRVERSION_SPECIFIC_USE_START = "startFhirVersion";
+  public static final String EXT_FHIRVERSION_SPECIFIC_USE_END = "endFhirVersion";
   
   // specific extension helpers
 

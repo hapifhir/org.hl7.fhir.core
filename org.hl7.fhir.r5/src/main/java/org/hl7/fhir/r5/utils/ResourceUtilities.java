@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.utils;
 
+import java.util.Collections;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -183,11 +185,14 @@ public class ResourceUtilities {
     return b.toString();
   }
 
-  public static String listStrings(Set<String> set) {
+  public static String listStrings(Set<String> set, boolean sort) {
     List<String> list = Utilities.sorted(set);
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (String s : list) {
       b.append(s);
+    }
+    if (sort) {
+      Collections.sort(list);
     }
     return b.toString();
   }

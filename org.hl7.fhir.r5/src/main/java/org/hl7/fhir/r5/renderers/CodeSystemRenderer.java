@@ -114,7 +114,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   private void generateFilters(XhtmlNode x, CodeSystem cs) {
     if (cs.hasFilter()) {
       x.para().b().tx(formatPhrase(RenderingContext.CODESYSTEM_FILTERS));
-      XhtmlNode tbl = x.table("grid");
+      XhtmlNode tbl = x.table("grid", false);
       XhtmlNode tr = tbl.tr();
       tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_CODE));
       tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_DESC));
@@ -145,7 +145,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       
       x.para().b().tx(formatPhrase(RenderingContext.GENERAL_PROPS));
       x.para().b().tx(formatPhrase(RenderingContext.CODESYSTEM_PROPS_DESC));
-      XhtmlNode tbl = x.table("grid");
+      XhtmlNode tbl = x.table("grid", false);
       XhtmlNode tr = tbl.tr();
       if (hasRendered) {
         tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_NAME));        
@@ -224,7 +224,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       return;
     }
     
-    XhtmlNode t = x.table( "codes");
+    XhtmlNode t = x.table( "codes", false);
     boolean definitions = false;
     boolean commentS = false;
     boolean deprecated = false;
@@ -272,7 +272,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     if (langs.size() >= 2) {
       Collections.sort(langs);
       x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_ADD_LANG));
-      t = x.table("codes");
+      t = x.table("codes", false);
       XhtmlNode tr = t.tr();
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       for (String lang : langs)
