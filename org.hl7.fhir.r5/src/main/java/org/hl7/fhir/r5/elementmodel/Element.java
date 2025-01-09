@@ -1145,12 +1145,12 @@ public class Element extends Base implements NamedItem {
     return list;
   }
 
-  public Base getExtensionValue(String url) {
+  public Base getExtensionValue(String... url) {
     if (children != null) {
       for (Element child : children) {
         if (Utilities.existsInList(child.getName(), "extension", "modifierExtension")) {
           String u = child.getChildValue("url");
-          if (url.equals(u)) {
+          if (Utilities.existsInList(u, url)) {
             return child.getNamedChild("value", false);
           }
         }
@@ -1159,12 +1159,12 @@ public class Element extends Base implements NamedItem {
     return null;
   }
 
-  public boolean hasExtension(String url) {
+  public boolean hasExtension(String... url) {
     if (children != null) {
       for (Element child : children) {
         if (Utilities.existsInList(child.getName(), "extension", "modifierExtension")) {
           String u = child.getChildValue("url");
-          if (url.equals(u)) {
+          if (Utilities.existsInList(u, url)) {
             return true;
           }
         }
