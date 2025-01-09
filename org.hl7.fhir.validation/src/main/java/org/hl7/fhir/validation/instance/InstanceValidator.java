@@ -7503,9 +7503,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (!Utilities.noString(msg)) {
         msg = msg + " (log: " + msg + ")";
       }
+      String msgId = null;
       if (inv.hasSource()) {
-        msg = context.formatMessage(I18nConstants.INV_FAILED_SOURCE, inv.getKey() + ": '" + inv.getHuman()+"'", inv.getSource())+msg;        
+        msg = context.formatMessage(I18nConstants.INV_FAILED_SOURCE, inv.getKey() + ": '" + inv.getHuman()+"'", inv.getSource())+msg;
+        msgId = inv.getSource()+"#"+inv.getKey();
       } else {
+        msgId = profile.getUrl()+"#"+inv.getKey();
         msg = context.formatMessage(I18nConstants.INV_FAILED, inv.getKey() + ": '" + inv.getHuman()+"'")+msg;
       }
       String invId = (inv.hasSource() ? inv.getSource() : profile.getUrl()) + "#"+inv.getKey();
@@ -7514,15 +7517,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ToolingExtensions.readBooleanExtension(inv, ToolingExtensions.EXT_BEST_PRACTICE)) {
         msg = msg +" (Best Practice Recommendation)";
         if (bpWarnings == BestPracticeWarningLevel.Hint)
-          hintInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId);
+          hintInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId, msgId);
         else if (/*bpWarnings == null || */ bpWarnings == BestPracticeWarningLevel.Warning)
-          warningInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId);
+          warningInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId, msgId);
         else if (bpWarnings == BestPracticeWarningLevel.Error)
-          ok = ruleInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId) && ok;
+          ok = ruleInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId, msgId) && ok;
       } else if (inv.getSeverity() == ConstraintSeverity.ERROR) {
-        ok = ruleInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId) && ok;
+        ok = ruleInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId, msgId) && ok;
       } else if (inv.getSeverity() == ConstraintSeverity.WARNING) {
-        warningInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId);
+        warningInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId, msgId);
       }
     }
     return ok;
