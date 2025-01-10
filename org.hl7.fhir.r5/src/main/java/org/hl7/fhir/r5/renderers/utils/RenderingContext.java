@@ -34,6 +34,7 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.StandardsStatus;
+import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -295,7 +296,7 @@ public class RenderingContext extends RenderingI18nContext {
   private List<String> files = new ArrayList<String>(); // files created as by-products in destDir
   
   private Map<KnownLinkType, String> links = new HashMap<>();
-  private Map<String, String> namedLinks = new HashMap<>();
+  private Map<String, StringPair> namedLinks = new HashMap<>();
   private boolean addName = false;
   private Map<String, String> typeMap = new HashMap<>(); // type aliases that can be resolved in Markdown type links (mainly for cross-version usage)
   private int base64Limit = 1024;
@@ -781,7 +782,7 @@ public class RenderingContext extends RenderingI18nContext {
     return this;
   }
 
-  public Map<String, String> getNamedLinks() {
+  public Map<String, StringPair> getNamedLinks() {
     return namedLinks;
   }
 

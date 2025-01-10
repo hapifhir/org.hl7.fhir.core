@@ -570,8 +570,14 @@ public class ToolingExtensions {
     return ((BooleanType) ex.getValue()).getValue();
   }
 
-  public static boolean readBoolExtension(DomainResource c, String uri) {
-    Extension ex = ExtensionHelper.getExtension(c, uri);
+  public static boolean readBoolExtension(DomainResource c, String... uris) {
+    Extension ex = null;
+    for (String uri : uris) {
+      ex = ExtensionHelper.getExtension(c, uri);
+      if (ex != null) {
+        break;
+      }
+    }
     if (ex == null)
       return false;
     if (!(ex.getValue() instanceof BooleanType))
@@ -783,6 +789,17 @@ public class ToolingExtensions {
       ext.setValue(new CodeType(value));
     else
       element.getExtension().add(new Extension(uri).setValue(new CodeType(value)));
+  }
+
+  public static void setMarkdownExtension(DomainResource resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new MarkdownType(value));
+    else
+      resource.getExtension().add(new Extension(uri).setValue(new MarkdownType(value)));
   }
 
   public static void setIntegerExtension(DomainResource resource, String uri, int value) {
