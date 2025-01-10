@@ -674,6 +674,13 @@ public class Utilities {
     return PathBuilder.getPathBuilder().buildPath(a);
   }
 
+  public static String forcePath(String... args) throws IOException {
+    String path = path(args);
+    String folder = Utilities.getDirectoryForFile(path);
+    Utilities.createDirectory(folder);
+    return path;
+  }
+
   /**
    * Composes a path string using by concatenating the passed arguments.
    *

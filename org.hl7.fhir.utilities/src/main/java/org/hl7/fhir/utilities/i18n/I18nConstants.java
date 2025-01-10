@@ -413,6 +413,7 @@ public class I18nConstants {
   public static final String MEASURE_SHAREABLE_MISSING_HL7 = "MEASURE_SHAREABLE_MISSING_HL7";
   public static final String META_RES_SECURITY_DUPLICATE = "Meta_RES_Security_Duplicate";
   public static final String MSG_DEPENDS_ON_DEPRECATED = "MSG_DEPENDS_ON_DEPRECATED";
+  public static final String MSG_DEPENDS_ON_DEPRECATED_NOTE = "MSG_DEPENDS_ON_DEPRECATED_NOTE";
   public static final String MSG_DEPENDS_ON_DRAFT = "MSG_DEPENDS_ON_DRAFT";
   public static final String MSG_DEPENDS_ON_EXPERIMENTAL = "MSG_DEPENDS_ON_EXPERIMENTAL";
   public static final String MSG_DEPENDS_ON_EXTENSION = "MSG_DEPENDS_ON_EXTENSION";

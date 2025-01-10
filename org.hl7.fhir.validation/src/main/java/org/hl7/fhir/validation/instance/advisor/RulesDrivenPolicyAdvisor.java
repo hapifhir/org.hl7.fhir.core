@@ -53,7 +53,7 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
 
     public boolean matches(@Nonnull String mid, @Nonnull String path, String[] p) {
       if (regex) {
-        return stringMatches(id, mid) && regexMatches(path, path);
+        return stringMatches(id, mid) && regexMatches(this.path, path);
       } else {
         return stringMatches(id, mid) && pathMatches(pathSegments, p);
       }
@@ -97,7 +97,7 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
     if (specifier == null) {
       return true;
     } else if (specifier.endsWith("*")) {
-      return specifier.substring(0, specifier.length()-1).equalsIgnoreCase(actual.substring(0, specifier.length()-1));      
+      return specifier.substring(0, specifier.length()-1).equalsIgnoreCase(actual.substring(0, Integer.min(specifier.length()-1, actual.length())));      
     } else {
       return specifier.equalsIgnoreCase(actual);
     }
