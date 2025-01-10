@@ -1105,5 +1105,14 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   public static boolean isExemptFromMultipleVersionChecking(String url) {
     return Utilities.existsInList(url, "http://snomed.info/sct", "http://loinc.org");
   }
+
+  public static PropertyComponent getPropertyByUri(CodeSystem cs, String uri) {
+    for (PropertyComponent t : cs.getProperty()) {
+      if (uri.equals(t.getUri())) {
+        return t;
+      }
+    }
+    return null;
+  }
 }
 
