@@ -58,6 +58,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -77,6 +78,7 @@ import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -1563,10 +1565,15 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     String vurl = ex.getVersionedUrl();
 
     StandardsStatus standardsStatus = ToolingExtensions.getStandardsStatus(ex);
+    Extension ext = ex.getExtensionByUrl(ToolingExtensions.EXT_STANDARDS_STATUS);
+    ext = ext == null || !ext.hasValue() ? null : ext.getValue().getExtensionByUrl(ToolingExtensions.EXT_STANDARDS_STATUS_REASON);
+    String note = ext == null || !ext.hasValue() ? null : MarkDownProcessor.markdownToPlainText(ext.getValue().primitiveValue());
+    
     if (standardsStatus == StandardsStatus.DEPRECATED) {
       if (!statusWarnings.contains(vurl+":DEPRECATED")) {  
         statusWarnings.add(vurl+":DEPRECATED");
-        hint(errors, "2023-08-10", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_DEPRECATED, type, vurl);
+        hint(errors, "2023-08-10", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, 
+            Utilities.noString(note) ? I18nConstants.MSG_DEPENDS_ON_DEPRECATED : I18nConstants.MSG_DEPENDS_ON_DEPRECATED_NOTE, type, vurl, note);
       }
     } else if (standardsStatus == StandardsStatus.WITHDRAWN) {
       if (!statusWarnings.contains(vurl+":WITHDRAWN")) {  

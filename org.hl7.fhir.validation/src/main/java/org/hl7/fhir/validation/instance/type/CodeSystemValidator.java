@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
+import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
@@ -262,21 +263,34 @@ public class CodeSystemValidator extends BaseValidator {
             if (pcs == null) {
               warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_URI_UNKNOWN_BASE, base, code);
             } else {
-              ConceptDefinitionComponent cc = CodeSystemUtilities.findCode(pcs.getConcept(), pcode);              
-              if (warning(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), cc != null, I18nConstants.CODESYSTEM_PROPERTY_URI_INVALID, pcode, base, pcs.present(), uri, code)) {
+              PropertyComponent cp = CodeSystemUtilities.getPropertyByUri(pcs, uri);
+              if (cp != null) {
                 foundPropDefn = true;
                 if ("code".equals(type)) {
-                  ConceptPropertyComponent ccp = CodeSystemUtilities.getProperty(cc, "binding");
-                  if (ccp != null && ccp.hasValue() && ccp.getValue().hasPrimitiveValue()) {
+                  if (cp.hasExtension("http://hl7.org/fhir/StructureDefinition/codesystem-property-valueset", "http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet")) {
                     ruleFromUri = CodeValidationRule.VS_ERROR;
-                    valuesetFromUri = ccp.getValue().primitiveValue();
+                    valuesetFromUri = cp.getExtensionValue("http://hl7.org/fhir/StructureDefinition/codesystem-property-valueset", "http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet").primitiveValue();
                   } else {
                     ruleFromUri = CodeValidationRule.INTERNAL_CODE_WARNING;                    
                   }
                 }
               } else {
-                if ("code".equals(type)) {
-                  ruleFromUri = CodeValidationRule.INTERNAL_CODE_WARNING;
+                ConceptDefinitionComponent cc = CodeSystemUtilities.findCode(pcs.getConcept(), pcode);              
+                if (warning(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), cc != null, I18nConstants.CODESYSTEM_PROPERTY_URI_INVALID, pcode, base, pcs.present(), uri, code)) {
+                  foundPropDefn = true;
+                  if ("code".equals(type)) {
+                    ConceptPropertyComponent ccp = CodeSystemUtilities.getProperty(cc, "binding");
+                    if (ccp != null && ccp.hasValue() && ccp.getValue().hasPrimitiveValue()) {
+                      ruleFromUri = CodeValidationRule.VS_ERROR;
+                      valuesetFromUri = ccp.getValue().primitiveValue();
+                    } else {
+                      ruleFromUri = CodeValidationRule.INTERNAL_CODE_WARNING;                    
+                    }
+                  }
+                } else {
+                  if ("code".equals(type)) {
+                    ruleFromUri = CodeValidationRule.INTERNAL_CODE_WARNING;
+                  }
                 }
               }
             }
