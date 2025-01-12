@@ -39,6 +39,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.JsonException;
@@ -297,8 +298,8 @@ public class TestDataFactory {
   }
 
   private void checkDownloadBaseData() throws IOException {
-    localData = new File(Utilities.path("[tmp]", "fhir-test-data.db"));  
-    File localInfo = new File(Utilities.path("[tmp]", "fhir-test-data.json"));  
+    localData = ManagedFileAccess.file(Utilities.path("[tmp]", "fhir-test-data.db"));  
+    File localInfo = ManagedFileAccess.file(Utilities.path("[tmp]", "fhir-test-data.json"));  
     try {
       JsonObject local = localInfo.exists() ? JsonParser.parseObject(localInfo) : null; 
       JsonObject json = JsonParser.parseObjectFromUrl("http://fhir.org/downloads/test-data-versions.json");

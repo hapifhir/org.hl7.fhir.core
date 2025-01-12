@@ -275,5 +275,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
     return client.translate(params);
   }
 
+  @Override
+  public void setConversionLogger(ITerminologyConversionLogger logger) {
+    // TODO Auto-generated method stub
+    
+  }
+
 
 }

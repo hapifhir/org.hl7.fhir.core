@@ -477,6 +477,11 @@ public class Utilities {
     return ManagedFileAccess.file(path);
   }
 
+  public static File createDirectoryNC(String path) throws IOException {
+    ManagedFileAccess.file(path).mkdirs();
+    return ManagedFileAccess.file(path);
+  }
+
   public static String changeFileExt(String name, String ext) {
     if (name.lastIndexOf('.') > -1)
       return name.substring(0, name.lastIndexOf('.')) + ext;

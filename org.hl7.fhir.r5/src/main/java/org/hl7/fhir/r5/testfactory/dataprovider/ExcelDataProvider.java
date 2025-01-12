@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.testfactory.dataprovider;
 import org.apache.poi.ss.usermodel.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
@@ -37,7 +38,7 @@ public class ExcelDataProvider extends TableDataProvider {
    * @throws InvalidFormatException If the file format is invalid.
    */
   public ExcelDataProvider(String filename, String sheetName) throws IOException, InvalidFormatException {
-    FileInputStream fis = new FileInputStream(new File(filename));
+    FileInputStream fis = new FileInputStream(ManagedFileAccess.file(filename));
     this.workbook = WorkbookFactory.create(fis);
     if (sheetName != null) {
       this.sheet = workbook.getSheet(sheetName);
@@ -60,7 +61,7 @@ public class ExcelDataProvider extends TableDataProvider {
 
 
   public ExcelDataProvider(String filename) throws InvalidFormatException, IOException {
-    FileInputStream fis = new FileInputStream(new File(filename));
+    FileInputStream fis = new FileInputStream(ManagedFileAccess.file(filename));
     this.workbook = WorkbookFactory.create(fis);
     this.sheet = workbook.getSheetAt(0);
     loadColumnHeaders();
