@@ -38,6 +38,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient.ITerminologyConversionLogger;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
@@ -73,12 +74,42 @@ public class TxTester {
     public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException;
     public byte[] loadContent(String filename) throws FileNotFoundException, IOException;
     public boolean hasContent(String filename) throws IOException;
+    public String code();
+    public String version() throws JsonException, IOException;
+    public String testFileName();
+  }
+  
+  private class TxTesterConversionLogger implements ITerminologyConversionLogger {
+
+    public String suiteName;
+    public String testName;
+
+    @Override
+    public void log(String name, String resourceType, String version, byte[] cnt) {
+      if (!"expandValueset.response".equals(name)) {
+        return;
+      }
+       
+      String base;
+      try {
+        base = Utilities.path(outputDir, "conversions");
+        if (ManagedFileAccess.file(base).exists()) {
+          String dir = Utilities.path(base, version, suiteName);
+          Utilities.createDirectory(dir);
+          String filename = Utilities.path(dir, testName+"."+resourceType+".json");
+          TextFile.bytesToFile(cnt, filename);
+        }      
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
   }
   
   private String server;
-  private ITxTesterLoader loader;
+  private List<ITxTesterLoader> loaders = new ArrayList<>();
   private String error;
-  private String output;
+  private String outputDir;
   private ITerminologyClient terminologyClient;
   private boolean tight;
   private JsonObject externals;
@@ -86,33 +117,44 @@ public class TxTester {
   private List<String> fails = new ArrayList<>();
   private CapabilityStatement cstmt;
   private TerminologyCapabilities tc;
+  private TxTesterConversionLogger conversionLogger;
   
 
   public TxTester(ITxTesterLoader loader, String server, boolean tight, JsonObject externals) {
     super();
     this.server = server;
-    this.loader = loader;
+    this.loaders.add(loader);
     this.tight = tight;
     this.externals = externals;
+    conversionLogger = new TxTesterConversionLogger();
   }
 
   public static void main(String[] args) throws Exception {
     new TxTester(new InternalTxLoader(args[0]), args[1], "true".equals(args[2]), args.length == 5 ? JsonParser.parseObjectFromFile(args[4]) : null).execute(new ArrayList<>(), args[3]);
   }
   
+  public void addLoader(ITxTesterLoader loader) {
+    this.loaders.add(loader);    
+  }
+  
   public boolean execute(List<String> modes, String filter) throws IOException, URISyntaxException {
-    if (output == null) {
-      output = Utilities.path("[tmp]", serverId());
+    if (outputDir == null) {
+      outputDir = Utilities.path("[tmp]", serverId());
     }
     
     System.out.println("Run terminology service Tests");
-    System.out.println("  Source for tests: "+loader.describe());
-    System.out.println("  Output Directory: "+output);
-    if (!new File(output).exists()) {
-      Utilities.createDirectory(output);
+    System.out.println("  Source for tests: "+loaders.get(0).describe());
+    for (ITxTesterLoader loader : loaders) {
+      if (loader != loaders.get(0)) {
+        System.out.println("  Additional Tests: "+loader.describe());        
+      }
     }
-    if (!new File(output).exists()) {
-      throw new IOException("Unable to create output directory "+output);
+    System.out.println("  Output Directory: "+outputDir);
+    if (!ManagedFileAccess.file(outputDir).exists()) {
+      Utilities.createDirectory(outputDir);
+    }
+    if (!ManagedFileAccess.file(outputDir).exists()) {
+      throw new IOException("Unable to create output directory "+outputDir);
     }
     System.out.println("  Term Service Url: "+server);
     System.out.println("  External Strings: "+(externals != null));
@@ -121,32 +163,37 @@ public class TxTester {
     if (filter != null) {
       System.out.println("  Filter Parameter: "+filter);
     }
-    
+
     IntHolder counter = new IntHolder();
+    IntHolder errCount = new IntHolder();
     JsonObject json = new JsonObject();
+    List<StringPair> versions = new ArrayList<StringPair>();
     json.add("date", new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(Calendar.getInstance().getTime()) + timezone());
     try {
-      JsonObject tests = loadTests();
       terminologyClient = connectToServer(modes);
       boolean ok = checkClient();
-      for (JsonObject suite : tests.getJsonObjects("suites")) {
-        if ((!suite.has("mode") || modes.contains(suite.asString("mode")))) {
-          if (suite.asBoolean("disabled")) {
-            // ok = true;
-          } else {
-            ok = runSuite(suite, modes, filter, json.forceArray("suites"), counter) && ok;
+      for (ITxTesterLoader loader : loaders) {
+        JsonObject tests = loadTests(loader);
+        versions.add(new StringPair(loader.code(), loader.version()));
+        for (JsonObject suite : tests.getJsonObjects("suites")) {
+          if ((!suite.has("mode") || modes.contains(suite.asString("mode")))) {
+            if (suite.asBoolean("disabled")) {
+              // ok = true;
+            } else {
+              ok = runSuite(loader, suite, modes, filter, json.forceArray("suites"), counter, errCount) && ok;
+            }
           }
         }
       }
-      TextFile.stringToFile(JsonParser.compose(json, true), Utilities.path(output, "test-results.json"));
+      TextFile.stringToFile(JsonParser.compose(json, true), Utilities.path(outputDir, "test-results.json"));
 
       if (filter == null) {
         String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join(";", modes);
         if (ok) {
-          System.out.println(software+" passed all "+counter.total()+" HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+          System.out.println(software+" passed all "+counter.total()+" HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+vString(versions)+", runner v"+VersionUtil.getBaseVersion()+")");
           return true;
         } else {
-          System.out.println(software+" did not pass all "+counter.total()+" HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+          System.out.println(software+" failed "+errCount.total()+" of "+counter.total()+" HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+vString(versions)+", runner v"+VersionUtil.getBaseVersion()+")");
           System.out.println("Failed Tests: "+ CommaSeparatedStringBuilder.join(",", fails ));
           return false;
         }        
@@ -162,6 +209,24 @@ public class TxTester {
   }
   
 
+  private String vString(List<StringPair> versions) {
+    StringBuilder b = new StringBuilder();
+    b.append(versions.get(0).getValue());
+    if (versions.size() > 1) {
+      b.append("[");
+      for (int i = 1; i < versions.size(); i++) {
+        if (i > 1) {
+          b.append(",");
+        }
+        b.append(versions.get(i).getName());
+        b.append(":");
+        b.append(versions.get(i).getValue());
+      }
+      b.append("]");
+    }
+    return b.toString();
+  }
+
   private String timezone() {
     TimeZone tz = TimeZone.getDefault();
     Calendar cal = GregorianCalendar.getInstance(tz);
@@ -174,6 +239,8 @@ public class TxTester {
   }
 
   private boolean checkClient() {
+    conversionLogger.suiteName = "connect";
+    conversionLogger.testName = "checkClient";
     cstmt = terminologyClient.getCapabilitiesStatement();
     if (cstmt.hasSoftware()) {
       software = cstmt.getSoftware().getName()+" v"+cstmt.getSoftware().getVersion();
@@ -182,75 +249,76 @@ public class TxTester {
     return true;
   }
 
-  private JsonObject loadTests() throws JsonException, IOException {
+  private JsonObject loadTests(ITxTesterLoader loader) throws JsonException, IOException {
     System.out.println("Load Tests from "+loader.describe());
-    return JsonParser.parseObject(loader.loadContent("test-cases.json"));
+    return JsonParser.parseObject(loader.loadContent(loader.testFileName()));
   }
   
-  public String loadVersion() throws JsonException, IOException {
-    if (loader.hasContent("history.json")) {
-      return readHistory(loader.loadContent("history.json")); 
-    } else {
-      throw new Error("history.md is no longer supported");
-    }
-  }
-
-  private String readHistory(byte[] content) throws JsonException, IOException {
-    JsonObject json = JsonParser.parseObject(content);
-    return json.getJsonObjects("versions").get(0).asString("version");
-  }
 
   private ITerminologyClient connectToServer(List<String> modes) throws URISyntaxException, IOException {
     System.out.println("Connect to "+server);
     software = server;
+    
+    if (outputDir == null) {
+      outputDir = Utilities.path("[tmp]", serverId());
+    }
+    
+    // todo: we don't necessarily want R4:
+    Utilities.createDirectory(Utilities.path(outputDir, "conversions", "r4"));
+    Utilities.createDirectory(Utilities.path(outputDir, "conversions", "r5"));    
     ITerminologyClient client = new TerminologyClientFactory(FhirPublication.R4).makeClient("Test-Server", server, "Tools/Java", null);
+    client.setConversionLogger(conversionLogger);
     return client;  
   }
 
 
-  public String executeTest(JsonObject suite, JsonObject test, List<String> modes) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
+  public String executeTest(ITxTesterLoader loader, JsonObject suite, JsonObject test, List<String> modes) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
     error = null;
     if (terminologyClient == null) {
       terminologyClient = connectToServer(modes);
       checkClient();
     }
-    List<Resource> setup = loadSetupResources(suite);
+    List<Resource> setup = loadSetupResources(loader, suite);
 
-    if (runTest(suite, test, setup, modes, "*", null, new IntHolder())) {
+    if (runTest(loader, suite, test, setup, modes, "*", null, new IntHolder())) {
       return null;      
     } else {
       return error;
     }
   }
   
-  private boolean runSuite(JsonObject suite, List<String> modes, String filter, JsonArray output, IntHolder counter) throws FHIRFormatError, FileNotFoundException, IOException {
+  private boolean runSuite(ITxTesterLoader loader, JsonObject suite, List<String> modes, String filter, JsonArray output, IntHolder counter, IntHolder errCount) throws FHIRFormatError, FileNotFoundException, IOException {
     System.out.println("Group "+suite.asString("name"));
     JsonObject outputS = new JsonObject();
     if (output != null) {
       output.add(outputS);
     }
     outputS.add("name", suite.asString("name"));
-    List<Resource> setup = loadSetupResources(suite);
+    List<Resource> setup = loadSetupResources(loader, suite);
     boolean ok = true;
     for (JsonObject test : suite.getJsonObjects("tests")) {
       if ((!test.has("mode") || modes.contains(test.asString("mode")))) {
         if (test.asBoolean("disabled")) {
           ok = true;
         } else {
-          ok = runTest(suite, test, setup, modes, filter, outputS.forceArray("tests"), counter) && ok;
+          boolean tok = runTest(loader, suite, test, setup, modes, filter, outputS.forceArray("tests"), counter);
+          if (!tok) {
+            errCount.count();
+          }
+          ok = tok && ok;
         }
       }
     }
     return ok;
   }
 
-  private boolean runTest(JsonObject suite, JsonObject test, List<Resource> setup, List<String> modes, String filter, JsonArray output, IntHolder counter) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
+  private boolean runTest(ITxTesterLoader loader, JsonObject suite, JsonObject test, List<Resource> setup, List<String> modes, String filter, JsonArray output, IntHolder counter) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
     JsonObject outputT = new JsonObject();
     if (output != null) {
       output.add(outputT);
     }
     long start = System.currentTimeMillis();
-    Parameters profile = loadProfile(test);
+    Parameters profile = loadProfile(loader, test);
     outputT.add("name", test.asString("name"));
     if (Utilities.noString(filter) || filter.equals("*") || test.asString("name").contains(filter)) {
       System.out.print("  Test "+test.asString("name")+": ");
@@ -264,13 +332,14 @@ public class TxTester {
             terminologyClient.setClientHeaders(new ClientHeaders(List.of(header)));
           }
         }
-
+        conversionLogger.suiteName = suite.asString("name");
+        conversionLogger.testName = test.asString("name");
         String reqFile = chooseParam(test, "request", modes);
         Parameters req = reqFile == null ? null : (Parameters) loader.loadResource(reqFile);
 
         String fn = chooseParam(test, "response", modes);
         String resp = TextFile.bytesToString(loader.loadContent(fn));
-        String fp = this.output == null ?  Utilities.path("[tmp]", serverId(), fn) : Utilities.path(this.output, fn);
+        String fp = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), fn) : Utilities.path(this.outputDir, fn);
         File fo = ManagedFileAccess.file(fp);
         if (fo.exists()) {
           fo.delete();
@@ -373,7 +442,7 @@ public class TxTester {
     return test.asString(name);
   }
 
-  private Parameters loadProfile(JsonObject test) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException {
+  private Parameters loadProfile(ITxTesterLoader loader, JsonObject test) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException {
     if (test.has("profile")) {        
       return (Parameters) loader.loadResource(test.asString("profile"));
     } else {
@@ -560,7 +629,7 @@ public class TxTester {
     
   }
 
-  private List<Resource> loadSetupResources(JsonObject suite) throws FHIRFormatError, FileNotFoundException, IOException {
+  private List<Resource> loadSetupResources(ITxTesterLoader loader, JsonObject suite) throws FHIRFormatError, FileNotFoundException, IOException {
     List<Resource> res = new ArrayList<>();
     for (String s : suite.getStrings("setup")) {
       res.add(loader.loadResource(s));
@@ -569,26 +638,43 @@ public class TxTester {
   }
   
   public String getOutput() {
-    return output;
+    return outputDir;
   }
 
   public TxTester setOutput(String output) {
-    this.output = output;
+    this.outputDir = output;
     return this;
   }
 
   public static class InternalTxLoader implements ITxTesterLoader {
     
-    TxTestData txtests;
+    private TxTestData txtests;
+    private boolean additional;
     
     public InternalTxLoader(String version) throws IOException {
-      load(version);
+      File f = ManagedFileAccess.file(version);
+      if (f.exists() && f.isDirectory()) {
+        txtests = TxTestData.loadTestDataFromFolder(f, "test-cases.json");
+      } else {
+        load(version);
+      }
+    }
+
+    public InternalTxLoader(String source, boolean additional) throws IOException {
+      this.additional = additional;
+      File f = ManagedFileAccess.file(source);
+      if (f.exists() && f.isDirectory()) {
+        txtests = TxTestData.loadTestDataFromFolder(f, "test-cases.json");
+      } else if (f.exists()) {
+        txtests = TxTestData.loadTestDataFromFolder(ManagedFileAccess.file(Utilities.getDirectoryForFile(source)), f.getName());
+      } else {
+        load(source);
+      }
     }
     
     private void load(String version) throws IOException {
-      txtests = TxTestData.loadTestDataFromPackage(version);
+      txtests = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#"+version);
     }
-
 
     @Override
     public String describe() {
@@ -617,6 +703,22 @@ public class TxTester {
     public boolean hasContent(String filename) throws IOException {
       return txtests.hasFile(filename);
     }
+
+    @Override
+    public String code() {
+      return txtests.code();
+    }
+
+    @Override
+    public String version() throws JsonException, IOException {
+      return txtests.loadVersion();
+    }
+
+    @Override
+    public String testFileName() {
+      return txtests.testFileName();
+    }
   }
+
 
 }

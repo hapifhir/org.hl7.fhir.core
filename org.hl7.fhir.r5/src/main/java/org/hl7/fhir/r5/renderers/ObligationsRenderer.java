@@ -420,7 +420,7 @@ public class ObligationsRenderer extends Renderer {
           if (ad == null) {
             actorId.addText(anActor.getCanonical());
           } else {
-            actorId.ah(ad.getWebPath()).tx(ad.getTitle());
+            actorId.ah(ad.getWebPath()).tx(ad.present());
           }
         }
 

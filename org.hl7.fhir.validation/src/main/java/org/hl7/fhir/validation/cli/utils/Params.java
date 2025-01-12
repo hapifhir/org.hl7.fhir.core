@@ -405,7 +405,7 @@ public class Params {
         cliContext.setOutputStyle(args[++i]);
       } else if (args[i].equals(ADVSIOR_FILE)) {
         cliContext.setAdvisorFile(args[++i]);
-        File f = new File(cliContext.getAdvisorFile());
+        File f = ManagedFileAccess.file(cliContext.getAdvisorFile());
         if (!f.exists()) {
           throw new Error("Cannot find advisor file "+cliContext.getAdvisorFile());
         } else if (!Utilities.existsInList(Utilities.getFileExtension(f.getName()), "json", "txt")) {
