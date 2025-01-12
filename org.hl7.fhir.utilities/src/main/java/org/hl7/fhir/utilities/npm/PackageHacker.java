@@ -31,7 +31,7 @@ public class PackageHacker {
   private static boolean useSecureReferences = false;
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-//    new PackageHacker().massEdit(new File("/Users/grahamegrieve/web/hl7.org/fhir"));
+//    new PackageHacker().massEdit(ManagedFileAccess.file("/Users/grahamegrieve/web/hl7.org/fhir"));
 //    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.core.tgz");
 //    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.corexml.tgz");
 //    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.examples.tgz");
