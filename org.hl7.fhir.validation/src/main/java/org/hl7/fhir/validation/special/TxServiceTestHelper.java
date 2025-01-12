@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -174,7 +175,7 @@ public class TxServiceTestHelper {
             parameters.addParameter(validationResult.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED ? "x-caused-by-unknown-system" :  "x-unknown-system", new CanonicalType(s));
           }
         }
-        if (validationResult.getIssues().size() > 0) {
+        if (validationResult.getIssues().size() > 0) { 
           operationOutcome = new OperationOutcome();
           operationOutcome.getIssue().addAll(validationResult.getIssues());
           parameters.addParameter().setName("issues").setResource(operationOutcome);
@@ -205,12 +206,12 @@ public class TxServiceTestHelper {
     }
     String fullExpected = rootDirectory + "/expected/";
     String fullActual = rootDirectory + "/actual/";
-    File expectedDirectory = new File(fullExpected);
+    File expectedDirectory = ManagedFileAccess.file(fullExpected);
     if (!expectedDirectory.exists()) {
       expectedDirectory.mkdirs();
     }
 
-    File actualDirectory = new File(fullActual);
+    File actualDirectory = ManagedFileAccess.file(fullActual);
     if (!actualDirectory.exists()) {
       actualDirectory.mkdirs();
     }

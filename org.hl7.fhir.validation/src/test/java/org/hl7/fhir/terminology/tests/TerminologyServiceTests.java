@@ -59,7 +59,7 @@ private static TxTestData testData;
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
-    testData = TxTestData.loadTestDataFromPackage("dev");
+    testData = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev");
     return testData.getTestData();
   }
 

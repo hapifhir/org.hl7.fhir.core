@@ -268,4 +268,10 @@ public class TerminologyClientR3 implements ITerminologyClient {
     return (Parameters) VersionConvertorFactory_30_50.convertResource(client.transform((org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(params)));
   }
 
+  @Override
+  public void setConversionLogger(ITerminologyConversionLogger logger) {
+    // TODO Auto-generated method stub
+    
+  }
+
 }

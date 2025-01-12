@@ -76,4 +76,10 @@ public interface ITerminologyClient {
   String getUserAgent();
   int getUseCount();
   Bundle search(String type, String criteria); 
+  
+  // internal conversion logging
+  public interface ITerminologyConversionLogger {
+    void log(String name, String resourceType, String version, byte[] cnt);
+  }
+  void setConversionLogger(ITerminologyConversionLogger logger);
 }
