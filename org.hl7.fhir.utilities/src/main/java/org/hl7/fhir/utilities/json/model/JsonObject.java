@@ -35,6 +35,18 @@ public class JsonObject extends JsonElement {
     propMap.put(name, p);
     return this;
   }
+  
+  public JsonObject add(int index, String name, JsonElement value) throws JsonException {
+    check(name != null, "Json Property Name is null");
+    check(value != null, "Json Property Value is null");
+    if (get(name) != null) {
+      check(false, "Name '"+name+"' already exists (value = "+get(name).toString()+")");
+    }
+    JsonProperty p = new JsonProperty(name, value);
+    properties.add(index, p);
+    propMap.put(name, p);
+    return this;
+  }
 
   public JsonObject addIfNotNull(String name, JsonElement value) throws JsonException {
     if (value != null) {
@@ -344,6 +356,16 @@ public class JsonObject extends JsonElement {
     }
     if (!has(name)) {
       add(name, new JsonArray());
+    }
+    return getJsonArray(name);
+  }
+  
+  public JsonArray forceArray(int index, String name) throws JsonException {
+    if (has(name) && !hasArray(name)) {
+      remove(name);
+    }
+    if (!has(name)) {
+      add(index, name, new JsonArray());
     }
     return getJsonArray(name);
   }

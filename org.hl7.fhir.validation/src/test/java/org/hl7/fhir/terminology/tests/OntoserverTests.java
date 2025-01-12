@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.tests.TestConfig;
@@ -54,12 +55,10 @@ public class OntoserverTests implements ITxTesterLoader {
     return ManagedFileAccess.file("/Users/grahamegrieve/work/server/server").exists();
   }
 
-
-
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
 
-    txtests = TxTestData.loadTestDataFromPackage("dev");
+    txtests = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev");
     
     String contents = txtests.load("test-cases.json");
     externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(txtests.load("messages-ontoserver.csiro.au.json"));
@@ -117,7 +116,7 @@ public class OntoserverTests implements ITxTesterLoader {
     if (tester == null) {
       tester = new TxTester(this, SERVER, false, externals);
     }
-    String err = tester.executeTest(setup.suite, setup.test, modes);
+    String err = tester.executeTest(this, setup.suite, setup.test, modes);
     if (err != null) {
       System.out.println(err);
     }
@@ -161,10 +160,6 @@ public class OntoserverTests implements ITxTesterLoader {
           throw new FHIRException("unknown version " + version);
       }
     }
-//    org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_40_50.convertResource(res);
-//    String p = Utilities.path(FhirSettings.getFhirTestCasesPath(), "tx", "r4", filename);
-//    Utilities.createDirectory(Utilities.getDirectoryForFile(p));
-//    new org.hl7.fhir.r4.formats.JsonParser().compose(ManagedFileAccess.outStream(p), r4);
     return res;
   }
 
@@ -181,5 +176,22 @@ public class OntoserverTests implements ITxTesterLoader {
   @Override
   public boolean hasContent(String filename) throws IOException {
     return txtests.hasFile(filename);
+  }
+
+
+
+  @Override
+  public String code() {
+    return "onto";
+  }
+
+  @Override
+  public String version() throws JsonException, IOException {
+    return txtests.loadVersion();
+  }
+
+  @Override
+  public String testFileName() {
+    return txtests.testFileName();
   }
 }

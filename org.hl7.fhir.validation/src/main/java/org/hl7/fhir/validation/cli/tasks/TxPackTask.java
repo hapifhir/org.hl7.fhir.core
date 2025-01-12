@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
@@ -47,7 +48,7 @@ public class TxPackTask extends ValidationEngineTask {
     String pid = cliContext.getPackageName();
     boolean json = cliContext.getFormat() != FhirFormat.XML;
     String output = cliContext.getOutput();
-    File f = new File(output);
+    File f = ManagedFileAccess.file(output);
     ExpansionPackageGeneratorOutputType t = ExpansionPackageGeneratorOutputType.FOLDER;
     if (f.exists() && f.isDirectory()) {
       t = ExpansionPackageGeneratorOutputType.FOLDER;

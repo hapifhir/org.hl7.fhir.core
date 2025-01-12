@@ -49,7 +49,11 @@ public class TxTestsTask extends StandaloneTask{
       if (output == null ) {
         output = Utilities.path("[tmp]");
       }
-      boolean ok = new TxTester(new TxTester.InternalTxLoader(version), tx, false, loadExternals(externals)).setOutput(output).execute(cliContext.getModeParams(), filter);
+      TxTester txTester = new TxTester(new TxTester.InternalTxLoader(version), tx, false, loadExternals(externals));
+      for (String input : cliContext.getInputs()) {
+        txTester.addLoader(new TxTester.InternalTxLoader(input, true));
+      }
+      boolean ok = txTester.setOutput(output).execute(cliContext.getModeParams(), filter);
       SystemExitManager.setError(ok ? 0 : 1);
       SystemExitManager.finish();
   }
