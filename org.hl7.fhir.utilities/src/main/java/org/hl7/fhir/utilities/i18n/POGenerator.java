@@ -325,7 +325,7 @@ public class POGenerator {
     // save the destination file 
     String fn = Utilities.path(source, "source", dest);
     List<POObject> objects;
-    if (new File(fn).exists()) {
+    if (ManagedFileAccess.file(fn).exists()) {
       objects = loadPOFile(fn);
     } else {
       objects = new ArrayList<POGenerator.POObject>();

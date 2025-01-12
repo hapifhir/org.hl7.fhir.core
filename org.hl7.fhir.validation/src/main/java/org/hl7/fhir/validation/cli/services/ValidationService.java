@@ -643,9 +643,9 @@ public class ValidationService {
     }
     if (cliContext.getAdvisorFile() != null) {
       if (cliContext.getAdvisorFile().endsWith(".json")) {
-        validationEngine.getPolicyAdvisor().setPolicyAdvisor(new JsonDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), new File(cliContext.getAdvisorFile())));
+        validationEngine.getPolicyAdvisor().setPolicyAdvisor(new JsonDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), ManagedFileAccess.file(cliContext.getAdvisorFile())));
       } else {
-        validationEngine.getPolicyAdvisor().setPolicyAdvisor(new TextDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), new File(cliContext.getAdvisorFile())));          
+        validationEngine.getPolicyAdvisor().setPolicyAdvisor(new TextDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), ManagedFileAccess.file(cliContext.getAdvisorFile())));          
       }
     } else {
       validationEngine.getPolicyAdvisor().setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(validationEngine.getPolicyAdvisor() == null ? refpol : validationEngine.getPolicyAdvisor().getReferencePolicy()));
@@ -929,7 +929,7 @@ public class ValidationService {
     if (cliContext.getSource() == null) {
       System.out.println("Must specify a source (-version)");
       ok = false;
-    } else if (!new File(cliContext.getSource()).exists()) {      
+    } else if (!ManagedFileAccess.file(cliContext.getSource()).exists()) {      
       System.out.println("Factory source '"+cliContext.getSource()+"' not found");
       ok = false;
     }

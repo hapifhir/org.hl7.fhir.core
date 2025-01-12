@@ -126,7 +126,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
   }
 
   private void cleanValueSets(List<String> allOids, String dest) throws IOException {
-    cleanValueSets(allOids, new File(Utilities.path(dest)));
+    cleanValueSets(allOids, ManagedFileAccess.file(Utilities.path(dest)));
   }
 
   private void cleanValueSets(List<String> allOids, File file) {
