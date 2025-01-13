@@ -2853,7 +2853,7 @@ public class ProfileUtilities {
                 } else {
                   boolean ok = true;
                   for (ValueSetExpansionContainsComponent cc : expDerived.getValueset().getExpansion().getContains()) {
-                    ValidationResult vr = context.validateCode(null, cc.getSystem(), cc.getVersion(), cc.getCode(), null, baseVs);
+                    ValidationResult vr = context.validateCode(new ValidationOptions(), cc.getSystem(), cc.getVersion(), cc.getCode(), null, baseVs);
                     if (!vr.isOk()) {
                       ok = false;
                       break;                      
