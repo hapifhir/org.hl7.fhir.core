@@ -280,7 +280,7 @@ public class ValidationService {
           if (cliContext.getOutput() == null) {
             dst = System.out;
           } else {
-            dst = new PrintStream(ManagedFileAccess.outStream(cliContext.getOutput()));
+            dst = new PrintStream(ManagedFileAccess.outStream(Utilities.path(cliContext.getOutput())));
           }
           renderer.setOutput(dst);
         } else {
