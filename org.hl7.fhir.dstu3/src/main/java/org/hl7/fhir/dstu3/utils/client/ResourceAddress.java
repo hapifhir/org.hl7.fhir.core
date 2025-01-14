@@ -418,7 +418,7 @@ public class ResourceAddress {
 		        } else {
 		        	query = "";
 		        }
-		        query += httpParameterName + "=" + Utilities.encodeUri(parameters.get(httpParameterName));
+		        query += httpParameterName + "=" + Utilities.encodeUriParam(parameters.get(httpParameterName));
         	}
 	
 	        return new URI(basePath.getScheme(), basePath.getUserInfo(), basePath.getHost(),basePath.getPort(), basePath.getPath(), query, basePath.getFragment());
