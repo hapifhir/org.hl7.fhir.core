@@ -3,21 +3,30 @@ package org.hl7.fhir.validation.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
+import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -285,4 +294,149 @@ public class ValidationEngineTests {
     System.out.println("Finished");
   }
 
+
+  @Test
+  public void testResolveRelativeFileValid() throws Exception {
+    String folder = setupFolder();
+    try {
+      ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+      StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
+      ve.setFetcher(fetcher);
+      ve.getContext().setLocator(fetcher);
+      ve.setPolicyAdvisor(fetcher);
+      fetcher.setReferencePolicy(ReferenceValidationPolicy.CHECK_VALID);
+      fetcher.setResolutionContext("file:"+folder);
+      ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Observation.json")));
+      ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
+      OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "relative-url-valid.json"), null);
+      Assertions.assertTrue(checkOutcomes("testResolveRelativeFileValid", op, 
+          "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
+          "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n"+
+          "Observation null warning/invariant: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"));
+    } finally {
+      Utilities.clearDirectory(folder);
+      ManagedFileAccess.file(folder).delete();
+    } 
+  }
+
+  @Test
+  public void testResolveRelativeFileInvalid() throws Exception {
+    String folder = setupFolder();
+    try {
+      ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+      StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
+      ve.setFetcher(fetcher);
+      ve.getContext().setLocator(fetcher);
+      ve.setPolicyAdvisor(fetcher);
+      fetcher.setReferencePolicy(ReferenceValidationPolicy.CHECK_VALID);
+      fetcher.setResolutionContext("file:"+folder);
+      ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Observation.json")));
+      ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
+      OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "relative-url-invalid.json"), null);
+      Assertions.assertTrue(checkOutcomes("testResolveRelativeFileValid", op, 
+          "Observation.subject null error/structure: Unable to find a profile match for Patient/example-newborn among choices: http://hl7.org/fhir/test/StructureDefinition/PatientRule\n"+
+          "Observation.subject null information/structure: Details for Patient/example-newborn matching against profile http://hl7.org/fhir/test/StructureDefinition/PatientRule|0.1.0\n"+
+          "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
+          "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n"+
+          "Observation null warning/invariant: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"));
+    } finally {
+      Utilities.clearDirectory(folder);
+      ManagedFileAccess.file(folder).delete();
+    } 
+  }
+
+  @Test
+  public void testResolveRelativeFileError() throws Exception {
+    String folder = setupFolder();
+    try {
+      ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+      StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
+      ve.setFetcher(fetcher);
+      ve.getContext().setLocator(fetcher);
+      ve.setPolicyAdvisor(fetcher);
+      fetcher.setReferencePolicy(ReferenceValidationPolicy.CHECK_VALID);
+      fetcher.setResolutionContext("file:"+folder);
+      ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Observation.json")));
+      ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
+      OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "relative-url-error.json"), null);
+      Assertions.assertTrue(checkOutcomes("testResolveRelativeFileValid", op, 
+          "Observation.subject null error/structure: Unable to resolve resource with reference 'patient/example-newborn-x'\n"+
+          "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
+          "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n"+
+          "Observation null warning/invariant: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"));
+    } finally {
+      Utilities.clearDirectory(folder);
+      ManagedFileAccess.file(folder).delete();
+    } 
+  }
+
+
+  @Test
+  public void testResolveAbsoluteValid() throws Exception {
+    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+    StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
+    ve.setFetcher(fetcher);
+    ve.getContext().setLocator(fetcher);
+    ve.setPolicyAdvisor(fetcher);
+    ve.setShowMessagesFromReferences(true);
+    fetcher.setReferencePolicy(ReferenceValidationPolicy.CHECK_VALID);
+    ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Observation.json")));
+    ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
+    OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "absolute-url-valid.json"), null);
+    Assertions.assertTrue(checkOutcomes("testResolveRelativeFileValid", op, 
+        "Observation.subject.resolve().ofType(Patient).managingOrganization null error/structure: Unable to resolve resource with reference 'Organization/1'\n"+
+        "Observation.subject.resolve().ofType(Patient).managingOrganization null information/informational: Fetching 'Organization/1' failed. System details: org.hl7.fhir.exceptions.FHIRException: The URL 'Organization/1' is not known to the FHIR validator, and a resolution context has not been provided as part of the setup / parameters\n"+
+        "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
+        "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n"+
+        "Observation null warning/invariant: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"));
+  }
+
+  @Test
+  public void testResolveAbsoluteInvalid() throws Exception {
+      ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+      StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
+      ve.setFetcher(fetcher);
+      ve.getContext().setLocator(fetcher);
+      ve.setPolicyAdvisor(fetcher);
+      fetcher.setReferencePolicy(ReferenceValidationPolicy.CHECK_VALID);
+      ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Observation.json")));
+      ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
+      OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "absolute-url-invalid.json"), null);
+      Assertions.assertTrue(checkOutcomes("testResolveRelativeFileValid", op, 
+          "Observation.subject null error/structure: Unable to find a profile match for https://hl7.org/fhir/R4/patient-example-newborn.json among choices: http://hl7.org/fhir/test/StructureDefinition/PatientRule\n"+
+          "Observation.subject null information/structure: Details for https://hl7.org/fhir/R4/patient-example-newborn.json matching against profile http://hl7.org/fhir/test/StructureDefinition/PatientRule|0.1.0\n"+
+          "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
+          "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n"+
+          "Observation null warning/invariant: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"));
+  }
+
+  @Test
+  public void testResolveAbsoluteError() throws Exception {
+      ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+      StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
+      ve.setFetcher(fetcher);
+      ve.getContext().setLocator(fetcher);
+      ve.setPolicyAdvisor(fetcher);
+      fetcher.setReferencePolicy(ReferenceValidationPolicy.CHECK_VALID);
+      ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Observation.json")));
+      ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
+      OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "absolute-url-error.json"), null);
+      Assertions.assertTrue(checkOutcomes("testResolveRelativeFileValid", op, 
+          "Observation.subject null error/structure: Unable to resolve resource with reference 'http://hl7x.org/fhir/R4/Patient/Patient/example-newborn'\n"+
+          "Observation.subject null information/informational: Fetching 'http://hl7x.org/fhir/R4/Patient/Patient/example-newborn' failed. System details: java.net.UnknownHostException: hl7x.org\n"+
+          "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
+          "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n"+
+          "Observation null warning/invariant: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"));
+  }
+
+  private String setupFolder() throws IOException {
+    String now = new SimpleDateFormat("yyyymmddhhMMss").format(new Date());
+    String folder = Utilities.path("[tmp]", "validator-resolution", now);
+    Utilities.createDirectory(folder);
+    for (String s : Utilities.strings("Organization-first.xml", "Patient-example-newborn.json", "patient-example.json")) {
+      TextFile.bytesToFile( TestingUtilities.loadTestResourceBytes("validator", "resolution", s), Utilities.path(folder, s));
+    }
+    return folder;
+  }
+  
 }
