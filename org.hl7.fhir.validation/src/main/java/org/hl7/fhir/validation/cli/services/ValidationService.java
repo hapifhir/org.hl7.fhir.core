@@ -280,7 +280,7 @@ public class ValidationService {
           if (cliContext.getOutput() == null) {
             dst = System.out;
           } else {
-            dst = new PrintStream(ManagedFileAccess.outStream(cliContext.getOutput()));
+            dst = new PrintStream(ManagedFileAccess.outStream(Utilities.path(cliContext.getOutput())));
           }
           renderer.setOutput(dst);
         } else {
@@ -636,6 +636,12 @@ public class ValidationService {
       validationEngine.setFetcher(fetcher);
       validationEngine.getContext().setLocator(fetcher);
       validationEngine.setPolicyAdvisor(fetcher);
+      if (cliContext.isCheckReferences()) {
+        fetcher.setReferencePolicy(ReferenceValidationPolicy.CHECK_VALID);
+      } else {
+        fetcher.setReferencePolicy(ReferenceValidationPolicy.IGNORE);        
+      }
+      fetcher.setResolutionContext(cliContext.getResolutionContext());
     } else {
       DisabledValidationPolicyAdvisor fetcher = new DisabledValidationPolicyAdvisor();
       validationEngine.setPolicyAdvisor(fetcher);
