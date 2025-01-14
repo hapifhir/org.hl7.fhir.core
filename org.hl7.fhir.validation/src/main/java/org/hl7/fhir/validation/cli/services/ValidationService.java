@@ -636,6 +636,12 @@ public class ValidationService {
       validationEngine.setFetcher(fetcher);
       validationEngine.getContext().setLocator(fetcher);
       validationEngine.setPolicyAdvisor(fetcher);
+      if (cliContext.isCheckReferences()) {
+        fetcher.setReferencePolicy(ReferenceValidationPolicy.CHECK_VALID);
+      } else {
+        fetcher.setReferencePolicy(ReferenceValidationPolicy.IGNORE);        
+      }
+      fetcher.setResolutionContext(cliContext.getResolutionContext());
     } else {
       DisabledValidationPolicyAdvisor fetcher = new DisabledValidationPolicyAdvisor();
       validationEngine.setPolicyAdvisor(fetcher);
