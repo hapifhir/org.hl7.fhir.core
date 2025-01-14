@@ -16,6 +16,7 @@ import java.math.RoundingMode;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -926,11 +927,14 @@ public class Utilities {
     return parts.toArray(new String[]{});
   }
 
-
-  public static String encodeUri(String v) {
-    return v.replace("%", "%25").replace(" ", "%20").replace("?", "%3F").replace("=", "%3D").replace("|", "%7C").replace("+", "%2B");
+  @Deprecated
+  public static String encodeUri(String string) {
+    return URLEncoder.encode(string, StandardCharsets.UTF_8);
   }
 
+  public static String encodeUriParam(String param) {
+    return URLEncoder.encode(param, StandardCharsets.UTF_8);
+  }
 
   public static String normalize(String s) {
     if (noString(s))
