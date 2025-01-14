@@ -522,7 +522,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       if (!complex)
         for (ParametersParameterComponent p : params.getParameter())
           if (p.getValue() instanceof PrimitiveType)
-            ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
+            ps += p.getName() + "=" + Utilities.encodeUriParam(((PrimitiveType) p.getValue()).asStringValue()) + "&";
       ResourceRequest<T> result;
       if (complex)
         result = utils.issuePostRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps),
