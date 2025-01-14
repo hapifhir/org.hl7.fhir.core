@@ -929,7 +929,7 @@ public class Utilities {
 
   @Deprecated
   public static String encodeUri(String string) {
-    return URLEncoder.encode(string, StandardCharsets.UTF_8);
+    return encodeUriParam(string);
   }
 
   public static String encodeUriParam(String param) {
