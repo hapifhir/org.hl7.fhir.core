@@ -76,7 +76,7 @@ public class TestInstanceGenerationTester {
       byte[] fsrc = TestingUtilities.loadTestResourceBytes("rX", "instance-generation", "factories", name);
       TextFile.bytesToFile(fsrc, Utilities.path(path, name));
     }
-    for (String name : Utilities.strings("Patient-1.json", "Encounter-1.json", "MedicationStatement-1.json", "Observation-bp-1.json", "Observation-weight-1.json")) {
+    for (String name : Utilities.strings("Patient-1.json","Patient2-1.json", "Encounter-1.json", "MedicationStatement-1.json", "Observation-bp-1.json", "Observation-weight-1.json")) {
       byte[] fsrc = TestingUtilities.loadTestResourceBytes("rX", "instance-generation", "expected", name);
       TextFile.bytesToFile(fsrc, Utilities.path(path, "expected", name));
     }
@@ -93,12 +93,12 @@ public class TestInstanceGenerationTester {
     for (String name : Utilities.strings("Bundle-patients.json", "Encounter-1.json", "Encounter-2.json", "Encounter-3.json", "Encounter-4.json", "MedicationStatement-1.json", 
         "MedicationStatement-2.json", "MedicationStatement-4.json", "Observation-bp-1.json", "Observation-bp-2.json", "Observation-bp-3.json", 
         "Observation-bp-4.json", "Observation-weight-1.json", "Observation-weight-2.json", "Observation-weight-3.json", "Observation-weight-4.json", 
-        "Patient-1.json", "Patient-2.json", "Patient-3.json", "Patient-4.json")) {
+        "Patient-1.json", "Patient-2.json", "Patient-3.json", "Patient-4.json", "Patient2-1.json", "Patient2-2.json", "Patient2-3.json")) {
       File f = new File(Utilities.path(output, name));
       Assertions.assertTrue(f.exists());
     }
     
-    for (String name : Utilities.strings("Patient-1.json", "Encounter-1.json", "MedicationStatement-1.json", "Observation-bp-1.json", "Observation-weight-1.json")) {
+    for (String name : Utilities.strings("Patient-1.json", "Patient2-1.json", "Encounter-1.json", "MedicationStatement-1.json", "Observation-bp-1.json", "Observation-weight-1.json")) {
       String diff = new CompareUtilities(null, null).checkJsonSrcIsSame(name, TextFile.fileToString(Utilities.path(expected, name)), TextFile.fileToString(Utilities.path(output, name)), false);
       Assertions.assertNull(diff, "unexpected difference for "+name);
     }

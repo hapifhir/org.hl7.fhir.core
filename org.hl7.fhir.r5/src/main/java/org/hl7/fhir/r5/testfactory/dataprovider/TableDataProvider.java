@@ -19,7 +19,12 @@ public abstract class TableDataProvider {
     try {
       String filename = path;
       String sheetname = null;
+      String range = null;
 
+      if (path.contains("!")) {
+          range = path.substring(path.indexOf("!")+1);
+          path = path.substring(0, path.indexOf("!"));
+        }
       if (path.contains(";")) {
         filename = path.substring(0, path.indexOf(";"));
         sheetname = path.substring(path.indexOf(";")+1);
@@ -28,7 +33,7 @@ public abstract class TableDataProvider {
       if (Utilities.existsInList(extension, "csv", "txt")) {
         return new CSVDataProvider(filename);
       } else if (Utilities.existsInList(extension, "xlsx")) {
-        return new ExcelDataProvider(filename, sheetname);
+        return new ExcelDataProvider(filename, sheetname, range);
       } else if (Utilities.existsInList(extension, "db")) {
         return new SQLDataProvider(DriverManager.getConnection("jdbc:sqlite:"+filename), sheetname);
       } else {
