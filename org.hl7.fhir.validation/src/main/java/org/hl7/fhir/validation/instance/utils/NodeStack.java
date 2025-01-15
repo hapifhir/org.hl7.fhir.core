@@ -64,7 +64,12 @@ public class NodeStack {
     this.context = context;
     ids = new HashMap<>();
     this.element = element;
-    literalPath = refPath + "->" + element.getName();
+    int i = element.getName().indexOf(".");
+    if (i == -1) {
+      literalPath = refPath+".resolve().ofType(" + element.getName()+")";      
+    } else {
+      literalPath = refPath+".resolve().ofType(" + element.getName().substring(0, i)+")"+element.getName().substring(i);
+    }
     workingLang = validationLanguage;
   }
 

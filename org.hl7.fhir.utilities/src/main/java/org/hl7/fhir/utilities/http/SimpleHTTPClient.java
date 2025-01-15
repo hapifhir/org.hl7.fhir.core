@@ -132,7 +132,7 @@ public class SimpleHTTPClient {
     c.setDoOutput(true);
     c.setDoInput(true);
     c.setRequestMethod("POST");
-    c.setRequestProperty("Content-type", contentType);
+    c.setRequestProperty("Content-Type", contentType);
     if (accept != null) {
       c.setRequestProperty("Accept", accept);
     }

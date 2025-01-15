@@ -343,7 +343,8 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
 
   protected boolean slicingHint(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, String[] text) {
     if (!thePass && doingHints()) {
-      addValidationMessage(errors, ruleDate, type, line, col, path, msg, IssueSeverity.INFORMATION, null).setSlicingHint(true).setSliceHtml(html, text).setCriticalSignpost(isCritical);
+      addValidationMessage(errors, ruleDate, type, line, col, path, msg, IssueSeverity.INFORMATION, null)
+           .setMessageId(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_).setSlicingHint(true).setSliceHtml(html, text).setCriticalSignpost(isCritical);
     }
     return thePass;
   }
@@ -356,7 +357,8 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    */
   protected boolean slicingHint(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, String[] text, List<ValidationMessage> sliceInfo,  String id) {
     if (!thePass && doingHints()) {
-      addValidationMessage(errors, ruleDate, type, line, col, path, msg, IssueSeverity.INFORMATION, id).setSlicingHint(true).setSliceHtml(html, text).setCriticalSignpost(isCritical).setSliceInfo(sliceInfo);
+      addValidationMessage(errors, ruleDate, type, line, col, path, msg, IssueSeverity.INFORMATION, id)
+      .setMessageId(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_).setSlicingHint(true).setSliceHtml(html, text).setCriticalSignpost(isCritical).setSliceInfo(sliceInfo);
     }
     return thePass;
   }

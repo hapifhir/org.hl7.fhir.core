@@ -38,6 +38,8 @@ public class Params {
   public static final String QUESTIONNAIRE = "-questionnaire";
   public static final String NATIVE = "-native";
   public static final String ASSUME_VALID_REST_REF = "-assumeValidRestReferences";
+  public static final String CHECK_REFERENCES = "-check-references";
+  public static final String RESOLUTION_CONTEXT = "-resolution-context";
   public static final String DEBUG = "-debug";
   public static final String SCT = "-sct";
   public static final String RECURSE = "-recurse";
@@ -94,6 +96,7 @@ public class Params {
   public static final String CRUMB_TRAIL = "-crumb-trails";
   public static final String SHOW_MESSAGE_IDS = "-show-message-ids";
   public static final String FOR_PUBLICATION = "-forPublication";
+  public static final String AI_SERVICE = "-ai-service";
   public static final String VERBOSE = "-verbose";
   public static final String SHOW_TIMES = "-show-times";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
@@ -273,6 +276,10 @@ public class Params {
         cliContext.setDoNative(true);
       } else if (args[i].equals(ASSUME_VALID_REST_REF)) {
         cliContext.setAssumeValidRestReferences(true);
+      } else if (args[i].equals(CHECK_REFERENCES)) {
+        cliContext.setCheckReferences(true);
+      } else if (args[i].equals(RESOLUTION_CONTEXT)) {
+        cliContext.setResolutionContext(args[++i]);        
       } else if (args[i].equals(DEBUG)) {
         cliContext.setDoDebug(true);
       } else if (args[i].equals(SCT)) {
@@ -379,6 +386,8 @@ public class Params {
         cliContext.setShowMessageIds(true);
       } else if (args[i].equals(FOR_PUBLICATION)) {
         cliContext.setForPublication(true);
+      } else if (args[i].equals(AI_SERVICE)) {
+        cliContext.setAIService(args[++i]);
       } else if (args[i].equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
         cliContext.setUnknownCodeSystemsCauseErrors(true);
       } else if (args[i].equals(NO_EXPERIMENTAL_CONTENT)) {

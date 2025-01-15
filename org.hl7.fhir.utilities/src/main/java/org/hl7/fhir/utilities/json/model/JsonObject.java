@@ -287,6 +287,20 @@ public class JsonObject extends JsonElement {
     }
     return null;
   }
+  
+  public Double asDouble(String name) {
+    if (hasNumber(name)) {
+      return ((JsonNumber) get(name)).getDouble();
+    }
+    if (hasPrimitive(name)) {
+      String s = asString(name);
+      if (Utilities.isDecimal(s, false)) {
+        return Double.parseDouble(s);
+      }
+    }
+    return null;
+  }
+
 
   public String asString(String name) {
     return hasPrimitive(name) ? ((JsonPrimitive) get(name)).getValue() : null;

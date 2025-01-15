@@ -129,6 +129,22 @@ public class ManagedFileAccess {
       throw new IOException("Internal Error");
     }
   }
+
+  public static File file(File root, String filepath) throws IOException {
+    switch (accessPolicy) {
+    case DIRECT:
+      if (!inAllowedPaths(root.getAbsolutePath())) {
+        throw new IOException("The path '"+root.getAbsolutePath()+"' cannot be accessed by policy");
+      }
+      return new File(root.getAbsolutePath(), filepath);
+    case MANAGED:
+      return accessor.file(Utilities.path(root.getAbsolutePath(), filepath));
+    case PROHIBITED:
+      throw new IOException("Access to files is not allowed by local security policy");
+    default:
+      throw new IOException("Internal Error");
+    }
+  }
   /** 
    * Open a FileInputStream, conforming to local security policy 
    **/

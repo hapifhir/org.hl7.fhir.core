@@ -42,6 +42,14 @@ public class JsonNumber extends JsonPrimitive {
       return null; 
     }
   }
+
+  public Double getDouble() {
+    if (Utilities.isDecimal(value, false)) {
+      return Double.parseDouble(value); 
+    } else {
+      return null; 
+    }
+  }
   
   @Override
   protected JsonElement copy(JsonElement other) {
