@@ -222,6 +222,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean crumbTrails;
   @Getter @Setter private boolean showMessageIds;
   @Getter @Setter private boolean forPublication;
+  @Getter @Setter private String aiService;
   @Getter @Setter private boolean allowExampleUrls;
   @Getter @Setter private boolean showMessagesFromReferences;
   @Getter @Setter private boolean doImplicitFHIRPathStringConversion;
@@ -278,6 +279,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     securityChecks = other.securityChecks;
     crumbTrails = other.crumbTrails;
     forPublication = other.forPublication;
+    aiService = other.aiService;
     allowExampleUrls = other.allowExampleUrls;
     showMessagesFromReferences = other.showMessagesFromReferences;
     doImplicitFHIRPathStringConversion = other.doImplicitFHIRPathStringConversion;
@@ -904,6 +906,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setNoUnicodeBiDiControlChars(noUnicodeBiDiControlChars);
     validator.setDoImplicitFHIRPathStringConversion(doImplicitFHIRPathStringConversion);
     validator.setCheckIPSCodes(checkIPSCodes);
+    validator.setAIService(aiService);
+    validator.setCacheFolder(context.getTxCache().getFolder());
     if (format == FhirFormat.SHC) {
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
     }
