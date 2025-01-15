@@ -630,6 +630,7 @@ public class ValidationService {
     validationEngine.setForPublication(cliContext.isForPublication());
     validationEngine.setShowTimes(cliContext.isShowTimes());
     validationEngine.setAllowExampleUrls(cliContext.isAllowExampleUrls());
+    validationEngine.setAiService(cliContext.getAIService());
     ReferenceValidationPolicy refpol = ReferenceValidationPolicy.CHECK_VALID;
     if (!cliContext.isDisableDefaultResourceFetcher()) {
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validationEngine.getPcm(), validationEngine.getContext(), validationEngine);
