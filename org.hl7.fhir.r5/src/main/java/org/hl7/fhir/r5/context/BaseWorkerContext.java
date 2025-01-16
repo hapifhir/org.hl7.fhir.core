@@ -1710,9 +1710,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     Set<String> unknownSystems = new HashSet<>();
-    if ("8517006".equals(code.getCodingFirstRep().getCode())) {
-      DebugUtilities.breakpoint();
-    }
 
     List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
     

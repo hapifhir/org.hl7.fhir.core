@@ -333,7 +333,7 @@ public class ValidationEngineTests {
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Observation.json")));
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
       OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "relative-url-invalid.json"), null);
-      Assertions.assertTrue(checkOutcomes("testResolveRelativeFileValid", op, 
+      Assertions.assertTrue(checkOutcomes("testResolveRelativeFileInvalid", op, 
           "Observation.subject null error/structure: Unable to find a profile match for Patient/example-newborn among choices: http://hl7.org/fhir/test/StructureDefinition/PatientRule\n"+
           "Observation.subject null information/structure: Details for Patient/example-newborn matching against profile http://hl7.org/fhir/test/StructureDefinition/PatientRule|0.1.0\n"+
           "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
@@ -359,7 +359,7 @@ public class ValidationEngineTests {
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Observation.json")));
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
       OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "relative-url-error.json"), null);
-      Assertions.assertTrue(checkOutcomes("testResolveRelativeFileValid", op, 
+      Assertions.assertTrue(checkOutcomes("testResolveRelativeFileError", op, 
           "Observation.subject null error/structure: Unable to resolve resource with reference 'patient/example-newborn-x'\n"+
           "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
           "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n"+
@@ -383,7 +383,7 @@ public class ValidationEngineTests {
     ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Observation.json")));
     ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "absolute-url-valid.json"), null);
-    Assertions.assertTrue(checkOutcomes("testResolveRelativeFileValid", op, 
+    Assertions.assertTrue(checkOutcomes("testResolveAbsoluteValid", op, 
         "Observation.subject.resolve().ofType(Patient).managingOrganization null error/structure: Unable to resolve resource with reference 'Organization/1'\n"+
         "Observation.subject.resolve().ofType(Patient).managingOrganization null information/informational: Fetching 'Organization/1' failed. System details: org.hl7.fhir.exceptions.FHIRException: The URL 'Organization/1' is not known to the FHIR validator, and a resolution context has not been provided as part of the setup / parameters\n"+
         "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
@@ -402,7 +402,7 @@ public class ValidationEngineTests {
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Observation.json")));
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
       OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "absolute-url-invalid.json"), null);
-      Assertions.assertTrue(checkOutcomes("testResolveRelativeFileValid", op, 
+      Assertions.assertTrue(checkOutcomes("testResolveAbsoluteInvalid", op, 
           "Observation.subject null error/structure: Unable to find a profile match for https://hl7.org/fhir/R4/patient-example-newborn.json among choices: http://hl7.org/fhir/test/StructureDefinition/PatientRule\n"+
           "Observation.subject null information/structure: Details for https://hl7.org/fhir/R4/patient-example-newborn.json matching against profile http://hl7.org/fhir/test/StructureDefinition/PatientRule|0.1.0\n"+
           "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+
@@ -421,7 +421,7 @@ public class ValidationEngineTests {
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Observation.json")));
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
       OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "absolute-url-error.json"), null);
-      Assertions.assertTrue(checkOutcomes("testResolveRelativeFileValid", op, 
+      Assertions.assertTrue(checkOutcomes("testResolveAbsoluteError", op, 
           "Observation.subject null error/structure: Unable to resolve resource with reference 'http://hl7x.org/fhir/R4/Patient/Patient/example-newborn'\n"+
           "Observation.subject null information/informational: Fetching 'http://hl7x.org/fhir/R4/Patient/Patient/example-newborn' failed. System details: java.net.UnknownHostException: hl7x.org\n"+
           "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have a performer\n"+

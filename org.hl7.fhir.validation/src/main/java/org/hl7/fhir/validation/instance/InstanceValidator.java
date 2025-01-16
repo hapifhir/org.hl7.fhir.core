@@ -1024,6 +1024,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     errors.removeAll(messagesToRemove);
     timeTracker.overall(t);
     if (aiService != null && !textsToCheck.isEmpty()) {
+      t = System.nanoTime();
       CodeAndTextValidator ctv = new CodeAndTextValidator(cacheFolder, aiService);
       List<CodeAndTextValidationResult> results = null;
       try {
@@ -1045,6 +1046,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
         }
       }
+      timeTracker.ai(t);
     }
     
     if (DEBUG_ELEMENT) {
@@ -7815,7 +7817,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return (timeTracker.getOverall() - timeTracker.getTxTime()) / 1000000;
   }
   public String reportTimes() {
-    String s = String.format("Times (ms): overall = %d:4, tx = %d, sd = %d, load = %d, fpe = %d, spec = %d", timeTracker.getOverall() / 1000000, timeTracker.getTxTime() / 1000000, timeTracker.getSdTime() / 1000000, timeTracker.getLoadTime() / 1000000, timeTracker.getFpeTime() / 1000000, timeTracker.getSpecTime() / 1000000);
+    String s = String.format("Times (ms): overall = %d:4, tx = %d, sd = %d, load = %d, fpe = %d, spec = %d, ai = %d",
+        timeTracker.getOverall() / 1000000, timeTracker.getTxTime() / 1000000, timeTracker.getSdTime() / 1000000, 
+        timeTracker.getLoadTime() / 1000000, timeTracker.getFpeTime() / 1000000, timeTracker.getSpecTime() / 1000000, timeTracker.getAiTime() / 1000000);
     timeTracker.reset();
     return s;
   }
