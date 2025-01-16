@@ -138,6 +138,6 @@ public class UserDataNames {
   public static final String kindling_ballot_package = "ballot.package";
   public static final String archetypeSource = "archetype-source";
   public static final String archetypeName = "archetype-name";
-
+  public static final String VS_EXPANSION_SOURCE = "VS_EXPANSION_SOURCE";
 
 }  

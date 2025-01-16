@@ -77,6 +77,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
@@ -518,16 +519,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (cs != null) {
       if (cs.hasUserData("supplements.installed")) {
         for (String s : cs.getUserString("supplements.installed").split("\\,")) {
-          requiredSupplements.remove(s);
-          if (s.contains("|")) {
-            s = s.substring(0, s.indexOf("|"));
-            requiredSupplements.remove(s);
-          }
+          s = removeSupplement(s);
         }
       }
     }
     return cs;
   }
+
 
   public List<String> resolveCodeSystemVersions(String system) {
     List<String> res = new ArrayList<>();
@@ -696,6 +694,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
           res = validateCode(path, code, cs, null, info);
           res.setIssues(issues);
         } else if (cs == null && valueset.hasExpansion() && inExpansion) {
+          for (ValueSetExpansionParameterComponent p : valueset.getExpansion().getParameter()) {
+            if ("used-supplement".equals(p.getName())) {
+              removeSupplement(p.getValue().primitiveValue());
+            }
+          }
           // we just take the value set as face value then
           res = new ValidationResult(system, wv, new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()), code.getDisplay());
           if (!preferServerSide(system)) {

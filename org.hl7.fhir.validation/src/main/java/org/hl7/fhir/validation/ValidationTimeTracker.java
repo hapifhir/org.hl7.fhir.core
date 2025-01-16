@@ -7,6 +7,7 @@ public class ValidationTimeTracker {
   private long loadTime = 0;
   private long fpeTime = 0;
   private long specTime = 0;
+  private long aiTime = 0;
 
   public long getOverall() {
     return overall;
@@ -28,12 +29,18 @@ public class ValidationTimeTracker {
     return specTime;
   }
   
+  public long getAiTime() {
+    return aiTime;
+  }
   public void load(long start) {
     loadTime = loadTime + (System.nanoTime() - start);
   }
   
   public void overall(long start) {  
     overall = overall + (System.nanoTime() - start);
+  }
+  public void ai(long start) {  
+    aiTime = aiTime + (System.nanoTime() - start);
   }
   
   public void tx(long start, String s) {
@@ -61,5 +68,6 @@ public class ValidationTimeTracker {
     loadTime = 0;
     fpeTime = 0;
     specTime = 0;
+    aiTime = 0;
   }
 }

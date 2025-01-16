@@ -169,17 +169,23 @@ public class PathBuilder {
 
   private String replaceVariables(String a) throws IOException {
     if ("[tmp]".equals(a)) {
-      if (hasCTempDir()) {
-        return Utilities.C_TEMP_DIR;
-      } else if (FhirSettings.hasTempPath()) {
-        return FhirSettings.getTempPath();
-      } else {
-        return System.getProperty("java.io.tmpdir");
-      }
+      return getTempDir();
+    } else if (a.startsWith("[tmp]")) {
+      return getTempDir()+a.substring(5);
     } else if ("[user]".equals(a)) {
       return System.getProperty("user.home");
     }
     return a;
+  }
+
+  private String getTempDir() throws IOException {
+    if (hasCTempDir()) {
+      return Utilities.C_TEMP_DIR;
+    } else if (FhirSettings.hasTempPath()) {
+      return FhirSettings.getTempPath();
+    } else {
+      return System.getProperty("java.io.tmpdir");
+    }
   }
 
   protected static boolean hasCTempDir() throws IOException {

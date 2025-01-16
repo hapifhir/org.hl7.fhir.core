@@ -73,7 +73,7 @@ public class ObjectConverter  {
     ByteArrayInputStream bi = new ByteArrayInputStream(bs.toByteArray());
     List<ValidatedFragment> list = new JsonParser(context).parse(bi);
     if (list.size() != 1) {
-      throw new FHIRException("Unable to convert because the source contains multieple resources");
+      throw new FHIRException("Unable to convert because the source contains multiple resources");
     }
     return list.get(0).getElement();
   }

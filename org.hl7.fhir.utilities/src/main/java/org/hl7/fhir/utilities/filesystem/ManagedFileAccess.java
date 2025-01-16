@@ -129,6 +129,10 @@ public class ManagedFileAccess {
       throw new IOException("Internal Error");
     }
   }
+
+  public static File file(File root, String filepath) throws IOException {
+    return file(root.getAbsolutePath(), filepath);
+  }
   /** 
    * Open a FileInputStream, conforming to local security policy 
    **/
