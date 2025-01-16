@@ -24,5 +24,8 @@ public class CodeAndTextValidationResult {
   public String getConfidence() {
     return confidence;
   }
+  public String summary() {
+    return (isValid ? "Valid" : "Invalid") +" ("+confidence+") : "+explanation;
+  }
 
 }

@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -19,29 +20,42 @@ public class ClaudeAPI extends AIAPI {
 
   @Override
   public List<CodeAndTextValidationResult> validateCodings(List<CodeAndTextValidationRequest> requests) throws IOException {
-    StringBuilder prompt = new StringBuilder();
-    prompt.append("For each of the following cases, determine if the text appropriately matches the code. ");
-    prompt.append("Respond in JSON format with an array of objects containing 'index', 'isValid', 'explanation', and 'confidence'.\n\n");
-
-    for (int i = 0; i < requests.size(); i++) {
-      CodeAndTextValidationRequest req = requests.get(i);
-      prompt.append(String.format("%d. Is '%s' a reasonable text to associate with the %s code %s (display = %s)?\n",
-          i + 1, req.getText(), getSystemName(req.getSystem()), req.getCode(), req.getDisplay()));
+    // limit to 5 in a batch 
+    List<List<CodeAndTextValidationRequest>> chunks = new ArrayList<>();
+    for (int i = 0; i < requests.size(); i += 4) {
+      chunks.add(requests.subList(i, Math.min(i + 4, requests.size())));
     }
+    List<CodeAndTextValidationResult> results = new ArrayList<CodeAndTextValidationResult>();
+    int c = 0;
+    System.out.print(" ");
+    for (List<CodeAndTextValidationRequest> chunk : chunks) {
 
-    String systemPrompt = "You are a medical terminology expert. Evaluate whether text descriptions match their\n"+ 
-        "associated clinical codes. Provide detailed explanations for any mismatches. "+
-        "Express your confidence level based on how certain you are of the relationship.";
+      StringBuilder prompt = new StringBuilder();
+      prompt.append("For each of the following cases, determine if the text can't be a description of the same situation as the code. The text may contain significantly more or less information than the code.\n\n");
+      prompt.append("Respond in JSON format with an array of objects containing 'index', 'isCompatible', 'explanation', and 'confidence'. Please evaluate all the items in a single go\n\n");
 
-    JsonObject json = getResponse(prompt.toString(), systemPrompt);
+      for (int i = 0; i < chunk.size(); i++) {
+        CodeAndTextValidationRequest req = chunk.get(i);
+        prompt.append(String.format("%d. Is '%s' in conflict with the %s code %s (display = %s)?\n",
+            i + 1, req.getText(), getSystemName(req.getSystem()), req.getCode(), req.getDisplay()));
+      }
 
-    return parseValidationResponse(json, requests);
+      String systemPrompt = "You are a medical terminology expert. Evaluate whether text descriptions match their\n"+ 
+          "associated clinical codes. Provide detailed explanations for any mismatches. "+
+          "Express your confidence level based on how certain you are of the relationship.";
+
+      System.out.print(""+c+" ");
+      JsonObject json = getResponse(prompt.toString(), systemPrompt);
+
+      parseValidationResponse(json, chunk, results);
+      c+= 4;
+    }
+    return results;
   }
-
 
   public JsonObject getResponse(String prompt, String systemPrompt) throws IOException {
     JsonObject j = new JsonObject();
-    j.add("model", "claude-3-5-sonnet-20241022");
+    j.add("model", MODEL);
     j.add("system", systemPrompt);
     j.add("max_tokens", 1024);
     j.forceArray("messages").addObject().add("role", "user").add("content", prompt);
@@ -52,18 +66,17 @@ public class ClaudeAPI extends AIAPI {
     response.checkThrowException();
     JsonObject json = JsonParser.parseObject(response.getContentAsString());
     String text = json.getJsonArray("content").get(0).asJsonObject().asString("text");
+    TextFile.stringToFile(text, Utilities.path("[tmp]", "fhir-validator-claude-response.json"));
     return JsonParser.parseObject(text);
   }
 
 
 
-  private List<CodeAndTextValidationResult> parseValidationResponse(JsonObject json, List<CodeAndTextValidationRequest> requests) {
-    List<CodeAndTextValidationResult> res = new ArrayList<>();
+  private void parseValidationResponse(JsonObject json, List<CodeAndTextValidationRequest> requests, List<CodeAndTextValidationResult> res) {
     for (JsonObject o : json.getProperties().get(0).getValue().asJsonArray().asJsonObjects()) {
       CodeAndTextValidationRequest request = requests.get(o.asInteger("index")-1);
-      res.add(new CodeAndTextValidationResult(request, o.asBoolean("isValid"), o.asString("explanation"), o.asString("confidence")));
+      res.add(new CodeAndTextValidationResult(request, o.asBoolean("isCompatible"), o.asString("explanation"), o.asString("confidence")));
     }
-    return res;
   }
 
 }
