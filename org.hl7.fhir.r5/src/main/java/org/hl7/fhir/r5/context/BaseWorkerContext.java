@@ -942,7 +942,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     try {
       ValueSet result = tc.getClient().expandValueset(vs, p);
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());
+      if (res != null && res.getValueset() != null) { 
+        res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
+      }
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, true);
       if (txLog != null) {
@@ -1012,7 +1015,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
         }
       }
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId()); 
+      if (res != null && res.getValueset() != null) { 
+        res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
+      } 
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), TerminologyServiceErrorClass.UNKNOWN, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
     }
@@ -1085,6 +1091,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     res = null;
     try {
       res = vse.expand(vs, p);
+      if (res != null && res.getValueset() != null) { 
+        res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, vse.getSource());
+      }
     } catch (Exception e) {
       allErrors.addAll(vse.getAllErrors());
       e.printStackTrace();
@@ -1098,7 +1107,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       txCache.cacheExpansion(cacheToken, res, TerminologyCache.TRANSIENT);
       return res;
     }
-    if (res.getErrorClass() == TerminologyServiceErrorClass.INTERNAL_ERROR || isNoTerminologyServer()) { // this class is created specifically to say: don't consult the server
+    if (res.getErrorClass() == TerminologyServiceErrorClass.INTERNAL_ERROR || isNoTerminologyServer() || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNKNOWN) { // this class is created specifically to say: don't consult the server
       return new ValueSetExpansionOutcome(res.getError(), res.getErrorClass(), false);
     }
 
@@ -1132,6 +1141,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else {
         res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), TerminologyServiceErrorClass.UNKNOWN, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
       }
+    }
+    if (res != null && res.getValueset() != null) {
+      res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
@@ -1698,6 +1710,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     Set<String> unknownSystems = new HashSet<>();
+    if ("8517006".equals(code.getCodingFirstRep().getCode())) {
+      DebugUtilities.breakpoint();
+    }
 
     List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
     

@@ -240,7 +240,7 @@ public class CodeSystemUtilities {
     return null;
   }
 
-  private static ConceptDefinitionComponent findCode(List<ConceptDefinitionComponent> list, String code) {
+  public static ConceptDefinitionComponent findCode(List<ConceptDefinitionComponent> list, String code) {
     for (ConceptDefinitionComponent c : list) {
       if (c.getCode().equals(code))
         return c;

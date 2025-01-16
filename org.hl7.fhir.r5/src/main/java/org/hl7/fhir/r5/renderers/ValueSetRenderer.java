@@ -90,7 +90,20 @@ public class ValueSetRenderer extends TerminologyRenderer {
         if (vs.hasCopyright())
           generateCopyright(x, r);
       }
-
+      if (vs.hasExtension(ToolingExtensions.EXT_VS_CS_SUPPL_NEEDED)) {
+        var p = x.para();
+        p.tx("This ValueSet requires the Code system Supplement ");
+        String u = ToolingExtensions.readStringExtension(vs, ToolingExtensions.EXT_VS_CS_SUPPL_NEEDED);
+        CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, u);
+        if (cs == null) {
+          p.code().tx(u);
+        } else if (!cs.hasWebPath()) {
+          p.ah(u).tx(cs.present());
+        } else {
+          p.ah(cs.getWebPath()).tx(cs.present());          
+        }
+        p.tx(".");
+      }
       if (vs.hasExpansion()) {
         // for now, we just accept an expansion if there is one
         generateExpansion(status, r, x, vs, false, maps);
@@ -498,14 +511,26 @@ public class ValueSetRenderer extends TerminologyRenderer {
         if (versions.size() == 1 && versions.get(s).size() == 1) {
           for (String v : versions.get(s)) { // though there'll only be one
             XhtmlNode p = x.para().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
-            p.tx(context.formatPhrase(RenderingContext.VALUE_SET_EXPANSION)+" ");
+            if (!vs.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
+              p.tx(context.formatPhrase(RenderingContext.VALUE_SET_EXPANSION)+" ");
+            } else if ("internal".equals(vs.getUserString(UserDataNames.VS_EXPANSION_SOURCE))) {
+              p.tx(context.formatPhrase(RenderingContext.VALUE_SET_EXPANSION_INTERNAL)+" ");              
+            } else {
+              p.tx(context.formatPhrase(RenderingContext.VALUE_SET_EXPANSION_SRVR, vs.getUserString(UserDataNames.VS_EXPANSION_SOURCE))+" ");
+            }
             expRef(p, s, v, vs);
           }
         } else {
           for (String v : versions.get(s)) {
             if (first) {
               div = x.div().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
-              div.para().tx(context.formatPhrase(RenderingContext.VALUE_SET_EXPANSIONS));
+              if (!vs.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
+                div.para().tx(context.formatPhrase(RenderingContext.VALUE_SET_EXPANSIONS));                
+              } else if ("internal".equals(vs.getUserString(UserDataNames.VS_EXPANSION_SOURCE))) {
+                div.para().tx(context.formatPhrase(RenderingContext.VALUE_SET_EXPANSIONS_INTERNAL));                
+              } else {
+                div.para().tx(context.formatPhrase(RenderingContext.VALUE_SET_EXPANSIONS_SRVR, vs.getUserString(UserDataNames.VS_EXPANSION_SOURCE)));
+              }
               ul = div.ul();
               first = false;
             }
