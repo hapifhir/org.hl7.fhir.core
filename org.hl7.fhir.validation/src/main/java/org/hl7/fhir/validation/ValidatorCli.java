@@ -139,6 +139,7 @@ public class ValidatorCli {
       new SpreadsheetTask(),
       new TestsTask(),
       new TxTestsTask(),
+      new AiTestsTask(),
       new TransformTask(),
       new VersionTask(),
       new CodeGenTask(),

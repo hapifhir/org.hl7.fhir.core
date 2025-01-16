@@ -23,7 +23,7 @@ public class Ollama extends AIAPI {
   
   protected Ollama(JsonObject config, String details) throws MalformedURLException {
     super(config);
-    model = MODEL;
+    model = config.has("model") ? config.asString("model") :  MODEL;
     if (details == null) {
       url = "http://localhost:11434/api/generate";
     } else {
@@ -53,7 +53,7 @@ public class Ollama extends AIAPI {
 
       for (String s : config.forceArray("prompt").asStrings()) {
         prompt.append(String.format(s,
-            1, req.getText(), getSystemName(req.getSystem()), req.getCode(), req.getDisplay(), req.getContext(), req.getLang()));
+            Integer.toString(1), req.getText(), getSystemName(req.getSystem()), req.getCode(), req.getDisplay(), req.getContext(), req.getLang()));
           prompt.append("\n");
       }
       

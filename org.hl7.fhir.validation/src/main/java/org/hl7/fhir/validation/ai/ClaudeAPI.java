@@ -16,9 +16,11 @@ public class ClaudeAPI extends AIAPI {
 
   private static final String API_URL = "https://api.anthropic.com/v1/messages";
   private static final String MODEL = "claude-3-5-sonnet-20241022";
+  private String model;
 
   protected ClaudeAPI(JsonObject config) {
     super(config);
+    model = config.has("model") ? config.asString("model") :  MODEL;
   }
 
   @Override
@@ -42,7 +44,7 @@ public class ClaudeAPI extends AIAPI {
       for (int i = 0; i < chunk.size(); i++) {
         CodeAndTextValidationRequest req = chunk.get(i);
         prompt.append(String.format(config.asString("item"),
-          i + 1, req.getText(), getSystemName(req.getSystem()), req.getCode(), req.getDisplay(), req.getContext(), req.getLang()));
+            Integer.toString(i + 1), req.getText(), getSystemName(req.getSystem()), req.getCode(), req.getDisplay(), req.getContext(), req.getLang()));
         prompt.append("\n");
       }
 
@@ -63,7 +65,7 @@ public class ClaudeAPI extends AIAPI {
 
   public JsonObject getResponse(String prompt, String systemPrompt) throws IOException {
     JsonObject j = new JsonObject();
-    j.add("model", MODEL);
+    j.add("model", model);
     j.add("system", systemPrompt);
     j.add("max_tokens", 1024);
     j.forceArray("messages").addObject().add("role", "user").add("content", prompt);

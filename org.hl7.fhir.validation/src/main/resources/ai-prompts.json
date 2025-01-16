@@ -1,6 +1,7 @@
 {
   "item-parameters" : ["index", "text", "system/name", "code", "display", "FHIR Element Path", "lang-code"],
   "claude" : {
+    "model" : "claude-3-5-sonnet-20241022",
     "note" : "up to four items at a time - longer can cause timeouts and refusals",
     "system-prompt": [
       "You are a medical terminology expert. Evaluate whether text descriptions match their",
@@ -14,6 +15,7 @@
     "item" : "%d. Is '%s' in conflict with the %s code %s (display = %s)?"
   },
   "chatGPT" : {
+    "model" : "gpt-4o-mini",
     "note" : "up to four items at a time - longer can cause timeouts and refusals",
     "system-prompt": [
       "You are a medical terminology expert. Evaluate whether text descriptions match their",
@@ -27,6 +29,7 @@
     "item" : "%d. Is '%s' in conflict with the %s code %s (display '%s')"
   },
   "ollama" : {
+    "model" : "llama3.2",
     "note" : "No system prompt, and only one item per call",
     "prompt" : [
       "Evaluate if B can't be a description of the same situation as the data presented in A.",
@@ -37,11 +40,11 @@
       "* Respond in JSON format with an object containing a boolean property 'isCompatible', and string properties 'explanation' and 'confidence'",
       "",
       "A",
-      "Code: %3$, '%4$'",
-      "Text: '%5$'",
+      "Code: %3$s, '%4$s'",
+      "Text: '%5$s'",
       "",
       "B",
-      "Text: %2$"
+      "Text: %2$s"
     ]
   }
 }

@@ -75,6 +75,12 @@ public class ValidatorCliTests {
     @Override
     public void executeTask(CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) {}
   };
+  
+
+  AiTestsTask aiTestsTask = new AiTestsTask() {
+    @Override
+    public void executeTask(CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) {}
+  };
   @Spy
   TransformTask transformTask;
 
@@ -125,6 +131,7 @@ public class ValidatorCliTests {
           spreadsheetTask,
           testsTask,
           txTestsTask,
+          aiTestsTask,
           transformTask,
           versionTask,
           codeGenTask,
@@ -325,6 +332,16 @@ public class ValidatorCliTests {
     cli.readParamsAndExecuteTask(cliContext, args);
 
     Mockito.verify(txTestsTask).executeTask(same(cliContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
+  }
+
+  @Test
+  public void aiTestsTest() throws Exception {
+    final String[] args = new String[]{"-aiTests"};
+    CliContext cliContext = Params.loadCliContext(args);
+    ValidatorCli cli = mockValidatorCli();
+    cli.readParamsAndExecuteTask(cliContext, args);
+
+    Mockito.verify(aiTestsTask).executeTask(same(cliContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
   }
 
   @Test
