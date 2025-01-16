@@ -113,7 +113,7 @@ public class AITests {
     new AITests().execute(args[0], args.length == 1 ? null : args[1], args.length == 2 ? true : "true".equals(args[2]));
   }
 
-  private void execute(String testFilename, String config, boolean useServers) throws IOException {
+  public void execute(String testFilename, String config, boolean useServers) throws IOException {
     ManagedWebAccess.loadFromFHIRSettings();
 
     InputStream cfg = null;
@@ -140,6 +140,13 @@ public class AITests {
 
     long t;
     if (useServers) {
+
+      System.out.print("Ollama");
+      t = System.currentTimeMillis();
+      List<CodeAndTextValidationResult> resOllama = new Ollama(jcfg.forceObject("ollama"), null).validateCodings(requests);
+      System.out.println(": "+Utilities.describeDuration(System.currentTimeMillis() - t));
+
+      
       System.out.print("ChatGPT");
       t = System.currentTimeMillis();
       List<CodeAndTextValidationResult> resChatGPT = new ChatGPTAPI(jcfg.forceObject("chatGPT")).validateCodings(requests);
@@ -148,11 +155,6 @@ public class AITests {
       System.out.print("Claude");
       t = System.currentTimeMillis();
       List<CodeAndTextValidationResult> resClaude = new ClaudeAPI(jcfg.forceObject("claude")).validateCodings(requests);
-      System.out.println(": "+Utilities.describeDuration(System.currentTimeMillis() - t));
-
-      System.out.print("Ollama");
-      t = System.currentTimeMillis();
-      List<CodeAndTextValidationResult> resOllama = new Ollama(jcfg.forceObject("ollama"), null).validateCodings(requests);
       System.out.println(": "+Utilities.describeDuration(System.currentTimeMillis() - t));
 
 
@@ -213,7 +215,7 @@ public class AITests {
     doTable("Ollama", ollama);
   }
 
-  public void doTable(String name, StatsRecord rec) {
+  private void doTable(String name, StatsRecord rec) {
     System.out.println("");
     System.out.println("");
     System.out.println(Utilities.padRight(name, ' ', 7)+" | Valid | Invalid |"); 

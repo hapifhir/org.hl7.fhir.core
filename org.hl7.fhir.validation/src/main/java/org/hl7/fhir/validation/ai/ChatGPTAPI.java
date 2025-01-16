@@ -17,9 +17,11 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 public class ChatGPTAPI extends AIAPI {
   private static final String API_URL = "https://api.openai.com/v1/chat/completions";
   private static final String MODEL = "gpt-4o-mini";
+  private String model;
   
   protected ChatGPTAPI(JsonObject config) {
     super(config);
+    model = config.has("model") ? config.asString("model") :  MODEL;
   }
 
   @Override
@@ -43,7 +45,7 @@ public class ChatGPTAPI extends AIAPI {
       for (int i = 0; i < chunk.size(); i++) {
         CodeAndTextValidationRequest req = chunk.get(i);
         prompt.append(String.format(config.asString("item"),
-          i + 1, req.getText(), getSystemName(req.getSystem()), req.getCode(), req.getDisplay(), req.getContext(), req.getLang()));
+            Integer.toString(i + 1), req.getText(), getSystemName(req.getSystem()), req.getCode(), req.getDisplay(), req.getContext(), req.getLang()));
       }
 
       StringBuilder systemPrompt = new StringBuilder();
@@ -62,7 +64,7 @@ public class ChatGPTAPI extends AIAPI {
 
   public JsonArray getResponse(String prompt, String systemPrompt) throws IOException {
     JsonObject json = new JsonObject();
-    json.add("model", MODEL);
+    json.add("model", model);
     json.forceArray("messages").addObject().add("role", "system").add("content", systemPrompt);
     json.forceArray("messages").addObject().add("role", "user").add("content", prompt);
 
