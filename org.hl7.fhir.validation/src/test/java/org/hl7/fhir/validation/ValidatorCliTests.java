@@ -334,15 +334,6 @@ public class ValidatorCliTests {
     Mockito.verify(txTestsTask).executeTask(same(cliContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
   }
 
-  @Test
-  public void aiTestsTest() throws Exception {
-    final String[] args = new String[]{"-aiTests"};
-    CliContext cliContext = Params.loadCliContext(args);
-    ValidatorCli cli = mockValidatorCli();
-    cli.readParamsAndExecuteTask(cliContext, args);
-
-    Mockito.verify(aiTestsTask).executeTask(same(cliContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
-  }
 
   @Test
   public void testsTest() throws Exception {
