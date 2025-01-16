@@ -56,6 +56,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.StringPair;
@@ -419,7 +420,7 @@ public class TerminologyCache {
       nameCacheToken(vs, ct);
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
-      String expJS = json.composeString(expParameters);
+      String expJS = expParameters == null ? "" : json.composeString(expParameters);
 
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
         ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())
@@ -699,8 +700,12 @@ public class TerminologyCache {
           sw.write("e: {\r\n");
           if (ce.e.isFromServer())
             sw.write("  \"from-server\" : true,\r\n");
-          if (ce.e.getValueset() != null)
+          if (ce.e.getValueset() != null) {
+            if (ce.e.getValueset().hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
+              sw.write("  \"source\" : "+Utilities.escapeJson(ce.e.getValueset().getUserString(UserDataNames.VS_EXPANSION_SOURCE)).trim()+",\r\n");              
+            }
             sw.write("  \"valueSet\" : "+json.composeString(ce.e.getValueset()).trim()+",\r\n");
+          }
           sw.write("  \"error\" : \""+Utilities.escapeJson(ce.e.getError()).trim()+"\"\r\n}\r\n");
         } else if (ce.s != null) {
           sw.write("s: {\r\n");
@@ -820,10 +825,14 @@ public class TerminologyCache {
     JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(resultString);
     String error = loadJS(o.get("error"));
     if (e == 'e') {
-      if (o.has("valueSet"))
+      if (o.has("valueSet")) {
         ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN, o.has("from-server"));
-      else
+        if (o.has("source")) {
+          ce.e.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, o.get("source").getAsString());
+        }
+      } else {
         ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN, o.has("from-server"));
+      }
     } else if (e == 's') {
       ce.s = new SubsumesResult(o.get("result").getAsBoolean());
     } else {

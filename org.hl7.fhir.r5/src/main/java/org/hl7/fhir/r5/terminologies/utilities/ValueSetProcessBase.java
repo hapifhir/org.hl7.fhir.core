@@ -264,6 +264,15 @@ public class ValueSetProcessBase {
   }
 
 
+  public String removeSupplement(String s) {
+    requiredSupplements.remove(s);
+    if (s.contains("|")) {
+      s = s.substring(0, s.indexOf("|"));
+      requiredSupplements.remove(s);
+    }
+    return s;
+  }
+  
   protected AlternateCodesProcessingRules altCodeParams = new AlternateCodesProcessingRules(false);
   protected AlternateCodesProcessingRules allAltCodes = new AlternateCodesProcessingRules(true);
 }

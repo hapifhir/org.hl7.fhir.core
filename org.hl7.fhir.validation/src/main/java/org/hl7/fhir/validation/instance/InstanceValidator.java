@@ -179,6 +179,7 @@ import org.hl7.fhir.utilities.Utilities.DecimalStatus;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPResultException;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
@@ -190,6 +191,9 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.ai.CodeAndTextValidationRequest;
+import org.hl7.fhir.validation.ai.CodeAndTextValidationResult;
+import org.hl7.fhir.validation.ai.CodeAndTextValidator;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.codesystem.CodingsObserver;
@@ -619,6 +623,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private IDigitalSignatureServices signatureServices;
   private boolean unknownCodeSystemsCauseErrors;
   private boolean noExperimentalContent;
+  private List<CodeAndTextValidationRequest> textsToCheck = new ArrayList<>();
+  private String aiService;
+  private Set<Integer> textsToCheckKeys = new HashSet<>();
+  private String cacheFolder;
 
   public InstanceValidator(@Nonnull IWorkerContext theContext, @Nonnull IEvaluationContext hostServices, @Nonnull XVerExtensionManager xverManager, ValidatorSession session) {
     super(theContext, xverManager, false, session);
@@ -1015,6 +1023,32 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     codingObserver.finish(errors, stack);
     errors.removeAll(messagesToRemove);
     timeTracker.overall(t);
+    if (aiService != null && !textsToCheck.isEmpty()) {
+      t = System.nanoTime();
+      CodeAndTextValidator ctv = new CodeAndTextValidator(cacheFolder, aiService);
+      List<CodeAndTextValidationResult> results = null;
+      try {
+        results = ctv.validateCodings(textsToCheck);
+      } catch (Exception e) {
+        if (e.getCause() != null && e.getCause() instanceof HTTPResultException) {
+          warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
+              I18nConstants.VALIDATION_AI_FAILED_LOG, e.getMessage(), ((HTTPResultException)e.getCause()).logPath);   
+        } else {
+          warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
+              I18nConstants.VALIDATION_AI_FAILED, e.getMessage()); 
+        }
+      }
+      if (results != null) {
+        for (CodeAndTextValidationResult vr : results) {
+          if (!vr.isValid()) {
+            warning(errors, "2025-01-14", IssueType.BUSINESSRULE, vr.getRequest().getLocation().line(), vr.getRequest().getLocation().col(), vr.getRequest().getLocation().getLiteralPath(), false,
+                I18nConstants.VALIDATION_AI_TEXT_CODE, vr.getRequest().getCode(), vr.getRequest().getText(), vr.getConfidence(), vr.getExplanation());                
+          }
+        }
+      }
+      timeTracker.ai(t);
+    }
+    
     if (DEBUG_ELEMENT) {
       element.printToOutput();
     }
@@ -1354,6 +1388,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING, path)) {
         try {
           CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
+          if (cc.hasText() && cc.hasCoding()) {
+            for (Coding c : cc.getCoding()) {
+              recordCodeTextCombo(stack, c, cc.getText());
+            }
+          }
           if (binding.hasValueSet()) {
             String vsRef = binding.getValueSet();
             ValueSet valueset = resolveBindingReference(profile, vsRef, profile.getUrl(), profile);
@@ -1385,6 +1424,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (!noTerminologyChecks && theElementCntext != null && !checked.ok()) { // no binding check, so we just check the CodeableConcept generally
       try {
         CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
+        if (cc.hasText() && cc.hasCoding()) {
+          for (Coding c : cc.getCoding()) {
+            recordCodeTextCombo(stack, c, cc.getText());
+          }
+        }
         if (cc.hasCoding()) {
           long t = System.nanoTime();
           ValidationResult vr = checkCodeOnServer(stack, null, cc);
@@ -1397,6 +1441,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return checkDisp;
+  }
+
+  private void recordCodeTextCombo(NodeStack node, Coding c, String text) {
+    if (!c.hasDisplay() || !c.getDisplay().equals(text)) {
+      ValidationResult vr = context.validateCode(baseOptions.setDisplayWarningMode(false)
+          .setLanguages(node.getWorkingLang()), c.getSystem(), c.getVersion(), c.getCode(), text);
+      if (!vr.isOk()) {
+        int key = (c.getSystem()+"||"+c.getCode()+"||"+text).hashCode();
+        if (!textsToCheckKeys.contains(key)) {
+          textsToCheckKeys.add(key);
+          textsToCheck.add(new CodeAndTextValidationRequest(node, node.getWorkingLang() == null ? context.getLocale().toLanguageTag() : node.getWorkingLang(), c.getSystem(), c.getCode(), vr.getDisplay(), text));
+        }
+      }
+    }
   }
 
   private boolean isInScope(ElementDefinitionBindingAdditionalComponent ab, StructureDefinition profile, Element resource, StringBuilder b) {
@@ -1869,6 +1927,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         CodeableConcept cc = new CodeableConcept();
         ok.see(convertCDACodeToCodeableConcept(errors, path, element, logical, cc));
+        if (cc.hasText() && cc.hasCoding()) {
+          for (Coding c : cc.getCoding()) {
+            recordCodeTextCombo(stack, c, cc.getText());
+          }
+        }
         ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
         if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING, path)) {
           if (binding.hasValueSet()) {
@@ -2021,21 +2084,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return ok;
-  }
-
-  private Set<String> getUnknownSystems(ValidationResult vr) {
-    if (vr == null) {
-      return null;
-    }
-    if (vr.getUnknownSystems() != null && !vr.getUnknownSystems().isEmpty()) {
-      return vr.getUnknownSystems();
-    }
-    if (vr.getSystem() != null) {
-      Set<String> set = new HashSet<String>();
-      set.add(vr.getSystem());
-      return set;
-    }
-    return null;
   }
 
   private boolean convertCDACodeToCodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition logical, CodeableConcept cc) {
@@ -2525,7 +2573,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = false;
     CommaSeparatedStringBuilder contexts = new CommaSeparatedStringBuilder();
     List<String> plist = new ArrayList<>();
-    plist.add(stripIndexes(stack.getLiteralPath()));
+    plist.add(stripIndexes(stripRefs(stack.getLiteralPath())));
     for (String s : stack.getLogicalPaths()) {
       String p = stripIndexes(s);
       // all extensions are always allowed in ElementDefinition.example.value, and in fixed and pattern values. TODO: determine the logical paths from the path stated in the element definition....
@@ -2680,6 +2728,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
       return true;
+    }
+  }
+
+  private String stripRefs(String literalPath) {
+    if (literalPath.contains(".resolve().ofType(")) {
+      String s = literalPath.substring(literalPath.lastIndexOf(".resolve().")+18);
+      int i = s.indexOf(")");
+      s = s.substring(0, i)+s.substring(i+1);
+      return s;
+    } else {
+      return literalPath;
     }
   }
 
@@ -4182,9 +4241,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             } else {
               try {
                 ext = fetcher.fetch(this, valContext.getAppContext(), ref);
-              } catch (IOException e) {
+              } catch (Exception e) {
                 if (STACK_TRACE) e.printStackTrace();
-                throw new FHIRException(e);
+                ext = null;
+
+                // it's probably an error, but here we're just giving the user information about why resolution failed
+                hint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), path,
+                  false, I18nConstants.REFERENCE_RESOLUTION_FAILED, ref, e.getClass().getName(), e.getMessage());
+
               }
               if (ext != null) {
                 setParents(ext);
@@ -7753,7 +7817,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return (timeTracker.getOverall() - timeTracker.getTxTime()) / 1000000;
   }
   public String reportTimes() {
-    String s = String.format("Times (ms): overall = %d:4, tx = %d, sd = %d, load = %d, fpe = %d, spec = %d", timeTracker.getOverall() / 1000000, timeTracker.getTxTime() / 1000000, timeTracker.getSdTime() / 1000000, timeTracker.getLoadTime() / 1000000, timeTracker.getFpeTime() / 1000000, timeTracker.getSpecTime() / 1000000);
+    String s = String.format("Times (ms): overall = %d:4, tx = %d, sd = %d, load = %d, fpe = %d, spec = %d, ai = %d",
+        timeTracker.getOverall() / 1000000, timeTracker.getTxTime() / 1000000, timeTracker.getSdTime() / 1000000, 
+        timeTracker.getLoadTime() / 1000000, timeTracker.getFpeTime() / 1000000, timeTracker.getSpecTime() / 1000000, timeTracker.getAiTime() / 1000000);
     timeTracker.reset();
     return s;
   }
@@ -8169,6 +8235,25 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public void resetTimes() {
     timeTracker.reset();   
   }
-  
+
+  public List<CodeAndTextValidationRequest> getTextsToCheck() {
+    return textsToCheck;
+  }
+
+  public String getAIService() {
+    return aiService;
+  }
+
+  public void setAIService(String aiService) {
+    this.aiService = aiService;
+  }
+
+  public String getCacheFolder() {
+    return cacheFolder;
+  }
+
+  public void setCacheFolder(String cacheFolder) {
+    this.cacheFolder = cacheFolder;
+  }
   
 }

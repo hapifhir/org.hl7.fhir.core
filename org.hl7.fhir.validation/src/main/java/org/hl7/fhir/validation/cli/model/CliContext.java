@@ -59,6 +59,15 @@ public class CliContext {
   @SerializedName("assumeValidRestReferences")
   private
   boolean assumeValidRestReferences = false;
+  @JsonProperty("checkReferences")
+  @SerializedName("checkReferences")
+  private
+  boolean checkReferences = false;
+  @JsonProperty("resolutionContext")
+  @SerializedName("resolutionContext")
+  private
+  String resolutionContext = null;
+  
   @JsonProperty("canDoNative")
   @SerializedName("canDoNative")
   private
@@ -239,6 +248,11 @@ public class CliContext {
   private
   boolean forPublication = false;
 
+  @JsonProperty("aiService")
+  @SerializedName("aiService")
+  private
+  String aiService;
+
   @JsonProperty("allowExampleUrls")
   @SerializedName("allowExampleUrls")
   private
@@ -381,6 +395,18 @@ public class CliContext {
     return this;
   }
 
+  @SerializedName("resolutionContext")
+  @JsonProperty("resolutionContext")
+  public String getResolutionContext() {
+    return resolutionContext;
+  }
+
+  @SerializedName("resolutionContext")
+  @JsonProperty("resolutionContext")
+  public CliContext setResolutionContext(String resolutionContext) {
+    this.resolutionContext = resolutionContext;
+    return this;
+  }
 
   @SerializedName("langTransform")
   @JsonProperty("langTransform")
@@ -967,6 +993,19 @@ public class CliContext {
     return this;
   }
 
+  @SerializedName("checkReferences")
+  @JsonProperty("checkReferences")
+  public boolean isCheckReferences() {
+    return checkReferences;
+  }
+
+  @SerializedName("checkReferences")
+  @JsonProperty("checkReferences")
+  public CliContext setCheckReferences(boolean checkReferences) {
+    this.checkReferences = checkReferences;
+    return this;
+  }
+
   @SerializedName("noInternalCaching")
   @JsonProperty("noInternalCaching")
   public boolean isNoInternalCaching() {
@@ -1065,6 +1104,14 @@ public class CliContext {
   public void setForPublication(boolean forPublication) {
     this.forPublication = forPublication;
   }
+  
+  public String getAIService() {
+    return aiService;
+  }
+
+  public void setAIService(String aiService) {
+    this.aiService = aiService;
+  }
 
   public boolean isAllowExampleUrls() {
     return allowExampleUrls;
@@ -1150,6 +1197,7 @@ public class CliContext {
       recursive == that.recursive &&
       doDebug == that.doDebug &&
       assumeValidRestReferences == that.assumeValidRestReferences &&
+      checkReferences == that.checkReferences &&
       canDoNative == that.canDoNative &&
       noInternalCaching == that.noInternalCaching &&
       noExtensibleBindingMessages == that.noExtensibleBindingMessages &&
@@ -1161,6 +1209,7 @@ public class CliContext {
       checkIPSCodes == that.checkIPSCodes &&
       Objects.equals(extensions, that.extensions) &&
       Objects.equals(map, that.map) &&
+      Objects.equals(resolutionContext, that.resolutionContext) &&
       Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck) &&
       Objects.equals(output, that.output) &&
       Objects.equals(outputSuffix, that.outputSuffix) &&
@@ -1186,6 +1235,7 @@ public class CliContext {
       Objects.equals(crumbTrails, that.crumbTrails) &&
       Objects.equals(showMessageIds, that.showMessageIds) &&
       Objects.equals(forPublication, that.forPublication) &&
+      Objects.equals(aiService, that.aiService) &&
       Objects.equals(allowExampleUrls, that.allowExampleUrls) &&
       Objects.equals(showTimes, that.showTimes) &&
       mode == that.mode &&
@@ -1206,7 +1256,7 @@ public class CliContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(baseEngine, doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching,
+    return Objects.hash(baseEngine, doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, checkReferences,canDoNative, noInternalCaching, resolutionContext, aiService,
       noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
       targetVer, packageName, igs, questionnaireMode, level, profiles, options, sources, inputs, mode, locale, locations, crumbTrails, showMessageIds, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
       watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, advisorFile, expansionParameters, format, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
@@ -1222,6 +1272,7 @@ public class CliContext {
       ", recursive=" + recursive +
       ", doDebug=" + doDebug +
       ", assumeValidRestReferences=" + assumeValidRestReferences +
+      ", checkReferences=" + checkReferences +
       ", canDoNative=" + canDoNative +
       ", noInternalCaching=" + noInternalCaching +
       ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
@@ -1238,6 +1289,7 @@ public class CliContext {
       ", txLog='" + txLog + '\'' +
       ", txCache='" + txCache + '\'' +
       ", mapLog='" + mapLog + '\'' +
+      ", resolutionContext='" + resolutionContext + '\'' +
       ", lang='" + lang + '\'' +
       ", srcLang='" + srcLang + '\'' +
       ", tgtLang='" + tgtLang + '\'' +
@@ -1257,6 +1309,7 @@ public class CliContext {
       ", crumbTrails=" + crumbTrails +
       ", showMessageIds=" + showMessageIds +
       ", forPublication=" + forPublication +
+      ", aiService=" + aiService +
       ", outputStyle=" + outputStyle +
       ", jurisdiction=" + jurisdiction +
       ", allowExampleUrls=" + allowExampleUrls +

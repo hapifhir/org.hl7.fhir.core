@@ -1,6 +1,8 @@
 package org.hl7.fhir.r5.terminologies.client;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -217,6 +219,15 @@ public class TerminologyClientContext {
 
   public static void setCanUseCacheId(boolean canUseCacheId) {
     TerminologyClientContext.canUseCacheId = canUseCacheId;
+  }
+
+  public String getHost() {
+    try {
+      URL uri = new URL(getAddress());
+      return uri.getHost();
+    } catch (MalformedURLException e) {
+      return getAddress();
+    }
   }
   
 }
