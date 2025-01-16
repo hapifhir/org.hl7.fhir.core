@@ -74,8 +74,18 @@ public class CodeAndTextValidator {
           System.out.println("Consulting ChatGPT about "+query.size()+" code/text combinations");
           outcomes = new ChatGPTAPI().validateCodings(query);
           break;
+        case "ollama" : 
+          System.out.println("Consulting Ollama about "+query.size()+" code/text combinations");
+          outcomes = new Ollama(null).validateCodings(query);
+          break;
         default: 
-          throw new FHIRException("Unknown AI Service "+aiService);
+          if (aiService.toLowerCase().startsWith("ollama:")) {
+            Ollama ollama = new Ollama(aiService.substring(7));
+            System.out.println("Consulting Ollama at "+ollama.details()+" "+query.size()+" code/text combinations");
+            outcomes = ollama.validateCodings(query);            
+          } else {
+            throw new FHIRException("Unknown AI Service "+aiService);
+          }
         }
         for (CodeAndTextValidationResult o : outcomes) {
           results.add(o);

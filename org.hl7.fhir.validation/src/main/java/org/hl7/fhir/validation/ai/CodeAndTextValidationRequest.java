@@ -3,6 +3,8 @@ package org.hl7.fhir.validation.ai;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class CodeAndTextValidationRequest {
+  private Object data;
+  
   private NodeStack location;
   private String lang;
   private String system;
@@ -35,5 +37,12 @@ public class CodeAndTextValidationRequest {
   }
   public String getLang() {
     return lang;
+  }
+  public Object getData() {
+    return data;
+  }
+  public CodeAndTextValidationRequest setData(Object data) {
+    this.data = data;
+    return this;
   }
 }
