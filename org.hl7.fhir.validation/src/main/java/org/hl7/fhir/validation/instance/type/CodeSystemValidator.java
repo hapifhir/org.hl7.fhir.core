@@ -275,16 +275,29 @@ public class CodeSystemValidator extends BaseValidator {
                   }
                 }
               } else {
-                ConceptDefinitionComponent cc = CodeSystemUtilities.findCode(pcs.getConcept(), pcode);              
-                if (warning(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), cc != null, I18nConstants.CODESYSTEM_PROPERTY_URI_INVALID, pcode, base, pcs.present(), uri, code)) {
-                  foundPropDefn = true;
-                  if ("code".equals(type)) {
-                    ConceptPropertyComponent ccp = CodeSystemUtilities.getProperty(cc, "binding");
-                    if (ccp != null && ccp.hasValue() && ccp.getValue().hasPrimitiveValue()) {
-                      ruleFromUri = CodeValidationRule.VS_ERROR;
-                      valuesetFromUri = ccp.getValue().primitiveValue();
-                    } else {
-                      ruleFromUri = CodeValidationRule.INTERNAL_CODE_WARNING;                    
+                ConceptDefinitionComponent cc = CodeSystemUtilities.findCode(pcs.getConcept(), pcode);   
+                if (warning(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), cc != null || isOfficialRef(uri), I18nConstants.CODESYSTEM_PROPERTY_URI_INVALID, pcode, base, pcs.present(), uri, code)) {
+                  if (cc != null) {
+                    foundPropDefn = true;
+                    if ("code".equals(type)) {
+                      ConceptPropertyComponent ccp = CodeSystemUtilities.getProperty(cc, "binding");
+                      if (ccp != null && ccp.hasValue() && ccp.getValue().hasPrimitiveValue()) {
+                        ruleFromUri = CodeValidationRule.VS_ERROR;
+                        valuesetFromUri = ccp.getValue().primitiveValue();
+                      } else {
+                        ruleFromUri = CodeValidationRule.INTERNAL_CODE_WARNING;                    
+                      }
+                    }
+                  } else {
+                    switch (uri) {
+                    case "http://hl7.org/fhir/concept-properties#status":
+                    case "http://hl7.org/fhir/concept-properties#retirementDate":
+                    case "http://hl7.org/fhir/concept-properties#deprecationDate":
+                    case "http://hl7.org/fhir/concept-properties#parent":
+                    case "http://hl7.org/fhir/concept-properties#child":
+                    case "http://hl7.org/fhir/concept-properties#notSelectable":
+                    default:
+                      // do nothing for now
                     }
                   }
                 } else {
@@ -444,6 +457,15 @@ public class CodeSystemValidator extends BaseValidator {
       }
     }
     return ok;
+  }
+
+  private boolean isOfficialRef(String uri) {
+    if (VersionUtilities.isR5Plus(context.getVersion())) {
+      return false;
+    } else {
+      return Utilities.existsInList(uri, "http://hl7.org/fhir/concept-properties#status", "http://hl7.org/fhir/concept-properties#retirementDate", 
+          "http://hl7.org/fhir/concept-properties#deprecationDate","http://hl7.org/fhir/concept-properties#parent","http://hl7.org/fhir/concept-properties#child","http://hl7.org/fhir/concept-properties#notSelectable");
+    }
   }
 
   private ValueSet findVS(List<ValidationMessage> errors, Element cs, NodeStack stack, String url, String message) {
