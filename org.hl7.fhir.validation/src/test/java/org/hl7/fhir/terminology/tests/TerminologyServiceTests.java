@@ -184,6 +184,9 @@ private static TxTestData testData;
       case UNKNOWN:
         e.setCode(IssueType.UNKNOWN);
         break;
+      case VALUESET_UNKNOWN:
+        e.setCode(IssueType.UNKNOWN);
+        break;
       case VALUESET_UNSUPPORTED:
         e.setCode(IssueType.NOTSUPPORTED);
         break;

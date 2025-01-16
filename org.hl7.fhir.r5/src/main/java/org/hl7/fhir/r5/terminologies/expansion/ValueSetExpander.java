@@ -70,7 +70,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -116,6 +118,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander.UnknownValueSetException;
 import org.hl7.fhir.r5.terminologies.providers.CodeSystemProvider;
 import org.hl7.fhir.r5.terminologies.providers.CodeSystemProviderExtension;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
@@ -134,6 +137,26 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 
 public class ValueSetExpander extends ValueSetProcessBase {
 
+
+  public class UnknownValueSetException extends FHIRException {
+
+    protected UnknownValueSetException() {
+      super();
+    }
+
+    protected UnknownValueSetException(String message, Throwable cause) {
+      super(message, cause);
+    }
+    
+    protected UnknownValueSetException(String message) {
+      super(message);
+    }
+
+    protected UnknownValueSetException(Throwable cause) {
+      super(cause);
+    }
+
+  }
 
   public class Token {
     private String system;
@@ -169,6 +192,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private boolean checkCodesWhenExpanding;
   private boolean includeAbstract = true;
   private boolean debug;
+  private Set<String> sources = new HashSet<>();
 
   private AcceptLanguageHeader langs;
   private List<Token> designations = new ArrayList<>();
@@ -612,6 +636,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.supportsSystem(exc.getSystem(), opContext.getOptions().getFhirVersion())) {
         ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), exc, false, false);
         ValueSet valueset = vse.getValueset();
+        if (valueset.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
+          sources.add(valueset.getUserString(UserDataNames.VS_EXPANSION_SOURCE));
+        }
         if (valueset == null)
           throw failTSE("Error Expanding ValueSet: "+vse.getError());
         excludeCodes(wc, valueset.getExpansion());
@@ -677,6 +704,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     } catch (ETooCostly e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false);
+    } catch (UnknownValueSetException e) {
+      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.VALUESET_UNKNOWN, allErrors, false);
     } catch (Exception e) {
       if (debug) {
         e.printStackTrace();
@@ -870,9 +899,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
       boolean pinned = !url.equals(value);
       String ver = pinned ? url.substring(value.length()+1) : null;
       if (context.fetchResource(CodeSystem.class, url, valueSet) != null) {
-        throw fail(pinned ? I18nConstants.VS_EXP_IMPORT_CS_PINNED : I18nConstants.VS_EXP_IMPORT_CS, true, value, ver);
+        throw failUnk(pinned ? I18nConstants.VS_EXP_IMPORT_CS_PINNED : I18nConstants.VS_EXP_IMPORT_CS, true, value, ver);
       } else  {
-        throw fail(pinned ? I18nConstants.VS_EXP_IMPORT_UNK_PINNED : I18nConstants.VS_EXP_IMPORT_UNK, true, value, ver);
+        throw failUnk(pinned ? I18nConstants.VS_EXP_IMPORT_UNK_PINNED : I18nConstants.VS_EXP_IMPORT_UNK, true, value, ver);
       }
     }
     checkCanonical(exp, vs, focus);
@@ -880,13 +909,19 @@ public class ValueSetExpander extends ValueSetProcessBase {
       expParams = expParams.copy();
       expParams.addParameter("activeOnly", true);
     }
-    ValueSetExpansionOutcome vso = new ValueSetExpander(context, opContext.copy(), allErrors).expand(vs, expParams);
+    ValueSetExpander expander = new ValueSetExpander(context, opContext.copy(), allErrors);
+    ValueSetExpansionOutcome vso = expander.expand(vs, expParams);
     if (vso.getError() != null) {
       addErrors(vso.getAllErrors());
-      throw fail(I18nConstants.VS_EXP_IMPORT_ERROR, true, vs.getUrl(), vso.getError());
+      if (vso.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNKNOWN) {  
+        throw failUnk(I18nConstants.VS_EXP_IMPORT_ERROR, true, vs.getUrl(), vso.getError());
+      } else {
+        throw fail(I18nConstants.VS_EXP_IMPORT_ERROR, true, vs.getUrl(), vso.getError());
+      }
     } else if (vso.getValueset() == null) {
       throw fail(I18nConstants.VS_EXP_IMPORT_FAIL, true, vs.getUrl());      
     }
+    sources.addAll(expander.sources);
     if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
       UriType u = new UriType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
       if (!existsInParams(exp.getParameter(), "used-valueset", u))
@@ -938,10 +973,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
       expParams = expParams.copy();
       expParams.addParameter("activeOnly", true);
     }
-    ValueSetExpansionOutcome vso = new ValueSetExpander(context, opContext.copy(), allErrors).expand(vs, expParams);
+    ValueSetExpander expander = new ValueSetExpander(context, opContext.copy(), allErrors);
+    ValueSetExpansionOutcome vso = expander.expand(vs, expParams);
+    sources.addAll(expander.sources);
     if (vso.getError() != null) {
       addErrors(vso.getAllErrors());
-      throw fail(I18nConstants.VS_EXP_IMPORT_ERROR_X, true, vs.getUrl(), vso.getError());
+      throw fail(I18nConstants.VS_EXP_IMPORT_ERROR, true, vs.getUrl(), vso.getError());
     } else if (vso.getValueset() == null) {
       throw fail(I18nConstants.VS_EXP_IMPORT_FAIL_X, true, vs.getUrl());      
     }
@@ -1055,6 +1092,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
       throw failTSE("Unable to expand imported value set: " + vso.getError());
     }
     ValueSet vs = vso.getValueset();
+    if (vs.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
+      sources.add(vs.getUserString(UserDataNames.VS_EXPANSION_SOURCE));
+    }
     if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
       UriType u = new UriType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
       if (!existsInParams(exp.getParameter(), "used-valueset", u)) {
@@ -1328,6 +1368,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return new FHIRException(msg);
   }
 
+  private UnknownValueSetException failUnk(String msgId, boolean check, Object... params) {
+    String msg = context.formatMessage(msgId, params);
+    allErrors.add(msg);
+    return new UnknownValueSetException(msg);
+  }
+
   private ETooCostly failCostly(String msg) {
     allErrors.add(msg);
     return new ETooCostly(msg);
@@ -1370,6 +1416,14 @@ public class ValueSetExpander extends ValueSetProcessBase {
   public ValueSetExpander setDebug(boolean debug) {
     this.debug = debug;
     return this;
+  }
+
+  public String getSource() {
+    if (sources.isEmpty()) {
+      return "internal";
+    } else {
+      return CommaSeparatedStringBuilder.join(", ", Utilities.sorted(sources));
+    }
   }
   
   
