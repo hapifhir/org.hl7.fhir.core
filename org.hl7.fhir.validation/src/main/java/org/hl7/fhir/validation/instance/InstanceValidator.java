@@ -1390,7 +1390,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
           if (cc.hasText() && cc.hasCoding()) {
             for (Coding c : cc.getCoding()) {
-              recordCodeTextCombo(stack, c, cc.getText());
+              recordCodeTextCombo(stack, theElementCntext.getBase().getPath(), c, cc.getText());
             }
           }
           if (binding.hasValueSet()) {
@@ -1426,7 +1426,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
         if (cc.hasText() && cc.hasCoding()) {
           for (Coding c : cc.getCoding()) {
-            recordCodeTextCombo(stack, c, cc.getText());
+            recordCodeTextCombo(stack, theElementCntext.getBase().getPath(), c, cc.getText());
           }
         }
         if (cc.hasCoding()) {
@@ -1443,7 +1443,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return checkDisp;
   }
 
-  private void recordCodeTextCombo(NodeStack node, Coding c, String text) {
+  private void recordCodeTextCombo(NodeStack node, String path, Coding c, String text) {
     if (!c.hasDisplay() || !c.getDisplay().equals(text)) {
       ValidationResult vr = context.validateCode(baseOptions.setDisplayWarningMode(false)
           .setLanguages(node.getWorkingLang()), c.getSystem(), c.getVersion(), c.getCode(), text);
@@ -1451,7 +1451,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         int key = (c.getSystem()+"||"+c.getCode()+"||"+text).hashCode();
         if (!textsToCheckKeys.contains(key)) {
           textsToCheckKeys.add(key);
-          textsToCheck.add(new CodeAndTextValidationRequest(node, node.getWorkingLang() == null ? context.getLocale().toLanguageTag() : node.getWorkingLang(), c.getSystem(), c.getCode(), vr.getDisplay(), text));
+          textsToCheck.add(new CodeAndTextValidationRequest(node, path, node.getWorkingLang() == null ? context.getLocale().toLanguageTag() : node.getWorkingLang(), c.getSystem(), c.getCode(), vr.getDisplay(), text));
         }
       }
     }
@@ -1929,7 +1929,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok.see(convertCDACodeToCodeableConcept(errors, path, element, logical, cc));
         if (cc.hasText() && cc.hasCoding()) {
           for (Coding c : cc.getCoding()) {
-            recordCodeTextCombo(stack, c, cc.getText());
+            recordCodeTextCombo(stack, theElementCntext.getBase().getPath(), c, cc.getText());
           }
         }
         ElementDefinitionBindingComponent binding = theElementCntext.getBinding();

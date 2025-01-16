@@ -18,6 +18,10 @@ public class ChatGPTAPI extends AIAPI {
   private static final String API_URL = "https://api.openai.com/v1/chat/completions";
   private static final String MODEL = "gpt-4o-mini";
   
+  protected ChatGPTAPI(JsonObject config) {
+    super(config);
+  }
+
   @Override
   public List<CodeAndTextValidationResult> validateCodings(List<CodeAndTextValidationRequest> requests) throws IOException {
     // limit to 5 in a batch 
@@ -31,21 +35,24 @@ public class ChatGPTAPI extends AIAPI {
     for (List<CodeAndTextValidationRequest> chunk : chunks) {
 
       StringBuilder prompt = new StringBuilder();
-      prompt.append("For each of the following cases, determine if the text is not compatible with the code. The text may contain significantly more or less information than the code.\n\n");
-      prompt.append("Respond in JSON format with an array of objects containing 'index', 'isCompatible', 'explanation', and 'confidence'.\n\n");
+      for (String s : config.forceArray("prompt").asStrings()) {
+        prompt.append(s);
+        prompt.append("\n");
+      }
 
       for (int i = 0; i < chunk.size(); i++) {
         CodeAndTextValidationRequest req = chunk.get(i);
-        prompt.append(String.format("%d. Is '%s' in conflict with the %s code %s (display '%s')\n",
-            i + 1, req.getText(), getSystemName(req.getSystem()), req.getCode(), req.getDisplay()));
+        prompt.append(String.format(config.asString("item"),
+          i + 1, req.getText(), getSystemName(req.getSystem()), req.getCode(), req.getDisplay(), req.getContext(), req.getLang()));
       }
 
-      String systemPrompt = "You are a medical terminology expert. Evaluate whether text descriptions match their\n"+ 
-          "associated clinical codes. Provide detailed explanations for any mismatches. "+
-          "Express your confidence level based on how certain you are of the relationship.";
-
-      System.out.print(""+c+" ");
-      JsonArray json = getResponse(prompt.toString(), systemPrompt);
+      StringBuilder systemPrompt = new StringBuilder();
+      for (String s : config.forceArray("prompt").asStrings()) {
+        systemPrompt.append(s);
+        systemPrompt.append("\n");
+      }
+      System.out.print(".");
+      JsonArray json = getResponse(prompt.toString(), systemPrompt.toString());
 
        parseValidationResponse(json, chunk, results);
        c += 4;
