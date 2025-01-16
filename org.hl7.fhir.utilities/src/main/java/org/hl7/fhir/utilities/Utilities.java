@@ -643,6 +643,10 @@ public class Utilities {
     return s.toString();
   }
 
+  public static String padRight(int num, char c, int len) {
+    return padRight(Integer.toString(num), c, len);
+  }
+
 
   public static String padLeft(String src, char c, int len) {
     StringBuilder s = new StringBuilder();
