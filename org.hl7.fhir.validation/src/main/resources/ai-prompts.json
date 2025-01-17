@@ -1,0 +1,50 @@
+{
+  "item-parameters" : ["index", "text", "system/name", "code", "display", "FHIR Element Path", "lang-code"],
+  "claude" : {
+    "model" : "claude-3-5-sonnet-20241022",
+    "note" : "up to four items at a time - longer can cause timeouts and refusals",
+    "system-prompt": [
+      "You are a medical terminology expert. Evaluate whether text descriptions match their",
+      "associated clinical codes. Provide detailed explanations for any mismatches. ",
+      "Express your confidence level based on how certain you are of the relationship."
+    ],
+    "prompt" : [
+      "For each of the following cases, determine if the text can't be a description of the same situation as the code. The text may contain significantly more or less information than the code.",
+      "Respond in JSON format with an array of objects containing 'index', 'isCompatible', 'explanation', and 'confidence'. Please evaluate all the items in a single go"
+    ],
+    "item" : "%d. Is '%s' in conflict with the %s code %s (display = %s)?"
+  },
+  "chatGPT" : {
+    "model" : "gpt-4o-mini",
+    "note" : "up to four items at a time - longer can cause timeouts and refusals",
+    "system-prompt": [
+      "You are a medical terminology expert. Evaluate whether text descriptions match their",
+      "associated clinical codes. Provide detailed explanations for any mismatches.",
+      "Express your confidence level based on how certain you are of the relationship."
+    ],
+    "prompt" : [
+      "For each of the following cases, determine if the text is not compatible with the code. The text may contain significantly more or less information than the code.",
+      "Respond in JSON format with an array of objects containing 'index', 'isCompatible', 'explanation', and 'confidence'."
+    ],
+    "item" : "%d. Is '%s' in conflict with the %s code %s (display '%s')"
+  },
+  "ollama" : {
+    "model" : "llama3.2",
+    "note" : "No system prompt, and only one item per call",
+    "prompt" : [
+      "Evaluate if B can't be a description of the same situation as the data presented in A.",
+      "",
+      "* B may be significantly more or less specific than A.",
+      "* Provide detailed explanations for your reasoning.",
+      "* It's ok if the text includes more or less information than the code.",
+      "* Respond in JSON format with an object containing a boolean property 'isCompatible', and string properties 'explanation' and 'confidence'",
+      "",
+      "A",
+      "Code: %3$s, '%4$s'",
+      "Text: '%5$s'",
+      "",
+      "B",
+      "Text: %2$s"
+    ]
+  }
+}

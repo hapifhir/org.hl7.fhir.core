@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.ai;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +16,12 @@ public class ClaudeAPI extends AIAPI {
 
   private static final String API_URL = "https://api.anthropic.com/v1/messages";
   private static final String MODEL = "claude-3-5-sonnet-20241022";
+  private String model;
+
+  protected ClaudeAPI(JsonObject config) {
+    super(config);
+    model = config.has("model") ? config.asString("model") :  MODEL;
+  }
 
   @Override
   public List<CodeAndTextValidationResult> validateCodings(List<CodeAndTextValidationRequest> requests) throws IOException {
@@ -31,21 +36,26 @@ public class ClaudeAPI extends AIAPI {
     for (List<CodeAndTextValidationRequest> chunk : chunks) {
 
       StringBuilder prompt = new StringBuilder();
-      prompt.append("For each of the following cases, determine if the text can't be a description of the same situation as the code. The text may contain significantly more or less information than the code.\n\n");
-      prompt.append("Respond in JSON format with an array of objects containing 'index', 'isCompatible', 'explanation', and 'confidence'. Please evaluate all the items in a single go\n\n");
+      for (String s : config.forceArray("prompt").asStrings()) {
+        prompt.append(s);
+        prompt.append("\n");
+      }
 
       for (int i = 0; i < chunk.size(); i++) {
         CodeAndTextValidationRequest req = chunk.get(i);
-        prompt.append(String.format("%d. Is '%s' in conflict with the %s code %s (display = %s)?\n",
-            i + 1, req.getText(), getSystemName(req.getSystem()), req.getCode(), req.getDisplay()));
+        prompt.append(String.format(config.asString("item"),
+            Integer.toString(i + 1), req.getText(), getSystemName(req.getSystem()), req.getCode(), req.getDisplay(), req.getContext(), req.getLang()));
+        prompt.append("\n");
       }
 
-      String systemPrompt = "You are a medical terminology expert. Evaluate whether text descriptions match their\n"+ 
-          "associated clinical codes. Provide detailed explanations for any mismatches. "+
-          "Express your confidence level based on how certain you are of the relationship.";
+      StringBuilder systemPrompt = new StringBuilder();
+      for (String s : config.forceArray("prompt").asStrings()) {
+        systemPrompt.append(s);
+        systemPrompt.append("\n");
+      }
 
-      System.out.print(""+c+" ");
-      JsonObject json = getResponse(prompt.toString(), systemPrompt);
+      System.out.print(".");
+      JsonObject json = getResponse(prompt.toString(), systemPrompt.toString());
 
       parseValidationResponse(json, chunk, results);
       c+= 4;
@@ -55,7 +65,7 @@ public class ClaudeAPI extends AIAPI {
 
   public JsonObject getResponse(String prompt, String systemPrompt) throws IOException {
     JsonObject j = new JsonObject();
-    j.add("model", MODEL);
+    j.add("model", model);
     j.add("system", systemPrompt);
     j.add("max_tokens", 1024);
     j.forceArray("messages").addObject().add("role", "user").add("content", prompt);
