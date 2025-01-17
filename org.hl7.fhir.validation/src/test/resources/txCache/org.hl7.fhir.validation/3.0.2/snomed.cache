@@ -2126,7 +2126,6 @@ v: {
   "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/security-labels|3.0.2'; The provided code 'http://snomed.info/sct#17621005 ('Normal (qualifier value)')' was not found in the value set 'http://hl7.org/fhir/ValueSet/security-labels|3.0.2'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2160,6 +2159,94 @@ v: {
       }],
       "text" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/security-labels|3.0.2'"
     }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "66493003",
+  "display" : "Theophylline 200mg"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Product containing theophylline (medicinal product)",
+  "code" : "66493003",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20240801",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Theophylline 200mg' for http://snomed.info/sct#66493003. Valid display is one of 2 choices: 'Product containing theophylline (medicinal product)' or 'Theophylline-containing product' (for the language(s) '--')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Theophylline 200mg' for http://snomed.info/sct#66493003. Valid display is one of 2 choices: 'Product containing theophylline (medicinal product)' or 'Theophylline-containing product' (for the language(s) '--')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "27171005",
+  "display" : "Urinalysis (Protein / Glucose)"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Urinalysis",
+  "code" : "27171005",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20240801",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Urinalysis (Protein / Glucose)' for http://snomed.info/sct#27171005. Valid display is one of 3 choices: 'Urinalysis', 'Urinalysis procedure' or 'Urinalysis (procedure)' (for the language(s) '--')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Urinalysis (Protein / Glucose)' for http://snomed.info/sct#27171005. Valid display is one of 3 choices: 'Urinalysis', 'Urinalysis procedure' or 'Urinalysis (procedure)' (for the language(s) '--')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
   }]
 }
 
