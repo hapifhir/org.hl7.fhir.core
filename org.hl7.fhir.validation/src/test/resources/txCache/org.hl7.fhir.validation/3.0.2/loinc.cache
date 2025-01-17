@@ -794,7 +794,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -817,7 +816,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -841,7 +839,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -865,7 +862,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -889,7 +885,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -912,7 +907,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -936,7 +930,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -959,7 +952,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -986,7 +978,6 @@ v: {
   "error" : "Wrong Display Name 'Allergies' for http://loinc.org#48765-2. Valid display is 'Allergies and adverse reactions Document' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1027,7 +1018,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1051,7 +1041,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1075,7 +1064,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1099,7 +1087,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1123,7 +1110,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1147,7 +1133,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1171,7 +1156,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1198,7 +1182,6 @@ v: {
   "error" : "Wrong Display Name 'Plan of care' for http://loinc.org#18776-5. Valid display is 'Plan of care note' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1239,7 +1222,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1263,7 +1245,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1290,7 +1271,6 @@ v: {
   "error" : "Wrong Display Name 'Review of systems Narrative Reporte' for http://loinc.org#10187-3. Valid display is 'Review of systems Narrative - Reported' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1334,7 +1314,6 @@ v: {
   "error" : "Wrong Display Name 'Administrative information' for http://loinc.org#87504-7. Valid display is 'LCDS v4.00 - Administrative information - discharge during assessment period [CMS Assessment]' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1375,9 +1354,96 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "28655-9",
+  "display" : "Discharge Summary from Responsible Clinician"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Attending Discharge summary",
+  "code" : "28655-9",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Discharge Summary from Responsible Clinician' for http://loinc.org#28655-9. Valid display is one of 6 choices: 'Attending Discharge summary' (en-US), 'Attending Discharge summary' (en-US), 'Attend D/C sum' (en-US), 'Nota de resumen de alta:{Configuración} :Punto temporal:Tipo:Documento:Attending' (es-MX), 'nota de resumen en el momento del alta:hallazgo:punto en el tiempo:{contexto}:Documento:médico adjunto' (es-AR) or 'Samenvattende ontslagbrief [bevinding] in {instelling} d.m.v. behandelend arts (document)' (nl-NL) (for the language(s) '--')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Discharge Summary from Responsible Clinician' for http://loinc.org#28655-9. Valid display is one of 6 choices: 'Attending Discharge summary' (en-US), 'Attending Discharge summary' (en-US), 'Attend D/C sum' (en-US), 'Nota de resumen de alta:{Configuración} :Punto temporal:Tipo:Documento:Attending' (es-MX), 'nota de resumen en el momento del alta:hallazgo:punto en el tiempo:{contexto}:Documento:médico adjunto' (es-AR) or 'Samenvattende ontslagbrief [bevinding] in {instelling} d.m.v. behandelend arts (document)' (nl-NL) (for the language(s) '--')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "46241-6",
+  "display" : "Reason for admission"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Hospital admission diagnosis Narrative - Reported",
+  "code" : "46241-6",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Reason for admission' for http://loinc.org#46241-6. Valid display is one of 6 choices: 'Hospital admission diagnosis Narrative - Reported' (en-US), 'Hospital admission diagnosis Narrative - Reported' (en-US), 'Hospital admission Dx Reported' (en-US), 'Admisión hospitalaria Dx: Paciente:Punto temporal:Interpretación:Narrativo:Reported' (es-MX), 'Hospital admission Dx Reported' (pt-BR) or 'Ziekenhuis opnamediagnose [interpretatie] d.m.v. rapportage (tekstueel)' (nl-NL) (for the language(s) '--')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Reason for admission' for http://loinc.org#46241-6. Valid display is one of 6 choices: 'Hospital admission diagnosis Narrative - Reported' (en-US), 'Hospital admission diagnosis Narrative - Reported' (en-US), 'Hospital admission Dx Reported' (en-US), 'Admisión hospitalaria Dx: Paciente:Punto temporal:Interpretación:Narrativo:Reported' (es-MX), 'Hospital admission Dx Reported' (pt-BR) or 'Ziekenhuis opnamediagnose [interpretatie] d.m.v. rapportage (tekstueel)' (nl-NL) (for the language(s) '--')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
 }
 
 }

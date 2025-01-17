@@ -1772,7 +1772,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1796,7 +1795,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1819,7 +1817,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1845,7 +1842,6 @@ v: {
   "error" : "The provided code 'http://loinc.org#3141-9' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|5.0.0'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1886,7 +1882,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1910,7 +1905,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1934,7 +1928,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1961,7 +1954,6 @@ v: {
   "error" : "Wrong whitespace in Display Name 'Active motion ' for http://loinc.org#LA6715-2. Valid display is 'Active motion' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2005,7 +1997,6 @@ v: {
   "error" : "Wrong whitespace in Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2021,6 +2012,617 @@ v: {
         "code" : "invalid-display"
       }],
       "text" : "Wrong whitespace in Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) 'en-US')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "85354-9",
+  "display" : "Blood pressure systolic & diastolic"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Blood pressure panel with all children optional",
+  "code" : "85354-9",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Blood pressure systolic & diastolic' for http://loinc.org#85354-9. Valid display is one of 6 choices: 'Blood pressure panel with all children optional' (en-US), 'Blood pressure panel with all children optional' (en-US), 'BP pnl w all optional' (en-US), 'Panel de presión arterial con todos los niños opcional:Sistema arterial :Punto temporal:-:Cuantitativo:' (es-MX), 'Bluckdruck (Liste) optional mit allen Unterbegriffen' (de-DE) or 'Bloeddruk panel waarvan alle leden optioneel in arterieel vaatstelsel' (nl-NL) (for the language(s) '--')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Blood pressure systolic & diastolic' for http://loinc.org#85354-9. Valid display is one of 6 choices: 'Blood pressure panel with all children optional' (en-US), 'Blood pressure panel with all children optional' (en-US), 'BP pnl w all optional' (en-US), 'Panel de presión arterial con todos los niños opcional:Sistema arterial :Punto temporal:-:Cuantitativo:' (es-MX), 'Bluckdruck (Liste) optional mit allen Unterbegriffen' (de-DE) or 'Bloeddruk panel waarvan alle leden optioneel in arterieel vaatstelsel' (nl-NL) (for the language(s) '--')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "2.74",
+  "code" : "56445-0",
+  "display" : "Meds doc"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Medication summary Document",
+  "code" : "56445-0",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Meds doc' for http://loinc.org#56445-0. Valid display is one of 7 choices: 'Medication summary Document' (en-US), 'Medication summary Document' (en-US), 'Medication summary Doc' (en-US), 'Resumen de medicación: Paciente:Punto temporal:Tipo:Documento:' (es-MX), 'Medikationsübersicht - Dokument' (de-DE), 'Medicatieoverzicht [bevinding] (document)' (nl-NL) or 'Medikationsliste' (de-AT) (for the language(s) '--')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Meds doc' for http://loinc.org#56445-0. Valid display is one of 7 choices: 'Medication summary Document' (en-US), 'Medication summary Document' (en-US), 'Medication summary Doc' (en-US), 'Resumen de medicación: Paciente:Punto temporal:Tipo:Documento:' (es-MX), 'Medikationsübersicht - Dokument' (de-DE), 'Medicatieoverzicht [bevinding] (document)' (nl-NL) or 'Medikationsliste' (de-AT) (for the language(s) '--')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "2.74",
+  "code" : "48765-2",
+  "display" : "Allergies"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Allergies and adverse reactions Document",
+  "code" : "48765-2",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Allergies' for http://loinc.org#48765-2. Valid display is one of 6 choices: 'Allergies and adverse reactions Document' (en-US), 'Allergies and adverse reactions Document' (en-US), 'Allergies &or adverse reactions Doc' (en-US), 'Alergias y reacciones adversas: Paciente:Punto temporal:Tipo:Documento:' (es-MX), 'Allergien und unerwünschte Wirkungen - Dokument' (de-DE) or 'Allergieën en/of allergische reacties [bevinding] (document)' (nl-NL) (for the language(s) '--')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Allergies' for http://loinc.org#48765-2. Valid display is one of 6 choices: 'Allergies and adverse reactions Document' (en-US), 'Allergies and adverse reactions Document' (en-US), 'Allergies &or adverse reactions Doc' (en-US), 'Alergias y reacciones adversas: Paciente:Punto temporal:Tipo:Documento:' (es-MX), 'Allergien und unerwünschte Wirkungen - Dokument' (de-DE) or 'Allergieën en/of allergische reacties [bevinding] (document)' (nl-NL) (for the language(s) '--')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "current",
+  "code" : "56445-0",
+  "display" : "Meds doc"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Medication summary Document",
+  "code" : "56445-0",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Meds doc' for http://loinc.org#56445-0. Valid display is one of 7 choices: 'Medication summary Document' (en-US), 'Medication summary Document' (en-US), 'Medication summary Doc' (en-US), 'Resumen de medicación: Paciente:Punto temporal:Tipo:Documento:' (es-MX), 'Medikationsübersicht - Dokument' (de-DE), 'Medicatieoverzicht [bevinding] (document)' (nl-NL) or 'Medikationsliste' (de-AT) (for the language(s) '--')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Meds doc' for http://loinc.org#56445-0. Valid display is one of 7 choices: 'Medication summary Document' (en-US), 'Medication summary Document' (en-US), 'Medication summary Doc' (en-US), 'Resumen de medicación: Paciente:Punto temporal:Tipo:Documento:' (es-MX), 'Medikationsübersicht - Dokument' (de-DE), 'Medicatieoverzicht [bevinding] (document)' (nl-NL) or 'Medikationsliste' (de-AT) (for the language(s) '--')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "current",
+  "code" : "48765-2",
+  "display" : "Allergies"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Allergies and adverse reactions Document",
+  "code" : "48765-2",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Allergies' for http://loinc.org#48765-2. Valid display is one of 6 choices: 'Allergies and adverse reactions Document' (en-US), 'Allergies and adverse reactions Document' (en-US), 'Allergies &or adverse reactions Doc' (en-US), 'Alergias y reacciones adversas: Paciente:Punto temporal:Tipo:Documento:' (es-MX), 'Allergien und unerwünschte Wirkungen - Dokument' (de-DE) or 'Allergieën en/of allergische reacties [bevinding] (document)' (nl-NL) (for the language(s) '--')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Allergies' for http://loinc.org#48765-2. Valid display is one of 6 choices: 'Allergies and adverse reactions Document' (en-US), 'Allergies and adverse reactions Document' (en-US), 'Allergies &or adverse reactions Doc' (en-US), 'Alergias y reacciones adversas: Paciente:Punto temporal:Tipo:Documento:' (es-MX), 'Allergien und unerwünschte Wirkungen - Dokument' (de-DE) or 'Allergieën en/of allergische reacties [bevinding] (document)' (nl-NL) (for the language(s) '--')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "8867-4",
+  "display" : "MDC_PULS_OXIM_PULS_RATE"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Heart rate",
+  "code" : "8867-4",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'MDC_PULS_OXIM_PULS_RATE' for http://loinc.org#8867-4. Valid display is one of 10 choices: 'Heart rate' (en-US), 'Heart rate' (en-US), 'Heart rate' (en-US), 'Heart rate' (en-US), 'Ritmo cardiaco:No especificado :Punto temporal:NRat:Cuantitativo:' (es-MX), 'latido cardíaco:índice numérico:punto en el tiempo:XXX:cuantitativo:' (es-AR), 'Heart rate' (pt-BR), 'Herzfrequenz' (de-DE), 'Hartslagfrequentie [aantal/tijd]' (nl-NL) or 'Puls' (de-AT) (for the language(s) '--')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'MDC_PULS_OXIM_PULS_RATE' for http://loinc.org#8867-4. Valid display is one of 10 choices: 'Heart rate' (en-US), 'Heart rate' (en-US), 'Heart rate' (en-US), 'Heart rate' (en-US), 'Ritmo cardiaco:No especificado :Punto temporal:NRat:Cuantitativo:' (es-MX), 'latido cardíaco:índice numérico:punto en el tiempo:XXX:cuantitativo:' (es-AR), 'Heart rate' (pt-BR), 'Herzfrequenz' (de-DE), 'Hartslagfrequentie [aantal/tijd]' (nl-NL) or 'Puls' (de-AT) (for the language(s) '--')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "35200-5",
+  "display" : "Cholesterol"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Cholesterol [Mass or Moles/volume] in Serum or Plasma",
+  "code" : "35200-5",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Cholesterol' for http://loinc.org#35200-5. Valid display is one of 8 choices: 'Cholesterol [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Cholesterol [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Cholest SerPl-msCnc' (en-US), 'Cholesterol, Blood' (en-US), 'Colesterol: Suero o Plasma : Punto temporal: Concentración de masa o sustancia: Cuantitativo:' (es-MX), 'colesterol:concentración de masa:punto en el tiempo:suero/plasma:cuantitativo:' (es-AR), 'Colest SerPl-msCnc' (pt-BR) or 'Cholesterol [massa of stof/volume] in serum of plasma' (nl-NL) (for the language(s) '--')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Cholesterol' for http://loinc.org#35200-5. Valid display is one of 8 choices: 'Cholesterol [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Cholesterol [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Cholest SerPl-msCnc' (en-US), 'Cholesterol, Blood' (en-US), 'Colesterol: Suero o Plasma : Punto temporal: Concentración de masa o sustancia: Cuantitativo:' (es-MX), 'colesterol:concentración de masa:punto en el tiempo:suero/plasma:cuantitativo:' (es-AR), 'Colest SerPl-msCnc' (pt-BR) or 'Cholesterol [massa of stof/volume] in serum of plasma' (nl-NL) (for the language(s) '--')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "13457-7",
+  "display" : "Cholesterol"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation",
+  "code" : "13457-7",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Cholesterol' for http://loinc.org#13457-7. Valid display is one of 13 choices: 'Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation' (en-US), 'Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation' (en-US), 'LDLc SerPl Calc-mCnc' (en-US), 'LDL cholesterol, Blood' (en-US), 'Colesterol en LDL: Suero o Plasma : Punto temporal: Concentración de masa: Cuantitativo: Calculado' (es-MX), 'colesterol.en LDL:concentración de masa:punto en el tiempo:suero/plasma:cuantitativo:calculado' (es-AR), 'LDLc SerPl Calc-mCnc' (pt-BR), 'Cholesterol in LDL [Masse/Volumen] in Serum oder Plasma mittels Berechnung' (de-DE), 'Cholesterol.in LDL [massa/volume] in serum of plasma d.m.v. berekend' (nl-NL), 'LDL-Cholesterin berechnet' (de-AT), 'Холестерин у ЛПНЩ [Маса/об'єм] у сироватці чи плазмі розрахунковим методом' (uk-UA), 'Холестерин ЛПНЩ Розр-МасКнц' (uk-UA) or 'Холестерин у ЛПНЩ Розр [Маса/об'єм]' (uk-UA) (for the language(s) '--')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Cholesterol' for http://loinc.org#13457-7. Valid display is one of 13 choices: 'Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation' (en-US), 'Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation' (en-US), 'LDLc SerPl Calc-mCnc' (en-US), 'LDL cholesterol, Blood' (en-US), 'Colesterol en LDL: Suero o Plasma : Punto temporal: Concentración de masa: Cuantitativo: Calculado' (es-MX), 'colesterol.en LDL:concentración de masa:punto en el tiempo:suero/plasma:cuantitativo:calculado' (es-AR), 'LDLc SerPl Calc-mCnc' (pt-BR), 'Cholesterol in LDL [Masse/Volumen] in Serum oder Plasma mittels Berechnung' (de-DE), 'Cholesterol.in LDL [massa/volume] in serum of plasma d.m.v. berekend' (nl-NL), 'LDL-Cholesterin berechnet' (de-AT), 'Холестерин у ЛПНЩ [Маса/об'єм] у сироватці чи плазмі розрахунковим методом' (uk-UA), 'Холестерин ЛПНЩ Розр-МасКнц' (uk-UA) or 'Холестерин у ЛПНЩ Розр [Маса/об'єм]' (uk-UA) (for the language(s) '--')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "35217-9",
+  "display" : "Triglyceride"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Triglyceride [Mass or Moles/volume] in Serum or Plasma",
+  "code" : "35217-9",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Triglyceride' for http://loinc.org#35217-9. Valid display is one of 8 choices: 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Trigl SerPl-msCnc' (en-US), 'Triglyceride, Blood' (en-US), 'Triglicéridos: Suero o Plasma : Punto temporal: Concentración de masa o sustancia: Cuantitativo:' (es-MX), 'triglicérido:concentración de masa:punto en el tiempo:suero/plasma:cuantitativo:' (es-AR), 'Trigl SerPl-msCnc' (pt-BR) or 'Triglyceride [massa of stof/volume] in serum of plasma' (nl-NL) (for the language(s) '--')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Triglyceride' for http://loinc.org#35217-9. Valid display is one of 8 choices: 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Triglyceride [Mass or Moles/volume] in Serum or Plasma' (en-US), 'Trigl SerPl-msCnc' (en-US), 'Triglyceride, Blood' (en-US), 'Triglicéridos: Suero o Plasma : Punto temporal: Concentración de masa o sustancia: Cuantitativo:' (es-MX), 'triglicérido:concentración de masa:punto en el tiempo:suero/plasma:cuantitativo:' (es-AR), 'Trigl SerPl-msCnc' (pt-BR) or 'Triglyceride [massa of stof/volume] in serum of plasma' (nl-NL) (for the language(s) '--')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6724-4",
+  "display" : "2. Good color all over"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Good color all over",
+  "code" : "LA6724-4",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name '2. Good color all over' for http://loinc.org#LA6724-4. Valid display is 'Good color all over' (en-US) (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name '2. Good color all over' for http://loinc.org#LA6724-4. Valid display is 'Good color all over' (en-US) (for the language(s) 'en-US')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6718-6",
+  "display" : "2. At least 100 beats per minute"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "At least 100 beats per minute",
+  "code" : "LA6718-6",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name '2. At least 100 beats per minute' for http://loinc.org#LA6718-6. Valid display is 'At least 100 beats per minute' (en-US) (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name '2. At least 100 beats per minute' for http://loinc.org#LA6718-6. Valid display is 'At least 100 beats per minute' (en-US) (for the language(s) 'en-US')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6721-0",
+  "display" : "2. Grimace and pulling away, cough, or sneeze during suctioning"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Grimace and pulling away, cough, or sneeze during suctioning",
+  "code" : "LA6721-0",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name '2. Grimace and pulling away, cough, or sneeze during suctioning' for http://loinc.org#LA6721-0. Valid display is 'Grimace and pulling away, cough, or sneeze during suctioning' (en-US) (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name '2. Grimace and pulling away, cough, or sneeze during suctioning' for http://loinc.org#LA6721-0. Valid display is 'Grimace and pulling away, cough, or sneeze during suctioning' (en-US) (for the language(s) 'en-US')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6715-2",
+  "display" : "2. Active motion"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Active motion",
+  "code" : "LA6715-2",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name '2. Active motion' for http://loinc.org#LA6715-2. Valid display is 'Active motion' (en-US) (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name '2. Active motion' for http://loinc.org#LA6715-2. Valid display is 'Active motion' (en-US) (for the language(s) 'en-US')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA6727-7",
+  "display" : "2. Good, strong cry; normal rate and effort of breathing"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Good, strong cry; normal rate and effort of breathing",
+  "code" : "LA6727-7",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "severity" : "error",
+  "error" : "Wrong Display Name '2. Good, strong cry; normal rate and effort of breathing' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name '2. Good, strong cry; normal rate and effort of breathing' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) 'en-US')"
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
