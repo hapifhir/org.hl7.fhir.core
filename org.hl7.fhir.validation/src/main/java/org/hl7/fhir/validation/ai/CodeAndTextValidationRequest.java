@@ -6,14 +6,16 @@ public class CodeAndTextValidationRequest {
   private Object data;
   
   private NodeStack location;
+  private String context;
   private String lang;
   private String system;
   private String code;
   private String display;
   private String text;
-  public CodeAndTextValidationRequest(NodeStack location, String lang, String system, String code, String display, String text) {
+  public CodeAndTextValidationRequest(NodeStack location, String context, String lang, String system, String code, String display, String text) {
     super();
     this.location = location;
+    this.context = context;
     this.lang = lang == null ? "en" : lang;
     this.system = system;
     this.code = code;
@@ -44,5 +46,8 @@ public class CodeAndTextValidationRequest {
   public CodeAndTextValidationRequest setData(Object data) {
     this.data = data;
     return this;
+  }
+  public String getContext() {
+    return context;
   }
 }

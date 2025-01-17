@@ -32,6 +32,7 @@ public class Params {
   public static final String PROXY_AUTH = "-auth";
   public static final String PROFILE = "-profile";
   public static final String PROFILES = "-profiles";
+  public static final String CONFIG = "-config";
   public static final String OPTION = "-option";
   public static final String OPTIONS = "-options";
   public static final String BUNDLE = "-bundle";
@@ -78,6 +79,7 @@ public class Params {
   public static final String FHIRPATH = "-fhirpath";
   public static final String TEST = "-tests";
   public static final String TX_TESTS = "-txTests";
+  public static final String AI_TESTS = "-aiTests";
   public static final String HELP = "help";
   public static final String COMPARE = "-compare";
   public static final String SPREADSHEET = "-spreadsheet";
