@@ -66,9 +66,15 @@ public class TxPackTask extends ValidationEngineTask {
     }
     if (c < args.length - 1) {
       switch (args[c+1].toLowerCase()) {
-      case "ig" : scope = ExpansionPackageGeneratorScope.IG_ONLY;
-      case "igs" : scope = ExpansionPackageGeneratorScope.ALL_IGS;
-      case "core" : scope = ExpansionPackageGeneratorScope.EVERYTHING;
+      case "ig" : 
+        scope = ExpansionPackageGeneratorScope.IG_ONLY;
+        break;
+      case "igs" : 
+        scope = ExpansionPackageGeneratorScope.ALL_IGS;
+        break;
+      case "core" : 
+        scope = ExpansionPackageGeneratorScope.EVERYTHING;
+        break;
       default: 
         System.out.println("Unknown scope "+args[c+1]);
       }
