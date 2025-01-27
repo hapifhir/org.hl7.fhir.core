@@ -487,9 +487,9 @@ public class PackageReGenerator {
         var loader = new IgLoader(pcm, (SimpleWorkerContext) context, context.getVersion());
         loader.loadPackage(npm, true);
         if (scope == ExpansionPackageGeneratorScope.ALL_IGS) {
-          for (NpmPackage p : loader.getPackageList()) {
-            // nothing?
-          }
+//          for (NpmPackage p : loader.getPackageList()) {
+//            // nothing?
+//          }
         }
       }
       list.add(npm);
