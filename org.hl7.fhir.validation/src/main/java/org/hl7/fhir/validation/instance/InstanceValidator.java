@@ -6375,6 +6375,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             hc = valContext.forContained(element);
           }
 
+          if (special == SpecialElement.CONTAINED) {
+            String id = element.getNamedChildValue("id");
+            if (id == null) {
+              // this is an error handled elsewhere
+            } else {
+              ok = rule(errors, "2025-01-28", IssueType.DUPLICATE, element.line(), element.col(), stack.getLiteralPath(),
+                  !stack.getIds().containsKey("!"+id), I18nConstants.RESOURCE_DUPLICATE_CONTAINED_ID, id) && ok;
+              stack.getIds().put("!"+id, element);
+            }
+          }
           stack.resetIds();
           if (special != null) {
             switch (special) {
