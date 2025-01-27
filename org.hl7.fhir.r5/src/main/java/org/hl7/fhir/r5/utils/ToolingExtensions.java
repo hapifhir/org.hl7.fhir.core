@@ -1082,6 +1082,9 @@ public class ToolingExtensions {
   }
 
   private static IssueType mapType(org.hl7.fhir.r5.model.OperationOutcome.IssueType code) {
+    if (code == null) {
+      return null;
+    }
     switch (code) {
     case BUSINESSRULE: return IssueType.BUSINESSRULE;
     case CODEINVALID: return IssueType.CODEINVALID;
