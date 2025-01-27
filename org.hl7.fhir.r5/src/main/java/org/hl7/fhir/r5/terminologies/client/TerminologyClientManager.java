@@ -740,7 +740,7 @@ public class TerminologyClientManager {
       }
       client.seeUse(canonical, TerminologyClientContextUseType.readCS);
       String criteria = canonical.contains("|") ? 
-          "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+"&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)): 
+          "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+(canonical.contains("|") ? "&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)) : "") : 
             "?_format=json&url="+Utilities.URLEncode(canonical);
       request = Utilities.pathURL(client.getAddress(), "CodeSystem"+ criteria);
       Bundle bnd = client.getClient().search("CodeSystem", criteria);
