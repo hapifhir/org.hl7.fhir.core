@@ -20,11 +20,12 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Set;
 
 public class TxServiceTestHelper {
 
 
-  public static String getDiffForValidation(String id, IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String lang, String fp, JsonObject externals, boolean isCodeSystem) throws JsonSyntaxException, FileNotFoundException, IOException {
+  public static String getDiffForValidation(String id, IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String lang, String fp, JsonObject externals, boolean isCodeSystem, Set<String> modes) throws JsonSyntaxException, FileNotFoundException, IOException {
     org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) requestParameters;
     ValueSet valueSet = null;
     String valueSetUrl = null;
@@ -115,7 +116,7 @@ public class TxServiceTestHelper {
 
       writeDiffToFileSystem( name, expectedResponse, actualResponse);
 
-      String diff = new CompareUtilities(externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      String diff = new CompareUtilities(modes, externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null) {
         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
         TextFile.stringToFile(actualResponse, fp);
@@ -189,7 +190,7 @@ public class TxServiceTestHelper {
 
       writeDiffToFileSystem(name, expectedResponse, actualResponse);
 
-      String diff = new CompareUtilities(externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      String diff = new CompareUtilities(modes, externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null) {
          Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
         TextFile.stringToFile(actualResponse, fp);

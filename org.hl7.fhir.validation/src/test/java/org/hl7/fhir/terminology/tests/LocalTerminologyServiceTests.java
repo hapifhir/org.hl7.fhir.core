@@ -94,7 +94,7 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   private JsonObjectPair setup;
   private String version = "5.0.0";
   private static TxTester tester;
-  private List<String> modes = new ArrayList<>();
+  private Set<String> modes = new HashSet<>();
   private static int error = 0;
   private static int count = 0;
   private static TxTestData txtests;
@@ -107,7 +107,7 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
-    if (TestUtilities.runningAsSurefire()) {
+    if (false && TestUtilities.runningAsSurefire()) {
       logTestSkip("Running in surefire.");
       return;
     }

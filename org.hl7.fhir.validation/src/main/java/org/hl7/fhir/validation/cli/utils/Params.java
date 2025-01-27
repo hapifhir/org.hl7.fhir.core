@@ -50,7 +50,10 @@ public class Params {
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
   public static final String TO_VERSION = "-to-version";
   public static final String TX_PACK = "-tx-pack";
+  public static final String RE_PACK = "-re-package";
   public static final String PACKAGE_NAME = "-package-name";
+  public static final String PIN = "-pin";
+  public static final String EXPAND = "-expand";
   public static final String DO_NATIVE = "-do-native";
   public static final String NO_NATIVE = "-no-native";
   public static final String COMPILE = "-compile";
@@ -345,8 +348,38 @@ public class Params {
         cliContext.setPackageName(args[++i]);
         cliContext.setMode(EngineMode.CODEGEN);
       } else if (args[i].equals(TX_PACK)) {
-        cliContext.setPackageName(args[++i]);
-        cliContext.setMode(EngineMode.TX_PACK);
+        cliContext.setMode(EngineMode.RE_PACKAGE);
+        String pn = args[++i];
+        if (pn != null) {
+          if (pn.contains(",")) {
+            for (String s : pn.split("\\,")) {
+              cliContext.getIgs().add(s);              
+            }
+          } else {
+            cliContext.getIgs().add(pn);
+          }
+        }
+        cliContext.getModeParams().add("tx");
+        cliContext.getModeParams().add("expansions");
+      } else if (args[i].equals(RE_PACK)) {
+        cliContext.setMode(EngineMode.RE_PACKAGE);
+        String pn = args[++i];
+        if (pn != null) {
+          if (pn.contains(",")) {
+            for (String s : pn.split("\\,")) {
+              cliContext.getIgs().add(s);              
+            }
+          } else {
+            cliContext.getIgs().add(pn);
+          }
+        }
+        cliContext.getModeParams().add("tx");
+        cliContext.getModeParams().add("cnt");
+        cliContext.getModeParams().add("api");
+      } else if (args[i].equals(PIN)) {
+        cliContext.getModeParams().add("pin");
+      } else if (args[i].equals(EXPAND)) {
+        cliContext.getModeParams().add("expand");
       } else if (args[i].equals(DO_NATIVE)) {
         cliContext.setCanDoNative(true);
       } else if (args[i].equals(NO_NATIVE)) {

@@ -3,10 +3,12 @@ package org.hl7.fhir.validation.cli.model;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -221,7 +223,7 @@ public class CliContext {
   @JsonProperty("modeParams")
   @SerializedName("modeParams")
   private
-  List<String> modeParams = new ArrayList<String>();
+  Set<String> modeParams = new HashSet<String>();
 
   @JsonProperty("mode")
   @SerializedName("mode")
@@ -779,7 +781,7 @@ public class CliContext {
 
   @SerializedName("modeParams")
   @JsonProperty("modeParams")
-  public List<String> getModeParams() {
+  public Set<String> getModeParams() {
     return modeParams;
   }
 
