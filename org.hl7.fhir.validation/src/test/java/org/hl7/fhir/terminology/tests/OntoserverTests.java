@@ -94,7 +94,7 @@ public class OntoserverTests implements ITxTesterLoader {
   private JsonObjectPair setup;
   private String version = "5.0.0";
   private static TxTester tester;
-  private List<String> modes = new ArrayList<>();
+  private Set<String> modes = new HashSet<>();
   private static TxTestData txtests;
 
   public OntoserverTests(String name, JsonObjectPair setup) {

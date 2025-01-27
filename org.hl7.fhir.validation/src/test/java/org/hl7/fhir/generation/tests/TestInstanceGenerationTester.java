@@ -99,7 +99,7 @@ public class TestInstanceGenerationTester {
     }
     
     for (String name : Utilities.strings("Patient-1.json", "Patient2-1.json", "Encounter-1.json", "MedicationStatement-1.json", "Observation-bp-1.json", "Observation-weight-1.json")) {
-      String diff = new CompareUtilities(null, null).checkJsonSrcIsSame(name, TextFile.fileToString(Utilities.path(expected, name)), TextFile.fileToString(Utilities.path(output, name)), false);
+      String diff = new CompareUtilities(null, null, null).checkJsonSrcIsSame(name, TextFile.fileToString(Utilities.path(expected, name)), TextFile.fileToString(Utilities.path(output, name)), false);
       Assertions.assertNull(diff, "unexpected difference for "+name);
     }
   }
