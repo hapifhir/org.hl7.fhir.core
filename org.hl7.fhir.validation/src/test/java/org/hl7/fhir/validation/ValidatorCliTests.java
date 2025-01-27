@@ -93,7 +93,7 @@ public class ValidatorCliTests {
   CodeGenTask codeGenTask;
 
   @Spy
-  TxPackTask txPackTask;
+  RePackageTask txPackTask;
 
   @Spy
   InstanceFactoryTask instanceFactoryTask;
