@@ -1188,4 +1188,5 @@ public class I18nConstants {
   public static final String VALIDATION_AI_TEXT_CODE = "VALIDATION_AI_TEXT_CODE";
   public static final String VALIDATION_AI_FAILED = "VALIDATION_AI_FAILED";
   public static final String VALIDATION_AI_FAILED_LOG = "VALIDATION_AI_FAILED_LOG";
+  public static final String RESOURCE_DUPLICATE_CONTAINED_ID = "RESOURCE_DUPLICATE_CONTAINED_ID";
 }
