@@ -6,8 +6,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
@@ -84,7 +86,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   private JsonObjectPair setup;
   private String version = "5.0.0";
   private static TxTester tester;
-  private List<String> modes = new ArrayList<>();
+  private Set<String> modes = new HashSet<>();
   private static TxTestData txtests;
 
   public ExternalTerminologyServiceTests(String name, JsonObjectPair setup) {

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
@@ -109,10 +111,10 @@ private static TxTestData testData;
     if (setup.getTest().asString("operation").equals("expand")) {
       expand(setup.getTest().str("name"), engine, req, resp, setup.getTest().asString("Accept-Language"), fp, ext);
     } else if (setup.getTest().asString("operation").equals("validate-code")) {
-      String diff = TxServiceTestHelper.getDiffForValidation(setup.getTest().str("name"), engine.getContext(), setup.getTest().asString("name"), req, resp, setup.getTest().asString("Accept-Language"), fp, ext, false);
+      String diff = TxServiceTestHelper.getDiffForValidation(setup.getTest().str("name"), engine.getContext(), setup.getTest().asString("name"), req, resp, setup.getTest().asString("Accept-Language"), fp, ext, false, modes());
       assertNull(diff, diff);
     } else if (setup.getTest().asString("operation").equals("cs-validate-code")) {
-      String diff = TxServiceTestHelper.getDiffForValidation(setup.getTest().str("name"), engine.getContext(), setup.getTest().asString("name"), req, resp, setup.getTest().asString("Accept-Language"), fp, ext, true);
+      String diff = TxServiceTestHelper.getDiffForValidation(setup.getTest().str("name"), engine.getContext(), setup.getTest().asString("name"), req, resp, setup.getTest().asString("Accept-Language"), fp, ext, true, modes());
       assertNull(diff, diff);
     } else if (Utilities.existsInList(setup.getTest().asString("operation"), "lookup", "translate", "metadata", "term-caps")) {
       Assertions.assertTrue(true); // we don't test these for the internal server
@@ -145,7 +147,7 @@ private static TxTestData testData;
         TxTesterSorters.sortValueSet(vse.getValueset());
         TxTesterScrubbers.scrubVS(vse.getValueset(), false);
         String vsj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
-        String diff = new CompareUtilities(ext).checkJsonSrcIsSame(id, resp, vsj);
+        String diff = new CompareUtilities(modes(), ext).checkJsonSrcIsSame(id, resp, vsj);
         if (diff != null) {
           Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
           TextFile.stringToFile(vsj, fp);        
@@ -197,13 +199,19 @@ private static TxTestData testData;
       TxTesterScrubbers.scrubOO(oo, false);
 
       String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
-      String diff = new CompareUtilities(ext).checkJsonSrcIsSame(id, resp, ooj);
+      String diff = new CompareUtilities(modes(), ext).checkJsonSrcIsSame(id, resp, ooj);
       if (diff != null) {
         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
         TextFile.stringToFile(ooj, fp);        
       }
       Assertions.assertTrue(diff == null, diff);
     }
+  }
+
+  private Set<String> modes() {
+    Set<String> modes = new HashSet<String>();
+    modes.add("tx.fhir.org");
+    return modes;
   }
 
   private void removeParameter(ValueSet valueset, String name) {

@@ -31,26 +31,35 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class CompareUtilities extends BaseTestingUtilities {
 
   private static final boolean SHOW_DIFF = false;
   private JsonObject externals;
   private Map<String, String> variables;
+  private Set<String> modes;
   private boolean patternMode; 
 
   public CompareUtilities() {
     super();
     this.variables = new HashMap<String, String>();
   }
-  
-  public CompareUtilities(JsonObject externals) {
+
+  public CompareUtilities(Set<String> modes) {
     super();
+    this.modes = modes;
+    this.variables = new HashMap<String, String>();
+  }
+  
+  public CompareUtilities(Set<String> modes, JsonObject externals) {
+    super();
+    this.modes = modes;
     this.externals = externals;
     this.variables = new HashMap<String, String>();
   }
   
-  public CompareUtilities(JsonObject externals, Map<String, String> variables) {
+  public CompareUtilities(Set<String> modes, JsonObject externals, Map<String, String> variables) {
     super();
     this.externals = externals;
     this.variables = variables;
@@ -498,7 +507,10 @@ public class CompareUtilities extends BaseTestingUtilities {
     for (JsonElement e : arr) {
       if (e.isJsonObject()) {
         JsonObject j = e.asJsonObject();
-        if (j.has("$optional$") && j.asBoolean("$optional$")) {
+        if (j.isJsonString("$optional$") && passesOptionalFilter(j.asString("$optional$"))) {
+          c++;
+        }
+        if (j.isJsonBoolean("$optional$") && j.asBoolean("$optional$")) {
           c++;
         }
       }
@@ -507,7 +519,26 @@ public class CompareUtilities extends BaseTestingUtilities {
   }
 
   private boolean isOptional(JsonElement e, String name, JsonObject parent) {
-    return e.isJsonObject() && e.asJsonObject().has("$optional$");
+    if (e.isJsonObject()) {
+      JsonObject j = e.asJsonObject();
+      if (j.isJsonString("$optional$") && passesOptionalFilter(j.asString("$optional$"))) {
+        return true;
+      } else if (j.isJsonBoolean("$optional$") && j.asBoolean("$optional$")) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  private boolean passesOptionalFilter(String token) {
+    if (token.startsWith("!")) {
+      return modes == null || !modes.contains(token.substring(1));
+    } else {
+      return modes != null && modes.contains(token);
+    }
   }
 
   private int countExpectedMin(JsonArray array, String name, JsonObject parent) {

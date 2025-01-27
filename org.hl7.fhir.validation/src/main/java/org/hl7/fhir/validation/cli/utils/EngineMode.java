@@ -15,6 +15,6 @@ public enum EngineMode {
   RUN_TESTS,
   INSTALL,
   CODEGEN,
-  TX_PACK,
+  RE_PACKAGE,
   FACTORY
 }
