@@ -471,5 +471,12 @@ public class JsonObject extends JsonElement {
     properties.clear();
     propMap.clear();
   }
+
+  public boolean isJsonString(String name) {
+    return has(name) && get(name).type() == JsonElementType.STRING;
+  }
   
+  public boolean isJsonBoolean(String name) {
+    return has(name) && get(name).type() == JsonElementType.BOOLEAN;
+  }
 }
