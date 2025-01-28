@@ -470,4 +470,9 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
     this.resolutionContext = resolutionContext;
   }
 
+  @Override
+  public SpecialValidationAction policyForSpecialValidation(IResourceValidator validator, Object appContext, SpecialValidationRule rule, String stackPath, Element resource, Element element) {
+    return policyAdvisor.policyForSpecialValidation(validator, appContext, rule, stackPath, resource, element);
+  }
+
 }

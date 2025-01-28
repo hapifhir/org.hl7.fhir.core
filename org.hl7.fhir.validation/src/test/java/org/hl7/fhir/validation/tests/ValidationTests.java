@@ -945,5 +945,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   public IValidationPolicyAdvisor setPolicyAdvisor(IValidationPolicyAdvisor policyAdvisor) {
     throw new Error("This policy advisor is the test advisor");
   }
+
+  @Override
+  public SpecialValidationAction policyForSpecialValidation(IResourceValidator validator, Object appContext,
+      SpecialValidationRule rule, String stackPath, Element resource, Element element) {
+    return SpecialValidationAction.CHECK_RULE;
+  }
   
 }

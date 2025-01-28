@@ -191,5 +191,10 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
     return refpol;
   }
 
+  @Override
+  public SpecialValidationAction policyForSpecialValidation(IResourceValidator validator, Object appContext, SpecialValidationRule rule, String stackPath, Element resource, Element element) {
+    return SpecialValidationAction.CHECK_RULE;
+  }
+
   
 }

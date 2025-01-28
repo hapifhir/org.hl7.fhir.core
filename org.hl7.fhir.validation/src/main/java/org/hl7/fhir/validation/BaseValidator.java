@@ -90,6 +90,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
+import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
@@ -1695,5 +1696,12 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
 
+  protected InstanceValidator validator() {
+    if (this instanceof InstanceValidator) {
+      return (InstanceValidator) this;
+    } else {
+      return (InstanceValidator) parent;
+    }
+  }
 
 }
