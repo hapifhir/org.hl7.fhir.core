@@ -1324,4 +1324,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   }
 
+  @Override
+  public SpecialValidationAction policyForSpecialValidation(IResourceValidator validator, Object appContext, SpecialValidationRule rule, String stackPath, Element resource, Element element) {
+    return SpecialValidationAction.CHECK_RULE;
+  }
+
 }
