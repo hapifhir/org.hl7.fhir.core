@@ -12,9 +12,12 @@ import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ElementValidationAction;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationAction;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 
 public interface IValidationPolicyAdvisor {
+
 
 
   public IValidationPolicyAdvisor getPolicyAdvisor();
@@ -151,6 +154,39 @@ public interface IValidationPolicyAdvisor {
                                                         ValueSet valueSet,
                                                         List<String> systems);
 
+  public enum SpecialValidationAction {
+    CHECK_RULE, IGNORE_RULE
+  }
+
+  public enum SpecialValidationRule {
+    CODESYSTEM_METADATA_CHECKS, // check code system metadata - including count, heirarchy, etc
+    CODESYSTEM_SUPPLEMENT_CHECKS, // check supplement integrity
+    CODESYSTEM_VALUESET_CHECKS, // check that the designated value set actually is the right value set
+    CODESYSTEM_PROPERTY_CHECKS, // check that the properties are defined properly
+    CODESYSTEM_DESIGNATION_CHECKS, // check that concept designations (element = concept) 
+    VALUESET_METADATA_CHECKS, // check the value set metadata (element = include/exclude)
+    VALUESET_SYSTEM_CHECKS, // check that value set against the system definition (element = include/exclude) 
+    VALUESET_IMPORT_CHECKS  // check the value set imports (element = include/exclude)
+  }
+  
+  /**
+   * This routine gives control over the execution of the advanced validator functionality that applies to particular kinds of resources
+   * 
+   * @param validator
+   * @param appContext What was originally provided from the app for it's context
+   * @param rule The rule that is to be executed (actually often a group of checks)
+   * @param stackPath The current path for the stack. Note that the because of cross-references and FHIRPath conformsTo() statements, the stack can wind through the content unpredictably.
+   * @param resource The resource that is being checked
+   * @param element The element that is being checked (if relevant for the rule)
+   * @return whether to execute the rule or not 
+   */
+  SpecialValidationAction policyForSpecialValidation(IResourceValidator validator,
+      Object appContext,
+      SpecialValidationRule rule,
+      String stackPath,
+      Element resource,
+      Element element);
+  
   /**
    * This is called after a resource has been validated against the base structure, 
    * but before it's validated against any profiles specified in .meta.profile or in the parameters. 
