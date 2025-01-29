@@ -85,6 +85,7 @@ import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.instance.InstanceValidator.MatchetypeStatus;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
@@ -370,6 +371,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
     if (content.has("noHtmlInMarkdown")) {
       val.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.ERROR);
+    }
+    if (content.has("matchetype")) {
+      val.setMatchetypeStatus(MatchetypeStatus.Required);
     }
     List<String> suppress = new ArrayList<>();
     if (content.has("suppress")) {
