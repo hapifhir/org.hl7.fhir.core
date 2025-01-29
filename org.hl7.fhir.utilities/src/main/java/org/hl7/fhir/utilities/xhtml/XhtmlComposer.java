@@ -290,9 +290,12 @@ public class XhtmlComposer {
       if (node.getName() == "head" && node.getElement("meta") == null)
         dst.append(indent + "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>" + (pretty && !noPrettyOverride ? "\r\n" : ""));
 
-
-      for (XhtmlNode c : node.getChildNodes())
-        writeNode(indent + "  ", c, noPrettyOverride || node.isNoPretty());
+      if (act && "script".equals(node.getName())) {
+        dst.append(node.allText());
+      } else {
+        for (XhtmlNode c : node.getChildNodes())
+          writeNode(indent + "  ", c, noPrettyOverride || node.isNoPretty());
+      }
       if (act)
         dst.append("</" + node.getName() + ">" + (pretty && !noPrettyOverride ? "\r\n" : ""));
       else if (node.getChildNodes().get(node.getChildNodes().size() - 1).getNodeType() == NodeType.Text)
