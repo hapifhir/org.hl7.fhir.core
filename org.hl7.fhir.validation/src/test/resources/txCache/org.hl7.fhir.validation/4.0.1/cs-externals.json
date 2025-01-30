@@ -43,6 +43,7 @@
   "http://hl7.org/fhir/test/CodeSystem/imaginary|null" : null,
   "http://loinc.org|2.74" : null,
   "http://example.org/fhir/us/spl/CodeSystem/codesystem-organizationTypes|null" : null,
+  "http://hl7.org/fhir/test/CodeSystem/big|null" : null,
   "Location|null" : null,
   "http://terminology.hl7.org/CodeSystem/v3-NullFlavor|2018-08-12" : null,
   "http://loinc.org|current" : null,

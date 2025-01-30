@@ -102,7 +102,9 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
+import org.hl7.fhir.utilities.i18n.subtag.LanguageSubtagRegistry;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.i18n.LanguageTag;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
@@ -139,17 +141,20 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private Set<String> unknownSystems;
   private Set<String> unknownValueSets = new HashSet<>();
   private boolean throwToServer;
+  private LanguageSubtagRegistry registry;
+  
 
-  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, Parameters expansionProfile, TerminologyClientManager tcm) {
+  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, Parameters expansionProfile, TerminologyClientManager tcm, LanguageSubtagRegistry registry) {
     super(context, opContext);
     this.valueset = source;
     this.options = options;
     this.expansionParameters = expansionProfile;
     this.tcm = tcm;
+    this.registry = registry;
     analyseValueSet();
   }
   
-  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, ValidationContextCarrier ctxt, Parameters expansionProfile, TerminologyClientManager tcm) {
+  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, ValidationContextCarrier ctxt, Parameters expansionProfile, TerminologyClientManager tcm, LanguageSubtagRegistry registry) {
     super(context, opContext);
     this.valueset = source;
     this.options = options.copy();
@@ -157,6 +162,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     this.localContext = ctxt;
     this.expansionParameters = expansionProfile;
     this.tcm = tcm;
+    this.registry = registry;
     analyseValueSet();
   }
 
@@ -802,6 +808,16 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
       if (!options.hasLanguages() && valueset.hasLanguage()) {
         options.addLanguage(valueset.getLanguage());
+      }
+    }
+
+    if (options.getLanguages() != null) {
+      for (LanguagePreference t : options.getLanguages().getLangs()) {
+        try {
+          LanguageTag tag = new LanguageTag(registry, t.getLang());
+        } catch (Exception e) {
+          throw new TerminologyServiceProtectionException(context.formatMessage(I18nConstants.INVALID_DISPLAY_NAME, options.getLanguages().getSource()), TerminologyServiceErrorClass.PROCESSING, IssueType.PROCESSING, e.getMessage());
+        }
       }
     }
   }
@@ -1672,7 +1688,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       unknownValueSets.add(url);
       info.addIssue(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, null, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, url), OpIssueCode.NotFound, null));
     }
-    ValueSetValidator vsc = new ValueSetValidator(context, opContext.copy(), options, vs, localContext, expansionParameters, tcm);
+    ValueSetValidator vsc = new ValueSetValidator(context, opContext.copy(), options, vs, localContext, expansionParameters, tcm, registry);
     vsc.setThrowToServer(throwToServer);
     inner.put(url, vsc);
     return vsc;

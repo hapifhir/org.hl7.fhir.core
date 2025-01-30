@@ -19,11 +19,18 @@ public class TerminologyOperationContext {
 
     private TerminologyServiceErrorClass error;
     private IssueType type;
+    private String diagnostics;
 
     public TerminologyServiceProtectionException(String message, TerminologyServiceErrorClass error, IssueType type) {
       super(message);
       this.error = error;
       this.type = type;
+    }
+    public TerminologyServiceProtectionException(String message, TerminologyServiceErrorClass error, IssueType type, String diagnostics) {
+      super(message);
+      this.error = error;
+      this.type = type;
+      this.diagnostics = diagnostics;
     }
 
     public TerminologyServiceErrorClass getError() {
@@ -32,6 +39,9 @@ public class TerminologyOperationContext {
 
     public IssueType getType() {
       return type;
+    }
+    public String getDiagnostics() {
+      return diagnostics;
     }
 
   }
