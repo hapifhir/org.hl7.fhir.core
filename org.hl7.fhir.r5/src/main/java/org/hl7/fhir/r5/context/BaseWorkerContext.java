@@ -1469,6 +1469,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } catch (TerminologyServiceProtectionException e) {
         OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, e.getType());
         iss.getDetails().setText(e.getMessage());
+        iss.setDiagnostics(e.getDiagnostics());
         issues.add(iss);
         return new ValidationResult(IssueSeverity.FATAL, e.getMessage(), e.getError(), issues);
       } catch (Exception e) {
@@ -1752,6 +1753,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } catch (TerminologyServiceProtectionException e) {
         OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, e.getType());
         iss.getDetails().setText(e.getMessage());
+        iss.setDiagnostics(e.getDiagnostics());
         issues.add(iss);
         return new ValidationResult(IssueSeverity.FATAL, e.getMessage(), e.getError(), issues);
       } catch (Exception e) {
