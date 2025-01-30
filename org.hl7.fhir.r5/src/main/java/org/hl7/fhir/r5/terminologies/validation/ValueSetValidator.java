@@ -816,7 +816,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         try {
           LanguageTag tag = new LanguageTag(registry, t.getLang());
         } catch (Exception e) {
-          throw new TerminologyServiceProtectionException("Invalid displayLanguage: '"+options.getLanguages().getSource()+"'", TerminologyServiceErrorClass.PROCESSING, IssueType.PROCESSING);
+          throw new TerminologyServiceProtectionException(context.formatMessage(I18nConstants.INVALID_DISPLAY_NAME, options.getLanguages().getSource()), TerminologyServiceErrorClass.PROCESSING, IssueType.PROCESSING, e.getMessage());
         }
       }
     }
