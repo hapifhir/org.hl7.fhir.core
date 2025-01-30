@@ -1,7 +1,13 @@
 ## Validator Changes
 
-* no changes
+* Add check for duplicate ids on contained resources
+* fix bug looking up code system
+* fix bug for cross-version extension containing escaped [x]
+* Look for cs on other server in missed location
+* fix bug accessing code system from other terminology server if no version specified
+* upgrade tx tests to make optionality dependent on mode
+* upgrade tx-task in validator to handle more repackaging functionality (and fix bugs)
 
 ## Other code changes
 
-* no changes
+* Possible fix for an NPE reported bu a user with no context

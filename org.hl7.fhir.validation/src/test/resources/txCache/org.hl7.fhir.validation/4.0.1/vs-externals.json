@@ -8,6 +8,7 @@
   "http://hl7.org/fhir/us/qicore/ValueSet/qicore-negation-reason" : null,
   "http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType" : null,
   "https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_ICD_SEITENLOKALISATION" : null,
+  "http://hl7.org/fhir/test/CodeSystem/big|null" : null,
   "http://fhir.abda.de/eRezeptAbgabedaten/ValueSet/DAV-VS-ERP-DEUEV-Anlage-8" : null,
   "http://loinc.org/vs/LL378-1" : null,
   "http://something/something|null" : null,
