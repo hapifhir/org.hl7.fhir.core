@@ -98,7 +98,7 @@ public class POGenerator {
       generate(source, "rendering-phrases.properties",  "rendering-phrases-ja.po",    "rendering-phrases_ja.properties", 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-fr.po",    "rendering-phrases_fr.properties", 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-nl.po",    "rendering-phrases_nl.properties", 2);
-      generate(source, "rendering-phrases.properties",  "rendering-phrases-pt_BR.po", "rendering-phrases_pt-BR.properties", 2);
+      generate(source, "rendering-phrases.properties",  "rendering-phrases-pt_BR.po", "rendering-phrases_pt_BR.properties", 2);
 
       generate(source, "Messages.properties", "validator-messages-en.po",    null, 2);
       generate(source, "Messages.properties", "validator-messages-de.po",    "Messages_de.properties", 2);
@@ -106,7 +106,7 @@ public class POGenerator {
       generate(source, "Messages.properties", "validator-messages-ja.po",    "Messages_ja.properties", 2);
       generate(source, "Messages.properties", "validator-messages-fr.po",    "Messages_fr.properties", 2);
       generate(source, "Messages.properties", "validator-messages-nl.po",    "Messages_nl.properties", 2);
-      generate(source, "Messages.properties", "validator-messages-pt_BR.po", "Messages_pt-BR.properties", 2);
+      generate(source, "Messages.properties", "validator-messages-pt_BR.po", "Messages_pt_BR.properties", 2);
 
       System.out.println("Finished");
     } 
