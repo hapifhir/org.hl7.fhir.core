@@ -827,7 +827,7 @@ public class RenderingContext extends RenderingI18nContext {
 
   public String getTranslated(PrimitiveType<?> t) {
     if (locale != null) {
-      String v = ToolingExtensions.getLanguageTranslation(t, locale.toString());
+      String v = ToolingExtensions.getLanguageTranslation(t, locale.toLanguageTag());
       if (v != null) {
         return v;
       }
@@ -842,7 +842,7 @@ public class RenderingContext extends RenderingI18nContext {
     if (locale != null) {
       for (ResourceWrapper e : t.extensions(ToolingExtensions.EXT_TRANSLATION)) {
         String l = e.extensionString("lang");
-        if (l != null && l.equals(locale.toString())) {
+        if (l != null && l.equals(locale.toLanguageTag())) {
           String v = e.extensionString("content");
           if (v != null) {
             return v;
@@ -855,7 +855,7 @@ public class RenderingContext extends RenderingI18nContext {
 
   public StringType getTranslatedElement(PrimitiveType<?> t) {
     if (locale != null) {
-      StringType v = ToolingExtensions.getLanguageTranslationElement(t, locale.toString());
+      StringType v = ToolingExtensions.getLanguageTranslationElement(t, locale.toLanguageTag());
       if (v != null) {
         return v;
       }
@@ -872,13 +872,13 @@ public class RenderingContext extends RenderingI18nContext {
     if (b instanceof org.hl7.fhir.r5.model.Element) {
       org.hl7.fhir.r5.model.Element e = (org.hl7.fhir.r5.model.Element) b;
       if (locale != null) {
-        String v = ToolingExtensions.getLanguageTranslation(e, locale.toString());
+        String v = ToolingExtensions.getLanguageTranslation(e, locale.toLanguageTag());
         if (v != null) {
           return v;
         }
         // no? then see if the tx service can translate it for us 
         try {
-          ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toString()).withVersionFlexible(true),
+          ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toLanguageTag()).withVersionFlexible(true),
               codeSystem, null, e.primitiveValue(), null);
           if (t.isOk() && t.getDisplay() != null) {
             return t.getDisplay();
@@ -903,7 +903,7 @@ public class RenderingContext extends RenderingI18nContext {
 
     if (locale != null) {
       try {
-        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toString()).withVersionFlexible(true), codeSystem, null, code, null);
+        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toLanguageTag()).withVersionFlexible(true), codeSystem, null, code, null);
         if (t.isOk() && t.getDisplay() != null) {
           return t.getDisplay();
         }
@@ -916,13 +916,13 @@ public class RenderingContext extends RenderingI18nContext {
   
   public String getTranslatedCode(Enumeration<?> e, String codeSystem) {
     if (locale != null) {
-      String v = ToolingExtensions.getLanguageTranslation(e, locale.toString());
+      String v = ToolingExtensions.getLanguageTranslation(e, locale.toLanguageTag());
       if (v != null) {
         return v;
       }
       // no? then see if the tx service can translate it for us 
       try {
-        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toString()).withVersionFlexible(true),
+        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toLanguageTag()).withVersionFlexible(true),
             codeSystem, null, e.getCode(), null);
         if (t.isOk() && t.getDisplay() != null) {
           return t.getDisplay();
@@ -952,7 +952,7 @@ public class RenderingContext extends RenderingI18nContext {
         if (url.equals(ToolingExtensions.EXT_TRANSLATION)) {
           Base e1 = ext.getExtensionValue("lang");
 
-          if (e1 != null && e1.primitiveValue() != null && e1.primitiveValue().equals(locale.toString())) {
+          if (e1 != null && e1.primitiveValue() != null && e1.primitiveValue().equals(locale.toLanguageTag())) {
             e1 = ext.getExtensionValue("content");
             if (e1 != null && e1.isPrimitive()) {
               return e1.primitiveValue();
@@ -962,7 +962,7 @@ public class RenderingContext extends RenderingI18nContext {
       }
       // no? then see if the tx service can translate it for us 
       try {
-        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toString()).withVersionFlexible(true),
+        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toLanguageTag()).withVersionFlexible(true),
             codeSystem, null, e.primitiveValue(), null);
         if (t.isOk() && t.getDisplay() != null) {
           return t.getDisplay();
