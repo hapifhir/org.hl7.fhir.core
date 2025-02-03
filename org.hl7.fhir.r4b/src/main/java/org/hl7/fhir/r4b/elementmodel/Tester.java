@@ -40,7 +40,7 @@ import org.hl7.fhir.r4b.context.SimpleWorkerContext;
 import org.hl7.fhir.r4b.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r4b.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r4b.formats.IParser.OutputStyle;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
@@ -71,9 +71,9 @@ public class Tester {
             FhirFormat.TURTLE, OutputStyle.PRETTY, null);
         Manager.compose(context, e, ManagedFileAccess.outStream(Utilities.path("[tmp]", "resource.xml")), FhirFormat.XML,
             OutputStyle.PRETTY, null);
-        String src = TextFile
+        String src = FileUtilities
             .fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\" + Utilities.changeFileExt(f, ".mm.ttl"));
-        String tgt = TextFile
+        String tgt = FileUtilities
             .fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\" + Utilities.changeFileExt(f, ".ttl"));
         t++;
         if (src.equals(tgt)) {

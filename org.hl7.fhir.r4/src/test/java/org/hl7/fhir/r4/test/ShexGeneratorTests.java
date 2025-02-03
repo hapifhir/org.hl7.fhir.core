@@ -12,7 +12,7 @@ import org.hl7.fhir.r4.conformance.ShExGenerator;
 import org.hl7.fhir.r4.conformance.ShExGenerator.HTMLLinkPolicy;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,7 @@ public class ShexGeneratorTests {
       throw new FHIRException("StructuredDefinition for " + name + "was null");
     }
     Path outPath = FileSystems.getDefault().getPath(workingDirectory, name.toLowerCase() + ".shex");
-    TextFile.stringToFile(new ShExGenerator(TestingUtilities.context()).generate(HTMLLinkPolicy.NONE, sd),
+    FileUtilities.stringToFile(new ShExGenerator(TestingUtilities.context()).generate(HTMLLinkPolicy.NONE, sd),
         outPath.toString());
   }
 

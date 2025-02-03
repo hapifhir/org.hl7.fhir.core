@@ -22,6 +22,7 @@ import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.utils.NPMPackageGenerator;
 import org.hl7.fhir.r4.utils.NPMPackageGenerator.Category;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -64,7 +65,7 @@ public class DicomPackageBuilder {
   public void execute() throws FileNotFoundException, ParserConfigurationException, SAXException, IOException {
     CodeSystem cs = buildCodeSystem();
     String fn = Utilities.path(dest, pattern.replace("{version}", version));
-    Utilities.createDirectory(Utilities.getDirectoryForFile(fn));
+    FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fn));
     
     NPMPackageGenerator gen = new NPMPackageGenerator(fn, buildPackage());
     int i = 2;

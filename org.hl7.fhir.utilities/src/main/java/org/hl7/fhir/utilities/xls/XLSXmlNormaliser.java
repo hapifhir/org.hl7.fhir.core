@@ -49,7 +49,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -124,10 +124,10 @@ public class XLSXmlNormaliser {
       } finally {
         fs.close();
       }
-      String s = TextFile.fileToString(dest);
+      String s = FileUtilities.fileToString(dest);
       s = s.replaceAll("\r\n","\n");
       s = replaceSignificantEoln(s);
-      TextFile.stringToFile(s, dest);
+      FileUtilities.stringToFile(s, dest);
       ManagedFileAccess.file(dest).setLastModified(time);
     } catch (Exception e) {
       System.out.println("The file "+dest+" is still open in Excel, and you will have to run the build after closing Excel before committing");

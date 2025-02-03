@@ -39,7 +39,7 @@ import org.hl7.fhir.r5.elementmodel.ValidatedFragment;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.StringPair;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -373,7 +373,7 @@ public class TestGenerationDataGenerator implements IPackageVisitorProcessor {
         rt.add(type);
         for (PackagedResourceFile s : npm.listAllResources(rt)) {
           c++;
-          processResource(ctxt, context, type, s.getFilename(), TextFile.streamToBytes(npm.load(s.getFolder(), s.getFilename())));
+          processResource(ctxt, context, type, s.getFilename(), FileUtilities.streamToBytes(npm.load(s.getFolder(), s.getFilename())));
         }
       }
     }    

@@ -22,6 +22,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextCompo
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -174,7 +175,7 @@ public class ExtensionExtractor {
     String fn = Utilities.path(dst, folder, cr.fhirType()+"-"+cr.getId()+".xml"); 
     cr.setUserData("folder", folder);
     if (!ManagedFileAccess.file(fn).exists()) {
-      Utilities.createDirectory(Utilities.getDirectoryForFile(fn));
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fn));
       new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(fn), cr);
     }
   }

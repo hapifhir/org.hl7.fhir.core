@@ -91,7 +91,7 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -4821,9 +4821,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       parser.compose(bs, value, null); 
     } else if (value instanceof PrimitiveType<?>) { 
       if (value instanceof BooleanType || value instanceof IntegerType || value instanceof DecimalType) { 
-        TextFile.stringToStream(((PrimitiveType<?>) value).asStringValue(), bs); 
+        FileUtilities.stringToStream(((PrimitiveType<?>) value).asStringValue(), bs); 
       } else { 
-        TextFile.stringToStream("\""+Utilities.escapeJson(((PrimitiveType<?>) value).asStringValue())+"\"", bs);         
+        FileUtilities.stringToStream("\""+Utilities.escapeJson(((PrimitiveType<?>) value).asStringValue())+"\"", bs);         
       } 
     } else { 
       JsonParser parser = new JsonParser(); 

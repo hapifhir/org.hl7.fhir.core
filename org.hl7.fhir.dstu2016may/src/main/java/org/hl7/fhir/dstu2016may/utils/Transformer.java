@@ -44,7 +44,7 @@ import org.hl7.fhir.dstu2016may.metamodel.Manager;
 import org.hl7.fhir.dstu2016may.metamodel.Manager.FhirFormat;
 import org.hl7.fhir.dstu2016may.model.Bundle;
 import org.hl7.fhir.dstu2016may.model.StructureMap;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
@@ -139,7 +139,7 @@ public class Transformer {
   private void loadMaps(String folder) throws IOException {
     for (String f : ManagedFileAccess.file(folder).list()) {
       try {
-        StructureMap map = scu.parse(TextFile.fileToString(Utilities.path(folder, f)));
+        StructureMap map = scu.parse(FileUtilities.fileToString(Utilities.path(folder, f)));
         scu.getLibrary().put(map.getUrl(), map);
       } catch (Exception e) {
       }

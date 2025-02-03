@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.validation.ValidationEngine;
@@ -65,7 +66,7 @@ public class ComparisonService {
     session.compare(resLeft, resRight);
     
     System.out.println("Generating output to " + dest + "...");
-    Utilities.createDirectory(dest);
+    FileUtilities.createDirectory(dest);
     ComparisonRenderer cr = new ComparisonRenderer(validator.getContext(), validator.getContext(), dest, session);
     cr.loadTemplates(validator.getContext());
     File htmlFile = cr.render(left, right);

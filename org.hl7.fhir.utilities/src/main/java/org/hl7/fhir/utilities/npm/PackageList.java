@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -312,7 +312,7 @@ public class PackageList {
   }
 
   public void save(String filepath) throws IOException {
-    TextFile.stringToFile(toJson(), filepath);
+    FileUtilities.stringToFile(toJson(), filepath);
   }
 
   public String determineLocalPath(String url, String root) throws IOException {

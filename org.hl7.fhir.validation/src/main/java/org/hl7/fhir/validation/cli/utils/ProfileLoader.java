@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
@@ -38,7 +38,7 @@ public class ProfileLoader {
     File f = ManagedFileAccess.file(src);
     if (f.isDirectory())
       throw new IOException("You must provide a file name, not a directory name");
-    return TextFile.fileToBytes(src);
+    return FileUtilities.fileToBytes(src);
   }
 
 }

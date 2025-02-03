@@ -37,7 +37,7 @@ import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -267,28 +267,28 @@ public class NarrativeGenerationTests {
     if (TestingUtilities.findTestResource("r5", "narrative", test.getId() + ".json")) {
       source = (Resource) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".json"));
     } else  if (TestingUtilities.findTestResource("r5", "narrative", test.getId() + ".fml")) {
-      source = (Resource) new StructureMapUtilities(context).parse(TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".fml")), "source");
+      source = (Resource) new StructureMapUtilities(context).parse(FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".fml")), "source");
     } else {
       source = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"));      
     }
     
     XhtmlNode x = RendererFactory.factory(source, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), source));
-    String expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".html"));
+    String expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".html"));
     String actual = HEADER+new XhtmlComposer(true, test.pretty).compose(x)+FOOTER;
     String expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.html");
     String actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".html");
-    TextFile.stringToFile(expected, expectedFileName);
-    TextFile.stringToFile(actual, actualFileName);
+    FileUtilities.stringToFile(expected, expectedFileName);
+    FileUtilities.stringToFile(actual, actualFileName);
     String msg = new CompareUtilities().checkXMLIsSame(id, expectedFileName, actualFileName);
     Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
 
     String disp = RendererFactory.factory(source, rc).buildSummary(ResourceWrapper.forResource(rc.getContextUtilities(), source));
-    expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".txt"));
+    expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".txt"));
     actual = disp;
     expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.txt");
     actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".txt");
-    TextFile.stringToFile(expected, expectedFileName);
-    TextFile.stringToFile(actual, actualFileName);
+    FileUtilities.stringToFile(expected, expectedFileName);
+    FileUtilities.stringToFile(actual, actualFileName);
     msg = new CompareUtilities().checkTextIsSame(id, expected, actual);
     Assertions.assertTrue(msg == null, "Summary Output does not match expected: "+msg);
     

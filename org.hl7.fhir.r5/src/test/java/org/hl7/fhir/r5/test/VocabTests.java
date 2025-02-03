@@ -24,7 +24,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -155,8 +155,8 @@ public class VocabTests {
       String actual = new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeString(outcome.getValueset());
       String expectedFileName = CompareUtilities.tempFile("vocab", test.getId() + ".expected.html");
       String actualFileName = CompareUtilities.tempFile("vocab", test.getId() + ".actual.html");
-      TextFile.stringToFile(expected, expectedFileName);
-      TextFile.stringToFile(actual, actualFileName);
+      FileUtilities.stringToFile(expected, expectedFileName);
+      FileUtilities.stringToFile(actual, actualFileName);
       String msg = new CompareUtilities().checkXMLIsSame(test.id, expectedFileName, actualFileName);
       Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
     } else {

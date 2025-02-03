@@ -10,7 +10,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -118,8 +118,8 @@ public class TxServiceTestHelper {
 
       String diff = new CompareUtilities(modes, externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null) {
-        Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-        TextFile.stringToFile(actualResponse, fp);
+        FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+        FileUtilities.stringToFile(actualResponse, fp);
         System.out.println("Test "+name+"failed: "+diff);
       }
       return diff;
@@ -192,8 +192,8 @@ public class TxServiceTestHelper {
 
       String diff = new CompareUtilities(modes, externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null) {
-         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-        TextFile.stringToFile(actualResponse, fp);
+         FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+        FileUtilities.stringToFile(actualResponse, fp);
         System.out.println("Test "+name+"failed: "+diff);
       }
       return diff;
@@ -216,8 +216,8 @@ public class TxServiceTestHelper {
     if (!actualDirectory.exists()) {
       actualDirectory.mkdirs();
     }
-    TextFile.stringToFile(expected, fullExpected + testName + ".json");
-    TextFile.stringToFile(actual, fullActual + testName + ".json");
+    FileUtilities.stringToFile(expected, fullExpected + testName + ".json");
+    FileUtilities.stringToFile(actual, fullActual + testName + ".json");
 
   }
 }

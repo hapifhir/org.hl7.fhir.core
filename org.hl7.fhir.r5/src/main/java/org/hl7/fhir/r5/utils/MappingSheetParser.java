@@ -34,7 +34,7 @@ import org.hl7.fhir.r5.model.StructureMap.StructureMapTransform;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.CSVReader;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
@@ -421,8 +421,8 @@ public class MappingSheetParser {
     StructureMap sm = parser.getStructureMap();
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "sm.json")), sm);
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "cm.json")), cm);
-    TextFile.stringToFile(StructureMapUtilities.render(sm), Utilities.path("[tmp]", "sm.txt"));
-    TextFile.stringToFile(PFX+parser.genSheet(cm)+SFX, Utilities.path("[tmp]", "map.html"));
+    FileUtilities.stringToFile(StructureMapUtilities.render(sm), Utilities.path("[tmp]", "sm.txt"));
+    FileUtilities.stringToFile(PFX+parser.genSheet(cm)+SFX, Utilities.path("[tmp]", "map.html"));
   }
 
 }

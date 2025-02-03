@@ -4,10 +4,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -37,41 +34,8 @@ import java.util.zip.ZipInputStream;
 
 import javax.annotation.Nullable;
 
-/*
-  Copyright (c) 2011+, HL7, Inc.
-  All rights reserved.
-
-  Redistribution and use in source and binary forms, with or without modification, 
-  are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this 
-     list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
-     and/or other materials provided with the distribution.
- * Neither the name of HL7 nor the names of its contributors may be used to 
-     endorse or promote products derived from this software without specific 
-     prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-  POSSIBILITY OF SUCH DAMAGE.
-
- */
-
-
-import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.FileNotifier.FileNotifier2;
 import org.hl7.fhir.utilities.Utilities.CaseInsensitiveSorter;
-import org.hl7.fhir.utilities.filesystem.CSFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
@@ -317,115 +281,6 @@ public class Utilities {
     return s.substring(0, 1).toUpperCase() + s.substring(1);
   }
 
-  public static void copyDirectory(String sourceFolder, String destFolder, FileNotifier notifier) throws IOException, FHIRException {
-    CSFile src = ManagedFileAccess.csfile(sourceFolder);
-    if (!src.exists())
-      throw new FHIRException("Folder " + sourceFolder + " not found");
-    File dst = ManagedFileAccess.file(destFolder);
-    if(!dst.getCanonicalFile().getName().equals(dst.getName())) {
-      File tmp = ManagedFileAccess.file(destFolder+System.currentTimeMillis());
-      if (!dst.renameTo(tmp)) {
-        throw new IOException("fixing case from "+dst.getCanonicalFile().getName()+" to "+tmp.getName()+" failed");
-      }
-      if (!tmp.renameTo(dst)) {
-        throw new IOException("fixing case from "+tmp.getCanonicalFile().getName()+" to "+dst.getName()+" failed");
-      }
-    } else if (!dst.exists()) {    
-      createDirectory(destFolder);
-    }
-
-    String[] files = src.list();
-    for (String f : files) {
-      if (ManagedFileAccess.csfile(sourceFolder + File.separator + f).isDirectory()) {
-        if (!f.startsWith(".")) { // ignore .git files...
-          copyDirectory(sourceFolder + File.separator + f, destFolder + File.separator + f, notifier);
-        }
-      } else {
-        if (notifier != null)
-          notifier.copyFile(sourceFolder + File.separator + f, destFolder + File.separator + f);
-        copyFile(ManagedFileAccess.csfile(sourceFolder + File.separator + f), new /*CS*/File(destFolder + File.separator + f)); // case doesn't have to match on the target
-      }
-    }
-  }
-
-
-  public static void copyDirectory2(String sourceFolder, String destFolder, FileNotifier2 notifier) throws IOException, FHIRException {
-    CSFile src = ManagedFileAccess.csfile(sourceFolder);
-    if (!src.exists())
-      throw new FHIRException("Folder " + sourceFolder + " not found");
-    createDirectory(destFolder);
-
-    String[] files = src.list();
-    for (String f : files) {
-      if (ManagedFileAccess.csfile(sourceFolder + File.separator + f).isDirectory()) {
-        if (!f.startsWith(".")) { // ignore .git files...
-          boolean doCopy = notifier != null ? notifier.copyFolder(sourceFolder + File.separator + f, destFolder + File.separator + f) : true;
-          if (doCopy) {
-            copyDirectory2(sourceFolder + File.separator + f, destFolder + File.separator + f, notifier);
-          }
-        }
-      } else {
-        boolean doCopy = notifier != null ? notifier.copyFile(sourceFolder + File.separator + f, destFolder + File.separator + f) : true;
-        if (doCopy) {
-          copyFile(ManagedFileAccess.csfile(sourceFolder + File.separator + f), ManagedFileAccess.csfile(destFolder + File.separator + f));
-        }
-      }
-    }
-  }
-
-  public static void copyFile(String source, String dest) throws IOException {
-    copyFile(ManagedFileAccess.file(source), ManagedFileAccess.file(dest));
-  }
-
-  public static void copyFile(File sourceFile, File destFile) throws IOException {
-    if (!destFile.exists()) {
-      if (!ManagedFileAccess.csfile(destFile.getParent()).exists()) {
-        createDirectory(destFile.getParent());
-      }
-      destFile.createNewFile();
-    } else if (!destFile.getCanonicalFile().getName().equals(destFile.getName())) {
-      // case mismatch
-      destFile.delete();
-      destFile.createNewFile();
-    }
-
-    FileInputStream source = null;
-    FileOutputStream destination = null;
-
-    try {
-      source = ManagedFileAccess.inStream(sourceFile);
-      destination = ManagedFileAccess.outStream(destFile);
-      destination.getChannel().transferFrom(source.getChannel(), 0, source.getChannel().size());
-    } finally {
-      if (source != null) {
-        source.close();
-      }
-      if (destination != null) {
-        destination.close();
-      }
-    }
-  }
-
-  public static boolean checkFolder(String dir, List<String> errors)
-      throws IOException {
-    if (!ManagedFileAccess.csfile(dir).exists()) {
-      errors.add("Unable to find directory " + dir);
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  public static boolean checkFile(String purpose, String dir, String file, List<String> errors)
-      throws IOException {
-    if (!ManagedFileAccess.csfile(dir + file).exists()) {
-      if (errors != null)
-        errors.add("Unable to find " + purpose + " file " + file + " in " + dir);
-      return false;
-    } else {
-      return true;
-    }
-  }
 
   public static String asCSV(List<String> strings) {
     StringBuilder s = new StringBuilder();
@@ -452,44 +307,6 @@ public class Utilities {
     return s.toString();
   }
 
-  public static void clearDirectory(String folder, String... exemptions) throws IOException {
-    File dir = ManagedFileAccess.file(folder);
-    if (dir.exists()) {
-      if (exemptions.length == 0)
-        FileUtils.cleanDirectory(dir);
-      else {
-        String[] files = ManagedFileAccess.csfile(folder).list();
-        if (files != null) {
-          for (String f : files) {
-            if (!existsInList(f, exemptions)) {
-              File fh = ManagedFileAccess.csfile(folder + File.separatorChar + f);
-              if (fh.isDirectory())
-                clearDirectory(fh.getAbsolutePath());
-              fh.delete();
-            }
-          }
-        }
-      }
-    }
-  }
-
-  public static File createDirectory(String path) throws IOException {
-    ManagedFileAccess.csfile(path).mkdirs();
-    return ManagedFileAccess.file(path);
-  }
-
-  public static File createDirectoryNC(String path) throws IOException {
-    ManagedFileAccess.file(path).mkdirs();
-    return ManagedFileAccess.file(path);
-  }
-
-  public static String changeFileExt(String name, String ext) {
-    if (name.lastIndexOf('.') > -1)
-      return name.substring(0, name.lastIndexOf('.')) + ext;
-    else
-      return name + ext;
-  }
-
   public static String cleanupTextString(String contents) {
     if (contents == null || contents.trim().equals(""))
       return null;
@@ -497,19 +314,9 @@ public class Utilities {
       return contents.trim();
   }
 
-
   public static boolean noString(String v) {
     return v == null || v.equals("");
   }
-
-
-  public static void bytesToFile(byte[] content, String filename) throws IOException {
-    FileOutputStream out = ManagedFileAccess.outStream(filename);
-    out.write(content);
-    out.close();
-
-  }
-
 
   public static String appendSlash(String definitions) {
     return definitions.endsWith(File.separator) ? definitions : definitions + File.separator;
@@ -521,15 +328,6 @@ public class Utilities {
     }
     return definitions.endsWith("/") ? definitions : definitions + "/";
   }
-
-
-  public static String fileTitle(String file) throws IOException {
-    if (file == null)
-      return null;
-    String s = ManagedFileAccess.file(file).getName();
-    return s.indexOf(".") == -1 ? s : s.substring(0, s.indexOf("."));
-  }
-
 
   public static String systemEol() {
     return System.getProperty("line.separator");
@@ -686,8 +484,8 @@ public class Utilities {
 
   public static String forcePath(String... args) throws IOException {
     String path = path(args);
-    String folder = Utilities.getDirectoryForFile(path);
-    Utilities.createDirectory(folder);
+    String folder = FileUtilities.getDirectoryForFile(path);
+    FileUtilities.createDirectory(folder);
     return path;
   }
 
@@ -849,16 +647,6 @@ public class Utilities {
     return ((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z'));
   }
 
-
-  public static String getDirectoryForFile(String filepath) throws IOException {
-    File f = ManagedFileAccess.file(filepath);
-    return f.getParent();
-  }
-
-  public static String getDirectoryForURL(String url) {
-    return url.contains("/") && url.lastIndexOf("/") > 10 ? url.substring(0, url.lastIndexOf("/")) : url;
-  }
-
   public static String appendPeriod(String s) {
     if (Utilities.noString(s))
       return s;
@@ -980,12 +768,6 @@ public class Utilities {
     return b.toString().trim();
   }
 
-
-  public static void copyFileToDirectory(File source, File destDir) throws IOException {
-    copyFile(source, ManagedFileAccess.file(path(destDir.getAbsolutePath(), source.getName())));
-  }
-
-
   public static String URLEncode(String string) {
     try {
       return URLEncoder.encode(string, "UTF-8");
@@ -1077,29 +859,6 @@ public class Utilities {
   public static String getFileNameForName(String name) {
     return name.toLowerCase();
   }
-
-  public static void deleteTempFiles() throws IOException {
-    File file = createTempFile("test", "test");
-    String folder = getDirectoryForFile(file.getAbsolutePath());
-    String[] list = ManagedFileAccess.file(folder).list(new FilenameFilter() {
-      public boolean accept(File dir, String name) {
-        return name.startsWith("ohfu-");
-      }
-    });
-    if (list != null) {
-      for (String n : list) {
-        ManagedFileAccess.file(path(folder, n)).delete();
-      }
-    }
-  }
-
-  public static File createTempFile(String prefix, String suffix) throws IOException {
-    // this allows use to eaily identify all our dtemp files and delete them, since delete on Exit doesn't really work.
-    File file = File.createTempFile("ohfu-" + prefix, suffix);
-    file.deleteOnExit();
-    return file;
-  }
-
 
   public static boolean isAsciiChar(char ch) {
     return ch >= ' ' && ch <= '~';
@@ -1222,19 +981,6 @@ public class Utilities {
     return one.equals(two);
   }
 
-
-  public static void deleteAllFiles(String folder, String type) throws IOException {
-    File src = ManagedFileAccess.file(folder);
-    String[] files = src.list();
-    for (String f : files) {
-      if (ManagedFileAccess.file(folder + File.separator + f).isDirectory()) {
-        deleteAllFiles(folder + File.separator + f, type);
-      } else if (f.endsWith(type)) {
-        ManagedFileAccess.file(folder + File.separator + f).delete();
-      }
-    }
-
-  }
 
   public static boolean compareIgnoreWhitespace(File f1, File f2) throws IOException {
     InputStream in1 = null;
@@ -1404,19 +1150,6 @@ public class Utilities {
     return b.toString();
   }
 
-
-  public static int countFilesInDirectory(String dirName) throws IOException {
-    File dir = ManagedFileAccess.file(dirName);
-    if (dir.exists() == false) {
-      return 0;
-    }
-    int i = 0;
-    for (File f : dir.listFiles())
-      if (!f.isDirectory())
-        i++;
-    return i;
-  }
-
   public static String makeId(String name) {
     StringBuilder b = new StringBuilder();
     for (char ch : name.toCharArray()) {
@@ -1432,22 +1165,6 @@ public class Utilities {
     return b.toString();
   }
 
-  public interface FileVisitor {
-    void visitFile(File file) throws FileNotFoundException, IOException;
-  }
-
-  public static void visitFiles(String folder, String extension, FileVisitor visitor) throws FileNotFoundException, IOException {
-    visitFiles(ManagedFileAccess.file(folder), extension, visitor);
-  }
-
-  public static void visitFiles(File folder, String extension, FileVisitor visitor) throws FileNotFoundException, IOException {
-    for (File file : folder.listFiles()) {
-      if (file.isDirectory())
-        visitFiles(file, extension, visitor);
-      else if (extension == null || file.getName().endsWith(extension))
-        visitor.visitFile(file);
-    }
-  }
 
   public static String extractBaseUrl(String url) {
     if (url == null)
@@ -2114,39 +1831,12 @@ public class Utilities {
     }
   }
 
-  public static String getRelativePath(String root, String path) {
-    String res = path.substring(root.length());
-    if (res.startsWith(File.separator)) {
-      res = res.substring(1);
-    }
-    return res;
-  }
-
   public static String getRelativeUrlPath(String root, String path) {
     String res = path.substring(root.length());
     if (res.startsWith("/")) {
       res = res.substring(1);
     }
     return res;
-  }
-
-  public static List<String> listAllFiles(String path, List<String> ignoreList) throws IOException {
-    List<String> res = new ArrayList<>();
-    addAllFiles(res, path, ManagedFileAccess.file(path), ignoreList);
-    return res;
-  }
-
-  private static void addAllFiles(List<String> res, String root, File dir, List<String> ignoreList) {
-    for (File f : dir.listFiles()) {
-      if (ignoreList == null || !ignoreList.contains(f.getAbsolutePath())) {
-        if (f.isDirectory()) {
-          addAllFiles(res, root, f, ignoreList);
-        } else if (!f.getName().equals(".DS_Store")) {
-          res.add(getRelativePath(root, f.getAbsolutePath()));
-        }
-      }
-    }
-
   }
 
   public static boolean isValidCRName(String name) {
@@ -2300,32 +1990,6 @@ public class Utilities {
     return i == 0 ? "" : s.substring(0, i+1);
   }
 
-  public static void renameDirectory(String source, String dest) throws FHIRException, IOException {
-    File src = ManagedFileAccess.file(source);
-    File dst = ManagedFileAccess.file(dest);
-    if (!src.renameTo(dst)) {
-      int i = 0;
-      do {
-        try {
-          Thread.sleep(20);
-        } catch (Exception e) {
-          // nothing
-        }
-        System.gc();
-        i++;
-      } while (!src.renameTo(dst) && i < 10);
-      if (src.exists()) {
-        copyDirectory(source, dest, null);
-        try {
-          src.delete();	
-        } catch (Exception e) {
-          // nothing
-        }
-      }
-    }
-
-  }
-
   public static String urlTail(String url) {
     if (url == null) {
       return null;
@@ -2438,4 +2102,17 @@ public class Utilities {
     return result.length() == 0 ? null : result.toString(); 
   }
 
+  public static String changeFileExt(String name, String ext) {
+    if (name.lastIndexOf('.') > -1)
+      return name.substring(0, name.lastIndexOf('.')) + ext;
+    else
+      return name + ext;
+  }
+  
+  public static String getDirectoryForURL(String url) {
+    return url.contains("/") && url.lastIndexOf("/") > 10 ? url.substring(0, url.lastIndexOf("/")) : url;
+  }
+
+
+  
 }

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import lombok.Getter;
@@ -92,7 +92,7 @@ public class SimpleHTTPClient {
       }
     }
     
-    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(),  c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
+    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(),  c.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
   }
 
   private void setHeaders(HttpURLConnection c) {
@@ -139,7 +139,7 @@ public class SimpleHTTPClient {
     setHeaders(c);
     c.getOutputStream().write(content);
     c.getOutputStream().close();    
-    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(), c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
+    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(), c.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
   }
 
  
@@ -159,7 +159,7 @@ public class SimpleHTTPClient {
     setHeaders(c);
     c.getOutputStream().write(content);
     c.getOutputStream().close();    
-    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(), c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
+    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(), c.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
   }
 
   public static int nextCounter() {

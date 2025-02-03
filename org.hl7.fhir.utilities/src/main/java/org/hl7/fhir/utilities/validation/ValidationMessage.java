@@ -79,6 +79,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     ProfileValidator, 
     ResourceValidator, 
     InstanceValidator,
+    MatchetypeValidator,
     Template,
     Schema, 
     Schematron, 

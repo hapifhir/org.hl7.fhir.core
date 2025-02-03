@@ -142,7 +142,7 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
@@ -195,7 +195,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     @Override
     public byte[] bytes() throws IOException {
-      return TextFile.streamToBytes(pi.load("other", name));
+      return FileUtilities.streamToBytes(pi.load("other", name));
     }
 
   }
@@ -210,7 +210,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     @Override
     public byte[] bytes() throws IOException {
-      return TextFile.streamToBytes(ManagedFileAccess.inStream(name));
+      return FileUtilities.streamToBytes(ManagedFileAccess.inStream(name));
     }
 
   }

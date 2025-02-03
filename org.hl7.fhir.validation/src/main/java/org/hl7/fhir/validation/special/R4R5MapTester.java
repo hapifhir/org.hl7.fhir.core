@@ -37,7 +37,7 @@ import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -225,7 +225,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
         System.out.println("   .. done");
       }
     }
-    TextFile.stringToFile(log.toString(), Utilities.path(src, "input", "_data", "validation.log"));
+    FileUtilities.stringToFile(log.toString(), Utilities.path(src, "input", "_data", "validation.log"));
     log("Done!");
 //    load R4
 //    load R4B
@@ -251,7 +251,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
         context.cacheResource(new org.hl7.fhir.r5.formats.JsonParser().parse(ManagedFileAccess.inStream(f)));
       }
       if (f.getName().endsWith(".fml")) {
-        context.cacheResource(utils.parse(TextFile.fileToString(f), f.getName()));
+        context.cacheResource(utils.parse(FileUtilities.fileToString(f), f.getName()));
       }
     }
     

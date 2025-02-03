@@ -59,7 +59,7 @@ import org.hl7.fhir.r4b.model.ImplementationGuide;
 import org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideDependsOnComponent;
 import org.hl7.fhir.r4b.utils.NPMPackageGenerator.Category;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
@@ -361,17 +361,17 @@ public class NPMPackageGenerator {
     gzipOutputStream.close();
     bufferedOutputStream.close();
     OutputStream.close();
-    TextFile.bytesToFile(OutputStream.toByteArray(), destFile);
+    FileUtilities.bytesToFile(OutputStream.toByteArray(), destFile);
     // also, for cache management on current builds, generate a little manifest
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String json = gson.toJson(packageManifest);
-    TextFile.stringToFile(json, Utilities.changeFileExt(destFile, ".manifest.json"));
+    FileUtilities.stringToFile(json, Utilities.changeFileExt(destFile, ".manifest.json"));
   }
 
   private void buildIndexJson() throws IOException {
-    byte[] content = TextFile.stringToBytes(indexer.build());
+    byte[] content = FileUtilities.stringToBytes(indexer.build());
     addFile(Category.RESOURCE, ".index.json", content);
-    content = TextFile.fileToBytes(indexdb);
+    content = FileUtilities.fileToBytes(indexdb);
     ManagedFileAccess.file(indexdb).delete();
     addFile(Category.RESOURCE, ".index.db", content);
   }
@@ -391,7 +391,7 @@ public class NPMPackageGenerator {
           loadFiles(root, f);
         } else {
           String path = f.getAbsolutePath().substring(root.length() + 1);
-          byte[] content = TextFile.fileToBytes(f);
+          byte[] content = FileUtilities.fileToBytes(f);
           if (created.contains(path))
             System.out.println("Duplicate package file " + path);
           else {
