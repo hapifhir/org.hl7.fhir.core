@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -466,6 +467,18 @@ public class FileUtilities {
     if (empty) {
       df.delete();
     }
+  }
+
+  public static String cleanFileName(String badFileName) {
+    StringBuilder cleanName = new StringBuilder();
+    int len = badFileName.codePointCount(0, badFileName.length());
+    for (int i=0; i<len; i++) {
+      int c = badFileName.codePointAt(i);
+      if (Arrays.binarySearch(Utilities.illegalChars, c) < 0) {
+        cleanName.appendCodePoint(c);
+      }
+    }
+    return cleanName.toString();
   }
 
 }
