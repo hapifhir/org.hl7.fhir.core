@@ -597,7 +597,7 @@ public class POGenerator {
   }
 
   private void savePropFile(String tgt, List<POObject> objects) throws IOException {
-    String nameLine = FileUtilities.fileToLines(tgt)[0];
+    String nameLine = FileUtilities.fileToLines(tgt).get(0);
     String[] parts = nameLine.substring(1).trim().split("\\=");
     String[] names = parts[1].split("\\,");
     

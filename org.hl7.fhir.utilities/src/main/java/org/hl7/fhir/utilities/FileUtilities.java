@@ -125,9 +125,13 @@ public class FileUtilities {
     return Files.readAllBytes(Path.of(srcFile));
   }
 
-  public static String[] fileToLines(String file) throws FileNotFoundException, IOException {
+  public static List<String> fileToLines(String file) throws FileNotFoundException, IOException {
     Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
-    return LINE_SEP_PATTERN.split(fileToString(file));
+    List<String> res = new ArrayList<String>();
+    for (String s : LINE_SEP_PATTERN.split(fileToString(file))) {
+      res.add(s);
+    }
+    return res;
   }
 
   public static String[] fileToLines(File file) throws FileNotFoundException, IOException {
