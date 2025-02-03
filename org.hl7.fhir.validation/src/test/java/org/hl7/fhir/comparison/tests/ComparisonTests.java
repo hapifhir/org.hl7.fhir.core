@@ -242,7 +242,7 @@ public class ComparisonTests {
     String an = Utilities.path("[tmp]", "comparison", name);
     FileUtilities.stringToFile(output, an);
     String expected = loadResource(name);
-    String en = Utilities.path("[tmp]", "comparison", Utilities.changeFileExt(name, ".expected.html"));
+    String en = Utilities.path("[tmp]", "comparison", FileUtilities.changeFileExt(name, ".expected.html"));
     FileUtilities.stringToFile(expected, en);
     
     String msg = new CompareUtilities().checkXMLIsSame(id, en, an);

@@ -441,4 +441,31 @@ public class FileUtilities {
   
   }
 
+  public static String changeFileExt(String name, String ext) {
+    if (name.lastIndexOf('.') > -1)
+      return name.substring(0, name.lastIndexOf('.')) + ext;
+    else
+      return name + ext;
+  }
+
+  public static boolean isIgnorableFile(File file) {
+    return Utilities.existsInList(file.getName(), ".DS_Store");
+  }
+
+  public static void deleteEmptyFolders(File df) {
+    for (File f : df.listFiles()) {
+      if (f.isDirectory()) {
+        deleteEmptyFolders(f);
+      }
+    }
+    boolean empty = true;
+    for (File f : df.listFiles()) {
+      empty = false;
+      break;
+    }
+    if (empty) {
+      df.delete();
+    }
+  }
+
 }

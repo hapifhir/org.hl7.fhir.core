@@ -391,7 +391,7 @@ public class NPMPackageGenerator {
     FileUtilities.bytesToFile(OutputStream.toByteArray(), destFile);
     // also, for cache management on current builds, generate a little manifest
     String json = JsonParser.compose(packageManifest, true);
-    FileUtilities.stringToFile(json, Utilities.changeFileExt(destFile, ".manifest.json"));
+    FileUtilities.stringToFile(json, FileUtilities.changeFileExt(destFile, ".manifest.json"));
   }
 
   private void buildIndexJson() throws IOException {
