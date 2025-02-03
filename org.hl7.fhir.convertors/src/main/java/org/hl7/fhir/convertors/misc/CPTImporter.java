@@ -31,6 +31,7 @@ import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.CSVReader;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
@@ -91,12 +92,12 @@ public class CPTImporter {
     System.out.println(k);
     
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst), cs); 
-    produceDB(Utilities.changeFileExt(dst, ".db"), cs);
+    produceDB(FileUtilities.changeFileExt(dst, ".db"), cs);
     
     cs.setContent(CodeSystemContentMode.FRAGMENT);
     cs.getConcept().removeIf(cc -> !Utilities.existsInList(cc.getCode(), "metadata-kinds", "metadata-designations", "99202", "99203", "0001A", "99252", "25", "P1", "1P", "F1", "95"));
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.changeFileExt(dst, "-fragment.json")), cs); 
-    produceDB(Utilities.changeFileExt(dst, "-fragment.db"), cs);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(FileUtilities.changeFileExt(dst, "-fragment.json")), cs); 
+    produceDB(FileUtilities.changeFileExt(dst, "-fragment.db"), cs);
   }
 
   private String processAppendixP(CodeSystem cs) {

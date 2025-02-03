@@ -108,9 +108,9 @@ public class ToolsHelper {
 			String srcDir = lines.get(0);
 			lines.remove(0);
 			processExamples(srcDir, lines);
-			FileUtilities.stringToFile("ok", Utilities.changeFileExt(args[1], ".out"));
+			FileUtilities.stringToFile("ok", FileUtilities.changeFileExt(args[1], ".out"));
 		} catch (Exception e) {
-			FileUtilities.stringToFile(e.getMessage(), Utilities.changeFileExt(args[1], ".out"));			
+			FileUtilities.stringToFile(e.getMessage(), FileUtilities.changeFileExt(args[1], ".out"));			
 		}
 	}
 
@@ -284,7 +284,7 @@ public class ToolsHelper {
 		parser.setOutputStyle(OutputStyle.PRETTY);
 		parser.compose(json, rf);
 		json.close();
-		FileUtilities.stringToFile(new String(json.toByteArray()), Utilities.changeFileExt(dest.getAbsolutePath(), ".json"));
+		FileUtilities.stringToFile(new String(json.toByteArray()), FileUtilities.changeFileExt(dest.getAbsolutePath(), ".json"));
 		rf = pj.parse(new ByteArrayInputStream(json.toByteArray()));
 		FileOutputStream s = ManagedFileAccess.outStream(dest);
 		new XmlParser().compose(s, rf, true);
@@ -295,9 +295,9 @@ public class ToolsHelper {
 		FileInputStream in;
 		File source = ManagedFileAccess.csfile(args[1]);
 		File dest = ManagedFileAccess.csfile(args[2]);
-		File destc = ManagedFileAccess.csfile(Utilities.changeFileExt(args[2], ".canonical.json"));
+		File destc = ManagedFileAccess.csfile(FileUtilities.changeFileExt(args[2], ".canonical.json"));
 		File destt = ManagedFileAccess.csfile(args[2]+".tmp");
-		File destr = ManagedFileAccess.csfile(Utilities.changeFileExt(args[2], ".ttl"));
+		File destr = ManagedFileAccess.csfile(FileUtilities.changeFileExt(args[2], ".ttl"));
 
 		if (!source.exists())        
 			throw new FHIRException("Source File \""+source.getAbsolutePath()+"\" not found");
@@ -352,7 +352,7 @@ public class ToolsHelper {
 				String filename = rootDir + n + ".xml";
 				// 1. produce canonical XML
 				CSFileInputStream source = new CSFileInputStream(filename);
-				FileOutputStream dest = ManagedFileAccess.outStream(Utilities.changeFileExt(filename, ".canonical.xml"));
+				FileOutputStream dest = ManagedFileAccess.outStream(FileUtilities.changeFileExt(filename, ".canonical.xml"));
 				XmlParser p = new XmlParser();
 				Resource r = p.parse(source);
 				XmlParser cxml = new XmlParser();
@@ -361,18 +361,18 @@ public class ToolsHelper {
 
 				// 2. produce JSON
 				source = new CSFileInputStream(filename);
-				dest = ManagedFileAccess.outStream(Utilities.changeFileExt(filename, ".json"));
+				dest = ManagedFileAccess.outStream(FileUtilities.changeFileExt(filename, ".json"));
 				r = p.parse(source);
 				JsonParser json = new JsonParser();
 				json.setOutputStyle(OutputStyle.PRETTY);
 				json.compose(dest, r);
 				json = new JsonParser();
 				json.setOutputStyle(OutputStyle.CANONICAL);
-				dest = ManagedFileAccess.outStream(Utilities.changeFileExt(filename, ".canonical.json"));
+				dest = ManagedFileAccess.outStream(FileUtilities.changeFileExt(filename, ".canonical.json"));
 				json.compose(dest, r);
 				
 				// 2. produce JSON
-				dest = ManagedFileAccess.outStream(Utilities.changeFileExt(filename, ".ttl"));
+				dest = ManagedFileAccess.outStream(FileUtilities.changeFileExt(filename, ".ttl"));
 				RdfParserBase rdf = new RdfParser();
 				rdf.compose(dest, r);
 			} catch (Exception e) {
@@ -430,9 +430,9 @@ public class ToolsHelper {
 			String dstDir = lines.get(0).trim();
 			lines.remove(0);
 			testRoundTrip(srcDir, dstDir, lines);
-			FileUtilities.stringToFile("ok", Utilities.changeFileExt(args[1], ".out"));
+			FileUtilities.stringToFile("ok", FileUtilities.changeFileExt(args[1], ".out"));
 		} catch (Exception e) {
-			FileUtilities.stringToFile(e.getMessage(), Utilities.changeFileExt(args[1], ".out"));			
+			FileUtilities.stringToFile(e.getMessage(), FileUtilities.changeFileExt(args[1], ".out"));			
 		}
 	}
 }

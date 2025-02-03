@@ -1815,22 +1815,6 @@ public class Utilities {
     return baseText + "\r\n" + derivedText.substring(3);
   }
 
-  public static void deleteEmptyFolders(File df) {
-    for (File f : df.listFiles()) {
-      if (f.isDirectory()) {
-        deleteEmptyFolders(f);
-      }
-    }
-    boolean empty = true;
-    for (File f : df.listFiles()) {
-      empty = false;
-      break;
-    }
-    if (empty) {
-      df.delete();
-    }
-  }
-
   public static String getRelativeUrlPath(String root, String path) {
     String res = path.substring(root.length());
     if (res.startsWith("/")) {
@@ -1978,10 +1962,6 @@ public class Utilities {
     return txt.split("\\r?\\n|\\r");
   }
 
-  public static boolean isIgnorableFile(File file) {
-    return Utilities.existsInList(file.getName(), ".DS_Store");
-  }
-
   public static String rightTrim(String s) {
     int i = s.length()-1;
     while (i > 0 && Character.isWhitespace(s.charAt(i))) {
@@ -2102,13 +2082,6 @@ public class Utilities {
     return result.length() == 0 ? null : result.toString(); 
   }
 
-  public static String changeFileExt(String name, String ext) {
-    if (name.lastIndexOf('.') > -1)
-      return name.substring(0, name.lastIndexOf('.')) + ext;
-    else
-      return name + ext;
-  }
-  
   public static String getDirectoryForURL(String url) {
     return url.contains("/") && url.lastIndexOf("/") > 10 ? url.substring(0, url.lastIndexOf("/")) : url;
   }

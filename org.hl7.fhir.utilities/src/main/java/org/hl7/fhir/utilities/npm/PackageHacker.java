@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -163,7 +162,7 @@ public class PackageHacker {
     System.out.print("save? y/n: ");
     int r = System.in.read();
     if (r == 'y') {
-      f.renameTo(ManagedFileAccess.file(Utilities.changeFileExt(name, ".tgz.bak")));
+      f.renameTo(ManagedFileAccess.file(FileUtilities.changeFileExt(name, ".tgz.bak")));
       FileOutputStream fso = ManagedFileAccess.outStream(f);
       try {
         pck.save(fso);

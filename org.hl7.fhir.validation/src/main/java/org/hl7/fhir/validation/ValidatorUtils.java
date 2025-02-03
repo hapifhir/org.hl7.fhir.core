@@ -32,6 +32,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.utilities.ByteProvider;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -189,7 +190,7 @@ public class ValidatorUtils {
       } else {
         for (File fileInDirectory : file.listFiles()) {
           if (fileInDirectory.isFile()) {
-            if (!Utilities.isIgnorableFile(fileInDirectory)) {
+            if (!FileUtilities.isIgnorableFile(fileInDirectory)) {
               addSourceFile(refs, fileInDirectory);
             }
           }

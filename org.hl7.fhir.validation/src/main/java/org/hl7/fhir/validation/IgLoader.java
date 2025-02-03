@@ -305,7 +305,7 @@ public class IgLoader implements IValidationEngineLoader {
       Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), FileUtilities.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, ByteProvider> res = new HashMap<String, ByteProvider>();
-        res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forFile(src));
+        res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forFile(src));
         return res;
       }
     } else if ((src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) || src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX)) && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
@@ -483,7 +483,7 @@ public class IgLoader implements IValidationEngineLoader {
       Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), FileUtilities.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, ByteProvider> res = new HashMap<String, ByteProvider>();
-        res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forFile(src));
+        res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forFile(src));
         return res;
       }
     } else if ((src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) || src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX)) && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
@@ -643,7 +643,7 @@ public class IgLoader implements IValidationEngineLoader {
     Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), cnt, src, true);
     if (fmt != null) {
       Map<String, ByteProvider> res = new HashMap<String, ByteProvider>();
-      res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forBytes(cnt));
+      res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forBytes(cnt));
       return res;
     }
     String fn = Utilities.path("[tmp]", "fetch-resource-error-content.bin");
@@ -712,7 +712,7 @@ public class IgLoader implements IValidationEngineLoader {
     Manager.FhirFormat fmt = checkFormat(cnt, src);
     if (fmt != null) {
       Map<String, ByteProvider> res = new HashMap<>();
-      res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forBytes(cnt));
+      res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forBytes(cnt));
       return res;
     }
     throw new FHIRException("Unable to read content from " + src + ": cannot determine format");
@@ -733,7 +733,7 @@ public class IgLoader implements IValidationEngineLoader {
       } else if (!ff.isDirectory() && !isIgnoreFile(ff)) {
         Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), FileUtilities.fileToBytes(ff), ff.getAbsolutePath(), true);
         if (fmt != null) {
-          res.put(Utilities.changeFileExt(ff.getName(), "." + fmt.getExtension()), ByteProvider.forFile(ff));
+          res.put(FileUtilities.changeFileExt(ff.getName(), "." + fmt.getExtension()), ByteProvider.forFile(ff));
         }
       }
     }

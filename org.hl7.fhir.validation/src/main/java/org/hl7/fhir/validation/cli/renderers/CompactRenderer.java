@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
@@ -26,7 +27,7 @@ public class CompactRenderer extends ValidationOutputRenderer {
   @Override
   public void render(OperationOutcome op) throws IOException {
     if (split) {
-      File file = ManagedFileAccess.file(Utilities.path(dir.getAbsolutePath(), Utilities.changeFileExt(tail(ToolingExtensions.readStringExtension(op, ToolingExtensions.EXT_OO_FILE)), ".txt")));
+      File file = ManagedFileAccess.file(Utilities.path(dir.getAbsolutePath(), FileUtilities.changeFileExt(tail(ToolingExtensions.readStringExtension(op, ToolingExtensions.EXT_OO_FILE)), ".txt")));
       if (op.isSuccess()) {
         if (file.exists()) {
           file.delete();
