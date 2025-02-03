@@ -108,6 +108,8 @@ public class CodeSystemValidator extends BaseValidator {
 
   private static final String VS_PROP_STATUS = null;
   private Set<String> propertyCodes = new HashSet<String>();
+  private boolean noDisplayWarningDone;
+  private boolean noDefinitionWarningDone;
 
   public CodeSystemValidator(BaseValidator parent) {
     super(parent);
@@ -505,6 +507,21 @@ public class CodeSystemValidator extends BaseValidator {
     }
     codes.add(code);
 
+    if (isHL7(cs)) {
+      if (!noDisplayWarningDone) {
+        if (!concept.hasChild("display")) {          
+          warning(errors, "2025-01-31", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CONCEPT_NO_DISPLAY, code);
+          noDisplayWarningDone = true;
+        }
+      }
+      if (!noDefinitionWarningDone) {
+        if (!concept.hasChild("definition")) {          
+          warning(errors, "2025-01-31", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CONCEPT_NO_DEFINITION, code);
+          noDefinitionWarningDone = true;
+        }
+      }
+    }
+    
     if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.CODESYSTEM_DESIGNATION_CHECKS, stack.getLiteralPath(), cs, concept) == SpecialValidationAction.CHECK_RULE) {
 
       if (csB != null && !Utilities.noString(display)) {

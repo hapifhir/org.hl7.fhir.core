@@ -369,17 +369,18 @@ public class Element extends Base implements NamedItem {
 
   public List<Element> getChildren(String name) {
     List<Element> res = new ArrayList<Element>(); 
-    if (children.size() > 20) {
-      List<Element> l = children.getByName(name);
-      if (l != null) {
-        res.addAll(l);
-      }
-    } else {
-      if (children != null)
+    if (children != null) {
+      if (children.size() > 20) {
+        List<Element> l = children.getByName(name);
+        if (l != null) {
+          res.addAll(l);
+        }
+      } else {
         for (Element child : children) {
           if (name.equals(child.getName()))
             res.add(child);
         }
+      }
     }
 		return res;
 	}
@@ -1684,5 +1685,9 @@ public class Element extends Base implements NamedItem {
         child.stripLocations();
       }
     }
+  }
+
+  public void sortChildren(Comparator<Element> sorter) {
+    children.sort(sorter);
   }
 }
