@@ -30,7 +30,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -149,8 +149,8 @@ private static TxTestData testData;
         String vsj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
         String diff = new CompareUtilities(modes(), ext).checkJsonSrcIsSame(id, resp, vsj);
         if (diff != null) {
-          Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-          TextFile.stringToFile(vsj, fp);        
+          FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+          FileUtilities.stringToFile(vsj, fp);        
         }
         Assertions.assertTrue(diff == null, diff);
       }
@@ -201,8 +201,8 @@ private static TxTestData testData;
       String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
       String diff = new CompareUtilities(modes(), ext).checkJsonSrcIsSame(id, resp, ooj);
       if (diff != null) {
-        Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-        TextFile.stringToFile(ooj, fp);        
+        FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+        FileUtilities.stringToFile(ooj, fp);        
       }
       Assertions.assertTrue(diff == null, diff);
     }

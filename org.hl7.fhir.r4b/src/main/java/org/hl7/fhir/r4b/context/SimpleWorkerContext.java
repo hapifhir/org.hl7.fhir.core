@@ -74,7 +74,7 @@ import org.hl7.fhir.r4b.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r4b.terminologies.TerminologyClient;
 import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.r4b.utils.XVerExtensionManager;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -485,7 +485,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       }
     }
     for (String s : pi.list("other")) {
-      binaries.put(s, TextFile.streamToBytes(pi.load("other", s)));
+      binaries.put(s, FileUtilities.streamToBytes(pi.load("other", s)));
     }
     if (version == null) {
       version = pi.version();

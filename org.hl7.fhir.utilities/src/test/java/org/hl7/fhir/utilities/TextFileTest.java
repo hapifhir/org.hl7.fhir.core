@@ -15,7 +15,7 @@ import org.junit.jupiter.api.*;
  import static org.junit.jupiter.api.Assertions.*;
 
  /**
-  * Test bench for {@link TextFile}.
+  * Test bench for {@link FileUtilities}.
   *
   * @author Quentin Ligier
   **/
@@ -45,14 +45,14 @@ import org.junit.jupiter.api.*;
 
    @Test
    void testReadAllLines() throws IOException {
-     final var readLines = TextFile.readAllLines(readFile.getAbsolutePath());
-     assertEquals(3, readLines.size());
+     final var readLines = FileUtilities.fileToLines(readFile.getAbsolutePath());
+     assertEquals(3, readLines.length);
      assertEquals(SAMPLE_CONTENT_LINES, readLines);
    }
 
    @Test
    void testBytesToString1() throws IOException {
-     final var converted = TextFile.bytesToString(SAMPLE_CONTENT.getBytes(StandardCharsets.UTF_8));
+     final var converted = FileUtilities.bytesToString(SAMPLE_CONTENT.getBytes(StandardCharsets.UTF_8));
      assertEquals(SAMPLE_CONTENT, converted);
    }
 
@@ -63,63 +63,63 @@ import org.junit.jupiter.api.*;
      final var bytesWithBom = Arrays.copyOf(bomBytes, bomBytes.length + bytesWithoutBom.length);
      System.arraycopy(bytesWithoutBom, 0, bytesWithBom, bomBytes.length, bytesWithoutBom.length);
 
-     var converted = TextFile.bytesToString(bytesWithoutBom, true);
+     var converted = FileUtilities.bytesToString(bytesWithoutBom, true);
      assertEquals(SAMPLE_CONTENT, converted);
 
-     converted = TextFile.bytesToString(bytesWithoutBom, false);
+     converted = FileUtilities.bytesToString(bytesWithoutBom, false);
      assertEquals(SAMPLE_CONTENT, converted);
 
-     converted = TextFile.bytesToString(bytesWithBom, true);
+     converted = FileUtilities.bytesToString(bytesWithBom, true);
      assertEquals(SAMPLE_CONTENT, converted);
 
-     converted = TextFile.bytesToString(bytesWithBom, false);
+     converted = FileUtilities.bytesToString(bytesWithBom, false);
      assertEquals(BOM + SAMPLE_CONTENT, converted);
    }
 
    @Test
    void testFileToString1() throws IOException {
-     final var read = TextFile.fileToString(readFile);
+     final var read = FileUtilities.fileToString(readFile);
      assertEquals(SAMPLE_CONTENT, read);
    }
 
    @Test
    void testFileToString2() throws IOException {
-     final var read = TextFile.fileToString(readFile.getAbsolutePath());
+     final var read = FileUtilities.fileToString(readFile.getAbsolutePath());
      assertEquals(SAMPLE_CONTENT, read);
    }
 
    @Test
    void testFileToBytes1() throws IOException {
-     final var read = TextFile.fileToBytes(readFile);
+     final var read = FileUtilities.fileToBytes(readFile);
      assertArrayEquals(SAMPLE_CONTENT.getBytes(StandardCharsets.UTF_8), read);
    }
 
    @Test
    void testFileToBytesNCS() throws IOException {
-     final var read = TextFile.fileToBytesNCS(readFile.getAbsolutePath());
+     final var read = FileUtilities.fileToBytesNCS(readFile.getAbsolutePath());
      assertArrayEquals(SAMPLE_CONTENT.getBytes(StandardCharsets.UTF_8), read);
    }
 
    @Test
    void testFileToBytes2() throws IOException {
-     final var read = TextFile.fileToBytes(readFile.getAbsolutePath());
+     final var read = FileUtilities.fileToBytes(readFile.getAbsolutePath());
      assertArrayEquals(SAMPLE_CONTENT.getBytes(StandardCharsets.UTF_8), read);
    }
 
    @Test
    void testBytesToFile() throws IOException {
      final var writeFile = createTempFile();
-     TextFile.bytesToFile(BOM_BYTES, writeFile);
+     FileUtilities.bytesToFile(BOM_BYTES, writeFile);
      assertArrayEquals(BOM_BYTES, Files.readAllBytes(writeFile.toPath()));
    }
 
    @Test
    void testAppendBytesToFile() throws IOException {
      final var writeFile = createTempFile();
-     TextFile.bytesToFile(BOM_BYTES, writeFile);
+     FileUtilities.bytesToFile(BOM_BYTES, writeFile);
      assertArrayEquals(BOM_BYTES, Files.readAllBytes(writeFile.toPath()));
 
-     TextFile.appendBytesToFile(SAMPLE_CONTENT.getBytes(StandardCharsets.UTF_8), writeFile.getAbsolutePath());
+     FileUtilities.appendBytesToFile(SAMPLE_CONTENT.getBytes(StandardCharsets.UTF_8), writeFile.getAbsolutePath());
 
      ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
      outputStream.write( BOM_BYTES );
@@ -136,17 +136,17 @@ import org.junit.jupiter.api.*;
    @Test
    void testStringToFile() throws IOException {
      final var writeFile = createTempFile();
-     TextFile.stringToFileWithBOM(SAMPLE_CONTENT, writeFile);
+     FileUtilities.stringToFileWithBOM(SAMPLE_CONTENT, writeFile);
      assertEquals(BOM + SAMPLE_CONTENT, Files.readString(writeFile.toPath()));
 
-     TextFile.stringToFile(SAMPLE_CONTENT, writeFile);
+     FileUtilities.stringToFile(SAMPLE_CONTENT, writeFile);
      assertEquals(SAMPLE_CONTENT, Files.readString(writeFile.toPath()));
    }
 
    @Test
    void testWriteAllLines() throws IOException {
      final var writeFile = createTempFile();
-     TextFile.writeAllLines(writeFile.getAbsolutePath(), SAMPLE_CONTENT_LINES);
+     FileUtilities.linesToFile(writeFile.getAbsolutePath(), SAMPLE_CONTENT_LINES);
      assertEquals(SAMPLE_CONTENT_LINES, Files.readAllLines(writeFile.toPath()));
    }
 

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -240,9 +240,9 @@ public class PackageHacker {
   private void addContentFrom(String folder, Map<String, byte[]> content) throws FileNotFoundException, IOException {
     for (File f : ManagedFileAccess.file(folder).listFiles()) {
       if (f.getName().endsWith(".json") && !f.getName().endsWith(".canonical.json")) {
-        String cnt = TextFile.fileToString(f);
+        String cnt = FileUtilities.fileToString(f);
         if (cnt.contains("\"resourceType\"")) {
-          content.put("package/"+f.getName(), TextFile.fileToBytes(f));
+          content.put("package/"+f.getName(), FileUtilities.fileToBytes(f));
         }
       }
     }

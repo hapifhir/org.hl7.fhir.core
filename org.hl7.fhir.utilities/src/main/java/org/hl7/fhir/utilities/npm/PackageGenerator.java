@@ -37,7 +37,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -92,7 +92,7 @@ public class PackageGenerator {
   public PackageGenerator(OutputStream stream, InputStream template) throws IOException {
     super();
     this.stream = stream;
-    object = JsonParser.parseObject(TextFile.streamToString(template));
+    object = JsonParser.parseObject(FileUtilities.streamToString(template));
 
   }
 

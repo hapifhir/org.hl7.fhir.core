@@ -9,7 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
@@ -239,7 +239,7 @@ public class PackageVisitor {
 
           HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), repo+"/package.tgz?nocache=" + System.currentTimeMillis());
           res.checkThrowException();
-          TextFile.bytesToFile(res.getContent(), co);
+          FileUtilities.bytesToFile(res.getContent(), co);
         }
         NpmPackage npm = NpmPackage.fromPackage(ManagedFileAccess.inStream(co));          
         String fv = npm.fhirVersion();
@@ -263,7 +263,7 @@ public class PackageVisitor {
                 for (String s : npm.listResources(type)) {
                   c++;
                   try {
-                    processor.processResource(ctxt, context, type, s, TextFile.streamToBytes(npm.load("package", s)));
+                    processor.processResource(ctxt, context, type, s, FileUtilities.streamToBytes(npm.load("package", s)));
                   } catch (Exception e) {
                     System.out.println("####### Error loading "+pid+"#current["+fv+"]/"+type+" ####### "+e.getMessage());
                     //                e.printStackTrace();
@@ -383,7 +383,7 @@ public class PackageVisitor {
           for (PackagedResourceFile p : npm.listAllResources(resourceTypes)) {
             c++;
             try {
-              processor.processResource(ctxt, context, p.getResourceType(), p.getFilename(), TextFile.streamToBytes(npm.load(p.getFolder(), p.getFilename())));
+              processor.processResource(ctxt, context, p.getResourceType(), p.getFilename(), FileUtilities.streamToBytes(npm.load(p.getFolder(), p.getFilename())));
             } catch (Exception e) {
               System.out.println("####### Error loading "+pid+"#"+v +"["+fv+"]/"+p.getResourceType()+" ####### "+e.getMessage());
               e.printStackTrace();

@@ -435,7 +435,7 @@ class UtilitiesTest {
     makeDir (Utilities.path(dst, "sub"));
     makeFile(Utilities.path(dst, "sub", "test.txt"), "dest2");
     
-    Utilities.copyDirectory(src, dst, null);
+    FileUtilities.copyDirectory(src, dst, null);
     
     checkDir (dst);
     checkFile(Utilities.path(dst, "Test.txt"), "source1");
@@ -445,7 +445,7 @@ class UtilitiesTest {
 
   private void checkFile(String path, String content) throws IOException {
     Assertions.assertTrue(ManagedFileAccess.csfile(path).exists());
-    Assertions.assertEquals(content, TextFile.fileToString(path));
+    Assertions.assertEquals(content, FileUtilities.fileToString(path));
   }
 
   private void checkDir(String path) throws IOException {
@@ -453,12 +453,12 @@ class UtilitiesTest {
   }
 
   private void makeFile(String path, String content) throws IOException {
-    TextFile.stringToFile(content, path);
+    FileUtilities.stringToFile(content, path);
   }
 
   private void makeDir(String path) throws IOException {
-    Utilities.createDirectory(path);
-    Utilities.clearDirectory(path);
+    FileUtilities.createDirectory(path);
+    FileUtilities.clearDirectory(path);
   }
 
   @Test

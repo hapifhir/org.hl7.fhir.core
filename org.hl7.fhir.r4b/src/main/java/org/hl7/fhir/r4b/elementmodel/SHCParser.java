@@ -19,7 +19,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.formats.IParser.OutputStyle;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JsonUtilities;
@@ -64,7 +64,7 @@ public class SHCParser extends ParserBase {
   public List<NamedElement> parse(InputStream stream)
       throws IOException, FHIRFormatError, DefinitionException, FHIRException {
     List<NamedElement> res = new ArrayList<>();
-    String src = TextFile.streamToString(stream).trim();
+    String src = FileUtilities.streamToString(stream).trim();
     List<String> list = new ArrayList<>();
     String pfx = null;
     if (src.startsWith("{")) {
@@ -296,7 +296,7 @@ public class SHCParser extends ParserBase {
     if ("DEF".equals(JsonUtilities.str(res.header, "zip"))) {
       payloadJson = inflate(payloadJson);
     }
-    res.payload = JsonTrackingParser.parse(TextFile.bytesToString(payloadJson), res.map, true);
+    res.payload = JsonTrackingParser.parse(FileUtilities.bytesToString(payloadJson), res.map, true);
     return res;
   }
 

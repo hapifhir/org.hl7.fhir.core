@@ -24,7 +24,7 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.testfactory.ProfileBasedFactory;
 import org.hl7.fhir.r5.testfactory.TestDataFactory;
 import org.hl7.fhir.r5.testfactory.TestDataHostServices;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -59,26 +59,26 @@ public class TestInstanceGenerationTester {
     
     // set up the space
     String path = Utilities.path("[tmp]", "instance-generation");
-    Utilities.createDirectory(path);
-    Utilities.clearDirectory(path);
+    FileUtilities.createDirectory(path);
+    FileUtilities.clearDirectory(path);
 
     String log = Utilities.path(path, "log");
-    Utilities.createDirectory(log);
+    FileUtilities.createDirectory(log);
 
     String output = Utilities.path(path, "output");
-    Utilities.createDirectory(output);
+    FileUtilities.createDirectory(output);
 
     String expected = Utilities.path(path, "expected");
-    Utilities.createDirectory(expected);
+    FileUtilities.createDirectory(expected);
           
     
     for (String name : Utilities.strings("countries.csv", "data.csv", "encounter.liquid", "factories.json", "patient-cases.xlsx", "patient-genders.csv", "patient.liquid", "test-cases.liquid")) {
       byte[] fsrc = TestingUtilities.loadTestResourceBytes("rX", "instance-generation", "factories", name);
-      TextFile.bytesToFile(fsrc, Utilities.path(path, name));
+      FileUtilities.bytesToFile(fsrc, Utilities.path(path, name));
     }
     for (String name : Utilities.strings("Patient-1.json","Patient2-1.json", "Encounter-1.json", "MedicationStatement-1.json", "Observation-bp-1.json", "Observation-weight-1.json")) {
       byte[] fsrc = TestingUtilities.loadTestResourceBytes("rX", "instance-generation", "expected", name);
-      TextFile.bytesToFile(fsrc, Utilities.path(path, "expected", name));
+      FileUtilities.bytesToFile(fsrc, Utilities.path(path, "expected", name));
     }
     JsonObject json = JsonParser.parseObjectFromFile(Utilities.path(path, "factories.json"));
     for (JsonObject fact : json.forceArray("factories").asJsonObjects()) {
@@ -86,7 +86,7 @@ public class TestInstanceGenerationTester {
       tdf.setTesting(true); // no randomness
       System.out.println("Execute Test Data Factory '"+tdf.getName()+"'. Log in "+tdf.statedLog());
       tdf.execute();
-      System.out.println(TextFile.fileToString(Utilities.path(log, tdf.statedLog())));
+      System.out.println(FileUtilities.fileToString(Utilities.path(log, tdf.statedLog())));
     }
     
     // now, check output
@@ -99,7 +99,7 @@ public class TestInstanceGenerationTester {
     }
     
     for (String name : Utilities.strings("Patient-1.json", "Patient2-1.json", "Encounter-1.json", "MedicationStatement-1.json", "Observation-bp-1.json", "Observation-weight-1.json")) {
-      String diff = new CompareUtilities(null, null, null).checkJsonSrcIsSame(name, TextFile.fileToString(Utilities.path(expected, name)), TextFile.fileToString(Utilities.path(output, name)), false);
+      String diff = new CompareUtilities(null, null, null).checkJsonSrcIsSame(name, FileUtilities.fileToString(Utilities.path(expected, name)), FileUtilities.fileToString(Utilities.path(output, name)), false);
       Assertions.assertNull(diff, "unexpected difference for "+name);
     }
   }

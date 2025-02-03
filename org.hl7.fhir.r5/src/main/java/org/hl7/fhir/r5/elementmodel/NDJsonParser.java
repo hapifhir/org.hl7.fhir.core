@@ -43,7 +43,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonCreator;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -68,7 +68,7 @@ public class NDJsonParser extends ParserBase {
 
   @Override
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
-    String source = TextFile.streamToString(inStream);
+    String source = FileUtilities.streamToString(inStream);
     int length = source.length();
     int start = 0;
     int cursor = start;

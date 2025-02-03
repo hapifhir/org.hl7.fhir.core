@@ -11,7 +11,7 @@ import org.hl7.fhir.r4.model.CodeSystem.PropertyType;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -62,7 +62,7 @@ public class SPDXImporter {
     new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(args[1]), cs);
     b = new StringBuilder();
     generateEnum("SPDXLicense", cs);
-    TextFile.stringToFile(b.toString(), Utilities.changeFileExt(args[1], ".java"));
+    FileUtilities.stringToFile(b.toString(), Utilities.changeFileExt(args[1], ".java"));
   }
 
   private void write(String s) {

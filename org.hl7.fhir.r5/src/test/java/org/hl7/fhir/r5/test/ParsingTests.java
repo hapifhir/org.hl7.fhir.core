@@ -14,7 +14,7 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.junit.jupiter.api.Assertions;
@@ -51,7 +51,7 @@ public class ParsingTests {
   @MethodSource("data")
   public void test(String name) throws Exception {
 //    System.out.println(name);
-    byte[] b = TextFile.streamToBytes(npm.load("package", name));
+    byte[] b = FileUtilities.streamToBytes(npm.load("package", name));
     String src = new String(b);
     Resource r = new JsonParser().parse(b);
     b = new XmlParser().composeBytes(r);

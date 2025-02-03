@@ -76,7 +76,7 @@ import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.test.utils.ClassesLoadedFlags;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -242,9 +242,9 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   private JsonObject loadJson(InputStream input) throws JsonSyntaxException, IOException {
     // the GSON parser is the fastest, but the least robust 
     if (allowComments || allowUnknownContent) {
-      return JsonTrackingParser.parse(TextFile.streamToString(input), null, allowUnknownContent, allowComments);      
+      return JsonTrackingParser.parse(FileUtilities.streamToString(input), null, allowUnknownContent, allowComments);      
     } else {
-      return (JsonObject) com.google.gson.JsonParser.parseString(TextFile.streamToString(input));
+      return (JsonObject) com.google.gson.JsonParser.parseString(FileUtilities.streamToString(input));
     }
   }
   

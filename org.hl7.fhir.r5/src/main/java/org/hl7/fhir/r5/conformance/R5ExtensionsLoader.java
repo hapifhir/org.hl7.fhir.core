@@ -25,7 +25,7 @@ import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.utils.ResourceSorters;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -272,7 +272,7 @@ public class R5ExtensionsLoader {
   }
 
   public byte[] getMap() throws IOException {
-   return pckCore.hasFile("other", "spec.internals") ?  TextFile.streamToBytes(pckCore.load("other", "spec.internals")) : null;
+   return pckCore.hasFile("other", "spec.internals") ?  FileUtilities.streamToBytes(pckCore.load("other", "spec.internals")) : null;
   }
 
   public NpmPackage getPckCore() {

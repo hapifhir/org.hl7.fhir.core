@@ -37,7 +37,7 @@ import org.hl7.fhir.r5.testfactory.dataprovider.TableDataProvider;
 import org.hl7.fhir.r5.testfactory.dataprovider.ValueSetDataProvider;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
@@ -280,12 +280,12 @@ public class TestDataFactory {
       
       if ("true".equals(details.asString("bundle"))) {
         byte[] data = runBundle(profile, factory, tbl);
-        TextFile.bytesToFile(data, Utilities.path(rootFolder, details.asString( "filename")));
+        FileUtilities.bytesToFile(data, Utilities.path(rootFolder, details.asString( "filename")));
       } else {
         while (tbl.nextRow()) {
           if (rowPasses(factory)) {
             byte[] data = factory.generateFormat(profile, format);
-            TextFile.bytesToFile(data,  Utilities.path(rootFolder, getFileName(details.asString( "filename"), tbl.columns(), tbl.cells())));
+            FileUtilities.bytesToFile(data,  Utilities.path(rootFolder, getFileName(details.asString( "filename"), tbl.columns(), tbl.cells())));
           }
         }
       }
@@ -317,7 +317,7 @@ public class TestDataFactory {
       }
       if (local == null || !date.equals(local.asString("date"))) {
         HTTPResult data = ManagedWebAccess.get(Utilities.strings("general"), "http://fhir.org/downloads/"+filename);
-        TextFile.bytesToFile(data.getContent(), localData);
+        FileUtilities.bytesToFile(data.getContent(), localData);
         local = new JsonObject();
         local.set("date", date);
         JsonParser.compose(current, localInfo, true);
@@ -378,7 +378,7 @@ public class TestDataFactory {
 
   public void executeLiquid() throws IOException {
     try {
-      LiquidDocument template = liquid.parse(TextFile.fileToString(Utilities.path(rootFolder, details.asString( "liquid"))), "liquid");
+      LiquidDocument template = liquid.parse(FileUtilities.fileToString(Utilities.path(rootFolder, details.asString( "liquid"))), "liquid");
       log("liquid compiled");
       DataTable dt = loadData(Utilities.path(rootFolder, details.asString( "data")));
       Map<String, DataTable> tables = new HashMap<>();
@@ -397,11 +397,11 @@ public class TestDataFactory {
       logStrings("columns", dt.columns);
       if ("true".equals(details.asString( "bundle"))) {
         byte[] data = runBundle(template, dt);
-        TextFile.bytesToFile(data, Utilities.path(rootFolder, details.asString( "filename")));
+        FileUtilities.bytesToFile(data, Utilities.path(rootFolder, details.asString( "filename")));
       } else {
         for (List<String> row : dt.rows) { 
           byte[] data = runInstance(template, dt.columns, row);
-          TextFile.bytesToFile(data, Utilities.path(rootFolder, getFileName(details.asString( "filename"), dt.columns, row)));
+          FileUtilities.bytesToFile(data, Utilities.path(rootFolder, getFileName(details.asString( "filename"), dt.columns, row)));
         }
       }
     } catch (Exception e) {
@@ -431,7 +431,7 @@ public class TestDataFactory {
       JsonObject j = JsonParser.parseObject(cnt, true);
       return JsonParser.composeBytes(j, true);
     } else {
-      return TextFile.stringToBytes(cnt);
+      return FileUtilities.stringToBytes(cnt);
     }
   }
 
@@ -454,7 +454,7 @@ public class TestDataFactory {
 
   private InputStream bundleShell() throws IOException {
     String bundle = "{\"resourceType\" : \"Bundle\", \"type\" : \"collection\"}";
-    return new ByteArrayInputStream(TextFile.stringToBytes(bundle));
+    return new ByteArrayInputStream(FileUtilities.stringToBytes(bundle));
   }
 
   private DataTable loadData(String path) throws FHIRException, IOException, InvalidFormatException {

@@ -47,7 +47,7 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.StringPair;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode.Location;
@@ -1323,7 +1323,7 @@ public class XhtmlParser {
       return parseFragment();
     } catch (Exception e) {
       if (DEBUG) {
-        TextFile.stringToFile(source, Utilities.path("[tmp]", "html-fail.xhtml"));
+        FileUtilities.stringToFile(source, Utilities.path("[tmp]", "html-fail.xhtml"));
       }
       throw e;
     }

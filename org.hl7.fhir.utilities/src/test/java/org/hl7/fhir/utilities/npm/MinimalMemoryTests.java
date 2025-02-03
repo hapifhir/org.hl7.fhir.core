@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities.npm;
 import java.io.File;
 import java.io.IOException;
 
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;
@@ -14,9 +15,9 @@ public class MinimalMemoryTests {
   public void testFetch() throws IOException {
     File folder = ManagedFileAccess.file(Utilities.path("[tmp]", ".fhir-mm"));
     if (folder.exists()) {
-      Utilities.clearDirectory(folder.getAbsolutePath());
+      FileUtilities.clearDirectory(folder.getAbsolutePath());
     } else {
-      Utilities.createDirectory(folder.getAbsolutePath());
+      FileUtilities.createDirectory(folder.getAbsolutePath());
     }
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(folder.getAbsolutePath()).build();
     pcm.setMinimalMemory(true);

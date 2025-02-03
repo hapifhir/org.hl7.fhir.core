@@ -16,7 +16,7 @@ import lombok.With;
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -218,7 +218,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     locks.getCacheLock().doWriteWithLock(() -> {
 
       if (!(cacheFolder.exists())) {
-        Utilities.createDirectory(cacheFolder.getAbsolutePath());
+        FileUtilities.createDirectory(cacheFolder.getAbsolutePath());
         createIniFile();
       } else {
         if (!iniFileExists()) {
@@ -248,7 +248,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
           File packageDirectory = ManagedFileAccess.file(Utilities.path(cacheFolder, packageDirectoryName));
           if (packageDirectory.exists()) {
-            Utilities.clearDirectory(packageDirectory.getAbsolutePath());
+            FileUtilities.clearDirectory(packageDirectory.getAbsolutePath());
             packageDirectory.delete();
           }
           file.delete();
@@ -274,7 +274,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private void deleteOldTempDirectories() throws IOException {
     for (File f : Objects.requireNonNull(cacheFolder.listFiles())) {
       if (f.isDirectory() && Utilities.isValidUUID(f.getName())) {
-        Utilities.clearDirectory(f.getAbsolutePath());
+        FileUtilities.clearDirectory(f.getAbsolutePath());
         f.delete();
       }
     }
@@ -312,7 +312,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private void clearCache() throws IOException {
     for (File f : Objects.requireNonNull(cacheFolder.listFiles())) {
       if (f.isDirectory()) {
-        Utilities.clearDirectory(f.getAbsolutePath());
+        FileUtilities.clearDirectory(f.getAbsolutePath());
         try {
           FileUtils.deleteDirectory(f);
         } catch (Exception e1) {
@@ -451,7 +451,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       String f = Utilities.path(cacheFolder, id + "#" + version);
       File ff = ManagedFileAccess.file(f);
       if (ff.exists()) {
-        Utilities.clearDirectory(f);
+        FileUtilities.clearDirectory(f);
         ff.delete();
       }
 
@@ -581,17 +581,17 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       try {
         // ok, now we have a lock on it... check if something created it while we were waiting
         if (!ManagedFileAccess.file(packageRoot).exists() || Utilities.existsInList(version, "current", "dev")) {
-          Utilities.createDirectory(packageRoot);
+          FileUtilities.createDirectory(packageRoot);
           try {
-            Utilities.clearDirectory(packageRoot);
+            FileUtilities.clearDirectory(packageRoot);
           } catch (Throwable t) {
             log("Unable to clear directory: " + packageRoot + ": " + t.getMessage() + " - this may cause problems later");
           }
-          Utilities.renameDirectory(tempDir, packageRoot);
+          FileUtilities.renameDirectory(tempDir, packageRoot);
 
           log(" done.");
         } else {
-          Utilities.clearDirectory(tempDir);
+          FileUtilities.clearDirectory(tempDir);
           ManagedFileAccess.file(tempDir).delete();
         }
         if (!id.equals(npm.getNpm().asString("name")) || !version.equals(npm.getNpm().asString("version"))) {
@@ -605,7 +605,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
             npm.getNpm().remove("version");
             npm.getNpm().add("version", version);
           }
-          TextFile.stringToFile(JsonParser.compose(npm.getNpm(), true), Utilities.path(cacheFolder, id + "#" + version, "package", "package.json"));
+          FileUtilities.stringToFile(JsonParser.compose(npm.getNpm(), true), Utilities.path(cacheFolder, id + "#" + version, "package", "package.json"));
         }
         npmPackage = loadPackageInfo(packageRoot);
         if (npmPackage != null && !npmPackage.isIndexed()) {
@@ -616,7 +616,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           // don't leave a half extracted package behind
           log("Clean up package " + packageRoot + " because installation failed: " + e.getMessage());
           e.printStackTrace();
-          Utilities.clearDirectory(packageRoot);
+          FileUtilities.clearDirectory(packageRoot);
           ManagedFileAccess.file(packageRoot).delete();
         } catch (Exception ignored) {
           // nothing
@@ -868,7 +868,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), "https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
     res.checkThrowException();
 
-    buildInfo = (JsonArray) JsonParser.parse(TextFile.bytesToString(res.getContent()));
+    buildInfo = (JsonArray) JsonParser.parse(FileUtilities.bytesToString(res.getContent()));
 
     List<BuildRecord> builds = new ArrayList<>();
 

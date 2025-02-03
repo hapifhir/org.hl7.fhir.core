@@ -87,7 +87,7 @@ import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.SIDUtilities;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -966,7 +966,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         new org.hl7.fhir.dstu3.formats.JsonParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(s, res);
       else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
-        TextFile.stringToStream(org.hl7.fhir.dstu3.utils.StructureMapUtilities.render((org.hl7.fhir.dstu3.model.StructureMap) res), s);
+        FileUtilities.stringToStream(org.hl7.fhir.dstu3.utils.StructureMapUtilities.render((org.hl7.fhir.dstu3.model.StructureMap) res), s);
       else
         throw new FHIRException("Unsupported format for " + fn);
     } else if (VersionUtilities.isR4Ver(version)) {
@@ -976,7 +976,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(s, res);
       else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
-        TextFile.stringToStream(org.hl7.fhir.r4.utils.StructureMapUtilities.render((org.hl7.fhir.r4.model.StructureMap) res), s);
+        FileUtilities.stringToStream(org.hl7.fhir.r4.utils.StructureMapUtilities.render((org.hl7.fhir.r4.model.StructureMap) res), s);
       else
         throw new FHIRException("Unsupported format for " + fn);
     } else if (VersionUtilities.isR2BVer(version)) {
@@ -1001,7 +1001,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         new JsonParser().setOutputStyle(org.hl7.fhir.r5.formats.IParser.OutputStyle.PRETTY).compose(s, r);
       else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
-        TextFile.stringToStream(StructureMapUtilities.render((org.hl7.fhir.r5.model.StructureMap) r), s);
+        FileUtilities.stringToStream(StructureMapUtilities.render((org.hl7.fhir.r5.model.StructureMap) r), s);
       else
         throw new FHIRException("Unsupported format for " + fn);
     } else

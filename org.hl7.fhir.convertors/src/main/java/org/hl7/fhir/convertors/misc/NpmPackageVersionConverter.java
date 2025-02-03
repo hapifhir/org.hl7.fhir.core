@@ -38,7 +38,7 @@ import org.hl7.fhir.r5.model.Enumerations.FHIRVersionEnumFactory;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -143,7 +143,7 @@ public class NpmPackageVersionConverter {
       tar.putArchiveEntry(entry);
       tar.write(cnt);
       tar.closeArchiveEntry();
-      cnt = TextFile.fileToBytes(e.getValue().getDbFilename());
+      cnt = FileUtilities.fileToBytes(e.getValue().getDbFilename());
       ManagedFileAccess.file(e.getValue().getDbFilename()).delete();
       entry = new TarArchiveEntry(e.getKey() + "/.index.db");
       entry.setSize(cnt.length);
@@ -165,7 +165,7 @@ public class NpmPackageVersionConverter {
     bufferedOutputStream.close();
     OutputStream.close();
     byte[] b = OutputStream.toByteArray();
-    TextFile.bytesToFile(b, dest);
+    FileUtilities.bytesToFile(b, dest);
   }
 
   @Nonnull
