@@ -46,7 +46,7 @@ import org.junit.jupiter.api.*;
    @Test
    void testReadAllLines() throws IOException {
      final var readLines = FileUtilities.fileToLines(readFile.getAbsolutePath());
-     assertEquals(3, readLines.length);
+     assertEquals(3, readLines.size());
      assertEquals(SAMPLE_CONTENT_LINES, readLines);
    }
 
