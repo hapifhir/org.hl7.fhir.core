@@ -32,8 +32,6 @@ package org.hl7.fhir.dstu3.context;
 
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -93,6 +91,7 @@ import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nBase;
@@ -869,7 +868,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     ConceptSetComponent vsi) {
     try {
       ValueSet vs = new ValueSet();
-      vs.setUrl(Utilities.makeUuidUrn());
+      vs.setUrl(UUIDUtilities.makeUuidUrn());
       vs.getCompose().addInclude(vsi);
       return verifyCodeExternal(vs,
         new Coding().setSystem(system).setCode(code).setDisplay(display), true);

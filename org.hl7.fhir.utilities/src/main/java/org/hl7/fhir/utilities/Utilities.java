@@ -4,7 +4,6 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -26,7 +25,6 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -35,13 +33,11 @@ import java.util.zip.ZipInputStream;
 import javax.annotation.Nullable;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.Utilities.CaseInsensitiveSorter;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class Utilities {
 
-  private static final String UUID_REGEX = "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}";
   private static final String OID_REGEX = "[0-2](\\.(0|[1-9][0-9]*))+";
   static final String C_TEMP_DIR = "c:\\temp";
 
@@ -865,14 +861,6 @@ public class Utilities {
   }
 
 
-  public static String makeUuidLC() {
-    return UUID.randomUUID().toString().toLowerCase();
-  }
-
-  public static String makeUuidUrn() {
-    return "urn:uuid:" + UUID.randomUUID().toString().toLowerCase();
-  }
-
   public static boolean isURL(String s) {
     boolean ok = s.matches("^http(s{0,1})://[a-zA-Z0-9_/\\-\\.]+\\.([A-Za-z/]{2,5})[a-zA-Z0-9_/\\&\\?\\=\\-\\.\\~\\%]*");
     return ok;
@@ -1474,10 +1462,6 @@ public class Utilities {
 
   static {
     Arrays.sort(illegalChars);
-  }
-
-  public static boolean isValidUUID(String uuid) {
-    return uuid.matches(UUID_REGEX);
   }
 
   public static boolean isValidOID(String oid) {

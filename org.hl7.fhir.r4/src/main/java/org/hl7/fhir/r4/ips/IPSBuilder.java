@@ -3,7 +3,6 @@ package org.hl7.fhir.r4.ips;
 import java.util.Date;
 import java.util.List;
 
-import org.hl7.fhir.r4.ips.IPSBuilder.TypeAndId;
 import org.hl7.fhir.r4.model.Age;
 import org.hl7.fhir.r4.model.Annotation;
 import org.hl7.fhir.r4.model.Bundle;
@@ -29,6 +28,7 @@ import org.hl7.fhir.r4.model.Medication;
 import org.hl7.fhir.r4.model.MedicationStatement;
 import org.hl7.fhir.r4.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
+import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -64,7 +64,7 @@ public class IPSBuilder {
   private static Bundle initBundle() {
     Bundle bnd = new Bundle();
     bnd.getIdentifier().setSystem("urn:ietf:rfc:3986");
-    bnd.getIdentifier().setValue(Utilities.makeUuidUrn());
+    bnd.getIdentifier().setValue(UUIDUtilities.makeUuidUrn());
     bnd.setType(BundleType.DOCUMENT);
     bnd.setTimestamp(new Date());
     return bnd;
@@ -72,7 +72,7 @@ public class IPSBuilder {
   
   private static Composition initComposition(Bundle bnd, String url, Patient pat) {
     Composition cmp = new Composition();
-    cmp.setIdBase(Utilities.makeUuidLC());
+    cmp.setIdBase(UUIDUtilities.makeUuidLC());
     cmp.setStatus(CompositionStatus.FINAL);
     cmp.getType().addCoding().setSystem("http://loinc.org").setCode("60591-5");
     cmp.setDate(new Date());
@@ -146,7 +146,7 @@ public class IPSBuilder {
     }
     if (!ok) {
       Condition cnd = new Condition();
-      cnd.setId(Utilities.makeUuidLC());
+      cnd.setId(UUIDUtilities.makeUuidLC());
 
       cnd.getText().setStatus(NarrativeStatus.GENERATED);
       var rx = cnd.getText().getDiv();
@@ -249,7 +249,7 @@ public class IPSBuilder {
     }
     if (!ok) {
       Condition cnd = new Condition();
-      cnd.setId(Utilities.makeUuidLC());
+      cnd.setId(UUIDUtilities.makeUuidLC());
 
       cnd.getText().setStatus(NarrativeStatus.GENERATED);
       var rx = cnd.getText().getDiv();

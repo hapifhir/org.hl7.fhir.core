@@ -59,10 +59,9 @@ import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.r4.model.DomainResource;
-import org.hl7.fhir.r4.model.Library;
-import org.hl7.fhir.r4.model.Measure;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.TranslationServices;
+import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -522,7 +521,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       ConceptSetComponent vsi) {
     Coding c = new Coding(system, code, display);
     ValueSet vs = new ValueSet();
-    vs.setUrl(Utilities.makeUuidUrn());
+    vs.setUrl(UUIDUtilities.makeUuidUrn());
     vs.getCompose().addInclude(vsi);
     return validateCode(options, c, vs);
   }

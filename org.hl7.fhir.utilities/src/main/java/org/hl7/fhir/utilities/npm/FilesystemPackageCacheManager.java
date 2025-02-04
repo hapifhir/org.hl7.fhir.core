@@ -15,10 +15,7 @@ import lombok.Setter;
 import lombok.With;
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -273,7 +270,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private void deleteOldTempDirectories() throws IOException {
     for (File f : Objects.requireNonNull(cacheFolder.listFiles())) {
-      if (f.isDirectory() && Utilities.isValidUUID(f.getName())) {
+      if (f.isDirectory() && UUIDUtilities.isValidUUID(f.getName())) {
         FileUtilities.clearDirectory(f.getAbsolutePath());
         f.delete();
       }
