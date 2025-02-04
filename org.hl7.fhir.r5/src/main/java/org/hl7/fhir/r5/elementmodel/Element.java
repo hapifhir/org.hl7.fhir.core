@@ -607,13 +607,23 @@ public class Element extends Base implements NamedItem {
         return child;
       }
     }
+    
+    int index = -1;
 
     for (Property p : property.getChildProperties(this.name, type)) {
       if (p.getName().equals(name)) {
         Element ne = new Element(name, p).setFormat(format);
-        children.add(ne);
-        ne.index = children.getSizeByName(ne.getListName()) - 1;
+        children.add(index+1, ne);
+        for (int i = 0; i < children.size(); i++) {
+          children.get(i).index = i;
+        }        
         return ne;
+      } else {
+        for (int i = 0; i < children.size(); i++) {
+          if (children.get(i).getName().equals(p.getName())) {
+            index = i;
+          }
+        }
       }
     }
       
