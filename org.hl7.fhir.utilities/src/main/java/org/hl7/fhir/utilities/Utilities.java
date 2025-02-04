@@ -13,9 +13,6 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,8 +24,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import javax.annotation.Nullable;
 
@@ -1380,60 +1375,6 @@ public class Utilities {
       byteArrays.add(Arrays.copyOfRange(array, begin, array.length));
 
     return byteArrays;
-  }
-
-  public static void unzip(InputStream zip, String target) throws IOException {
-    unzip(zip, Path.of(target));
-  }
-
-  public static void unzip(InputStream zip, Path target) throws IOException {
-    try (ZipInputStream zis = new ZipInputStream(zip)) {
-      ZipEntry zipEntry = zis.getNextEntry();
-      while (zipEntry != null) {
-        boolean isDirectory = false;
-
-        String n = makeOSSafe(zipEntry.getName());
-
-        if (n.endsWith(File.separator)) {
-          isDirectory = true;
-        }
-        Path newPath = zipSlipProtect(n, target);
-        if (isDirectory) {
-          Files.createDirectories(newPath);
-        } else {
-          if (newPath.getParent() != null) {
-            if (Files.notExists(newPath.getParent())) {
-              Files.createDirectories(newPath.getParent());
-            }
-          }
-          Files.copy(zis, newPath, StandardCopyOption.REPLACE_EXISTING);
-        }
-        zipEntry = zis.getNextEntry();
-      }
-      zis.closeEntry();
-    }
-  }
-
-  public static String makeOSSafe(String name) {
-    return name.replace("\\", File.separator).replace("/", File.separator);
-  }
-
-  public static Path zipSlipProtect(String zipName, Path targetDir)
-      throws IOException {
-
-    // test zip slip vulnerability
-    // Path targetDirResolved = targetDir.resolve("../../" + zipEntry.getName());
-
-    Path targetDirResolved = targetDir.resolve(zipName);
-
-    // make sure normalized file still has targetDir as its prefix
-    // else throws exception
-    Path normalizePath = targetDirResolved.normalize();
-    if (!normalizePath.startsWith(targetDir)) {
-      throw new IOException("Bad zip entry: " + zipName);
-    }
-
-    return normalizePath;
   }
 
   final static int[] illegalChars = {34, 60, 62, 124, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 58, 42, 63, 92, 47};
