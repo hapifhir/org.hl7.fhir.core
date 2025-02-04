@@ -77,7 +77,7 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.MagicResources;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -352,7 +352,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     else if (name.equals("version.info"))
       readVersionInfo(stream);
     else
-      binaries.put(name, new BytesProvider(TextFile.streamToBytesNoClose(stream)));
+      binaries.put(name, new BytesProvider(FileUtilities.streamToBytesNoClose(stream)));
   }
 
   public void connectToTSServer(ITerminologyClientFactory factory, ITerminologyClient client, boolean useEcosystem) {

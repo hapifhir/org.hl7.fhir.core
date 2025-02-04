@@ -172,7 +172,7 @@ import org.hl7.fhir.utilities.HL7WorkGroups;
 import org.hl7.fhir.utilities.HL7WorkGroups.HL7WorkGroup;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.SIDUtilities;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.UnicodeUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.Utilities.DecimalStatus;
@@ -851,9 +851,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String tgt = null;
     try {
       tgt = Utilities.path("[tmp]", "validator", "content");
-      Utilities.createDirectory(tgt);
+      FileUtilities.createDirectory(tgt);
       tgt = Utilities.path(tgt, "content-"+index+"-"+ne.getFilename());
-      TextFile.bytesToFile(ne.getContent(), tgt);
+      FileUtilities.bytesToFile(ne.getContent(), tgt);
     } catch (Exception e) {
       System.out.println("Error saving internal content to '"+tgt+"': "+e.getLocalizedMessage());
     }
@@ -7726,9 +7726,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       boolean isMatcheType = false;
       if (element.hasExtension("http://hl7.org/fhir/tools/StructureDefinition/matchetype")) {
         Element ext = element.getExtension("http://hl7.org/fhir/tools/StructureDefinition/matchetype");
-        isMatcheType = "true".equals(ext.getNamedChildValue("value"));
+        isMatcheType = Utilities.existsInList(ext.getNamedChildValue("value"), "partial", "complete", "true");
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), matchetypeStatus != MatchetypeStatus.Disallowed, I18nConstants.RESOURCE_MATCHETYPE_DISALLOWED) && ok;        
-      
       } else {
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), matchetypeStatus != MatchetypeStatus.Required, I18nConstants.RESOURCE_MATCHETYPE_REQUIRED) && ok;        
       }

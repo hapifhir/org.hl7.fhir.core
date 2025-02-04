@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.DirectoryVisitor;
 import org.hl7.fhir.utilities.filesystem.DirectoryVisitor.IDirectoryVisitorImplementation;
@@ -30,8 +30,8 @@ public class SpecMapUnpacker {
       try {
         NpmPackage npm = NpmPackage.fromPackage(ManagedFileAccess.inStream(file));
         if (npm.hasFile("other", "spec.internals")) {
-          byte[] cnt = TextFile.streamToBytes(npm.load("other", "spec.internals"));
-          TextFile.bytesToFile(cnt, Utilities.path(Utilities.getDirectoryForFile(file.getAbsolutePath()), "page-map.json"));
+          byte[] cnt = FileUtilities.streamToBytes(npm.load("other", "spec.internals"));
+          FileUtilities.bytesToFile(cnt, Utilities.path(FileUtilities.getDirectoryForFile(file.getAbsolutePath()), "page-map.json"));
           System.out.println("  ...extracted");
           return true;
         } else {

@@ -74,7 +74,7 @@ import org.hl7.fhir.r4b.model.IdType;
 import org.hl7.fhir.r4b.model.PrimitiveType;
 import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r4b.model.StringType;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -229,7 +229,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   private boolean htmlPretty;
 
   private JsonObject loadJson(InputStream input) throws JsonSyntaxException, IOException {
-    return JsonTrackingParser.parse(TextFile.streamToString(input), null, allowUnknownContent, allowComments);
+    return JsonTrackingParser.parse(FileUtilities.streamToString(input), null, allowUnknownContent, allowComments);
     // return parser.parse(TextFile.streamToString(input)).getAsJsonObject();
   }
 

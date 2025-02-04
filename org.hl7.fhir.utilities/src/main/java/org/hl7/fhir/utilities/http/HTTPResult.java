@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import lombok.Getter;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 public class HTTPResult {
@@ -45,8 +45,8 @@ public class HTTPResult {
         throw new IOException(exception.message, exception);
       } else {
         String filename = Utilities.path("[tmp]", "http-log", "fhir-http-"+(SimpleHTTPClient.nextCounter())+".log");
-        Utilities.createDirectory(Utilities.path("[tmp]", "http-log"));
-        TextFile.bytesToFile(content, filename);
+        FileUtilities.createDirectory(Utilities.path("[tmp]", "http-log"));
+        FileUtilities.bytesToFile(content, filename);
         HTTPResultException exception = new HTTPResultException(code, message, source, filename);
         throw new IOException(exception.message, exception);
       }

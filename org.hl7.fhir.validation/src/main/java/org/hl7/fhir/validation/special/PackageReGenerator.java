@@ -39,7 +39,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.NPMPackageGenerator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.ZipGenerator;
@@ -366,8 +366,8 @@ public class PackageReGenerator {
 
   private void produceFolder() throws IOException {
     System.out.println("Producing Output in folder "+output);
-    Utilities.createDirectory(output);
-    Utilities.clearDirectory(output);
+    FileUtilities.createDirectory(output);
+    FileUtilities.clearDirectory(output);
     Set<String> names = new HashSet<>();
     names.add("manifest");
     if (json) {
@@ -376,7 +376,7 @@ public class PackageReGenerator {
       new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(output, "manifest.xml")), expansionParameters);
     }
     for (CanonicalResource cr : resources) {
-      TextFile.bytesToFile(composeResource(cr), Utilities.path(output, cr.fhirType()+"-"+cr.getIdBase()+(json? ".json" : ".xml")));      
+      FileUtilities.bytesToFile(composeResource(cr), Utilities.path(output, cr.fhirType()+"-"+cr.getIdBase()+(json? ".json" : ".xml")));      
     }
     if (modeParams.contains("expansions")) {
       StringBuilder b = new StringBuilder();
@@ -394,9 +394,9 @@ public class PackageReGenerator {
         } else {
           b.append(name+","+n+", \""+Utilities.escapeCSV(e.error)+"\", "+CommaSeparatedStringBuilder.join(";",e.sources)+"\r\n");
         }
-        TextFile.bytesToFile(composeResource(e.valueSet), Utilities.path(output, name+(json? ".json" : ".xml")));
+        FileUtilities.bytesToFile(composeResource(e.valueSet), Utilities.path(output, name+(json? ".json" : ".xml")));
       }
-      TextFile.stringToFile(b.toString(), Utilities.path(output, "expansions.csv"));
+      FileUtilities.stringToFile(b.toString(), Utilities.path(output, "expansions.csv"));
     }
   }
 

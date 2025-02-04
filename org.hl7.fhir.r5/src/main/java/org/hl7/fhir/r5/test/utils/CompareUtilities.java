@@ -284,9 +284,9 @@ public class CompareUtilities extends BaseTestingUtilities {
       if (System.getProperty("os.name").contains("Linux"))
         diff = Utilities.path("/", "usr", "bin", "meld");
       else if (System.getenv("ProgramFiles(X86)") != null) {
-        if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"), "\\WinMergeU.exe", null))
+        if (FileUtilities.checkFileExists("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"), "\\WinMergeU.exe", null))
           diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
-        else if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"), "\\Meld.exe", null))
+        else if (FileUtilities.checkFileExists("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"), "\\Meld.exe", null))
           diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld", "Meld.exe");
       }
       if (diff == null || diff.isEmpty())
@@ -295,8 +295,8 @@ public class CompareUtilities extends BaseTestingUtilities {
       List<String> command = new ArrayList<String>();
       String expected = Utilities.path("[tmp]", "expected" + expectedString.hashCode() + ".json");
       String actual = Utilities.path("[tmp]", "actual" + actualString.hashCode() + ".json");
-      TextFile.stringToFile(expectedString, expected);
-      TextFile.stringToFile(actualString, actual);
+      FileUtilities.stringToFile(expectedString, expected);
+      FileUtilities.stringToFile(actualString, actual);
       command.add(diff);
       if (diff.toLowerCase().contains("meld"))
         command.add("--newtab");
@@ -333,8 +333,8 @@ public class CompareUtilities extends BaseTestingUtilities {
   }
 
   private String compareJson(String id, String expected, String actual) throws FileNotFoundException, IOException {
-    JsonObject actualJsonObject = JsonParser.parseObject(TextFile.fileToString(actual));
-    JsonObject expectedJsonObject = JsonParser.parseObject(TextFile.fileToString(expected));
+    JsonObject actualJsonObject = JsonParser.parseObject(FileUtilities.fileToString(actual));
+    JsonObject expectedJsonObject = JsonParser.parseObject(FileUtilities.fileToString(expected));
     return compareObjects(id, "", expectedJsonObject, actualJsonObject);
   }
 
@@ -628,9 +628,9 @@ public class CompareUtilities extends BaseTestingUtilities {
       if (System.getProperty("os.name").contains("Linux"))
         diff = Utilities.path("/", "usr", "bin", "meld");
       else {
-        if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"), "\\WinMergeU.exe", null))
+        if (FileUtilities.checkFileExists("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"), "\\WinMergeU.exe", null))
           diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
-        else if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"), "\\Meld.exe", null))
+        else if (FileUtilities.checkFileExists("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"), "\\Meld.exe", null))
           diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld", "Meld.exe");
       }
       if (diff == null || diff.isEmpty())
@@ -639,8 +639,8 @@ public class CompareUtilities extends BaseTestingUtilities {
       List<String> command = new ArrayList<String>();
       String actual = Utilities.path("[tmp]", "actual" + actualString.hashCode() + ".json");
       String expected = Utilities.path("[tmp]", "expected" + expectedString.hashCode() + ".json");
-      TextFile.stringToFile(expectedString, expected);
-      TextFile.stringToFile(actualString, actual);
+      FileUtilities.stringToFile(expectedString, expected);
+      FileUtilities.stringToFile(actualString, actual);
       command.add(diff);
       if (diff.toLowerCase().contains("meld"))
         command.add("--newtab");

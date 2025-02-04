@@ -68,7 +68,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r4b.model.Resource;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 
 public abstract class FormatUtilities {
   public static final String ID_REGEX = "[A-Za-z0-9\\-\\.]{1,64}";
@@ -175,7 +175,7 @@ public abstract class FormatUtilities {
   }
 
   public static Resource loadFile(String path) throws FileNotFoundException, IOException, FHIRException {
-    byte[] src = TextFile.fileToBytes(path);
+    byte[] src = FileUtilities.fileToBytes(path);
     FhirFormat fmt = determineFormat(src);
     ParserBase parser = makeParser(fmt);
     return parser.parse(src);

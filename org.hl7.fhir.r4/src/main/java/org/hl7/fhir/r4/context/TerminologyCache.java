@@ -55,7 +55,7 @@ import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -391,7 +391,7 @@ public class TerminologyCache {
           nc.name = title;
           caches.put(title, nc);
           System.out.print(" - load " + title + ".cache");
-          String src = TextFile.fileToString(Utilities.path(folder, fn));
+          String src = FileUtilities.fileToString(Utilities.path(folder, fn));
           if (src.startsWith("?"))
             src = src.substring(1);
           int i = src.indexOf(ENTRY_MARKER);

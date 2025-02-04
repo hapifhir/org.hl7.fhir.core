@@ -60,7 +60,7 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.StringPair;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonNull;
@@ -315,7 +315,7 @@ public class TerminologyCache {
     if (folder != null) {
       File f = ManagedFileAccess.file(folder);
       if (!f.exists()) {
-        Utilities.createDirectory(folder);
+        FileUtilities.createDirectory(folder);
       }
       if (!f.exists()) {
         throw new IOException("Unable to create terminology cache at "+folder);
@@ -328,14 +328,14 @@ public class TerminologyCache {
   private void checkVersion() throws IOException {
     File verFile = ManagedFileAccess.file(Utilities.path(folder, "version.ctl"));
     if (verFile.exists()) {
-      String ver = TextFile.fileToString(verFile);
+      String ver = FileUtilities.fileToString(verFile);
       if (!ver.equals(FIXED_CACHE_VERSION)) {
         System.out.println("Terminology Cache Version has changed from 1 to "+FIXED_CACHE_VERSION+", so clearing txCache");
         clear();
       }
-      TextFile.stringToFile(FIXED_CACHE_VERSION, verFile);
+      FileUtilities.stringToFile(FIXED_CACHE_VERSION, verFile);
     } else {
-      TextFile.stringToFile(FIXED_CACHE_VERSION, verFile);
+      FileUtilities.stringToFile(FIXED_CACHE_VERSION, verFile);
     }
   }
 
@@ -367,7 +367,7 @@ public class TerminologyCache {
   
   public void clear() throws IOException {
     if (folder != null) {
-      Utilities.clearDirectory(folder);
+      FileUtilities.clearDirectory(folder);
     }
     caches.clear();
     vsCache.clear();
@@ -786,7 +786,7 @@ public class TerminologyCache {
 
   private void loadCapabilityCache(String fn) {
     try {
-      String src = TextFile.fileToString(Utilities.path(folder, fn));
+      String src = FileUtilities.fileToString(Utilities.path(folder, fn));
       String serverId = Utilities.getFileNameForName(fn).replace(CACHE_FILE_EXTENSION, "");
       serverId = serverId.substring(serverId.indexOf(".")+1);
       serverId = serverId.substring(serverId.indexOf(".")+1);
@@ -864,7 +864,7 @@ public class TerminologyCache {
   private void loadNamedCache(String fn) {
     int c = 0;
     try {
-      String src = TextFile.fileToString(Utilities.path(folder, fn));
+      String src = FileUtilities.fileToString(Utilities.path(folder, fn));
       String title = fn.substring(0, fn.lastIndexOf("."));
 
       NamedCache nc = new NamedCache();

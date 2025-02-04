@@ -16,7 +16,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -55,7 +55,7 @@ public class TerminologyCacheManager {
   public void initialize() throws IOException {
     File f = ManagedFileAccess.file(cacheFolder);
     if (!f.exists()) {
-      Utilities.createDirectory(cacheFolder);      
+      FileUtilities.createDirectory(cacheFolder);      
     }
     if (!version.equals(getCacheVersion())) {
       clearCache();
@@ -97,17 +97,17 @@ public class TerminologyCacheManager {
           throw new RuntimeException("Entry with an illegal path: " + ze.getName());
         }
         if (ze.isDirectory()) {
-          Utilities.createDirectory(pathString);
+          FileUtilities.createDirectory(pathString);
         } else {
-          Utilities.createDirectory(Utilities.getDirectoryForFile(pathString));
-          TextFile.streamToFileNoClose(zipIn, pathString);
+          FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(pathString));
+          FileUtilities.streamToFileNoClose(zipIn, pathString);
         }
       }
     }
   }
 
   private void clearCache() throws IOException {
-    Utilities.clearDirectory(cacheFolder);    
+    FileUtilities.clearDirectory(cacheFolder);    
   }
 
   private String getCacheVersion() throws IOException {

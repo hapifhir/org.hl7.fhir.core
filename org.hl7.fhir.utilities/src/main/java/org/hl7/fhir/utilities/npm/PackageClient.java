@@ -13,7 +13,7 @@ import java.util.*;
 import javax.annotation.Nullable;
 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
@@ -185,13 +185,13 @@ public class PackageClient {
   }
 
   private JsonObject fetchJson(String source) throws IOException {
-    String src = TextFile.streamToString(fetchUrl(source, "application/json"));
+    String src = FileUtilities.streamToString(fetchUrl(source, "application/json"));
     //System.out.println(src);
     return JsonParser.parseObject(src);
   }
   
   private JsonArray fetchJsonArray(String source) throws IOException {
-    String src = TextFile.streamToString(fetchUrl(source, "application/json"));
+    String src = FileUtilities.streamToString(fetchUrl(source, "application/json"));
     //System.out.println(src);
     return (JsonArray) JsonParser.parse(src);
   }

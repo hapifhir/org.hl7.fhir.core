@@ -51,7 +51,7 @@ import org.hl7.fhir.r4.profilemodel.PEDefinition;
 import org.hl7.fhir.r4.profilemodel.PEType;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 /**
@@ -848,7 +848,7 @@ public class PECodeGenerator {
     }
     w(b, imports.toString());
     cls.write(b, source.getProfile().getCopyright());
-    TextFile.stringToFile(b.toString(), Utilities.path(folder, cls.name+".java"));
+    FileUtilities.stringToFile(b.toString(), Utilities.path(folder, cls.name+".java"));
     return cls.name+".java";
   }
 

@@ -97,9 +97,9 @@ public class TxTester {
         base = Utilities.path(outputDir, "conversions");
         if (ManagedFileAccess.file(base).exists()) {
           String dir = Utilities.path(base, version, suiteName);
-          Utilities.createDirectory(dir);
+          FileUtilities.createDirectory(dir);
           String filename = Utilities.path(dir, testName+"."+resourceType+".json");
-          TextFile.bytesToFile(cnt, filename);
+          FileUtilities.bytesToFile(cnt, filename);
         }      
       } catch (IOException e) {
         // TODO Auto-generated catch block
@@ -153,7 +153,7 @@ public class TxTester {
     }
     System.out.println("  Output Directory: "+outputDir);
     if (!ManagedFileAccess.file(outputDir).exists()) {
-      Utilities.createDirectory(outputDir);
+      FileUtilities.createDirectory(outputDir);
     }
     if (!ManagedFileAccess.file(outputDir).exists()) {
       throw new IOException("Unable to create output directory "+outputDir);
@@ -187,7 +187,7 @@ public class TxTester {
           }
         }
       }
-      TextFile.stringToFile(JsonParser.compose(json, true), Utilities.path(outputDir, "test-results.json"));
+      FileUtilities.stringToFile(JsonParser.compose(json, true), Utilities.path(outputDir, "test-results.json"));
 
       if (filter == null) {
         String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join(";", modes);
@@ -266,8 +266,8 @@ public class TxTester {
     }
     
     // todo: we don't necessarily want R4:
-    Utilities.createDirectory(Utilities.path(outputDir, "conversions", "r4"));
-    Utilities.createDirectory(Utilities.path(outputDir, "conversions", "r5"));    
+    FileUtilities.createDirectory(Utilities.path(outputDir, "conversions", "r4"));
+    FileUtilities.createDirectory(Utilities.path(outputDir, "conversions", "r5"));    
     ITerminologyClient client = new TerminologyClientFactory(FhirPublication.R4).makeClient("Test-Server", server, "Tools/Java", null);
     client.setConversionLogger(conversionLogger);
     return client;  
@@ -340,7 +340,7 @@ public class TxTester {
         Parameters req = reqFile == null ? null : (Parameters) loader.loadResource(reqFile);
 
         String fn = chooseParam(test, "response", modes);
-        String resp = TextFile.bytesToString(loader.loadContent(fn));
+        String resp = FileUtilities.bytesToString(loader.loadContent(fn));
         String fp = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), fn) : Utilities.path(this.outputDir, fn);
         File fo = ManagedFileAccess.file(fp);
         if (fo.exists()) {
@@ -407,8 +407,8 @@ public class TxTester {
 
     String diff = new CompareUtilities(modes, ext, vars()).setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     if (diff != null) {
-      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-      TextFile.stringToFile(csj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+      FileUtilities.stringToFile(csj, fp);        
     }
     return diff;
   }
@@ -421,8 +421,8 @@ public class TxTester {
 
     String diff = new CompareUtilities(modes, ext, vars()).setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     if (diff != null) {
-      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-      TextFile.stringToFile(csj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+      FileUtilities.stringToFile(csj, fp);        
     }
     return diff;
   }
@@ -481,8 +481,8 @@ public class TxTester {
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
-      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-      TextFile.stringToFile(pj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+      FileUtilities.stringToFile(pj, fp);        
     }
     return diff;
   }
@@ -512,8 +512,8 @@ public class TxTester {
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
-      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-      TextFile.stringToFile(pj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+      FileUtilities.stringToFile(pj, fp);        
     }
     return diff;
   }
@@ -543,8 +543,8 @@ public class TxTester {
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, vsj, false);
     if (diff != null) {
-      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-      TextFile.stringToFile(vsj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+      FileUtilities.stringToFile(vsj, fp);        
     }
     return diff;
   }
@@ -586,8 +586,8 @@ public class TxTester {
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
-      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-      TextFile.stringToFile(pj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+      FileUtilities.stringToFile(pj, fp);        
     }
     return diff;
   }
@@ -617,8 +617,8 @@ public class TxTester {
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
-      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-      TextFile.stringToFile(pj, fp);        
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+      FileUtilities.stringToFile(pj, fp);        
     }
     return diff;
   }
@@ -668,7 +668,7 @@ public class TxTester {
       if (f.exists() && f.isDirectory()) {
         txtests = TxTestData.loadTestDataFromFolder(f, "test-cases.json");
       } else if (f.exists()) {
-        txtests = TxTestData.loadTestDataFromFolder(ManagedFileAccess.file(Utilities.getDirectoryForFile(source)), f.getName());
+        txtests = TxTestData.loadTestDataFromFolder(ManagedFileAccess.file(FileUtilities.getDirectoryForFile(source)), f.getName());
       } else {
         load(source);
       }

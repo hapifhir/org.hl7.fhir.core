@@ -39,7 +39,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Map.Entry;
 
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.graphql.Argument.ArgumentListStatus;
 
@@ -64,12 +64,12 @@ public class Parser {
   }
 
   public static Package parseFile(String filename) throws FileNotFoundException, IOException, EGraphQLException, EGraphEngine {
-    String src = TextFile.fileToString(filename);
+    String src = FileUtilities.fileToString(filename);
     return parse(src);
   }
 
   public static Package parseJson(InputStream source) throws EGraphQLException, IOException, EGraphEngine {
-    JsonObject json = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(source));
+    JsonObject json = (JsonObject) new com.google.gson.JsonParser().parse(FileUtilities.streamToString(source));
     Parser self = new Parser();
     self.reader = new StringReader(json.get("query").getAsString());
     self.next();
