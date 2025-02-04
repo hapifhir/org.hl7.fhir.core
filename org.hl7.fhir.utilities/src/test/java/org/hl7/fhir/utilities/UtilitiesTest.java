@@ -11,7 +11,6 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.hl7.fhir.utilities.filesystem.CSFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.junit.jupiter.api.Assertions;
@@ -217,21 +216,21 @@ class UtilitiesTest {
 //    Assertions.assertEquals("2021-04-04T21:22:23.999Z", Utilities.highBoundaryForDate("2021-04-04T21:22:23Z"));
 //    Assertions.assertEquals("2021-04-04T21:22:23.245+10:00", Utilities.highBoundaryForDate("2021-04-04T21:22:23.245+10:00"));
     
-    assertEquals(8, Utilities.getDatePrecision("1900-01-01"));
-    assertEquals(4, Utilities.getDatePrecision("1900"));
-    assertEquals(6, Utilities.getDatePrecision("1900-06"));
-    assertEquals(14, Utilities.getDatePrecision("1900-06-06T14:00:00"));
-    assertEquals(17, Utilities.getDatePrecision("1900-06-06T14:00:00.000"));
-    assertEquals(8, Utilities.getDatePrecision("1900-01-01Z"));
-    assertEquals(4, Utilities.getDatePrecision("1900Z"));
-    assertEquals(6, Utilities.getDatePrecision("1900-06Z"));
-    assertEquals(14, Utilities.getDatePrecision("1900-06-06T14:00:00Z"));
-    assertEquals(17, Utilities.getDatePrecision("1900-06-06T14:00:00.000Z"));
-    assertEquals(8, Utilities.getDatePrecision("1900-01-01+10:00"));
-    assertEquals(4, Utilities.getDatePrecision("1900+10:00"));
-    assertEquals(6, Utilities.getDatePrecision("1900-06+10:00"));
-    assertEquals(14, Utilities.getDatePrecision("1900-06-06T14:00:00+10:00"));
-    assertEquals(17, Utilities.getDatePrecision("1900-06-06T14:00:00.000-10:00"));
+    assertEquals(8, DateTimeUtil.getDatePrecision("1900-01-01"));
+    assertEquals(4, DateTimeUtil.getDatePrecision("1900"));
+    assertEquals(6, DateTimeUtil.getDatePrecision("1900-06"));
+    assertEquals(14, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00"));
+    assertEquals(17, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00.000"));
+    assertEquals(8, DateTimeUtil.getDatePrecision("1900-01-01Z"));
+    assertEquals(4, DateTimeUtil.getDatePrecision("1900Z"));
+    assertEquals(6, DateTimeUtil.getDatePrecision("1900-06Z"));
+    assertEquals(14, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00Z"));
+    assertEquals(17, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00.000Z"));
+    assertEquals(8, DateTimeUtil.getDatePrecision("1900-01-01+10:00"));
+    assertEquals(4, DateTimeUtil.getDatePrecision("1900+10:00"));
+    assertEquals(6, DateTimeUtil.getDatePrecision("1900-06+10:00"));
+    assertEquals(14, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00+10:00"));
+    assertEquals(17, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00.000-10:00"));
   }
   
   public static Stream<Arguments> windowsRootPaths() {
