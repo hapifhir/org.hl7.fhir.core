@@ -91,10 +91,6 @@ public class OIDUtilities {
     return id.substring(0, id.indexOf("."));
   }
 
-  public static boolean isValidId(String id) {
-    return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
-  }
-
   public static boolean isValidOID(String oid) {
     return oid.matches(OID_REGEX);
   }

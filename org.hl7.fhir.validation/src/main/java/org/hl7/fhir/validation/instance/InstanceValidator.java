@@ -4514,10 +4514,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return false;
     }
     String[] parts = url.split("\\/");
-    if (parts.length == 2 && context.getResourceNames().contains(parts[0]) && OIDUtilities.isValidId(parts[1])) {
+    if (parts.length == 2 && context.getResourceNames().contains(parts[0]) && Utilities.isValidId(parts[1])) {
       return false;
     }
-    if (parts.length == 4 && context.getResourceNames().contains(parts[0]) && OIDUtilities.isValidId(parts[1]) && "_history".equals(parts[2]) && OIDUtilities.isValidId(parts[3])) {
+    if (parts.length == 4 && context.getResourceNames().contains(parts[0]) && Utilities.isValidId(parts[1]) && "_history".equals(parts[2]) && Utilities.isValidId(parts[3])) {
       return false;
     }
     return true;

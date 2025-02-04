@@ -405,7 +405,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     s = s + "-" + Boolean.toString(heirarchical);
     String r = Integer.toString(s.hashCode());
-    //    TextFile.stringToFile(s, Utilities.path(cache, r+".id.json"));
+    //    FileUtilities.stringToFile(s, Utilities.path(cache, r+".id.json"));
     return r;
   }
 

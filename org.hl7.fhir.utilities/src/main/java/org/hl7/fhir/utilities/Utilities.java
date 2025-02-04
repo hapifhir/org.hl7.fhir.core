@@ -133,6 +133,10 @@ public class Utilities {
     }
   }
 
+  public static boolean isValidId(String id) {
+    return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
+  }
+
   public enum DecimalStatus {
     BLANK, SYNTAX, RANGE, OK
   }

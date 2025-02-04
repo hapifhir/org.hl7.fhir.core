@@ -19,7 +19,7 @@ import org.junit.jupiter.api.*;
   *
   * @author Quentin Ligier
   **/
- class TextFileTest {
+ class FileUtilitiesTest {
 
    private static final String SAMPLE_CONTENT = "Line 1\nLine 2\nLine 3";
    private static final List<String> SAMPLE_CONTENT_LINES = List.of("Line 1", "Line 2", "Line 3");

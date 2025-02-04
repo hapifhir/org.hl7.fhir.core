@@ -77,7 +77,7 @@ public class SPDXImporter {
   protected String makeConst(String cc) {
     if (cc.equals("*"))
       cc = "ASTERISK";
-    if (OIDUtilities.isValidOid(cc) && Utilities.charCount(cc, '.') > 2)
+    if (OIDUtilities.isValidOID(cc) && Utilities.charCount(cc, '.') > 2)
       cc = "OID_"+cc;
     if (cc.equals("%"))
       cc = "pct";

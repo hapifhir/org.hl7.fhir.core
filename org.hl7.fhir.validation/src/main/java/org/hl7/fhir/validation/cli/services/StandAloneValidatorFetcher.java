@@ -43,7 +43,6 @@ import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
@@ -377,7 +376,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   private String getRoot(String[] p, String url) {
-    if (p.length > 3 && OIDUtilities.isValidId(p[p.length - 1]) && context.getResourceNames().contains(p[p.length - 2])) {
+    if (p.length > 3 && Utilities.isValidId(p[p.length - 1]) && context.getResourceNames().contains(p[p.length - 2])) {
       url = url.substring(0, url.lastIndexOf("/"));
       return url.substring(0, url.lastIndexOf("/"));
     } else {
