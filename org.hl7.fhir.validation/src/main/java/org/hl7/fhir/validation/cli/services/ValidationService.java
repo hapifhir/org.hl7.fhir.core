@@ -960,7 +960,7 @@ public class ValidationService {
                   
       JsonObject json = JsonParser.parseObjectFromFile(cliContext.getSource());
       for (JsonObject fact : json.forceArray("factories").asJsonObjects()) {
-        TestDataFactory tdf = new TestDataFactory(validationEngine.getContext(), fact, liquid, fpe, "http://hl7.org/fhir/test", path, log);
+        TestDataFactory tdf = new TestDataFactory(validationEngine.getContext(), fact, liquid, fpe, "http://hl7.org/fhir/test", path, log, new HashMap<>());
         tdf.setTesting(true); // no randomness
         System.out.println("Execute Test Data Factory '"+tdf.getName()+"'. Log in "+Utilities.path(log, tdf.statedLog()));
         tdf.execute();

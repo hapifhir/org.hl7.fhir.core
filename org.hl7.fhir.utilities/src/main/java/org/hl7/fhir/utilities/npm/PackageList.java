@@ -369,5 +369,9 @@ public class PackageList {
     return false;
   }
 
+  public boolean isCurrentOnly() {
+    return "current-only".equals(json.asString("publish-pattern"));
+  }
+
 
 }

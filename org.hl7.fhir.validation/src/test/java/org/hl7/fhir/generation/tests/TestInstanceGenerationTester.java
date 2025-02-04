@@ -3,6 +3,7 @@ package org.hl7.fhir.generation.tests;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
 import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
@@ -82,7 +83,7 @@ public class TestInstanceGenerationTester {
     }
     JsonObject json = JsonParser.parseObjectFromFile(Utilities.path(path, "factories.json"));
     for (JsonObject fact : json.forceArray("factories").asJsonObjects()) {
-      TestDataFactory tdf = new TestDataFactory(context, fact, liquid, fpe, "http://hl7.org/fhir/test", path, log);
+      TestDataFactory tdf = new TestDataFactory(context, fact, liquid, fpe, "http://hl7.org/fhir/test", path, log, new HashMap<>());
       tdf.setTesting(true); // no randomness
       System.out.println("Execute Test Data Factory '"+tdf.getName()+"'. Log in "+tdf.statedLog());
       tdf.execute();

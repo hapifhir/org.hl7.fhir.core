@@ -284,6 +284,7 @@ public class ToolingExtensions {
   public static final String EXT_FHIRVERSION_SPECIFIC_USE = "http://hl7.org/fhir/StructureDefinition/version-specific-use";
   public static final String EXT_FHIRVERSION_SPECIFIC_USE_START = "startFhirVersion";
   public static final String EXT_FHIRVERSION_SPECIFIC_USE_END = "endFhirVersion";
+  public static final String EXT_VERSION_BASE = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-base-version";
   
   // specific extension helpers
 

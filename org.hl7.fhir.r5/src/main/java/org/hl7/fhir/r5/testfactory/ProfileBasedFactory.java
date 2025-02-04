@@ -61,6 +61,7 @@ public class ProfileBasedFactory {
   private FHIRPathEngine fpe;
   private PrintStream log;
   private boolean testing;
+  private boolean markProfile;
   
   private static class LogSet {
     public LogSet(String msg) {
@@ -105,6 +106,12 @@ public class ProfileBasedFactory {
     }
     log("--------------------------------");
     logEntries.clear();
+    
+    if (markProfile) {
+      Element meta = element.forceElement("meta");
+      Element prof = meta.forceElement("profile");
+      prof.setValue(profile.getVersionedUrl());
+    }
     
     ByteArrayOutputStream ba = new ByteArrayOutputStream();
     Manager.compose(fpe.getWorker(), element, ba, format, OutputStyle.PRETTY, null);
@@ -617,6 +624,14 @@ public class ProfileBasedFactory {
   public void setTesting(boolean testing) {
     this.testing = testing;
     baseData.setTesting(testing);
+  }
+
+  public boolean isMarkProfile() {
+    return markProfile;
+  }
+
+  public void setMarkProfile(boolean markProfile) {
+    this.markProfile = markProfile;
   }
   
   
