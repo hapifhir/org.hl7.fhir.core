@@ -309,12 +309,15 @@ public class TurtleParser extends ParserBase {
   
   @Override
   public void compose(Element e, OutputStream stream, OutputStyle style, String base) throws IOException, FHIRException {
-    this.base = base;
+	if (base != null) {
+		this.base = base;	
+	} else {
+		this.base = "http://hl7.org/fhir/";
+	}
     this.style = style;
-    
-		Turtle ttl = new Turtle();
-		compose(e, ttl, base);
-		ttl.commit(stream, false);
+	Turtle ttl = new Turtle();
+	compose(e, ttl, base);
+	ttl.commit(stream, false);
   }
 
   public void compose(Element e, Turtle ttl, String base) throws FHIRException {
