@@ -38,7 +38,6 @@ import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class Utilities {
 
-  private static final String OID_REGEX = "[0-2](\\.(0|[1-9][0-9]*))+";
   static final String C_TEMP_DIR = "c:\\temp";
 
   /**
@@ -667,19 +666,6 @@ public class Utilities {
   }
 
 
-  public static String oidTail(String id) {
-    if (id == null || !id.contains("."))
-      return id;
-    return id.substring(id.lastIndexOf(".") + 1);
-  }
-
-
-  public static String oidRoot(String id) {
-    if (id == null || !id.contains("."))
-      return id;
-    return id.substring(0, id.indexOf("."));
-  }
-
   public static String escapeJava(String doco) {
     if (doco == null)
       return "";
@@ -957,10 +943,6 @@ public class Utilities {
     return res;
   }
 
-  public static boolean isOid(String cc) {
-    return cc.matches(OID_REGEX);
-  }
-
   public static boolean equals(String one, String two) {
     if (one == null && two == null)
       return true;
@@ -1165,10 +1147,6 @@ public class Utilities {
 
   public static String listCanonicalUrls(Set<String> keys) {
     return keys.toString();
-  }
-
-  public static boolean isValidId(String id) {
-    return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
   }
 
   public static class CaseInsensitiveSorter implements Comparator<String> {
@@ -1462,10 +1440,6 @@ public class Utilities {
 
   static {
     Arrays.sort(illegalChars);
-  }
-
-  public static boolean isValidOID(String oid) {
-    return oid.matches(OID_REGEX);
   }
 
   public static int findinList(String[] list, String val) {

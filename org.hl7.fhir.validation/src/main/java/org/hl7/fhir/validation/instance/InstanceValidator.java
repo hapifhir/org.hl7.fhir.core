@@ -3183,7 +3183,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           String cc = url.substring(8);
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, 
               // OIDs roots shorter than 4 chars are almost never valid for namespaces except for 1.3.x
-              Utilities.isOid(cc) && ((cc.lastIndexOf('.') >= 4 || cc.startsWith("1.3"))), 
+              OIDUtilities.isValidOID(cc) && ((cc.lastIndexOf('.') >= 4 || cc.startsWith("1.3"))),
               I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID, cc) && ok;
         }
 
@@ -4514,10 +4514,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return false;
     }
     String[] parts = url.split("\\/");
-    if (parts.length == 2 && context.getResourceNames().contains(parts[0]) && Utilities.isValidId(parts[1])) {
+    if (parts.length == 2 && context.getResourceNames().contains(parts[0]) && OIDUtilities.isValidId(parts[1])) {
       return false;
     }
-    if (parts.length == 4 && context.getResourceNames().contains(parts[0]) && Utilities.isValidId(parts[1]) && "_history".equals(parts[2]) && Utilities.isValidId(parts[3])) {
+    if (parts.length == 4 && context.getResourceNames().contains(parts[0]) && OIDUtilities.isValidId(parts[1]) && "_history".equals(parts[2]) && OIDUtilities.isValidId(parts[3])) {
       return false;
     }
     return true;

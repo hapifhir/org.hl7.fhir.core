@@ -76,12 +76,7 @@ import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.StandardsStatus;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -1344,7 +1339,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       if (!Utilities.isAbsoluteUrl(ref)) {
         String[] p = ref.split("\\/");
         List<Element> ml = new ArrayList<>();
-        if (p.length >= 2 && context.getResourceNamesAsSet().contains(p[0]) && Utilities.isValidId(p[1])) {
+        if (p.length >= 2 && context.getResourceNamesAsSet().contains(p[0]) && OIDUtilities.isValidId(p[1])) {
           for (int i = 0; i < entries.size(); i++) {
             Element we = entries.get(i);
             Element r = we.getNamedChild(RESOURCE, false);

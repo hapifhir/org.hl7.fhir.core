@@ -59,7 +59,7 @@ import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.r4.model.DomainResource;
-import org.hl7.fhir.utilities.OIDUtils;
+import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -1115,7 +1115,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public String oid2Uri(String oid) {
     synchronized (lock) {
-      String uri = OIDUtils.getUriForOid(oid);
+      String uri = OIDUtilities.getUriForOid(oid);
       if (uri != null)
         return uri;
       for (NamingSystem ns : systems) {
