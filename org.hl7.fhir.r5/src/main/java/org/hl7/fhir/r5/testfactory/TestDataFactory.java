@@ -204,8 +204,9 @@ public class TestDataFactory {
   private JsonObject details;
   private String name;
   private boolean testing;
+  private Map<String, String> profileMap;
   
-  public TestDataFactory(IWorkerContext context, JsonObject details, LiquidEngine liquid, FHIRPathEngine fpe, String canonical, String rootFolder, String logFolder) throws IOException {
+  public TestDataFactory(IWorkerContext context, JsonObject details, LiquidEngine liquid, FHIRPathEngine fpe, String canonical, String rootFolder, String logFolder, Map<String, String> profileMap) throws IOException {
     super();
     this.context = context;
     this.rootFolder = rootFolder;
@@ -213,6 +214,7 @@ public class TestDataFactory {
     this.details = details;
     this.liquid = liquid;
     this.fpe = fpe;
+    this.profileMap = profileMap;
 
     this.name = details.asString("name");
     if (Utilities.noString(name)) {
@@ -270,22 +272,27 @@ public class TestDataFactory {
       ProfileBasedFactory factory = new ProfileBasedFactory(fpe, localData.getAbsolutePath(), tbl, tables, details.forceArray("mappings"));
       factory.setLog(log);
       factory.setTesting(testing);
+      factory.setMarkProfile(details.asBoolean("mark-profile"));
       String purl = details.asString( "profile");
       StructureDefinition profile = context.fetchResource(StructureDefinition.class, purl);
       if (profile == null) {
         error("Unable to find profile "+purl);
       } else if (!profile.hasSnapshot()) {
-        error("Pprofile "+purl+" doesn't have a snapshot");
+        error("Profile "+purl+" doesn't have a snapshot");
       }
       
       if ("true".equals(details.asString("bundle"))) {
         byte[] data = runBundle(profile, factory, tbl);
-        FileUtilities.bytesToFile(data, Utilities.path(rootFolder, details.asString( "filename")));
+        String fn = Utilities.path(rootFolder, details.asString( "filename"));
+        FileUtilities.bytesToFile(data, fn);
+        profileMap.put(FileUtilities.changeFileExt(fn, ""), profile.getVersionedUrl());
       } else {
         while (tbl.nextRow()) {
           if (rowPasses(factory)) {
             byte[] data = factory.generateFormat(profile, format);
-            FileUtilities.bytesToFile(data,  Utilities.path(rootFolder, getFileName(details.asString( "filename"), tbl.columns(), tbl.cells())));
+            String fn = Utilities.path(rootFolder, getFileName(details.asString( "filename"), tbl.columns(), tbl.cells()));
+            FileUtilities.bytesToFile(data, fn);
+            profileMap.put(FileUtilities.changeFileExt(fn, ""), profile.getVersionedUrl());
           }
         }
       }
