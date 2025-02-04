@@ -1,8 +1,6 @@
 package org.hl7.fhir.r4.context;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -24,11 +22,10 @@ import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r4.model.StructureMap;
-import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.NamingSystem;
 import org.hl7.fhir.r4.model.StructureDefinition;
-import org.hl7.fhir.utilities.OIDUtils;
+import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -67,7 +64,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       return oidCache.get(oid);
     }
 
-    String uri = OIDUtils.getUriForOid(oid);
+    String uri = OIDUtilities.getUriForOid(oid);
     if (uri != null) {
       oidCache.put(oid, uri);
       return uri;

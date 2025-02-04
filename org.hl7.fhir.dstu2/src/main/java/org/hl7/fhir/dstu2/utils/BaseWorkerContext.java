@@ -31,14 +31,12 @@ package org.hl7.fhir.dstu2.utils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -68,7 +66,7 @@ import org.hl7.fhir.dstu2.terminologies.ValueSetExpanderFactory;
 import org.hl7.fhir.dstu2.terminologies.ValueSetExpansionCache;
 import org.hl7.fhir.dstu2.utils.client.FHIRToolingClient;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
@@ -318,7 +316,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public ValidationResult validateCode(String system, String code, String display, ConceptSetComponent vsi) {
     try {
-      ValueSet vs = new ValueSet().setUrl(Utilities.makeUuidUrn());
+      ValueSet vs = new ValueSet().setUrl(UUIDUtilities.makeUuidUrn());
       vs.getCompose().addInclude(vsi);
       return verifyCodeExternal(vs, new Coding().setSystem(system).setCode(code).setDisplay(display), true);
     } catch (Exception e) {

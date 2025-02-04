@@ -50,7 +50,6 @@ import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.extensions.ExtensionConstants;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -60,16 +59,11 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.Transport.ParameterComponent;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
@@ -86,8 +80,6 @@ import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
 import org.hl7.fhir.r5.terminologies.providers.URICodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
-import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase.OpIssueCode;
-import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator.StringWithCode;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
@@ -96,19 +88,13 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
 import org.hl7.fhir.utilities.i18n.subtag.LanguageSubtagRegistry;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.i18n.LanguageTag;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
-
-import com.google.j2objc.annotations.ReflectionSupport.Level;
 
 public class ValueSetValidator extends ValueSetProcessBase {
 
@@ -1258,7 +1244,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (vsi.hasSystem()) {
       if (vsi.hasFilter()) {
         ValueSet vsDummy = new ValueSet();
-        vsDummy.setUrl(Utilities.makeUuidUrn());
+        vsDummy.setUrl(UUIDUtilities.makeUuidUrn());
         vsDummy.setStatus(PublicationStatus.ACTIVE);
         vsDummy.getCompose().addInclude(vsi);
         Coding c = new Coding().setCode(code).setSystem(vsi.getSystem());
@@ -1305,7 +1291,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           }
         } else {
           ValueSet vsDummy = new ValueSet();
-          vsDummy.setUrl(Utilities.makeUuidUrn());
+          vsDummy.setUrl(UUIDUtilities.makeUuidUrn());
           vsDummy.setStatus(PublicationStatus.ACTIVE);
           vsDummy.getCompose().addInclude(vsi);
           ValidationResult vr = context.validateCode(options.withNoClient(), code, vsDummy);

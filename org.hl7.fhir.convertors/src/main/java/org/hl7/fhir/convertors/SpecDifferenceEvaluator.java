@@ -123,7 +123,7 @@ public class SpecDifferenceEvaluator {
 //    b.append(self.getDiffAsHtml(null));
 //    b.append("</body>\r\n");
 //    b.append("</html>\r\n");
-//    TextFile.stringToFile(b.toString(), Utilities.path("[tmp]", "diff.html"));
+//    FileUtilities.stringToFile(b.toString(), Utilities.path("[tmp]", "diff.html"));
 //    System.out.println("done");
 //  }
 //  

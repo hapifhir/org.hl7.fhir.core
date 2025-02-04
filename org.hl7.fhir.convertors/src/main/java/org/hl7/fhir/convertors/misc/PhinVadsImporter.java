@@ -28,7 +28,7 @@ public class PhinVadsImporter extends OIDBasedValueSetImporter {
   }
 
   public static void main(String[] args) throws FHIRException, IOException, ParseException {
-//    new PhinVadsImporter().importValueSet(TextFile.fileToBytes("C:\\work\\org.hl7.fhir\\packages\\us.cdc.phinvads-source\\source\\PHVS_BirthDefectsLateralityatDiagnosis_HL7_V1.txt"));
+//    new PhinVadsImporter().importValueSet(FileUtilities.fileToBytes("C:\\work\\org.hl7.fhir\\packages\\us.cdc.phinvads-source\\source\\PHVS_BirthDefectsLateralityatDiagnosis_HL7_V1.txt"));
     PhinVadsImporter self = new PhinVadsImporter();
     self.process(args[0], args[1]);
   }

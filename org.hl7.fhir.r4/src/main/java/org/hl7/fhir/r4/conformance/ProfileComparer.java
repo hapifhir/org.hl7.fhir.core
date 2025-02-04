@@ -1335,16 +1335,16 @@ public class ProfileComparer {
     producePage(summaryTemplate(), Utilities.path(dest, getId() + ".html"), vars);
 
 //    page.log("   ... generate", LogMessageType.Process);
-//    String src = TextFile.fileToString(page.getFolders().srcDir + "template-comparison-set.html");
+//    String src = FileUtilities.fileToString(page.getFolders().srcDir + "template-comparison-set.html");
 //    src = page.processPageIncludes(n+".html", src, "?type", null, "??path", null, null, "Comparison", pc, null, null, page.getDefinitions().getWorkgroups().get("fhir"));
-//    TextFile.stringToFile(src, Utilities.path(page.getFolders().dstDir, n+".html"));
+//    FileUtilities.stringToFile(src, Utilities.path(page.getFolders().dstDir, n+".html"));
 //    cachePage(n + ".html", src, "Comparison "+pc.getTitle(), false);
 //
 //    // then we produce a comparison page for each pair
 //    for (ProfileComparison cmp : pc.getComparisons()) {
-//      src = TextFile.fileToString(page.getFolders().srcDir + "template-comparison.html");
+//      src = FileUtilities.fileToString(page.getFolders().srcDir + "template-comparison.html");
 //      src = page.processPageIncludes(n+"."+cmp.getId()+".html", src, "?type", null, "??path", null, null, "Comparison", cmp, null, null, page.getDefinitions().getWorkgroups().get("fhir"));
-//      TextFile.stringToFile(src, Utilities.path(page.getFolders().dstDir, n+"."+cmp.getId()+".html"));
+//      FileUtilities.stringToFile(src, Utilities.path(page.getFolders().dstDir, n+"."+cmp.getId()+".html"));
 //      cachePage(n +"."+cmp.getId()+".html", src, "Comparison "+pc.getTitle(), false);
 //    }
 //      //   and also individual pages for each pair outcome

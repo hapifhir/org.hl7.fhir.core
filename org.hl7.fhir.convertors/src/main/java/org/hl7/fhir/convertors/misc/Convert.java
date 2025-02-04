@@ -67,7 +67,7 @@ import org.hl7.fhir.dstu3.model.Timing.TimingRepeatComponent;
 import org.hl7.fhir.dstu3.model.Timing.UnitsOfTime;
 import org.hl7.fhir.dstu3.model.Type;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.OIDUtils;
+import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -139,7 +139,7 @@ public class Convert {
   }
 
   private String UriForOid(String r) {
-    String uri = OIDUtils.getUriForOid(r);
+    String uri = OIDUtilities.getUriForOid(r);
     if (uri != null)
       return uri;
     else {

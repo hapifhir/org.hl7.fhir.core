@@ -297,10 +297,10 @@ public class NarrativeGenerationTests {
 //      org.hl7.fhir.r5.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
 //      x = RendererFactory.factory(source, rc).build(ResourceElement.forResource(rc.getContextUtilities(), rc.getProfileUtilities(), e));
 //
-//      expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + "-meta.html"));
+//      expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + "-meta.html"));
 //      actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
 //      actualFileName = CompareUtilities.tempFile("narrative", test.getId() + "-meta.actual.html");
-//      TextFile.stringToFile(actual, actualFileName);
+//      FileUtilities.stringToFile(actual, actualFileName);
 //      msg = CompareUtilities.checkXMLIsSame(id, expectedFileName, actualFileName);
 //      Assertions.assertTrue(msg == null, "Meta output does not match expected: "+msg);
 //    }

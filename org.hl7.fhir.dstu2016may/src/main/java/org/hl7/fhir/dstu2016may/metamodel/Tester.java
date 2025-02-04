@@ -60,8 +60,8 @@ public class Tester {
         System.out.print("convert " + f);
 //				Manager.convert(context, ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+f), FhirFormat.XML, 
 //						ManagedFileAccess.outStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".mm.json")), FhirFormat.JSON, OutputStyle.PRETTY);
-//				String src = normalise(TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".mm.json")));
-//				String tgt = normalise(TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".json")));
+//				String src = normalise(FileUtilities.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".mm.json")));
+//				String tgt = normalise(FileUtilities.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".json")));
         Element e = Manager.parse(context, ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir\\build\\publish\\" + f),
             FhirFormat.XML);
         Manager.compose(context, e,

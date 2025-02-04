@@ -32,7 +32,6 @@ import org.hl7.fhir.r5.fhirpath.ExpressionNode.Function;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Operation;
 import org.hl7.fhir.r5.fhirpath.FHIRLexer.FHIRLexerException;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.ExtensionDefinition;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.ClassTypeInfo;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FHIRConstant;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
@@ -65,14 +64,8 @@ import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.MergedList;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
-import org.hl7.fhir.utilities.SourceLocation;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -4387,11 +4380,11 @@ public class FHIRPathEngine {
         result.add(new DecimalType(Utilities.lowBoundaryForDecimal(base.primitiveValue(), precision == null ? 8 : precision)));
       }
     } else if (base.hasType("date")) {
-      result.add(new DateTimeType(Utilities.lowBoundaryForDate(base.primitiveValue(), precision == null ? 10 : precision)));
+      result.add(new DateTimeType(DateTimeUtil.lowBoundaryForDate(base.primitiveValue(), precision == null ? 10 : precision)));
     } else if (base.hasType("dateTime")) {
-      result.add(new DateTimeType(Utilities.lowBoundaryForDate(base.primitiveValue(), precision == null ? 17 : precision)));
+      result.add(new DateTimeType(DateTimeUtil.lowBoundaryForDate(base.primitiveValue(), precision == null ? 17 : precision)));
     } else if (base.hasType("time")) {
-      result.add(new TimeType(Utilities.lowBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
+      result.add(new TimeType(DateTimeUtil.lowBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
       Base v = base.copy();
@@ -4431,11 +4424,11 @@ public class FHIRPathEngine {
         result.add(new DecimalType(Utilities.highBoundaryForDecimal(base.primitiveValue(), precision == null ? 8 : precision)));
       }
     } else if (base.hasType("date")) {
-      result.add(new DateTimeType(Utilities.highBoundaryForDate(base.primitiveValue(), precision == null ? 10 : precision)));
+      result.add(new DateTimeType(DateTimeUtil.highBoundaryForDate(base.primitiveValue(), precision == null ? 10 : precision)));
     } else if (base.hasType("dateTime")) {
-      result.add(new DateTimeType(Utilities.highBoundaryForDate(base.primitiveValue(), precision == null ? 17 : precision)));
+      result.add(new DateTimeType(DateTimeUtil.highBoundaryForDate(base.primitiveValue(), precision == null ? 17 : precision)));
     } else if (base.hasType("time")) {
-      result.add(new TimeType(Utilities.highBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
+      result.add(new TimeType(DateTimeUtil.highBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
       Base v = base.copy();
@@ -4456,9 +4449,9 @@ public class FHIRPathEngine {
     if (base.hasType("decimal")) {
       result.add(new IntegerType(Utilities.getDecimalPrecision(base.primitiveValue())));
     } else if (base.hasType("date") || base.hasType("dateTime")) {
-      result.add(new IntegerType(Utilities.getDatePrecision(base.primitiveValue())));
+      result.add(new IntegerType(DateTimeUtil.getDatePrecision(base.primitiveValue())));
     } else if (base.hasType("time")) {
-      result.add(new IntegerType(Utilities.getTimePrecision(base.primitiveValue())));
+      result.add(new IntegerType(DateTimeUtil.getTimePrecision(base.primitiveValue())));
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "decimal or date");
     }
