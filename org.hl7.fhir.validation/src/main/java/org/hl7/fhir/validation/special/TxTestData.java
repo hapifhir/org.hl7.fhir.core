@@ -2,7 +2,7 @@ package org.hl7.fhir.validation.special;
 
 import lombok.Getter;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.JsonException;
@@ -57,9 +57,9 @@ public class TxTestData {
 
   public static TxTestData loadTestDataFromFolder(File folder, String name) throws IOException {
     
-    String contents = TextFile.streamToString(loadFile(folder, name));
+    String contents = FileUtilities.streamToString(loadFile(folder, name));
     String externalSource = ManagedFileAccess.file(folder.getAbsolutePath(), "messages-tx.fhir.org.json").exists() ?
-        TextFile.streamToString(loadFile(folder, "messages-tx.fhir.org.json")) : null;
+        FileUtilities.streamToString(loadFile(folder, "messages-tx.fhir.org.json")) : null;
     JsonObject externals = externalSource == null ? new JsonObject() : org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(externalSource);
 
     Map<String, TxTestSetup> examples = new HashMap<String, TxTestSetup>();
@@ -97,8 +97,8 @@ public class TxTestData {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage npm = pcm.loadPackage(source);
     
-    String contents = TextFile.streamToString(npm.load("tests", "test-cases.json"));
-    String externalSource = TextFile.streamToString(npm.load("tests", "messages-tx.fhir.org.json"));
+    String contents = FileUtilities.streamToString(npm.load("tests", "test-cases.json"));
+    String externalSource = FileUtilities.streamToString(npm.load("tests", "messages-tx.fhir.org.json"));
     JsonObject externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(externalSource);
 
     Map<String, TxTestSetup> examples = new HashMap<String, TxTestSetup>();
@@ -127,17 +127,17 @@ public class TxTestData {
 
   public String load(String fn) throws IOException {
     if (folder != null) {
-      return TextFile.streamToString(loadFile(folder, fn));
+      return FileUtilities.streamToString(loadFile(folder, fn));
     } else {
-      return TextFile.streamToString(npm.load("tests", fn));
+      return FileUtilities.streamToString(npm.load("tests", fn));
     }
   }
 
   public byte[] loadBytes(String fn) throws IOException {
     if (folder != null) {
-      return TextFile.streamToBytes(loadFile(folder, fn));
+      return FileUtilities.streamToBytes(loadFile(folder, fn));
     } else {
-      return TextFile.streamToBytes(npm.load("tests", fn));
+      return FileUtilities.streamToBytes(npm.load("tests", fn));
     }
   }
 

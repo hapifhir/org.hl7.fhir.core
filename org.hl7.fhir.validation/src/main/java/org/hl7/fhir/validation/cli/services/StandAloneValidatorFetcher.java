@@ -42,7 +42,7 @@ import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
@@ -158,7 +158,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   private boolean isPossibleMatch(File f, String rt, String id) throws FileNotFoundException, IOException {
-    String src = TextFile.fileToString(f);
+    String src = FileUtilities.fileToString(f);
     if (f.getName().endsWith(".xml")) {
       return src.contains("<"+rt) && src.contains("\""+id+"\"");
     } else {

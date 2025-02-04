@@ -41,7 +41,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 
 import org.hl7.fhir.convertors.misc.adl.ADLImporter;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
@@ -107,7 +107,7 @@ public class CKMImporter {
     Element e = XMLUtil.getFirstChild(sxml.getDocumentElement());
 
     String src = Utilities.path(Utilities.path("[tmp]"), id + ".xml");
-    TextFile.stringToFile(e.getTextContent(), src);
+    FileUtilities.stringToFile(e.getTextContent(), src);
   }
 
   private void processArchetype(String id) throws Exception {

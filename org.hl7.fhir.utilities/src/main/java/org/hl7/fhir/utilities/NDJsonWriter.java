@@ -92,7 +92,7 @@ public class NDJsonWriter {
   }
 
   private void addFile(String path) throws JsonSyntaxException, FileNotFoundException, IOException {
-    JsonObject js = parser.parse(TextFile.fileToString(path)).getAsJsonObject();
+    JsonObject js = parser.parse(FileUtilities.fileToString(path)).getAsJsonObject();
     if (js.has("resourceType")) {
       addResource(js);  
     }

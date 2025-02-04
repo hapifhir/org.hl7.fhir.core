@@ -8,7 +8,7 @@ import org.hl7.fhir.dstu3.model.StructureMap;
 import org.hl7.fhir.dstu3.test.support.TestingUtilities;
 import org.hl7.fhir.dstu3.utils.StructureMapUtilities;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 
@@ -19,8 +19,8 @@ public class StructureMapTests {
     	TestingUtilities.context = SimpleWorkerContext.fromPack(Utilities.path(TestingUtilities.home(), "publish", "definitions.xml.zip"));
     
     StructureMapUtilities scm = new StructureMapUtilities(TestingUtilities.context, null, null);
-    StructureMap map = scm.parse(TextFile.fileToString(Utilities.path(TestingUtilities.home(), path)));
-    TextFile.stringToFile(scm.render(map), Utilities.path(TestingUtilities.home(), path+".out"));
+    StructureMap map = scm.parse(FileUtilities.fileToString(Utilities.path(TestingUtilities.home(), path)));
+    FileUtilities.stringToFile(scm.render(map), Utilities.path(TestingUtilities.home(), path+".out"));
   }
   
 //  @Test

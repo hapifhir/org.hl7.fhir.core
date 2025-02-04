@@ -62,7 +62,7 @@ import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -144,11 +144,11 @@ public class ComparisonTests {
 
     if (!ManagedFileAccess.file(Utilities.path("[tmp]", "comparison")).exists()) {
       System.out.println("---- Set up Output ----------------------------------------------------------");
-      Utilities.createDirectory(Utilities.path("[tmp]", "comparison"));
+      FileUtilities.createDirectory(Utilities.path("[tmp]", "comparison"));
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pcm.loadPackage(CommonPackages.ID_PUBPACK, CommonPackages.VER_PUBPACK);
       for (String f : npm.list("other")) {
-        TextFile.streamToFile(npm.load("other", f), Utilities.path("[tmp]", "comparison", f));
+        FileUtilities.streamToFile(npm.load("other", f), Utilities.path("[tmp]", "comparison", f));
       }
     }
     System.out.println("---- " + name + " ----------------------------------------------------------------");
@@ -178,7 +178,7 @@ public class ComparisonTests {
       String xmle = new XhtmlComposer(true).compose(cs.renderErrors(csc));
       String xml1 = new XhtmlComposer(true).compose(cs.renderMetadata(csc, "", ""));
       String xml2 = new XhtmlComposer(true).compose(cs.renderConcepts(csc, "", ""));
-      TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Concepts") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
+      FileUtilities.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Concepts") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
       new CodeSystemRenderer(lrc).renderResource(ResourceWrapper.forResource(lrc.getContextUtilities(), right));
       checkOutput(id, content.getJsonObject("version").asString("filename"), right);
@@ -192,7 +192,7 @@ public class ComparisonTests {
       String xml1 = new XhtmlComposer(true).compose(cs.renderMetadata(csc, "", ""));
       String xml2 = new XhtmlComposer(true).compose(cs.renderCompose(csc, "", ""));
       String xml3 = new XhtmlComposer(true).compose(cs.renderExpansion(csc, "", ""));
-      TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Definition") + xml2 + BREAK + hd("Expansion") + xml3 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
+      FileUtilities.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Definition") + xml2 + BREAK + hd("Expansion") + xml3 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
       new ValueSetRenderer(lrc).renderResource(ResourceWrapper.forResource(lrc.getContextUtilities(), right));
       checkOutput(id, content.getJsonObject("version").asString("filename"), right);
@@ -209,7 +209,7 @@ public class ComparisonTests {
       String xml1 = new XhtmlComposer(true).compose(pc.renderMetadata(csc, "", ""));
       String xml2 = new XhtmlComposer(true).compose(pc.renderStructure(csc, "", "", "http://hl7.org/fhir"));
 //      String xml3 = new XhtmlComposer(true).compose(cs.renderExpansion(csc, "", ""));
-      TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Structure") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
+      FileUtilities.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Structure") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
       
 
@@ -230,7 +230,7 @@ public class ComparisonTests {
       String xml1 = new XhtmlComposer(true).compose(pc.renderMetadata(csc, "", ""));
       String xml2 = new XhtmlComposer(true).compose(pc.renderStatements(csc, "", ""));
 //      String xml3 = new XhtmlComposer(true).compose(cs.renderExpansion(csc, "", ""));
-      TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Structure") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
+      FileUtilities.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Structure") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
     } else {
       throw new FHIRException("Can't compare " + left.fhirType() + " to " + right.fhirType());
@@ -240,10 +240,10 @@ public class ComparisonTests {
   private void checkOutput(String id, String name, CanonicalResource right) throws Exception {
     String output = prefix+ new XhtmlComposer(false, true).compose(right.getText().getDiv()) + suffix;
     String an = Utilities.path("[tmp]", "comparison", name);
-    TextFile.stringToFile(output, an);
+    FileUtilities.stringToFile(output, an);
     String expected = loadResource(name);
-    String en = Utilities.path("[tmp]", "comparison", Utilities.changeFileExt(name, ".expected.html"));
-    TextFile.stringToFile(expected, en);
+    String en = Utilities.path("[tmp]", "comparison", FileUtilities.changeFileExt(name, ".expected.html"));
+    FileUtilities.stringToFile(expected, en);
     
     String msg = new CompareUtilities().checkXMLIsSame(id, en, an);
     Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);

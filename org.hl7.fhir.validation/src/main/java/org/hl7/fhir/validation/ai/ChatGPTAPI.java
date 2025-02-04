@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -75,7 +75,7 @@ public class ChatGPTAPI extends AIAPI {
     String text = json.getJsonArray("choices").get(0).asJsonObject().getJsonObject("message").asString("content");
     text = text.replace("```", "").substring(4);
 
-    TextFile.stringToFile(text, Utilities.path("[tmp]", "fhir-validator-chatgpt-response.json"));
+    FileUtilities.stringToFile(text, Utilities.path("[tmp]", "fhir-validator-chatgpt-response.json"));
     return (JsonArray) JsonParser.parse(text);
   }
 

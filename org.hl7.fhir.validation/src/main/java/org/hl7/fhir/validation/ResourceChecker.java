@@ -9,7 +9,7 @@ import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.SHCParser;
 import org.hl7.fhir.r5.elementmodel.SHCParser.JWT;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -68,7 +68,7 @@ public class ResourceChecker {
       }
       if (Utilities.existsInList(ext, "txt")) {
         try {
-          String src = TextFile.bytesToString(cnt);
+          String src = FileUtilities.bytesToString(cnt);
           if (src.startsWith("shc:/")) {
             return FhirFormat.SHC;
           }
@@ -129,7 +129,7 @@ public class ResourceChecker {
       }
     }
     try {
-      new StructureMapUtilities(context, null, null).parse(TextFile.bytesToString(cnt), null);
+      new StructureMapUtilities(context, null, null).parse(FileUtilities.bytesToString(cnt), null);
       return Manager.FhirFormat.TEXT;
     } catch (Exception e) {
       if (debug) {

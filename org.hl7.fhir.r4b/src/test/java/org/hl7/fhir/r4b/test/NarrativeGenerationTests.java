@@ -32,7 +32,7 @@ import org.hl7.fhir.r4b.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -208,13 +208,13 @@ public class NarrativeGenerationTests {
     }
 
     XhtmlNode x = RendererFactory.factory(source, rc).build(source);
-    String target = TextFile
+    String target = FileUtilities
         .streamToString(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + ".html"));
     String output = HEADER + new XhtmlComposer(true, true).compose(x) + FOOTER;
     String tfn = TestingUtilities.tempFile("narrative", test.getId() + ".target.html");
     String ofn = TestingUtilities.tempFile("narrative", test.getId() + ".output.html");
-    TextFile.stringToFile(target, tfn);
-    TextFile.stringToFile(output, ofn);
+    FileUtilities.stringToFile(target, tfn);
+    FileUtilities.stringToFile(output, ofn);
     String msg = TestingUtilities.checkXMLIsSame(ofn, tfn);
     Assertions.assertTrue(msg == null, "Output does not match expected: " + msg);
 
@@ -223,11 +223,11 @@ public class NarrativeGenerationTests {
           TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + ".xml"), FhirFormat.XML);
       x = RendererFactory.factory(source, rc).render(new ElementWrappers.ResourceWrapperMetaElement(rc, e));
 
-      target = TextFile
+      target = FileUtilities
           .streamToString(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + "-meta.html"));
       output = HEADER + new XhtmlComposer(true, true).compose(x) + FOOTER;
       ofn = TestingUtilities.tempFile("narrative", test.getId() + "-meta.output.html");
-      TextFile.stringToFile(output, ofn);
+      FileUtilities.stringToFile(output, ofn);
       msg = TestingUtilities.checkXMLIsSame(ofn, tfn);
       Assertions.assertTrue(msg == null, "Meta output does not match expected: " + msg);
     }

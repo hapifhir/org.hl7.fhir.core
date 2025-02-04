@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -39,7 +40,7 @@ public class CorePackageTools {
           if ("1.4".equals(version)) {
             String n = f.getName();
             System.out.println(n);
-            String xn = Utilities.changeFileExt(n, ".xml");
+            String xn = FileUtilities.changeFileExt(n, ".xml");
             org.hl7.fhir.dstu2016may.model.Resource r = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(ManagedFileAccess.inStream(f));
             new org.hl7.fhir.dstu2016may.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu2016may.formats.IParser.OutputStyle.NORMAL).compose(ManagedFileAccess.outStream(Utilities.path(xml, "package", xn)), r);
           }

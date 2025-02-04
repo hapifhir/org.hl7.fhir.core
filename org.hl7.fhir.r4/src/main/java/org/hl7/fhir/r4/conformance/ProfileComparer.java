@@ -61,7 +61,7 @@ import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.DefinitionNavigator;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
@@ -1364,7 +1364,7 @@ public class ProfileComparer {
       String v = vars.containsKey(s2) ? vars.get(s2) : "???";
       src = s1 + v + s3;
     }
-    TextFile.stringToFile(src, path);
+    FileUtilities.stringToFile(src, path);
   }
 
   private String summaryTemplate() throws IOException {
@@ -1377,12 +1377,12 @@ public class ProfileComparer {
     String local = Utilities.path(tmpDir, id);
     File f = ManagedFileAccess.file(local);
     if (f.exists())
-      return TextFile.fileToString(f);
+      return FileUtilities.fileToString(f);
 
     HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source);
     res.checkThrowException();
-    String result = TextFile.bytesToString(res.getContent());
-    TextFile.stringToFile(result, f);
+    String result = FileUtilities.bytesToString(res.getContent());
+    FileUtilities.stringToFile(result, f);
     return result;
   }
 

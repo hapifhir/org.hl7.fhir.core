@@ -92,7 +92,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nBase;
@@ -719,7 +719,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (!(ManagedFileAccess.file(fn).exists())) {
       return null;
     }
-    String cnt = TextFile.fileToString(fn);
+    String cnt = FileUtilities.fileToString(fn);
     if (cnt.startsWith("!error: ")) {
       return new ValidationResult(IssueSeverity.ERROR, cnt.substring(8));
     } else if (cnt.startsWith("!warning: ")) {
@@ -734,12 +734,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return;
     }
     if (res.getDisplay() != null) {
-      TextFile.stringToFile(res.getDisplay(), cacheName);
+      FileUtilities.stringToFile(res.getDisplay(), cacheName);
     } else if (res.getMessage() != null) {
       if (res.getSeverity() == IssueSeverity.WARNING) {
-        TextFile.stringToFile("!warning: " + res.getMessage(), cacheName);
+        FileUtilities.stringToFile("!warning: " + res.getMessage(), cacheName);
       } else {
-        TextFile.stringToFile("!error: " + res.getMessage(), cacheName);
+        FileUtilities.stringToFile("!error: " + res.getMessage(), cacheName);
       }
     }
   }

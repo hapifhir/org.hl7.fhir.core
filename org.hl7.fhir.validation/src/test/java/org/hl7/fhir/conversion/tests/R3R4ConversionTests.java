@@ -44,7 +44,7 @@ import org.hl7.fhir.r4.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r4.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r4.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -72,7 +72,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
     if (!(ManagedFileAccess.file(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "outcomes.json")).exists()))
       throw new Error("You must set the default directory to the build directory when you execute these tests");
     r3r4Outcomes = (JsonObject) new com.google.gson.JsonParser().parse(
-      TextFile.fileToString(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "outcomes.json")));
+      FileUtilities.fileToString(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "outcomes.json")));
     rules = new IniFile(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "test-rules.ini"));
 
     String srcFile = Utilities.path(TestingUtilities.home(), "source", "release3", "examples.zip");
@@ -143,14 +143,14 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
         ByteArrayOutputStream bso = new ByteArrayOutputStream();
         new org.hl7.fhir.r4.elementmodel.JsonParser(contextR3).compose(r3, bso, OutputStyle.PRETTY, null);
         cnt = bso.toByteArray();
-        Utilities.createDirectory(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "test-output"));
-        TextFile.bytesToFile(cnt, Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "test-output",
+        FileUtilities.createDirectory(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "test-output"));
+        FileUtilities.bytesToFile(cnt, Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "test-output",
           tn + "-" + workingid + ".input.json"));
       }
 
       String mapFile = Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "R3toR4", r3.fhirType() + ".map");
       if (ManagedFileAccess.file(mapFile).exists()) {
-        StructureMap sm = smu4.parse(TextFile.fileToString(mapFile), mapFile);
+        StructureMap sm = smu4.parse(FileUtilities.fileToString(mapFile), mapFile);
 
         tn = smu4.getTargetType(sm).getType();
 
@@ -161,12 +161,12 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
         ByteArrayOutputStream bs = new ByteArrayOutputStream();
         new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(bs, r4);
         if (SAVING) {
-          TextFile.bytesToFile(bs.toByteArray(), Utilities.path(TestingUtilities.home(), "implementations", "r3maps",
+          FileUtilities.bytesToFile(bs.toByteArray(), Utilities.path(TestingUtilities.home(), "implementations", "r3maps",
             "test-output", tn + "-" + workingid + ".r4.json"));
           for (Resource r : extras) {
             bs = new ByteArrayOutputStream();
             new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(bs, r);
-            TextFile.bytesToFile(bs.toByteArray(), Utilities.path(TestingUtilities.home(), "implementations", "r3maps",
+            FileUtilities.bytesToFile(bs.toByteArray(), Utilities.path(TestingUtilities.home(), "implementations", "r3maps",
               "test-output", r.fhirType() + "-" + r.getId() + ".r4.json"));
           }
         }
@@ -179,7 +179,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
 
         // load the R4 to R3 map
         mapFile = Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "R4toR3", getMapFor(r4.fhirType(), r3.fhirType()) + ".map");
-        sm = smu3.parse(TextFile.fileToString(mapFile), mapFile);
+        sm = smu3.parse(FileUtilities.fileToString(mapFile), mapFile);
 
         // convert to R3
         StructureDefinition sd = smu3.getTargetType(sm);
@@ -190,7 +190,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
         bs = new ByteArrayOutputStream();
         new org.hl7.fhir.r4.elementmodel.JsonParser(contextR3).compose(ro3, bs, OutputStyle.PRETTY, null);
         if (SAVING)
-          TextFile.bytesToFile(bs.toByteArray(), Utilities.path(TestingUtilities.home(), "implementations", "r3maps",
+          FileUtilities.bytesToFile(bs.toByteArray(), Utilities.path(TestingUtilities.home(), "implementations", "r3maps",
             "test-output", tn + "-" + workingid + ".output.json"));
 
         // check(errors, tn, workingid);
@@ -258,7 +258,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
     }
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String json = gson.toJson(r3r4Outcomes);
-    TextFile.stringToFile(json,
+    FileUtilities.stringToFile(json,
       (Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "outcomes.json")));
 
   }
@@ -361,7 +361,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
   private void loadLib(String dir) throws FileNotFoundException, IOException {
     StructureMapUtilities smu = new StructureMapUtilities(contextR4);
     for (String s : ManagedFileAccess.file(dir).list()) {
-      String map = TextFile.fileToString(Utilities.path(dir, s));
+      String map = FileUtilities.fileToString(Utilities.path(dir, s));
       try {
         StructureMap sm = smu.parse(map, s);
         contextR3.cacheResource(sm);

@@ -111,6 +111,7 @@ import org.hl7.fhir.r4b.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4b.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.r4b.utils.validation.ValidationContextCarrier;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -1261,7 +1262,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void initTS(String cachePath) throws Exception {
     if (!ManagedFileAccess.file(cachePath).exists()) {
-      Utilities.createDirectory(cachePath);
+      FileUtilities.createDirectory(cachePath);
     }
     txCache = new TerminologyCache(lock, cachePath);
   }

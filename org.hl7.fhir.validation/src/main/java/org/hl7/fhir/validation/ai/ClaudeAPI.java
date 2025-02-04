@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -76,7 +76,7 @@ public class ClaudeAPI extends AIAPI {
     response.checkThrowException();
     JsonObject json = JsonParser.parseObject(response.getContentAsString());
     String text = json.getJsonArray("content").get(0).asJsonObject().asString("text");
-    TextFile.stringToFile(text, Utilities.path("[tmp]", "fhir-validator-claude-response.json"));
+    FileUtilities.stringToFile(text, Utilities.path("[tmp]", "fhir-validator-claude-response.json"));
     return JsonParser.parseObject(text);
   }
 

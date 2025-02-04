@@ -19,7 +19,7 @@ import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -314,7 +314,7 @@ public class ValidationEngineTests {
           "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n"+
           "Observation null warning/invariant: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"));
     } finally {
-      Utilities.clearDirectory(folder);
+      FileUtilities.clearDirectory(folder);
       ManagedFileAccess.file(folder).delete();
     } 
   }
@@ -340,7 +340,7 @@ public class ValidationEngineTests {
           "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n"+
           "Observation null warning/invariant: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"));
     } finally {
-      Utilities.clearDirectory(folder);
+      FileUtilities.clearDirectory(folder);
       ManagedFileAccess.file(folder).delete();
     } 
   }
@@ -365,7 +365,7 @@ public class ValidationEngineTests {
           "Observation null warning/invalid: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n"+
           "Observation null warning/invariant: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"));
     } finally {
-      Utilities.clearDirectory(folder);
+      FileUtilities.clearDirectory(folder);
       ManagedFileAccess.file(folder).delete();
     } 
   }
@@ -432,9 +432,9 @@ public class ValidationEngineTests {
   private String setupFolder() throws IOException {
     String now = new SimpleDateFormat("yyyymmddhhMMss").format(new Date());
     String folder = Utilities.path("[tmp]", "validator-resolution", now);
-    Utilities.createDirectory(folder);
+    FileUtilities.createDirectory(folder);
     for (String s : Utilities.strings("Organization-first.xml", "Patient-example-newborn.json", "patient-example.json")) {
-      TextFile.bytesToFile( TestingUtilities.loadTestResourceBytes("validator", "resolution", s), Utilities.path(folder, s));
+      FileUtilities.bytesToFile( TestingUtilities.loadTestResourceBytes("validator", "resolution", s), Utilities.path(folder, s));
     }
     return folder;
   }

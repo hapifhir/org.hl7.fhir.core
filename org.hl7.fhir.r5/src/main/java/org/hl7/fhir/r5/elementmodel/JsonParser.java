@@ -65,7 +65,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.StringPair;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -142,13 +142,13 @@ public class JsonParser extends ParserBase {
   
   public List<ValidatedFragment> parse(InputStream inStream, int line) throws IOException, FHIRException {
 //    long start = System.currentTimeMillis();
-    byte[] content = TextFile.streamToBytes(inStream);
+    byte[] content = FileUtilities.streamToBytes(inStream);
     ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "json", content, false);
     
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     
     // if we're parsing at this point, then we're going to use the custom parser
-    String source = TextFile.streamToString(stream);
+    String source = FileUtilities.streamToString(stream);
     JsonObject obj = null;
     
     if (policy == ValidationPolicy.EVERYTHING) {

@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -136,7 +136,7 @@ public class JsonLangFileProducer extends LanguageFileProducer {
       entry.add("source", tu.getSrcText());
       entry.add("target", tu.getTgtText());
     }
-    TextFile.stringToFile(JsonParser.compose(json, true), getTargetFileName(targetLang, filename));
+    FileUtilities.stringToFile(JsonParser.compose(json, true), getTargetFileName(targetLang, filename));
   }
 
 }
