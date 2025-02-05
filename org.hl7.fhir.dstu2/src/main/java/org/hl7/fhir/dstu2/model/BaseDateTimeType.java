@@ -501,7 +501,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
   /**
    * Returns a human readable version of this date/time using the system local
-   * format, converted to the local timezone if neccesary.
+   * format, converted to the local timezone if necessary.
    *
    * @see #toHumanDisplay() for a method which does not convert the time to the
    *      local timezone before rendering it.
