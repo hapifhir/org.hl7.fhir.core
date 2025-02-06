@@ -19,7 +19,7 @@ import org.junit.jupiter.api.*;
   *
   * @author Quentin Ligier
   **/
- class TextFileTest {
+ class FileUtilitiesTest {
 
    private static final String SAMPLE_CONTENT = "Line 1\nLine 2\nLine 3";
    private static final List<String> SAMPLE_CONTENT_LINES = List.of("Line 1", "Line 2", "Line 3");
@@ -155,5 +155,46 @@ import org.junit.jupiter.api.*;
      file.deleteOnExit();
      createdFiles.add(file);
      return file;
+   }
+
+   @Test
+   @DisplayName("directory copy case tests")
+   void testFDirectoryCopy() throws IOException {
+     String src = Utilities.path("[tmp]", "test", "copy-source");
+     String dst = Utilities.path("[tmp]", "test", "copy-dest");
+     makeDir (src);
+     makeFile(Utilities.path(src, "Test.txt"), "source1");
+     makeDir (Utilities.path(src, "SUB"));
+     makeFile(Utilities.path(src, "SUB", "TEST.txt"), "source2");
+
+     makeDir (dst);
+     makeFile(Utilities.path(dst, "test.txt"), "dest1");
+     makeDir (Utilities.path(dst, "sub"));
+     makeFile(Utilities.path(dst, "sub", "test.txt"), "dest2");
+
+     FileUtilities.copyDirectory(src, dst, null);
+
+     checkDir (dst);
+     checkFile(Utilities.path(dst, "Test.txt"), "source1");
+     checkDir (Utilities.path(dst, "SUB"));
+     checkFile(Utilities.path(dst, "SUB", "TEST.txt"), "source2");
+   }
+
+   private void checkFile(String path, String content) throws IOException {
+     Assertions.assertTrue(ManagedFileAccess.csfile(path).exists());
+     Assertions.assertEquals(content, FileUtilities.fileToString(path));
+   }
+
+   private void checkDir(String path) throws IOException {
+     Assertions.assertTrue(ManagedFileAccess.csfile(path).exists());
+   }
+
+   private void makeFile(String path, String content) throws IOException {
+     FileUtilities.stringToFile(content, path);
+   }
+
+   private void makeDir(String path) throws IOException {
+     FileUtilities.createDirectory(path);
+     FileUtilities.clearDirectory(path);
    }
  } 

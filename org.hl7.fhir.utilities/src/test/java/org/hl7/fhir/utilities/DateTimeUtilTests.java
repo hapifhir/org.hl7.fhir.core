@@ -8,9 +8,7 @@ import java.util.TimeZone;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.time.FastDateFormat;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -86,6 +84,44 @@ public class DateTimeUtilTests {
   public void testToHumanDisplayLocalTimezone(TemporalPrecisionEnum thePrecision, Date theValue, String expected){
     final String humanDisplay = DateTimeUtil.toHumanDisplayLocalTimezone(thePrecision, theValue, "dummyValueAsString");
     assertEquals(expected, humanDisplay);
+  }
+
+  @Test
+  @DisplayName("Date Reasoning Tests")
+  void testDateRoutines() {
+//    Assertions.assertEquals("2021-01-01T00:00:00.000", Utilities.lowBoundaryForDate("2021"));
+//    Assertions.assertEquals("2021-04-01T00:00:00.000", Utilities.lowBoundaryForDate("2021-04"));
+//    Assertions.assertEquals("2020-02-01T00:00:00.000", Utilities.lowBoundaryForDate("2020-02"));
+//    Assertions.assertEquals("2021-04-04T00:00:00.000", Utilities.lowBoundaryForDate("2021-04-04"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.000", Utilities.lowBoundaryForDate("2021-04-04T21:22:23"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.245", Utilities.lowBoundaryForDate("2021-04-04T21:22:23.245"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.000Z", Utilities.lowBoundaryForDate("2021-04-04T21:22:23Z"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.245+10:00", Utilities.lowBoundaryForDate("2021-04-04T21:22:23.245+10:00"));
+//
+//    Assertions.assertEquals("2021-12-31T23:23:59.999", Utilities.highBoundaryForDate("2021"));
+//    Assertions.assertEquals("2021-04-30T23:23:59.999", Utilities.highBoundaryForDate("2021-04"));
+//    Assertions.assertEquals("2020-02-29T23:23:59.999", Utilities.highBoundaryForDate("2020-02"));
+//    Assertions.assertEquals("2021-04-04T23:23:59.999", Utilities.highBoundaryForDate("2021-04-04"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.999", Utilities.highBoundaryForDate("2021-04-04T21:22:23"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.245", Utilities.highBoundaryForDate("2021-04-04T21:22:23.245"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.999Z", Utilities.highBoundaryForDate("2021-04-04T21:22:23Z"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.245+10:00", Utilities.highBoundaryForDate("2021-04-04T21:22:23.245+10:00"));
+
+    assertEquals(8, DateTimeUtil.getDatePrecision("1900-01-01"));
+    assertEquals(4, DateTimeUtil.getDatePrecision("1900"));
+    assertEquals(6, DateTimeUtil.getDatePrecision("1900-06"));
+    assertEquals(14, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00"));
+    assertEquals(17, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00.000"));
+    assertEquals(8, DateTimeUtil.getDatePrecision("1900-01-01Z"));
+    assertEquals(4, DateTimeUtil.getDatePrecision("1900Z"));
+    assertEquals(6, DateTimeUtil.getDatePrecision("1900-06Z"));
+    assertEquals(14, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00Z"));
+    assertEquals(17, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00.000Z"));
+    assertEquals(8, DateTimeUtil.getDatePrecision("1900-01-01+10:00"));
+    assertEquals(4, DateTimeUtil.getDatePrecision("1900+10:00"));
+    assertEquals(6, DateTimeUtil.getDatePrecision("1900-06+10:00"));
+    assertEquals(14, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00+10:00"));
+    assertEquals(17, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00.000-10:00"));
   }
 
 }

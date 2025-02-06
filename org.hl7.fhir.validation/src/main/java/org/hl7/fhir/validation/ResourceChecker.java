@@ -27,7 +27,7 @@ public class ResourceChecker {
 //    if (Utilities.existsInList(ext, "jwt", "jws"))
 //      return Manager.FhirFormat.SHC;
 //
-//    return checkIsResource(context, debug, TextFile.fileToBytes(path), path);
+//    return checkIsResource(context, debug, FileUtilities.fileToBytes(path), path);
 //  }
   public static Manager.FhirFormat checkIsResource(SimpleWorkerContext context, boolean debug, byte[] cnt, String filename, boolean guessFromExtension) {
 //    System.out.println("   ..Detect format for " + filename);
