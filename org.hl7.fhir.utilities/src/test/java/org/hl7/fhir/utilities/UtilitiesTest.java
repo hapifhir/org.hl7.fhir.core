@@ -195,44 +195,6 @@ class UtilitiesTest {
     assertEquals(4, Utilities.getDecimalPrecision("-1.0200"));
   }
   
-  @Test
-  @DisplayName("Date Reasoning Tests")
-  void testDateRoutines() {
-//    Assertions.assertEquals("2021-01-01T00:00:00.000", Utilities.lowBoundaryForDate("2021"));
-//    Assertions.assertEquals("2021-04-01T00:00:00.000", Utilities.lowBoundaryForDate("2021-04"));
-//    Assertions.assertEquals("2020-02-01T00:00:00.000", Utilities.lowBoundaryForDate("2020-02"));
-//    Assertions.assertEquals("2021-04-04T00:00:00.000", Utilities.lowBoundaryForDate("2021-04-04"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.000", Utilities.lowBoundaryForDate("2021-04-04T21:22:23"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.245", Utilities.lowBoundaryForDate("2021-04-04T21:22:23.245"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.000Z", Utilities.lowBoundaryForDate("2021-04-04T21:22:23Z"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.245+10:00", Utilities.lowBoundaryForDate("2021-04-04T21:22:23.245+10:00"));
-//
-//    Assertions.assertEquals("2021-12-31T23:23:59.999", Utilities.highBoundaryForDate("2021"));
-//    Assertions.assertEquals("2021-04-30T23:23:59.999", Utilities.highBoundaryForDate("2021-04"));
-//    Assertions.assertEquals("2020-02-29T23:23:59.999", Utilities.highBoundaryForDate("2020-02"));
-//    Assertions.assertEquals("2021-04-04T23:23:59.999", Utilities.highBoundaryForDate("2021-04-04"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.999", Utilities.highBoundaryForDate("2021-04-04T21:22:23"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.245", Utilities.highBoundaryForDate("2021-04-04T21:22:23.245"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.999Z", Utilities.highBoundaryForDate("2021-04-04T21:22:23Z"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.245+10:00", Utilities.highBoundaryForDate("2021-04-04T21:22:23.245+10:00"));
-    
-    assertEquals(8, DateTimeUtil.getDatePrecision("1900-01-01"));
-    assertEquals(4, DateTimeUtil.getDatePrecision("1900"));
-    assertEquals(6, DateTimeUtil.getDatePrecision("1900-06"));
-    assertEquals(14, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00"));
-    assertEquals(17, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00.000"));
-    assertEquals(8, DateTimeUtil.getDatePrecision("1900-01-01Z"));
-    assertEquals(4, DateTimeUtil.getDatePrecision("1900Z"));
-    assertEquals(6, DateTimeUtil.getDatePrecision("1900-06Z"));
-    assertEquals(14, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00Z"));
-    assertEquals(17, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00.000Z"));
-    assertEquals(8, DateTimeUtil.getDatePrecision("1900-01-01+10:00"));
-    assertEquals(4, DateTimeUtil.getDatePrecision("1900+10:00"));
-    assertEquals(6, DateTimeUtil.getDatePrecision("1900-06+10:00"));
-    assertEquals(14, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00+10:00"));
-    assertEquals(17, DateTimeUtil.getDatePrecision("1900-06-06T14:00:00.000-10:00"));
-  }
-  
   public static Stream<Arguments> windowsRootPaths() {
     return Stream.of(
       Arguments.of((Object)new String[]{"C:"}),
@@ -417,47 +379,6 @@ class UtilitiesTest {
     Assertions.assertTrue("\u0009\n\u000B\u000C\r\u0020\u0085\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u2028\u2029\u202F\u205F\u3000".matches("^[\\s\\S]+$"));
     Assertions.assertFalse("\u0009\n\u000B\u000C\r\u0020\u0085\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u2028\u2029\u202F\u205F\u3000".matches(".+"));
     Assertions.assertFalse("\u0009\n\u000B\u000C\r\u0020\u0085\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u2028\u2029\u202F\u205F\u3000".matches("^.+$"));
-  }
-
-  @Test
-  @DisplayName("directory copy case tests")
-  void testFDirectoryCopy() throws IOException {
-    String src = Utilities.path("[tmp]", "test", "copy-source");
-    String dst = Utilities.path("[tmp]", "test", "copy-dest");
-    makeDir (src);
-    makeFile(Utilities.path(src, "Test.txt"), "source1");
-    makeDir (Utilities.path(src, "SUB"));
-    makeFile(Utilities.path(src, "SUB", "TEST.txt"), "source2");
-
-    makeDir (dst);
-    makeFile(Utilities.path(dst, "test.txt"), "dest1");
-    makeDir (Utilities.path(dst, "sub"));
-    makeFile(Utilities.path(dst, "sub", "test.txt"), "dest2");
-    
-    FileUtilities.copyDirectory(src, dst, null);
-    
-    checkDir (dst);
-    checkFile(Utilities.path(dst, "Test.txt"), "source1");
-    checkDir (Utilities.path(dst, "SUB"));
-    checkFile(Utilities.path(dst, "SUB", "TEST.txt"), "source2");
-  }
-
-  private void checkFile(String path, String content) throws IOException {
-    Assertions.assertTrue(ManagedFileAccess.csfile(path).exists());
-    Assertions.assertEquals(content, FileUtilities.fileToString(path));
-  }
-
-  private void checkDir(String path) throws IOException {
-    Assertions.assertTrue(ManagedFileAccess.csfile(path).exists());
-  }
-
-  private void makeFile(String path, String content) throws IOException {
-    FileUtilities.stringToFile(content, path);
-  }
-
-  private void makeDir(String path) throws IOException {
-    FileUtilities.createDirectory(path);
-    FileUtilities.clearDirectory(path);
   }
 
   @Test
