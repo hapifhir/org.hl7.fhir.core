@@ -7,6 +7,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -17,6 +18,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 
 public class DateTimeUtilTests {
+
+  private static final org.slf4j.Logger ourLog = org.slf4j.LoggerFactory.getLogger(DateTimeUtilTests.class.getName());
 
   private static Stream<Arguments> getToHumanDisplayParams() {
     return Stream.of(
@@ -57,16 +60,25 @@ public class DateTimeUtilTests {
     );
   }
 
-  private static final Locale defaultLocale = Locale.getDefault();;
+  private static Locale defaultLocale;
 
   @BeforeAll
   public static void beforeAll() {
-   Locale.setDefault(Locale.UK);
+    defaultLocale = Locale.getDefault();
+    ourLog.info("Test setup: getting current default locale");
+    ourLog.info("Locale.getDefault(): " + defaultLocale);
+    ourLog.info("Test setup: setting default locale to UK for tests");
+    Locale.setDefault(Locale.UK);
+    ourLog.info("Locale.getDefault(): " + Locale.getDefault());
+    ourLog.info("DateTime format: " + FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM));
   }
 
   @AfterAll
   public static void afterAll() {
+    ourLog.info("Test teardown: setting default locale back to default");
     Locale.setDefault(defaultLocale);
+    ourLog.info("Locale.getDefault(): " + Locale.getDefault());
+    ourLog.info("DateTime format: " + FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM));
   }
 
   @ParameterizedTest

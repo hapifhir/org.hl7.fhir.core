@@ -152,6 +152,10 @@ public class ValidatorCli {
     TimeTracker tt = new TimeTracker();
     TimeTracker.Session tts = tt.start("Loading");
 
+    if (cliContext.getLocale() != null) {
+      Locale.setDefault(cliContext.getLocale());
+    }
+
     setJavaSystemProxyParamsFromParams(args);
 
     Display.displayVersion(System.out);
