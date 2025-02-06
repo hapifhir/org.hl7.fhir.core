@@ -10,9 +10,6 @@ import org.apache.commons.lang3.time.FastDateFormat;
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 
 public class DateTimeUtil {
-  private static final FastDateFormat ourHumanDateFormat = FastDateFormat.getDateInstance(FastDateFormat.MEDIUM);
-  private static final FastDateFormat ourHumanDateTimeFormat = FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM);
-
 
   public static String toHumanDisplay(TimeZone theTimeZone, TemporalPrecisionEnum thePrecision, Date theValue, String theValueAsString) {
     Calendar value = theTimeZone != null ? Calendar.getInstance(theTimeZone) : Calendar.getInstance();
@@ -26,7 +23,7 @@ public class DateTimeUtil {
       case MILLI:
       case SECOND:
       default:
-        return ourHumanDateTimeFormat.format(value);
+        return FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM).format(value);
     }
 
   }
@@ -40,7 +37,7 @@ public class DateTimeUtil {
       case MILLI:
       case SECOND:
       default:
-        return ourHumanDateTimeFormat.format(theValue);
+        return FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM).format(theValue);
     }
   }
 
