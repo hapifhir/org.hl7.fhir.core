@@ -35,7 +35,7 @@ public class ExamplesPackageBuilder {
             content = r5ToR4B(content);
             FileUtilities.bytesToFile(content, f);
           }
-//          TextFile.bytesToFile(content, Utilities.path(dest2, type+"-"+id+".json"));
+//          FileUtilities.bytesToFile(content, Utilities.path(dest2, type+"-"+id+".json"));
 //          if (!set.contains(type+"/"+id)) {
 //            set.add(type+"/"+id);
 //            pck.addFile(Category.RESOURCE, type+"-"+id+".json", content);

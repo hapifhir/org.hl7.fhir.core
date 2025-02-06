@@ -4,7 +4,6 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -14,9 +13,6 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,23 +22,17 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import javax.annotation.Nullable;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.Utilities.CaseInsensitiveSorter;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class Utilities {
 
-  private static final String UUID_REGEX = "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}";
-  private static final String OID_REGEX = "[0-2](\\.(0|[1-9][0-9]*))+";
   static final String C_TEMP_DIR = "c:\\temp";
 
   /**
@@ -141,6 +131,10 @@ public class Utilities {
     } catch (Exception e) {
       return false;
     }
+  }
+
+  public static boolean isValidId(String id) {
+    return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
   }
 
   public enum DecimalStatus {
@@ -671,19 +665,6 @@ public class Utilities {
   }
 
 
-  public static String oidTail(String id) {
-    if (id == null || !id.contains("."))
-      return id;
-    return id.substring(id.lastIndexOf(".") + 1);
-  }
-
-
-  public static String oidRoot(String id) {
-    if (id == null || !id.contains("."))
-      return id;
-    return id.substring(0, id.indexOf("."));
-  }
-
   public static String escapeJava(String doco) {
     if (doco == null)
       return "";
@@ -865,14 +846,6 @@ public class Utilities {
   }
 
 
-  public static String makeUuidLC() {
-    return UUID.randomUUID().toString().toLowerCase();
-  }
-
-  public static String makeUuidUrn() {
-    return "urn:uuid:" + UUID.randomUUID().toString().toLowerCase();
-  }
-
   public static boolean isURL(String s) {
     boolean ok = s.matches("^http(s{0,1})://[a-zA-Z0-9_/\\-\\.]+\\.([A-Za-z/]{2,5})[a-zA-Z0-9_/\\&\\?\\=\\-\\.\\~\\%]*");
     return ok;
@@ -967,10 +940,6 @@ public class Utilities {
       if (ch == c)
         res++;
     return res;
-  }
-
-  public static boolean isOid(String cc) {
-    return cc.matches(OID_REGEX);
   }
 
   public static boolean equals(String one, String two) {
@@ -1177,10 +1146,6 @@ public class Utilities {
 
   public static String listCanonicalUrls(Set<String> keys) {
     return keys.toString();
-  }
-
-  public static boolean isValidId(String id) {
-    return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
   }
 
   public static class CaseInsensitiveSorter implements Comparator<String> {
@@ -1416,72 +1381,10 @@ public class Utilities {
     return byteArrays;
   }
 
-  public static void unzip(InputStream zip, String target) throws IOException {
-    unzip(zip, Path.of(target));
-  }
-
-  public static void unzip(InputStream zip, Path target) throws IOException {
-    try (ZipInputStream zis = new ZipInputStream(zip)) {
-      ZipEntry zipEntry = zis.getNextEntry();
-      while (zipEntry != null) {
-        boolean isDirectory = false;
-
-        String n = makeOSSafe(zipEntry.getName());
-
-        if (n.endsWith(File.separator)) {
-          isDirectory = true;
-        }
-        Path newPath = zipSlipProtect(n, target);
-        if (isDirectory) {
-          Files.createDirectories(newPath);
-        } else {
-          if (newPath.getParent() != null) {
-            if (Files.notExists(newPath.getParent())) {
-              Files.createDirectories(newPath.getParent());
-            }
-          }
-          Files.copy(zis, newPath, StandardCopyOption.REPLACE_EXISTING);
-        }
-        zipEntry = zis.getNextEntry();
-      }
-      zis.closeEntry();
-    }
-  }
-
-  public static String makeOSSafe(String name) {
-    return name.replace("\\", File.separator).replace("/", File.separator);
-  }
-
-  public static Path zipSlipProtect(String zipName, Path targetDir)
-      throws IOException {
-
-    // test zip slip vulnerability
-    // Path targetDirResolved = targetDir.resolve("../../" + zipEntry.getName());
-
-    Path targetDirResolved = targetDir.resolve(zipName);
-
-    // make sure normalized file still has targetDir as its prefix
-    // else throws exception
-    Path normalizePath = targetDirResolved.normalize();
-    if (!normalizePath.startsWith(targetDir)) {
-      throw new IOException("Bad zip entry: " + zipName);
-    }
-
-    return normalizePath;
-  }
-
   final static int[] illegalChars = {34, 60, 62, 124, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 58, 42, 63, 92, 47};
 
   static {
     Arrays.sort(illegalChars);
-  }
-
-  public static boolean isValidUUID(String uuid) {
-    return uuid.matches(UUID_REGEX);
-  }
-
-  public static boolean isValidOID(String oid) {
-    return oid.matches(OID_REGEX);
   }
 
   public static int findinList(String[] list, String val) {
@@ -1562,97 +1465,6 @@ public class Utilities {
     return s.toString();
   }
 
-  public static String lowBoundaryForDate(String value, int precision) {
-    String[] res = splitTimezone(value);
-    StringBuilder b = new StringBuilder(res[0]);
-    if (b.length() == 4) {
-      b.append("-01");
-    }
-    if (b.length() == 7) {
-      b.append("-01");
-    }
-    if (b.length() == 10) {
-      b.append("T00:00");
-    }
-    if (b.length() == 16) {
-      b.append(":00");
-    }
-    if (b.length() == 19) {
-      b.append(".000");
-    }
-    String tz;
-    if (precision <= 10) {
-      tz = "";
-    } else {
-      tz = Utilities.noString(res[1]) ? defLowTimezone(b.toString()) : res[1];
-    }
-    return applyDatePrecision(b.toString(), precision)+tz;
-  }
-
-  private static String defLowTimezone(String string) {
-    return "+14:00"; // Kiribati permanent timezone since 1994 and we don't worry about before then 
-  }
-
-  private static String defHighTimezone(String string) {
-    return "-12:00"; // Parts of Russia, Antarctica, Baker Island and Midway Atoll 
-  }
-
-  public static String lowBoundaryForTime(String value, int precision) {
-    String[] res = splitTimezone(value);
-    StringBuilder b = new StringBuilder(res[0]);
-    if (b.length() == 2) {
-      b.append(":00");
-    }
-    if (b.length() == 5) {
-      b.append(":00");
-    }
-    if (b.length() == 8) {
-      b.append(".000");
-    }
-    return applyTimePrecision(b.toString(), precision)+res[1];
-  }
-
-  public static String highBoundaryForTime(String value, int precision) {
-    String[] res = splitTimezone(value);
-    StringBuilder b = new StringBuilder(res[0]);
-    if (b.length() == 2) {
-      b.append(":59");
-    }
-    if (b.length() == 5) {
-      b.append(":59");
-    }
-    if (b.length() == 8) {
-      b.append(".999");
-    }
-    return applyTimePrecision(b.toString(), precision)+res[1];
-  }
-
-
-  private static Object applyDatePrecision(String v, int precision) {
-    switch (precision) {
-    case 4: 
-      return v.substring(0, 4);
-    case 6:
-    case 7:
-      return v.substring(0, 7);
-    case 8:
-    case 10:
-      return v.substring(0, 10);
-    case 14: return v.substring(0, 17);
-    case 17: return v;      
-    }
-    throw new FHIRException("Unsupported Date precision for boundary operation: "+precision);
-  }
-
-  private static Object applyTimePrecision(String v, int precision) {
-    switch (precision) {
-    case 2: return v.substring(0, 3);
-    case 4: return v.substring(0, 6);
-    case 6: return v.substring(0, 9);
-    case 9: return v;      
-    }
-    throw new FHIRException("Unsupported Time precision for boundary operation: "+precision);
-  }
 
   public static String highBoundaryForDecimal(String value, int precision) {
     if (Utilities.noString(value)) {
@@ -1679,51 +1491,6 @@ public class Utilities {
     return value.replace(".", "").replace("-", "").replace("0", "").length() == 0;
   }
 
-  public static String highBoundaryForDate(String value, int precision) {
-    String[] res = splitTimezone(value);
-    StringBuilder b = new StringBuilder(res[0]);
-    if (b.length() == 4) {
-      b.append("-12");
-    }
-    if (b.length() == 7) {
-      b.append("-"+dayCount(Integer.parseInt(b.substring(0,4)), Integer.parseInt(b.substring(5,7))));
-    }
-    if (b.length() == 10) {
-      b.append("T23:59");
-    }
-    if (b.length() == 16) {
-      b.append(":59");
-    }
-    if (b.length() == 19) {
-      b.append(".999");
-    }
-    String tz;
-    if (precision <= 10) {
-      tz = "";
-    } else {
-      tz = Utilities.noString(res[1]) ? defHighTimezone(b.toString()) : res[1];
-    }
-    return applyDatePrecision(b.toString(), precision)+tz;
-  }
-
-  private static String dayCount(int y, int m) {
-    switch (m) {
-    case 1: return "31";
-    case 2: return ((y % 4 == 0) && (y % 400 == 0 || !(y % 100 == 0))) ? "29" : "28";
-    case 3: return "31";
-    case 4: return "30";
-    case 5: return "31";
-    case 6: return "30";
-    case 7: return "31";
-    case 8: return "31";
-    case 9: return "30";
-    case 10: return "31";
-    case 11: return "30";
-    case 12: return "31";
-    default: return "30"; // make the compiler happy
-    }
-  }
-
   public static Integer getDecimalPrecision(String value) {
     if (value.contains("e")) {
       value = value.substring(0, value.indexOf("e"));
@@ -1735,33 +1502,6 @@ public class Utilities {
     }
   }
 
-
-  private static String[] splitTimezone(String value) {
-    String[] res = new String[2];
-
-    if (value.contains("+")) {
-      res[0] = value.substring(0, value.indexOf("+"));
-      res[1] = value.substring(value.indexOf("+"));
-    } else if (value.contains("-") && value.contains("T") && value.lastIndexOf("-") > value.indexOf("T")) {
-      res[0] = value.substring(0, value.lastIndexOf("-"));
-      res[1]  = value.substring(value.lastIndexOf("-"));
-    } else if (value.contains("Z")) {
-      res[0] = value.substring(0, value.indexOf("Z"));
-      res[1] = value.substring(value.indexOf("Z"));
-    } else {
-      res[0] = value;
-      res[1] = "";
-    }
-    return res;
-  }
-
-  public static Integer getDatePrecision(String value) {
-    return splitTimezone(value)[0].replace("-", "").replace("T", "").replace(":", "").replace(".", "").length();
-  }
-
-  public static Integer getTimePrecision(String value) {
-    return splitTimezone(value)[0].replace("T", "").replace(":", "").replace(".", "").length();
-  }
 
   public static String padInt(int i, int len) {
     return Utilities.padLeft(Integer.toString(i), ' ', len);

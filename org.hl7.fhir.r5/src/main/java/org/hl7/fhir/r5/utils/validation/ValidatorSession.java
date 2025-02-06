@@ -3,7 +3,7 @@ package org.hl7.fhir.r5.utils.validation;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.UUIDUtilities;
 
 /**
  * Used by the validation infrastructure to cache internal infrastructure that
@@ -18,7 +18,7 @@ public class ValidatorSession {
   
   public ValidatorSession() {
     super();
-    sessionId = Utilities.makeUuidLC();
+    sessionId = UUIDUtilities.makeUuidLC();
   }
 
   public String getSessionId() {

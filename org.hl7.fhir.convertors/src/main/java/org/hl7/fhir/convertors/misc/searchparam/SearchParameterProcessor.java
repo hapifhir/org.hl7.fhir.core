@@ -73,7 +73,7 @@ public class SearchParameterProcessor {
 //      }
 //      b.append(s+"\r\n");
 //    }
-//    TextFile.stringToFile(b.toString(), name);
+//    FileUtilities.stringToFile(b.toString(), name);
 //  }
 //
   public static void main(String[] args) throws IOException, FHIRException {

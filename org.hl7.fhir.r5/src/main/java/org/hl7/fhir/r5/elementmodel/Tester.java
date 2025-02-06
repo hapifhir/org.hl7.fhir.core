@@ -60,8 +60,8 @@ public class Tester {
 				System.out.print("convert "+f);
 //				Manager.convert(context, ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+f), FhirFormat.XML, 
 //						ManagedFileAccess.outStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".mm.json")), FhirFormat.JSON, OutputStyle.PRETTY);
-//				String src = normalise(TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".mm.json")));
-//				String tgt = normalise(TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".json")));
+//				String src = normalise(FileUtilities.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".mm.json")));
+//				String tgt = normalise(FileUtilities.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".json")));
 				Element e = Manager.parseSingle(context, ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+f), FhirFormat.XML);
 				Manager.compose(context, e, ManagedFileAccess.outStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+FileUtilities.changeFileExt(f, ".mm.ttl")), FhirFormat.TURTLE, OutputStyle.PRETTY, null);
         Manager.compose(context, e, ManagedFileAccess.outStream(Utilities.path("[tmp]", "resource.xml")), FhirFormat.XML, OutputStyle.PRETTY, null);

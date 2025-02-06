@@ -83,7 +83,7 @@ public class StructureMapTests {
 //   
 //    for (String f : ManagedFileAccess.file(Utilities.path(TestingUtilities.home(), "guides", "ccda2", "mapping", "map")).list()) {
 //      try {
-//        StructureMap map = scu.parse(TextFile.fileToString(Utilities.path(TestingUtilities.home(), "guides", "ccda2", "mapping", "map", f)));
+//        StructureMap map = scu.parse(FileUtilities.fileToString(Utilities.path(TestingUtilities.home(), "guides", "ccda2", "mapping", "map", f)));
 //        maps.put(map.getUrl(), map);
 //      } catch (Exception e) {
 //        e.printStackTrace();
@@ -117,7 +117,7 @@ public class StructureMapTests {
 //
 //    for (String f : ManagedFileAccess.file("C:\\work\\org.hl7.fhir\\build\\guides\\ccda2\\mapping\\map").list()) {
 //      try {
-//        StructureMap map = scu.parse(TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\guides\\ccda2\\mapping\\map\\"+ f));
+//        StructureMap map = scu.parse(FileUtilities.fileToString("C:\\work\\org.hl7.fhir\\build\\guides\\ccda2\\mapping\\map\\"+ f));
 //        maps.put(map.getUrl(), map);
 //      } catch (Exception e) {
 //      }
