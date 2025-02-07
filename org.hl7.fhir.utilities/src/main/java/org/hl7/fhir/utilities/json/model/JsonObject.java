@@ -35,6 +35,18 @@ public class JsonObject extends JsonElement {
     propMap.put(name, p);
     return this;
   }
+  
+  public JsonObject add(int index, String name, JsonElement value) throws JsonException {
+    check(name != null, "Json Property Name is null");
+    check(value != null, "Json Property Value is null");
+    if (get(name) != null) {
+      check(false, "Name '"+name+"' already exists (value = "+get(name).toString()+")");
+    }
+    JsonProperty p = new JsonProperty(name, value);
+    properties.add(index, p);
+    propMap.put(name, p);
+    return this;
+  }
 
   public JsonObject addIfNotNull(String name, JsonElement value) throws JsonException {
     if (value != null) {
@@ -275,6 +287,20 @@ public class JsonObject extends JsonElement {
     }
     return null;
   }
+  
+  public Double asDouble(String name) {
+    if (hasNumber(name)) {
+      return ((JsonNumber) get(name)).getDouble();
+    }
+    if (hasPrimitive(name)) {
+      String s = asString(name);
+      if (Utilities.isDecimal(s, false)) {
+        return Double.parseDouble(s);
+      }
+    }
+    return null;
+  }
+
 
   public String asString(String name) {
     return hasPrimitive(name) ? ((JsonPrimitive) get(name)).getValue() : null;
@@ -344,6 +370,16 @@ public class JsonObject extends JsonElement {
     }
     if (!has(name)) {
       add(name, new JsonArray());
+    }
+    return getJsonArray(name);
+  }
+  
+  public JsonArray forceArray(int index, String name) throws JsonException {
+    if (has(name) && !hasArray(name)) {
+      remove(name);
+    }
+    if (!has(name)) {
+      add(index, name, new JsonArray());
     }
     return getJsonArray(name);
   }
@@ -435,5 +471,12 @@ public class JsonObject extends JsonElement {
     properties.clear();
     propMap.clear();
   }
+
+  public boolean isJsonString(String name) {
+    return has(name) && get(name).type() == JsonElementType.STRING;
+  }
   
+  public boolean isJsonBoolean(String name) {
+    return has(name) && get(name).type() == JsonElementType.BOOLEAN;
+  }
 }

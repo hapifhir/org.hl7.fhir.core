@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.r4b.model.Binary;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -85,7 +85,7 @@ public class BinaryRenderer {
       error(x, "The Image Type '" + bin.getContentType() + "' is not rendered in this context");
     } else {
       String fn = "Binary-Native-" + bin.getId() + ext;
-      TextFile.bytesToFile(bin.getContent(), Utilities.path(folder, fn));
+      FileUtilities.bytesToFile(bin.getContent(), Utilities.path(folder, fn));
       filenames.add(fn);
       x.img("Binary-Native-" + bin.getId() + ext, "Binary");
     }

@@ -62,7 +62,7 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
 
-    txtests = TxTestData.loadTestDataFromPackage("dev");
+    txtests = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev");
     
     String contents = txtests.load("test-cases.json");
     externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(txtests.load("messages-tx.fhir.org.json"));
@@ -94,8 +94,9 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   private JsonObjectPair setup;
   private String version = "5.0.0";
   private static TxTester tester;
-  private List<String> modes = new ArrayList<>();
-  private boolean error = false;
+  private Set<String> modes = new HashSet<>();
+  private static int error = 0;
+  private static int count = 0;
   private static TxTestData txtests;
 
   public LocalTerminologyServiceTests(String name, JsonObjectPair setup) {
@@ -106,7 +107,7 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
-    if (TestUtilities.runningAsSurefire()) {
+    if (false && TestUtilities.runningAsSurefire()) {
       logTestSkip("Running in surefire.");
       return;
     }
@@ -115,17 +116,23 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
       return;
     }
     if (setup == null) {
-      if (!error) {
-      System.out.println("tx.fhir.org passed all HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+      count++;
+      if (error == 0) {
+        System.out.println("tx.fhir.org passed all "+count+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+      } else {
+        System.out.println("tx.fhir.org failed "+error+" of "+count+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
       }
-      Assertions.assertTrue(!error);
+      Assertions.assertTrue(error == 0);
     } else {
+      count++;
       if (SERVER != null) {
         if (tester == null) {
           tester = new TxTester(this, SERVER, true, externals);
         }
-        String err = tester.executeTest(setup.suite, setup.test, modes);
-        error = error || err != null; 
+        String err = tester.executeTest(this, setup.suite, setup.test, modes);
+        if (err != null) {
+          error++;
+        }
         Assertions.assertTrue(err == null, err);
       } else {
         Assertions.assertTrue(true);
@@ -175,10 +182,6 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
           throw new FHIRException("unknown version " + version);
       }
     }
-//    org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_40_50.convertResource(res);
-//    String p = Utilities.path(FhirSettings.getFhirTestCasesPath(), "tx", "r4", filename);
-//    Utilities.createDirectory(Utilities.getDirectoryForFile(p));
-//    new org.hl7.fhir.r4.formats.JsonParser().compose(ManagedFileAccess.outStream(p), r4);
     return res;
   }
 
@@ -195,5 +198,22 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   @Override
   public boolean hasContent(String filename) throws IOException {
     return txtests.hasFile(filename);
+  }
+
+  @Override
+  public String code() {
+    return "local";
+  }
+
+  @Override
+  public String version() throws JsonException, IOException {
+    return txtests.loadVersion();
+  }
+
+
+
+  @Override
+  public String testFileName() {
+    return txtests.testFileName();
   }
 }

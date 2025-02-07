@@ -39,6 +39,14 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
     this.refpol = refpol;
   }
 
+  public ReferenceValidationPolicy getRefpol() {
+    return refpol;
+  }
+
+  public void setRefpol(ReferenceValidationPolicy refpol) {
+    this.refpol = refpol;
+  }
+
   @Override
   public ReferenceValidationPolicy policyForReference(IResourceValidator validator, Object appContext, String path, String url) {
     return refpol;
@@ -181,6 +189,11 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
   @Override
   public ReferenceValidationPolicy getReferencePolicy() {
     return refpol;
+  }
+
+  @Override
+  public SpecialValidationAction policyForSpecialValidation(IResourceValidator validator, Object appContext, SpecialValidationRule rule, String stackPath, Element resource, Element element) {
+    return SpecialValidationAction.CHECK_RULE;
   }
 
   

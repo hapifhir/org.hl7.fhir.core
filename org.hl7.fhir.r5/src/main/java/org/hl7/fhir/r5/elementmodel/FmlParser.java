@@ -27,7 +27,7 @@ import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapTransform;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.SourceLocation;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -46,9 +46,9 @@ public class FmlParser extends ParserBase {
 
   @Override
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
-    byte[] content = TextFile.streamToBytes(inStream);
+    byte[] content = FileUtilities.streamToBytes(inStream);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
-    String text = TextFile.streamToString(stream);
+    String text = FileUtilities.streamToString(stream);
     List<ValidatedFragment> result = new ArrayList<>();
     ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "fml", content, false);
     focusFragment.setElement(parse(focusFragment.getErrors(), text));

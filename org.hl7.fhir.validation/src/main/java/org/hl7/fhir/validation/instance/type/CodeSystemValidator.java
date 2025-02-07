@@ -8,14 +8,17 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.codesystems.CodesystemAltcodeKind;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
+import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationAction;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationRule;
 import org.hl7.fhir.utilities.CanonicalPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -24,9 +27,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.cli.model.ValidationOutcome;
-import org.hl7.fhir.validation.instance.type.CodeSystemValidator.KnownProperty;
-import org.hl7.fhir.validation.instance.type.CodeSystemValidator.PropertyDef;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
@@ -108,6 +108,8 @@ public class CodeSystemValidator extends BaseValidator {
 
   private static final String VS_PROP_STATUS = null;
   private Set<String> propertyCodes = new HashSet<String>();
+  private boolean noDisplayWarningDone;
+  private boolean noDefinitionWarningDone;
 
   public CodeSystemValidator(BaseValidator parent) {
     super(parent);
@@ -123,38 +125,42 @@ public class CodeSystemValidator extends BaseValidator {
     int count = countConcepts(cs); 
     CodeSystem csB = null;
     
-    metaChecks(errors, cs, stack, url, content, caseSensitive, hierarchyMeaning, !Utilities.noString(supp), count, supp);
+    metaChecks(errors, cs, stack, url, content, caseSensitive, hierarchyMeaning, !Utilities.noString(supp), count, supp, valContext);
 
-    String vsu = cs.getNamedChildValue("valueSet", false);
-    if (!Utilities.noString(vsu)) {
-      if ("supplement".equals(content)) {
-        csB = context.fetchCodeSystem(supp);
-        if (csB != null) {
-          if (csB.hasValueSet()) {
-            warning(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), vsu.equals(vsu), I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT2, csB.getValueSet());            
+    if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.CODESYSTEM_VALUESET_CHECKS, stack.getLiteralPath(), cs, null) == SpecialValidationAction.CHECK_RULE) {
+      String vsu = cs.getNamedChildValue("valueSet", false);
+      if (!Utilities.noString(vsu)) {
+        if ("supplement".equals(content)) {
+          csB = context.fetchCodeSystem(supp);
+          if (csB != null) {
+            if (csB.hasValueSet()) {
+              warning(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), vsu.equals(vsu), I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT2, csB.getValueSet());            
+            } else {
+              warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT1);
+            }
           } else {
-            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT1);
-          }
-        } else {
-          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), "complete".equals(content), I18nConstants.CODESYSTEM_CS_NO_VS_NOTCOMPLETE);
-        }        
-      } else { 
-        hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), "complete".equals(content), I18nConstants.CODESYSTEM_CS_NO_VS_NOTCOMPLETE);
-      }
-      ValueSet vs;
-      try {
-        vs = context.fetchResourceWithException(ValueSet.class, vsu);
-      } catch (FHIRException e) {
-        vs = null;
-      }
-      if (vs != null) {
-        if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.hasCompose(), I18nConstants.CODESYSTEM_CS_VS_INVALID, url, vsu)) { 
-          if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.getCompose().getInclude().size() == 1, I18nConstants.CODESYSTEM_CS_VS_INVALID, url, vsu)) {
-            if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.getCompose().getInclude().get(0).getSystem().equals(url), I18nConstants.CODESYSTEM_CS_VS_WRONGSYSTEM, url, vsu, vs.getCompose().getInclude().get(0).getSystem())) {
-              ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !vs.getCompose().getInclude().get(0).hasValueSet()
-                  && !vs.getCompose().getInclude().get(0).hasConcept() && !vs.getCompose().getInclude().get(0).hasFilter(), I18nConstants.CODESYSTEM_CS_VS_INCLUDEDETAILS, url, vsu) && ok;
-              if (vs.hasExpansion()) {
-                ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.getExpansion().getContains().size() == count, I18nConstants.CODESYSTEM_CS_VS_EXP_MISMATCH, url, vsu, count, vs.getExpansion().getContains().size()) && ok;
+            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), "complete".equals(content), I18nConstants.CODESYSTEM_CS_NO_VS_NOTCOMPLETE);
+          }        
+        } else { 
+          hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), "complete".equals(content), I18nConstants.CODESYSTEM_CS_NO_VS_NOTCOMPLETE);
+        }
+        ValueSet vs;
+        try {
+          vs = context.fetchResourceWithException(ValueSet.class, vsu);
+        } catch (FHIRException e) {
+          vs = null;
+        }
+        if (vs != null) {
+          if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.hasCompose(), I18nConstants.CODESYSTEM_CS_VS_INVALID, url, vsu)) { 
+            if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.getCompose().getInclude().size() == 1, I18nConstants.CODESYSTEM_CS_VS_INVALID, url, vsu)) {
+              if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.getCompose().getInclude().get(0).getSystem().equals(url), I18nConstants.CODESYSTEM_CS_VS_WRONGSYSTEM, url, vsu, vs.getCompose().getInclude().get(0).getSystem())) {
+                ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !vs.getCompose().getInclude().get(0).hasValueSet()
+                    && !vs.getCompose().getInclude().get(0).hasConcept() && !vs.getCompose().getInclude().get(0).hasFilter(), I18nConstants.CODESYSTEM_CS_VS_INCLUDEDETAILS, url, vsu) && ok;
+                if (vs.hasExpansion()) {
+                  ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.getExpansion().getContains().size() == count, I18nConstants.CODESYSTEM_CS_VS_EXP_MISMATCH, url, vsu, count, vs.getExpansion().getContains().size()) && ok;
+                }
+              } else {
+                ok = false;
               }
             } else {
               ok = false;
@@ -162,42 +168,42 @@ public class CodeSystemValidator extends BaseValidator {
           } else {
             ok = false;
           }
+        }
+      } // todo... try getting the value set the other way...
+    }
+    if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.CODESYSTEM_SUPPLEMENT_CHECKS, stack.getLiteralPath(), cs, null) == SpecialValidationAction.CHECK_RULE) {
+
+      CodeSystem csSupp = null;
+      if ("supplement".equals(content) || supp != null) {      
+        if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), !Utilities.noString(supp), I18nConstants.CODESYSTEM_CS_SUPP_NO_SUPP)) {
+          if (context.supportsSystem(supp, options.getFhirVersion())) {
+            csSupp = context.fetchCodeSystem(supp);
+            if (csSupp != null) {
+              if (csSupp.hasHierarchyMeaningElement() && cs.hasChild("hierarchyMeaning")) {
+                String hm = cs.getNamedChildValue("hierarchyMeaning");
+                ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), hm.equals(csSupp.getHierarchyMeaning().toCode()), I18nConstants.CODESYSTEM_CS_SUPP_HIERARCHY_MEANING, hm, csSupp.getHierarchyMeaning().toCode()) & ok;
+              }
+
+
+            }
+            List<Element> concepts = cs.getChildrenByName("concept");
+            int ce = 0;
+            for (Element concept : concepts) {
+              NodeStack nstack = stack.push(concept, ce, null, null);
+              if (ce == 0) {
+                rule(errors, "2023-08-15", IssueType.INVALID, nstack,  !"not-present".equals(content), I18nConstants.CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED);            
+              }
+              ok = validateSupplementConcept(errors, concept, nstack, supp, options) && ok;
+              ce++;
+            }    
+          } else {
+            if (cs.hasChildren("concept")) {
+              warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_CANT_CHECK, supp);
+            }
+          }
         } else {
           ok = false;
         }
-      }
-    } // todo... try getting the value set the other way...
-
-    CodeSystem csSupp = null;
-    if ("supplement".equals(content) || supp != null) {      
-      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), !Utilities.noString(supp), I18nConstants.CODESYSTEM_CS_SUPP_NO_SUPP)) {
-        if (context.supportsSystem(supp, options.getFhirVersion())) {
-          csSupp = context.fetchCodeSystem(supp);
-          if (csSupp != null) {
-            if (csSupp.hasHierarchyMeaningElement() && cs.hasChild("hierarchyMeaning")) {
-              String hm = cs.getNamedChildValue("hierarchyMeaning");
-              ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), hm.equals(csSupp.getHierarchyMeaning().toCode()), I18nConstants.CODESYSTEM_CS_SUPP_HIERARCHY_MEANING, hm, csSupp.getHierarchyMeaning().toCode()) & ok;
-            }
-              
-              
-          }
-          List<Element> concepts = cs.getChildrenByName("concept");
-          int ce = 0;
-          for (Element concept : concepts) {
-            NodeStack nstack = stack.push(concept, ce, null, null);
-            if (ce == 0) {
-              rule(errors, "2023-08-15", IssueType.INVALID, nstack,  !"not-present".equals(content), I18nConstants.CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED);            
-            }
-            ok = validateSupplementConcept(errors, concept, nstack, supp, options) && ok;
-            ce++;
-          }    
-        } else {
-          if (cs.hasChildren("concept")) {
-            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_CANT_CHECK, supp);
-          }
-        }
-      } else {
-        ok = false;
       }
     }
 
@@ -211,29 +217,33 @@ public class CodeSystemValidator extends BaseValidator {
       boolean isSuppProp = valContext.getRootResource() != null && valContext.getRootResource().fhirType().equals("CodeSystem"); // todo add more checks
       hint(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), !isInQ && !isSuppProp, I18nConstants.CODESYSTEM_NOT_CONTAINED);      
     }
-    
-    Map<String, PropertyDef> properties = new HashMap<>();
-    List<Element> propertyElements = cs.getChildrenByName("property");
-    int i = 0;
-    for (Element propertyElement : propertyElements) {
-      ok = checkPropertyDefinition(errors, cs,  stack.push(propertyElement, i, null, null), "true".equals(caseSensitive), hierarchyMeaning, csB, propertyElement, properties) && ok;
-      i++;
+
+    Map<String, PropertyDef> properties = null;
+    if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.CODESYSTEM_PROPERTY_CHECKS, stack.getLiteralPath(), cs, null) == SpecialValidationAction.CHECK_RULE) {
+      properties = new HashMap<>();
+      List<Element> propertyElements = cs.getChildrenByName("property");
+      int i = 0;
+      for (Element propertyElement : propertyElements) {
+        ok = checkPropertyDefinition(errors, cs,  stack.push(propertyElement, i, null, null), "true".equals(caseSensitive), hierarchyMeaning, csB, propertyElement, properties) && ok;
+        i++;
+      }
     }
 
     Set<String> codes = new HashSet<>();
-    
+
     List<Element> concepts = cs.getChildrenByName("concept");
-    i = 0;
+    int i = 0;
     for (Element concept : concepts) {
-      ok = checkConcept(errors, cs,  stack.push(concept, i, null, null), "true".equals(caseSensitive), hierarchyMeaning, csB, concept, codes, properties) && ok;
+      ok = checkConcept(errors, cs,  stack.push(concept, i, null, null), "true".equals(caseSensitive), hierarchyMeaning, csB, concept, codes, valContext) && ok;
       i++;
     }    
-    i = 0;
-    for (Element concept : concepts) {
-      ok = checkConceptProps(errors, cs,  stack.push(concept, i, null, null), "true".equals(caseSensitive), hierarchyMeaning, csB, concept, codes, properties) && ok;
-      i++;
+    if (properties != null) {
+      i = 0;
+      for (Element concept : concepts) {
+        ok = checkConceptProps(errors, cs,  stack.push(concept, i, null, null), "true".equals(caseSensitive), hierarchyMeaning, csB, concept, codes, properties) && ok;
+        i++;
+      }
     }
-    
     return ok;
   }
 
@@ -262,21 +272,47 @@ public class CodeSystemValidator extends BaseValidator {
             if (pcs == null) {
               warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_URI_UNKNOWN_BASE, base, code);
             } else {
-              ConceptDefinitionComponent cc = CodeSystemUtilities.findCode(pcs.getConcept(), pcode);              
-              if (warning(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), cc != null, I18nConstants.CODESYSTEM_PROPERTY_URI_INVALID, pcode, base, pcs.present(), uri, code)) {
+              PropertyComponent cp = CodeSystemUtilities.getPropertyByUri(pcs, uri);
+              if (cp != null) {
                 foundPropDefn = true;
                 if ("code".equals(type)) {
-                  ConceptPropertyComponent ccp = CodeSystemUtilities.getProperty(cc, "binding");
-                  if (ccp != null && ccp.hasValue() && ccp.getValue().hasPrimitiveValue()) {
+                  if (cp.hasExtension("http://hl7.org/fhir/StructureDefinition/codesystem-property-valueset", "http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet")) {
                     ruleFromUri = CodeValidationRule.VS_ERROR;
-                    valuesetFromUri = ccp.getValue().primitiveValue();
+                    valuesetFromUri = cp.getExtensionValue("http://hl7.org/fhir/StructureDefinition/codesystem-property-valueset", "http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet").primitiveValue();
                   } else {
                     ruleFromUri = CodeValidationRule.INTERNAL_CODE_WARNING;                    
                   }
                 }
               } else {
-                if ("code".equals(type)) {
-                  ruleFromUri = CodeValidationRule.INTERNAL_CODE_WARNING;
+                ConceptDefinitionComponent cc = CodeSystemUtilities.findCode(pcs.getConcept(), pcode);   
+                if (warning(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), cc != null || isOfficialRef(uri), I18nConstants.CODESYSTEM_PROPERTY_URI_INVALID, pcode, base, pcs.present(), uri, code)) {
+                  if (cc != null) {
+                    foundPropDefn = true;
+                    if ("code".equals(type)) {
+                      ConceptPropertyComponent ccp = CodeSystemUtilities.getProperty(cc, "binding");
+                      if (ccp != null && ccp.hasValue() && ccp.getValue().hasPrimitiveValue()) {
+                        ruleFromUri = CodeValidationRule.VS_ERROR;
+                        valuesetFromUri = ccp.getValue().primitiveValue();
+                      } else {
+                        ruleFromUri = CodeValidationRule.INTERNAL_CODE_WARNING;                    
+                      }
+                    }
+                  } else {
+                    switch (uri) {
+                    case "http://hl7.org/fhir/concept-properties#status":
+                    case "http://hl7.org/fhir/concept-properties#retirementDate":
+                    case "http://hl7.org/fhir/concept-properties#deprecationDate":
+                    case "http://hl7.org/fhir/concept-properties#parent":
+                    case "http://hl7.org/fhir/concept-properties#child":
+                    case "http://hl7.org/fhir/concept-properties#notSelectable":
+                    default:
+                      // do nothing for now
+                    }
+                  }
+                } else {
+                  if ("code".equals(type)) {
+                    ruleFromUri = CodeValidationRule.INTERNAL_CODE_WARNING;
+                  }
                 }
               }
             }
@@ -290,7 +326,7 @@ public class CodeSystemValidator extends BaseValidator {
         } else {
           ok = false;
         }
-        if (uri.contains("hl7.org/fhir")) {
+        if (uri.contains("://hl7.org/fhir")) {
           switch (uri) {
           case "http://hl7.org/fhir/concept-properties#status" :
             ukp = KnownProperty.Status;
@@ -432,6 +468,15 @@ public class CodeSystemValidator extends BaseValidator {
     return ok;
   }
 
+  private boolean isOfficialRef(String uri) {
+    if (VersionUtilities.isR5Plus(context.getVersion())) {
+      return false;
+    } else {
+      return Utilities.existsInList(uri, "http://hl7.org/fhir/concept-properties#status", "http://hl7.org/fhir/concept-properties#retirementDate", 
+          "http://hl7.org/fhir/concept-properties#deprecationDate","http://hl7.org/fhir/concept-properties#parent","http://hl7.org/fhir/concept-properties#child","http://hl7.org/fhir/concept-properties#notSelectable");
+    }
+  }
+
   private ValueSet findVS(List<ValidationMessage> errors, Element cs, NodeStack stack, String url, String message) {
     if (url == null) {
       return null;
@@ -452,7 +497,7 @@ public class CodeSystemValidator extends BaseValidator {
     return (url != null) && uri.startsWith(url);
   }
 
-  private boolean checkConcept(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean caseSensitive, String hierarchyMeaning, CodeSystem csB, Element concept, Set<String> codes, Map<String, PropertyDef> properties) {
+  private boolean checkConcept(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean caseSensitive, String hierarchyMeaning, CodeSystem csB, Element concept, Set<String> codes, ValidationContext valContext) {
     boolean ok = true;
     String code = concept.getNamedChildValue("code");
     String display = concept.getNamedChildValue("display");
@@ -461,30 +506,48 @@ public class CodeSystemValidator extends BaseValidator {
       ok = rule(errors, "2025-01-09", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_DUPLICATE_CODE, code) && ok;             
     }
     codes.add(code);
-    
-    if (csB != null && !Utilities.noString(display)) {
-      ConceptDefinitionComponent b = CodeSystemUtilities.findCode(csB.getConcept(), code);
-      if (b != null && !b.getDisplay().equalsIgnoreCase(display)) {
-        String lang = cs.getNamedChildValue("language");
-        if ((lang == null && !csB.hasLanguage()) || 
-            csB.getLanguage().equals(lang)) {
-          // nothing new language wise, and the display doesn't match
-          hint(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_SUPP_NO_DISPLAY, display, b.getDisplay(), lang == null? "undefined" : lang);        
+
+    if (isHL7(cs)) {
+      if (!noDisplayWarningDone) {
+        if (!concept.hasChild("display")) {          
+          warning(errors, "2025-01-31", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CONCEPT_NO_DISPLAY, code);
+          noDisplayWarningDone = true;
+        }
+      }
+      if (!noDefinitionWarningDone) {
+        if (!concept.hasChild("definition")) {          
+          warning(errors, "2025-01-31", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CONCEPT_NO_DEFINITION, code);
+          noDefinitionWarningDone = true;
         }
       }
     }
     
-    List<Element> designations = concept.getChildrenByName("designation");
-    int i = 0;
-    for (Element designation : designations) {
-      ok = checkDesignation(errors, cs, stack.push(designation, i, null, null), concept, designation) && ok;
-      i++;
+    if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.CODESYSTEM_DESIGNATION_CHECKS, stack.getLiteralPath(), cs, concept) == SpecialValidationAction.CHECK_RULE) {
+
+      if (csB != null && !Utilities.noString(display)) {
+        ConceptDefinitionComponent b = CodeSystemUtilities.findCode(csB.getConcept(), code);
+        if (b != null && !b.getDisplay().equalsIgnoreCase(display)) {
+          String lang = cs.getNamedChildValue("language");
+          if ((lang == null && !csB.hasLanguage()) || 
+              csB.getLanguage().equals(lang)) {
+            // nothing new language wise, and the display doesn't match
+            hint(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_SUPP_NO_DISPLAY, display, b.getDisplay(), lang == null? "undefined" : lang);        
+          }
+        }
+      }
+
+      List<Element> designations = concept.getChildrenByName("designation");
+      int i = 0;
+      for (Element designation : designations) {
+        ok = checkDesignation(errors, cs, stack.push(designation, i, null, null), concept, designation) && ok;
+        i++;
+      }
     }
-    
+
     List<Element> concepts = concept.getChildrenByName("concept");
-    i = 0;
+    int i = 0;
     for (Element child : concepts) {
-      ok = checkConcept(errors, cs,  stack.push(concept, i, null, null), caseSensitive, hierarchyMeaning, csB, child, codes, properties) && ok;
+      ok = checkConcept(errors, cs,  stack.push(concept, i, null, null), caseSensitive, hierarchyMeaning, csB, child, codes, valContext) && ok;
       i++;
     }
     return ok;
@@ -631,7 +694,11 @@ public class CodeSystemValidator extends BaseValidator {
     return true;
   }
   
-  private void metaChecks(List<ValidationMessage> errors, Element cs, NodeStack stack, String url,  String content, String caseSensitive, String hierarchyMeaning, boolean isSupplement, int count, String supp) {
+  private void metaChecks(List<ValidationMessage> errors, Element cs, NodeStack stack, String url,  String content, String caseSensitive, String hierarchyMeaning, boolean isSupplement, int count, String supp, ValidationContext valContext) {
+    if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.CODESYSTEM_METADATA_CHECKS, stack.getLiteralPath(), cs, null) == SpecialValidationAction.IGNORE_RULE) {
+      return;
+    }
+    
     if (forPublication && url != null && (url.contains("hl7.org"))) {
       hint(errors, "2024-03-07", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), url.contains("terminology.hl7.org") || url.contains("hl7.org/cda/stds/core"), I18nConstants.CODESYSTEM_THO_CHECK);
     }

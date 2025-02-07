@@ -47,7 +47,7 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.StringPair;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode.Location;
@@ -513,7 +513,7 @@ public class XhtmlParser {
     } else {
       unwindPoint = null;
       List<XhtmlNode> p = new ArrayList<>();
-      parseElementInner(root, p, nsm, true);
+      parseElementInner(root, p, nsm);
       root.setEmptyExpanded(true);
     }
     return result;
@@ -580,17 +580,16 @@ public class XhtmlParser {
     return nodeNamespaceMap.hasDefaultNamespace() && (parentNamespaceMap == null || !nodeNamespaceMap.getDefaultNamespace().equals(parentNamespaceMap.getDefaultNamespace()));
   }
 
-  private void addTextNode(XhtmlNode node, StringBuilder s)
-  {
+  private void addTextNode(XhtmlNode node, StringBuilder s) {
     String t = isTrimWhitespace() ? s.toString().trim() : s.toString();
-    if (t.length() > 0)
-    {
+    if (t.length() > 0) {
       lastText = t;
       node.addText(t).setLocation(markLocation());
       s.setLength(0);
     }
   }
-  private void parseElementInner(XhtmlNode node, List<XhtmlNode> parents, NamespaceNormalizationMap nsm, boolean escaping) throws FHIRFormatError, IOException
+  
+  private void parseElementInner(XhtmlNode node, List<XhtmlNode> parents, NamespaceNormalizationMap nsm) throws FHIRFormatError, IOException
   {
     StringBuilder s = new StringBuilder();
     while (peekChar() != END_OF_CHARS && !parents.contains(unwindPoint) && !(node == unwindPoint))
@@ -659,6 +658,23 @@ public class XhtmlParser {
     addTextNode(node, s);
   }
 
+
+  private void parseScriptInner(XhtmlNode node) throws FHIRFormatError, IOException {
+    StringBuilder s = new StringBuilder();
+    while (peekChar() != END_OF_CHARS && !s.toString().endsWith("</script>")) {
+      s.append(readChar());
+    }      
+    String ss = s.toString();
+    if (ss.length() >= 9) {
+      ss = ss.substring(0, ss.length()-9);
+    }
+    String t = isTrimWhitespace() ? ss.trim() : ss;
+    if (t.length() > 0) {
+      lastText = t;
+      node.addText(t).setLocation(markLocation());
+    }
+  }
+
   private void parseElement(XhtmlNode parent, List<XhtmlNode> parents, NamespaceNormalizationMap namespaceMap) throws IOException, FHIRFormatError
   {
     markLocation();
@@ -676,9 +692,11 @@ public class XhtmlParser {
         throw new FHIRFormatError("unexpected non-end of element "+name+" "+descLoc());
       readChar();
       node.setEmptyExpanded(false);
+    } else if ("script".equals(name.getName())) {
+      parseScriptInner(node);
     } else {
       node.setEmptyExpanded(true);
-      parseElementInner(node, newParents, namespaceMap, "script".equals(name.getName()));
+      parseElementInner(node, newParents, namespaceMap);
     }
   }
 
@@ -1305,7 +1323,7 @@ public class XhtmlParser {
       return parseFragment();
     } catch (Exception e) {
       if (DEBUG) {
-        TextFile.stringToFile(source, Utilities.path("[tmp]", "html-fail.xhtml"));
+        FileUtilities.stringToFile(source, Utilities.path("[tmp]", "html-fail.xhtml"));
       }
       throw e;
     }
@@ -1341,7 +1359,7 @@ public class XhtmlParser {
     result.setName(n);
     unwindPoint = null;
     List<XhtmlNode> p = new ArrayList<>();
-    parseElementInner(result, p, null, true);
+    parseElementInner(result, p, null);
 
     return result;
   }

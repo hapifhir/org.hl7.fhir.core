@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -97,7 +97,7 @@ public class PackageMaintainer {
         if (json.has("resourceType") && json.has("text")) {
           json.remove("text");
           String src = JsonParser.compose(json);
-          TextFile.stringToFile(src, f.getAbsolutePath());
+          FileUtilities.stringToFile(src, f.getAbsolutePath());
         }
       }
     }

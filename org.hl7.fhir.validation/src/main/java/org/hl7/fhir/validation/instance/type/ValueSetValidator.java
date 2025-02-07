@@ -23,6 +23,9 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationAction;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationRule;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -185,31 +188,33 @@ public class ValueSetValidator extends BaseValidator {
       }
     }
     if (!stack.isContained()) {
-      ok = checkShareableValueSet(errors, vs, stack) && ok;
+      ok = checkShareableValueSet(valContext, errors, vs, stack) && ok;
     }
     return ok;
   }
 
-  private boolean checkShareableValueSet(List<ValidationMessage> errors, Element vs, NodeStack stack) {
-    if (parent.isForPublication()) { 
-      if (isHL7(vs)) {
-        boolean ok = true;
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("url", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "url") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("version", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "version") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("title", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "title") && ok;                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("name", false), I18nConstants.VALUESET_SHAREABLE_EXTRA_MISSING_HL7, "name");                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("status", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "status") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("experimental", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "experimental") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("description", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "description") && ok;
-        return ok;
-      } else {
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("url", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "url");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("version", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "version");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("title", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "title");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("name", false), I18nConstants.VALUESET_SHAREABLE_EXTRA_MISSING, "name");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("status", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "status");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("experimental", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "experimental");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("description", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "description");
+  private boolean checkShareableValueSet(ValidationContext valContext, List<ValidationMessage> errors, Element vs, NodeStack stack) {
+    if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.VALUESET_METADATA_CHECKS, stack.getLiteralPath(), vs, null) == SpecialValidationAction.CHECK_RULE) {
+      if (parent.isForPublication()) { 
+        if (isHL7(vs)) {
+          boolean ok = true;
+          ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("url", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "url") && ok;                      
+          ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("version", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "version") && ok;                      
+          ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("title", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "title") && ok;                      
+          warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("name", false), I18nConstants.VALUESET_SHAREABLE_EXTRA_MISSING_HL7, "name");                      
+          ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("status", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "status") && ok;                      
+          ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("experimental", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "experimental") && ok;                      
+          ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("description", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "description") && ok;
+          return ok;
+        } else {
+          warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("url", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "url");                      
+          warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("version", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "version");                      
+          warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("title", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "title");                      
+          warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("name", false), I18nConstants.VALUESET_SHAREABLE_EXTRA_MISSING, "name");                      
+          warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("status", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "status");                      
+          warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("experimental", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "experimental");                      
+          warning(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("description", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "description");
+        }
       }
     }
     return true;
@@ -237,6 +242,9 @@ public class ValueSetValidator extends BaseValidator {
     boolean ok = true;
     String system = include.getChildValue("system");
     String version = include.getChildValue("version");
+    
+    if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.VALUESET_IMPORT_CHECKS, stack.getLiteralPath(), vsSrc, include) == SpecialValidationAction.CHECK_RULE) {
+
     List<Element> valuesets = include.getChildrenByName("valueSet");
     int i = 0;
     for (Element ve : valuesets) {
@@ -262,6 +270,7 @@ public class ValueSetValidator extends BaseValidator {
     }
     if (valuesets.size() > 1) {
       warning(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, stack, false, I18nConstants.VALUESET_IMPORT_UNION_INTERSECTION);                  
+    }
     }
     if (system != null) {
       rule(errors, "2024-03-06", IssueType.INVALID, stack, Utilities.isAbsoluteUrl(system), system.startsWith("#") ? I18nConstants.VALUESET_INCLUDE_SYSTEM_ABSOLUTE_FRAG : I18nConstants.VALUESET_INCLUDE_SYSTEM_ABSOLUTE, system);
@@ -338,45 +347,47 @@ public class ValueSetValidator extends BaseValidator {
           }
         }
       }
+      if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.VALUESET_SYSTEM_CHECKS, stack.getLiteralPath(), vsSrc, include) == SpecialValidationAction.CHECK_RULE) {
 
-      if (!noTerminologyChecks && validateConcepts) {
-        boolean systemOk = true;
-        int cc = 0;
-        List<VSCodingValidationRequest> batch = new ArrayList<>();
-        boolean first = true;
-        if (concepts.size() > TOO_MANY_CODES_TO_VALIDATE) {
-          hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_TOO_MANY_CODES, concepts.size());
-        } else {        
-          if (((InstanceValidator) parent).isValidateValueSetCodesOnTxServer() && !context.isNoTerminologyServer()) {
-            try {
-              for (Element concept : concepts) {
-                // we treat the first differently because we want to know if the system is worth validating. if it is, then we batch the rest
-                if (first) {
-                  systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version, csChecker, cs != null);
-                  first = false;
-                } else if (systemOk) {
-                  batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version, csChecker));
-                  if (batch.size() > VALIDATION_BATCH_SIZE) {
-                    executeValidationBatch(errors, vsid, retired, system, version, batch);
-                    batch.clear();
+        if (!noTerminologyChecks && validateConcepts) {
+          boolean systemOk = true;
+          int cc = 0;
+          List<VSCodingValidationRequest> batch = new ArrayList<>();
+          boolean first = true;
+          if (concepts.size() > TOO_MANY_CODES_TO_VALIDATE) {
+            hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_TOO_MANY_CODES, concepts.size());
+          } else {        
+            if (((InstanceValidator) parent).isValidateValueSetCodesOnTxServer() && !context.isNoTerminologyServer()) {
+              try {
+                for (Element concept : concepts) {
+                  // we treat the first differently because we want to know if the system is worth validating. if it is, then we batch the rest
+                  if (first) {
+                    systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version, csChecker, cs != null);
+                    first = false;
+                  } else if (systemOk) {
+                    batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version, csChecker));
+                    if (batch.size() > VALIDATION_BATCH_SIZE) {
+                      executeValidationBatch(errors, vsid, retired, system, version, batch);
+                      batch.clear();
+                    }
                   }
-                }
-                cc++;
-              }    
-              executeValidationBatch(errors, vsid, retired, system, version, batch);
-            } catch (Exception e) {
-              ok = false;
-              VSCodingValidationRequest cv = batch.get(0);
-              rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, cv.getStack().getLiteralPath(), false, e.getMessage());
+                  cc++;
+                }    
+                executeValidationBatch(errors, vsid, retired, system, version, batch);
+              } catch (Exception e) {
+                ok = false;
+                VSCodingValidationRequest cv = batch.get(0);
+                rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, cv.getStack().getLiteralPath(), false, e.getMessage());
+              }
             }
           }
         }
+        int cf = 0;
+        for (Element filter : filters) {
+          ok = validateValueSetIncludeFilter(errors, filter, stack.push(filter, cf, null, null), system, version, cs, csChecker) & ok;
+          cf++;
+        }    
       }
-      int cf = 0;
-      for (Element filter : filters) {
-        ok = validateValueSetIncludeFilter(errors, filter, stack.push(filter, cf, null, null), system, version, cs, csChecker) & ok;
-        cf++;
-      }    
       csChecker.finish(include, stack);
     } else {
       warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, filters.size() == 0 && concepts.size() == 0, I18nConstants.VALUESET_NO_SYSTEM_WARNING);      

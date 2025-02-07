@@ -51,7 +51,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.SnomedExpressions;
 import org.hl7.fhir.r5.utils.SnomedExpressions.Expression;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.turtle.Turtle;
@@ -82,21 +82,21 @@ public class TurtleParser extends ParserBase {
   }
   @Override
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
-    byte[] content = TextFile.streamToBytes(inStream);
+    byte[] content = FileUtilities.streamToBytes(inStream);
     ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "ttl", content, false);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
 
     Turtle src = new Turtle();
     if (policy == ValidationPolicy.EVERYTHING) {
       try {
-        src.parse(TextFile.streamToString(stream));
+        src.parse(FileUtilities.streamToString(stream));
       } catch (Exception e) {  
         logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, -1, -1, "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_TURTLE_, e.getMessage()), IssueSeverity.FATAL);
         return null;
       }
       focusFragment.setElement(parse(focusFragment.getErrors(), src));
     } else {
-      src.parse(TextFile.streamToString(stream));
+      src.parse(FileUtilities.streamToString(stream));
       focusFragment.setElement(parse(focusFragment.getErrors(), src));
     }
     List<ValidatedFragment> res = new ArrayList<>();

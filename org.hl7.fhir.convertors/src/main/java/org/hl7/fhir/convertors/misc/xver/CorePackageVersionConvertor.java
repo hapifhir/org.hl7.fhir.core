@@ -13,6 +13,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -511,7 +512,7 @@ public class CorePackageVersionConvertor {
         }
       }
     }
-    dst.save(ManagedFileAccess.outStream(Utilities.changeFileExt(packageSource, ".as."+VersionUtilities.getNameForVersion(versionTarget).toLowerCase()+".tgz")));
+    dst.save(ManagedFileAccess.outStream(FileUtilities.changeFileExt(packageSource, ".as."+VersionUtilities.getNameForVersion(versionTarget).toLowerCase()+".tgz")));
   }
 
   private IContentConvertor contentConvertorFactory(String fhirVersion, String versionTarget) throws Exception {

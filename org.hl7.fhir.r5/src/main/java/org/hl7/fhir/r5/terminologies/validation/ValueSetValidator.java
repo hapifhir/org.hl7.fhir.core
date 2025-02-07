@@ -50,7 +50,6 @@ import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.extensions.ExtensionConstants;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -60,16 +59,11 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.Transport.ParameterComponent;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
@@ -77,6 +71,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
@@ -85,8 +80,6 @@ import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
 import org.hl7.fhir.r5.terminologies.providers.URICodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
-import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase.OpIssueCode;
-import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator.StringWithCode;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
@@ -95,17 +88,13 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
+import org.hl7.fhir.utilities.i18n.subtag.LanguageSubtagRegistry;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.i18n.LanguageTag;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
-
-import com.google.j2objc.annotations.ReflectionSupport.Level;
 
 public class ValueSetValidator extends ValueSetProcessBase {
 
@@ -138,17 +127,20 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private Set<String> unknownSystems;
   private Set<String> unknownValueSets = new HashSet<>();
   private boolean throwToServer;
+  private LanguageSubtagRegistry registry;
+  
 
-  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, Parameters expansionProfile, TerminologyClientManager tcm) {
+  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, Parameters expansionProfile, TerminologyClientManager tcm, LanguageSubtagRegistry registry) {
     super(context, opContext);
     this.valueset = source;
     this.options = options;
     this.expansionParameters = expansionProfile;
     this.tcm = tcm;
+    this.registry = registry;
     analyseValueSet();
   }
   
-  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, ValidationContextCarrier ctxt, Parameters expansionProfile, TerminologyClientManager tcm) {
+  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, ValidationContextCarrier ctxt, Parameters expansionProfile, TerminologyClientManager tcm, LanguageSubtagRegistry registry) {
     super(context, opContext);
     this.valueset = source;
     this.options = options.copy();
@@ -156,6 +148,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     this.localContext = ctxt;
     this.expansionParameters = expansionProfile;
     this.tcm = tcm;
+    this.registry = registry;
     analyseValueSet();
   }
 
@@ -515,19 +508,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (cs == null) {
       cs = findSpecialCodeSystem(system, version);
     }
+    if (cs == null) {
+      cs = context.findTxResource(CodeSystem.class, system, version);
+    }
     if (cs != null) {
       if (cs.hasUserData("supplements.installed")) {
         for (String s : cs.getUserString("supplements.installed").split("\\,")) {
-          requiredSupplements.remove(s);
-          if (s.contains("|")) {
-            s = s.substring(0, s.indexOf("|"));
-            requiredSupplements.remove(s);
-          }
+          s = removeSupplement(s);
         }
       }
     }
     return cs;
   }
+
 
   public List<String> resolveCodeSystemVersions(String system) {
     List<String> res = new ArrayList<>();
@@ -696,6 +689,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
           res = validateCode(path, code, cs, null, info);
           res.setIssues(issues);
         } else if (cs == null && valueset.hasExpansion() && inExpansion) {
+          for (ValueSetExpansionParameterComponent p : valueset.getExpansion().getParameter()) {
+            if ("used-supplement".equals(p.getName())) {
+              removeSupplement(p.getValue().primitiveValue());
+            }
+          }
           // we just take the value set as face value then
           res = new ValidationResult(system, wv, new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()), code.getDisplay());
           if (!preferServerSide(system)) {
@@ -796,6 +794,16 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
       if (!options.hasLanguages() && valueset.hasLanguage()) {
         options.addLanguage(valueset.getLanguage());
+      }
+    }
+
+    if (options.getLanguages() != null) {
+      for (LanguagePreference t : options.getLanguages().getLangs()) {
+        try {
+          LanguageTag tag = new LanguageTag(registry, t.getLang());
+        } catch (Exception e) {
+          throw new TerminologyServiceProtectionException(context.formatMessage(I18nConstants.INVALID_DISPLAY_NAME, options.getLanguages().getSource()), TerminologyServiceErrorClass.PROCESSING, IssueType.PROCESSING, e.getMessage());
+        }
       }
     }
   }
@@ -1008,7 +1016,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return new ValidationResult(IssueSeverity.INFORMATION, n, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.INFORMATION, IssueType.INVALID, path+".display", msg, OpIssueCode.DisplayComment, null)).setStatus(inactive, status);      
     } else if (!code.getDisplay().equals(vc.getDisplay())) {
       String msg = context.formatMessage(I18nConstants.NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR, code.getDisplay(), code.getSystem(), code.getCode(), options.langSummary(), vc.getDisplay());
-      return new ValidationResult(IssueSeverity.ERROR, msg, code.getSystem(), cs.getVersion(), cc, cc.getDisplay(), makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path+".display", msg, OpIssueCode.Display, null)).setStatus(inactive, status).setErrorIsDisplayIssue(true);      
+      return new ValidationResult(IssueSeverity.ERROR, msg, code.getSystem(), cs.getVersion(), cc, cc.getDisplay(), makeIssue(dispWarning(), IssueType.INVALID, path+".display", msg, OpIssueCode.Display, null)).setStatus(inactive, status).setErrorIsDisplayIssue(true);      
     } else {
       String msg = context.formatMessagePlural(options.getLanguages().getLangs().size(), I18nConstants.NO_VALID_DISPLAY_FOUND, code.getSystem(), code.getCode(), code.getDisplay(), options.langSummary());
       return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, cc.getDisplay(), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg, OpIssueCode.Display, null)).setStatus(inactive, status);      
@@ -1236,7 +1244,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (vsi.hasSystem()) {
       if (vsi.hasFilter()) {
         ValueSet vsDummy = new ValueSet();
-        vsDummy.setUrl(Utilities.makeUuidUrn());
+        vsDummy.setUrl(UUIDUtilities.makeUuidUrn());
         vsDummy.setStatus(PublicationStatus.ACTIVE);
         vsDummy.getCompose().addInclude(vsi);
         Coding c = new Coding().setCode(code).setSystem(vsi.getSystem());
@@ -1283,7 +1291,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           }
         } else {
           ValueSet vsDummy = new ValueSet();
-          vsDummy.setUrl(Utilities.makeUuidUrn());
+          vsDummy.setUrl(UUIDUtilities.makeUuidUrn());
           vsDummy.setStatus(PublicationStatus.ACTIVE);
           vsDummy.getCompose().addInclude(vsi);
           ValidationResult vr = context.validateCode(options.withNoClient(), code, vsDummy);
@@ -1666,7 +1674,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       unknownValueSets.add(url);
       info.addIssue(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, null, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, url), OpIssueCode.NotFound, null));
     }
-    ValueSetValidator vsc = new ValueSetValidator(context, opContext.copy(), options, vs, localContext, expansionParameters, tcm);
+    ValueSetValidator vsc = new ValueSetValidator(context, opContext.copy(), options, vs, localContext, expansionParameters, tcm, registry);
     vsc.setThrowToServer(throwToServer);
     inner.put(url, vsc);
     return vsc;

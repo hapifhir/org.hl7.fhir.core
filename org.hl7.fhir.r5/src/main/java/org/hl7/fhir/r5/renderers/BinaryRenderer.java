@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Binary;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -104,7 +104,7 @@ public class BinaryRenderer {
       error(x, "The Image Type '"+ct+"' is not rendered in this context");
     } else {
       String fn = "Binary-Native-"+id+ext;
-      TextFile.bytesToFile(cnt, Utilities.path(folder, fn));
+      FileUtilities.bytesToFile(cnt, Utilities.path(folder, fn));
       filenames.add(fn);
       x.img("Binary-Native-"+id+ext, "binary");
     }

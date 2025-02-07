@@ -83,6 +83,11 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
           client.setAuthenticationMode(HTTPAuthenticationMode.APIKEY);
           break;
         }
+        if (settings.getHeaders() != null) {
+          for (String n : settings.getHeaders().keySet()) {
+            client.addHeader(n, settings.getHeaders().get(n));
+          }
+        }
       }
     }
     if (getUsername() != null || getToken() != null) {

@@ -865,6 +865,10 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VALUE_SET_EXP = "VALUE_SET_EXP";
   public static final String VALUE_SET_EXPANSION = "VALUE_SET_EXPANSION";
   public static final String VALUE_SET_EXPANSIONS = "VALUE_SET_EXPANSIONS";
+  public static final String VALUE_SET_EXPANSION_SRVR = "VALUE_SET_EXPANSION_SRVR";
+  public static final String VALUE_SET_EXPANSIONS_SRVR = "VALUE_SET_EXPANSIONS_SRVR";
+  public static final String VALUE_SET_EXPANSION_INTERNAL = "VALUE_SET_EXPANSION_INTERNAL";
+  public static final String VALUE_SET_EXPANSIONS_INTERNAL = "VALUE_SET_EXPANSIONS_INTERNAL";
   public static final String VALUE_SET_EXP_FRAG = "VALUE_SET_EXP_FRAG";
   public static final String VALUE_SET_GENERALIZES = "VALUE_SET_GENERALIZES";
   public static final String VALUE_SET_HAS = "VALUE_SET_HAS";

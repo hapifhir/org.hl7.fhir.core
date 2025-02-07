@@ -284,7 +284,7 @@ public class FilesystemPackageCacheManagerLocks {
   }
 
   public synchronized PackageLock getPackageLock(String packageName) throws IOException {
-    File lockFile = new File(Utilities.path(cacheFolder.getAbsolutePath(), packageName + ".lock"));
+    File lockFile = ManagedFileAccess.file(Utilities.path(cacheFolder.getAbsolutePath(), packageName + ".lock"));
     return packageLocks.computeIfAbsent(lockFile, (k) -> new PackageLock(k, new ReentrantReadWriteLock()));
   }
 }

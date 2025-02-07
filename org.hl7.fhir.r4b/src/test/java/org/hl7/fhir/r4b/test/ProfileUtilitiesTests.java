@@ -9,7 +9,7 @@ import org.hl7.fhir.r4b.model.IntegerType;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ public class ProfileUtilitiesTests {
     StructureDefinition focus = new StructureDefinition();
     StructureDefinition base = TestingUtilities.context()
         .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
-    focus.setUrl(Utilities.makeUuidUrn());
+    focus.setUrl(UUIDUtilities.makeUuidUrn());
     focus.setBaseDefinition(base.getUrl());
     focus.setType("Patient");
     focus.setDerivation(TypeDerivationRule.CONSTRAINT);
@@ -81,7 +81,7 @@ public class ProfileUtilitiesTests {
     StructureDefinition base = TestingUtilities.context()
         .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet").copy();
     StructureDefinition focus = base.copy();
-    focus.setUrl(Utilities.makeUuidUrn());
+    focus.setUrl(UUIDUtilities.makeUuidUrn());
     focus.setSnapshot(null);
     focus.setDifferential(null);
     List<ValidationMessage> messages = new ArrayList<>();
@@ -128,7 +128,7 @@ public class ProfileUtilitiesTests {
     StructureDefinition focus = new StructureDefinition();
     StructureDefinition base = TestingUtilities.context()
         .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
-    focus.setUrl(Utilities.makeUuidUrn());
+    focus.setUrl(UUIDUtilities.makeUuidUrn());
     focus.setBaseDefinition(base.getUrl());
     focus.setType(base.getType());
     focus.setDerivation(TypeDerivationRule.CONSTRAINT);
@@ -180,7 +180,7 @@ public class ProfileUtilitiesTests {
     StructureDefinition focus = new StructureDefinition();
     StructureDefinition base = TestingUtilities.context()
         .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Appointment").copy();
-    focus.setUrl(Utilities.makeUuidUrn());
+    focus.setUrl(UUIDUtilities.makeUuidUrn());
     focus.setBaseDefinition(base.getUrl());
     focus.setType(base.getType());
     focus.setDerivation(TypeDerivationRule.CONSTRAINT);
@@ -234,7 +234,7 @@ public class ProfileUtilitiesTests {
     StructureDefinition focus = new StructureDefinition();
     StructureDefinition base = TestingUtilities.context()
         .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Appointment").copy();
-    focus.setUrl(Utilities.makeUuidUrn());
+    focus.setUrl(UUIDUtilities.makeUuidUrn());
     focus.setBaseDefinition(base.getUrl());
     focus.setType(base.getType());
     focus.setDerivation(TypeDerivationRule.CONSTRAINT);

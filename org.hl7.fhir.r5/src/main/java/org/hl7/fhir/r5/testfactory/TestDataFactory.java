@@ -37,8 +37,9 @@ import org.hl7.fhir.r5.testfactory.dataprovider.TableDataProvider;
 import org.hl7.fhir.r5.testfactory.dataprovider.ValueSetDataProvider;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.JsonException;
@@ -203,8 +204,9 @@ public class TestDataFactory {
   private JsonObject details;
   private String name;
   private boolean testing;
+  private Map<String, String> profileMap;
   
-  public TestDataFactory(IWorkerContext context, JsonObject details, LiquidEngine liquid, FHIRPathEngine fpe, String canonical, String rootFolder, String logFolder) throws IOException {
+  public TestDataFactory(IWorkerContext context, JsonObject details, LiquidEngine liquid, FHIRPathEngine fpe, String canonical, String rootFolder, String logFolder, Map<String, String> profileMap) throws IOException {
     super();
     this.context = context;
     this.rootFolder = rootFolder;
@@ -212,6 +214,7 @@ public class TestDataFactory {
     this.details = details;
     this.liquid = liquid;
     this.fpe = fpe;
+    this.profileMap = profileMap;
 
     this.name = details.asString("name");
     if (Utilities.noString(name)) {
@@ -269,22 +272,27 @@ public class TestDataFactory {
       ProfileBasedFactory factory = new ProfileBasedFactory(fpe, localData.getAbsolutePath(), tbl, tables, details.forceArray("mappings"));
       factory.setLog(log);
       factory.setTesting(testing);
+      factory.setMarkProfile(details.asBoolean("mark-profile"));
       String purl = details.asString( "profile");
       StructureDefinition profile = context.fetchResource(StructureDefinition.class, purl);
       if (profile == null) {
         error("Unable to find profile "+purl);
       } else if (!profile.hasSnapshot()) {
-        error("Pprofile "+purl+" doesn't have a snapshot");
+        error("Profile "+purl+" doesn't have a snapshot");
       }
       
       if ("true".equals(details.asString("bundle"))) {
         byte[] data = runBundle(profile, factory, tbl);
-        TextFile.bytesToFile(data, Utilities.path(rootFolder, details.asString( "filename")));
+        String fn = Utilities.path(rootFolder, details.asString( "filename"));
+        FileUtilities.bytesToFile(data, fn);
+        profileMap.put(FileUtilities.changeFileExt(fn, ""), profile.getVersionedUrl());
       } else {
         while (tbl.nextRow()) {
           if (rowPasses(factory)) {
             byte[] data = factory.generateFormat(profile, format);
-            TextFile.bytesToFile(data,  Utilities.path(rootFolder, getFileName(details.asString( "filename"), tbl.columns(), tbl.cells())));
+            String fn = Utilities.path(rootFolder, getFileName(details.asString( "filename"), tbl.columns(), tbl.cells()));
+            FileUtilities.bytesToFile(data, fn);
+            profileMap.put(FileUtilities.changeFileExt(fn, ""), profile.getVersionedUrl());
           }
         }
       }
@@ -297,8 +305,8 @@ public class TestDataFactory {
   }
 
   private void checkDownloadBaseData() throws IOException {
-    localData = new File(Utilities.path("[tmp]", "fhir-test-data.db"));  
-    File localInfo = new File(Utilities.path("[tmp]", "fhir-test-data.json"));  
+    localData = ManagedFileAccess.file(Utilities.path("[tmp]", "fhir-test-data.db"));  
+    File localInfo = ManagedFileAccess.file(Utilities.path("[tmp]", "fhir-test-data.json"));  
     try {
       JsonObject local = localInfo.exists() ? JsonParser.parseObject(localInfo) : null; 
       JsonObject json = JsonParser.parseObjectFromUrl("http://fhir.org/downloads/test-data-versions.json");
@@ -316,7 +324,7 @@ public class TestDataFactory {
       }
       if (local == null || !date.equals(local.asString("date"))) {
         HTTPResult data = ManagedWebAccess.get(Utilities.strings("general"), "http://fhir.org/downloads/"+filename);
-        TextFile.bytesToFile(data.getContent(), localData);
+        FileUtilities.bytesToFile(data.getContent(), localData);
         local = new JsonObject();
         local.set("date", date);
         JsonParser.compose(current, localInfo, true);
@@ -377,7 +385,7 @@ public class TestDataFactory {
 
   public void executeLiquid() throws IOException {
     try {
-      LiquidDocument template = liquid.parse(TextFile.fileToString(Utilities.path(rootFolder, details.asString( "liquid"))), "liquid");
+      LiquidDocument template = liquid.parse(FileUtilities.fileToString(Utilities.path(rootFolder, details.asString( "liquid"))), "liquid");
       log("liquid compiled");
       DataTable dt = loadData(Utilities.path(rootFolder, details.asString( "data")));
       Map<String, DataTable> tables = new HashMap<>();
@@ -396,11 +404,11 @@ public class TestDataFactory {
       logStrings("columns", dt.columns);
       if ("true".equals(details.asString( "bundle"))) {
         byte[] data = runBundle(template, dt);
-        TextFile.bytesToFile(data, Utilities.path(rootFolder, details.asString( "filename")));
+        FileUtilities.bytesToFile(data, Utilities.path(rootFolder, details.asString( "filename")));
       } else {
         for (List<String> row : dt.rows) { 
           byte[] data = runInstance(template, dt.columns, row);
-          TextFile.bytesToFile(data, Utilities.path(rootFolder, getFileName(details.asString( "filename"), dt.columns, row)));
+          FileUtilities.bytesToFile(data, Utilities.path(rootFolder, getFileName(details.asString( "filename"), dt.columns, row)));
         }
       }
     } catch (Exception e) {
@@ -430,7 +438,7 @@ public class TestDataFactory {
       JsonObject j = JsonParser.parseObject(cnt, true);
       return JsonParser.composeBytes(j, true);
     } else {
-      return TextFile.stringToBytes(cnt);
+      return FileUtilities.stringToBytes(cnt);
     }
   }
 
@@ -453,7 +461,7 @@ public class TestDataFactory {
 
   private InputStream bundleShell() throws IOException {
     String bundle = "{\"resourceType\" : \"Bundle\", \"type\" : \"collection\"}";
-    return new ByteArrayInputStream(TextFile.stringToBytes(bundle));
+    return new ByteArrayInputStream(FileUtilities.stringToBytes(bundle));
   }
 
   private DataTable loadData(String path) throws FHIRException, IOException, InvalidFormatException {

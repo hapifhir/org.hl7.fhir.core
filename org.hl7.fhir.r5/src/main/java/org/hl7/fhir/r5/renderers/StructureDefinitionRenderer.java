@@ -91,7 +91,7 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -679,7 +679,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (actor == null) { 
           columns.add(new Column(col, tail(col), context.formatPhrase(RenderingContext.STRUC_DEF_UNDEF_ACT, col, col)+" "));           
         } else { 
-          columns.add(new Column(col, actor.getName(), context.formatPhrase(RenderingContext.STRUC_DEF_ACT, actor.present(), actor.getWebPath())+" "));                     
+          columns.add(new Column(col, actor.present(), context.formatPhrase(RenderingContext.STRUC_DEF_ACT, actor.present(), actor.getWebPath())+" "));                     
         } 
       } 
     } 
@@ -1761,7 +1761,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             obr.seeObligations(profile.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)); 
           } 
           obr.renderTable(status, res, gen, c, inScopeElements);
- 
           if (definition.hasMaxLength() && definition.getMaxLength()!=0) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
             c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingContext.GENERAL_MAX_LENGTH), null).addStyle("font-weight:bold"))); 
@@ -4822,9 +4821,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       parser.compose(bs, value, null); 
     } else if (value instanceof PrimitiveType<?>) { 
       if (value instanceof BooleanType || value instanceof IntegerType || value instanceof DecimalType) { 
-        TextFile.stringToStream(((PrimitiveType<?>) value).asStringValue(), bs); 
+        FileUtilities.stringToStream(((PrimitiveType<?>) value).asStringValue(), bs); 
       } else { 
-        TextFile.stringToStream("\""+Utilities.escapeJson(((PrimitiveType<?>) value).asStringValue())+"\"", bs);         
+        FileUtilities.stringToStream("\""+Utilities.escapeJson(((PrimitiveType<?>) value).asStringValue())+"\"", bs);         
       } 
     } else { 
       JsonParser parser = new JsonParser(); 
