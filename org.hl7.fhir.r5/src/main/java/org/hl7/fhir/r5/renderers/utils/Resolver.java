@@ -2,6 +2,9 @@ package org.hl7.fhir.r5.renderers.utils;
 
 import java.io.IOException;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+@MarkedToMoveToAdjunctPackage
 public class Resolver {
 
 

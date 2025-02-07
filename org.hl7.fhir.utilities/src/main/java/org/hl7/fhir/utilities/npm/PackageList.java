@@ -373,5 +373,9 @@ public class PackageList {
     return "current-only".equals(json.asString("publish-pattern"));
   }
 
+  public void setCurrentOnly(boolean b) {
+    json.set("publish-pattern", b ? "current-only" : "normal");
+  }
+
 
 }

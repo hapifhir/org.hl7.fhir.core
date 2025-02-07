@@ -77,7 +77,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  * 
  * @author Grahame
  */
-@MarkedToMoveToAdjunctPackage
+
 public interface IWorkerContext {
 
   /**

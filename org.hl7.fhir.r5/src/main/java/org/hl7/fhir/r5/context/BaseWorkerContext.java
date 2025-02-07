@@ -153,6 +153,7 @@ import com.google.gson.JsonObject;
 
 import javax.annotation.Nonnull;
 
+@MarkedToMoveToAdjunctPackage
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   public interface IByteProvider {

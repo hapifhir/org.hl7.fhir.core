@@ -1,5 +1,8 @@
 package org.hl7.fhir.r5.conformance.profile;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+@MarkedToMoveToAdjunctPackage
 public class BindingResolution {
   public BindingResolution(String display, String url) {
     this.display = display;
