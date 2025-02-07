@@ -291,7 +291,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private void clearCache() throws IOException {
     for (File f : Objects.requireNonNull(cacheFolder.listFiles())) {
       if (f.isDirectory()) {
-        Utilities.atomicDeleteDirectory(f.getAbsolutePath());
+        FileUtilities.atomicDeleteDirectory(f.getAbsolutePath());
 
       } else if (!f.getName().equals("packages.ini")) {
         FileUtils.forceDelete(f);
@@ -421,7 +421,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       String f = Utilities.path(cacheFolder, id + "#" + version);
         File ff = ManagedFileAccess.file(f);
         if (ff.exists()) {
-          Utilities.atomicDeleteDirectory(f);
+          FileUtilities.atomicDeleteDirectory(f);
         }
       return null;
     }, lockParameters);

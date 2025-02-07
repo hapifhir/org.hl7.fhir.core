@@ -21,8 +21,6 @@ import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.FileNotifier.FileNotifier2;
-import org.hl7.fhir.utilities.filesystem.CSFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
@@ -294,27 +292,6 @@ public class Utilities {
       first = false;
     }
     return s.toString();
-  }
-
-  /**
-   * Delete a directory atomically by first renaming it to a temp directory in
-   * its parent, and then deleting its contents.
-   *
-   * @param path The directory to delete.
-   */
-  public static void atomicDeleteDirectory(String path) throws IOException {
-
-      File directory = ManagedFileAccess.file(path);
-
-      String tempDirectoryPath = generateUniqueRandomUUIDPath(directory.getParent());
-      File tempDirectory = ManagedFileAccess.file(tempDirectoryPath);
-     if (!directory.renameTo(tempDirectory)) {
-       throw new IOException("Unable to rename directory " + path + " to " + tempDirectory +" for atomic delete");
-     }
-     FileUtilities.clearDirectory(tempDirectory.getAbsolutePath());
-     if (!tempDirectory.delete()) {
-       throw new IOException("Unable to delete temp directory " + tempDirectory + " when atomically deleting " + path);
-     }
   }
 
   public static String generateUniqueRandomUUIDPath(String path) throws IOException {
