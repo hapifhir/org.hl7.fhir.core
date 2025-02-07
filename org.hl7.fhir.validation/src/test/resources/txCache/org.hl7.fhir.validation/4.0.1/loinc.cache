@@ -11338,7 +11338,6 @@ v: {
   "error" : "Wrong Display Name 'Meds doc' for http://loinc.org#56445-0. Valid display is one of 7 choices: 'Medication summary Document' (en-US), 'Medication summary Document' (en-US), 'Medication summary Doc' (en-US), 'Resumen de medicación: Paciente:Punto temporal:Tipo:Documento:' (es-MX), 'Medikationsübersicht - Dokument' (de-DE), 'Medicatieoverzicht [bevinding] (document)' (nl-NL) or 'Medikationsliste' (de-AT) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11383,7 +11382,6 @@ v: {
   "error" : "Wrong Display Name 'Allergies' for http://loinc.org#48765-2. Valid display is one of 6 choices: 'Allergies and adverse reactions Document' (en-US), 'Allergies and adverse reactions Document' (en-US), 'Allergies &or adverse reactions Doc' (en-US), 'Alergias y reacciones adversas: Paciente:Punto temporal:Tipo:Documento:' (es-MX), 'Allergien und unerwünschte Wirkungen - Dokument' (de-DE) or 'Allergieën en/of allergische reacties [bevinding] (document)' (nl-NL) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11427,7 +11425,6 @@ v: {
   "error" : "Wrong Display Name 'CCD Document' for http://loinc.org#34133-9. Valid display is one of 9 choices: 'Summary of episode note' (en-US), 'Summary of episode note' (en-US), 'Summary of episode note' (en-US), 'Y' (en-US), 'Resumen de la nota del episodio:{Configuración} :Punto temporal:Tipo:Documento:{Role}' (es-MX), 'nota con síntesis sobre el episodio:hallazgo:punto en el tiempo:{contexto}:Documento:{proveedor}' (es-AR), 'Zusammenfassung der Behandlungsepisode - Notiz' (de-DE), 'Samenvatting van episode [bevinding] in {instelling} d.m.v. {rol} (document)' (nl-NL) or 'Krankengeschichte' (de-AT) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11471,7 +11468,6 @@ v: {
   "error" : "Wrong Display Name 'Complete Blood Count' for http://loinc.org#58410-2. Valid display is one of 8 choices: 'CBC panel - Blood by Automated count' (en-US), 'CBC panel - Blood by Automated count' (en-US), 'CBC Pnl Bld Auto' (en-US), 'CBC panel, Blood' (en-US), 'Panel de hemograma completo: Sangre : Punto temporal: -: -: Recuento automatizado' (es-MX), 'CBC (hemogram) Sg Auto' (pt-BR), 'Kleines Blutbild (Liste) - Blut mittels automatisierter Zählung' (de-DE) or 'Compleet bloedbeeld panel in bloed d.m.v. geautomatiseerde telling' (nl-NL) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11512,7 +11508,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.78",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -11539,7 +11534,6 @@ v: {
   "error" : "Wrong Display Name 'Blood Group' for http://loinc.org#883-9. Valid display is one of 13 choices: 'ABO group [Type] in Blood' (en-US), 'ABO group [Type] in Blood' (en-US), 'ABO Group Bld' (en-US), 'ABO group, Blood' (en-US), 'Grupo ABO: Sangre : Punto temporal: Tipo: Nominal:' (es-MX), 'grupo ABO:tipo:punto en el tiempo:sangre:Nominal:' (es-AR), 'ABO group Sg' (pt-BR), 'AB0-Blutgruppensystem [Typ] in Blut' (de-DE), 'AB0-bloedgroep [type] in bloed' (nl-NL), 'Blutgruppe AB0' (de-AT), 'АВО група [Тип] Крові' (uk-UA), 'АВО Група Крв' (uk-UA) or 'АВО група (Крв)' (uk-UA) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11583,7 +11577,6 @@ v: {
   "error" : "Wrong Display Name 'Blood Rh Group' for http://loinc.org#10331-7. Valid display is one of 13 choices: 'Rh [Type] in Blood' (en-US), 'Rh [Type] in Blood' (en-US), 'Rh Bld' (en-US), 'Rh, Blood' (en-US), 'Rh: Sangre : Punto temporal: Tipo: Nominal:' (es-MX), 'Rh:tipo:punto en el tiempo:sangre:Nominal:' (es-AR), 'Rh Sg' (pt-BR), 'Rhesusfaktor [Typ] in Blut' (de-DE), 'Rh [type] in bloed' (nl-NL), 'Rhesusfaktor' (de-AT), 'Rh [Тип] Крові' (uk-UA), 'Rh Крв' (uk-UA) or 'Rh категорійно (Крв)' (uk-UA) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11627,7 +11620,6 @@ v: {
   "error" : "Wrong Display Name '���k����������' for http://loinc.org#8480-6. Valid display is one of 9 choices: 'Systolic blood pressure' (en-US), 'Systolic blood pressure' (en-US), 'BP sys' (en-US), 'Sistólica intravascular:Sistema arterial :Punto temporal:Pres:Cuantitativo:' (es-MX), 'sistólico intravascular:presión:punto en el tiempo:sistema arterial:cuantitativo:' (es-AR), 'BP sys' (pt-BR), 'Systolischer Blutdruck' (de-DE), 'Intravasculaire systolische bloeddruk [druk] in arterieel vaatstelsel' (nl-NL) or 'Blutdruck systolisch' (de-AT) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11671,7 +11663,6 @@ v: {
   "error" : "Wrong Display Name 'Hb' for http://loinc.org#718-7. Valid display is one of 13 choices: 'Hemoglobin [Mass/volume] in Blood' (en-US), 'Hemoglobin [Mass/volume] in Blood' (en-US), 'Hgb Bld-mCnc' (en-US), 'Hemoglobin, Blood' (en-US), 'Hemoglobina: Sangre : Punto temporal: Concentración de masa: Cuantitativo:' (es-MX), 'hemoglobina:concentración de masa:punto en el tiempo:sangre:cuantitativo:' (es-AR), 'Hgb Sg-mCnc' (pt-BR), 'Hämoglobin [Masse/Volumen] in Blut' (de-DE), 'Hemoglobine [massa/volume] in bloed' (nl-NL), 'Hämoglobin' (de-AT), 'Гемоглобін [Маса/об'єм] в Крові' (uk-UA), 'Гемоглобін Крв МасКонц' (uk-UA) or 'Гемоглобін (Крв) [Маса/об'єм]' (uk-UA) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11715,7 +11706,6 @@ v: {
   "error" : "Wrong Display Name 'Cr' for http://loinc.org#38483-4. Valid display is one of 10 choices: 'Creatinine [Mass/volume] in Blood' (en-US), 'Creatinine [Mass/volume] in Blood' (en-US), 'Creat Bld-mCnc' (en-US), 'Creatinine, Blood' (en-US), 'Creatinina: Sangre : Punto temporal: Concentración de masa: Cuantitativo:' (es-MX), 'metanefrina/creatinina:concentración de masa:punto en el tiempo:sangre:cuantitativo:' (es-AR), 'Creat Sg-mCnc' (pt-BR), 'Creatinin [Masse/Volumen] in Blut' (de-DE), 'Creatinine [massa/volume] in bloed' (nl-NL) or 'Kreatinin /Blut' (de-AT) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11759,7 +11749,6 @@ v: {
   "error" : "Wrong Display Name 'Tchol' for http://loinc.org#2093-3. Valid display is one of 13 choices: 'Cholesterol [Mass/volume] in Serum or Plasma' (en-US), 'Cholesterol [Mass/volume] in Serum or Plasma' (en-US), 'Cholest SerPl-mCnc' (en-US), 'Cholesterol, Blood' (en-US), 'Colesterol: Suero o Plasma : Punto temporal: Concentración de masa: Cuantitativo:' (es-MX), 'colesterol:concentración de masa:punto en el tiempo:suero/plasma:cuantitativo:' (es-AR), 'Colest SerPl-mCnc' (pt-BR), 'Cholesterol [Masse/Volumen] in Serum oder Plasma' (de-DE), 'Cholesterol [massa/volume] in serum of plasma' (nl-NL), 'Cholesterin' (de-AT), 'Холестерин [Маса/об'єм] у сироватці чи плазмі' (uk-UA), 'Холестерин СвткПлаз-МасКнц' (uk-UA) or 'Холестерин [Маса/об'єм]' (uk-UA) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11803,7 +11792,6 @@ v: {
   "error" : "Wrong Display Name 'Arterielle Sauerstoffsättigung' for http://loinc.org#2708-6. Valid display is one of 10 choices: 'Oxygen saturation in Arterial blood' (en-US), 'Oxygen saturation in Arterial blood' (en-US), 'SaO2 % BldA' (en-US), 'SaO2%, Blood' (en-US), 'Saturación de oxígeno: Sangre arterial : Punto temporal: Fracción de masa: Cuantitativo:' (es-MX), 'saturación de oxígeno:fracción de sustancia:punto en el tiempo:sangre arterial:cuantitativo:' (es-AR), 'SgA O2 % MFr' (pt-BR), 'Sauerstoffsättigung in arteriellem Blut' (de-DE), 'Zuurstofverzadiging [massafractie] in arterieel bloed' (nl-NL) or 'O2-Sättigung arteriell' (de-AT) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11847,7 +11835,6 @@ v: {
   "error" : "Wrong Display Name 'Sauerstoffflussrate' for http://loinc.org#3151-8. Valid display is one of 10 choices: 'Inhaled oxygen flow rate' (en-US), 'Inhaled oxygen flow rate' (en-US), 'Inhaled O2 flow rate' (en-US), 'Inhaled oxygen' (en-US), 'Oxigeno inhalado:Gas inhl :Punto temporal:VRat:Cuantitativo:' (es-MX), 'oxígeno inhalado:índice de volumen:punto en el tiempo:gas inhalado:cuantitativo:' (es-AR), 'Inhaled O2 flow rate' (pt-BR), 'Inhalierter Sauerstoff - Flussrate' (de-DE), 'Ingeademde zuurstof [volume/tijd] in geïnhaleerd gas' (nl-NL) or 'O2-Zufuhr' (de-AT) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11891,7 +11878,6 @@ v: {
   "error" : "Wrong Display Name 'Inspiratorische Sauerstoffkonzentration' for http://loinc.org#3150-0. Valid display is one of 10 choices: 'Inhaled oxygen concentration' (en-US), 'Inhaled oxygen concentration' (en-US), 'Inhaled O2 concentration' (en-US), 'Oxygen' (en-US), 'Oxígeno / Gas total:Gas inhl :Punto temporal:VFr:Cuantitativo:' (es-MX), 'oxígeno inhalado:fracción de volumen:punto en el tiempo:gas inhalado:cuantitativo:' (es-AR), 'Inhaled O2 Fr' (pt-BR), 'Inhalierte Sauerstoffkonzentration' (de-DE), 'Zuurstof/gas.totaal [volumefractie] in geïnhaleerd gas' (nl-NL) or 'O2 Konzentration inhaliert' (de-AT) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11935,7 +11921,6 @@ v: {
   "error" : "Wrong Display Name 'MDC_PULS_OXIM_PULS_RATE' for http://loinc.org#8867-4. Valid display is one of 10 choices: 'Heart rate' (en-US), 'Heart rate' (en-US), 'Heart rate' (en-US), 'Heart rate' (en-US), 'Ritmo cardiaco:No especificado :Punto temporal:NRat:Cuantitativo:' (es-MX), 'latido cardíaco:índice numérico:punto en el tiempo:XXX:cuantitativo:' (es-AR), 'Heart rate' (pt-BR), 'Herzfrequenz' (de-DE), 'Hartslagfrequentie [aantal/tijd]' (nl-NL) or 'Puls' (de-AT) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11979,7 +11964,6 @@ v: {
   "error" : "Wrong Display Name 'Blood pressure systolic & diastolic' for http://loinc.org#85354-9. Valid display is one of 6 choices: 'Blood pressure panel with all children optional' (en-US), 'Blood pressure panel with all children optional' (en-US), 'BP pnl w all optional' (en-US), 'Panel de presión arterial con todos los niños opcional:Sistema arterial :Punto temporal:-:Cuantitativo:' (es-MX), 'Bluckdruck (Liste) optional mit allen Unterbegriffen' (de-DE) or 'Bloeddruk panel waarvan alle leden optioneel in arterieel vaatstelsel' (nl-NL) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -11999,6 +11983,53 @@ v: {
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
   }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "14272-9",
+  "display" : "Liver kidney microsomal Ab [Presence] in Serum"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Liver kidney microsomal Ab [Presence] in Serum",
+  "code" : "14272-9",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "14272-9"
+}, "url": "http://hl7.org/fhir/ValueSet/report-codes--0", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Liver kidney microsomal Ab [Presence] in Serum",
+  "code" : "14272-9",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
 }
 
 }
