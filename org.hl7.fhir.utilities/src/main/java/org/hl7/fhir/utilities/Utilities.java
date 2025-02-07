@@ -1814,6 +1814,12 @@ public class Utilities {
     return url.contains("/") && url.lastIndexOf("/") > 10 ? url.substring(0, url.lastIndexOf("/")) : url;
   }
 
+  public static List<String> copyAdd(List<String> oldList, String newItem) {
+    List<String> newList = new ArrayList<>(oldList);
+    newList.add(newItem);
+    return newList;
+  }
+
 
   
 }
