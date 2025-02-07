@@ -63,7 +63,7 @@ import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -85,6 +85,8 @@ import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.instance.InstanceValidator.MatchetypeStatus;
+import org.hl7.fhir.validation.instance.MatchetypeValidator;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
@@ -371,6 +373,15 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("noHtmlInMarkdown")) {
       val.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.ERROR);
     }
+    JsonObject mtInfo = null;
+    
+    if (content.has("matchetype")) {
+      if (content.get("matchetype").isJsonPrimitive()) {
+        val.setMatchetypeStatus(MatchetypeStatus.Required);
+      } else {
+        mtInfo = content.getAsJsonObject("matchetype");
+      }
+    }
     List<String> suppress = new ArrayList<>();
     if (content.has("suppress")) {
       for (JsonElement c : content.getAsJsonArray("suppress")) {
@@ -382,9 +393,19 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("logical")==false) {
       val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
       logOutput(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
-      val.validate(null, errors, new ByteArrayInputStream(testCaseContent), fmt);
+      Element res = val.validate(null, errors, new ByteArrayInputStream(testCaseContent), fmt);
       logOutput(val.reportTimes());
       checkOutcomes(errors, content, null, name, suppress);
+      
+      if (mtInfo != null) {
+        System.out.print("** Matchetype: ");
+        byte[] cnt = TestingUtilities.loadTestResourceBytes("validator", mtInfo.get("source").getAsString());
+        Element exp = Manager.parseSingle(val.getContext(), new ByteArrayInputStream(cnt), fmt);
+        MatchetypeValidator mv = new MatchetypeValidator(val.getFHIRPathEngine());
+        List<ValidationMessage> mtErrors = new ArrayList<ValidationMessage>();
+        mv.compare(mtErrors, "$", exp, res);
+        checkOutcomes(mtErrors, mtInfo, null, name, suppress);
+      }
     }
     if (content.has("profile")) {
       System.out.print("** Profile: ");
@@ -859,7 +880,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   @AfterClass
   public static void saveWhenDone() throws IOException {
     String content = new GsonBuilder().setPrettyPrinting().create().toJson(manifest);
-    TextFile.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
+    FileUtilities.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
 
   }
 
@@ -944,6 +965,12 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   public IValidationPolicyAdvisor setPolicyAdvisor(IValidationPolicyAdvisor policyAdvisor) {
     throw new Error("This policy advisor is the test advisor");
+  }
+
+  @Override
+  public SpecialValidationAction policyForSpecialValidation(IResourceValidator validator, Object appContext,
+      SpecialValidationRule rule, String stackPath, Element resource, Element element) {
+    return SpecialValidationAction.CHECK_RULE;
   }
   
 }

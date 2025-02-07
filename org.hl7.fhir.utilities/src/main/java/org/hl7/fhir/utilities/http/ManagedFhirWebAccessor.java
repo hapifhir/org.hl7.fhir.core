@@ -44,7 +44,6 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
     return this;
   }
 
-
   public ManagedFhirWebAccessor(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
     super(Arrays.asList("fhir"), userAgent, serverAuthDetails);
     this.timeout = 5000;

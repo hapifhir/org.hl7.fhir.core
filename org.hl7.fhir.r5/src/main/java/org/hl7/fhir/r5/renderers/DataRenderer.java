@@ -312,7 +312,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (JurisdictionUtilities.isJurisdiction(system)) { 
       return JurisdictionUtilities.displayJurisdiction(system+"#"+code); 
     } 
-    ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().withLanguage(context.getLocale().toString().replace("_", "-")).withVersionFlexible(true), system, version, code, null); 
+    ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().withLanguage(context.getLocale().toLanguageTag()).withVersionFlexible(true), system, version, code, null);
 
     if (t != null && t.getDisplay() != null) 
       return t.getDisplay(); 
@@ -1602,7 +1602,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         s.append(" "); 
       } 
     } 
-    if (name.has("use") && !name.primitiveValue("use").equals("usual")) 
+    if (name.has("use") && !"usual".equals(name.primitiveValue("use"))) 
       s.append("("+name.primitiveValue("use")+")"); 
     return s.toString(); 
   } 
@@ -1622,7 +1622,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         s.append(" "); 
       } 
     } 
-    if (name.has("use") && !name.primitiveValue("use").equals("usual")) { 
+    if (name.has("use") && !"usual".equals(name.primitiveValue("use"))) { 
       s.append("("+context.getTranslatedCode(name.primitiveValue("use"), "http://hl7.org/fhir/name-use")+")");
     }
     x.addText(s.toString());       

@@ -6,8 +6,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
@@ -21,6 +23,7 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.special.TxTestData;
@@ -52,7 +55,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
 
-    txtests = TxTestData.loadTestDataFromPackage("dev");
+    txtests = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev");
     
     String contents = txtests.load("test-cases.json");
     externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(txtests.load("messages-tx.fhir.org.json"));
@@ -83,7 +86,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   private JsonObjectPair setup;
   private String version = "5.0.0";
   private static TxTester tester;
-  private List<String> modes = new ArrayList<>();
+  private Set<String> modes = new HashSet<>();
   private static TxTestData txtests;
 
   public ExternalTerminologyServiceTests(String name, JsonObjectPair setup) {
@@ -101,7 +104,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
       if (setup.suite.asBoolean("disabled") || setup.test.asBoolean("disabled")) {
         return;
       }
-      String err = tester.executeTest(setup.suite, setup.test, modes);
+      String err = tester.executeTest(this, setup.suite, setup.test, modes);
       Assertions.assertTrue(err == null, err);
     } else {
       Assertions.assertTrue(true);
@@ -154,5 +157,20 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   @Override
   public boolean hasContent(String filename) throws IOException {
     return txtests.hasFile(filename);
+  }
+
+  @Override
+  public String code() {
+    return "external";
+  }
+
+  @Override
+  public String version() throws JsonException, IOException {
+    return txtests.loadVersion();
+  }
+
+  @Override
+  public String testFileName() {
+    return txtests.testFileName();
   }
 }

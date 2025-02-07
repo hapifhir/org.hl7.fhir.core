@@ -84,7 +84,7 @@ import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
@@ -1106,7 +1106,7 @@ public class HierarchicalTableGenerator {
     InputStream help = classLoader.getResourceAsStream("help16.png");
     StringBuilder b = new StringBuilder();
     b.append("data:image/png;base64,");
-    byte[] bytes = TextFile.streamToBytes(help);
+    byte[] bytes = FileUtilities.streamToBytes(help);
     b.append(new String(Base64.encodeBase64(bytes)));
     return b.toString();
   }

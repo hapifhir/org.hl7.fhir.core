@@ -99,6 +99,15 @@ public class CanonicalType extends UriType {
     }
     return null;
   }
-	
 
+  public boolean hasVersion() {
+    return getValue() != null && getValue().contains("|");
+  }
+
+  public void addVersion(String version) {
+    if (version != null) {
+      setValue(getValue()+"|"+version);
+    }
+  }
+	
 }

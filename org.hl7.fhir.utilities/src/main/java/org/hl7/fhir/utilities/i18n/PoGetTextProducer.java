@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 public class PoGetTextProducer extends LanguageFileProducer {
@@ -76,7 +76,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
 
     @Override
     public void finish() throws IOException {
-      TextFile.stringToFile(po.toString(), getFileName(id, baseLang, targetLang));
+      FileUtilities.stringToFile(po.toString(), getFileName(id, baseLang, targetLang));
       filecount++;
     }
 
@@ -187,7 +187,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
       ln(po, "msgstr \""+(tu.getTgtText() == null ? "" : stripEoln(tu.getTgtText()))+"\"");
       ln(po, "");
     }
-    TextFile.stringToFile(po.toString(), getTargetFileName(targetLang, filename));
+    FileUtilities.stringToFile(po.toString(), getTargetFileName(targetLang, filename));
   }
 
   private String stripEoln(String s) {

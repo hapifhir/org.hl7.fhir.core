@@ -108,6 +108,7 @@ import org.hl7.fhir.dstu3.model.Timing;
 import org.hl7.fhir.dstu3.model.Type;
 import org.hl7.fhir.dstu3.utils.NarrativeGenerator;
 import org.hl7.fhir.dstu3.utils.ResourceUtilities;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.ZipGenerator;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -229,13 +230,13 @@ public class ArgonautConverter extends ConverterBase {
     try {
       System.out.println("Process " + Utilities.path(sourceFolder, filename));
       cda = new CDAUtilities(ManagedFileAccess.inStream(Utilities.path(sourceFolder, filename)));
-      zipJ = new ZipGenerator(Utilities.path(destFolder, "json/doc", Utilities.changeFileExt(filename, ".json.zip")));
-      zipX = new ZipGenerator(Utilities.path(destFolder, "xml/doc", Utilities.changeFileExt(filename, ".xml.zip")));
+      zipJ = new ZipGenerator(Utilities.path(destFolder, "json/doc", FileUtilities.changeFileExt(filename, ".json.zip")));
+      zipX = new ZipGenerator(Utilities.path(destFolder, "xml/doc", FileUtilities.changeFileExt(filename, ".xml.zip")));
       Element doc = cda.getElement();
       Convert convert = new Convert(cda, ucumSvc, "-0400");
       convert.setGenerateMissingExtensions(true);
       Context context = new Context();
-      context.setBaseId(Utilities.changeFileExt(filename, ""));
+      context.setBaseId(FileUtilities.changeFileExt(filename, ""));
       context.setEncClass(clss);
       makeSubject(cda, convert, doc, context, context.getBaseId() + "-patient");
       makeAuthor(cda, convert, doc, context, context.getBaseId() + "-author");

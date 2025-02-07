@@ -12,10 +12,7 @@ import lombok.Setter;
 import lombok.With;
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -221,7 +218,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     locks.getCacheLock().doWriteWithLock(() -> {
 
       if (!(cacheFolder.exists())) {
-        Utilities.createDirectory(cacheFolder.getAbsolutePath());
+        FileUtilities.createDirectory(cacheFolder.getAbsolutePath());
         createIniFile();
       } else {
         if (!iniFileExists()) {
@@ -251,7 +248,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
           File packageDirectory = ManagedFileAccess.file(Utilities.path(cacheFolder, packageDirectoryName));
           if (packageDirectory.exists()) {
-            Utilities.clearDirectory(packageDirectory.getAbsolutePath());
+            FileUtilities.clearDirectory(packageDirectory.getAbsolutePath());
             packageDirectory.delete();
           }
           file.delete();
@@ -276,8 +273,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private void deleteOldTempDirectories() throws IOException {
     for (File f : Objects.requireNonNull(cacheFolder.listFiles())) {
-      if (f.isDirectory() && Utilities.isValidUUID(f.getName())) {
-        Utilities.clearDirectory(f.getAbsolutePath());
+      if (f.isDirectory() && UUIDUtilities.isValidUUID(f.getName())) {
+        FileUtilities.clearDirectory(f.getAbsolutePath());
         f.delete();
       }
     }
@@ -560,7 +557,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
             extractedNpm.getNpm().remove("version");
             extractedNpm.getNpm().add("version", version);
           }
-          TextFile.stringToFile(JsonParser.compose(extractedNpm.getNpm(), true), Utilities.path(tempDir, "package", "package.json"));
+          FileUtilities.stringToFile(JsonParser.compose(extractedNpm.getNpm(), true), Utilities.path(tempDir, "package", "package.json"));
         }
 
         final NpmPackage tempPackage = loadPackageInfo(tempDir);
@@ -569,20 +566,19 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
 
         if (!ManagedFileAccess.file(packageRoot).exists() || Utilities.existsInList(version, "current", "dev")) {
-          Utilities.createDirectory(packageRoot);
+          FileUtilities.createDirectory(packageRoot);
           try {
-            Utilities.clearDirectory(packageRoot);
+            FileUtilities.clearDirectory(packageRoot);
           } catch (Throwable t) {
             log("Unable to clear directory: " + packageRoot + ": " + t.getMessage() + " - this may cause problems later");
           }
-
-          Utilities.renameDirectory(tempDir, packageRoot);
+          FileUtilities.renameDirectory(tempDir, packageRoot);
 
           npmPackage = loadPackageInfo(packageRoot);
 
           log(" done.");
         } else {
-          Utilities.clearDirectory(tempDir);
+          FileUtilities.clearDirectory(tempDir);
           ManagedFileAccess.file(tempDir).delete();
         }
         npmPackage = loadPackageInfo(packageRoot);
@@ -592,7 +588,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           // don't leave a half extracted package behind
           log("Clean up package " + packageRoot + " because installation failed: " + e.getMessage());
           e.printStackTrace();
-          Utilities.clearDirectory(packageRoot);
+          FileUtilities.clearDirectory(packageRoot);
           ManagedFileAccess.file(packageRoot).delete();
         } catch (Exception ignored) {
           // nothing

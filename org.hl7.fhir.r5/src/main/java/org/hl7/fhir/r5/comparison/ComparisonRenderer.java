@@ -38,7 +38,7 @@ import org.hl7.fhir.r5.model.Tuple;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -100,7 +100,7 @@ public class ComparisonRenderer implements IEvaluationContext {
     vars.put("list", new StringType(b.toString()));
     String template = templates.get("Index");
     String cnt = processTemplate(template, "CodeSystem", vars);
-    TextFile.stringToFile(cnt, file("index.html"));
+    FileUtilities.stringToFile(cnt, file("index.html"));
     return ManagedFileAccess.file(file("index.html"));
   }
 
@@ -136,12 +136,12 @@ public class ComparisonRenderer implements IEvaluationContext {
   private void dumpBinaries() throws IOException {
     if (contextLeft != null && contextLeft.getBinaryKeysAsSet() != null) {
       for (String k : contextLeft.getBinaryKeysAsSet()) {
-        TextFile.bytesToFile(contextLeft.getBinaryForKey(k), Utilities.path(folder, k));
+        FileUtilities.bytesToFile(contextLeft.getBinaryForKey(k), Utilities.path(folder, k));
       }
     }
     if (contextRight != null && contextRight.getBinaryKeysAsSet() != null) {
       for (String k : contextRight.getBinaryKeysAsSet()) {
-        TextFile.bytesToFile(contextRight.getBinaryForKey(k), Utilities.path(folder, k));
+        FileUtilities.bytesToFile(contextRight.getBinaryForKey(k), Utilities.path(folder, k));
       }
     }
   }
@@ -169,7 +169,7 @@ public class ComparisonRenderer implements IEvaluationContext {
       cnt = sw.toString();
     }    
     cnt = "<html><body><pre>"+cnt+"</pre></body></html>\r\n";
-    TextFile.stringToFile(cnt, file(comp.getId()+".html"));
+    FileUtilities.stringToFile(cnt, file(comp.getId()+".html"));
   }
 
   private void renderCodeSystem(String id, CodeSystemComparison comp) throws IOException, FHIRFormatError, DefinitionException, FHIRException, EOperationOutcome {  
@@ -188,7 +188,7 @@ public class ComparisonRenderer implements IEvaluationContext {
     vars.put("concepts", new StringType(new XhtmlComposer(true).compose(cs.renderConcepts(comp, "", ""))));
 
     String cnt = processTemplate(template, "CodeSystem", vars);
-    TextFile.stringToFile(cnt, file(comp.getId()+".html"));
+    FileUtilities.stringToFile(cnt, file(comp.getId()+".html"));
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
 
@@ -199,11 +199,11 @@ public class ComparisonRenderer implements IEvaluationContext {
 
     template = templates.get("CodeSystem-Union");
     cnt = processTemplate(template, "CodeSystem-Union", vars);
-    TextFile.stringToFile(cnt, file(comp.getId()+"-union.html"));
+    FileUtilities.stringToFile(cnt, file(comp.getId()+"-union.html"));
     
     template = templates.get("CodeSystem-Intersection");
     cnt = processTemplate(template, "CodeSystem-Intersection", vars);
-    TextFile.stringToFile(cnt, file(comp.getId()+"-intersection.html"));
+    FileUtilities.stringToFile(cnt, file(comp.getId()+"-intersection.html"));
         
   }
 
@@ -227,7 +227,7 @@ public class ComparisonRenderer implements IEvaluationContext {
     vars.put("compose", new StringType(new XhtmlComposer(true).compose(cs.renderCompose(comp, "", ""))));
     vars.put("expansion", new StringType(new XhtmlComposer(true).compose(cs.renderExpansion(comp, "", ""))));
     String cnt = processTemplate(template, "ValueSet", vars);
-    TextFile.stringToFile(cnt, file(comp.getId()+".html"));
+    FileUtilities.stringToFile(cnt, file(comp.getId()+".html"));
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
 
@@ -238,11 +238,11 @@ public class ComparisonRenderer implements IEvaluationContext {
 
     template = templates.get("ValueSet-Union");
     cnt = processTemplate(template, "ValueSet-Union", vars);
-    TextFile.stringToFile(cnt, file(comp.getId()+"-union.html"));
+    FileUtilities.stringToFile(cnt, file(comp.getId()+"-union.html"));
     
     template = templates.get("ValueSet-Intersection");
     cnt = processTemplate(template, "ValueSet-Intersection", vars);
-    TextFile.stringToFile(cnt, file(comp.getId()+"-intersection.html"));        
+    FileUtilities.stringToFile(cnt, file(comp.getId()+"-intersection.html"));        
   }
 
   private void renderProfile(String id, ProfileComparison comp) throws IOException {
@@ -265,15 +265,15 @@ public class ComparisonRenderer implements IEvaluationContext {
     vars.put("intersection", new StringType(intersection));
     
     String cnt = processTemplate(template, "Profile", vars);
-    TextFile.stringToFile(cnt, file(comp.getId()+".html"));
+    FileUtilities.stringToFile(cnt, file(comp.getId()+".html"));
 
     template = templates.get("Profile-Union");
     cnt = processTemplate(template, "Profile-Union", vars);
-    TextFile.stringToFile(cnt, file(comp.getId()+"-union.html"));
+    FileUtilities.stringToFile(cnt, file(comp.getId()+"-union.html"));
     
     template = templates.get("Profile-Intersection");
     cnt = processTemplate(template, "Profile-Intersection", vars);
-    TextFile.stringToFile(cnt, file(comp.getId()+"-intersection.html"));
+    FileUtilities.stringToFile(cnt, file(comp.getId()+"-intersection.html"));
     
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
@@ -293,7 +293,7 @@ public class ComparisonRenderer implements IEvaluationContext {
     vars.put("metadata", new StringType(new XhtmlComposer(true).compose(cs.renderMetadata(comp, "", ""))));
     vars.put("statement", new StringType(new XhtmlComposer(true).compose(cs.renderStatements(comp, "", ""))));
     String cnt = processTemplate(template, "CapabilityStatement", vars);
-    TextFile.stringToFile(cnt, file(comp.getId()+".html"));
+    FileUtilities.stringToFile(cnt, file(comp.getId()+".html"));
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
   }

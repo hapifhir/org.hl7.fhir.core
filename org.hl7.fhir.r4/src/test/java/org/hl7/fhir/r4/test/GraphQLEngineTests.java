@@ -22,7 +22,7 @@ import org.hl7.fhir.r4.model.DomainResource;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.GraphQLEngine;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.graphql.Argument;
@@ -125,7 +125,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       gql.getOutput().write(str, 0);
       String actualFilePath = TestingUtilities.generateResourcePath("graphql", output + ".out");
 
-      TextFile.stringToFile(str.toString(), actualFilePath);
+      FileUtilities.stringToFile(str.toString(), actualFilePath);
       msg = TestingUtilities.checkJsonIsSame(actualFilePath, TestingUtilities.resourceNameToFile("graphql", output));
       Assertions.assertTrue(Utilities.noString(msg), msg);
     } else

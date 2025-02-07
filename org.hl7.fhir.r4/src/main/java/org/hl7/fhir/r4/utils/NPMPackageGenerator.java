@@ -54,7 +54,7 @@ import org.hl7.fhir.r4.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r4.model.ImplementationGuide;
 import org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDependsOnComponent;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
@@ -278,7 +278,7 @@ public class NPMPackageGenerator {
     gzipOutputStream.close();
     bufferedOutputStream.close();
     OutputStream.close();
-    TextFile.bytesToFile(OutputStream.toByteArray(), destFile);
+    FileUtilities.bytesToFile(OutputStream.toByteArray(), destFile);
   }
 
   public String filename() {
@@ -296,7 +296,7 @@ public class NPMPackageGenerator {
           loadFiles(root, f);
         } else {
           String path = f.getAbsolutePath().substring(root.length() + 1);
-          byte[] content = TextFile.fileToBytes(f);
+          byte[] content = FileUtilities.fileToBytes(f);
           if (created.contains(path))
             System.out.println("Duplicate package file " + path);
           else {

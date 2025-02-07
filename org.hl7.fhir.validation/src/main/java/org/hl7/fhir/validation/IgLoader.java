@@ -32,7 +32,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -302,10 +302,10 @@ public class IgLoader implements IValidationEngineLoader {
         stream.close();
       }
 
-      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), TextFile.fileToBytes(f), src, true);
+      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), FileUtilities.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, ByteProvider> res = new HashMap<String, ByteProvider>();
-        res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forFile(src));
+        res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forFile(src));
         return res;
       }
     } else if ((src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) || src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX)) && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
@@ -340,7 +340,7 @@ public class IgLoader implements IValidationEngineLoader {
 
   private void scanForFhirVersion(VersionSourceInformation versions, String ref, ByteProvider bp) throws IOException {
     byte[] cnt = bp.getBytes();
-    String s = TextFile.bytesToString(cnt.length > SCAN_HEADER_SIZE ? Arrays.copyOfRange(cnt, 0, SCAN_HEADER_SIZE) : cnt).trim();
+    String s = FileUtilities.bytesToString(cnt.length > SCAN_HEADER_SIZE ? Arrays.copyOfRange(cnt, 0, SCAN_HEADER_SIZE) : cnt).trim();
     try {
       int i = s.indexOf("fhirVersion");
       if (i > 1) {
@@ -480,10 +480,10 @@ public class IgLoader implements IValidationEngineLoader {
         return readZip(ManagedFileAccess.inStream(src));
       if (src.endsWith("igpack.zip"))
         return readZip(ManagedFileAccess.inStream(src));
-      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), TextFile.fileToBytes(f), src, true);
+      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), FileUtilities.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, ByteProvider> res = new HashMap<String, ByteProvider>();
-        res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forFile(src));
+        res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forFile(src));
         return res;
       }
     } else if ((src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) || src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX)) && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
@@ -574,9 +574,9 @@ public class IgLoader implements IValidationEngineLoader {
   }
 
   private String readInfoVersion(ByteProvider bs) throws IOException {
-    String is = TextFile.bytesToString(bs.getBytes());
+    String is = FileUtilities.bytesToString(bs.getBytes());
     is = is.trim();
-    IniFile ini = new IniFile(new ByteArrayInputStream(TextFile.stringToBytes(is)));
+    IniFile ini = new IniFile(new ByteArrayInputStream(FileUtilities.stringToBytes(is)));
     return ini.getStringProperty("FHIR", "version");
   }
 
@@ -638,16 +638,16 @@ public class IgLoader implements IValidationEngineLoader {
     if (stream == null)
       cnt = fetchFromUrlSpecific(src, "application/json", true, null);
     else
-      cnt = TextFile.streamToBytes(stream);
+      cnt = FileUtilities.streamToBytes(stream);
 
     Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), cnt, src, true);
     if (fmt != null) {
       Map<String, ByteProvider> res = new HashMap<String, ByteProvider>();
-      res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forBytes(cnt));
+      res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forBytes(cnt));
       return res;
     }
     String fn = Utilities.path("[tmp]", "fetch-resource-error-content.bin");
-    TextFile.bytesToFile(cnt, fn);
+    FileUtilities.bytesToFile(cnt, fn);
     System.out.println("Error Fetching " + src);
     System.out.println("Some content was found, saved to " + fn);
     System.out.println("1st 100 bytes = " + presentForDebugging(cnt));
@@ -712,7 +712,7 @@ public class IgLoader implements IValidationEngineLoader {
     Manager.FhirFormat fmt = checkFormat(cnt, src);
     if (fmt != null) {
       Map<String, ByteProvider> res = new HashMap<>();
-      res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forBytes(cnt));
+      res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forBytes(cnt));
       return res;
     }
     throw new FHIRException("Unable to read content from " + src + ": cannot determine format");
@@ -731,9 +731,9 @@ public class IgLoader implements IValidationEngineLoader {
       if (ff.isDirectory() && recursive) {
         res.putAll(scanDirectory(ff, true));
       } else if (!ff.isDirectory() && !isIgnoreFile(ff)) {
-        Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), TextFile.fileToBytes(ff), ff.getAbsolutePath(), true);
+        Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), FileUtilities.fileToBytes(ff), ff.getAbsolutePath(), true);
         if (fmt != null) {
-          res.put(Utilities.changeFileExt(ff.getName(), "." + fmt.getExtension()), ByteProvider.forFile(ff));
+          res.put(FileUtilities.changeFileExt(ff.getName(), "." + fmt.getExtension()), ByteProvider.forFile(ff));
         }
       }
     }
@@ -754,7 +754,7 @@ public class IgLoader implements IValidationEngineLoader {
   }
 
   private Manager.FhirFormat checkFormat(byte[] cnt, String filename) throws IOException {
-    String text = TextFile.bytesToString(cnt);
+    String text = FileUtilities.bytesToString(cnt);
     System.out.println("   ..Detect format for " + filename);
     try {
       org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(cnt);
@@ -769,13 +769,13 @@ public class IgLoader implements IValidationEngineLoader {
       log("Not XML: " + e.getMessage());
     }
     try {
-      new Turtle().parse(TextFile.bytesToString(cnt));
+      new Turtle().parse(FileUtilities.bytesToString(cnt));
       return Manager.FhirFormat.TURTLE;
     } catch (Exception e) {
       log("Not Turtle: " + e.getMessage());
     }
     try {
-      new StructureMapUtilities(getContext(), null, null).parse(TextFile.bytesToString(cnt), null);
+      new StructureMapUtilities(getContext(), null, null).parse(FileUtilities.bytesToString(cnt), null);
       return Manager.FhirFormat.TEXT;
     } catch (Exception e) {
       log("Not Text: " + e.getMessage());
@@ -866,7 +866,7 @@ public class IgLoader implements IValidationEngineLoader {
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         r = new JsonParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".txt"))
-        r = new StructureMapUtilities(getContext(), null, null).parse(TextFile.bytesToString(content), fn);
+        r = new StructureMapUtilities(getContext(), null, null).parse(FileUtilities.bytesToString(content), fn);
       else if (fn.endsWith(".map") || fn.endsWith(".fml"))
         r = new StructureMapUtilities(context).parse(new String(content), fn);
       else

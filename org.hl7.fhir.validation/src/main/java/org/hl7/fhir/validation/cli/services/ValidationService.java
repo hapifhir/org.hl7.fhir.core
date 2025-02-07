@@ -62,7 +62,7 @@ import org.hl7.fhir.r5.testfactory.TestDataHostServices;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.SystemExitManager;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -280,7 +280,7 @@ public class ValidationService {
           if (cliContext.getOutput() == null) {
             dst = System.out;
           } else {
-            dst = new PrintStream(ManagedFileAccess.outStream(cliContext.getOutput()));
+            dst = new PrintStream(ManagedFileAccess.outStream(Utilities.path(cliContext.getOutput())));
           }
           renderer.setOutput(dst);
         } else {
@@ -320,7 +320,7 @@ public class ValidationService {
 
         if (cliContext.getHtmlOutput() != null) {
           String html = new HTMLOutputGenerator(records).generate(System.currentTimeMillis() - start);
-          TextFile.stringToFile(html, cliContext.getHtmlOutput());
+          FileUtilities.stringToFile(html, cliContext.getHtmlOutput());
           System.out.println("HTML Summary in " + cliContext.getHtmlOutput());
         }
 
@@ -524,7 +524,7 @@ public class ValidationService {
       }
       byte[] r = validator.transformVersion(cliContext.getSources().get(0), cliContext.getTargetVer(), cliContext.getOutput().endsWith(".json") ? Manager.FhirFormat.JSON : Manager.FhirFormat.XML, cliContext.getCanDoNative());
       System.out.println(" ...success");
-      TextFile.bytesToFile(r, cliContext.getOutput());
+      FileUtilities.bytesToFile(r, cliContext.getOutput());
     } catch (Exception e) {
       System.out.println(" ...Failure: " + e.getMessage());
       e.printStackTrace();
@@ -630,12 +630,19 @@ public class ValidationService {
     validationEngine.setForPublication(cliContext.isForPublication());
     validationEngine.setShowTimes(cliContext.isShowTimes());
     validationEngine.setAllowExampleUrls(cliContext.isAllowExampleUrls());
+    validationEngine.setAiService(cliContext.getAIService());
     ReferenceValidationPolicy refpol = ReferenceValidationPolicy.CHECK_VALID;
     if (!cliContext.isDisableDefaultResourceFetcher()) {
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validationEngine.getPcm(), validationEngine.getContext(), validationEngine);
       validationEngine.setFetcher(fetcher);
       validationEngine.getContext().setLocator(fetcher);
       validationEngine.setPolicyAdvisor(fetcher);
+      if (cliContext.isCheckReferences()) {
+        fetcher.setReferencePolicy(ReferenceValidationPolicy.CHECK_VALID);
+      } else {
+        fetcher.setReferencePolicy(ReferenceValidationPolicy.IGNORE);        
+      }
+      fetcher.setResolutionContext(cliContext.getResolutionContext());
     } else {
       DisabledValidationPolicyAdvisor fetcher = new DisabledValidationPolicyAdvisor();
       validationEngine.setPolicyAdvisor(fetcher);
@@ -643,9 +650,9 @@ public class ValidationService {
     }
     if (cliContext.getAdvisorFile() != null) {
       if (cliContext.getAdvisorFile().endsWith(".json")) {
-        validationEngine.getPolicyAdvisor().setPolicyAdvisor(new JsonDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), new File(cliContext.getAdvisorFile())));
+        validationEngine.getPolicyAdvisor().setPolicyAdvisor(new JsonDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), ManagedFileAccess.file(cliContext.getAdvisorFile())));
       } else {
-        validationEngine.getPolicyAdvisor().setPolicyAdvisor(new TextDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), new File(cliContext.getAdvisorFile())));          
+        validationEngine.getPolicyAdvisor().setPolicyAdvisor(new TextDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), ManagedFileAccess.file(cliContext.getAdvisorFile())));          
       }
     } else {
       validationEngine.getPolicyAdvisor().setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(validationEngine.getPolicyAdvisor() == null ? refpol : validationEngine.getPolicyAdvisor().getReferencePolicy()));
@@ -736,7 +743,7 @@ public class ValidationService {
 
   private void transformLangExtract(CliContext cliContext, ValidationEngine validator) throws IOException { 
     String dst = cliContext.getOutput();
-    Utilities.createDirectory(dst);
+    FileUtilities.createDirectory(dst);
     PoGetTextProducer po = new PoGetTextProducer(dst, ".", false);
     XLIFFProducer xliff = new XLIFFProducer(dst, ".", false);
     JsonLangFileProducer jl = new JsonLangFileProducer(dst, ".", false);
@@ -768,7 +775,7 @@ public class ValidationService {
   
   private void transformLangInject(CliContext cliContext, ValidationEngine validator) throws IOException { 
     String dst = cliContext.getOutput();
-    Utilities.createDirectory(dst);
+    FileUtilities.createDirectory(dst);
     
     List<TranslationUnit> translations = new ArrayList<>();
     for (String input : cliContext.getInputs()) {
@@ -850,7 +857,7 @@ public class ValidationService {
       cp++;
       for (String d : npm.listResources("StructureDefinition")) {
         String filename = npm.getFilePath(d);
-        Resource res = validator.loadResource(TextFile.fileToBytes(filename), filename);
+        Resource res = validator.loadResource(FileUtilities.fileToBytes(filename), filename);
         if (!(res instanceof StructureDefinition))
           throw new FHIRException("Require a StructureDefinition for generating a snapshot");
         StructureDefinition sd = (StructureDefinition) res;
@@ -885,7 +892,7 @@ public class ValidationService {
       System.out.println("Must provide an output directory (-output)");
       ok = false;
     }
-    Utilities.createDirectory(cliContext.getOutput());
+    FileUtilities.createDirectory(cliContext.getOutput());
     if (ok) {
       PECodeGenerator gen = new PECodeGenerator(validationEngine.getContext());
       gen.setFolder(cliContext.getOutput());
@@ -929,7 +936,7 @@ public class ValidationService {
     if (cliContext.getSource() == null) {
       System.out.println("Must specify a source (-version)");
       ok = false;
-    } else if (!new File(cliContext.getSource()).exists()) {      
+    } else if (!ManagedFileAccess.file(cliContext.getSource()).exists()) {      
       System.out.println("Factory source '"+cliContext.getSource()+"' not found");
       ok = false;
     }
@@ -947,13 +954,13 @@ public class ValidationService {
       fpe.setHostServices(hs);
       LiquidEngine liquid = new LiquidEngine(validationEngine.getContext(), hs);
       
-      String path = Utilities.getDirectoryForFile(cliContext.getSource());
+      String path = FileUtilities.getDirectoryForFile(cliContext.getSource());
       String log = Utilities.path(path, "log");
-      Utilities.createDirectory(log);
+      FileUtilities.createDirectory(log);
                   
       JsonObject json = JsonParser.parseObjectFromFile(cliContext.getSource());
       for (JsonObject fact : json.forceArray("factories").asJsonObjects()) {
-        TestDataFactory tdf = new TestDataFactory(validationEngine.getContext(), fact, liquid, fpe, "http://hl7.org/fhir/test", path, log);
+        TestDataFactory tdf = new TestDataFactory(validationEngine.getContext(), fact, liquid, fpe, "http://hl7.org/fhir/test", path, log, new HashMap<>());
         tdf.setTesting(true); // no randomness
         System.out.println("Execute Test Data Factory '"+tdf.getName()+"'. Log in "+Utilities.path(log, tdf.statedLog()));
         tdf.execute();

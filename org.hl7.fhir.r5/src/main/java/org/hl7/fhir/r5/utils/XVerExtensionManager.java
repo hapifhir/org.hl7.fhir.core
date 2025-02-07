@@ -49,6 +49,7 @@ public class XVerExtensionManager {
     if (url.length() < 54) {
       return XVerExtensionStatus.Invalid;
     }
+    url = url.replace("%5Bx%5D", "[x]");
     String v = url.substring(20, 23);
     String e = url.substring(54);
     if (!lists.containsKey(v)) {
@@ -82,6 +83,7 @@ public class XVerExtensionManager {
   }
 
   public StructureDefinition makeDefinition(String url) {
+    url = url.replace("%5Bx%5D", "[x]");
     String verSource = url.substring(20, 23);
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);

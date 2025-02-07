@@ -1,7 +1,5 @@
 package org.hl7.fhir.r4b.context;
 
-import java.io.File;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -51,10 +49,8 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
-import org.hl7.fhir.r4b.context.BaseWorkerContext.ResourceProxy;
-import org.hl7.fhir.r4b.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.r4b.context.IWorkerContext.PackageVersion;
-import org.hl7.fhir.r4b.context.IWorkerContext.ILoggingService.LogCategory;
+  import org.hl7.fhir.r4b.context.CanonicalResourceManager.CanonicalResourceProxy;
+  import org.hl7.fhir.r4b.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r4b.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r4b.model.BooleanType;
 import org.hl7.fhir.r4b.model.Bundle;
@@ -111,7 +107,8 @@ import org.hl7.fhir.r4b.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4b.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.r4b.utils.validation.ValidationContextCarrier;
-import org.hl7.fhir.utilities.OIDUtils;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.TranslationServices;
@@ -125,8 +122,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonObject;
-
-import ca.uhn.fhir.model.valueset.BundleEntrySearchModeEnum;
 
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
@@ -1261,7 +1256,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void initTS(String cachePath) throws Exception {
     if (!ManagedFileAccess.file(cachePath).exists()) {
-      Utilities.createDirectory(cachePath);
+      FileUtilities.createDirectory(cachePath);
     }
     txCache = new TerminologyCache(lock, cachePath);
   }
@@ -1941,7 +1936,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return oidCache.get(oid);
       }
 
-      String uri = OIDUtils.getUriForOid(oid);
+      String uri = OIDUtilities.getUriForOid(oid);
       if (uri != null) {
         oidCache.put(oid, uri);
         return uri;

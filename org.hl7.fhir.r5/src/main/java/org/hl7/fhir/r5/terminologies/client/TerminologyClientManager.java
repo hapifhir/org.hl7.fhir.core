@@ -22,6 +22,7 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
+import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
@@ -562,7 +563,28 @@ public class TerminologyClientManager {
     if (IGNORE_TX_REGISTRY || getMasterClient() == null) {
       return null;
     }
-    String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+Utilities.URLEncode(canonical));
+    String request = null;
+    boolean isImplicit = false;
+    String iVersion = null;
+    if (ValueSetUtilities.isImplicitSCTValueSet(canonical)) {
+      isImplicit = true;
+      iVersion = canonical.substring(0, canonical.indexOf("?fhir_vs"));
+      if ("http://snomed.info/sct".equals(iVersion) && canonical.contains("|")) {
+        iVersion = canonical.substring(canonical.indexOf("|")+1);
+      } 
+      iVersion = ValueSetUtilities.versionFromExpansionParams(expParameters, "http://snomed.info/sct", iVersion); 
+      request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode("http://snomed.info/sct"+(iVersion == null ? "": "|"+iVersion)));
+    } else if (ValueSetUtilities.isImplicitLoincValueSet(canonical)) {
+      isImplicit = true;
+      iVersion = null;
+      if (canonical.contains("|")) {
+        iVersion = canonical.substring(canonical.indexOf("|")+1);
+      } 
+      iVersion = ValueSetUtilities.versionFromExpansionParams(expParameters, "http://loinc.org", iVersion); 
+      request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode("http://loinc.org"+(iVersion == null ? "": "|"+iVersion)));
+    } else {
+      request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+Utilities.URLEncode(canonical));
+    }
     String server = null;
     try {
       if (!useEcosystem) {
@@ -628,7 +650,23 @@ public class TerminologyClientManager {
       Bundle bnd = client.getClient().search("ValueSet", criteria);
       String rid = null;
       if (bnd.getEntry().size() == 0) {
-        return null;
+        if (isImplicit) {
+          // couldn't find it, but can we expand on it? 
+          Parameters p= new Parameters();
+          p.addParameter("url", new UriType(canonical));
+          p.addParameter("count", 0);
+          p.addParameters(expParameters);
+          try {
+            ValueSet vs = client.getClient().expandValueset(null, p);
+            if (vs != null) {
+              return new SourcedValueSet(server, ValueSetUtilities.makeImplicitValueSet(canonical, iVersion));
+            }
+          } catch (Exception e) {
+            return null;
+          }
+        } else {
+          return null;
+        }
       } else if (bnd.getEntry().size() > 1) {
         List<ValueSet> vslist = new ArrayList<>();
         for (BundleEntryComponent be : bnd.getEntry()) {
@@ -659,7 +697,6 @@ public class TerminologyClientManager {
       return null;
     }
   }
-
   public SourcedCodeSystem findCodeSystemOnServer(String canonical) {
     if (IGNORE_TX_REGISTRY || getMasterClient() == null || !useEcosystem) {
       return null;
@@ -703,7 +740,7 @@ public class TerminologyClientManager {
       }
       client.seeUse(canonical, TerminologyClientContextUseType.readCS);
       String criteria = canonical.contains("|") ? 
-          "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+"&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)): 
+          "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+(canonical.contains("|") ? "&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)) : "") : 
             "?_format=json&url="+Utilities.URLEncode(canonical);
       request = Utilities.pathURL(client.getAddress(), "CodeSystem"+ criteria);
       Bundle bnd = client.getClient().search("CodeSystem", criteria);

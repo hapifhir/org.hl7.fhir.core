@@ -189,9 +189,6 @@ public class BundleValidator extends BaseValidator {
     return ok;
   }
 
-  private InstanceValidator validator() {
-    return (InstanceValidator) parent;
-  }
 
   private boolean validateLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack, String type, List<Element> entries) {
     switch (type) {

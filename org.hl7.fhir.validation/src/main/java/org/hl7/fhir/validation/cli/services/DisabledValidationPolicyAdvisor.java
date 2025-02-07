@@ -83,4 +83,9 @@ public class DisabledValidationPolicyAdvisor implements IValidationPolicyAdvisor
                                                       String url) {
     return ReferenceValidationPolicy.IGNORE;
   }
+
+  @Override
+  public SpecialValidationAction policyForSpecialValidation(IResourceValidator validator, Object appContext, SpecialValidationRule rule, String stackPath, Element resource, Element element) {
+    return policyAdvisor.policyForSpecialValidation(validator, appContext, rule, stackPath, resource, element);
+  }
 }

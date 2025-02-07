@@ -366,6 +366,16 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
      super.copyNewExtensions(src, urls);
    }
 
+
+   public Base getExtensionValue(String... theUrls) {
+     for (Extension next : getModifierExtension()) {
+       if (Utilities.existsInList(next.getUrl(), theUrls)) {
+         return next.getValue();
+       }
+     }
+     return super.getExtensionValue(theUrls);
+   }
+
 // end addition
 
 }

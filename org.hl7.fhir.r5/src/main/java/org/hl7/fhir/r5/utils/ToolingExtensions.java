@@ -284,6 +284,7 @@ public class ToolingExtensions {
   public static final String EXT_FHIRVERSION_SPECIFIC_USE = "http://hl7.org/fhir/StructureDefinition/version-specific-use";
   public static final String EXT_FHIRVERSION_SPECIFIC_USE_START = "startFhirVersion";
   public static final String EXT_FHIRVERSION_SPECIFIC_USE_END = "endFhirVersion";
+  public static final String EXT_VERSION_BASE = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-base-version";
   
   // specific extension helpers
 
@@ -570,8 +571,14 @@ public class ToolingExtensions {
     return ((BooleanType) ex.getValue()).getValue();
   }
 
-  public static boolean readBoolExtension(DomainResource c, String uri) {
-    Extension ex = ExtensionHelper.getExtension(c, uri);
+  public static boolean readBoolExtension(DomainResource c, String... uris) {
+    Extension ex = null;
+    for (String uri : uris) {
+      ex = ExtensionHelper.getExtension(c, uri);
+      if (ex != null) {
+        break;
+      }
+    }
     if (ex == null)
       return false;
     if (!(ex.getValue() instanceof BooleanType))
@@ -783,6 +790,17 @@ public class ToolingExtensions {
       ext.setValue(new CodeType(value));
     else
       element.getExtension().add(new Extension(uri).setValue(new CodeType(value)));
+  }
+
+  public static void setMarkdownExtension(DomainResource resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new MarkdownType(value));
+    else
+      resource.getExtension().add(new Extension(uri).setValue(new MarkdownType(value)));
   }
 
   public static void setIntegerExtension(DomainResource resource, String uri, int value) {
@@ -1065,6 +1083,9 @@ public class ToolingExtensions {
   }
 
   private static IssueType mapType(org.hl7.fhir.r5.model.OperationOutcome.IssueType code) {
+    if (code == null) {
+      return null;
+    }
     switch (code) {
     case BUSINESSRULE: return IssueType.BUSINESSRULE;
     case CODEINVALID: return IssueType.CODEINVALID;

@@ -48,8 +48,10 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Meta;
+import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -65,6 +67,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptStatus;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.utils.CanonicalResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
@@ -501,4 +504,97 @@ public class ValueSetUtilities extends TerminologyUtilities {
       }
     }    
   }
+  
+
+
+  public static String versionFromExpansionParams(Parameters expParameters, String system, String defaultVersion) {
+    for (ParametersParameterComponent p : expParameters.getParameter()) {
+      if ("system-version".equals(p.getName()) || "force-system-version".equals(p.getName())) {
+        String v = p.getValue().primitiveValue();
+        if (v.startsWith(system+"|")) {
+          String ver = v.substring(v.indexOf("|")+1);
+          if (defaultVersion == null || ver.startsWith(defaultVersion) || "force-system-version".equals(p.getName())) {
+            return ver;
+          }
+        }
+      }
+    }
+    return defaultVersion;
+  }
+
+  public static boolean isImplicitLoincValueSet(String url) {
+    return url.startsWith("http://loinc.org/vs");    
+  }
+
+  public static boolean isImplicitSCTValueSet(String url) {
+    return url.startsWith("http://snomed.info/sct") && url.contains("?fhir_vs");
+  }
+
+  public static ValueSet makeImplicitValueSet(String url, String version) {
+    if (url.startsWith("http://snomed.info/sct")) {
+      return makeImplicitSCTVS(url, version);
+    } else if (url.startsWith("http://loinc.org/vs")) {
+      return makeImplicitLoincVS(url, version);
+    } else {
+      throw new FHIRException("Unknown implicit value set URL "+url);
+    }
+  }
+
+  private static ValueSet makeImplicitSCTVS(String url, String version) {
+    String query = url.substring(url.indexOf("?")+1);
+    if ("fhir_vs".equals(query)) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl(url);
+      vs.setVersion(version);
+      vs.getCompose().addInclude().setSystem("http://snomed.info/sct");
+      return vs;
+    } else if (query.startsWith("fhir_vs=isa/")) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl(url);
+      vs.setVersion(version);
+      vs.getCompose().addInclude().setSystem("http://snomed.info/sct").addFilter().setProperty("concept").setOp(FilterOperator.ISA).setValue(query.substring(12));
+      return vs;
+    } else if (query.equals("fhir_vs=refset")) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl(url);
+      vs.setVersion(version);
+      vs.getCompose().addInclude().setSystem("http://snomed.info/sct").addFilter().setProperty("concept").setOp(FilterOperator.ISA).setValue("refset-base");
+      return vs;      
+    } else if (query.startsWith("fhir_vs=refset/")) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl(url);
+      vs.setVersion(version);
+      vs.getCompose().addInclude().setSystem("http://snomed.info/sct").addFilter().setProperty("concept").setOp(FilterOperator.IN).setValue(query.substring(15));
+      return vs;      
+    } else {
+      throw new FHIRException("Unknown implicit SNOMED CT value set URL "+url);
+    }
+  }
+
+  private static ValueSet makeImplicitLoincVS(String url, String version) {
+    if (url.equals("http://loinc.org/vs")) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl(url);
+      vs.setVersion(version);
+      vs.getCompose().addInclude().setSystem("http://loinc.org");
+      return vs;
+    } else if (url.startsWith("http://loinc.org/vs/LP")) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl(url);
+      vs.setVersion(version);
+      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("ancestor").setOp(FilterOperator.EQUAL).setValue(url.substring(21));
+      return vs;      
+    } else if (url.startsWith("http://loinc.org/vs/LL")) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl(url);
+      vs.setVersion(version);
+      // this isn't the actual definition, but it won't matter to us internally
+      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("answer-list").setOp(FilterOperator.EQUAL).setValue(url.substring(21));      
+      return vs;
+    } else {
+      throw new FHIRException("Unknown implicit LOINC value set URL "+url);
+    }
+  }
+
+  
 }

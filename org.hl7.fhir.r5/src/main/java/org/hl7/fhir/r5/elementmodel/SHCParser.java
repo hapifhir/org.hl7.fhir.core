@@ -26,7 +26,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.SHCParser.SHCSignedJWT;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.HTTPRequest;
@@ -83,13 +83,13 @@ public class SHCParser extends ParserBase {
   }
 
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
-    byte[] content = TextFile.streamToBytes(inStream);
+    byte[] content = FileUtilities.streamToBytes(inStream);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     List<ValidatedFragment> res = new ArrayList<>();
     ValidatedFragment shc = new ValidatedFragment("shc", "txt", content, false);
     res.add(shc);
 
-    String src = TextFile.streamToString(stream).trim();
+    String src = FileUtilities.streamToString(stream).trim();
     List<String> list = new ArrayList<>();
     String pfx = null;
     if (src.startsWith("{")) {
@@ -313,7 +313,7 @@ public class SHCParser extends ParserBase {
       payloadJson = inflate(payloadJson);
     }
     res.setPayloadSrc(payloadJson);
-    res.payload = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(TextFile.bytesToString(payloadJson), true);
+    res.payload = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(FileUtilities.bytesToString(payloadJson), true);
 
     checkSignature(jwt, res, errors, "jwt", org.hl7.fhir.utilities.json.parser.JsonParser.compose(res.payload));
     return res;

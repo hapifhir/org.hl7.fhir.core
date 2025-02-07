@@ -16,7 +16,7 @@ import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.utilities.CSVReader;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
@@ -28,7 +28,7 @@ public class PhinVadsImporter extends OIDBasedValueSetImporter {
   }
 
   public static void main(String[] args) throws FHIRException, IOException, ParseException {
-//    new PhinVadsImporter().importValueSet(TextFile.fileToBytes("C:\\work\\org.hl7.fhir\\packages\\us.cdc.phinvads-source\\source\\PHVS_BirthDefectsLateralityatDiagnosis_HL7_V1.txt"));
+//    new PhinVadsImporter().importValueSet(FileUtilities.fileToBytes("C:\\work\\org.hl7.fhir\\packages\\us.cdc.phinvads-source\\source\\PHVS_BirthDefectsLateralityatDiagnosis_HL7_V1.txt"));
     PhinVadsImporter self = new PhinVadsImporter();
     self.process(args[0], args[1]);
   }
@@ -37,7 +37,7 @@ public class PhinVadsImporter extends OIDBasedValueSetImporter {
     for (File f : ManagedFileAccess.file(source).listFiles()) {
       try {
         System.out.println("Process " + f.getName());
-        ValueSet vs = importValueSet(TextFile.fileToBytes(f));
+        ValueSet vs = importValueSet(FileUtilities.fileToBytes(f));
         if (vs.getId() != null) {
           new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "ValueSet-" + vs.getId() + ".json")), vs);
         }
@@ -51,7 +51,7 @@ public class PhinVadsImporter extends OIDBasedValueSetImporter {
     // first thing do is split into 2 
     List<byte[]> parts = Utilities.splitBytes(source, "\r\n\r\n".getBytes());
     if (parts.size() < 2) {
-      TextFile.bytesToFile(source, Utilities.path("[tmp]", "phinvads.txt"));
+      FileUtilities.bytesToFile(source, Utilities.path("[tmp]", "phinvads.txt"));
       throw new FHIRException("Unable to parse phinvads value set: " + parts.size() + " parts found");
     }
     CSVReader rdr = new CSVReader(new ByteArrayInputStream(parts.get(0)));

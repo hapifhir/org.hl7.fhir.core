@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.utilities.StringPair;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.DirectoryVisitor;
 import org.hl7.fhir.utilities.filesystem.DirectoryVisitor.IDirectoryVisitorImplementation;
@@ -98,7 +98,7 @@ public class POGenerator {
       generate(source, "rendering-phrases.properties",  "rendering-phrases-ja.po",    "rendering-phrases_ja.properties", 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-fr.po",    "rendering-phrases_fr.properties", 2);
       generate(source, "rendering-phrases.properties",  "rendering-phrases-nl.po",    "rendering-phrases_nl.properties", 2);
-      generate(source, "rendering-phrases.properties",  "rendering-phrases-pt_BR.po", "rendering-phrases_pt-BR.properties", 2);
+      generate(source, "rendering-phrases.properties",  "rendering-phrases-pt_BR.po", "rendering-phrases_pt_BR.properties", 2);
 
       generate(source, "Messages.properties", "validator-messages-en.po",    null, 2);
       generate(source, "Messages.properties", "validator-messages-de.po",    "Messages_de.properties", 2);
@@ -106,7 +106,7 @@ public class POGenerator {
       generate(source, "Messages.properties", "validator-messages-ja.po",    "Messages_ja.properties", 2);
       generate(source, "Messages.properties", "validator-messages-fr.po",    "Messages_fr.properties", 2);
       generate(source, "Messages.properties", "validator-messages-nl.po",    "Messages_nl.properties", 2);
-      generate(source, "Messages.properties", "validator-messages-pt_BR.po", "Messages_pt-BR.properties", 2);
+      generate(source, "Messages.properties", "validator-messages-pt_BR.po", "Messages_pt_BR.properties", 2);
 
       System.out.println("Finished");
     } 
@@ -228,7 +228,7 @@ public class POGenerator {
 
     @Override
     public boolean visitFile(File file) throws IOException {
-      String source = TextFile.fileToString(file);
+      String source = FileUtilities.fileToString(file);
       for (ConstantDefinition cd : consts) {
         if (!cd.used) {
           boolean found = false;
@@ -275,7 +275,7 @@ public class POGenerator {
 
     @Override
     public boolean visitFile(File file) throws IOException {
-      String source = TextFile.fileToString(file);
+      String source = FileUtilities.fileToString(file);
       for (PropertyValue pv : defs) {
         if (!pv.used) {
           boolean found = false;
@@ -301,7 +301,7 @@ public class POGenerator {
   
   private List<ConstantDefinition> loadConstants(String path) throws FileNotFoundException, IOException {
     List<ConstantDefinition> res = new ArrayList<POGenerator.ConstantDefinition>();
-    for (String line : TextFile.fileToLines(path)) {
+    for (String line : FileUtilities.fileToLines(path)) {
       if (line.contains("public static final String") && !line.trim().startsWith("//")) {
         int i = line.indexOf("public static final String") + "public static final String".length();
         String[] p = line.substring(i).split("\\=");
@@ -325,7 +325,7 @@ public class POGenerator {
     // save the destination file 
     String fn = Utilities.path(source, "source", dest);
     List<POObject> objects;
-    if (new File(fn).exists()) {
+    if (ManagedFileAccess.file(fn).exists()) {
       objects = loadPOFile(fn);
     } else {
       objects = new ArrayList<POGenerator.POObject>();
@@ -441,7 +441,7 @@ public class POGenerator {
       } 
       b.append("\r\n");
     }
-    TextFile.stringToFile(b.toString(), dest);
+    FileUtilities.stringToFile(b.toString(), dest);
   }
 
   private String wrapQuotes(String s) {
@@ -509,7 +509,7 @@ public class POGenerator {
   private List<POObject> loadPOFile(String dest) throws FileNotFoundException, IOException {
     List<POObject> list = new ArrayList<POGenerator.POObject>();
     POObject obj = null;
-    for (String line : TextFile.fileToLines(dest)) {
+    for (String line : FileUtilities.fileToLines(dest)) {
       if (Utilities.noString(line)) {
         // else 
       } else if (line.startsWith("#:")) {
@@ -597,7 +597,7 @@ public class POGenerator {
   }
 
   private void savePropFile(String tgt, List<POObject> objects) throws IOException {
-    String nameLine = TextFile.fileToLines(tgt)[0];
+    String nameLine = FileUtilities.fileToLines(tgt).get(0);
     String[] parts = nameLine.substring(1).trim().split("\\=");
     String[] names = parts[1].split("\\,");
     
@@ -619,7 +619,7 @@ public class POGenerator {
       }
     }
     
-    TextFile.stringToFile(b.toString(), tgt);
+    FileUtilities.stringToFile(b.toString(), tgt);
   }
 
   

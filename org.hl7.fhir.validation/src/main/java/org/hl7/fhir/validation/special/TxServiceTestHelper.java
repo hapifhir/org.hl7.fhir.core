@@ -10,8 +10,9 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -19,11 +20,12 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Set;
 
 public class TxServiceTestHelper {
 
 
-  public static String getDiffForValidation(String id, IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String lang, String fp, JsonObject externals, boolean isCodeSystem) throws JsonSyntaxException, FileNotFoundException, IOException {
+  public static String getDiffForValidation(String id, IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String lang, String fp, JsonObject externals, boolean isCodeSystem, Set<String> modes) throws JsonSyntaxException, FileNotFoundException, IOException {
     org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) requestParameters;
     ValueSet valueSet = null;
     String valueSetUrl = null;
@@ -114,10 +116,10 @@ public class TxServiceTestHelper {
 
       writeDiffToFileSystem( name, expectedResponse, actualResponse);
 
-      String diff = new CompareUtilities(externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      String diff = new CompareUtilities(modes, externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null) {
-        Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-        TextFile.stringToFile(actualResponse, fp);
+        FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+        FileUtilities.stringToFile(actualResponse, fp);
         System.out.println("Test "+name+"failed: "+diff);
       }
       return diff;
@@ -174,7 +176,7 @@ public class TxServiceTestHelper {
             parameters.addParameter(validationResult.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED ? "x-caused-by-unknown-system" :  "x-unknown-system", new CanonicalType(s));
           }
         }
-        if (validationResult.getIssues().size() > 0) {
+        if (validationResult.getIssues().size() > 0) { 
           operationOutcome = new OperationOutcome();
           operationOutcome.getIssue().addAll(validationResult.getIssues());
           parameters.addParameter().setName("issues").setResource(operationOutcome);
@@ -188,10 +190,10 @@ public class TxServiceTestHelper {
 
       writeDiffToFileSystem(name, expectedResponse, actualResponse);
 
-      String diff = new CompareUtilities(externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      String diff = new CompareUtilities(modes, externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null) {
-         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-        TextFile.stringToFile(actualResponse, fp);
+         FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+        FileUtilities.stringToFile(actualResponse, fp);
         System.out.println("Test "+name+"failed: "+diff);
       }
       return diff;
@@ -205,17 +207,17 @@ public class TxServiceTestHelper {
     }
     String fullExpected = rootDirectory + "/expected/";
     String fullActual = rootDirectory + "/actual/";
-    File expectedDirectory = new File(fullExpected);
+    File expectedDirectory = ManagedFileAccess.file(fullExpected);
     if (!expectedDirectory.exists()) {
       expectedDirectory.mkdirs();
     }
 
-    File actualDirectory = new File(fullActual);
+    File actualDirectory = ManagedFileAccess.file(fullActual);
     if (!actualDirectory.exists()) {
       actualDirectory.mkdirs();
     }
-    TextFile.stringToFile(expected, fullExpected + testName + ".json");
-    TextFile.stringToFile(actual, fullActual + testName + ".json");
+    FileUtilities.stringToFile(expected, fullExpected + testName + ".json");
+    FileUtilities.stringToFile(actual, fullActual + testName + ".json");
 
   }
 }

@@ -58,7 +58,7 @@ import org.hl7.fhir.r4.formats.RdfParserBase;
 import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.Constants;
 import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.CSFile;
 import org.hl7.fhir.utilities.filesystem.CSFileInputStream;
@@ -97,7 +97,7 @@ public class ToolsHelper {
     } catch (Throwable e) {
       try {
         e.printStackTrace();
-        TextFile.stringToFile(e.toString(), (args.length == 0 ? "tools" : args[0]) + ".err");
+        FileUtilities.stringToFile(e.toString(), (args.length == 0 ? "tools" : args[0]) + ".err");
       } catch (Exception e1) {
         e1.printStackTrace();
       }
@@ -111,9 +111,9 @@ public class ToolsHelper {
       String srcDir = lines.get(0);
       lines.remove(0);
       processExamples(srcDir, lines);
-      TextFile.stringToFile("ok", Utilities.changeFileExt(args[1], ".out"));
+      FileUtilities.stringToFile("ok", FileUtilities.changeFileExt(args[1], ".out"));
     } catch (Exception e) {
-      TextFile.stringToFile(e.getMessage(), Utilities.changeFileExt(args[1], ".out"));
+      FileUtilities.stringToFile(e.getMessage(), FileUtilities.changeFileExt(args[1], ".out"));
     }
   }
 
@@ -266,10 +266,10 @@ public class ToolsHelper {
       }
       s.append("</results>\r\n");
 
-      TextFile.stringToFile(s.toString(), args[2]);
+      FileUtilities.stringToFile(s.toString(), args[2]);
     } catch (Exception e) {
       e.printStackTrace();
-      TextFile.stringToFile(e.getMessage(), args[2]);
+      FileUtilities.stringToFile(e.getMessage(), args[2]);
     }
   }
 
@@ -278,7 +278,7 @@ public class ToolsHelper {
     File source = ManagedFileAccess.csfile(args[1]);
     File dest = ManagedFileAccess.csfile(args[2]);
     if (args.length >= 4) {
-      Utilities.copyFile(args[1], args[3]);
+      FileUtilities.copyFile(args[1], args[3]);
     }
 
     if (!source.exists())
@@ -292,7 +292,7 @@ public class ToolsHelper {
     parser.setOutputStyle(OutputStyle.PRETTY);
     parser.compose(json, rf);
     json.close();
-    TextFile.stringToFile(new String(json.toByteArray()), Utilities.changeFileExt(dest.getAbsolutePath(), ".json"));
+    FileUtilities.stringToFile(new String(json.toByteArray()), FileUtilities.changeFileExt(dest.getAbsolutePath(), ".json"));
     rf = pj.parse(new ByteArrayInputStream(json.toByteArray()));
     FileOutputStream s = ManagedFileAccess.outStream(dest);
     new XmlParser().compose(s, rf, true);
@@ -303,9 +303,9 @@ public class ToolsHelper {
     FileInputStream in;
     File source = ManagedFileAccess.csfile(args[1]);
     File dest = ManagedFileAccess.csfile(args[2]);
-    File destc = ManagedFileAccess.csfile(Utilities.changeFileExt(args[2], ".canonical.json"));
+    File destc = ManagedFileAccess.csfile(FileUtilities.changeFileExt(args[2], ".canonical.json"));
     File destt = ManagedFileAccess.csfile(args[2] + ".tmp");
-    File destr = ManagedFileAccess.csfile(Utilities.changeFileExt(args[2], ".ttl"));
+    File destr = ManagedFileAccess.csfile(FileUtilities.changeFileExt(args[2], ".ttl"));
 
     if (!source.exists())
       throw new FHIRException("Source File \"" + source.getAbsolutePath() + "\" not found");
@@ -332,7 +332,7 @@ public class ToolsHelper {
     rdf.compose(s, rf);
     s.close();
 
-    return TextFile.fileToString(destt.getAbsolutePath());
+    return FileUtilities.fileToString(destt.getAbsolutePath());
   }
 
   public void executeCanonicalXml(String[] args) throws FHIRException, IOException {
@@ -351,7 +351,7 @@ public class ToolsHelper {
   }
 
   private void executeVersion(String[] args) throws IOException {
-    TextFile.stringToFile(org.hl7.fhir.r4.utils.Version.VERSION + ":" + Constants.VERSION, args[1]);
+    FileUtilities.stringToFile(org.hl7.fhir.r4.utils.Version.VERSION + ":" + Constants.VERSION, args[1]);
   }
 
   public void processExamples(String rootDir, Collection<String> list) throws FHIRException {
@@ -360,7 +360,7 @@ public class ToolsHelper {
         String filename = rootDir + n + ".xml";
         // 1. produce canonical XML
         CSFileInputStream source = new CSFileInputStream(filename);
-        FileOutputStream dest = ManagedFileAccess.outStream(Utilities.changeFileExt(filename, ".canonical.xml"));
+        FileOutputStream dest = ManagedFileAccess.outStream(FileUtilities.changeFileExt(filename, ".canonical.xml"));
         XmlParser p = new XmlParser();
         Resource r = p.parse(source);
         XmlParser cxml = new XmlParser();
@@ -369,18 +369,18 @@ public class ToolsHelper {
 
         // 2. produce JSON
         source = new CSFileInputStream(filename);
-        dest = ManagedFileAccess.outStream(Utilities.changeFileExt(filename, ".json"));
+        dest = ManagedFileAccess.outStream(FileUtilities.changeFileExt(filename, ".json"));
         r = p.parse(source);
         JsonParser json = new JsonParser();
         json.setOutputStyle(OutputStyle.PRETTY);
         json.compose(dest, r);
         json = new JsonParser();
         json.setOutputStyle(OutputStyle.CANONICAL);
-        dest = ManagedFileAccess.outStream(Utilities.changeFileExt(filename, ".canonical.json"));
+        dest = ManagedFileAccess.outStream(FileUtilities.changeFileExt(filename, ".canonical.json"));
         json.compose(dest, r);
 
         // 2. produce JSON
-        dest = ManagedFileAccess.outStream(Utilities.changeFileExt(filename, ".ttl"));
+        dest = ManagedFileAccess.outStream(FileUtilities.changeFileExt(filename, ".ttl"));
         RdfParserBase rdf = new RdfParser();
         rdf.compose(dest, r);
       } catch (Exception e) {
@@ -439,9 +439,9 @@ public class ToolsHelper {
       String dstDir = lines.get(0).trim();
       lines.remove(0);
       testRoundTrip(srcDir, dstDir, lines);
-      TextFile.stringToFile("ok", Utilities.changeFileExt(args[1], ".out"));
+      FileUtilities.stringToFile("ok", FileUtilities.changeFileExt(args[1], ".out"));
     } catch (Exception e) {
-      TextFile.stringToFile(e.getMessage(), Utilities.changeFileExt(args[1], ".out"));
+      FileUtilities.stringToFile(e.getMessage(), FileUtilities.changeFileExt(args[1], ".out"));
     }
   }
 }

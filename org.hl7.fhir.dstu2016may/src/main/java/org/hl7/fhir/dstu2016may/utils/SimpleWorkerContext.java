@@ -30,8 +30,6 @@ package org.hl7.fhir.dstu2016may.utils;
  */
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,7 +69,7 @@ import org.hl7.fhir.dstu2016may.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.utilities.OIDUtils;
+import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.CSFileInputStream;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -396,7 +394,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   @Override
   public String oid2Uri(String oid) {
-    String uri = OIDUtils.getUriForOid(oid);
+    String uri = OIDUtilities.getUriForOid(oid);
     if (uri != null)
       return uri;
     for (NamingSystem ns : systems) {

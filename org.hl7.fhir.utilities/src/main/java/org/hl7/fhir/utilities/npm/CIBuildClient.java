@@ -2,7 +2,7 @@ package org.hl7.fhir.utilities.npm;
 
 import lombok.Getter;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -152,7 +152,7 @@ public class CIBuildClient {
     HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), rootUrl + "/ig/qas.json?nocache=" + System.currentTimeMillis());
     res.checkThrowException();
 
-    ciBuildInfo = (JsonArray) JsonParser.parse(TextFile.bytesToString(res.getContent()));
+    ciBuildInfo = (JsonArray) JsonParser.parse(FileUtilities.bytesToString(res.getContent()));
 
     List<BuildRecord> builds = new ArrayList<>();
 

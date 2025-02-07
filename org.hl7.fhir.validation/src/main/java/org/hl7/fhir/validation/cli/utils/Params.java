@@ -32,12 +32,15 @@ public class Params {
   public static final String PROXY_AUTH = "-auth";
   public static final String PROFILE = "-profile";
   public static final String PROFILES = "-profiles";
+  public static final String CONFIG = "-config";
   public static final String OPTION = "-option";
   public static final String OPTIONS = "-options";
   public static final String BUNDLE = "-bundle";
   public static final String QUESTIONNAIRE = "-questionnaire";
   public static final String NATIVE = "-native";
   public static final String ASSUME_VALID_REST_REF = "-assumeValidRestReferences";
+  public static final String CHECK_REFERENCES = "-check-references";
+  public static final String RESOLUTION_CONTEXT = "-resolution-context";
   public static final String DEBUG = "-debug";
   public static final String SCT = "-sct";
   public static final String RECURSE = "-recurse";
@@ -47,7 +50,10 @@ public class Params {
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
   public static final String TO_VERSION = "-to-version";
   public static final String TX_PACK = "-tx-pack";
+  public static final String RE_PACK = "-re-package";
   public static final String PACKAGE_NAME = "-package-name";
+  public static final String PIN = "-pin";
+  public static final String EXPAND = "-expand";
   public static final String DO_NATIVE = "-do-native";
   public static final String NO_NATIVE = "-no-native";
   public static final String COMPILE = "-compile";
@@ -76,6 +82,7 @@ public class Params {
   public static final String FHIRPATH = "-fhirpath";
   public static final String TEST = "-tests";
   public static final String TX_TESTS = "-txTests";
+  public static final String AI_TESTS = "-aiTests";
   public static final String HELP = "help";
   public static final String COMPARE = "-compare";
   public static final String SPREADSHEET = "-spreadsheet";
@@ -94,6 +101,7 @@ public class Params {
   public static final String CRUMB_TRAIL = "-crumb-trails";
   public static final String SHOW_MESSAGE_IDS = "-show-message-ids";
   public static final String FOR_PUBLICATION = "-forPublication";
+  public static final String AI_SERVICE = "-ai-service";
   public static final String VERBOSE = "-verbose";
   public static final String SHOW_TIMES = "-show-times";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
@@ -273,6 +281,10 @@ public class Params {
         cliContext.setDoNative(true);
       } else if (args[i].equals(ASSUME_VALID_REST_REF)) {
         cliContext.setAssumeValidRestReferences(true);
+      } else if (args[i].equals(CHECK_REFERENCES)) {
+        cliContext.setCheckReferences(true);
+      } else if (args[i].equals(RESOLUTION_CONTEXT)) {
+        cliContext.setResolutionContext(args[++i]);        
       } else if (args[i].equals(DEBUG)) {
         cliContext.setDoDebug(true);
       } else if (args[i].equals(SCT)) {
@@ -336,8 +348,38 @@ public class Params {
         cliContext.setPackageName(args[++i]);
         cliContext.setMode(EngineMode.CODEGEN);
       } else if (args[i].equals(TX_PACK)) {
-        cliContext.setPackageName(args[++i]);
-        cliContext.setMode(EngineMode.TX_PACK);
+        cliContext.setMode(EngineMode.RE_PACKAGE);
+        String pn = args[++i];
+        if (pn != null) {
+          if (pn.contains(",")) {
+            for (String s : pn.split("\\,")) {
+              cliContext.getIgs().add(s);              
+            }
+          } else {
+            cliContext.getIgs().add(pn);
+          }
+        }
+        cliContext.getModeParams().add("tx");
+        cliContext.getModeParams().add("expansions");
+      } else if (args[i].equals(RE_PACK)) {
+        cliContext.setMode(EngineMode.RE_PACKAGE);
+        String pn = args[++i];
+        if (pn != null) {
+          if (pn.contains(",")) {
+            for (String s : pn.split("\\,")) {
+              cliContext.getIgs().add(s);              
+            }
+          } else {
+            cliContext.getIgs().add(pn);
+          }
+        }
+        cliContext.getModeParams().add("tx");
+        cliContext.getModeParams().add("cnt");
+        cliContext.getModeParams().add("api");
+      } else if (args[i].equals(PIN)) {
+        cliContext.getModeParams().add("pin");
+      } else if (args[i].equals(EXPAND)) {
+        cliContext.getModeParams().add("expand");
       } else if (args[i].equals(DO_NATIVE)) {
         cliContext.setCanDoNative(true);
       } else if (args[i].equals(NO_NATIVE)) {
@@ -379,6 +421,8 @@ public class Params {
         cliContext.setShowMessageIds(true);
       } else if (args[i].equals(FOR_PUBLICATION)) {
         cliContext.setForPublication(true);
+      } else if (args[i].equals(AI_SERVICE)) {
+        cliContext.setAIService(args[++i]);
       } else if (args[i].equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
         cliContext.setUnknownCodeSystemsCauseErrors(true);
       } else if (args[i].equals(NO_EXPERIMENTAL_CONTENT)) {
@@ -405,7 +449,7 @@ public class Params {
         cliContext.setOutputStyle(args[++i]);
       } else if (args[i].equals(ADVSIOR_FILE)) {
         cliContext.setAdvisorFile(args[++i]);
-        File f = new File(cliContext.getAdvisorFile());
+        File f = ManagedFileAccess.file(cliContext.getAdvisorFile());
         if (!f.exists()) {
           throw new Error("Cannot find advisor file "+cliContext.getAdvisorFile());
         } else if (!Utilities.existsInList(Utilities.getFileExtension(f.getName()), "json", "txt")) {

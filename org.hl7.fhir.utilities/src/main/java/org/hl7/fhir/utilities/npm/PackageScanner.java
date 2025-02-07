@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -29,7 +29,7 @@ public class PackageScanner {
       b.append("\r\n");
       System.out.println(s);
     }
-    TextFile.stringToFile(b.toString(), Utilities.path("[tmp]", "packages.csv"));
+    FileUtilities.stringToFile(b.toString(), Utilities.path("[tmp]", "packages.csv"));
   }
 
   public static void processServer(PackageServer server, List<String> output, Set<String> packages) throws IOException {

@@ -440,6 +440,15 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
      return false;
    }
 
+   public Base getExtensionValue(String... theUrls) {
+     
+     for (Extension next : getExtension()) {
+       if (Utilities.existsInList(next.getUrl(), theUrls)) {
+         return next.getValue();
+       }
+     }
+     return null;
+   }
 
    /**
     * Returns an true if this element has an extension that matchs the given URL.

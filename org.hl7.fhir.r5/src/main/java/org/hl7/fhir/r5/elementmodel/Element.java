@@ -369,17 +369,18 @@ public class Element extends Base implements NamedItem {
 
   public List<Element> getChildren(String name) {
     List<Element> res = new ArrayList<Element>(); 
-    if (children.size() > 20) {
-      List<Element> l = children.getByName(name);
-      if (l != null) {
-        res.addAll(l);
-      }
-    } else {
-      if (children != null)
+    if (children != null) {
+      if (children.size() > 20) {
+        List<Element> l = children.getByName(name);
+        if (l != null) {
+          res.addAll(l);
+        }
+      } else {
         for (Element child : children) {
           if (name.equals(child.getName()))
             res.add(child);
         }
+      }
     }
 		return res;
 	}
@@ -606,13 +607,23 @@ public class Element extends Base implements NamedItem {
         return child;
       }
     }
+    
+    int index = -1;
 
     for (Property p : property.getChildProperties(this.name, type)) {
       if (p.getName().equals(name)) {
         Element ne = new Element(name, p).setFormat(format);
-        children.add(ne);
-        ne.index = children.getSizeByName(ne.getListName()) - 1;
+        children.add(index+1, ne);
+        for (int i = 0; i < children.size(); i++) {
+          children.get(i).index = i;
+        }        
         return ne;
+      } else {
+        for (int i = 0; i < children.size(); i++) {
+          if (children.get(i).getName().equals(p.getName())) {
+            index = i;
+          }
+        }
       }
     }
       
@@ -1684,5 +1695,9 @@ public class Element extends Base implements NamedItem {
         child.stripLocations();
       }
     }
+  }
+
+  public void sortChildren(Comparator<Element> sorter) {
+    children.sort(sorter);
   }
 }

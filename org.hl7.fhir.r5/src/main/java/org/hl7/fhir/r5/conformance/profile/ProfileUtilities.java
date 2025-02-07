@@ -61,6 +61,7 @@ import org.hl7.fhir.r5.fhirpath.ExpressionNode.Operation;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Element;
@@ -1002,6 +1003,9 @@ public class ProfileUtilities {
     } finally {
       derived.clearUserData(UserDataNames.SNAPSHOT_GENERATING);
       snapshotStack.remove(derived.getUrl());
+    }
+    if (base.getVersion() != null) {
+      derived.getSnapshot().addExtension(ToolingExtensions.EXT_VERSION_BASE, new StringType(base.getVersion()));
     }
     derived.setUserData(UserDataNames.SNAPSHOT_GENERATED, true); // used by the publisher
     derived.setUserData(UserDataNames.SNAPSHOT_GENERATED_MESSAGES, messages); // used by the publisher
@@ -2853,7 +2857,7 @@ public class ProfileUtilities {
                 } else {
                   boolean ok = true;
                   for (ValueSetExpansionContainsComponent cc : expDerived.getValueset().getExpansion().getContains()) {
-                    ValidationResult vr = context.validateCode(null, cc.getSystem(), cc.getVersion(), cc.getCode(), null, baseVs);
+                    ValidationResult vr = context.validateCode(new ValidationOptions(), cc.getSystem(), cc.getVersion(), cc.getCode(), null, baseVs);
                     if (!vr.isOk()) {
                       ok = false;
                       break;                      

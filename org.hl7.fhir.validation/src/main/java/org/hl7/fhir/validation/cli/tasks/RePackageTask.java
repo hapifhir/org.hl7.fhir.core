@@ -6,16 +6,17 @@ import java.io.PrintStream;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.utils.Display;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
-import org.hl7.fhir.validation.special.ExpansionPackageGenerator;
-import org.hl7.fhir.validation.special.ExpansionPackageGenerator.ExpansionPackageGeneratorOutputType;
-import org.hl7.fhir.validation.special.ExpansionPackageGenerator.ExpansionPackageGeneratorScope;
+import org.hl7.fhir.validation.special.PackageReGenerator;
+import org.hl7.fhir.validation.special.PackageReGenerator.ExpansionPackageGeneratorOutputType;
+import org.hl7.fhir.validation.special.PackageReGenerator.ExpansionPackageGeneratorScope;
 
-public class TxPackTask extends ValidationEngineTask {
+public class RePackageTask extends ValidationEngineTask {
 
   @Override
   public String getName() {
@@ -34,7 +35,7 @@ public class TxPackTask extends ValidationEngineTask {
 
   @Override
   public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
-    return cliContext.getMode() == EngineMode.TX_PACK;
+    return cliContext.getMode() == EngineMode.RE_PACKAGE;
   }
 
   @Override
@@ -44,10 +45,9 @@ public class TxPackTask extends ValidationEngineTask {
 
   @Override
   public void executeTask(ValidationService validationService, ValidationEngine validationEngine, CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception { 
-    String pid = cliContext.getPackageName();
     boolean json = cliContext.getFormat() != FhirFormat.XML;
     String output = cliContext.getOutput();
-    File f = new File(output);
+    File f = ManagedFileAccess.file(output);
     ExpansionPackageGeneratorOutputType t = ExpansionPackageGeneratorOutputType.FOLDER;
     if (f.exists() && f.isDirectory()) {
       t = ExpansionPackageGeneratorOutputType.FOLDER;
@@ -65,19 +65,29 @@ public class TxPackTask extends ValidationEngineTask {
     }
     if (c < args.length - 1) {
       switch (args[c+1].toLowerCase()) {
-      case "ig" : scope = ExpansionPackageGeneratorScope.IG_ONLY;
-      case "igs" : scope = ExpansionPackageGeneratorScope.ALL_IGS;
-      case "core" : scope = ExpansionPackageGeneratorScope.EVERYTHING;
+      case "ig" :
+        scope = ExpansionPackageGeneratorScope.IG_ONLY;
+        break;
+      case "igs" : 
+        scope = ExpansionPackageGeneratorScope.ALL_IGS;
+        break;
+      case "core" :
+        scope = ExpansionPackageGeneratorScope.EVERYTHING;
+        break;
       default: 
         System.out.println("Unknown scope "+args[c+1]);
       }
     }
     IWorkerContext ctxt = validationEngine.getContext();
-    ExpansionPackageGenerator ep = new ExpansionPackageGenerator().setContext(ctxt).setPackageId(pid).setScope(scope);
+    PackageReGenerator ep = new PackageReGenerator().setContext(ctxt).setScope(scope);
+    for (String s : cliContext.getIgs()) {
+      ep.addPackage(s);
+    }
     if (cliContext.getExpansionParameters() != null) {
       validationEngine.loadExpansionParameters(cliContext.getExpansionParameters());
     }
-    ep.setOutput(output).setOutputType(t);
+    ep.setOutput(output).setOutputType(t).setJson(json);
+    ep.setModes(cliContext.getModeParams());
     ep.generateExpansionPackage();
   }
 }
