@@ -32,6 +32,7 @@ import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.StringPair;
@@ -73,6 +74,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  * Timezones: by default, date/times are rendered in their source timezone 
  * 
  */
+@MarkedToMoveToAdjunctPackage
 public class RenderingContext extends RenderingI18nContext {
 
   public interface IResourceLinkResolver {

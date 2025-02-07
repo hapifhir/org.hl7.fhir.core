@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class TerminologyServerDetails {
   public enum ServerAuthorizationMethod {
     OPEN,

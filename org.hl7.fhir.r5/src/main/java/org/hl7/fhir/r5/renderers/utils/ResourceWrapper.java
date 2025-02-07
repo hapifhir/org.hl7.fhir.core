@@ -11,12 +11,14 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /** 
  * This class is used to walk through the resources when rendering, whether
  * the resource is a native resource or loaded by the element model
  */
+@MarkedToMoveToAdjunctPackage
 public abstract class ResourceWrapper {
 
   public enum ElementKind {

@@ -21,10 +21,12 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.testfactory.TestDataFactory.DataTable;
 import org.hl7.fhir.r5.testfactory.dataprovider.TableDataProvider;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
 // this class exists to allow the Liquid Engine to be used against raw JSON
 
+@MarkedToMoveToAdjunctPackage
 public class BaseTableWrapper extends Base {
 
 

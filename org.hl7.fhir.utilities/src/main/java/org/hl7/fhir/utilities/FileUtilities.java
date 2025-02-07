@@ -168,12 +168,20 @@ public class FileUtilities {
     Files.copy(stream, Path.of(filename), StandardCopyOption.REPLACE_EXISTING);
   }
   	
-	public static void linesToFile(String path, List<String> lines) throws IOException
-	{
-	  final File file = ManagedFileAccess.csfile(path);
+  public static void linesToFile(File f, String[] lines) throws IOException {
+    Files.write(f.toPath(), List.of(lines), StandardCharsets.UTF_8);
+  }
+  
+  public static void linesToFile(String path, String[] lines) throws IOException  {
+    final File file = ManagedFileAccess.csfile(path);
+    Files.write(file.toPath(), List.of(lines), StandardCharsets.UTF_8);
+  }
+  
+  public static void linesToFile(String path, List<String> lines) throws IOException  {
+    final File file = ManagedFileAccess.csfile(path);
     Files.write(file.toPath(), lines, StandardCharsets.UTF_8);
-	}
-	
+  }
+  
   public static String fileTitle(String file) throws IOException {
     if (file == null)
       return null;

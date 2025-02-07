@@ -32,6 +32,7 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
@@ -58,6 +59,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
  *  generateTranslations = -langTransform export -src {src} -tgt {tgt} -dest {dest}
  *  importFromTranslations =  -langTransform import -src {src} -tgt {tgt} -dest {dest}
  */
+@MarkedToMoveToAdjunctPackage
 public class LanguageUtils {
 
   public static final List<String> TRANSLATION_SUPPLEMENT_RESOURCE_TYPES = Arrays.asList("CodeSystem", "StructureDefinition", "Questionnaire");
