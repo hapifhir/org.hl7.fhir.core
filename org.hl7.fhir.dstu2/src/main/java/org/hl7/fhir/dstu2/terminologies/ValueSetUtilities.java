@@ -33,6 +33,7 @@ import org.hl7.fhir.dstu2.model.Meta;
 import org.hl7.fhir.dstu2.model.UriType;
 import org.hl7.fhir.dstu2.model.ValueSet;
 
+@Deprecated
 public class ValueSetUtilities {
 
   public static ValueSet makeShareable(ValueSet vs) {

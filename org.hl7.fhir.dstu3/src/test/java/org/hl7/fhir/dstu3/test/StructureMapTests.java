@@ -12,6 +12,7 @@ import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 
+@Deprecated
 public class StructureMapTests {
 
   private void testParse(String path) throws FileNotFoundException, IOException, FHIRException {

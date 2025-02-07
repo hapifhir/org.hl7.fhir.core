@@ -56,6 +56,7 @@ import org.hl7.fhir.r4.terminologies.ValueSetExpander.TerminologyServiceErrorCla
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.INarrativeGenerator;
 import org.hl7.fhir.r4.utils.validation.IResourceValidator;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -76,6 +77,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  * 
  * @author Grahame
  */
+@MarkedToMoveToAdjunctPackage
 public interface IWorkerContext {
 
   /**

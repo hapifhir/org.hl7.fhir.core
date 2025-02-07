@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
+@Deprecated
 public class MetaTest {
   public static String TEST_SYSTEM = "TEST_SYSTEM";
   public static String TEST_CODE = "TEST_CODE";

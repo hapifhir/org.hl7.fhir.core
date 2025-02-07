@@ -67,6 +67,7 @@ import org.hl7.fhir.utilities.xml.XmlGenerator;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+@Deprecated
 public class DigitalSignatures {
 
 

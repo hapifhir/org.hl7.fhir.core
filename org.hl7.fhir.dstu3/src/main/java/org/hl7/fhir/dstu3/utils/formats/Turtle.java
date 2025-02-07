@@ -47,6 +47,7 @@ import java.util.UUID;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
 
+@Deprecated
 public class Turtle {
 
 	public static final String GOOD_IRI_CHAR = "a-zA-Z0-9\u00A0-\uFFFE";

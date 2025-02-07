@@ -103,6 +103,8 @@ import com.google.gson.JsonSyntaxException;
 
 import ca.uhn.fhir.rest.api.Constants;
 
+
+@Deprecated
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   // all maps are to the full URI

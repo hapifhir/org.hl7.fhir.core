@@ -43,6 +43,7 @@ import org.hl7.fhir.dstu2.utils.EOperationOutcome;
 import org.hl7.fhir.dstu2.utils.IWorkerContext;
 import org.hl7.fhir.dstu2.utils.IWorkerContext.ValidationResult;
 
+@Deprecated
 public class ValueSetCheckerSimple implements ValueSetChecker {
 
   private ValueSet valueset;

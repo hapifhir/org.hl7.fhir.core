@@ -76,6 +76,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+@Deprecated
 public class XmlParser extends ParserBase {
   private boolean allowXsiLocation;
 

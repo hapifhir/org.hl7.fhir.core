@@ -63,6 +63,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
  * 
  * @author Grahame
  */
+@Deprecated
 public interface IWorkerContext {
 
   // -- Parsers (read and write instances)

@@ -61,6 +61,7 @@ import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.r4.utils.formats.XmlLocationAnnotator;
 import org.hl7.fhir.r4.utils.formats.XmlLocationData;
 import org.hl7.fhir.utilities.ElementDecoration;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -77,6 +78,8 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+
+@Deprecated
 public class XmlParser extends ParserBase {
   private boolean allowXsiLocation;
 

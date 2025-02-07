@@ -33,6 +33,7 @@ import org.hl7.fhir.r4.model.ImplementationGuide.GuideParameterCode;
 import org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionComponent;
 import org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent;
 
+@Deprecated
 public class IGHelper {
 
   public static String readStringParameter(ImplementationGuideDefinitionComponent ig, GuideParameterCode name) {

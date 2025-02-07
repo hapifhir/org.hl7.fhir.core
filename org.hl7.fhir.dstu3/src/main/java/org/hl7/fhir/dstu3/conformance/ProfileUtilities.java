@@ -128,6 +128,7 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  * @author Grahame
  *
  */
+@Deprecated
 public class ProfileUtilities extends TranslatingUtilities {
 
   private static int nextSliceId = 0;
