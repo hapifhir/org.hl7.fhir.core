@@ -41,6 +41,7 @@ import org.w3c.dom.Element;
 
 import com.google.gson.JsonObject;
 
+@Deprecated
 public interface IResourceValidator {
 
   /**

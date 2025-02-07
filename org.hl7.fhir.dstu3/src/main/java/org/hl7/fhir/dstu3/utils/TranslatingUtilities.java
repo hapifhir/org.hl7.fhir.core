@@ -35,6 +35,7 @@ package org.hl7.fhir.dstu3.utils;
 import org.hl7.fhir.dstu3.model.Enumeration;
 import org.hl7.fhir.dstu3.model.PrimitiveType;
 
+@Deprecated
 public class TranslatingUtilities extends org.hl7.fhir.utilities.TranslatingUtilities {
 
   public interface TranslationServices extends org.hl7.fhir.utilities.TranslationServices {

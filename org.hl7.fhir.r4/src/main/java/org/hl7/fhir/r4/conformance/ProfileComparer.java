@@ -87,6 +87,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
  * @author Grahame Grieve
  *
  */
+@Deprecated
 public class ProfileComparer {
 
   private IWorkerContext context;

@@ -40,6 +40,7 @@ import org.hl7.fhir.dstu3.model.StringType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
+@Deprecated
 public class OperationOutcomeUtilities {
 
 

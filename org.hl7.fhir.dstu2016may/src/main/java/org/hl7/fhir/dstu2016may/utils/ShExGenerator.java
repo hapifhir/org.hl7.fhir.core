@@ -44,6 +44,7 @@ import org.hl7.fhir.dstu2016may.model.ElementDefinition;
 import org.hl7.fhir.dstu2016may.model.StructureDefinition;
 import org.stringtemplate.v4.ST;
 
+@Deprecated
 public class ShExGenerator {
 
   public enum HTMLLinkPolicy {

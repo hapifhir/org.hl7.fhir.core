@@ -2,7 +2,9 @@ package org.hl7.fhir.r4.utils.sql;
 
 import org.hl7.fhir.r4.utils.sql.Column;
 import org.hl7.fhir.r4.utils.sql.ColumnKind;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class Column {
 
   private String name;

@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
+@Deprecated
 public class ParserTests {
 
   private String root = "C:\\work\\org.hl7.fhir.2016May\\build\\publish";

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
+@Deprecated
 public class TurtleTests {
 
   private void doTest(String filename, boolean ok) throws Exception {

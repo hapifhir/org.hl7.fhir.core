@@ -65,6 +65,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+@Deprecated
 public class NPMPackageGenerator {
 
   public enum Category {

@@ -34,6 +34,7 @@ import java.io.IOException;
 
 import org.hl7.fhir.dstu2.model.ValueSet;
 
+@Deprecated
 public interface ValueSetExpander {
   public class ETooCostly extends Exception {
 

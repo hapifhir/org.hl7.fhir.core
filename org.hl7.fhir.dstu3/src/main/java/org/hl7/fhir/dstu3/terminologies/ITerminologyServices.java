@@ -56,6 +56,7 @@ import org.hl7.fhir.dstu3.terminologies.ValueSetExpander.ValueSetExpansionOutcom
  * @author Grahame
  *
  */
+@Deprecated
 public interface ITerminologyServices {
   /**
    * return true if the service handles code or value set resolution on the system

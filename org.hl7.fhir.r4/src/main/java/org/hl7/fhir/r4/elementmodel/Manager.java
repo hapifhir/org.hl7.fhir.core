@@ -40,6 +40,7 @@ import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.model.StructureDefinition;
 
+@Deprecated
 public class Manager {
 
   public enum FhirFormat {
