@@ -5,6 +5,7 @@ import java.util.List;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.utils.sql.Validator.TrueFalseOrUnknown;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonBoolean;
 import org.hl7.fhir.utilities.json.model.JsonElement;
@@ -13,6 +14,7 @@ import org.hl7.fhir.utilities.json.model.JsonNumber;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonString;
 
+@MarkedToMoveToAdjunctPackage
 public class StorageJson implements Storage {
 
   private String name; 

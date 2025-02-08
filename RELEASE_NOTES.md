@@ -10,7 +10,7 @@ This change is planned for July 2025. This release starts the process of marking
 code with annotations to indicate it's proposed fate:
 - @Deprecated classes will be deleted in July 2025 unless users raise issues with that 
 - @MarkedToMoveToAdjunctPackage is code that will move the other package
-- Code with no annotations will not move or be deleted (r2-r4) or has not yet been reviewed (R4B/R5)
+- Code with no annotations will not move or be deleted (r2-r4 + r5) or has not yet been reviewed (R4B)
 
 ## Validator Changes
 

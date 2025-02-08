@@ -2,7 +2,9 @@ package org.hl7.fhir.r5.terminologies.validation;
 
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class ConceptReferencePair {
 
   private ValueSet valueset;

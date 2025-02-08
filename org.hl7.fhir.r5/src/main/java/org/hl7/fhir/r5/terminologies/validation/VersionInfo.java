@@ -2,7 +2,9 @@ package org.hl7.fhir.r5.terminologies.validation;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class VersionInfo {
   /**
    * 

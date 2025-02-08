@@ -96,6 +96,7 @@ import org.hl7.fhir.utilities.i18n.LanguageTag;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
+@MarkedToMoveToAdjunctPackage
 public class ValueSetValidator extends ValueSetProcessBase {
 
   public static final String NO_TRY_THE_SERVER = "The local terminology server cannot handle this request";

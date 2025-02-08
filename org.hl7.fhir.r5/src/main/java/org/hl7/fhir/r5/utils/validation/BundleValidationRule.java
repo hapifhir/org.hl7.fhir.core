@@ -1,8 +1,11 @@
 package org.hl7.fhir.r5.utils.validation;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
+@MarkedToMoveToAdjunctPackage
 public class BundleValidationRule {
   @JsonProperty("rule")
   @SerializedName("rule")

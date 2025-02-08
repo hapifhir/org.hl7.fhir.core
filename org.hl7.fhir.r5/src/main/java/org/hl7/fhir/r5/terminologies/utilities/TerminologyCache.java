@@ -71,6 +71,7 @@ import com.google.gson.JsonPrimitive;
  * @author graha
  *
  */
+@MarkedToMoveToAdjunctPackage
 public class TerminologyCache {
   
   public static class SourcedCodeSystem {

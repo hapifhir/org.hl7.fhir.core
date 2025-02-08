@@ -51,6 +51,7 @@ import org.hl7.fhir.r5.utils.client.FHIRToolingClient;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@Deprecated
 public class BatchLoader {
 
 	public static void main(String[] args) throws IOException, Exception {
