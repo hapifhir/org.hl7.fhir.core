@@ -311,12 +311,15 @@ public class TurtleParser extends ParserBase {
   
   @Override
   public void compose(Element e, OutputStream stream, OutputStyle style, String base) throws IOException, FHIRException {
-    this.base = base;
+	if (base != null) {
+		this.base = base;	
+	} else {
+		this.base = "http://hl7.org/fhir/";
+	}
     this.style = style;
-    
-		Turtle ttl = new Turtle();
-		compose(e, ttl, base);
-		ttl.commit(stream, false);
+	Turtle ttl = new Turtle();
+	compose(e, ttl, base);
+	ttl.commit(stream, false);
   }
 
   public void compose(Element e, Turtle ttl, String base) throws FHIRException {
@@ -325,6 +328,7 @@ public class TurtleParser extends ParserBase {
     }
     
     ttl.prefix("fhir", FHIR_URI_BASE);
+    ttl.prefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
     ttl.prefix("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
     ttl.prefix("owl", "http://www.w3.org/2002/07/owl#");
     ttl.prefix("xsd", "http://www.w3.org/2001/XMLSchema#");
@@ -426,7 +430,7 @@ public class TurtleParser extends ParserBase {
 	  } else {
 	    t = ctxt.linkedPredicate("fhir:"+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
 	  }
-	if (element.getProperty().getName().endsWith("[x]") && !element.hasValue()) {
+	if (element.getProperty().getName().endsWith("[x]")) {
 	  t.linkedPredicate("a", "fhir:" + element.fhirType(), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
 	}
     if (element.getSpecial() != null)
@@ -513,6 +517,8 @@ public class TurtleParser extends ParserBase {
       xst = "^^xsd:base64Binary";
     else if (type.equals("canonical") || type.equals("oid") || type.equals("uri") || type.equals("url") || type.equals("uuid"))
   	  xst = "^^xsd:anyURI";
+    else if (type.equals("xhtml"))
+      xst = "^^rdf:XMLLiteral";
     else if (type.equals("instant"))
       xst = "^^xsd:dateTime";
     else if (type.equals("time"))
