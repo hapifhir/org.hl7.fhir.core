@@ -1,5 +1,7 @@
 package org.hl7.fhir.r4.utils;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -29,6 +31,7 @@ package org.hl7.fhir.r4.utils;
   
  */
 
+@MarkedToMoveToAdjunctPackage
 public interface NameResolver {
   boolean isResource(String name);
 }

@@ -3,11 +3,13 @@ package org.hl7.fhir.r5.liquid;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 
 // this class exists to allow the Liquid Engine to be used against raw JSON
 
+@MarkedToMoveToAdjunctPackage
 public class BaseJsonWrapper extends Base {
 
   private static final long serialVersionUID = 1L;

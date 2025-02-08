@@ -52,6 +52,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.SnomedExpressions;
 import org.hl7.fhir.r5.utils.SnomedExpressions.Expression;
 import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.turtle.Turtle;
@@ -68,6 +69,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
 
+@MarkedToMoveToAdjunctPackage
 public class TurtleParser extends ParserBase {
 
   private String base;

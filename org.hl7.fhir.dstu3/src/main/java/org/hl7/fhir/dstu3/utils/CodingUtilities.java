@@ -33,6 +33,7 @@ package org.hl7.fhir.dstu3.utils;
 
 import org.hl7.fhir.dstu3.model.Coding;
 
+@Deprecated
 public class CodingUtilities {
 
   public static boolean matches(Coding coding, String system, String code) {

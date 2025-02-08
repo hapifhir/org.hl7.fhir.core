@@ -117,6 +117,7 @@ public class UserDataNames {
   
   public static final String validator_source_msg = "source.msg";
   public static final String validator_source_vm = "source.vm";
+  public static final String validator_contained_Id = "val.contained.id.session";
 
   
   public static final String PUB_CS_CONVERTED = "conv-vs";
@@ -139,5 +140,5 @@ public class UserDataNames {
   public static final String archetypeSource = "archetype-source";
   public static final String archetypeName = "archetype-name";
   public static final String VS_EXPANSION_SOURCE = "VS_EXPANSION_SOURCE";
-
+  
 }  

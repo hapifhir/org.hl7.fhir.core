@@ -196,6 +196,7 @@ import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.utilities.xml.XmlGenerator;
 import org.w3c.dom.Element;
 
+@Deprecated
 public class NarrativeGenerator implements INarrativeGenerator {
 
   public class ResourceContext {

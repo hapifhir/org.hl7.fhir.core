@@ -75,6 +75,7 @@ import org.hl7.fhir.r4.terminologies.TerminologyClient;
 import org.hl7.fhir.r4.utils.INarrativeGenerator;
 import org.hl7.fhir.r4.utils.NarrativeGenerator;
 import org.hl7.fhir.r4.utils.validation.IResourceValidator;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.CSFileInputStream;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -91,6 +92,7 @@ import ca.uhn.fhir.parser.DataFormatException;
  * very light client to connect to an open unauthenticated terminology service
  */
 
+@MarkedToMoveToAdjunctPackage
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext, ProfileKnowledgeProvider {
 
   public interface IContextResourceLoader {

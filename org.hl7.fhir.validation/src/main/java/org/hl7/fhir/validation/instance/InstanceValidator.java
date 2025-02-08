@@ -1012,6 +1012,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         i++;
       }
       for (StructureDefinition defn : profiles) {
+        stack.getIds().clear();
         validateResource(new ValidationContext(appContext, element), errors, element, element, defn, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.ConfigProfile), false, false);
       }
     }
@@ -6423,13 +6424,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
 
           if (special == SpecialElement.CONTAINED) {
-            String id = element.getNamedChildValue("id");
-            if (id == null) {
-              // this is an error handled elsewhere
-            } else {
-              ok = rule(errors, "2025-01-28", IssueType.DUPLICATE, element.line(), element.col(), stack.getLiteralPath(),
-                  !stack.getIds().containsKey("!"+id), I18nConstants.RESOURCE_DUPLICATE_CONTAINED_ID, id) && ok;
-              stack.getIds().put("!"+id, element);
+            if (!session.getSessionId().equals(element.getUserData(UserDataNames.validator_contained_Id))) {
+              element.setUserData(UserDataNames.validator_contained_Id, session.getSessionId());
+              String id = element.getNamedChildValue("id");
+              if (id == null) {
+                // this is an error handled elsewhere
+              } else {
+                if (stack.getIds().containsKey("!"+id)) {
+                  ok = rule(errors, "2025-01-28", IssueType.DUPLICATE, element.line(), element.col(), stack.getLiteralPath(),
+                      false, I18nConstants.RESOURCE_DUPLICATE_CONTAINED_ID, id) && ok;
+                }
+                stack.getIds().put("!"+id, element);
+              }
             }
           }
           stack.resetIds();

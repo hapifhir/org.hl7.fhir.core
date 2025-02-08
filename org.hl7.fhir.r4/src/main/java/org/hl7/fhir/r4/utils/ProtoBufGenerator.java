@@ -41,6 +41,7 @@ import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.utilities.Utilities;
 
+@Deprecated
 public class ProtoBufGenerator {
 
   private IWorkerContext context;

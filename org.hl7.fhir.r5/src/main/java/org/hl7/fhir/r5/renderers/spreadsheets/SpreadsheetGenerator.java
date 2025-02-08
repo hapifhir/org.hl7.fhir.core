@@ -21,6 +21,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.renderers.DataRenderer;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 import com.microsoft.schemas.office.visio.x2012.main.ShapeSheetType;
 
@@ -55,6 +56,7 @@ import com.microsoft.schemas.office.visio.x2012.main.ShapeSheetType;
 
 
 
+@MarkedToMoveToAdjunctPackage
 public class SpreadsheetGenerator {
     
   private static final int MAX_SENSITIVE_SHEET_NAME_LEN = 31;

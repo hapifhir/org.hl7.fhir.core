@@ -35,6 +35,7 @@ package org.hl7.fhir.dstu2.utils.client;
  * @author Claude Nanjo
  *
  */
+@Deprecated
 public enum ResourceFormat {
 
   RESOURCE_XML("application/xml+fhir"), RESOURCE_JSON("application/json+fhir");

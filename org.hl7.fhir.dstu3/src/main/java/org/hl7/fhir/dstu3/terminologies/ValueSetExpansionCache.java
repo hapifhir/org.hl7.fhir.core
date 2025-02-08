@@ -82,6 +82,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
+@Deprecated
 public class ValueSetExpansionCache implements ValueSetExpanderFactory {
 
   public class CacheAwareExpander implements ValueSetExpander {

@@ -51,6 +51,7 @@ import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -61,6 +62,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum; 
 
+@MarkedToMoveToAdjunctPackage
 public class DataRenderer extends Renderer implements CodeResolver { 
 
   // -- 1. context -------------------------------------------------------------- 

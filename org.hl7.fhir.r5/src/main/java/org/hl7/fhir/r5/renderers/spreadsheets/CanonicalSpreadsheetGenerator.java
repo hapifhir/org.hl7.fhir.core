@@ -13,7 +13,9 @@ import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.renderers.DataRenderer;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class CanonicalSpreadsheetGenerator extends SpreadsheetGenerator {
 
   public CanonicalSpreadsheetGenerator(IWorkerContext context) {

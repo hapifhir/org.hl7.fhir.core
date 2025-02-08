@@ -48,6 +48,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
 
+@Deprecated
 public class CodeSystemUtilities {
 
   public static boolean isDeprecated(CodeSystem cs, ConceptDefinitionComponent def) {

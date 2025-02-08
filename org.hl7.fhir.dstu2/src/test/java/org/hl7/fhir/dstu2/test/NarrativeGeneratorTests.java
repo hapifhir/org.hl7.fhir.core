@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled // TODO Need to find and fix files referenced here
+@Deprecated
 public class NarrativeGeneratorTests {
 
   private NarrativeGenerator gen;

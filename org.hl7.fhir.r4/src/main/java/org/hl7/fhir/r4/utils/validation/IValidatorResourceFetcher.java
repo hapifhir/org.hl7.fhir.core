@@ -4,7 +4,9 @@ import java.io.IOException;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.elementmodel.Element;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public interface IValidatorResourceFetcher {
   Element fetch(Object appContext, String url) throws FHIRException, IOException;
 

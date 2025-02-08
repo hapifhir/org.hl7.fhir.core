@@ -91,6 +91,7 @@ import org.hl7.fhir.dstu2016may.model.ValueSet;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
+@Deprecated
 public class ToolingExtensions {
 
   // validated

@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -18,6 +19,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * This class is used to walk through the resources when rendering, whether
  * the resource is a native resource or loaded by the element model
  */
+@MarkedToMoveToAdjunctPackage
 public class ResourceWrapperModel extends ResourceWrapper {
 
   protected Element model;

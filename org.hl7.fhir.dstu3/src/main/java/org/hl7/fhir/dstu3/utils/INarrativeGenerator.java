@@ -31,6 +31,7 @@ package org.hl7.fhir.dstu3.utils;
 
 
 
+@Deprecated
 public interface INarrativeGenerator {
 
 }

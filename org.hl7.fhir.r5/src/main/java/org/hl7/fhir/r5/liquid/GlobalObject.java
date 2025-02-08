@@ -14,10 +14,12 @@ import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
 import com.microsoft.schemas.office.visio.x2012.main.impl.FunctionDefTypeImpl;
 
+@MarkedToMoveToAdjunctPackage
 public class GlobalObject extends Base {
 
   private DateTimeType dt;

@@ -29,6 +29,7 @@ package org.hl7.fhir.dstu2016may.utils;
   
  */
 
+@Deprecated
 public class XmlLocationData {
 
   public static final String LOCATION_DATA_KEY = "locationDataKey";

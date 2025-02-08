@@ -2431,7 +2431,6 @@ v: {
   "error" : "Wrong Display Name '2. Good color all over' for http://loinc.org#LA6724-4. Valid display is 'Good color all over' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2475,7 +2474,6 @@ v: {
   "error" : "Wrong Display Name '2. At least 100 beats per minute' for http://loinc.org#LA6718-6. Valid display is 'At least 100 beats per minute' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2519,7 +2517,6 @@ v: {
   "error" : "Wrong Display Name '2. Grimace and pulling away, cough, or sneeze during suctioning' for http://loinc.org#LA6721-0. Valid display is 'Grimace and pulling away, cough, or sneeze during suctioning' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2563,7 +2560,6 @@ v: {
   "error" : "Wrong Display Name '2. Active motion' for http://loinc.org#LA6715-2. Valid display is 'Active motion' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2607,7 +2603,6 @@ v: {
   "error" : "Wrong Display Name '2. Good, strong cry; normal rate and effort of breathing' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2627,6 +2622,53 @@ v: {
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
   }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "14272-9",
+  "display" : "Liver kidney microsomal Ab [Presence] in Serum"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Liver kidney microsomal Ab [Presence] in Serum",
+  "code" : "14272-9",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "14272-9"
+}, "url": "http://hl7.org/fhir/ValueSet/report-codes--0", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Liver kidney microsomal Ab [Presence] in Serum",
+  "code" : "14272-9",
+  "system" : "http://loinc.org",
+  "version" : "2.78",
+  "server" : "http://tx-dev.fhir.org/r5",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
 }
 
 }

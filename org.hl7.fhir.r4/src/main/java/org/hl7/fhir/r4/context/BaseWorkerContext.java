@@ -59,6 +59,7 @@ import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.r4.model.DomainResource;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.UUIDUtilities;
@@ -99,6 +100,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonObject;
 
+@MarkedToMoveToAdjunctPackage
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   private Object lock = new Object(); // used as a lock for the data that follows

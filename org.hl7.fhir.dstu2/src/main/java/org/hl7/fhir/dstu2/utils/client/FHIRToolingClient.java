@@ -82,6 +82,7 @@ import org.hl7.fhir.utilities.Utilities;
  * @author Claude Nanjo
  *
  */
+@Deprecated
 public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   public static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssK";
