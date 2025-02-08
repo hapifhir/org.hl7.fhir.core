@@ -19,7 +19,9 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class TestDataHostServices implements IEvaluationContext  {
 
   private SimpleWorkerContext context;

@@ -3,10 +3,12 @@ package org.hl7.fhir.r5.utils;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
+@MarkedToMoveToAdjunctPackage
 public class PackageHackerR5 {
 
   public static void fixLoadedResource(CanonicalResourceProxy r, PackageInformation packageInfo) {

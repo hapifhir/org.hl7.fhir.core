@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
@@ -51,6 +52,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
  *    * when done, call finish(WorkContext)
  */
 
+@MarkedToMoveToAdjunctPackage
 public class Runner implements IEvaluationContext {
   
   public interface IRunnerObserver {

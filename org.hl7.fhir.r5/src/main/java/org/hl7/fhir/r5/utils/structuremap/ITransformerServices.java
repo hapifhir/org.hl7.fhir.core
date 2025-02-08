@@ -4,9 +4,11 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 import java.util.List;
 
+@MarkedToMoveToAdjunctPackage
 public interface ITransformerServices {
   //    public boolean validateByValueSet(Coding code, String valuesetId);
   public void log(String message); // log internal progress

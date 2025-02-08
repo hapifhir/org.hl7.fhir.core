@@ -15,7 +15,9 @@ import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCode
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.TerminologyClientContextUseCount;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class TerminologyClientContext {
   public enum TerminologyClientContextUseType {
     expand, validate, readVS, readCS

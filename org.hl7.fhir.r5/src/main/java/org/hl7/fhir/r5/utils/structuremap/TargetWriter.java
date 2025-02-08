@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.utils.structuremap;
 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -9,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@MarkedToMoveToAdjunctPackage
 public class TargetWriter {
   private Map<String, String> newResources = new HashMap<String, String>();
   private List<StringPair> assignments = new ArrayList<StringPair>();

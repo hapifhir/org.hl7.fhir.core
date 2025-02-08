@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ElementValidationAction;
@@ -16,6 +17,7 @@ import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidati
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 
+@MarkedToMoveToAdjunctPackage
 public interface IValidationPolicyAdvisor {
 
 

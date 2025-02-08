@@ -1,7 +1,9 @@
 package org.hl7.fhir.r5.utils.structuremap;
 
 import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class SourceElementComponentWrapper {
   private ConceptMap.ConceptMapGroupComponent group;
   private ConceptMap.SourceElementComponent comp;

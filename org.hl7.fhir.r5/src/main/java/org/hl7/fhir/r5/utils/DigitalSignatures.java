@@ -60,12 +60,14 @@ import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.utilities.xml.XmlGenerator;
 import org.w3c.dom.Document;
 
+@MarkedToMoveToAdjunctPackage
 public class DigitalSignatures {
 
   public static PrivateKey getPrivateKey(String filename) throws Exception {

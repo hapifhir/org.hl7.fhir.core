@@ -35,9 +35,11 @@ import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@MarkedToMoveToAdjunctPackage
 public class MappingSheetParser {
 
   public class MappingRow {
