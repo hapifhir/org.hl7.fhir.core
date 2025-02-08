@@ -47,6 +47,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 /**
  * This class provides special support for parsing v2 by the v2 logical model
@@ -55,6 +56,7 @@ import org.hl7.fhir.utilities.FileUtilities;
  * @author Grahame Grieve
  *
  */
+@MarkedToMoveToAdjunctPackage
 public class VerticalBarParser extends ParserBase {
 
   /**

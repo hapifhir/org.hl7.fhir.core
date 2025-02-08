@@ -2,6 +2,7 @@
   "https://www.humanservices.gov.au/organisations/health-professionals/enablers/air-vaccine-code-formats|null" : null,
   "http://fhir.mimic.mit.edu/CodeSystem/admit-source|null" : null,
   "urn:oid:2.16.840.1.113883.2.9.6.2.7|null" : null,
+  "http://terminology.hl7.org.au/CodeSystem/v2-0203|null" : null,
   "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html|2022" : null,
   "http://snomed.info/sct|http://snomed.info/sct/900000000000207008" : null,
   "http://hl7.org/fhir/ValueSet/participant-role|null" : null,

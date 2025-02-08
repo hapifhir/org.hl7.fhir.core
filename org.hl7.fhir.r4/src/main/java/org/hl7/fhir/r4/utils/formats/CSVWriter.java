@@ -54,6 +54,7 @@ import org.hl7.fhir.r4.model.Type;
 import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.utilities.TextStreamWriter;
 
+@Deprecated
 public class CSVWriter extends TextStreamWriter {
 
   private StructureDefinition def;

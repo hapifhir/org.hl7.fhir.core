@@ -93,6 +93,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 
+@Deprecated
 public class ToolingExtensions {
 
   // validated

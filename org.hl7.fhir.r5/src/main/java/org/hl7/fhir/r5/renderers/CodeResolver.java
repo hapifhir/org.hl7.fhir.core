@@ -2,7 +2,9 @@ package org.hl7.fhir.r5.renderers;
 
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public interface CodeResolver {
 
   public class CodeResolution {

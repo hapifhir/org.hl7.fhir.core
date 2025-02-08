@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
+@Deprecated
 public class ShexGeneratorTests {
 
   private void doTest(String name) throws IOException, FHIRException {

@@ -30,6 +30,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
+@Deprecated
 public class TestingUtilities {
   private static final boolean SHOW_DIFF = true;
 

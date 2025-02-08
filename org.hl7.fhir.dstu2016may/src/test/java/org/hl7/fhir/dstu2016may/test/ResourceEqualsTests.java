@@ -13,6 +13,7 @@ import java.io.InputStream;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Deprecated
 public class ResourceEqualsTests {
 
   private JsonParser dstu2016_parser = new JsonParser();;

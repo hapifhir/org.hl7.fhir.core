@@ -5,12 +5,14 @@ import java.util.Date;
 
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.utils.sql.Value;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 
 /**
  * String value is always provided, and a more specific value may also be provided
  */
 
+@MarkedToMoveToAdjunctPackage
 public class Value {
 
   private String valueString;

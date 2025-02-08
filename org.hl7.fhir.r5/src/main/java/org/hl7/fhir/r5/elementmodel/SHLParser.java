@@ -30,6 +30,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.HTTPResult;
@@ -60,6 +61,7 @@ import com.nimbusds.jose.crypto.DirectDecrypter;
  * @author grahame
  *
  */
+@MarkedToMoveToAdjunctPackage
 public class SHLParser extends ParserBase {
   private static boolean testMode;
   

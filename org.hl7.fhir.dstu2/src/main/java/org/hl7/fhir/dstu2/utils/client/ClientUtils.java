@@ -74,6 +74,7 @@ import javax.annotation.Nonnull;
  * 
  * @author Claude Nanjo
  */
+@Deprecated
 public class ClientUtils {
   protected static final String LOCATION_HEADER = "location";
   protected static final String CONTENT_LOCATION_HEADER = "content-location";

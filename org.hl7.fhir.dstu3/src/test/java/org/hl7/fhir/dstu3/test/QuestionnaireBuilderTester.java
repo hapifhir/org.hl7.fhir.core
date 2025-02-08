@@ -10,6 +10,7 @@ import org.hl7.fhir.dstu3.model.StructureDefinition;
 import org.hl7.fhir.dstu3.utils.QuestionnaireBuilder;
 import org.hl7.fhir.exceptions.FHIRException;
 
+@Deprecated
 public class QuestionnaireBuilderTester {
 
 	private static final String TEST_PROFILE_DIR = "C:\\work\\org.hl7.fhir\\build\\publish";

@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
 
+@Deprecated
 public class FHIRToolingClientTest {
 
   private final Address address = new Address()

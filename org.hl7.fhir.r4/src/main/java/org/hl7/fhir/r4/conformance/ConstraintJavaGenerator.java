@@ -40,6 +40,7 @@ import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@Deprecated
 public class ConstraintJavaGenerator {
 
   private IWorkerContext context; // for doing expansions

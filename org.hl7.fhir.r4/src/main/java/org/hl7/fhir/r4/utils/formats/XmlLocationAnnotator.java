@@ -48,6 +48,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
 
 // http://javacoalface.blogspot.com.au/2011/04/line-and-column-numbers-in-xml-dom.html
 
+@Deprecated
 public class XmlLocationAnnotator extends XMLFilterImpl {
 
   private Locator locator;

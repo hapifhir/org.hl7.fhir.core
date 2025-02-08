@@ -14,7 +14,9 @@ import org.hl7.fhir.r4.utils.sql.ColumnKind;
 import org.hl7.fhir.r4.utils.sql.Storage;
 import org.hl7.fhir.r4.utils.sql.Store;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class StorageSqlite3 implements Storage {
   
   public static class SQLiteStore extends Store {

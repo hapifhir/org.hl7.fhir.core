@@ -48,6 +48,7 @@ import com.google.gson.JsonPrimitive;
  * @author Grahame Grieve
  *
  */
+@Deprecated
 public class JsonTrackingParser {
 
   public enum TokenType {
