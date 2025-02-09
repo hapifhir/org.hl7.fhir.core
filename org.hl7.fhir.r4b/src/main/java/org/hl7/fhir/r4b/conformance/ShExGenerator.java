@@ -49,8 +49,10 @@ import org.hl7.fhir.r4b.model.Enumerations;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.r4b.terminologies.ValueSetExpander;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.stringtemplate.v4.ST;
 
+@MarkedToMoveToAdjunctPackage
 public class ShExGenerator {
 
   public enum HTMLLinkPolicy {

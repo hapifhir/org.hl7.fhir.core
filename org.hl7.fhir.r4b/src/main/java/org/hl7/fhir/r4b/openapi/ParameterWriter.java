@@ -1,5 +1,7 @@
 package org.hl7.fhir.r4b.openapi;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +33,7 @@ package org.hl7.fhir.r4b.openapi;
 
 import com.google.gson.JsonObject;
 
+@MarkedToMoveToAdjunctPackage
 public class ParameterWriter extends BaseWriter {
 
   public enum ParameterLocation {

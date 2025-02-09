@@ -53,6 +53,7 @@ import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.model.StructureDefinition.StructureDefinitionKind;
 
+@Deprecated
 public class ObjectConverter {
 
   private IWorkerContext context;
