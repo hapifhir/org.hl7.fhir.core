@@ -893,10 +893,12 @@ public class StructureDefinitionValidator extends BaseValidator {
   }
 
   private SourcedInvariant findInvariantInBase(StructureDefinition base, String key) {
-    for (ElementDefinition ed : base.getSnapshot().getElement()) {
-      for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
-        if (key.equals(inv.getKey())) {
-          return new SourcedInvariant(base.getVersionedUrl(), ed.getPath(), inv.getExpression());
+    if (base != null) {
+      for (ElementDefinition ed : base.getSnapshot().getElement()) {
+        for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+          if (key.equals(inv.getKey())) {
+            return new SourcedInvariant(base.getVersionedUrl(), ed.getPath(), inv.getExpression());
+          }
         }
       }
     }
