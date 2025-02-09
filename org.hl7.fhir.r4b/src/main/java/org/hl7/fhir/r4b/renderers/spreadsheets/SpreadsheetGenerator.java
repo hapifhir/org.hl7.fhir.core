@@ -53,6 +53,7 @@ import com.microsoft.schemas.office.visio.x2012.main.ShapeSheetType;
 
  */
 
+@Deprecated
 public class SpreadsheetGenerator {
 
   private static final int MAX_SENSITIVE_SHEET_NAME_LEN = 31;

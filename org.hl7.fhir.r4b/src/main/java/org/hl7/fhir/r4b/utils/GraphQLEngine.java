@@ -54,6 +54,7 @@ import org.hl7.fhir.r4b.model.Property;
 import org.hl7.fhir.r4b.model.Reference;
 import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r4b.model.StringType;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.graphql.Argument;
 import org.hl7.fhir.utilities.graphql.Argument.ArgumentListStatus;
@@ -78,6 +79,7 @@ import org.hl7.fhir.utilities.graphql.Value;
 import org.hl7.fhir.utilities.graphql.Variable;
 import org.hl7.fhir.utilities.graphql.VariableValue;
 
+@MarkedToMoveToAdjunctPackage
 public class GraphQLEngine implements IGraphQLEngine {
 
   public static class SearchEdge extends Base {

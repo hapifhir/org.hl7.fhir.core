@@ -28,6 +28,7 @@ import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.utilities.xml.XmlGenerator;
 import org.w3c.dom.Element;
 
+@Deprecated
 public class DOMWrappers {
 
   public static class BaseWrapperElement extends WrapperBaseImpl implements BaseWrapper {

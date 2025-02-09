@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4b.context;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+@MarkedToMoveToAdjunctPackage
 public class BaseLogger {
 
   private int id = 0;

@@ -36,7 +36,9 @@ import java.util.List;
 
 import org.hl7.fhir.r4b.model.Parameters;
 import org.hl7.fhir.r4b.model.ValueSet;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public interface ValueSetExpander {
   public enum TerminologyServiceErrorClass {
     UNKNOWN, NOSERVICE, SERVER_ERROR, VALUESET_UNSUPPORTED, CODESYSTEM_UNSUPPORTED, BLOCKED_BY_OPTIONS;

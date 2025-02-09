@@ -16,6 +16,7 @@ import org.hl7.fhir.r4b.model.CanonicalResource;
 import org.hl7.fhir.r4b.model.CodeSystem;
 import org.hl7.fhir.r4b.model.DomainResource;
 import org.hl7.fhir.r4b.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 /**
@@ -27,6 +28,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
  *
  */
 
+@MarkedToMoveToAdjunctPackage
 public class CanonicalResourceManager<T extends CanonicalResource> {
 
   public static abstract class CanonicalResourceProxy {
