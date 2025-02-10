@@ -309,18 +309,6 @@ public class Utilities {
     return randomUUIDPath;
   }
 
-  public static File createDirectory(String path) throws IOException {
-    ManagedFileAccess.csfile(path).mkdirs();
-    return ManagedFileAccess.file(path);
-  }
-
-  public static String changeFileExt(String name, String ext) {
-    if (name.lastIndexOf('.') > -1)
-      return name.substring(0, name.lastIndexOf('.')) + ext;
-    else
-      return name + ext;
-  }
-
   public static String cleanupTextString(String contents) {
     if (contents == null || contents.trim().equals(""))
       return null;
