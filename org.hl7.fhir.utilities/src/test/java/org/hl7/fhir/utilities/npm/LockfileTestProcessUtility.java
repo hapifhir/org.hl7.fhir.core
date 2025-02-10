@@ -105,6 +105,8 @@ public class LockfileTestProcessUtility {
         System.out.println("File "+lockFileName+" is locked. Waiting for " + seconds + " seconds to release. ");
         Thread.sleep(seconds * 1000L);
 
+        // Normally this would used ManagedFileAccess. We cannot however, use this here, as this class uses no
+        // dependencies outside of core Java. See class javadoc for details.
         lockFile.renameTo(File.createTempFile(lockFile.getName(), ".lock-renamed", lockFile.getParentFile()));
 
         fileLock.release();
