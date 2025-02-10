@@ -30,7 +30,6 @@ package org.hl7.fhir.r5.context;
  */
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -67,7 +66,6 @@ import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -102,13 +100,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
     private final String filename;
     private final IContextResourceLoader loader;
-    private PackageInformation pi;
+    private final PackageInformation packageInformation;
 
     public PackageResourceLoader(PackageResourceInformation pri, IContextResourceLoader loader, PackageInformation pi) {
       super(pri.getResourceType(), pri.getId(), loader == null ? pri.getUrl() :loader.patchUrl(pri.getUrl(), pri.getResourceType()), pri.getVersion(), pri.getSupplements(), pri.getDerivation(), pri.getContent());
       this.filename = pri.getFilename();
       this.loader = loader;
-      this.pi = pi;
+      this.packageInformation = pi;
     }
 
     @Override
@@ -130,7 +128,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
 
     private CanonicalResource setPi(CanonicalResource cr) {
-      cr.setSourcePackage(pi);
+      cr.setSourcePackage(packageInformation);
       return cr;
     }
   }
@@ -727,20 +725,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   @Override
   public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
-    T r = super.fetchResource(class_, uri);
-    if (r instanceof StructureDefinition) {
-      StructureDefinition p = (StructureDefinition)r;
-      try {
-        new ContextUtilities(this).generateSnapshot(p);
-      } catch (Exception e) {
-        // not sure what to do in this case?
-        System.out.println("Unable to generate snapshot @3 for "+uri+": "+e.getMessage());
-        if (logger.isDebugLogging()) {
-          e.printStackTrace();          
-        }
-      }
+    T resource = super.fetchResource(class_, uri);
+    if (resource instanceof StructureDefinition) {
+      StructureDefinition structureDefinition = (StructureDefinition)resource;
+      generateSnapshot(structureDefinition, "3");
     }
-    return r;
+    return resource;
   }
 
   @Override
@@ -751,33 +741,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   @Override
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, Resource source) {
-    T r = super.fetchResource(class_, uri, source);
-    if (r instanceof StructureDefinition) {
-      StructureDefinition p = (StructureDefinition)r;
-      if (!p.isGeneratedSnapshot()) {
-        if (p.isGeneratingSnapshot()) {
-          throw new FHIRException("Attempt to fetch the profile "+p.getVersionedUrl()+" while generating the snapshot for it");
-        }
-        try {
-          if (logger.isDebugLogging()) {
-            System.out.println("Generating snapshot for "+p.getVersionedUrl());
-          }
-          p.setGeneratingSnapshot(true);
-          try {
-            new ContextUtilities(this).generateSnapshot(p);
-          } finally {
-            p.setGeneratingSnapshot(false);      
-          }
-        } catch (Exception e) {
-          // not sure what to do in this case?
-          System.out.println("Unable to generate snapshot @4 for "+p.getVersionedUrl()+": "+e.getMessage());
-          if (logger.isDebugLogging()) {
-            e.printStackTrace();
-          }
-        }
-      }
+    T resource = super.fetchResource(class_, uri, source);
+    if (resource instanceof StructureDefinition) {
+      StructureDefinition structureDefinition = (StructureDefinition)resource;
+      generateSnapshot(structureDefinition, "4");
     }
-    return r;
+    return resource;
   }
 
 

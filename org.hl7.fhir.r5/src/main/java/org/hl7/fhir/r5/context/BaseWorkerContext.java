@@ -380,6 +380,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       transforms.copy(other.transforms);
       structures.copy(other.structures);
       typeManager = new TypeManager(structures);
+      // Snapshot generation is not thread safe, so before this copy of can be used by another thread, we create all the
+      // necessary snapshots. This prevent asynchronous snapshot generation for the shared structure definitions.
+      for (String typeName : typeManager.getTypeNames()) {
+        StructureDefinition structureDefinition = typeManager.fetchTypeDefinition(typeName);
+        generateSnapshot(structureDefinition, "6");
+      }
       searchParameters.copy(other.searchParameters);
       plans.copy(other.plans);
       questionnaires.copy(other.questionnaires);
@@ -3064,32 +3070,36 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return res;
       }
     } 
-    StructureDefinition p = typeManager.fetchTypeDefinition(typeName);
-    if (p != null && !p.isGeneratedSnapshot()) {
-      if (p.isGeneratingSnapshot()) {
-        throw new FHIRException("Attempt to fetch the profile "+p.getVersionedUrl()+" while generating the snapshot for it");
+    StructureDefinition structureDefinition = typeManager.fetchTypeDefinition(typeName);
+    generateSnapshot(structureDefinition, "5");
+    return structureDefinition;
+  }
+
+  void generateSnapshot(StructureDefinition structureDefinition, String breadcrumb) {
+    if (structureDefinition != null && !structureDefinition.isGeneratedSnapshot()) {
+      if (structureDefinition.isGeneratingSnapshot()) {
+        throw new FHIRException("Attempt to fetch the profile "+ structureDefinition.getVersionedUrl()+" while generating the snapshot for it");
       }
       try {
         if (logger.isDebugLogging()) {
-          System.out.println("Generating snapshot for "+p.getVersionedUrl());
+          System.out.println("Generating snapshot for "+ structureDefinition.getVersionedUrl());
         }
-        p.setGeneratingSnapshot(true);
+        structureDefinition.setGeneratingSnapshot(true);
         try {
-          new ContextUtilities(this).generateSnapshot(p);
+          new ContextUtilities(this).generateSnapshot(structureDefinition);
         } finally {
-          p.setGeneratingSnapshot(false);      
+          structureDefinition.setGeneratingSnapshot(false);
         }
       } catch (Exception e) {
         // not sure what to do in this case?
-        System.out.println("Unable to generate snapshot @5 for "+p.getVersionedUrl()+": "+e.getMessage());
+        System.out.println("Unable to generate snapshot in @" + breadcrumb + " for " + structureDefinition.getVersionedUrl()+": "+e.getMessage());
         if (logger.isDebugLogging()) {
           e.printStackTrace();
         }
       }
     }
-    return p;
   }
-  
+
   @Override
   public List<StructureDefinition> fetchTypeDefinitions(String typeName) {
     return typeManager.getDefinitions(typeName);
