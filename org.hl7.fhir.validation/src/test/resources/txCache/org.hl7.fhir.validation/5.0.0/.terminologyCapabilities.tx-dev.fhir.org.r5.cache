@@ -1,18 +1,19 @@
 {
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
-  "url" : "http://tx-dev.fhir.org/r5/metadata",
+  "url" : "http://tx-dev.fhir.org/r5/TerminologyCapabilities/tx",
   "version" : "2.0.0",
-  "name" : "FHIR Reference Server Teminology Capability Statement",
+  "name" : "FHIRReferenceServerTerminologyCapabilities",
+  "title" : "FHIR Reference Server Terminology Capability Statement",
   "status" : "active",
-  "date" : "2024-10-30T11:07:55.862Z",
+  "date" : "2025-02-11T17:29:48.405Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
       "value" : "http://healthintersections.com.au/"
     }]
   }],
-  "description" : "Standard Teminology Capability Statement for the open source Reference FHIR Server provided by Health Intersections",
+  "description" : "Standard Terminology Capability Statement for the open source Reference FHIR Server provided by Health Intersections",
   "codeSystem" : [{
     "uri" : "http://cap.org/eCP"
   },
@@ -1394,10 +1395,19 @@
     "uri" : "http://standardterms.edqm.eu"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/accepting-patients"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/action-type"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/activity-definition-category"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ADAToothSurfaceCodes"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ADAUniversalToothDesignationSystem"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/adjudication"
@@ -1479,6 +1489,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/can-push-updates"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/care-service-accessibility"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/catalogType"
@@ -1799,6 +1812,9 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/icd-o-3"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ILRSpeakingSkillScale"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status"
   },
   {
@@ -1823,7 +1839,16 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/implantStatus"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/insurance-coverage-type"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/insuranceplan-plan-type"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/insurance-plan-type"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/insurance-product-type"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/iso-21089-lifecycle"
@@ -1916,6 +1941,9 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/name-assembly-order"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ndh-healthcare-service-category"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/need"
   },
   {
@@ -1932,6 +1960,15 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/operation-outcome"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/organization-affiliation-role"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/organization-affiliation-role-for-hie"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/organization-alias-type"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/organization-type"
@@ -1965,6 +2002,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/processpriority"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/professional-credential-status"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/program"
@@ -2031,6 +2071,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/service-category"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/service-delivery-method"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/service-provision-conditions"
@@ -3933,6 +3976,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/verificationresult-communication-method"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/virtual-healthcare-delivery-method"
   },
   {
     "uri" : "http://unitsofmeasure.org"
