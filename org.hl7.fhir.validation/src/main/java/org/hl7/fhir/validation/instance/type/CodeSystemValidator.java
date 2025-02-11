@@ -171,6 +171,7 @@ public class CodeSystemValidator extends BaseValidator {
         }
       } // todo... try getting the value set the other way...
     }
+    
     if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.CODESYSTEM_SUPPLEMENT_CHECKS, stack.getLiteralPath(), cs, null) == SpecialValidationAction.CHECK_RULE) {
 
       CodeSystem csSupp = null;
@@ -240,7 +241,7 @@ public class CodeSystemValidator extends BaseValidator {
     if (properties != null) {
       i = 0;
       for (Element concept : concepts) {
-        ok = checkConceptProps(errors, cs,  stack.push(concept, i, null, null), "true".equals(caseSensitive), hierarchyMeaning, csB, concept, codes, properties) && ok;
+        ok = checkConceptProps(errors, cs,  stack.push(concept, i, null, null), "true".equals(caseSensitive), hierarchyMeaning, csB, concept, codes, properties, supp) && ok;
         i++;
       }
     }
@@ -553,20 +554,20 @@ public class CodeSystemValidator extends BaseValidator {
     return ok;
   }
   
-  private boolean checkConceptProps(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean caseSensitive, String hierarchyMeaning, CodeSystem csB, Element concept, Set<String> codes, Map<String, PropertyDef> properties) {
+  private boolean checkConceptProps(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean caseSensitive, String hierarchyMeaning, CodeSystem csB, Element concept, Set<String> codes, Map<String, PropertyDef> properties, String supplements) {
     boolean ok = true;
 
     List<Element> propertyElements = concept.getChildrenByName("property");
     int i = 0;
     for (Element propertyElement : propertyElements) {
-      ok = checkPropertyValue(errors, cs, stack.push(propertyElement, i, null, null), propertyElement, properties, codes) && ok;
+      ok = checkPropertyValue(errors, cs, stack.push(propertyElement, i, null, null), propertyElement, properties, codes, supplements) && ok;
       i++;
     }
 
     List<Element> concepts = concept.getChildrenByName("concept");
     i = 0;
     for (Element child : concepts) {
-      ok = checkConceptProps(errors, cs,  stack.push(concept, i, null, null), caseSensitive, hierarchyMeaning, csB, child, codes, properties) && ok;
+      ok = checkConceptProps(errors, cs,  stack.push(concept, i, null, null), caseSensitive, hierarchyMeaning, csB, child, codes, properties, supplements) && ok;
       i++;
     }
     return ok;
@@ -600,7 +601,7 @@ public class CodeSystemValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean checkPropertyValue(List<ValidationMessage> errors, Element cs, NodeStack stack, Element property, Map<String, PropertyDef> properties, Set<String> codes) {
+  private boolean checkPropertyValue(List<ValidationMessage> errors, Element cs, NodeStack stack, Element property, Map<String, PropertyDef> properties, Set<String> codes, String supplements) {
     boolean ok = true;
 
     String code = property.getNamedChildValue("code");
@@ -611,7 +612,7 @@ public class CodeSystemValidator extends BaseValidator {
           rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value != null, I18nConstants.CODESYSTEM_PROPERTY_NO_VALUE, code) &&
           rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value.fhirType().equals(defn.type), I18nConstants.CODESYSTEM_PROPERTY_WRONG_TYPE, code, value.fhirType(), defn.type)) {
         if ("code".equals(value.fhirType())) {
-          checkCodeProperty(errors, cs, stack, defn, value.primitiveValue(), codes);
+          checkCodeProperty(errors, cs, stack, defn, value.primitiveValue(), codes, supplements);
         }
       } else {
         ok = false;
@@ -624,16 +625,26 @@ public class CodeSystemValidator extends BaseValidator {
     return ok;
   }
 
-  private void checkCodeProperty(List<ValidationMessage> errors, Element cs, NodeStack stack, PropertyDef defn, String code, Set<String> codes) {
+  private void checkCodeProperty(List<ValidationMessage> errors, Element cs, NodeStack stack, PropertyDef defn, String code, Set<String> codes, String supplements) {
     switch (defn.getRule()) {
     case INTERNAL_CODE:
       if (!isSeenPropertyCode(defn, code)) {
-        rule(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), codes.contains(code), I18nConstants.CODESYSTEM_PROPERTY_BAD_INTERNAL_REFERENCE, code);
+        if (supplements != null) {
+          ValidationResult vr = context.validateCode(baseOptions, supplements, null, code, null);
+          rule(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), vr.isOk(), I18nConstants.CODESYSTEM_PROPERTY_BAD_INTERNAL_REFERENCE, code);
+        } else {
+          rule(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), codes.contains(code), I18nConstants.CODESYSTEM_PROPERTY_BAD_INTERNAL_REFERENCE, code);
+        }
       }
       break;
     case INTERNAL_CODE_WARNING:
       if (!isSeenPropertyCode(defn, code)) {
-        warning(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), codes.contains(code), I18nConstants.CODESYSTEM_PROPERTY_BAD_INTERNAL_REFERENCE, code);
+        if (supplements != null) {
+          ValidationResult vr = context.validateCode(baseOptions, supplements, null, code, null);
+          rule(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), vr.isOk(), I18nConstants.CODESYSTEM_PROPERTY_BAD_INTERNAL_REFERENCE, code);
+        } else {
+          warning(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), codes.contains(code), I18nConstants.CODESYSTEM_PROPERTY_BAD_INTERNAL_REFERENCE, code);
+        }
       }
       break;
     case VS_ERROR:
