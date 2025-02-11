@@ -737,6 +737,9 @@ public class XmlParser extends ParserBase {
     }
     if (hasTypeAttr(e))
       xml.namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
+    if (Utilities.isAbsoluteUrl(e.getType())) {
+      xml.namespace(urlRoot(e.getType()), "et");
+    }
     addNamespaces(xml, e);
     composeElement(xml, e, e.getType(), true);
     xml.end();
@@ -793,7 +796,11 @@ public class XmlParser extends ParserBase {
     }
     markedXhtml = false;
     xml.start();
-    xml.setDefaultNamespace(e.getProperty().getXmlNamespace());
+    xml.setDefaultNamespace(e.getProperty().getXmlNamespace());    
+    if (Utilities.isAbsoluteUrl(e.getType())) {
+      xml.namespace(urlRoot(e.getType()), "et");
+    }
+
     if (schemaPath != null) {
       xml.setSchemaLocation(FormatUtilities.FHIR_NS, Utilities.pathURL(schemaPath, e.fhirType()+".xsd"));
     }
@@ -928,7 +935,11 @@ public class XmlParser extends ParserBase {
           String abbrev = makeNamespaceAbbrev(element.getProperty(), xml);
           xml.namespace(element.getProperty().getXmlNamespace(), abbrev);
         }
-        xml.enter(element.getProperty().getXmlNamespace(), elementName);
+        if (Utilities.isAbsoluteUrl(elementName)) {
+          xml.enter(urlRoot(elementName), urlTail(elementName));
+        } else {
+          xml.enter(element.getProperty().getXmlNamespace(), elementName);
+        }
       }
 
       if (!root && element.getSpecial() != null) {
@@ -960,11 +971,19 @@ public class XmlParser extends ParserBase {
       if (!element.getProperty().getDefinition().hasExtension(ToolingExtensions.EXT_ID_CHOICE_GROUP)) {
         if (!root && element.getSpecial() != null)
           xml.exit(element.getProperty().getXmlNamespace(),element.getType());
-        xml.exit(element.getProperty().getXmlNamespace(),elementName);
+        if (Utilities.isAbsoluteUrl(elementName)) {
+          xml.exit(urlRoot(elementName), urlTail(elementName));
+        } else {
+          xml.exit(element.getProperty().getXmlNamespace(),elementName);
+        }
       }
     }
   }
 
+  private String urlRoot(String elementName) {
+    return elementName.substring(0, elementName.lastIndexOf("/"));
+  }
+  
   private String makeNamespaceAbbrev(Property property, IXMLWriter xml) {
     // it's a cosmetic thing, but we're going to try to come up with a nice namespace
 
