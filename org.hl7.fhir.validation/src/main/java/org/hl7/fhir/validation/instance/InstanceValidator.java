@@ -1024,24 +1024,33 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     timeTracker.overall(t);
     if (aiService != null && !textsToCheck.isEmpty()) {
       t = System.nanoTime();
-      CodeAndTextValidator ctv = new CodeAndTextValidator(cacheFolder, aiService);
-      List<CodeAndTextValidationResult> results = null;
-      try {
-        results = ctv.validateCodings(textsToCheck);
-      } catch (Exception e) {
-        if (e.getCause() != null && e.getCause() instanceof HTTPResultException) {
-          warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
-              I18nConstants.VALIDATION_AI_FAILED_LOG, e.getMessage(), ((HTTPResultException)e.getCause()).logPath);   
-        } else {
-          warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
-              I18nConstants.VALIDATION_AI_FAILED, e.getMessage()); 
+      List<CodeAndTextValidationRequest> list = new ArrayList<>();
+      for (CodeAndTextValidationRequest tt : textsToCheck) {
+        ValidationResult vr = context.validateCode(baseOptions.setDisplayWarningMode(false).setLanguages(tt.getLang()), tt.getSystem(), null, tt.getCode(), tt.getText());
+        if (!vr.isOk()) {
+          list.add(tt);          
         }
       }
-      if (results != null) {
-        for (CodeAndTextValidationResult vr : results) {
-          if (!vr.isValid()) {
-            warning(errors, "2025-01-14", IssueType.BUSINESSRULE, vr.getRequest().getLocation().line(), vr.getRequest().getLocation().col(), vr.getRequest().getLocation().getLiteralPath(), false,
-                I18nConstants.VALIDATION_AI_TEXT_CODE, vr.getRequest().getCode(), vr.getRequest().getText(), vr.getConfidence(), vr.getExplanation());                
+      if (!list.isEmpty()) {
+        CodeAndTextValidator ctv = new CodeAndTextValidator(cacheFolder, aiService);
+        List<CodeAndTextValidationResult> results = null;
+        try {
+          results = ctv.validateCodings(list);
+        } catch (Exception e) {
+          if (e.getCause() != null && e.getCause() instanceof HTTPResultException) {
+            warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
+                I18nConstants.VALIDATION_AI_FAILED_LOG, e.getMessage(), ((HTTPResultException)e.getCause()).logPath);   
+          } else {
+            warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
+                I18nConstants.VALIDATION_AI_FAILED, e.getMessage()); 
+          }
+        }
+        if (results != null) {
+          for (CodeAndTextValidationResult vr : results) {
+            if (!vr.isValid()) {
+              warning(errors, "2025-01-14", IssueType.BUSINESSRULE, vr.getRequest().getLocation().line(), vr.getRequest().getLocation().col(), vr.getRequest().getLocation().getLiteralPath(), false,
+                  I18nConstants.VALIDATION_AI_TEXT_CODE, vr.getRequest().getCode(), vr.getRequest().getText(), vr.getConfidence(), vr.getExplanation());                
+            }
           }
         }
       }
@@ -1444,14 +1453,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private void recordCodeTextCombo(NodeStack node, String path, Coding c, String text) {
     if (!c.hasDisplay() || !c.getDisplay().equals(text)) {
-      ValidationResult vr = context.validateCode(baseOptions.setDisplayWarningMode(false)
-          .setLanguages(node.getWorkingLang()), c.getSystem(), c.getVersion(), c.getCode(), text);
-      if (!vr.isOk()) {
-        int key = (c.getSystem()+"||"+c.getCode()+"||"+text).hashCode();
-        if (!textsToCheckKeys.contains(key)) {
-          textsToCheckKeys.add(key);
-          textsToCheck.add(new CodeAndTextValidationRequest(node, path, node.getWorkingLang() == null ? context.getLocale().toLanguageTag() : node.getWorkingLang(), c.getSystem(), c.getCode(), vr.getDisplay(), text));
-        }
+      int key = (c.getSystem()+"||"+c.getCode()+"||"+text).hashCode();
+      if (!textsToCheckKeys.contains(key)) {
+        textsToCheckKeys.add(key);
+        textsToCheck.add(new CodeAndTextValidationRequest(node, path, node.getWorkingLang() == null ? context.getLocale().toLanguageTag() : node.getWorkingLang(), c.getSystem(), c.getCode(), c.getDisplay(), text));
       }
     }
   }
