@@ -10,6 +10,7 @@
   "urn:oid:1.2.840.10008.2.16.4|null" : null,
   "http://spms.min-saude.pt/valueset-list-empty-reason|null" : null,
   "http://acme.org|null" : null,
+  "http://acme.org/devices/clinical-codes|null" : null,
   "http://example.org/system|null" : null,
   "http://spms.min-saude.pt/valueset-list|null" : null
 }
