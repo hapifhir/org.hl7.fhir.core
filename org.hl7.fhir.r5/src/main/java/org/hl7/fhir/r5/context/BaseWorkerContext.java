@@ -383,8 +383,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       // Snapshot generation is not thread safe, so before this copy of can be used by another thread, we create all the
       // necessary snapshots. This prevent asynchronous snapshot generation for the shared structure definitions.
       for (String typeName : typeManager.getTypeNames()) {
-        StructureDefinition structureDefinition = typeManager.fetchTypeDefinition(typeName);
-        generateSnapshot(structureDefinition, "6");
+        if (typeName != null) {
+          StructureDefinition structureDefinition = typeManager.fetchTypeDefinition(typeName);
+          generateSnapshot(structureDefinition, "6");
+        }
       }
       searchParameters.copy(other.searchParameters);
       plans.copy(other.plans);
