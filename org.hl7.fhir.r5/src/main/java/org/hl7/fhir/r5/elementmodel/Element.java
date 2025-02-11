@@ -1702,4 +1702,13 @@ public class Element extends Base implements NamedItem {
   public void sortChildren(Comparator<Element> sorter) {
     children.sort(sorter);
   }
+
+  public String getStatedResourceId() {
+    for (Property p : getProperty().getChildProperties(null)) {
+      if (ToolingExtensions.readBoolExtension(p.getDefinition(), ToolingExtensions.EXT_USE_AS_RESOURCE_ID)) {
+        return getNamedChildValue(p.getName());
+      }
+    }
+    return null;
+  }
 }

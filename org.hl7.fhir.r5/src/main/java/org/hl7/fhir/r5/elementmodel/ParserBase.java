@@ -219,7 +219,7 @@ public abstract class ParserBase {
     return expectedName != null && expectedName.equals(name);
   }
 
-  private String urlTail(String type) {
+  protected String urlTail(String type) {
     return type == null || !type.contains("/") ? type : type.substring(type.lastIndexOf("/")+1);
   }
 
