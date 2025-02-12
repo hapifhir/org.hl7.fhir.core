@@ -727,12 +727,20 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   @Override
   public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
-    T resource = super.fetchResource(class_, uri);
-    if (resource instanceof StructureDefinition) {
-      StructureDefinition structureDefinition = (StructureDefinition)resource;
-      generateSnapshot(structureDefinition, "3");
+    T r = super.fetchResource(class_, uri);
+    if (r instanceof StructureDefinition) {
+      StructureDefinition p = (StructureDefinition)r;
+      try {
+        new ContextUtilities(this).generateSnapshot(p);
+      } catch (Exception e) {
+        // not sure what to do in this case?
+        System.out.println("Unable to generate snapshot @3 for "+uri+": "+e.getMessage());
+        if (logger.isDebugLogging()) {
+          e.printStackTrace();
+        }
+      }
     }
-    return resource;
+    return r;
   }
 
   @Override

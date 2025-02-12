@@ -725,7 +725,8 @@ public class ProfileUtilities {
     if (snapshotStack.contains(derived.getUrl())) {
       throw new DefinitionException(context.formatMessage(I18nConstants.CIRCULAR_SNAPSHOT_REFERENCES_DETECTED_CANNOT_GENERATE_SNAPSHOT_STACK__, snapshotStack.toString()));
     }
-    derived.setUserData(UserDataNames.SNAPSHOT_GENERATING, true);
+    //derived.setUserData(UserDataNames.SNAPSHOT_GENERATING, true);
+    derived.setGeneratingSnapshot(true);
     snapshotStack.add(derived.getUrl());
     try {
 
@@ -999,11 +1000,11 @@ public class ProfileUtilities {
       } catch (Exception e) {
         // if we had an exception generating the snapshot, make sure we don't leave any half generated snapshot behind
         derived.setSnapshot(null);
-        derived.clearUserData(UserDataNames.SNAPSHOT_GENERATING);
+        derived.setGeneratingSnapshot(false);
         throw e;
       }
     } finally {
-      derived.clearUserData(UserDataNames.SNAPSHOT_GENERATING);
+      derived.setGeneratingSnapshot(false);
       snapshotStack.remove(derived.getUrl());
     }
     if (base.getVersion() != null) {
@@ -1574,7 +1575,7 @@ public class ProfileUtilities {
 
 
   protected void checkNotGenerating(StructureDefinition sd, String role) {
-    if (sd.hasUserData(UserDataNames.SNAPSHOT_GENERATING)) {
+    if (sd.isGeneratingSnapshot()) {
       throw new FHIRException(context.formatMessage(I18nConstants.ATTEMPT_TO_USE_A_SNAPSHOT_ON_PROFILE__AS__BEFORE_IT_IS_GENERATED, sd.getUrl(), role));
     }
   }
