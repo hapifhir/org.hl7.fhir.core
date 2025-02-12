@@ -3092,11 +3092,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (logger.isDebugLogging()) {
           System.out.println("Generating snapshot for "+ structureDefinition.getVersionedUrl());
         }
-        structureDefinition.setGeneratingSnapshot(true);
+       // structureDefinition.setGeneratingSnapshot(true);
         try {
           new ContextUtilities(this).generateSnapshot(structureDefinition);
         } finally {
-          structureDefinition.setGeneratingSnapshot(false);
+          //structureDefinition.setGeneratingSnapshot(false);
         }
       } catch (Exception e) {
         // not sure what to do in this case?
