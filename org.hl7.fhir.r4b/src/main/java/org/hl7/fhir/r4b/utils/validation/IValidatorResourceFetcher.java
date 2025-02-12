@@ -3,11 +3,13 @@ package org.hl7.fhir.r4b.utils.validation;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.elementmodel.Element;
 import org.hl7.fhir.r4b.model.CanonicalResource;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Locale;
 
+@MarkedToMoveToAdjunctPackage
 public interface IValidatorResourceFetcher {
 
   Element fetch(IResourceValidator validator, Object appContext, String url) throws FHIRException, IOException;

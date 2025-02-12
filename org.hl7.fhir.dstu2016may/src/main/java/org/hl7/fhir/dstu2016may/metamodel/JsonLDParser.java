@@ -46,6 +46,7 @@ import org.hl7.fhir.dstu2016may.formats.JsonCreatorGson;
 import org.hl7.fhir.dstu2016may.utils.IWorkerContext;
 import org.hl7.fhir.utilities.Utilities;
 
+@Deprecated
 public class JsonLDParser extends ParserBase {
 
   private JsonCreator json;

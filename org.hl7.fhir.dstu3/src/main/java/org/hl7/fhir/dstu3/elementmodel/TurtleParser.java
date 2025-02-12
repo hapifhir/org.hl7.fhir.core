@@ -60,6 +60,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
 
+@Deprecated
 public class TurtleParser extends ParserBase {
 
   private String base;

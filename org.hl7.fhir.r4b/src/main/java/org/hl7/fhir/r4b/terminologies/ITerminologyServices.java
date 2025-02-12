@@ -35,6 +35,7 @@ import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.r4b.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r4b.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r4b.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 /**
  * The value set system has a collection of value sets that define code systems,
@@ -51,6 +52,7 @@ import org.hl7.fhir.r4b.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
  * @author Grahame
  *
  */
+@MarkedToMoveToAdjunctPackage
 public interface ITerminologyServices {
   /**
    * return true if the service handles code or value set resolution on the system

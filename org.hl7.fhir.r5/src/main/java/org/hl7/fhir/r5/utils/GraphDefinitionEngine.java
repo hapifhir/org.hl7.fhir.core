@@ -17,6 +17,7 @@ import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.GraphDefinition;
 import org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.graphql.Argument;
 import org.hl7.fhir.utilities.graphql.EGraphEngine;
@@ -24,6 +25,7 @@ import org.hl7.fhir.utilities.graphql.EGraphQLException;
 import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices;
 import org.hl7.fhir.utilities.graphql.StringValue;
 
+@MarkedToMoveToAdjunctPackage
 public class GraphDefinitionEngine {
 
 

@@ -55,6 +55,7 @@ import org.hl7.fhir.utilities.Utilities;
  * @author Claude Nanjo
  *
  */
+@Deprecated
 public class ResourceAddress {
 
   public static final String REGEX_ID_WITH_HISTORY = "(.*)(/)([a-zA-Z0-9]*)(/)([a-z0-9\\-\\.]{1,64})(/_history/)([a-z0-9\\-\\.]{1,64})$";

@@ -2,7 +2,9 @@ package org.hl7.fhir.r4b.utils.structuremap;
 
 import org.hl7.fhir.r4b.elementmodel.Property;
 import org.hl7.fhir.r4b.fhirpath.TypeDetails;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class PropertyWithType {
   private String path;
   private Property baseProperty;

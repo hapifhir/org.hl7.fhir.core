@@ -52,6 +52,7 @@ import org.hl7.fhir.r4b.model.StructureDefinition;
  * @author Grahame Grieve
  *
  */
+@Deprecated
 public class VerticalBarParser extends ParserBase {
 
   /**

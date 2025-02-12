@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
@@ -39,6 +40,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * @author graha
  *
  */
+@MarkedToMoveToAdjunctPackage
 public class Renderer  {
 
   protected static final boolean DEBUG = false;

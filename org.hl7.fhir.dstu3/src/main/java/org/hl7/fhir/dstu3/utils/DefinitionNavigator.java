@@ -42,6 +42,7 @@ import org.hl7.fhir.dstu3.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.dstu3.model.StructureDefinition;
 import org.hl7.fhir.exceptions.DefinitionException;
 
+@Deprecated
 public class DefinitionNavigator {
 
   private IWorkerContext context;

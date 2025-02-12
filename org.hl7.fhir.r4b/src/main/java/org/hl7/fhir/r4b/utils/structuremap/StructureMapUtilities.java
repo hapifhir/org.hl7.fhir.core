@@ -75,6 +75,7 @@ import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -97,6 +98,7 @@ import java.util.*;
  *
  * @author Grahame Grieve
  */
+@MarkedToMoveToAdjunctPackage
 public class StructureMapUtilities {
 
   public class ResolvedGroup {

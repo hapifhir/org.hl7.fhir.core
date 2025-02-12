@@ -130,11 +130,13 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 
+@MarkedToMoveToAdjunctPackage
 public class ValueSetExpander extends ValueSetProcessBase {
 
 
@@ -368,6 +370,15 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return n;
   }
 
+  private String findParamValue(List<ValueSetExpansionParameterComponent> list, String name) {
+    for (ValueSetExpansionParameterComponent p : list) {
+      if (name.equals(p.getName())) {
+        return p.getValue().primitiveValue();
+      }
+    }
+    return null;
+  }
+
   private DataType convertToDecimal(DataType v) {
     if (v == null) {
       return null;
@@ -386,7 +397,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       return true;
     }
     for (Token t : designations) {
-      if (t.matches(d.getUse()) || t.matchesLang(d.getLanguage())) {
+      if ((d.hasUse() && t.matches(d.getUse())) || t.matchesLang(d.getLanguage())) {
         return true;
       }
       for (Coding c : d.getAdditionalUse()) {
@@ -410,12 +421,32 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (LanguagePreference lang : langs.getLangs()) {
       if (lang.getValue() > 0) {
         for (ConceptDefinitionDesignationComponent cd : designations) {
-          if (isDisplay(cd) && LanguageUtils.langsMatchExact(cd.getLanguage(), lang.getLang())) {
+          if (isDisplay(cd, false) && LanguageUtils.langsMatchExact(cd.getLanguage(), lang.getLang())) {
             return cd;
           }
         }
         for (ConceptDefinitionDesignationComponent cd : designations) {
-          if (isDisplay(cd) && LanguageUtils.langsMatch(cd.getLanguage(), lang.getLang())) {
+          if (isDisplay(cd, false) && LanguageUtils.langsMatch(lang.getLang(), cd.getLanguage())) {
+            return cd;
+          }
+        }
+        for (ConceptDefinitionDesignationComponent cd : designations) {
+          if (isDisplay(cd, false) && LanguageUtils.langsMatch(cd.getLanguage(), lang.getLang())) {
+            return cd;
+          }
+        }
+        for (ConceptDefinitionDesignationComponent cd : designations) {
+          if (isDisplay(cd, true) && LanguageUtils.langsMatchExact(cd.getLanguage(), lang.getLang())) {
+            return cd;
+          }
+        }
+        for (ConceptDefinitionDesignationComponent cd : designations) {
+          if (isDisplay(cd, true) && LanguageUtils.langsMatch(cd.getLanguage(), lang.getLang())) {
+            return cd;
+          }
+        }
+        for (ConceptDefinitionDesignationComponent cd : designations) {
+          if (isDisplay(cd, true) && LanguageUtils.langsMatch(lang.getLang(), cd.getLanguage())) {
             return cd;
           }
         }
@@ -429,13 +460,18 @@ public class ValueSetExpander extends ValueSetProcessBase {
             return cd;
           }
         }
+        for (ConceptDefinitionDesignationComponent cd : designations) {
+          if (LanguageUtils.langsMatch(lang.getLang(), cd.getLanguage())) {
+            return cd;
+          }
+        }
       }
     }
     return null;
   }
 
-  private boolean isDisplay(ConceptDefinitionDesignationComponent cd) {
-    return cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display");
+  private boolean isDisplay(ConceptDefinitionDesignationComponent cd, boolean def) {
+    return (def && !cd.hasUse()) || (cd.hasUse() && cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display"));
   }
 
   private boolean filterContainsCode(List<ValueSet> filters, String system, String code, ValueSetExpansionComponent exp) {
@@ -513,7 +549,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ConceptReferenceDesignationComponent d : designations) {
       ConceptDefinitionDesignationComponent n = new ConceptDefinitionDesignationComponent();
       n.setLanguage(d.getLanguage());
-      n.setUse(d.getUse());
+      if (d.hasUse()) {
+        n.setUse(d.getUse());
+      }
       n.setValue(d.getValue());
       list.add(n);
     }
@@ -1036,9 +1074,14 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private int copyImportContains(List<ValueSetExpansionContainsComponent> list, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filter, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp) throws FHIRException, ETooCostly {
     int count = 0;
     opContext.deadCheck("copyImportContains");
+    
+    String lang = vsSrc.getLanguage();
+    if (lang == null) { 
+      lang = findParamValue(vsSrc.getExpansion().getParameter(), "displayLanguage");
+    }
     for (ValueSetExpansionContainsComponent c : list) {
       c.checkNoModifiers("Imported Expansion in Code System", "expanding");
-      ValueSetExpansionContainsComponent np = addCode(dwc, c.getSystem(), c.getCode(), c.getDisplay(), vsSrc.getLanguage(), parent, null, expParams, c.getAbstract(), c.getInactive(), 
+      ValueSetExpansionContainsComponent np = addCode(dwc, c.getSystem(), c.getCode(), c.getDisplay(), lang, parent, null, expParams, c.getAbstract(), c.getInactive(), 
           filter, noInactive, false, vsProps, makeCSProps(c.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), null, c.getProperty(), null, c.getExtension(), exp);
       if (np != null) {
         count++;
@@ -1346,7 +1389,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ConceptReferenceDesignationComponent t : list) {
       ConceptDefinitionDesignationComponent c = new ConceptDefinitionDesignationComponent();
       c.setLanguage(t.getLanguage());
-      c.setUse(t.getUse());
+      if (t.hasUse()) {
+        c.setUse(t.getUse());
+      }
       c.setValue(t.getValue());
       c.getExtension().addAll(t.getExtension());
       res.add(c);

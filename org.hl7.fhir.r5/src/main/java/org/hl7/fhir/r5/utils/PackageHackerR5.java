@@ -3,10 +3,12 @@ package org.hl7.fhir.r5.utils;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
+@MarkedToMoveToAdjunctPackage
 public class PackageHackerR5 {
 
   public static void fixLoadedResource(CanonicalResourceProxy r, PackageInformation packageInfo) {
@@ -63,6 +65,23 @@ public class PackageHackerR5 {
      for (ElementDefinition ed : sd.getDifferential().getElement()) {
        if (ed.hasRequirements()) {
          ed.setRequirements(ed.getRequirements().replace("[http://hl7.org/fhir/StructureDefinition/bodySite](null.html)", "[http://hl7.org/fhir/StructureDefinition/bodySite](http://hl7.org/fhir/extension-bodysite.html)"));
+       }
+     }
+   }
+   if ("http://hl7.org/fhir/StructureDefinition/ServiceRequest".equals(r.getUrl()) && "4.0.1".equals(r.getVersion())) {
+     StructureDefinition sd = (StructureDefinition) r.getResource();
+     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+       if (ed.hasBinding()) {
+         if ("Codes for tests or services that can be carried out by a designated individual, organization or healthcare service.  For laboratory, LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred] and a valueset using LOINC Order codes is available [here](valueset-diagnostic-requests.html).".equals(ed.getBinding().getDescription())) {
+           ed.getBinding().setDescription("Codes for tests or services that can be carried out by a designated individual, organization or healthcare service.  For laboratory, LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred].");
+         }
+       }
+     }
+     for (ElementDefinition ed : sd.getDifferential().getElement()) {
+       if (ed.hasBinding()) {
+         if ("Codes for tests or services that can be carried out by a designated individual, organization or healthcare service.  For laboratory, LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred] and a valueset using LOINC Order codes is available [here](valueset-diagnostic-requests.html).".equals(ed.getBinding().getDescription())) {
+           ed.getBinding().setDescription("Codes for tests or services that can be carried out by a designated individual, organization or healthcare service.  For laboratory, LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred].");
+         }
        }
      }
    }

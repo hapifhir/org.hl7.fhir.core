@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.hl7.fhir.r4.model.MetadataResource;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 /**
@@ -21,6 +22,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
  *
  */
 
+@MarkedToMoveToAdjunctPackage
 public class CanonicalResourceManager<T extends MetadataResource> {
 
   public class MetadataResourceVersionComparator<T extends MetadataResource> implements Comparator<T> {

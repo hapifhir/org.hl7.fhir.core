@@ -302,7 +302,7 @@ public class ValidatorCli {
         res.add("-bundle");
         res.add("Composition:0");
         res.add("http://hl7.org.au/fhir/ips/StructureDefinition/Composition-au-ips");
-      } else if (a.equals("-ips#")) {
+      } else if (a.startsWith("-ips#")) {
         res.add("-version");
         res.add("4.0");
         res.add("-check-ips-codes");

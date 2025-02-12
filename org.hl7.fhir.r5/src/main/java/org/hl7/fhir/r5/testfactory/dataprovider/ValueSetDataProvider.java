@@ -7,7 +7,9 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class ValueSetDataProvider extends TableDataProvider {
 
   public enum ColumnSpecifierType {

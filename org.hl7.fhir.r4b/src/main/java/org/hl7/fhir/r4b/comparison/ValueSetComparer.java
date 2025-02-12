@@ -18,6 +18,7 @@ import org.hl7.fhir.r4b.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r4b.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r4b.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r4b.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -30,6 +31,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public class ValueSetComparer extends CanonicalResourceComparer {
 
   public class ValueSetComparison extends CanonicalResourceComparison<ValueSet> {

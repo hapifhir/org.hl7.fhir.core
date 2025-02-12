@@ -32,6 +32,7 @@ import java.io.File;
 
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@Deprecated
 public class SingleTest {
 
   /**

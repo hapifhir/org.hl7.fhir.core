@@ -3,10 +3,12 @@ package org.hl7.fhir.r4b.utils.structuremap;
 import org.hl7.fhir.r4b.elementmodel.Property;
 import org.hl7.fhir.r4b.fhirpath.TypeDetails;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@MarkedToMoveToAdjunctPackage
 public class VariablesForProfiling {
   private final StructureMapUtilities structureMapUtilities;
   private List<VariableForProfiling> list = new ArrayList<VariableForProfiling>();

@@ -1,24 +1,2 @@
 {
-  "systems" : [
-    {
-      "system" : "http://acme.org/devices/clinical-codes",
-      "authoritative" : [],
-      "candidates" : []
-    },
-    {
-      "system" : "http://loinc.org",
-      "authoritative" : [],
-      "candidates" : ["http://tx-dev.fhir.org/r3"]
-    },
-    {
-      "system" : "http://snomed.info/sct",
-      "authoritative" : [],
-      "candidates" : ["http://tx-dev.fhir.org/r3"]
-    },
-    {
-      "system" : "http://unitsofmeasure.org",
-      "authoritative" : [],
-      "candidates" : ["http://tx-dev.fhir.org/r3"]
-    }
-  ]
 }

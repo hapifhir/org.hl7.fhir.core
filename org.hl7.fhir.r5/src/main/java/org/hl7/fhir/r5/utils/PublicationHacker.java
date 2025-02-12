@@ -3,10 +3,12 @@ package org.hl7.fhir.r5.utils;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 
+@MarkedToMoveToAdjunctPackage
 public class PublicationHacker {
 
   // this routine fixes up broken binding descriptions from past FHIR publications. All of them will be or are fixed in a later version, 

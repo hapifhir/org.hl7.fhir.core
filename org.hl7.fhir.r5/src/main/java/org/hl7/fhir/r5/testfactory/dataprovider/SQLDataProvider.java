@@ -12,10 +12,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 /**
  * Concrete implementation of TableDataProvider that reads data from a SQL database table.
  */
+@MarkedToMoveToAdjunctPackage
 public class SQLDataProvider extends TableDataProvider {
 
   private Connection connection;

@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.openapi;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,6 +35,7 @@ package org.hl7.fhir.r5.openapi;
 
 import com.google.gson.JsonObject;
 
+@MarkedToMoveToAdjunctPackage
 public class MediaTypeObjectWriter extends BaseWriter {
 
   public MediaTypeObjectWriter(JsonObject object) {

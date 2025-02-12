@@ -5,7 +5,9 @@ import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.ElementVisitor.ElementVisitorInstruction;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class ElementVisitor {
 
   public enum ElementVisitorInstruction {

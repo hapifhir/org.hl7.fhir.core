@@ -22,6 +22,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 @Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Deprecated
 public class NarrativeGeneratorTests {
 
   private NarrativeGenerator gen;

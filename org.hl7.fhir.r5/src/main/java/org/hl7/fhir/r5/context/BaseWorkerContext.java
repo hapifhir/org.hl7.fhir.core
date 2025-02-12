@@ -65,6 +65,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeableConcept;
@@ -153,6 +154,7 @@ import com.google.gson.JsonObject;
 
 import javax.annotation.Nonnull;
 
+@MarkedToMoveToAdjunctPackage
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   public interface IByteProvider {
@@ -1941,7 +1943,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (expParameters == null) {
       throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
     }
-    pin.addParameters(expParameters);
+    for (ParametersParameterComponent pp : expParameters.getParameter()) {
+      if (!pin.hasParameter(pp.getName())) {
+        pin.addParameter(pp);
+      }
+    }
 
     if (options.isDisplayWarningMode()) {
       pin.addParameter("mode","lenient-display-validation");
@@ -3641,5 +3647,24 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     return res;
   }
-
+  public void setLocale(Locale locale) {
+    super.setLocale(locale);
+    if (expParameters != null && locale != null) {
+      for (ParametersParameterComponent p : expParameters.getParameter()) {
+        if ("displayLanguage".equals(p.getName())) {
+          if (p.hasUserData(UserDataNames.auto_added_parameter)) {
+            p.setValue(new CodeType(locale.toLanguageTag()));
+            return;
+          } else {
+            // user supplied, we leave it alone
+            return ;
+          }
+        }
+      }
+      ParametersParameterComponent p = expParameters.addParameter();
+      p.setName("displayLanguage");
+      p.setValue(new CodeType(locale.toLanguageTag()));
+      p.setUserData(UserDataNames.auto_added_parameter, true);
+    }
+  }
 }

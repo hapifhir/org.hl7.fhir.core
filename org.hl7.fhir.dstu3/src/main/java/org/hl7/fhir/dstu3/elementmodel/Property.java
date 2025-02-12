@@ -48,6 +48,7 @@ import org.hl7.fhir.dstu3.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.DefinitionException;
 
 
+@Deprecated
 public class Property {
 
 	private IWorkerContext context;
