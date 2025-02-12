@@ -140,5 +140,6 @@ public class UserDataNames {
   public static final String archetypeSource = "archetype-source";
   public static final String archetypeName = "archetype-name";
   public static final String VS_EXPANSION_SOURCE = "VS_EXPANSION_SOURCE";
+  public static final String auto_added_parameter = "auto_added_parameter";
   
 }  

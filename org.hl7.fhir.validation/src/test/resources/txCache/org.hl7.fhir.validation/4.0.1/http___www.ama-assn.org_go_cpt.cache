@@ -2,74 +2,15 @@
 {"code" : {
   "system" : "http://www.ama-assn.org/go/cpt",
   "code" : "99234"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Hospital inpatient or observation care, for the evaluation and management of a patient including admission and discharge on the same date, which requires a medically appropriate history and/or examination and straightforward or low level of medical decision making. When using total time on the date of the encounter for code selection, 45 minutes must be met or exceeded.",
-  "code" : "99234",
-  "system" : "http://www.ama-assn.org/go/cpt",
-  "version" : "2023",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://www.ama-assn.org/go/cpt",
-  "code" : "43235",
-  "display" : "Esophagogastroduodenoscopy (EGD), a tiny camera at the end of a flexible tube inserted through the mouth and into the esophagus (a tube that carries food and liquid to the stomach), stomach and small intestine with removal of tissue"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Esophagogastroduodenoscopy, flexible, transoral; diagnostic, including collection of specimen(s) by brushing or washing, when performed (separate procedure)",
-  "code" : "43235",
-  "severity" : "error",
-  "error" : "Wrong Display Name 'Esophagogastroduodenoscopy (EGD), a tiny camera at the end of a flexible tube inserted through the mouth and into the esophagus (a tube that carries food and liquid to the stomach), stomach and small intestine with removal of tissue' for http://www.ama-assn.org/go/cpt#43235. Valid display is 'Esophagogastroduodenoscopy, flexible, transoral; diagnostic, including collection of specimen(s) by brushing or washing, when performed (separate procedure)' (en) (for the language(s) '--')",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "invalid-display"
-      }],
-      "text" : "Wrong Display Name 'Esophagogastroduodenoscopy (EGD), a tiny camera at the end of a flexible tube inserted through the mouth and into the esophagus (a tube that carries food and liquid to the stomach), stomach and small intestine with removal of tissue' for http://www.ama-assn.org/go/cpt#43235. Valid display is 'Esophagogastroduodenoscopy, flexible, transoral; diagnostic, including collection of specimen(s) by brushing or washing, when performed (separate procedure)' (en) (for the language(s) '--')"
-    },
-    "location" : ["Coding.display"],
-    "expression" : ["Coding.display"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://www.ama-assn.org/go/cpt",
-  "code" : "99234"
 }, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
     "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "displayLanguage",
+    "valueCode" : "en-US"
   }]
 }}####
 v: {
@@ -77,53 +18,10 @@ v: {
   "code" : "99234",
   "system" : "http://www.ama-assn.org/go/cpt",
   "version" : "2023",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://www.ama-assn.org/go/cpt",
-  "code" : "99234",
-  "display" : "Inpatient hospital care"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Hospital inpatient or observation care, for the evaluation and management of a patient including admission and discharge on the same date, which requires a medically appropriate history and/or examination and straightforward or low level of medical decision making. When using total time on the date of the encounter for code selection, 45 minutes must be met or exceeded.",
-  "code" : "99234",
-  "system" : "http://www.ama-assn.org/go/cpt",
-  "version" : "2023",
-  "severity" : "error",
-  "error" : "Wrong Display Name 'Inpatient hospital care' for http://www.ama-assn.org/go/cpt#99234. Valid display is one of 17 choices: 'Hospital inpatient or observation care, for the evaluation and management of a patient including admission and discharge on the same date, which requires a medically appropriate history and/or examination and straightforward or low level of medical decision making. When using total time on the date of the encounter for code selection, 45 minutes must be met or exceeded.' (en), 'HOSPITAL INPATIENT OR OBSERVATION CARE, FOR THE EVALUATION AND MANAGEMENT OF A PATIENT INCLUDING ADMISSION AND DISCHARGE ON THE SAME DATE, WHICH REQUIRES A MEDICALLY APPROPRIATE HISTORY AND/OR EXAMINATION AND STRAIGHTFORWARD OR LOW LEVEL OF MEDICAL DECISION MAKING. WHEN USING TOTAL TIME ON THE DATE OF THE ENCOUNTER FOR CODE SELECTION, 45 MINUTES MUST BE MET OR EXCEEDED.' (en), 'HOSPITAL IP/OBS CARE SAME DATE SF/LOW MDM 45 MIN' (en), 'HOSP IP/OBS SM DT SF/LOW 45' (en), 'Initial hospital care with same-day admission and discharge with straightforward or low level of medical decision making, per day, if using time, at least 45 minutes' (en), 'Hospital inpatient care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate examination and low level of medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital inpatient care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate examination and straightforward medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital inpatient care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and examination and low level of medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital inpatient care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and examination and straightforward medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital inpatient care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and low level of medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital inpatient care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and straightforward medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital observation care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate examination and low level of medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital observation care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate examination and straightforward medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital observation care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and examination and low level of medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital observation care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and examination and straightforward medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital observation care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and low level of medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en) or 'Hospital observation care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and straightforward medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en) (for the language(s) '--')",
-  "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "invalid-display"
-      }],
-      "text" : "Wrong Display Name 'Inpatient hospital care' for http://www.ama-assn.org/go/cpt#99234. Valid display is one of 17 choices: 'Hospital inpatient or observation care, for the evaluation and management of a patient including admission and discharge on the same date, which requires a medically appropriate history and/or examination and straightforward or low level of medical decision making. When using total time on the date of the encounter for code selection, 45 minutes must be met or exceeded.' (en), 'HOSPITAL INPATIENT OR OBSERVATION CARE, FOR THE EVALUATION AND MANAGEMENT OF A PATIENT INCLUDING ADMISSION AND DISCHARGE ON THE SAME DATE, WHICH REQUIRES A MEDICALLY APPROPRIATE HISTORY AND/OR EXAMINATION AND STRAIGHTFORWARD OR LOW LEVEL OF MEDICAL DECISION MAKING. WHEN USING TOTAL TIME ON THE DATE OF THE ENCOUNTER FOR CODE SELECTION, 45 MINUTES MUST BE MET OR EXCEEDED.' (en), 'HOSPITAL IP/OBS CARE SAME DATE SF/LOW MDM 45 MIN' (en), 'HOSP IP/OBS SM DT SF/LOW 45' (en), 'Initial hospital care with same-day admission and discharge with straightforward or low level of medical decision making, per day, if using time, at least 45 minutes' (en), 'Hospital inpatient care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate examination and low level of medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital inpatient care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate examination and straightforward medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital inpatient care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and examination and low level of medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital inpatient care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and examination and straightforward medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital inpatient care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and low level of medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital inpatient care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and straightforward medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital observation care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate examination and low level of medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital observation care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate examination and straightforward medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital observation care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and examination and low level of medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital observation care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and examination and straightforward medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en), 'Hospital observation care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and low level of medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en) or 'Hospital observation care with admission and discharge on same date, for evaluation and management of patient requiring medically appropriate history and straightforward medical decision making. If using time, at least 45 minutes total time on encounter date must be met.' (en) (for the language(s) '--')"
-    },
-    "location" : ["Coding.display"],
-    "expression" : ["Coding.display"]
-  }]
+  "resourceType" : "OperationOutcome"
 }
 
 }
