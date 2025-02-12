@@ -53,6 +53,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.r5.elementmodel.JsonParser.ILogicalModelResolver;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -86,6 +87,12 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 @MarkedToMoveToAdjunctPackage
 public class JsonParser extends ParserBase {
 
+  public interface ILogicalModelResolver {
+
+    StructureDefinition resolve(JsonObject object);
+
+  }
+
   private JsonCreator json;
   private boolean allowComments;
   private boolean elideElements;
@@ -93,6 +100,7 @@ public class JsonParser extends ParserBase {
 
   private Element baseElement;
   private boolean markedXhtml;
+  private ILogicalModelResolver logicalModelResolver;
 
   public JsonParser(IWorkerContext context, ProfileUtilities utilities) {
     super(context, utilities);
@@ -178,11 +186,22 @@ public class JsonParser extends ParserBase {
     return parse(errors, object, null);
   }
   
+  private StructureDefinition resolveLogical(JsonObject object) {
+    StructureDefinition sd = getLogical();
+    if (sd != null) {
+      return sd;
+    } else if (logicalModelResolver != null) {
+      return logicalModelResolver.resolve(object);
+    } else {
+      return null;
+    }
+  }
+  
   public Element parse(List<ValidationMessage> errors, JsonObject object, String statedPath) throws FHIRException {
     if (object == null) {
       System.out.println("What?");
     }
-    StructureDefinition sd = getLogical();
+    StructureDefinition sd = resolveLogical(object);
     String name;
     String path;      
     if (sd == null) {
@@ -1047,5 +1066,14 @@ public class JsonParser extends ParserBase {
     return this;
   }
 */
+
+  public ILogicalModelResolver getLogicalModelResolver() {
+    return logicalModelResolver;
+  }
+
+  public JsonParser setLogicalModelResolver(ILogicalModelResolver logicalModelResolver) {
+    this.logicalModelResolver = logicalModelResolver;
+    return this;
+  }
 
 }

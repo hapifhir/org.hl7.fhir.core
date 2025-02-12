@@ -837,6 +837,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String TEXT_ICON_SLICE = "TEXT_ICON_SLICE";
   public static final String TEXT_ICON_SLICE_ITEM = "TEXT_ICON_SLICE_ITEM";
   public static final String TX_DISPLAY = "TX_DISPLAY";
+  public static final String TX_DISPLAY_LANG = "TX_DISPLAY_LANG";
   public static final String VALUE_SET_ADD_DESIG = "VALUE_SET_ADD_DESIG";
   public static final String VALUE_SET_ALL_CODE = "VALUE_SET_ALL_CODE";
   public static final String VALUE_SET_ALL_CODES_DEF = "VALUE_SET_ALL_CODES_DEF";

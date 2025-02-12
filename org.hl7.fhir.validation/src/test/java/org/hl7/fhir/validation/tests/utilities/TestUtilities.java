@@ -17,7 +17,7 @@ public class TestUtilities {
 
   public static boolean silent = false;
 
-  public static ValidationEngine getValidationEngine(java.lang.String src, java.lang.String txServer, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, java.lang.String vString) throws Exception {
+  public static ValidationEngine getValidationEngine(java.lang.String src, java.lang.String txServer, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, java.lang.String vString, boolean usesEcosystem) throws Exception {
     TestingUtilities.injectCorePackageLoader();
 
    final ValidationEngine validationEngine = new ValidationEngine.ValidationEngineBuilder()
@@ -25,7 +25,7 @@ public class TestUtilities {
       .withVersion(vString)
       .withUserAgent(TestConstants.USER_AGENT)
       .withTerminologyCachePath(getTerminologyCacheDirectory(vString))
-      .withTxServer(txServer, txLog, version, false)
+      .withTxServer(txServer, txLog, version, usesEcosystem)
       .fromSource(src);
 
     TerminologyCache.setCacheErrors(true);

@@ -30,7 +30,7 @@ public class ResourceValidationTests {
     TestingUtilities.injectCorePackageLoader();
     if (val == null) {
       ctxt = TestingUtilities.getSharedWorkerContext();
-      engine = TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", FhirSettings.getTxFhirDevelopment(), null, FhirPublication.R5, true, "5.0.0");
+      engine = TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", FhirSettings.getTxFhirDevelopment(), null, FhirPublication.R5, true, "5.0.0", false);
       val = engine.getValidator(null);
       val.setDebug(false);
     }
