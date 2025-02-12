@@ -30,6 +30,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@Deprecated
 public class ElementWrappers {
 
   public static class BaseWrapperMetaElement extends WrapperBaseImpl implements BaseWrapper {

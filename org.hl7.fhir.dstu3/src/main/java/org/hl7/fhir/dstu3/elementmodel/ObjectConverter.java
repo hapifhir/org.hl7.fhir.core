@@ -58,6 +58,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 
 
 
+@Deprecated
 public class ObjectConverter  {
 
   private IWorkerContext context;

@@ -24,6 +24,14 @@ public class TextDrivenPolicyAdvisor extends RulesDrivenPolicyAdvisor {
     load(source);
   }
 
+  public TextDrivenPolicyAdvisor(IValidationPolicyAdvisor base, String filename, String source) throws JsonException, IOException {
+    super(base);
+    String[] lines= source.split("\\R");
+    for (String line : lines) {
+      processLine(line);  
+    }
+  }
+
   private void load(File source) throws JsonException, IOException {
     BufferedReader reader = new BufferedReader(new FileReader(source));
     String line = reader.readLine();

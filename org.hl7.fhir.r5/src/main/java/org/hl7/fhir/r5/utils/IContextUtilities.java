@@ -31,6 +31,7 @@ package org.hl7.fhir.r5.utils;
 
 
 
+@Deprecated
 public interface IContextUtilities {
 
 }

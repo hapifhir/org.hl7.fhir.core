@@ -160,6 +160,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
@@ -200,6 +201,7 @@ Copyright (c) 2011+, HL7, Inc
 
 */
 
+@MarkedToMoveToAdjunctPackage
 public class NarrativeGenerator implements INarrativeGenerator {
 
   public interface ILiquidTemplateProvider {

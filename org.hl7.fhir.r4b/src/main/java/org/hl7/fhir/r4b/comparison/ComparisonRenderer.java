@@ -35,10 +35,12 @@ import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.r4b.utils.LiquidEngine;
 import org.hl7.fhir.r4b.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
+@MarkedToMoveToAdjunctPackage
 public class ComparisonRenderer implements IEvaluationContext {
 
   private IWorkerContext contextLeft;

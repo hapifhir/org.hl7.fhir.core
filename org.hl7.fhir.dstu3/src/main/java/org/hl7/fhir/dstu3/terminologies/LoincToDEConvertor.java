@@ -69,6 +69,7 @@ import org.xmlpull.v1.XmlPullParserException;
  * @author Grahame
  *
  */
+@Deprecated
 public class LoincToDEConvertor {
 
 	public static void main(String[] args) throws FHIRFormatError, IOException, XmlPullParserException, SAXException, ParserConfigurationException {

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4b.utils.validation;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+@MarkedToMoveToAdjunctPackage
 public class BundleValidationRule {
   private String rule;
   private String profile;

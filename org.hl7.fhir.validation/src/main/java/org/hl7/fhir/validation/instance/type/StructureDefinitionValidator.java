@@ -334,6 +334,10 @@ public class StructureDefinitionValidator extends BaseValidator {
           }
         } else if (child.getName().equals("mustSupport")) {
           // this is ok, and there's nothing to check 
+        } else if (child.getName().equals("min")) {
+          // this is ok, and what there is to be checked will be checked elsewhere
+        } else if (child.getName().equals("max")) {
+          // this is ok, and what there is to be checked will be checked elsewhere
         } else if (child.getName().equals("id")) {
           // this is ok (it must have this), and there's nothing to check 
         } else if (child.getName().equals("binding")) {
@@ -889,10 +893,12 @@ public class StructureDefinitionValidator extends BaseValidator {
   }
 
   private SourcedInvariant findInvariantInBase(StructureDefinition base, String key) {
-    for (ElementDefinition ed : base.getSnapshot().getElement()) {
-      for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
-        if (key.equals(inv.getKey())) {
-          return new SourcedInvariant(base.getVersionedUrl(), ed.getPath(), inv.getExpression());
+    if (base != null) {
+      for (ElementDefinition ed : base.getSnapshot().getElement()) {
+        for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+          if (key.equals(inv.getKey())) {
+            return new SourcedInvariant(base.getVersionedUrl(), ed.getPath(), inv.getExpression());
+          }
         }
       }
     }

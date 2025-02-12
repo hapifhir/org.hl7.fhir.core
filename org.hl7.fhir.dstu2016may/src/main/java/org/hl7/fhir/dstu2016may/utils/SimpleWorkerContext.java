@@ -82,6 +82,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
  * very light cient to connect to an open unauthenticated terminology service
  */
 
+@Deprecated
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext, ProfileKnowledgeProvider {
 
   // all maps are to the full URI

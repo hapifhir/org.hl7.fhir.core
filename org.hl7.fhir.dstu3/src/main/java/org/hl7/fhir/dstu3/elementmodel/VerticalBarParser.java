@@ -51,6 +51,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
  * @author Grahame Grieve
  *
  */
+@Deprecated
 public class VerticalBarParser extends ParserBase {
 
   /**

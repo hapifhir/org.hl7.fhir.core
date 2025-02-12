@@ -26,8 +26,10 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 
+@MarkedToMoveToAdjunctPackage
 public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
 
   public CodeSystemSpreadsheetGenerator(IWorkerContext context) {

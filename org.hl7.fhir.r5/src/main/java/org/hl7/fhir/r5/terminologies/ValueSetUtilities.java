@@ -505,16 +505,16 @@ public class ValueSetUtilities extends TerminologyUtilities {
     }    
   }
   
-
-
   public static String versionFromExpansionParams(Parameters expParameters, String system, String defaultVersion) {
-    for (ParametersParameterComponent p : expParameters.getParameter()) {
-      if ("system-version".equals(p.getName()) || "force-system-version".equals(p.getName())) {
-        String v = p.getValue().primitiveValue();
-        if (v.startsWith(system+"|")) {
-          String ver = v.substring(v.indexOf("|")+1);
-          if (defaultVersion == null || ver.startsWith(defaultVersion) || "force-system-version".equals(p.getName())) {
-            return ver;
+    if (expParameters != null) {
+      for (ParametersParameterComponent p : expParameters.getParameter()) {
+        if ("system-version".equals(p.getName()) || "force-system-version".equals(p.getName())) {
+          String v = p.getValue().primitiveValue();
+          if (v.startsWith(system+"|")) {
+            String ver = v.substring(v.indexOf("|")+1);
+            if (defaultVersion == null || ver.startsWith(defaultVersion) || "force-system-version".equals(p.getName())) {
+              return ver;
+            }
           }
         }
       }

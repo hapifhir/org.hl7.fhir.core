@@ -15,6 +15,7 @@ import org.hl7.fhir.r4b.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r4b.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r4b.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r4b.model.CodeSystem.PropertyComponent;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -27,6 +28,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public class CodeSystemComparer extends CanonicalResourceComparer {
 
   public class CodeSystemComparison extends CanonicalResourceComparison<CodeSystem> {

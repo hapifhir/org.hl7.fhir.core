@@ -31,7 +31,9 @@ package org.hl7.fhir.r4b.utils;
 
 import org.hl7.fhir.r4b.model.ElementDefinition;
 import org.hl7.fhir.r4b.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class ElementDefinitionUtilities {
 
   public static boolean hasType(ElementDefinition ed, String name) {

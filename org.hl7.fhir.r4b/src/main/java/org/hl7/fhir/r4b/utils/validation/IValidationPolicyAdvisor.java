@@ -8,9 +8,11 @@ import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.r4b.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r4b.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.r4b.utils.validation.constants.CodedContentValidationPolicy;
 import org.hl7.fhir.r4b.utils.validation.constants.BindingKind;
 
+@MarkedToMoveToAdjunctPackage
 public interface IValidationPolicyAdvisor {
 
   /**

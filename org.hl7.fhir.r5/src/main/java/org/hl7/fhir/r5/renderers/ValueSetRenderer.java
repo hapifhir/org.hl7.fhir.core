@@ -57,6 +57,7 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.LoincLinker;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
@@ -66,6 +67,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
+@MarkedToMoveToAdjunctPackage
 public class ValueSetRenderer extends TerminologyRenderer {
 
   public ValueSetRenderer(RenderingContext context) { 
@@ -220,16 +222,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
     generateVersionNotice(x, vs.getExpansion(), vs);
     
     if (ToolingExtensions.hasExtension(vs.getExpansion(), ToolingExtensions.EXT_EXP_TOOCOSTLY)) {
-//      List<Extension> exl = vs.getExpansion().getExtensionsByUrl(ToolingExtensions.EXT_EXP_TOOCOSTLY);
-//      boolean other = false;
-//      for (Extension ex : exl) {
-//        if (ex.getValue() instanceof BooleanType) {
-//          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? getContext().getTooCostlyNoteEmpty() : getContext().getTooCostlyNoteNotEmpty());
-//        } else if (!other) {
-//          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? getContext().getTooCostlyNoteEmptyDependent() : getContext().getTooCostlyNoteNotEmptyDependent());
-//          other = true;
-//        }
-//      }
       String msg = null;
       if (vs.getExpansion().getContains().isEmpty()) {
         msg = context.formatPhrase(RenderingContext.VALUE_SET_TOO_COSTLY);
@@ -274,7 +266,15 @@ public class ValueSetRenderer extends TerminologyRenderer {
     tr.td().attribute("style", "white-space:nowrap").b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
     tr.td().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_SYSTEM));
     XhtmlNode tdDisp = tr.td();
-    tdDisp.b().tx(context.formatPhrase(RenderingContext.TX_DISPLAY));
+    String displang = vs.getLanguage();
+    if (displang == null) {
+      displang = findParamValue(vs.getExpansion().getParameter(), "displayLanguage");
+    }
+    if (displang == null) {
+      tdDisp.b().tx(context.formatPhrase(RenderingContext.TX_DISPLAY));
+    } else {
+      tdDisp.b().tx(context.formatPhrase(RenderingContext.TX_DISPLAY_LANG, displang));
+    }
     boolean doDesignations = false;
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
       scanForDesignations(c, langs, designations);
@@ -492,6 +492,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   @SuppressWarnings("rawtypes")
   private void generateVersionNotice(XhtmlNode x, ValueSetExpansionComponent expansion, Resource vs) {
+
     Multimap<String, String> versions = HashMultimap.create();
     Set<String> vlist = new HashSet<>();
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
@@ -541,6 +542,15 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
   }
 
+  private String findParamValue(List<ValueSetExpansionParameterComponent> list, String name) {
+    for (ValueSetExpansionParameterComponent p : list) {
+      if (name.equals(p.getName())) {
+        return p.getValue().primitiveValue();
+      }
+    }
+    return null;
+  }
+  
   private void expRef(XhtmlNode x, String u, String v, Resource source) {
     String t = u.contains("|") ? u.substring(0, u.indexOf("|")) : u;
     u = u.substring(u.indexOf("|")+1);

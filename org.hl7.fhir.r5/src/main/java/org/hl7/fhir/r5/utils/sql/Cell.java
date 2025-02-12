@@ -3,7 +3,10 @@ package org.hl7.fhir.r5.utils.sql;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+
+@MarkedToMoveToAdjunctPackage
 public class Cell {
   private Column column; 
   private List<Value> values = new ArrayList<>();

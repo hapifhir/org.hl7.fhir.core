@@ -90,6 +90,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -108,6 +109,7 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
  
+@MarkedToMoveToAdjunctPackage
 public class StructureDefinitionRenderer extends ResourceRenderer { 
  
   public StructureDefinitionRenderer(RenderingContext context) { 
@@ -1405,7 +1407,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } 
         if (logicalModel) { 
           List<SourcedElementDefinition> ancestors = new ArrayList<>(); 
-          getAncestorElements(profile, ancestors); 
+          getAncestorElements(new ArrayList<>(), profile, ancestors); 
           if (ancestors.size() > 0) { 
             c.addPiece(gen.new Piece("br")); 
             c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ELEMENTS), null)); 
@@ -1838,10 +1840,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return false; 
   } 
  
-  private void getAncestorElements(StructureDefinition profile, List<SourcedElementDefinition> ancestors) { 
+  private void getAncestorElements(List<String> inscope, StructureDefinition profile, List<SourcedElementDefinition> ancestors) { 
     StructureDefinition base = context.getContext().fetchResource(StructureDefinition.class, profile.getBaseDefinition()); 
     if (base != null) { 
-      getAncestorElements(base, ancestors); 
+      List<String> newList = Utilities.copyAdd(inscope, base.getVersionedUrl()); 
+      if (inscope.contains(base.getVersionedUrl())) {
+        throw new FHIRException("Circular Definition detected in derivation heirarchy: "+CommaSeparatedStringBuilder.join("->", newList));
+      }
+      getAncestorElements(newList, base, ancestors);      
       for (ElementDefinition ed : base.getDifferential().getElement()) { 
         if (Utilities.charCount(ed.getPath(), '.') == 1) { 
           ancestors.add(new SourcedElementDefinition(base, ed)); 

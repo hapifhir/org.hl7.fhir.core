@@ -10,16 +10,25 @@
   "https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_ICD_SEITENLOKALISATION" : null,
   "http://hl7.org/fhir/test/CodeSystem/big|null" : null,
   "http://fhir.abda.de/eRezeptAbgabedaten/ValueSet/DAV-VS-ERP-DEUEV-Anlage-8" : null,
-  "http://loinc.org/vs/LL378-1" : null,
+  "http://loinc.org/vs/LL378-1" : {
+    "server" : "http://tx-dev.fhir.org/r4",
+    "filename" : "vs-7d42daaf-7b0a-421a-a6d3-f774a024f6d0.json"
+  },
   "http://something/something|null" : null,
   "http://hl7.org/fhir/CodeSystem/c1|null" : null,
   "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9|null" : null,
-  "http://loinc.org/vs/LL1971-2" : null,
+  "http://loinc.org/vs/LL1971-2" : {
+    "server" : "http://tx-dev.fhir.org/r4",
+    "filename" : "vs-30f00168-3999-47fe-9472-de13230543a5.json"
+  },
   "#f3b2bd36-199b-4591-b4db-f49db0912b62|null" : null,
   "http://hl7.org/fhir/smart-app-launch/ValueSet/user-access-category" : null,
   "https://healthterminologies.gov.au/fhir/ValueSet/australian-immunisation-register-vaccine-1" : {
     "server" : "https://tx.ontoserver.csiro.au/fhir",
-    "filename" : "vs-0ce1569f-f985-44cb-a5a0-9d205efd76b4.json"
+    "filename" : "vs-4f5cd624-55f3-4da2-a342-61e924454fc1.json"
   },
-  "http://loinc.org/vs/LL4048-6" : null
+  "http://loinc.org/vs/LL4048-6" : {
+    "server" : "http://tx-dev.fhir.org/r4",
+    "filename" : "vs-ec459ed7-8688-4a32-b4a4-1f62a24c92d3.json"
+  }
 }

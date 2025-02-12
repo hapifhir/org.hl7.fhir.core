@@ -3,8 +3,10 @@ package org.hl7.fhir.r4b.utils;
 import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.model.ServiceRequest;
 import org.hl7.fhir.r4b.model.StringType;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
+@MarkedToMoveToAdjunctPackage
 public class PublicationHacker {
 
   // this routine fixes up broken binding descriptions from past FHIR

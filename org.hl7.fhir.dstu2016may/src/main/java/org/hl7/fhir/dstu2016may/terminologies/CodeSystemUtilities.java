@@ -38,6 +38,7 @@ import org.hl7.fhir.dstu2016may.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.dstu2016may.model.CodeSystem.ConceptDefinitionPropertyComponent;
 import org.hl7.fhir.dstu2016may.model.CodeSystem.PropertyType;
 
+@Deprecated
 public class CodeSystemUtilities {
 
   public static boolean isDeprecated(CodeSystem cs, ConceptDefinitionComponent def) {

@@ -37,6 +37,7 @@ import org.hl7.fhir.dstu2016may.model.StructureDefinition.StructureDefinitionKin
 import org.hl7.fhir.dstu2016may.utils.IWorkerContext;
 import org.hl7.fhir.dstu2016may.utils.ToolingExtensions;
 
+@Deprecated
 public class Property {
 
   private IWorkerContext context;

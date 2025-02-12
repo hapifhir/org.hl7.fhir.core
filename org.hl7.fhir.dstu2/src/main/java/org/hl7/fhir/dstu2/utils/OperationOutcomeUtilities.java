@@ -38,6 +38,7 @@ import org.hl7.fhir.dstu2.model.StringType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
+@Deprecated
 public class OperationOutcomeUtilities {
 
   public static OperationOutcomeIssueComponent convertToIssue(ValidationMessage message, OperationOutcome op) {

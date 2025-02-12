@@ -10,6 +10,7 @@ import org.hl7.fhir.r4b.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r4b.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r4b.model.ConceptMap.TargetElementComponent;
 
+@Deprecated
 public class ConceptMapSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
 
   public ConceptMapSpreadsheetGenerator(IWorkerContext context) {

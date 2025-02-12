@@ -42,6 +42,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 
+@Deprecated
 public class Manager {
 
   public enum FhirFormat { XML, JSON, JSONLD, TURTLE, TEXT, VBAR;

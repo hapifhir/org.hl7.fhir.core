@@ -10,6 +10,7 @@ import org.hl7.fhir.dstu2016may.utils.QuestionnaireBuilder;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@Deprecated
 public class QuestionnaireBuilderTester {
 
   private static final String TEST_PROFILE_DIR = "C:\\work\\org.hl7.fhir\\build\\publish";

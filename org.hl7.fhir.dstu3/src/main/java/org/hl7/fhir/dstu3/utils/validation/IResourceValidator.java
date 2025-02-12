@@ -52,6 +52,7 @@ import com.google.gson.JsonObject;
    * @author Grahame Grieve
    *
    */
+@Deprecated
 public interface IResourceValidator {
 
   /**

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r5.utils.validation.constants;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+@MarkedToMoveToAdjunctPackage
 public enum ReferenceValidationPolicy {
   IGNORE,
   CHECK_TYPE_IF_EXISTS,

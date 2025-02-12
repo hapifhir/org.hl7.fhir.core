@@ -27,6 +27,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.SHCParser.SHCSignedJWT;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.HTTPRequest;
@@ -72,6 +73,7 @@ import com.nimbusds.jwt.proc.*;
  * @author grahame
  *
  */
+@MarkedToMoveToAdjunctPackage
 public class SHCParser extends ParserBase {
 
   private JsonParser jsonParser;

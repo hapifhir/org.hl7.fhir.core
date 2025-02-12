@@ -2,10 +2,12 @@ package org.hl7.fhir.r5.utils.structuremap;
 
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@MarkedToMoveToAdjunctPackage
 public class Variables {
   private List<Variable> list = new ArrayList<Variable>();
 

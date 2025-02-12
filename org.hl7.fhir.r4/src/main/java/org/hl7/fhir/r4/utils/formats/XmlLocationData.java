@@ -28,7 +28,7 @@ package org.hl7.fhir.r4.utils.formats;
   POSSIBILITY OF SUCH DAMAGE.
   
  */
-
+@Deprecated
 public class XmlLocationData {
 
   public static final String LOCATION_DATA_KEY = "locationDataKey";

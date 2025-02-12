@@ -61,6 +61,7 @@ import org.w3c.dom.Element;
  *
  */
 
+@Deprecated
 public class ICPC2Importer {
 
   public static void main(String[] args) {

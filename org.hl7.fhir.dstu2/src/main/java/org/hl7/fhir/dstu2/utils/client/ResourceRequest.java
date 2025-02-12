@@ -35,6 +35,7 @@ import java.util.List;
 import lombok.Getter;
 import org.hl7.fhir.dstu2.model.Resource;
 
+@Deprecated
 public class ResourceRequest<T extends Resource> {
   @Getter
   private T payload;

@@ -4,6 +4,7 @@ import org.hl7.fhir.r4b.model.ElementDefinition;
 import org.hl7.fhir.r4b.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r4b.model.StructureDefinition;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 /**
@@ -12,6 +13,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
  * @author graha
  *
  */
+@MarkedToMoveToAdjunctPackage
 public class StructureDefinitionHacker {
 
   private String version;

@@ -7,8 +7,10 @@ import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
+@MarkedToMoveToAdjunctPackage
 public class R5Hacker {
 
   public static void fixR5BrokenResources(IWorkerContext context) {

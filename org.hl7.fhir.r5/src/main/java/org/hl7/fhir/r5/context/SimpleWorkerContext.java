@@ -75,6 +75,7 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.MagicResources;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
@@ -94,6 +95,7 @@ import ca.uhn.fhir.parser.DataFormatException;
  * very light client to connect to an open unauthenticated terminology service
  */
 
+@MarkedToMoveToAdjunctPackage
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext {
 
   public static class PackageResourceLoader extends CanonicalResourceProxy {

@@ -3,7 +3,9 @@ package org.hl7.fhir.r5.utils;
 import java.util.Comparator;
 
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class ResourceSorters {
 
   public static class CanonicalResourceSortByUrl implements Comparator<CanonicalResource> {

@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.utils.sql.Validator.TrueFalseOrUnknown;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public interface Storage {
 
   TrueFalseOrUnknown supportsArrays();

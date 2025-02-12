@@ -67,6 +67,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+@Deprecated
 public class ToolsHelper {
 
   public static void main(String[] args) {

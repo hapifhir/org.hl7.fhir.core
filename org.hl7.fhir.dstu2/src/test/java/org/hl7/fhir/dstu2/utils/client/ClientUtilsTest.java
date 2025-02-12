@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Deprecated
 public class ClientUtilsTest {
 
   public static final String DUMMY_LOCATION = "http://myhost/Patient/1";

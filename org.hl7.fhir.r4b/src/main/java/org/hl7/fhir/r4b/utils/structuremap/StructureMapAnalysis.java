@@ -1,11 +1,13 @@
 package org.hl7.fhir.r4b.utils.structuremap;
 
 import org.hl7.fhir.r4b.model.StructureDefinition;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@MarkedToMoveToAdjunctPackage
 public class StructureMapAnalysis {
   public List<StructureDefinition> profiles = new ArrayList<StructureDefinition>();
   public XhtmlNode summary;

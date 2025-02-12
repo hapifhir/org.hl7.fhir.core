@@ -16,16 +16,20 @@ public class JsonDrivenPolicyAdvisor extends RulesDrivenPolicyAdvisor {
 
   public JsonDrivenPolicyAdvisor(IValidationPolicyAdvisor base, File source) throws JsonException, IOException {
     super(base);
-    load(source);
+    load(JsonParser.parseObject(source));
   }
 
   public JsonDrivenPolicyAdvisor(ReferenceValidationPolicy refpol, File source) throws JsonException, IOException {
     super(refpol);
-    load(source);
+    load(JsonParser.parseObject(source));
   }
 
-  private void load(File source) throws JsonException, IOException {
-    JsonObject json = JsonParser.parseObject(source);
+  public JsonDrivenPolicyAdvisor(IValidationPolicyAdvisor base, String filename, String source) throws JsonException, IOException {
+    super(base);
+    load(JsonParser.parseObject(source));
+  }
+
+  private void load(JsonObject json) throws JsonException, IOException {
     for (JsonElement e : json.forceArray("suppress").getItems()) {
       @Nonnull String s = e.asString();
       if (s.contains("@")) {

@@ -9,7 +9,9 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.utils.sql.Validator.TrueFalseOrUnknown;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class StorageSqlite3 implements Storage {
   
   public static class SQLiteStore extends Store {

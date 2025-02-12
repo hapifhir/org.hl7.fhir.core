@@ -47,6 +47,7 @@ import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.r4.utils.TypesUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
+@Deprecated
 public class Property {
 
   private IWorkerContext context;

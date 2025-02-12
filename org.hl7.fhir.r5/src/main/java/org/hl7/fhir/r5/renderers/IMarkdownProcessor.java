@@ -2,7 +2,9 @@ package org.hl7.fhir.r5.renderers;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public interface IMarkdownProcessor {
 
   @SuppressWarnings("rawtypes")

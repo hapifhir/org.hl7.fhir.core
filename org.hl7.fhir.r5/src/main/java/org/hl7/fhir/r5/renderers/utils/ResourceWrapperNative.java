@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -18,6 +19,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * This class is used to walk through the resources when rendering, whether
  * the resource is a native resource or loaded by the element model
  */
+@MarkedToMoveToAdjunctPackage
 public class ResourceWrapperNative extends ResourceWrapper {
 
   protected Base element;

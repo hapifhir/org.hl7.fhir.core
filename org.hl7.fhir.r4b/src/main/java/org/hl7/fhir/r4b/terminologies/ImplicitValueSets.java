@@ -31,8 +31,10 @@ package org.hl7.fhir.r4b.terminologies;
 
 import org.hl7.fhir.r4b.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r4b.model.ValueSet;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
+@MarkedToMoveToAdjunctPackage
 public class ImplicitValueSets {
 
   public static ValueSet build(String url) {

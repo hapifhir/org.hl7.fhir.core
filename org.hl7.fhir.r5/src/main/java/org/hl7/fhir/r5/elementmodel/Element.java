@@ -61,6 +61,7 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.NamedItemList;
 import org.hl7.fhir.utilities.NamedItemList.NamedItem;
 import org.hl7.fhir.utilities.SourceLocation;
@@ -78,6 +79,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * @author Grahame Grieve
  *
  */
+@MarkedToMoveToAdjunctPackage
 public class Element extends Base implements NamedItem {
   public class SliceDefinition {
 
@@ -1699,5 +1701,14 @@ public class Element extends Base implements NamedItem {
 
   public void sortChildren(Comparator<Element> sorter) {
     children.sort(sorter);
+  }
+
+  public String getStatedResourceId() {
+    for (Property p : getProperty().getChildProperties(null)) {
+      if (ToolingExtensions.readBoolExtension(p.getDefinition(), ToolingExtensions.EXT_USE_AS_RESOURCE_ID)) {
+        return getNamedChildValue(p.getName());
+      }
+    }
+    return null;
   }
 }

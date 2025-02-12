@@ -6,8 +6,10 @@ import java.util.List;
 import org.hl7.fhir.r4.utils.sql.Cell;
 import org.hl7.fhir.r4.utils.sql.Column;
 import org.hl7.fhir.r4.utils.sql.Value;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 
+@MarkedToMoveToAdjunctPackage
 public class Cell {
   private Column column; 
   private List<Value> values = new ArrayList<>();

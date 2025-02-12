@@ -35,6 +35,7 @@ import java.io.OutputStream;
 import org.hl7.fhir.dstu2016may.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu2016may.utils.IWorkerContext;
 
+@Deprecated
 public class Manager {
 
   public enum FhirFormat {

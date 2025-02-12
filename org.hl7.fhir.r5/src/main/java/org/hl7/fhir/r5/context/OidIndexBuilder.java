@@ -10,9 +10,11 @@ import java.sql.Types;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
+@MarkedToMoveToAdjunctPackage
 public class OidIndexBuilder {
 
   private File folder;
