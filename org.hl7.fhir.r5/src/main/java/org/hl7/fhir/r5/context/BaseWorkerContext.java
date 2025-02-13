@@ -410,7 +410,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         txCache = other.txCache; // no copy. for now?
       expandCodesLimit = other.expandCodesLimit;
       logger = other.logger;
-      expParameters = other.expParameters;
+      expParameters = other.expParameters.copy();
       version = other.version;
       supportedCodeSystems.addAll(other.supportedCodeSystems);
       unsupportedCodeSystems.addAll(other.unsupportedCodeSystems);
