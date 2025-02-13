@@ -18,8 +18,6 @@ public class UserDataNames {
   public static final String SNAPSHOT_IS_DERIVED = "derived.fact";
   public static final String SNAPSHOT_GENERATED_IN_SNAPSHOT = "profileutilities.snapshot.processed";
   public static final String SNAPSHOT_DERIVATION_DIFF = "profileutilities.snapshot.diffsource";
-  public static final String SNAPSHOT_GENERATING = "profileutils.snapshot.generating";
-  public static final String SNAPSHOT_GENERATED = "profileutils.snapshot.generated";
   public static final String SNAPSHOT_GENERATED_MESSAGES = "profileutils.snapshot.generated.messages";
   public static final String SNAPSHOT_ERRORS = "profileutils.snapshot.errors";
   public static final String SNAPSHOT_auto_added_slicing = "auto-added-slicing";

@@ -725,7 +725,6 @@ public class ProfileUtilities {
     if (snapshotStack.contains(derived.getUrl())) {
       throw new DefinitionException(context.formatMessage(I18nConstants.CIRCULAR_SNAPSHOT_REFERENCES_DETECTED_CANNOT_GENERATE_SNAPSHOT_STACK__, snapshotStack.toString()));
     }
-    //derived.setUserData(UserDataNames.SNAPSHOT_GENERATING, true);
     derived.setGeneratingSnapshot(true);
     snapshotStack.add(derived.getUrl());
     try {
@@ -1010,7 +1009,8 @@ public class ProfileUtilities {
     if (base.getVersion() != null) {
       derived.getSnapshot().addExtension(ToolingExtensions.EXT_VERSION_BASE, new StringType(base.getVersion()));
     }
-    derived.setUserData(UserDataNames.SNAPSHOT_GENERATED, true); // used by the publisher
+    derived.setGeneratedSnapshot(true);
+    //derived.setUserData(UserDataNames.SNAPSHOT_GENERATED, true); // used by the publisher
     derived.setUserData(UserDataNames.SNAPSHOT_GENERATED_MESSAGES, messages); // used by the publisher
   }
 
@@ -1568,11 +1568,6 @@ public class ProfileUtilities {
     }
     return false;
   }
-
-  protected boolean isGenerating(StructureDefinition sd) {
-    return sd.hasUserData(UserDataNames.SNAPSHOT_GENERATING);
-  }
-
 
   protected void checkNotGenerating(StructureDefinition sd, String role) {
     if (sd.isGeneratingSnapshot()) {
