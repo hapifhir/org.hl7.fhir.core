@@ -18,6 +18,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.convertors.analytics.PackageVisitor.IPackageVisitorProcessor;
 import org.hl7.fhir.convertors.analytics.PackageVisitor.PackageContext;
+import org.hl7.fhir.convertors.context.ContextResourceLoaderFactory;
 import org.hl7.fhir.convertors.loaders.loaderR5.ILoaderKnowledgeProviderR5;
 import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
 import org.hl7.fhir.convertors.loaders.loaderR5.R2016MayToR5Loader;
@@ -89,7 +90,7 @@ public class TestGenerationDataGenerator implements IPackageVisitorProcessor {
     if (worker == null) {
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(version));
-      IContextResourceLoader loader = makeLoader(ctxt.getNpm().fhirVersion(), new NullLoaderKnowledgeProviderR5());
+      IContextResourceLoader loader = ContextResourceLoaderFactory.makeLoader(ctxt.getNpm().fhirVersion(), new NullLoaderKnowledgeProviderR5());
       SimpleWorkerContext swc = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm, loader, true);
       contexts.put(version, swc);
       worker = swc;
@@ -104,27 +105,6 @@ public class TestGenerationDataGenerator implements IPackageVisitorProcessor {
     }
   }
 
-  private IContextResourceLoader makeLoader(String version, ILoaderKnowledgeProviderR5 loader) {
-    if (VersionUtilities.isR2Ver(version)) { 
-      return new R2ToR5Loader(Utilities.strings("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
-    } 
-    if (VersionUtilities.isR2BVer(version)) {
-      return new R2016MayToR5Loader(Utilities.strings("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader); // special case
-    }
-    if (VersionUtilities.isR3Ver(version)) {
-      return new R3ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
-    }
-    if (VersionUtilities.isR4Ver(version)) {
-      return new R4ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
-    }
-    if (VersionUtilities.isR4BVer(version)) {
-      return new R4BToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
-    }
-    if (VersionUtilities.isR6Ver(version)) {
-      return new R6ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
-    }
-    return new R5ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
-  }
 
   private void processElement(Element element, String path) throws SQLException {
     String id = path != null ? path : element.getProperty().getDefinition().getId();
