@@ -1000,7 +1000,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     return null;
   }
 
-  private XhtmlNode plateStyle(XhtmlNode para) {
+  protected XhtmlNode plateStyle(XhtmlNode para) {
     return para.style("margin-bottom: 0px");
   }
 
