@@ -490,6 +490,9 @@ public class ProfileUtilities {
   }
 
   public SourcedChildDefinitions getChildMap(StructureDefinition profile, ElementDefinition element, boolean chaseTypes) throws DefinitionException {
+    return getChildMap(profile, element, chaseTypes, null);
+  }
+  public SourcedChildDefinitions getChildMap(StructureDefinition profile, ElementDefinition element, boolean chaseTypes, String type) throws DefinitionException {
     String cacheKey = "cm."+profile.getVersionedUrl()+"#"+(element.hasId() ? element.getId() : element.getPath())+"."+chaseTypes;
     if (childMapCache.containsKey(cacheKey)) {
       return childMapCache.get(cacheKey);
@@ -539,7 +542,9 @@ public class ProfileUtilities {
         // we've got no in-line children. Some consumers of this routine will figure this out for themselves but most just want to walk into 
         // the type children.
         src = null;
-        if (element.getType().isEmpty()) {
+        if (type != null) {
+          src = context.fetchTypeDefinition(type);
+        } else if (element.getType().isEmpty()) {
           throw new DefinitionException("No defined children and no type information on element '"+element.getId()+"'");
         } else if (element.getType().size() > 1) {
           throw new DefinitionException("No defined children and multiple possible types '"+element.typeSummary()+"' on element '"+element.getId()+"'");
@@ -757,7 +762,8 @@ public class ProfileUtilities {
 
         // we actually delegate the work to a subroutine so we can re-enter it with a different cursors
         StructureDefinitionDifferentialComponent diff = cloneDiff(derived.getDifferential()); // we make a copy here because we're sometimes going to hack the differential while processing it. Have to migrate user data back afterwards
-
+        new SnapshotGenerationPreProcessor(this).process(diff);
+        
         StructureDefinitionSnapshotComponent baseSnapshot  = base.getSnapshot();
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
           String derivedType = derived.getTypeName();
@@ -831,9 +837,9 @@ public class ProfileUtilities {
         int ce = 0;
         int i = 0;
         for (ElementDefinition e : diff.getElement()) {
-          if (!e.hasUserData(UserDataNames.SNAPSHOT_diff_source))
-            throw new Error(context.formatMessage(I18nConstants.UNXPECTED_INTERNAL_CONDITION__NO_SOURCE_ON_DIFF_ELEMENT));
-          else {
+          if (!e.hasUserData(UserDataNames.SNAPSHOT_diff_source)) {
+            // was injected during preprocessing - this is ok
+          } else {
             if (e.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS))
               ((Base) e.getUserData(UserDataNames.SNAPSHOT_diff_source)).setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, e.getUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS));
             if (e.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER))
@@ -2938,7 +2944,7 @@ public class ProfileUtilities {
             t.setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, true);
       }
 
-      mappings.merge(derived, base); // note reversal of names to be correct in .merge()
+        mappings.merge(derived, base); // note reversal of names to be correct in .merge()
 
       // todo: constraints are cumulative. there is no replacing
       for (ElementDefinitionConstraintComponent s : base.getConstraint()) { 
@@ -3124,11 +3130,11 @@ public class ProfileUtilities {
         if (t.hasCode()) {
           types.add(t.getWorkingCode());
         }
-        ok = ft.equals(t.getWorkingCode());
+        ok = ok || ft.equals(t.getWorkingCode());
       }
     } else {
       types.add(sd.getType());
-      ok = ft.equals(sd.getType());
+      ok = ok || ft.equals(sd.getType());
 
     }
     if (!ok) {

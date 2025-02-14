@@ -13119,6 +13119,10 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     return !Utilities.existsInList(getMax(), "0", "1");
   }
 
+  public String getIdOrPath() {
+    return hasId() ? getId() : getPath();
+  }
+  
 // end addition
 
 }

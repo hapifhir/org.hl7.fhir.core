@@ -1197,4 +1197,9 @@ public class I18nConstants {
   public static final String INVALID_DISPLAY_NAME = "INVALID_DISPLAY_NAME";
   public static final String CODESYSTEM_CONCEPT_NO_DEFINITION = "CODESYSTEM_CONCEPT_NO_DEFINITION";
   public static final String CODESYSTEM_CONCEPT_NO_DISPLAY = "CODESYSTEM_CONCEPT_NO_DISPLAY";
+  public static final String IG_HL7_STANDARDS_STATUS_REQUIRED = "IG_HL7_STANDARDS_STATUS_REQUIRED";
+  public static final String IG_HL7_FMM_SHOULD = "IG_HL7_FMM_SHOULD";
+  public static final String IG_HL7_WG_REQUIRED = "IG_HL7_WG_REQUIRED";
+  public static final String UNSUPPORTED_SLICING_COMPLEXITY = "UNSUPPORTED_SLICING_COMPLEXITY";
+  public static final String UNKNOWN_PROPERTY = "UNKNOWN_PROPERTY";
 }
