@@ -401,4 +401,12 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
     }
   }
 
+  public void dump() {
+    super.dump();
+    xml = null;
+    json = null;
+    mapKeys = null;
+    
+  }
+
 }

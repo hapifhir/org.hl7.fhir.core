@@ -212,5 +212,11 @@ public class SpreadsheetGenerator {
       addCell(row, i, values[i], styles.get("body"));
     }
   }
-  
+
+  public void dump() {
+    wb = null;
+    styles = null;
+    dr = null;
+    sheetNames = null;
+  }
 }

@@ -626,6 +626,9 @@ public class CodeSystemValidator extends BaseValidator {
   }
 
   private void checkCodeProperty(List<ValidationMessage> errors, Element cs, NodeStack stack, PropertyDef defn, String code, Set<String> codes, String supplements) {
+    if (defn.getRule() == null) {
+      return; // todo: why would this happen?
+    }
     switch (defn.getRule()) {
     case INTERNAL_CODE:
       if (!isSeenPropertyCode(defn, code)) {
