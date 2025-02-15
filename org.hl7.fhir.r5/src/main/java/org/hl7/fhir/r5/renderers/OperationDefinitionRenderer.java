@@ -140,19 +140,30 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     td = tr.td(); 
     String actualType = translateTypeToVersion(p.getTypeElement()); 
     StructureDefinition sd = actualType != null ? context.getWorker().fetchTypeDefinition(actualType) : null; 
-    if (sd == null) 
-      td.tx(p.hasType() ? actualType : ""); 
-    else if (sd.getAbstract() && p.hasExtension(ToolingExtensions.EXT_ALLOWED_TYPE)) { 
+    if (sd == null) {
+      td.tx(p.hasType() ? actualType : "");  
+    } else if (sd.getAbstract() && p.hasExtension(ToolingExtensions.EXT_ALLOWED_TYPE)) {  
+      boolean first = true;  
+      for (Extension ex : p.getExtensionsByUrl(ToolingExtensions.EXT_ALLOWED_TYPE)) {  
+        if (first) first = false; else td.tx(" | ");  
+        String s = ex.getValue().primitiveValue();  
+        StructureDefinition sdt = context.getWorker().fetchTypeDefinition(s);  
+        if (sdt == null)  
+          td.tx(p.hasType() ? actualType : "");  
+        else  
+          td.ah(context.prefixLocalHref(sdt.getWebPath())).tx(s);           
+      }  
+    } else if (sd.getAbstract() && (p.hasAllowedType())) {
       boolean first = true; 
-      for (Extension ex : p.getExtensionsByUrl(ToolingExtensions.EXT_ALLOWED_TYPE)) { 
+      for (Enumeration<FHIRTypes> ex : p.getAllowedType()) {
         if (first) first = false; else td.tx(" | "); 
-        String s = ex.getValue().primitiveValue(); 
+        String s = ex.primitiveValue();
         StructureDefinition sdt = context.getWorker().fetchTypeDefinition(s); 
         if (sdt == null) 
           td.tx(p.hasType() ? actualType : ""); 
         else 
           td.ah(context.prefixLocalHref(sdt.getWebPath())).tx(s);          
-      } 
+      }
     } else 
       td.ah(context.prefixLocalHref(sd.getWebPath())).tx(actualType); 
     if (p.hasTargetProfile()) { 
