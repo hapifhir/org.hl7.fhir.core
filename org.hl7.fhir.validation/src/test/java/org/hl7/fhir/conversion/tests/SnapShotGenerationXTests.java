@@ -503,8 +503,6 @@ public class SnapShotGenerationXTests {
   }
 
   private void testGen(boolean fail, TestDetails test) throws Exception {
-    org.hl7.fhir.r4.model.Resource r = new org.hl7.fhir.r4.formats.JsonParser().parse(new FileInputStream("/Users/grahamegrieve/work/test-cases/rX/snapshot-generation/ILCorePractitioner-output.json"));
-    new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(new FileOutputStream("/Users/grahamegrieve/work/test-cases/rX/snapshot-generation/ILCorePractitioner-output.json"), r);
     if (!Utilities.noString(test.register)) {
       List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
       ProfileUtilities pu = new ProfileUtilities(UtilitiesXTests.context(version), messages, null);

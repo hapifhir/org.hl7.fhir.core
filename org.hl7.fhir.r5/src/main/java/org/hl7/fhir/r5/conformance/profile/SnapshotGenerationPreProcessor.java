@@ -138,9 +138,9 @@ public class SnapshotGenerationPreProcessor {
       if (!si.sliceStuff.isEmpty() && si.slices != null) {
         for (ElementDefinition ed : si.sliceStuff) {
           if (ed.hasSlicing() && !isExtensionSlicing(ed)) {
-            String message = context.formatMessage(I18nConstants.UNSUPPORTED_SLICING_COMPLEXITY, si.slicer.getPath(), ed.getPath());
-            throw new Error(message);
-            // throw new DefinitionException(message);
+            String message = context.formatMessage(I18nConstants.UNSUPPORTED_SLICING_COMPLEXITY, si.slicer.getPath(), ed.getPath(), ed.getSlicing().summary());
+            System.out.println(message);
+            return;
           }
         }
       }
@@ -270,8 +270,7 @@ public class SnapshotGenerationPreProcessor {
         StructureDefinition sd = context.fetchTypeDefinition(pn);
         if (sd == null) {
           String message = context.formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, pn, ed.getPath());
-          throw new Error(message);
-//          throw new DefinitionException(message);
+          throw new DefinitionException(message);
         }
         res.add(new ElementAnalysis(sd, sd.getSnapshot().getElementFirstRep(), null));
       } else {
@@ -300,8 +299,7 @@ public class SnapshotGenerationPreProcessor {
         }
         if (t == null) {
           String message = context.formatMessage(I18nConstants.UNKNOWN_PROPERTY, pn, ed.getPath());
-          throw new Error(message);
-//          throw new DefinitionException("Unknown path "+pn+" in path "+ed.getPath());          
+          throw new DefinitionException("Unknown path "+pn+" in path "+ed.getPath());          
         } else {
           res.add(new ElementAnalysis(sed.getChildren().getSource(), t, type));
         }
@@ -409,7 +407,7 @@ public class SnapshotGenerationPreProcessor {
     if (!Utilities.existsInList(ed.getName(), "extension", "modiferExtension")) {
       return false;
     }
-    if (ed.getSlicing().getRules() != SlicingRules.OPEN || ed.getSlicing().getOrdered() || ed.getSlicing().getDiscriminator().size() != 1) {
+    if (ed.getSlicing().getRules() != SlicingRules.OPEN || (!ed.getSlicing().hasOrdered() || ed.getSlicing().getOrdered()) || ed.getSlicing().getDiscriminator().size() != 1) {
       return false;
     }
     ElementDefinitionSlicingDiscriminatorComponent d = ed.getSlicing().getDiscriminatorFirstRep();
