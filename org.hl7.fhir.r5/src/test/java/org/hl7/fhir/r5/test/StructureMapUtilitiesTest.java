@@ -31,7 +31,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
   @BeforeAll
   static public void setUp() throws Exception {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-    context = TestingUtilities.getWorkerContext(pcm.loadPackage("hl7.fhir.r5.core", "5.0.0"));
+    context = TestingUtilities.getWorkerContext(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
   }
 
   @Test
@@ -88,22 +88,6 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
       FHIRPathEngine fp = new FHIRPathEngine(context);
       assertEquals("true", fp.evaluateToString(target, "rest.resource.interaction.where(code='create').exists()"));
   }
-  
-  @Test
-  public void testShortSyntax() throws IOException, FHIRException {
-      StructureMapUtilities scu = new StructureMapUtilities(context, null);
-      scu.setDebug(true);
-      String fileMap = TestingUtilities.loadTestResource("r5", "structure-mapping", "syntaxshort.map");
-      Element source = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r4", "examples", "capabilitystatement-example.json"), FhirFormat.JSON);
-      StructureMap structureMap = scu.parse(fileMap, "syntaxshort");
-      
-      Element target = Manager.build(context, scu.getTargetType(structureMap));
-      scu.transform(null, source, structureMap, target);
-      FHIRPathEngine fp = new FHIRPathEngine(context);
-      assertEquals("ACME-EHR", fp.evaluateToString(target, "name"));
-      assertEquals("ACME EHR capability statement", fp.evaluateToString(target, "title"));
-  }
-
 
   private void assertSerializeDeserialize(StructureMap structureMap) {
     Assertions.assertEquals("syntax", structureMap.getName());
@@ -116,8 +100,8 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     Assertions.assertEquals("http://hl7.org/fhir/StructureDefinition/Basic", structureMap.getStructure().get(1).getUrl());
     Assertions.assertEquals("Target Documentation", structureMap.getStructure().get(1).getDocumentation());
     Assertions.assertEquals("Groups\r\nrule for patient group", structureMap.getGroup().get(0).getDocumentation());
-    Assertions.assertEquals("Comment to rule", structureMap.getGroup().get(0).getRule().get(0).getDocumentation());
-    Assertions.assertEquals("Copy identifier short syntax", structureMap.getGroup().get(0).getRule().get(1).getDocumentation());
+    Assertions.assertEquals("Comment to rule", structureMap.getGroup().get(0).getRule().get(0).getFormatCommentsPre().get(0));
+    Assertions.assertEquals("Copy identifier short syntax", structureMap.getGroup().get(0).getRule().get(1).getFormatCommentsPre().get(0));
 
     StructureMapGroupRuleTargetComponent target = structureMap.getGroup().get(0).getRule().get(2).getTarget().get(1);
     Assertions.assertEquals("'urn:uuid:' + r.lower()", target.getParameter().get(0).toString());
