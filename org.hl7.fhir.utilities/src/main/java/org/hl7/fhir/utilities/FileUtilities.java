@@ -348,6 +348,27 @@ public class FileUtilities {
     }
   }
 
+  /**
+   * Delete a directory atomically by first renaming it to a temp directory in
+   * its parent, and then deleting its contents.
+   *
+   * @param path The directory to delete.
+   */
+  public static void atomicDeleteDirectory(String path) throws IOException {
+
+      File directory = ManagedFileAccess.file(path);
+
+      String tempDirectoryPath = Utilities.generateUniqueRandomUUIDPath(directory.getParent());
+      File tempDirectory = ManagedFileAccess.file(tempDirectoryPath);
+     if (!directory.renameTo(tempDirectory)) {
+       throw new IOException("Unable to rename directory " + path + " to " + tempDirectory +" for atomic delete");
+     }
+     clearDirectory(tempDirectory.getAbsolutePath());
+     if (!tempDirectory.delete()) {
+       throw new IOException("Unable to delete temp directory " + tempDirectory + " when atomically deleting " + path);
+     }
+  }
+
   public interface FileVisitor {
     void visitFile(File file) throws FileNotFoundException, IOException;
   }

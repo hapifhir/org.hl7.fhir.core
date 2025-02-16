@@ -14,14 +14,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -299,6 +292,21 @@ public class Utilities {
       first = false;
     }
     return s.toString();
+  }
+
+  public static String generateUniqueRandomUUIDPath(String path) throws IOException {
+    String randomUUIDPath = null;
+
+    while (randomUUIDPath == null) {
+      final String uuid = UUID.randomUUID().toString().toLowerCase();
+      final String pathCandidate = Utilities.path(path, uuid);
+
+      if (!ManagedFileAccess.file(pathCandidate).exists()) {
+        randomUUIDPath = pathCandidate;
+      }
+    }
+
+    return randomUUIDPath;
   }
 
   public static String cleanupTextString(String contents) {
