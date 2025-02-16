@@ -145,7 +145,7 @@ public class ProfilePathProcessor {
         .withResult(derived.getSnapshot())
         .withDifferential(differential)
         .withBaseLimit(baseSnapshot.getElement().size() - 1)
-        .withDiffLimit(derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size() - 1 : -1)
+        .withDiffLimit(differential.hasElement() ? differential.getElement().size() - 1 : -1)
         .withUrl(url)
         .withWebUrl(webUrl)
         .withProfileName(derived.present())

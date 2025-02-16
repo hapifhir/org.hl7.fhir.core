@@ -1449,6 +1449,37 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return (ordered == null ? "??" : "true".equals(ordered.asStringValue()) ? "ordered" : "unordered")+"/"+
             (rules == null ? "??" : rules.asStringValue())+" "+discriminator.toString();
       }
+
+      public String summary() {
+        StringBuilder b = new StringBuilder();
+        if (!hasRulesElement() && !hasOrdered() && !hasDiscriminator()) {
+          return "(no slicing)";
+        }
+        if (hasRulesElement() || hasOrdered()) {
+          if (hasRulesElement() && hasOrdered()) {
+            b.append((getOrdered() ? "orderer" : "unordered")+" and " +getRules().toCode()+", by");            
+          } else if (hasRules()) {
+            b.append(getRules().toCode()+", by");
+          } else if (getOrdered()) {
+            b.append("ordered, by");
+          } else {
+            b.append("unordered, by");            
+          }
+        } 
+        boolean first = true;
+        for (ElementDefinitionSlicingDiscriminatorComponent d : getDiscriminator()) {
+          if (first) {
+            first = false;
+          } else {
+            b.append(",");
+          }
+          b.append(" ");
+          b.append(d.getType().toCode());
+          b.append("=");
+          b.append(d.getPath());
+        }
+        return b.toString();
+      }
     }
 
     @Block()
@@ -13119,6 +13150,10 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     return !Utilities.existsInList(getMax(), "0", "1");
   }
 
+  public String getIdOrPath() {
+    return hasId() ? getId() : getPath();
+  }
+  
 // end addition
 
 }

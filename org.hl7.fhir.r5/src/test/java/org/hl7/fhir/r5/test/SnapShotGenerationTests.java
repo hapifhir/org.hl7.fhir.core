@@ -17,6 +17,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
+import org.hl7.fhir.r5.conformance.profile.SnapshotGenerationPreProcessor;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.AllowUnknownProfile;
@@ -45,6 +46,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
@@ -116,6 +118,7 @@ public class SnapShotGenerationTests {
     private StructureDefinition output;
     public AllowUnknownProfile allow;
     private boolean json;
+    private boolean sourceJson;
 
     public TestDetails(Element test) {
       super();
@@ -199,10 +202,13 @@ public class SnapShotGenerationTests {
     }
 
     public void load() throws FHIRFormatError, FileNotFoundException, IOException {
-      if (TestingUtilities.findTestResource("r5", "snapshot-generation", id + "-input.json"))
+      if (TestingUtilities.findTestResource("r5", "snapshot-generation", id + "-input.json")) {
+        sourceJson = true;
         source = (StructureDefinition) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", id + "-input.json"));
-      else
+      } else {
+        sourceJson = false;
         source = (StructureDefinition) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", id + "-input.xml"));
+      }
       if (!fail) {
         if (TestingUtilities.findTestResource("r5", "snapshot-generation", id + "-expected.json")) {
           json = true;
@@ -518,6 +524,7 @@ public class SnapShotGenerationTests {
   }
 
   private void testGen(boolean fail, TestDetails test, SnapShotGenerationTestsContext context) throws Exception {
+    FileUtilities.createDirectory(Utilities.path("[tmp]", "snapshot", "input"));
     if (!Utilities.noString(test.register)) {
       List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
       ProfileUtilities pu = new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), messages, null);
@@ -568,6 +575,15 @@ public class SnapShotGenerationTests {
       if (errors.size() > 0)
         throw new FHIRException("Sort failed: " + errors.toString());
     }
+    StructureDefinition sdc = test.getSource().copy();
+    new SnapshotGenerationPreProcessor(pu).process(sdc.getDifferential());
+    if (test.sourceJson) {
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.json")), sdc);
+    } else {
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.xml")), sdc);
+    }
+
+    
     try {
       messages.clear();
       pu.generateSnapshot(base, output, test.getSource().getUrl(), "http://test.org/profile", test.getSource().getName());

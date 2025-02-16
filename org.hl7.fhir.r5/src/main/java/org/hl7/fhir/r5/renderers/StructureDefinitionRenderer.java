@@ -146,12 +146,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   } 
  
-  public class SourcedElementDefinition { 
+  public static class SourcedElementDefinition { 
     private StructureDefinition profile; 
     private ElementDefinition definition; 
      
      
-    protected SourcedElementDefinition(StructureDefinition profile, ElementDefinition definition) { 
+    public SourcedElementDefinition(StructureDefinition profile, ElementDefinition definition) { 
       super(); 
       this.profile = profile; 
       this.definition = definition; 
