@@ -43,6 +43,10 @@ public class TypeManager {
     }    
   }
 
+  protected Iterable<String> getTypeNames() {
+    return typeDefinitions.keySet();
+  }
+
   public void see(CanonicalResourceProxy r) {
     if (!"constraint".equals(r.getDerivation())) {
       see((StructureDefinition) r.getResource());

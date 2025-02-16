@@ -616,12 +616,12 @@ public class ProfilePathProcessor {
         }
       }
       if (firstTypeStructureDefinition != null) {
-        if (!profileUtilities.isGenerating(firstTypeStructureDefinition)) { // can't do this check while generating
+        if (!firstTypeStructureDefinition.isGeneratingSnapshot()) { // can't do this check while generating
           if (!profileUtilities.isMatchingType(firstTypeStructureDefinition, diffMatches.get(0).getType(), firstTypeProfile.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT))) {
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE2, firstTypeStructureDefinition.getUrl(), diffMatches.get(0).getPath(), firstTypeStructureDefinition.getType(), firstTypeProfile.getValue(), diffMatches.get(0).getType().get(0).getWorkingCode()));
           }
         }
-        if (profileUtilities.isGenerating(firstTypeStructureDefinition)) {
+        if (firstTypeStructureDefinition.isGeneratingSnapshot()) {
           // this is a special case, because we're only going to access the first element, and we can rely on the fact that it's already populated.
           // but we check anyway
           if (firstTypeStructureDefinition.getSnapshot().getElementFirstRep().isEmpty()) {
@@ -643,7 +643,7 @@ public class ProfilePathProcessor {
               src = t;
           }
           if (src == null) {
-            if (profileUtilities.isGenerating(firstTypeStructureDefinition)) {
+            if (firstTypeStructureDefinition.isGeneratingSnapshot()) {
               System.out.println("At this time the reference to "+eid+" cannot be handled - consult Grahame Grieve"); 
             } else if (Utilities.existsInList(currentBase.typeSummary(), "Extension", "Resource")) {
               throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT__IN_, eid, firstTypeProfile.getValue()));
