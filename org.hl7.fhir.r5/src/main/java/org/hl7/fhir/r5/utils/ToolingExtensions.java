@@ -285,8 +285,8 @@ public class ToolingExtensions {
   public static final String EXT_FHIRVERSION_SPECIFIC_USE_START = "startFhirVersion";
   public static final String EXT_FHIRVERSION_SPECIFIC_USE_END = "endFhirVersion";
   public static final String EXT_VERSION_BASE = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-base-version";
-  public static final String EXT_LOAD_AS_RESOURCE = "http://hl7.org/fhir/tools/StructureDefinition/load-as-resource";
-  public static final String EXT_USE_AS_RESOURCE_ID = "http://hl7.org/fhir/tools/StructureDefinition/use-as-resource-id";
+  public static final String EXT_LOAD_AS_RESOURCE = "http://hl7.org/fhir/tools/StructureDefinition/ig-load-as-resource";
+  public static final String EXT_USE_AS_RESOURCE_ID = "http://hl7.org/fhir/tools/StructureDefinition/ig-use-as-resource-id";
   
   // specific extension helpers
 

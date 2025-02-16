@@ -1,6 +1,7 @@
 package org.hl7.fhir.conversion.tests;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -190,6 +191,7 @@ public class SnapShotGenerationXTests {
           expected = (StructureDefinition) XVersionLoader.loadJson(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-output.json"));
         } else
           expected = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-output.xml"));
+        
       }
       if (!Utilities.noString(include))
         included.add((StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", include + ".xml")));
@@ -573,9 +575,9 @@ public class SnapShotGenerationXTests {
       if (dst.exists())
         dst.delete();
       if (test.outputIsJson) {
-        XVersionLoader.saveJson("5.0", output, ManagedFileAccess.outStream(dst.getAbsolutePath()));
+        XVersionLoader.saveJson(version, output, ManagedFileAccess.outStream(dst.getAbsolutePath()));
       } else {
-        XVersionLoader.saveXml("5.0", output, ManagedFileAccess.outStream(dst.getAbsolutePath()));
+        XVersionLoader.saveXml(version, output, ManagedFileAccess.outStream(dst.getAbsolutePath()));
       }
       if (test.outputIsJson) {
         XVersionLoader.saveJson(version, test.expected, ManagedFileAccess.outStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected" + (test.outputIsJson ? ".json" : ".xml"))));
