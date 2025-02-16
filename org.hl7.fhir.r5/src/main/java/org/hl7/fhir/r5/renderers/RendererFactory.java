@@ -45,6 +45,8 @@ public class RendererFactory {
     case "SubscriptionTopic": return new SubscriptionTopicRenderer(context);
     case "TestPlan": return new TestPlanRenderer(context);
     case "ValueSet": return new ValueSetRenderer(context);
+    case "ViewDefinition": return new ViewDefinitionRenderer(context);
+    case "WebTemplate": return new WebTemplateRenderer(context);
     }
     return new ProfileDrivenRenderer(context);    
   }
@@ -73,6 +75,7 @@ public class RendererFactory {
     case "DiagnosticReport": return new DiagnosticReportRenderer(context);
     case "Library": return new LibraryRenderer(context);
     case "ViewDefinition": return new ViewDefinitionRenderer(context);
+    case "WebTemplate": return new WebTemplateRenderer(context);
     case "FeatureDefinition": return new FeatureDefinitionRenderer(context);
     case "List": return new ListRenderer(context);
     case "Patient": return new PatientRenderer(context);
