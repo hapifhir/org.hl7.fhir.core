@@ -509,6 +509,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String RES_REND_UNKNOWN = "RES_REND_UNKNOWN";
   public static final String RES_REND_UPDATED = "RES_REND_UPDATED";
   public static final String RES_REND_VER = "RES_REND_VER";
+  public static final String RES_REND_TEMPLATE_ID = "RES_REND_TEMPLATE_ID";
   public static final String SD_COMP_HEAD_CARD_L = "SD_COMP_HEAD_CARD_L";
   public static final String SD_COMP_HEAD_CARD_L_DESC  ="SD_COMP_HEAD_CARD_L_DESC";
   public static final String SD_COMP_HEAD_CARD_R = "SD_COMP_HEAD_CARD_R";
