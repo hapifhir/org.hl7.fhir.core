@@ -399,8 +399,6 @@ public class SnapshotGenerationPreProcessor {
     if (base.hasBinding() && !focus.hasBinding()) {
       focus.setBinding(base.getBinding());
     }
-
-
   }
 
   private boolean isExtensionSlicing(ElementDefinition ed) {
