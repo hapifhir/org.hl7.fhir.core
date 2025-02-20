@@ -521,7 +521,7 @@ public class Utilities {
       if (arg != null) {
         if (!d)
           d = !noString(arg);
-        else if (s.toString() != null && !s.toString().endsWith("/") && !arg.startsWith("/"))
+        else if (s.toString() != null && !s.toString().endsWith("/") && !arg.startsWith("/") && !arg.startsWith("?") && !arg.startsWith("&"))
           s.append("/");
         s.append(arg);
       }
@@ -1176,6 +1176,17 @@ public class Utilities {
     list.addAll(set);
     Collections.sort(list);
     return list;
+  }
+
+  public static List<String> sortedReverse(Collection<String> set) {
+    List<String> list = new ArrayList<>();
+    list.addAll(set);
+    Collections.sort(list);
+    List<String> rlist = new ArrayList<>();
+    for (int i = list.size()-1; i >= 0; i--) {
+      rlist.add(list.get(i));
+    }
+    return rlist;
   }
 
   public static List<String> sorted(String[] set) {

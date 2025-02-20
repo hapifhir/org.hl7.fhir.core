@@ -449,14 +449,16 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   public ValueSet expandValueset(ValueSet source, Parameters expParams) {
     recordUse();
     Parameters p = expParams == null ? new Parameters() : expParams.copy();
-    p.addParameter().setName("valueSet").setResource(source);
+    if (source != null) {
+      p.addParameter().setName("valueSet").setResource(source);
+    }
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand"),
           ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
           withVer(getPreferredResourceFormat(), "4.0"),
           generateHeaders(true),
-          "ValueSet/$expand?url=" + source.getUrl(),
+          source == null ? "ValueSet/$expand" : "ValueSet/$expand?url=" + source.getUrl(),
           timeoutExpand);
     } catch (IOException e) {
       throw new FHIRException(e);
