@@ -243,7 +243,7 @@ public class TestPlanRenderer extends ResourceRenderer {
         tr.td().addText("??");
       }
       if (script.has("source")) {
-        renderDataType(status, tr.td(), script.child("script"));
+        renderDataType(status, tr.td(), script.child("source"));
       } else {
         tr.td().addText("??");
       }
