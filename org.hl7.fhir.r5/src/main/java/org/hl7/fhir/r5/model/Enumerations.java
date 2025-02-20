@@ -19101,9 +19101,13 @@ The primary difference between a medicationstatement and a medicationadministrat
         /**
          * null
          */
-        SUBSTANCESPECIFICATION, 
+        SUBSTANCESPECIFICATION,
         /**
-         * added to help the parsers
+         * Added in R6
+         */
+        MOLECULARDEFINITION,
+        /**
+           * added to help the parsers
          */
         NULL;
         public static VersionIndependentResourceTypesAll fromCode(String codeString) throws FHIRException {
@@ -19513,8 +19517,10 @@ The primary difference between a medicationstatement and a medicationadministrat
           return SEQUENCE;
         if ("ServiceDefinition".equals(codeString))
           return SERVICEDEFINITION;
-        if ("SubstanceSpecification".equals(codeString))
-          return SUBSTANCESPECIFICATION;
+          if ("SubstanceSpecification".equals(codeString))
+            return SUBSTANCESPECIFICATION;
+          if ("MolecularDefinition".equals(codeString))
+            return MOLECULARDEFINITION;
         throw new FHIRException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
         }
         public static boolean isValidCode(String codeString) {
@@ -19727,6 +19733,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SEQUENCE: return "Sequence";
             case SERVICEDEFINITION: return "ServiceDefinition";
             case SUBSTANCESPECIFICATION: return "SubstanceSpecification";
+            case MOLECULARDEFINITION: return "MolecularDefinition";
             case NULL: return null;
             default: return "?";
           }
@@ -19936,6 +19943,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SEQUENCE: return "http://hl7.org/fhir/fhir-old-types";
             case SERVICEDEFINITION: return "http://hl7.org/fhir/fhir-old-types";
             case SUBSTANCESPECIFICATION: return "http://hl7.org/fhir/fhir-old-types";
+            case MOLECULARDEFINITION: return "http://hl7.org/fhir/fhir-old-types";
             case NULL: return null;
             default: return "?";
           }
@@ -20145,6 +20153,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SEQUENCE: return "";
             case SERVICEDEFINITION: return "";
             case SUBSTANCESPECIFICATION: return "";
+            case MOLECULARDEFINITION: return "";
             case NULL: return null;
             default: return "?";
           }
@@ -20354,6 +20363,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case SEQUENCE: return "Sequence";
             case SERVICEDEFINITION: return "ServiceDefinition";
             case SUBSTANCESPECIFICATION: return "SubstanceSpecification";
+            case MOLECULARDEFINITION: return "MolecularDefinition";
             case NULL: return null;
             default: return "?";
           }
@@ -20769,8 +20779,10 @@ The primary difference between a medicationstatement and a medicationadministrat
           return VersionIndependentResourceTypesAll.SEQUENCE;
         if ("ServiceDefinition".equals(codeString))
           return VersionIndependentResourceTypesAll.SERVICEDEFINITION;
-        if ("SubstanceSpecification".equals(codeString))
-          return VersionIndependentResourceTypesAll.SUBSTANCESPECIFICATION;
+      if ("SubstanceSpecification".equals(codeString))
+        return VersionIndependentResourceTypesAll.SUBSTANCESPECIFICATION;
+      if ("MolecularDefinition".equals(codeString))
+        return VersionIndependentResourceTypesAll.MOLECULARDEFINITION;
         throw new IllegalArgumentException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
         }
 
@@ -21186,8 +21198,10 @@ The primary difference between a medicationstatement and a medicationadministrat
           return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.SEQUENCE, code);
         if ("ServiceDefinition".equals(codeString))
           return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.SERVICEDEFINITION, code);
-        if ("SubstanceSpecification".equals(codeString))
-          return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.SUBSTANCESPECIFICATION, code);
+          if ("SubstanceSpecification".equals(codeString))
+            return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.SUBSTANCESPECIFICATION, code);
+          if ("MolecularDefinition".equals(codeString))
+            return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.MOLECULARDEFINITION, code);
         throw new FHIRException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
         }
     public String toCode(VersionIndependentResourceTypesAll code) {
@@ -21599,6 +21613,8 @@ The primary difference between a medicationstatement and a medicationadministrat
         return "ServiceDefinition";
       if (code == VersionIndependentResourceTypesAll.SUBSTANCESPECIFICATION)
         return "SubstanceSpecification";
+      if (code == VersionIndependentResourceTypesAll.MOLECULARDEFINITION)
+        return "MolecularDefinition";
       return "?";
    }
     public String toSystem(VersionIndependentResourceTypesAll code) {
