@@ -88,7 +88,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         }
       }
       switch (res.fhirType()) {
-      case "Binary" : return res.fhirType()+": "+ res.primitiveValue("data").length()+" chars (base64)";
+      case "Binary" : return res.fhirType()+": "+res.primitiveValue("contentType")+" ("+res.primitiveValue("data").length()+" bytes base64)";
       }
       return generateResourceSummary(res, profile, profile.getSnapshot().getElementFirstRep(), false, false);
     }
