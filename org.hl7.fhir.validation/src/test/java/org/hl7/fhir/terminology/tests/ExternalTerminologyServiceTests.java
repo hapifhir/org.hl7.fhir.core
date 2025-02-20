@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -51,12 +52,12 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
 
   private static final String SERVER = FhirSettings.getTxFhirDevelopment();  
 
-  
+
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
 
     txtests = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev");
-    
+
     String contents = txtests.load("test-cases.json");
     externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(txtests.load("messages-tx.fhir.org.json"));
 
@@ -76,8 +77,9 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
 
     List<Object[]> objects = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
-        objects.add(new Object[]{id, examples.get(id)});
+      objects.add(new Object[]{id, examples.get(id)});
     }
+    objects.add(new Object[]{"final", null});
     return objects;
   }
 
@@ -87,30 +89,49 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   private String version = "5.0.0";
   private static TxTester tester;
   private Set<String> modes = new HashSet<>();
+  private static int error = 0;
+  private static int count = 0;
   private static TxTestData txtests;
 
   public ExternalTerminologyServiceTests(String name, JsonObjectPair setup) {
     this.setup = setup;
   }
-  
+
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
-    if (SERVER != null) {
-      if (tester == null) {
-        tester = new TxTester(this, SERVER, true, externals);
+    if (setup == null) {
+      if (error == 0) {
+        System.out.println("tx.fhir.org passed all "+count+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
+      } else {
+        System.out.println("tx.fhir.org failed "+error+" of "+count+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
       }
-
-      if (setup.suite.asBoolean("disabled") || setup.test.asBoolean("disabled")) {
-        return;
-      }
-      String err = tester.executeTest(this, setup.suite, setup.test, modes);
-      Assertions.assertTrue(err == null, err);
+      Assertions.assertTrue(error == 0);
     } else {
-      Assertions.assertTrue(true);
+      count++;
+      if (SERVER != null) {
+        if (tester == null) {
+          tester = new TxTester(this, SERVER, true, externals);
+        }
+
+        if (setup.suite.asBoolean("disabled") || setup.test.asBoolean("disabled")) {
+          return;
+        }
+        String err = tester.executeTest(this, setup.suite, setup.test, modes);
+        if (err != null) {
+          error++;
+        }
+        Assertions.assertTrue(err == null, err);
+      } else {
+        Assertions.assertTrue(true);
+      }
     }
   }
-  
+
+  private String loadVersion() throws JsonException, IOException {
+    return txtests.loadVersion();
+  }
+
   public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
     String contents = txtests.load(filename);
     try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
