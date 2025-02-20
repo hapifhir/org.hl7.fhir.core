@@ -2871,8 +2871,15 @@ public class ProfileUtilities {
                     addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Binding "+derived.getBinding().getValueSet()+" is not a subset of binding "+base.getBinding().getValueSet(), ValidationMessage.IssueSeverity.ERROR));
                   }
                 }
-              } else if (!isSubset(expBase.getValueset(), expDerived.getValueset()))
-                addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Binding "+derived.getBinding().getValueSet()+" is not a subset of binding "+base.getBinding().getValueSet(), ValidationMessage.IssueSeverity.ERROR));
+              } else if (expBase.getValueset().getExpansion().getContains().size() == 1000 || 
+                  expDerived.getValueset().getExpansion().getContains().size() == 1000) {
+                addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Unable to check if "+derived.getBinding().getValueSet()+" is a proper subset of " +base.getBinding().getValueSet()+" - value set is too large to check", ValidationMessage.IssueSeverity.WARNING));
+              } else {
+                 String msgs = checkSubset(expBase.getValueset(), expDerived.getValueset());
+                 if (msgs != null) {
+                  addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Binding "+derived.getBinding().getValueSet()+" is not a subset of binding "+base.getBinding().getValueSet()+" because "+msgs, ValidationMessage.IssueSeverity.ERROR));
+                }
+              }
             }
           }
           ElementDefinitionBindingComponent d = derived.getBinding();
@@ -3167,21 +3174,24 @@ public class ProfileUtilities {
   }
 
 
-  private boolean isSubset(ValueSet expBase, ValueSet expDerived) {
-    return codesInExpansion(expDerived.getExpansion().getContains(), expBase.getExpansion());
+  private String checkSubset(ValueSet expBase, ValueSet expDerived) {
+    Set<String> codes = new HashSet<>();
+    checkCodesInExpansion(codes, expDerived.getExpansion().getContains(), expBase.getExpansion());
+    if (codes.isEmpty()) {
+      return null;
+    } else {
+      return "The codes '"+CommaSeparatedStringBuilder.join(",", codes)+"' are not in the base valueset";
+    }
   }
 
 
-  private boolean codesInExpansion(List<ValueSetExpansionContainsComponent> contains, ValueSetExpansionComponent expansion) {
+  private void checkCodesInExpansion(Set<String> codes, List<ValueSetExpansionContainsComponent> contains, ValueSetExpansionComponent expansion) {
     for (ValueSetExpansionContainsComponent cc : contains) {
       if (!inExpansion(cc, expansion.getContains())) {
-        return false;
+        codes.add(cc.getCode());
       }
-      if (!codesInExpansion(cc.getContains(), expansion)) {
-        return false;
-      }
+      checkCodesInExpansion(codes, cc.getContains(), expansion);
     }
-    return true;
   }
 
 
