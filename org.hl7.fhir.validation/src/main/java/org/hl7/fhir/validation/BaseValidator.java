@@ -1523,9 +1523,19 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return url != null && url.contains("hl7");
   }
 
+  protected boolean isHL7Org(Element cr) {
+    String url = cr.getChildValue("url");
+    return url != null && url.startsWith("http://hl7.org/fhir/");
+  }
+
   protected boolean isHL7Core(Element cr) {
     String url = cr.getChildValue("url");
-    return url != null && url.startsWith("http://hl7.org/fhir/") && !url.startsWith("http://hl7.org/fhir/test");
+    if ("CodeSystem".equals(cr.fhirType())) {
+      if (("http://hl7.org/fhir/"+cr.getIdBase()).equals(url)) {
+        return true;
+      }
+    }
+    return url != null && url.startsWith("http://hl7.org/fhir/"+cr.fhirType());
   }
 
   public boolean isAllowExamples() {
