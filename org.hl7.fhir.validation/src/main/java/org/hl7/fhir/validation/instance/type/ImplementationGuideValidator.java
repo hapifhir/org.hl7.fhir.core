@@ -75,7 +75,7 @@ public class ImplementationGuideValidator extends BaseValidator {
       i++;
     }
 
-    if (isHL7(ig)) {
+    if (isHL7Org(ig)) {
       ok = rule(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS), I18nConstants.IG_HL7_STANDARDS_STATUS_REQUIRED) && ok;               
       ok = rule(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ToolingExtensions.EXT_WORKGROUP), I18nConstants.IG_HL7_WG_REQUIRED) && ok;               
       warning(errors, "2025-02-13", IssueType.BUSINESSRULE, ig.line(), ig.col(), stack.getLiteralPath(), ig.hasExtension(ToolingExtensions.EXT_FMM_LEVEL), I18nConstants.IG_HL7_FMM_SHOULD);               
