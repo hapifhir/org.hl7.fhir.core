@@ -17,7 +17,7 @@ public class NpmPackageVersionConverterTests implements ResourceLoaderTests {
 
   public void testNormalTgz() throws IOException {
     InputStream tgzStream = getResourceAsInputStream("misc", "npmPackageVersionConverter", "tgz-normal.tgz");
-    NpmPackageVersionConverter converter = new NpmPackageVersionConverter(null, null, "r5", null);
+    NpmPackageVersionConverter converter = new NpmPackageVersionConverter(null, null, "r5", null, null);
     Map<String, byte[]> contents = converter.loadContentMap(tgzStream);
     String actual = new String(contents.get("depth1/test.txt"), StandardCharsets.UTF_8);
     assertEquals("dummy file content", actual);
@@ -27,7 +27,7 @@ public class NpmPackageVersionConverterTests implements ResourceLoaderTests {
   public void testEvilTgz() throws IOException {
     RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
       InputStream tgzStream = getResourceAsInputStream("misc", "npmPackageVersionConverter", "tgz-evil.tgz");
-      NpmPackageVersionConverter converter = new NpmPackageVersionConverter(null, null, "r5", null);
+      NpmPackageVersionConverter converter = new NpmPackageVersionConverter(null, null, "r5", null, null);
       converter.loadContentMap(tgzStream);
     });
     assertNotNull(thrown);
