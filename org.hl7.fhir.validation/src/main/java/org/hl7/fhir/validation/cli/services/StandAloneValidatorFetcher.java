@@ -39,6 +39,7 @@ import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ReferenceDestinationType;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
@@ -178,8 +179,9 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   public ReferenceValidationPolicy policyForReference(IResourceValidator validator,
                                                       Object appContext,
                                                       String path,
-                                                      String url) {
-    return policyAdvisor.policyForReference(validator, appContext, path, url);
+                                                      String url,
+                                                      ReferenceDestinationType destinationType) {
+    return policyAdvisor.policyForReference(validator, appContext, path, url, destinationType);
   }
   
   @Override
