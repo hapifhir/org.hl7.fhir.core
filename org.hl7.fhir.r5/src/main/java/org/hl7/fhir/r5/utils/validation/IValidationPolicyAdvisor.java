@@ -13,6 +13,7 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ElementValidationAction;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ReferenceDestinationType;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationAction;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
@@ -22,17 +23,32 @@ public interface IValidationPolicyAdvisor {
 
 
 
+  public enum ReferenceDestinationType {
+    CONTAINED, // the reference points to a contained resource in the resource being validated
+    INTERNAL,  // the reference points to another resource in the scope of what is being validated  
+    EXTERNAL   // the reference points outside what is being validated. 
+       // Note that at the point this is called, the validator has not tried to see whether the reference 
+       // is resolvable based on the resources made available to it
+  }
+
   public IValidationPolicyAdvisor getPolicyAdvisor();
   public IValidationPolicyAdvisor setPolicyAdvisor(IValidationPolicyAdvisor policyAdvisor);
   
   /** 
-   * Internal use, for chaining advisors
+   * Internal use, for chaining advisors - if you define an implementation, you return the default policy.
+   * Usually, this is the policy for the operating policy advisor in place before your implementation is 
+   * registered, so keep a reference to that and pass the value through
    * 
    * @return
    */
   ReferenceValidationPolicy getReferencePolicy();
   
   /**
+   * Return true if the validation message for this message id should not be reported 
+   * 
+   * Note that this is generally a pretty blunt instrument. E.g. you might want to suppress 
+   * errors associated with a particular code system, but this can only suppress errors associated 
+   * with all code systems 
    * 
    * @param path - the current path of the element
    * @param messageId - the message id (from messages.properties)
@@ -41,7 +57,8 @@ public interface IValidationPolicyAdvisor {
   boolean isSuppressMessageId(String path, String messageId);
   
   /**
-   *
+   * Whether to try validating a reference, and if so, how much validation to apply
+   * 
    * @param validator
    * @param appContext What was originally provided from the app for it's context
    * @param path Path that led us to this resource.
@@ -51,9 +68,15 @@ public interface IValidationPolicyAdvisor {
   ReferenceValidationPolicy policyForReference(IResourceValidator validator,
                                                Object appContext,
                                                String path,
-                                               String url);
+                                               String url,
+                                               ReferenceDestinationType destinationType);
 
   /**
+   * whether to validate a contained resource. Note that if there's a reference to the
+   * contained resource (and there should be), then the policyForReference will override
+   * this value (e.g. if the result of policyForReference is CHECK_VALID, then the 
+   * resource will be validated, irrespective of the value of policyForContained)
+   * 
    * //TODO pass through the actual containing Element as opposed to the type, id
    * @param validator
    * @param appContext What was originally provided from the app for it's context
