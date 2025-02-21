@@ -6139,7 +6139,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = rule(errors, "2024-09-17", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), !"true".equals(exp), I18nConstants.VALIDATION_NO_EXPERIMENTAL_CONTENT) && ok;
         }
         
-        if (isHL7Core(element) && !isExample()) {
+        if (isHL7Org(element) && !isExample()) {
           ok = checkPublisherConsistency(valContext, errors, element, stack, contained) && ok;  
         }
         String version = element.getNamedChildValue("version");
