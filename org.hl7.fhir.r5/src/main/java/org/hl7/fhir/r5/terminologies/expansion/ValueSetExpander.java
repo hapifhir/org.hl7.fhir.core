@@ -507,21 +507,33 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return null;
   }
 
-  private void addCodeAndDescendents(WorkingContext wc, ValueSetExpansionContainsComponent focus, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp)  throws FHIRException, ETooCostly {
+  private void addCodeAndDescendents(WorkingContext wc, ValueSetExpansionContainsComponent focus, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp, String langDisplay)  throws FHIRException, ETooCostly {
     opContext.deadCheck("addCodeAndDescendents");
     focus.checkNoModifiers("Expansion.contains", "expanding");
     ValueSetExpansionContainsComponent np = null;
     for (String code : getCodesForConcept(focus, expParams)) {
-      ValueSetExpansionContainsComponent t = addCode(wc, focus.getSystem(), code, focus.getDisplay(), vsSrc.getLanguage(), parent, 
+      ValueSetExpansionContainsComponent t = addCode(wc, focus.getSystem(), code, focus.getDisplay(), langDisplay, parent, 
            convert(focus.getDesignation()), expParams, focus.getAbstract(), focus.getInactive(), filters, noInactive, false, vsProps, makeCSProps(focus.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), null, focus.getProperty(), null, focus.getExtension(), exp);
       if (np == null) {
         np = t;
       }
     }
     for (ValueSetExpansionContainsComponent c : focus.getContains())
-      addCodeAndDescendents(wc, c, np, expParams, filters, noInactive, vsProps, vsSrc, exp);
+      addCodeAndDescendents(wc, c, np, expParams, filters, noInactive, vsProps, vsSrc, exp, langDisplay);
   }
   
+  private String getLang(ValueSet vsSrc) {
+    if (vsSrc.hasLanguage()) {
+      return vsSrc.getLanguage();
+    }
+    for (ValueSetExpansionParameterComponent p : vsSrc.getExpansion().getParameter()) {
+      if ("displayLanguage".equals(p.getName())) {
+        return p.getValue().primitiveValue();
+      }
+    }
+    return null;
+  }
+
   private List<ConceptPropertyComponent> makeCSProps(String definition, List<ConceptPropertyComponent> list) {
     List<ConceptPropertyComponent> res = new ArrayList<>();
     if (!Utilities.noString(definition)) {
@@ -1162,7 +1174,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
     for (ValueSetExpansionContainsComponent cc : vs.getExpansion().getContains()) {
-      addCodeAndDescendents(dwc, cc, null, expParams, imports, noInactive, vsProps, vs, exp);
+      addCodeAndDescendents(dwc, cc, null, expParams, imports, noInactive, vsProps, vs, exp, getLang(vs));
     }
   }
 

@@ -59,7 +59,7 @@ public class SnomedUtilities {
   }
 
   public static String getSctLink(String version, String code, Parameters p) {
-    if (!Utilities.noString(code)) { 
+    if (!Utilities.noString(code) && !code.contains(":")) { 
       version = SnomedUtilities.getVersionFromParameters(p, version);
       String edId = SnomedUtilities.getEditionFromVersion(version);
       if (edId != null) {

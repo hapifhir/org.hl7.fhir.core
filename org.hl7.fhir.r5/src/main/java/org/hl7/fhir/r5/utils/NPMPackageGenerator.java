@@ -100,6 +100,10 @@ public class NPMPackageGenerator {
 
   private String destFile;
   private Set<String> created = new HashSet<String>();
+  public Set<String> getCreated() {
+    return created;
+  }
+
   private TarArchiveOutputStream tar;
   private ByteArrayOutputStream OutputStream;
   private BufferedOutputStream bufferedOutputStream;
@@ -111,14 +115,23 @@ public class NPMPackageGenerator {
   private String indexdb;
 
 
-  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, boolean notForPublication) throws FHIRException, IOException {
+  public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, boolean notForPublication) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
     start();
     List<String> fhirVersion = new ArrayList<>();
     for (Enumeration<FHIRVersion> v : ig.getFhirVersion())
       fhirVersion.add(v.asStringValue());
-    buildPackageJson(canonical, kind, url, date, ig, fhirVersion, notForPublication);
+    buildPackageJson(pid, canonical, kind, url, date, ig, fhirVersion, notForPublication);
+  }
+
+  public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, boolean notForPublication, String fhirVersion) throws FHIRException, IOException {
+    super();
+    this.destFile = destFile;
+    start();
+    List<String> fhirVersions = new ArrayList<>();
+    fhirVersions.add(fhirVersion);
+    buildPackageJson(pid, canonical, kind, url, date, ig, fhirVersions, notForPublication);
   }
 
   public static NPMPackageGenerator subset(NPMPackageGenerator master, String destFile, String id, String name, Date date, boolean notForPublication) throws FHIRException, IOException {
@@ -140,7 +153,7 @@ public class NPMPackageGenerator {
     super();
     this.destFile = destFile;
     start();
-    buildPackageJson(canonical, kind, url, date, ig, fhirVersion, notForPublication);
+    buildPackageJson(ig.getPackageId(), canonical, kind, url, date, ig, fhirVersion, notForPublication);
   }
 
   public NPMPackageGenerator(String destFile, JsonObject npm, Date date, boolean notForPublication) throws FHIRException, IOException {
@@ -164,7 +177,7 @@ public class NPMPackageGenerator {
     }
   }
 
-  private void buildPackageJson(String canonical, PackageType kind, String web, Date date, ImplementationGuide ig, List<String> fhirVersion, boolean notForPublication) throws FHIRException, IOException {
+  private void buildPackageJson(String pid, String canonical, PackageType kind, String web, Date date, ImplementationGuide ig, List<String> fhirVersion, boolean notForPublication) throws FHIRException, IOException {
     String dtHuman = new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(date);
     String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
 
@@ -188,7 +201,7 @@ public class NPMPackageGenerator {
     }
 
     JsonObject npm = new JsonObject();
-    npm.add("name", ig.getPackageId());
+    npm.add("name", pid);
     npm.add("version", ig.getVersion());
     igVersion = ig.getVersion();
     npm.add("tools-version", ToolsVersion.TOOLS_VERSION);
@@ -336,6 +349,16 @@ public class NPMPackageGenerator {
   }
 
 
+  public boolean hasFile(Category cat, String name) throws IOException {
+    String path = cat.getDirectory()+name;
+    if (path.length() > 100) {
+      name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString()+".json";
+      path = cat.getDirectory()+name;      
+    }
+      
+    return created.contains(path);    
+  }
+  
   public void addFile(Category cat, String name, byte[] content) throws IOException {
     String path = cat.getDirectory()+name;
     if (path.length() > 100) {

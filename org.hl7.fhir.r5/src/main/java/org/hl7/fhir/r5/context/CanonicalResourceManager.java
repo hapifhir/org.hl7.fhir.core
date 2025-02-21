@@ -48,6 +48,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       this.version = version;
       this.supplements = supplements;
       this.content = content;
+      this.derivation = derivation;
     }
     
     public String getType() {

@@ -116,7 +116,6 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
       return;
     }
     if (setup == null) {
-      count++;
       if (error == 0) {
         System.out.println("tx.fhir.org passed all "+count+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
       } else {

@@ -265,11 +265,45 @@ public class TxTester {
       outputDir = Utilities.path("[tmp]", serverId());
     }
     
-    // todo: we don't necessarily want R4:
-    FileUtilities.createDirectory(Utilities.path(outputDir, "conversions", "r4"));
-    FileUtilities.createDirectory(Utilities.path(outputDir, "conversions", "r5"));    
-    ITerminologyClient client = new TerminologyClientFactory(FhirPublication.R4).makeClient("Test-Server", server, "Tools/Java", null);
-    client.setConversionLogger(conversionLogger);
+    String fhirVersion = null;
+    try {
+      JsonObject vl = JsonParser.parseObjectFromUrl(Utilities.pathURL(server, "$versions", "?_format=json"));
+      for (JsonObject v : vl.forceArray("parameter").asJsonObjects()) {
+        if ("default".equals(v.asString("name"))) {
+          fhirVersion = v.asString("valueString");
+        }
+      }
+      if (fhirVersion != null) {
+        System.out.println("Server version "+fhirVersion+" from $versions");
+      }
+      
+    } catch (Exception e) {
+      System.out.println("Server does not support $versions: "+e.getMessage());
+    }
+    if (fhirVersion == null) {
+      try {
+        JsonObject cs = JsonParser.parseObjectFromUrl(Utilities.pathURL(server, "metadata", "?_format=json"));
+        fhirVersion = cs.asString("fhirVersion");
+        System.out.println("Server version "+fhirVersion+" from /metadata");
+      } catch (Exception e) {
+        System.out.println("Error checking server version: "+e.getMessage());
+        System.out.println("Defaulting to FHIR R4");
+        fhirVersion = "4.0";
+      }
+    }
+    
+    ITerminologyClient client = null;
+    
+    if (VersionUtilities.isR5Plus(fhirVersion)) {
+      client = new TerminologyClientFactory(FhirPublication.R5).makeClient("Test-Server", server, "Tools/Java", null);      
+    } else if (VersionUtilities.isR4Plus(fhirVersion)) {
+      FileUtilities.createDirectory(Utilities.path(outputDir, "conversions", "r4"));
+      FileUtilities.createDirectory(Utilities.path(outputDir, "conversions", "r5"));    
+      client = new TerminologyClientFactory(FhirPublication.R4).makeClient("Test-Server", server, "Tools/Java", null);
+      client.setConversionLogger(conversionLogger); 
+    } else {
+      throw new FHIRException("unsupported FHIR Version for terminology tests: "+fhirVersion);
+    }
     return client;  
   }
 
