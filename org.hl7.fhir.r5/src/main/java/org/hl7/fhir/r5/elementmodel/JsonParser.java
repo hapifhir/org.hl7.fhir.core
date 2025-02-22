@@ -864,7 +864,7 @@ public class JsonParser extends ParserBase {
         if (child.isElided() && isElideElements() && json.canElide())
           json.elide();
         else
-          compose(path, child);
+          compose(child.getName(), path, child);
       } else if (!done.contains(child.getName())) {
         done.add(child.getName());
         List<Element> list = e.getChildrenByName(child.getName());
@@ -885,13 +885,14 @@ public class JsonParser extends ParserBase {
         if (!skipList) {
           if (child.getProperty().getDefinition().hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY))
             composeKeyList(path, list);
-          else
-            composeList(path, list);
+          else 
+            composeList(list.get(0).getName(), path, list);
         }
       }
     }
   }
 
+  
   private void composeKeyList(String path, List<Element> list) throws IOException {
     String keyName = list.get(0).getProperty().getDefinition().getExtensionString(ToolingExtensions.EXT_JSON_PROP_KEY);
     json.name(list.get(0).getName());
@@ -916,15 +917,14 @@ public class JsonParser extends ParserBase {
           compose(value.getName(), value, done, child);
         }
         json.endObject();
-        compose(path + "." + key.getValue(), value);
+        compose(value.getName(), path + "." + key.getValue(), value);
       }
     }
     json.endObject();
   }
 
-  private void composeList(String path, List<Element> list) throws IOException {
+  private void composeList(String name, String path, List<Element> list) throws IOException {
     // there will be at least one element
-    String name = list.get(0).getName();
     boolean complex = true;
     if (list.get(0).isPrimitive()) {
       boolean prim = false;
@@ -957,7 +957,6 @@ public class JsonParser extends ParserBase {
     }
     if (complex) {
       openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
-      int i = 0;
       for (Element item : list) {
         if (item.isElided() && json.canElide())
           json.elide();
@@ -980,7 +979,6 @@ public class JsonParser extends ParserBase {
         } else {
           json.nullValue();
         }
-        i++;
       }
       closeArray();
     }
@@ -1008,8 +1006,7 @@ public class JsonParser extends ParserBase {
     }
   }
 
-  private void compose(String path, Element element) throws IOException {
-    String name = element.getName();
+  private void compose(String name, String path, Element element) throws IOException {
     if (element.isPrimitive() || isPrimitive(element.getType())) {
       if (element.hasValue())
         primitiveValue(name, element);
@@ -1030,14 +1027,48 @@ public class JsonParser extends ParserBase {
         }
       }
 
-      Set<String> done = new HashSet<String>();
-      for (Element child : element.getChildren()) {
-        compose(path + "." + element.getName(), element, done, child);
+      if ("named-elements".equals(element.getProperty().getDefinition().getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE))) {
+        composeNamedChildren(path + "." + element.getJsonName(), element);        
+      } else {
+        Set<String> done = new HashSet<String>();
+        for (Element child : element.getChildren()) {
+          compose(path + "." + element.getJsonName(), element, done, child);
+        }
       }
       close();
     }
   }
 
+  private void composeNamedChildren(String path, Element element) throws IOException {
+    Map<String, StructureDefinition> names = new HashMap<>();
+    for (Element child : element.getChildren()) {
+      String name = child.getJsonName();
+      StructureDefinition sd = child.getProperty().getStructure();
+      if (!names.containsKey(name)) {
+        names.put(name, sd);        
+      } else if (names.get(name) != sd) {
+        throw new FHIRException("Error: conflicting definitions for "+name+" at "+path+": "+sd.getVersionedUrl()+" / "+names.get(name).getVersionedUrl());
+      }
+    }
+    for (String name : Utilities.sorted(names.keySet())) {
+      StructureDefinition sd = names.get(name);
+      ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
+      boolean list = !"1".equals(ed.getMax());
+      List<Element> children = new ArrayList<>();
+      for (Element child : element.getChildren()) {
+        if (name.equals(child.getJsonName())) {
+          children.add(child);
+        }
+      }
+      if (list) {        
+        composeList(name, path+"."+name, children);
+      } else if (children.size() > 1) {
+        throw new FHIRException("Error: definitions for "+name+" ("+sd.getVersionedUrl()+") says it cannot repeat, but "+children.size()+" items found");        
+      } else {
+        compose(name, path+"."+name, children.get(0));
+      }
+    }
+  }
 
   public boolean isAllowComments() {
     return allowComments;
