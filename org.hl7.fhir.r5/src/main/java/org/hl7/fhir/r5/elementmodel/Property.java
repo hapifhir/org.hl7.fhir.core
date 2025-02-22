@@ -312,7 +312,7 @@ public class Property {
    * @return
    */
   public boolean isJsonList() {
-    if (definition.hasExtension("http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-json-name")) {
+    if (definition.hasExtension(ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED)) {
       return !"1".equals(definition.getMax());
     } else {
       return !"1".equals(definition.getBase().hasMax() ? definition.getBase().getMax() : definition.getMax());

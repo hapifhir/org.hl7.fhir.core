@@ -211,9 +211,13 @@ public class Element extends Base implements NamedItem {
 		return special;
 	}
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
+
+  public String getJsonName() {
+    return property.getJsonName();
+  }
 
 	public String getType() {
 		if (type == null)
