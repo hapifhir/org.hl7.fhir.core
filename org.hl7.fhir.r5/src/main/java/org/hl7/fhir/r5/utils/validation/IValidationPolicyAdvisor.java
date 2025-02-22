@@ -26,14 +26,23 @@ public interface IValidationPolicyAdvisor {
   public enum ReferenceDestinationType {
     CONTAINED, // the reference points to a contained resource in the resource being validated
     INTERNAL,  // the reference points to another resource in the scope of what is being validated  
-    EXTERNAL   // the reference points outside what is being validated. 
-       // Note that at the point this is called, the validator has not tried to see whether the reference 
-       // is resolvable based on the resources made available to it
+    EXTERNAL;  // the reference points outside what is being validated. 
+    // Note that at the point this is called, the validator has not tried to see whether the reference 
+    // is resolvable based on the resources made available to it
+
+    public String toCode() {
+      switch (this) {
+      case CONTAINED: return "contained";
+      case EXTERNAL: return "external";
+      case INTERNAL: return "internal";
+      }
+      return null;
+    }
   }
 
   public IValidationPolicyAdvisor getPolicyAdvisor();
   public IValidationPolicyAdvisor setPolicyAdvisor(IValidationPolicyAdvisor policyAdvisor);
-  
+
   /** 
    * Internal use, for chaining advisors - if you define an implementation, you return the default policy.
    * Usually, this is the policy for the operating policy advisor in place before your implementation is 
@@ -42,7 +51,7 @@ public interface IValidationPolicyAdvisor {
    * @return
    */
   ReferenceValidationPolicy getReferencePolicy();
-  
+
   /**
    * Return true if the validation message for this message id should not be reported 
    * 
@@ -55,7 +64,7 @@ public interface IValidationPolicyAdvisor {
    * @return true if the validator should ignore the message
    */
   boolean isSuppressMessageId(String path, String messageId);
-  
+
   /**
    * Whether to try validating a reference, and if so, how much validation to apply
    * 
@@ -66,10 +75,10 @@ public interface IValidationPolicyAdvisor {
    * @return {@link ReferenceValidationPolicy}
    */
   ReferenceValidationPolicy policyForReference(IResourceValidator validator,
-                                               Object appContext,
-                                               String path,
-                                               String url,
-                                               ReferenceDestinationType destinationType);
+      Object appContext,
+      String path,
+      String url,
+      ReferenceDestinationType destinationType);
 
   /**
    * whether to validate a contained resource. Note that if there's a reference to the
@@ -88,14 +97,14 @@ public interface IValidationPolicyAdvisor {
    * @return {@link ReferenceValidationPolicy}
    */
   ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator,
-                                                        Object appContext,
-                                                        StructureDefinition structure,
-                                                        ElementDefinition element,
-                                                        String containerType,
-                                                        String containerId,
-                                                        Element.SpecialElement containingResourceType,
-                                                        String path,
-                                                        String url);
+      Object appContext,
+      StructureDefinition structure,
+      ElementDefinition element,
+      String containerType,
+      String containerId,
+      Element.SpecialElement containingResourceType,
+      String path,
+      String url);
 
 
   public enum ResourceValidationAction {
@@ -104,7 +113,7 @@ public interface IValidationPolicyAdvisor {
     MetaProfiles,
     GlobalProfiles
   }
-  
+
   EnumSet<ResourceValidationAction> policyForResource(IResourceValidator validator,
       Object appContext,
       StructureDefinition type,
@@ -117,13 +126,13 @@ public interface IValidationPolicyAdvisor {
     AdditionalBindings,
     StatusCheck
   }
-  
+
   EnumSet<ElementValidationAction> policyForElement(IResourceValidator validator,
-                                                      Object appContext,
-                                                      StructureDefinition structure,
-                                                      ElementDefinition element,
-                                                      String path);
-  
+      Object appContext,
+      StructureDefinition structure,
+      ElementDefinition element,
+      String path);
+
   public enum AdditionalBindingPurpose {
     Minimum,
     Required,
@@ -132,7 +141,7 @@ public interface IValidationPolicyAdvisor {
     Preferred,
     Ui
   }
-  
+
   public enum CodedContentValidationAction {
     VSCheck,  
     VSCheckThisCode,
@@ -144,7 +153,7 @@ public interface IValidationPolicyAdvisor {
     VSInvalid,
     StatusCheck
   }
-  
+
   /**
    * Called before validating a concept in an instance against the terminology sub-system
    * 
@@ -170,14 +179,14 @@ public interface IValidationPolicyAdvisor {
    * @return {@link CodedContentValidationPolicy}
    */
   EnumSet<CodedContentValidationAction> policyForCodedContent(IResourceValidator validator,
-                                                        Object appContext,
-                                                        String stackPath,
-                                                        ElementDefinition definition,
-                                                        StructureDefinition structure,
-                                                        BindingKind kind,
-                                                        AdditionalBindingPurpose purpose,
-                                                        ValueSet valueSet,
-                                                        List<String> systems);
+      Object appContext,
+      String stackPath,
+      ElementDefinition definition,
+      StructureDefinition structure,
+      BindingKind kind,
+      AdditionalBindingPurpose purpose,
+      ValueSet valueSet,
+      List<String> systems);
 
   public enum SpecialValidationAction {
     CHECK_RULE, IGNORE_RULE
@@ -193,7 +202,7 @@ public interface IValidationPolicyAdvisor {
     VALUESET_SYSTEM_CHECKS, // check that value set against the system definition (element = include/exclude) 
     VALUESET_IMPORT_CHECKS  // check the value set imports (element = include/exclude)
   }
-  
+
   /**
    * This routine gives control over the execution of the advanced validator functionality that applies to particular kinds of resources
    * 
@@ -211,7 +220,7 @@ public interface IValidationPolicyAdvisor {
       String stackPath,
       Element resource,
       Element element);
-  
+
   /**
    * This is called after a resource has been validated against the base structure, 
    * but before it's validated against any profiles specified in .meta.profile or in the parameters. 
@@ -241,14 +250,14 @@ public interface IValidationPolicyAdvisor {
    * @return
    */
   List<StructureDefinition> getImpliedProfilesForResource(IResourceValidator validator,
-                                                        Object appContext,
-                                                        String stackPath,
-                                                        ElementDefinition definition,
-                                                        StructureDefinition structure,
-                                                        Element resource,
-                                                        boolean valid,
-                                                        IMessagingServices msgServices,
-                                                        List<ValidationMessage> messages);
+      Object appContext,
+      String stackPath,
+      ElementDefinition definition,
+      StructureDefinition structure,
+      Element resource,
+      boolean valid,
+      IMessagingServices msgServices,
+      List<ValidationMessage> messages);
 
-  
+
 }

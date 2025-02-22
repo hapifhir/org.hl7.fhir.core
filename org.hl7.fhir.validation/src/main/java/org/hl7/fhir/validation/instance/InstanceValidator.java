@@ -4273,7 +4273,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     boolean conditional = ref.contains("?") && context.getResourceNamesAsSet().contains(ref.substring(0, ref.indexOf("?")));
     ReferenceValidationPolicy pol;
-    if (refType.equals("contained") || refType.equals("bundled")) {
+    if (refType == ReferenceDestinationType.CONTAINED || refType == ReferenceDestinationType.INTERNAL) {
       pol = ReferenceValidationPolicy.CHECK_VALID;
     } else {
       pol = policyAdvisor.policyForReference(this, valContext.getAppContext(), path, ref, refType);
@@ -4287,7 +4287,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   
     } else if (pol.checkExists()) {
       if (we == null) {
-        if (!refType.equals("contained")) {
+        if (refType != ReferenceDestinationType.CONTAINED) {
           if (fetcher == null) {
             throw new FHIRException(context.formatMessage(I18nConstants.RESOURCE_RESOLUTION_SERVICES_NOT_PROVIDED));
           } else {
@@ -4460,15 +4460,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
           for (Enumeration<AggregationMode> mode : type.getAggregation()) {
             b.append(mode.getCode());
-            if (mode.getValue().equals(AggregationMode.CONTAINED) && refType.equals("contained"))
+            if (mode.getValue().equals(AggregationMode.CONTAINED) && refType == ReferenceDestinationType.CONTAINED)
               modeOk = true;
-            else if (mode.getValue().equals(AggregationMode.BUNDLED) && refType.equals("bundled"))
+            else if (mode.getValue().equals(AggregationMode.BUNDLED) && refType == ReferenceDestinationType.INTERNAL)
               modeOk = true;
-            else if (mode.getValue().equals(AggregationMode.REFERENCED) && (refType.equals("bundled") || refType.equals("remote")))
+            else if (mode.getValue().equals(AggregationMode.REFERENCED) && (refType != ReferenceDestinationType.CONTAINED))
               modeOk = true;
           }
           ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, modeOk,
-            I18nConstants.REFERENCE_REF_AGGREGATION, refType, b.toString()) && ok;
+            I18nConstants.REFERENCE_REF_AGGREGATION, refType.toCode(), b.toString()) && ok;
         }
       }
     }
@@ -5474,7 +5474,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       for (String url : shc.getSliceRecords().keySet()) {
         StructureDefinition sdt = context.fetchResource(StructureDefinition.class, url);
         slicingHint(sliceInfo, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, false, isProfile(slicer), 
-         context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, stack.getLiteralPath(), sdt == null ?  url : sdt.getVersionedUrl()),
+          context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, stack.getLiteralPath(), sdt == null ?  url : sdt.getVersionedUrl()),
           context.formatMessage(I18nConstants.PROFILE__DOES_NOT_MATCH_FOR__BECAUSE_OF_THE_FOLLOWING_PROFILE_ISSUES__,
               url,
               stack.getLiteralPath(), errorSummaryForSlicingAsHtml(shc.getSliceRecords().get(url))), errorSummaryForSlicingAsText(shc.getSliceRecords().get(url)));
