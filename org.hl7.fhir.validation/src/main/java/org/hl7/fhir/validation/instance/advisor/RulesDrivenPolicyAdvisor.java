@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ReferenceDestinationType;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
@@ -142,11 +143,12 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
   public ReferenceValidationPolicy policyForReference(IResourceValidator validator,
                                                Object appContext,
                                                String path,
-                                               String url) {
+                                               String url,
+                                               ReferenceDestinationType destinationType) {
     if (base != null) {
-      return base.policyForReference(validator, appContext, path, url);      
+      return base.policyForReference(validator, appContext, path, url, destinationType);      
     } else {
-      return super.policyForReference(validator, appContext, path, url);
+      return super.policyForReference(validator, appContext, path, url, destinationType);
     }
   }
 
