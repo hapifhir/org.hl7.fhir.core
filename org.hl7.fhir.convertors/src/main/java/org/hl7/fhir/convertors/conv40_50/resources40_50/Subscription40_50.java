@@ -1,35 +1,14 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.ContactPoint40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.ContactDetail40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.UsageContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Instant40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.MarkDown40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.BooleanType;
-import org.hl7.fhir.r4.model.Extension;
-import org.hl7.fhir.r4.model.MarkdownType;
 import org.hl7.fhir.r4.model.Subscription.SubscriptionStatus;
-import org.hl7.fhir.r4.model.UriType;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.SearchComparator;
-import org.hl7.fhir.r5.model.Enumerations.SearchModifierCode;
 import org.hl7.fhir.r5.model.Enumerations.SubscriptionStatusCodes;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.UsageContext;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -86,8 +65,6 @@ public class Subscription40_50 {
 
     return tgt;
   }
-
-
 
 
   public static org.hl7.fhir.r4.model.Subscription convertSubscription(org.hl7.fhir.r5.model.Subscription src) throws FHIRException {

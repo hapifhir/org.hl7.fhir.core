@@ -252,7 +252,7 @@ public class ProfileUtilities {
    */  
   public static final List<String> NON_OVERRIDING_ED_URLS = Arrays.asList(
       "http://hl7.org/fhir/StructureDefinition/elementdefinition-translatable",
-      "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-json-name",
+      ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED,
       "http://hl7.org/fhir/tools/StructureDefinition/implied-string-prefix",
       "http://hl7.org/fhir/tools/StructureDefinition/json-empty-behavior",
       "http://hl7.org/fhir/tools/StructureDefinition/json-nullable",
