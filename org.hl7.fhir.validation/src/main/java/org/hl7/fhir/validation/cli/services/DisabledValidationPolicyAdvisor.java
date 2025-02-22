@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.AdditionalBindingPurpose;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.CodedContentValidationAction;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ElementValidationAction;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ReferenceDestinationType;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ResourceValidationAction;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
@@ -80,7 +81,8 @@ public class DisabledValidationPolicyAdvisor implements IValidationPolicyAdvisor
   public ReferenceValidationPolicy policyForReference(IResourceValidator validator,
                                                       Object appContext,
                                                       String path,
-                                                      String url) {
+                                                      String url,
+                                                      ReferenceDestinationType destinationType) {
     return ReferenceValidationPolicy.IGNORE;
   }
 

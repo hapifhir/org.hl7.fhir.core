@@ -77,6 +77,7 @@ import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ReferenceDestinationType;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
@@ -1133,7 +1134,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   @Override
-  public ReferenceValidationPolicy policyForReference(IResourceValidator validator, Object appContext, String path, String url) {
+  public ReferenceValidationPolicy policyForReference(IResourceValidator validator, Object appContext, String path, String url, ReferenceDestinationType destinationType) {
     Resource resource = context.fetchResource(StructureDefinition.class, url);
     if (resource != null) {
       return ReferenceValidationPolicy.CHECK_VALID;
@@ -1141,7 +1142,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (!(url.contains("hl7.org") || url.contains("fhir.org"))) {
       return ReferenceValidationPolicy.IGNORE;
     } else if (policyAdvisor != null) {
-      return policyAdvisor.policyForReference(validator, appContext, path, url);
+      return policyAdvisor.policyForReference(validator, appContext, path, url, destinationType);
     } else {
       return ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE;
     }

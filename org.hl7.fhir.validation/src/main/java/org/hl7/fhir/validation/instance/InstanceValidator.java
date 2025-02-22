@@ -158,6 +158,7 @@ import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.CodedContentValidationAction;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ElementValidationAction;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ReferenceDestinationType;
 import org.hl7.fhir.r5.utils.validation.IValidationProfileUsageTracker;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
@@ -3535,8 +3536,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public boolean validateReference(ValidationContext valContext, List<ValidationMessage> errors, String path, String type, ElementDefinition context, Element e, String url) {
     boolean ok = true;
+    ReferenceDestinationType refType = ReferenceDestinationType.EXTERNAL;
     if (url.startsWith("#")) {
       valContext.getInternalRefs().add(url.substring(1));
+      refType = ReferenceDestinationType.CONTAINED;
     }
     // now, do we check the URI target?
     if (fetcher != null && !type.equals("uuid")) {
@@ -3552,7 +3555,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       if (!found) {
         if (type.equals("canonical")) {
-          ReferenceValidationPolicy rp = policyAdvisor.policyForReference(this, valContext, path, url);
+          ReferenceValidationPolicy rp = policyAdvisor.policyForReference(this, valContext, path, url, refType);
           if (rp == ReferenceValidationPolicy.CHECK_EXISTS || rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url) && ok;
           } else {
@@ -3569,7 +3572,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       } else {
         if (type.equals("canonical")) {
-          ReferenceValidationPolicy rp = policyAdvisor.policyForReference(this, valContext, path, url);
+          ReferenceValidationPolicy rp = policyAdvisor.policyForReference(this, valContext, path, url, refType);
           if (rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE || rp == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS || rp == ReferenceValidationPolicy.CHECK_VALID) {
             try {
               Resource r = null;
@@ -4257,15 +4260,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     BooleanHolder bh = new BooleanHolder();
     ResolvedReference we = localResolve(ref, stack, errors, path, valContext.getRootResource(), valContext.getGroupingResource(), element, bh);
     ok = bh.ok() && ok;
-    String refType;
+    ReferenceDestinationType refType;
     if (ref.startsWith("#")) {
       valContext.getInternalRefs().add(ref.substring(1));
-      refType = "contained";
+      refType = ReferenceDestinationType.CONTAINED;
     } else {
       if (we == null) {
-        refType = "remote";
+        refType = ReferenceDestinationType.EXTERNAL;
       } else {
-        refType = "bundled";
+        refType = ReferenceDestinationType.INTERNAL;
       }
     }
     boolean conditional = ref.contains("?") && context.getResourceNamesAsSet().contains(ref.substring(0, ref.indexOf("?")));
@@ -4273,7 +4276,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (refType.equals("contained") || refType.equals("bundled")) {
       pol = ReferenceValidationPolicy.CHECK_VALID;
     } else {
-      pol = policyAdvisor.policyForReference(this, valContext.getAppContext(), path, ref);
+      pol = policyAdvisor.policyForReference(this, valContext.getAppContext(), path, ref, refType);
     }
 
     if (conditional) {
