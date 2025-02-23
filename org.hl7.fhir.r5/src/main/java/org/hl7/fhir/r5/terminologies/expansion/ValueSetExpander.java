@@ -1028,7 +1028,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     sources.addAll(expander.sources);
     if (vso.getError() != null) {
       addErrors(vso.getAllErrors());
-      throw fail(I18nConstants.VS_EXP_IMPORT_ERROR, true, vs.getUrl(), vso.getError());
+      throw fail(I18nConstants.VS_EXP_IMPORT_ERROR_X, true, vs.getUrl(), vso.getError());
     } else if (vso.getValueset() == null) {
       throw fail(I18nConstants.VS_EXP_IMPORT_FAIL_X, true, vs.getUrl());      
     }

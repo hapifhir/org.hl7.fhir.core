@@ -430,6 +430,16 @@ msgstr ""
 msgid "The CDA Template {0} / {1} is not known"
 msgstr ""
 
+# CODESYSTEM_CONCEPT_NO_DEFINITION
+#: CODESYSTEM_CONCEPT_NO_DEFINITION
+msgid "HL7 Defined CodeSystems should ensure that every concept has a definition"
+msgstr ""
+
+# CODESYSTEM_CONCEPT_NO_DISPLAY
+#: CODESYSTEM_CONCEPT_NO_DISPLAY
+msgid "HL7 Defined CodeSystems should ensure that every concept has a display"
+msgstr ""
+
 # CODESYSTEM_CS_COMPLETE_AND_EMPTY
 #: CODESYSTEM_CS_COMPLETE_AND_EMPTY
 msgid "When a CodeSystem has content = ''complete'', it doesn't make sense for there to be no concepts defined"
@@ -550,6 +560,11 @@ msgstr ""
 msgid "The designation ''{0}'' has no use and no language, so is not differentiated from the base display (''{1}'')"
 msgstr ""
 
+# CODESYSTEM_DUPLICATE_CODE
+#: CODESYSTEM_DUPLICATE_CODE
+msgid "The code ''{0}'' has already been defined"
+msgstr ""
+
 # CODESYSTEM_NOT_CONTAINED
 #: CODESYSTEM_NOT_CONTAINED
 msgid "CodeSystems are referred to directly from Coding.system, so it''s generally best for them not to be contained resources"
@@ -563,6 +578,21 @@ msgstr ""
 # CODESYSTEM_PROPERTY_BAD_HL7_URI
 #: CODESYSTEM_PROPERTY_BAD_HL7_URI
 msgid "Unknown CodeSystem Property ''{0}''. If you are creating your own property, do not create it in the HL7 namespace"
+msgstr ""
+
+# CODESYSTEM_PROPERTY_BAD_INTERNAL_REFERENCE
+#: CODESYSTEM_PROPERTY_BAD_INTERNAL_REFERENCE
+msgid "The code ''{0}'' is not a valid code in this code system"
+msgstr ""
+
+# CODESYSTEM_PROPERTY_BAD_PROPERTY_CODE
+#: CODESYSTEM_PROPERTY_BAD_PROPERTY_CODE
+msgid "The code ''{0}'' is not a valid code in the value set ''{1}''"
+msgstr ""
+
+# CODESYSTEM_PROPERTY_CODE_DEFAULT_WARNING
+#: CODESYSTEM_PROPERTY_CODE_DEFAULT_WARNING
+msgid "The type of property ''{0}'' is ''code'', but no ValueSet information was found, so the codes will be validated as internal codes"
 msgstr ""
 
 # CODESYSTEM_PROPERTY_CODE_TYPE_MISMATCH
@@ -615,9 +645,34 @@ msgstr ""
 msgid "The URI ''{0}'' is normally assigned the code ''{1}''. Using the code ''{2}'' will usually create confusion in ValueSet filters etc"
 msgstr ""
 
+# CODESYSTEM_PROPERTY_URI_INVALID
+#: CODESYSTEM_PROPERTY_URI_INVALID
+msgid "The uri ''{3}'' for the property ''{4}'' implies a property with that URI exists in the CodeSystem {2} for {1}, or the code ''{0}'' does, but neither were found"
+msgstr ""
+
 # CODESYSTEM_PROPERTY_URI_TYPE_MISMATCH
 #: CODESYSTEM_PROPERTY_URI_TYPE_MISMATCH
 msgid "Wrong type ''{2}'': The URI ''{0}'' identifies a property that has the type ''{1}''"
+msgstr ""
+
+# CODESYSTEM_PROPERTY_URI_UNKNOWN
+#: CODESYSTEM_PROPERTY_URI_UNKNOWN
+msgid "The property uri ''{0}'' is not known, so the property values can not be validated fully"
+msgstr ""
+
+# CODESYSTEM_PROPERTY_URI_UNKNOWN_BASE
+#: CODESYSTEM_PROPERTY_URI_UNKNOWN_BASE
+msgid "The base property uri ''{0}'' is not known for the property ''{1}'', so the property values can not be validated fully"
+msgstr ""
+
+# CODESYSTEM_PROPERTY_URI_UNKNOWN_TYPE
+#: CODESYSTEM_PROPERTY_URI_UNKNOWN_TYPE
+msgid "The property uri ''{0}'' is not known, so the property values can not be validated fully; unless specified elsewhere, codes will be treated as internal references"
+msgstr ""
+
+# CODESYSTEM_PROPERTY_VALUESET_NOT_FOUND
+#: CODESYSTEM_PROPERTY_VALUESET_NOT_FOUND
+msgid "The ValueSet {0} is unknown, so the property codes cannot be validated"
 msgstr ""
 
 # CODESYSTEM_PROPERTY_WRONG_TYPE
@@ -653,6 +708,11 @@ msgstr ""
 # CODESYSTEM_THO_CHECK
 #: CODESYSTEM_THO_CHECK
 msgid "Most code systems defined in HL7 IGs will need to move to THO later during the process. Consider giving this code system a THO URL now (See https://confluence.hl7.org/display/TSMG/Terminology+Play+Book, and/or talk to TSMG)"
+msgstr ""
+
+# CODESYSTEM_TOO_COSTLY_TIME
+#: CODESYSTEM_TOO_COSTLY_TIME
+msgid "The operation ''{1}'' took too long to process (>{0}sec) (at {2})"
 msgstr ""
 
 # CODE_CASE_DIFFERENCE
@@ -793,6 +853,11 @@ msgstr ""
 # CONCEPTMAP_VS_INVALID_CONCEPT_CODE_VER
 #: CONCEPTMAP_VS_INVALID_CONCEPT_CODE_VER
 msgid "The code ''{2}'' in the system {0} version {1} is not valid in the value set ''{3}''"
+msgstr ""
+
+# CONCEPTMAP_VS_NOT_A_VS
+#: CONCEPTMAP_VS_NOT_A_VS
+msgid "Reference must be to a ValueSet, but found a {0} instead"
 msgstr ""
 
 # CONCEPTMAP_VS_TOO_MANY_CODES
@@ -978,7 +1043,7 @@ msgstr ""
 
 # ED_INVARIANT_KEY_ALREADY_USED
 #: ED_INVARIANT_KEY_ALREADY_USED
-msgid "The constraint key ''{0}'' already exists in the base profile ''{1}''"
+msgid "The constraint key ''{0}'' already exists at the location ''{1}'' with a different expression (''{2}'')"
 msgstr ""
 
 # ED_INVARIANT_NO_EXPRESSION
@@ -1026,10 +1091,30 @@ msgstr ""
 msgid "The modifier extension {0} from FHIR version {3} is not allowed to be used at this point (allowed = {1}; this element is [{2}; this is a warning since contexts may be renamed between FHIR versions)"
 msgstr "Die Modifier-Erweiterung {0} aus FHIR Version {3} darf an dieser Stelle nicht verwendet werden (erlaubt = {1}; dieses Element ist [{2}; dies ist eine Warnung, da Kontexte zwischen FHIR Versionen umbenannt werden k\u00f6nnen)"
 
+# EXTENSION_EXTM_CONTEXT_WRONG_XVER_VER
+#: EXTENSION_EXTM_CONTEXT_WRONG_XVER_VER
+msgid "The modifier extension {0} from FHIR version {3} is not allowed to be used at this point (allowed for this version = {1}; this element is [{2}; this is a warning since contexts may be renamed between FHIR versions)"
+msgstr ""
+
 # EXTENSION_EXTP_CONTEXT_WRONG_XVER
 #: EXTENSION_EXTP_CONTEXT_WRONG_XVER
 msgid "The extension {0} from FHIR version {3} is not allowed to be used at this point (allowed = {1}; this element is [{2}; this is a warning since contexts may be renamed between FHIR versions)"
 msgstr "Die Erweiterung {0} aus FHIR Version {3} darf an dieser Stelle nicht verwendet werden (erlaubt = {1}; dieses Element ist [{2}; dies ist eine Warnung, da Kontexte zwischen FHIR Versionen umbenannt werden k\u00f6nnen)"
+
+# EXTENSION_EXTP_CONTEXT_WRONG_XVER_VER
+#: EXTENSION_EXTP_CONTEXT_WRONG_XVER_VER
+msgid "The extension {0} from FHIR version {3} is not allowed to be used at this point (allowed for this version = {1}; this element is [{2}; this is a warning since contexts may be renamed between FHIR versions)"
+msgstr ""
+
+# EXTENSION_FHIR_VERSION_EARLIEST
+#: EXTENSION_FHIR_VERSION_EARLIEST
+msgid "The definition of the extension ''{0}'' specifies that the earliest version it can be used with is {1} (v{2}), but this context of use is version {3} (v{4})"
+msgstr ""
+
+# EXTENSION_FHIR_VERSION_LATEST
+#: EXTENSION_FHIR_VERSION_LATEST
+msgid "The definition of the extension ''{0}'' specifies that the latest version it can be used with is {1} (v{2}), but this context of use is version {3} (v{4})"
+msgstr ""
 
 # EXT_VER_URL_IGNORE
 #: EXT_VER_URL_IGNORE
@@ -1166,10 +1251,20 @@ msgstr "!!Fehler beim Validieren des Codes: Ausf\u00fchrung ohne Terminologiedie
 msgid "The modifier extension {0} is not allowed to be used at this point (allowed = {1}; this element is {2})"
 msgstr "Die Modifier Extension {0} darf an dieser Stelle nicht verwendet werden (erlaubt = {1}; dieses Element ist {2})"
 
+# Extension_EXTM_Context_Wrong_VER
+#: Extension_EXTM_Context_Wrong_VER
+msgid "The modifier extension {0} is not allowed to be used at this point (allowed for this version = {1}; this element is {2})"
+msgstr ""
+
 # Extension_EXTP_Context_Wrong
 #: Extension_EXTP_Context_Wrong
 msgid "The extension {0} is not allowed to be used at this point (allowed = {1}; this element is {2})"
 msgstr "Die Extension {0} darf an dieser Stelle nicht verwendet werden (erlaubt = {1}; dieses Element ist {2})"
+
+# Extension_EXTP_Context_Wrong_VER
+#: Extension_EXTP_Context_Wrong_VER
+msgid "The extension {0} is not allowed to be used at this point (allowed for this version = {1}; this element is {2})"
+msgstr ""
 
 # Extension_EXT_Count_Mismatch
 #: Extension_EXT_Count_Mismatch
@@ -1712,6 +1807,21 @@ msgstr ""
 msgid "The ImplementationGuide is based on FHIR version {0} but package {1} is based on FHIR version {2}. In general, this version mismatch should be avoided - some tools will try to make this work with variable degrees of success, but others will not even try"
 msgstr ""
 
+# IG_HL7_FMM_SHOULD
+#: IG_HL7_FMM_SHOULD
+msgid "HL7 Implementation Guides should state their maturity explicitly using the extension http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm"
+msgstr ""
+
+# IG_HL7_STANDARDS_STATUS_REQUIRED
+#: IG_HL7_STANDARDS_STATUS_REQUIRED
+msgid "HL7 Implementation Guides must state their status explicitly using the extension http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status"
+msgstr ""
+
+# IG_HL7_WG_REQUIRED
+#: IG_HL7_WG_REQUIRED
+msgid "HL7 Implementation Guides must state their owning workgroup explicitly using the extension http://hl7.org/fhir/StructureDefinition/structuredefinition-wg"
+msgstr ""
+
 # IG_NO_VERSION
 #: IG_NO_VERSION
 msgid "No fhir version was specified for the IG so the version consistency can't be checked"
@@ -1725,6 +1835,11 @@ msgstr "Die Eigenschaft fhir_comments muss ein Array von Strings sein"
 # ILLEGAL_PROPERTY
 #: ILLEGAL_PROPERTY
 msgid "The property ''{0}'' is invalid"
+msgstr ""
+
+# INVALID_DISPLAY_NAME
+#: INVALID_DISPLAY_NAME
+msgid "Invalid displayLanguage: ''{0}''"
 msgstr ""
 
 # INV_FAILED
@@ -2150,6 +2265,11 @@ msgstr "!!!!Das ShareableMeasure-Profil sagt, dass das {0}-Element obligatorisch
 # MSG_DEPENDS_ON_DEPRECATED
 #: MSG_DEPENDS_ON_DEPRECATED
 msgid "The {0} {1} is deprecated"
+msgstr ""
+
+# MSG_DEPENDS_ON_DEPRECATED_NOTE
+#: MSG_DEPENDS_ON_DEPRECATED_NOTE
+msgid "The {0} {1} is deprecated with the note {2}"
 msgstr ""
 
 # MSG_DEPENDS_ON_DRAFT
@@ -2830,6 +2950,11 @@ msgstr "Die Syntax der Reference ''{0}'' sieht falsch aus und sollte \u00fcberpr
 msgid "The type ''{2}'' is not a valid Target for the element {0} (must be {1})"
 msgstr "Der Typ ''{2}'' ist kein g\u00fcltiges Ziel f\u00fcr das Element {0} (muss {1} sein)"
 
+# REFERENCE_RESOLUTION_FAILED
+#: REFERENCE_RESOLUTION_FAILED
+msgid "Fetching ''{0}'' failed. System details: {1}: {2}"
+msgstr ""
+
 # REQUEST_TOO_COSTLY_TIME
 #: REQUEST_TOO_COSTLY_TIME
 msgid "Request took too long to process (>{0}sec)"
@@ -2839,6 +2964,36 @@ msgstr ""
 #: RESOURCETYPE_PROPERTY_WRONG_TYPE
 msgid "The JSON element ''resourceType'' has the wrong JSON type: {0}"
 msgstr "Das JSON-Element ''resourceType'' hat den falschen JSON-Typ: {0}"
+
+# RESOURCE_DUPLICATE_CONTAINED_ID
+#: RESOURCE_DUPLICATE_CONTAINED_ID
+msgid "Duplicate ID for contained resource: {0}"
+msgstr ""
+
+# RESOURCE_MATCHETYPE_DISALLOWED
+#: RESOURCE_MATCHETYPE_DISALLOWED
+msgid "This resource is not allowed to be a matchetype resource (extension http://hl7.org/fhir/tools/StructureDefinition/matchetype is true)"
+msgstr ""
+
+# RESOURCE_MATCHETYPE_REQUIRED
+#: RESOURCE_MATCHETYPE_REQUIRED
+msgid "This resource is required to be a matchetype resource (extension http://hl7.org/fhir/tools/StructureDefinition/matchetype must be true)"
+msgstr ""
+
+# RESOURCE_MATCHETYPE_SUSPECT_TYPE
+#: RESOURCE_MATCHETYPE_SUSPECT_TYPE
+msgid "The type ''{0}'' does not appear to match the matchetype pattern value ''{1}''"
+msgstr ""
+
+# RESOURCE_MATCHETYPE_UNKNOWN_PATTERN
+#: RESOURCE_MATCHETYPE_UNKNOWN_PATTERN
+msgid "The matchetype pattern value ''{1}'' is not valid"
+msgstr ""
+
+# RESOURCE_NOT_MATCHETYPE_EXTENSION
+#: RESOURCE_NOT_MATCHETYPE_EXTENSION
+msgid "This resource is not a matcehtype, so it cannot have the extension {0}"
+msgstr ""
 
 # Reference_REF_Aggregation
 #: Reference_REF_Aggregation
@@ -2857,13 +3012,13 @@ msgstr "Der Typ ''{0}'', der durch die Referenz-URL {1} impliziert wird, ist kei
 
 # Reference_REF_CantMatchChoice
 #: Reference_REF_CantMatchChoice
-msgid "Unable to find a match for profile {0} among choices: {1}"
-msgstr "Es konnte kein passendes Profil f\u00fcr {0} unter den Auswahlm\u00f6glichkeiten [{1}] gefunden werden"
+msgid "Unable to find a profile match for {0} among choices: {1}"
+msgstr "!!Es konnte kein passendes Profil f\u00fcr {0} unter den Auswahlm\u00f6glichkeiten [{1}] gefunden werden"
 
 # Reference_REF_CantMatchType
 #: Reference_REF_CantMatchType
-msgid "Unable to find a match for profile {0} (by type) among choices: {1}"
-msgstr "Es konnte kein passendes Profil f\u00fcr {0} (nach Typ) unter den Auswahlm\u00f6glichkeiten [{1}] gefunden werden"
+msgid "Unable to find a profile match for {0} (by type) among choices: {1}"
+msgstr "!!Es konnte kein passendes Profil f\u00fcr {0} (nach Typ) unter den Auswahlm\u00f6glichkeiten [{1}] gefunden werden"
 
 # Reference_REF_CantResolve
 #: Reference_REF_CantResolve
@@ -2984,6 +3139,11 @@ msgstr ""
 #: SD_DERIVATION_KIND_MISMATCH
 msgid "The structure definition constrains a kind of {0}, but has a different kind ({1})"
 msgstr "Die StructureDefinition schr\u00e4nkt eine Art von {0} ein, hat aber eine andere Art ({1})"
+
+# SD_DERIVATION_NO_CONCRETE
+#: SD_DERIVATION_NO_CONCRETE
+msgid "{0} is labeled as an abstract type, but no concrete descendants were found (check definitions - this is usually an error unless concrete definitions are in some other package)"
+msgstr ""
 
 # SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_ELEMENT
 #: SD_ED_ADDITIONAL_BINDING_USAGE_INVALID_ELEMENT
@@ -3239,7 +3399,7 @@ msgstr ""
 
 # SD_PATH_SLICING_DEPRECATED
 #: SD_PATH_SLICING_DEPRECATED
-msgid "The discriminator type ''{0}'' is been deprecated in R5+. For future compatibility, you could consider using type=value with a pattern[x] instead (if this is not an inherited slicing)"
+msgid "The discriminator type ''{0}'' is deprecated in R5+. For future compatibility, you could consider using type=value with a pattern[x] instead (if this is not an inherited slicing)"
 msgstr ""
 
 # SD_PATH_SLICING_DEPRECATED_R5
@@ -4684,6 +4844,11 @@ msgstr "!!Das CodeSystem {0} Version {1} ist unbekannt. G\u00fcltige Versionen: 
 msgid "Unknown Code ''{0}'' in the CodeSystem ''{1}'' version ''{2}'' - note that the code system is labeled as a fragment, so the code may be valid in some other fragment"
 msgstr ""
 
+# UNKNOWN_PROPERTY
+#: UNKNOWN_PROPERTY
+msgid "Unknown property name {0} in path {1}2"
+msgstr ""
+
 # UNRECOGNISED_PROPERTY_TYPE
 #: UNRECOGNISED_PROPERTY_TYPE
 msgid "Invalid JSON type {0} for the element {1}; valid types = {2}"
@@ -4703,6 +4868,11 @@ msgstr "Nicht unterst\u00fctzt: keine Properties mit Werten gefunden auf Typ {2}
 #: UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE
 msgid "Unsupported property {3} on type {2} for pattern for discriminator ({0}) for slice {1}"
 msgstr "Nicht unterst\u00fctzte Eigenschaft {3} auf Typ {2} f\u00fcr Pattern des Diskriminators ({0}) f\u00fcr Slice {1}"
+
+# UNSUPPORTED_SLICING_COMPLEXITY
+#: UNSUPPORTED_SLICING_COMPLEXITY
+msgid "Unsupported feature in slicing at {0}: the slicing element at path {1} has slicing {2}, and this nested slicing is not supported"
+msgstr ""
 
 # Unable_to_connect_to_terminology_server
 #: Unable_to_connect_to_terminology_server
@@ -4993,6 +5163,21 @@ msgstr "Nicht unterst\u00fctzte Version R2B"
 #: Unxpected_internal_condition__no_source_on_diff_element
 msgid "Unexpected internal condition - no source on diff element"
 msgstr "Unerwarteter interner Zustand - keine Source auf dem diff-Element definiert"
+
+# VALIDATION_AI_FAILED
+#: VALIDATION_AI_FAILED
+msgid "Consulting AI failed: {0}"
+msgstr ""
+
+# VALIDATION_AI_FAILED_LOG
+#: VALIDATION_AI_FAILED_LOG
+msgid "Consulting AI failed: {0} (see {1} for further details)"
+msgstr ""
+
+# VALIDATION_AI_TEXT_CODE
+#: VALIDATION_AI_TEXT_CODE
+msgid "Apparent mis-match between code ''{0}'' and text ''{1}'': {3} ({2} confidence)"
+msgstr ""
 
 # VALIDATION_HL7_PUBLISHER_MISMATCH
 #: VALIDATION_HL7_PUBLISHER_MISMATCH
@@ -5294,6 +5479,21 @@ msgstr ""
 msgid "URI values in ValueSet.compose.include.system must be absolute. To reference a contained code system, use the full CodeSystem URL and reference it using the http://hl7.org/fhir/StructureDefinition/valueset-system extension"
 msgstr ""
 
+# VALUESET_INCLUDE_WRONG_VS
+#: VALUESET_INCLUDE_WRONG_VS
+msgid "The system ''{0}'' is actually a value set"
+msgstr ""
+
+# VALUESET_INCLUDE_WRONG_VS_HINT
+#: VALUESET_INCLUDE_WRONG_VS_HINT
+msgid "The system ''{0}'' is actually a value set, which itself refers to the system ''{1}'' so that may be what is intended here"
+msgstr ""
+
+# VALUESET_INCLUDE_WRONG_VS_MANY
+#: VALUESET_INCLUDE_WRONG_VS_MANY
+msgid "The system ''{0}'' is actually a value set, which itself refers to the systems {1}"
+msgstr ""
+
 # VALUESET_INC_TOO_MANY_CODES
 #: VALUESET_INC_TOO_MANY_CODES
 msgid "The value set include has too many codes to validate ({0}), so each individual code has not been checked"
@@ -5454,6 +5654,81 @@ msgstr ""
 # VIEWDEFINITION_UNKNOWN_RESOURCE
 #: VIEWDEFINITION_UNKNOWN_RESOURCE
 msgid "The name ''{0}'' is not a valid resource{1}"
+msgstr ""
+
+# VS_EXP_FILTER_UNK
+#: VS_EXP_FILTER_UNK
+msgid "ValueSet ''{0}'' Filter by property ''{1}'' and op ''{2}'' is not supported yet"
+msgstr ""
+
+# VS_EXP_IMPORT_CS
+#: VS_EXP_IMPORT_CS
+msgid "Cannot include value set ''{0}'' because it's actually a code system"
+msgstr ""
+
+# VS_EXP_IMPORT_CS_PINNED
+#: VS_EXP_IMPORT_CS_PINNED
+msgid "Cannot include value set ''{0}'' version ''{1}'' because it's actually a code system"
+msgstr ""
+
+# VS_EXP_IMPORT_CS_PINNED_X
+#: VS_EXP_IMPORT_CS_PINNED_X
+msgid "Cannot exclude value set ''{0}'' version ''{1}'' because it's actually a code system"
+msgstr ""
+
+# VS_EXP_IMPORT_CS_X
+#: VS_EXP_IMPORT_CS_X
+msgid "Cannot exclude value set ''{0}'' because it's actually a code system"
+msgstr ""
+
+# VS_EXP_IMPORT_ERROR
+#: VS_EXP_IMPORT_ERROR
+msgid "Unable to expand included value set ''{0}'': {1}"
+msgstr ""
+
+# VS_EXP_IMPORT_ERROR_X
+#: VS_EXP_IMPORT_ERROR_X
+msgid "Unable to expand included value set ''{0}'', but no error"
+msgstr ""
+
+# VS_EXP_IMPORT_FAIL
+#: VS_EXP_IMPORT_FAIL
+msgid "Unable to expand included value set {0}"
+msgstr ""
+
+# VS_EXP_IMPORT_FAIL_X
+#: VS_EXP_IMPORT_FAIL_X
+msgid "Unable to expand excluded value set {0}"
+msgstr ""
+
+# VS_EXP_IMPORT_NULL
+#: VS_EXP_IMPORT_NULL
+msgid "Unable to find included value set with no identity"
+msgstr ""
+
+# VS_EXP_IMPORT_NULL_X
+#: VS_EXP_IMPORT_NULL_X
+msgid "Unable to find excluded value set with no identity"
+msgstr ""
+
+# VS_EXP_IMPORT_UNK
+#: VS_EXP_IMPORT_UNK
+msgid "Unable to find included value set ''{0}''"
+msgstr ""
+
+# VS_EXP_IMPORT_UNK_PINNED
+#: VS_EXP_IMPORT_UNK_PINNED
+msgid "Unable to find included value set ''{0}'' version ''{1}''"
+msgstr ""
+
+# VS_EXP_IMPORT_UNK_PINNED_X
+#: VS_EXP_IMPORT_UNK_PINNED_X
+msgid "Unable to find excluded value set ''{0}'' version ''{1}''"
+msgstr ""
+
+# VS_EXP_IMPORT_UNK_X
+#: VS_EXP_IMPORT_UNK_X
+msgid "Unable to find excluded value set ''{0}''"
 msgstr ""
 
 # Validation_BUNDLE_Message
@@ -5635,10 +5910,10 @@ msgstr "Die URL ist nicht g\u00fcltig, weil ''({1})'': {0}"
 
 # XHTML_URL_INVALID_CHARS
 #: XHTML_URL_INVALID_CHARS
-msgid "URL contains Invalid Character ({1})"
-msgid_plural "URL contains {0} Invalid Characters ({1})"
-msgstr[0] "URL enth\u00e4lt ung\u00fcltiges Zeichen ({1})"
-msgstr[1] "URL enth\u00e4lt {0} ung\u00fcltige Zeichen ({1})"
+msgid "URL contains Invalid Character: {1}"
+msgid_plural "URL contains {0} Invalid Characters: {1}"
+msgstr[0] "!!URL enth\u00e4lt ung\u00fcltiges Zeichen ({1})"
+msgstr[1] "!!URL enth\u00e4lt {0} ung\u00fcltige Zeichen ({1})"
 
 # XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #: XHTML_XHTML_ATTRIBUTE_XML_SPACE

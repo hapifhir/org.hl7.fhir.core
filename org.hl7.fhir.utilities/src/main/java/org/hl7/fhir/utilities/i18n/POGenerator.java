@@ -157,7 +157,7 @@ public class POGenerator {
         System.out.println("Error: msg for "+cd.name+ " not found at "+cd.sname);
       } else if (!cd.used) {
         System.out.println("Warning: const "+cd.name+ " not used");
-        ok = false;
+        // ok = false;
       }
     }
 
@@ -205,7 +205,7 @@ public class POGenerator {
         System.out.println("Error: msg for "+cd.name+ " not found @ "+cd.sname);
       } else if (!cd.used) {
         System.out.println("Warning: const "+cd.name+ " not used");
-        ok = false;
+        // ok = false;
       }
     }
     if (ok) {

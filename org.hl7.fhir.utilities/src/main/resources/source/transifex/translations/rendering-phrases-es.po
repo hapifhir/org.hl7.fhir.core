@@ -784,6 +784,26 @@ msgstr ""
 msgid "Target Concept Details"
 msgstr ""
 
+# DATA_REND_AFTERNOON
+#: DATA_REND_AFTERNOON
+msgid "Afternoon"
+msgstr ""
+
+# DATA_REND_AFTERNOON_EARLY
+#: DATA_REND_AFTERNOON_EARLY
+msgid "Early Afternoon"
+msgstr ""
+
+# DATA_REND_AFTERNOON_LATE
+#: DATA_REND_AFTERNOON_LATE
+msgid "Late Afternoon"
+msgstr ""
+
+# DATA_REND_AFTER_SLEEP
+#: DATA_REND_AFTER_SLEEP
+msgid "After Sleep"
+msgstr ""
+
 # DATA_REND_AFTRBKFST
 #: DATA_REND_AFTRBKFST
 msgid "after breakfast"
@@ -930,6 +950,21 @@ msgstr ""
 msgid "Error: {0}"
 msgstr ""
 
+# DATA_REND_EVENING
+#: DATA_REND_EVENING
+msgid "Evening"
+msgstr ""
+
+# DATA_REND_EVENING_EARLY
+#: DATA_REND_EVENING_EARLY
+msgid "Early Evening"
+msgstr ""
+
+# DATA_REND_EVENING_LATE
+#: DATA_REND_EVENING_LATE
+msgid "Late Evening"
+msgstr ""
+
 # DATA_REND_EVENTS
 #: DATA_REND_EVENTS
 msgid "Events: {0}"
@@ -960,6 +995,11 @@ msgstr ""
 msgid "ICD-9"
 msgstr ""
 
+# DATA_REND_IMMEDIATE
+#: DATA_REND_IMMEDIATE
+msgid "Immediate"
+msgstr ""
+
 # DATA_REND_INT
 #: DATA_REND_INT
 msgid "Interval: {0}"
@@ -988,6 +1028,31 @@ msgstr ""
 # DATA_REND_MKDWN_LNK
 #: DATA_REND_MKDWN_LNK
 msgid "Unable to resolve markdown link"
+msgstr ""
+
+# DATA_REND_MORNING
+#: DATA_REND_MORNING
+msgid "Morning"
+msgstr ""
+
+# DATA_REND_MORNING_EARLY
+#: DATA_REND_MORNING_EARLY
+msgid "Early Morning"
+msgstr ""
+
+# DATA_REND_MORNING_LATE
+#: DATA_REND_MORNING_LATE
+msgid "Late Morning"
+msgstr ""
+
+# DATA_REND_NIGHT
+#: DATA_REND_NIGHT
+msgid "Night"
+msgstr ""
+
+# DATA_REND_NOON
+#: DATA_REND_NOON
+msgid "Noon"
 msgstr ""
 
 # DATA_REND_NOT_STAT
@@ -2681,6 +2746,11 @@ msgstr ""
 msgid "Tag"
 msgstr ""
 
+# RES_REND_TEMPLATE_ID
+#: RES_REND_TEMPLATE_ID
+msgid "templateId: {0}"
+msgstr ""
+
 # RES_REND_UNKNOWN
 #: RES_REND_UNKNOWN
 msgid "Unknown"
@@ -4320,6 +4390,16 @@ msgstr ""
 msgid "Display"
 msgstr ""
 
+# TX_DISPLAY_LANG
+#: TX_DISPLAY_LANG
+msgid "Display ({0})"
+msgstr ""
+
+# VALUE_ES_ES
+#: VALUE_ES_ES
+msgid "Spanish National Edition"
+msgstr ""
+
 # VALUE_SET_ADD_DESIG
 #: VALUE_SET_ADD_DESIG
 msgid "Additional Designations and Language Displays"
@@ -4341,9 +4421,39 @@ msgctxt "VALUE_SET_AND"
 msgid "and"
 msgstr ""
 
+# VALUE_SET_AR
+#: VALUE_SET_AR
+msgid "Argentinian Edition"
+msgstr ""
+
+# VALUE_SET_AT
+#: VALUE_SET_AT
+msgid "Austrian Edition"
+msgstr ""
+
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
 msgid "Australian"
+msgstr ""
+
+# VALUE_SET_BE
+#: VALUE_SET_BE
+msgid "Belgian Edition"
+msgstr ""
+
+# VALUE_SET_CA_EN
+#: VALUE_SET_CA_EN
+msgid "Canadian English Edition"
+msgstr ""
+
+# VALUE_SET_CA_FR
+#: VALUE_SET_CA_FR
+msgid "Canadian Canadian French Edition"
+msgstr ""
+
+# VALUE_SET_CH
+#: VALUE_SET_CH
+msgid "Swiss Edition"
 msgstr ""
 
 # VALUE_SET_CODES_FROM
@@ -4391,6 +4501,11 @@ msgstr ""
 msgid "Danish"
 msgstr ""
 
+# VALUE_SET_DE
+#: VALUE_SET_DE
+msgid "German Edition"
+msgstr ""
+
 # VALUE_SET_DESCENDENTOF
 #: VALUE_SET_DESCENDENTOF
 msgid "descends from"
@@ -4414,6 +4529,11 @@ msgstr ""
 # VALUE_SET_DUTCH
 #: VALUE_SET_DUTCH
 msgid "Dutch"
+msgstr ""
+
+# VALUE_SET_EE
+#: VALUE_SET_EE
+msgid "Estonian Edition"
 msgstr ""
 
 # VALUE_SET_EQUAL
@@ -4456,9 +4576,34 @@ msgstr ""
 msgid "Expansion based on:"
 msgstr ""
 
+# VALUE_SET_EXPANSIONS_INTERNAL
+#: VALUE_SET_EXPANSIONS_INTERNAL
+msgid "Expansion performed internally based on:"
+msgstr ""
+
+# VALUE_SET_EXPANSIONS_SRVR
+#: VALUE_SET_EXPANSIONS_SRVR
+msgid "Expansion from {0} based on:"
+msgstr ""
+
+# VALUE_SET_EXPANSION_INTERNAL
+#: VALUE_SET_EXPANSION_INTERNAL
+msgid "Expansion performed internally based on"
+msgstr ""
+
+# VALUE_SET_EXPANSION_SRVR
+#: VALUE_SET_EXPANSION_SRVR
+msgid "Expansion from {0} based on"
+msgstr ""
+
 # VALUE_SET_EXP_FRAG
 #: VALUE_SET_EXP_FRAG
 msgid "Expansion based on code system fragment"
+msgstr ""
+
+# VALUE_SET_FI
+#: VALUE_SET_FI
+msgid "Finnish Edition"
 msgstr ""
 
 # VALUE_SET_GENERALIZES
@@ -4474,6 +4619,11 @@ msgstr ""
 # VALUE_SET_HAS_AT_LEAST
 #: VALUE_SET_HAS_AT_LEAST
 msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
+msgstr ""
+
+# VALUE_SET_IE
+#: VALUE_SET_IE
+msgid "Irish Edition"
 msgstr ""
 
 # VALUE_SET_IMPORT
@@ -4524,6 +4674,11 @@ msgstr ""
 msgid "is-not-a"
 msgstr ""
 
+# VALUE_SET_KR
+#: VALUE_SET_KR
+msgid "Republic of Korea Edition (South Korea)"
+msgstr ""
+
 # VALUE_SET_LEVEL
 #: VALUE_SET_LEVEL
 msgid "Level"
@@ -4532,6 +4687,11 @@ msgstr ""
 # VALUE_SET_LOINCV
 #: VALUE_SET_LOINCV
 msgid "Loinc v"
+msgstr ""
+
+# VALUE_SET_NO
+#: VALUE_SET_NO
+msgid "Norwegian Edition"
 msgstr ""
 
 # VALUE_SET_NOTE
@@ -4577,6 +4737,11 @@ msgstr ""
 # VALUE_SET_NUMBER_CONCEPTS
 #: VALUE_SET_NUMBER_CONCEPTS
 msgid "This value set expansion contains {0} concepts."
+msgstr ""
+
+# VALUE_SET_NZ
+#: VALUE_SET_NZ
+msgid "New Zealand Edition"
 msgstr ""
 
 # VALUE_SET_REGEX
@@ -4649,6 +4814,11 @@ msgstr ""
 msgid "United Kingdom"
 msgstr ""
 
+# VALUE_SET_UK_CLIN
+#: VALUE_SET_UK_CLIN
+msgid "UK Clinical Edition"
+msgstr ""
+
 # VALUE_SET_US
 #: VALUE_SET_US
 msgid "United States"
@@ -4657,6 +4827,16 @@ msgstr ""
 # VALUE_SET_USED_ELSEWHERE
 #: VALUE_SET_USED_ELSEWHERE
 msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr ""
+
+# VALUE_SET_US_ICD10CM
+#: VALUE_SET_US_ICD10CM
+msgid "US Edition (with ICD-10-CM maps)"
+msgstr ""
+
+# VALUE_SET_UY
+#: VALUE_SET_UY
+msgid "Uruguay Edition"
 msgstr ""
 
 # VALUE_SET_WHERE
