@@ -960,10 +960,10 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_MORNING_LATE = "DATA_REND_MORNING_LATE";
   public static final String DATA_REND_NOON = "DATA_REND_NOON";
   public static final String DATA_REND_AFTERNOON = "DATA_REND_AFTERNOON";
-  public static final String DATA_REND_AFTERNOON_EARLY = "";
+  public static final String DATA_REND_AFTERNOON_EARLY = "DATA_REND_AFTERNOON_EARLY";
   public static final String DATA_REND_AFTERNOON_LATE = "DATA_REND_AFTERNOON_LATE";
   public static final String DATA_REND_EVENING = "DATA_REND_EVENING";
-  public static final String DATA_REND_EVENING_EARLY = "";
+  public static final String DATA_REND_EVENING_EARLY = "DATA_REND_EVENING_EARLY";
   public static final String DATA_REND_EVENING_LATE = "DATA_REND_EVENING_LATE";
   public static final String DATA_REND_NIGHT = "DATA_REND_NIGHT";
   public static final String DATA_REND_AFTER_SLEEP = "DATA_REND_AFTER_SLEEP";
