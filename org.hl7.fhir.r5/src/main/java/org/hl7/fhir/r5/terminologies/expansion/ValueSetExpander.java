@@ -949,9 +949,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
       boolean pinned = !url.equals(value);
       String ver = pinned ? url.substring(value.length()+1) : null;
       if (context.fetchResource(CodeSystem.class, url, valueSet) != null) {
-        throw failUnk(pinned ? I18nConstants.VS_EXP_IMPORT_CS_PINNED : I18nConstants.VS_EXP_IMPORT_CS, true, value, ver);
+        throw failNotFound(pinned ? I18nConstants.VS_EXP_IMPORT_CS_PINNED : I18nConstants.VS_EXP_IMPORT_CS, true, value, ver);
       } else  {
-        throw failUnk(pinned ? I18nConstants.VS_EXP_IMPORT_UNK_PINNED : I18nConstants.VS_EXP_IMPORT_UNK, true, value, ver);
+        throw failNotFound(pinned ? I18nConstants.VS_EXP_IMPORT_UNK_PINNED : I18nConstants.VS_EXP_IMPORT_UNK, true, value, ver);
       }
     }
     checkCanonical(exp, vs, focus);
@@ -1426,6 +1426,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private UnknownValueSetException failUnk(String msgId, boolean check, Object... params) {
+    String msg = context.formatMessage(msgId, params);
+    allErrors.add(msg);
+    return new UnknownValueSetException(msg);
+  }
+
+  private UnknownValueSetException failNotFound(String msgId, boolean check, Object... params) {
     String msg = context.formatMessage(msgId, params);
     allErrors.add(msg);
     return new UnknownValueSetException(msg);
