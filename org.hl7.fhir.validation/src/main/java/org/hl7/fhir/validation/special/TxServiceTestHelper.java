@@ -70,7 +70,7 @@ public class TxServiceTestHelper {
         options = options.setActiveOnly(true);
       }
       for (ParametersParameterComponent pp : p.getParameter()) {
-        if (Utilities.existsInList(pp.getName(), "valueset-version", "system-version", "force-system-version", "default-system-version")) {
+        if (Utilities.existsInList(pp.getName(), "default-valueset-version", "system-version", "force-system-version", "default-system-version")) {
           context.getExpansionParameters().getParameter().add(pp);
         }
       }

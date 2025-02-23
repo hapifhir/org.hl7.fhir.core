@@ -490,7 +490,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       return value;
     }
     for (ParametersParameterComponent p : expParams.getParameter()) {
-      if ("valueset-version".equals(p.getName())) {
+      if ("default-valueset-version".equals(p.getName())) {
         String s = p.getValue().primitiveValue();
         if (s.startsWith(value+"|")) {
           return s;

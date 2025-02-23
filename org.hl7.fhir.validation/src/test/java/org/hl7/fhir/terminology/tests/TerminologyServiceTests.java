@@ -187,7 +187,8 @@ private static TxTestData testData;
         e.setCode(IssueType.UNKNOWN);
         break;
       case VALUESET_UNKNOWN:
-        e.setCode(IssueType.UNKNOWN);
+        e.setCode(IssueType.NOTFOUND);
+        e.getDetails().addCoding().setSystem("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type").setCode("not-found");
         break;
       case VALUESET_UNSUPPORTED:
         e.setCode(IssueType.NOTSUPPORTED);
