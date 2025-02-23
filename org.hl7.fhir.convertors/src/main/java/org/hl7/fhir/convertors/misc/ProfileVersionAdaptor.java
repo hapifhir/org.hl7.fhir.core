@@ -204,7 +204,6 @@ public class ProfileVersionAdaptor {
       }
     }
     
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("/Users/grahamegrieve/temp/base", sd.getId()+".json")), sd);
     StructureDefinition base = tCtxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
     tpu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/"+VersionUtilities.getNameForVersion(tCtxt.getVersion())+"/", sd.getName());  
     return sd;
