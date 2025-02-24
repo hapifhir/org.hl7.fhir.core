@@ -44,6 +44,7 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -115,23 +116,23 @@ public class NPMPackageGenerator {
   private String indexdb;
 
 
-  public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, boolean notForPublication) throws FHIRException, IOException {
+  public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, boolean notForPublication, Map<String, String> relatedIgs) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
     start();
     List<String> fhirVersion = new ArrayList<>();
     for (Enumeration<FHIRVersion> v : ig.getFhirVersion())
       fhirVersion.add(v.asStringValue());
-    buildPackageJson(pid, canonical, kind, url, date, ig, fhirVersion, notForPublication);
+    buildPackageJson(pid, canonical, kind, url, date, ig, fhirVersion, notForPublication, relatedIgs);
   }
 
-  public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, boolean notForPublication, String fhirVersion) throws FHIRException, IOException {
+  public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, boolean notForPublication, String fhirVersion, Map<String, String> relatedIgs) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
     start();
     List<String> fhirVersions = new ArrayList<>();
     fhirVersions.add(fhirVersion);
-    buildPackageJson(pid, canonical, kind, url, date, ig, fhirVersions, notForPublication);
+    buildPackageJson(pid, canonical, kind, url, date, ig, fhirVersions, notForPublication, relatedIgs);
   }
 
   public static NPMPackageGenerator subset(NPMPackageGenerator master, String destFile, String id, String name, Date date, boolean notForPublication) throws FHIRException, IOException {
@@ -149,11 +150,11 @@ public class NPMPackageGenerator {
     return new NPMPackageGenerator(destFile, p, date, notForPublication);
   }
 
-  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, List<String> fhirVersion, boolean notForPublication) throws FHIRException, IOException {
+  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, List<String> fhirVersion, boolean notForPublication, Map<String, String> relatedIgs) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
     start();
-    buildPackageJson(ig.getPackageId(), canonical, kind, url, date, ig, fhirVersion, notForPublication);
+    buildPackageJson(ig.getPackageId(), canonical, kind, url, date, ig, fhirVersion, notForPublication, relatedIgs);
   }
 
   public NPMPackageGenerator(String destFile, JsonObject npm, Date date, boolean notForPublication) throws FHIRException, IOException {
@@ -177,7 +178,7 @@ public class NPMPackageGenerator {
     }
   }
 
-  private void buildPackageJson(String pid, String canonical, PackageType kind, String web, Date date, ImplementationGuide ig, List<String> fhirVersion, boolean notForPublication) throws FHIRException, IOException {
+  private void buildPackageJson(String pid, String canonical, PackageType kind, String web, Date date, ImplementationGuide ig, List<String> fhirVersion, boolean notForPublication, Map<String, String> relatedIgs) throws FHIRException, IOException {
     String dtHuman = new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(date);
     String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
 
@@ -269,6 +270,12 @@ public class NPMPackageGenerator {
     if (ig.hasJurisdiction() && ig.getJurisdiction().size() == 1 && ig.getJurisdictionFirstRep().getCoding().size() == 1) {
       Coding c = ig.getJurisdictionFirstRep().getCodingFirstRep();
       npm.add("jurisdiction", c.getSystem()+"#"+c.getCode());
+    }
+    if (relatedIgs != null) {
+      JsonObject pd = npm.forceObject("peerDependencies");
+      for (String n : relatedIgs.keySet()) {
+        pd.add(n, relatedIgs.get(n));
+      }
     }
     String json = JsonParser.compose(npm, true);
     try {
