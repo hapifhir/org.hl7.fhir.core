@@ -116,7 +116,7 @@ public class NPMPackageGenerator {
   private String indexdb;
 
 
-  public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, boolean notForPublication, Map<String, String> relatedIgs) throws FHIRException, IOException {
+  public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, Map<String, String> relatedIgs, boolean notForPublication) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
     start();
@@ -126,7 +126,7 @@ public class NPMPackageGenerator {
     buildPackageJson(pid, canonical, kind, url, date, ig, fhirVersion, notForPublication, relatedIgs);
   }
 
-  public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, boolean notForPublication, String fhirVersion, Map<String, String> relatedIgs) throws FHIRException, IOException {
+  public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, Map<String, String> relatedIgs, boolean notForPublication, String fhirVersion) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
     start();
@@ -150,7 +150,7 @@ public class NPMPackageGenerator {
     return new NPMPackageGenerator(destFile, p, date, notForPublication);
   }
 
-  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, List<String> fhirVersion, boolean notForPublication, Map<String, String> relatedIgs) throws FHIRException, IOException {
+  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, List<String> fhirVersion, Map<String, String> relatedIgs, boolean notForPublication) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
     start();
