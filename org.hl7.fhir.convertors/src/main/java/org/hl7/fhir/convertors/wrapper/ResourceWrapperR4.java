@@ -10,6 +10,8 @@ import org.hl7.fhir.r4.model.Enumeration;
 import org.hl7.fhir.r4.model.Narrative;
 import org.hl7.fhir.r4.model.Property;
 import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -26,6 +28,8 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * validator works internally, so this is well tested code). But you only need to set 
  * up the R5 context once; then you can create instances of these to wrap the objects you
  * want rendered on the fly. (is thread safe)
+ * 
+ * See test case for how to use this: @org.hl7.fhir.convertors.rendering.R4RenderingTestCases (testR4 method)
  * 
  */
 public class ResourceWrapperR4 extends ResourceWrapper {
@@ -250,6 +254,22 @@ public class ResourceWrapperR4 extends ResourceWrapper {
   @Override
   public Object getUserData(String name) {
     return element.getUserData(name);
+  }
+
+  public static ResourceWrapper forResource(RenderingContext rc, Resource resource) {
+    return forResource(rc.getContextUtilities(), resource);
+  }
+
+    public static ResourceWrapper forResource(ContextUtilities contextUtils, Resource resource) {
+
+    ResourceWrapperR4 self = new ResourceWrapperR4();
+    self.contextUtils = contextUtils;
+    self.parent = null;
+    self.name = null;
+    self.index = -1;
+    self.kind = ElementKind.IndependentResource;
+    self.element = resource;
+    return self;
   }
 
 }

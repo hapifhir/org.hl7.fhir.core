@@ -8,6 +8,7 @@ import java.util.Locale;
 import org.hl7.fhir.convertors.context.ContextResourceLoaderFactory;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
+import org.hl7.fhir.convertors.wrapper.ResourceWrapperR4;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -38,6 +39,30 @@ class R4RenderingTestCases {
 
   @Test
   void test() throws IOException, FHIRFormatError, DefinitionException, FHIRException, EOperationOutcome {
+    Patient patient = makePatient();
+    org.hl7.fhir.r5.model.Resource r5p = VersionConvertorFactory_40_50.convertResource(patient);
+    
+    RenderingContext rc = makeContext("5.0.0", FhirPublication.R5);
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    ResourceRenderer pr = RendererFactory.factory(r5p.fhirType(), rc);
+    pr.buildNarrative(new Renderer.RenderingStatus(), x, ResourceWrapper.forResource(rc, r5p));
+    String html = new XhtmlComposer(false, true).compose(x);
+    System.out.println(html);
+  }
+
+  @Test
+  void testR4() throws IOException, FHIRFormatError, DefinitionException, FHIRException, EOperationOutcome {
+    Patient patient = makePatient();
+    RenderingContext rc = makeContext("4.0.1", FhirPublication.R4);
+
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    ResourceRenderer pr = RendererFactory.factory(patient.fhirType(), rc);
+    pr.buildNarrative(new Renderer.RenderingStatus(), x, ResourceWrapperR4.forResource(rc, patient));
+    String html = new XhtmlComposer(false, true).compose(x);
+    System.out.println(html);
+  }
+
+  public Patient makePatient() {
     Patient patient = new Patient();
     patient.setId("Ik");
     patient.addIdentifier().setSystem("eadnr").setValue("123456");
@@ -56,23 +81,22 @@ class R4RenderingTestCases {
     contact.setGender(Enumerations.AdministrativeGender.FEMALE);
     contact.addTelecom(new ContactPoint().setSystem(ContactPoint.ContactPointSystem.PHONE).setValue("123"));
     patient.addContact(contact);
+    return patient;
+  }
 
+
+  public RenderingContext makeContext(String version, FhirPublication pub) throws IOException {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-    NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion("5.0.0"));
+    NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(version));
     IContextResourceLoader loader = ContextResourceLoaderFactory.makeLoader(npm.fhirVersion(), new NullLoaderKnowledgeProviderR5());
     SimpleWorkerContext context = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm, loader, true);
 
     RenderingContext rc = new RenderingContext(context, new MarkDownProcessor(MarkDownProcessor.Dialect.COMMON_MARK),
-            new org.hl7.fhir.utilities.validation.ValidationOptions(FhirPublication.R5), "http://hl7.org/fhir",
+            new org.hl7.fhir.utilities.validation.ValidationOptions(pub), "http://hl7.org/fhir",
             "", new Locale("en"), RenderingContext.ResourceRendererMode.END_USER, RenderingContext.GenerationRules.VALID_RESOURCE);
-    org.hl7.fhir.r5.model.Resource r5p = VersionConvertorFactory_40_50.convertResource(patient);
-
-    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    ResourceRenderer pr = RendererFactory.factory(r5p.fhirType(), rc);
-    pr.buildNarrative(new Renderer.RenderingStatus(), x, ResourceWrapper.forResource(rc, r5p));
-    String html = new XhtmlComposer(false, true).compose(x);
-    System.out.println(html);
+    return rc;
   }
+
 
 
   
