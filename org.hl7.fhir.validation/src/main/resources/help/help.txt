@@ -109,7 +109,10 @@ The following parameters are supported:
     from the URL
 -security-checks: If present, check that string content doesn't include any html
     -like tags that might create problems downstream (though all external input
-    must always be santized by escaping for either html or sql)
+    must always be sanitized by escaping for either html or sql)
+-no-http-access: If present, the validator will not attempt to make connections
+    to the web via http or https. If you do not have all IGs, structure
+    definitions, etc. provided locally, this may result in unexpected failures.
 
 The validator also supports the param -proxy=[address]:[port] for if you use a
 proxy
