@@ -72,6 +72,7 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
@@ -99,6 +100,8 @@ import org.hl7.fhir.validation.cli.utils.Params;
  */
 public class ValidatorCli {
 
+private static final String NO_WEB_ACCESS = "http.disabled";
+
   public static final String HTTP_PROXY_HOST = "http.proxyHost";
   public static final String HTTP_PROXY_PORT = "http.proxyPort";
 
@@ -112,7 +115,7 @@ public class ValidatorCli {
   public static final String JAVA_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
 
   private final static ValidationService validationService = new ValidationService();
-
+  
   protected ValidationService myValidationService;
 
   final List<CliTask> cliTasks;
@@ -226,6 +229,9 @@ public class ValidatorCli {
 
   private static void setJavaSystemProxyParamsFromParams(String[] args) {
 
+    if (Params.hasParam(args, NO_WEB_ACCESS)) {
+      ManagedWebAccess.setAccessPolicy(WebAccessPolicy.PROHIBITED);
+    }
     setJavaSystemProxyHostFromParams(args, Params.PROXY, HTTP_PROXY_HOST, HTTP_PROXY_PORT);
     setJavaSystemProxyHostFromParams(args, Params.HTTPS_PROXY, HTTPS_PROXY_HOST, HTTPS_PROXY_PORT);
 
