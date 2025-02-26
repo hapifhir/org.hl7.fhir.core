@@ -1202,4 +1202,5 @@ public class I18nConstants {
   public static final String IG_HL7_WG_REQUIRED = "IG_HL7_WG_REQUIRED";
   public static final String UNSUPPORTED_SLICING_COMPLEXITY = "UNSUPPORTED_SLICING_COMPLEXITY";
   public static final String UNKNOWN_PROPERTY = "UNKNOWN_PROPERTY";
+  public static final String SEARCHPARAMETER_BAD_CHAR = "SEARCHPARAMETER_BAD_CHAR";
 }
