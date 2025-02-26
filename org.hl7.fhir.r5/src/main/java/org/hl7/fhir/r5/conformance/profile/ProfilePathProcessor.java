@@ -1175,7 +1175,16 @@ public class ProfilePathProcessor {
         for (ElementDefinition baseItem : baseMatches)
           if (baseItem.getSliceName().equals(diffItem.getSliceName()))
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.NAMED_ITEMS_ARE_OUT_OF_ORDER_IN_THE_SLICE));
-        outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), currentBase.copy(), true);
+
+        String id = diffItem.getId();
+        String lid = profileUtilities.tail(id);
+        ElementDefinition template = currentBase;
+        if (lid.contains("/")) {
+          profileUtilities.generateIds(getResult().getElement(), getUrl(), getSourceStructureDefinition().getType(), getSourceStructureDefinition());
+          String baseId = id.substring(0, id.length() - lid.length()) + lid.substring(0, lid.indexOf("/")); // this is wrong if there's more than one reslice (todo: one thing at a time)
+          template = profileUtilities.getById(getResult().getElement(), baseId);
+        }
+        outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), template.copy(), true);
         //            outcome = updateURLs(url, diffItem.copy());
         outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
         profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
