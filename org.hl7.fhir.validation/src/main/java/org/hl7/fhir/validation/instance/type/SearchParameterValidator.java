@@ -42,7 +42,12 @@ public class SearchParameterValidator extends BaseValidator {
   public boolean validateSearchParameter(List<ValidationMessage> errors, Element cs, NodeStack stack) {
     boolean ok = true;
 //    String url = cs.getNamedChildValue("url");
-    
+    String code = cs.getNamedChildValue("code");
+    if (code != null) {
+      warning(errors, "2025-02-27", IssueType.INVALID, stack.getLiteralPath(), !code.contains("."), I18nConstants.SEARCHPARAMETER_BAD_CHAR, code, ".");
+      warning(errors, "2025-02-27", IssueType.INVALID, stack.getLiteralPath(), !code.contains("$"), I18nConstants.SEARCHPARAMETER_BAD_CHAR, code, "$");
+      warning(errors, "2025-02-27", IssueType.INVALID, stack.getLiteralPath(), !code.contains("|"), I18nConstants.SEARCHPARAMETER_BAD_CHAR, code, "|");
+    }
     if (cs.hasChild("expression", false)) {
       List<String> bases = new ArrayList<>();
       for (Element b : cs.getChildrenByName("base")) {
