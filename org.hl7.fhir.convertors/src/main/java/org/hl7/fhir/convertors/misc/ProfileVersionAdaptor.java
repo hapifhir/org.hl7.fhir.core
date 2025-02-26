@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
@@ -132,9 +133,12 @@ public class ProfileVersionAdaptor {
             if (type == null) {
               throw new DefinitionException("unable to find definition for "+tr.getCode());
             }
-            log.add(new ConversionMessage("Replace the type "+tr.getCode()+" with a set of extensions for the content of the type", false));
+            log.add(new ConversionMessage("Replace the type "+tr.getCode()+" with a set of extensions for the content of the type along with the _datatype extension", false));
             int insPoint = sd.getDifferential().getElement().indexOf(lastExt);
             int offset = 1;
+            
+            // a slice extension for _datatype
+            offset = addDatatypeSlice(sd, offset, insPoint, lastExt, tr.getCode());
 
             // now, a slice extension for each thing in the data type differential
             for (ElementDefinition ted : type.getDifferential().getElement()) {
@@ -207,6 +211,32 @@ public class ProfileVersionAdaptor {
     StructureDefinition base = tCtxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
     tpu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/"+VersionUtilities.getNameForVersion(tCtxt.getVersion())+"/", sd.getName());  
     return sd;
+  }
+
+  private int addDatatypeSlice(StructureDefinition sd, int offset, int insPoint, ElementDefinition base, String type) {
+    ElementDefinition ned = new ElementDefinition(base.getPath());
+    ned.setSliceName("_datatype");
+    ned.setShort("DataType name '"+type+"' from "+VersionUtilities.getNameForVersion(sCtxt.getVersion()));
+    ned.setDefinition(ned.getShort());
+    ned.setMin(1);
+    ned.setMax("1");
+    ned.addType().setCode("Extension").addProfile("http://hl7.org/fhir/StructureDefinition/_datatype");
+    offset = addDiffElement(sd, insPoint, offset, ned);
+//    // set the extensions to 0
+//    ElementDefinition need = new ElementDefinition(base.getPath()+".extension");
+//    need.setMax("0");
+//    offset = addDiffElement(sd, insPoint, offset, need);
+//    // fix the url 
+//    ned = new ElementDefinition(base.getPath()+".url");
+//    ned.setFixed(new UriType("http://hl7.org/fhir/StructureDefinition/_datatype"));
+//    offset = addDiffElement(sd, insPoint, offset, ned);
+    // set the value 
+    ned = new ElementDefinition(base.getPath()+".value[x]");
+    ned.setMin(1);
+    offset = addDiffElement(sd, insPoint, offset, ned);
+    ned.addType().setCode("string");
+    ned.setFixed(new StringType(type));
+    return offset;
   }
 
   private int addDiffElement(StructureDefinition sd, int insPoint, int offset, ElementDefinition ned) {

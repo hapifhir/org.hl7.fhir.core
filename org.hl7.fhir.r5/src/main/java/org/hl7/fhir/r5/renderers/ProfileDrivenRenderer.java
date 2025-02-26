@@ -68,8 +68,6 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if (profile == null)
       return "unknown resource type " +res.fhirType();
     else {
-      boolean firstElement = true;
-      boolean last = false;
       List<ResourceWrapper> children = res.children();
       ContextUtilities cu = res.getContextUtilities();
       for (ResourceWrapper p : children) {

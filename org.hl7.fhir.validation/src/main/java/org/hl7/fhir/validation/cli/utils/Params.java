@@ -346,7 +346,9 @@ public class Params {
         cliContext.setMode(EngineMode.VERSION);
       } else if (args[i].equals(PACKAGE_NAME)) {
         cliContext.setPackageName(args[++i]);
-        cliContext.setMode(EngineMode.CODEGEN);
+        if (!hasParam(args, "-re-package")) {
+          cliContext.setMode(EngineMode.CODEGEN);
+        }
       } else if (args[i].equals(TX_PACK)) {
         cliContext.setMode(EngineMode.RE_PACKAGE);
         String pn = args[++i];
