@@ -100,8 +100,6 @@ import org.hl7.fhir.validation.cli.utils.Params;
  */
 public class ValidatorCli {
 
-private static final String NO_WEB_ACCESS = "http.disabled";
-
   public static final String HTTP_PROXY_HOST = "http.proxyHost";
   public static final String HTTP_PROXY_PORT = "http.proxyPort";
 
@@ -158,7 +156,9 @@ private static final String NO_WEB_ACCESS = "http.disabled";
     if (cliContext.getLocale() != null) {
       Locale.setDefault(cliContext.getLocale());
     }
-
+    if (Params.hasParam(args, Params.NO_HTTP_ACCESS)) {
+      ManagedWebAccess.setAccessPolicy(WebAccessPolicy.PROHIBITED);
+    }
     setJavaSystemProxyParamsFromParams(args);
 
     Display.displayVersion(System.out);
@@ -228,10 +228,7 @@ private static final String NO_WEB_ACCESS = "http.disabled";
   }
 
   private static void setJavaSystemProxyParamsFromParams(String[] args) {
-
-    if (Params.hasParam(args, NO_WEB_ACCESS)) {
-      ManagedWebAccess.setAccessPolicy(WebAccessPolicy.PROHIBITED);
-    }
+    
     setJavaSystemProxyHostFromParams(args, Params.PROXY, HTTP_PROXY_HOST, HTTP_PROXY_PORT);
     setJavaSystemProxyHostFromParams(args, Params.HTTPS_PROXY, HTTPS_PROXY_HOST, HTTPS_PROXY_PORT);
 

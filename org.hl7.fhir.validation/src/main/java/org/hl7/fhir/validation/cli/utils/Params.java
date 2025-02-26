@@ -135,6 +135,7 @@ public class Params {
   private static final String WATCH_MODE_PARAM = "-watch-mode";
   private static final String WATCH_SCAN_DELAY = "-watch-scan-delay";
   private static final String WATCH_SETTLE_TIME = "-watch-settle-time";
+  public static final String NO_HTTP_ACCESS = "-no-http-access";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
