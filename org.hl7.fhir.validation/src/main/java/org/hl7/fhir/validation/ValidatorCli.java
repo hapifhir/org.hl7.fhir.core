@@ -1,7 +1,5 @@
 package org.hl7.fhir.validation;
 
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -99,18 +97,6 @@ import org.hl7.fhir.validation.cli.utils.Params;
  * @author Grahame
  */
 public class ValidatorCli {
-
-  public static final String HTTP_PROXY_HOST = "http.proxyHost";
-  public static final String HTTP_PROXY_PORT = "http.proxyPort";
-
-  public static final String HTTPS_PROXY_HOST = "https.proxyHost";
-
-  public static final String HTTPS_PROXY_PORT = "https.proxyPort";
-  public static final String HTTP_PROXY_USER = "http.proxyUser";
-  public static final String HTTP_PROXY_PASS = "http.proxyPassword";
-  public static final String JAVA_DISABLED_TUNNELING_SCHEMES = "jdk.http.auth.tunneling.disabledSchemes";
-  public static final String JAVA_DISABLED_PROXY_SCHEMES = "jdk.http.auth.proxying.disabledSchemes";
-  public static final String JAVA_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
 
   private final static ValidationService validationService = new ValidationService();
   
@@ -228,52 +214,11 @@ public class ValidatorCli {
   }
 
   private static void setJavaSystemProxyParamsFromParams(String[] args) {
-    
-    setJavaSystemProxyHostFromParams(args, Params.PROXY, HTTP_PROXY_HOST, HTTP_PROXY_PORT);
-    setJavaSystemProxyHostFromParams(args, Params.HTTPS_PROXY, HTTPS_PROXY_HOST, HTTPS_PROXY_PORT);
 
-    if (Params.hasParam(args, Params.PROXY_AUTH)) {
-      assert Params.getParam(args, Params.PROXY) != null : "Cannot set PROXY_AUTH without setting PROXY...";
-      assert Params.getParam(args, Params.PROXY_AUTH) != null : "PROXY_AUTH arg passed in was NULL...";
-      String[] p = Params.getParam(args, Params.PROXY_AUTH).split(":");
-      String authUser = p[0];
-      String authPass = p[1];
-
-      /*
-       * For authentication, use java.net.Authenticator to set proxy's configuration and set the system properties
-       * http.proxyUser and http.proxyPassword
-       */
-      Authenticator.setDefault(
-        new Authenticator() {
-          @Override
-          public PasswordAuthentication getPasswordAuthentication() {
-            return new PasswordAuthentication(authUser, authPass.toCharArray());
-          }
-        }
-      );
-
-      System.setProperty(HTTP_PROXY_USER, authUser);
-      System.setProperty(HTTP_PROXY_PASS, authPass);
-      System.setProperty(JAVA_USE_SYSTEM_PROXIES, "true");
-
-      /*
-       * For Java 1.8 and higher you must set
-       * -Djdk.http.auth.tunneling.disabledSchemes=
-       * to make proxies with Basic Authorization working with https along with Authenticator
-       */
-      System.setProperty(JAVA_DISABLED_TUNNELING_SCHEMES, "");
-      System.setProperty(JAVA_DISABLED_PROXY_SCHEMES, "");
-    }
-  }
-
-  private static void setJavaSystemProxyHostFromParams(String[] args, String proxyParam, String proxyHostProperty, String proxyPortProperty) {
-    if (Params.hasParam(args, proxyParam)) {
-      assert Params.getParam(args, proxyParam) != null : "PROXY arg passed in was NULL";
-      String[] p = Params.getParam(args, proxyParam).split(":");
-
-      System.setProperty(proxyHostProperty, p[0]);
-      System.setProperty(proxyPortProperty, p[1]);
-    }
+    final String proxy = Params.hasParam(args, Params.PROXY) ? Params.getParam(args, Params.PROXY) : null;
+    final String httpsProxy = Params.hasParam(args, Params.HTTPS_PROXY) ? Params.getParam(args, Params.HTTPS_PROXY) : null;
+    final String proxyAuth = Params.hasParam(args, Params.PROXY_AUTH) ? Params.getParam(args, Params.PROXY_AUTH) : null;
+    JavaSystemProxyParamSetter.setJavaSystemProxyParams(proxy, httpsProxy, proxyAuth);
   }
 
   private static String[] addAdditionalParamsForIpsParam(String[] args) {
