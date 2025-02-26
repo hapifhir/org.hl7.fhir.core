@@ -384,7 +384,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   public static final String RIM_MAPPING = "http://hl7.org/v3"; 
   public static final String v2_MAPPING = "http://hl7.org/v2"; 
   public static final String LOINC_MAPPING = "http://loinc.org"; 
-  public static final String SNOMED_MAPPING = "http://snomed.info"; 
+  public static final String SNOMED_MAPPING = "http://snomed.info";
+  private static final boolean PREFIX_SLICES = true; 
  
   private final boolean ADD_REFERENCE_TO_TABLE = true; 
  
@@ -819,10 +820,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
       UnusedTracker used = new UnusedTracker(); 
       String ref = defPath == null ? null : defPath + element.getId(); 
-      String sName = tail(element.getPath()); 
-      if (element.hasSliceName()) {  
-        sName = sName +":"+element.getSliceName(); 
-      } 
+      String sName = null;
+      if (PREFIX_SLICES) {
+    	sName = tail(element.getPath());
+    	if (element.hasSliceName()) {
+    	  sName = sName + ":" + element.getSliceName();
+    	}    	  
+      } else {
+        sName = element.hasSliceName() ? element.getSliceName() : tail(element.getPath());
+      }
       used.used = true; 
       if (logicalModel) { 
         if (element.hasRepresentation(PropertyRepresentation.XMLATTR)) { 
@@ -843,7 +849,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         genElementObligations(gen, element, columns, row, corePath, profile); 
         break; 
       case SUMMARY: 
-        genElementCells(status, gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName, nc, mustSupport, true, rc, children.size() > 0, defPath, anchorPrefix, all, res);
+        genElementCells(status, gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, nc, mustSupport, true, rc, children.size() > 0, defPath, anchorPrefix, all, res);
         break; 
       } 
       if (element.hasSlicing()) { 
@@ -1132,7 +1138,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   public List<Cell> genElementCells(RenderingStatus status, HierarchicalTableGenerator gen, ElementDefinition element, String profileBaseFileName, boolean snapshot, String corePath, 
       String imagePath, boolean root, boolean logicalModel, boolean allInvariants, StructureDefinition profile, Row typesRow, Row row, boolean hasDef, 
-      boolean ext, UnusedTracker used, String ref, String sName, Cell nameCell, boolean mustSupport, boolean allowSubRows, RenderingContext rc, boolean walksIntoThis, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements, ResourceWrapper resource) throws IOException {
+      boolean ext, UnusedTracker used, String ref, Cell nameCell, boolean mustSupport, boolean allowSubRows, RenderingContext rc, boolean walksIntoThis, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements, ResourceWrapper resource) throws IOException {
     List<Cell> res = new ArrayList<>(); 
     Cell gc = gen.new Cell(); 
     row.getCells().add(gc); 
@@ -1178,7 +1184,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             res.add(generateDescription(status, gen, row, element, (ElementDefinition) element.getUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER), used.used, profile == null ? "" : profile.getUrl(), eurl, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot, mustSupport, allowSubRows, rc, inScopeElements, resource));
           } else { 
             String name = element.hasSliceName() ? element.getSliceName() : urltail(eurl); 
-            nameCell.getPieces().get(0).setText(name); 
+//          disable 26-02-2025 GDG - this just makes things inconsistent, and why do this?  nameCell.getPieces().get(0).setText(name); 
             // left.getPieces().get(0).setReference((String) extDefn.getExtensionStructure().getTag("filename")); 
             nameCell.getPieces().get(0).setHint((context.formatPhrase(RenderingContext.STRUC_DEF_EX_URL, extDefn.getUrl()))); 
             res.add(genCardinality(gen, element, row, hasDef, used, extDefn.getElement())); 

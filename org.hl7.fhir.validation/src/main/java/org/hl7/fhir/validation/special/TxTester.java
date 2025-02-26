@@ -190,7 +190,7 @@ public class TxTester {
       FileUtilities.stringToFile(JsonParser.compose(json, true), Utilities.path(outputDir, "test-results.json"));
 
       if (filter == null) {
-        String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join(";", modes);
+        String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join("+", modes);
         if (ok) {
           System.out.println(software+" passed all "+counter.total()+" HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+vString(versions)+", runner v"+VersionUtil.getBaseVersion()+")");
           return true;

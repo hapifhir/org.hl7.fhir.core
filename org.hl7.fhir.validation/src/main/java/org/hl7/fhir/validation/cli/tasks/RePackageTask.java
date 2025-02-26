@@ -80,6 +80,7 @@ public class RePackageTask extends ValidationEngineTask {
     }
     IWorkerContext ctxt = validationEngine.getContext();
     PackageReGenerator ep = new PackageReGenerator().setContext(ctxt).setScope(scope);
+    ep.setNpmId(cliContext.getPackageName());
     for (String s : cliContext.getIgs()) {
       ep.addPackage(s);
     }
