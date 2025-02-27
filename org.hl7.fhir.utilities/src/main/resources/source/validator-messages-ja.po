@@ -1468,13 +1468,13 @@ msgstr "discriminatorで無効な式構文 (グループ ''{0}'')"
 
 # FHIRPATH_DISCRIMINATOR_CANT_FIND
 #: FHIRPATH_DISCRIMINATOR_CANT_FIND
-msgid "Unable to resolve discriminator in definitions: {0} in profile {1} on element {2}, looking in profile {3}"
-msgstr "定義内でdiscriminatorを解決できません: プロファイル {1} の要素 {2} に対する{0}、プロファイル {3} を確認中に"
+msgid "Unable to resolve discriminator in definitions: ''{0}'' in profile ''{1}'' on element ''{2}'', looking in profile ''{3}''"
+msgstr "!!定義内でdiscriminatorを解決できません: プロファイル {1} の要素 {2} に対する{0}、プロファイル {3} を確認中に"
 
 # FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION
 #: FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION
-msgid "Unable to resolve discriminator {0} on {2} found in the definitions because the extension {1} wasn''t found in the profile {3}"
-msgstr "定義内でdiscriminator {0} を {2} 上で見つけたが、extension {1} がプロファイル {3} に見つからなかったため解決できません"
+msgid "Unable to resolve discriminator ''{0}'' on ''{2}'' found in the definitions because the extension ''{1}'' wasn''t found in the profile ''{3}''"
+msgstr "!!定義内でdiscriminator {0} を {2} 上で見つけたが、extension {1} がプロファイル {3} に見つからなかったため解決できません"
 
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
@@ -3491,6 +3491,11 @@ msgstr "繰り返し要素には {1} があります。 {1} はすべての繰�
 #: SD_VALUE_TYPE_REPEAT_WARNING_DOTNET
 msgid "The repeating element has a {1} value for a primitive type. The DotNet validator will not apply this to all the repeats - this is an error"
 msgstr "繰り返し要素にはプリミティブ型の {1} 値があります。DotNetバリデータはこれをすべての繰り返しに適用しない - これはエラーです"
+
+# SEARCHPARAMETER_BAD_CHAR
+#: SEARCHPARAMETER_BAD_CHAR
+msgid "The Search Parameter code includes ''{0}'' which has special meaning in the RESTful API, and so this will be a problem"
+msgstr ""
 
 # SEARCHPARAMETER_BASE_WRONG
 #: SEARCHPARAMETER_BASE_WRONG
@@ -5912,8 +5917,8 @@ msgstr "URLは''({1})''のため有効ではありません：{0}"
 #: XHTML_URL_INVALID_CHARS
 msgid "URL contains Invalid Character: {1}"
 msgid_plural "URL contains {0} Invalid Characters: {1}"
-msgstr[0] "!!URLに無効な文字({1})が含まれています"
-msgstr[1] "!!URLに{0}個の無効な文字({1})が含まれています"
+msgstr[0] "URLに無効な文字({1})が含まれています"
+msgstr[1] "URLに{0}個の無効な文字({1})が含まれています"
 
 # XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #: XHTML_XHTML_ATTRIBUTE_XML_SPACE

@@ -1473,13 +1473,13 @@ msgstr "expresión sintáctica ilegal en el discriminador (group ''{0}'')"
 
 # FHIRPATH_DISCRIMINATOR_CANT_FIND
 #: FHIRPATH_DISCRIMINATOR_CANT_FIND
-msgid "Unable to resolve discriminator in definitions: {0} in profile {1} on element {2}, looking in profile {3}"
-msgstr "Imposible resolver el discriminador en las definiciones: {0} en el perfil {1} en el elemento {2}, buscando en el perfil {3}"
+msgid "Unable to resolve discriminator in definitions: ''{0}'' in profile ''{1}'' on element ''{2}'', looking in profile ''{3}''"
+msgstr "!!Imposible resolver el discriminador en las definiciones: {0} en el perfil {1} en el elemento {2}, buscando en el perfil {3}"
 
 # FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION
 #: FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION
-msgid "Unable to resolve discriminator {0} on {2} found in the definitions because the extension {1} wasn''t found in the profile {3}"
-msgstr "Imposible resolver el discriminador{0} en {2} encontrado en las definiciones porque la extension {1} no ha sido encontrada en el perfil {3}"
+msgid "Unable to resolve discriminator ''{0}'' on ''{2}'' found in the definitions because the extension ''{1}'' wasn''t found in the profile ''{3}''"
+msgstr "!!Imposible resolver el discriminador{0} en {2} encontrado en las definiciones porque la extension {1} no ha sido encontrada en el perfil {3}"
 
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
@@ -3512,6 +3512,11 @@ msgstr "El elemento repetitivo tiene un {1}. El {1} aplicará a todas las repeti
 #: SD_VALUE_TYPE_REPEAT_WARNING_DOTNET
 msgid "The repeating element has a {1} value for a primitive type. The DotNet validator will not apply this to all the repeats - this is an error"
 msgstr "El elemento repetitivo tiene un valor {1} para un tipo primitivo. EL validador DotNet no aplicará esto a todas las repeticiones. Esto es un error"
+
+# SEARCHPARAMETER_BAD_CHAR
+#: SEARCHPARAMETER_BAD_CHAR
+msgid "The Search Parameter code includes ''{0}'' which has special meaning in the RESTful API, and so this will be a problem"
+msgstr ""
 
 # SEARCHPARAMETER_BASE_WRONG
 #: SEARCHPARAMETER_BASE_WRONG
@@ -5941,8 +5946,8 @@ msgstr "La URL no es válida porque ''({1})'': {0}"
 #: XHTML_URL_INVALID_CHARS
 msgid "URL contains Invalid Character: {1}"
 msgid_plural "URL contains {0} Invalid Characters: {1}"
-msgstr[0] "!!La URL contiene Caracteres Inválidos ({1})"
-msgstr[1] "!!La URL contiene {0} Caracteres Inválidos ({1})"
+msgstr[0] "La URL contiene Caracteres Inválidos ({1})"
+msgstr[1] "La URL contiene {0} Caracteres Inválidos ({1})"
 msgstr[2] "La URL contiene {0} Caracteres Inválidos ({1})"
 
 # XHTML_XHTML_ATTRIBUTE_XML_SPACE

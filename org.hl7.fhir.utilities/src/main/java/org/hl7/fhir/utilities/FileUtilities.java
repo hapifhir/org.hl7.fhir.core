@@ -194,6 +194,10 @@ public class FileUtilities {
     return f.getParent();
   }
 
+  public static String getDirectoryForFile(File file) throws IOException {
+    return file.getParent();
+  }
+
   public static String getRelativePath(String root, String path) {
     String res = path.substring(root.length());
     if (res.startsWith(File.separator)) {
