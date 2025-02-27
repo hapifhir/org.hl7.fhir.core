@@ -77,13 +77,13 @@ public class NarrativeGeneratorTests {
     DateTimeType dt = new DateTimeType(src);
     String actual = new DataRenderer(rc).displayDataType(ResourceWrapper.forType(rc.getContextUtilities(), dt));
     
-    Assert.assertTrue("Actual = "+actual+", expected one of "+Utilities.toString(expected), Utilities.existsInList(Utilities.normalize(actual), expected));
+    Assert.assertTrue("Actual = "+actual+", expected one of "+Utilities.toString(expected), Utilities.existsInList(Utilities.normalize(actual, false), expected));
     XhtmlNode node = new XhtmlNode(NodeType.Element, "p");
     new DataRenderer(rc).renderDataType(new RenderingStatus(), node, ResourceWrapper.forType(rc.getContextUtilities(), dt));
     actual = new XhtmlComposer(true, false).compose(node); 
     Assert.assertTrue(actual.startsWith("<p>"));
     Assert.assertTrue(actual.endsWith("</p>"));
-    Assert.assertTrue("Actual = "+actual+", expected one of "+Utilities.toString(expected), Utilities.existsInList(Utilities.normalize(actual.substring(0, actual.length()-4)).substring(3), expected));
+    Assert.assertTrue("Actual = "+actual+", expected one of "+Utilities.toString(expected), Utilities.existsInList(Utilities.normalize(actual.substring(0, actual.length()-4), false).substring(3), expected));
 }
   
   @Test
