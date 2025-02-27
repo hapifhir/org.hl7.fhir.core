@@ -718,6 +718,9 @@ public class Utilities {
   }
 
   public static String normalize(String s) {
+    return normalize(s, true);
+  }
+  public static String normalize(String s, boolean lower) {
     if (noString(s))
       return null;
     StringBuilder b = new StringBuilder();
@@ -725,7 +728,7 @@ public class Utilities {
     for (int i = 0; i < s.length(); i++) {
       char c = s.charAt(i);
       if (!isWhitespace(c)) {
-        b.append(Character.toLowerCase(c));
+        b.append(lower ? Character.toLowerCase(c) : c);
         isWhitespace = false;
       } else if (!isWhitespace) {
         if (c == '\r' || c == '\n') {
