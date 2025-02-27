@@ -1468,12 +1468,12 @@ msgstr ""
 
 # FHIRPATH_DISCRIMINATOR_CANT_FIND
 #: FHIRPATH_DISCRIMINATOR_CANT_FIND
-msgid "Unable to resolve discriminator in definitions: {0} in profile {1} on element {2}, looking in profile {3}"
+msgid "Unable to resolve discriminator in definitions: ''{0}'' in profile ''{1}'' on element ''{2}'', looking in profile ''{3}''"
 msgstr ""
 
 # FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION
 #: FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION
-msgid "Unable to resolve discriminator {0} on {2} found in the definitions because the extension {1} wasn''t found in the profile {3}"
+msgid "Unable to resolve discriminator ''{0}'' on ''{2}'' found in the definitions because the extension ''{1}'' wasn''t found in the profile ''{3}''"
 msgstr ""
 
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
@@ -3490,6 +3490,11 @@ msgstr ""
 # SD_VALUE_TYPE_REPEAT_WARNING_DOTNET
 #: SD_VALUE_TYPE_REPEAT_WARNING_DOTNET
 msgid "The repeating element has a {1} value for a primitive type. The DotNet validator will not apply this to all the repeats - this is an error"
+msgstr ""
+
+# SEARCHPARAMETER_BAD_CHAR
+#: SEARCHPARAMETER_BAD_CHAR
+msgid "The Search Parameter code includes ''{0}'' which has special meaning in the RESTful API, and so this will be a problem"
 msgstr ""
 
 # SEARCHPARAMETER_BASE_WRONG

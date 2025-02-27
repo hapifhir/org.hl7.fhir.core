@@ -1468,13 +1468,13 @@ msgstr "Onjuiste expressiesyntax in discriminator (groep ''{0}'')"
 
 # FHIRPATH_DISCRIMINATOR_CANT_FIND
 #: FHIRPATH_DISCRIMINATOR_CANT_FIND
-msgid "Unable to resolve discriminator in definitions: {0} in profile {1} on element {2}, looking in profile {3}"
-msgstr "Kan discriminator niet vinden in definities: {0} in profiel {1} op element {2}, kijkende in profiel {3}"
+msgid "Unable to resolve discriminator in definitions: ''{0}'' in profile ''{1}'' on element ''{2}'', looking in profile ''{3}''"
+msgstr "!!Kan discriminator niet vinden in definities: {0} in profiel {1} op element {2}, kijkende in profiel {3}"
 
 # FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION
 #: FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION
-msgid "Unable to resolve discriminator {0} on {2} found in the definitions because the extension {1} wasn''t found in the profile {3}"
-msgstr "Kan discriminator {0} op {2} niet vinden, gevonden in de definities omdat de extensie {1} uit profiel {3} niet is gevonden"
+msgid "Unable to resolve discriminator ''{0}'' on ''{2}'' found in the definitions because the extension ''{1}'' wasn''t found in the profile ''{3}''"
+msgstr "!!Kan discriminator {0} op {2} niet vinden, gevonden in de definities omdat de extensie {1} uit profiel {3} niet is gevonden"
 
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
@@ -3491,6 +3491,11 @@ msgstr "Het herhalende element heeft een {1}. De {1} is van toepassing op alle h
 #: SD_VALUE_TYPE_REPEAT_WARNING_DOTNET
 msgid "The repeating element has a {1} value for a primitive type. The DotNet validator will not apply this to all the repeats - this is an error"
 msgstr "Het herhalende element heeft een {1} waarde voor een primitief type. De DotNet validator zal dit niet op alle herhalingen toepassen - dit is een fout"
+
+# SEARCHPARAMETER_BAD_CHAR
+#: SEARCHPARAMETER_BAD_CHAR
+msgid "The Search Parameter code includes ''{0}'' which has special meaning in the RESTful API, and so this will be a problem"
+msgstr ""
 
 # SEARCHPARAMETER_BASE_WRONG
 #: SEARCHPARAMETER_BASE_WRONG
@@ -5912,8 +5917,8 @@ msgstr "De URL is ongeldig vanwege ''({1})'' : {0}"
 #: XHTML_URL_INVALID_CHARS
 msgid "URL contains Invalid Character: {1}"
 msgid_plural "URL contains {0} Invalid Characters: {1}"
-msgstr[0] "!!URL bevat een ongeldig teken ({1})"
-msgstr[1] "!!URL bevat {0} ongeldige tekens ({1})"
+msgstr[0] "URL bevat een ongeldig teken ({1})"
+msgstr[1] "URL bevat {0} ongeldige tekens ({1})"
 
 # XHTML_XHTML_ATTRIBUTE_XML_SPACE
 #: XHTML_XHTML_ATTRIBUTE_XML_SPACE
