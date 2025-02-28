@@ -986,6 +986,11 @@ public class RenderingContext extends RenderingI18nContext {
     return this;
   }
 
+  public RenderingContext withMode(ResourceRendererMode mode) {
+    setMode(mode);
+    return this;
+  }
+  
   public ContextUtilities getContextUtilities() {
     if (contextUtilities == null) {
       contextUtilities = new ContextUtilities(worker);
