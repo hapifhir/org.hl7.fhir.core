@@ -305,7 +305,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
             resList.add(res);
             if (!res.isOk() && !res.messageIsInIssues()) {
               if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {                
-                info.getIssues().addAll(makeIssue(res.getSeverity(), IssueType.NOTFOUND, path+".coding["+i+"]", res.getMessage(), OpIssueCode.NotFound, res.getServer()));
+                info.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.NOTFOUND, path+".coding["+i+"]", res.getMessage(), OpIssueCode.NotFound, res.getServer()));
               } else {
                 info.getIssues().addAll(makeIssue(res.getSeverity(), IssueType.CODEINVALID, path+".coding["+i+"]", res.getMessage(), OpIssueCode.InvalidCode, res.getServer()));
               }
@@ -605,38 +605,42 @@ public class ValueSetValidator extends ValueSetProcessBase {
         String wv = vi.getVersion(system, code.getVersion());
         CodeSystem cs = resolveCodeSystem(system, wv);
         if (cs == null) {
-          OpIssueCode oic = OpIssueCode.NotFound;
-          IssueType itype = IssueType.NOTFOUND;
-          ValueSet vs = context.fetchResource(ValueSet.class, system);
-          if (vs != null) {
-            warningMessage = context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, system);  
-            oic = OpIssueCode.InvalidData;
-            itype = IssueType.INVALID;
-          } else if (wv == null) {
-            warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, system);
-            unknownSystems.add(system);
+          if (!VersionUtilities.isR6Plus(context.getVersion()) && "urn:ietf:bcp:13".equals(system) && Utilities.existsInList(code.getCode(), "xml", "json", "ttl") && "http://hl7.org/fhir/ValueSet/mimetypes".equals(valueset.getUrl())) {
+            return new ValidationResult(system, null, new ConceptDefinitionComponent(code.getCode()), "application/fhir+"+code.getCode());        
           } else {
-            warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, system, wv, resolveCodeSystemVersions(system).toString());
-            unknownSystems.add(system+"|"+wv);
-          }
-          if (!inExpansion) {
-            if (valueset != null && valueset.hasExpansion()) {
-              String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_UNK_EXPANSION,
-                  valueset.getUrl(), 
-                  code.getSystem(), 
-                  code.getCode().toString());
-              issues.addAll(makeIssue(IssueSeverity.ERROR, itype, path, msg, OpIssueCode.VSProcessing, null));
-              throw new VSCheckerException(msg, issues, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
+            OpIssueCode oic = OpIssueCode.NotFound;
+            IssueType itype = IssueType.NOTFOUND;
+            ValueSet vs = context.fetchResource(ValueSet.class, system);
+            if (vs != null) {
+              warningMessage = context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, system);  
+              oic = OpIssueCode.InvalidData;
+              itype = IssueType.INVALID;
+            } else if (wv == null) {
+              warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, system);
+              unknownSystems.add(system);
             } else {
-              issues.addAll(makeIssue(IssueSeverity.ERROR, itype, path+".system", warningMessage, oic, null));
-              res = new ValidationResult(IssueSeverity.WARNING, warningMessage, issues);              
-              if (valueset == null) {
-                throw new VSCheckerException(warningMessage, issues, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
+              warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, system, wv, resolveCodeSystemVersions(system).toString());
+              unknownSystems.add(system+"|"+wv);
+            }
+            if (!inExpansion) {
+              if (valueset != null && valueset.hasExpansion()) {
+                String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_UNK_EXPANSION,
+                    valueset.getUrl(), 
+                    code.getSystem(), 
+                    code.getCode().toString());
+                issues.addAll(makeIssue(IssueSeverity.ERROR, itype, path, msg, OpIssueCode.VSProcessing, null));
+                throw new VSCheckerException(msg, issues, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
               } else {
-                //              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), code.toString());
-                //              issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
-                // we don't do this yet
-                // throw new VSCheckerException(warningMessage, issues); 
+                issues.addAll(makeIssue(IssueSeverity.ERROR, itype, path+".system", warningMessage, oic, null));
+                res = new ValidationResult(IssueSeverity.WARNING, warningMessage, issues);              
+                if (valueset == null) {
+                  throw new VSCheckerException(warningMessage, issues, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
+                } else {
+                  //              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), code.toString());
+                  //              issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
+                  // we don't do this yet
+                  // throw new VSCheckerException(warningMessage, issues); 
+                }
               }
             }
           }
@@ -1290,6 +1294,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
               sys.add(vsi.getSystem());
             }
           }
+        } else if (!VersionUtilities.isR6Plus(context.getVersion()) && Utilities.existsInList(code, "xml", "json", "ttl") && "urn:ietf:bcp:13".equals(vsi.getSystem())) {
+          sys.add(vsi.getSystem());
+          return true;
         } else {
           ValueSet vsDummy = new ValueSet();
           vsDummy.setUrl(UUIDUtilities.makeUuidUrn());
