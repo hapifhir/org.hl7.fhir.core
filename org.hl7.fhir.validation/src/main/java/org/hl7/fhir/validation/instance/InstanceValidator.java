@@ -4007,7 +4007,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
-  private boolean checkQuantity(List<ValidationMessage> errors, String path, Element element, StructureDefinition theProfile, ElementDefinition definition, NodeStack theStack) {
+  private boolean checkQuantity(List<ValidationMessage> errors, String path, Element element, StructureDefinition theProfile, ElementDefinition definition, boolean checkDisplayInContext, NodeStack theStack) {
     boolean ok = true;
     String value = element.hasChild("value", false) ? element.getNamedChild("value", false).getValue() : null;
     String unit = element.hasChild("unit", false) ? element.getNamedChild("unit", false).getValue() : null;
@@ -4024,7 +4024,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     if (system != null || code != null ) {
-      ok = checkCodedElement(errors, path, element, theProfile, definition, false, false, theStack, code, system, null, unit) && ok;
+      ok = checkCodedElement(errors, path, element, theProfile, definition, false, checkDisplayInContext, theStack, code, system, null, unit) && ok;
     }
 
     if (code != null && "http://unitsofmeasure.org".equals(system)) {
@@ -6909,7 +6909,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else if (type.equals("Coding")) {
         ok = (checkCoding(checkBindings ? errors : new ArrayList<>(), ei.getPath(), ei.getElement(), profile, checkDefn, inCodeableConcept, checkDisplayInContext, localStack) || !checkBindings) && ok;
       } else if (type.equals("Quantity")) {
-        ok = checkQuantity(errors, ei.getPath(), ei.getElement(), profile, checkDefn, localStack) && ok;
+        ok = checkQuantity(errors, ei.getPath(), ei.getElement(), profile, checkDefn, checkDisplayInContext, localStack) && ok;
       } else if (type.equals("Attachment")) {
         ok = checkAttachment(errors, ei.getPath(), ei.getElement(), profile, checkDefn, inCodeableConcept, checkDisplayInContext, localStack) && ok;
       } else if (type.equals("CodeableConcept")) {
