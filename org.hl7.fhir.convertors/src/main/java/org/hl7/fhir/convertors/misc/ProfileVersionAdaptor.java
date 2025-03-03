@@ -367,9 +367,6 @@ public class ProfileVersionAdaptor {
     // todo: translate resource types
     res.getBase().removeIf(t -> { 
         String rt = t.asStringValue();
-        if (rt.equals("DeviceUsage")) {
-          DebugUtilities.breakpoint();
-        }
         return !tcu.isResource(rt);
       }
     );
