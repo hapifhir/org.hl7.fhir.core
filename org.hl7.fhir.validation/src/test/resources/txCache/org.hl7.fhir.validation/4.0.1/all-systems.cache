@@ -1,5 +1,115 @@
 -------------------------------------------------------------------------------------
 {"code" : {
+  "code" : "application/octet-stream"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "displayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "application/octet-stream",
+  "code" : "application/octet-stream",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "application/octet-stream"
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "displayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "application/octet-stream",
+  "code" : "application/octet-stream",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "image/png"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "displayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "image/png",
+  "code" : "image/png",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "image/png"
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "displayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "image/png",
+  "code" : "image/png",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
   "code" : "de-CH"
 }, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"de-CH", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
@@ -121,116 +231,6 @@ v: {
   "code" : "cm",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "application/octet-stream"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "urn:ietf:bcp:13"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "application/octet-stream",
-  "code" : "application/octet-stream",
-  "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "application/octet-stream"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "application/octet-stream",
-  "code" : "application/octet-stream",
-  "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "image/png"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "urn:ietf:bcp:13"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "image/png",
-  "code" : "image/png",
-  "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "image/png"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "image/png",
-  "code" : "image/png",
-  "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -389,116 +389,6 @@ v: {
 v: {
   "display" : "image/jpg",
   "code" : "image/jpg",
-  "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "json"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "urn:ietf:bcp:13"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "json",
-  "code" : "json",
-  "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "json"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "json",
-  "code" : "json",
-  "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "xml"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "urn:ietf:bcp:13"
-    }]
-  }
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "xml",
-  "code" : "xml",
-  "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "xml"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "xml",
-  "code" : "xml",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
@@ -2892,7 +2782,7 @@ v: {
 v: {
   "code" : "[%payloadFormat%]",
   "severity" : "error",
-  "error" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:918ed361-17a6-4209-9831-ef6cd54b6c3e'; The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:918ed361-17a6-4209-9831-ef6cd54b6c3e'",
+  "error" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:9b756979-4109-4c27-92c7-7d59c62855ee'; The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:9b756979-4109-4c27-92c7-7d59c62855ee'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
@@ -2913,7 +2803,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "cannot-infer"
       }],
-      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:918ed361-17a6-4209-9831-ef6cd54b6c3e'"
+      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:9b756979-4109-4c27-92c7-7d59c62855ee'"
     },
     "location" : ["code"],
     "expression" : ["code"]
@@ -2934,7 +2824,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-in-vs"
       }],
-      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:918ed361-17a6-4209-9831-ef6cd54b6c3e'"
+      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:9b756979-4109-4c27-92c7-7d59c62855ee'"
     },
     "location" : ["code"],
     "expression" : ["code"]
@@ -2944,170 +2834,7 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "code" : "en-AU"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "English (Australia)",
-  "code" : "en-AU",
-  "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "en-AU"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "English (Australia)",
-  "code" : "en-AU",
-  "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "en-AU"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "display" : "English (Australia)",
-  "code" : "en-AU",
-  "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "urn:oid:1.2.840.114350.1.72.1.7.7.10.696784.13260",
-  "code" : "1",
-  "display" : "Surgery Case"
-}, "url": "http://terminology.hl7.org/ValueSet/v3-ActEncounterCode", "version": "3.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  },
-  {
-    "name" : "displayLanguage",
-    "valueCode" : "en-US"
-  }]
-}}####
-v: {
-  "code" : "1",
-  "system" : "urn:oid:1.2.840.114350.1.72.1.7.7.10.696784.13260",
-  "severity" : "error",
-  "error" : "A definition for CodeSystem 'urn:oid:1.2.840.114350.1.72.1.7.7.10.696784.13260' could not be found, so the code cannot be validated; The provided code 'urn:oid:1.2.840.114350.1.72.1.7.7.10.696784.13260#1 ('Surgery Case')' was not found in the value set 'http://terminology.hl7.org/ValueSet/v3-ActEncounterCode|3.0.0'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "urn:oid:1.2.840.114350.1.72.1.7.7.10.696784.13260",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "UNKNOWN_CODESYSTEM"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "not-found",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-found"
-      }],
-      "text" : "A definition for CodeSystem 'urn:oid:1.2.840.114350.1.72.1.7.7.10.696784.13260' could not be found, so the code cannot be validated"
-    },
-    "location" : ["Coding.system"],
-    "expression" : ["Coding.system"]
-  },
-  {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'urn:oid:1.2.840.114350.1.72.1.7.7.10.696784.13260#1 ('Surgery Case')' was not found in the value set 'http://terminology.hl7.org/ValueSet/v3-ActEncounterCode|3.0.0'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "application/pkcs7-mime"
+  "code" : "json"
 }, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
@@ -3127,20 +2854,69 @@ v: {
   }]
 }}####
 v: {
-  "display" : "application/pkcs7-mime",
-  "code" : "application/pkcs7-mime",
-  "system" : "urn:ietf:bcp:13",
+  "code" : "json",
+  "severity" : "error",
+  "error" : "The provided code '#json' was not found in the value set 'urn:uuid:a8f45898-3057-42c2-9c69-7cebc4852399'; The System URI could not be determined for the code 'json' in the ValueSet 'urn:uuid:a8f45898-3057-42c2-9c69-7cebc4852399'",
+  "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'json' in the ValueSet 'urn:uuid:a8f45898-3057-42c2-9c69-7cebc4852399'"
+    },
+    "location" : ["code"],
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#json' was not found in the value set 'urn:uuid:a8f45898-3057-42c2-9c69-7cebc4852399'"
+    },
+    "location" : ["code"],
+    "expression" : ["code"]
+  }]
 }
 
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "code" : "application/pkcs7-mime"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "code" : "xml"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -3152,9 +2928,76 @@ v: {
   }]
 }}####
 v: {
-  "display" : "application/pkcs7-mime",
-  "code" : "application/pkcs7-mime",
-  "system" : "urn:ietf:bcp:13",
+  "code" : "xml",
+  "severity" : "error",
+  "error" : "The provided code '#xml' was not found in the value set 'urn:uuid:d8e4a967-287c-4699-93cd-0d7d81ade24e'; The System URI could not be determined for the code 'xml' in the ValueSet 'urn:uuid:d8e4a967-287c-4699-93cd-0d7d81ade24e'",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'xml' in the ValueSet 'urn:uuid:d8e4a967-287c-4699-93cd-0d7d81ade24e'"
+    },
+    "location" : ["code"],
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#xml' was not found in the value set 'urn:uuid:d8e4a967-287c-4699-93cd-0d7d81ade24e'"
+    },
+    "location" : ["code"],
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en-AU"
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "displayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "English (Australia)",
+  "code" : "en-AU",
+  "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
