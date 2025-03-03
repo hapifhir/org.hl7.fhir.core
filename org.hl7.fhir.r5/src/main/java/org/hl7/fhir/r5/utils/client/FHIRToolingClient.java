@@ -473,7 +473,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     recordUse();
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
-      result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup", params),
+      result = client.issueGetResourceRequest(resourceAddress.resolveOperationUriNoEscape(CodeSystem.class, "lookup", params),
         withVer(getPreferredResourceFormat(), "4.0"),
         generateHeaders(false),
         "CodeSystem/$lookup",

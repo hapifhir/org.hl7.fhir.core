@@ -3392,6 +3392,10 @@ public class Enumerations {
         /**
          * added to help the parsers
          */
+        GROUP, 
+        /**
+         * added to help the parsers
+         */
         NULL;
         public static CompartmentType fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
@@ -3408,6 +3412,8 @@ public class Enumerations {
           return DEVICE;
         if ("EpisodeOfCare".equals(codeString))
           return EPISODEOFCARE;
+        if ("Group".equals(codeString))
+          return GROUP;
         throw new FHIRException("Unknown CompartmentType code '"+codeString+"'");
         }
         public static boolean isValidCode(String codeString) {
@@ -3423,6 +3429,7 @@ public class Enumerations {
             case PRACTITIONER: return "Practitioner";
             case DEVICE: return "Device";
             case EPISODEOFCARE: return "EpisodeOfCare";
+            case GROUP: return "Group";
             case NULL: return null;
             default: return "?";
           }
@@ -3435,6 +3442,7 @@ public class Enumerations {
             case PRACTITIONER: return "http://hl7.org/fhir/compartment-type";
             case DEVICE: return "http://hl7.org/fhir/compartment-type";
             case EPISODEOFCARE: return "http://hl7.org/fhir/compartment-type";
+            case GROUP: return "http://hl7.org/fhir/compartment-type";
             case NULL: return null;
             default: return "?";
           }
@@ -3447,6 +3455,7 @@ public class Enumerations {
             case PRACTITIONER: return "The compartment definition is for the practitioner compartment.";
             case DEVICE: return "The compartment definition is for the device compartment.";
             case EPISODEOFCARE: return "The compartment definition is for the episodeofcare compartment.";
+            case GROUP: return "The compartment definition is for the Group compartment.";
             case NULL: return null;
             default: return "?";
           }
@@ -3459,6 +3468,7 @@ public class Enumerations {
             case PRACTITIONER: return "Practitioner";
             case DEVICE: return "Device";
             case EPISODEOFCARE: return "EpisodeOfCare";
+            case GROUP: return "Group";
             case NULL: return null;
             default: return "?";
           }
@@ -3482,6 +3492,8 @@ public class Enumerations {
           return CompartmentType.DEVICE;
         if ("EpisodeOfCare".equals(codeString))
           return CompartmentType.EPISODEOFCARE;
+        if ("Group".equals(codeString))
+          return CompartmentType.GROUP;
         throw new IllegalArgumentException("Unknown CompartmentType code '"+codeString+"'");
         }
 
@@ -3505,6 +3517,8 @@ public class Enumerations {
           return new Enumeration<CompartmentType>(this, CompartmentType.DEVICE, code);
         if ("EpisodeOfCare".equals(codeString))
           return new Enumeration<CompartmentType>(this, CompartmentType.EPISODEOFCARE, code);
+        if ("Group".equals(codeString))
+          return new Enumeration<CompartmentType>(this, CompartmentType.GROUP, code);
         throw new FHIRException("Unknown CompartmentType code '"+codeString+"'");
         }
     public String toCode(CompartmentType code) {
@@ -3522,6 +3536,8 @@ public class Enumerations {
         return "Device";
       if (code == CompartmentType.EPISODEOFCARE)
         return "EpisodeOfCare";
+      if (code == CompartmentType.GROUP)
+        return "Group";
       return "?";
    }
     public String toSystem(CompartmentType code) {

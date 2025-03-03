@@ -3922,10 +3922,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (noTerminologyChecks)
       return true;
-    
+          
     boolean ok = true;
     String value = element.primitiveValue();
-    // System.out.println("check "+value+" in "+path);
 
     // firstly, resolve the value set
     ElementDefinitionBindingComponent binding = elementContext.getBinding();

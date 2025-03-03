@@ -18,7 +18,7 @@ v: {
   "display" : "oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray",
   "code" : "1000990",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "??",
+  "version" : "02032025",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -46,7 +46,7 @@ v: {
   "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film [Suboxone]",
   "code" : "1010603",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "??",
+  "version" : "02032025",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -74,7 +74,7 @@ v: {
   "display" : "flurazepam hydrochloride 15 MG Oral Capsule",
   "code" : "1298088",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "??",
+  "version" : "02032025",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -102,7 +102,7 @@ v: {
   "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film",
   "code" : "1010600",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "??",
+  "version" : "02032025",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -129,7 +129,7 @@ v: {
   "display" : "Mircera",
   "code" : "1591957",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "??",
+  "version" : "02032025",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
