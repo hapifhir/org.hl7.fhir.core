@@ -500,19 +500,25 @@ public class TurtleParser extends ParserBase {
   }
 
   static public String ttlLiteral(String value, String type) {
-	  String xst = "";
-	  if (type.equals("boolean"))
-	    xst = "^^xsd:boolean";
+	boolean quote = true;
+	String xst = "";
+	if (type.equals("boolean"))
+	  quote = false;
     else if (type.equals("integer"))
-      xst = "^^xsd:integer";
+    	quote = false;
     else if (type.equals("integer64"))
       xst = "^^xsd:long";	  
     else if (type.equals("unsignedInt"))
       xst = "^^xsd:nonNegativeInteger";
     else if (type.equals("positiveInt"))
       xst = "^^xsd:positiveInteger";
-    else if (type.equals("decimal"))
-      xst = "^^xsd:decimal";
+    else if (type.equals("decimal")) {
+      if (value.contains(".")) {
+    	  quote = false;
+      } else {
+    	  xst = "^^xsd:decimal";
+      }
+    }
     else if (type.equals("base64Binary"))
       xst = "^^xsd:base64Binary";
     else if (type.equals("canonical") || type.equals("oid") || type.equals("uri") || type.equals("url") || type.equals("uuid"))
@@ -540,9 +546,12 @@ public class TurtleParser extends ParserBase {
       else if (v.length() == 4)
         xst = "^^xsd:gYear";
     }
-	  
-		return "\"" +Turtle.escape(value, true) + "\""+xst;
-	}
+	if (quote) {
+	  return "\"" + Turtle.escape(value, true) + "\"" + xst;
+	} else {
+	  return value;	
+	}		
+  }
 
   protected void decorateCoding(Complex t, Element coding, Section section) throws FHIRException {
     String system = coding.getChildValue("system");
