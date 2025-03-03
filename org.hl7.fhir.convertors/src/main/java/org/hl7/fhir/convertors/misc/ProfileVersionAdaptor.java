@@ -20,6 +20,10 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
+import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
@@ -74,6 +78,8 @@ public class ProfileVersionAdaptor {
       log.add(new ConversionMessage("There are no valid contexts for this extension", false));
       return null; // didn't convert successfully
     }
+    sd.setFhirVersion(FHIRVersion.fromCode(tCtxt.getVersion()));
+    
     sd.setSnapshot(null);
 
     // first pass, targetProfiles
@@ -178,6 +184,7 @@ public class ProfileVersionAdaptor {
                   need.setMax("*");
                   ned.setMin(0);
                   ned.setMax("0");
+                  ned.getType().clear();
                   group = need;
                   group.getSlicing().setRules(SlicingRules.OPEN).setOrdered(false).addDiscriminator().setType(DiscriminatorType.VALUE).setPath("url");
                 } else {
@@ -353,6 +360,20 @@ public class ProfileVersionAdaptor {
         return path;
       }
     }
+  }
+
+  public SearchParameter convert(SearchParameter resource, List<ConversionMessage> log) {
+    SearchParameter res = resource.copy();
+    // todo: translate resource types
+    res.getBase().removeIf(t -> { 
+        String rt = t.asStringValue();
+        if (rt.equals("DeviceUsage")) {
+          DebugUtilities.breakpoint();
+        }
+        return !tcu.isResource(rt);
+      }
+    );
+    return res;
   }
   
 }
