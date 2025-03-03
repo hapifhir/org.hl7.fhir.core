@@ -92,7 +92,7 @@ public class ResourceAddress {
 	}
 	
 	public <T extends Resource> URI resolveSearchUri(Class<T> resourceClass, Map<String,String> parameters) {
-		return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"_search"), parameters);
+		return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"_search"), parameters, true);
 	}
 	
   private <T extends Resource> String nameForClassWithSlash(Class<T> resourceClass) {
@@ -103,9 +103,13 @@ public class ResourceAddress {
   public <T extends Resource> URI resolveOperationUri(Class<T> resourceClass, String opName) {
     return baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"$"+opName);
   }
-  
+
   public <T extends Resource> URI resolveOperationUri(Class<T> resourceClass, String opName, Map<String,String> parameters) {
-    return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"$"+opName), parameters);
+    return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"$"+opName), parameters, true);
+  }
+  
+  public <T extends Resource> URI resolveOperationUriNoEscape(Class<T> resourceClass, String opName, Map<String,String> parameters) {
+    return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"$"+opName), parameters, false);
   }
   
 	public <T extends Resource> URI resolveValidateUri(Class<T> resourceClass, String id) {
@@ -145,27 +149,27 @@ public class ResourceAddress {
 	
 	protected <T extends Resource> URI resolveGetHistoryUriForResourceId(Class<T> resourceClass, String id, Object since, int count) {
 		Map<String,String>  parameters = getHistoryParameters(since, count);
-		return appendHttpParameters(baseServiceUri.resolve(nameForClass(resourceClass) + "/" + id + "/_history"), parameters);
+		return appendHttpParameters(baseServiceUri.resolve(nameForClass(resourceClass) + "/" + id + "/_history"), parameters, true);
 	}
 	
 	public <T extends Resource> URI resolveGetHistoryForResourceType(Class<T> resourceClass, int count) {
 		Map<String,String>  parameters = getHistoryParameters(null, count);
-		return appendHttpParameters(baseServiceUri.resolve(nameForClass(resourceClass) + "/_history"), parameters);
+		return appendHttpParameters(baseServiceUri.resolve(nameForClass(resourceClass) + "/_history"), parameters, true);
 	}
 	
 	public <T extends Resource> URI resolveGetHistoryForResourceType(Class<T> resourceClass, Object since, int count) {
 		Map<String,String>  parameters = getHistoryParameters(since, count);
-		return appendHttpParameters(baseServiceUri.resolve(nameForClass(resourceClass) + "/_history"), parameters);
+		return appendHttpParameters(baseServiceUri.resolve(nameForClass(resourceClass) + "/_history"), parameters, true);
 	}
 	
 	public URI resolveGetHistoryForAllResources(Calendar since, int count) {
 		Map<String,String>  parameters = getHistoryParameters(since, count);
-		return appendHttpParameters(baseServiceUri.resolve("_history"), parameters);
+		return appendHttpParameters(baseServiceUri.resolve("_history"), parameters, true);
 	}
 	
 	public URI resolveGetHistoryForAllResources(Date since, int count) {
 		Map<String,String>  parameters = getHistoryParameters(since, count);
-		return appendHttpParameters(baseServiceUri.resolve("_history"), parameters);
+		return appendHttpParameters(baseServiceUri.resolve("_history"), parameters, true);
 	}
 	
 	public Map<String,String> getHistoryParameters(Object since, int count) {
@@ -412,10 +416,10 @@ public class ResourceAddress {
 	public static URI appendHttpParameter(URI basePath, String httpParameterName, String httpParameterValue) {
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put(httpParameterName, httpParameterValue);
-		return appendHttpParameters(basePath, parameters);
+		return appendHttpParameters(basePath, parameters, true);
 	}
 	
-	public static URI appendHttpParameters(URI basePath, Map<String,String> parameters) {
+	public static URI appendHttpParameters(URI basePath, Map<String,String> parameters, boolean escape) {
         try {
         	Set<String> httpParameterNames = parameters.keySet();
         	String query = basePath.getQuery();
@@ -426,7 +430,7 @@ public class ResourceAddress {
 		        } else {
 		        	query = "";
 		        }
-		        query += httpParameterName + "=" + Utilities.encodeUriParam(parameters.get(httpParameterName));
+		        query += httpParameterName + "=" + (escape ? Utilities.encodeUriParam(parameters.get(httpParameterName)) : parameters.get(httpParameterName));
         	}
 	
 	        return new URI(basePath.getScheme(), basePath.getUserInfo(), basePath.getHost(),basePath.getPort(), basePath.getPath(), query, basePath.getFragment());
