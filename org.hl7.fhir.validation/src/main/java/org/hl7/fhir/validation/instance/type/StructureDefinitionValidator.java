@@ -233,7 +233,9 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      if (debug) { 
+        e.printStackTrace();
+      }
       rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
       ok = false;
     }
