@@ -1203,4 +1203,7 @@ public class I18nConstants {
   public static final String UNSUPPORTED_SLICING_COMPLEXITY = "UNSUPPORTED_SLICING_COMPLEXITY";
   public static final String UNKNOWN_PROPERTY = "UNKNOWN_PROPERTY";
   public static final String SEARCHPARAMETER_BAD_CHAR = "SEARCHPARAMETER_BAD_CHAR";
+  public static final String SD_TABLE_PROHIBITED = "SD_TABLE_PROHIBITED";
+  public static final String SD_TABLE_REQUIRED = "SD_TABLE_REQUIRED";
+  public static final String IG_DEPENDENCY_VERSION_WARNING_OLD = "IG_DEPENDENCY_VERSION_WARNING_OLD";
 }

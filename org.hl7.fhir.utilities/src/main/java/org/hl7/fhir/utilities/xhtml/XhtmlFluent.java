@@ -111,7 +111,11 @@ public abstract class XhtmlFluent {
   }
 
   public XhtmlNode pre(String clss) {
-    return addTag("pre").setAttribute("class", clss);
+    XhtmlNode res = addTag("pre");
+    if (clss != null) {
+      res.setAttribute("class", clss);
+    }
+    return res;
   }
 
   public void br() {
