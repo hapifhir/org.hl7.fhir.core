@@ -684,6 +684,40 @@ public class StructureDefinitionValidator extends BaseValidator {
       ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path", false), rootPath, profileUrl, profileType, snapshot, base) && ok;
       cc++;
     }    
+    if (snapshot) {
+      if (constraint) {
+        if (path.contains(".")) {
+          // nothing
+        } else {
+          ok = prohibited(errors, stack, "constraint", element, "sliceName", "slicing", "requirements", "nameReference", "defaultValue", "meaningWhenMissing", "fixed", "pattern", "example", "minValue", "maxValue", "maxLength") && ok;
+        }
+      } else {
+        if (path.contains(".")) {
+          ok = required(errors, stack,  "specialization", element, "min", "max") && ok;
+          ok = prohibited(errors, stack,  "specialization", element, "sliceName", "slicing", "fixed", "pattern", "minValue", "maxValue", "maxLength", "mustSupport") && ok;
+        } else {
+          ok = prohibited(errors, stack,  "specialization", element, "sliceName", "slicing", "requirements", "nameReference", "defaultValue", "fixed", "pattern", "example", "minValue", "maxValue", "maxLength", "mustSupport") && ok;
+        }      
+      }
+    }
+    return ok;
+  }
+
+  private boolean prohibited(List<ValidationMessage> errors, NodeStack stack, String mode, Element element, String... names) {
+    boolean ok = true;
+    for (String name : names) {
+      List<Element> c = element.getChildren(name);
+      ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack, c.isEmpty(), I18nConstants.SD_TABLE_PROHIBITED, name, element.getNamedChildValue("path"), mode) && ok; 
+    }
+    return ok;
+  }
+
+  private boolean required(List<ValidationMessage> errors, NodeStack stack, String mode, Element element, String... names) {
+    boolean ok = true;
+    for (String name : names) {
+      List<Element> c = element.getChildren(name);
+      ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack, !c.isEmpty(), I18nConstants.SD_TABLE_REQUIRED, name, element.getNamedChildValue("path"), mode) && ok; 
+    }
     return ok;
   }
 
