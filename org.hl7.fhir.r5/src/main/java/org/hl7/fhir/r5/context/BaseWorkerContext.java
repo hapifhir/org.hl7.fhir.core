@@ -2023,7 +2023,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (opCtxt != null) {
         opCtxt.seeSupplement(supp);
       }
-      cache = checkAddToParams(tc, pin, supp) || cache;
+      if (!hasCanonicalResource(pin, "tx-resource", supp.getVUrl()) ) {
+        cache = checkAddToParams(tc, pin, supp) || cache;
+      }
     }
     if (sys != null) {
       // we also have to look at this by version because the resource might not be versioned or we might not have a copy
@@ -2032,7 +2034,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (opCtxt != null) {
           opCtxt.seeSupplement(supp);
         }
-        cache = checkAddToParams(tc, pin, supp) || cache;
+        if (!hasCanonicalResource(pin, "tx-resource", supp.getVUrl()) ) {
+          cache = checkAddToParams(tc, pin, supp) || cache;
+        }
       }
       if (!sys.contains("!")) {
         sys = getFixedVersion(sys, pin);
@@ -2041,7 +2045,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             if (opCtxt != null) {
               opCtxt.seeSupplement(supp);
             }
-            cache = checkAddToParams(tc, pin, supp) || cache;
+            if (!hasCanonicalResource(pin, "tx-resource", supp.getVUrl()) ) {
+              cache = checkAddToParams(tc, pin, supp) || cache;
+            }
           }
         }
       }
