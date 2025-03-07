@@ -160,5 +160,12 @@ public class JsonArray extends JsonElement implements Iterable<JsonElement> {
     }
     return false;
   }
+
+  public void addAll(JsonArray src) {
+    for (JsonElement e : src) {
+      add(e);
+    }
+    
+  }
   
 }
