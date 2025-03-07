@@ -1093,7 +1093,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     for (ValueSetExpansionContainsComponent c : list) {
       c.checkNoModifiers("Imported Expansion in Code System", "expanding");
-      ValueSetExpansionContainsComponent np = addCode(dwc, c.getSystem(), c.getCode(), c.getDisplay(), lang, parent, null, expParams, c.getAbstract(), c.getInactive(), 
+      ValueSetExpansionContainsComponent np = addCode(dwc, c.getSystem(), c.getCode(), c.getDisplay(), lang, parent, translateDesignations(c), expParams, c.getAbstract(), c.getInactive(), 
           filter, noInactive, false, vsProps, makeCSProps(c.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), null, c.getProperty(), null, c.getExtension(), exp);
       if (np != null) {
         count++;
@@ -1101,6 +1101,22 @@ public class ValueSetExpander extends ValueSetProcessBase {
       count = count + copyImportContains(c.getContains(), np, expParams, filter, noInactive, vsProps, vsSrc, exp);
     }
     return count;
+  }
+
+  private List<ConceptDefinitionDesignationComponent> translateDesignations(ValueSetExpansionContainsComponent c) {
+    if (!c.hasDesignation()) {
+      return null;
+    }
+    List<ConceptDefinitionDesignationComponent> list = new ArrayList<>();
+    for (ConceptReferenceDesignationComponent d : c.getDesignation()) {
+      ConceptDefinitionDesignationComponent d2 = new ConceptDefinitionDesignationComponent();
+      d2.setLanguage(d.getLanguage());
+      d2.setUse(d.getUse());
+      d2.setAdditionalUse(d.getAdditionalUse());
+      d2.setValue(d.getValue());
+      list.add(d2);
+    }
+    return list;
   }
 
   private void includeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, boolean heirarchical, boolean noInactive, List<Extension> extensions, ValueSet valueSet) throws ETooCostly, FileNotFoundException, IOException, FHIRException, CodeSystemProviderExtension {

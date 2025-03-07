@@ -255,11 +255,19 @@ public class BundleRenderer extends ResourceRenderer {
       for (ResourceWrapper base : baselist) {
         ResourceWrapper res = null;
         ResourceWrapper prop = base.child("reference");
+        String ref = prop.primitiveValue();
         if (prop != null && prop.hasPrimitiveValue()) {
           for (ResourceWrapper entry : entries) {
             if (entry.has("fullUrl")) {
               String fu = entry.primitiveValue("fullUrl");
-              if (prop.primitiveValue().equals(fu)) {
+              if (ref.equals(fu)) {
+                res = entry.child("resource");
+              }
+            }
+            if (entry.has("resource")) {
+              String type = entry.child("resource").fhirType();
+              String id = entry.child("resource").primitiveValue("id");
+              if (ref.equals(type+"/"+id)) {
                 res = entry.child("resource");
               }
             }
