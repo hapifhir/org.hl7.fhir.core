@@ -56,6 +56,9 @@ public class PackageList {
     public String status() {
       return json.asString("status");
     }
+    public void setStatus(String status) {
+      json.set("status", status);
+    }
 
     public String desc() {
       return json.asString("desc");
@@ -159,21 +162,13 @@ public class PackageList {
      * @param fhirVersion
      * @param tcName
      */
-    public void update(String version, String path, String status, String sequence, FhirPublication fhirVersion, String tcPath, String date) {
+    public void addTC(String tcVersion, String tcPath, String date) {
       JsonObject tc = new JsonObject();
       json.forceArray("corrections").add(tc);
-      tc.set("version", json.asString("version"));
+      tc.set("version", tcVersion);
       tc.set("path", tcPath);
       tc.set("date", date);
 
-      json.set("version", version);      
-      json.set("path", path);
-      json.set("status", status);
-      json.set("sequence", sequence);
-      if (fhirVersion != null) {
-        json.set("fhirversion", fhirVersion.toCode());
-      }
-      setDate(date);
     }
 
     public List<String> languages() {
@@ -183,6 +178,12 @@ public class PackageList {
     public PackageListEntry addLang(String langCode) {
       json.forceArray("languages").add(langCode);
       return this;
+    }
+
+    public void takeCorrections(PackageListEntry src) {      
+      json.forceArray("corrections").addAll(src.json.forceArray("corrections"));
+      src.json.remove("corrections");
+      
     }
   }
   
@@ -316,8 +317,9 @@ public class PackageList {
   }
 
   public String determineLocalPath(String url, String root) throws IOException {
-    if (canonical().startsWith(url+"/")) {
-      String tail = canonical().substring(url.length()+1);
+    String c = canonical();
+    if (c.startsWith(url+"/")) {
+      String tail = c.substring(url.length()+1);
       return Utilities.path(root, tail);
     } else {
       return null;

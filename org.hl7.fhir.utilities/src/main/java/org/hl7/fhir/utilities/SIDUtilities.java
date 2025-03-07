@@ -15,6 +15,7 @@ public class SIDUtilities {
     codeSystems.add("http://hl7.org/fhir/sid/srt");
     codeSystems.add("http://hl7.org/fhir/sid/icd-10-vn");
     codeSystems.add("http://hl7.org/fhir/sid/icd-10-cm");
+    codeSystems.add("http://hl7.org/fhir/sid/icd-10-am");
     codeSystems.add("http://hl7.org/fhir/sid/icd-9-cm"); 
     return codeSystems;
   }
@@ -75,6 +76,8 @@ public class SIDUtilities {
         case "http://hl7.org/fhir/sid/icd-10-vn":
           return false;
         case "http://hl7.org/fhir/sid/icd-10-cm":
+          return false;
+        case "http://hl7.org/fhir/sid/icd-10-am":
           return false;
         case "http://hl7.org/fhir/sid/icd-9-cm":
           return false;

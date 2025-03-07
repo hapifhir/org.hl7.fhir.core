@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,8 @@ import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator.QStack;
 import ca.uhn.fhir.util.ObjectUtil;
 
 public class ImplementationGuideValidator extends BaseValidator {
+
+  private static final int DATE_WARNING_CUTOFF = 3;
 
   public ImplementationGuideValidator(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, ValidatorSession session) {
     super(context, xverManager, debug, session);
@@ -108,17 +111,24 @@ public class ImplementationGuideValidator extends BaseValidator {
         ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), (packageId+"#"+version).matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX), I18nConstants.IG_DEPENDENCY_INVALID_PACKAGE_VERSION, version) && ok;               
         NpmPackage npm = pcm.loadPackage(packageId, version);
         if (warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), npm != null, I18nConstants.IG_DEPENDENCY_PACKAGE_UNKNOWN, packageId+"#"+version)) {
-          if (fvl.isEmpty()) {
+          if (!fvl.isEmpty()) {
             String pver = npm.fhirVersion();
             if (!VersionUtilities.versionsMatch(pver, fvl)) {
-              if ("hl7.fhir.uv.extensions".equals(packageId)) {
+              if (Utilities.existsInList(packageId, "hl7.fhir.uv.extensions", "hl7.fhir.uv.tools", "hl7.terminology")) {
                 ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_ERROR, CommaSeparatedStringBuilder.join(",", fvl), packageId+"#"+version, pver, 
-                    "hl7.fhir.uv.extensions."+VersionUtilities.getNameForVersion(fvl.get(0)).toLowerCase()) && ok;                           
+                    packageId+"."+VersionUtilities.getNameForVersion(fvl.get(0)).toLowerCase()) && ok;                           
               } else {
                 warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_WARNING, CommaSeparatedStringBuilder.join(",", fvl), packageId+"#"+version, pver);
               }
             }
           }
+        }
+        try {
+          String lver = pcm.getLatestVersion(packageId);
+          if (lver != null && !VersionUtilities.versionsMatch(version, lver) && isMoreThanXMonthsAgo(npm.dateAsLocalDate(), DATE_WARNING_CUTOFF)) {
+            warning(errors, "2025-03-06", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_WARNING_OLD, packageId+"#"+version, lver, npm.dateAsLocalDate().toString());            
+          }
+        } catch (Exception e) {
         }
       }
     } catch (Exception e) {
@@ -127,5 +137,9 @@ public class ImplementationGuideValidator extends BaseValidator {
     return ok;
   }
 
-
+  public static boolean isMoreThanXMonthsAgo(LocalDate date, int months) {
+    LocalDate today = LocalDate.now();
+    LocalDate thresholdDate = today.minusMonths(months);
+    return date.isBefore(thresholdDate);
+  }
 }
