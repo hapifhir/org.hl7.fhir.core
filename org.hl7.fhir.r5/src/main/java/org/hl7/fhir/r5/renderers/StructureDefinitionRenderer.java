@@ -1395,7 +1395,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (root) { 
         if (profile != null && profile.getAbstract()) { 
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ABSTRACT) +(profile.getDerivation() == TypeDerivationRule.CONSTRAINT ? "profile" : "type")+". ", null)); 
+          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_ABSTRACT)+" " +(profile.getDerivation() == TypeDerivationRule.CONSTRAINT ? "profile" : "type")+". ", null)); 
  
           List<StructureDefinition> children = new ArrayList<>(); 
           for (StructureDefinition sd : context.getWorker().fetchResourcesByType(StructureDefinition.class)) { 
@@ -1404,7 +1404,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             } 
           } 
           if (!children.isEmpty()) { 
-            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_CHILD) +(profile.getDerivation() == TypeDerivationRule.CONSTRAINT ? "profiles" : "types")+": ", null)); 
+            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_CHILD) +" "+(profile.getDerivation() == TypeDerivationRule.CONSTRAINT ? "profiles" : "types")+": ", null)); 
             boolean first = true; 
             for (StructureDefinition sd : children) { 
               if (first) first = false; else c.addPiece(gen.new Piece(null, ", ", null)); 
@@ -1601,7 +1601,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             Piece piece = gen.new Piece("code"); 
             piece.addHtml(new XhtmlNode(NodeType.Text).setContent(cond)); 
             c.getPieces().add(piece);           
-            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_THEN_TYPE), null));           
+            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_THEN_TYPE)+" ", null));           
             StructureDefinition sd = context.getWorker().fetchTypeDefinition(type); 
             if (sd == null) { 
               c.getPieces().add(gen.new Piece("<code>"));           
