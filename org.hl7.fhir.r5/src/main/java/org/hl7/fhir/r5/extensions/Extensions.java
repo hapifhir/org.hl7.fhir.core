@@ -7982,7 +7982,7 @@ public class Extensions {
 
 // -- SDcompliesWithProfile -------------------------------------
 // http://hl7.org/fhir/StructureDefinition/structuredefinition-compliesWithProfile|0.1.0
-// StructureDefinition Compiles With Profile
+// StructureDefinition Complies With Profile
 
   public static Extension makeSDcompliesWithProfile(String value) {
     return new Extension(ExtensionConstants.EXT_SDCOMPLIES_WITH_PROFILE).setValue(new CanonicalType(value));
