@@ -55,7 +55,6 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.TypesUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -1419,9 +1418,6 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		ElementDefinition e = ti.getDefn();
 
 		StructureDefinition sd = definitions.getType(e.typeSummary());
-		if (sd == null) {
-		  DebugUtilities.breakpoint();
-		}
 		List<ElementDefinition> children = ti.getChildren();
 		write("    @Block()\r\n");
 		write("    public static class "+tn+" extends "+fixExtendsName(sd.getName())+" {\r\n");
