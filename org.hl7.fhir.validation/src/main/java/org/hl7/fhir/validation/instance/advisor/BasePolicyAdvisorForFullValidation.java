@@ -126,7 +126,7 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
     } else if (hasSctCode(code, codes, "46680005")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/vitalspanel", "Vital Signs Panel", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "86290005", "271625008", "271306003")) {
-      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bp", "Blood pressure systolic and diastolic", "SNOMED CT", codes);
+      addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/resprate", "Respiratory Rate", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "271306003", "249043002", "444981005", "399017001", "251670001", "429525003", "429614003")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/heartrate", "Heart rate", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "103228002", "103228002", "442349007", "442476006", "442440005", "431314004", "442734002", "713194001")) {
