@@ -3,6 +3,8 @@ package org.hl7.fhir.validation.codesystem;
 import java.util.EnumSet;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Enumeration;
@@ -13,6 +15,7 @@ import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.CodeValidationRule;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.PropertyFilterType;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.PropertyOperation;
@@ -22,8 +25,8 @@ public class CodeSystemBasedChecker extends CodeSystemChecker {
 
   private CodeSystem cs;
 
-  public CodeSystemBasedChecker(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, List<ValidationMessage> errors, CodeSystem cs, ValidatorSession session) {
-    super(context, xverManager, debug, errors, session);
+  public CodeSystemBasedChecker(IWorkerContext context, @Nonnull ValidatorSettings settings, XVerExtensionManager xverManager, List<ValidationMessage> errors, CodeSystem cs, ValidatorSession session) {
+    super(context, settings, xverManager, errors, session);
     this.cs = cs;
   }
 
@@ -62,7 +65,7 @@ public class CodeSystemBasedChecker extends CodeSystemChecker {
           case CODE: 
             // the definitions say " a code that identifies a concept defined in the code system" -> ValidCode.
             // but many people have ignored that and defined a property as 'code' because it's from a list of values that are otherwise undefined
-            boolean external = !forPublication || cs.getWebPath() == null || Utilities.isAbsoluteUrl(cs.getWebPath());
+            boolean external = !settings.isForPublication() || cs.getWebPath() == null || Utilities.isAbsoluteUrl(cs.getWebPath());
             return new PropertyValidationRules(PropertyFilterType.Code, external ? CodeValidationRule.Warning : CodeValidationRule.Error, ops); // valid code... the definitions say that, but people were missing that in the pastm 
           case CODING: return new PropertyValidationRules(PropertyFilterType.Coding, null, ops);
           case DATETIME: return new PropertyValidationRules(PropertyFilterType.DateTime, null, ops);
