@@ -309,7 +309,7 @@ class ValidationServiceTests {
     return new ValidationService() {
       @Override
       protected ValidationEngine.ValidationEngineBuilder getValidationEngineBuilder() {
-        when(validationEngineBuilder.withTHO(anyBoolean())).thenReturn(validationEngineBuilder);
+        when(validationEngineBuilder.withThoVersion(anyString())).thenReturn(validationEngineBuilder);
         when(validationEngineBuilder.withVersion(isNull())).thenReturn(validationEngineBuilder);
         when(validationEngineBuilder.withTimeTracker(any())).thenReturn(validationEngineBuilder);
         when(validationEngineBuilder.withUserAgent(anyString())).thenReturn(validationEngineBuilder);
