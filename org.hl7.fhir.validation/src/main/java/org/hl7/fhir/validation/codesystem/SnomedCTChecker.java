@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
@@ -12,6 +14,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.CodeValidationRule;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.PropertyFilterType;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.PropertyOperation;
@@ -24,8 +27,8 @@ public class SnomedCTChecker extends CodeSystemChecker {
   private boolean hasTag = false;
   private List<String> tags = new ArrayList<>();
   
-  public SnomedCTChecker(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, List<ValidationMessage> errors, ValidatorSession session) {
-    super(context, xverManager, debug, errors, session);
+  public SnomedCTChecker(IWorkerContext context, @Nonnull ValidatorSettings settings, XVerExtensionManager xverManager, List<ValidationMessage> errors, ValidatorSession session) {
+    super(context, settings, xverManager, errors, session);
   }
   
   public void checkConcept(String code, String display) {

@@ -633,7 +633,7 @@ public class CodeSystemValidator extends BaseValidator {
     case INTERNAL_CODE:
       if (!isSeenPropertyCode(defn, code)) {
         if (supplements != null) {
-          ValidationResult vr = context.validateCode(baseOptions, supplements, null, code, null);
+          ValidationResult vr = context.validateCode(settings, supplements, null, code, null);
           rule(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), vr.isOk(), I18nConstants.CODESYSTEM_PROPERTY_BAD_INTERNAL_REFERENCE, code);
         } else {
           rule(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), codes.contains(code), I18nConstants.CODESYSTEM_PROPERTY_BAD_INTERNAL_REFERENCE, code);
@@ -643,7 +643,7 @@ public class CodeSystemValidator extends BaseValidator {
     case INTERNAL_CODE_WARNING:
       if (!isSeenPropertyCode(defn, code)) {
         if (supplements != null) {
-          ValidationResult vr = context.validateCode(baseOptions, supplements, null, code, null);
+          ValidationResult vr = context.validateCode(settings, supplements, null, code, null);
           rule(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), vr.isOk(), I18nConstants.CODESYSTEM_PROPERTY_BAD_INTERNAL_REFERENCE, code);
         } else {
           warning(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), codes.contains(code), I18nConstants.CODESYSTEM_PROPERTY_BAD_INTERNAL_REFERENCE, code);
@@ -652,13 +652,13 @@ public class CodeSystemValidator extends BaseValidator {
       break;
     case VS_ERROR:
       if (defn.getValueset() != null && !isSeenPropertyCode(defn, code)) {
-        ValidationResult vo = context.validateCode(baseOptions, code, defn.getValueset());
+        ValidationResult vo = context.validateCode(settings, code, defn.getValueset());
         rule(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), vo.isOk(), I18nConstants.CODESYSTEM_PROPERTY_BAD_PROPERTY_CODE, code);
       }
       break;
     case VS_WARNING:
       if (defn.getValueset() != null && !isSeenPropertyCode(defn, code)) {
-        ValidationResult vo = context.validateCode(baseOptions, code, defn.getValueset());
+        ValidationResult vo = context.validateCode(settings, code, defn.getValueset());
         warning(errors, "2025-01-09", IssueType.INVALID, cs.line(), cs.col(), stack.getLiteralPath(), vo.isOk(), I18nConstants.CODESYSTEM_PROPERTY_BAD_PROPERTY_CODE, code, defn.getValueset().getVersionedUrl());
       }
       break;
@@ -676,7 +676,7 @@ public class CodeSystemValidator extends BaseValidator {
   }
 
   private boolean checkShareableCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack) {
-    if (parent.isForPublication()) { 
+    if (settings.isForPublication()) { 
       if (isHL7(cs)) {
         boolean ok = true;
         ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "url") && ok;                      
@@ -713,7 +713,7 @@ public class CodeSystemValidator extends BaseValidator {
       return;
     }
     
-    if (forPublication && url != null && (url.contains("hl7.org"))) {
+    if (settings.isForPublication() && url != null && (url.contains("hl7.org"))) {
       hint(errors, "2024-03-07", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), url.contains("terminology.hl7.org") || url.contains("hl7.org/cda/stds/core"), I18nConstants.CODESYSTEM_THO_CHECK);
     }
     if (isSupplement) {
