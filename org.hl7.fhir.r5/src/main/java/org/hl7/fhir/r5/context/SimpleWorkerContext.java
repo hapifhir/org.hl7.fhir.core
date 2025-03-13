@@ -385,9 +385,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       terminologyClientManager.setFactory(factory);
       if (log != null && (log.endsWith(".htm") || log.endsWith(".html"))) {
         txLog = new HTMLClientLogger(log);
-      } else {
-        txLog = new TextClientLogger(log);
-      }      
+      }
       ITerminologyClient client = factory.makeClient("tx-server", address, software, txLog);
       // txFactory.makeClient("Tx-Server", txServer, "fhir/publisher", null)
 //      terminologyClientManager.setLogger(txLog);
