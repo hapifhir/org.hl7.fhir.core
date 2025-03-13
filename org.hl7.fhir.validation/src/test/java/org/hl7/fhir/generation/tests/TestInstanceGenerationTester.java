@@ -39,7 +39,7 @@ public class TestInstanceGenerationTester {
   public void testDataFactory() throws IOException, FHIRException, SQLException {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     SimpleWorkerContext context = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withDefaultParams().fromPackage(pcm.loadPackage("hl7.fhir.r4.core"));
-    context.connectToTSServer(new TerminologyClientR5Factory(), "http://tx-dev.fhir.org/r4", "Instance-Generator", Utilities.path("[tmp]", "tx-log.log"), true);
+    context.connectToTSServer(new TerminologyClientR5Factory(), "http://tx-dev.fhir.org/r4", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
     context.loadFromPackage(pcm.loadPackage("us.nlm.vsac#0.21.0"), new R4ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),
         new NullLoaderKnowledgeProviderR5(), context.getVersion()));
     context.loadFromPackage(pcm.loadPackage("hl7.fhir.us.core#6.0.0"), new R4ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),
