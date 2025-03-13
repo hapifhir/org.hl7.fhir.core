@@ -266,7 +266,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           checkInclude(c, vi);
           CodeSystem cs = resolveCodeSystem(c.getSystem(), vi.getVersion(c.getSystem(), c.getVersion()));
           ValidationResult res = null;
-          if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
+          if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.SUPPLEMENT)) {
             if (context.isNoTerminologyServer()) {
               if (c.hasVersion()) {
                 String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, c.getSystem(), c.getVersion() , resolveCodeSystemVersions(c.getSystem()).toString());
@@ -294,6 +294,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
                 res.getIssues().addAll(makeIssue(IssueSeverity.INFORMATION, IssueType.INVALID, path+".coding["+i+"].code", msg, OpIssueCode.CodeRule, res.getServer()));
               }
             }
+          } else if (cs.getContent() == CodeSystemContentMode.SUPPLEMENT || cs.hasSupplements()) {
+            String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getVersionedUrl());
+            res = new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg, OpIssueCode.InvalidData, null));
           } else {
             c.setUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM, cs);
 
@@ -522,7 +525,6 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return cs;
   }
 
-
   public List<String> resolveCodeSystemVersions(String system) {
     List<String> res = new ArrayList<>();
     for (CodeSystem t : localSystems) {
@@ -647,9 +649,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
         } else {
           checkCanonical(issues, path, cs, valueset);
         }
-        if (cs != null && cs.hasSupplements()) {
-          String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getUrl());
-          return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path+".system", msg, OpIssueCode.InvalidData, null));        
+        if (cs != null && (cs.hasSupplements() || cs.getContent() == CodeSystemContentMode.SUPPLEMENT)) {
+          String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getVersionedUrl());
+          return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path+".system", msg, OpIssueCode.InvalidData, null, I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT));        
         }
         if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
           warningMessage = "Resolved system "+system+(cs.hasVersion() ? " (v"+cs.getVersion()+")" : "")+", but the definition ";
