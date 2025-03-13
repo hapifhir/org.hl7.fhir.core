@@ -131,7 +131,7 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/heartrate", "Heart rate", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "442476006", "431314004")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/oxygensat", "Oxygen saturation", "SNOMED CT", codes);
-    } else if (hasSctCode(code, codes, "386725007", "276885007", "300076005", "1222808002", "364246006", "307047009", "708499008", "708499008", "431598003", "698831002", "698832009", "415882003", "415974002", "415929009", "415945006")) {
+    } else if (hasSctCode(code, codes, "386725007", "276885007", "300076005", "1222808002", "364246006", "307047009", "708499008", "431598003", "698831002", "698832009", "415882003", "415974002", "415929009", "415945006")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodytemp", "Body temperature", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "1153637007", "1162419008", "50373000", "1162418000", "1230278008", "1162392001", "1162417005")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodyheight", "Body height", "SNOMED CT", codes);
