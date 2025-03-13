@@ -137,7 +137,7 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodyheight", "Body height", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "363812007", "169876006", "1269262007", "363811000")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/headcircum", "Head circumference", "SNOMED CT", codes);
-    } else if (hasSctCode(code, codes, "60621009", "735395000", "425024002", "424927000", "784399000", "1162416001", "1162415002")) {
+    } else if (hasSctCode(code, codes, "735395000", "425024002", "424927000", "784399000", "1162416001", "1162415002")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodyweight", "Body weight", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "60621009")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bmi", "Body mass index", "SNOMED CT", codes);
