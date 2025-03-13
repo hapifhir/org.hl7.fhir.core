@@ -383,8 +383,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   public void connectToTSServer(ITerminologyClientFactory factory, String address, String software, String log, boolean useEcosystem) {
     try {
       terminologyClientManager.setFactory(factory);
-      if (log != null && (log.endsWith(".htm") || log.endsWith(".html"))) {
-        txLog = new HTMLClientLogger(log);
+      if (log != null) {
+        if (log.endsWith(".htm") || log.endsWith(".html")) {
+          txLog = new HTMLClientLogger(log);
+        } else {
+          throw new IllegalArgumentException("Unknown extension for text file logging: \"" + log + "\" expected: .html or .htm");
+        }
       }
       ITerminologyClient client = factory.makeClient("tx-server", address, software, txLog);
       // txFactory.makeClient("Tx-Server", txServer, "fhir/publisher", null)
