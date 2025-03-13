@@ -59,6 +59,7 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.InternalLog
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.testfactory.TestDataFactory;
 import org.hl7.fhir.r5.testfactory.TestDataHostServices;
+import org.hl7.fhir.r5.tools.Constants;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.SystemExitManager;
@@ -579,7 +580,9 @@ public class ValidationService {
   @Nonnull
   protected ValidationEngine buildValidationEngine(CliContext cliContext, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
     System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
-    ValidationEngine validationEngine = getValidationEngineBuilder().withTHO(false).withVersion(cliContext.getSv()).withTimeTracker(timeTracker).withUserAgent(Common.getValidatorUserAgent()).fromSource(definitions);
+    ValidationEngine validationEngine = getValidationEngineBuilder().withVersion(cliContext.getSv()).withTimeTracker(timeTracker)
+        .withUserAgent(Common.getValidatorUserAgent()).withThoVersion(Constants.THO_WORKING_VERSION)
+        .withExtensionsVersion(Constants.EXTENSIONS_WORKING_VERSION).fromSource(definitions);
 
     System.out.println(" - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
 

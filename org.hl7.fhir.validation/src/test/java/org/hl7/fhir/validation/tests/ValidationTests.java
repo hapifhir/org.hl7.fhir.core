@@ -103,6 +103,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Charsets;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -129,6 +130,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
     Map<String, JsonObject> examples = new HashMap<String, JsonObject>();
     manifest = (JsonObject) new com.google.gson.JsonParser().parse(contents);
+    thoVersion = manifest.getAsJsonObject("versions").get("terminology").getAsString();
+    extensionsVersion = manifest.getAsJsonObject("versions").get("extensions").getAsString();
     for (JsonElement e : manifest.getAsJsonArray("test-cases")) {
       JsonObject o = (JsonObject) e;
       String name = JsonUtilities.str(o, "name");
@@ -159,6 +162,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   private static ValidationEngine currentEngine;
   private ValidationEngine vCurr;
+  private static String thoVersion;
+  private static String extensionsVersion;
   private static String currentVersion;
   private static IgLoader igLoader;
 
@@ -208,6 +213,12 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     igLoader.setDirectProvider(this);
 
     if (content.has("close-up")) {
+      File newManifestFile = ManagedFileAccess.file(Utilities.path("[tmp]", "validator", "manifest.new.json"));
+      if (!newManifestFile.getParentFile().exists()) {
+        newManifestFile.getParentFile().mkdir();
+      }
+      JsonTrackingParser.write(manifest, newManifestFile);
+      
       cleanup();
       Assertions.assertTrue(true);
       return;
@@ -222,19 +233,22 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       throw new FHIRException("Unknown format in source "+JsonUtilities.str(content, "file"));
     }
     
+    if (!content.has("module")) {
+      throw new FHIRException("A module is required");
+    }
     InstanceValidator val = vCurr.getValidator(fmt);
     val.setWantCheckSnapshotUnchanged(true);
     val.getContext().setClientRetryCount(4);
     val.setBestPracticeWarningLevel(BestPracticeWarningLevel.Ignore);
-    val.setDebug(false);
+    val.getSettings().setDebug(false);
     if (!VersionUtilities.isR5Plus(val.getContext().getVersion())) {
-      val.getBaseOptions().setUseValueSetDisplays(true);
+      val.getSettings().setUseValueSetDisplays(true);
     }
     if (content.has("language")) {
-      val.getBaseOptions().setLanguages(content.get("language").getAsString());
-      val.setValidationLanguage(val.getBaseOptions().getLanguages().getChosen());
+      val.getSettings().setLanguages(content.get("language").getAsString());
+      val.setValidationLanguage(val.getSettings().getLanguages().getChosen());
     } else {
-      val.getBaseOptions().setLanguages(null);      
+      val.getSettings().setLanguages(null);      
     }
     
     if (content.has("fetcher") && "standalone".equals(JsonUtilities.str(content, "fetcher"))) {
@@ -257,7 +271,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
 
     if (content.has("wrong-displays"))
-      val.getBaseOptions().setDisplayWarningMode("warning".equals(content.get("wrong-displays").getAsString()));
+      val.getSettings().setDisplayWarningMode("warning".equals(content.get("wrong-displays").getAsString()));
     if (content.has("allowed-extension-domain"))
       val.getExtensionDomains().add(content.get("allowed-extension-domain").getAsString());
     if (content.has("allowed-extension-domains"))
@@ -269,9 +283,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       val.setValidationLanguage(null);
     val.setForPublication(content.has("for-publication") && "true".equals(content.get("for-publication").getAsString()));
     if (content.has("default-version")) {
-      val.setBaseOptions(val.getBaseOptions().withVersionFlexible(content.get("default-version").getAsBoolean()));
+      val.getSettings().setVersionFlexible(content.get("default-version").getAsBoolean());
     } else {
-      val.setBaseOptions(val.getBaseOptions().withVersionFlexible(false));
+      val.getSettings().setVersionFlexible(false);
     }
     if (content.has("no-tx")) {
       boolean notx = "true".equals(content.get("no-tx").getAsString());
@@ -333,16 +347,16 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       for (JsonElement je : content.getAsJsonArray("profiles")) {
         String filename = je.getAsString();    
         String contents = TestingUtilities.loadTestResource("validator", filename);
-        StructureDefinition sd = loadProfile(filename, contents, messages, val.isDebug(), val.getContext());
+        StructureDefinition sd = loadProfile(filename, contents, messages, val.getSettings().isDebug(), val.getContext());
         logOutput("load resource "+sd.getUrl());
         val.getContext().cacheResource(sd);
       }
    }
     List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
     if (content.getAsJsonObject("java").has("debug")) {
-      val.setDebug(content.getAsJsonObject("java").get("debug").getAsBoolean());
+      val.getSettings().setDebug(content.getAsJsonObject("java").get("debug").getAsBoolean());
     } else {
-      val.setDebug(false);
+      val.getSettings().setDebug(false);
     }
 
     StructureDefinition sd = null;
@@ -424,7 +438,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       System.out.print("** Profile: ");
       JsonObject profile = content.getAsJsonObject("profile");
       if (profile.has("valueset-displays")) {
-        val.getBaseOptions().setUseValueSetDisplays(true);
+        val.getSettings().setUseValueSetDisplays(true);
       }
       if (profile.has("packages")) {
         for (JsonElement e : profile.getAsJsonArray("packages")) {
@@ -433,7 +447,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         }
       }
       if (profile.getAsJsonObject("java").has("debug")) {
-        val.setDebug(profile.getAsJsonObject("java").get("debug").getAsBoolean());
+        val.getSettings().setDebug(profile.getAsJsonObject("java").get("debug").getAsBoolean());
       }
       if (profile.has("supporting")) {
         for (JsonElement e : profile.getAsJsonArray("supporting")) {
@@ -459,7 +473,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         String contents = TestingUtilities.loadTestResource("validator", filename);
         logOutput("Name: " + name + " - profile : " + profile.get("source").getAsString());
         version = content.has("version") ? content.get("version").getAsString() : version;
-        sd = loadProfile(filename, contents, messages, val.isDebug(), val.getContext());
+        sd = loadProfile(filename, contents, messages, val.getSettings().isDebug(), val.getContext());
         logOutput("load resource "+sd.getUrl());
         val.getContext().cacheResource(sd);
       }
@@ -523,12 +537,12 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   private ValidationEngine buildVersionEngine(String ver, String txLog) throws Exception {
     String server = FhirSettings.getTxFhirDevelopment();
     switch (ver) {
-    case "1.0": return TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", server, txLog, FhirPublication.DSTU2, true, "1.0.2", true);
-    case "1.4": return TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", server, txLog, FhirPublication.DSTU2016May, true, "1.4.0", true); 
-    case "3.0": return TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", server, txLog, FhirPublication.STU3, true, "3.0.2", true);
-    case "4.0": return TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", server, txLog, FhirPublication.R4, true, "4.0.1", true);
-    case "4.3": return TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", server, txLog, FhirPublication.R4B, true, "4.3.0", true);
-    case "5.0": return TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", server, txLog, FhirPublication.R5, true, "5.0.0", true);
+    case "1.0": return TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", server, txLog, FhirPublication.DSTU2, true, "1.0.2", true, thoVersion, extensionsVersion);
+    case "1.4": return TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", server, txLog, FhirPublication.DSTU2016May, true, "1.4.0", true, thoVersion, extensionsVersion); 
+    case "3.0": return TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", server, txLog, FhirPublication.STU3, true, "3.0.2", true, thoVersion, extensionsVersion);
+    case "4.0": return TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", server, txLog, FhirPublication.R4, true, "4.0.1", true, thoVersion, extensionsVersion);
+    case "4.3": return TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", server, txLog, FhirPublication.R4B, true, "4.3.0", true, thoVersion, extensionsVersion);
+    case "5.0": return TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", server, txLog, FhirPublication.R5, true, "5.0.0", true, thoVersion, extensionsVersion);
     }
     throw new Exception("unknown version " + version);    
   }
