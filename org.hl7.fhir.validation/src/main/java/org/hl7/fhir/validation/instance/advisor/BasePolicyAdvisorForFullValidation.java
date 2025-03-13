@@ -141,7 +141,7 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodyweight", "Body weight", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "60621009")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bmi", "Body mass index", "SNOMED CT", codes);
-    } else if (hasSctCode(code, codes, "251076008", "163033001", "163035008", "386534000", "386536003", "271649006", "271649006", "271650006", "407556006", "407554009", "716579001", "399304008")) {
+    } else if (hasSctCode(code, codes, "251076008", "163033001", "163035008", "386534000", "386536003", "271649006", "271650006", "407556006", "407554009", "716579001", "399304008")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bp", "Blood pressure systolic and diastolic", "SNOMED CT", codes);
     }  
     
