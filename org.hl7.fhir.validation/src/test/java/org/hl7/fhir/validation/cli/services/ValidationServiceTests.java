@@ -313,6 +313,7 @@ class ValidationServiceTests {
         when(validationEngineBuilder.withVersion(isNull())).thenReturn(validationEngineBuilder);
         when(validationEngineBuilder.withTimeTracker(any())).thenReturn(validationEngineBuilder);
         when(validationEngineBuilder.withUserAgent(anyString())).thenReturn(validationEngineBuilder);
+        when(validationEngineBuilder.withExtensionsVersion(anyString())).thenReturn(validationEngineBuilder);
         try {
           when(validationEngineBuilder.fromSource(isNull())).thenReturn(validationEngine);
         } catch (IOException | URISyntaxException e) {
