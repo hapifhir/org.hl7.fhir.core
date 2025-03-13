@@ -129,7 +129,7 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/resprate", "Respiratory Rate", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "271306003", "249043002", "444981005", "399017001", "251670001", "429525003", "429614003")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/heartrate", "Heart rate", "SNOMED CT", codes);
-    } else if (hasSctCode(code, codes, "442476006", "431314004", "442734002", "713194001")) {
+    } else if (hasSctCode(code, codes, "442476006", "431314004", "713194001")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/oxygensat", "Oxygen saturation", "SNOMED CT", codes);
     } else if (hasSctCode(code, codes, "386725007", "276885007", "300076005", "1222808002", "364246006", "307047009", "708499008", "708499008", "431598003", "698831002", "698832009", "415882003", "415974002", "415929009", "415945006")) {
       addProfile(profiles, msgServices, messages, context, stackPath, resource, "http://hl7.org/fhir/StructureDefinition/bodytemp", "Body temperature", "SNOMED CT", codes);
