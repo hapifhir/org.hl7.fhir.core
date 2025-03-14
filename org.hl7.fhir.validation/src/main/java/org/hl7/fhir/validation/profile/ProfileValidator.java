@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -47,6 +49,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.ValidatorSettings;
 
 public class ProfileValidator extends BaseValidator {
 
@@ -55,8 +58,8 @@ public class ProfileValidator extends BaseValidator {
   private boolean allowDoubleQuotesInFHIRPath = false;
   private FHIRPathEngine fpe;
 
-  public ProfileValidator(IWorkerContext context, XVerExtensionManager xverManager, ValidatorSession session) {
-    super(context, xverManager, false, session);
+  public ProfileValidator(IWorkerContext context, @Nonnull ValidatorSettings settings, XVerExtensionManager xverManager, ValidatorSession session) {
+    super(context, settings, xverManager, session);
     fpe = new FHIRPathEngine(context);
     fpe.setAllowDoubleQuotes(allowDoubleQuotesInFHIRPath);
   }
