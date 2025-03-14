@@ -139,10 +139,12 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       boolean hasRendered = false;
       boolean hasURI = false;
       boolean hasDescription = false;
+      boolean hasValueSet = false;
       for (PropertyComponent p : cs.getProperty()) {
         hasRendered = hasRendered || getDisplayForProperty(p) != null;
         hasURI = hasURI || p.hasUri();
         hasDescription = hasDescription || p.hasDescription();
+        hasValueSet = hasValueSet || p.hasExtension(ToolingExtensions.EXT_PROPERTY_VALUESET);
       }
       
       x.para().b().tx(formatPhrase(RenderingContext.GENERAL_PROPS));
@@ -160,6 +162,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       if (hasDescription) {
         tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_DESC));
       }
+      if (hasValueSet) {
+        tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_VALUESET));
+      }
       for (PropertyComponent p : cs.getProperty()) {
         tr = tbl.tr();
         if (hasRendered) {
@@ -172,6 +177,18 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         renderStatus(p.getTypeElement(), tr.td()).tx(p.hasType() ? p.getType().toCode() : "");
         if (hasDescription) {
           renderStatus(p.getDescriptionElement(), tr.td()).tx(p.getDescription());
+        }
+        if (hasValueSet) {
+          XhtmlNode td = tr.td();
+          String url = p.getExtensionString(ToolingExtensions.EXT_PROPERTY_VALUESET);
+          if (url != null) {
+            ValueSet vs = context.getContext().fetchResource(ValueSet.class, url);
+            if (vs == null) {
+              td.code().tx(url);
+            } else {
+              td.ah(vs.getWebPath()).tx(vs.present());
+            }
+          }
         }
       }
       return true;
