@@ -192,7 +192,6 @@ public class ValueSetUtilities extends TerminologyUtilities {
           System.out.println("Value Set "+vs.getUrl()+": ownership clash "+pckage+" vs "+vs.getUserString(UserDataNames.kindling_ballot_package));
       }
       if (status == StandardsStatus.NORMATIVE) {
-        vs.setExperimental(false);
         vs.setStatus(PublicationStatus.ACTIVE);
       }
     }
@@ -200,9 +199,6 @@ public class ValueSetUtilities extends TerminologyUtilities {
       String sfmm = ToolingExtensions.readStringExtension(vs, ToolingExtensions.EXT_FMM_LEVEL);
       if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm))  {
         ToolingExtensions.setIntegerExtension(vs, ToolingExtensions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
-      }
-      if (Integer.parseInt(fmm) <= 1) {
-        vs.setExperimental(true);
       }
     }
     if (vs.hasUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM))
