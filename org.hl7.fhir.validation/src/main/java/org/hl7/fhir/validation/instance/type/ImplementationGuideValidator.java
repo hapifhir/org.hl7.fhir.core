@@ -40,12 +40,16 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.PackageClient;
+import org.hl7.fhir.utilities.npm.PackageInfo;
+import org.hl7.fhir.utilities.npm.PackageServer;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
@@ -58,8 +62,8 @@ public class ImplementationGuideValidator extends BaseValidator {
 
   private static final int DATE_WARNING_CUTOFF = 3;
 
-  public ImplementationGuideValidator(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, ValidatorSession session) {
-    super(context, xverManager, debug, session);
+  public ImplementationGuideValidator(BaseValidator parent) {
+    super(parent);
   }
 
   public boolean validateImplementationGuide(ValidationContext valContext, List<ValidationMessage> errors, Element ig, NodeStack stack) {
@@ -123,12 +127,21 @@ public class ImplementationGuideValidator extends BaseValidator {
             }
           }
         }
-        try {
-          String lver = pcm.getLatestVersion(packageId);
-          if (lver != null && !VersionUtilities.versionsMatch(version, lver) && isMoreThanXMonthsAgo(npm.dateAsLocalDate(), DATE_WARNING_CUTOFF)) {
-            warning(errors, "2025-03-06", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_WARNING_OLD, packageId+"#"+version, lver, npm.dateAsLocalDate().toString());            
+        if (settings.isForPublication()) { 
+          try {
+            PackageClient pc = new PackageClient(PackageServer.primaryServer());
+            List<PackageInfo> list = pc.getVersions(packageId);
+            String lver = pcm.getLatestVersion(packageId);
+            for (PackageInfo t : list) {
+              if (!t.getVersion().contains("-")) {
+                lver = t.getVersion();
+              }
+            }
+            if (lver != null && !VersionUtilities.versionsMatch(version, lver) && isMoreThanXMonthsAgo(npm.dateAsLocalDate(), DATE_WARNING_CUTOFF)) {
+              warning(errors, "2025-03-06", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_WARNING_OLD, packageId+"#"+version, lver, npm.dateAsLocalDate().toString());            
+            }
+          } catch (Exception e) {
           }
-        } catch (Exception e) {
         }
       }
     } catch (Exception e) {

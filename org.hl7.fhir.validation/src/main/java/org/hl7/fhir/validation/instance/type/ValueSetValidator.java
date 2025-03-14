@@ -139,21 +139,21 @@ public class ValueSetValidator extends BaseValidator {
 
   private CodeSystemChecker getSystemValidator(String system, List<ValidationMessage> errors) {
     if (system == null) {
-      return new GeneralCodeSystemChecker(context, xverManager, debug, errors, session);
+      return new GeneralCodeSystemChecker(context, settings, xverManager, errors, session);
     }
     switch (system) {
-    case "http://snomed.info/sct" :return new SnomedCTChecker(context, xverManager, debug, errors, session);
-    case "http://loinc.org": return new LoincChecker(context, xverManager, debug, errors, session);
-    case "http://www.nlm.nih.gov/research/umls/rxnorm": return new RxNormChecker(context, xverManager, debug, errors, session); 
-    case "http://unitsofmeasure.org": return new UcumChecker(context, xverManager, debug, errors, session); 
-    case "http://www.ama-assn.org/go/cpt": return new CPTChecker(context, xverManager, debug, errors, session); 
-    case "urn:ietf:bcp:47": return new BCP47Checker(context, xverManager, debug, errors, session);  
+    case "http://snomed.info/sct" :return new SnomedCTChecker(context, settings, xverManager, errors, session);
+    case "http://loinc.org": return new LoincChecker(context, settings, xverManager, errors, session);
+    case "http://www.nlm.nih.gov/research/umls/rxnorm": return new RxNormChecker(context, settings, xverManager, errors, session); 
+    case "http://unitsofmeasure.org": return new UcumChecker(context, settings, xverManager, errors, session); 
+    case "http://www.ama-assn.org/go/cpt": return new CPTChecker(context, settings, xverManager, errors, session); 
+    case "urn:ietf:bcp:47": return new BCP47Checker(context, settings, xverManager, errors, session);  
     default: 
       CodeSystem cs = context.fetchCodeSystem(system);
       if (cs != null) {
-        return new CodeSystemBasedChecker(context, xverManager, debug, errors, cs, session);
+        return new CodeSystemBasedChecker(context, settings, xverManager, errors, cs, session);
       } else {
-        return new GeneralCodeSystemChecker(context, xverManager, debug, errors, session);
+        return new GeneralCodeSystemChecker(context, settings, xverManager, errors, session);
       }
     }
   }
@@ -195,7 +195,7 @@ public class ValueSetValidator extends BaseValidator {
 
   private boolean checkShareableValueSet(ValidationContext valContext, List<ValidationMessage> errors, Element vs, NodeStack stack) {
     if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.VALUESET_METADATA_CHECKS, stack.getLiteralPath(), vs, null) == SpecialValidationAction.CHECK_RULE) {
-      if (parent.isForPublication()) { 
+      if (settings.isForPublication()) { 
         if (isHL7(vs)) {
           boolean ok = true;
           ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack, vs.hasChild("url", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "url") && ok;                      
@@ -399,11 +399,11 @@ public class ValueSetValidator extends BaseValidator {
       String version, List<VSCodingValidationRequest> batch) {
     if (batch.size() > 0) {
       long t = System.currentTimeMillis();
-      if (parent.isDebug()) {
+      if (settings.isDebug()) {
         System.out.println("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
       }
       context.validateCodeBatch(ValidationOptions.defaults().withExampleOK(), batch, null);
-      if (parent.isDebug()) {
+      if (settings.isDebug()) {
         System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
       }
       for (VSCodingValidationRequest cv : batch) {
@@ -427,7 +427,7 @@ public class ValueSetValidator extends BaseValidator {
         ValidationResult vv = context.validateCode(ValidationOptions.defaults().withExampleOK(), new Coding(system, code, null), null);
         if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
           if (isExampleUrl(system)) {
-            if (isAllowExamples()) {
+            if (settings.isAllowExamples()) {
               hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stackInc.getLiteralPath(), false, I18nConstants.VALUESET_EXAMPLE_SYSTEM_HINT, system);
             } else {
               rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stackInc.getLiteralPath(), false, I18nConstants.VALUESET_EXAMPLE_SYSTEM_ERROR, system);
@@ -556,7 +556,7 @@ public class ValueSetValidator extends BaseValidator {
             value.trim().equals(value), 
             I18nConstants.VALUESET_BAD_FILTER_VALUE_CODE, property, value) && ok;
         if (!noTerminologyChecks && (rules.getCodeValidation() == CodeValidationRule.Error || rules.getCodeValidation() == CodeValidationRule.Warning)) {
-          ValidationResult vr = context.validateCode(baseOptions, system, version, value, null);
+          ValidationResult vr = context.validateCode(settings, system, version, value, null);
           if (rules.getCodeValidation() == CodeValidationRule.Error) {
             ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), vr.isOk(), rules.isChange() ? I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_CHANGE : I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage()) && ok;
           } else {
@@ -596,7 +596,7 @@ public class ValueSetValidator extends BaseValidator {
         if (code == null) {
           ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, false, I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED, property, value) && ok;
         } else if (!noTerminologyChecks) {
-          ValidationResult vr = context.validateCode(baseOptions, code, null);
+          ValidationResult vr = context.validateCode(settings, code, null);
           ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, vr.isOk(), I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED_INVALID, property, value, vr.getMessage()) && ok;
         }
         break;
