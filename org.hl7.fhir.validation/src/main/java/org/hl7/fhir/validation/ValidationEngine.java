@@ -347,9 +347,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
     @With
     private final ILoggingService loggingService;
-
+    
     @With
-    private boolean THO = true;
+    private String thoVersion;
+    
+    @With 
+    private String extensionsVersion;
 
     private static final boolean USE_ECOSYSTEM_DEFAULT = true;
 
@@ -364,6 +367,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       canRunWithoutTerminologyServer = false;
       useEcosystem = USE_ECOSYSTEM_DEFAULT;
       loggingService = new SystemOutLoggingService();
+      thoVersion = null;
+      extensionsVersion = null;
     }
 
     /**
@@ -371,8 +376,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
      * Use {@link #ValidationEngineBuilder()} instead.
      */
     @Deprecated
-    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, boolean THO) {
-      this(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, USE_ECOSYSTEM_DEFAULT, timeTracker, canRunWithoutTerminologyServer, loggingService, THO);
+    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, String thoVersion, String extensionsVersion) {
+      this(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, USE_ECOSYSTEM_DEFAULT, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion);
     }
 
     /**
@@ -380,7 +385,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
      * Use {@link #ValidationEngineBuilder()} instead.
      */
     @Deprecated
-    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, boolean THO) {
+    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, String thoVersion, String extensionsVersion) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
       this.version = version;
@@ -391,15 +396,16 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       this.canRunWithoutTerminologyServer = canRunWithoutTerminologyServer;
       this.loggingService = loggingService;
       this.useEcosystem = useEcosystem;
-      this.THO = THO;
-    }
+      this.thoVersion = thoVersion;
+      this.extensionsVersion = extensionsVersion;
+   }
 
     public ValidationEngineBuilder withTxServer(String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem) {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, useEcosystem, timeTracker, canRunWithoutTerminologyServer, loggingService, THO);
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, useEcosystem, timeTracker, canRunWithoutTerminologyServer, loggingService, thoVersion, extensionsVersion);
     }
 
     public ValidationEngineBuilder withNoTerminologyServer() {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, null, null, txVersion, useEcosystem, timeTracker, true, loggingService, THO);
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, null, null, txVersion, useEcosystem, timeTracker, true, loggingService, thoVersion, extensionsVersion);
     }
     
     public ValidationEngine fromNothing() throws IOException {
@@ -427,11 +433,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       }
       engine.setVersion(version);
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
-      if (THO) {
+      if (thoVersion != null) {
         loadTx(engine);
       }
-      if (VersionUtilities.isR5Plus(version)) {
-        engine.loadPackage("hl7.fhir.uv.extensions", "1.0.0");
+      if (extensionsVersion != null) {
+        loadExt(engine);
       }
       return engine;
     }
@@ -451,10 +457,29 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         pid =  "hl7.terminology.r5";
       }
       if (pid != null) {
-        engine.loadPackage(pid, "5.0.0");
+        engine.loadPackage(pid, thoVersion);
       }
-      
     }
+    
+    private void loadExt(ValidationEngine engine) throws FHIRException, IOException {
+      String pid = null;
+      if (VersionUtilities.isR3Ver(version)) {
+        pid =  "hl7.fhir.uv.extensions.r3";
+      }
+      if (VersionUtilities.isR4Ver(version)) {
+        pid =  "hl7.fhir.uv.extensions.r4";
+      }
+      if (VersionUtilities.isR4BVer(version)) {
+        pid =  "hl7.fhir.uv.extensions.r4";
+      }
+      if (VersionUtilities.isR5Plus(version)) {
+        pid =  "hl7.fhir.uv.extensions.r5";
+      }
+      if (pid != null) {
+        engine.loadPackage(pid, extensionsVersion);
+      }    
+    }
+
   }
 
   /**
@@ -874,7 +899,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public InstanceValidator getValidator(FhirFormat format) throws FHIRException, IOException {
-    InstanceValidator validator = new InstanceValidator(context, null, null, new ValidatorSession());
+    InstanceValidator validator = new InstanceValidator(context, null, null, new ValidatorSession(), new ValidatorSettings());
     context.getTxClientManager().setUsage("validation");
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
@@ -883,7 +908,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setNoInvariantChecks(isNoInvariantChecks());
     validator.setWantInvariantInMessage(isWantInvariantInMessage());
     validator.setValidationLanguage(language);
-    validator.setDisplayWarnings(isDisplayWarnings());
+    validator.getSettings().setDisplayWarningMode(isDisplayWarnings());
     if (language != null) {
       validator.getContext().setValidationMessageLanguage(Locale.forLanguageTag(language));
     }
@@ -900,7 +925,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.getBundleValidationRules().addAll(bundleValidationRules);
     validator.getValidationControl().putAll(validationControl);
     validator.setQuestionnaireMode(questionnaireMode);
-    validator.setLevel(level);
+    validator.getSettings().setLevel(level);
     validator.setHtmlInMarkdownCheck(htmlInMarkdownCheck);
     validator.setBestPracticeWarningLevel(bestPracticeLevel);
     validator.setAllowDoubleQuotesInFHIRPath(allowDoubleQuotesInFHIRPath);

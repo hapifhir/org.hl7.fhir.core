@@ -168,7 +168,7 @@ public class ConceptMapValidator  extends BaseValidator {
         try {
           long t = System.currentTimeMillis();
           context.validateCodeBatch(ValidationOptions.defaults(), batch, null);
-          if (isDebug()) {
+          if (settings.isDebug()) {
             System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
           }
           for (CMCodingValidationRequest cv : batch) {
@@ -454,7 +454,7 @@ public class ConceptMapValidator  extends BaseValidator {
   }
 
   private boolean checkShareableConceptMap(List<ValidationMessage> errors, Element cs, NodeStack stack) {
-    if (parent.isForPublication()) { 
+    if (settings.isForPublication()) { 
       if (isHL7(cs)) {
         boolean ok = true;
         ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url", false), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING_HL7, "url") && ok;                      

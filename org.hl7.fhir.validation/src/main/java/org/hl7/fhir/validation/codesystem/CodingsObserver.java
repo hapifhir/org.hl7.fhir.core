@@ -19,7 +19,10 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
+
+import lombok.NonNull;
 
 public class CodingsObserver extends BaseValidator {
 
@@ -34,8 +37,8 @@ public class CodingsObserver extends BaseValidator {
     }
   }
 
-  public CodingsObserver(@Nonnull IWorkerContext context, @Nonnull XVerExtensionManager xverManager, boolean debug, ValidatorSession session) {
-    super(context, xverManager, debug, session);
+  public CodingsObserver(@Nonnull IWorkerContext context, @Nonnull ValidatorSettings settings, @Nonnull XVerExtensionManager xverManager, ValidatorSession session) {
+    super(context, settings, xverManager, session);
     this.context = context;
   }
 
