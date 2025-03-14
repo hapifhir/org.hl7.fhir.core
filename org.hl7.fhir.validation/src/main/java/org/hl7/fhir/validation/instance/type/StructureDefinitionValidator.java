@@ -126,7 +126,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             if (!src.hasUserData(UserDataNames.SNAPSHOT_ERRORS)) { // if it does, we've already logged these errors elsewhere
               List<ValidationMessage> msgs = new ArrayList<>();
               ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
-              pu.setForPublication(forPublication);
+              pu.setForPublication(settings.isForPublication());
               pu.setXver(xverManager);
               pu.setNewSlicingProcessing(!sd.hasFhirVersion() || VersionUtilities.isR4Plus(sd.getFhirVersion().toCode()));
               pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/R4/", sd.getName());
@@ -233,7 +233,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
     } catch (Exception e) {
-      if (debug) { 
+      if (settings.isDebug()) { 
         e.printStackTrace();
       }
       rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
@@ -694,9 +694,10 @@ public class StructureDefinitionValidator extends BaseValidator {
       } else {
         if (path.contains(".")) {
           ok = required(errors, stack,  "specialization", element, "min", "max") && ok;
-          ok = prohibited(errors, stack,  "specialization", element, "sliceName", "slicing", "fixed", "pattern", "minValue", "maxValue", "maxLength", "mustSupport") && ok;
+          ok = prohibited(errors, stack,  "specialization", element, "sliceName", /* allowed in element on .extension "slicing", */
+              "fixed", "pattern", "minValue", "maxValue", "maxLength") && ok;
         } else {
-          ok = prohibited(errors, stack,  "specialization", element, "sliceName", "slicing", "requirements", "nameReference", "defaultValue", "fixed", "pattern", "example", "minValue", "maxValue", "maxLength", "mustSupport") && ok;
+          ok = prohibited(errors, stack,  "specialization", element, "sliceName", "slicing", "requirements", "nameReference", "defaultValue", "fixed", "pattern", "example", "minValue", "maxValue", "maxLength") && ok;
         }      
       }
     }
@@ -707,7 +708,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     boolean ok = true;
     for (String name : names) {
       List<Element> c = element.getChildren(name);
-      ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack, c.isEmpty(), I18nConstants.SD_TABLE_PROHIBITED, name, element.getNamedChildValue("path"), mode) && ok; 
+      ok = rule(errors, "2025-03-01", IssueType.EXCEPTION, stack, c.isEmpty(), I18nConstants.SD_TABLE_PROHIBITED, name, element.getNamedChildValue("path"), mode) && ok; 
     }
     return ok;
   }
@@ -716,7 +717,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     boolean ok = true;
     for (String name : names) {
       List<Element> c = element.getChildren(name);
-      ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack, !c.isEmpty(), I18nConstants.SD_TABLE_REQUIRED, name, element.getNamedChildValue("path"), mode) && ok; 
+      ok = rule(errors, "2025-03-01", IssueType.EXCEPTION, stack, !c.isEmpty(), I18nConstants.SD_TABLE_REQUIRED, name, element.getNamedChildValue("path"), mode) && ok; 
     }
     return ok;
   }
@@ -842,7 +843,7 @@ public class StructureDefinitionValidator extends BaseValidator {
                   warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, s.getId(), false, key+": "+s.getMessage());
                 }
               } catch (Exception e) {
-                if (debug) {
+                if (settings.isDebug()) {
                   e.printStackTrace();
                 }
                 ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
@@ -891,7 +892,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, s.getId(), false, s.getMessage());
           }
         } catch (Exception e) {
-          if (debug) {
+          if (settings.isDebug()) {
             e.printStackTrace();
           }
           ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_CONTEXT_INVARIANT_EXPRESSION_ERROR, expression, e.getMessage()) && ok;

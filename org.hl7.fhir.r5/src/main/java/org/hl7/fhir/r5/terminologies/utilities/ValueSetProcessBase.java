@@ -16,6 +16,7 @@ import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -142,6 +143,9 @@ public class ValueSetProcessBase {
 
 
   protected List<OperationOutcomeIssueComponent> makeIssue(IssueSeverity level, IssueType type, String location, String message, OpIssueCode code, String server) {
+    return makeIssue(level, type, location, message, code, server, null);
+  }
+  protected List<OperationOutcomeIssueComponent> makeIssue(IssueSeverity level, IssueType type, String location, String message, OpIssueCode code, String server, String msgId) {
     OperationOutcomeIssueComponent result = new OperationOutcomeIssueComponent();
     switch (level) {
     case ERROR:
@@ -168,6 +172,9 @@ public class ValueSetProcessBase {
     }
     if (server != null) {
       result.addExtension(ToolingExtensions.EXT_ISSUE_SERVER, new UrlType(server));
+    }
+    if (msgId != null) {      
+      result.addExtension(ToolingExtensions.EXT_ISSUE_MSG_ID, new StringType(msgId));
     }
     ArrayList<OperationOutcomeIssueComponent> list = new ArrayList<>();
     list.add(result);

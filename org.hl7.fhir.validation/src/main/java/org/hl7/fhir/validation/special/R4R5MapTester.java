@@ -48,6 +48,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 
@@ -187,14 +188,14 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
     loadPackage("hl7.fhir.r4.core#4.0.1", false);
     loadPackage("hl7.fhir.r4b.core#4.3.0", false);
     
-    validator = new InstanceValidator(context, null, null, null);
+    validator = new InstanceValidator(context, null, null, null, new ValidatorSettings());
     validator.setSuppressLoincSnomedMessages(true);
     validator.setResourceIdRule(IdStatus.REQUIRED);
     validator.setBestPracticeWarningLevel(BestPracticeWarningLevel.Warning);
     validator.getExtensionDomains().add("http://hl7.org/fhir/us");
     validator.setFetcher(this);
     validator.setAllowExamples(true);
-    validator.setDebug(false);
+    validator.getSettings().setDebug(false);
     validator.setForPublication(true);
     validator.setNoTerminologyChecks(true);
     context.setExpansionParameters(new Parameters());

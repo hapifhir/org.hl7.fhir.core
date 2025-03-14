@@ -103,7 +103,7 @@ public class SearchParameterValidator extends BaseValidator {
         warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, m.getId(), false, m.getMessage());
       }
     } catch (Exception e) {
-      if (debug) {
+      if (settings.isDebug()) {
         e.printStackTrace();
       }
       ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_SEARCH_EXPRESSION_ERROR, expression, e.getMessage()) && ok;

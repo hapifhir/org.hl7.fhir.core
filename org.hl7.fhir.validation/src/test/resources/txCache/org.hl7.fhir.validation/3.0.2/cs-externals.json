@@ -3,6 +3,7 @@
   "http://myownsystem.info/sct|null" : null,
   "https://fhir.hl7.org.uk/STU3/CodeSystem/CareConnect-NHSNumberVerificationStatus-1|null" : null,
   "http://mydomain.org/fhir/cs/mydomain|null" : null,
+  "http://loinc.org|null" : null,
   "http://acme.org/not-snomed|null" : null,
   "urn:ietf:bcp:13|null" : null,
   "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode|null" : null,

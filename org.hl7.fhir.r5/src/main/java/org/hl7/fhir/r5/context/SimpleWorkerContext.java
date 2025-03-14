@@ -633,9 +633,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	  return validatorFactory.makeValidator(this, xverManager, null).setJurisdiction(JurisdictionUtilities.getJurisdictionCodingFromLocale(Locale.getDefault().getCountry()));
 	}
 
-
-
-
   @Override
   public List<String> getResourceNames() {
     Set<String> result = new HashSet<String>();
