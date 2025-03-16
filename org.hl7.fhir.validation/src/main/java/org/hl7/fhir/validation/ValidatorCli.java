@@ -63,6 +63,7 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 import org.apache.commons.text.WordUtils;
+import org.hl7.fhir.r5.formats.ParserFactory;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.utilities.SystemExitManager;
@@ -205,6 +206,7 @@ public class ValidatorCli {
   public static void main(String[] args) throws Exception {
     // Prevents SLF4J(I) from printing unnecessary info to the console.
     System.setProperty("slf4j.internal.verbosity", "WARN");
+    ParserFactory.registerCustomResources();
 
     final ValidatorCli validatorCli = new ValidatorCli(validationService);
 
