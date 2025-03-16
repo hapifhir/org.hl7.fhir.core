@@ -601,10 +601,16 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       res.setModeElement(parseCode(json.get("mode").getAsString()));
     if (json.has("_mode"))
       parseElementProperties(getJObject(json, "_mode"), res.getModeElement());
-    if (json.has("setup")) {
-      JsonArray array = getJArray(json, "setup");
+    if (json.has("resource")) {
+      JsonArray array = getJArray(json, "resource");
       for (int i = 0; i < array.size(); i++) {
-        res.getSetup().add(parseTestCasesSuiteSetupComponent(array.get(i).getAsJsonObject()));
+        res.getResource().add(parseTestCasesSuiteResourceComponent(array.get(i).getAsJsonObject()));
+      }
+    };
+    if (json.has("parameter")) {
+      JsonArray array = getJArray(json, "parameter");
+      for (int i = 0; i < array.size(); i++) {
+        res.getParameter().add(parseTestCasesSuiteParameterComponent(array.get(i).getAsJsonObject()));
       }
     };
     if (json.has("test")) {
@@ -615,13 +621,13 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     };
   }
 
-  protected TestCases.TestCasesSuiteSetupComponent parseTestCasesSuiteSetupComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestCases.TestCasesSuiteSetupComponent res = new TestCases.TestCasesSuiteSetupComponent();
-    parseTestCasesSuiteSetupComponentProperties(json, res);
+  protected TestCases.TestCasesSuiteResourceComponent parseTestCasesSuiteResourceComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestCases.TestCasesSuiteResourceComponent res = new TestCases.TestCasesSuiteResourceComponent();
+    parseTestCasesSuiteResourceComponentProperties(json, res);
     return res;
   }
 
-  protected void parseTestCasesSuiteSetupComponentProperties(JsonObject json, TestCases.TestCasesSuiteSetupComponent res) throws IOException, FHIRFormatError {
+  protected void parseTestCasesSuiteResourceComponentProperties(JsonObject json, TestCases.TestCasesSuiteResourceComponent res) throws IOException, FHIRFormatError {
     parseBaseProperties(json, res);
     if (json.has("name"))
       res.setNameElement(parseString(json.get("name").getAsString()));
@@ -633,6 +639,27 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       parseElementProperties(getJObject(json, "_file"), res.getFileElement());
     if (json.has("resource"))
       res.setResource(parseResource(getJObject(json, "resource")));
+    if (json.has("mode"))
+      res.setModeElement(parseCode(json.get("mode").getAsString()));
+    if (json.has("_mode"))
+      parseElementProperties(getJObject(json, "_mode"), res.getModeElement());
+  }
+
+  protected TestCases.TestCasesSuiteParameterComponent parseTestCasesSuiteParameterComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestCases.TestCasesSuiteParameterComponent res = new TestCases.TestCasesSuiteParameterComponent();
+    parseTestCasesSuiteParameterComponentProperties(json, res);
+    return res;
+  }
+
+  protected void parseTestCasesSuiteParameterComponentProperties(JsonObject json, TestCases.TestCasesSuiteParameterComponent res) throws IOException, FHIRFormatError {
+    parseBaseProperties(json, res);
+    if (json.has("name"))
+      res.setNameElement(parseString(json.get("name").getAsString()));
+    if (json.has("_name"))
+      parseElementProperties(getJObject(json, "_name"), res.getNameElement());
+    DataType value = parseType("value", json);
+    if (value != null)
+      res.setValue(value);
     if (json.has("mode"))
       res.setModeElement(parseCode(json.get("mode").getAsString()));
     if (json.has("_mode"))
@@ -666,42 +693,21 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("parameter")) {
       JsonArray array = getJArray(json, "parameter");
       for (int i = 0; i < array.size(); i++) {
-        res.getParameter().add(parseTestCasesSuiteTestParameterComponent(array.get(i).getAsJsonObject()));
+        res.getParameter().add(parseTestCasesSuiteParameterComponent(array.get(i).getAsJsonObject()));
       }
     };
     if (json.has("input")) {
       JsonArray array = getJArray(json, "input");
       for (int i = 0; i < array.size(); i++) {
-        res.getInput().add(parseTestCasesSuiteSetupComponent(array.get(i).getAsJsonObject()));
+        res.getInput().add(parseTestCasesSuiteResourceComponent(array.get(i).getAsJsonObject()));
       }
     };
     if (json.has("output")) {
       JsonArray array = getJArray(json, "output");
       for (int i = 0; i < array.size(); i++) {
-        res.getOutput().add(parseTestCasesSuiteSetupComponent(array.get(i).getAsJsonObject()));
+        res.getOutput().add(parseTestCasesSuiteResourceComponent(array.get(i).getAsJsonObject()));
       }
     };
-  }
-
-  protected TestCases.TestCasesSuiteTestParameterComponent parseTestCasesSuiteTestParameterComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestCases.TestCasesSuiteTestParameterComponent res = new TestCases.TestCasesSuiteTestParameterComponent();
-    parseTestCasesSuiteTestParameterComponentProperties(json, res);
-    return res;
-  }
-
-  protected void parseTestCasesSuiteTestParameterComponentProperties(JsonObject json, TestCases.TestCasesSuiteTestParameterComponent res) throws IOException, FHIRFormatError {
-    parseBaseProperties(json, res);
-    if (json.has("name"))
-      res.setNameElement(parseString(json.get("name").getAsString()));
-    if (json.has("_name"))
-      parseElementProperties(getJObject(json, "_name"), res.getNameElement());
-    DataType value = parseType("value", json);
-    if (value != null)
-      res.setValue(value);
-    if (json.has("mode"))
-      res.setModeElement(parseCode(json.get("mode").getAsString()));
-    if (json.has("_mode"))
-      parseElementProperties(getJObject(json, "_mode"), res.getModeElement());
   }
 
 
@@ -1282,10 +1288,16 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
         composeCodeCore("mode", element.getModeElement(), false);
         composeCodeExtras("mode", element.getModeElement(), false);
       }
-      if (element.hasSetup()) {
-        openArray("setup");
-        for (TestCases.TestCasesSuiteSetupComponent e : element.getSetup()) 
-          composeTestCasesSuiteSetupComponent(null, e);
+      if (element.hasResource()) {
+        openArray("resource");
+        for (TestCases.TestCasesSuiteResourceComponent e : element.getResource()) 
+          composeTestCasesSuiteResourceComponent(null, e);
+        closeArray();
+      };
+      if (element.hasParameter()) {
+        openArray("parameter");
+        for (TestCases.TestCasesSuiteParameterComponent e : element.getParameter()) 
+          composeTestCasesSuiteParameterComponent(null, e);
         closeArray();
       };
       if (element.hasTest()) {
@@ -1296,15 +1308,15 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       };
   }
 
-  protected void composeTestCasesSuiteSetupComponent(String name, TestCases.TestCasesSuiteSetupComponent element) throws IOException {
+  protected void composeTestCasesSuiteResourceComponent(String name, TestCases.TestCasesSuiteResourceComponent element) throws IOException {
     if (element != null) {
       open(name);
-      composeTestCasesSuiteSetupComponentProperties(element);
+      composeTestCasesSuiteResourceComponentProperties(element);
       close();
     }
   }
 
-  protected void composeTestCasesSuiteSetupComponentProperties(TestCases.TestCasesSuiteSetupComponent element) throws IOException {
+  protected void composeTestCasesSuiteResourceComponentProperties(TestCases.TestCasesSuiteResourceComponent element) throws IOException {
     composeBaseProperties(element);
       if (element.hasNameElement()) {
         composeStringCore("name", element.getNameElement(), false);
@@ -1319,6 +1331,29 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
           composeResource(element.getResource());
           close();
         }
+      if (element.hasModeElement()) {
+        composeCodeCore("mode", element.getModeElement(), false);
+        composeCodeExtras("mode", element.getModeElement(), false);
+      }
+  }
+
+  protected void composeTestCasesSuiteParameterComponent(String name, TestCases.TestCasesSuiteParameterComponent element) throws IOException {
+    if (element != null) {
+      open(name);
+      composeTestCasesSuiteParameterComponentProperties(element);
+      close();
+    }
+  }
+
+  protected void composeTestCasesSuiteParameterComponentProperties(TestCases.TestCasesSuiteParameterComponent element) throws IOException {
+    composeBaseProperties(element);
+      if (element.hasNameElement()) {
+        composeStringCore("name", element.getNameElement(), false);
+        composeStringExtras("name", element.getNameElement(), false);
+      }
+      if (element.hasValue()) {
+        composeType("value", element.getValue());
+      }
       if (element.hasModeElement()) {
         composeCodeCore("mode", element.getModeElement(), false);
         composeCodeExtras("mode", element.getModeElement(), false);
@@ -1353,45 +1388,22 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       }
       if (element.hasParameter()) {
         openArray("parameter");
-        for (TestCases.TestCasesSuiteTestParameterComponent e : element.getParameter()) 
-          composeTestCasesSuiteTestParameterComponent(null, e);
+        for (TestCases.TestCasesSuiteParameterComponent e : element.getParameter()) 
+          composeTestCasesSuiteParameterComponent(null, e);
         closeArray();
       };
       if (element.hasInput()) {
         openArray("input");
-        for (TestCases.TestCasesSuiteSetupComponent e : element.getInput()) 
-          composeTestCasesSuiteSetupComponent(null, e);
+        for (TestCases.TestCasesSuiteResourceComponent e : element.getInput()) 
+          composeTestCasesSuiteResourceComponent(null, e);
         closeArray();
       };
       if (element.hasOutput()) {
         openArray("output");
-        for (TestCases.TestCasesSuiteSetupComponent e : element.getOutput()) 
-          composeTestCasesSuiteSetupComponent(null, e);
+        for (TestCases.TestCasesSuiteResourceComponent e : element.getOutput()) 
+          composeTestCasesSuiteResourceComponent(null, e);
         closeArray();
       };
-  }
-
-  protected void composeTestCasesSuiteTestParameterComponent(String name, TestCases.TestCasesSuiteTestParameterComponent element) throws IOException {
-    if (element != null) {
-      open(name);
-      composeTestCasesSuiteTestParameterComponentProperties(element);
-      close();
-    }
-  }
-
-  protected void composeTestCasesSuiteTestParameterComponentProperties(TestCases.TestCasesSuiteTestParameterComponent element) throws IOException {
-    composeBaseProperties(element);
-      if (element.hasNameElement()) {
-        composeStringCore("name", element.getNameElement(), false);
-        composeStringExtras("name", element.getNameElement(), false);
-      }
-      if (element.hasValue()) {
-        composeType("value", element.getValue());
-      }
-      if (element.hasModeElement()) {
-        composeCodeCore("mode", element.getModeElement(), false);
-        composeCodeExtras("mode", element.getModeElement(), false);
-      }
   }
 
 

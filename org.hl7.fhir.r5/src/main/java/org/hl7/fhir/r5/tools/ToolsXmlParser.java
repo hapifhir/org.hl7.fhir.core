@@ -627,8 +627,10 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       res.setDescriptionElement(parseString(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
       res.setModeElement(parseCode(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("setup")) {
-      res.getSetup().add(parseTestCasesSuiteSetupComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("resource")) {
+      res.getResource().add(parseTestCasesSuiteResourceComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("parameter")) {
+      res.getParameter().add(parseTestCasesSuiteParameterComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("test")) {
       res.getTest().add(parseTestCasesSuiteTestComponent(xpp));
     } else if (!parseBaseContent(eventType, xpp, res)){ //2
@@ -637,12 +639,12 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return true;
   }
 
-  protected TestCases.TestCasesSuiteSetupComponent parseTestCasesSuiteSetupComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestCases.TestCasesSuiteSetupComponent res = new TestCases.TestCasesSuiteSetupComponent();
+  protected TestCases.TestCasesSuiteResourceComponent parseTestCasesSuiteResourceComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestCases.TestCasesSuiteResourceComponent res = new TestCases.TestCasesSuiteResourceComponent();
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
     while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestCasesSuiteSetupComponentContent(eventType, xpp, res)) // 1
+    if (!parseTestCasesSuiteResourceComponentContent(eventType, xpp, res)) // 1
         unknownContent(xpp);
       eventType = nextNoWhitespace(xpp);
     }
@@ -651,13 +653,40 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
-  protected boolean parseTestCasesSuiteSetupComponentContent(int eventType, XmlPullParser xpp, TestCases.TestCasesSuiteSetupComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+  protected boolean parseTestCasesSuiteResourceComponentContent(int eventType, XmlPullParser xpp, TestCases.TestCasesSuiteResourceComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
       res.setNameElement(parseString(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("file")) {
       res.setFileElement(parseString(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("resource")) {
       res.setResource(parseResourceContained(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
+      res.setModeElement(parseCode(xpp));
+    } else if (!parseBaseContent(eventType, xpp, res)){ //2
+      return false;
+    }
+    return true;
+  }
+
+  protected TestCases.TestCasesSuiteParameterComponent parseTestCasesSuiteParameterComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestCases.TestCasesSuiteParameterComponent res = new TestCases.TestCasesSuiteParameterComponent();
+    next(xpp);
+    int eventType = nextNoWhitespace(xpp);
+    while (eventType != XmlPullParser.END_TAG) {
+    if (!parseTestCasesSuiteParameterComponentContent(eventType, xpp, res)) // 1
+        unknownContent(xpp);
+      eventType = nextNoWhitespace(xpp);
+    }
+    next(xpp);
+    parseElementClose(res);
+    return res;
+  }
+
+  protected boolean parseTestCasesSuiteParameterComponentContent(int eventType, XmlPullParser xpp, TestCases.TestCasesSuiteParameterComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
+      res.setNameElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && nameIsTypeName(xpp, "value")) {
+      res.setValue(parseType("value", xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
       res.setModeElement(parseCode(xpp));
     } else if (!parseBaseContent(eventType, xpp, res)){ //2
@@ -690,38 +719,11 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
       res.setModeElement(parseString(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("parameter")) {
-      res.getParameter().add(parseTestCasesSuiteTestParameterComponent(xpp));
+      res.getParameter().add(parseTestCasesSuiteParameterComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("input")) {
-      res.getInput().add(parseTestCasesSuiteSetupComponent(xpp));
+      res.getInput().add(parseTestCasesSuiteResourceComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("output")) {
-      res.getOutput().add(parseTestCasesSuiteSetupComponent(xpp));
-    } else if (!parseBaseContent(eventType, xpp, res)){ //2
-      return false;
-    }
-    return true;
-  }
-
-  protected TestCases.TestCasesSuiteTestParameterComponent parseTestCasesSuiteTestParameterComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestCases.TestCasesSuiteTestParameterComponent res = new TestCases.TestCasesSuiteTestParameterComponent();
-    next(xpp);
-    int eventType = nextNoWhitespace(xpp);
-    while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestCasesSuiteTestParameterComponentContent(eventType, xpp, res)) // 1
-        unknownContent(xpp);
-      eventType = nextNoWhitespace(xpp);
-    }
-    next(xpp);
-    parseElementClose(res);
-    return res;
-  }
-
-  protected boolean parseTestCasesSuiteTestParameterComponentContent(int eventType, XmlPullParser xpp, TestCases.TestCasesSuiteTestParameterComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
-      res.setNameElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && nameIsTypeName(xpp, "value")) {
-      res.setValue(parseType("value", xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
-      res.setModeElement(parseCode(xpp));
+      res.getOutput().add(parseTestCasesSuiteResourceComponent(xpp));
     } else if (!parseBaseContent(eventType, xpp, res)){ //2
       return false;
     }
@@ -1488,9 +1490,13 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     if (element.hasModeElement()) {
       composeCode("mode", element.getModeElement());
     }
-    if (element.hasSetup()) { 
-      for (TestCases.TestCasesSuiteSetupComponent e : element.getSetup()) 
-          composeTestCasesSuiteSetupComponent("setup", e); // a
+    if (element.hasResource()) { 
+      for (TestCases.TestCasesSuiteResourceComponent e : element.getResource()) 
+          composeTestCasesSuiteResourceComponent("resource", e); // a
+    }
+    if (element.hasParameter()) { 
+      for (TestCases.TestCasesSuiteParameterComponent e : element.getParameter()) 
+          composeTestCasesSuiteParameterComponent("parameter", e); // a
     }
     if (element.hasTest()) { 
       for (TestCases.TestCasesSuiteTestComponent e : element.getTest()) 
@@ -1498,16 +1504,16 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
-  protected void composeTestCasesSuiteSetupComponent(String name, TestCases.TestCasesSuiteSetupComponent element) throws IOException {
+  protected void composeTestCasesSuiteResourceComponent(String name, TestCases.TestCasesSuiteResourceComponent element) throws IOException {
     if (element != null) {
       xml.enter(FHIR_NS, name);
-      composeTestCasesSuiteSetupComponentElements(element);
+      composeTestCasesSuiteResourceComponentElements(element);
       composeElementClose(element);
       xml.exit(FHIR_NS, name);
     }
   }
 
-  protected void composeTestCasesSuiteSetupComponentElements(TestCases.TestCasesSuiteSetupComponent element) throws IOException {
+  protected void composeTestCasesSuiteResourceComponentElements(TestCases.TestCasesSuiteResourceComponent element) throws IOException {
     composeBaseElements(element);
     if (element.hasNameElement()) {
       composeString("name", element.getNameElement());
@@ -1521,6 +1527,27 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       xml.exit(FHIR_NS, "resource");
     }
     if (element.hasModeElement()) {
+      composeCode("mode", element.getModeElement());
+    }
+  }
+
+  protected void composeTestCasesSuiteParameterComponent(String name, TestCases.TestCasesSuiteParameterComponent element) throws IOException {
+    if (element != null) {
+      xml.enter(FHIR_NS, name);
+      composeTestCasesSuiteParameterComponentElements(element);
+      composeElementClose(element);
+      xml.exit(FHIR_NS, name);
+    }
+  }
+
+  protected void composeTestCasesSuiteParameterComponentElements(TestCases.TestCasesSuiteParameterComponent element) throws IOException {
+    composeBaseElements(element);
+    if (element.hasNameElement()) {
+      composeString("name", element.getNameElement());
+    }
+    if (element.hasValue()) {
+      composeType("value", element.getValue());
+    }    if (element.hasModeElement()) {
       composeCode("mode", element.getModeElement());
     }
   }
@@ -1549,37 +1576,16 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       composeString("mode", element.getModeElement());
     }
     if (element.hasParameter()) { 
-      for (TestCases.TestCasesSuiteTestParameterComponent e : element.getParameter()) 
-          composeTestCasesSuiteTestParameterComponent("parameter", e); // a
+      for (TestCases.TestCasesSuiteParameterComponent e : element.getParameter()) 
+          composeTestCasesSuiteParameterComponent("parameter", e); // a
     }
     if (element.hasInput()) { 
-      for (TestCases.TestCasesSuiteSetupComponent e : element.getInput()) 
-          composeTestCasesSuiteSetupComponent("input", e); // a
+      for (TestCases.TestCasesSuiteResourceComponent e : element.getInput()) 
+          composeTestCasesSuiteResourceComponent("input", e); // a
     }
     if (element.hasOutput()) { 
-      for (TestCases.TestCasesSuiteSetupComponent e : element.getOutput()) 
-          composeTestCasesSuiteSetupComponent("output", e); // a
-    }
-  }
-
-  protected void composeTestCasesSuiteTestParameterComponent(String name, TestCases.TestCasesSuiteTestParameterComponent element) throws IOException {
-    if (element != null) {
-      xml.enter(FHIR_NS, name);
-      composeTestCasesSuiteTestParameterComponentElements(element);
-      composeElementClose(element);
-      xml.exit(FHIR_NS, name);
-    }
-  }
-
-  protected void composeTestCasesSuiteTestParameterComponentElements(TestCases.TestCasesSuiteTestParameterComponent element) throws IOException {
-    composeBaseElements(element);
-    if (element.hasNameElement()) {
-      composeString("name", element.getNameElement());
-    }
-    if (element.hasValue()) {
-      composeType("value", element.getValue());
-    }    if (element.hasModeElement()) {
-      composeCode("mode", element.getModeElement());
+      for (TestCases.TestCasesSuiteResourceComponent e : element.getOutput()) 
+          composeTestCasesSuiteResourceComponent("output", e); // a
     }
   }
 
