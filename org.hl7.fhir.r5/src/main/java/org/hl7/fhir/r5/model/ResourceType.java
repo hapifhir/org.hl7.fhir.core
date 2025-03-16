@@ -35,7 +35,7 @@ package org.hl7.fhir.r5.model;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ResourceType {
-Account,
+    Account,
     ActivityDefinition,
     ActorDefinition,
     AdministrableProductDefinition,
@@ -192,7 +192,8 @@ Account,
     Transport,
     ValueSet,
     VerificationResult,
-    VisionPrescription;
+    VisionPrescription,
+    Custom;
 
 
     public String getPath() {;
@@ -513,7 +514,6 @@ Account,
       return "verificationresult";
     case VisionPrescription:
       return "visionprescription";
-
     }
     return null;
   }

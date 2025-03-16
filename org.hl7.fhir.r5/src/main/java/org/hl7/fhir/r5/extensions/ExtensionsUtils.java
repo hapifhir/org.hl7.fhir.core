@@ -266,6 +266,18 @@ public class ExtensionsUtils {
     return result; 
   }
 
+  public static List<Boolean> getExtensionBooleanList(Base context, String url) {
+    List<Boolean> result = new ArrayList<>();
+    for (Extension ext : getAllExtensions(context, url)) {
+      if (ext.hasUrl() && ext.getUrl().equals(url)) {
+        if (ext.hasValue() && ext.getValue().isPrimitive()) {
+          result.add(Boolean.valueOf(ext.getValue().primitiveValue()));
+        }
+      }
+    }
+    return result; 
+  }
+
   public static List<Integer> getExtensionIntList(Base context, String url) {
     List<Integer> result = new ArrayList<>();
     for (Extension ext : getAllExtensions(context, url)) {

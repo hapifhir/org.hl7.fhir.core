@@ -274,7 +274,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader, boolean genSnapshots) throws IOException, FHIRException {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
       context.setAllowLoadingDuplicates(allowLoadingDuplicates);      
-      context.version = pi.getNpm().asString("version");
+      context.version = pi.fhirVersion();
       context.terminologyClientManager.setFactory(loader.txFactory());
       context.loadFromPackage(pi, loader);
       context.finishLoading(genSnapshots);
@@ -630,9 +630,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	    throw new Error(formatMessage(I18nConstants.NO_VALIDATOR_CONFIGURED));
 	  return validatorFactory.makeValidator(this, xverManager, null).setJurisdiction(JurisdictionUtilities.getJurisdictionCodingFromLocale(Locale.getDefault().getCountry()));
 	}
-
-
-
 
   @Override
   public List<String> getResourceNames() {

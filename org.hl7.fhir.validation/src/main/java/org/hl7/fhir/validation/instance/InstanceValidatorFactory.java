@@ -38,17 +38,18 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext.IValidatorFactory;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
+import org.hl7.fhir.validation.ValidatorSettings;
 
 public class InstanceValidatorFactory implements IValidatorFactory {
 
   @Override
   public IResourceValidator makeValidator(IWorkerContext ctxt, XVerExtensionManager xverManager, ValidatorSession session) throws FHIRException {
-    return new InstanceValidator(ctxt, null, xverManager, session);
+    return new InstanceValidator(ctxt, null, xverManager, session, new ValidatorSettings());
   }
 
   @Override
   public IResourceValidator makeValidator(IWorkerContext ctxt, ValidatorSession session) throws FHIRException {
-    return new InstanceValidator(ctxt, null, null, session);
+    return new InstanceValidator(ctxt, null, null, session, new ValidatorSettings());
   }
 
 }

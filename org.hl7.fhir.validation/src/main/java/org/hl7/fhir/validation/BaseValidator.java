@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -175,6 +177,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   protected IValidatorResourceFetcher fetcher;
   protected IValidationPolicyAdvisor policyAdvisor;
   protected boolean noTerminologyChecks;
+  protected ValidatorSettings settings;
   
   // these two related to removing warnings on extensible bindings in structures that have derivatives that replace their bindings
   protected List<TrackedLocationRelatedMessage> trackedMessages = new ArrayList<>();   
@@ -184,19 +187,9 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   protected Set<String> statusWarnings = new HashSet<>();  
   
   protected ValidatorSession session;
-  protected Source source; // @configuration
-  protected ValidationLevel level = ValidationLevel.HINTS; // @configuration
-  protected Coding jurisdiction; // @configuration
-  protected boolean allowExamples; // @configuration
-  protected boolean forPublication; // @configuration
-  protected boolean debug; // @configuration
-  protected boolean warnOnDraftOrExperimental; // @configuration 
-  protected BestPracticeWarningLevel bpWarnings = BestPracticeWarningLevel.Warning; // @configuration
-  protected List<UsageContext> usageContexts = new ArrayList<UsageContext>(); // @configuration
-  protected ValidationOptions baseOptions = new ValidationOptions(FhirPublication.R5); // @configuration
   protected ContextUtilities cu;
 
-  public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, ValidatorSession session) {
+  public BaseValidator(IWorkerContext context, @Nonnull ValidatorSettings settings, XVerExtensionManager xverManager, ValidatorSession session) {
     super();
     this.context = context;
     cu = new ContextUtilities(context);
@@ -208,7 +201,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     if (this.xverManager == null) {
       this.xverManager = new XVerExtensionManager(context);
     }
-    this.debug = debug;
+    this.settings = settings;
     policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID);
     urlRegex = Constants.URI_REGEX_XVER.replace("$$", CommaSeparatedStringBuilder.join("|", context.getResourceNames()));
   }
@@ -220,21 +213,12 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     this.context = parent.context;
     this.cu = parent.cu;
     this.xverManager = parent.xverManager;
-    this.debug = parent.debug;
-    this.source = parent.source;
     this.timeTracker = parent.timeTracker;
     this.trackedMessages = parent.trackedMessages;
     this.messagesToRemove = parent.messagesToRemove;
-    this.level = parent.level;
-    this.allowExamples = parent.allowExamples;
-    this.forPublication = parent.forPublication;
-    this.debug = parent.debug;
-    this.warnOnDraftOrExperimental = parent.warnOnDraftOrExperimental;
     this.statusWarnings = parent.statusWarnings;
-    this.bpWarnings = parent.bpWarnings;
     this.urlRegex = parent.urlRegex;
-    this.usageContexts.addAll(parent.usageContexts);
-    this.baseOptions = parent.baseOptions;
+    this.settings = parent.settings;
     this.fetcher = parent.fetcher;
     this.policyAdvisor = parent.policyAdvisor;
     this.noTerminologyChecks = parent.noTerminologyChecks;
@@ -243,13 +227,13 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   private boolean doingLevel(IssueSeverity error) {
     switch (error) {
     case ERROR:
-      return level == null || level == ValidationLevel.ERRORS || level == ValidationLevel.WARNINGS || level == ValidationLevel.HINTS;
+      return settings.getLevel() == null || settings.getLevel() == ValidationLevel.ERRORS || settings.getLevel() == ValidationLevel.WARNINGS || settings.getLevel() == ValidationLevel.HINTS;
     case FATAL:
-      return level == null || level == ValidationLevel.ERRORS || level == ValidationLevel.WARNINGS || level == ValidationLevel.HINTS;
+      return settings.getLevel() == null || settings.getLevel() == ValidationLevel.ERRORS || settings.getLevel() == ValidationLevel.WARNINGS || settings.getLevel() == ValidationLevel.HINTS;
     case WARNING:
-      return level == null || level == ValidationLevel.WARNINGS || level == ValidationLevel.HINTS;
+      return settings.getLevel() == null || settings.getLevel() == ValidationLevel.WARNINGS || settings.getLevel() == ValidationLevel.HINTS;
     case INFORMATION:
-      return level == null || level == ValidationLevel.HINTS;
+      return settings.getLevel() == null || settings.getLevel() == ValidationLevel.HINTS;
     case NULL:
       return true;
     default:
@@ -649,7 +633,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   protected ValidationMessage addValidationMessage(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, String msg, IssueSeverity theSeverity, String id) {
-    Source source = this.source;
+    Source source = this.settings.getSource();
     return addValidationMessage(errors, ruleDate, type, line, col, path, msg, theSeverity, source, id);
   }
 
@@ -922,7 +906,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   protected void addValidationMessage(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, String msg, String html, IssueSeverity theSeverity, String id) {
-    ValidationMessage vm = new ValidationMessage(source, type, -1, -1, path, msg, html, theSeverity);
+    ValidationMessage vm = new ValidationMessage(settings.getSource(), type, -1, -1, path, msg, html, theSeverity);
     vm.setRuleDate(ruleDate);
     if (checkMsgId(id, vm)) {
       if (doingLevel(theSeverity)) {
@@ -1510,14 +1494,6 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     }
   }
 
-  public void setLevel(ValidationLevel level) {
-    this.level = level;
-  }
-
-  public ValidationLevel getLevel() {
-    return level;
-  }
-
   protected boolean isHL7(Element cr) {
     String url = cr.getChildValue("url");
     return url != null && url.contains("hl7");
@@ -1538,36 +1514,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return url != null && url.startsWith("http://hl7.org/fhir/"+cr.fhirType());
   }
 
-  public boolean isAllowExamples() {
-    return this.allowExamples;
-  }
-
-  public void setAllowExamples(boolean value) {
-    this.allowExamples = value;
-  }
-
   protected boolean isExampleUrl(String url) {
     return Utilities.containsInList(url, "example.org", "acme.com", "acme.org");    
   }
   
-  public boolean isForPublication() {
-    return forPublication;
-  }
-  
-  public BaseValidator setForPublication(boolean forPublication) {
-    this.forPublication = forPublication;
-    return this;
-  }
-
-  public boolean isDebug() {
-    return debug;
-  }
-
-  public void setDebug(boolean debug) {
-    this.debug = debug;
-  }
- 
-
   protected boolean checkDefinitionStatus(List<ValidationMessage> errors, Element element, String path, StructureDefinition ex, CanonicalResource source, String type) {
     boolean ok = true;
     String vurl = ex.getVersionedUrl();
@@ -1593,7 +1543,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         statusWarnings.add(vurl+":RETIRED");
         hint(errors, "2023-08-10", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_RETIRED, type, vurl);
       }
-    } else if (false && warnOnDraftOrExperimental && source != null) {
+    } else if (false && settings.isWarnOnDraftOrExperimental() && source != null) {
       // for now, this is disabled; these warnings are just everywhere, and it's an intractible problem. 
       // working this through QA in IG publisher
       if (ex.getExperimental() && !source.getExperimental()) {
@@ -1611,15 +1561,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return ok;
   }
 
-
-  public BestPracticeWarningLevel getBestPracticeWarningLevel() {
-    return bpWarnings;
-  }
-
   
   protected boolean bpCheck(List<ValidationMessage> errors, IssueType invalid, int line, int col, String literalPath, boolean test, String message, Object... theMessageArguments) {
-    if (bpWarnings != null) {
-      switch (bpWarnings) {
+    if (settings.getBpWarnings() != null) {
+      switch (settings.getBpWarnings()) {
         case Error:
           rule(errors, NO_RULE_DATE, invalid, line, col, literalPath, test, message, theMessageArguments);
           return test;
@@ -1636,12 +1581,8 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return true;
   }
 
-  public List<UsageContext> getUsageContexts() {
-    return usageContexts;
-  }
-  
   protected boolean hasUseContext(Coding use, Coding value) {
-    for (UsageContext usage : usageContexts)  {
+    for (UsageContext usage : settings.getUsageContexts())  {
       if (isContext(use, value, usage)) {
         return true;
       }
@@ -1650,12 +1591,12 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   private boolean isContext(Coding use, Coding value, UsageContext usage) {
-    return usage.getValue() instanceof Coding && context.subsumes(baseOptions, usage.getCode(), use) && context.subsumes(baseOptions, (Coding) usage.getValue(), value);
+    return usage.getValue() instanceof Coding && context.subsumes(settings, usage.getCode(), use) && context.subsumes(settings, (Coding) usage.getValue(), value);
   }
   
 
   protected boolean isKnownUsage(UsageContext usage) {
-    for (UsageContext t : usageContexts) {
+    for (UsageContext t : settings.getUsageContexts()) {
       if (usagesMatch(usage, t)) {
         return true;
       }
@@ -1707,6 +1648,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     } else {
       return (InstanceValidator) parent;
     }
+  }
+
+  public ValidatorSettings getSettings() {
+    return settings;
   }
 
 }

@@ -454,7 +454,7 @@ public class ExtensionConstants {
   public static final String EXT_SDAPPLICABLE_VERSION = "http://hl7.org/fhir/StructureDefinition/structuredefinition-applicable-version"; // StructureDefinition Applicable Version
   public static final String EXT_SDCATEGORY = "http://hl7.org/fhir/StructureDefinition/structuredefinition-category"; // StructureDefinition Category
   public static final String EXT_SDCODEGEN_SUPER = "http://hl7.org/fhir/StructureDefinition/structuredefinition-codegen-super"; // StructureDefinition Codegen Super
-  public static final String EXT_SDCOMPLIES_WITH_PROFILE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-compliesWithProfile"; // StructureDefinition Compiles With Profile
+  public static final String EXT_SDCOMPLIES_WITH_PROFILE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-compliesWithProfile"; // StructureDefinition Complies With Profile
   public static final String EXT_SDSTATUS_DERIVATION = "http://hl7.org/fhir/StructureDefinition/structuredefinition-conformance-derivedFrom"; // StructureDefinition Status Derivation
   public static final String EXT_SDDISPLAY_HINT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-display-hint"; // StructureDefinition Display Hint
   public static final String EXT_SDEXPLICIT_TYPE_NAME = "http://hl7.org/fhir/StructureDefinition/structuredefinition-explicit-type-name"; // StructureDefinition Explicit Type Name

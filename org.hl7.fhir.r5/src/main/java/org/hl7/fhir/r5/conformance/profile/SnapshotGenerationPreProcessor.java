@@ -310,7 +310,8 @@ public class SnapshotGenerationPreProcessor {
 
   private int findEndOfSlice(List<ElementDefinition> elements, ElementDefinition slice) {
     for (int i = elements.indexOf(slice); i < elements.size(); i++) {
-      if (elements.get(i).getPath().length() < slice.getPath().length()) {
+      ElementDefinition e = elements.get(i);
+      if (e.getPath().length() < slice.getPath().length() || (e.getPath().equals(slice.getPath()) && !slice.getSliceName().equals(e.getSliceName()))) {
         return i-1;
       }
     }
