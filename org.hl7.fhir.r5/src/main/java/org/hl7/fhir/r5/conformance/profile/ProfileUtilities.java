@@ -1003,6 +1003,10 @@ public class ProfileUtilities {
           i++;
         }
       } catch (Exception e) {
+        System.out.println("Exception generating snapshot for "+derived.getVersionedUrl()+": " +e.getMessage());
+        if (debug) {
+          e.printStackTrace();
+        }
         // if we had an exception generating the snapshot, make sure we don't leave any half generated snapshot behind
         derived.setSnapshot(null);
         derived.setGeneratingSnapshot(false);

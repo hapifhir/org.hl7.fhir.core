@@ -287,6 +287,7 @@ public class ToolingExtensions {
   public static final String EXT_VERSION_BASE = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-base-version";
   public static final String EXT_LOAD_AS_RESOURCE = "http://hl7.org/fhir/tools/StructureDefinition/ig-load-as-resource";
   public static final String EXT_USE_AS_RESOURCE_ID = "http://hl7.org/fhir/tools/StructureDefinition/ig-use-as-resource-id";
+  public static final String EXT_PROPERTY_VALUESET = "http://hl7.org/fhir/StructureDefinition/codesystem-property-valueset";
   
   // specific extension helpers
 

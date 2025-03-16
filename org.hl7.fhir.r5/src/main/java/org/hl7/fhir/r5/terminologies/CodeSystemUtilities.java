@@ -598,7 +598,6 @@ public class CodeSystemUtilities extends TerminologyUtilities {
             System.out.println("Code System "+cs.getUrl()+": ownership clash "+pckage+" vs "+cs.getUserString(UserDataNames.kindling_ballot_package));
       }
       if (status == StandardsStatus.NORMATIVE) {
-        cs.setExperimental(false);
         cs.setStatus(PublicationStatus.ACTIVE);
       }
     }
@@ -606,9 +605,6 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       String sfmm = ToolingExtensions.readStringExtension(cs, ToolingExtensions.EXT_FMM_LEVEL);
       if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm)) { 
         ToolingExtensions.setIntegerExtension(cs, ToolingExtensions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
-      }
-      if (Integer.parseInt(fmm) <= 1) {
-        cs.setExperimental(true);
       }
     }
   }
