@@ -53,15 +53,15 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
 
     public enum CDSActionTypeCodesVS {
         /**
-         * 
+         * Create this resource
          */
         CREATE, 
         /**
-         * 
+         * Update this resource
          */
         UPDATE, 
         /**
-         * 
+         * Delete this resource
          */
         DELETE, 
         /**
@@ -102,9 +102,9 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         }
         public String getDefinition() {
           switch (this) {
-            case CREATE: return "";
-            case UPDATE: return "";
-            case DELETE: return "";
+            case CREATE: return "Create this resource";
+            case UPDATE: return "Update this resource";
+            case DELETE: return "Delete this resource";
             case NULL: return null;
             default: return "?";
           }
@@ -165,15 +165,15 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
 
     public enum CDSIndicatorCodesVS {
         /**
-         * 
+         * An information message
          */
         INFO, 
         /**
-         * 
+         * A warning message
          */
         WARNING, 
         /**
-         * 
+         * An error message
          */
         ERROR, 
         /**
@@ -214,9 +214,9 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         }
         public String getDefinition() {
           switch (this) {
-            case INFO: return "";
-            case WARNING: return "";
-            case ERROR: return "";
+            case INFO: return "An information message";
+            case WARNING: return "A warning message";
+            case ERROR: return "An error message";
             case NULL: return null;
             default: return "?";
           }
