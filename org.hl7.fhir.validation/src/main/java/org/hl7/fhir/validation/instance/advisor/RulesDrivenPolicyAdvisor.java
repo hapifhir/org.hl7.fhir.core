@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -19,6 +20,7 @@ import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPo
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
+@Slf4j
 public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation {
 
   private IValidationPolicyAdvisor base;
@@ -116,10 +118,12 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
   private int suppressed = 0;
 
   protected void addSuppressMessageRule(@Nonnull String id, String path, boolean regex) {
+    log.debug("SuppressingRule was added for: " + id + " at path " + path + " as regex?: " + regex);
     suppressMessageRules.add(new SuppressMessageRule(id, path, regex));
   }
   
   protected void addSuppressMessageRule(@Nonnull String id) {
+    log.debug("SuppressingRule was added for: " + id);
     suppressMessageRules.add(new SuppressMessageRule(id));
   }
   
@@ -128,6 +132,7 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
     String[] p = path.split("\\.");
     for (SuppressMessageRule rule : suppressMessageRules) {
       if (rule.matches(messageId, path, p)) {
+        log.debug("Suppressed: " + messageId + " at path " + path + " with rule-path: " + rule.path);
         return true;
       }
     }
