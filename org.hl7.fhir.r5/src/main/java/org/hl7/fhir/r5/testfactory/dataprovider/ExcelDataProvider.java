@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public class ExcelDataProvider extends TableDataProvider {
   private int currentRowIndex = -1;
   private Map<String, Integer> columnIndexMap = new HashMap<>();
   private Row currentRow;
-  private DataFormatter df = new DataFormatter();
+  private DataFormatter df;
   private int startRow = 0;
   private int startCol = 0;
   private int endRow = -1;
@@ -40,13 +41,14 @@ public class ExcelDataProvider extends TableDataProvider {
    * @throws IOException If an I/O error occurs.
    * @throws InvalidFormatException If the file format is invalid.
    */
-  public ExcelDataProvider(String filename, String sheetName, String range) throws IOException, InvalidFormatException {
+  public ExcelDataProvider(String filename, String sheetName, String range, Locale locale) throws IOException, InvalidFormatException {
     FileInputStream fis = new FileInputStream(ManagedFileAccess.file(filename));
     this.workbook = WorkbookFactory.create(fis);
     if (sheetName != null) {
       this.sheet = workbook.getSheet(sheetName);
     }
 
+    df = new DataFormatter(locale);
     if (sheet == null) {
       List<String> names = new ArrayList<String>();
       for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
