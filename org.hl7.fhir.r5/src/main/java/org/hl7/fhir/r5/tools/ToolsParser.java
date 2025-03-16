@@ -34,14 +34,36 @@ package org.hl7.fhir.r5.tools;
 
 
 
-public class Constants {
+import org.hl7.fhir.r5.formats.JsonCreator;
+import org.hl7.fhir.r5.formats.JsonParserBase;
+import org.hl7.fhir.r5.formats.ParserBase.IParserFactory;
+import org.hl7.fhir.r5.formats.XmlParserBase;
+import org.hl7.fhir.utilities.xml.IXMLWriter;
 
-  public final static String LOCAL_REF_REGEX = "()\\\\/[A-Za-z0-9\\\\-\\\\.]{1,64}";
-  public final static String NS_SYSTEM_TYPE = "http://hl7.org/fhirpath/System.";
+public class ToolsParser {
 
-  public final static String VERSION = "current";
-  public final static String VERSION_BASE = "current";
-  public final static String VERSION_MM = "current";
-  public final static String DATE = "Sun, Mar 16, 2025 20:04+1100";
-  public final static String URI_REGEX = "((http|https):\\/\\/([A-Za-z0-9\\\\\\.\\:\\%\\$\\-]*\\/)*?)?()\\/[A-Za-z0-9\\-\\.]{1,64}(\\/_history\\/[A-Za-z0-9\\-\\.]{1,64})?";
+  public static void register() {    
+    org.hl7.fhir.r5.formats.JsonParser.getCustomResourceHandlers().put("TestCases", new ToolsJsonParserFactory());
+
+  }
+
+  public static class ToolsJsonParserFactory implements IParserFactory {
+    @Override
+    public JsonParserBase composerJson(JsonCreator json) {
+      return new ToolsJsonParser(json);
+    }
+    @Override
+    public JsonParserBase parserJson(boolean allowUnknownContent, boolean allowComments) {
+      return new ToolsJsonParser(allowUnknownContent, allowComments);
+    }
+    @Override
+    public XmlParserBase composerXml(IXMLWriter xml) {
+      return new ToolsXmlParser(xml);
+    }
+    @Override
+    public XmlParserBase parserXml(boolean allowUnknownContent) {
+      return new ToolsXmlParser(allowUnknownContent);
+    }
+  }
+  
 }
