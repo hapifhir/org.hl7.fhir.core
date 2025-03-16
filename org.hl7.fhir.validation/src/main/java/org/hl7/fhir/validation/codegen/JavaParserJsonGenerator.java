@@ -427,13 +427,14 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     composer.append("  protected void compose"+tn+"(String name, "+stn+" element) throws IOException {\r\n");
     composer.append("    if (element != null) {\r\n");
     boolean isResource = ti == analysis.getRootType() && analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE;
-    composer.append("      open(name);\r\n");
     if (ti.getAncestorName().equals("Resource")) {
       composer.append("      prop(\"resourceType\", \""+analysis.getName()+"\");\r\n");
+    } else {
+      composer.append("      open(name);\r\n");      
     }
 
     composer.append("      compose"+upFirst(tn).replace(".", "")+"Properties(element);\r\n");
-    if (!isResource) {
+    if (!ti.getAncestorName().equals("Resource")) {
       composer.append("      close();\r\n");
     }
     composer.append("    }\r\n");

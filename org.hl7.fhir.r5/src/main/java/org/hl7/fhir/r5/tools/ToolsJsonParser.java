@@ -1199,10 +1199,8 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
 
   protected void composeTestCases(String name, TestCases element) throws IOException {
     if (element != null) {
-      open(name);
       prop("resourceType", "TestCases");
       composeTestCasesProperties(element);
-      close();
     }
   }
 
