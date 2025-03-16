@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -207,8 +208,9 @@ public class TestDataFactory {
   private String name;
   private boolean testing;
   private Map<String, String> profileMap;
+  private Locale locale;
   
-  public TestDataFactory(IWorkerContext context, JsonObject details, LiquidEngine liquid, FHIRPathEngine fpe, String canonical, String rootFolder, String logFolder, Map<String, String> profileMap) throws IOException {
+  public TestDataFactory(IWorkerContext context, JsonObject details, LiquidEngine liquid, FHIRPathEngine fpe, String canonical, String rootFolder, String logFolder, Map<String, String> profileMap, Locale locale) throws IOException {
     super();
     this.context = context;
     this.rootFolder = rootFolder;
@@ -217,6 +219,7 @@ public class TestDataFactory {
     this.liquid = liquid;
     this.fpe = fpe;
     this.profileMap = profileMap;
+    this.locale = locale;
 
     this.name = details.asString("name");
     if (Utilities.noString(name)) {
@@ -372,7 +375,7 @@ public class TestDataFactory {
 
   private TableDataProvider loadTable(String path) throws IOException, InvalidFormatException {
     log("Load Data From "+path);
-    return loadTableProvider(path);
+    return loadTableProvider(path, locale);
   }
 
   private void error(String msg) throws IOException {
@@ -468,7 +471,7 @@ public class TestDataFactory {
 
   private DataTable loadData(String path) throws FHIRException, IOException, InvalidFormatException {
     log("Load Data From "+path);
-    TableDataProvider tbl = loadTableProvider(path);
+    TableDataProvider tbl = loadTableProvider(path, locale);
 
     DataTable dt = new DataTable();
     for (String n : tbl.columns()) {
@@ -491,7 +494,7 @@ public class TestDataFactory {
     return dt;
   }
 
-  public TableDataProvider loadTableProvider(String path) {
+  public TableDataProvider loadTableProvider(String path, Locale locale) {
     TableDataProvider tbl;
     if (Utilities.isAbsoluteUrl(path)) {
       ValueSet vs = context.findTxResource(ValueSet.class, path);
@@ -506,7 +509,7 @@ public class TestDataFactory {
         }
       }
     } else {
-      tbl = TableDataProvider.forFile(path);
+      tbl = TableDataProvider.forFile(path, locale);
     }
     return tbl;
   }

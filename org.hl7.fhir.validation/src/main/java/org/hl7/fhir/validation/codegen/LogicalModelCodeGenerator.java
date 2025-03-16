@@ -110,8 +110,10 @@ public class LogicalModelCodeGenerator {
     egen.close();
     
     JavaFactoryGenerator fgen = new JavaFactoryGenerator(ManagedFileAccess.outStream(Utilities.path(folder, "TypeFactory.java")), master, config, date, npm.version(), packageName);
-    JavaParserJsonGenerator jgen = new JavaParserJsonGenerator(ManagedFileAccess.outStream(Utilities.path(folder,  "JsonParser.java")), master, config, date, npm.version(), packageName);
-    JavaParserXmlGenerator xgen = new JavaParserXmlGenerator(ManagedFileAccess.outStream(Utilities.path(folder, "XmlParser.java")), master, config, date, npm.version(), packageName);
+    String jname = Utilities.capitalize(tail(packageName));
+    JavaParserGenerator pgen = new JavaParserGenerator(ManagedFileAccess.outStream(Utilities.path(folder,  jname+"Parser.java")), master, config, date, npm.version(), packageName, jname);
+    JavaParserJsonGenerator jgen = new JavaParserJsonGenerator(ManagedFileAccess.outStream(Utilities.path(folder,  jname+"JsonParser.java")), master, config, date, npm.version(), packageName, jname);
+    JavaParserXmlGenerator xgen = new JavaParserXmlGenerator(ManagedFileAccess.outStream(Utilities.path(folder, jname+"XmlParser.java")), master, config, date, npm.version(), packageName, jname);
 
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
@@ -122,48 +124,51 @@ public class LogicalModelCodeGenerator {
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && sd.getAbstract()) {
-          genClassList.add(genClass(version, folder, date, config, packageName, npm, master, jgen, xgen, sd, elementInfo, context));
+          genClassList.add(genClass(version, folder, date, config, packageName, npm, master, pgen, jgen, xgen, sd, elementInfo, context));
         }
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && !sd.getAbstract()) {
-          genClassList.add(genClass(version, folder, date, config, packageName, npm, master, jgen, xgen, sd, elementInfo, context));
+          genClassList.add(genClass(version, folder, date, config, packageName, npm, master, pgen, jgen, xgen, sd, elementInfo, context));
         }
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.RESOURCE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && sd.getAbstract()) {
-          genClassList.add(genClass(version, folder, date, config, packageName, npm, master, jgen, xgen, sd, elementInfo, context));
+          genClassList.add(genClass(version, folder, date, config, packageName, npm, master, pgen, jgen, xgen, sd, elementInfo, context));
         }
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.RESOURCE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && !sd.getAbstract()) {
-          genClassList.add(genClass(version, folder, date, config, packageName, npm, master, jgen, xgen, sd, elementInfo, context));
+          genClassList.add(genClass(version, folder, date, config, packageName, npm, master, pgen, jgen, xgen, sd, elementInfo, context));
         }
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.LOGICAL) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && sd.getAbstract()) {
-          genClassList.add(genClass(version, folder, date, config, packageName, npm, master, jgen, xgen, sd, elementInfo, context));
+          genClassList.add(genClass(version, folder, date, config, packageName, npm, master, pgen, jgen, xgen, sd, elementInfo, context));
         }
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.LOGICAL) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && !sd.getAbstract()) {
-          genClassList.add(genClass(version, folder, date, config, packageName, npm, master, jgen, xgen, sd, elementInfo, context));
+          genClassList.add(genClass(version, folder, date, config, packageName, npm, master, pgen, jgen, xgen, sd, elementInfo, context));
         }
       }
     }
     System.out.println(" .. Factory");
     fgen.generate();
     fgen.close();
+    System.out.println(" .. Parser");
+    pgen.generate();
+    pgen.close();
     System.out.println(" .. JsonParser");
     jgen.generate();
     jgen.close();
@@ -181,6 +186,10 @@ public class LogicalModelCodeGenerator {
     exgen.generate(extensions);
     System.out.println("Done ("+Long.toString(System.currentTimeMillis()-start)+"ms)");   
     
+  }
+
+  private String tail(String packageName) {
+    return packageName.substring(packageName.lastIndexOf(".")+1);
   }
 
   private Definitions load(Definitions res, NpmPackage npm, IContextResourceLoader loader) throws IOException {    
@@ -260,6 +269,8 @@ public class LogicalModelCodeGenerator {
 
 
   public String genClass(String version, String dest, String date, Configuration config, String jid, NpmPackage npm, Definitions master,
+
+      JavaParserGenerator pgen, 
       JavaParserJsonGenerator jgen, JavaParserXmlGenerator xgen, StructureDefinition sd, Map<String, AnalysisElementInfo> elementInfo, IWorkerContext context)
       throws Exception, IOException, UnsupportedEncodingException, FileNotFoundException {
     String name = javaName(sd.getName());
@@ -274,6 +285,7 @@ public class LogicalModelCodeGenerator {
     gen.close();
     jgen.seeClass(analysis);
     xgen.seeClass(analysis);
+    pgen.seeClass(analysis);
     return name;
   }
 

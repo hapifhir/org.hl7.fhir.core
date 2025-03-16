@@ -1186,17 +1186,17 @@ public class TestCases extends Resource implements ICompositeType {
         protected List<TestCasesSuiteTestParameterComponent> parameter;
 
         /**
-         * The resources used when executing this test. How exactly they are used depends on the definition of the runner
+         * The resources used when executing this test. How exactly they are used depends on the definition of the runner.
          */
         @Child(name = "input", type = {TestCasesSuiteSetupComponent.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Resources used when executing this test", formalDefinition="The resources used when executing this test. How exactly they are used depends on the definition of the runner" )
+        @Description(shortDefinition="Resources used when executing this test (per runner definition)", formalDefinition="The resources used when executing this test. How exactly they are used depends on the definition of the runner." )
         protected List<TestCasesSuiteSetupComponent> input;
 
         /**
-         * Resources expected as output from this test. Often, but not always, these resource is a Matchetype resources. How exactly it is used depends on the definition of the runner
+         * Resources expected as output from this test. Often, but not always, these resources are Matchetype resources. How exactly it is used depends on the definition of the runner
          */
         @Child(name = "output", type = {TestCasesSuiteSetupComponent.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Resources expected as output from this test (often Matchetypes)", formalDefinition="Resources expected as output from this test. Often, but not always, these resource is a Matchetype resources. How exactly it is used depends on the definition of the runner" )
+        @Description(shortDefinition="Resources expected as output from this test (per runner definition, often Matchetypes)", formalDefinition="Resources expected as output from this test. Often, but not always, these resources are Matchetype resources. How exactly it is used depends on the definition of the runner" )
         protected List<TestCasesSuiteSetupComponent> output;
 
         private static final long serialVersionUID = 1590648880L;
@@ -1462,7 +1462,7 @@ public class TestCases extends Resource implements ICompositeType {
         }
 
         /**
-         * @return {@link #input} (The resources used when executing this test. How exactly they are used depends on the definition of the runner)
+         * @return {@link #input} (The resources used when executing this test. How exactly they are used depends on the definition of the runner.)
          */
         public List<TestCasesSuiteSetupComponent> getInput() { 
           if (this.input == null)
@@ -1515,7 +1515,7 @@ public class TestCases extends Resource implements ICompositeType {
         }
 
         /**
-         * @return {@link #output} (Resources expected as output from this test. Often, but not always, these resource is a Matchetype resources. How exactly it is used depends on the definition of the runner)
+         * @return {@link #output} (Resources expected as output from this test. Often, but not always, these resources are Matchetype resources. How exactly it is used depends on the definition of the runner)
          */
         public List<TestCasesSuiteSetupComponent> getOutput() { 
           if (this.output == null)
@@ -1574,8 +1574,8 @@ public class TestCases extends Resource implements ICompositeType {
           children.add(new Property("operation", "code", "A code that identifies the operation executed for this test. One of the codes defined in the definition of the runner", 0, 1, operation));
           children.add(new Property("mode", "string", "If this mode is not passed to the runner, then this test will not be run", 0, 1, mode));
           children.add(new Property("parameter", "Base", "A parameter passed to the runner when executing this test. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, parameter));
-          children.add(new Property("input", "http://hl7.org/fhir/uv/application-feature/StructureDefinition/TestCases@TestCases.suite.setup", "The resources used when executing this test. How exactly they are used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, input));
-          children.add(new Property("output", "http://hl7.org/fhir/uv/application-feature/StructureDefinition/TestCases@TestCases.suite.setup", "Resources expected as output from this test. Often, but not always, these resource is a Matchetype resources. How exactly it is used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, output));
+          children.add(new Property("input", "http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.setup", "The resources used when executing this test. How exactly they are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, input));
+          children.add(new Property("output", "http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.setup", "Resources expected as output from this test. Often, but not always, these resources are Matchetype resources. How exactly it is used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, output));
         }
 
         @Override
@@ -1586,8 +1586,8 @@ public class TestCases extends Resource implements ICompositeType {
           case 1662702951: /*operation*/  return new Property("operation", "code", "A code that identifies the operation executed for this test. One of the codes defined in the definition of the runner", 0, 1, operation);
           case 3357091: /*mode*/  return new Property("mode", "string", "If this mode is not passed to the runner, then this test will not be run", 0, 1, mode);
           case 1954460585: /*parameter*/  return new Property("parameter", "Base", "A parameter passed to the runner when executing this test. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, parameter);
-          case 100358090: /*input*/  return new Property("input", "http://hl7.org/fhir/uv/application-feature/StructureDefinition/TestCases@TestCases.suite.setup", "The resources used when executing this test. How exactly they are used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, input);
-          case -1005512447: /*output*/  return new Property("output", "http://hl7.org/fhir/uv/application-feature/StructureDefinition/TestCases@TestCases.suite.setup", "Resources expected as output from this test. Often, but not always, these resource is a Matchetype resources. How exactly it is used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, output);
+          case 100358090: /*input*/  return new Property("input", "http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.setup", "The resources used when executing this test. How exactly they are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, input);
+          case -1005512447: /*output*/  return new Property("output", "http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.setup", "Resources expected as output from this test. Often, but not always, these resources are Matchetype resources. How exactly it is used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, output);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1681,8 +1681,8 @@ public class TestCases extends Resource implements ICompositeType {
         case 1662702951: /*operation*/ return new String[] {"code"};
         case 3357091: /*mode*/ return new String[] {"string"};
         case 1954460585: /*parameter*/ return new String[] {"Base"};
-        case 100358090: /*input*/ return new String[] {"http://hl7.org/fhir/uv/application-feature/StructureDefinition/TestCases@TestCases.suite.setup"};
-        case -1005512447: /*output*/ return new String[] {"http://hl7.org/fhir/uv/application-feature/StructureDefinition/TestCases@TestCases.suite.setup"};
+        case 100358090: /*input*/ return new String[] {"http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.setup"};
+        case -1005512447: /*output*/ return new String[] {"http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.setup"};
         default: return super.getTypesForProperty(hash, name);
         }
 

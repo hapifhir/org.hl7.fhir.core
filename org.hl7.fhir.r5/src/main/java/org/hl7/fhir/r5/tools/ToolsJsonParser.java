@@ -34,31 +34,43 @@ package org.hl7.fhir.r5.tools;
 
 
 
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.formats.*;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.exceptions.FHIRFormatError;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import java.io.IOException;
-import java.util.Enumeration;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 
-public class JsonParser extends org.hl7.fhir.r5.formats.JsonParser {
+import org.hl7.fhir.r5.formats.JsonCreator;
+import org.hl7.fhir.r5.formats.JsonParserBase;
+import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.utilities.Utilities;
 
-  public JsonParser() {
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
+ 
+  public ToolsJsonParser(JsonCreator json) {
     super();
+    this.json = json;
   }
 
-  public JsonParser(boolean allowUnknownContent) {
-    super();
-    setAllowUnknownContent(allowUnknownContent);
-  }
-
-  public JsonParser(boolean allowUnknownContent, boolean allowComments) {
+  public ToolsJsonParser(boolean allowUnknownContent, boolean allowComments) {
     super();
     setAllowUnknownContent(allowUnknownContent);
     setAllowComments(allowComments);
+  }
+
+  public Resource parseResource(JsonObject json) throws IOException, FHIRFormatError {
+    if (!json.has("resourceType")) {
+      throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
+    }
+    String t = json.get("resourceType").getAsString();
+    if (Utilities.noString(t)) {
+      throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
+    } else if (t.equals("TestCases")) {
+      return parseTestCases(json);
+
+    } else {
+      throw new FHIRFormatError("Unknown/Unrecognised resource type '"+t+"' (in property 'resourceType')");
+    }
   }
 
   protected void parseCDSHookContextProperties(JsonObject json, CDSHookContext res) throws IOException, FHIRFormatError {
@@ -694,18 +706,6 @@ public class JsonParser extends org.hl7.fhir.r5.formats.JsonParser {
 
 
   
-  protected Base parseContent(JsonObject json) throws IOException, FHIRFormatError {
-    if (!json.has("resourceType")) {
-      throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
-    }
-    String t = json.get("resourceType").getAsString();
-    if (Utilities.noString(t)) {
-      throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
-
-    } else {
-      throw new FHIRFormatError("Unknown.Unrecognised resource type '"+t+"' (in property 'resourceType')");
-    }
-  }
 
 // -- compose ---------------------------------------------------------------------------------------------------------------------
 
@@ -1200,6 +1200,7 @@ public class JsonParser extends org.hl7.fhir.r5.formats.JsonParser {
   protected void composeTestCases(String name, TestCases element) throws IOException {
     if (element != null) {
       open(name);
+      prop("resourceType", "TestCases");
       composeTestCasesProperties(element);
       close();
     }
@@ -1397,9 +1398,12 @@ public class JsonParser extends org.hl7.fhir.r5.formats.JsonParser {
 
 
 
-  protected void composeContent(Base resource) throws IOException {
+  @Override
+  protected void composeResource(Resource resource) throws IOException {
     if (resource == null) {
       throw new Error("Unhandled resource type "+resource.getClass().getName());
+    } else if (resource instanceof TestCases) {
+      composeTestCases("TestCases", (TestCases)resource);
  
     } else
       throw new Error("Unhandled resource type "+resource.getClass().getName());
