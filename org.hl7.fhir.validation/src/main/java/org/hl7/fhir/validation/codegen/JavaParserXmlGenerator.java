@@ -57,9 +57,11 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
   private StringBuilder cRN = new StringBuilder();
   private StringBuilder cType = new StringBuilder();
   private List<TypeSpecifier> typeSpecifiers  = new ArrayList<>();
+  private String jname;
 
-  public JavaParserXmlGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String packageName) throws UnsupportedEncodingException {
+  public JavaParserXmlGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String packageName, String jname) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, packageName);
+    this.jname = jname;
   }
 
   public void seeClass(Analysis analysis) throws Exception {
@@ -88,6 +90,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
 
+    template = template.replace("{{jname}}", jname);
     template = template.replace("{{parser}}", parser.toString());
     template = template.replace("{{parse-resource}}", pRes.toString());
     template = template.replace("{{parse-type-prefix}}", pTP.toString());
@@ -106,6 +109,13 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
   }
   
   private void generateParser(Analysis analysis) throws Exception {
+
+    if (analysis.getAncestor().getName().equals("Resource")) {
+      pRes.append("    } else if (xpp.getName().equals(\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getClassName()+"(xpp);\r\n");
+      cRes.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+analysis.getName()+"\", ("+analysis.getClassName()+")resource);\r\n");
+      cRN.append( "    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(name, ("+analysis.getClassName()+")resource);\r\n");
+    }
+    
     if (analysis.isAbstract()) {
       genInnerAbstract(analysis, analysis.getRootType());
     } else {
