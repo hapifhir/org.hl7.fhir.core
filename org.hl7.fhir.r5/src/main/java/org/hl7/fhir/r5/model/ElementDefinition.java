@@ -13107,6 +13107,9 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
   }
 
   public boolean unbounded() {
+    if (getMax() == null) {
+      throw new Error("No max on "+getPath());
+    }
     return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
   }
 
