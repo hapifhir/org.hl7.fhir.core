@@ -37,21 +37,23 @@ package org.hl7.fhir.r5.tools;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.formats.*;
 import org.xmlpull.v1.*;
+import org.hl7.fhir.utilities.xml.IXMLWriter;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.FHIRException;
 import java.io.IOException;
 import java.util.Enumeration;
 
-public class XmlParser extends org.hl7.fhir.r5.formats.XmlParser {
+public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
 
-  public XmlParser() {
-    super();
-  }
-
-  public XmlParser(boolean allowUnknownContent) {
+  public ToolsXmlParser(boolean allowUnknownContent) {
     super();
     setAllowUnknownContent(allowUnknownContent);
+  }
+
+  public ToolsXmlParser(IXMLWriter xml) {
+    super();
+    this.xml = xml;
   }
 
   protected boolean parseCDSHookContextContent(int eventType, XmlPullParser xpp, CDSHookContext res) throws XmlPullParserException, IOException, FHIRFormatError {
@@ -732,6 +734,8 @@ public class XmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   protected Resource parseResource(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     if (xpp == null) {
       throw new IOException("xpp == null!");
+    } else if (xpp.getName().equals("TestCases")) {
+      return parseTestCases(xpp);
 
     } else {
       throw new FHIRFormatError("Unknown resource type "+xpp.getName()+"");
@@ -1585,6 +1589,8 @@ public class XmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   protected void composeResource(Resource resource) throws IOException {
     if (resource == null) {
       throw new IOException("resource == null");
+    } else if (resource instanceof TestCases) {
+      composeTestCases("TestCases", (TestCases)resource);
       
     } else {
       throw new Error("Unhandled resource type "+resource.getClass().getName());
@@ -1596,6 +1602,8 @@ public class XmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       throw new IOException("name == null");
     } else if (resource == null) {
       throw new IOException("resource == null");
+    } else if (resource instanceof TestCases) {
+      composeTestCases(name, (TestCases)resource);
       
     } else {
       throw new Error("Unhandled resource type "+resource.getClass().getName());
