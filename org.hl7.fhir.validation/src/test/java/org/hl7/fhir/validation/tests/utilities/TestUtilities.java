@@ -3,9 +3,9 @@ package org.hl7.fhir.validation.tests.utilities;
 import java.nio.file.Paths;
 import java.util.Locale;
 
+import org.hl7.fhir.r5.Constants;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.tools.Constants;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.tests.TestConfig;

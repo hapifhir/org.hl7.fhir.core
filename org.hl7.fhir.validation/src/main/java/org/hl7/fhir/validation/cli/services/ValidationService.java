@@ -59,7 +59,7 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.InternalLog
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.testfactory.TestDataFactory;
 import org.hl7.fhir.r5.testfactory.TestDataHostServices;
-import org.hl7.fhir.r5.tools.Constants;
+import org.hl7.fhir.r5.Constants;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.SystemExitManager;
@@ -963,7 +963,7 @@ public class ValidationService {
                   
       JsonObject json = JsonParser.parseObjectFromFile(cliContext.getSource());
       for (JsonObject fact : json.forceArray("factories").asJsonObjects()) {
-        TestDataFactory tdf = new TestDataFactory(validationEngine.getContext(), fact, liquid, fpe, "http://hl7.org/fhir/test", path, log, new HashMap<>());
+        TestDataFactory tdf = new TestDataFactory(validationEngine.getContext(), fact, liquid, fpe, "http://hl7.org/fhir/test", path, log, new HashMap<>(), new Locale("us"));
         tdf.setTesting(true); // no randomness
         System.out.println("Execute Test Data Factory '"+tdf.getName()+"'. Log in "+Utilities.path(log, tdf.statedLog()));
         tdf.execute();
