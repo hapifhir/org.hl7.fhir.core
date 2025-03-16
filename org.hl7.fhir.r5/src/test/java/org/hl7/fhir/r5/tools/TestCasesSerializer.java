@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.primitives.Bytes;
 
-class TeestCasesSerializer {
+class TestCasesSerializer {
 
   @Test
   void testJson() throws IOException {
