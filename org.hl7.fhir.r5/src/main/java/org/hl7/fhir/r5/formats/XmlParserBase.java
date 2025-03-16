@@ -213,7 +213,24 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	}
 
 
+  protected boolean composeCustomResource(Resource resource) throws IOException {
+    if (customResourceHandlers.containsKey(resource.fhirType())) {
+      customResourceHandlers.get(resource.fhirType()).composerXml(xml).composeResource(resource);
+      return true;
+    } else {
+      return false;
+    }
+  }
 
+  protected Resource parseCustomResource(XmlPullParser xpp) throws FHIRFormatError, IOException, XmlPullParserException {
+    if (customResourceHandlers.containsKey(xpp.getName())) {
+    return customResourceHandlers.get(xpp.getName()).parserXml(allowUnknownContent).parse(xpp);
+  } else {
+    return null;
+  }
+  }
+
+  
 	/* -- xml routines --------------------------------------------------- */
 
 	protected XmlPullParser loadXml(String source) throws UnsupportedEncodingException, XmlPullParserException, IOException {

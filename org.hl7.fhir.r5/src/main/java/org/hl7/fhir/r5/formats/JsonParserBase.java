@@ -84,6 +84,7 @@ import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
+import org.hl7.fhir.utilities.xml.IXMLWriter;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -98,13 +99,6 @@ import com.google.gson.JsonSyntaxException;
  */
 public abstract class JsonParserBase extends ParserBase implements IParser {
 
-  public interface IJsonParserFactory {
-    public JsonParserBase composer(JsonCreator json);
-    public JsonParserBase parser(boolean allowUnknownContent, boolean allowComments);
-  }
-
-  protected static Map<String, IJsonParserFactory> customResourceHandlers = new HashMap<>();
-  
   static {
 //    LoggerFactory.getLogger("org.hl7.fhir.r5.formats.JsonParserBase").debug("JSON Parser is being loaded");
     ClassesLoadedFlags.ourJsonParserBaseLoaded = true;
@@ -218,7 +212,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
 
   protected boolean customCompose(Resource resource) throws IOException {
     if (customResourceHandlers.containsKey(resource.fhirType())) {
-      customResourceHandlers.get(resource.fhirType()).composer(json).composeResource(resource);
+      customResourceHandlers.get(resource.fhirType()).composerJson(json).composeResource(resource);
       return true;
     } else {
       return false;
@@ -237,7 +231,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
 
   protected Resource parseCustomResource(String t, JsonObject json) throws FHIRFormatError, IOException {
     if (customResourceHandlers.containsKey(t)) {
-      return customResourceHandlers.get(t).parser(allowComments, allowUnknownContent).parse(json);
+      return customResourceHandlers.get(t).parserJson(allowComments, allowUnknownContent).parse(json);
     } else {
       return null;
     }
