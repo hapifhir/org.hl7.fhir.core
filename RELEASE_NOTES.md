@@ -4,6 +4,7 @@
 * Add message id to some messages for policy advisor framework
 * Update MeasureReport validation for changes in R5
 * produce TestReport from TxTester
+* Add more logging for PolicyAdvisor framework
 
 ## Other code changes
 
