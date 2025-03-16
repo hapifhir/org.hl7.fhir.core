@@ -1,5 +1,12 @@
 package org.hl7.fhir.r5.tools;
 
+import java.io.IOException;
+
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.formats.JsonCreator;
+import org.hl7.fhir.r5.formats.JsonParserBase;
+import org.hl7.fhir.r5.model.Account;
+
 // generated
 
 /*
@@ -31,34 +38,64 @@ package org.hl7.fhir.r5.tools;
   */
 
 // Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
-
-
-
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.formats.*;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.tools.ToolsJsonParser.ToolsJsonParserFactory;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.exceptions.FHIRFormatError;
-import com.google.gson.JsonObject;
+
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import java.io.IOException;
-import java.util.Enumeration;
+import com.google.gson.JsonObject;
 
-public class JsonParser extends org.hl7.fhir.r5.formats.JsonParser {
+public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
+  
+  public static void register() {    
+    org.hl7.fhir.r5.formats.JsonParser.customResourceHandlers.put("TestCases", new ToolsJsonParserFactory());
+  }
 
-  public JsonParser() {
+  public static class ToolsJsonParserFactory implements IJsonParserFactory {
+    @Override
+    public JsonParserBase composer(JsonCreator json) {
+      ToolsJsonParser res = new ToolsJsonParser();
+      res.json = json;
+      return res;
+    }
+    @Override
+    public JsonParserBase parser(boolean allowUnknownContent, boolean allowComments) {
+      ToolsJsonParser res = new ToolsJsonParser(allowUnknownContent, allowComments);
+      return res;
+    }
+  }
+  
+  public ToolsJsonParser() {
     super();
   }
 
-  public JsonParser(boolean allowUnknownContent) {
+  public ToolsJsonParser(boolean allowUnknownContent) {
     super();
     setAllowUnknownContent(allowUnknownContent);
   }
 
-  public JsonParser(boolean allowUnknownContent, boolean allowComments) {
+  public ToolsJsonParser(boolean allowUnknownContent, boolean allowComments) {
     super();
     setAllowUnknownContent(allowUnknownContent);
     setAllowComments(allowComments);
+  }
+  
+  public Resource parseResource(JsonObject json) throws IOException, FHIRFormatError {
+    if (!json.has("resourceType")) {
+      throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
+    }
+    String t = json.get("resourceType").getAsString();
+    if (Utilities.noString(t)) {
+      throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
+    } else if (t.equals("TestCases")) {
+      return parseTestCases(json);
+    } else {
+      throw new FHIRFormatError("Unknown/Unrecognised resource type '"+t+"' (in property 'resourceType')");
+    }
   }
 
   protected void parseCDSHookContextProperties(JsonObject json, CDSHookContext res) throws IOException, FHIRFormatError {
@@ -1200,6 +1237,7 @@ public class JsonParser extends org.hl7.fhir.r5.formats.JsonParser {
   protected void composeTestCases(String name, TestCases element) throws IOException {
     if (element != null) {
       open(name);
+      prop("resourceType", "TestCases");
       composeTestCasesProperties(element);
       close();
     }
@@ -1397,10 +1435,12 @@ public class JsonParser extends org.hl7.fhir.r5.formats.JsonParser {
 
 
 
-  protected void composeContent(Base resource) throws IOException {
+  @Override
+  protected void composeResource(Resource resource) throws IOException {
     if (resource == null) {
       throw new Error("Unhandled resource type "+resource.getClass().getName());
- 
+    } else if (resource instanceof TestCases) {
+      composeTestCases("TestCases", (TestCases)resource);
     } else
       throw new Error("Unhandled resource type "+resource.getClass().getName());
   }

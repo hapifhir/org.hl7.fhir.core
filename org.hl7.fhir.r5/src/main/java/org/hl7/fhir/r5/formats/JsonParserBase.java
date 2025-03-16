@@ -64,7 +64,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IIdType;
@@ -87,7 +89,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import org.slf4j.LoggerFactory;
 
 /**
  * General parser for JSON content. You instantiate an JsonParser of these, but you 
@@ -97,6 +98,13 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class JsonParserBase extends ParserBase implements IParser {
 
+  public interface IJsonParserFactory {
+    public JsonParserBase composer(JsonCreator json);
+    public JsonParserBase parser(boolean allowUnknownContent, boolean allowComments);
+  }
+
+  protected static Map<String, IJsonParserFactory> customResourceHandlers = new HashMap<>();
+  
   static {
 //    LoggerFactory.getLogger("org.hl7.fhir.r5.formats.JsonParserBase").debug("JSON Parser is being loaded");
     ClassesLoadedFlags.ourJsonParserBaseLoaded = true;
@@ -208,6 +216,34 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     osw.flush();
   }
 
+  protected boolean customCompose(Resource resource) throws IOException {
+    if (customResourceHandlers.containsKey(resource.fhirType())) {
+      customResourceHandlers.get(resource.fhirType()).composer(json).composeResource(resource);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  protected boolean customCompose(String name, Resource resource) {
+    if (customResourceHandlers.containsKey(resource.fhirType())) {
+      throw new Error("Not sorted yet");
+      // customResourceHandlers.get(resource.fhirType()).parser().composeResource(name, resource);
+      // return true;
+    } else {
+      return false;
+    }
+  }
+
+  protected Resource parseCustomResource(String t, JsonObject json) throws FHIRFormatError, IOException {
+    if (customResourceHandlers.containsKey(t)) {
+      return customResourceHandlers.get(t).parser(allowComments, allowUnknownContent).parse(json);
+    } else {
+      return null;
+    }
+  }
+
+    
   /**
    * Compose a resource using a pre-existing JsonWriter
    * @throws IOException 
