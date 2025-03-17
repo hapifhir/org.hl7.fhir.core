@@ -5,6 +5,7 @@
 * Update MeasureReport validation for changes in R5
 * produce TestReport from TxTester
 * Add more logging for PolicyAdvisor framework
+* handle version specific references in targets when generating snapshots
 
 ## Other code changes
 
