@@ -3112,6 +3112,9 @@ public class ProfileUtilities {
     if (td.hasTargetProfile(url)) {
       return true;
     }
+    if (url != null && url.contains("|") && td.hasTargetProfile(url.substring(0, url.indexOf("|")))) {
+      return true;
+    }
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
     if (sd == null) {
       addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, "Cannot check whether the target profile " + url + " on "+dPath+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
