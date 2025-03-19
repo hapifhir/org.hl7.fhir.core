@@ -37,9 +37,14 @@ public class DefaultRenderer extends ValidationOutputRenderer {
     for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
       dst.println(getIssueSummary(issue)+renderMessageId(issue));
       ValidationMessage vm = (ValidationMessage) issue.getUserData(UserDataNames.validator_source_msg);
-      if (vm != null && vm.sliceText != null && (crumbTrails || vm.isCriticalSignpost())) {
-        for (String s : vm.sliceText) {
-          dst.println("    slice info: "+s);          
+      if (vm != null && vm.getSliceInfo() != null && (crumbTrails || vm.isCriticalSignpost())) {
+        for (ValidationMessage s : vm.getSliceInfo()) {
+          dst.println("    slice "+s.getLevel().toShortCode()+": "+s.getMessage());          
+          if (s.hasSliceInfo()) {
+            for (ValidationMessage si : s.getSliceInfo()) {
+              dst.println("    - slice "+si.getLevel().toShortCode()+": "+si.getMessage());          
+            }
+          }
         }
       }
     }
