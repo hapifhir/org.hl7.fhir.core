@@ -578,7 +578,8 @@ public class ProfileUtilities {
     List<ElementDefinition> res = new ArrayList<ElementDefinition>();
     List<ElementDefinition> elements = profile.getSnapshot().getElement();
     String path = element.getPath();
-    for (int index = elements.indexOf(element) + 1; index < elements.size(); index++) {
+    int start = findElementIndex(elements, element);
+    for (int index = start + 1; index < elements.size(); index++) {
       ElementDefinition e = elements.get(index);
       if (e.getPath().startsWith(path + ".") || e.getPath().equals(path)) {
         // We want elements with the same path (until we hit an element that doesn't start with the same path)
@@ -590,6 +591,19 @@ public class ProfileUtilities {
     return res;
   }
 
+
+  private int findElementIndex(List<ElementDefinition> elements, ElementDefinition element) {
+    int res = elements.indexOf(element);
+    if (res == -1) {
+      for (int i = 0; i < elements.size(); i++) {
+        Element t  = elements.get(i);
+        if (t.getId().equals(element.getId())) {
+          res = i;
+        }
+      }
+    }
+    return res;
+  }
 
   /**
    * Given a Structure, navigate to the element given by the path and return the direct children of that element
