@@ -61,6 +61,7 @@ public class SnomedCTChecker extends CodeSystemChecker {
     addName(knownNames, "concept");
     addName(knownNames, "constraint");
     addName(knownNames, "expressions");
+    addName(knownNames, "inactive");
     addName(knownNames, "410662002");
     addName(knownNames, "42752001");
     addName(knownNames, "47429007");
@@ -206,6 +207,7 @@ public class SnomedCTChecker extends CodeSystemChecker {
     switch (property) {
     case "constraint": return null; // for now 
     case "expressions": return new PropertyValidationRules(PropertyFilterType.Boolean, null, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
+    case "inactive": return new PropertyValidationRules(PropertyFilterType.Boolean, null, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
     case "concept": return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.IsA, PropertyOperation.IsNotA, PropertyOperation.In, PropertyOperation.DescendentOf, PropertyOperation.DescendentLeaf));
     default:
       return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));

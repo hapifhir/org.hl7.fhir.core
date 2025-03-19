@@ -763,9 +763,89 @@ public class ValueSetExpander extends ValueSetProcessBase {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e instanceof EFhirClientException || e instanceof TerminologyServiceException);
     }
   }
-  
+
   public ValueSetExpansionOutcome expandInternal(ValueSet source, Parameters expParams) throws FHIRException, FileNotFoundException, ETooCostly, IOException, CodeSystemProviderExtension {
-      return doExpand(source, expParams);
+    if (expParams == null)
+      expParams = makeDefaultExpansion();
+    altCodeParams.seeParameters(expParams);
+    altCodeParams.seeValueSet(source);
+    source.checkNoModifiers("ValueSet", "expanding");
+    focus = source.copy();
+    focus.setIdBase(null);
+    focus.setExpansion(new ValueSet.ValueSetExpansionComponent());
+    focus.getExpansion().setTimestampElement(DateTimeType.now());
+    focus.getExpansion().setIdentifier(Factory.createUUID()); 
+    checkCanonical(focus.getExpansion(), focus, focus);
+    for (Extension ext : focus.getCompose().getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinion/valueset-expansion-param")) {
+      processParameter(ext.getExtensionString("name"), ext.getExtensionByUrl("value").getValue());
+    }
+    for (ParametersParameterComponent p : expParams.getParameter()) {
+      processParameter(p.getName(), p.getValue());
+    }
+    for (Extension s : focus.getExtensionsByUrl(ExtensionConstants.EXT_VSSUPPLEMENT)) {
+      requiredSupplements.add(s.getValue().primitiveValue());
+    }
+    if (langs == null && focus.hasLanguage()) {
+      langs = new AcceptLanguageHeader(focus.getLanguage(), true);
+    }
+
+    try {
+      if (source.hasCompose()) {
+        //        ExtensionsUtils.stripExtensions(focus.getCompose()); - disabled 23/05/2023 GDG - why was this ever thought to be a good idea?
+        handleCompose(source.getCompose(), focus.getExpansion(), expParams, source.getUrl(), focus.getExpansion().getExtension(), source);
+      }
+    } catch (EFinished e) {
+      // nothing - we intended to trap this here
+    }
+
+    if (dwc.getCount() > maxExpansionSize && dwc.getOffsetParam() + dwc.getCountParam() == 0) {
+      if (dwc.isNoTotal()) {
+        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));        
+      } else {
+        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_COUNT, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getCount())));
+      }
+    } else if (dwc.isCanBeHierarchy() && ((dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size())) {
+      for (ValueSetExpansionContainsComponent c : dwc.getRoots()) {
+        focus.getExpansion().getContains().add(c);
+      }
+    } else {
+      int i = 0;
+      int cc = 0;
+      for (ValueSetExpansionContainsComponent c : dwc.getCodes()) {
+        c.getContains().clear(); // make sure any hierarchy is wiped
+        if (dwc.getMap().containsKey(key(c)) && (includeAbstract || !c.getAbstract())) { // we may have added abstract codes earlier while we still thought it might be heirarchical, but later we gave up, so now ignore them
+          if (dwc.getOffsetParam() == 0 || i >= dwc.getOffsetParam()) {
+            focus.getExpansion().getContains().add(c);
+            cc++;
+            if (cc == dwc.getCountParam()) {
+              break;
+            }
+          }
+          i++;
+        }
+      }
+    }
+
+    if (dwc.hasOffsetParam()) {
+      focus.getExpansion().setOffset(dwc.getOffsetParam());
+    }
+    if (!dwc.isNoTotal()) {
+      focus.getExpansion().setTotal(dwc.getStatedTotal());
+    }
+    if (!requiredSupplements.isEmpty()) {      
+      return new ValueSetExpansionOutcome(context.formatMessagePlural(requiredSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(requiredSupplements)), TerminologyServiceErrorClass.BUSINESS_RULE, allErrors, false);
+    }
+    if (!expParams.hasParameter("includeDefinition") || !expParams.getParameterBool("includeDefinition")) {
+      focus.setCompose(null);
+      focus.getExtension().clear();
+      focus.setPublisher(null);
+      focus.setDescription(null);
+      focus.setPurpose(null);
+      focus.getContact().clear();
+      focus.setCopyright(null);
+      focus.setText(null);
+    }
+    return new ValueSetExpansionOutcome(focus);
   }
 
   private void processParameter(String name, DataType value) {
