@@ -321,10 +321,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return hint(errors, ruleDate, type, stack.line(), stack.col(), stack.getLiteralPath(),  thePass, msg, theMessageArguments);
   }
 
-  protected boolean slicingHint(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, String[] text) {
+  protected boolean slicingHint(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, List<ValidationMessage> info) {
     if (!thePass && doingHints()) {
       addValidationMessage(errors, ruleDate, type, line, col, path, msg, IssueSeverity.INFORMATION, null)
-           .setMessageId(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_).setSlicingHint(true).setSliceHtml(html, text).setCriticalSignpost(isCritical);
+           .setMessageId(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_).setSlicingHint(true).setSliceHtml(html, info).setCriticalSignpost(isCritical);
     }
     return thePass;
   }
@@ -335,10 +335,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean slicingHint(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, String[] text, List<ValidationMessage> sliceInfo,  String id) {
+  protected boolean slicingHint(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, List<ValidationMessage> info, String id) {
     if (!thePass && doingHints()) {
       addValidationMessage(errors, ruleDate, type, line, col, path, msg, IssueSeverity.INFORMATION, id)
-      .setMessageId(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_).setSlicingHint(true).setSliceHtml(html, text).setCriticalSignpost(isCritical).setSliceInfo(sliceInfo);
+      .setMessageId(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_).setSlicingHint(true).setSliceHtml(html, info).setCriticalSignpost(isCritical);
     }
     return thePass;
   }

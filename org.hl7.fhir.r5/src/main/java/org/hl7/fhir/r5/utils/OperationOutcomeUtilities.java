@@ -166,13 +166,31 @@ public class OperationOutcomeUtilities {
     CodeableConcept c = new CodeableConcept();
     c.setText(message.getMessage());
     issue.setDetails(c);
-    if (message.sliceText != null) {
-      issue.addExtension(ToolingExtensions.EXT_ISSUE_SLICE_INFO, new StringType(CommaSeparatedStringBuilder.join("; ", message.sliceText)));
+    if (message.hasSliceInfo()) {
+      issue.addExtension(ToolingExtensions.EXT_ISSUE_SLICE_INFO, new StringType(errorSummaryForSlicingAsText(message.getSliceInfo())));
     }
     if (message.getServer() != null) {
       issue.addExtension(ToolingExtensions.EXT_ISSUE_SERVER, new UrlType(message.getServer()));
     }
     return issue;
+  }
+
+  private static String errorSummaryForSlicingAsText(List<ValidationMessage> list) {
+    StringBuilder b = new StringBuilder();
+    for (ValidationMessage vm : list) {
+      if (vm.isSlicingHint()) {
+        if (vm.hasSliceInfo()) {
+          for (ValidationMessage s : vm.getSliceInfo()) {
+            b.append(vm.getLocation() + ": " + s);
+          }
+        } else {
+          b.append(vm.getLocation() + ": " + vm.getMessage());
+        }
+      } else if (vm.getLevel() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR || vm.getLevel() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.FATAL) {
+        b.append(vm.getLocation() + ": " + vm.getHtml());
+      }
+    }
+    return b.toString();
   }
 
   public static OperationOutcome createOutcomeSimple(List<ValidationMessage> messages) {
