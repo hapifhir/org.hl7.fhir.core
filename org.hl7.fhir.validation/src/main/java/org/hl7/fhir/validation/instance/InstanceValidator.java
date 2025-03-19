@@ -4417,7 +4417,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 for (StructureDefinition sd : badProfiles.keySet()) {
                   slicingHint(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, false, false, 
                     context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, ref, sd.getVersionedUrl()), 
-                    errorSummaryForSlicingAsHtml(badProfiles.get(sd)), errorSummaryForSlicingAsText(badProfiles.get(sd)));
+                    errorSummaryForSlicingAsHtml(badProfiles.get(sd)), badProfiles.get(sd));
                 }
               } else {
                 ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, profiles.size() == 1,
@@ -4438,7 +4438,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 for (StructureDefinition sd : badProfiles.keySet()) {
                   slicingHint(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, false,
                     false,  context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, ref, sd.getVersionedUrl()),
-                      errorSummaryForSlicingAsHtml(badProfiles.get(sd)), errorSummaryForSlicingAsText(badProfiles.get(sd)));
+                      errorSummaryForSlicingAsHtml(badProfiles.get(sd)), badProfiles.get(sd));
                 }
               } else {
                 warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, false,
@@ -4596,24 +4596,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return false;
   }
   
-  private String[] errorSummaryForSlicingAsText(List<ValidationMessage> list) {
-    List<String> res = new ArrayList<String>();
-    for (ValidationMessage vm : list) {
-      if (vm.isSlicingHint()) {
-        if (vm.sliceText != null) {
-          for (String s : vm.sliceText) {
-            res.add(vm.getLocation() + ": " + s);
-          }
-        } else {
-          res.add(vm.getLocation() + ": " + vm.getMessage());
-        }
-      } else if (vm.getLevel() == IssueSeverity.ERROR || vm.getLevel() == IssueSeverity.FATAL) {
-        res.add(vm.getLocation() + ": " + vm.getHtml());
-      }
-    }
-    return res.toArray(new String[0]);
-  }
-
   private TypeRefComponent getReferenceTypeRef(List<TypeRefComponent> types) {
     for (TypeRefComponent tr : types) {
       if ("Reference".equals(tr.getCode())) {
@@ -5479,7 +5461,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, stack.getLiteralPath(), sdt == null ?  url : sdt.getVersionedUrl()),
           context.formatMessage(I18nConstants.PROFILE__DOES_NOT_MATCH_FOR__BECAUSE_OF_THE_FOLLOWING_PROFILE_ISSUES__,
               url,
-              stack.getLiteralPath(), errorSummaryForSlicingAsHtml(shc.getSliceRecords().get(url))), errorSummaryForSlicingAsText(shc.getSliceRecords().get(url)));
+              stack.getLiteralPath(), errorSummaryForSlicingAsHtml(shc.getSliceRecords().get(url))), shc.getSliceRecords().get(url));
       }
     }
     return pass;
@@ -7209,11 +7191,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           slices = profileUtilities.getSliceList(profile, ed);
         }
         for (ElementInfo ei : children) {
-          if (ei.definition == ed) {
+          if (ei.definition == ed || idsMatch(ei.definition, ed)) {
             count++;
           } else if (slices != null) {
             for (ElementDefinition sed : slices) {
-              if (ei.definition == sed) {
+              if (ei.definition == sed || idsMatch(ei.definition, sed)) {
                 count++;
                 break;
               }
@@ -7245,6 +7227,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return ok;
+  }
+
+  private boolean idsMatch(ElementDefinition ed1, ElementDefinition ed2) {
+    return ed1 != null && ed2 != null && ed1.hasId() && ed2.hasId() && ed1.getId().equals(ed2.getId());
   }
 
   private String getFixedLOINCCode(ElementDefinition ed, StructureDefinition profile) {
@@ -7338,7 +7324,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   context.formatMessage(I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_,
                       profile == null ? "" : "defined in the profile " + profile.getVersionedUrl()),
                   context.formatMessage(I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_, profile == null ? "" : context.formatMessage(I18nConstants.DEFINED_IN_THE_PROFILE) + " "+profile.getVersionedUrl()) + errorSummaryForSlicingAsHtml(ei.sliceInfo),
-                  errorSummaryForSlicingAsText(ei.sliceInfo), ei.sliceInfo, I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_);
+                  ei.sliceInfo, I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_);
             }
           } else if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.CLOSED)) {
             bh.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTSLICE, (profile == null ? "" : "defined in the profile " + profile.getVersionedUrl()), errorSummaryForSlicing(ei.sliceInfo)));
