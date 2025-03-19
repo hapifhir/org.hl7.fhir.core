@@ -738,6 +738,10 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     return level.toString()+" @ "+location+(line>= 0 && col >= 0 ? " (line "+Integer.toString(line)+", col"+Integer.toString(col)+"): " : ": ") +message+showCount() +(server != null ? " (src = "+server+")" : "");
   }
 
+  public String summaryNoLevel() {
+    return location+(line>= 0 && col >= 0 ? " (line "+Integer.toString(line)+", col"+Integer.toString(col)+"): " : ": ") +message+showCount() +(server != null ? " (src = "+server+")" : "");
+  }
+
 
   public String toXML() {
     return "<message source=\"" + source + "\" line=\"" + line + "\" col=\"" + col + "\" location=\"" + Utilities.escapeXml(location) + "\" type=\"" + type + "\" level=\"" + level + "\" display=\"" + Utilities.escapeXml(getDisplay()) + "\" ><plain>" + Utilities.escapeXml(message)+showCount() + "</plain><html>" + html + "</html></message>";
