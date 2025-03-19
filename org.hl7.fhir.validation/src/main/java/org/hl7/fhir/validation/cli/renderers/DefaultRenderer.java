@@ -42,7 +42,7 @@ public class DefaultRenderer extends ValidationOutputRenderer {
           dst.println("    slice "+s.getLevel().toShortCode()+": "+s.getMessage());          
           if (s.hasSliceInfo()) {
             for (ValidationMessage si : s.getSliceInfo()) {
-              dst.println("    - slice "+si.getLevel().toShortCode()+": "+si.getMessage());          
+              dst.println("    - "+si.summary());          
             }
           }
         }
