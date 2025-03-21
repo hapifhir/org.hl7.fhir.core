@@ -136,6 +136,7 @@ public class Params {
   private static final String WATCH_SCAN_DELAY = "-watch-scan-delay";
   private static final String WATCH_SETTLE_TIME = "-watch-settle-time";
   public static final String NO_HTTP_ACCESS = "-no-http-access";
+  public static final String AUTH_NONCONFORMANT_SERVERS = "-authorise-non-conformant-tx-servers";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -573,7 +574,7 @@ public class Params {
             cliContext.setFhirpath(args[++i]);
         else
           throw new Exception("Can only nominate a single -fhirpath parameter");
-      } else {
+      } else if (!Utilities.existsInList(args[i], AUTH_NONCONFORMANT_SERVERS)) {
         cliContext.addSource(args[i]);
       }
     }
