@@ -41,6 +41,22 @@ public class NpmPackageTests implements ResourceLoaderTests {
   }
 
   @Test
+  public void testFHIRTgzNested() throws IOException {
+    InputStream tgzStream = getResourceAsInputStream("npm", "tar", "nested-package.tgz");
+    NpmPackage npmPackage = NpmPackage.fromPackage(tgzStream);
+
+    Map<String, NpmPackage.NpmPackageFolder> folders = npmPackage.getFolders();
+    Sets.SetView<String> result = Sets.symmetricDifference(folders.keySet(), Set.of(
+      "package",
+      "other",
+      "$root",
+      "tests/otherfff",
+      "tests"));
+    assertTrue(result.isEmpty());
+
+  }
+
+  @Test
   public void testEvilTgz() throws IOException {
     RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
       InputStream tgzStream = getResourceAsInputStream("npm", "tar", "tgz-evil.tgz");
