@@ -65,6 +65,8 @@ POSSIBILITY OF SUCH DAMAGE.
 import org.apache.commons.text.WordUtils;
 import org.hl7.fhir.r5.formats.ParserFactory;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
+import org.hl7.fhir.utilities.ENoDump;
 import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TimeTracker;
@@ -146,6 +148,11 @@ public class ValidatorCli {
     if (Params.hasParam(args, Params.NO_HTTP_ACCESS)) {
       ManagedWebAccess.setAccessPolicy(WebAccessPolicy.PROHIBITED);
     }
+
+    if (Params.hasParam(args, Params.AUTH_NONCONFORMANT_SERVERS)) {
+      TerminologyClientContext.setAllowNonConformantServers(true);
+    }      
+    TerminologyClientContext.setCanAllowNonConformantServers(true);
     setJavaSystemProxyParamsFromParams(args);
 
     Display.displayVersion(System.out);
@@ -212,7 +219,11 @@ public class ValidatorCli {
 
     args = addAdditionalParamsForIpsParam(args);
     final CliContext cliContext = Params.loadCliContext(args);
-    validatorCli.readParamsAndExecuteTask(cliContext, args);
+    try {
+      validatorCli.readParamsAndExecuteTask(cliContext, args);
+    } catch (ENoDump e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   private static void setJavaSystemProxyParamsFromParams(String[] args) {

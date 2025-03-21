@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DateType;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireAnswerConstraint;
@@ -27,6 +28,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -222,10 +224,49 @@ public class QuestionnaireValidator extends BaseValidator {
         }
       }
     }
+    if ((VersionUtilities.isR4Plus(context.getVersion())) && (item.hasChildren("answerValueSet"))) {
+      String url = item.getNamedChildValue("answerValueSet");
+      if (url != null) {
+        ValueSet vs = context.findTxResource(ValueSet.class, url);
+        if (vs != null && vs.hasExtension(ToolingExtensions.EXT_VALUESET_PARAMETER)) {
+          List<Element> list = item.getNamedChild("answerValueSet").getExtensions(ToolingExtensions.EXT_BINDING_PARAMETER);
+          for (Extension ve : vs.getExtensionsByUrl(ToolingExtensions.EXT_VALUESET_PARAMETER)) {
+            if (ve.hasExtension("name")) {
+              Element be = findBindingParameter(list, ve.getExtensionString("name"));
+              if (rule(errors, "2025-03-22", IssueType.BUSINESSRULE, ns, be != null, I18nConstants.VALUESET_PARAMETER_MISSING_BINDING_PARAMETER, vs.getVersionedUrl(), ve.getExtensionString("name"))) {
+                be.setUserData(UserDataNames.matchingParameter, ve);
+              } else {
+                ok = false;
+              }
+            }
+          }
+          for (Element ext : list) {
+            if (!ext.hasUserData(UserDataNames.matchingParameter)) {
+              String name = ext.getExtensionString("name");
+              warning(errors, "2025-03-22", IssueType.BUSINESSRULE, ns, Utilities.existsInList(name, 
+                  "abstract", "activeOnly", "check-system-version", "check-valueset-version", "context", "contextDirection", "count", "date", "default-valueset-version", "designation", "displayLanguage", "exclude-system", "excludeNested",
+                  "excludeNotForUI", "excludePostCoordinated", "filter", "filterProperty", "force-system-version", "force-valueset-version", "includeDefinition", "includeDesignations", "inferSystem    ", "lenient-display-validation", 
+                  "manifest", "offset", "property", "system-version", "useSupplement", "valueset-membership-only"), 
+                  I18nConstants.VALUESET_PARAMETER_UNRECOGNISED_BINDING_PARAMETER, name, vs.getVersionedUrl());
+            }
+          }
+        }
+      }
+    }
     for (QuestionnaireDerivation qd : derivations) {
       ok = validateQuestionnaireElementDerivation(errors, ns, questionnaire, item, qd) && ok;            
     }
     return ok;
+  }
+
+  private Element findBindingParameter(List<Element> list, String n) {
+    for (Element ext : list) {
+      String name = ext.getExtensionString("name");
+      if (n.equals(name)) {
+        return ext;
+      }
+    }
+    return null;
   }
 
   private boolean validateQuestionnaireElementDerivation(List<ValidationMessage> errors, NodeStack ns, Element questionnaire, Element item, QuestionnaireDerivation derivation) {
