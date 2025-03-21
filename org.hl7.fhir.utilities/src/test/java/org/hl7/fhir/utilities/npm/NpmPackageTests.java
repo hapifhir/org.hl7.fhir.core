@@ -35,7 +35,7 @@ public class NpmPackageTests implements ResourceLoaderTests {
     Sets.SetView<String> result = Sets.symmetricDifference(folders.keySet(), Set.of(
       "package",
       "other",
-      "test"));
+      "tests"));
     assertTrue(result.isEmpty());
 
   }
