@@ -134,7 +134,6 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
@@ -776,9 +775,6 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   public ValueSetExpansionOutcome expandInternal(ValueSet source, Parameters expParams) throws FHIRException, FileNotFoundException, ETooCostly, IOException, CodeSystemProviderExtension {
-   if ("https://nhdr.gov.ph/fhir/ValueSet/ClinicalStatusVS".equals(source.getUrl())) {
-     DebugUtilities.breakpoint();
-   }
     if (expParams == null)
       expParams = makeDefaultExpansion();
     altCodeParams.seeParameters(expParams);

@@ -27,6 +27,7 @@ import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ExtensionHelper;
 import org.hl7.fhir.r5.model.PrimitiveType;
@@ -105,6 +106,18 @@ public class ValueSetRenderer extends TerminologyRenderer {
           p.ah(cs.getWebPath()).tx(cs.present());          
         }
         p.tx(".");
+      }
+      if (vs.hasExtension(ToolingExtensions.EXT_VALUESET_PARAMETER)) {
+        x.para().b().tx("This ValueSet has parameters");
+        XhtmlNode tbl = x.table("grid");
+        XhtmlNode tr = tbl.tr();
+        tr.th().tx("Name");
+        tr.th().tx("Documentation");
+        for (Extension ext : vs.getExtensionsByUrl(ToolingExtensions.EXT_VALUESET_PARAMETER)) {
+          tr = tbl.tr();
+          tr.td().tx(ext.getExtensionString("name"));
+          tr.td().markdown(ext.getExtensionString("documentation"), "parameter.documentation");    
+        }
       }
       if (vs.hasExpansion()) {
         // for now, we just accept an expansion if there is one
@@ -1283,25 +1296,33 @@ public class ValueSetRenderer extends TerminologyRenderer {
               }
             } else {
               wli.tx(f.getProperty()+" "+describe(f.getOp())+" ");
-              if (e != null && codeExistsInValueSet(e, f.getValue())) {
-                String href = getContext().fixReference(getCsRef(e));
-                if (href == null) {
-                  wli.code().tx(f.getValue());                  
-                } else {
-                  if (href.contains("#"))
-                    href = href + "-"+Utilities.nmtokenize(f.getValue());
-                  else
-                    href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(f.getValue());
-                  wli.ah(context.prefixLocalHref(href)).addText(f.getValue());
-                }
-              } else if (inc.hasSystem()) {
-                wli.addText(f.getValue());
-                ValidationResult vr = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), inc.getVersion(), f.getValue(), null);
-                if (vr.isOk() && vr.getDisplay() != null) {
-                  wli.tx(" ("+vr.getDisplay()+")");
-                }
+              if (f.getValueElement().hasExtension(ToolingExtensions.EXT_CQF_EXP)) {
+                Extension expE = f.getValueElement().getExtensionByUrl(ToolingExtensions.EXT_CQF_EXP);
+                Expression exp = expE.getValueExpression();
+                wli.addText("(as calculated by ");
+                wli.code().tx(exp.getExpression());
+                wli.addText(")");
               } else {
-                wli.addText(f.getValue());
+                if (e != null && codeExistsInValueSet(e, f.getValue())) {
+                  String href = getContext().fixReference(getCsRef(e));
+                  if (href == null) {
+                    wli.code().tx(f.getValue());                  
+                  } else {
+                    if (href.contains("#"))
+                      href = href + "-"+Utilities.nmtokenize(f.getValue());
+                    else
+                      href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(f.getValue());
+                    wli.ah(context.prefixLocalHref(href)).addText(f.getValue());
+                  }
+                } else if (inc.hasSystem()) {
+                  wli.addText(f.getValue());
+                  ValidationResult vr = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), inc.getVersion(), f.getValue(), null);
+                  if (vr.isOk() && vr.getDisplay() != null) {
+                    wli.tx(" ("+vr.getDisplay()+")");
+                  }
+                } else {
+                  wli.addText(f.getValue());
+                }
               }
               String disp = ToolingExtensions.getDisplayHint(f);
               if (disp != null)
