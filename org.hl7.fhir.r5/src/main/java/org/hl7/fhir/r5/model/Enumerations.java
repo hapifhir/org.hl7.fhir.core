@@ -17861,6 +17861,7 @@ The primary difference between a medicationstatement and a medicationadministrat
          * Special logic applies to this parameter per the description of the search parameter.
          */
         SPECIAL, 
+        RESOURCE, // R6 hack
         /**
          * added to help the parsers
          */
@@ -17886,12 +17887,14 @@ The primary difference between a medicationstatement and a medicationadministrat
           return URI;
         if ("special".equals(codeString))
           return SPECIAL;
+        if ("resource".equals(codeString))
+          return RESOURCE;
         throw new FHIRException("Unknown SearchParamType code '"+codeString+"'");
         }
         public static boolean isValidCode(String codeString) {
             if (codeString == null || "".equals(codeString))
                 return false;
-          return Utilities.existsInList(codeString, "number", "date", "string", "token", "reference", "composite", "quantity", "uri", "special");
+          return Utilities.existsInList(codeString, "number", "date", "string", "token", "reference", "composite", "quantity", "uri", "special", "resource");
         }
         public String toCode() {
           switch (this) {
@@ -17904,6 +17907,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case QUANTITY: return "quantity";
             case URI: return "uri";
             case SPECIAL: return "special";
+            case RESOURCE: return "resource";
             case NULL: return null;
             default: return "?";
           }
@@ -17919,6 +17923,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case QUANTITY: return "http://hl7.org/fhir/search-param-type";
             case URI: return "http://hl7.org/fhir/search-param-type";
             case SPECIAL: return "http://hl7.org/fhir/search-param-type";
+            case RESOURCE: return "http://hl7.org/fhir/search-param-type";
             case NULL: return null;
             default: return "?";
           }
@@ -17934,6 +17939,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case QUANTITY: return "A search parameter that searches on a quantity.";
             case URI: return "A search parameter that searches on a URI (RFC 3986).";
             case SPECIAL: return "Special logic applies to this parameter per the description of the search parameter.";
+            case RESOURCE: return "Special logic applies to this parameter per the description of the search parameter.";
             case NULL: return null;
             default: return "?";
           }
@@ -17949,6 +17955,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case QUANTITY: return "Quantity";
             case URI: return "URI";
             case SPECIAL: return "Special";
+            case RESOURCE: return "Resource";
             case NULL: return null;
             default: return "?";
           }
@@ -17978,6 +17985,8 @@ The primary difference between a medicationstatement and a medicationadministrat
           return SearchParamType.URI;
         if ("special".equals(codeString))
           return SearchParamType.SPECIAL;
+        if ("resource".equals(codeString))
+          return SearchParamType.RESOURCE;
         throw new IllegalArgumentException("Unknown SearchParamType code '"+codeString+"'");
         }
 
@@ -18007,6 +18016,8 @@ The primary difference between a medicationstatement and a medicationadministrat
           return new Enumeration<SearchParamType>(this, SearchParamType.URI, code);
         if ("special".equals(codeString))
           return new Enumeration<SearchParamType>(this, SearchParamType.SPECIAL, code);
+        if ("resource".equals(codeString))
+          return new Enumeration<SearchParamType>(this, SearchParamType.RESOURCE, code);
         throw new FHIRException("Unknown SearchParamType code '"+codeString+"'");
         }
     public String toCode(SearchParamType code) {
@@ -18029,6 +18040,8 @@ The primary difference between a medicationstatement and a medicationadministrat
       if (code == SearchParamType.URI)
         return "uri";
       if (code == SearchParamType.SPECIAL)
+        return "resource";
+      if (code == SearchParamType.RESOURCE)
         return "special";
       return "?";
    }

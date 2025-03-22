@@ -1363,14 +1363,17 @@ public class ValueSetValidator extends ValueSetProcessBase {
     checkCanonical(info.getIssues(), path, valueset, valueset);
     Boolean result = false;
     VersionInfo vi = new VersionInfo(this);
+    String vspath = "ValueSet['"+valueset.getVersionedUrl()+"].compose"; 
       
     if (valueset.hasExpansion()) {
       return checkExpansion(new Coding(system, code, null), vi);
     } else if (valueset.hasCompose()) {
       int i = 0;
+      int c = 0;
       for (ConceptSetComponent vsi : valueset.getCompose().getInclude()) {
-        Boolean ok = inComponent(path, vsi, i, system, version, code, valueset.getCompose().getInclude().size() == 1, info);
+        Boolean ok = inComponent(path, vsi, i, system, version, code, valueset.getCompose().getInclude().size() == 1, info, vspath+".include["+c+"]");
         i++;
+        c++;
         if (ok == null && result != null && result == false) {
           result = null;
         } else if (ok != null && ok) {
@@ -1379,9 +1382,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
       }
       i = valueset.getCompose().getInclude().size();
+      c = 0;
       for (ConceptSetComponent vsi : valueset.getCompose().getExclude()) {
-        Boolean nok = inComponent(path, vsi, i, system, version, code, valueset.getCompose().getInclude().size() == 1, info);
+        Boolean nok = inComponent(path, vsi, i, system, version, code, valueset.getCompose().getInclude().size() == 1, info, vspath+".exclude["+c+"]");
         i++;
+        c++;
         if (nok == null && result != null && result == false) {
           result = null;
         } else if (nok != null && nok) {
@@ -1393,7 +1398,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return result;
   }
 
-  private Boolean inComponent(String path, ConceptSetComponent vsi, int vsiIndex, String system, String version, String code, boolean only, ValidationProcessInfo info) throws FHIRException {
+  private Boolean inComponent(String path, ConceptSetComponent vsi, int vsiIndex, String system, String version, String code, boolean only, ValidationProcessInfo info, String vspath) throws FHIRException {
     opContext.deadCheck("inComponent "+vsiIndex);
     boolean ok = true;
     
@@ -1492,10 +1497,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
       
       if (vsi.hasFilter()) {
         ok = true;
+        int i = 0;
         for (ConceptSetFilterComponent f : vsi.getFilter()) {
-          if (!codeInFilter(cs, system, f, code)) {
+          if (!codeInFilter(cs, vspath+".filter["+i+"]", system, f, code)) {
             return false;
           }
+          i++;
         }
       }
 
@@ -1525,7 +1532,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
   }
 
-  private boolean codeInFilter(CodeSystem cs, String system, ConceptSetFilterComponent f, String code) throws FHIRException {
+  private boolean codeInFilter(CodeSystem cs, String path, String system, ConceptSetFilterComponent f, String code) throws FHIRException {
+    String v = f.getValue();
+    if (v == null) {
+      List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
+      issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path+".value", context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE, cs.getUrl(), f.getProperty(), f.getOp().toCode()), OpIssueCode.VSProcessing, null)); 
+      throw new VSCheckerException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE, cs.getUrl(), f.getProperty(), f.getOp().toCode()), issues, TerminologyServiceErrorClass.INTERNAL_ERROR);
+      
+    }
     if ("concept".equals(f.getProperty()))
       return codeInConceptFilter(cs, f, code);
     else if ("code".equals(f.getProperty()) && f.getOp() == FilterOperator.REGEX)

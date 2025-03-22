@@ -288,6 +288,12 @@ public class ToolingExtensions {
   public static final String EXT_LOAD_AS_RESOURCE = "http://hl7.org/fhir/tools/StructureDefinition/ig-load-as-resource";
   public static final String EXT_USE_AS_RESOURCE_ID = "http://hl7.org/fhir/tools/StructureDefinition/ig-use-as-resource-id";
   public static final String EXT_PROPERTY_VALUESET = "http://hl7.org/fhir/StructureDefinition/codesystem-property-valueset";
+  public static final String EXT_FEATURE = "http://hl7.org/fhir/uv/application-feature/StructureDefinition/feature";
+  
+  public static final String FEATURE_TX_TEST_VERSION = "http://hl7.org/fhir/uv/tx-tests/FeatureDefinition/test-version";
+  public static final String FEATURE_TX_CS_PARAMS = "http://hl7.org/fhir/uv/tx-ecosystem/FeatureDefinition/CodeSystemAsParameter";
+  public static final String EXT_VALUESET_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/valueset-parameter";
+  public static final String EXT_BINDING_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/binding-parameter";
   
   // specific extension helpers
 
