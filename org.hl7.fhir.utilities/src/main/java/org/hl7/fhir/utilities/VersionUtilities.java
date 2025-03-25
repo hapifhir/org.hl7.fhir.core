@@ -78,6 +78,8 @@ public class VersionUtilities {
     private int compareString(String s1, String s2) {
       if (s1 == null) {
         return s2 == null ? 0 : 1;
+      } else if (s2 == null) {
+        return -1;
       } else {
         return s1.compareTo(s2);
       }
@@ -761,6 +763,10 @@ public class VersionUtilities {
       return true;
     }
     return startVer.compareTo(ver) < 0 && stopVer.compareTo(ver) > 0;
+  }
+
+  public static String getNoPatch(String version) {
+    return version.contains("-") ? version.substring(0, version.indexOf("-")) : version;
   }
 
 
