@@ -18040,9 +18040,9 @@ The primary difference between a medicationstatement and a medicationadministrat
       if (code == SearchParamType.URI)
         return "uri";
       if (code == SearchParamType.SPECIAL)
-        return "resource";
-      if (code == SearchParamType.RESOURCE)
         return "special";
+      if (code == SearchParamType.RESOURCE)
+        return "resource";
       return "?";
    }
     public String toSystem(SearchParamType code) {
