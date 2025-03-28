@@ -35,7 +35,7 @@ parameters:
         - r5
         - convertors
         - validation
-        - validation.cli
+        - validation_cli
       multiplatformModules:
         - utilities
   - name: testConfigurations
