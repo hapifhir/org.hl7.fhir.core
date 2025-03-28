@@ -12,7 +12,7 @@ jobs:
         variables:
           JAVA_TOOL_OPTIONS: ${{unit.javaToolOptions}}
           skipJaCoCo: $[eq(${{unit.skipJaCoCo}}, true)]
-          module: org.hl7.fhir.${{ replace(value, '_', '.')
+          module: org.hl7.fhir.${{ replace(value, '_', '.') }}
 
         steps:
         - task: Cache@2
