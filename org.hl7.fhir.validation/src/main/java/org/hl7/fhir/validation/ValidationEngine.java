@@ -761,8 +761,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   public org.hl7.fhir.r5.elementmodel.Element transform(ByteProvider source, FhirFormat cntType, String mapUri) throws FHIRException, IOException {
     List<Base> outputs = new ArrayList<>();
-    TransformSupportServices tss = new TransformSupportServices(outputs, mapLog, context);
-    StructureMapUtilities scu = new StructureMapUtilities(context, tss);
+    StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
     StructureMap map = context.fetchResource(StructureMap.class, mapUri);
     if (map == null) throw new Error("Unable to find map " + mapUri + " (Known Maps = " + context.listMapUrls() + ")");
     org.hl7.fhir.r5.elementmodel.Element resource = getTargetResourceFromStructureMap(map);
@@ -771,18 +770,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (sourceSD.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL) {
       parser.setLogical(sourceSD);
     }
-    org.hl7.fhir.r5.elementmodel.Element src = parser.parseSingle(new ByteArrayInputStream(source.getBytes()), null);
-    
-    // PoC: add resources from Bundle to reference cache
-    if("Bundle".equals(src.fhirType()) && src.hasChildren("entry")) {
-      for(Base entry : src.getChildByName("entry").getValues()) {
-        Base r = entry.getChildValueByName("resource");
-        if (r != null) {
-          tss.addToReferenceCache(r);
-        }
-      }
-    }
-    
+    org.hl7.fhir.r5.elementmodel.Element src = parser.parseSingle(new ByteArrayInputStream(source.getBytes()), null);    
     scu.transform(null, src, map, resource);
     resource.populatePaths(null);
     return resource;
