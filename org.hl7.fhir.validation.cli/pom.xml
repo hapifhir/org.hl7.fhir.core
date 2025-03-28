@@ -343,6 +343,17 @@
                 </configuration>
             </plugin>
 
+
+            <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${jacoco_version}</version>
+            <configuration>
+            <includes>
+                <include>org/hl7/fhir/validation/**/*</include>
+            </includes>
+            </configuration>
+            </plugin>
             <!--
             These two plugins provide quality checks that don't make sense to perform
             on a fatjar.
