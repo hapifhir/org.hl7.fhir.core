@@ -109,8 +109,12 @@ public class ValidatorCli {
 
   final List<CliTask> cliTasks;
 
+  private final Logger logger = LoggerFactory.getLogger(ValidatorCli.class);
+
   final CliTask defaultCliTask = new ValidateTask();
   protected ValidatorCli(ValidationService validationService) {
+    //FIXME delete this log!
+    logger.info("Test info log.");
     myValidationService = validationService;
     cliTasks = getCliTasks();
   }
