@@ -80,6 +80,8 @@ import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.cli.utils.Display;
 import org.hl7.fhir.validation.cli.utils.Params;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A executable providing a Command Line Interface primarily for validating one or more FHIR resources against
