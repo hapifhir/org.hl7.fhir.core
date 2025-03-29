@@ -968,6 +968,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_NIGHT = "DATA_REND_NIGHT";
   public static final String DATA_REND_AFTER_SLEEP = "DATA_REND_AFTER_SLEEP";
   public static final String DATA_REND_IMMEDIATE = "DATA_REND_IMMEDIATE";
+  public static final String VALUE_SET_OTHER_DISPLAY = "VALUE_SET_OTHER_DISPLAY";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
