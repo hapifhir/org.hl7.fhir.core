@@ -317,7 +317,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           tr.td().b().addText(designations.get(url));
         }
         for (String lang : langs) {
-          tr.td().b().addText(describeLang(lang));
+          tr.td().b().addText(describeVSLang(lang, displang));
         }
       }
     }
@@ -355,6 +355,67 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   }
 
+  protected String describeVSLang(String lang, String displang) { 
+    
+    // special cases: 
+    if ("fr-CA".equals(lang)) { 
+      return "French (Canadian)"; // this one was omitted from the value set 
+    } 
+    ValueSet v = getContext().getWorker().findTxResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/languages"); 
+    if (v != null) { 
+      ConceptReferenceComponent l = null; 
+      for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) { 
+        if (cc.getCode().equals(lang)) 
+          l = cc; 
+      } 
+      if (l == null) { 
+        if (lang.contains("-")) { 
+          lang = lang.substring(0, lang.indexOf("-")); 
+        } 
+        for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) { 
+          if (cc.getCode().equals(lang)) { 
+            l = cc; 
+            break; 
+          } 
+        } 
+        if (l == null) { 
+          for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) { 
+            if (cc.getCode().startsWith(lang+"-")) { 
+              l = cc; 
+              break; 
+            } 
+          } 
+        } 
+      } 
+      if (l != null) { 
+        if (lang.contains("-")) 
+          lang = lang.substring(0, lang.indexOf("-")); 
+        String en = l.getDisplay(); 
+        String nativelang = null; 
+        for (ConceptReferenceDesignationComponent cd : l.getDesignation()) { 
+          if (cd.getLanguage().equals(lang)) 
+            nativelang = cd.getValue(); 
+        } 
+        return context.formatPhrase(langsMatch(lang, displang) ? RenderingContext.VALUE_SET_OTHER_DISPLAY : RenderingContext.TX_DISPLAY_LANG,  nativelang == null ? en : nativelang);
+      } 
+    } 
+    return lang; 
+  } 
+
+
+  private boolean langsMatch(String lang, String displang) {
+    if (lang == null) {
+      return displang == null;
+    } else if (lang.equals(displang)) {
+      return true;
+    } else if (displang == null) {
+      return false;
+    } else {
+      String l1 = lang.contains("-") ? lang.substring(0, lang.indexOf("-")) : lang;
+      String l2 = displang.contains("-") ? displang.substring(0, displang.indexOf("-")) : displang;
+      return l1.equals(l2);
+    }
+  }
 
   private void scanForProperties(ValueSetExpansionComponent exp, List<String> langs, Map<String, String> properties) {
     properties.clear();
@@ -679,32 +740,32 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   private String describeModule(String module) {
     switch (module) {
-    case "900000000000207008" : context.formatPhrase(RenderingContext.VALUE_SET_INT);
-    case "449081005" : context.formatPhrase(RenderingContext.VALUE_SET_SPAN);  
-    case "11000221109" : context.formatPhrase(RenderingContext.VALUE_SET_AR);
-    case "32506021000036107" : context.formatPhrase(RenderingContext.VALUE_SET_AUS);
-    case "11000234105" : context.formatPhrase(RenderingContext.VALUE_SET_AT);
-    case "11000172109" : context.formatPhrase(RenderingContext.VALUE_SET_BE);
-    case "20621000087109" : context.formatPhrase(RenderingContext.VALUE_SET_CA_EN);
-    case "20611000087101" : context.formatPhrase(RenderingContext.VALUE_SET_CA_FR);
-    case "554471000005108" : context.formatPhrase(RenderingContext.VALUE_SET_DANISH);
-    case "11000181102 " : context.formatPhrase(RenderingContext.VALUE_SET_EE);
-    case "11000229106" : context.formatPhrase(RenderingContext.VALUE_SET_FI);
-    case "11000274103" : context.formatPhrase(RenderingContext.VALUE_SET_DE);
-    case "1121000189102" : context.formatPhrase(RenderingContext.VALUE_SET_IN);
-    case "11000220105" : context.formatPhrase(RenderingContext.VALUE_SET_IE);
-    case "11000146104" : context.formatPhrase(RenderingContext.VALUE_SET_DUTCH);
-    case "21000210109" : context.formatPhrase(RenderingContext.VALUE_SET_NZ);
-    case "51000202101 " : context.formatPhrase(RenderingContext.VALUE_SET_NO);
-    case "11000267109" : context.formatPhrase(RenderingContext.VALUE_SET_KR);
-    case "900000001000122104" : context.formatPhrase(RenderingContext.VALUE_ES_ES);
-    case "45991000052106" : context.formatPhrase(RenderingContext.VALUE_SET_SWEDISH); 
-    case "2011000195101" : context.formatPhrase(RenderingContext.VALUE_SET_CH);
-    case "83821000000107" : context.formatPhrase(RenderingContext.VALUE_SET_UK);
-    case "999000021000000109" : context.formatPhrase(RenderingContext.VALUE_SET_UK_CLIN);
-    case "5631000179106" : context.formatPhrase(RenderingContext.VALUE_SET_UY);  
-    case "731000124108" : context.formatPhrase(RenderingContext.VALUE_SET_US);
-    case "5991000124107" : context.formatPhrase(RenderingContext.VALUE_SET_US_ICD10CM);
+    case "900000000000207008" : return context.formatPhrase(RenderingContext.VALUE_SET_INT);
+    case "449081005" : return context.formatPhrase(RenderingContext.VALUE_SET_SPAN);  
+    case "11000221109" : return context.formatPhrase(RenderingContext.VALUE_SET_AR);
+    case "32506021000036107" : return context.formatPhrase(RenderingContext.VALUE_SET_AUS);
+    case "11000234105" : return context.formatPhrase(RenderingContext.VALUE_SET_AT);
+    case "11000172109" : return context.formatPhrase(RenderingContext.VALUE_SET_BE);
+    case "20621000087109" : return context.formatPhrase(RenderingContext.VALUE_SET_CA_EN);
+    case "20611000087101" : return context.formatPhrase(RenderingContext.VALUE_SET_CA_FR);
+    case "554471000005108" : return context.formatPhrase(RenderingContext.VALUE_SET_DANISH);
+    case "11000181102 " : return context.formatPhrase(RenderingContext.VALUE_SET_EE);
+    case "11000229106" : return context.formatPhrase(RenderingContext.VALUE_SET_FI);
+    case "11000274103" : return context.formatPhrase(RenderingContext.VALUE_SET_DE);
+    case "1121000189102" : return context.formatPhrase(RenderingContext.VALUE_SET_IN);
+    case "11000220105" : return context.formatPhrase(RenderingContext.VALUE_SET_IE);
+    case "11000146104" : return context.formatPhrase(RenderingContext.VALUE_SET_DUTCH);
+    case "21000210109" : return context.formatPhrase(RenderingContext.VALUE_SET_NZ);
+    case "51000202101 " : return context.formatPhrase(RenderingContext.VALUE_SET_NO);
+    case "11000267109" : return context.formatPhrase(RenderingContext.VALUE_SET_KR);
+    case "900000001000122104" : return context.formatPhrase(RenderingContext.VALUE_ES_ES);
+    case "45991000052106" : return context.formatPhrase(RenderingContext.VALUE_SET_SWEDISH); 
+    case "2011000195101" : return context.formatPhrase(RenderingContext.VALUE_SET_CH);
+    case "83821000000107" : return context.formatPhrase(RenderingContext.VALUE_SET_UK);
+    case "999000021000000109" : return context.formatPhrase(RenderingContext.VALUE_SET_UK_CLIN);
+    case "5631000179106" : return context.formatPhrase(RenderingContext.VALUE_SET_UY);  
+    case "731000124108" : return context.formatPhrase(RenderingContext.VALUE_SET_US);
+    case "5991000124107" : return context.formatPhrase(RenderingContext.VALUE_SET_US_ICD10CM);
     default:
       return module;
     }
@@ -831,8 +892,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     for (ConceptReferenceDesignationComponent d : c.getDesignation()) {
       String lang = d.getLanguage();
-      if (!Utilities.noString(lang) && !langs.contains(lang)) {
-        langs.add(lang);
+      if (!Utilities.noString(lang)) {
+        if (!langs.contains(lang)) {
+          langs.add(lang);
+        }
       } else {
         // can we present this as a designation that we know?
         String disp = getDisplayForDesignation(d);
@@ -1208,6 +1271,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
       return context.formatPhrase(RenderingContext.VALUE_SET_SPEC_NAME);
     case "http://snomed.info/sct#900000000000013009":
       return context.formatPhrase(RenderingContext.VALUE_SET_SYNONYM);
+    case "http://terminology.hl7.org/CodeSystem/designation-usage#display":
+      return context.formatPhrase(RenderingContext.VALUE_SET_OTHER_DISPLAY);
     default:
       // As specified in http://www.hl7.org/fhir/valueset-definitions.html#ValueSet.compose.include.concept.designation.use and in http://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.concept.designation.use the terminology binding is extensible.
       return url;

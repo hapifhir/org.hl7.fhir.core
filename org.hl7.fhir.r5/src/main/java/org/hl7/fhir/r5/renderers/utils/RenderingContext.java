@@ -982,7 +982,7 @@ public class RenderingContext extends RenderingI18nContext {
   }
 
   public RenderingContext withLocaleCode(String locale) {
-    setLocale(new Locale(locale));
+    setLocale(Locale.forLanguageTag(locale));
     return this;
   }
 

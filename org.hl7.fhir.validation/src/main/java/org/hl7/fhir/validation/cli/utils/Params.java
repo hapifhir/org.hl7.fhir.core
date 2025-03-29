@@ -319,7 +319,7 @@ public class Params {
         if (i + 1 == args.length) {
           throw new Error("Specified -locale without indicating locale");
         } else {
-          cliContext.setLocale(new Locale(args[++i]));
+          cliContext.setLocale(Locale.forLanguageTag(args[++i]));
         }
       } else if (args[i].equals(EXTENSION)) {
         cliContext.getExtensions().add(args[++i]);
