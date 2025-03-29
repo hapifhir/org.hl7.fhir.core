@@ -6671,4 +6671,5 @@ public class FHIRPathEngine {
   public void setAllowDoubleQuotes(boolean allowDoubleQuotes) {
     this.allowDoubleQuotes = allowDoubleQuotes;    
   }
+
 }
