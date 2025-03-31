@@ -139,9 +139,9 @@ jobs:
           - task: Bash@3
             inputs:
               targetType: 'inline'
-              script: mkdir -p $(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}/target/
+              script: mkdir -p $(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ replace(module, '_', '.') }}/target/site
           - task: DownloadBuildArtifacts@0
-            displayName: 'Download jacoco test coverage results for org.hl7.fhir.${{ module }}'
+            displayName: 'Download jacoco test coverage results for ${{ module }}'
             continueOnError: true
             inputs:
               buildType: 'current'
@@ -154,7 +154,7 @@ jobs:
             inputs:
               sourceFolder: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}_target/'
               contents: '**'
-              targetFolder: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}/target/'
+              targetFolder: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ replace(module, '_', '.') }}/target/site"
       - task: Maven@4
         inputs:
           mavenPomFile: 'pom.xml'

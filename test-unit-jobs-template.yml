@@ -53,6 +53,6 @@ jobs:
           condition: eq(variables.skipJaCoCo, false)
           continueOnError: true
           inputs:
-            pathToPublish: '$(System.DefaultWorkingDirectory)/${{ variables.module }}/target/'
+            pathToPublish: '$(System.DefaultWorkingDirectory)/${{ variables.module }}/target/site/'
             parallel: true
             artifactName: 'org.hl7.fhir.${{ value }}_target'
