@@ -2,6 +2,8 @@ package org.hl7.fhir.r5.utils;
 
 import java.util.List;
 
+import org.hl7.fhir.r5.model.CodeType;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,6 +36,7 @@ import java.util.List;
 
 
 import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.OperationOutcome;
@@ -167,7 +170,15 @@ public class OperationOutcomeUtilities {
     c.setText(message.getMessage());
     issue.setDetails(c);
     if (message.hasSliceInfo()) {
-      issue.addExtension(ToolingExtensions.EXT_ISSUE_SLICE_INFO, new StringType(errorSummaryForSlicingAsText(message.getSliceInfo())));
+      // issue.addExtension(ToolingExtensions.EXT_ISSUE_SLICE_INFO, new StringType(errorSummaryForSlicingAsText(message.getSliceInfo())));
+      for (ValidationMessage vm : message.getSliceInfo()) {
+        Extension ext = issue.addExtension();
+        ext.setUrl(ToolingExtensions.EXT_ISSUE_INNER_MESSAGE);
+        ext.addExtension("severity", new CodeType(vm.getLevel().toCode()));
+        ext.addExtension("type", new CodeType(vm.getType().toCode()));
+        ext.addExtension("path", new StringType(vm.getLocation()));
+        ext.addExtension("message", new StringType(vm.getMessage()));
+      }
     }
     if (message.getServer() != null) {
       issue.addExtension(ToolingExtensions.EXT_ISSUE_SERVER, new UrlType(message.getServer()));
