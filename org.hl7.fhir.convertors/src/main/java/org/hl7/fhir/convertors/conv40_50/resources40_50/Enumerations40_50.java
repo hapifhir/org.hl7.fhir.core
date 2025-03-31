@@ -278,8 +278,11 @@ public class Enumerations40_50 {
                   tgt.setValue(Enumerations.FHIRVersion._6_0_0_BALLOT1);
                   break;
               case _6_0_0_BALLOT2:
-                  tgt.setValue(Enumerations.FHIRVersion._6_0_0_BALLOT2);
-                  break;
+                tgt.setValue(Enumerations.FHIRVersion._6_0_0_BALLOT2);
+                break;
+              case _6_0_0_BALLOT3:
+                tgt.setValue(Enumerations.FHIRVersion._6_0_0_BALLOT3);
+                break;
               default:
                   tgt.setValue(Enumerations.FHIRVersion.NULL);
                   break;
@@ -397,8 +400,11 @@ public class Enumerations40_50 {
                   tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._6_0_0_BALLOT1);
                   break;
               case _6_0_0_BALLOT2:
-                  tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._6_0_0_BALLOT2);
-                  break;
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._6_0_0_BALLOT2);
+                break;
+              case _6_0_0_BALLOT3:
+                tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._6_0_0_BALLOT3);
+                break;
 
               default:
                   tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion.NULL);
