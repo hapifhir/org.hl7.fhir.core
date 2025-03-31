@@ -46,6 +46,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.DesignationMode;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
@@ -290,7 +291,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     boolean doDesignations = false;
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
-      scanForDesignations(c, langs, designations);
+      scanForDesignations(vs, c, langs, designations);
     }
     scanForProperties(vs.getExpansion(), langs, properties);
     if (doInactive) {
@@ -881,36 +882,46 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return ref == null ? null : ref.replace("\\", "/");
   }
 
-  private void scanForDesignations(ValueSetExpansionContainsComponent c, List<String> langs, Map<String, String> designations) {
+  private void scanForDesignations(ValueSet vs, ValueSetExpansionContainsComponent c, List<String> langs, Map<String, String> designations) {
     for (Extension ext : c.getExtension()) {
       if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
         String lang = ToolingExtensions.readStringExtension(ext,  "lang");
-        if (!Utilities.noString(lang) && !langs.contains(lang)) {
+        if (!Utilities.noString(lang) && !langs.contains(lang) && !isBaseLang(vs, lang)) {
           langs.add(lang);
         }
       }
     }
-    for (ConceptReferenceDesignationComponent d : c.getDesignation()) {
-      String lang = d.getLanguage();
-      if (!Utilities.noString(lang)) {
-        if (!langs.contains(lang)) {
-          langs.add(lang);
-        }
-      } else {
-        // can we present this as a designation that we know?
-        String disp = getDisplayForDesignation(d);
-        String url = getUrlForDesignation(d);
-        if (disp == null) {
-          disp = getDisplayForUrl(url);
-        }
-        if (disp != null && !designations.containsKey(url) && url != null) {
-          designations.put(url, disp);
+    if (context.getDesignationMode() != DesignationMode.NONE) {
+      for (ConceptReferenceDesignationComponent d : c.getDesignation()) {
+        String lang = d.getLanguage();
+        if (!Utilities.noString(lang)) {
+          if (!langs.contains(lang)) {
+            langs.add(lang);
+          }
+        } else if (context.getDesignationMode() == DesignationMode.ALL) {
+          // can we present this as a designation that we know?
+          String disp = getDisplayForDesignation(d);
+          String url = getUrlForDesignation(d);
+          if (disp == null) {
+            disp = getDisplayForUrl(url);
+          }
+          if (disp != null && !designations.containsKey(url) && url != null) {
+            designations.put(url, disp);
+          }
         }
       }
     }
     for (ValueSetExpansionContainsComponent cc : c.getContains()) {
-      scanForDesignations(cc, langs, designations);
+      scanForDesignations(vs, cc, langs, designations);
     }
+  }
+
+  private boolean isBaseLang(ValueSet vs, String lang) {
+    return (isDefLang(lang) && isDefLang(vs.getLanguage())) || langsMatch(lang, vs.getLanguage());
+  }
+
+  private boolean isDefLang(String lang) {
+    return lang == null || "en".equals(lang) || "en-US".equals(lang);
   }
 
   private void scanForLangs(ValueSetExpansionContainsComponent c, List<String> langs) {

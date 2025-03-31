@@ -294,6 +294,7 @@ public class ToolingExtensions {
   public static final String FEATURE_TX_CS_PARAMS = "http://hl7.org/fhir/uv/tx-ecosystem/FeatureDefinition/CodeSystemAsParameter";
   public static final String EXT_VALUESET_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/valueset-parameter";
   public static final String EXT_BINDING_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/binding-parameter";
+  public static final String EXT_ISSUE_INNER_MESSAGE = "http://hl7.org/fhir/tools/StructureDefinition/operationoutcome-inner-message";
   
   // specific extension helpers
 
