@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.DesignationMode;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.IResourceLinkResolver;
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
@@ -76,6 +77,12 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  */
 @MarkedToMoveToAdjunctPackage
 public class RenderingContext extends RenderingI18nContext {
+
+  public enum DesignationMode {
+    ALL,
+    LANGUAGES,
+    NONE
+  }
 
   public interface IResourceLinkResolver {
     public <T extends Resource> T findLinkableResource(Class<T> class_, String uri) throws IOException;
@@ -308,6 +315,7 @@ public class RenderingContext extends RenderingI18nContext {
   private boolean unknownLocalReferencesNotLinks;
   private IResourceLinkResolver resolveLinkResolver;
   private boolean debug;
+  private DesignationMode designationMode;
   
   /**
    * 
@@ -326,6 +334,7 @@ public class RenderingContext extends RenderingI18nContext {
     this.localPrefix = localPrefix;
     this.mode = mode;
     this.rules = rules;
+    this.designationMode = DesignationMode.ALL;
     if (terminologyServiceOptions != null) {
       this.terminologyServiceOptions = terminologyServiceOptions;
     }
@@ -1099,6 +1108,14 @@ public class RenderingContext extends RenderingI18nContext {
 
   public void setDebug(boolean debug) {
     this.debug = debug;
+  }
+
+  public DesignationMode getDesignationMode() {
+    return designationMode;
+  }
+
+  public void setDesignationMode(DesignationMode designationMode) {
+    this.designationMode = designationMode;
   }
 
 }
