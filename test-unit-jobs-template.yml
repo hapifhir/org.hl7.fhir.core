@@ -13,6 +13,7 @@ jobs:
           JAVA_TOOL_OPTIONS: ${{unit.javaToolOptions}}
           skipJaCoCo: $[eq(${{unit.skipJaCoCo}}, true)]
           module: org.hl7.fhir.${{ replace(value, '_', '.') }}
+          classpath: org.hl7.fhir.${{ replace(value, '_', '/') }}
 
         steps:
         - task: Cache@2
@@ -48,11 +49,15 @@ jobs:
           inputs:
             targetPath: '$(Build.ArtifactStagingDirectory)/'
             artifactName: '${{value}}_full_logs_$(Build.BuildId)_$(Build.BuildNumber)_$(System.JobId).zip'
+        - bash: |
+            find ./${{ variables.module }}/target/classes -type f -not -path './${{ variables.module }}/target/classes/${{ variables.classpath }}/*' -delete
+            find ./${{ variables.module }}/target/classes -empty -type d -delete
+          displayName: 'Delete non-module classes.'
         - task: PublishBuildArtifacts@1
           displayName: 'Publish jacoco module artifacts'
           condition: eq(variables.skipJaCoCo, false)
           continueOnError: true
           inputs:
-            pathToPublish: '$(System.DefaultWorkingDirectory)/${{ variables.module }}/target/site/'
+            pathToPublish: '$(System.DefaultWorkingDirectory)/${{ variables.module }}/target/'
             parallel: true
             artifactName: '${{ variables.module }}_target'

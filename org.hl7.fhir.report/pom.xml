@@ -46,6 +46,11 @@
             <artifactId>org.hl7.fhir.validation</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.validation.cli</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
