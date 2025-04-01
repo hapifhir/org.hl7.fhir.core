@@ -81,7 +81,7 @@ parameters:
   - name: sourceDirectories
     displayName: Source directories for test coverage reporting
     type: string
-    default: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.utilities/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.dstu2/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.dstu2016may/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.dstu3/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.r4/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.r4b/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.r5/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.convertors/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/src/main/java/'
+    default: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.utilities/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.dstu2/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.dstu2016may/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.dstu3/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.r4/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.r4b/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.r5/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.convertors/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/src/main/java/;$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation.cli/src/main/java/'
   - name: verboseCoverage
     displayName: Enable Verbose Coverage Reporting
     type: boolean
@@ -147,12 +147,12 @@ jobs:
               buildType: 'current'
               downloadType: 'single'
               artifactName: "org.hl7.fhir.${{ replace(module, '_', '.') }}_target"
-              downloadPath: '$(System.DefaultWorkingDirectory)/'
+              downloadPath: '$(Agent.TempDirectory)/'
           # Copy contents from downloaded artifact directory to final target directory.
           - task: CopyFiles@2
             condition: always()
             inputs:
-              sourceFolder: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ module }}_target/'
+              sourceFolder: "$(Agent.TempDirectory)/org.hl7.fhir.${{ replace(module, '_', '.') }}_target/"
               contents: '**'
               targetFolder: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ replace(module, '_', '.') }}/target/site"
       - task: Maven@4
