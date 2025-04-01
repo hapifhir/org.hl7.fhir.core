@@ -49,7 +49,7 @@ jobs:
             targetPath: '$(Build.ArtifactStagingDirectory)/'
             artifactName: '${{value}}_full_logs_$(Build.BuildId)_$(Build.BuildNumber)_$(System.JobId).zip'
         - task: PublishBuildArtifacts@1
-          displayName: 'Publish generated build files'
+          displayName: 'Publish jacoco module artifacts'
           condition: eq(variables.skipJaCoCo, false)
           continueOnError: true
           inputs:
