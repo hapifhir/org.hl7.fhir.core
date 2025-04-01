@@ -154,7 +154,7 @@ jobs:
             inputs:
               sourceFolder: "$(Agent.TempDirectory)/org.hl7.fhir.${{ replace(module, '_', '.') }}_target/"
               contents: '**'
-              targetFolder: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ replace(module, '_', '.') }}/target/site"
+              targetFolder: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ replace(module, '_', '.') }}/target"
       - task: Maven@4
         inputs:
           mavenPomFile: 'pom.xml'
