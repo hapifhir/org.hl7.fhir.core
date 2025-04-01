@@ -50,8 +50,8 @@ jobs:
             targetPath: '$(Build.ArtifactStagingDirectory)/'
             artifactName: '${{value}}_full_logs_$(Build.BuildId)_$(Build.BuildNumber)_$(System.JobId).zip'
         - bash: |
-            find ./${{ variables.module }}/target/classes -type f -not -path './${{ variables.module }}/target/classes/${{ variables.classpath }}/*' -delete
-            find ./${{ variables.module }}/target/classes -empty -type d -delete
+            find $(System.DefaultWorkingDirectory)/${{ variables.module }}/target/classes -type f -not -path '$(System.DefaultWorkingDirectory)/${{ variables.module }}/target/classes/${{ variables.classpath }}/*' -delete
+            find $(System.DefaultWorkingDirectory)/${{ variables.module }}/target/classes -empty -type d -delete
           displayName: 'Delete non-module classes.'
         - task: PublishBuildArtifacts@1
           displayName: 'Publish jacoco module artifacts'
