@@ -4645,7 +4645,7 @@ msgstr "Inactif"
 # VALUE_SET_INC
 #: VALUE_SET_INC
 msgid "Include"
-msgstr ""
+msgstr "Inclus"
 
 # VALUE_SET_INCLUDED_INTO
 #: VALUE_SET_INCLUDED_INTO
@@ -4795,7 +4795,7 @@ msgstr "Système"
 # VALUE_SET_THESE_CODES_DEF
 #: VALUE_SET_THESE_CODES_DEF
 msgid "these codes as defined in"
-msgstr "ces codes sont définis dans"
+msgstr "les codes sont définis dans"
 
 # VALUE_SET_TOO_COSTLY
 #: VALUE_SET_TOO_COSTLY
