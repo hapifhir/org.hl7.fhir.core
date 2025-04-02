@@ -4645,7 +4645,7 @@ msgstr "Inactif"
 # VALUE_SET_INC
 #: VALUE_SET_INC
 msgid "Include"
-msgstr "Inclus"
+msgstr "Inclut"
 
 # VALUE_SET_INCLUDED_INTO
 #: VALUE_SET_INCLUDED_INTO
