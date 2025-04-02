@@ -1,9 +1,7 @@
 package org.hl7.fhir.validation;
 
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -22,7 +20,6 @@ public class TransformSupportServices implements ITransformerServices {
   private final PrintWriter mapLog;
   private final SimpleWorkerContext context;
   private List<Base> outputs;
-  private Map<String, Base> referenceCache;
 
   public TransformSupportServices(List<Base> outputs,
                                   PrintWriter mapLog,
@@ -30,7 +27,6 @@ public class TransformSupportServices implements ITransformerServices {
     this.outputs = outputs;
     this.mapLog = mapLog;
     this.context = context;
-    this.referenceCache = new HashMap<String, Base>();
   }
 
   @Override
@@ -58,19 +54,10 @@ public class TransformSupportServices implements ITransformerServices {
     ConceptMapEngine cme = new ConceptMapEngine(context);
     return cme.translate(source, conceptMapUrl);
   }
-  
-  public void addToReferenceCache(Base res) {
-    // PoC: Just adding Resource/id for demonstration purposes.
-    // TODO: add other options (see BaseValidator.resolveInBundle() how to correctly resolve within a Bundle)
-    this.referenceCache.put(res.fhirType() + "/" + res.getIdBase(), res);
-  }
 
   @Override
   public Base resolveReference(Object appContext, String url) throws FHIRException {
-    Base r = referenceCache.get(url);
-    if(r != null)
-      return r;
-    throw new FHIRException("resolveReference is only supported for Bundles");
+    throw new FHIRException("resolveReference is not supported yet");
   }
 
   @Override
