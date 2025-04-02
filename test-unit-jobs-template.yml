@@ -50,8 +50,6 @@ jobs:
             targetPath: '$(Build.ArtifactStagingDirectory)/'
             artifactName: '${{value}}_full_logs_$(Build.BuildId)_$(Build.BuildNumber)_$(System.JobId).zip'
         - bash: |
-            echo $(System.DefaultWorkingDirectory)/${{ variables.module }}/target/classes
-            echo $(System.DefaultWorkingDirectory)/${{ variables.module }}/target/classes/${{ variables.classpath }}/
             find $(System.DefaultWorkingDirectory)/${{ variables.module }}/target/classes -type f -not -path '$(System.DefaultWorkingDirectory)/${{ variables.module }}/target/classes/${{ variables.classpath }}/*' -delete
             find $(System.DefaultWorkingDirectory)/${{ variables.module }}/target/classes -empty -type d -delete
           condition: ne( variables['Agent.OS'], 'Windows_NT' )
