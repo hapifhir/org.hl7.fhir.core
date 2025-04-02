@@ -3560,7 +3560,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (type.equals("canonical")) {
           ReferenceValidationPolicy rp = policyAdvisor.policyForReference(this, valContext, path, url, refType);
           if (rp == ReferenceValidationPolicy.CHECK_EXISTS || rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE) {
-            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url) && ok;
+            ok = warningOrError(isKnownSpace(url), errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url) && ok;
           } else {
             hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
           }
@@ -3614,6 +3614,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return ok;
+  }
+
+  private boolean isKnownSpace(String url) {
+    return url.startsWith("http://hl7.org/fhir") || url.startsWith("http://terminology.hl7.org") || url.startsWith("http://fhir.org/guides");
   }
 
   private Set<String> listExpectedCanonicalTypes(ElementDefinition context) {
@@ -5437,7 +5441,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           anyFound = true;
       }
       if (!anyFound) {
-          throw new DefinitionException(context.formatMessagePlural(slicer.getSlicing().getDiscriminator().size(), I18nConstants.Could_not_match_discriminator_for_slice_in_profile, discriminators, ed.getId(), profile.getVersionedUrl(), discriminators));
+          throw new DefinitionException(context.formatMessagePlural(slicer.getSlicing().getDiscriminator().size(), I18nConstants.Could_not_match_discriminator_for_slice_in_profile, 
+              CommaSeparatedStringBuilder.join("|", discriminators), ed.getId(), profile.getVersionedUrl(), discriminators));
       }
 
       try {
