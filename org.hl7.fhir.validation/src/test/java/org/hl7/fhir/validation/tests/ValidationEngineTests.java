@@ -231,6 +231,7 @@ public class ValidationEngineTests {
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, FhirPublication.STU3, "3.0.2");
     CacheVerificationLogger logger = new CacheVerificationLogger();
     ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
+    ve.setAllowExampleUrls(true);
     if (!TestUtilities.silent)
       System.out.println("  .. load USCore");
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "observation301.xml"), null);
