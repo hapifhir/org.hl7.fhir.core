@@ -469,6 +469,10 @@ public class SnapShotGenerationTests {
       objects.add(Arguments.of(t.getId(), t, context));
       test = XMLUtil.getNextSibling(test);
     }
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
+    NpmPackage npm = pcm.loadPackage("hl7.fhir.uv.sdc");
+    System.out.println("loading SDC "+npm.version());
+    TestingUtilities.getSharedWorkerContext().loadFromPackage(npm, null);
     return objects.stream();
   }
 
