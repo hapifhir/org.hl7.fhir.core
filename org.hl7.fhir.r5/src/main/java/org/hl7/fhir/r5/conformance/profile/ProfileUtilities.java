@@ -111,6 +111,7 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -855,7 +856,14 @@ public class ProfileUtilities {
           System.out.println("Differential: ");
           int i = 0;
           for (ElementDefinition ed : derived.getDifferential().getElement()) {
-            System.out.println(" "+Utilities.padLeft(Integer.toString(i), ' ', 3)+" "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+            System.out.println(" "+Utilities.padLeft(Integer.toString(i), ' ', 3)+" "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed));
+            i++;
+          }
+          System.out.println("Diff (processed): ");
+          i = 0;
+          for (ElementDefinition ed : diff.getElement()) {
+            System.out.println(" "+Utilities.padLeft(Integer.toString(i), ' ', 3)+" "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+
+                " -> "+(destInfo(ed, derived.getSnapshot().getElement())));
             i++;
           }
           System.out.println("Snapshot: ");
@@ -1060,6 +1068,16 @@ public class ProfileUtilities {
     derived.setUserData(UserDataNames.SNAPSHOT_GENERATED_MESSAGES, messages); // used by the publisher
   }
 
+
+  private String destInfo(ElementDefinition ed, List<ElementDefinition> snapshot) {
+    ElementDefinition sed = (ElementDefinition) ed.getUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT);
+    if (sed == null) {
+      return "(null)";
+    } else {
+      int index = snapshot.indexOf(sed);
+      return ""+index+" "+sed.getId();
+    }
+  }
 
   private ElementDefinition findTypeSlice(List<ElementDefinition> list, int i, String path, String typeCode) {
     for (int j = i+1; j < list.size(); j++) {
@@ -4778,6 +4796,23 @@ public class ProfileUtilities {
     if (outcome.hasBinding()) {
       outcome.getBinding().getExtension().removeIf(ext -> Utilities.existsInList(ext.getUrl(), ProfileUtilities.NON_INHERITED_ED_URLS));      
     }
+  }
+
+  public static boolean hasObligations(StructureDefinition sd) {
+    if (sd.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE)) {
+      return true;
+    }
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      if (ed.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE)) {
+        return true;
+      }
+      for (TypeRefComponent tr : ed.getType()) {
+        if (tr.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 }
