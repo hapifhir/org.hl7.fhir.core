@@ -6929,5 +6929,5 @@ public class FHIRPathEngine {
   public void setEmitSQLonFHIRWarning(boolean emitSQLonFHIRWarning) {
     this.emitSQLonFHIRWarning = emitSQLonFHIRWarning;
   }
-
+  
 }
