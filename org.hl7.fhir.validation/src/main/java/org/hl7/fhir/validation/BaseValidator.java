@@ -532,6 +532,14 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return thePass;
   }
 
+  protected boolean rule(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, List<ValidationMessage> details, String theMessage, Object... theMessageArguments) {
+    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage)) {
+      String message = context.formatMessage(theMessage, theMessageArguments);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage).setSliceInfo(details);
+    }
+    return thePass;
+  }
+
   /**
    * Test a rule and add a {@link IssueSeverity#ERROR} validation message if the validation fails
    * 
@@ -792,6 +800,14 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
       String message = context.formatMessage(msg, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.WARNING, msg);
+    }
+    return thePass;
+  }
+
+  protected boolean warning(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, List<ValidationMessage> details, String msg, Object... theMessageArguments) {
+    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
+      String message = context.formatMessage(msg, theMessageArguments);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.WARNING, msg).setSliceInfo(details);
     }
     return thePass;
   }
