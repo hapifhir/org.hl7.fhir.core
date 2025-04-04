@@ -616,7 +616,7 @@ msgstr ""
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
-msgid "This code system <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
+msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
 msgstr ""
 
 # CODESYSTEM_DEPRECATED
@@ -3826,7 +3826,7 @@ msgstr ""
 
 # STRUC_DEF_PROF_COMP
 #: STRUC_DEF_PROF_COMP
-msgid "This profile compiles with the profile"
+msgid "This profile complies with the profile"
 msgstr ""
 
 # STRUC_DEF_PROF_REQ
@@ -4742,6 +4742,11 @@ msgstr ""
 # VALUE_SET_NZ
 #: VALUE_SET_NZ
 msgid "New Zealand Edition"
+msgstr ""
+
+# VALUE_SET_OTHER_DISPLAY
+#: VALUE_SET_OTHER_DISPLAY
+msgid "Other Display ({0})"
 msgstr ""
 
 # VALUE_SET_REGEX
