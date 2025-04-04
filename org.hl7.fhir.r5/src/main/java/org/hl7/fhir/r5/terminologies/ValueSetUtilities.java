@@ -592,5 +592,39 @@ public class ValueSetUtilities extends TerminologyUtilities {
     }
   }
 
+  public static Set<String> checkExpansionSubset(ValueSet vs1, ValueSet vs2) {
+    Set<String> codes = new HashSet<>();
+    checkCodes(codes, vs2.getExpansion().getContains(), vs1.getExpansion().getContains());
+    return codes;
+  }
+
+  private static void checkCodes(Set<String> codes, List<ValueSetExpansionContainsComponent> listS, List<ValueSetExpansionContainsComponent> listT) {
+    for (ValueSetExpansionContainsComponent c : listS) {
+      ValueSetExpansionContainsComponent t = findContained(c, listT);
+      if (t == null) {
+        codes.add(c.getCode());
+      }
+      if (c.hasContains()) {
+        checkCodes(codes, c.getContains(), listT);
+      }
+    }
+    
+  }
+
+  private static ValueSetExpansionContainsComponent findContained(ValueSetExpansionContainsComponent c, List<ValueSetExpansionContainsComponent> listT) {
+    for (ValueSetExpansionContainsComponent t : listT) {
+      if (t.getSystem().equals(c.getSystem()) && t.getCode().equals(c.getCode())) {
+        return t;
+      }
+      if (t.hasContains()) {
+        ValueSetExpansionContainsComponent tt = findContained(c, t.getContains());
+        if (tt != null) {
+          return tt;
+        }
+      }
+    }
+    return null;
+  }
+
   
 }

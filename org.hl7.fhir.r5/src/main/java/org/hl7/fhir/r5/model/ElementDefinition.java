@@ -13156,6 +13156,19 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
   public String getIdOrPath() {
     return hasId() ? getId() : getPath();
   }
+
+  public int getMaxAsInt() {
+    return "*".equals(getMax()) ? Integer.MAX_VALUE : Integer.parseInt(getMax());
+  }
+
+  public TypeRefComponent getByType(String code) {
+    for (TypeRefComponent tr : getType()) {
+      if (tr.getWorkingCode().equals(code)) {
+        return tr;
+      }
+    }
+    return null;
+  }
   
 // end addition
 
