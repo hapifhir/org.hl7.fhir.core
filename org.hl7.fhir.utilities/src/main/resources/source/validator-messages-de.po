@@ -927,10 +927,10 @@ msgstr "Enthaltene Ressource scheint keine FHIR-Ressource zu sein (unbekannter N
 
 # Could_not_match_discriminator_for_slice_in_profile
 #: Could_not_match_discriminator_for_slice_in_profile
-msgid "Could not match discriminator ({0}) for slice {1} in profile {2} - the discriminator {3} does not have fixed value, binding or existence assertions"
-msgid_plural "Could not match any discriminators ({1}) for slice {2} in profile {3} - None of the {0} discriminators {4} have fixed value, binding or existence assertions"
-msgstr[0] "Konnte nicht mit dem Diskriminator ({0}) f\u00fcr Slice {1} in Profil {2} \u00fcbereinstimmen - der Diskriminator {3} hat keinen fixed Value, kein Binding oder existence assertions"
-msgstr[1] "Konnte keinen Diskriminator ({1}) f\u00fcr Slice {2} im Profil {3} zuordnen - Keiner der Diskriminatoren {4} hat einen fixed value, eine Binding oder existence assertions"
+msgid "Could not match discriminator ({1}) for slice {2} in profile {3} - the discriminator {4} does not have fixed value, binding or existence assertions"
+msgid_plural "Could not match any of the {0} discriminators for slice {2} in profile {3} - None of the {1} discriminators {4} have fixed value, binding or existence assertions"
+msgstr[0] "!!Konnte nicht mit dem Diskriminator ({0}) f\u00fcr Slice {1} in Profil {2} \u00fcbereinstimmen - der Diskriminator {3} hat keinen fixed Value, kein Binding oder existence assertions"
+msgstr[1] "!!Konnte keinen Diskriminator ({1}) f\u00fcr Slice {2} im Profil {3} zuordnen - Keiner der Diskriminatoren {4} hat einen fixed value, eine Binding oder existence assertions"
 
 # DISCRIMINATOR_BAD_PATH
 #: DISCRIMINATOR_BAD_PATH
@@ -1807,6 +1807,11 @@ msgstr ""
 msgid "The ImplementationGuide is based on FHIR version {0} but package {1} is based on FHIR version {2}. In general, this version mismatch should be avoided - some tools will try to make this work with variable degrees of success, but others will not even try"
 msgstr ""
 
+# IG_DEPENDENCY_VERSION_WARNING_OLD
+#: IG_DEPENDENCY_VERSION_WARNING_OLD
+msgid "The ImplementationGuide uses package {0} released on {2}, but the most recent appropriate version is {1}. This reference is getting old and the more recent version should be considered"
+msgstr ""
+
 # IG_HL7_FMM_SHOULD
 #: IG_HL7_FMM_SHOULD
 msgid "HL7 Implementation Guides should state their maturity explicitly using the extension http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm"
@@ -2027,9 +2032,9 @@ msgstr "Die Ressource hat eine language, aber das XHTML hat kein lang-Tag (ben\u
 msgid "Resource has a language, but the XHTML does not have an xml:lang tag (needs both lang and xml:lang - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues)"
 msgstr "Die Ressource hat eine language, aber das XHTML hat kein xml:lang-Tag (ben\u00f6tigt sowohl lang als auch xml:lang - siehe https://www.w3.org/TR/i18n-html-tech-lang/#langvalues)"
 
-# MEASURE_MR_GRPST_POP_UNK_CODE
-#: MEASURE_MR_GRPST_POP_UNK_CODE
-msgid "The code for this group stratifier has no match in the measure definition"
+# MEASURE_MR_GRP_CODE_MISMATCH
+#: MEASURE_MR_GRP_CODE_MISMATCH
+msgid "The linkId ''{0}'' links this group to a measure group that has a different code (''{1}'' vs ''{2}'')"
 msgstr ""
 
 # MEASURE_MR_GRP_DUPL_CODE
@@ -2039,13 +2044,23 @@ msgstr "Der Code f\u00fcr diese Gruppe wird in einer anderen Gruppe dupliziert"
 
 # MEASURE_MR_GRP_MISSING_BY_CODE
 #: MEASURE_MR_GRP_MISSING_BY_CODE
-msgid "The MeasureReport does not include a group for the group ''{0}''"
-msgstr "Der MeasureReport enth\u00e4lt keine Gruppe f\u00fcr die Gruppe ''{0}''"
+msgid "The MeasureReport does not include a group for the group with code ''{0}''"
+msgstr "!!Der MeasureReport enth\u00e4lt keine Gruppe f\u00fcr die Gruppe ''{0}''"
+
+# MEASURE_MR_GRP_MISSING_BY_CODE_R5
+#: MEASURE_MR_GRP_MISSING_BY_CODE_R5
+msgid "The MeasureReport does not include a group for the group with linkId ''{1}'' and code ''{0}''"
+msgstr ""
 
 # MEASURE_MR_GRP_NO_CODE
 #: MEASURE_MR_GRP_NO_CODE
 msgid "Group should have a code that matches the group definition in the measure"
 msgstr "Die Gruppe sollte einen Code haben, der mit der Gruppendefinition  der Measure \u00fcbereinstimmt."
+
+# MEASURE_MR_GRP_NO_CODE_R5
+#: MEASURE_MR_GRP_NO_CODE_R5
+msgid "Group should have a code or linkId that matches the group definition in the measure"
+msgstr ""
 
 # MEASURE_MR_GRP_NO_USABLE_CODE
 #: MEASURE_MR_GRP_NO_USABLE_CODE
@@ -2056,6 +2071,16 @@ msgstr "Keiner der bereitgestellten Codes kann zum Vergleich herangezogen werden
 #: MEASURE_MR_GRP_NO_WRONG_CODE
 msgid "The code provided ({0}) does not match the code specified in the measure report ({1})"
 msgstr "Der angegebene Code ({0}) stimmt nicht mit dem im Measure-Report angegebenen Code \u00fcberein ({1})"
+
+# MEASURE_MR_GRP_NO_WRONG_LINKID
+#: MEASURE_MR_GRP_NO_WRONG_LINKID
+msgid "The linkId provided ({0}) does not match the code specified in the measure report ({1})"
+msgstr ""
+
+# MEASURE_MR_GRP_POP_CODE_MISMATCH
+#: MEASURE_MR_GRP_POP_CODE_MISMATCH
+msgid "The linkId ''{0}'' links this group population to a measure group population that has a different code (''{1}'' vs ''{2}'')"
+msgstr ""
 
 # MEASURE_MR_GRP_POP_COUNT_CANT_CHECK
 #: MEASURE_MR_GRP_POP_COUNT_CANT_CHECK
@@ -2092,10 +2117,20 @@ msgstr ""
 msgid "The code for this group population is duplicated with another group"
 msgstr "Der Code f\u00fcr diese Populationsgruppe wird in einer anderen Gruppe dupliziert"
 
+# MEASURE_MR_GRP_POP_MISSING_BY_CODE
+#: MEASURE_MR_GRP_POP_MISSING_BY_CODE
+msgid "The MeasureReport does not include a population for the population with linkId ''{0}'' and code ''{1}''"
+msgstr ""
+
 # MEASURE_MR_GRP_POP_NO_CODE
 #: MEASURE_MR_GRP_POP_NO_CODE
 msgid "Group should have a code that matches the group population definition in the measure"
 msgstr "Die Gruppe sollte einen Code haben, der mit der Definition der Gruppenpopulation der Measure \u00fcbereinstimmt."
+
+# MEASURE_MR_GRP_POP_NO_CODE_R5
+#: MEASURE_MR_GRP_POP_NO_CODE_R5
+msgid "Group should have a code or linkId that matches the group population definition in the measure"
+msgstr ""
 
 # MEASURE_MR_GRP_POP_NO_COUNT
 #: MEASURE_MR_GRP_POP_NO_COUNT
@@ -2112,10 +2147,60 @@ msgstr "Berichte, deren Typ nicht ''subject-list'' ist, sollten keine Subjekte e
 msgid "The code for this group population has no match in the measure definition"
 msgstr "Der Code f\u00fcr diese Populationsgruppe hat keine Entsprechung in der Measuredefinition"
 
+# MEASURE_MR_GRP_POP_UNK_LINKID
+#: MEASURE_MR_GRP_POP_UNK_LINKID
+msgid "The linkId ''{0}'' for this group population has no match in the measure definition"
+msgstr ""
+
+# MEASURE_MR_GRP_STRAT_CODE_MISMATCH
+#: MEASURE_MR_GRP_STRAT_CODE_MISMATCH
+msgid "The linkId ''{0}'' links this group stratifier to a measure group that has a different code (''{1}'' vs ''{2}'')"
+msgstr ""
+
+# MEASURE_MR_GRP_STRAT_DUPL_CODE
+#: MEASURE_MR_GRP_STRAT_DUPL_CODE
+msgid "The code for this group stratifier is duplicated with another group"
+msgstr ""
+
+# MEASURE_MR_GRP_STRAT_MISSING_BY_CODE
+#: MEASURE_MR_GRP_STRAT_MISSING_BY_CODE
+msgid "The MeasureReport does not include a stratifier for the stratifier with code ''{0}'' (id = ''{2}'')"
+msgstr ""
+
+# MEASURE_MR_GRP_STRAT_MISSING_BY_CODE_R5
+#: MEASURE_MR_GRP_STRAT_MISSING_BY_CODE_R5
+msgid "The MeasureReport does not include a stratifier for the stratifier with linkId ''{1}'' and code ''{0}'' (id = ''{2}'')"
+msgstr ""
+
+# MEASURE_MR_GRP_STRAT_NO_CODE
+#: MEASURE_MR_GRP_STRAT_NO_CODE
+msgid "Group should have a code that matches the group stratifier definition in the measure"
+msgstr ""
+
+# MEASURE_MR_GRP_STRAT_NO_CODE_R5
+#: MEASURE_MR_GRP_STRAT_NO_CODE_R5
+msgid "Group should have a code or linkId that matches the group stratifier definition in the measure"
+msgstr ""
+
+# MEASURE_MR_GRP_STRAT_UNK_CODE
+#: MEASURE_MR_GRP_STRAT_UNK_CODE
+msgid "The code for this group stratifier has no match in the measure definition"
+msgstr ""
+
+# MEASURE_MR_GRP_STRAT_UNK_LINKID
+#: MEASURE_MR_GRP_STRAT_UNK_LINKID
+msgid "The linkId ''{0}'' for this group stratifier has no match in the measure definition"
+msgstr ""
+
 # MEASURE_MR_GRP_UNK_CODE
 #: MEASURE_MR_GRP_UNK_CODE
-msgid "The code for this group has no match in the measure definition"
-msgstr "Der Code f\u00fcr diese Gruppe hat keine Entsprechung in der Measure- Definition"
+msgid "The code ''{0}'' for this group has no match in the measure definition"
+msgstr "!!Der Code f\u00fcr diese Gruppe hat keine Entsprechung in der Measure- Definition"
+
+# MEASURE_MR_GRP_UNK_LINKID
+#: MEASURE_MR_GRP_UNK_LINKID
+msgid "The linkId ''{0}'' for this group has no match in the measure definition"
+msgstr ""
 
 # MEASURE_MR_M_SCORING_UNK
 #: MEASURE_MR_M_SCORING_UNK
@@ -2574,6 +2659,46 @@ msgid "The element definition ``{0}`` in the profile ''{1}'' requires that if a 
 msgid_plural "The element definition ``{0}`` in the profile ''{1}'' requires that if a value is not present, one of the extensions ''{2}'' must be present"
 msgstr[0] ""
 msgstr[1] ""
+
+# PROFILE_COMPLIES_WITH_BAD_ELEMENT
+#: PROFILE_COMPLIES_WITH_BAD_ELEMENT
+msgid "This profile does not comply with the profile because the {0} ''{1}'' is not allowed in that profile"
+msgstr ""
+
+# PROFILE_COMPLIES_WITH_BAD_TYPE
+#: PROFILE_COMPLIES_WITH_BAD_TYPE
+msgid "This profile does not comply with the profile because the type ''{0}'' is not allowed in that profile"
+msgstr ""
+
+# PROFILE_COMPLIES_WITH_MISSING
+#: PROFILE_COMPLIES_WITH_MISSING
+msgid "There is no profile entry for the element {0}"
+msgstr ""
+
+# PROFILE_COMPLIES_WITH_NOT_VALID
+#: PROFILE_COMPLIES_WITH_NOT_VALID
+msgid "The {0} value of ''{2}'' does not comply with the value ''{1}''"
+msgstr ""
+
+# PROFILE_COMPLIES_WITH_NO_VS
+#: PROFILE_COMPLIES_WITH_NO_VS
+msgid "This profile's compliance cannot be checked because the ValueSet ''{0}'' cannot be found"
+msgstr ""
+
+# PROFILE_COMPLIES_WITH_NO_VS_EXP
+#: PROFILE_COMPLIES_WITH_NO_VS_EXP
+msgid "This profile's compliance cannot be checked because the ValueSet ''{0}'' cannot be expanded: {1}"
+msgstr ""
+
+# PROFILE_COMPLIES_WITH_NO_VS_NO
+#: PROFILE_COMPLIES_WITH_NO_VS_NO
+msgid "This profile does not comply with the profile because the valueSet {0} includes codes not allowed in the other profile which has value set {1} (codes: {2})"
+msgstr ""
+
+# PROFILE_COMPLIES_WITH_WRONG_TYPE
+#: PROFILE_COMPLIES_WITH_WRONG_TYPE
+msgid "This profile does not comply with the profile because the types are different (''{0}'' and ''{1}'')"
+msgstr ""
 
 # Parser_Type__not_supported
 #: Parser_Type__not_supported
@@ -3262,6 +3387,21 @@ msgstr ""
 msgid ", because the value must match the fixed value define in ''{0}''"
 msgstr ""
 
+# SD_EXTENSION_COMPLIES_WITH_ERROR
+#: SD_EXTENSION_COMPLIES_WITH_ERROR
+msgid "This profile does not comply with profile ''{0}''"
+msgstr ""
+
+# SD_EXTENSION_COMPLIES_WITH_UNKNOWN
+#: SD_EXTENSION_COMPLIES_WITH_UNKNOWN
+msgid "The profile ''{0}'' cannot be found, so the validator cannot check that the profile does comply with it"
+msgstr ""
+
+# SD_EXTENSION_COMPLIES_WITH_WARNING
+#: SD_EXTENSION_COMPLIES_WITH_WARNING
+msgid "The validator cannot confirm that this profile complies with profile ''{0}''"
+msgstr ""
+
 # SD_EXTENSION_URL_MISMATCH
 #: SD_EXTENSION_URL_MISMATCH
 msgid "The fixed value for the extension URL is {1} which doesn''t match the canonical URL {0}"
@@ -3416,6 +3556,16 @@ msgstr "Der Pfad {1} muss mit dem Typ der Struktur {0} beginnen"
 #: SD_SPECIALIZED_TYPE_MATCHES
 msgid "The type {0} must not be the same as the type in the base structure {1} that is being specialised"
 msgstr "Der Typ {0} darf nicht derselbe sein wie der Typ in der Basisstruktur {1}, die spezialisiert wird"
+
+# SD_TABLE_PROHIBITED
+#: SD_TABLE_PROHIBITED
+msgid "The element {0} is prohibited on the element {1} in the context of a {2}"
+msgstr ""
+
+# SD_TABLE_REQUIRED
+#: SD_TABLE_REQUIRED
+msgid "The element {0} is required on the element {1} in the context of a {2}"
+msgstr ""
 
 # SD_TYPE_MISSING
 #: SD_TYPE_MISSING
@@ -4029,7 +4179,7 @@ msgstr "Die Base64-Gr\u00f6\u00dfe betr\u00e4gt {0} Bytes, was die angegebene Gr
 
 # TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS
 #: TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS
-msgid "There are multiple different potential matches for the url ''{0}''. It might be a good idea to fix to the correct version to reduce the likelihood of a wrong version being selected by an implementation/implementer. Using version ''{1}'', found versions: {2}"
+msgid "There are multiple different potential matches for the url ''{0}''. It might be a good idea to fix to the correct version to reduce the likelihood of a wrong version being selected by an implementation/implementer, or use the [IG Parameter `pin-canonicals`](https://hl7.org/fhir/tools/CodeSystem-ig-parameters.html). Using version ''{1}'', found versions: {2}. Suggested fix: change the canonical reference from ''{0}'' to ''{0}|{1}''"
 msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE
@@ -4056,6 +4206,21 @@ msgstr "Es wurden {0} Dezimalstellen gefunden, was die angegebene Grenze von {1}
 #: TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE
 msgid "if identifier.system is ''urn:ietf:rfc:3986'', then the identifier.value must be a full URI (e.g. start with a scheme), not ''{0}''"
 msgstr "Lautet identifier.system ''urn:ietf:rfc:3986'', dann muss identifier.value ein vollst\u00e4ndiger URI sein (z. B. mit einem Schema beginnen), nicht ''{0}''"
+
+# TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_WRONG_1
+#: TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_WRONG_1
+msgid "The URL ''https://tools.ietf.org/html/rfc4122'' is not correct for the identifier ''{0}''"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_WRONG_2
+#: TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_WRONG_2
+msgid "The URL ''https://tools.ietf.org/html/rfc4122'' should not be used with the UUID ''{0}''. Prefix the value with ''urn:uuid:'' and use the system value ''urn:ietf:rfc:3986'' instead"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_WRONG_3
+#: TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_WRONG_3
+msgid "The URL ''https://tools.ietf.org/html/rfc4122'' should not be used with the UUID ''{0}''. Use the system value ''urn:ietf:rfc:3986'' instead"
+msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML
 #: TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML
@@ -4797,6 +4962,11 @@ msgstr ""
 msgid "The types could not be determined from the extension context, so the invariant can''t be validated (types = {0})"
 msgstr ""
 
+# UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE
+#: UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE
+msgid "The system {0} filter with property = {1}, op = {2} has no value"
+msgstr ""
+
 # UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__
 #: UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__
 msgid "Unable to handle system {0} property filter with op = {1}"
@@ -5324,6 +5494,31 @@ msgstr ""
 msgid "Version ''{0}'' contains a ''#'', which as this character is used in some URLs to separate the version and the fragment id. When version does include '#', systems will not be able to parse the URL"
 msgstr ""
 
+# VALUESET_BAD_FILTER_EXPR_AND_VALUE
+#: VALUESET_BAD_FILTER_EXPR_AND_VALUE
+msgid "A filter can't have both a value and and expression for the value at the same time"
+msgstr ""
+
+# VALUESET_BAD_FILTER_EXPR_LANG
+#: VALUESET_BAD_FILTER_EXPR_LANG
+msgid "A ValueSet expression language must be ''text/fhirpath'' not ''{0}''"
+msgstr ""
+
+# VALUESET_BAD_FILTER_EXPR_OR_VALUE
+#: VALUESET_BAD_FILTER_EXPR_OR_VALUE
+msgid "A filter needs a value and or an expression for the value"
+msgstr ""
+
+# VALUESET_BAD_FILTER_EXPR_PARAM_NAME
+#: VALUESET_BAD_FILTER_EXPR_PARAM_NAME
+msgid "The filter parameter expression ''{0}'' refers to the unknown parameter ''{1}''"
+msgstr ""
+
+# VALUESET_BAD_FILTER_EXPR_VALUE
+#: VALUESET_BAD_FILTER_EXPR_VALUE
+msgid "The value of the expression ''{0}'' is not a valid FHIRPath: {1}"
+msgstr ""
+
 # VALUESET_BAD_FILTER_OP
 #: VALUESET_BAD_FILTER_OP
 msgid "The operation ''{0}'' is not allowed for property ''{1}'' in system ''{3}''. Allowed ops: {2}"
@@ -5484,6 +5679,11 @@ msgstr ""
 msgid "URI values in ValueSet.compose.include.system must be absolute. To reference a contained code system, use the full CodeSystem URL and reference it using the http://hl7.org/fhir/StructureDefinition/valueset-system extension"
 msgstr ""
 
+# VALUESET_INCLUDE_WRONG_CS_OID
+#: VALUESET_INCLUDE_WRONG_CS_OID
+msgid "It is not valid to refer to a CodeSystem by an identifier like this ''{0}''"
+msgstr ""
+
 # VALUESET_INCLUDE_WRONG_VS
 #: VALUESET_INCLUDE_WRONG_VS
 msgid "The system ''{0}'' is actually a value set"
@@ -5508,6 +5708,31 @@ msgstr ""
 #: VALUESET_NO_SYSTEM_WARNING
 msgid "No System specified, so Concepts and Filters can''t be checked"
 msgstr "!!Kein System angegeben, daher k\u00f6nnen Konzepte und Filter nicht \u00fcberpr\u00fcft werden"
+
+# VALUESET_PARAMETER_MISSING_BINDING_PARAMETER
+#: VALUESET_PARAMETER_MISSING_BINDING_PARAMETER
+msgid "The ValueSet ''{0}'' has a parameter ''{1}'' but there is no matching binding parameter"
+msgstr ""
+
+# VALUESET_PARAMETER_NAME_WARNING
+#: VALUESET_PARAMETER_NAME_WARNING
+msgid "ValueSet parameter names are recommended to start with ''p-'' but this is ''{0}''"
+msgstr ""
+
+# VALUESET_PARAMETER_NOT_USED
+#: VALUESET_PARAMETER_NOT_USED
+msgid "The value set parameter ''{0}'' is not used"
+msgstr ""
+
+# VALUESET_PARAMETER_NO_DOCO
+#: VALUESET_PARAMETER_NO_DOCO
+msgid "Without documentation, users likely won't be able to use the valueset parameter ''{0}'' correctly"
+msgstr ""
+
+# VALUESET_PARAMETER_UNRECOGNISED_BINDING_PARAMETER
+#: VALUESET_PARAMETER_UNRECOGNISED_BINDING_PARAMETER
+msgid "The binding parameter ''{0}'' is not recognised as a standard parameter or a parameter on the ValueSet ''{1}''"
+msgstr ""
 
 # VALUESET_REFERENCE_INVALID_TYPE
 #: VALUESET_REFERENCE_INVALID_TYPE
