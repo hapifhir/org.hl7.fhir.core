@@ -16,10 +16,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
-import org.hl7.fhir.utilities.http.HTTPResult;
-import org.hl7.fhir.utilities.http.ManagedWebAccess;
-import org.hl7.fhir.utilities.http.ManagedWebAccessor;
+import org.hl7.fhir.utilities.http.*;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
@@ -58,14 +55,35 @@ public class PackageClient {
     return Utilities.pathURL(address, id, ver);
   }
 
-  private String getNpmServerTarballUrl(String id, String ver) throws IOException {
-    String packageDescriptorUrl = Utilities.pathURL(address, id, ver);
-    JsonObject json;
+  private String getNpmServerTarballUrl(String id, String version) throws IOException {
+    JsonObject releaseJson = getReleaseJson(id, version);
+    JsonObject dist = releaseJson.getJsonObject("dist");
+    return dist.getJsonString("tarball").asString();
+  }
 
-      json = fetchJson(packageDescriptorUrl);
-      JsonObject dist = json.getJsonObject("dist");
-      return dist.getJsonString("tarball").asString();
+  /**
+   * Try getting the release based on id + version first.
+   * <br/>
+   * Some servers do not support this, so if we get a 404, we fall back to extracting this info from all available
+   * versions returned from just the id.
+   * **/
+  private JsonObject getReleaseJson(String id, String version) throws IOException {
+    final String packageReleaseUrl = Utilities.pathURL(address, id, version);
 
+    try {
+      return fetchJson(packageReleaseUrl);
+    } catch (IOException e) {
+      if (e.getCause() instanceof HTTPResultException) {
+        final HTTPResultException httpException = (HTTPResultException) e.getCause();
+        if (httpException.httpCode == 404) {
+          //
+          final String packageReleasesUrl = Utilities.pathURL(address, id);
+          final JsonObject packageReleases = fetchJson(packageReleasesUrl);
+          return packageReleases.getJsonObject("versions").getJsonObject(version);
+        }
+      }
+      throw new IOException("Unable to fetch package descriptor from " + packageReleaseUrl, e);
+    }
   }
 
   public InputStream fetch(PackageInfo info) throws IOException {
