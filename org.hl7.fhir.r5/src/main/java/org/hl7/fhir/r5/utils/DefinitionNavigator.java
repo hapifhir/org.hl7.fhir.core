@@ -258,6 +258,23 @@ public class DefinitionNavigator {
     // TODO Auto-generated method stub
     return null;
   }
+
+  public boolean sliced() {
+    return current().hasSlicing();
+  }
+
+  public DefinitionNavigator childByPath(String path) {
+    for (DefinitionNavigator child : children()) {
+      if (child.path().equals(path)) {
+        return child;
+      }
+    }
+    return null;
+  }
+
+  public boolean hasChildren() {
+    return !children().isEmpty();
+  }
   
 
 }
