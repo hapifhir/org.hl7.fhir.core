@@ -5485,7 +5485,7 @@ public class FHIRPathEngine {
           Property p = context.rootResource.getChildByName("contained");
           if (p != null) {
             for (Base c : p.getValues()) {
-              if (chompHash(s).equals(chompHash(c.getIdBase()))) {
+              if (t.equals(c.getIdBase())) {
                 res = c;
                 break;
               }
@@ -6928,17 +6928,6 @@ public class FHIRPathEngine {
 
   public void setEmitSQLonFHIRWarning(boolean emitSQLonFHIRWarning) {
     this.emitSQLonFHIRWarning = emitSQLonFHIRWarning;
-  }
-
-  /**
-   * Strips a leading hashmark (#) if present at the start of a string
-   */
-  private String chompHash(String theId) {
-    String retVal = theId;
-    while (retVal.startsWith("#")) {
-      retVal = retVal.substring(1);
-    }
-    return retVal;
   }
 
 }
