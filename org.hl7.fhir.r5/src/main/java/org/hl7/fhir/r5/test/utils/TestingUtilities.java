@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.fhir.ucum.UcumEssenceService;
+import org.hl7.fhir.r5.Constants;
 import org.hl7.fhir.r5.context.IContextResourceLoader;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -94,7 +95,7 @@ public class TestingUtilities extends BaseTestingUtilities {
         fcontext.loadFromPackage(utg, new TestPackageLoader(Utilities.strings("CodeSystem", "ValueSet")));
       } 
       if (!fcontext.hasPackage("hl7.fhir.uv.extensions", null)) {
-        NpmPackage ext = pcm.loadPackage("hl7.fhir.uv.extensions", "1.0.0");
+        NpmPackage ext = pcm.loadPackage("hl7.fhir.uv.extensions", Constants.EXTENSIONS_WORKING_VERSION);
         System.out.println("Loading Extensions: "+ext.name()+"#"+ext.version());
         fcontext.loadFromPackage(ext, new TestPackageLoader(Utilities.strings("CodeSystem", "ValueSet", "StructureDefinition")));
       } 
