@@ -5483,7 +5483,7 @@ public class FHIRPathEngine {
           Property p = context.rootResource.getChildByName("contained");
           if (p != null) {
             for (Base c : p.getValues()) {
-              if (chompHash(s).equals(chompHash(c.getIdBase()))) {
+              if (t.equals(c.getIdBase())) {
                 res = c;
                 break;
               }
@@ -5505,19 +5505,7 @@ public class FHIRPathEngine {
     return result;
   }
 
-  /**
-   * Strips a leading hashmark (#) if present at the start of a string
-   */
-  private String chompHash(String theId) {
-    String retVal = theId;
-    while (retVal.startsWith("#")) {
-      retVal = retVal.substring(1);
-    }
-    return retVal;
-  }
-
-  private List<Base> funcExtension(ExecutionContext context, List<Base> focus, ExpressionNode exp)
-      throws FHIRException {
+  private List<Base> funcExtension(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
     String url = nl.get(0).primitiveValue();
