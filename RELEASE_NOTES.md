@@ -1,6 +1,5 @@
 ## Validator Changes
 
-* no changes
 * Change value set validation to consider unknown concepts as errors not warnings
 * rework handling of unknown URLs outside HL7.org and fhir.org spaces
 * fix bugs processing extension slicing in the all slices slice
@@ -14,9 +13,9 @@
 * Parameterised Valueset validation + check for misuse of OIDs
 * Handle missing valueset filter value better
 
-
 ## Other code changes
 
+* Fix issue in R3 handling of internal references in FHIRPath reference evaluation
 * Update rendering-phrases-fr.po
 * Add SDC for snapshot generation test case
 * update preferred extension pack version
