@@ -29,7 +29,6 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -65,10 +64,6 @@ public class CompliesWithChecker {
   }
 
   private void checkCompliesWith(List<ValidationMessage> messages, String path, DefinitionNavigator claimee, DefinitionNavigator authority, boolean isSlice) {
-    // System.out.println("checkCompliesWith: "+path);
-    if (Utilities.charCount(path, '.') > 10) {
-      DebugUtilities.breakpoint();
-    }
     ElementDefinition c = claimee.current();
     ElementDefinition a = authority.current();
     if (checkElementComplies(messages, path, c, a, isSlice)) {
@@ -556,9 +551,6 @@ public class CompliesWithChecker {
   }
 
   private boolean compliesWith(DataType authority, DataType test) {
-    if (authority == null || test == null) {
-      DebugUtilities.breakpoint();
-    }
     if (!authority.fhirType().equals(test.fhirType())) {
       return false;
     }
