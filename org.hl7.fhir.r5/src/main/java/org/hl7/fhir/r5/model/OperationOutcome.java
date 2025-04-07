@@ -1381,9 +1381,9 @@ For resource issues, this will be a simple XPath limited to element names, repet
       public String toString() { 
         String srvr = hasExtension(ToolingExtensions.EXT_ISSUE_SERVER) ? " (from "+getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER)+")" : "";
         if (getExpression().size() == 1) { 
-          return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpression().get(0)+" "+getDiagnostics()+": "+getDetails().getText()+srvr; 
+          return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpression().get(0)+(hasDiagnostics() ? " "+getDiagnostics() : "")+": "+getDetails().getText()+srvr; 
         } else { 
-          return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpression()+" "+getDiagnostics()+": "+getDetails().getText()+srvr; 
+          return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpression()+(hasDiagnostics() ? " "+getDiagnostics() : "")+": "+getDetails().getText()+srvr; 
         } 
       } 
 
