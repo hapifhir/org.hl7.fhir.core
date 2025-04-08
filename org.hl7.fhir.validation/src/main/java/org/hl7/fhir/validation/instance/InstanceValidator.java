@@ -198,6 +198,7 @@ import org.hl7.fhir.validation.instance.type.ConceptMapValidator;
 import org.hl7.fhir.validation.instance.type.ImplementationGuideValidator;
 import org.hl7.fhir.validation.instance.type.MeasureValidator;
 import org.hl7.fhir.validation.instance.type.ObservationValidator;
+import org.hl7.fhir.validation.instance.type.OperationDefinitionValidator;
 import org.hl7.fhir.validation.instance.type.QuestionnaireValidator;
 import org.hl7.fhir.validation.instance.type.SearchParameterValidator;
 import org.hl7.fhir.validation.instance.type.StructureDefinitionValidator;
@@ -4324,10 +4325,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // special known URLs that can't be validated but are known to be valid
       return true;
     }
+
     warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, !isSuspiciousReference(ref), I18nConstants.REFERENCE_REF_SUSPICIOUS, ref);      
 
     BooleanHolder bh = new BooleanHolder();
-    ResolvedReference we = localResolve(ref, stack, errors, path, valContext.getRootResource(), valContext.getGroupingResource(), element, bh);
+    BooleanHolder stop = new BooleanHolder(false);
+    ResolvedReference we = localResolve(ref, stack, errors, path, valContext.getRootResource(), valContext.getGroupingResource(), element, bh, stop);
     ok = bh.ok() && ok;
     ReferenceDestinationType refType;
     if (ref.startsWith("#")) {
@@ -4353,7 +4356,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       boolean test = !Utilities.noString(query) && query.matches("\\?([_a-zA-Z][_a-zA-Z0-9]*=[^=&]*)(&([_a-zA-Z][_a-zA-Z0-9]*=[^=&]*))*");
           //("^\\?([\\w-]+(=[\\w-]*)?(&[\\w-]+(=[\\w-]*)?)*)?$"),
       ok = rule(errors, "2023-02-20", IssueType.INVALID, element.line(), element.col(), path, test, I18nConstants.REFERENCE_REF_QUERY_INVALID, ref) && ok;
-  
+    } else if (stop.ok()) {
+      hint(errors, "2025-04-08", IssueType.INFORMATIONAL, element.line(), element.col(), path, false, I18nConstants.REFERENCE_REF_REL_UNSOLVEABLE, ref);      
     } else if (pol.checkExists()) {
       if (we == null) {
         if (refType != ReferenceDestinationType.CONTAINED) {
@@ -5088,7 +5092,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return true;
   }
 
-  public ResolvedReference localResolve(String ref, NodeStack stack, List<ValidationMessage> errors, String path, Element rootResource, Element groupingResource, Element source, BooleanHolder bh) {
+  public ResolvedReference localResolve(String ref, NodeStack stack, List<ValidationMessage> errors, String path, Element rootResource, Element groupingResource, Element source, BooleanHolder bh, BooleanHolder stop) {
     if (ref.startsWith("#")) {
       // work back through the parent list, tracking the stack as we go 
       // really, there should only be one level for this (contained resources cannot contain
@@ -5144,30 +5148,31 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       while (focus != null) {
         // track the stack while we can
         if (focus.getSpecial() == SpecialElement.BUNDLE_ENTRY && fullUrl == null && focus != null && focus.getParentForValidator() != null && focus.getParentForValidator().getName().equals(ENTRY)) {
-          String type = focus.getParentForValidator().getChildValue(TYPE);
+          String type = focus.getParentForValidator().getParentForValidator().getChildValue(TYPE);
           fullUrl = focus.getParentForValidator().getChildValue(FULL_URL); // we don't try to resolve contained references across this boundary
-          if (fullUrl == null)
+          if (fullUrl == null) {
             bh.see(rule(errors, NO_RULE_DATE, IssueType.REQUIRED, focus.getParentForValidator().line(), focus.getParentForValidator().col(), focus.getParentForValidator().getPath(),
               Utilities.existsInList(type, "batch-response", "transaction-response") || fullUrl != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFULLURL));
+          } else if (!fullUrl.matches(Constants.URI_REGEX) && !Utilities.existsInList(type, "transaction", "batch") && !Utilities.isAbsoluteUrl(ref) && applyR5BundleRelativePolicy()) {
+            stop.set(true);
+          }
         }
         if (BUNDLE.equals(focus.getType())) {
           String type = focus.getChildValue(TYPE);
-          IndexedElement res = getFromBundle(focus, ref, fullUrl, errors, path, type, "transaction".equals(type), bh);
-          if (res == null) {
-            return null;
-          } else {
-            ResolvedReference rr = new ResolvedReference();
-            rr.setResource(res.getMatch());
-            rr.setFocus(res.getMatch());
-            rr.setExternal(false);
-            rr.setStack(new NodeStack(context, null, res.getMatch(), validationLanguage));
-            rr.setVia(stack);
-//                
-//                !stack.push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
-//              res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
-//              res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
-            rr.getStack().pathComment(rr.getResource().fhirType()+"/"+rr.getResource().getIdBase());
-            return rr;
+          if (!stop.ok()) {
+            IndexedElement res = getFromBundle(focus, ref, fullUrl, errors, path, type, Utilities.existsInList(type, "transaction", "batch"), bh);
+            if (res == null) {
+              return null;
+            } else {
+              ResolvedReference rr = new ResolvedReference();
+              rr.setResource(res.getMatch());
+              rr.setFocus(res.getMatch());
+              rr.setExternal(false);
+              rr.setStack(new NodeStack(context, null, res.getMatch(), validationLanguage));
+              rr.setVia(stack);
+              rr.getStack().pathComment(rr.getResource().fhirType()+"/"+rr.getResource().getIdBase());
+              return rr;
+            }
           }
         }
         if (focus.getSpecial() == SpecialElement.PARAMETER && focus.getParentForValidator() != null) {
@@ -5189,23 +5194,37 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         String type = groupingResource.getChildValue(TYPE);
         Element entry = getEntryForSource(groupingResource, source);
         fullUrl = entry.getChildValue(FULL_URL);
-        IndexedElement res = getFromBundle(groupingResource, ref, fullUrl, errors, path, type, "transaction".equals(type), bh);
-        if (res == null) {
-          return null;
+        if (!fullUrl.matches(org.hl7.fhir.r5.tools.Constants.URI_REGEX) && !Utilities.existsInList(type, "transaction", "batch") && !Utilities.isAbsoluteUrl(ref) && applyR5BundleRelativePolicy()) {
+          stop.set(true);
         } else {
-          ResolvedReference rr = new ResolvedReference();
-          rr.setResource(res.getMatch());
-          rr.setFocus(res.getMatch());
-          rr.setExternal(false);
-          rr.setStack(new NodeStack(context, null, rootResource, validationLanguage).push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
-            res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
-            res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
-          rr.getStack().pathComment(rr.getResource().fhirType()+"/"+rr.getResource().getIdBase());
-          return rr;
+          IndexedElement res = getFromBundle(groupingResource, ref, fullUrl, errors, path, type, Utilities.existsInList(type, "transaction", "batch"), bh);
+          if (res == null) {
+            return null;
+          } else {
+            ResolvedReference rr = new ResolvedReference();
+            rr.setResource(res.getMatch());
+            rr.setFocus(res.getMatch());
+            rr.setExternal(false);
+            rr.setStack(new NodeStack(context, null, rootResource, validationLanguage).push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
+                res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
+                    res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
+            rr.getStack().pathComment(rr.getResource().fhirType()+"/"+rr.getResource().getIdBase());
+            return rr;
+          }
         }
       }
     }
     return null;
+  }
+
+  private boolean applyR5BundleRelativePolicy() {
+    switch (settings.getR5BundleRelativeReferencePolicy()) {
+    case ALWAYS: return true;
+    case NEVER: return false;
+    case DEFAULT:
+    default:
+      return VersionUtilities.isR5Plus(context.getVersion());
+    }
   }
 
   private Element findParameters(Element focus) {
@@ -5279,7 +5298,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
 
   private Element resolve(Object appContext, String ref, NodeStack stack, List<ValidationMessage> errors, String path, BooleanHolder bh) throws IOException, FHIRException {
-    Element local = localResolve(ref, stack, errors, path, null, null, null, bh).getFocus();
+    Element local = localResolve(ref, stack, errors, path, null, null, null, bh, new BooleanHolder()).getFocus();
     if (local != null)
       return local;
     if (fetcher == null)
@@ -6220,6 +6239,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return new CodeSystemValidator(this).validateCodeSystem(valContext, errors, element, stack, settings.withLanguage(stack.getWorkingLang())) && ok;
       } else if (element.getType().equals("ConceptMap")) {
         return new ConceptMapValidator(this).validateConceptMap(valContext, errors, element, stack, settings.withLanguage(stack.getWorkingLang())) && ok;
+      } else if (element.getType().equals("OperationDefinition")) {
+        return new OperationDefinitionValidator(this, fpe).validateOperationDefinition(valContext, errors, element, stack) && ok;
       } else if (element.getType().equals("SearchParameter")) {
         return new SearchParameterValidator(this, fpe).validateSearchParameter(errors, element, stack) && ok;
       } else if (element.getType().equals("StructureDefinition")) {

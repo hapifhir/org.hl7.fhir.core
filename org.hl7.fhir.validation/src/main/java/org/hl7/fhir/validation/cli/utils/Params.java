@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.services.ValidatorWatchMode;
@@ -137,6 +138,7 @@ public class Params {
   private static final String WATCH_SETTLE_TIME = "-watch-settle-time";
   public static final String NO_HTTP_ACCESS = "-no-http-access";
   public static final String AUTH_NONCONFORMANT_SERVERS = "-authorise-non-conformant-tx-servers";
+  public static final String R5_REF_POLICY = "r5-bundle-relative-reference-policy";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -427,6 +429,8 @@ public class Params {
         cliContext.setForPublication(true);
       } else if (args[i].equals(AI_SERVICE)) {
         cliContext.setAIService(args[++i]);
+      } else if (args[i].equals(R5_REF_POLICY)) {
+        cliContext.setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.fromCode(args[++i]));
       } else if (args[i].equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
         cliContext.setUnknownCodeSystemsCauseErrors(true);
       } else if (args[i].equals(NO_EXPERIMENTAL_CONTENT)) {
