@@ -327,6 +327,9 @@ public class DefinitionNavigator {
       if (child.current().getName().equals(name)) {
         return child;
       }
+      if (child.current().getName().startsWith(name+"[x]")) {
+        return child;
+      }
     }
     return null;
   }
