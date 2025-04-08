@@ -140,6 +140,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private static final int MAX_BATCH_VALIDATION_SIZE = 1000;
 
   private List<ConceptMapRenderInstructions> renderingMaps = new ArrayList<ConceptMapRenderInstructions>();
+
+  private Map<String, String> oidMap;
   
 
   public void render(RenderingStatus status, XhtmlNode x, ValueSet vs, boolean header) throws FHIRFormatError, DefinitionException, IOException {
@@ -964,7 +966,11 @@ public class ValueSetRenderer extends TerminologyRenderer {
     td.attribute("style", "white-space:nowrap").addText(s);
     addCodeToTable(c.getAbstract(), c.getSystem(), c.getVersion(), c.getCode(), c.getDisplay(), td);
     td = tr.td();
-    td.addText(c.getSystem());
+    if (context.isOids()) {
+      td.addText(getOid(c.getSystem()));
+    } else {
+      td.addText(c.getSystem());
+    }
     td = tr.td();
     if (c.hasDisplayElement())
       td.addText(c.getDisplay());
@@ -1014,9 +1020,21 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
   }
 
-
-
-
+  private String getOid(String system) {
+    if (oidMap == null) {
+      oidMap = new HashMap<>();
+    }
+    String oid = oidMap.get(system);
+    if (oid == null) {
+      CodeSystem cs = context.getContext().fetchCodeSystem(system);
+      oid = CodeSystemUtilities.getOID(cs);
+      if (oid == null) {
+        oid = system;
+      }
+      oidMap.put(system, oid);
+    }
+    return oid;
+  }
 
   private String getPropertyValue(ValueSetExpansionContainsComponent c, String n) {
     for (ConceptPropertyComponent  cp : c.getProperty()) {
