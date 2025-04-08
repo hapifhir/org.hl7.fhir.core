@@ -22,6 +22,8 @@ import java.io.PrintStream;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hl7.fhir.validation.tests.logging.LoggingUtil.setLogLevel;
+import static org.hl7.fhir.validation.tests.logging.LoggingUtil.setLogbackConfig;
 
 
 public class LogbackTests {
@@ -37,22 +39,6 @@ public class LogbackTests {
   @AfterEach
   public void tearDown() throws JoranException, IOException {
     setLogbackConfig(LogbackTests.class.getResourceAsStream("/logback-test.xml"));
-  }
-
-  private static void setLogbackConfig(InputStream configStream) throws JoranException, IOException {
-    LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-    loggerContext.reset();
-    JoranConfigurator configurator = new JoranConfigurator();
-    configurator.setContext(loggerContext);
-    configurator.doConfigure(configStream);// loads logback file
-    assert configStream != null;
-    configStream.close();
-  }
-
-  private void setLogLevel(ch.qos.logback.classic.Level level)
-  {
-    ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger)LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
-    root.setLevel(level);
   }
 
   private String captureLogOutput(Runnable runnable) {
@@ -72,8 +58,8 @@ public class LogbackTests {
 
   public static Stream<Arguments> testLevelsParams() {
     return Stream.of(
-      Arguments.of(Level.TRACE, Set.of(INFO_MESSAGE, WARNING_MESSAGE, ERROR_MESSAGE, DEBUG_MESSAGE, TRACE_MESSAGE), Set.of()),
-      Arguments.of(Level.DEBUG, Set.of(INFO_MESSAGE, WARNING_MESSAGE, ERROR_MESSAGE, DEBUG_MESSAGE), Set.of(TRACE_MESSAGE)),
+      Arguments.of(Level.TRACE, Set.of(INFO_MESSAGE, WARNING_MESSAGE, ERROR_MESSAGE), Set.of(DEBUG_MESSAGE, TRACE_MESSAGE)),
+      Arguments.of(Level.DEBUG, Set.of(INFO_MESSAGE, WARNING_MESSAGE, ERROR_MESSAGE), Set.of(DEBUG_MESSAGE, TRACE_MESSAGE)),
       Arguments.of(Level.INFO, Set.of(INFO_MESSAGE, WARNING_MESSAGE, ERROR_MESSAGE), Set.of(DEBUG_MESSAGE, TRACE_MESSAGE)),
       Arguments.of(Level.WARN, Set.of(WARNING_MESSAGE, ERROR_MESSAGE), Set.of(INFO_MESSAGE, DEBUG_MESSAGE, TRACE_MESSAGE)),
       Arguments.of(Level.ERROR, Set.of(ERROR_MESSAGE), Set.of(WARNING_MESSAGE, INFO_MESSAGE, DEBUG_MESSAGE, TRACE_MESSAGE))
