@@ -30,7 +30,7 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
 
-public class ConceptMapValidator  extends BaseValidator {
+public class ConceptMapValidator extends BaseValidator {
 
   private static final int TOO_MANY_CODES_TO_VALIDATE = 500;
   

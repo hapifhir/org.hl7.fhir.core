@@ -21,6 +21,7 @@ import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.cli.services.ValidatorWatchMode;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
@@ -358,6 +359,10 @@ public class CliContext {
   private
   FhirFormat format;
 
+  @JsonProperty("r5BundleRelativeReferencePolicy")
+  @SerializedName("r5BundleRelativeReferencePolicy")
+  private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
+  
   @SerializedName("baseEngine")
   @JsonProperty("baseEngine")
   public String getBaseEngine() {
@@ -1106,13 +1111,21 @@ public class CliContext {
   public void setForPublication(boolean forPublication) {
     this.forPublication = forPublication;
   }
-  
+
   public String getAIService() {
     return aiService;
   }
 
   public void setAIService(String aiService) {
     this.aiService = aiService;
+  }
+  
+  public R5BundleRelativeReferencePolicy getR5BundleRelativeReferencePolicy() {
+    return r5BundleRelativeReferencePolicy;
+  }
+
+  public void setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
+    this.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
   }
 
   public boolean isAllowExampleUrls() {

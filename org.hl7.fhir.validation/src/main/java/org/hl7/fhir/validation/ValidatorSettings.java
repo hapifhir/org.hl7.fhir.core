@@ -21,7 +21,7 @@ public class ValidatorSettings extends ValidationOptions {
   private boolean warnOnDraftOrExperimental; // @configuration 
   private BestPracticeWarningLevel bpWarnings = BestPracticeWarningLevel.Warning; // @configuration
   private List<UsageContext> usageContexts = new ArrayList<UsageContext>(); // @configuration
-
+  
   public Source getSource() {
     return source;
   }

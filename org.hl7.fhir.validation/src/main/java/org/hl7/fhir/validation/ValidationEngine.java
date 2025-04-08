@@ -99,6 +99,7 @@ import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
@@ -244,6 +245,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private FHIRPathEngine fhirPathEngine;
   @Getter @Setter private IgLoader igLoader;
   @Getter @Setter private Coding jurisdiction;
+  @Getter @Setter private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy;
 
 
   private ContextUtilities cu = null;
@@ -298,6 +300,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     igLoader = other.igLoader;
     jurisdiction = other.jurisdiction;
     unknownCodeSystemsCauseErrors = other.unknownCodeSystemsCauseErrors;
+    r5BundleRelativeReferencePolicy = other.r5BundleRelativeReferencePolicy;
   }
   
   /**
@@ -933,6 +936,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setDoImplicitFHIRPathStringConversion(doImplicitFHIRPathStringConversion);
     validator.setCheckIPSCodes(checkIPSCodes);
     validator.setAIService(aiService);
+    validator.getSettings().setR5BundleRelativeReferencePolicy(r5BundleRelativeReferencePolicy);
     validator.setCacheFolder(context.getTxCache().getFolder());
     if (format == FhirFormat.SHC) {
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
