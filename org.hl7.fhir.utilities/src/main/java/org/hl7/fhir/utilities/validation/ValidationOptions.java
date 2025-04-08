@@ -313,11 +313,14 @@ public class ValidationOptions {
   }
 
   public void setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
+    if (r5BundleRelativeReferencePolicy == null) {
+      r5BundleRelativeReferencePolicy = R5BundleRelativeReferencePolicy.DEFAULT;
+    } 
     this.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
   }
 
   public ValidationOptions withR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
-    this.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
+    setR5BundleRelativeReferencePolicy(r5BundleRelativeReferencePolicy);
     return this;
   }
 
