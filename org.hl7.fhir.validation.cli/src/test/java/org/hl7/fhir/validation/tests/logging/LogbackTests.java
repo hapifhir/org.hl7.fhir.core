@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.tests;
+package org.hl7.fhir.validation.tests.logging;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
@@ -24,11 +24,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class LoggingTest {
-
-
-  public static final String OVERWRITTEN_LINE = "Overwritten line";
-  public static final String OVERWRITE_CONTENT = "XXXXXXXXXXXXXXXX";
+public class LogbackTests {
 
   public static final String INFO_MESSAGE = "info message";
   public static final String WARNING_MESSAGE = "warning message";
@@ -36,11 +32,11 @@ public class LoggingTest {
   public static final String DEBUG_MESSAGE = "debug message";
   public static final String TRACE_MESSAGE = "trace message";
 
-  Logger logger = LoggerFactory.getLogger(LoggingTest.class);
+  Logger logger = LoggerFactory.getLogger(LogbackTests.class);
 
   @AfterEach
   public void tearDown() throws JoranException, IOException {
-    setLogbackConfig(LoggingTest.class.getResourceAsStream("/logback-test.xml"));
+    setLogbackConfig(LogbackTests.class.getResourceAsStream("/logback-test.xml"));
   }
 
   private static void setLogbackConfig(InputStream configStream) throws JoranException, IOException {
@@ -102,7 +98,7 @@ public class LoggingTest {
 
   @Test
   public void testCustomConfig() throws JoranException, IOException {
-    setLogbackConfig(LoggingTest.class.getResourceAsStream("/custom-logback.xml"));
+    setLogbackConfig(LogbackTests.class.getResourceAsStream("/custom-logback.xml"));
     String output = captureLogOutput(this::logAllLevels);
     System.out.println(output);
 
