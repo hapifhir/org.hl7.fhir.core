@@ -1531,7 +1531,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   protected boolean isExampleUrl(String url) {
-    return Utilities.containsInList(url, "example.org", "acme.com", "acme.org");    
+    return 
+        Utilities.containsInList(url, "example.org/", "acme.com/", "acme.org/", "example.com/", "example.net/") ||
+        Utilities.endsWithInList(url, "example.org", "acme.com", "acme.org", "example.com", "example.net") ||
+        url.startsWith("urn:oid:1.3.6.1.4.1.32473.");    
   }
   
   protected boolean checkDefinitionStatus(List<ValidationMessage> errors, Element element, String path, StructureDefinition ex, CanonicalResource source, String type) {

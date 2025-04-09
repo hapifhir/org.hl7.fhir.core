@@ -211,6 +211,7 @@ public class I18nConstants {
   public static final String ERROR_AT__THE_TARGET_PROFILE__IS_NOT__VALID_CONSTRAINT_ON_THE_BASE_ = "Error_at__The_target_profile__is_not__valid_constraint_on_the_base_";
   public static final String ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES = "Error_expanding_ValueSet_running_without_terminology_services";
   public static final String ERROR_GENERATING_SNAPSHOT = "ERROR_GENERATING_SNAPSHOT";
+  public static final String ERROR_PROCESSING_SNAPSHOT = "ERROR_PROCESSING_SNAPSHOT";
   public static final String ERROR_GENERATING_TABLE_FOR_PROFILE__ = "Error_generating_table_for_profile__";
   public static final String ERROR_IN_PROFILE__AT__BASE_ISSUMMARY___DERIVED_ISSUMMARY__ = "Error_in_profile__at__Base_isSummary___derived_isSummary__";
   public static final String ERROR_PARSING_ = "Error_parsing_";
@@ -565,6 +566,7 @@ public class I18nConstants {
   public static final String REFERENCE_REF_NOTFOUND_BUNDLE = "Reference_REF_NotFound_Bundle";
   public static final String REFERENCE_REF_NOTYPE = "Reference_REF_NoType";
   public static final String REFERENCE_REF_QUERY_INVALID = "REFERENCE_REF_QUERY_INVALID";
+  public static final String REFERENCE_REF_REL_UNSOLVEABLE = "REFERENCE_REF_REL_UNSOLVEABLE";
   public static final String REFERENCE_REF_RESOURCETYPE = "Reference_REF_ResourceType";
   public static final String REFERENCE_REF_SUSPICIOUS = "REFERENCE_REF_SUSPICIOUS";
   public static final String REFERENCE_REF_WRONGTARGET = "Reference_REF_WrongTarget";
@@ -1245,8 +1247,28 @@ public class I18nConstants {
   public static final String PROFILE_COMPLIES_WITH_WRONG_TYPE = "PROFILE_COMPLIES_WITH_WRONG_TYPE";
   public static final String PROFILE_COMPLIES_WITH_BAD_TYPE = "PROFILE_COMPLIES_WITH_BAD_TYPE";
   public static final String PROFILE_COMPLIES_WITH_BAD_ELEMENT = "PROFILE_COMPLIES_WITH_BAD_ELEMENT";
+  public static final String PROFILE_COMPLIES_WITH_MISSING_ELEMENT = "PROFILE_COMPLIES_WITH_MISSING_ELEMENT";
   public static final String PROFILE_COMPLIES_WITH_NO_VS = "PROFILE_COMPLIES_WITH_NO_VS";
   public static final String PROFILE_COMPLIES_WITH_NO_VS_EXP = "PROFILE_COMPLIES_WITH_NO_VS_EXP";
   public static final String PROFILE_COMPLIES_WITH_NO_VS_NO = "PROFILE_COMPLIES_WITH_NO_VS_NO";
-  
+  public static final String PROFILE_COMPLIES_WITH_SLICING_RULES = "PROFILE_COMPLIES_WITH_SLICING_RULES";
+  public static final String PROFILE_COMPLIES_WITH_SLICING_ORDER = "PROFILE_COMPLIES_WITH_SLICING_ORDER";
+  public static final String PROFILE_COMPLIES_WITH_SLICING_DISCRIMINATOR = "PROFILE_COMPLIES_WITH_SLICING_DISCRIMINATOR";
+  public static final String PROFILE_COMPLIES_WITH_SLICING_NO_SLICE = "PROFILE_COMPLIES_WITH_SLICING_NO_SLICE";
+  public static final String PROFILE_COMPLIES_WITH_SLICING_EXTRA_SLICE = "PROFILE_COMPLIES_WITH_SLICING_EXTRA_SLICE";
+  public static final String PROFILE_COMPLIES_WITH_SLICING_UNSLICED = "PROFILE_COMPLIES_WITH_SLICING_UNSLICED";
+  public static final String OPDEF_PROFILE_NOT_FOUND = "OPDEF_PROFILE_NOT_FOUND";
+  public static final String OPDEF_PROFILE_NOT_PARAMETERS = "OPDEF_PROFILE_NOT_PARAMETERS";
+  public static final String OPDEF_PROFILE_NOT_IN_PARAM = "OPDEF_PROFILE_NOT_IN_PARAM";
+  public static final String OPDEF_PROFILE_NOT_IN_PROFILE = "OPDEF_PROFILE_NOT_IN_PROFILE";
+  public static final String OPDEF_PROFILE_NO_SLICE = "OPDEF_PROFILE_NO_SLICE";
+  public static final String OPDEF_PROFILE_NO_FIXED = "OPDEF_PROFILE_NO_FIXED";
+  public static final String OPDEF_PROFILE_NOT_VALUE_MISMATCH = "OPDEF_PROFILE_NOT_VALUE_MISMATCH";
+  public static final String OPDEF_PROFILE_TYPE_NOT_IN_PARAMS = "OPDEF_PROFILE_TYPE_NOT_IN_PARAMS"; 
+  public static final String OPDEF_PROFILE_TYPE_NOT_IN_PROFILE = "OPDEF_PROFILE_TYPE_NOT_IN_PROFILE";
+  public static final String OPDEF_PROFILE_PROFILE_NOT_IN_PROFILE = "OPDEF_PROFILE_PROFILE_NOT_IN_PROFILE";
+  public static final String OPDEF_PROFILE_PROFILE_NOT_IN_PARAMS = "OPDEF_PROFILE_PROFILE_NOT_IN_PARAMS";
+  public static final String FHIRPATH_MUTIPLE_VALUES_IN_SORT = "FHIRPATH_MUTIPLE_VALUES_IN_SORT";
+  public static final String FHIRPATH_MUTIPLE_SORT_TYPE_PROBLEM_NATURAL = "FHIRPATH_MUTIPLE_SORT_TYPE_PROBLEM_NATURAL";
+  public static final String FHIRPATH_MUTIPLE_SORT_TYPE_PROBLEM = "FHIRPATH_MUTIPLE_SORT_TYPE_PROBLEM";
 }

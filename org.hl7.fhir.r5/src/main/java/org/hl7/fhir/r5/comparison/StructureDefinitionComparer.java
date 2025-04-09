@@ -167,13 +167,13 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     ch = comparePrimitives("type", left.getTypeElement(), right.getTypeElement(), res.getMetadata(), IssueSeverity.ERROR, res) || ch;
     ch = comparePrimitives("baseDefinition", left.getBaseDefinitionElement(), right.getBaseDefinitionElement(), res.getMetadata(), IssueSeverity.ERROR, res) || ch;
     if (left.getType().equals(right.getType())) {
-      DefinitionNavigator ln = new DefinitionNavigator(session.getContextLeft(), left, false);
-      DefinitionNavigator rn = new DefinitionNavigator(session.getContextRight(), right, false);
+      DefinitionNavigator ln = new DefinitionNavigator(session.getContextLeft(), left, false, false);
+      DefinitionNavigator rn = new DefinitionNavigator(session.getContextRight(), right, false, false);
       StructuralMatch<ElementDefinitionNode> sm = new StructuralMatch<ElementDefinitionNode>(new ElementDefinitionNode(left, ln.current()), new ElementDefinitionNode(right, rn.current()));
       compareElements(res, sm, ln.path(), null, ln, rn);
       res.combined = sm;
-      ln = new DefinitionNavigator(session.getContextLeft(), left, true);
-      rn = new DefinitionNavigator(session.getContextRight(), right, true);
+      ln = new DefinitionNavigator(session.getContextLeft(), left, true, false);
+      rn = new DefinitionNavigator(session.getContextRight(), right, true, false);
       ch = compareDiff(ln.path(), null, ln, rn, res, right) || ch;
       // we don't preserve the differences - we only want the annotations
     }

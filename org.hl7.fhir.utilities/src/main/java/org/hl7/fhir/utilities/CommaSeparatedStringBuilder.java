@@ -126,6 +126,33 @@ public class CommaSeparatedStringBuilder {
     }
     return b.toString();
   }
+  
+  public static String join2(String sep, String finalSep, Collection<String> list) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(sep, finalSep);
+    for (String s : list) {
+      if (s != null) {
+        b.append(s);
+      }
+    }
+    return b.toString();
+  }
+
+  public static String joinToLimit(String sep, int limit, String overflow, Collection<String> list) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(sep);
+    int i = 0;
+    for (String s : list) {
+      if (s != null) {
+        i++;
+        if (i == limit) {
+          b.append(overflow);
+          break;
+        } else {
+          b.append(s);
+        }
+      }
+    }
+    return b.toString();
+  }
 
   public static String join(String sep, String[] list) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(sep);

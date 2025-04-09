@@ -279,6 +279,8 @@ public class RenderingContext extends RenderingI18nContext {
   private boolean pretty;
   private boolean showSummaryTable; // for canonical resources
   private boolean contained;
+  private boolean oids;
+
 
   private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R5);
   private boolean noSlowLookup;
@@ -1118,4 +1120,17 @@ public class RenderingContext extends RenderingI18nContext {
     this.designationMode = designationMode;
   }
 
+  public boolean isOids() {
+    return oids;
+  }
+
+  public void setOids(boolean oids) {
+    this.oids = oids;
+  }
+
+  public RenderingContext withOids(boolean oids) {
+    RenderingContext self = this.copy(false);
+    self.oids = oids;
+    return self;
+  }
 }
