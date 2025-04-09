@@ -23,6 +23,7 @@ jobs:
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
     permissions:
       contents: read
+      security-events: write
 
     strategy:
       fail-fast: false
