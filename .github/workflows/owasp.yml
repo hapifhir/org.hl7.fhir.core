@@ -12,7 +12,8 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read  # Only read access to repository contents
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
