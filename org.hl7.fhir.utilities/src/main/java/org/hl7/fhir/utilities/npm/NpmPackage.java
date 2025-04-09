@@ -1185,6 +1185,9 @@ public class NpmPackage {
     if (f == null) {
       f = folders.get("package/example");      
     }
+    if (f == null) {
+      f = folders.get("package\\example");      
+    }
     if (f != null) {
       JsonArray files = f.index().getJsonArray("files");
       for (JsonElement e : files.getItems()) {
