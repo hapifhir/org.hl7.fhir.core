@@ -12,6 +12,8 @@ jobs:
   build:
     name: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read  # Only read access to repository contents
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
