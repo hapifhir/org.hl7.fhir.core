@@ -3,6 +3,12 @@ package org.hl7.fhir.validation.tests.logging;
 import lombok.Getter;
 import org.slf4j.Logger;
 
+/**
+ * A utility class to keep track of task progress in a console as well as an slf4j logger.
+ * <p/>
+ * Note that this class is intended to be used by a single thread, without interference from other logging. However,
+ * guaranteeing.
+ */
 public class ProgressLogger {
 
   @Getter
@@ -12,43 +18,37 @@ public class ProgressLogger {
 
   private final String processName;
 
-  private final int maxLength;
+  private final int intervalPadding;
 
-  private int observedMaxLength = 0;
-
-  private final String suffix;
-
-  public ProgressLogger(Logger logger, String processName, int maxLength, String suffix) {
+  public ProgressLogger(Logger logger, String processName, int intervalPadding) {
     this.logger = logger;
     this.processName = processName;
-    this.maxLength = maxLength;
-    this.suffix = suffix;
+    this.intervalPadding = intervalPadding;
+    System.out.print(processName + " progress: ");
+    logger.debug(processName + " : started");
   }
 
   public void logProgress(String message) {
+    logProgress(message, false);
+  }
+
+  public void logProgress(String message, boolean consoleOnly) {
     // Log the progress message
-    StringBuilder stringBuilder = new StringBuilder(processName + " progress: " );
-    if (message.length() < maxLength) {
-      for (int i = 0; i < maxLength - message.length(); i++) {
-        stringBuilder.append(".");
-      }
+    StringBuilder stringBuilder = new StringBuilder();
+    if (message.length() < intervalPadding) {
+        stringBuilder.append(".".repeat(intervalPadding - message.length()));
     }
     stringBuilder.append(message);
-    if (suffix != null) {
-      stringBuilder.append(suffix);
+    System.out.print(stringBuilder);
+
+    if (!consoleOnly) {
+     logger.debug(processName + " progress: " + message);
     }
-    System.out.print(stringBuilder + "\r");
-    if (stringBuilder.length() > observedMaxLength) {
-      observedMaxLength = stringBuilder.length();
-    }
-    logger.debug(stringBuilder.toString());
   }
 
   public void done() {
     isDone = true;
-    for (int i = 0; i < observedMaxLength; i++) {
-      System.out.print(" ");
-    }
-    System.out.print("\r");
+    System.out.println(" done");
+    logger.debug(processName + " : done");
   }
 }

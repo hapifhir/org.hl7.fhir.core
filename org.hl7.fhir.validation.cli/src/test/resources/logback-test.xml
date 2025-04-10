@@ -15,6 +15,7 @@
 		</filter>
 		<encoder>
 			<pattern>%highlight(%msg%n)</pattern>
+			<immediateFlush>true</immediateFlush>
 		</encoder>
 	</appender>
 

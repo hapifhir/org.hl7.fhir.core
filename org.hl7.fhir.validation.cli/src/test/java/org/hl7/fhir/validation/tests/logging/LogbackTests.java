@@ -22,6 +22,7 @@ import java.io.PrintStream;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hl7.fhir.validation.tests.logging.LoggingTestUtil.captureLogOutput;
 import static org.hl7.fhir.validation.tests.logging.LoggingUtil.setLogLevel;
 import static org.hl7.fhir.validation.tests.logging.LoggingUtil.setLogbackConfig;
 
@@ -41,19 +42,7 @@ public class LogbackTests {
     setLogbackConfig(LogbackTests.class.getResourceAsStream("/logback-test.xml"));
   }
 
-  private String captureLogOutput(Runnable runnable) {
-    PrintStream originalOut = System.out;
-    final String output;
-    try {
-      java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
-      System.setOut(new java.io.PrintStream(out));
-      runnable.run();
-      output = out.toString();
-    } finally {
-      System.setOut(originalOut);
-    }
-    return output;
-  }
+
 
 
   public static Stream<Arguments> testLevelsParams() {

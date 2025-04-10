@@ -3,6 +3,10 @@ package org.hl7.fhir.validation.tests.logging;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 @Slf4j
 public class AClassThatLogs {
 
@@ -30,7 +34,7 @@ public class AClassThatLogs {
   }
 
   public void doSomeLoggingThatTracksProgress() throws InterruptedException {
-    ProgressLogger progressLogger = new ProgressLogger(log, "Reticulating splines", 0, "%");
+    ProgressLogger progressLogger = new ProgressLogger(log, "Reticulating splines", 8);
     String[] progressMessages = {
       "0",
       "20",
@@ -44,5 +48,33 @@ public class AClassThatLogs {
       Thread.sleep(1000);
     }
     progressLogger.done();
+  }
+
+  public List<String> randomProgressAndLogging() throws InterruptedException {
+    ProgressLogger progressLogger = new ProgressLogger(log, "Reticulating splines", 8);
+    List<String> expectedLogMessages = new ArrayList<>();
+    for (int i = 0; i < 10; i++) {
+      String log = randomLog(i);
+      if (log != null) {
+       expectedLogMessages.add(log);
+      }
+      progressLogger.logProgress(String.valueOf(i));
+    }
+    progressLogger.done();
+    return expectedLogMessages;
+  }
+
+  private static String randomLog(int i) {
+    Random rand = new Random();
+    int randomElement =rand.nextInt(6);
+    final String logMessage;
+    switch (randomElement) {
+      case 0: logMessage = "Error message " + i; log.error(logMessage); return logMessage;
+      case 1: logMessage = "Warning message " + i; log.warn(logMessage); return logMessage;
+      case 2: logMessage = "Info message " + i; log.info(logMessage); return logMessage;
+      case 3: logMessage = "Debug message " + i; log.debug(logMessage); return logMessage;
+      case 4: logMessage = "Trace message " + i; log.trace(logMessage); return logMessage;
+      default: return null; // do nothing
+    }
   }
 }

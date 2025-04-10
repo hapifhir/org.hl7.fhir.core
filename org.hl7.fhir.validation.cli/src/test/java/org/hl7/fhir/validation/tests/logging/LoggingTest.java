@@ -1,14 +1,22 @@
 package org.hl7.fhir.validation.tests.logging;
 
+import ca.uhn.fhir.util.FileUtil;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.core.joran.spi.JoranException;
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hl7.fhir.validation.tests.logging.LoggingTestUtil.captureLogOutput;
 import static org.hl7.fhir.validation.tests.logging.LoggingUtil.*;
 
 @Slf4j
@@ -25,8 +33,8 @@ public class LoggingTest {
   }
   @Test
   public void test() throws InterruptedException, IOException {
-    String logFilePath = Files.createTempFile("logging-test", ".log").toString();
-    test(logFilePath);
+      File logFile = FileUtilities.createTempFile("logging-test", ".log");
+      test(logFile.getAbsolutePath());
   }
 
   private static void test(String logFilePath) throws InterruptedException {
@@ -38,6 +46,49 @@ public class LoggingTest {
     AClassThatLogs.doSomeLogging();
     aClassThatLogs.doSomeWarningAndErrorLogging();
     System.out.println("Logging complete to file: " + logFilePath);
+  }
+
+
+
+  @RepeatedTest(10)
+  public void testProgressLogging() throws IOException, InterruptedException {
+    File logFile = FileUtilities.createTempFile("logging-test", ".log");
+    testProgressLogging(logFile.getAbsolutePath());
+  }
+
+ private static void testProgressLogging(String logFilePath) throws InterruptedException, IOException {setLogToFile(logFilePath);
+     setLogLevel(Level.TRACE);
+     setLogToFile(logFilePath);
+     AClassThatLogs aClassThatLogs = new AClassThatLogs();
+     List<String> expectedLogs = new ArrayList<>();
+
+    String capturedOutput = captureLogOutput(() -> {
+      try {
+        expectedLogs.addAll(aClassThatLogs.randomProgressAndLogging());
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+      }
+    });
+
+    String logFileContent = FileUtilities.fileToString(logFilePath);
+    System.out.println("Captured console output:");
+    System.out.println("========================");
+
+    System.out.println(capturedOutput);
+
+    System.out.println();
+    System.out.println("Log file content:");
+    System.out.println("=================");
+
+    for (String expectedLog : expectedLogs) {
+        if (expectedLog.startsWith("Info")
+                || expectedLog.startsWith("Warning")
+                || expectedLog.startsWith("Error")) {
+            assertThat(capturedOutput).contains(expectedLog);
+        }
+        assertThat(logFileContent).contains(expectedLog);
+    }
+
   }
 
   @AfterEach
