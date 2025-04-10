@@ -323,7 +323,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathLayoutType>repository</classpathLayoutType>
-                            <mainClass>org.hl7.fhir.validation.ValidatorCli</mainClass>
+                            <mainClass>org.hl7.fhir.validation.cli.ValidatorCli</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
