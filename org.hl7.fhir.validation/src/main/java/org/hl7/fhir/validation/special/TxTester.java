@@ -209,7 +209,7 @@ public class TxTester {
 
       int c = counter.total() * 100;
       int e = errCount.total() * 100;
-      double s = (c - e) / counter.total();
+      double s = counter.total() == 0 ? 0 : (c - e) / counter.total();
       
       testReport.setScore(s / 100);
       testReport.setResult(errCount.total() == 0 ? TestReportResult.PASS : TestReportResult.FAIL);
