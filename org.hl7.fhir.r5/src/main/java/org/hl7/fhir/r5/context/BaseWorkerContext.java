@@ -647,7 +647,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           requirements.see((Requirements) m, packageInfo);
         } else if (r instanceof ActorDefinition) {
           actors.see((ActorDefinition) m, packageInfo);
-          systemUrlMap = null;
         }
       }
     }
