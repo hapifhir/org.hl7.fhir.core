@@ -340,6 +340,10 @@
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco_version}</version>
                     <configuration>
+                        <includes>
+                            <include>org/hl7/fhir/**/*</include>
+                        </includes>
+
                         <excludes>
                             <!-- These are auto-generated files that will exceed the JVM limit on file size.
                                  If these are not excluded Jacoco complains and won't run the validator tests. -->
