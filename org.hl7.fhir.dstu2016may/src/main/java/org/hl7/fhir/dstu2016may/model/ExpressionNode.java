@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
 
 public class ExpressionNode {
@@ -71,6 +72,17 @@ public class ExpressionNode {
 
     public String toString() {
       return Integer.toString(line) + ", " + Integer.toString(column);
+    }
+    public SourceLocation copy() {
+      return new SourceLocation(line, column);
+    }
+    
+    public void incColumn() {
+      incColumn(1);    
+    }
+    public void incColumn(int i) {
+      column = column + i;
+      
     }
   }
 

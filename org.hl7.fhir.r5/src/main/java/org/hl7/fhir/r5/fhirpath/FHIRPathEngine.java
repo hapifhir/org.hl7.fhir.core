@@ -1157,8 +1157,8 @@ public class FHIRPathEngine {
   private ExpressionNode parseExpression(FHIRLexer lexer, boolean proximal) throws FHIRLexerException {
     ExpressionNode result = new ExpressionNode(lexer.nextId());
     ExpressionNode wrapper = null;
-    SourceLocation c = lexer.getCurrentStartLocation();
-    result.setStart(lexer.getCurrentLocation());
+    SourceLocation c = lexer.getCurrentStartLocation().copy();
+    result.setStart(lexer.getCurrentStartLocation().copy());
     // special: +/- represents a unary operation at this point, but cannot be a feature of the lexer, since that's not always true.
     // so we back correct for both +/- and as part of a numeric constant below.
 
@@ -1168,7 +1168,7 @@ public class FHIRPathEngine {
       wrapper = new ExpressionNode(lexer.nextId());
       wrapper.setKind(Kind.Unary);
       wrapper.setOperation(ExpressionNode.Operation.fromCode(lexer.take()));
-      wrapper.setStart(lexer.getCurrentLocation());
+      wrapper.setStart(lexer.getCurrentLocation().copy());
       wrapper.setProximal(proximal);
     }
 
@@ -1182,7 +1182,7 @@ public class FHIRPathEngine {
         wrapper.setKind(Kind.Unary);
         wrapper.setOperation(ExpressionNode.Operation.fromCode(lexer.getCurrent().substring(0, 1)));
         wrapper.setProximal(proximal);
-        wrapper.setStart(lexer.getCurrentLocation());
+        wrapper.setStart(lexer.getCurrentLocation().copy());
         lexer.setCurrent(lexer.getCurrent().substring(1));
       }
       result.setConstant(processConstant(lexer));
@@ -1216,7 +1216,7 @@ public class FHIRPathEngine {
         }
         result.setConstant(new Quantity().setValue(new BigDecimal(result.getConstant().primitiveValue())).setUnit(unit).setSystem(ucum == null ? null : "http://unitsofmeasure.org").setCode(ucum));
       }
-      result.setEnd(lexer.getCurrentLocation());
+      result.setEnd(lexer.getCurrentLocation().copy());
     } else if ("(".equals(lexer.getCurrent())) {
       lexer.next();
       result.setKind(Kind.Group);
@@ -1224,7 +1224,7 @@ public class FHIRPathEngine {
       if (!")".equals(lexer.getCurrent())) {
         throw lexer.error("Found "+lexer.getCurrent()+" expecting a \")\"");
       }
-      result.setEnd(lexer.getCurrentLocation());
+      result.setEnd(lexer.getCurrentLocation().copy());
       lexer.next();
     } else {
       if (!lexer.isToken() && !lexer.getCurrent().startsWith("`")) {
@@ -1235,7 +1235,7 @@ public class FHIRPathEngine {
       } else {
         result.setName(lexer.take());
       }
-      result.setEnd(lexer.getCurrentLocation());
+      result.setEnd(lexer.getCurrentStartLocation().copy());
       if (!result.checkName()) {
         throw lexer.error("Found "+result.getName()+" expecting a valid token name");
       }
@@ -1262,7 +1262,7 @@ public class FHIRPathEngine {
             throw lexer.error("The token "+lexer.getCurrent()+" is not expected here - either a \",\" or a \")\" expected");
           }
         }
-        result.setEnd(lexer.getCurrentLocation());
+        result.setEnd(lexer.getCurrentLocation().copy());
         lexer.next();
         checkParameters(lexer, c, result, details);
       } else {
