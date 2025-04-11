@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation;
+package org.hl7.fhir.validation.cli;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +75,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.tasks.*;
