@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation;
+package org.hl7.fhir.validation.cli;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
