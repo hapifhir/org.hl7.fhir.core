@@ -2296,4 +2296,19 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
 
+  /**
+   * when we run into an unknown (canonical) URL, we assume that it's a pointer to something we don't 
+   * know about, and render it as an 'a href=' in case it is valid. But in the 'known' domains, where 
+   * we reasonably expect to know everything , we don't make them links 
+   * @return
+   */
+  protected boolean isInKnownUrlSpace(String url) {
+    DebugUtilities.ln(url);
+    return Utilities.startsWithInList(url, 
+        "http://hl7.org/fhir",  "http://fhir.org/guides",  "http://ihe.net/fhir",  "http://terminology.hl7.org", 
+        "https://hl7.org/fhir", "https://fhir.org/guides", "https://ihe.net/fhir", "https://terminology.hl7.org", 
+        "http://www.hl7.org/fhir",  "http://www.fhir.org/guides",  "http://www.ihe.net/fhir",
+        "https://www.hl7.org/fhir", "https://www.fhir.org/guides", "https://www.ihe.net/fhir"
+       );
+  }
 }
