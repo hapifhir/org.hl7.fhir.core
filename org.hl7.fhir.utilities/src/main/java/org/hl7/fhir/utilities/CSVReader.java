@@ -84,6 +84,7 @@ public class CSVReader extends InputStreamReader {
     return false;
   }
   
+
   public String cell(String name) {
     int index = -1;
     for (int i = 0; i < cols.length; i++) {
@@ -94,6 +95,10 @@ public class CSVReader extends InputStreamReader {
     }
     if (index == -1)
       throw new FHIRException("no cell "+name+" in "+cols);
+    return cell(index);
+  }
+
+  public String cell(int index) {
     String s = cells.length > index ? cells[index] : null;
     if (Utilities.noString(s))
       return null;
@@ -252,6 +257,7 @@ public class CSVReader extends InputStreamReader {
   public String[] getCells() {
     return cells;
   }
+
 
 
 }

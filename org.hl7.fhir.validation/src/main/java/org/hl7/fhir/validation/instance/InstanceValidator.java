@@ -628,6 +628,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private Set<Integer> textsToCheckKeys = new HashSet<>();
   private String cacheFolder;
   private MatchetypeStatus matchetypeStatus = MatchetypeStatus.Disallowed;
+  private OIDUtilities oids;
 
   public InstanceValidator(@Nonnull IWorkerContext theContext, @Nonnull IEvaluationContext hostServices, @Nonnull XVerExtensionManager xverManager, ValidatorSession session, @Nonnull ValidatorSettings settings) {
     super(theContext, settings, xverManager, session);
@@ -643,6 +644,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     fpe.setDoNotEnforceAsSingletonRule(!VersionUtilities.isR5VerOrLater(theContext.getVersion()));
     fpe.setAllowDoubleQuotes(allowDoubleQuotesInFHIRPath);
     codingObserver = new CodingsObserver(theContext, settings, xverManager, session);
+    oids = new OIDUtilities();
   }
 
   @Override
@@ -3570,7 +3572,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           found = count > 0;
         } else {
           found = isDefinitionURL(url) || (settings.isAllowExamples() && isExampleUrl(url)) /* || (url.startsWith("http://hl7.org/fhir/tools")) */ || 
-              SpecialExtensions.isKnownExtension(url) || isXverUrl(url) || SIDUtilities.isKnownSID(url) || isKnownNamespaceUri(url) || isRfcRef(url);
+              SpecialExtensions.isKnownExtension(url) || isXverUrl(url) || SIDUtilities.isKnownSID(url) || isKnownNamespaceUri(url) || isRfcRef(url) || isKnownMappingUri(url) || oids.isKnownOID(url);
           if (!found) {
             found = fetcher.resolveURL(this, valContext, path, url, type, type.equals("canonical"), context.getByType(type) != null ? context.getByType(type).getTargetProfile() : null);
           }
@@ -3648,6 +3650,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
+  private boolean isKnownMappingUri(String url) {
+    return Utilities.existsInList(url, "urn:hl7-org:v3/mif2", 
+        "http://cap.org/ecc", "http://clinicaltrials.gov", "http://fda.gov/UDI", "http://github.com/MDMI/ReferentIndexContent", "http://hl7.org/fhir/auditevent", "http://hl7.org/fhir/composition", 
+        "http://hl7.org/fhir/consent", "http://hl7.org/fhir/documentreference", "http://hl7.org/fhir/fivews", "http://hl7.org/fhir/interface", "http://hl7.org/fhir/logical", "http://hl7.org/fhir/object-implementation",
+        "http://hl7.org/fhir/provenance", "http://hl7.org/fhir/rr", "http://hl7.org/fhir/w5", "http://hl7.org/fhir/workflow", "http://hl7.org/orim", "http://hl7.org/qidam", "http://hl7.org/v2", "http://hl7.org/v3/cda",
+        "http://hl7.org/v3", "http://ietf.org/rfc/2445", "http://ihe.net/data-element-exchange", "http://loinc.org", "http://metadata-standards.org/11179/", "http://ncpdp.org/SCRIPT10_6", "http://nema.org/dicom",
+        "http://openehr.org", "http://siframework.org/cqf", "http://siframework.org/ihe-sdc-profile", "http://snomed.info/conceptdomain", "http://snomed.org/attributebinding", "http://w3.org/vcard", 
+        "http://www.cda-adc.ca/en/services/cdanet/", "http://www.cdisc.org/define-xml", "http://www.cdisc.org/define-xml", "http://www.healthit.gov/quality-data-model", "http://www.hl7.org/v3/PORX_RM020070UV", 
+        "http://www.omg.org/spec/ServD/1.0/", "http://www.pharmacists.ca/", "http://www.w3.org/ns/prov", "https://bridgmodel.nci.nih.gov", "https://dicomstandard.org/current", "https://profiles.ihe.net/ITI/TF/Volume3",
+        "https://www.iso.org/obp/ui/#iso:std:iso:11238", "https://www.iso.org/obp/ui/#iso:std:iso:11615", "urn:iso:std:iso:11073:10201", "urn:iso:std:iso:11073:10207", "urn:iso:std:iso:11073:20701", "https://www.isbt128.org/uri/");
+  }
+
   private boolean isRfcRef(String url) {
     return url != null && Utilities.startsWithInList(url, "https://tools.ietf.org/html/rfc", "http://tools.ietf.org/html/rfc") && Utilities.isInteger(url.substring(url.indexOf("rfc")+3));
   }
@@ -3667,7 +3681,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return Utilities.existsInList(context.getBase().getPath(),
           "ImplementationGuide.definition.page.source[x]", "ImplementationGuide.definition.page.name",  "ImplementationGuide.definition.page.name[x]",
           "Requirements.statement.satisfiedBy", 
-          "StructureDefinition.type", "ElementDefinition.fixed[x]", "ElementDefinition.pattern[x]", "ImplementationGuide.dependsOn.uri"
+          "StructureDefinition.type", "ElementDefinition.fixed[x]", "ElementDefinition.pattern[x]", "ImplementationGuide.dependsOn.uri", "StructureDefinition​.mapping.uri"
           );
       
     } else {

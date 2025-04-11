@@ -73,6 +73,17 @@ public class ExpressionNode {
     public String toString() {
       return Integer.toString(line) + ", " + Integer.toString(column);
     }
+    public SourceLocation copy() {
+      return new SourceLocation(line, column);
+    }
+    
+    public void incColumn() {
+      incColumn(1);    
+    }
+    public void incColumn(int i) {
+      column = column + i;
+      
+    }
   }
 
   public enum Function {

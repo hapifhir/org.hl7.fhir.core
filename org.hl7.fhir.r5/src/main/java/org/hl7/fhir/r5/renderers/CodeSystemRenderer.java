@@ -601,19 +601,22 @@ public class CodeSystemRenderer extends TerminologyRenderer {
             if (first) first = false; else td.addText(", ");
             if (pcv.hasValueCoding()) { 
               td.addText(pcv.getValueCoding().getCode());
-            } else if (pcv.hasValueStringType() && Utilities.isAbsoluteUrl(pcv.getValue().primitiveValue())) {
-              CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, pcv.getValue().primitiveValue());
-              if (cr != null) {
-                td.ah(context.prefixLocalHref(cr.getWebPath()), cr.getVersionedUrl()).tx(cr.present());
-              } else if (Utilities.isAbsoluteUrlLinkable(pcv.getValue().primitiveValue())) {
-                td.ah(context.prefixLocalHref(pcv.getValue().primitiveValue())).tx(pcv.getValue().primitiveValue());
-              } else {
-                td.code(pcv.getValue().primitiveValue());                
-              }
-            } else if ("parent".equals(pcv.getCode())) {              
-              td.ah(context.prefixLocalHref("#"+cs.getId()+"-"+Utilities.nmtokenize(pcv.getValue().primitiveValue()))).addText(pcv.getValue().primitiveValue());
             } else {
-              td.addText(pcv.getValue().primitiveValue());
+              String pv = pcv.getValue().primitiveValue();
+              if (pcv.hasValueStringType() && Utilities.isAbsoluteUrl(pv)) {
+                CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, pv);
+                if (cr != null) {
+                  td.ah(context.prefixLocalHref(cr.getWebPath()), cr.getVersionedUrl()).tx(cr.present());
+                } else if (Utilities.isAbsoluteUrlLinkable(pv) && !isInKnownUrlSpace(pv)) {
+                  td.ah(context.prefixLocalHref(pv)).tx(pv);
+                } else {
+                  td.code(pv);                
+                }
+              } else if ("parent".equals(pcv.getCode())) {              
+                td.ah(context.prefixLocalHref("#"+cs.getId()+"-"+Utilities.nmtokenize(pv))).addText(pv);
+              } else {
+                td.addText(pv);
+              }
             }
           }
         }
@@ -672,6 +675,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       clipboard(td, "icon_clipboard_j.png", "JSON", "\"system\" : \""+Utilities.escapeXml(cs.getUrl())+"\",\n"+(cs.getVersionNeeded() ? "\"version\" : \""+Utilities.escapeXml(cs.getVersion())+"\",\n" : "")+"\"code\" : \""+Utilities.escapeXml(c.getCode())+"\",\n\"display\" : \""+Utilities.escapeXml(c.getDisplay())+"\"\n");
     }
   }
+
 
   private String getDisplay(String lang, ConceptDefinitionComponent c) {
     for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {

@@ -516,7 +516,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   public static String getOID(CanonicalResource cs) {
-    if (cs.hasIdentifier() && "urn:ietf:rfc:3986".equals(cs.getIdentifierFirstRep().getSystem()) && cs.getIdentifierFirstRep().hasValue() && cs.getIdentifierFirstRep().getValue().startsWith("urn:oid:"))
+    if (cs != null && cs.hasIdentifier() && "urn:ietf:rfc:3986".equals(cs.getIdentifierFirstRep().getSystem()) && cs.getIdentifierFirstRep().hasValue() && cs.getIdentifierFirstRep().getValue().startsWith("urn:oid:"))
         return cs.getIdentifierFirstRep().getValue().substring(8);
     return null;
   }

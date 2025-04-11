@@ -13169,6 +13169,14 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     }
     return null;
   }
+
+  public boolean hasObligations() {
+    boolean res = hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE);
+    for (TypeRefComponent tr : getType()) {
+      res = res || tr.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE);
+    }
+    return res;
+  }
   
 // end addition
 
