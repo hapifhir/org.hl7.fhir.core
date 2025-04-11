@@ -34,7 +34,6 @@ package org.hl7.fhir.dstu3.fhirpath;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
 
 public class ExpressionNode {
