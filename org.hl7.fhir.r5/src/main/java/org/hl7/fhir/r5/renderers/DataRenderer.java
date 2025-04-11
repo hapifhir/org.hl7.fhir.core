@@ -2303,7 +2303,6 @@ public class DataRenderer extends Renderer implements CodeResolver {
    * @return
    */
   protected boolean isInKnownUrlSpace(String url) {
-    DebugUtilities.ln(url);
     return Utilities.startsWithInList(url, 
         "http://hl7.org/fhir",  "http://fhir.org/guides",  "http://ihe.net/fhir",  "http://terminology.hl7.org", 
         "https://hl7.org/fhir", "https://fhir.org/guides", "https://ihe.net/fhir", "https://terminology.hl7.org", 
