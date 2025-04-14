@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.service.utils;
+package org.hl7.fhir.validation.cli.param;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;

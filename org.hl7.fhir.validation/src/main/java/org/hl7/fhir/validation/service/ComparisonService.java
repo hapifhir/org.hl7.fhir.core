@@ -13,18 +13,13 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.service.utils.Params;
 
 public class ComparisonService {
 
-  public static void doLeftRightComparison(String[] args, String dest, ValidationEngine validator) throws IOException, FHIRException, EOperationOutcome {
+  public static void doLeftRightComparison(String left, String right, String dest, ValidationEngine validator) throws IOException, FHIRException, EOperationOutcome {
     // ok now set up the comparison
-    String left = Params.getParam(args, Params.LEFT);
-    String right = Params.getParam(args, Params.RIGHT);
-
     Resource resLeft = validator.getContext().fetchResource(Resource.class, left);
     Resource resRight = validator.getContext().fetchResource(Resource.class, right);
     if (resLeft == null) {
@@ -38,13 +33,13 @@ public class ComparisonService {
       if (resLeft instanceof StructureDefinition && resRight instanceof StructureDefinition) {
         ComparisonService.compareStructureDefinitions(dest, validator, left, right, (StructureDefinition) resLeft, (StructureDefinition) resRight);
       } else if (resLeft instanceof CapabilityStatement && resRight instanceof CapabilityStatement) {
-        ComparisonService.compareCapabilityStatements(args, dest, validator, left, right, (CanonicalResource) resLeft, (CanonicalResource) resRight);
+        ComparisonService.compareCapabilityStatements(dest, validator, left, right, (CanonicalResource) resLeft, (CanonicalResource) resRight);
       } else
         System.out.println("Unable to compare left resource " + left + " (" + resLeft.fhirType() + ") with right resource " + right + " (" + resRight.fhirType() + ")");
     }
   }
 
-  public static void compareCapabilityStatements(String[] args, String dest, ValidationEngine validator, String left, String right, CanonicalResource resLeft, CanonicalResource resRight) throws IOException {
+  public static void compareCapabilityStatements(String dest, ValidationEngine validator, String left, String right, CanonicalResource resLeft, CanonicalResource resRight) throws IOException {
     throw new Error("CapabilityStatement comparison is not implemented at this time (WIP)");
 //    System.out.println("Comparing CapabilityStatements " + left + " to " + right);
 //    ComparisonSession session = new ComparisonSession(validator.getContext(), validator.getContext(), "Comparing Capability Statements", null);
@@ -74,10 +69,4 @@ public class ComparisonService {
     System.out.println("Done");
   }
 
-  private static String chooseName(String[] args, String name, CanonicalResource mr) {
-    String s = Params.getParam(args, "-" + name);
-    if (Utilities.noString(s))
-      s = mr.present();
-    return s;
-  }
 }

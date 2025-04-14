@@ -79,9 +79,8 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.service.utils.Display;
-import org.hl7.fhir.validation.service.utils.Params;
+import org.hl7.fhir.validation.cli.param.Params;
 
 
 /**

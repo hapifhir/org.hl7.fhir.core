@@ -12,7 +12,7 @@ import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ComparisonService;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.service.utils.Display;
-import org.hl7.fhir.validation.service.utils.Params;
+import org.hl7.fhir.validation.cli.param.Params;
 
 public class CompareTask extends ValidationEngineTask {
   @Override
@@ -53,7 +53,9 @@ public class CompareTask extends ValidationEngineTask {
     String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
     ValidationEngine validator = validationService.initializeValidator(validationContext, definitions, tt);
     validator.loadPackage(CommonPackages.ID_PUBPACK, null);
-    ComparisonService.doLeftRightComparison(args, Params.getParam(args, Params.DESTINATION), validator);
+    String left = Params.getParam(args, Params.LEFT);
+    String right = Params.getParam(args, Params.RIGHT);
+    ComparisonService.doLeftRightComparison(left, right, Params.getParam(args, Params.DESTINATION), validator);
   }
 
   private boolean destinationDirectoryValid(String dest) throws IOException {
