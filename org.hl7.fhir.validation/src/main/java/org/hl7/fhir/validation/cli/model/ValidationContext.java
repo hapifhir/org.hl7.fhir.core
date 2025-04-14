@@ -1,6 +1,5 @@
 package org.hl7.fhir.validation.cli.model;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,9 +12,6 @@ import java.util.Set;
 import com.google.gson.annotations.SerializedName;
 
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
@@ -32,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A POJO for storing the flags/values for the CLI validator.
  */
-public class CliContext {
+public class ValidationContext {
 
   @JsonProperty("baseEngine")
   @SerializedName("baseEngine")
@@ -371,7 +367,7 @@ public class CliContext {
 
   @SerializedName("baseEngine")
   @JsonProperty("baseEngine")
-  public CliContext setBaseEngine(String baseEngine) {
+  public ValidationContext setBaseEngine(String baseEngine) {
     this.baseEngine = baseEngine;
     return this;
   }
@@ -384,7 +380,7 @@ public class CliContext {
 
   @SerializedName("map")
   @JsonProperty("map")
-  public CliContext setMap(String map) {
+  public ValidationContext setMap(String map) {
     this.map = map;
     return this;
   }
@@ -397,7 +393,7 @@ public class CliContext {
 
   @SerializedName("source")
   @JsonProperty("source")
-  public CliContext setSource(String source) {
+  public ValidationContext setSource(String source) {
     this.source = source;
     return this;
   }
@@ -410,7 +406,7 @@ public class CliContext {
 
   @SerializedName("resolutionContext")
   @JsonProperty("resolutionContext")
-  public CliContext setResolutionContext(String resolutionContext) {
+  public ValidationContext setResolutionContext(String resolutionContext) {
     this.resolutionContext = resolutionContext;
     return this;
   }
@@ -423,7 +419,7 @@ public class CliContext {
 
   @SerializedName("langTransform")
   @JsonProperty("langTransform")
-  public CliContext setLangTransform(String langTransform) {
+  public ValidationContext setLangTransform(String langTransform) {
     this.langTransform = langTransform;
     return this;
   }
@@ -436,7 +432,7 @@ public class CliContext {
 
   @SerializedName("igs")
   @JsonProperty("igs")
-  public CliContext setIgs(List<String> igs) {
+  public ValidationContext setIgs(List<String> igs) {
     this.igs = igs;
     return this;
   }
@@ -449,12 +445,12 @@ public class CliContext {
 
   @SerializedName("bundleValidationRules")
   @JsonProperty("bundleValidationRules")
-  public CliContext setBundleValidationRules(List<BundleValidationRule> bundleValidationRules) {
+  public ValidationContext setBundleValidationRules(List<BundleValidationRule> bundleValidationRules) {
     this.bundleValidationRules = bundleValidationRules;
     return this;
   }
 
-  public CliContext addIg(String ig) {
+  public ValidationContext addIg(String ig) {
     if (this.igs == null) {
       this.igs = new ArrayList<>();
     }
@@ -470,7 +466,7 @@ public class CliContext {
 
   @SerializedName("questionnaire")
   @JsonProperty("questionnaire")
-  public CliContext setQuestionnaireMode(QuestionnaireMode questionnaireMode) {
+  public ValidationContext setQuestionnaireMode(QuestionnaireMode questionnaireMode) {
     this.questionnaireMode = questionnaireMode;
     return this;
   }
@@ -483,7 +479,7 @@ public class CliContext {
 
   @SerializedName("level")
   @JsonProperty("level")
-  public CliContext setLevel(ValidationLevel level) {
+  public ValidationContext setLevel(ValidationLevel level) {
     this.level = level;
     return this;
   }
@@ -496,7 +492,7 @@ public class CliContext {
 
   @SerializedName("txServer")
   @JsonProperty("txServer")
-  public CliContext setTxServer(String txServer) {
+  public ValidationContext setTxServer(String txServer) {
     this.txServer = txServer;
     return this;
   }
@@ -509,7 +505,7 @@ public class CliContext {
 
   @SerializedName("noEcosystem")
   @JsonProperty("noEcosystem")
-  public CliContext setNoEcosystem(boolean noEcosystem) {
+  public ValidationContext setNoEcosystem(boolean noEcosystem) {
     this.noEcosystem = noEcosystem;
     return this;
   }
@@ -522,7 +518,7 @@ public class CliContext {
 
   @SerializedName("doNative")
   @JsonProperty("doNative")
-  public CliContext setDoNative(boolean doNative) {
+  public ValidationContext setDoNative(boolean doNative) {
     this.doNative = doNative;
     return this;
   }
@@ -535,7 +531,7 @@ public class CliContext {
 
   @SerializedName("extensions")
   @JsonProperty("extensions")
-  public CliContext setExtensions(List<String> extensions) {
+  public ValidationContext setExtensions(List<String> extensions) {
     this.extensions = extensions;
     return this;
   }
@@ -548,7 +544,7 @@ public class CliContext {
 
   @SerializedName("hintAboutNonMustSupport")
   @JsonProperty("hintAboutNonMustSupport")
-  public CliContext setHintAboutNonMustSupport(boolean hintAboutNonMustSupport) {
+  public ValidationContext setHintAboutNonMustSupport(boolean hintAboutNonMustSupport) {
     this.hintAboutNonMustSupport = hintAboutNonMustSupport;
     return this;
   }
@@ -561,7 +557,7 @@ public class CliContext {
 
   @SerializedName("recursive")
   @JsonProperty("recursive")
-  public CliContext setRecursive(boolean recursive) {
+  public ValidationContext setRecursive(boolean recursive) {
     this.recursive = recursive;
     return this;
   }
@@ -574,7 +570,7 @@ public class CliContext {
 
   @SerializedName("showMessagesFromReferences")
   @JsonProperty("showMessagesFromReferences")
-  public CliContext setShowMessagesFromReferences(boolean showMessagesFromReferences) {
+  public ValidationContext setShowMessagesFromReferences(boolean showMessagesFromReferences) {
     this.showMessagesFromReferences = showMessagesFromReferences;
     return this;
   }
@@ -623,7 +619,7 @@ public class CliContext {
 
   @SerializedName("disableDefaultResourceFetcher")
   @JsonProperty("disableDefaultResourceFetcher")
-  public CliContext setDisableDefaultResourceFetcher(boolean disableDefaultResourceFetcher) {
+  public ValidationContext setDisableDefaultResourceFetcher(boolean disableDefaultResourceFetcher) {
     this.disableDefaultResourceFetcher = disableDefaultResourceFetcher;
     return this;
   }
@@ -636,7 +632,7 @@ public class CliContext {
 
   @SerializedName("checkIPSCodes")
   @JsonProperty("checkIPSCodes")
-  public CliContext setCheckIPSCodes(boolean checkIPSCodes) {
+  public ValidationContext setCheckIPSCodes(boolean checkIPSCodes) {
     this.checkIPSCodes = checkIPSCodes;
     return this;
   }
@@ -654,12 +650,12 @@ public class CliContext {
 
   @SerializedName("locale")
   @JsonProperty("locale")
-  public CliContext setLocale(String languageString) {
+  public ValidationContext setLocale(String languageString) {
     this.locale = languageString;
     return this;
   }
 
-  public CliContext setLocale(Locale locale) {
+  public ValidationContext setLocale(Locale locale) {
     this.locale = locale.getLanguage();
     return this;
   }
@@ -672,12 +668,12 @@ public class CliContext {
 
   @SerializedName("profiles")
   @JsonProperty("profiles")
-  public CliContext setProfiles(List<String> profiles) {
+  public ValidationContext setProfiles(List<String> profiles) {
     this.profiles = profiles;
     return this;
   }
 
-  public CliContext addProfile(String profile) {
+  public ValidationContext addProfile(String profile) {
     if (this.profiles == null) {
       this.profiles = new ArrayList<>();
     }
@@ -693,12 +689,12 @@ public class CliContext {
 
   @SerializedName("options")
   @JsonProperty("options")
-  public CliContext setOptions(List<String> options) {
+  public ValidationContext setOptions(List<String> options) {
     this.options = options;
     return this;
   }
 
-  public CliContext addOption(String option) {
+  public ValidationContext addOption(String option) {
     if (this.options == null) {
       this.options = new ArrayList<>();
     }
@@ -714,7 +710,7 @@ public class CliContext {
 
   @SerializedName("mode")
   @JsonProperty("mode")
-  public CliContext setMode(EngineMode mode) {
+  public ValidationContext setMode(EngineMode mode) {
     this.mode = mode;
     return this;
   }
@@ -727,7 +723,7 @@ public class CliContext {
 
   @SerializedName("output")
   @JsonProperty("output")
-  public CliContext setOutput(String output) {
+  public ValidationContext setOutput(String output) {
     this.output = output;
     return this;
   }
@@ -740,7 +736,7 @@ public class CliContext {
 
   @SerializedName("outputSuffix")
   @JsonProperty("outputSuffix")
-  public CliContext setOutputSuffix(String outputSuffix) {
+  public ValidationContext setOutputSuffix(String outputSuffix) {
     this.outputSuffix = outputSuffix;
     return this;
   }
@@ -753,7 +749,7 @@ public class CliContext {
 
   @SerializedName("htmlOutput")
   @JsonProperty("htmlOutput")
-  public CliContext setHtmlOutput(String htmlOutput) {
+  public ValidationContext setHtmlOutput(String htmlOutput) {
     this.htmlOutput = htmlOutput;
     return this;
   }
@@ -766,7 +762,7 @@ public class CliContext {
 
   @SerializedName("canDoNative")
   @JsonProperty("canDoNative")
-  public CliContext setCanDoNative(boolean canDoNative) {
+  public ValidationContext setCanDoNative(boolean canDoNative) {
     this.canDoNative = canDoNative;
     return this;
   }
@@ -792,12 +788,12 @@ public class CliContext {
 
   @SerializedName("sources")
   @JsonProperty("sources")
-  public CliContext setSources(List<String> sources) {
+  public ValidationContext setSources(List<String> sources) {
     this.sources = sources;
     return this;
   }
 
-  public CliContext addSource(String source) {
+  public ValidationContext addSource(String source) {
     if (this.sources == null) {
       this.sources = new ArrayList<>();
     }
@@ -813,12 +809,12 @@ public class CliContext {
 
   @SerializedName("locations")
   @JsonProperty("locations")
-  public CliContext setLocations(Map<String, String> locations) {
+  public ValidationContext setLocations(Map<String, String> locations) {
     this.locations = locations;
     return this;
   }
 
-  public CliContext addLocation(String profile, String location) {
+  public ValidationContext addLocation(String profile, String location) {
     this.locations.put(profile, location);
     return this;
   }
@@ -831,7 +827,7 @@ public class CliContext {
 
   @SerializedName("sv")
   @JsonProperty("sv")
-  public CliContext setSv(String sv) {
+  public ValidationContext setSv(String sv) {
     if (sv != null && (sv.startsWith("R") || sv.startsWith("r"))) {
       this.sv = VersionUtilities.versionFromCode(sv.toLowerCase());
     } else {
@@ -848,7 +844,7 @@ public class CliContext {
 
   @SerializedName("txLog")
   @JsonProperty("txLog")
-  public CliContext setTxLog(String txLog) {
+  public ValidationContext setTxLog(String txLog) {
     this.txLog = txLog;
     return this;
   }
@@ -861,7 +857,7 @@ public class CliContext {
 
   @SerializedName("txCache")
   @JsonProperty("txCache")
-  public CliContext setTxCache(String txCache) {
+  public ValidationContext setTxCache(String txCache) {
     this.txCache = txCache;
     return this;
   }
@@ -874,7 +870,7 @@ public class CliContext {
 
   @SerializedName("mapLog")
   @JsonProperty("mapLog")
-  public CliContext setMapLog(String mapLog) {
+  public ValidationContext setMapLog(String mapLog) {
     this.mapLog = mapLog;
     return this;
   }
@@ -887,7 +883,7 @@ public class CliContext {
 
   @SerializedName("lang")
   @JsonProperty("lang")
-  public CliContext setLang(String lang) {
+  public ValidationContext setLang(String lang) {
     this.lang = lang;
     return this;
   }
@@ -900,7 +896,7 @@ public class CliContext {
 
   @SerializedName("fhirpath")
   @JsonProperty("fhirpath")
-  public CliContext setFhirpath(String fhirpath) {
+  public ValidationContext setFhirpath(String fhirpath) {
     this.fhirpath = fhirpath;
     return this;
   }
@@ -943,7 +939,7 @@ public class CliContext {
 
   @SerializedName("snomedCT")
   @JsonProperty("snomedCT")
-  public CliContext setSnomedCT(String snomedCT) {
+  public ValidationContext setSnomedCT(String snomedCT) {
     this.snomedCT = snomedCT;
     return this;
   }
@@ -956,7 +952,7 @@ public class CliContext {
 
   @SerializedName("targetVer")
   @JsonProperty("targetVer")
-  public CliContext setTargetVer(String targetVer) {
+  public ValidationContext setTargetVer(String targetVer) {
     this.targetVer = targetVer;
     return this;
   }
@@ -969,7 +965,7 @@ public class CliContext {
 
   @SerializedName("packageName")
   @JsonProperty("packageName")
-  public CliContext setPackageName(String packageName) {
+  public ValidationContext setPackageName(String packageName) {
     this.packageName = packageName;
     return this;
   }
@@ -982,7 +978,7 @@ public class CliContext {
 
   @SerializedName("doDebug")
   @JsonProperty("doDebug")
-  public CliContext setDoDebug(boolean doDebug) {
+  public ValidationContext setDoDebug(boolean doDebug) {
     this.doDebug = doDebug;
     return this;
   }
@@ -995,7 +991,7 @@ public class CliContext {
 
   @SerializedName("assumeValidRestReferences")
   @JsonProperty("assumeValidRestReferences")
-  public CliContext setAssumeValidRestReferences(boolean assumeValidRestReferences) {
+  public ValidationContext setAssumeValidRestReferences(boolean assumeValidRestReferences) {
     this.assumeValidRestReferences = assumeValidRestReferences;
     return this;
   }
@@ -1008,7 +1004,7 @@ public class CliContext {
 
   @SerializedName("checkReferences")
   @JsonProperty("checkReferences")
-  public CliContext setCheckReferences(boolean checkReferences) {
+  public ValidationContext setCheckReferences(boolean checkReferences) {
     this.checkReferences = checkReferences;
     return this;
   }
@@ -1021,7 +1017,7 @@ public class CliContext {
 
   @SerializedName("noInternalCaching")
   @JsonProperty("noInternalCaching")
-  public CliContext setNoInternalCaching(boolean noInternalCaching) {
+  public ValidationContext setNoInternalCaching(boolean noInternalCaching) {
     this.noInternalCaching = noInternalCaching;
     return this;
   }
@@ -1034,7 +1030,7 @@ public class CliContext {
 
   @SerializedName("noExtensibleBindingMessages")
   @JsonProperty("noExtensibleBindingMessages")
-  public CliContext setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
+  public ValidationContext setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
     this.noExtensibleBindingMessages = noExtensibleBindingMessages;
     return this;
   }
@@ -1083,7 +1079,7 @@ public class CliContext {
 
   @SerializedName("securityChecks")
   @JsonProperty("securityChecks")
-  public CliContext setSecurityChecks(boolean securityChecks) {
+  public ValidationContext setSecurityChecks(boolean securityChecks) {
     this.securityChecks = securityChecks;
     return this;
   }
@@ -1205,7 +1201,7 @@ public class CliContext {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    CliContext that = (CliContext) o;
+    ValidationContext that = (ValidationContext) o;
     return Objects.equals(baseEngine, that.baseEngine) &&
       doNative == that.doNative &&
       hintAboutNonMustSupport == that.hintAboutNonMustSupport &&
@@ -1279,7 +1275,7 @@ public class CliContext {
 
   @Override
   public String toString() {
-    return "CliContext{" +
+    return "ValidationContext{" +
       "baseEngine=" + baseEngine +
       ", doNative=" + doNative +
       ", extensions=" + extensions +
@@ -1349,7 +1345,7 @@ public class CliContext {
 
   @SerializedName("fhirSettingsFile")
   @JsonProperty("fhirSettingsFile")
-  public CliContext setFhirSettingsFile(String fhirSettingsFile) {
+  public ValidationContext setFhirSettingsFile(String fhirSettingsFile) {
     this.fhirSettingsFile = fhirSettingsFile;
     return this;
   }
@@ -1368,7 +1364,7 @@ public class CliContext {
 
   @SerializedName("watchMode")
   @JsonProperty("watchMode")
-  public CliContext setWatchMode(ValidatorWatchMode watchMode) {
+  public ValidationContext setWatchMode(ValidatorWatchMode watchMode) {
     this.watchMode = watchMode;
     return this;
   }
@@ -1406,7 +1402,7 @@ public class CliContext {
 
   @SerializedName("bestPracticeLevel")
   @JsonProperty("bestPracticeLevel")
-  public CliContext setBestPracticeLevel(BestPracticeWarningLevel bestPracticeLevel) {
+  public ValidationContext setBestPracticeLevel(BestPracticeWarningLevel bestPracticeLevel) {
     this.bestPracticeLevel = bestPracticeLevel;
     return this;
   }

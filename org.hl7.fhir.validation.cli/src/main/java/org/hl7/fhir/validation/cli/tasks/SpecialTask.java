@@ -1,11 +1,10 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import java.io.File;
 import java.io.PrintStream;
 
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.hl7.fhir.validation.cli.model.CliContext;
+import org.hl7.fhir.validation.cli.model.ValidationContext;
 import org.hl7.fhir.validation.cli.utils.Params;
 import org.hl7.fhir.validation.special.R4R5MapTester;
 
@@ -26,7 +25,7 @@ public class SpecialTask extends StandaloneTask{
   }
 
   @Override
-  public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
+  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
     return Params.hasParam(args, Params.SPECIAL);
   }
 
@@ -36,7 +35,7 @@ public class SpecialTask extends StandaloneTask{
   }
 
   @Override
-  public void executeTask(CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+  public void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
     String specialMode = Params.getParam(args, Params.SPECIAL);
     if ("r4r5tests".equals(specialMode)) {
       final String target = Params.getParam(args, Params.TARGET);

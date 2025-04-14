@@ -8,20 +8,20 @@ import com.google.gson.annotations.SerializedName;
 
 public class ValidationRequest {
 
-  @JsonProperty("cliContext")
-  @SerializedName("cliContext")
+  @JsonProperty("validationContext")
+  @SerializedName("validationContext")
   private
-  CliContext cliContext;
+  ValidationContext validationContext;
 
   @JsonProperty("filesToValidate")
   @SerializedName("filesToValidate")
   private
   List<FileInfo> filesToValidate = new ArrayList<>();
 
-  @SerializedName("cliContext")
-  @JsonProperty("cliContext")
-  public CliContext getCliContext() {
-    return cliContext;
+  @SerializedName("validationContext")
+  @JsonProperty("validationContext")
+  public ValidationContext getValidationContext() {
+    return validationContext;
   }
 
   @JsonProperty("sessionId")
@@ -32,20 +32,20 @@ public class ValidationRequest {
   public ValidationRequest() {
   }
 
-  public ValidationRequest(CliContext cliContext, List<FileInfo> filesToValidate) {
-    this(cliContext, filesToValidate, null);
+  public ValidationRequest(ValidationContext validationContext, List<FileInfo> filesToValidate) {
+    this(validationContext, filesToValidate, null);
   }
 
-  public ValidationRequest(CliContext cliContext, List<FileInfo> filesToValidate, String sessionToken) {
-    this.cliContext = cliContext;
+  public ValidationRequest(ValidationContext validationContext, List<FileInfo> filesToValidate, String sessionToken) {
+    this.validationContext = validationContext;
     this.filesToValidate = filesToValidate;
     this.sessionId = sessionToken;
   }
 
-  @SerializedName("cliContext")
-  @JsonProperty("cliContext")
-  public ValidationRequest setCliContext(CliContext cliContext) {
-    this.cliContext = cliContext;
+  @SerializedName("validationContext")
+  @JsonProperty("validationContext")
+  public ValidationRequest setValidationContext(ValidationContext validationContext) {
+    this.validationContext = validationContext;
     return this;
   }
 

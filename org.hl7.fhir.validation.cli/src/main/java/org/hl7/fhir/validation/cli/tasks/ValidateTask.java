@@ -8,7 +8,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.cli.model.CliContext;
+import org.hl7.fhir.validation.cli.model.ValidationContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.utils.Display;
 
@@ -38,7 +38,7 @@ public class ValidateTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
+  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
     // There is no explicit way to trigger a validation task.
     // It is the default task.
     return false;
@@ -50,20 +50,20 @@ public class ValidateTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
-    if (cliContext.getExpansionParameters() != null) {
-      validationEngine.loadExpansionParameters(cliContext.getExpansionParameters());
+  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+    if (validationContext.getExpansionParameters() != null) {
+      validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
     }
     
-    for (String s : cliContext.getProfiles()) {
+    for (String s : validationContext.getProfiles()) {
       if (!validationEngine.getContext().hasResource(StructureDefinition.class, s) && !validationEngine.getContext().hasResource(ImplementationGuide.class, s)) {
         System.out.println("  Fetch Profile from " + s);
-        validationEngine.loadProfile(cliContext.getLocations().getOrDefault(s, s));
+        validationEngine.loadProfile(validationContext.getLocations().getOrDefault(s, s));
       }
     }
     System.out.println("Validating");
 
-    validationService.validateSources(cliContext, validationEngine, cliContext.getWatchMode(), cliContext.getWatchScanDelay(), cliContext.getWatchSettleTime());
+    validationService.validateSources(validationContext, validationEngine, validationContext.getWatchMode(), validationContext.getWatchScanDelay(), validationContext.getWatchSettleTime());
 
   }
 }

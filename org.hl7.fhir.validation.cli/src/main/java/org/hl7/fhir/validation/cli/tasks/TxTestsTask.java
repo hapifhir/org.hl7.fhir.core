@@ -11,7 +11,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
-import org.hl7.fhir.validation.cli.model.CliContext;
+import org.hl7.fhir.validation.cli.model.ValidationContext;
 import org.hl7.fhir.validation.cli.utils.Params;
 import org.hl7.fhir.validation.special.TxTester;
 
@@ -32,7 +32,7 @@ public class TxTestsTask extends StandaloneTask{
   }
 
   @Override
-  public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
+  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
     return Params.hasParam(args, Params.TX_TESTS);
   }
 
@@ -42,7 +42,7 @@ public class TxTestsTask extends StandaloneTask{
   }
 
   @Override
-  public void executeTask(CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+  public void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
       String output = Params.getParam(args, Params.OUTPUT);
       String version = Params.getParam(args, Params.VERSION);
       final String tx = Params.getParam(args, Params.TERMINOLOGY);
@@ -55,10 +55,10 @@ public class TxTestsTask extends StandaloneTask{
         version = "current";
       }
       TxTester txTester = new TxTester(new TxTester.InternalTxLoader(version), tx, false, loadExternals(externals));
-      for (String input : cliContext.getInputs()) {
+      for (String input : validationContext.getInputs()) {
         txTester.addLoader(new TxTester.InternalTxLoader(input, true));
       }
-      boolean ok = txTester.setOutput(output).execute(cliContext.getModeParams(), filter);
+      boolean ok = txTester.setOutput(output).execute(validationContext.getModeParams(), filter);
       // new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(output, "testcases.json")), txTester.getTestCases());
       new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(output, "report.json")), txTester.getTestReport());
       SystemExitManager.setError(ok ? 0 : 1);

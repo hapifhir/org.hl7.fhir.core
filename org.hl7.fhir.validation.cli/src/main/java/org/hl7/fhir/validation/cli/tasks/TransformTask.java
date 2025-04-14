@@ -4,7 +4,7 @@ import java.io.PrintStream;
 
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.cli.model.CliContext;
+import org.hl7.fhir.validation.cli.model.ValidationContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.utils.Display;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
@@ -27,8 +27,8 @@ public class TransformTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
-    return cliContext.getMode() == EngineMode.TRANSFORM;
+  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
+    return validationContext.getMode() == EngineMode.TRANSFORM;
   }
 
   @Override
@@ -37,8 +37,8 @@ public class TransformTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
-    validationService.transform(cliContext, validationEngine);
+  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+    validationService.transform(validationContext, validationEngine);
   }
 
 }

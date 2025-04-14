@@ -4,7 +4,6 @@ import static org.hl7.fhir.validation.tests.utilities.TestUtilities.getTerminolo
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.AdditionalMatchers.and;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.endsWith;
 import static org.mockito.ArgumentMatchers.eq;
@@ -35,7 +34,7 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.cli.model.CliContext;
+import org.hl7.fhir.validation.cli.model.ValidationContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -62,7 +61,7 @@ class ValidationServiceTests {
 
     List<FileInfo> filesToValidate = getFilesToValidate();
 
-    ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"))).setFilesToValidate(filesToValidate);
+    ValidationRequest request = new ValidationRequest().setValidationContext(new ValidationContext().setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"))).setFilesToValidate(filesToValidate);
     // Validation run 1...nothing cached yet
     myService.validateSources(request);
     verify(sessionCache, Mockito.times(1)).cacheSession(ArgumentMatchers.any(ValidationEngine.class));
@@ -90,13 +89,13 @@ class ValidationServiceTests {
 
     ValidationService myService = Mockito.spy(new ValidationService());
 
-    CliContext baseContext = new CliContext().setBaseEngine("myDummyKey").setSv("4.0.1").setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"));
+    ValidationContext baseContext = new ValidationContext().setBaseEngine("myDummyKey").setSv("4.0.1").setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"));
     myService.putBaseEngine("myDummyKey", baseContext);
     verify(myService, Mockito.times(1)).buildValidationEngine(any(), any(), any());
 
     {
       final List<FileInfo> filesToValidate = getFilesToValidate();
-      final ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setSv("4.0.1")).setFilesToValidate(filesToValidate);
+      final ValidationRequest request = new ValidationRequest().setValidationContext(new ValidationContext().setSv("4.0.1")).setFilesToValidate(filesToValidate);
       myService.validateSources(request);
 
       verify(myService, Mockito.times(0)).getBaseEngine("myDummyKey");
@@ -105,7 +104,7 @@ class ValidationServiceTests {
 
     {
       final List<FileInfo> filesToValidate = getFilesToValidate();
-      final ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setBaseEngine("myDummyKey")).setFilesToValidate(filesToValidate);
+      final ValidationRequest request = new ValidationRequest().setValidationContext(new ValidationContext().setBaseEngine("myDummyKey")).setFilesToValidate(filesToValidate);
       myService.validateSources(request);
 
       verify(myService, Mockito.times(1)).getBaseEngine("myDummyKey");
@@ -141,8 +140,8 @@ class ValidationServiceTests {
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
-    CliContext cliContext = getCliContextSingleSource();
-    validationService.convertSources(cliContext.setOutput(DUMMY_OUTPUT),validationEngine);
+    ValidationContext validationContext = getValidationContextSingleSource();
+    validationService.convertSources(validationContext.setOutput(DUMMY_OUTPUT),validationEngine);
 
     verify(validationEngine).convert(DUMMY_SOURCE, DUMMY_OUTPUT);
   }
@@ -154,8 +153,8 @@ class ValidationServiceTests {
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
-    CliContext cliContext = getCliContextSingleSource();
-    assertThrows( Exception.class, () -> validationService.convertSources(cliContext,validationEngine));
+    ValidationContext validationContext = getValidationContextSingleSource();
+    assertThrows( Exception.class, () -> validationService.convertSources(validationContext,validationEngine));
   }
 
 
@@ -167,8 +166,8 @@ class ValidationServiceTests {
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
-    CliContext cliContext = getCliContextMultipleSource();
-    assertThrows( Exception.class, () -> validationService.convertSources(cliContext,validationEngine)
+    ValidationContext validationContext = getValidationContextMultipleSource();
+    assertThrows( Exception.class, () -> validationService.convertSources(validationContext,validationEngine)
     );
   }
 
@@ -179,8 +178,8 @@ class ValidationServiceTests {
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
-    CliContext cliContext = getCliContextMultipleSource();
-    validationService.convertSources(cliContext.setOutputSuffix(DUMMY_OUTPUT),validationEngine);
+    ValidationContext validationContext = getValidationContextMultipleSource();
+    validationService.convertSources(validationContext.setOutputSuffix(DUMMY_OUTPUT),validationEngine);
     verify(validationEngine).convert(eq(DUMMY_SOURCE1), and(startsWith(DUMMY_SOURCE1), endsWith(DUMMY_OUTPUT)));
     verify(validationEngine).convert(eq(DUMMY_SOURCE2), and(startsWith(DUMMY_SOURCE2), endsWith(DUMMY_OUTPUT)));
     verify(validationEngine).convert(eq(DUMMY_SOURCE3), and(startsWith(DUMMY_SOURCE3), endsWith(DUMMY_OUTPUT)));
@@ -194,8 +193,8 @@ class ValidationServiceTests {
     ValidationEngine validationEngine = mock(ValidationEngine.class);
     StructureDefinition structureDefinition = mock(StructureDefinition.class);
     when(validationEngine.snapshot(DUMMY_SOURCE, DUMMY_SV)).thenReturn(structureDefinition);
-    CliContext cliContext = getCliContextSingleSource();
-    validationService.generateSnapshot(cliContext.setOutput(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine);
+    ValidationContext validationContext = getValidationContextSingleSource();
+    validationService.generateSnapshot(validationContext.setOutput(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine);
 
     verify(validationEngine).snapshot(DUMMY_SOURCE, DUMMY_SV);
     verify(validationEngine).handleOutput(structureDefinition, DUMMY_OUTPUT, DUMMY_SV);
@@ -208,8 +207,8 @@ class ValidationServiceTests {
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
-    CliContext cliContext = getCliContextSingleSource();
-    assertThrows( Exception.class, () -> validationService.generateSnapshot(cliContext.setSv(DUMMY_SV),validationEngine));
+    ValidationContext validationContext = getValidationContextSingleSource();
+    assertThrows( Exception.class, () -> validationService.generateSnapshot(validationContext.setSv(DUMMY_SV),validationEngine));
   }
 
   @Test
@@ -219,8 +218,8 @@ class ValidationServiceTests {
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
 
-    CliContext cliContext = getCliContextMultipleSource();
-    assertThrows( Exception.class, () -> validationService.generateSnapshot(cliContext.setOutput(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine)
+    ValidationContext validationContext = getValidationContextMultipleSource();
+    assertThrows( Exception.class, () -> validationService.generateSnapshot(validationContext.setOutput(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine)
     );
   }
 
@@ -240,8 +239,8 @@ class ValidationServiceTests {
     when(validationEngine.snapshot(DUMMY_SOURCE3, DUMMY_SV)).thenReturn(structureDefinition3);
 
 
-    CliContext cliContext = getCliContextMultipleSource();
-    validationService.generateSnapshot(cliContext.setOutputSuffix(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine);
+    ValidationContext validationContext = getValidationContextMultipleSource();
+    validationService.generateSnapshot(validationContext.setOutputSuffix(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine);
     verify(validationEngine).snapshot(DUMMY_SOURCE1, DUMMY_SV);
     verify(validationEngine).handleOutput(eq(structureDefinition1), and(startsWith(DUMMY_SOURCE1),endsWith(DUMMY_OUTPUT)), eq(DUMMY_SV));
     verify(validationEngine).snapshot(DUMMY_SOURCE2, DUMMY_SV);
@@ -251,15 +250,15 @@ class ValidationServiceTests {
 
   }
 
-  private CliContext getCliContextSingleSource() {
-    CliContext cliContext;
-    cliContext = new CliContext().setSources(Arrays.asList(DUMMY_SOURCE));
-    return cliContext;
+  private ValidationContext getValidationContextSingleSource() {
+    ValidationContext validationContext;
+    validationContext = new ValidationContext().setSources(Arrays.asList(DUMMY_SOURCE));
+    return validationContext;
   }
-  private CliContext getCliContextMultipleSource() {
-    CliContext cliContext;
-    cliContext = new CliContext().setSources(Arrays.asList(DUMMY_SOURCE1, DUMMY_SOURCE2, DUMMY_SOURCE3));
-    return cliContext;
+  private ValidationContext getValidationContextMultipleSource() {
+    ValidationContext validationContext;
+    validationContext = new ValidationContext().setSources(Arrays.asList(DUMMY_SOURCE1, DUMMY_SOURCE2, DUMMY_SOURCE3));
+    return validationContext;
   }
 
   /*  This is a particularly long way to test that fields in ValidationEngine are
@@ -279,8 +278,8 @@ class ValidationServiceTests {
     final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);
     final ValidationService validationService = createFakeValidationService(mockValidationEngineBuilder, mockValidationEngine);
 
-    CliContext cliContext = new CliContext();
-    validationService.buildValidationEngine(cliContext, null, timeTracker);
+    ValidationContext validationContext = new ValidationContext();
+    validationService.buildValidationEngine(validationContext, null, timeTracker);
 
     verify(mockValidationEngine).setFetcher(notNull());
     verify(mockValidationEngineBuilder).withUserAgent(eq("fhir/validator/" + VersionUtil.getVersion()));
@@ -297,9 +296,9 @@ class ValidationServiceTests {
     final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);
     final ValidationService validationService = createFakeValidationService(mockValidationEngineBuilder, mockValidationEngine);
 
-    CliContext cliContext = new CliContext();
-    cliContext.setDisableDefaultResourceFetcher(true);
-    validationService.buildValidationEngine(cliContext, null, timeTracker);
+    ValidationContext validationContext = new ValidationContext();
+    validationContext.setDisableDefaultResourceFetcher(true);
+    validationService.buildValidationEngine(validationContext, null, timeTracker);
 
     verify(mockValidationEngine, never()).setFetcher(any());
     verify(mockValidationEngineBuilder).withUserAgent(eq("fhir/validator/" + VersionUtil.getVersion()));
@@ -323,7 +322,7 @@ class ValidationServiceTests {
       }
 
       @Override
-      protected void loadIgsAndExtensions(ValidationEngine validationEngine, CliContext cliContext, TimeTracker timeTracker) {
+      protected void loadIgsAndExtensions(ValidationEngine validationEngine, ValidationContext validationContext, TimeTracker timeTracker) {
         //Don't care. Do nothing.
       }
     };

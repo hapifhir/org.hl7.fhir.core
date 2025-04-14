@@ -8,7 +8,7 @@ import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.cli.model.CliContext;
+import org.hl7.fhir.validation.cli.model.ValidationContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.utils.Display;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
@@ -34,8 +34,8 @@ public class RePackageTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
-    return cliContext.getMode() == EngineMode.RE_PACKAGE;
+  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
+    return validationContext.getMode() == EngineMode.RE_PACKAGE;
   }
 
   @Override
@@ -44,9 +44,9 @@ public class RePackageTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception { 
-    boolean json = cliContext.getFormat() != FhirFormat.XML;
-    String output = cliContext.getOutput();
+  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+    boolean json = validationContext.getFormat() != FhirFormat.XML;
+    String output = validationContext.getOutput();
     File f = ManagedFileAccess.file(output);
     ExpansionPackageGeneratorOutputType t = ExpansionPackageGeneratorOutputType.FOLDER;
     if (f.exists() && f.isDirectory()) {
@@ -80,15 +80,15 @@ public class RePackageTask extends ValidationEngineTask {
     }
     IWorkerContext ctxt = validationEngine.getContext();
     PackageReGenerator ep = new PackageReGenerator().setContext(ctxt).setScope(scope);
-    ep.setNpmId(cliContext.getPackageName());
-    for (String s : cliContext.getIgs()) {
+    ep.setNpmId(validationContext.getPackageName());
+    for (String s : validationContext.getIgs()) {
       ep.addPackage(s);
     }
-    if (cliContext.getExpansionParameters() != null) {
-      validationEngine.loadExpansionParameters(cliContext.getExpansionParameters());
+    if (validationContext.getExpansionParameters() != null) {
+      validationEngine.loadExpansionParameters(validationContext.getExpansionParameters());
     }
     ep.setOutput(output).setOutputType(t).setJson(json);
-    ep.setModes(cliContext.getModeParams());
+    ep.setModes(validationContext.getModeParams());
     ep.generateExpansionPackage();
   }
 }

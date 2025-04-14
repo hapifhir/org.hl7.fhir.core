@@ -1,6 +1,5 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
@@ -9,7 +8,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.cli.model.CliContext;
+import org.hl7.fhir.validation.cli.model.ValidationContext;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.utils.Display;
@@ -32,7 +31,7 @@ public class CompareTask extends ValidationEngineTask {
   }
 
   @Override
-  public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
+  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
     return Params.hasParam(args, Params.COMPARE);
   }
 
@@ -42,17 +41,17 @@ public class CompareTask extends ValidationEngineTask {
   }
 
   @Override
-  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+  public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
     Display.printCliParamsAndInfo(args);
     if (!destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
       return;
     }
-    if (cliContext.getSv() == null) {
-      cliContext.setSv(validationService.determineVersion(cliContext));
+    if (validationContext.getSv() == null) {
+      validationContext.setSv(validationService.determineVersion(validationContext));
     }
-    String v = VersionUtilities.getCurrentVersion(cliContext.getSv());
+    String v = VersionUtilities.getCurrentVersion(validationContext.getSv());
     String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
-    ValidationEngine validator = validationService.initializeValidator(cliContext, definitions, tt);
+    ValidationEngine validator = validationService.initializeValidator(validationContext, definitions, tt);
     validator.loadPackage(CommonPackages.ID_PUBPACK, null);
     ComparisonService.doLeftRightComparison(args, Params.getParam(args, Params.DESTINATION), validator);
   }

@@ -7,12 +7,12 @@ import java.util.Locale;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class CliContextTests {
+public class ValidationContextTests {
     @Test
     @DisplayName("test locale set and get")
     public void testSetAndGetLocale() {
-        CliContext cliContext = new CliContext();
-        cliContext.setLocale(Locale.GERMAN);
-        assertEquals(Locale.GERMAN, cliContext.getLocale());
+        ValidationContext validationContext = new ValidationContext();
+        validationContext.setLocale(Locale.GERMAN);
+        assertEquals(Locale.GERMAN, validationContext.getLocale());
     }
 }

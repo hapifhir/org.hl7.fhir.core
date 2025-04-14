@@ -14,7 +14,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
-import org.hl7.fhir.validation.cli.model.CliContext;
+import org.hl7.fhir.validation.cli.model.ValidationContext;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.services.ValidatorWatchMode;
 
@@ -168,35 +168,35 @@ public class Params {
   /**
    * TODO Don't do this all in one for loop. Use the above methods.
    */
-  public static CliContext loadCliContext(String[] args) throws Exception {
-    CliContext cliContext = new CliContext();
+  public static ValidationContext loadValidationContext(String[] args) throws Exception {
+    ValidationContext validationContext = new ValidationContext();
 
     // load the parameters - so order doesn't matter
     for (int i = 0; i < args.length; i++) {
       if (args[i].equals(VERSION)) {
-        cliContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
+        validationContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
       } else if (args[i].equals(FHIR_SETTINGS_PARAM)) {
         final String fhirSettingsFilePath = args[++i];
         if (! ManagedFileAccess.file(fhirSettingsFilePath).exists()) {
           throw new Error("Cannot find fhir-settings file: " + fhirSettingsFilePath);
         }
-        cliContext.setFhirSettingsFile(fhirSettingsFilePath);
+        validationContext.setFhirSettingsFile(fhirSettingsFilePath);
       } else if (args[i].equals(OUTPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -output without indicating output file");
         else
-          cliContext.setOutput(args[++i]);
+          validationContext.setOutput(args[++i]);
       } else if (args[i].equals(OUTPUT_SUFFIX)) {
         if (i + 1 == args.length)
           throw new Error("Specified -outputSuffix without indicating output suffix");
         else
-          cliContext.setOutputSuffix(args[++i]);
+          validationContext.setOutputSuffix(args[++i]);
       }
       else if (args[i].equals(HTML_OUTPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -html-output without indicating output file");
         else
-          cliContext.setHtmlOutput(args[++i]);
+          validationContext.setHtmlOutput(args[++i]);
       } else if (args[i].equals(PROXY)) {
         i++; // ignore next parameter
       } else if (args[i].equals(PROXY_AUTH)) {
@@ -209,7 +209,7 @@ public class Params {
           throw new Error("Specified -profile without indicating profile url");
         } else {
           p = args[++i];
-          cliContext.addProfile(p);
+          validationContext.addProfile(p);
         }
       } else if (args[i].equals(PROFILES)) {
         String p = null;
@@ -218,7 +218,7 @@ public class Params {
         } else {
           p = args[++i];
           for (String s : p.split("\\,")) {
-            cliContext.addProfile(s);
+            validationContext.addProfile(s);
           }
         }
       } else if (args[i].equals(OPTION)) {
@@ -227,7 +227,7 @@ public class Params {
           throw new Error("Specified -option without indicating option value");
         } else {
           p = args[++i];
-          cliContext.addOption(p);
+          validationContext.addOption(p);
         }
       } else if (args[i].equals(OPTIONS)) {
         String p = null;
@@ -236,7 +236,7 @@ public class Params {
         } else {
           p = args[++i];
           for (String s : p.split("\\,")) {
-            cliContext.addOption(s);
+            validationContext.addOption(s);
           }
         }
       } else if (args[i].equals(BUNDLE)) {
@@ -252,53 +252,53 @@ public class Params {
         } else {
           profile = args[++i];
         }
-        cliContext.getBundleValidationRules().add(new BundleValidationRule().setRule(rule).setProfile(profile));
+        validationContext.getBundleValidationRules().add(new BundleValidationRule().setRule(rule).setProfile(profile));
       } else if (args[i].equals(QUESTIONNAIRE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -questionnaire without indicating questionnaire mode");
         else {
           String questionnaireMode = args[++i];
-          cliContext.setQuestionnaireMode(QuestionnaireMode.fromCode(questionnaireMode));
+          validationContext.setQuestionnaireMode(QuestionnaireMode.fromCode(questionnaireMode));
         }
       } else if (args[i].equals(LEVEL)) {
         if (i + 1 == args.length)
           throw new Error("Specified -level without indicating level mode");
         else {
           String q = args[++i];
-          cliContext.setLevel(ValidationLevel.fromCode(q));
+          validationContext.setLevel(ValidationLevel.fromCode(q));
         }
       } else if (args[i].equals(MODE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -mode without indicating mode");
         else {
           String q = args[++i];
-          cliContext.getModeParams().add(q);
+          validationContext.getModeParams().add(q);
         }
       } else if (args[i].equals(INPUT)) {
         if (i + 1 == args.length)
           throw new Error("Specified -input without providing value");
         else {
           String inp = args[++i];
-          cliContext.getInputs().add(inp);
+          validationContext.getInputs().add(inp);
         }
       } else if (args[i].equals(NATIVE)) {
-        cliContext.setDoNative(true);
+        validationContext.setDoNative(true);
       } else if (args[i].equals(ASSUME_VALID_REST_REF)) {
-        cliContext.setAssumeValidRestReferences(true);
+        validationContext.setAssumeValidRestReferences(true);
       } else if (args[i].equals(CHECK_REFERENCES)) {
-        cliContext.setCheckReferences(true);
+        validationContext.setCheckReferences(true);
       } else if (args[i].equals(RESOLUTION_CONTEXT)) {
-        cliContext.setResolutionContext(args[++i]);        
+        validationContext.setResolutionContext(args[++i]);
       } else if (args[i].equals(DEBUG)) {
-        cliContext.setDoDebug(true);
+        validationContext.setDoDebug(true);
       } else if (args[i].equals(SCT)) {
-        cliContext.setSnomedCT(args[++i]);
+        validationContext.setSnomedCT(args[++i]);
       } else if (args[i].equals(RECURSE)) {
-        cliContext.setRecursive(true);
+        validationContext.setRecursive(true);
       } else if (args[i].equals(SHOW_MESSAGES_FROM_REFERENCES)) {
-        cliContext.setShowMessagesFromReferences(true);
+        validationContext.setShowMessagesFromReferences(true);
       } else if (args[i].equals(DO_IMPLICIT_FHIRPATH_STRING_CONVERSION)) {
-        cliContext.setDoImplicitFHIRPathStringConversion(true);
+        validationContext.setDoImplicitFHIRPathStringConversion(true);
       } else if (args[i].equals(HTML_IN_MARKDOWN)) {
         if (i + 1 == args.length)
           throw new Error("Specified "+HTML_IN_MARKDOWN+" without indicating mode");
@@ -307,7 +307,7 @@ public class Params {
           if (!HtmlInMarkdownCheck.isValidCode(q)) {
             throw new Error("Specified "+HTML_IN_MARKDOWN+" with na invalid code - must be ignore, warning, or error");            
           } else {
-            cliContext.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.fromCode(q));
+            validationContext.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.fromCode(q));
           }
         }
       } else if (args[i].equals(BEST_PRACTICE)) {
@@ -315,198 +315,198 @@ public class Params {
           throw new Error("Specified "+BEST_PRACTICE+" without indicating mode");
         else {
           String q = args[++i];
-          cliContext.setBestPracticeLevel(readBestPractice(q));
+          validationContext.setBestPracticeLevel(readBestPractice(q));
         }
       } else if (args[i].equals(LOCALE)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -locale without indicating locale");
         } else {
-          cliContext.setLocale(Locale.forLanguageTag(args[++i]));
+          validationContext.setLocale(Locale.forLanguageTag(args[++i]));
         }
       } else if (args[i].equals(EXTENSION)) {
-        cliContext.getExtensions().add(args[++i]);
+        validationContext.getExtensions().add(args[++i]);
       } else if (args[i].equals(NO_INTERNAL_CACHING)) {
-        cliContext.setNoInternalCaching(true);
+        validationContext.setNoInternalCaching(true);
       } else if (args[i].equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
-        cliContext.setNoExtensibleBindingMessages(true);
+        validationContext.setNoExtensibleBindingMessages(true);
       } else if (args[i].equals(ALLOW_DOUBLE_QUOTES)) {
-        cliContext.setAllowDoubleQuotesInFHIRPath(true);       
+        validationContext.setAllowDoubleQuotesInFHIRPath(true);
       } else if (args[i].equals(DISABLE_DEFAULT_RESOURCE_FETCHER)) {
-        cliContext.setDisableDefaultResourceFetcher(true);
+        validationContext.setDisableDefaultResourceFetcher(true);
       } else if (args[i].equals(CHECK_IPS_CODES)) {
-        cliContext.setCheckIPSCodes(true);       
+        validationContext.setCheckIPSCodes(true);
       } else if (args[i].equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {
-        cliContext.setNoUnicodeBiDiControlChars(true);
+        validationContext.setNoUnicodeBiDiControlChars(true);
       } else if (args[i].equals(NO_INVARIANTS)) {
-        cliContext.setNoInvariants(true);
+        validationContext.setNoInvariants(true);
       } else if (args[i].equals(DISPLAY_WARNINGS)) {
-        cliContext.setDisplayWarnings(true);
+        validationContext.setDisplayWarnings(true);
       } else if (args[i].equals(WANT_INVARIANTS_IN_MESSAGES)) {
-        cliContext.setWantInvariantsInMessages(true);
+        validationContext.setWantInvariantsInMessages(true);
       } else if (args[i].equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
-        cliContext.setHintAboutNonMustSupport(true);
+        validationContext.setHintAboutNonMustSupport(true);
       } else if (args[i].equals(TO_VERSION)) {
-        cliContext.setTargetVer(args[++i]);
-        cliContext.setMode(EngineMode.VERSION);
+        validationContext.setTargetVer(args[++i]);
+        validationContext.setMode(EngineMode.VERSION);
       } else if (args[i].equals(PACKAGE_NAME)) {
-        cliContext.setPackageName(args[++i]);
+        validationContext.setPackageName(args[++i]);
         if (!hasParam(args, "-re-package")) {
-          cliContext.setMode(EngineMode.CODEGEN);
+          validationContext.setMode(EngineMode.CODEGEN);
         }
       } else if (args[i].equals(TX_PACK)) {
-        cliContext.setMode(EngineMode.RE_PACKAGE);
+        validationContext.setMode(EngineMode.RE_PACKAGE);
         String pn = args[++i];
         if (pn != null) {
           if (pn.contains(",")) {
             for (String s : pn.split("\\,")) {
-              cliContext.getIgs().add(s);              
+              validationContext.getIgs().add(s);
             }
           } else {
-            cliContext.getIgs().add(pn);
+            validationContext.getIgs().add(pn);
           }
         }
-        cliContext.getModeParams().add("tx");
-        cliContext.getModeParams().add("expansions");
+        validationContext.getModeParams().add("tx");
+        validationContext.getModeParams().add("expansions");
       } else if (args[i].equals(RE_PACK)) {
-        cliContext.setMode(EngineMode.RE_PACKAGE);
+        validationContext.setMode(EngineMode.RE_PACKAGE);
         String pn = args[++i];
         if (pn != null) {
           if (pn.contains(",")) {
             for (String s : pn.split("\\,")) {
-              cliContext.getIgs().add(s);              
+              validationContext.getIgs().add(s);
             }
           } else {
-            cliContext.getIgs().add(pn);
+            validationContext.getIgs().add(pn);
           }
         }
-        cliContext.getModeParams().add("tx");
-        cliContext.getModeParams().add("cnt");
-        cliContext.getModeParams().add("api");
+        validationContext.getModeParams().add("tx");
+        validationContext.getModeParams().add("cnt");
+        validationContext.getModeParams().add("api");
       } else if (args[i].equals(PIN)) {
-        cliContext.getModeParams().add("pin");
+        validationContext.getModeParams().add("pin");
       } else if (args[i].equals(EXPAND)) {
-        cliContext.getModeParams().add("expand");
+        validationContext.getModeParams().add("expand");
       } else if (args[i].equals(DO_NATIVE)) {
-        cliContext.setCanDoNative(true);
+        validationContext.setCanDoNative(true);
       } else if (args[i].equals(NO_NATIVE)) {
-        cliContext.setCanDoNative(false);
+        validationContext.setCanDoNative(false);
       } else if (args[i].equals(TRANSFORM)) {
-        cliContext.setMap(args[++i]);
-        cliContext.setMode(EngineMode.TRANSFORM);
+        validationContext.setMap(args[++i]);
+        validationContext.setMode(EngineMode.TRANSFORM);
       } else if (args[i].equals(FORMAT)) {
-        cliContext.setFormat(FhirFormat.fromCode(args[++i]));
+        validationContext.setFormat(FhirFormat.fromCode(args[++i]));
       } else if (args[i].equals(LANG_TRANSFORM)) {
-        cliContext.setLangTransform(args[++i]);
-        cliContext.setMode(EngineMode.LANG_TRANSFORM);
+        validationContext.setLangTransform(args[++i]);
+        validationContext.setMode(EngineMode.LANG_TRANSFORM);
       } else if (args[i].equals(EXP_PARAMS)) {
-        cliContext.setExpansionParameters(args[++i]);
+        validationContext.setExpansionParameters(args[++i]);
       } else if (args[i].equals(COMPILE)) {
-        cliContext.setMap(args[++i]);
-        cliContext.setMode(EngineMode.COMPILE);
+        validationContext.setMap(args[++i]);
+        validationContext.setMode(EngineMode.COMPILE);
       } else if (args[i].equals(CODEGEN)) {
-        cliContext.setMode(EngineMode.CODEGEN);
+        validationContext.setMode(EngineMode.CODEGEN);
       } else if (args[i].equals(FACTORY)) {
-        cliContext.setMode(EngineMode.FACTORY);
-        cliContext.setSource(args[++i]);
+        validationContext.setMode(EngineMode.FACTORY);
+        validationContext.setSource(args[++i]);
       } else if (args[i].equals(NARRATIVE)) {
-        cliContext.setMode(EngineMode.NARRATIVE);
+        validationContext.setMode(EngineMode.NARRATIVE);
       } else if (args[i].equals(SPREADSHEET)) {
-        cliContext.setMode(EngineMode.SPREADSHEET);
+        validationContext.setMode(EngineMode.SPREADSHEET);
       } else if (args[i].equals(SNAPSHOT)) {
-        cliContext.setMode(EngineMode.SNAPSHOT);
+        validationContext.setMode(EngineMode.SNAPSHOT);
       } else if (args[i].equals(INSTALL)) {
-        cliContext.setMode(EngineMode.INSTALL);
+        validationContext.setMode(EngineMode.INSTALL);
       } else if (args[i].equals(RUN_TESTS)) {
         // TODO setBaseTestingUtils test directory
-        cliContext.setMode(EngineMode.RUN_TESTS);
+        validationContext.setMode(EngineMode.RUN_TESTS);
       } else if (args[i].equals(SECURITY_CHECKS)) {
-        cliContext.setSecurityChecks(true);
+        validationContext.setSecurityChecks(true);
       } else if (args[i].equals(CRUMB_TRAIL)) {
-        cliContext.setCrumbTrails(true);
+        validationContext.setCrumbTrails(true);
       } else if (args[i].equals(SHOW_MESSAGE_IDS)) {
-        cliContext.setShowMessageIds(true);
+        validationContext.setShowMessageIds(true);
       } else if (args[i].equals(FOR_PUBLICATION)) {
-        cliContext.setForPublication(true);
+        validationContext.setForPublication(true);
       } else if (args[i].equals(AI_SERVICE)) {
-        cliContext.setAIService(args[++i]);
+        validationContext.setAIService(args[++i]);
       } else if (args[i].equals(R5_REF_POLICY)) {
-        cliContext.setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.fromCode(args[++i]));
+        validationContext.setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.fromCode(args[++i]));
       } else if (args[i].equals(UNKNOWN_CODESYSTEMS_CAUSE_ERROR)) {
-        cliContext.setUnknownCodeSystemsCauseErrors(true);
+        validationContext.setUnknownCodeSystemsCauseErrors(true);
       } else if (args[i].equals(NO_EXPERIMENTAL_CONTENT)) {
-        cliContext.setNoExperimentalContent(true);
+        validationContext.setNoExperimentalContent(true);
       } else if (args[i].equals(VERBOSE)) {
-        cliContext.setCrumbTrails(true);
-        cliContext.setShowMessageIds(true);
+        validationContext.setCrumbTrails(true);
+        validationContext.setShowMessageIds(true);
       } else if (args[i].equals(ALLOW_EXAMPLE_URLS)) {
         String bl = args[++i]; 
         if ("true".equals(bl)) {
-          cliContext.setAllowExampleUrls(true);
+          validationContext.setAllowExampleUrls(true);
         } else if ("false".equals(bl)) {
-          cliContext.setAllowExampleUrls(false);
+          validationContext.setAllowExampleUrls(false);
         } else {
           throw new Error("Value for "+ALLOW_EXAMPLE_URLS+" not understood: "+bl);          
         }          
       } else if (args[i].equals(TERMINOLOGY_ROUTING)) {
-        cliContext.setShowTerminologyRouting(true);
+        validationContext.setShowTerminologyRouting(true);
       } else if (args[i].equals(TERMINOLOGY_CACHE_CLEAR)) {
-        cliContext.setClearTxCache(true);
+        validationContext.setClearTxCache(true);
       } else if (args[i].equals(SHOW_TIMES)) {
-        cliContext.setShowTimes(true);
+        validationContext.setShowTimes(true);
       } else if (args[i].equals(OUTPUT_STYLE)) {
-        cliContext.setOutputStyle(args[++i]);
+        validationContext.setOutputStyle(args[++i]);
       } else if (args[i].equals(ADVSIOR_FILE)) {
-        cliContext.setAdvisorFile(args[++i]);
-        File f = ManagedFileAccess.file(cliContext.getAdvisorFile());
+        validationContext.setAdvisorFile(args[++i]);
+        File f = ManagedFileAccess.file(validationContext.getAdvisorFile());
         if (!f.exists()) {
-          throw new Error("Cannot find advisor file "+cliContext.getAdvisorFile());
+          throw new Error("Cannot find advisor file "+ validationContext.getAdvisorFile());
         } else if (!Utilities.existsInList(Utilities.getFileExtension(f.getName()), "json", "txt")) {
-          throw new Error("Advisor file "+cliContext.getAdvisorFile()+" must be a .json or a .txt file");
+          throw new Error("Advisor file "+ validationContext.getAdvisorFile()+" must be a .json or a .txt file");
         }
       } else if (args[i].equals(SCAN)) {
-        cliContext.setMode(EngineMode.SCAN);
+        validationContext.setMode(EngineMode.SCAN);
       } else if (args[i].equals(TERMINOLOGY)) {
         if (i + 1 == args.length)
           throw new Error("Specified -tx without indicating terminology server");
         else {
-          cliContext.setTxServer("n/a".equals(args[++i]) ? null : args[i]);
-          cliContext.setNoEcosystem(true);
+          validationContext.setTxServer("n/a".equals(args[++i]) ? null : args[i]);
+          validationContext.setNoEcosystem(true);
         }
       } else if (args[i].equals(TERMINOLOGY_LOG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -txLog without indicating file");
         else
-          cliContext.setTxLog(args[++i]);
+          validationContext.setTxLog(args[++i]);
       } else if (args[i].equals(TERMINOLOGY_CACHE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -txCache without indicating file");
         else
-          cliContext.setTxCache(args[++i]);
+          validationContext.setTxCache(args[++i]);
       } else if (args[i].equals(LOG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -log without indicating file");
         else
-          cliContext.setMapLog(args[++i]);
+          validationContext.setMapLog(args[++i]);
       } else if (args[i].equals(LANGUAGE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -language without indicating language");
         else
-          cliContext.setLang(args[++i]);
+          validationContext.setLang(args[++i]);
       } else if (args[i].equals(SRC_LANG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -src-lang without indicating file");
         else
-          cliContext.setSrcLang(args[++i]);
+          validationContext.setSrcLang(args[++i]);
       } else if (args[i].equals(TGT_LANG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -tgt-lang without indicating file");
         else
-          cliContext.setTgtLang(args[++i]);
+          validationContext.setTgtLang(args[++i]);
       } else if (args[i].equals(JURISDICTION)) {
         if (i + 1 == args.length)
           throw new Error("Specified -jurisdiction without indicating jurisdiction");
         else
-          cliContext.setJurisdiction(processJurisdiction(args[++i]));
+          validationContext.setJurisdiction(processJurisdiction(args[++i]));
       } else if (args[i].equals(IMPLEMENTATION_GUIDE) || args[i].equals(DEFINITION)) {
         if (i + 1 == args.length)
           throw new Error("Specified " + args[i] + " without indicating ig file");
@@ -514,15 +514,15 @@ public class Params {
           String s = args[++i];
           String version = Common.getVersionFromIGName(null, s);
           if (version == null) {
-            cliContext.addIg(s);
+            validationContext.addIg(s);
           } else {
             String v = getParam(args, VERSION);
             if (v != null && !v.equals(version)) {
               throw new Error("Parameters are inconsistent: specified version is "+v+" but -ig parameter "+s+" implies a different version");
-            } else if (cliContext.getSv() != null && !version.equals(cliContext.getSv())) {
-              throw new Error("Parameters are inconsistent: multiple -ig parameters implying differetion versions ("+cliContext.getSv()+","+version+")");
+            } else if (validationContext.getSv() != null && !version.equals(validationContext.getSv())) {
+              throw new Error("Parameters are inconsistent: multiple -ig parameters implying differetion versions ("+ validationContext.getSv()+","+version+")");
             } else {
-              cliContext.setSv(version);
+              validationContext.setSv(version);
             }
           }
         }
@@ -537,14 +537,14 @@ public class Params {
           }
           String pid = VersionUtilities.packageForVersion(v);
           pid = pid + "#"+VersionUtilities.getCurrentPackageVersion(v);
-          cliContext.addIg(pid);
+          validationContext.addIg(pid);
         }
       } else if (args[i].equals(MAP)) {
-        if (cliContext.getMap() == null) {
+        if (validationContext.getMap() == null) {
           if (i + 1 == args.length)
             throw new Error("Specified -map without indicating map file");
           else
-            cliContext.setMap(args[++i]);
+            validationContext.setMap(args[++i]);
         } else {
           throw new Exception("Can only nominate a single -map parameter");
         }
@@ -552,38 +552,38 @@ public class Params {
         if (i + 1 == args.length) {
           throw new Error("Specified -watch-mode without indicating mode value");
         } else {
-          cliContext.setWatchMode(readWatchMode(args[++i]));
+          validationContext.setWatchMode(readWatchMode(args[++i]));
         }
       } else if (args[i].equals(WATCH_SCAN_DELAY)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -watch-scan-delay without indicating mode value");
         } else {
-          cliContext.setWatchScanDelay(readInteger(WATCH_SCAN_DELAY, args[++i]));
+          validationContext.setWatchScanDelay(readInteger(WATCH_SCAN_DELAY, args[++i]));
         }
       } else if (args[i].equals(WATCH_SETTLE_TIME)) {
           if (i + 1 == args.length) {
             throw new Error("Specified -watch-mode without indicating mode value");
           } else {
-            cliContext.setWatchSettleTime(readInteger(WATCH_SETTLE_TIME, args[++i]));
+            validationContext.setWatchSettleTime(readInteger(WATCH_SETTLE_TIME, args[++i]));
           }      } else if (args[i].startsWith(X)) {
         i++;
       } else if (args[i].equals(CONVERT)) {
-        cliContext.setMode(EngineMode.CONVERT);
+        validationContext.setMode(EngineMode.CONVERT);
       } else if (args[i].equals(FHIRPATH)) {
-        cliContext.setMode(EngineMode.FHIRPATH);
-        if (cliContext.getFhirpath() == null)
+        validationContext.setMode(EngineMode.FHIRPATH);
+        if (validationContext.getFhirpath() == null)
           if (i + 1 == args.length)
             throw new Error("Specified -fhirpath without indicating a FHIRPath expression");
           else
-            cliContext.setFhirpath(args[++i]);
+            validationContext.setFhirpath(args[++i]);
         else
           throw new Exception("Can only nominate a single -fhirpath parameter");
       } else if (!Utilities.existsInList(args[i], AUTH_NONCONFORMANT_SERVERS)) {
-        cliContext.addSource(args[i]);
+        validationContext.addSource(args[i]);
       }
     }
     
-    return cliContext;
+    return validationContext;
   }
 
   private static BestPracticeWarningLevel readBestPractice(String s) {

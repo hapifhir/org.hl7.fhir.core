@@ -3,7 +3,7 @@ package org.hl7.fhir.validation.cli.tasks;
 import java.io.PrintStream;
 
 import org.hl7.fhir.utilities.TimeTracker;
-import org.hl7.fhir.validation.cli.model.CliContext;
+import org.hl7.fhir.validation.cli.model.ValidationContext;
 import org.hl7.fhir.validation.cli.utils.Display;
 import org.hl7.fhir.validation.cli.utils.Params;
 import org.hl7.fhir.validation.testexecutor.TestExecutor;
@@ -26,7 +26,7 @@ public class TestsTask extends StandaloneTask{
   }
 
   @Override
-  public boolean shouldExecuteTask(CliContext cliContext, String[] args) {
+  public boolean shouldExecuteTask(ValidationContext validationContext, String[] args) {
     return Params.hasParam(args, Params.TEST);
   }
 
@@ -36,7 +36,7 @@ public class TestsTask extends StandaloneTask{
   }
 
   @Override
-  public void executeTask(CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
+  public void executeTask(ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
       final String testModuleParam = Params.getParam(args, Params.TEST_MODULES);
       final String testClassnameFilter = Params.getParam(args, Params.TEST_NAME_FILTER);
       final String testCasesDirectory = Params.getParam(args, Params.TEST);
