@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.cli;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.validation.cli.ValidatorCli;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

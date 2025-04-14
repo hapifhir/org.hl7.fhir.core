@@ -4,8 +4,8 @@ import java.io.PrintStream;
 
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.hl7.fhir.validation.cli.model.ValidationContext;
-import org.hl7.fhir.validation.cli.utils.Params;
+import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.service.utils.Params;
 import org.hl7.fhir.validation.special.R4R5MapTester;
 
 public class SpecialTask extends StandaloneTask{

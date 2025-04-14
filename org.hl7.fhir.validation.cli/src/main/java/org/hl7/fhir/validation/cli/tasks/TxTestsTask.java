@@ -11,8 +11,8 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
-import org.hl7.fhir.validation.cli.model.ValidationContext;
-import org.hl7.fhir.validation.cli.utils.Params;
+import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.service.utils.Params;
 import org.hl7.fhir.validation.special.TxTester;
 
 public class TxTestsTask extends StandaloneTask{

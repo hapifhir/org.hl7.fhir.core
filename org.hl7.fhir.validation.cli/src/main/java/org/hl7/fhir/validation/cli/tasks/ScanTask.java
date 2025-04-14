@@ -5,9 +5,9 @@ import java.io.PrintStream;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.Scanner;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.cli.model.ValidationContext;
-import org.hl7.fhir.validation.cli.services.ValidationService;
-import org.hl7.fhir.validation.cli.utils.EngineMode;
+import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.service.ValidationService;
+import org.hl7.fhir.validation.service.utils.EngineMode;
 
 public class ScanTask extends ValidationEngineTask {
 

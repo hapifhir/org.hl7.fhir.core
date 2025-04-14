@@ -14,11 +14,12 @@ import java.util.List;
 
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.cli.model.ValidationContext;
-import org.hl7.fhir.validation.cli.services.ValidationService;
-import org.hl7.fhir.validation.cli.services.ValidatorWatchMode;
+import org.hl7.fhir.validation.cli.ValidatorCli;
+import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.service.ValidationService;
+import org.hl7.fhir.validation.service.ValidatorWatchMode;
 import org.hl7.fhir.validation.cli.tasks.*;
-import org.hl7.fhir.validation.cli.utils.Params;
+import org.hl7.fhir.validation.service.utils.Params;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

@@ -5,8 +5,8 @@ import java.io.PrintStream;
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.ai.AITests;
-import org.hl7.fhir.validation.cli.model.ValidationContext;
-import org.hl7.fhir.validation.cli.utils.Params;
+import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.service.utils.Params;
 
 public class AiTestsTask extends StandaloneTask{
   @Override

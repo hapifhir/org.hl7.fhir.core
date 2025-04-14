@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import org.hl7.fhir.validation.cli.model.ValidationContext;
+import org.hl7.fhir.validation.service.model.ValidationContext;
 
 public abstract class CliTask {
 

@@ -76,11 +76,13 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.cli.model.ValidationContext;
-import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.tasks.*;
-import org.hl7.fhir.validation.cli.utils.Display;
-import org.hl7.fhir.validation.cli.utils.Params;
+import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.service.ValidationService;
+import org.hl7.fhir.validation.cli.tasks.*;
+import org.hl7.fhir.validation.service.utils.Display;
+import org.hl7.fhir.validation.service.utils.Params;
+
 
 /**
  * A executable providing a Command Line Interface primarily for validating one or more FHIR resources against

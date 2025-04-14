@@ -8,11 +8,11 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.cli.model.ValidationContext;
-import org.hl7.fhir.validation.cli.services.ComparisonService;
-import org.hl7.fhir.validation.cli.services.ValidationService;
-import org.hl7.fhir.validation.cli.utils.Display;
-import org.hl7.fhir.validation.cli.utils.Params;
+import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.service.ComparisonService;
+import org.hl7.fhir.validation.service.ValidationService;
+import org.hl7.fhir.validation.service.utils.Display;
+import org.hl7.fhir.validation.service.utils.Params;
 
 public class CompareTask extends ValidationEngineTask {
   @Override
