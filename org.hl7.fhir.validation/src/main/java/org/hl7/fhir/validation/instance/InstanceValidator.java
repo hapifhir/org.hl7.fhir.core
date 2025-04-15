@@ -3571,7 +3571,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           int count = countTargetMatches(valContext.getRootResource(), url.substring(1), true, "$", refs);
           found = count > 0;
         } else {
-          found = isDefinitionURL(url) || (settings.isAllowExamples() && isExampleUrl(url)) /* || (url.startsWith("http://hl7.org/fhir/tools")) */ || 
+          found = isDefinitionURL(url) || (settings.isAllowExamples() && isExampleUrl(url)) /* || (url.startsWith("http://hl7.org/fhir/tools")) */ || isCommunicationsUrl(url) ||
               SpecialExtensions.isKnownExtension(url) || isXverUrl(url) || SIDUtilities.isKnownSID(url) || isKnownNamespaceUri(url) || isRfcRef(url) || isKnownMappingUri(url) || oids.isKnownOID(url);
           if (!found) {
             found = fetcher.resolveURL(this, valContext, path, url, type, type.equals("canonical"), context.getByType(type) != null ? context.getByType(type).getTargetProfile() : null);
@@ -3648,6 +3648,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return ok;
+  }
+
+  private boolean isCommunicationsUrl(String url) {
+    return Utilities.startsWithInList(url, "tel:");
   }
 
   private boolean isKnownMappingUri(String url) {
