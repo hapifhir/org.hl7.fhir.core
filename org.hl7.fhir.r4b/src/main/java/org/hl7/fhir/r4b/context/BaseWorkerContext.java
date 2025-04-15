@@ -707,12 +707,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     tlog("$expand on " + txCache.summary(vs));
     try {
       ValueSet result = txClient.expandValueset(vs, p, params);
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(),
           TerminologyServiceErrorClass.UNKNOWN);
       if (txLog != null) {
-        res.setTxLink(txLog.getLastId());
+        res.setTxLink(txLog == null ? null : txLog.getLastId());
       }
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
@@ -810,7 +810,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
         }
       }
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(),
           TerminologyServiceErrorClass.UNKNOWN, allErrors).setTxLink(txLog == null ? null : txLog.getLastId());
@@ -1107,7 +1107,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       res = validateOnServer(vs, pIn, options);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage())
-          .setTxLink(txLog.getLastId());
+          .setTxLink(txLog == null ? null : txLog.getLastId());
     }
     txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
@@ -1242,15 +1242,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (!ok) {
       return new ValidationResult(IssueSeverity.ERROR, message + " (from " + txClient.getAddress() + ")", err)
-          .setTxLink(txLog.getLastId());
+          .setTxLink(txLog == null ? null : txLog.getLastId());
     } else if (message != null && !message.equals("No Message returned")) {
       return new ValidationResult(IssueSeverity.WARNING, message + " (from " + txClient.getAddress() + ")", system,
-          new ConceptDefinitionComponent().setDisplay(display).setCode(code)).setTxLink(txLog.getLastId());
+          new ConceptDefinitionComponent().setDisplay(display).setCode(code)).setTxLink(txLog == null ? null : txLog.getLastId());
     } else if (display != null) {
       return new ValidationResult(system, new ConceptDefinitionComponent().setDisplay(display).setCode(code))
-          .setTxLink(txLog.getLastId());
+          .setTxLink(txLog == null ? null : txLog.getLastId());
     } else {
-      return new ValidationResult(system, new ConceptDefinitionComponent().setCode(code)).setTxLink(txLog.getLastId());
+      return new ValidationResult(system, new ConceptDefinitionComponent().setCode(code)).setTxLink(txLog == null ? null : txLog.getLastId());
     }
   }
 

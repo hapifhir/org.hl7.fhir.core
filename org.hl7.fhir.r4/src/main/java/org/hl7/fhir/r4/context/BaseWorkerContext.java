@@ -416,7 +416,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     tlog("$expand on " + txCache.summary(vs));
     try {
       ValueSet result = txClient.expandValueset(vs, p);
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(),
           TerminologyServiceErrorClass.UNKNOWN);
@@ -483,7 +483,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (!result.hasUrl())
           throw new Error("no url in expand value set 2");
       }
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(),
           TerminologyServiceErrorClass.UNKNOWN).setTxLink(txLog == null ? null : txLog.getLastId());
@@ -612,7 +612,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       res = validateOnServer(vs, pIn);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage())
-          .setTxLink(txLog.getLastId());
+          .setTxLink(txLog == null ? null : txLog.getLastId());
     }
     txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
@@ -656,17 +656,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     if (!ok)
-      return new ValidationResult(IssueSeverity.ERROR, message, err).setTxLink(txLog.getLastId())
-          .setTxLink(txLog.getLastId());
+      return new ValidationResult(IssueSeverity.ERROR, message, err).setTxLink(txLog == null ? null : txLog.getLastId());
     else if (message != null && !message.equals("No Message returned"))
-      return new ValidationResult(IssueSeverity.WARNING, message, new ConceptDefinitionComponent().setDisplay(display))
-          .setTxLink(txLog.getLastId()).setTxLink(txLog.getLastId());
+      return new ValidationResult(IssueSeverity.WARNING, message, new ConceptDefinitionComponent().setDisplay(display)).setTxLink(txLog == null ? null : txLog.getLastId());
     else if (display != null)
-      return new ValidationResult(new ConceptDefinitionComponent().setDisplay(display)).setTxLink(txLog.getLastId())
-          .setTxLink(txLog.getLastId());
+      return new ValidationResult(new ConceptDefinitionComponent().setDisplay(display)).setTxLink(txLog == null ? null : txLog.getLastId());
     else
-      return new ValidationResult(new ConceptDefinitionComponent()).setTxLink(txLog.getLastId())
-          .setTxLink(txLog.getLastId());
+      return new ValidationResult(new ConceptDefinitionComponent()).setTxLink(txLog == null ? null : txLog.getLastId());
   }
 
   // --------------------------------------------------------------------------------------------------------------------------------------------------------
