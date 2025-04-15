@@ -76,11 +76,12 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess.WebAccessPolicy;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.cli.model.CliContext;
-import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.tasks.*;
-import org.hl7.fhir.validation.cli.utils.Display;
-import org.hl7.fhir.validation.cli.utils.Params;
+import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.hl7.fhir.validation.service.ValidationService;
+import org.hl7.fhir.validation.service.utils.Display;
+import org.hl7.fhir.validation.cli.param.Params;
+
 
 /**
  * A executable providing a Command Line Interface primarily for validating one or more FHIR resources against
@@ -139,12 +140,12 @@ public class ValidatorCli {
       defaultCliTask);
   }
 
-  protected void readParamsAndExecuteTask(CliContext cliContext, String[] args) throws Exception {
+  protected void readParamsAndExecuteTask(ValidationContext validationContext, String[] args) throws Exception {
     TimeTracker tt = new TimeTracker();
     TimeTracker.Session tts = tt.start("Loading");
 
-    if (cliContext.getLocale() != null) {
-      Locale.setDefault(cliContext.getLocale());
+    if (validationContext.getLocale() != null) {
+      Locale.setDefault(validationContext.getLocale());
     }
     if (Params.hasParam(args, Params.NO_HTTP_ACCESS)) {
       ManagedWebAccess.setAccessPolicy(WebAccessPolicy.PROHIBITED);
@@ -159,8 +160,8 @@ public class ValidatorCli {
     Display.displayVersion(System.out);
     Display.displaySystemInfo(System.out);
 
-    if (cliContext.getFhirSettingsFile() != null) {
-      FhirSettings.setExplicitFilePath(cliContext.getFhirSettingsFile());
+    if (validationContext.getFhirSettingsFile() != null) {
+      FhirSettings.setExplicitFilePath(validationContext.getFhirSettingsFile());
     }
     ManagedWebAccess.loadFromFHIRSettings();
 
@@ -181,7 +182,7 @@ public class ValidatorCli {
       return;
     }
 
-    readParamsAndExecuteTask(tt, tts, cliContext, args);
+    readParamsAndExecuteTask(tt, tts, validationContext, args);
   }
 
   private void displayHelpForDefaultTask() {
@@ -219,9 +220,9 @@ public class ValidatorCli {
     final ValidatorCli validatorCli = new ValidatorCli(validationService);
 
     args = addAdditionalParamsForIpsParam(args);
-    final CliContext cliContext = Params.loadCliContext(args);
+    final ValidationContext validationContext = Params.loadValidationContext(args);
     try {
-      validatorCli.readParamsAndExecuteTask(cliContext, args);
+      validatorCli.readParamsAndExecuteTask(validationContext, args);
     } catch (ENoDump e) {
       System.out.println(e.getMessage());
     }
@@ -327,33 +328,33 @@ public class ValidatorCli {
       || Params.hasParam(args, "/?"));
   }
 
-  private void readParamsAndExecuteTask(TimeTracker tt, TimeTracker.Session tts, CliContext cliContext, String[] params) throws Exception {
+  private void readParamsAndExecuteTask(TimeTracker tt, TimeTracker.Session tts, ValidationContext validationContext, String[] params) throws Exception {
     Display.printCliParamsAndInfo(params);
 
-    final CliTask cliTask = selectCliTask(cliContext, params);
+    final CliTask cliTask = selectCliTask(validationContext, params);
 
     if (cliTask instanceof ValidationEngineTask) {
-      if (cliContext.getSv() == null) {
-        cliContext.setSv(myValidationService.determineVersion(cliContext));
+      if (validationContext.getSv() == null) {
+        validationContext.setSv(myValidationService.determineVersion(validationContext));
       }
-      ValidationEngine validationEngine = getValidationEngine(tt, cliContext);
+      ValidationEngine validationEngine = getValidationEngine(tt, validationContext);
       tts.end();
-      ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, cliContext, params, tt, tts);
+      ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, validationContext, params, tt, tts);
     } else if (cliTask instanceof StandaloneTask) {
-      ((StandaloneTask) cliTask).executeTask(cliContext,params,tt,tts);
+      ((StandaloneTask) cliTask).executeTask(validationContext,params,tt,tts);
     }
 
-    if (cliContext.getAdvisorFile() != null) {
-      System.out.println("Note: Some validation issues might be hidden by the advisor settings in the file "+cliContext.getAdvisorFile());      
+    if (validationContext.getAdvisorFile() != null) {
+      System.out.println("Note: Some validation issues might be hidden by the advisor settings in the file "+ validationContext.getAdvisorFile());
     }
     System.out.println("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     SystemExitManager.finish();
   }
 
-  private CliTask selectCliTask(CliContext cliContext, String[] params) {
+  private CliTask selectCliTask(ValidationContext validationContext, String[] params) {
     CliTask cliTask = null;
     for(CliTask candidateTask : cliTasks) {
-      if (candidateTask.shouldExecuteTask(cliContext, params)) {
+      if (candidateTask.shouldExecuteTask(validationContext, params)) {
         cliTask = candidateTask;
       }
     }
@@ -362,19 +363,19 @@ public class ValidatorCli {
     return cliTask;
   }
 
-  private ValidationEngine getValidationEngine(TimeTracker tt, CliContext cliContext) throws Exception {
+  private ValidationEngine getValidationEngine(TimeTracker tt, ValidationContext validationContext) throws Exception {
     ValidationEngine validationEngine;
     System.out.println("  Locale: "+Locale.getDefault().getDisplayCountry()+"/"+Locale.getDefault().getCountry());
-    if (cliContext.getJurisdiction() == null) {
+    if (validationContext.getJurisdiction() == null) {
       System.out.println("  Jurisdiction: None specified (locale = "+Locale.getDefault().getCountry()+")");
       System.out.println("  Note that exceptions and validation failures may happen in the absense of a locale");
     } else {
-      System.out.println("  Jurisdiction: "+JurisdictionUtilities.displayJurisdiction(cliContext.getJurisdiction()));
+      System.out.println("  Jurisdiction: "+JurisdictionUtilities.displayJurisdiction(validationContext.getJurisdiction()));
     }
 
     System.out.println("Loading");
-    String definitions = "dev".equals(cliContext.getSv()) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
-    validationEngine = myValidationService.initializeValidator(cliContext, definitions, tt);
+    String definitions = "dev".equals(validationContext.getSv()) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationContext.getSv());
+    validationEngine = myValidationService.initializeValidator(validationContext, definitions, tt);
     return validationEngine;
   }
 
