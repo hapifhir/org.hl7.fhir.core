@@ -33,7 +33,7 @@
         <jacoco_version>0.8.12</jacoco_version>
         <lombok_version>1.18.32</lombok_version>
         <byte_buddy_version>1.14.8</byte_buddy_version>
-        <apache_poi_version>5.4.0</apache_poi_version>
+        <apache_poi_version>5.4.1</apache_poi_version>
         <saxon_he_version>11.6</saxon_he_version>
         <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.source>11</maven.compiler.source>
