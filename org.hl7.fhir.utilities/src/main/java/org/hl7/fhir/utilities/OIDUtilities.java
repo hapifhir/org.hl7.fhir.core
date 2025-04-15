@@ -86,26 +86,24 @@ public class OIDUtilities {
           BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 
         String line;
-        boolean isHeader = true;
+        boolean isHeaderProcessed = false;
 
         while ((line = reader.readLine()) != null) {
-          // Skip header line
-          if (isHeader) {
-            isHeader = false;
-            continue;
-          }
+          if (!isHeaderProcessed) {
+            // Skip header line
+            isHeaderProcessed = true;
+          } else {
+            String[] parts = line.split(",");
+            if (parts.length >= 4) {
+              OIDInfo info = new OIDInfo();
+              info.setOid(parts[0].trim());
+              info.setType(Integer.parseInt(parts[1].trim()));
+              info.setName(parts[2].trim());
+              info.setCodeSystem(parts[3].trim());
 
-          // Parse CSV line
-          String[] parts = line.split(",");
-          if (parts.length >= 4) {
-            OIDInfo info = new OIDInfo();
-            info.setOid(parts[0].trim());
-            info.setType(Integer.parseInt(parts[1].trim()));
-//            info.setName(parts[2].trim());
-//            info.setCodeSystem(parts[3].trim());
-
-            // Add to map with OID as key
-            oidMap.put(info.getOid(), info);
+              // Add to map with OID as key
+              oidMap.put(info.getOid(), info);
+            }
           }
         }
       }
@@ -113,6 +111,7 @@ public class OIDUtilities {
       throw new FHIRException(e);
     }
   }
+
   /*
   2.16.840.1.113883.3.72.5.2 - NIST owns this
   2.16.840.1.113883.4.6 - National Provider Identifier
