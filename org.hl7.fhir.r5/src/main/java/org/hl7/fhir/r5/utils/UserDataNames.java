@@ -143,5 +143,6 @@ public class UserDataNames {
   public static final String SNAPSHOT_PREPROCESS_INJECTED = "SNAPSHOT_PREPROCESS_INJECTED";
   public static final String renderer_title = "renderer_title";
   public static final String matchingParameter = "matchingParameter";
+  public static final String SNAPSHOT_SOURCE = "SNAPSHOT_SOURCE";
   
 }  
