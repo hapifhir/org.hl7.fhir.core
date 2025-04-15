@@ -977,14 +977,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     try {
       ValueSet result = tc.getClient().expandValueset(vs, p);
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
       if (res != null && res.getValueset() != null) { 
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, true);
       if (txLog != null) {
-        res.setTxLink(txLog.getLastId());
+        res.setTxLink(txLog == null ? null : txLog.getLastId());
       }
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
@@ -1050,7 +1050,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
         }
       }
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId()); 
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId()); 
       if (res != null && res.getValueset() != null) { 
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       } 
@@ -1169,7 +1169,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
         }
       }
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());  
     } catch (Exception e) {
       if (res != null && !res.isFromServer()) {
         res = new ValueSetExpansionOutcome(res.getError()+" (and "+e.getMessage()+")", res.getErrorClass(), false);
@@ -2199,7 +2199,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     ValidationResult res = null;
     if (!ok) {
-      res = new ValidationResult(IssueSeverity.ERROR, message, err, null).setTxLink(txLog.getLastId());
+      res = new ValidationResult(IssueSeverity.ERROR, message, err, null).setTxLink(txLog == null ? null : txLog.getLastId());
       if (code != null) {
         res.setDefinition(new ConceptDefinitionComponent().setDisplay(display).setCode(code));
         res.setDisplay(display);
@@ -2211,11 +2211,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.setVersion(version);
       }
     } else if (message != null && !message.equals("No Message returned")) { 
-      res = new ValidationResult(IssueSeverity.WARNING, message, system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog.getLastId());
+      res = new ValidationResult(IssueSeverity.WARNING, message, system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog == null ? null : txLog.getLastId());
     } else if (display != null) {
-      res = new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog.getLastId());
+      res = new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog == null ? null : txLog.getLastId());
     } else {
-      res = new ValidationResult(system, version, new ConceptDefinitionComponent().setCode(code), null).setTxLink(txLog.getLastId());
+      res = new ValidationResult(system, version, new ConceptDefinitionComponent().setCode(code), null).setTxLink(txLog == null ? null : txLog.getLastId());
     }
     res.setIssues(issues);
     res.setStatus(inactive, status);
