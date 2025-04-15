@@ -245,7 +245,7 @@ public class QuestionnaireValidator extends BaseValidator {
               String name = ext.getExtensionString("name");
               warning(errors, "2025-03-22", IssueType.BUSINESSRULE, ns, Utilities.existsInList(name, 
                   "abstract", "activeOnly", "check-system-version", "check-valueset-version", "context", "contextDirection", "count", "date", "default-valueset-version", "designation", "displayLanguage", "exclude-system", "excludeNested",
-                  "excludeNotForUI", "excludePostCoordinated", "filter", "filterProperty", "force-system-version", "force-valueset-version", "includeDefinition", "includeDesignations", "inferSystem    ", "lenient-display-validation", 
+                  "excludeNotForUI", "excludePostCoordinated", "filter", "filterProperty", "force-system-version", "force-valueset-version", "includeDefinition", "includeDesignations", "inferSystem", "lenient-display-validation", 
                   "manifest", "offset", "property", "system-version", "useSupplement", "valueset-membership-only"), 
                   I18nConstants.VALUESET_PARAMETER_UNRECOGNISED_BINDING_PARAMETER, name, vs.getVersionedUrl());
             }
