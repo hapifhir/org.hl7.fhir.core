@@ -36,7 +36,26 @@ import lombok.With;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @MarkedToMoveToAdjunctPackage
 public class ProfilePathProcessor {
+
+  /**
+   * The code contains a fix for an issue that was reported where slices that are being defined don't inherit 
+   * properties from the slice. This is a reference to this text in the profiling documentation:
+   * 
+   * > That is, the first element in a slice group must contain a slicing property that defines the discriminator 
+   * > for all members of the group. It also contains the unconstrained definition of the element that is sliced, 
+   * > potentially including children of the unconstrained element, if there are any
+   * 
+   * APPLY_PROPERTIES_FROM_SLICER = true will mean that this code works that way (though there is some interpretational questions 
+   * around the meaning of this text)
+   * 
+   * But the community decided not to apply this fix in practice, and to change(/clarify) the text above, so the 
+   * fix is not enabled. See discussion at 
+   * https://chat.fhir.org/#narrow/channel/179252-IG-creation/topic/Slices.20not.20inheriting.20preferred.20bindings.20from.20root
+   * 
+   */
+  private static final boolean APPLY_PROPERTIES_FROM_SLICER = false;
   
+
   @Getter
   protected final ProfileUtilities profileUtilities;
 
@@ -723,7 +742,7 @@ public class ProfilePathProcessor {
       }
     }
     if (template == null) {
-      if (slicerElement == null || currentBase.hasContentReference()) {
+      if (!APPLY_PROPERTIES_FROM_SLICER || slicerElement == null || currentBase.hasContentReference()) {
         template = currentBase.copy();
       } else {
         template = slicerElement.copy();  
@@ -731,7 +750,7 @@ public class ProfilePathProcessor {
       }
     } else {
       // some of what's in currentBase overrides template
-      template = profileUtilities.fillOutFromBase(template, slicerElement != null ? slicerElement : currentBase);
+      template = profileUtilities.fillOutFromBase(template, APPLY_PROPERTIES_FROM_SLICER && slicerElement != null ? slicerElement : currentBase);
     }
 
     ElementDefinition outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), template, true);
@@ -755,6 +774,9 @@ public class ProfilePathProcessor {
     profileUtilities.updateFromDefinition(outcome, diffMatches.get(0), getProfileName(), isTrimDifferential(), getUrl(), getSourceStructureDefinition(), getDerived(), diffPath(diffMatches.get(0)), mapHelper, fromSlicer);
 //          if (outcome.getPath().endsWith("[x]") && outcome.getType().size() == 1 && !outcome.getType().get(0).getCode().equals("*") && !diffMatches.get(0).hasSlicing()) // if the base profile allows multiple types, but the profile only allows one, rename it
 //            outcome.setPath(outcome.getPath().substring(0, outcome.getPath().length()-3)+Utilities.capitalize(outcome.getType().get(0).getCode()));
+    if (!APPLY_PROPERTIES_FROM_SLICER && slicerElement != null && outcome.getMaxAsInt() > slicerElement.getMaxAsInt()) {
+      outcome.setMaxElement(slicerElement.getMaxElement());
+    }
     outcome.setSlicing(null);
     if (cursors.resultPathBase == null)
       cursors.resultPathBase = outcome.getPath();
@@ -856,7 +878,7 @@ public class ProfilePathProcessor {
   }
 
   private ElementDefinition merge(ElementDefinition src, ElementDefinition slicer) {
-    if (slicer != null) {
+    if (slicer != null && APPLY_PROPERTIES_FROM_SLICER) {
       ElementDefinition res = slicer.copy();
       if (src.getMin() > res.getMin()) {
         res.setMinElement(src.getMinElement().copy());        
