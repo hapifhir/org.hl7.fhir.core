@@ -43,6 +43,7 @@ public class ObligationsRenderer extends Renderer {
     private boolean isUnchanged = false;
     private boolean matched = false;
     private boolean removed = false;
+    private String source;
     private ValueSet vs;
     
     private ObligationDetail compare;
@@ -55,7 +56,7 @@ public class ObligationsRenderer extends Renderer {
       for (Extension e: ext.getExtensionsByUrl("actor")) {
         actors.add(e.getValueCanonicalType());
       }
-      this.doco =  ext.getExtensionString("documentation");
+      this.doco = ext.getExtensionString("documentation");
       this.docoShort =  ext.getExtensionString("shortDoco");
       this.filter =  ext.getExtensionString("filter");
       this.filterDoco =  ext.getExtensionString("filterDocumentation");
@@ -69,6 +70,7 @@ public class ObligationsRenderer extends Renderer {
         this.elementIds.add(eid.getValue().primitiveValue());
       }
       this.isUnchanged = ext.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS);
+      this.source = ext.getExtensionString("source");
     }
     
     private String getKey() {
@@ -155,8 +157,9 @@ public class ObligationsRenderer extends Renderer {
   private RenderingContext context;
   private IMarkdownProcessor md;
   private CodeResolver cr;
+  private boolean canDoNoList;
 
-  public ObligationsRenderer(String corePath, StructureDefinition profile, String path, RenderingContext context, IMarkdownProcessor md, CodeResolver cr) {
+  public ObligationsRenderer(String corePath, StructureDefinition profile, String path, RenderingContext context, IMarkdownProcessor md, CodeResolver cr, boolean canDoNoList) {
     super(context);
     this.corePath = corePath;
     this.profile = profile;
@@ -164,6 +167,7 @@ public class ObligationsRenderer extends Renderer {
     this.context = context;
     this.md = md;
     this.cr = cr;
+    this.canDoNoList = canDoNoList;
   }
 
 
@@ -302,7 +306,7 @@ public class ObligationsRenderer extends Renderer {
     if (obligations.size() > 0) {
       Piece p = gen.new Piece(null);
       c.addPiece(p);
-      if (obligations.size() == 1) {
+      if (obligations.size() == 1 && canDoNoList) {
         renderObligationLI(p.getChildren(), obligations.get(0));
       } else {
         XhtmlNode ul = p.getChildren().ul();
@@ -541,7 +545,10 @@ public class ObligationsRenderer extends Renderer {
           children.b().tx(c.toUpperCase());
           children.tx(":");
         }
-        CodeResolution cr = this.cr.resolveCode("http://hl7.org/fhir/tools/CodeSystem/obligation", code);
+        CodeResolution cr = this.cr.resolveCode("http://hl7.org/fhir/CodeSystem/obligation", code);
+        if (cr == null) {
+          cr = this.cr.resolveCode("http://hl7.org/fhir/tools/CodeSystem/obligation", code);
+        }
         code = code.replace("will-", "").replace("can-", "");
         if (cr.getLink() != null) {
           children.ah(context.prefixLocalHref(cr.getLink()), cr.getHint()).tx(code);
