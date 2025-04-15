@@ -50,10 +50,11 @@ public class PackageServer {
 
 
   public static final String SECONDARY_SERVER = "https://packages.fhir.org";
-  public static final String PRIMARY_SERVER = "https://packages2.fhir.org/packages";
+  //public static final String PRIMARY_SERVER = "https://packages2.fhir.org/packages";
+  public static final String PRIMARY_SERVER = "https://fs.get-ig.org/pkgs";
 
   public static PackageServer primaryServer() {
-    return new PackageServer(PRIMARY_SERVER);
+    return new PackageServer(PRIMARY_SERVER).withServerType(PackageServerType.NPM);
   }
 
   public static PackageServer secondaryServer() {
