@@ -1168,7 +1168,11 @@ public class Utilities {
 
   public static List<String> sortedCaseInsensitive(Collection<String> set) {
     List<String> list = new ArrayList<>();
-    list.addAll(set);
+    for (String s : set) {
+      if (s != null) {
+        list.add(s);
+      }
+    }
     Collections.sort(list, new CaseInsensitiveSorter());
     return list;
   }
@@ -1176,14 +1180,22 @@ public class Utilities {
   
   public static List<String> sorted(Collection<String> set) {
     List<String> list = new ArrayList<>();
-    list.addAll(set);
+    for (String s : set) {
+      if (s != null) {
+        list.add(s);
+      }
+    }
     Collections.sort(list);
     return list;
   }
 
   public static List<String> sortedReverse(Collection<String> set) {
     List<String> list = new ArrayList<>();
-    list.addAll(set);
+    for (String s : set) {
+      if (s != null) {
+        list.add(s);
+      }
+    }
     Collections.sort(list);
     List<String> rlist = new ArrayList<>();
     for (int i = list.size()-1; i >= 0; i--) {
@@ -1195,7 +1207,9 @@ public class Utilities {
   public static List<String> sorted(String[] set) {
     List<String> list = new ArrayList<>();
     for (String s : set) {
-      list.add(s);
+      if (s != null) {
+        list.add(s);
+      }
     }
     Collections.sort(list);
     return list;
@@ -1204,7 +1218,11 @@ public class Utilities {
 
   public static List<String> reverseSorted(Collection<String> set) {
     List<String> list = new ArrayList<>();
-    list.addAll(set);
+    for (String s : set) {
+      if (s != null) {
+        list.add(s);
+      }
+    }
     Collections.sort(list, Collections.reverseOrder());
     return list;
   }
@@ -1212,7 +1230,9 @@ public class Utilities {
   public static List<String> reverseSorted(String[] set) {
     List<String> list = new ArrayList<>();
     for (String s : set) {
-      list.add(s);
+      if (s != null) {
+        list.add(s);
+      }
     }
     Collections.sort(list, Collections.reverseOrder());
     return list;

@@ -12,7 +12,7 @@
 # javax.xml.bind is incorrectly interpreted as a license name.
 (The Apache Software License, Version 2.0) Jackson module: Old JAXB Annotations (javax.xml.bind) (com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.15.2 - https://github.com/FasterXML/jackson-modules-base)
 # full is incorrectly interpreted as a license name
-(Apache License, Version 2.0) Apache POI - OOXML schemas (full) (org.apache.poi:poi-ooxml-full:5.2.1 - https://poi.apache.org/)
+(Apache License, Version 2.0) Apache POI - OOXML schemas (full) (org.apache.poi:poi-ooxml-full:5.4.1 - https://poi.apache.org/)
 # Actually a BSD license https://mvnrepository.com/artifact/org.antlr/ST4/4.1
 (Unknown license) StringTemplate 4 (org.antlr:ST4:4.1 - http://nexus.sonatype.org/oss-repository-hosting.html/ST4)
 # without dependencies is incorrectly intepreted as a license name

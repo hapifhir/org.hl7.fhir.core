@@ -67,10 +67,10 @@ public class XVersionLoader {
         new org.hl7.fhir.dstu2016may.formats.XmlParser(true, true).compose(stream, VersionConvertorFactory_14_50.convertResource(resource), true);
         return;
       case "3.0":
-        new org.hl7.fhir.dstu3.formats.XmlParser().compose(stream, VersionConvertorFactory_30_50.convertResource(resource), true);
+        new org.hl7.fhir.dstu3.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(stream, VersionConvertorFactory_30_50.convertResource(resource));
         return;
       case "4.0":
-        new org.hl7.fhir.r4.formats.XmlParser().compose(stream, VersionConvertorFactory_40_50.convertResource(resource), true);
+        new org.hl7.fhir.r4.formats.XmlParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(stream, VersionConvertorFactory_40_50.convertResource(resource));
         return;
       case "5.0":
         new org.hl7.fhir.r5.formats.XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(stream, resource);

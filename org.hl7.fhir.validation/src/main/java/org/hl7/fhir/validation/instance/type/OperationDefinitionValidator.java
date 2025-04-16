@@ -117,7 +117,9 @@ public class OperationDefinitionValidator extends BaseValidator {
     List<String> profileTypes = new ArrayList<>();
     List<String> profileTargets = new ArrayList<>();
     DefinitionNavigator valueDefn = slice.childByName("value");
-    if (valueDefn != null && !"0".equals(valueDefn.current().getMax())) {
+    DefinitionNavigator resDefn = slice.childByName("resource");
+    DefinitionNavigator partDefn = slice.childByName("part");
+    if (valueDefn != null && isUsed(valueDefn, resDefn, partDefn)) {
       for (TypeRefComponent tr : valueDefn.current().getType()) {
         String t = tr.getWorkingCode();
         profileTypes.add(t);
@@ -127,8 +129,7 @@ public class OperationDefinitionValidator extends BaseValidator {
         }
       }
     }
-    DefinitionNavigator resDefn = slice.childByName("resource");
-    if (resDefn != null && !"0".equals(resDefn.current().getMax())) {
+    if (resDefn != null && isUsed(resDefn, valueDefn, partDefn)) {
       for (TypeRefComponent tr : resDefn.current().getType()) {
         String t = tr.getWorkingCode();
         profileTypes.add(t);
@@ -156,6 +157,19 @@ public class OperationDefinitionValidator extends BaseValidator {
 //    
     // toodo later - part
     return ok;
+  }
+
+  private boolean isUsed(DefinitionNavigator focus, DefinitionNavigator other1, DefinitionNavigator other2) {
+    if ("0".equals(focus.current().getMax())) {
+      return false;
+    }
+    if (other1.current().getMin() > 0) {
+      return false;
+    }
+    if (other2.current().getMin() > 0) {
+      return false;
+    }
+    return true;
   }
 
   private int parseMax(String max) {
