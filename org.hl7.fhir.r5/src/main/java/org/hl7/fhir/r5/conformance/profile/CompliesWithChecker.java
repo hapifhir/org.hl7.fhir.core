@@ -370,11 +370,13 @@ public class CompliesWithChecker {
         }
       }
     }
-    for (TypeRefComponent tr : c.getType()) {
-      if (!hasType(tr, a.getType())) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_BAD_TYPE, tr.toString()), IssueSeverity.ERROR));        
+    if (!"Resource.id".equals(c.getBase().getPath())) { // tricky... there's definitional problems with Resource.id for legacy reasons, but whatever issues there are aren't due to anything the profile did
+      for (TypeRefComponent tr : c.getType()) {
+        if (!hasType(tr, a.getType())) {
+          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_BAD_TYPE, tr.getWorkingCode()), IssueSeverity.ERROR));        
+        }
+        doInner = false;
       }
-      doInner = false;
     }
     if (a.hasMinValue()) {
       if (notGreaterThan(a.getMinValue(), c.getMinValue())) {

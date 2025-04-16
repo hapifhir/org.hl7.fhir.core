@@ -409,18 +409,18 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     } else if (!result) {
       if (valueset != null) {
-        throw new Error("what?");
+        throw new Error("This should never happen: no result but is value set");
       } else if (vcc.hasCoding()) {
         return new ValidationResult(vcc.getCodingFirstRep().getSystem(), getVersion(vcc.getCodingFirstRep()), new ConceptDefinitionComponent(vcc.getCodingFirstRep().getCode()).setDisplay(vcc.getCodingFirstRep().getDisplay()), vcc.getCodingFirstRep().getDisplay()).addCodeableConcept(vcc);
       } else {
-        throw new Error("what?");
+        throw new Error("This should never happen: no result, no value set, no coding");
       }
     } else if (foundCoding != null) {
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
       cd.setDisplay(lookupDisplay(foundCoding));
       return new ValidationResult(foundCoding.getSystem(), getVersion(foundCoding), cd, getPreferredDisplay(cd, null)).addCodeableConcept(vcc);
     } else {
-      throw new Error("what?");
+      throw new Error("This should never happen - ther response from the server could not be understood");
     }
   }
 
