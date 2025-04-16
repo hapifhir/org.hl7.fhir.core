@@ -3592,7 +3592,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (class_ == StructureDefinition.class) {
         uri = ProfileUtilities.sdNs(uri, null);
       }
-      assert !uri.contains("|");
+      if (uri.contains("|")) {
+        throw new Error("at fetchResourcesByUrl, but a version is found in the uri - should not happen ('"+uri+"')");
+      }
       if (uri.contains("#")) {
         uri = uri.substring(0, uri.indexOf("#"));
       } 
