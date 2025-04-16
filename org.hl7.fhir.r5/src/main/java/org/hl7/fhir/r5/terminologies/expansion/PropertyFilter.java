@@ -39,7 +39,8 @@ public class PropertyFilter extends ConceptFilter {
       case ISNOTA: throw fail("not supported yet: "+filter.getOp().toCode());
       case NOTIN: return !Utilities.existsInListTrimmed(v, filter.getValue().split("\\,"));
       case NULL: throw fail("not supported yet: "+filter.getOp().toCode());
-      case REGEX: throw fail("not supported yet: "+filter.getOp().toCode());
+      case REGEX:
+        return v != null && v.matches(filter.getValue());
       default:
         throw fail("Shouldn't get here");        
       }            
