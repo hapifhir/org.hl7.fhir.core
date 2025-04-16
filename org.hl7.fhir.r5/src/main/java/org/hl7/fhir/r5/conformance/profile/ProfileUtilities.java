@@ -49,19 +49,16 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ElementRedirection;
 import org.hl7.fhir.r5.conformance.profile.MappingAssistant.MappingMergeModeOption;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.AllowUnknownProfile;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ElementDefinitionCounter;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.elementmodel.Property;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Operation;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Element;
@@ -90,7 +87,6 @@ import org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionDifferentialComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
@@ -111,7 +107,6 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
-import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -816,7 +811,7 @@ public class ProfileUtilities {
             if (!e.hasUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT) && e.getPath().contains(".")) {
               ElementDefinition existing = getElementInCurrentContext(e.getPath(), derived.getSnapshot().getElement());
               if (existing != null) {
-                updateFromDefinition(existing, e, profileName, false, url, base, derived, "StructureDefinition.differential.element["+i+"]", mappingDetails);
+                updateFromDefinition(existing, e, profileName, false, url, base, derived, "StructureDefinition.differential.element["+i+"]", mappingDetails, false);
               } else {
                 ElementDefinition outcome = updateURLs(url, webUrl, e.copy(), true);
                 e.setUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT, outcome);
@@ -1865,6 +1860,12 @@ public class ProfileUtilities {
       res.setMaxLength(usage.getMaxLength());
     if (!res.hasMustSupport() && usage.hasMustSupport())
       res.setMustSupport(usage.getMustSupport());
+    if (!res.hasIsSummary() && usage.hasIsSummary())
+      res.setIsSummary(usage.getIsSummary());
+    if (!res.hasIsModifier() && usage.hasIsModifier())
+      res.setIsModifier(usage.getIsModifier());
+    if (!res.hasIsModifierReason() && usage.hasIsModifierReason())
+      res.setIsModifierReason(usage.getIsModifierReason());
     if (!res.hasMustHaveValue() && usage.hasMustHaveValue())
       res.setMustHaveValue(usage.getMustHaveValue());
     if (!res.hasBinding() && usage.hasBinding())
@@ -2530,7 +2531,7 @@ public class ProfileUtilities {
   }
 
   
-  protected void updateFromDefinition(ElementDefinition dest, ElementDefinition source, String pn, boolean trimDifferential, String purl, StructureDefinition srcSD, StructureDefinition derivedSrc, String path, MappingAssistant mappings) throws DefinitionException, FHIRException {
+  protected void updateFromDefinition(ElementDefinition dest, ElementDefinition source, String pn, boolean trimDifferential, String purl, StructureDefinition srcSD, StructureDefinition derivedSrc, String path, MappingAssistant mappings, boolean fromSlicer) throws DefinitionException, FHIRException {
     source.setUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT, dest);
     // we start with a clone of the base profile ('dest') and we copy from the profile ('source')
     // over the top for anything the source has
@@ -2825,7 +2826,7 @@ public class ProfileUtilities {
           }
         }
         if (!(base.hasMustSupportElement() && Base.compareDeep(base.getMustSupportElement(), mse, false))) {
-          if (base.hasMustSupport() && base.getMustSupport() && !derived.getMustSupport()) {
+          if (base.hasMustSupport() && base.getMustSupport() && !derived.getMustSupport() && !fromSlicer) {
             addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Illegal constraint [must-support = false] when [must-support = true] in the base profile", ValidationMessage.IssueSeverity.ERROR));
           }
           base.setMustSupportElement(mse);
@@ -2837,7 +2838,7 @@ public class ProfileUtilities {
       
       if (derived.hasMustHaveValueElement()) {
         if (!(base.hasMustHaveValueElement() && Base.compareDeep(derived.getMustHaveValueElement(), base.getMustHaveValueElement(), false))) {
-          if (base.hasMustHaveValue() && base.getMustHaveValue() && !derived.getMustHaveValue()) {
+          if (base.hasMustHaveValue() && base.getMustHaveValue() && !derived.getMustHaveValue() && !fromSlicer) {
             addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Illegal constraint [must-have-value = false] when [must-have-value = true] in the base profile", ValidationMessage.IssueSeverity.ERROR));
           }
           base.setMustHaveValueElement(derived.getMustHaveValueElement().copy());

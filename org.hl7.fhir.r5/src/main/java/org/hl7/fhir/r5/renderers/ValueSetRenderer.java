@@ -1027,7 +1027,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
     String oid = oidMap.get(system);
     if (oid == null) {
       CodeSystem cs = context.getContext().fetchCodeSystem(system);
-      oid = CodeSystemUtilities.getOID(cs);
+      if (cs != null) {
+        oid = CodeSystemUtilities.getOID(cs);
+      }
       if (oid == null) {
         oid = system;
       }

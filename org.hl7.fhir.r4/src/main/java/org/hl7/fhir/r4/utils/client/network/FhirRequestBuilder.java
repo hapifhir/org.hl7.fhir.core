@@ -36,8 +36,7 @@ public class FhirRequestBuilder {
   private String message = null;
   private int retryCount = 1;
   /**
-   * The timeout quantity. Used in combination with
-   * {@link FhirRequestBuilder#timeoutUnit}.
+   * The timeout quantity. Used in combination with {@link FhirRequestBuilder#timeoutUnit}.
    */
   private long timeout = 5000;
   /**
@@ -76,6 +75,12 @@ public class FhirRequestBuilder {
     return request.withHeaders(allHeaders);
   }
 
+  /**
+   * Adds necessary headers for the given resource format provided.
+   *
+   * @param httpRequest {@link HTTPRequest} to add default headers to.
+   * @param format     Expected {@link Resource} format.
+   */
   protected static Iterable<HTTPHeader> getResourceFormatHeaders(HTTPRequest httpRequest, String format) {
     List<HTTPHeader> headers = new ArrayList<>();
     headers.add(new HTTPHeader("Accept", format));
@@ -89,12 +94,10 @@ public class FhirRequestBuilder {
   }
 
   /**
-   * Returns true if any of the
-   * {@link org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent}
-   * within the provided {@link OperationOutcome} have an
-   * {@link org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity} of
-   * {@link org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity#ERROR} or
-   * {@link org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity#FATAL}
+   * Returns true if any of the {@link OperationOutcome.OperationOutcomeIssueComponent} within the
+   * provided {@link OperationOutcome} have an {@link OperationOutcome.IssueSeverity} of
+   * {@link OperationOutcome.IssueSeverity#ERROR} or
+   * {@link OperationOutcome.IssueSeverity#FATAL}
    *
    * @param oo {@link OperationOutcome} to evaluate.
    * @return {@link Boolean#TRUE} if an error exists.
@@ -181,9 +184,9 @@ public class FhirRequestBuilder {
     if (response.getContent() == null) {
       if (!ok) {
         if (Utilities.noString(response.getMessage())) {
-          throw new EFhirClientException(response.getMessagefromCode());
+          throw new EFhirClientException(code, response.getMessagefromCode());
         } else {
-          throw new EFhirClientException(response.getMessage());
+          throw new EFhirClientException(code, response.getMessage());
         }
       } else {
         return null;
@@ -221,7 +224,7 @@ public class FhirRequestBuilder {
           if (!format.contains("xml")) {
             System.out.println("Got xml response expecting "+format+" from "+source+" with status "+code);            
           }
-          resource = getParser(ResourceFormat.RESOURCE_XML.getHeader()).parse(response.getContent());
+          resource = getParser(ResourceFormat.RESOURCE_XML.getHeader()).parse(body);
           break;
         case "text/plain":
           resource = OperationOutcomeUtilities.outcomeFromTextError(body);

@@ -75,7 +75,7 @@ public class DicomPackageBuilder {
     Set<String> ids = new HashSet<>();
     ids.add(vs.getId());
     
-    for (File f : ManagedFileAccess.file(Utilities.path(source, "Resources", "valuesets", "fhir", "json")).listFiles()) {
+    for (File f : ManagedFileAccess.file(Utilities.path(source, "valuesets", "fhir", "json")).listFiles()) {
       vs = (ValueSet) JsonParser.loadFile(ManagedFileAccess.inStream(f));
       vs.setVersion(version);
       if (vs.getId().length() > 64) {
@@ -135,7 +135,7 @@ public class DicomPackageBuilder {
     DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    Document doc = builder.parse(ManagedFileAccess.inStream(Utilities.path(source, "Resources", "Ontology", "DCM", "dcm.owl")));
+    Document doc = builder.parse(ManagedFileAccess.inStream(Utilities.path(source, "Ontology", "DCM", "dcm.owl")));
     Element rdf = doc.getDocumentElement();
     Element d = XMLUtil.getFirstChild(rdf);
     version = processVersion(XMLUtil.getNamedChildText(d, "versionInfo"));
