@@ -12,6 +12,7 @@
 * Add support for enforcing R5 policy on relative references in Bundle entries
 * Fix bug where examples in other packages not being found on windows
 * Add profile.compliesWith validation
+* Fix validation issues around ImplementationGuide.dependsOn canonical and package
 
 ## Other code changes
 
