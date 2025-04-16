@@ -196,6 +196,12 @@ public class StructureDefinitionValidator extends BaseValidator {
         for (Element snapshotE : snapshots) {
           ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("type", false), base, experimental) && ok;
         }
+        if (!(differentials.isEmpty()  && snapshots.isEmpty())) {
+          for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+            NodeStack snStack = stack.push(snapshots.isEmpty() ? differentials.get(0) : snapshots.get(0), -1, null, null);
+            ok = validateSDElement(errors, ed, sd.getSnapshot().getElement(), snStack) && ok;
+          }
+        }
 
         // obligation profile support
         if (src.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG)) {
@@ -735,6 +741,53 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     return ok;
+  }
+
+
+  private boolean validateSDElement(List<ValidationMessage> errors, ElementDefinition element, List<ElementDefinition> elements, NodeStack stack) {
+    boolean ok = true;
+    
+    if (element.hasSlicing()) {
+
+      boolean ms = element.getMustSupport();
+      List<ElementDefinition> slices = getSlices(element, elements);
+      for (ElementDefinition slice : slices) {
+        boolean mss = slice.getMustSupport();
+        warning(errors, "2024-11-06", IssueType.INVALID, stack, !ms || mss, I18nConstants.SD_PATH_SLICE_INCONSISTENT_MS, slice.getSliceName(), element.getPath());
+        for (TypeRefComponent tr : slice.getType()) {
+          if (!hasTypeByCode(tr.getWorkingCode(), element)) {            
+            warning(errors, "2024-11-06", IssueType.INVALID, stack, !ms || mss, I18nConstants.SD_PATH_SLICE_INCONSISTENT_TYPE, slice.getSliceName(), element.getPath(), tr.getWorkingCode(), element.typeSummary());
+          }
+        }
+        // todo: other checks such as obligations, bindings
+      }
+    }
+    return ok;
+  }
+
+  private boolean hasTypeByCode(String workingCode, ElementDefinition element) {
+    for (TypeRefComponent tr : element.getType()) {
+      if (tr.getWorkingCode().equals(workingCode)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private List<ElementDefinition> getSlices(ElementDefinition element, List<ElementDefinition> elements) {
+    String path = element.getPath();
+    int index = elements.indexOf(element)+1;
+    List<ElementDefinition> result = new ArrayList<>();
+    while (index < elements.size()) {
+      String spath = elements.get(index).getPath();
+      if (spath.length() < path.length()) {
+        break; // end of that element
+      } else if (spath.equals(path)) {
+        result.add(elements.get(index));
+      }
+      index++;
+    } 
+    return result;
   }
 
   private boolean prohibited(List<ValidationMessage> errors, NodeStack stack, String mode, Element element, String... names) {

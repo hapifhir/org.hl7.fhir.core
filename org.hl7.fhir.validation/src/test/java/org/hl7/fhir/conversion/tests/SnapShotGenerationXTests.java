@@ -579,14 +579,16 @@ public class SnapShotGenerationXTests {
       } else {
         XVersionLoader.saveXml(version, output, ManagedFileAccess.outStream(dst.getAbsolutePath()));
       }
+      StructureDefinition t1 = null;
+      StructureDefinition t2 = test.expected.copy();
       if (test.outputIsJson) {
-        XVersionLoader.saveJson(version, test.expected, ManagedFileAccess.outStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected" + (test.outputIsJson ? ".json" : ".xml"))));
+        XVersionLoader.saveJson(version, test.expected, ManagedFileAccess.outStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected.json")));
+        t1 = (StructureDefinition) XVersionLoader.loadJson(version, ManagedFileAccess.inStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected.json")));
       } else {
-        XVersionLoader.saveXml(version, test.expected, ManagedFileAccess.outStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected" + (test.outputIsJson ? ".json" : ".xml"))));
+        XVersionLoader.saveXml(version, test.expected, ManagedFileAccess.outStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected.xml")));
+        t1 = (StructureDefinition) XVersionLoader.loadXml(version, ManagedFileAccess.inStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-expected.xml")));
       }
-      StructureDefinition t1 = test.expected.copy();
       t1.setText(null);
-      StructureDefinition t2 = test.output.copy();
       t2.setText(null);
       t1.setIdBase(t2.getIdBase());
       Assertions.assertTrue(t1.equalsDeep(t2), "Output does not match expected");

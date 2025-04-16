@@ -39,8 +39,8 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.hl7.fhir.validation.cli.utils.AsteriskFilter;
-import org.hl7.fhir.validation.cli.utils.Common;
+import org.hl7.fhir.validation.service.utils.AsteriskFilter;
+import org.hl7.fhir.validation.service.utils.Common;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
