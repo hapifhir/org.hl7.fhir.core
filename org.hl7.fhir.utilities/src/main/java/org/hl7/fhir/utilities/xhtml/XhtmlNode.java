@@ -1096,8 +1096,6 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return getChildNodes().indexOf(node);
   }
   
-
-  
   public int compareTo(XhtmlNode other) {
     return compare(this, other);
   }
@@ -1203,6 +1201,18 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
   public void setCheckParaTree(boolean checkParaTree) {
     this.checkParaTree = checkParaTree;
+  }
+
+
+  public XhtmlNode id(String id) {
+    attribute("id", id);
+    return this;
+  }
+
+
+  public XhtmlNode supr(String tx) {
+    addTag("sup").tx(tx);
+    return this;
   }
 
 }

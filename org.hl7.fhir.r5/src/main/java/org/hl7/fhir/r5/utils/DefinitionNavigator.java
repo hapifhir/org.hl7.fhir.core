@@ -41,9 +41,10 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.Utilities;
 
 @MarkedToMoveToAdjunctPackage
 public class DefinitionNavigator {
@@ -59,14 +60,17 @@ public class DefinitionNavigator {
   private TypeRefComponent typeOfChildren;
   private String path;
   private boolean diff;
+  private boolean followTypes;
+  private boolean inlineChildren;
   
-  public DefinitionNavigator(IWorkerContext context, StructureDefinition structure, boolean diff) throws DefinitionException {
+  public DefinitionNavigator(IWorkerContext context, StructureDefinition structure, boolean diff, boolean followTypes) throws DefinitionException {
     if (!diff && !structure.hasSnapshot())
       throw new DefinitionException("Snapshot required");
     this.context = context;
     this.structure = structure;
     this.index = 0;
     this.diff = diff;
+    this.followTypes = followTypes;
     if (diff) {
       this.path = structure.getType(); // fragile?
       indexMatches = this.path.equals(list().get(0).getPath());
@@ -77,11 +81,13 @@ public class DefinitionNavigator {
     names.add(nameTail());
   }
   
-  private DefinitionNavigator(IWorkerContext context, StructureDefinition structure, boolean diff, int index, String path, List<String> names, String type) {
+  private DefinitionNavigator(IWorkerContext context, StructureDefinition structure, boolean diff, boolean followTypes, int index, String path, List<String> names, String type) {
     this.path = path;
     this.context = context;
     this.structure = structure;
     this.diff = diff;
+    this.followTypes = followTypes;
+    this.inlineChildren = inlineChildren;
     this.index = index;
     this.indexMatches = true;
     if (type == null)
@@ -147,7 +153,7 @@ public class DefinitionNavigator {
       if (path.startsWith(prefix)) {
         if (!path.substring(prefix.length()).contains(".")) {
           // immediate child
-          DefinitionNavigator dn = new DefinitionNavigator(context, structure, diff, i, this.path+"."+tail(path), names, null);
+          DefinitionNavigator dn = new DefinitionNavigator(context, structure, diff, followTypes, i, this.path+"."+tail(path), names, null);
           last = dn;
 
           if (nameMap.containsKey(path)) {
@@ -171,12 +177,41 @@ public class DefinitionNavigator {
           }
         } else if (last == null || !path.startsWith(last.path)) {
           // implied child
-          DefinitionNavigator dn = new DefinitionNavigator(context, structure, diff, i, this.path+"."+tail(path), names, null);
+          DefinitionNavigator dn = new DefinitionNavigator(context, structure, diff, followTypes, i, this.path+"."+tail(path), names, null);
           nameMap.put(path, dn);
           children.add(dn);
         }
-      } else if (path.length() < prefix.length())
+      } else if (path.length() < prefix.length()) {
         break;
+      }
+    }
+    inlineChildren = !children.isEmpty();
+    if (children.isEmpty() && followTypes) {
+      ElementDefinition ed = current();
+      if (ed.getType().size() != 1) {
+        // well, we can't walk into it 
+        return; // what to do?
+      }
+      TypeRefComponent tr = ed.getTypeFirstRep();
+      StructureDefinition sdt = null;
+      if (tr.getProfile().size() > 1) {
+        return;
+      } else if (tr.getProfile().size() == 1) {
+        sdt = context.fetchResource(StructureDefinition.class, tr.getProfile().get(0).asStringValue());        
+      } else {
+        sdt = context.fetchTypeDefinition(ed.getTypeFirstRep().getWorkingCode());
+      }
+      if (sdt == null) {
+        return;
+      }
+      List<ElementDefinition> list = diff ? sdt.getDifferential().getElement() : sdt.getSnapshot().getElement();
+      for (int i = 0; i < list.size(); i++) {
+        ElementDefinition edt = list.get(i);
+        if (Utilities.charCount(edt.getPath(), '.') == 1) {
+          DefinitionNavigator dn = new DefinitionNavigator(context, sdt, diff, followTypes, i, ed.getPath(), names, null);
+          children.add(dn);
+        }
+      }
     }
   }
 
@@ -220,7 +255,7 @@ public class DefinitionNavigator {
     typeOfChildren = null;
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, /* GF#13465 : this somehow needs to be revisited type.hasProfile() ? type.getProfile() : */ type.getWorkingCode(), src);
     if (sd != null) {
-      DefinitionNavigator dn = new DefinitionNavigator(context, sd, diff, 0, path, names, sd.getType());
+      DefinitionNavigator dn = new DefinitionNavigator(context, sd, diff, followTypes, 0, path, names, sd.getType());
       typeChildren = dn.children();
     } else
       throw new DefinitionException("Unable to find definition for "+type.getWorkingCode()+(type.hasProfile() ? "("+type.getProfile()+")" : ""));
@@ -256,6 +291,46 @@ public class DefinitionNavigator {
 
   public Base parent() {
     // TODO Auto-generated method stub
+    return null;
+  }
+
+  public boolean sliced() {
+    return current().hasSlicing();
+  }
+
+  public DefinitionNavigator childByPath(String path) {
+    for (DefinitionNavigator child : children()) {
+      if (child.path().equals(path)) {
+        return child;
+      }
+    }
+    return null;
+  }
+
+  public boolean hasChildren() {
+    return !children().isEmpty();
+  }
+
+  public boolean hasSlices() {
+     return sliced() && slices != null && !slices.isEmpty();
+  }
+
+  public boolean hasInlineChildren() {
+    if (children == null) {
+      loadChildren();
+    }
+    return inlineChildren;
+  }
+
+  public DefinitionNavigator childByName(String name) {
+    for (DefinitionNavigator child : children()) {
+      if (child.current().getName().equals(name)) {
+        return child;
+      }
+      if (child.current().getName().startsWith(name+"[x]")) {
+        return child;
+      }
+    }
     return null;
   }
   

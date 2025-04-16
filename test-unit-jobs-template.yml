@@ -12,6 +12,8 @@ jobs:
         variables:
           JAVA_TOOL_OPTIONS: ${{unit.javaToolOptions}}
           skipJaCoCo: $[eq(${{unit.skipJaCoCo}}, true)]
+          module: org.hl7.fhir.${{ replace(value, '_', '.') }}
+          classpath: org/hl7/fhir/${{ replace(value, '_', '/') }}
 
         steps:
         - task: Cache@2
@@ -22,12 +24,12 @@ jobs:
         - template: cache-target-tasks-template.yml
           parameters:
             modules:
-              - org.hl7.fhir.${{ value }}
+              - ${{variables.module}}
           # Runs 'mvn install'
         - task: Maven@4
           inputs:
             mavenPomFile: 'pom.xml'
-            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl org.hl7.fhir.${{value}} -Djacoco.skip=${{unit.skipJaCoCo}} -P JACOCO'
+            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl ${{variables.module}} -Djacoco.skip=${{unit.skipJaCoCo}} -P JACOCO'
             mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '${{unit.jdkVersion}}'
@@ -47,11 +49,16 @@ jobs:
           inputs:
             targetPath: '$(Build.ArtifactStagingDirectory)/'
             artifactName: '${{value}}_full_logs_$(Build.BuildId)_$(Build.BuildNumber)_$(System.JobId).zip'
+        - bash: |
+            find $(System.DefaultWorkingDirectory)/${{ variables.module }}/target/classes -type f -not -path '$(System.DefaultWorkingDirectory)/${{ variables.module }}/target/classes/${{ variables.classpath }}/*' -delete
+            find $(System.DefaultWorkingDirectory)/${{ variables.module }}/target/classes -empty -type d -delete
+          condition: ne( variables['Agent.OS'], 'Windows_NT' )
+          displayName: 'Delete non-module classes.'
         - task: PublishBuildArtifacts@1
-          displayName: 'Publish generated build files'
+          displayName: 'Publish jacoco module artifacts'
           condition: eq(variables.skipJaCoCo, false)
           continueOnError: true
           inputs:
-            pathToPublish: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.${{ value }}/target/'
+            pathToPublish: '$(System.DefaultWorkingDirectory)/${{ variables.module }}/target/'
             parallel: true
-            artifactName: 'org.hl7.fhir.${{ value }}_target'
+            artifactName: '${{ variables.module }}_target'

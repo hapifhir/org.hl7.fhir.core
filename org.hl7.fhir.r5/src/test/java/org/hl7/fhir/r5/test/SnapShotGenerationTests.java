@@ -469,6 +469,10 @@ public class SnapShotGenerationTests {
       objects.add(Arguments.of(t.getId(), t, context));
       test = XMLUtil.getNextSibling(test);
     }
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
+    NpmPackage npm = pcm.loadPackage("hl7.fhir.uv.sdc");
+    System.out.println("loading SDC "+npm.version());
+    TestingUtilities.getSharedWorkerContext().loadFromPackage(npm, null);
     return objects.stream();
   }
 
@@ -583,18 +587,16 @@ public class SnapShotGenerationTests {
       new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.xml")), sdc);
     }
 
-    
+
+    List<ValidationMessage> ml = new ArrayList<>();
     try {
       messages.clear();
       pu.generateSnapshot(base, output, test.getSource().getUrl(), "http://test.org/profile", test.getSource().getName());
-      List<ValidationMessage> ml = new ArrayList<>();
       for (ValidationMessage vm : messages) {
         if (vm.getLevel() == IssueSeverity.ERROR) {
+          System.out.println(vm.summary());
           ml.add(vm);
         }
-      }
-      if (ml.size() > 0) {
-        throw new FHIRException("Snapshot Generation failed: " + ml.toString());
       }
     } catch (Throwable e) {
       System.out.println("\r\nException: " + e.getMessage());
@@ -632,7 +634,11 @@ public class SnapShotGenerationTests {
         System.out.println("Encountered unexpected change in diff in structure definition");
 //        DiffUtils.testDiff(dst.getAbsolutePath(), actualFilePath);
       }
+
       Assertions.assertTrue(structureDefinitionEquality, "Output does not match expected");
+    }
+    if (ml.size() > 0) {
+      throw new FHIRException("Snapshot Generation failed: " + ml.toString());
     }
     output.setText(txt);
   }

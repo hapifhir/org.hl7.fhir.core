@@ -20,6 +20,7 @@ public class UserDataNames {
   public static final String SNAPSHOT_DERIVATION_DIFF = "profileutilities.snapshot.diffsource";
   public static final String SNAPSHOT_GENERATED_MESSAGES = "profileutils.snapshot.generated.messages";
   public static final String SNAPSHOT_ERRORS = "profileutils.snapshot.errors";
+  public static final String SNAPSHOT_DETAILS = "profileutils.snapshot.details";
   public static final String SNAPSHOT_auto_added_slicing = "auto-added-slicing";
   public static final String SNAPSHOT_messages = "profileutils.snapshot.messages";
   public static final String SNAPSHOT_slice_name = "slice-name";
