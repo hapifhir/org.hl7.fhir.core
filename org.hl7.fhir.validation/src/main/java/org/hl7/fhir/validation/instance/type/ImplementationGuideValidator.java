@@ -77,8 +77,8 @@ public class ImplementationGuideValidator extends BaseValidator {
       if (url != null && packageId != null) {
         String pid = pcm.getPackageId(url);
         String canonical = pcm.getPackageUrl(packageId);
-        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), pid == null || pid.equals(packageId), I18nConstants.IG_DEPENDENCY_CLASH_PACKAGEID, url, pid, packageId) && ok;         
-        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), canonical == null || canonical.equals(url), I18nConstants.IG_DEPENDENCY_CLASH_CANONICAL, packageId, canonical, url) && ok;         
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), pid == null || pid.equals(packageId) || packageId.startsWith(pid+"."+VersionUtilities.getNameForVersion(context.getVersion()).toLowerCase()), I18nConstants.IG_DEPENDENCY_CLASH_PACKAGEID, url, pid, packageId) && ok;         
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), canonical == null || canonical.equals(url) || url.startsWith(Utilities.pathURL(canonical, "ImplementationGuide")), I18nConstants.IG_DEPENDENCY_CLASH_CANONICAL, packageId, canonical, url) && ok;         
       }
       if (packageId == null && ok) {
         packageId = pcm.getPackageId(url);
