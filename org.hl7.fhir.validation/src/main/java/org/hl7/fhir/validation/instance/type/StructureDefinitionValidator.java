@@ -196,7 +196,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         for (Element snapshotE : snapshots) {
           ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("type", false), base, experimental) && ok;
         }
-        if (!differentials.isEmpty() && snapshots.isEmpty()) {
+        if (!(differentials.isEmpty()  && snapshots.isEmpty())) {
           for (ElementDefinition ed : sd.getSnapshot().getElement()) {
             NodeStack snStack = stack.push(snapshots.isEmpty() ? differentials.get(0) : snapshots.get(0), -1, null, null);
             ok = validateSDElement(errors, ed, sd.getSnapshot().getElement(), snStack) && ok;
