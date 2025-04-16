@@ -290,16 +290,16 @@ public class ValueSetValidator extends BaseValidator {
     if (system != null && system.contains("|")) {
       String uver = system.substring(system.indexOf("|")+1);
       system = system.substring(0, system.indexOf("|"));
-      if (uver != null) {
-        if (version == null) {
-          ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1, uver) && ok;                   
-        } else if (!uver.equals(version)) {
-          ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2, uver, version) && ok;                   
-        } else {
-          ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_3, uver) && ok;                             
-        }
-      }      
-    }
+      if (Utilities.noString(uver)) {
+         warning(errors, "2024-06-13", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_0, system);                   
+      } else if (version == null) {
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_1, uver) && ok;                   
+      } else if (!uver.equals(version)) {
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2, uver, version) && ok;                   
+      } else {
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_3, uver) && ok;                             
+      }
+    }      
 
     if (policyAdvisor.policyForSpecialValidation((IResourceValidator) parent, valContext.getAppContext(), SpecialValidationRule.VALUESET_IMPORT_CHECKS, stack.getLiteralPath(), vsSrc, include) == SpecialValidationAction.CHECK_RULE) {
 
