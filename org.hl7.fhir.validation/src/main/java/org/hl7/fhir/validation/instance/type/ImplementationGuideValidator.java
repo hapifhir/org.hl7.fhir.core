@@ -92,18 +92,18 @@ public class ImplementationGuideValidator extends BaseValidator {
 
   private boolean checkDependency(List<ValidationMessage> errors, Element ig, NodeStack stack, Element dependency, List<String> fvl) {
     boolean ok = true;
-    String url = dependency.getNamedChildValue("url");
+    String url = dependency.getNamedChildValue("uri");
     String packageId = dependency.getNamedChildValue("packageId");
     String version = dependency.getNamedChildValue("version");
     if (url != null && url.contains("|")) {
       String uver = url.substring(url.indexOf("|")+1);
       url = url.substring(0, url.indexOf("|"));
-      if (uver != null) {
-        if (version == null) {
-          ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(),false, I18nConstants.IG_DEPENDENCY_CAN_VERSION_ALONE, uver) && ok;                   
-        } else if (!uver.equals(version)) {
-          ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), url == null || url.contains("/ImplementationGuide/"), I18nConstants.IG_DEPENDENCY_CAN_VERSION_ERROR, uver, version) && ok;                   
-        }
+      if (Utilities.noString(uver)) {
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(),false, I18nConstants.IG_DEPENDENCY_CAN_VERSION_NONE, uver) && ok;                   
+      } else if (version == null) {
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(),false, I18nConstants.IG_DEPENDENCY_CAN_VERSION_ALONE, uver) && ok;                   
+      } else if (!uver.equals(version)) {
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), url == null || url.contains("/ImplementationGuide/"), I18nConstants.IG_DEPENDENCY_CAN_VERSION_ERROR, uver, version) && ok;                   
       }
     }
     ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), url == null || url.contains("/ImplementationGuide/"), I18nConstants.IG_DEPENDENCY_DIRECT, url) && ok;         
