@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.ILoggingService;
 import org.hl7.fhir.r5.model.Bundle;
@@ -313,9 +314,7 @@ public class TerminologyClientManager {
       if (!hasMessage(msg)) {
         internalLog.add(new InternalLogEvent(msg, vs, request));
       }
-      if (logger.isDebugLogging()) {
-        e.printStackTrace();
-      }
+      logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
     }
     return null; 
   }
@@ -407,9 +406,7 @@ public class TerminologyClientManager {
       if (!hasMessage(msg)) {
         internalLog.add(new InternalLogEvent(msg, url, request));
       }
-      if (logger.isDebugLogging()) {
-        e.printStackTrace();
-      }
+      logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
     }
     return new ServerOptionList( getMasterClient().getAddress());
     
@@ -616,9 +613,7 @@ public class TerminologyClientManager {
           if (!hasMessage(msg)) {
             internalLog.add(new InternalLogEvent(msg, canonical, request));
           }
-          if (logger.isDebugLogging()) {
-            e.printStackTrace();
-          }
+          logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
           ecosystemfailCount++;
           if (ecosystemfailCount > 3) {
             useEcosystem = false;
@@ -686,9 +681,7 @@ public class TerminologyClientManager {
       if (!hasMessage(msg)) {
         internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
-      if (logger.isDebugLogging()) {
-        e.printStackTrace();
-      }
+      logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
       return null;
     }
   }
@@ -766,9 +759,7 @@ public class TerminologyClientManager {
       if (!hasMessage(msg)) {
         internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
-      if (logger.isDebugLogging()) {
-        e.printStackTrace();
-      }
+      logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
       return null;
     }
   }

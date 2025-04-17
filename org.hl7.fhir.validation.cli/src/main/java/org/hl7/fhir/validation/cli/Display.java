@@ -21,13 +21,18 @@ public class Display {
     return Long.toString(maxMemory / (1024 * 1024));
   }
 
-  public static void printCliParamsAndInfo(String[] args) throws IOException {
-    System.out.println("  Paths:  Current = " + System.getProperty("user.dir") + ", Package Cache = " + new FilesystemPackageCacheManager.Builder().build().getFolder());
-    System.out.print("  Params:");
-    for (String s : args) {
-      System.out.print(s.contains(" ") ? " \"" + s + "\"" : " " + s);
-    }
-    System.out.println();
+  public static void printCliParamsAndInfo(Logger logger, String[] args) throws IOException {
+   logger.info("  Paths:  Current = " + System.getProperty("user.dir") + ", Package Cache = " + new FilesystemPackageCacheManager.Builder().build().getFolder());
+   StringBuilder sb = new StringBuilder();
+   for (String s : args) {
+     if (s.contains(" ")) {
+       sb.append(" \"").append(s).append("\"");
+     } else {
+       sb.append(" ").append(s);
+     }
+   }
+
+   logger.info("  Params:" + sb.toString());
   }
 
   final static String CURLY_START = "\\{\\{";
@@ -73,8 +78,8 @@ public class Display {
   /**
    * Prints out system info to the command line.
    */
-  public static void displaySystemInfo(PrintStream out) {
-    out.println("  Java:   " + System.getProperty("java.version")
+  public static void displaySystemInfo(Logger logger) {
+    logger.info("  Java:   " + System.getProperty("java.version")
       + " from " + System.getProperty("java.home")
       + " on " + System.getProperty("os.arch")
       + " (" + System.getProperty("sun.arch.data.model") + "bit). "
@@ -84,7 +89,7 @@ public class Display {
   /**
    * Prints current version of the validator.
    */
-  public static void displayVersion(PrintStream out) {
-    out.println("FHIR Validation tool " + VersionUtil.getVersionString());
+  public static void displayVersion(Logger logger) {
+    logger.info("FHIR Validation tool " + VersionUtil.getVersionString());
   }
 }

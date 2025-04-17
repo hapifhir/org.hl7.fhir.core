@@ -21,6 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
@@ -956,9 +957,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         makeSnapshot(sd);
       } catch (Exception e) {
         System.out.println("Process Note: Unable to generate snapshot for " + sd.present() + ": " + e.getMessage());
-        if (context.getLogger().isDebugLogging()) {
-          e.printStackTrace();
-        }
+        context.getLogger().logDebugMessage(ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
       }
     }
   }

@@ -293,7 +293,8 @@ public class Params {
       } else if (args[i].equals(RESOLUTION_CONTEXT)) {
         validationContext.setResolutionContext(args[++i]);
       } else if (args[i].equals(DEBUG)) {
-        validationContext.setDoDebug(true);
+        //FIXME warm that debug now outputs to the log file
+        //validationContext.setDoDebug(true);
       } else if (args[i].equals(SCT)) {
         validationContext.setSnomedCT(args[++i]);
       } else if (args[i].equals(RECURSE)) {
