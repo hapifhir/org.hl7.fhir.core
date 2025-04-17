@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.service.utils;
+package org.hl7.fhir.validation.cli;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.slf4j.Logger;
 
 /**
  * Class for displaying output to the cli user.
@@ -46,20 +47,22 @@ public class Display {
     return output;
   }
 
-  public static void displayHelpDetails(PrintStream out, String file) {
-    displayHelpDetails(out, file, new String[][]{});
+  public static void displayHelpDetails(Logger logger, String file) {
+    displayHelpDetails(logger, file, new String[][]{});
   }
   /**
    * Loads the help details from a file, and displays them on the out stream.
+   *
+   * @param logger
    * @param file
    */
-  public static void displayHelpDetails(PrintStream out, String file, final String[][] placeholders) {
+  public static void displayHelpDetails(Logger logger, String file, final String[][] placeholders) {
     ClassLoader classLoader = Display.class.getClassLoader();
     InputStream help = classLoader.getResourceAsStream(file);
     try {
       String data = IOUtils.toString(help, "UTF-8");
 
-      out.println(replacePlaceholders(data, placeholders));
+      logger.info(replacePlaceholders(data, placeholders));
     } catch (IOException e) {
       e.printStackTrace();
     }

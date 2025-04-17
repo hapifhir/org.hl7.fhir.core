@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import java.io.File;
-import java.io.PrintStream;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -10,11 +9,12 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.utils.Display;
+import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.hl7.fhir.validation.special.PackageReGenerator;
 import org.hl7.fhir.validation.special.PackageReGenerator.ExpansionPackageGeneratorOutputType;
 import org.hl7.fhir.validation.special.PackageReGenerator.ExpansionPackageGeneratorScope;
+import org.slf4j.Logger;
 
 public class RePackageTask extends ValidationEngineTask {
 
@@ -39,8 +39,8 @@ public class RePackageTask extends ValidationEngineTask {
   }
 
   @Override
-  public void printHelp(PrintStream out) {
-    Display.displayHelpDetails(out,"help/tx-pack.txt");
+  public void logHelp(Logger logger) {
+    Display.displayHelpDetails(logger,"help/tx-pack.txt");
   }
 
   @Override

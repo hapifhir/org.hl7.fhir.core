@@ -1,8 +1,10 @@
-package org.hl7.fhir.validation.service.utils;
+package org.hl7.fhir.validation.cli;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -21,13 +23,17 @@ public class DisplayTests {
   @Test
   @DisplayName("Check for placeholder replacement in help output")
   public void displayHelpDetails() {
-    final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    StringBuilder outContent = new StringBuilder();
 
-    PrintStream out = new PrintStream(outContent);
-    PrintStream err  = new PrintStream(errContent);
+    org.slf4j.Logger logger = mock(org.slf4j.Logger.class);
+    doAnswer(invocation -> {
+      Object[] args = invocation.getArguments();
+      outContent.append(args[0]);
+      return null;
+    }
+    ).when(logger).info(anyString());
 
-      Display.displayHelpDetails(out, "help/validate.txt", PLACEHOLDERS);
+      Display.displayHelpDetails(logger, "help/validate.txt", PLACEHOLDERS);
 
       String output = outContent.toString();
 

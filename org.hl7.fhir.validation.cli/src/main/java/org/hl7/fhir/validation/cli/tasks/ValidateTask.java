@@ -1,7 +1,5 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import java.io.PrintStream;
-
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -10,7 +8,8 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.utils.Display;
+import org.hl7.fhir.validation.cli.Display;
+import org.slf4j.Logger;
 
 public class ValidateTask extends ValidationEngineTask {
 
@@ -45,8 +44,8 @@ public class ValidateTask extends ValidationEngineTask {
   }
 
   @Override
-  public void printHelp(PrintStream out) {
-    Display.displayHelpDetails(out,"help/validate.txt", PLACEHOLDERS);
+  public void logHelp(Logger logger) {
+    Display.displayHelpDetails(logger,"help/validate.txt", PLACEHOLDERS);
   }
 
   @Override
