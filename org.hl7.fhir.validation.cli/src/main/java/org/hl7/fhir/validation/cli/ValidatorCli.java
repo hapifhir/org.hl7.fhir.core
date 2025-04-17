@@ -163,8 +163,8 @@ public class ValidatorCli {
     TerminologyClientContext.setCanAllowNonConformantServers(true);
     setJavaSystemProxyParamsFromParams(args);
 
-    Display.displayVersion(System.out);
-    Display.displaySystemInfo(System.out);
+    Display.displayVersion(log);
+    Display.displaySystemInfo(log);
 
     if (validationContext.getFhirSettingsFile() != null) {
       FhirSettings.setExplicitFilePath(validationContext.getFhirSettingsFile());
@@ -351,7 +351,7 @@ public class ValidatorCli {
   }
 
   private void readParamsAndExecuteTask(TimeTracker tt, TimeTracker.Session tts, ValidationContext validationContext, String[] params) throws Exception {
-    Display.printCliParamsAndInfo(params);
+    Display.printCliParamsAndInfo(log, params);
 
     final CliTask cliTask = selectCliTask(validationContext, params);
 

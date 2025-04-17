@@ -51,6 +51,7 @@ import java.util.UUID;
 
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -1640,7 +1641,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected ValueSetExpander constructValueSetExpanderSimple(ValidationOptions options) {
-    return new ValueSetExpander(this, new TerminologyOperationContext(this, options, "expansion")).setDebug(logger.isDebugLogging());
+    return new ValueSetExpander(this, new TerminologyOperationContext(this, options, "expansion"));
   }
 
   protected ValueSetValidator constructValueSetCheckerSimple(ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
@@ -2073,15 +2074,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (tc.usingCache()) {
       if (!tc.alreadyCached(cr)) {
         tc.addToCache(cr);
-        if (logger.isDebugLogging()) {
-          logger.logMessage("add to cache: "+cr.getVUrl());
-        }
+
+        logger.logDebugMessage(LogCategory.CONTEXT, "add to cache: "+cr.getVUrl());
+
         addToParams = true;
         cache = true;
       } else {
-        if (logger.isDebugLogging()) {
-          logger.logMessage("already cached: "+cr.getVUrl());
-        }
+        logger.logDebugMessage(LogCategory.CONTEXT,"already cached: "+cr.getVUrl());
       }
     } else {
       addToParams = true;
@@ -3117,9 +3116,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         throw new FHIRException("Attempt to fetch the profile "+ structureDefinition.getVersionedUrl()+" while generating the snapshot for it");
       }
       try {
-        if (logger.isDebugLogging()) {
-          System.out.println("Generating snapshot for "+ structureDefinition.getVersionedUrl());
-        }
+
+        logger.logDebugMessage(LogCategory.GENERATE,"Generating snapshot for "+ structureDefinition.getVersionedUrl());
+
        // structureDefinition.setGeneratingSnapshot(true);
         try {
           new ContextUtilities(this).generateSnapshot(structureDefinition);
@@ -3129,9 +3128,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } catch (Exception e) {
         // not sure what to do in this case?
         System.out.println("Unable to generate snapshot in @" + breadcrumb + " for " + structureDefinition.getVersionedUrl()+": "+e.getMessage());
-        if (logger.isDebugLogging()) {
-          e.printStackTrace();
-        }
+        logger.logDebugMessage(ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
       }
     }
   }
@@ -3285,9 +3282,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           }
         } catch (Exception e) {
           System.out.println("Unable to generate snapshot @1 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
-          if (logger.isDebugLogging()) {
-            e.printStackTrace();          
-          }
+          logger.logDebugMessage(LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
         }
       }  
     }

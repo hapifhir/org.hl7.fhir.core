@@ -7,10 +7,9 @@
 		</filter>
 		<encoder>
 			<pattern>%highlight(%msg%n)</pattern>
-			<immediateFlush>true</immediateFlush>
 		</encoder>
+		<immediateFlush>true</immediateFlush>
 	</appender>
-
 
 	<root level="info">
 		<appender-ref ref="COLOR" />

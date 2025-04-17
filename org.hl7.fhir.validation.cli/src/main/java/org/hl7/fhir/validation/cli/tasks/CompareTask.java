@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.cli.tasks;
 
 import java.io.IOException;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -14,6 +15,7 @@ import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.slf4j.Logger;
 
+@Slf4j
 public class CompareTask extends ValidationEngineTask {
   @Override
   public String getName() {
@@ -42,7 +44,7 @@ public class CompareTask extends ValidationEngineTask {
 
   @Override
   public void executeTask(ValidationService validationService, ValidationEngine validationEngine, ValidationContext validationContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
-    Display.printCliParamsAndInfo(args);
+    Display.printCliParamsAndInfo(log, args);
     if (!destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
       return;
     }

@@ -37,7 +37,7 @@ public class LogbackUtilities {
 
     PatternLayoutEncoder encoder = new PatternLayoutEncoder();
     encoder.setContext(root.getLoggerContext());
-    encoder.setPattern("%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%file:%line] %msg%n");
+    encoder.setPattern("%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %marker %logger{36} [%file:%line] %msg%n");
     encoder.start();
 
     FileAppender<ILoggingEvent> fileAppender = new FileAppender<>();
