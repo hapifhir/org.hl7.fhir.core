@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import java.io.IOException;
-import java.io.PrintStream;
 
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -11,8 +10,9 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ComparisonService;
 import org.hl7.fhir.validation.service.ValidationService;
-import org.hl7.fhir.validation.service.utils.Display;
+import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.slf4j.Logger;
 
 public class CompareTask extends ValidationEngineTask {
   @Override
@@ -36,8 +36,8 @@ public class CompareTask extends ValidationEngineTask {
   }
 
   @Override
-  public void printHelp(PrintStream out) {
-    Display.displayHelpDetails(out,"help/compare.txt");
+  public void logHelp(Logger logger) {
+    Display.displayHelpDetails(logger,"help/compare.txt");
   }
 
   @Override

@@ -1,12 +1,11 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import java.io.PrintStream;
-
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.special.R4R5MapTester;
+import org.slf4j.Logger;
 
 public class SpecialTask extends StandaloneTask{
   @Override
@@ -30,7 +29,7 @@ public class SpecialTask extends StandaloneTask{
   }
 
   @Override
-  public void printHelp(PrintStream out) {
+  public void logHelp(Logger logger) {
 
   }
 

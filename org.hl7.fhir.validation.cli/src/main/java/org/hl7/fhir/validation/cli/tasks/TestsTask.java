@@ -1,13 +1,12 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import java.io.PrintStream;
-
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.service.model.ValidationContext;
-import org.hl7.fhir.validation.service.utils.Display;
+import org.hl7.fhir.validation.cli.Display;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.testexecutor.TestExecutor;
 import org.hl7.fhir.validation.testexecutor.TestExecutorParams;
+import org.slf4j.Logger;
 
 public class TestsTask extends StandaloneTask{
   @Override
@@ -31,8 +30,8 @@ public class TestsTask extends StandaloneTask{
   }
 
   @Override
-  public void printHelp(PrintStream out) {
-    Display.displayHelpDetails(out,"help/tests.txt");
+  public void logHelp(Logger logger) {
+    Display.displayHelpDetails(logger,"help/tests.txt");
   }
 
   @Override
