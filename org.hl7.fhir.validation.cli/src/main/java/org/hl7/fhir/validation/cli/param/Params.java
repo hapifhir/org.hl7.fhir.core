@@ -46,6 +46,8 @@ public class Params {
   public static final String CHECK_REFERENCES = "-check-references";
   public static final String RESOLUTION_CONTEXT = "-resolution-context";
   public static final String DEBUG = "-debug";
+  public static final String DEBUG_LOG = "-debug-log";
+  public static final String TRACE_LOG = "-trace-log";
   public static final String SCT = "-sct";
   public static final String RECURSE = "-recurse";
   public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
@@ -200,6 +202,10 @@ public class Params {
           throw new Error("Specified -html-output without indicating output file");
         else
           validationContext.setHtmlOutput(args[++i]);
+      } else if (args[i].equals(DEBUG_LOG)) {
+        i++;
+      } else if (args[i].equals(TRACE_LOG)) {
+        i++;
       } else if (args[i].equals(PROXY)) {
         i++; // ignore next parameter
       } else if (args[i].equals(PROXY_AUTH)) {

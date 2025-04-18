@@ -26,7 +26,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.context.SystemOutLoggingService;
+import org.hl7.fhir.r5.context.Slf4JLoggingService;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -598,7 +598,7 @@ public class ValidationService {
         validationEngine.getContext().getTxCache().clear();
       }
     }
-    System.out.print("  Get set... ");
+    log.info("  Get set... ");
     validationEngine.setQuestionnaireMode(validationContext.getQuestionnaireMode());
     validationEngine.setLevel(validationContext.getLevel());
     validationEngine.setDoNative(validationContext.isDoNative());
@@ -665,7 +665,7 @@ public class ValidationService {
     validationEngine.setNoExperimentalContent(validationContext.isNoExperimentalContent());
     TerminologyCache.setNoCaching(validationContext.isNoInternalCaching());
     validationEngine.prepare(); // generate any missing snapshots
-    log.info(" go (" + timeTracker.milestone() + ")");
+    log.info("...go! (" + timeTracker.milestone() + ")");
     return validationEngine;
   }
 
@@ -680,7 +680,7 @@ public class ValidationService {
     String txver = validationEngine.setTerminologyServer(validationContext.getTxServer(), validationContext.getTxLog(), ver, !validationContext.getNoEcosystem());
     log.info(" - Version " + txver + " (" + timeTracker.milestone() + ")");
     validationEngine.setDebug(validationContext.isDoDebug());
-    validationEngine.getContext().setLogger(new SystemOutLoggingService(validationContext.isDoDebug()));
+    validationEngine.getContext().setLogger(new Slf4JLoggingService(log));
     for (String src : validationContext.getIgs()) {
       igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), src, validationContext.isRecursive());
     }

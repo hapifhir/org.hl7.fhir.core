@@ -47,6 +47,7 @@ import java.util.zip.ZipInputStream;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.With;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -96,6 +97,7 @@ import ca.uhn.fhir.parser.DataFormatException;
  * very light client to connect to an open unauthenticated terminology service
  */
 
+@Slf4j
 @MarkedToMoveToAdjunctPackage
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext {
 
@@ -228,7 +230,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       locale = null;
       userAgent = null;
       allowLoadingDuplicates = false;
-      loggingService = new SystemOutLoggingService();
+      loggingService = new Slf4JLoggingService(log);
     }
 
     private SimpleWorkerContext getSimpleWorkerContextInstance() throws IOException {
