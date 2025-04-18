@@ -83,6 +83,7 @@ import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.param.Params;
+import org.slf4j.MarkerFactory;
 
 
 /**
@@ -192,10 +193,11 @@ public class ValidatorCli {
   }
 
   private static void setLogbackConfiguration(String[] args) {
-    setLogbackConfiguration(args, "-debug-log", Level.DEBUG);
-    setLogbackConfiguration(args, "-trace-log", Level.TRACE);
-    log.debug("Test debug log");
-    log.trace("Test trace log");
+    setLogbackConfiguration(args, Params.DEBUG_LOG, Level.DEBUG);
+    setLogbackConfiguration(args, Params.TRACE_LOG, Level.TRACE);
+    //log.debug("Test debug log");
+    //log.trace("Test trace log");
+    //log.info(MarkerFactory.getMarker("marker"), "Test marker interface");
   }
 
   private static void setLogbackConfiguration(String[] args, String logParam, Level logLevel) {
