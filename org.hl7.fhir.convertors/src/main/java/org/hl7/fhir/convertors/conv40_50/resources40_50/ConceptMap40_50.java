@@ -50,7 +50,6 @@ import org.hl7.fhir.utilities.CanonicalPair;
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
 public class ConceptMap40_50 {
-;
 
   public static org.hl7.fhir.r5.model.ConceptMap convertConceptMap(org.hl7.fhir.r4.model.ConceptMap src) throws FHIRException {
     if (src == null)

@@ -358,8 +358,8 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
     for (ConceptMapGroupComponent grp : cm.getGroup()) {
       String src = grp.getSource();
-      boolean comment = false;
-      boolean properties = false;
+      boolean hasComment = false;
+      boolean hasProperties = false;
       boolean ok = true;
       Map<String, HashSet<String>> props = new HashMap<String, HashSet<String>>();
       Map<String, HashSet<String>> sources = new HashMap<String, HashSet<String>>();
@@ -371,10 +371,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       for (SourceElementComponent ccl : grp.getElement()) {
         ok = ok && (ccl.getNoMap() || (ccl.getTarget().size() == 1 && ccl.getTarget().get(0).getDependsOn().isEmpty() && ccl.getTarget().get(0).getProduct().isEmpty()));
         if (ccl.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
-          comment = true;
+          hasComment = true;
         }
         for (TargetElementComponent ccm : ccl.getTarget()) {
-          comment = comment || !Utilities.noString(ccm.getComment());
+          hasComment = hasComment || !Utilities.noString(ccm.getComment());
           for (MappingPropertyComponent pp : ccm.getProperty()) {
             if (!props.containsKey(pp.getCode()))
               props.put(pp.getCode(), new HashSet<String>());            
@@ -390,7 +390,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         }
       }
       if (props.size() > 0) {
-        properties = true;
+        hasProperties = true;
       }
 
       gc++;
@@ -420,7 +420,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SOURCE));
         tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_REL));
         tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT));
-        if (comment)
+        if (hasComment)
           tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
         for (SourceElementComponent ccl : grp.getElement()) {
           tr = tbl.tr();
@@ -430,7 +430,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           if (display != null && !isSameCodeAndDisplay(ccl.getCode(), display))
             td.tx(" ("+display+")");
           if (ccl.getNoMap()) {
-            if (!comment) {
+            if (!hasComment) {
               tr.td().colspan("2").style("background-color: #efefef").tx("(not mapped)");
             } else if (ccl.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
               tr.td().colspan("2").style("background-color: #efefef").tx("(not mapped)");
@@ -455,7 +455,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             display = ccm.hasDisplay() ? ccm.getDisplay() : getDisplayForConcept(grp.getTarget(), ccm.getCode());
             if (display != null && !isSameCodeAndDisplay(ccm.getCode(), display))
               td.tx(" ("+display+")");
-            if (comment)
+            if (hasComment)
               tr.td().addText(ccm.getComment());
           }
           addUnmapped(tbl, grp);
@@ -480,10 +480,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_REL));
         }
         tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT_DET));
-        if (comment) {
+        if (hasComment) {
           tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
         }
-        if (properties) {
+        if (hasProperties) {
           tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.GENERAL_PROPS));
         }
         tr = tbl.tr();
@@ -518,10 +518,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               tr.td().b().addText(getDescForConcept(s));
           }
         }
-        if (comment) {
+        if (hasComment) {
           tr.td();
         }
-        if (properties) {
+        if (hasProperties) {
           for (String s : props.keySet()) {
             if (s != null) {
               if (props.get(s).size() == 1) {
@@ -628,7 +628,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
                     td.tx(" ("+display+")");
                 }
               }
-              if (comment)
+              if (hasComment)
                 tr.td().addText(ccm.getComment());
 
               for (String s : props.keySet()) {

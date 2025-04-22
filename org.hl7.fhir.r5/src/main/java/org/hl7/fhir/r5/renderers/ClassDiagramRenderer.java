@@ -1227,6 +1227,7 @@ public class ClassDiagramRenderer {
     }
     return null;
   }
+  
   private ClassItem drawClass(XhtmlNode svg, StructureDefinition sd, ElementDefinition ed, String path, StandardsStatus status, StructureDefinition parent) throws FHIRException, IOException {
     ClassItem item = classes.get(path);
     if (item == null) {
@@ -1355,7 +1356,7 @@ public class ClassDiagramRenderer {
       p1 = new Point(l.source.right() + SELF_LINK_WIDTH, l.source.centerV() - SELF_LINK_HEIGHT, PointKind.unknown);
       p2 = new Point(l.source.right() + SELF_LINK_WIDTH, l.source.centerV() + SELF_LINK_HEIGHT, PointKind.unknown);
 
-      var path = svg.svgPath(insertionPoint, abs(p1.y-start.y), abs(p1.x-start.x));
+      var path = svg.svgPath(insertionPoint);
       path.attribute("id", prefix+id);
       path.attribute("d", checkForLinkPathData(id, "M"+start.x+" "+start.y+" L"+p1.x+" "+p1.y+" L"+p1.x+" "+p1.y+" L"+p2.x+" "+p2.y+" L"+end.x+" "+end.y));
       path.style("stroke:navy;stroke-width:1;fill:none");
@@ -1376,7 +1377,7 @@ public class ClassDiagramRenderer {
       p1 = end;
       p2 = start;
       if (start != null && end != null) {
-        var path = svg.svgPath(insertionPoint, abs(end.y-start.y), abs(end.x-start.x));
+        var path = svg.svgPath(insertionPoint);
         path.attribute("d", checkForLinkPathData(id, "M"+Double.toString(start.x)+" "+Double.toString(start.y)+" L"+Double.toString(end.x)+" "+Double.toString(end.y)));
         if (l.type == LinkType.CONSTRAINT)
           path.style("stroke:orange;stroke-width:1;fill:none");
