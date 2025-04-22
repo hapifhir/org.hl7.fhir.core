@@ -96,6 +96,7 @@ import org.hl7.fhir.validation.service.renderers.NativeRenderer;
 import org.hl7.fhir.validation.service.renderers.ValidationOutputRenderer;
 import org.hl7.fhir.validation.service.utils.Common;
 import org.hl7.fhir.validation.service.utils.EngineMode;
+import org.hl7.fhir.validation.service.utils.Slf4JOutputStream;
 import org.hl7.fhir.validation.service.utils.VersionSourceInformation;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.advisor.JsonDrivenPolicyAdvisor;
@@ -277,7 +278,7 @@ public class ValidationService {
         renderer.setRunDate(runDate);
         if (renderer.isSingleFile()) {
           if (validationContext.getOutput() == null) {
-            dst = System.out;
+            dst = new PrintStream(new Slf4JOutputStream());
           } else {
             dst = new PrintStream(ManagedFileAccess.outStream(Utilities.path(validationContext.getOutput())));
           }
