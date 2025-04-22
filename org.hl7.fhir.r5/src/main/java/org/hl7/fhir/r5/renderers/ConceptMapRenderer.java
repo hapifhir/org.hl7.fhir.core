@@ -31,6 +31,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -359,6 +360,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     for (ConceptMapGroupComponent grp : cm.getGroup()) {
       String src = grp.getSource();
       boolean comment = false;
+      boolean properties = false;
       boolean ok = true;
       Map<String, HashSet<String>> props = new HashMap<String, HashSet<String>>();
       Map<String, HashSet<String>> sources = new HashMap<String, HashSet<String>>();
@@ -369,6 +371,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       targets.get("code").add(grp.getTarget());
       for (SourceElementComponent ccl : grp.getElement()) {
         ok = ok && (ccl.getNoMap() || (ccl.getTarget().size() == 1 && ccl.getTarget().get(0).getDependsOn().isEmpty() && ccl.getTarget().get(0).getProduct().isEmpty()));
+        if (ccl.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
+          comment = true;
+        }
         for (TargetElementComponent ccm : ccl.getTarget()) {
           comment = comment || !Utilities.noString(ccm.getComment());
           for (MappingPropertyComponent pp : ccm.getProperty()) {
@@ -384,6 +389,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               targets.put(d.getAttribute(), new HashSet<String>());
           }
         }
+      }
+      if (props.size() > 0) {
+        properties = true;
       }
 
       gc++;
@@ -422,8 +430,18 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(grp.getSource(), ccl.getCode());
           if (display != null && !isSameCodeAndDisplay(ccl.getCode(), display))
             td.tx(" ("+display+")");
+          if ("Allgemeinmedizin".equals(display)) {
+            DebugUtilities.breakpoint();
+          }
           if (ccl.getNoMap()) {
-            tr.td().colspan(comment ? "3" : "2").style("background-color: #efefef").tx("(not mapped)");
+            if (!comment) {
+              tr.td().colspan("2").style("background-color: #efefef").tx("(not mapped)");
+            } else if (ccl.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
+              tr.td().colspan("2").style("background-color: #efefef").tx("(not mapped)");
+              tr.td().style("background-color: #efefef").tx(ccl.getExtensionString(ToolingExtensions.EXT_CM_NOMAP_COMMENT));
+            } else {
+              tr.td().colspan("3").style("background-color: #efefef").tx("(not mapped)");
+            }
           } else {
             TargetElementComponent ccm = ccl.getTarget().get(0);
             if (!ccm.hasRelationship())
@@ -469,7 +487,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         if (comment) {
           tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
         }
-        tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.GENERAL_PROPS));
+        if (properties) {
+          tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.GENERAL_PROPS));
+        }
         tr = tbl.tr();
         if (sources.get("code").size() == 1) {
           String url = sources.get("code").iterator().next();
@@ -505,13 +525,15 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         if (comment) {
           tr.td();
         }
-        for (String s : props.keySet()) {
-          if (s != null) {
-            if (props.get(s).size() == 1) {
-              String url = props.get(s).iterator().next();
-              renderCSDetailsLink(tr, url, false);           
-            } else
-              tr.td().b().addText(getDescForConcept(s));
+        if (properties) {
+          for (String s : props.keySet()) {
+            if (s != null) {
+              if (props.get(s).size() == 1) {
+                String url = props.get(s).iterator().next();
+                renderCSDetailsLink(tr.td(), url, false);           
+              } else
+                tr.td().b().addText(getDescForConcept(s));
+            }
           }
         }
 
@@ -532,8 +554,12 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               td.addText(grp.getSource()+" / "+ccl.getCode());
             display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(grp.getSource(), ccl.getCode());
             tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
-            tr.td().colspan("4").style("background-color: #efefef").tx("(not mapped)");
-
+            if (ccl.hasExtension(ToolingExtensions.EXT_CM_NOMAP_COMMENT)) {
+              tr.td().colspan("3").style("background-color: #efefef").tx("(not mapped)");
+              tr.td().style("background-color: #efefef").tx(ccl.getExtensionString(ToolingExtensions.EXT_CM_NOMAP_COMMENT));             
+            } else {
+              tr.td().colspan("4").style("background-color: #efefef").tx("(not mapped)");
+            }
           } else {
             for (int ti = 0; ti < ccl.getTarget().size(); ti++) {
               TargetElementComponent ccm = ccl.getTarget().get(ti);
