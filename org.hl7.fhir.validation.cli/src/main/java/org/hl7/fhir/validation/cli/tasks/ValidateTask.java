@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.tasks;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -11,6 +12,7 @@ import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.Display;
 import org.slf4j.Logger;
 
+@Slf4j
 public class ValidateTask extends ValidationEngineTask {
 
   final static String[][] PLACEHOLDERS = {
@@ -56,13 +58,12 @@ public class ValidateTask extends ValidationEngineTask {
     
     for (String s : validationContext.getProfiles()) {
       if (!validationEngine.getContext().hasResource(StructureDefinition.class, s) && !validationEngine.getContext().hasResource(ImplementationGuide.class, s)) {
-        System.out.println("  Fetch Profile from " + s);
+        log.info("  Fetch Profile from " + s);
         validationEngine.loadProfile(validationContext.getLocations().getOrDefault(s, s));
       }
     }
-    System.out.println("Validating");
+    log.info("Validating");
 
     validationService.validateSources(validationContext, validationEngine, validationContext.getWatchMode(), validationContext.getWatchScanDelay(), validationContext.getWatchSettleTime());
-
   }
 }
