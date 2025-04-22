@@ -578,7 +578,7 @@ public class ValidationService {
 
   @Nonnull
   protected ValidationEngine buildValidationEngine(ValidationContext validationContext, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
-    System.out.print("  Load FHIR v" + validationContext.getSv() + " from " + definitions);
+    log.info("  Load FHIR v" + validationContext.getSv() + " from " + definitions);
     ValidationEngine validationEngine = getValidationEngineBuilder().withVersion(validationContext.getSv()).withTimeTracker(timeTracker)
         .withUserAgent(Common.getValidatorUserAgent()).withThoVersion(Constants.THO_WORKING_VERSION)
         .withExtensionsVersion(Constants.EXTENSIONS_WORKING_VERSION).fromSource(definitions);

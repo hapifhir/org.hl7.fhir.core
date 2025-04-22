@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
@@ -49,6 +50,7 @@ import org.hl7.fhir.validation.service.utils.VersionSourceInformation;
 import lombok.Getter;
 import lombok.Setter;
 
+@Slf4j
 public class IgLoader implements IValidationEngineLoader {
 
   /**
@@ -133,16 +135,18 @@ public class IgLoader implements IValidationEngineLoader {
           }
         }
       }
-      System.out.print("  Load " + srcPackage);
+      StringBuilder packageLoadLine = new StringBuilder();
+      packageLoadLine.append("  Load " + srcPackage);
       if (!srcPackage.contains("#")) {
-        System.out.print("#" + npm.version());
+        packageLoadLine.append("#" + npm.version());
       }
       IContextResourceLoader loader = ValidatorUtils.loaderForVersion(npm.fhirVersion());
       loader.setPatchUrls(VersionUtilities.isCorePackage(npm.id()));
       int count = getContext().loadFromPackage(npm, loader);
-      System.out.println(" - " + count + " resources (" + getContext().clock().milestone() + ")");
+      log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
     } else {
-      System.out.print("  Load " + srcPackage);
+      StringBuilder packageLoadLine = new StringBuilder();
+      packageLoadLine.append("  Load " + srcPackage);
       String canonical = null;
       int count = 0;
       Map<String, ByteProvider> source = loadIgSource(srcPackage, recursive, true);
@@ -179,7 +183,7 @@ public class IgLoader implements IValidationEngineLoader {
       if (canonical != null) {
         ValidatorUtils.grabNatives(binaries, source, canonical);
       }
-      System.out.println(" - " + count + " resources (" + getContext().clock().milestone() + ")");
+      log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
     }
   }
 
