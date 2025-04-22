@@ -37,7 +37,6 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
@@ -1089,7 +1088,6 @@ public class ClassDiagramRenderer {
 
   private int encodeType(XhtmlNode text, LineStatus ls, String tc)  throws Exception {
     if (tc == null) {
-      DebugUtilities.breakpoint();
       return 0;
     } else if (tc.equals("*")) {
       var a = text.ah(Utilities.pathURL(rc.getLink(KnownLinkType.SPEC), "datatypes.html#open")).style("text-decoration: none;");;
@@ -1637,10 +1635,6 @@ public class ClassDiagramRenderer {
     File f = new File(Utilities.path(sourceFolder, diagramId+".svg"));
     if (f.exists()) {
       parseSvgFile(f, f.getAbsolutePath());
-    }
-
-    if ("AdditionalBinding".equals(profile.getName())) {
-      DebugUtilities.breakpoint();
     }
     attributes = true;
     innerClasses = true;
