@@ -31,7 +31,6 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -430,9 +429,6 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(grp.getSource(), ccl.getCode());
           if (display != null && !isSameCodeAndDisplay(ccl.getCode(), display))
             td.tx(" ("+display+")");
-          if ("Allgemeinmedizin".equals(display)) {
-            DebugUtilities.breakpoint();
-          }
           if (ccl.getNoMap()) {
             if (!comment) {
               tr.td().colspan("2").style("background-color: #efefef").tx("(not mapped)");
