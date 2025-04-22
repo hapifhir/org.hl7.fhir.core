@@ -2,7 +2,6 @@ package org.hl7.fhir.r5.renderers;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
@@ -49,6 +49,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 public class ClassDiagramRenderer {
   public class LinkInfo {
@@ -290,21 +291,10 @@ public class ClassDiagramRenderer {
     var feBlend = filter.addTag("feBlend").attribute("in", "SourceGraphic").attribute("in2", "blurOut").attribute("mode", "normal");    
   }
 
-  private void parseSvgFile(File f, String name) throws FileNotFoundException, FHIRException {
-    Document svg = parseXml(new FileInputStream(f), name);
+  private void parseSvgFile(File f, String name) throws FHIRException, ParserConfigurationException, SAXException, IOException {
+    Document svg = XMLUtil.parseFileToDom(f.getAbsolutePath());
     readElement(svg.getDocumentElement(), null);
     fixLayout();
-  }
-
-  private Document parseXml(InputStream in, String name) throws FHIRException  {
-    try {
-      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-      factory.setNamespaceAware(true);
-      DocumentBuilder builder = factory.newDocumentBuilder();
-      return builder.parse(in);
-    } catch (Exception e) {
-      throw new FHIRException("Error processing "+name+": "+e.getMessage(), e);
-    }
   }
 
   private void fixLayout() {
@@ -559,7 +549,10 @@ public class ClassDiagramRenderer {
       for (String cn : classNames) {
         StructureDefinition sd = context.fetchResource(StructureDefinition.class, cn);
         if (sd == null) {
-          cutils.fetchStructureByName(cn);
+          sd = cutils.fetchStructureByName(cn);
+        }
+        if (sd == null) {
+          throw new FHIRException("Unable to find class '"+cn+"'");
         }
         ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
         StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
