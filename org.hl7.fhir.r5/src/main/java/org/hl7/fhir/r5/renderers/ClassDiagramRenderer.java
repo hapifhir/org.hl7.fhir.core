@@ -179,7 +179,7 @@ public class ClassDiagramRenderer {
     return s; 
   }
 
-  public String buildClassDiagram(StructureDefinition sd) throws Exception {
+  public String buildClassDiagram(StructureDefinition sd) throws FHIRException, IOException {
     File f = new File(Utilities.path(sourceFolder, diagramId+".svg"));
     if (f.exists()) {
       parseSvgFile(f, f.getAbsolutePath());
@@ -291,8 +291,13 @@ public class ClassDiagramRenderer {
     var feBlend = filter.addTag("feBlend").attribute("in", "SourceGraphic").attribute("in2", "blurOut").attribute("mode", "normal");    
   }
 
-  private void parseSvgFile(File f, String name) throws FHIRException, ParserConfigurationException, SAXException, IOException {
-    Document svg = XMLUtil.parseFileToDom(f.getAbsolutePath());
+  private void parseSvgFile(File f, String name) throws FHIRException, IOException {
+    Document svg;
+    try {
+      svg = XMLUtil.parseFileToDom(f.getAbsolutePath());
+    } catch (ParserConfigurationException | SAXException | IOException e) {
+      throw new IOException(e);
+    }
     readElement(svg.getDocumentElement(), null);
     fixLayout();
   }
@@ -564,7 +569,7 @@ public class ClassDiagramRenderer {
     return new Point(x, y, PointKind.unknown);
   }
 
-  private Point determineClassMetrics(StructureDefinition sd) throws Exception {
+  private Point determineClassMetrics(StructureDefinition sd) throws FHIRException, IOException {
     double width = textWidth("Element") * 1.8;
     double height = HEADER_HEIGHT + GAP_HEIGHT*2;
     //    if ("true".equals(ini.getStringProperty("diagram", "element-attributes"))) {
@@ -586,7 +591,7 @@ public class ClassDiagramRenderer {
   }
 
 
-  private Point determineMetrics(StructureDefinition sd, ElementDefinition ed, ClassItem source, String path, String name, StructureDefinition base, ClassItemMode mode) throws Exception {
+  private Point determineMetrics(StructureDefinition sd, ElementDefinition ed, ClassItem source, String path, String name, StructureDefinition base, ClassItemMode mode) throws FHIRException, IOException {
 
     List<ElementDefinition> children = putils.getChildList(sd, ed);
     String n = name;
@@ -798,12 +803,12 @@ public class ClassDiagramRenderer {
     return i == null ? MAX_NEG : i;
   }
 
-  private int addAttribute(XhtmlNode g, double left, double top, StructureDefinition sd, ElementDefinition e, String path, double height, double width) throws Exception  {
+  private int addAttribute(XhtmlNode g, double left, double top, StructureDefinition sd, ElementDefinition e, String path, double height, double width) throws FHIRException, IOException  {
     LineStatus ls = new LineStatus();
     return addAttribute(g, left, top, sd, e, path, ls, height, width);
   }
 
-  private int addAttribute(XhtmlNode g, double left, double top, StructureDefinition sd, ElementDefinition e, String path, LineStatus ls, double height, double width) throws Exception  {
+  private int addAttribute(XhtmlNode g, double left, double top, StructureDefinition sd, ElementDefinition e, String path, LineStatus ls, double height, double width) throws FHIRException, IOException  {
     if (e.getStandardsStatus() != null) {
       var rect = g.svgRect(null);
       rect.attribute("x", Double.toString(left+1));
@@ -1079,7 +1084,7 @@ public class ClassDiagramRenderer {
     return min + ".." + max;
   }
 
-  private int encodeType(XhtmlNode text, LineStatus ls, String tc)  throws Exception {
+  private int encodeType(XhtmlNode text, LineStatus ls, String tc)  throws FHIRException, IOException {
     if (tc == null) {
       return 0;
     } else if (tc.equals("*")) {
@@ -1126,11 +1131,11 @@ public class ClassDiagramRenderer {
     }
   }
 
-  private String baseUrl(StructureDefinition sd, String path) throws Exception {
+  private String baseUrl(StructureDefinition sd, String path) throws FHIRException, IOException {
     return sd.getWebPath()+"#";
   } 
 
-  private String[] textForAttribute(StructureDefinition sd, ElementDefinition e) throws Exception {
+  private String[] textForAttribute(StructureDefinition sd, ElementDefinition e) throws FHIRException, IOException {
     LineStatus ls = new LineStatus();
     XhtmlNode svg = new XhtmlNode(NodeType.Element, "svg"); // this is a dummy
     addAttribute(svg.svgG(null), 0, 0, sd, e, "Element.id", ls, 0, 0);
@@ -1193,7 +1198,7 @@ public class ClassDiagramRenderer {
       for (String cn : classNames) {
         StructureDefinition sd = context.fetchResource(StructureDefinition.class, cn);
         if (sd == null) {
-          cutils.fetchStructureByName(cn);
+          sd = cutils.fetchStructureByName(cn);
         }
         ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
 
@@ -1210,7 +1215,7 @@ public class ClassDiagramRenderer {
     return null;
   }
 
-  private ClassItem drawClassElement(XhtmlNode svg, StructureDefinition sd) throws Exception {
+  private ClassItem drawClassElement(XhtmlNode svg, StructureDefinition sd) throws FHIRException, IOException {
     ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
 
     StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());       
@@ -1222,7 +1227,7 @@ public class ClassDiagramRenderer {
     }
     return null;
   }
-  private ClassItem drawClass(XhtmlNode svg, StructureDefinition sd, ElementDefinition ed, String path, StandardsStatus status, StructureDefinition parent) throws Exception {
+  private ClassItem drawClass(XhtmlNode svg, StructureDefinition sd, ElementDefinition ed, String path, StandardsStatus status, StructureDefinition parent) throws FHIRException, IOException {
     ClassItem item = classes.get(path);
     if (item == null) {
       throw new FHIRException("Unable to find a class for "+path+" from "+CommaSeparatedStringBuilder.join(",", classes.keySet()));
@@ -1338,7 +1343,7 @@ public class ClassDiagramRenderer {
     return item;  
   }
 
-  private void drawLink(XhtmlNode svg, Link l, XhtmlNode insertionPoint) throws Exception {
+  private void drawLink(XhtmlNode svg, Link l, XhtmlNode insertionPoint) throws FHIRException, IOException {
     Point start;
     Point end;
     Point p1;
@@ -1624,7 +1629,7 @@ public class ClassDiagramRenderer {
     }
   }
 
-  public String buildConstraintDiagram(StructureDefinition profile) throws Exception {
+  public String buildConstraintDiagram(StructureDefinition profile) throws FHIRException, IOException {
     File f = new File(Utilities.path(sourceFolder, diagramId+".svg"));
     if (f.exists()) {
       parseSvgFile(f, f.getAbsolutePath());
@@ -1665,7 +1670,7 @@ public class ClassDiagramRenderer {
     return s; 
   }
 
-  private void drawConstraintElement(XhtmlNode svg, StructureDefinition sd) throws Exception {
+  private void drawConstraintElement(XhtmlNode svg, StructureDefinition sd) throws FHIRException, IOException {
 
     ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
 
@@ -1673,7 +1678,7 @@ public class ClassDiagramRenderer {
     drawClass(svg, sd, ed, ed.getPath(), sd.getStandardsStatus(), base);
   }
 
-  private Point determineConstraintMetrics(StructureDefinition sd) throws Exception {
+  private Point determineConstraintMetrics(StructureDefinition sd) throws FHIRException, IOException {
 
     double width = textWidth("Element") * 1.8;
     double height = HEADER_HEIGHT + GAP_HEIGHT*2;
