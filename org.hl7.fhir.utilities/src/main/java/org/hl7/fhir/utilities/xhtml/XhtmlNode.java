@@ -1290,10 +1290,8 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
 
-  public XhtmlNode svgPath(XhtmlNode insertionPoint, String height, String width) {
+  public XhtmlNode svgPath(XhtmlNode insertionPoint) {
     var x = addTag("path", insertionPoint);
-//    x.attribute("height", height);
-//    x.attribute("width", width);
     return x;
   }
 
