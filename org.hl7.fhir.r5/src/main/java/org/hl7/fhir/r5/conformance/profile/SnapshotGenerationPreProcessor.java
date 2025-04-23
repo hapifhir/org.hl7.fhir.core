@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
@@ -468,4 +469,119 @@ public class SnapshotGenerationPreProcessor {
     return null;
   }
 
+  public List<ElementDefinition> supplementMissingDiffElements(StructureDefinition profile) { 
+    List<ElementDefinition> list = new ArrayList<>(); 
+    list.addAll(profile.getDifferential().getElement()); 
+    if (list.isEmpty()) { 
+      ElementDefinition root = new ElementDefinition().setPath(profile.getTypeName()); 
+      root.setId(profile.getTypeName()); 
+      list.add(root); 
+    } else { 
+      if (list.get(0).getPath().contains(".")) { 
+        ElementDefinition root = new ElementDefinition().setPath(profile.getTypeName()); 
+        root.setId(profile.getTypeName()); 
+        list.add(0, root); 
+      } 
+    } 
+    insertMissingSparseElements(list); 
+    return list; 
+  } 
+
+  private void insertMissingSparseElements(List<ElementDefinition> list) { 
+    int i = 1; 
+    while (i < list.size()) { 
+      String[] pathCurrent = list.get(i).getPath().split("\\."); 
+      String[] pathLast = list.get(i-1).getPath().split("\\."); 
+      int firstDiff = 0; // the first entry must be a match 
+      while (firstDiff < pathCurrent.length && firstDiff < pathLast.length && pathCurrent[firstDiff].equals(pathLast[firstDiff])) { 
+        firstDiff++; 
+      } 
+      if (!(isSibling(pathCurrent, pathLast, firstDiff) || isChild(pathCurrent, pathLast, firstDiff))) { 
+        // now work backwards down to lastMatch inserting missing path nodes 
+        ElementDefinition parent = findParent(list, i, list.get(i).getPath()); 
+        int parentDepth = Utilities.charCount(parent.getPath(), '.')+1; 
+        int childDepth =  Utilities.charCount(list.get(i).getPath(), '.')+1; 
+        if (childDepth > parentDepth + 1) { 
+          String basePath = parent.getPath(); 
+          String baseId = parent.getId(); 
+          for (int index = parentDepth; index >= firstDiff; index--) { 
+            String mtail = makeTail(pathCurrent, parentDepth, index); 
+            ElementDefinition root = new ElementDefinition().setPath(basePath+"."+mtail); 
+            root.setId(baseId+"."+mtail); 
+            list.add(i, root); 
+          } 
+        } 
+      }  
+      i++; 
+    } 
+  } 
+ 
+
+  private ElementDefinition findParent(List<ElementDefinition> list, int i, String path) { 
+    while (i > 0 && !path.startsWith(list.get(i).getPath()+".")) { 
+      i--; 
+    } 
+    return list.get(i); 
+  } 
+ 
+  private boolean isSibling(String[] pathCurrent, String[] pathLast, int firstDiff) { 
+    return pathCurrent.length == pathLast.length && firstDiff == pathCurrent.length-1; 
+  } 
+ 
+ 
+  private boolean isChild(String[] pathCurrent, String[] pathLast, int firstDiff) { 
+    return pathCurrent.length == pathLast.length+1 && firstDiff == pathLast.length; 
+  } 
+ 
+  private String makeTail(String[] pathCurrent, int start, int index) { 
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("."); 
+    for (int i = start; i <= index; i++) { 
+      b.append(pathCurrent[i]); 
+    } 
+    return b.toString(); 
+  }
+
+  public StructureDefinition trimSnapshot(StructureDefinition profile) {
+    // first pass: mark elements from the diff
+    Stack<ElementDefinition> stack = new Stack<ElementDefinition>();
+    ElementDefinition edRoot = profile.getSnapshot().getElementFirstRep();
+    if (!edRoot.hasUserData(UserDataNames.SNAPSHOT_FROM_DIFF)) {
+      stack.push(edRoot);
+      for (int i = 1; i < profile.getSnapshot().getElement().size(); i++) {
+        ElementDefinition ed = profile.getSnapshot().getElement().get(i);
+        String cpath = ed.getPath();
+        boolean fromDiff = ed.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_DIFF);
+
+        String spath = stack.peek().getPath();
+        while (!(cpath.equals(spath) || cpath.startsWith(spath+"."))) {
+          stack.pop();
+          spath = stack.peek().getPath();
+        }
+        stack.push(ed);
+        if (fromDiff) {
+          for (int j = stack.size() - 1; j >= 0; j--) {
+            if (stack.get(j).hasUserData(UserDataNames.SNAPSHOT_FROM_DIFF)) {
+              break;
+            } else {
+              stack.get(j).setUserData(UserDataNames.SNAPSHOT_FROM_DIFF, true);
+            }
+          }
+        }
+      }
+    }
+    edRoot.setUserData(UserDataNames.SNAPSHOT_FROM_DIFF, true);
+    
+    StructureDefinition res = new StructureDefinition();
+    res.setUrl(profile.getUrl());
+    res.setVersion(profile.getVersion());
+    res.setName(profile.getName());
+    res.setBaseDefinition(profile.getBaseDefinition());
+    for (ElementDefinition ed : profile.getSnapshot().getElement()) {
+      if (ed.hasUserData(UserDataNames.SNAPSHOT_FROM_DIFF)) {
+        res.getSnapshot().getElement().add(ed);
+      }
+    }
+    return res;
+  } 
+ 
 }
