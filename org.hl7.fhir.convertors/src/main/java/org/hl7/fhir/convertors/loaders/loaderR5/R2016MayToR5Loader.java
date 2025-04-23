@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /*
@@ -43,6 +44,7 @@ import org.hl7.fhir.dstu2016may.formats.JsonParser;
 import org.hl7.fhir.dstu2016may.formats.XmlParser;
 import org.hl7.fhir.dstu2016may.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
@@ -56,7 +58,7 @@ public class R2016MayToR5Loader extends BaseLoaderR5 {
 
   private final BaseAdvisor_14_50 advisor = new BaseAdvisor_14_50();
 
-  public R2016MayToR5Loader(List<String> types, ILoaderKnowledgeProviderR5 lkp) {
+  public R2016MayToR5Loader(Set<String> types, ILoaderKnowledgeProviderR5 lkp) {
     super(types, lkp);
   }
 
@@ -143,4 +145,16 @@ public class R2016MayToR5Loader extends BaseLoaderR5 {
     return new TerminologyClientFactory(versionString());
   }
 
+
+  @Override
+  public Set<String> reviewActualTypes(Set<String> types) {
+    // this isn't correct, but we don't care anymore for R2B IGs
+    return types;
+  }
+  
+
+  @Override
+  public PackageResourceLoader editInfo(PackageResourceLoader pri) {
+    return pri;
+  }
 }
