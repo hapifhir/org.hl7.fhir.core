@@ -682,7 +682,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (!"$all".equals(col)) { 
         ActorDefinition actor = context.getWorker().fetchResource(ActorDefinition.class, col); 
         if (actor == null) { 
-          columns.add(new Column(col, tail(col), context.formatPhrase(RenderingContext.STRUC_DEF_UNDEF_ACT, col, col)+" "));           
+          columns.add(new Column(col, urlTail(col), context.formatPhrase(RenderingContext.STRUC_DEF_UNDEF_ACT, col, col)+" "));           
         } else { 
           columns.add(new Column(col, actor.present(), context.formatPhrase(RenderingContext.STRUC_DEF_ACT, actor.present(), actor.getWebPath())+" "));                     
         } 
@@ -691,6 +691,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return res;
   } 
  
+  private String urlTail(String url) {
+    return url.contains("/") ? url.substring(url.lastIndexOf("/")+1) : url;
+  }
+
   private boolean scanObligations(Set<String> cols, List<ElementDefinition> list, ElementDefinition ed) { 
     boolean res = true;
     Map<String, Integer> nameCounts = new HashMap<>();

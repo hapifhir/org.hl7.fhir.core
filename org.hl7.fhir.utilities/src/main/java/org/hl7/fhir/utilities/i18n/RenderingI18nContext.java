@@ -223,6 +223,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_FACT = "DATA_REND_FACT";
   public static final String DATA_REND_FAX = "DATA_REND_FAX";
   public static final String GENERAL_FILTER = "GENERAL_FILTER";
+  public static final String GENERAL_SOURCE = "GENERAL_SOURCE";
+  public static final String OBLIGATION_SOURCE = "OBLIGATION_SOURCE";
   public static final String DATA_REND_GLN = "DATA_REND_GLN";
   public static final String DATA_REND_ICD = "DATA_REND_ICD";
   public static final String DATA_REND_INT = "DATA_REND_INT";
