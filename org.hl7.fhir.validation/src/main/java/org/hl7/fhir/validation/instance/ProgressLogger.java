@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.cli.logging;
+package org.hl7.fhir.validation.instance;
 
 import lombok.Getter;
 import org.slf4j.Logger;
