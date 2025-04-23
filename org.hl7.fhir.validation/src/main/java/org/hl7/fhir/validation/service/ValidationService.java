@@ -578,12 +578,12 @@ public class ValidationService {
 
   @Nonnull
   protected ValidationEngine buildValidationEngine(ValidationContext validationContext, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
-    log.info("  Load FHIR v" + validationContext.getSv() + " from " + definitions);
+    log.info("  Loading FHIR v" + validationContext.getSv() + " from " + definitions);
     ValidationEngine validationEngine = getValidationEngineBuilder().withVersion(validationContext.getSv()).withTimeTracker(timeTracker)
         .withUserAgent(Common.getValidatorUserAgent()).withThoVersion(Constants.THO_WORKING_VERSION)
         .withExtensionsVersion(Constants.EXTENSIONS_WORKING_VERSION).fromSource(definitions);
 
-    log.info(" - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
+    log.info("  Loaded FHIR - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
 
     loadIgsAndExtensions(validationEngine, validationContext, timeTracker);
     if (validationContext.getTxCache() != null) {
@@ -677,9 +677,9 @@ public class ValidationService {
     if (!VersionUtilities.isR5Ver(validationEngine.getContext().getVersion())) {
       igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.fhir.uv.extensions", false);
     }
-    System.out.print("  Terminology server " + validationContext.getTxServer());
-    String txver = validationEngine.setTerminologyServer(validationContext.getTxServer(), validationContext.getTxLog(), ver, !validationContext.getNoEcosystem());
-    log.info(" - Version " + txver + " (" + timeTracker.milestone() + ")");
+    final String lineStart = "  Terminology server " + validationContext.getTxServer();
+    final String txver = validationEngine.setTerminologyServer(validationContext.getTxServer(), validationContext.getTxLog(), ver, !validationContext.getNoEcosystem());
+    log.info(lineStart + " - Version " + txver + " (" + timeTracker.milestone() + ")");
     validationEngine.setDebug(validationContext.isDoDebug());
     validationEngine.getContext().setLogger(new Slf4JLoggingService(log));
     for (String src : validationContext.getIgs()) {

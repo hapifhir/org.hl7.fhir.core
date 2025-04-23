@@ -1,7 +1,7 @@
 package org.hl7.fhir.validation.cli.logging;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
+import org.hl7.fhir.validation.instance.ProgressLogger;
 
 import java.util.ArrayList;
 import java.util.List;
