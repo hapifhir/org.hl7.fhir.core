@@ -580,7 +580,7 @@ public class SnapShotGenerationTests {
         throw new FHIRException("Sort failed: " + errors.toString());
     }
     StructureDefinition sdc = test.getSource().copy();
-    new SnapshotGenerationPreProcessor(pu).process(sdc.getDifferential());
+    new SnapshotGenerationPreProcessor(pu).process(sdc.getDifferential(), sdc);
     if (test.sourceJson) {
       new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.json")), sdc);
     } else {

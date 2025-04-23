@@ -10,9 +10,11 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
+import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionDifferentialComponent;
 import org.hl7.fhir.r5.utils.TypesUtilities;
@@ -114,7 +116,7 @@ public class SnapshotGenerationPreProcessor {
     this.context = utils.getContext();
   }
 
-  public void process(StructureDefinitionDifferentialComponent diff) {
+  public void process(StructureDefinitionDifferentialComponent diff, StructureDefinition src) {
     // first pass, divide it up 
     for (int cursor = 0; cursor < diff.getElement().size(); cursor++) {      
       ElementDefinition ed = diff.getElement().get(cursor);
@@ -164,6 +166,9 @@ public class SnapshotGenerationPreProcessor {
       }
     }
 
+    for (ElementDefinition ed : diff.getElement()) {
+      ProfileUtilities.markExtensions(ed, false, src);
+    }
   }
 
   private void mergeElements(List<ElementDefinition> elements, List<ElementDefinition> allSlices, ElementDefinition slice, ElementDefinition slicer) {
@@ -204,7 +209,7 @@ public class SnapshotGenerationPreProcessor {
       }
     } else {
       Set<ElementDefinition> handled = new HashSet<>();
-      
+
       // merge the simple stuff
       for (int j = startOfSlice; j <= endOfSlice; j++) {
         for (int i = 0; i < allSlices.size(); i++) {
@@ -214,7 +219,7 @@ public class SnapshotGenerationPreProcessor {
           }
         }
       }
-      
+
       // we have a lot of work to do
       // the challenge is that the things missing from startOfSlice..endOfSlice have to injected in the correct order 
       // which means that we need to know the definitions
@@ -232,7 +237,7 @@ public class SnapshotGenerationPreProcessor {
         }
       }
     }   
-    
+
   }
 
   private int determineInsertionPoint(List<ElementDefinition> elements, int startOfSlice, int endOfSlice, String id, String path, List<ElementAnalysis> edDef) {
@@ -273,7 +278,7 @@ public class SnapshotGenerationPreProcessor {
     for (ElementAnalysis ed : edDef) {
       s.add(ed.summary());
     }
-    
+
     return CommaSeparatedStringBuilder.join(",", s);
   }
 
@@ -515,7 +520,7 @@ public class SnapshotGenerationPreProcessor {
       i++; 
     } 
   } 
- 
+
 
   private ElementDefinition findParent(List<ElementDefinition> list, int i, String path) { 
     while (i > 0 && !path.startsWith(list.get(i).getPath()+".")) { 
@@ -523,16 +528,16 @@ public class SnapshotGenerationPreProcessor {
     } 
     return list.get(i); 
   } 
- 
+
   private boolean isSibling(String[] pathCurrent, String[] pathLast, int firstDiff) { 
     return pathCurrent.length == pathLast.length && firstDiff == pathCurrent.length-1; 
   } 
- 
- 
+
+
   private boolean isChild(String[] pathCurrent, String[] pathLast, int firstDiff) { 
     return pathCurrent.length == pathLast.length+1 && firstDiff == pathLast.length; 
   } 
- 
+
   private String makeTail(String[] pathCurrent, int start, int index) { 
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("."); 
     for (int i = start; i <= index; i++) { 
@@ -570,7 +575,7 @@ public class SnapshotGenerationPreProcessor {
       }
     }
     edRoot.setUserData(UserDataNames.SNAPSHOT_FROM_DIFF, true);
-    
+
     StructureDefinition res = new StructureDefinition();
     res.setUrl(profile.getUrl());
     res.setVersion(profile.getVersion());
@@ -583,5 +588,5 @@ public class SnapshotGenerationPreProcessor {
     }
     return res;
   } 
- 
+
 }

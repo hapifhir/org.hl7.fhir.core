@@ -148,5 +148,6 @@ public class UserDataNames {
   public static final String SvgTop = "SvgTop";
   public static final String UmlDir = "UmlDir";
   public static final String SNAPSHOT_FROM_DIFF = "SNAPSHOT_FROM_DIFF";
+  public static final String SNAPSHOT_EXTENSION_SOURCE = "SNAPSHOT_EXTENSION_SOURCE";
   
 }  
