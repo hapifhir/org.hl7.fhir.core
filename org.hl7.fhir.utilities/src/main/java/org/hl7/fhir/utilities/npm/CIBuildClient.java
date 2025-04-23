@@ -112,9 +112,16 @@ public class CIBuildClient {
     } else if (id.startsWith("hl7.fhir.r6")) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(rootUrl, id + ".tgz"));
       return new BasePackageCacheManager.InputStreamWithSrc(stream, Utilities.pathURL(rootUrl, id + ".tgz"), "current");
-    } else if (id.startsWith("hl7.fhir.uv.extensions.")) {
-      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(rootUrl + "/ig/HL7/fhir-extensions/", id + ".tgz"));
-      return new BasePackageCacheManager.InputStreamWithSrc(stream, Utilities.pathURL(rootUrl + "/ig/HL7/fhir-extensions/", id + ".tgz"), "current");
+    } else if (Utilities.endsWithInList(id, ".r3", ".r4", ".r4b", ".r5", ".r6")) {
+      String npid = id.substring(0, id.lastIndexOf("."));
+      String url = ciPackageUrls.get(npid);
+      if (url == null) {
+        throw new FHIRException("The package '" + id + "' has no entry on the current build server (" + ciPackageUrls + ")");        
+      } else {
+        url = Utilities.pathURL(url, id+".tgz");
+        InputStream stream = fetchFromUrlSpecific(url);
+        return new BasePackageCacheManager.InputStreamWithSrc(stream, url, "current");
+      }
     } else {
       throw new FHIRException("The package '" + id + "' has no entry on the current build server (" + ciPackageUrls + ")");
     }
