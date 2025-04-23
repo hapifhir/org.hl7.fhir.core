@@ -969,7 +969,19 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_AFTER_SLEEP = "DATA_REND_AFTER_SLEEP";
   public static final String DATA_REND_IMMEDIATE = "DATA_REND_IMMEDIATE";
   public static final String VALUE_SET_OTHER_DISPLAY = "VALUE_SET_OTHER_DISPLAY";
+  public static final String GENERAL_VALUE_BOUNDED = "GENERAL_VALUE_BOUNDED";
+  public static final String GENERAL_VALUE_MAX = "GENERAL_VALUE_MAX";
+  public static final String GENERAL_VALUE_MIN = "GENERAL_VALUE_MIN";
+  public static final String GENERAL_REQUIRED_BINDING = "GENERAL_REQUIRED_BINDING";
+  public static final String GENERAL_ADDITIONAL_BINDING = "GENERAL_ADDITIONAL_BINDING";
+  public static final String GENERAL_FIXED_VALUE = "GENERAL_FIXED_VALUE";
+  public static final String GENERAL_PATTERN_VALUE = "GENERAL_PATTERN_VALUE";
+  public static final String GENERAL_TYPE_PROFILE = "GENERAL_TYPE_PROFILE";
+  public static final String GENERAL_TYPE_TARGET_PROFILE = "GENERAL_TYPE_TARGET_PROFILE";
 
+
+
+  
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
   }

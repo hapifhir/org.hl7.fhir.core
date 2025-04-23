@@ -55,7 +55,7 @@ import org.xml.sax.SAXException;
 
 public class NarrativeGenerationTests {
 
-  public class TestProfileKnowledgeProvider implements ProfileKnowledgeProvider {
+  public static class TestProfileKnowledgeProvider implements ProfileKnowledgeProvider {
 
     private IWorkerContext context;
 
@@ -131,7 +131,7 @@ public class NarrativeGenerationTests {
 
   }
 
-  public class TestTypeParser implements ITypeParser {
+  public static class TestTypeParser implements ITypeParser {
 
     @Override
     public Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException {
