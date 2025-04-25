@@ -962,6 +962,20 @@ public class Utilities {
     return res;
   }
 
+
+  public static int startCharCount(String s, char c) {
+    int res = 0;
+    for (char ch : s.toCharArray()) {
+      if (ch == c) {
+        res++;
+      } else {
+        break;
+      }
+    } 
+    return res;
+  }
+
+  
   public static boolean equals(String one, String two) {
     if (one == null && two == null)
       return true;
