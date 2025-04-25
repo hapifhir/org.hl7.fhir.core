@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.conformance.profile;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -862,7 +863,28 @@ public class ProfilePathProcessor {
                 .processPaths(ncursors, mapHelper, null);
           }
         } else {
-          StructureDefinition dt = outcome.getType().size() == 1 ? profileUtilities.getProfileForDataType(outcome.getType().get(0), getWebUrl(), getDerived()) : profileUtilities.getProfileForDataType("Element");
+          StructureDefinition dt = null;
+          TypeRefComponent tr = null;
+          if (outcome.getType().size() > 1) {
+            Set<String> types = new HashSet<>();
+            for (TypeRefComponent t : outcome.getType()) {
+              types.add(t.getCode());
+            }
+            if (types.size() == 1) {
+              tr = outcome.getTypeFirstRep();
+            } else {
+               dt = profileUtilities.getProfileForDataType("Element");
+            }
+          } else {
+            tr = outcome.getTypeFirstRep();
+          }
+          if (dt == null) {
+            if (tr.getProfile().size() > 1) {
+              dt  = profileUtilities.getContext().fetchTypeDefinition(tr.getWorkingCode());
+            } else {
+              dt  = profileUtilities.getProfileForDataType(tr, getWebUrl(), getDerived());
+            }
+          }
           if (dt == null)
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__FOR_TYPE__IN_PROFILE__BUT_CANT_FIND_TYPE, diffMatches.isEmpty() ? "??" : diffMatches.get(0).getPath(), getDifferential().getElement().get(cursors.diffCursor).getPath(), profileUtilities.typeCode(outcome.getType()), getProfileName()));
           cursors.contextName = dt.getUrl();

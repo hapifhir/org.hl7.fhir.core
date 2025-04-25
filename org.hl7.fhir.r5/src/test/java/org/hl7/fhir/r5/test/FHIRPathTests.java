@@ -111,7 +111,7 @@ public class FHIRPathTests {
 
   @BeforeAll
   public static void setUp() throws FileNotFoundException, FHIRException, IOException {
-    context = new SimpleWorkerContext((SimpleWorkerContext) TestingUtilities.getSharedWorkerContext());
+    context = new SimpleWorkerContext(TestingUtilities.getSharedWorkerContext());
     if (!context.hasPackage("hl7.cda.us.ccda", null)) {
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pcm.loadPackage("hl7.cda.uv.core", "2.0.0");

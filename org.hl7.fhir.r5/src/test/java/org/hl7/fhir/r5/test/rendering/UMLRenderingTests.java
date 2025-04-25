@@ -27,7 +27,7 @@ import org.hl7.fhir.r5.tools.TestCases;
 import org.hl7.fhir.r5.tools.TestCases.TestCasesSuiteComponent;
 import org.hl7.fhir.r5.tools.TestCases.TestCasesSuiteResourceComponent;
 import org.hl7.fhir.r5.tools.TestCases.TestCasesSuiteTestComponent;
-import org.hl7.fhir.r5.tools.ToolsParser;
+import org.hl7.fhir.r5.tools.ToolsRegistration;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
@@ -43,7 +43,7 @@ import org.xml.sax.SAXException;
 public class UMLRenderingTests {
 
   public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
-    ToolsParser.register();
+    ToolsRegistration.register();
     TestCases tests = (TestCases) new JsonParser().parse(TestingUtilities.loadTestResource("r5", "uml", "manifest.json"));
     List<Arguments> objects = new ArrayList<>();
     for (TestCasesSuiteComponent suite : tests.getSuite()) {
