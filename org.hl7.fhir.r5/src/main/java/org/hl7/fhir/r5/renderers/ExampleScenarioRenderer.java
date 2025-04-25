@@ -456,14 +456,14 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     if (step.hasProcess()) {
       XhtmlNode n = row.td().colspan(6);
       n.tx(context.formatPhrase(RenderingContext.EX_SCEN_SEE));
-      n.ah(context.prefixLocalHref("#p_" + stepLabel), step.getProcess().getTitle());
+      n.ah(context.prefixLocalHref("#p_" + stepLabel)).tx(step.getProcess().getTitle());
       n.tx(" "+ context.formatPhrase(RenderingContext.EX_SCEN_BEL));
 
     } else if (step.hasWorkflow()) {
       XhtmlNode n = row.td().colspan(6);
       n.tx(context.formatPhrase(RenderingContext.EX_SCEN_OTH));
       String link = new ContextUtilities(context.getWorker()).getLinkForUrl(context.getLink(KnownLinkType.SPEC), step.getWorkflow());
-      n.ah(context.prefixLocalHref(link), step.getProcess().getTitle());
+      n.ah(context.prefixLocalHref(link)).tx(step.getProcess().getTitle());
 
     } else {
       // Must be an operation
