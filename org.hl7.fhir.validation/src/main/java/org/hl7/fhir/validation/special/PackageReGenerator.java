@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
+import org.hl7.fhir.dstu2016may.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -307,7 +308,7 @@ public class PackageReGenerator {
         sourcePackages.add(res.getSourcePackage().getVID());
       }
       if (modeParams.contains("pin")) {
-        processBase(res, res);
+        processBase(res, res, res.fhirType());
       }
       if (scope != ExpansionPackageGeneratorScope.IG_ONLY) {
         chaseDependencies(res);
@@ -480,10 +481,10 @@ public class PackageReGenerator {
     }
   }
 
-  private void processBase(CanonicalResource src, Base b) {
+  private void processBase(CanonicalResource src, Base b, String path) {
     for (Property p : b.children()) {
       for (Base v : p.getValues()) {
-        processBase(src, v);
+        processBase(src, v,  path+"."+p.getName());
       }
     }
     if (b instanceof CanonicalType) {
@@ -493,6 +494,16 @@ public class PackageReGenerator {
         if (res != null && res instanceof CanonicalResource) {
           CanonicalResource cr = (CanonicalResource) res;
           ct.addVersion(cr.getVersion());
+        }          
+      }
+    }
+    if (b instanceof ConceptSetComponent) {
+      ConceptSetComponent cs = (ConceptSetComponent) b;
+      if (!cs.hasVersion()) {
+        Resource res = context.fetchResource(Resource.class, cs.getSystem(), src);
+        if (res != null && res instanceof CanonicalResource) {
+          CanonicalResource cr = (CanonicalResource) res;
+          cs.setVersion(cr.getVersion());
         }          
       }
     }

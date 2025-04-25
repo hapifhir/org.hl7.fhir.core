@@ -1915,7 +1915,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     addServerValidationParameters(null, tc, vs, pin, options, systems);
-
+    
     if (txLog != null) {
       txLog.clearLastId();
     }
@@ -1975,6 +1975,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (ParametersParameterComponent pp : expParameters.getParameter()) {
       if (!pin.hasParameter(pp.getName())) {
         pin.addParameter(pp);
+      } else if (isOverridingParameterName(pp.getName())) {
+        pin.setParameter(pp);
       }
     }
 
@@ -1982,6 +1984,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       pin.addParameter("mode","lenient-display-validation");
     }
     pin.addParameter("diagnostics", true);
+  }
+
+  private boolean isOverridingParameterName(String pname) {
+    return Utilities.existsInList(pname, "displayLanguage");
   }
 
   private boolean addDependentResources(ITerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ValueSet vs) {

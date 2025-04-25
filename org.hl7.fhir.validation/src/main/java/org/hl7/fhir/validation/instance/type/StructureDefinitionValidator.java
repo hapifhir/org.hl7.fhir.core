@@ -48,6 +48,7 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -473,7 +474,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         } else if ("fhirpath".equals(ct)) {        	
           warning(errors, "2023-12-05", IssueType.BUSINESSRULE, n.getLiteralPath(), !isElement(cv), I18nConstants.SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH, cv, src.getNamedChildValue("id", false));
         }
-      } else {
+      } else if (!hasJsonName(src)) { // special case: if there's a json name, it can be used as an extension
         ok = rule(errors, "2023-04-23", IssueType.INVALID, n.getLiteralPath(), false, I18nConstants.SD_NO_CONTEXT_WHEN_NOT_EXTENSION, type) && ok;
       }
     }
@@ -487,6 +488,27 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     return ok;
+  }
+
+  private boolean hasJsonName(Element sd) {
+    Element rootDefn = null;
+    if (sd.hasChild("snapshot")) {
+      Element snapshot = sd.getNamedChild("snapshot");
+      if (snapshot.hasChildren("element")) {
+        rootDefn = snapshot.getChildren("element").get(0);
+      }
+    }
+    if (rootDefn == null && sd.hasChild("differential")) {
+      Element differential = sd.getNamedChild("differential");
+      if (differential.hasChildren("element")) {
+        rootDefn = differential.getChildren("element").get(0);
+      }
+    }
+    if (rootDefn != null) {
+      return rootDefn.hasExtension(ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED);
+    } else {
+      return false;
+    }
   }
 
   private boolean isElement(String cv) {

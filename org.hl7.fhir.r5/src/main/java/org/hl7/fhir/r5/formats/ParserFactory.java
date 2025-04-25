@@ -33,7 +33,7 @@ package org.hl7.fhir.r5.formats;
 
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.tools.ToolsParser;
+import org.hl7.fhir.r5.tools.ToolsRegistration;
 
 public class ParserFactory {
 
@@ -58,6 +58,6 @@ public class ParserFactory {
   }
   
   public static void registerCustomResources() {
-    ToolsParser.register();
+    ToolsRegistration.register();
   }
 }

@@ -133,9 +133,9 @@ public class CompliesWithChecker {
                 messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath, 
                     context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_EXTRA_SLICE, cpath, cnSlice.current().getSliceName()), IssueSeverity.ERROR));
               }
+              String spath = cpath+":"+cnSlice.current().getSliceName();
+              checkCompliesWith(messages, spath, cnSlice, anChild, true);
             }
-            String spath = cpath+":"+cnSlice.current().getSliceName();
-            checkCompliesWith(messages, spath, cnSlice, anChild, true);
           }            
         }
       }
