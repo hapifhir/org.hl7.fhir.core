@@ -12,7 +12,9 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.Constants;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.extensions.ExtensionConstants;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.ExampleScenario;
@@ -28,6 +30,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
+import org.hl7.fhir.r5.renderers.utils.Resolver;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -463,7 +466,18 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       XhtmlNode n = row.td().colspan(6);
       n.tx(context.formatPhrase(RenderingContext.EX_SCEN_OTH));
       String link = new ContextUtilities(context.getWorker()).getLinkForUrl(context.getLink(KnownLinkType.SPEC), step.getWorkflow());
-      n.ah(context.prefixLocalHref(link), step.getProcess().getTitle());
+      String title = "Unknown title";
+      if (step.getWorkflowElement().hasExtension(ExtensionConstants.EXT_DISPLAY_NAME)) {
+        title = step.getWorkflowElement().getExtensionString(ExtensionConstants.EXT_DISPLAY_NAME);
+      } else {
+        Resolver.ResourceWithReference rres = context.getResolver().resolve(context, step.getWorkflow(), null);
+        if (rres != null && rres.getResource() != null && rres.getResource().has("title"))
+          title = rres.getResource().primitiveValue("title");
+      }
+      if (link!= null)
+        n.ah(context.prefixLocalHref(link), title);
+      else
+        n.addText(title);
 
     } else {
       // Must be an operation
