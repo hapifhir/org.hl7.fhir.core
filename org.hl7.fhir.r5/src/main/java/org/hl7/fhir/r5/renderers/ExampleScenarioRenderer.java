@@ -329,8 +329,9 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       addMarkdown(descCell, instance.getDescription());
       if (instance.hasContainedInstance()) {
         descCell.b().tx(context.formatPhrase(RenderingContext.EX_SCEN_CONTA) + " ");
-        int containedCount = 1;
+        boolean first = true;
         for (ExampleScenarioInstanceContainedInstanceComponent contained: instance.getContainedInstance()) {
+          if (first) first = false; else descCell.tx(", ");
           String key = "i_" + contained.getInstanceReference();
           if (contained.hasVersionReference())
             key += "v_" + contained.getVersionReference();
@@ -338,9 +339,6 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
           if (description==null)
             throw new FHIRException("Unable to find contained instance " + key + " under " + instance.getKey());
           descCell.ah(context.prefixLocalHref("#" + key)).tx(description);
-          containedCount++;
-          if (instance.getContainedInstance().size() > containedCount)
-            descCell.tx(", ");
         }
       }
 
