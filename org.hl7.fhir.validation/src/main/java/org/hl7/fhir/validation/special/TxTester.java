@@ -376,12 +376,18 @@ public class TxTester {
     }
     
     String fhirVersion = null;
-    try {
+    try {      
       JsonObject vl = JsonParser.parseObjectFromUrl(Utilities.pathURL(server, "$versions", "?_format=json"));
-      for (JsonObject v : vl.forceArray("parameter").asJsonObjects()) {
-        if ("default".equals(v.asString("name"))) {
-          fhirVersion = v.asString("valueString");
+      if ("Parameters".equals(vl.asString("resourceType"))) {
+        for (JsonObject v : vl.forceArray("parameter").asJsonObjects()) {
+          if ("default".equals(v.asString("name"))) {
+            fhirVersion = v.asString("valueString");
+          }
         }
+      } else if (vl.has("default")) {
+        fhirVersion = vl.asString("default");
+      } else {
+        System.out.println("Unable to interpret response from $versions: "+vl.toString());
       }
       if (fhirVersion != null) {
         System.out.println("Server version "+fhirVersion+" from $versions");
