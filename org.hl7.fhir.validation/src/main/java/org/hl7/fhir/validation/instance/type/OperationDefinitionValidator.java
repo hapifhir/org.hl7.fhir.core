@@ -35,7 +35,7 @@ public class OperationDefinitionValidator extends BaseValidator {
       ok = validateProfile(errors, stack.push(od.getNamedChild("inputProfile"), -1, null, null), od, od.getNamedChildValue("inputProfile"), "in") && ok;
     }
     if (od.hasChild("outputProfile")) {
-      ok = validateProfile(errors, stack.push(od.getNamedChild("inputProfile"), -1, null, null), od, od.getNamedChildValue("outputProfile"), "out") && ok;      
+      ok = validateProfile(errors, stack.push(od.getNamedChild("outputProfile"), -1, null, null), od, od.getNamedChildValue("outputProfile"), "out") && ok;      
     }
 
     return ok;
