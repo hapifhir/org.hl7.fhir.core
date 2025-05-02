@@ -358,6 +358,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected BaseWorkerContext(Locale locale) throws FileNotFoundException, IOException, FHIRException {
+    this.locale = locale;
     setValidationMessageLanguage(locale);
     clock = new TimeTracker();
     initLang();

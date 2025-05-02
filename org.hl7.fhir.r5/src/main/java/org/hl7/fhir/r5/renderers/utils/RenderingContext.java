@@ -332,6 +332,7 @@ public class RenderingContext extends RenderingI18nContext {
     this.worker = worker;
     this.markdown = markdown;
     this.locale = locale;
+    setValidationMessageLanguage(getLocale());
     this.links.put(KnownLinkType.SPEC, specLink);
     this.localPrefix = localPrefix;
     this.mode = mode;
