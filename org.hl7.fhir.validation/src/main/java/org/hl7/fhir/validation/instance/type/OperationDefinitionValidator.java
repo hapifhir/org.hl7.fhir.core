@@ -133,7 +133,7 @@ public class OperationDefinitionValidator extends BaseValidator {
       for (TypeRefComponent tr : resDefn.current().getType()) {
         String t = tr.getWorkingCode();
         profileTypes.add(t);
-        for (CanonicalType ct : tr.getTargetProfile()) {
+        for (CanonicalType ct : tr.getProfile()) {
           profileTargets.add(ct.asStringValue());
         }
         ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, allowedTypes.contains(t), I18nConstants.OPDEF_PROFILE_TYPE_NOT_IN_PARAMS, use, paramName, t, CommaSeparatedStringBuilder.join2(",", " and ", allowedTypes)) && ok;
