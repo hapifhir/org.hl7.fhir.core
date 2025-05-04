@@ -321,7 +321,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
       // if it has maxLength, that can't get longer
       if (qi.hasMaxLength()) {
-        Element e = item.getNamedChild("maxlength", false);
+        Element e = item.getNamedChild("maxLength", false);
         if (e != null) {
           NodeStack ne = ns.push(e, -1, e.getProperty().getDefinition(), e.getProperty().getDefinition());
           int ml = Utilities.parseInt(e.primitiveValue(), 0);
