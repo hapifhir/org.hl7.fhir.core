@@ -296,6 +296,9 @@ public class ToolingExtensions {
   public static final String EXT_VALUESET_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/valueset-parameter";
   public static final String EXT_BINDING_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/binding-parameter";
   public static final String EXT_ISSUE_INNER_MESSAGE = "http://hl7.org/fhir/tools/StructureDefinition/operationoutcome-inner-message";
+  public static final String EXT_OBLIGATION_SOURCE = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-source";
+  public static final String EXT_OBLIGATION_SOURCE_SHORT = "source";
+  public static final String EXT_ADDITIONAL_BASE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-additionalBase";
   
   // specific extension helpers
 

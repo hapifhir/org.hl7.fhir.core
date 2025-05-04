@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -70,8 +71,8 @@ public class ObligationsRenderer extends Renderer {
         this.elementIds.add(eid.getValue().primitiveValue());
       }
       this.isUnchanged = ext.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS);
-      if (ext.hasExtension("source")) {
-        this.source = ext.getExtensionString("source");
+      if (ext.hasExtension(ToolingExtensions.EXT_OBLIGATION_SOURCE, ToolingExtensions.EXT_OBLIGATION_SOURCE_SHORT)) {
+        this.source = ext.getExtensionString(ToolingExtensions.EXT_OBLIGATION_SOURCE, ToolingExtensions.EXT_OBLIGATION_SOURCE_SHORT);
       } else if (ext.hasUserData(UserDataNames.SNAPSHOT_EXTENSION_SOURCE)) {
         this.source = ((StructureDefinition) ext.getUserData(UserDataNames.SNAPSHOT_EXTENSION_SOURCE)).getVersionedUrl();        
       }      
