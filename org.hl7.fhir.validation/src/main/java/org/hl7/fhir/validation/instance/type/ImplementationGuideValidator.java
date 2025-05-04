@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -73,8 +75,10 @@ public class ImplementationGuideValidator extends BaseValidator {
     ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), packageId == null || packageId.matches(FilesystemPackageCacheManager.PACKAGE_REGEX), I18nConstants.IG_DEPENDENCY_INVALID_PACKAGEID, packageId) && ok;         
 
     try {
+      ImplementationGuide igD = context.fetchResource(ImplementationGuide.class, url);
+      warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), igD != null, I18nConstants.IG_DEPENDENCY_INVALID_URL, url);                   
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-      if (url != null && packageId != null) {
+      if (url != null && packageId != null && (igD == null || !igD.hasUserData(UserDataNames.IG_FAKE))) {
         String pid = pcm.getPackageId(url);
         String canonical = pcm.getPackageUrl(packageId);
         ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), pid == null || pid.equals(packageId) || packageId.startsWith(pid+"."+VersionUtilities.getNameForVersion(context.getVersion()).toLowerCase()), I18nConstants.IG_DEPENDENCY_CLASH_PACKAGEID, url, pid, packageId) && ok;         
