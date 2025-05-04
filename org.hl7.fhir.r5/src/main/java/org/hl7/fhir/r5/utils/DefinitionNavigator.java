@@ -40,11 +40,15 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 
 @MarkedToMoveToAdjunctPackage
 public class DefinitionNavigator {
@@ -62,6 +66,8 @@ public class DefinitionNavigator {
   private boolean diff;
   private boolean followTypes;
   private boolean inlineChildren;
+  private ElementDefinitionSlicingComponent manualSlice;
+  private TypeRefComponent manualType;
   
   public DefinitionNavigator(IWorkerContext context, StructureDefinition structure, boolean diff, boolean followTypes) throws DefinitionException {
     if (!diff && !structure.hasSnapshot())
@@ -87,7 +93,6 @@ public class DefinitionNavigator {
     this.structure = structure;
     this.diff = diff;
     this.followTypes = followTypes;
-    this.inlineChildren = inlineChildren;
     this.index = index;
     this.indexMatches = true;
     if (type == null)
@@ -97,6 +102,25 @@ public class DefinitionNavigator {
       this.names.addAll(names);
       this.names.add(type);
     }
+  }
+  
+  /**
+   * Special case - changing the value of followTypes, for special use case
+   * @param other
+   * @param followTypes
+   */
+  public DefinitionNavigator(DefinitionNavigator other, boolean followTypes) {
+    this.context = other.context;
+    this.structure =  other.structure;
+    this.index =  other.index;
+    this.diff =  other.diff;
+    this.followTypes = followTypes;
+    this.path = other.path;
+    this.indexMatches = other.indexMatches;
+    this.typeOfChildren = other.typeOfChildren;
+    this.inlineChildren = other.inlineChildren;
+    this.manualSlice = other.manualSlice;
+    this.manualType = other.manualType;
   }
   
   /**
@@ -148,6 +172,8 @@ public class DefinitionNavigator {
     Map<String, DefinitionNavigator> nameMap = new HashMap<String, DefinitionNavigator>();
 
     DefinitionNavigator last = null;
+    String polymorphicRoot = null;
+    DefinitionNavigator polymorphicDN = null;
     for (int i = indexMatches ? index + 1 : index; i < list().size(); i++) {
       String path = list().get(i).getPath();
       if (path.startsWith(prefix)) {
@@ -158,22 +184,60 @@ public class DefinitionNavigator {
 
           if (nameMap.containsKey(path)) {
             DefinitionNavigator master = nameMap.get(path);
-            ElementDefinition cm = master.current();
-            if (diff) { 
-              // slice name - jumped straight into slicing
-              children.add(dn);
-            } else {
-              if (!cm.hasSlicing()) {
-                throw new DefinitionException("Found slices with no slicing details at "+dn.current().getPath());
+            ElementDefinition cm = master.current();           
+            if (!cm.hasSlicing()) {
+              throw new DefinitionException("Found slices with no slicing details at "+dn.current().getPath());
+            }
+            if (master.slices == null) {
+              master.slices = new ArrayList<DefinitionNavigator>();
+            }
+            master.slices.add(dn);
+          
+          } else if (polymorphicRoot != null && path.startsWith(polymorphicRoot) && !path.substring(polymorphicRoot.length()).contains(".")) {
+            if (polymorphicDN.slices == null) {
+              polymorphicDN.slices = new ArrayList<DefinitionNavigator>();
+              polymorphicDN.manualSlice = new ElementDefinitionSlicingComponent();
+              polymorphicDN.manualSlice.setUserData(UserDataNames.DN_TRANSIENT, "true");
+              polymorphicDN.manualSlice.setRules(SlicingRules.CLOSED);
+              polymorphicDN.manualSlice.setOrdered(false);
+              polymorphicDN.manualSlice.addDiscriminator().setType(DiscriminatorType.TYPE).setPath("$this");
+            }
+            polymorphicDN.slices.add(dn);
+            if (!dn.current().hasType()) {
+              String t = path.substring(polymorphicRoot.length());
+              StructureDefinition sd = context.fetchTypeDefinition(t);
+              if (sd == null) {
+                sd = context.fetchTypeDefinition(Utilities.uncapitalize(t));
               }
-              if (master.slices == null) {
-                master.slices = new ArrayList<DefinitionNavigator>();
+              if (sd != null) {
+                dn.manualType = new TypeRefComponent(sd.getType());
               }
+            }
+          } else if (dn.current().hasSliceName()) {
+            // this is an error unless we're dealing with extensions, which are auto-sliced (for legacy reasons)
+            if (diff && "extension".equals(dn.current().getName())) {
+              StructureDefinition vsd = new StructureDefinition(); // fake wrapper for placeholder element
+              vsd.getDifferential().getElement().add(makeExtensionDefinitionElement(path));
+              DefinitionNavigator master = new DefinitionNavigator(context, vsd, diff, followTypes, 0, this.path+"."+tail(path), names, null);
+              nameMap.put(path, master);
+              children.add(master);
+              master.slices = new ArrayList<DefinitionNavigator>();
               master.slices.add(dn);
+            } else {
+              throw new DefinitionException(context.formatMessage(I18nConstants.DN_SLICE_NO_DEFINITION, path));
             }
           } else {
             nameMap.put(path, dn);
             children.add(dn);
+            if (diff && path.endsWith("[x]")) { 
+              // we're going to infer slicing if we need to
+              polymorphicRoot = path.substring(0, path.length() -3);
+              polymorphicDN = dn;
+            } else {
+              polymorphicRoot = null;
+              polymorphicDN = null;
+              
+            }
           }
         } else if (last == null || !path.startsWith(last.path)) {
           // implied child
@@ -213,6 +277,13 @@ public class DefinitionNavigator {
         }
       }
     }
+  }
+
+  private ElementDefinition makeExtensionDefinitionElement(String path) {
+    ElementDefinition ed = new ElementDefinition(path);
+    ed.setUserData(UserDataNames.DN_TRANSIENT, "true");
+    ed.getSlicing().setRules(SlicingRules.OPEN).setOrdered(false).addDiscriminator().setType(DiscriminatorType.VALUE).setPath("url");
+    return ed;
   }
 
   public String path() {
@@ -295,7 +366,13 @@ public class DefinitionNavigator {
   }
 
   public boolean sliced() {
-    return current().hasSlicing();
+    if (manualSlice != null) {
+      return true;
+    } else if (current() == null) {
+      return false;
+    } else {
+      return current().hasSlicing();
+    }
   }
 
   public DefinitionNavigator childByPath(String path) {
@@ -332,6 +409,22 @@ public class DefinitionNavigator {
       }
     }
     return null;
+  }
+
+  public boolean isManualSliced() {
+    return manualSlice != null;
+  }
+
+  public ElementDefinitionSlicingComponent getSlicing() {
+    return manualSlice != null ? manualSlice : current().getSlicing();
+  }
+
+  public void setManualSliced(ElementDefinitionSlicingComponent manualSliced) {
+    this.manualSlice = manualSliced;
+  }
+
+  public TypeRefComponent getManualType() {
+    return manualType;
   }
   
 
