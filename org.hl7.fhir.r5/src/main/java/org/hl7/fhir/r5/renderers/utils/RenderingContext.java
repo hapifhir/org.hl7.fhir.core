@@ -343,7 +343,7 @@ public class RenderingContext extends RenderingI18nContext {
   }
   
   public RenderingContext copy(boolean copyAnchors) {
-    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC), localPrefix, locale, mode, rules);
+    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC, false), localPrefix, locale, mode, rules);
 
     res.resolver = resolver;
     res.templateProvider = templateProvider;
@@ -607,7 +607,7 @@ public class RenderingContext extends RenderingI18nContext {
       return (localPrefix == null ? "" : localPrefix)+ref;
     }
     if (ref.startsWith("http://hl7.org/fhir") && !ref.substring(20).contains("/")) {
-      return getLink(KnownLinkType.SPEC)+ref.substring(20);
+      return getLink(KnownLinkType.SPEC, true)+ref.substring(20);
     }
     return ref;
   }
@@ -764,8 +764,12 @@ public class RenderingContext extends RenderingI18nContext {
     return links.containsKey(link);
   }
   
-  public String getLink(KnownLinkType link) {
-    return links.get(link);
+  public String getLink(KnownLinkType link, boolean secure) {
+    String url = links.get(link);
+    if (url != null && secure && url.startsWith("http://")) {
+      url = url.replace("http://", "https://");
+    }
+    return url;
   }
   public void addLink(KnownLinkType type, String link) {
     links.put(type, link);

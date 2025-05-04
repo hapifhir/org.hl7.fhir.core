@@ -32,9 +32,13 @@ package org.hl7.fhir.utilities.http;
 
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
 import lombok.Getter;
+
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
@@ -144,5 +148,24 @@ public class ManagedWebAccess {
     setUserAgent("hapi-fhir-tooling-client");
     serverAuthDetails = new ArrayList<>();
     serverAuthDetails.addAll(settings.getServers());
+  }
+
+  public static String makeSecureRef(String url) {
+    if (url == null || !url.startsWith("http://") || isLocal(url)) {
+      return url;
+    } else {
+      return url.replace("http://", "https://");
+    }
+  }
+
+  private static boolean isLocal(String url) {
+    URI uri;
+    try {
+      uri = new URI(url);
+      // todo: check in serverAuthDetails to see if policy is set for this server
+      return Utilities.existsInList(uri.getHost(), "localhost", "local.fhir.org", "127.0.0.1", "[::1]") || (uri.getHost() != null && uri.getHost().endsWith(".localhost"));
+    } catch (URISyntaxException e) {
+      return false;
+    }
   }
 }
