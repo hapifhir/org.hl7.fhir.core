@@ -48,6 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
 import org.hl7.fhir.instance.model.api.IBaseElement;
 import  org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 import  org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import  org.hl7.fhir.utilities.StandardsStatus;
 /**
@@ -361,6 +362,29 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
      }
    }
   
+   /**
+    * Returns an extension if one (and only one) matches the given URL.
+    * 
+    * Note: BackbdoneElements override this to look in matching Modifier Extensions too
+    * 
+    * @param theUrls One or more URLs to match. Must not be blank or null.
+    * @return the matching extension, or null
+    */
+    public Extension getExtensionByUrl(String... theUrls) {
+      ArrayList<Extension> retVal = new ArrayList<Extension>();
+      for (Extension next : getExtension()) {
+        if (Utilities.existsInList(next.getUrl(), theUrls)) {
+          retVal.add(next);
+        }
+      }
+      if (retVal.size() == 0)
+        return null;
+      else {
+        org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url "+CommaSeparatedStringBuilder.join(",", theUrls)+" must have only one match");
+        return retVal.get(0);
+      }
+    }
+   
    /**
     * Remove any extensions that match (by given URL).
     * 

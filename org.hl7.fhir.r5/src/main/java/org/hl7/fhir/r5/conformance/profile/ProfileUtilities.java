@@ -3095,9 +3095,9 @@ public class ProfileUtilities {
       extension.setUserData(UserDataNames.SNAPSHOT_EXTENSION_SOURCE, srcSD);
     }
     if (Utilities.existsInList(extension.getUrl(), ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
-      Extension sub = extension.getExtensionByUrl("source");
+      Extension sub = extension.getExtensionByUrl(ToolingExtensions.EXT_OBLIGATION_SOURCE, ToolingExtensions.EXT_OBLIGATION_SOURCE_SHORT);
       if (sub == null || overrideSource) {
-        ToolingExtensions.setUriExtension(extension, "source", srcSD.getVersionedUrl());
+        ToolingExtensions.setUriExtension(extension, ToolingExtensions.EXT_OBLIGATION_SOURCE, srcSD.getVersionedUrl());
       }
     }
     return extension;
