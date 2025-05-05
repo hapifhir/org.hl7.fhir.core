@@ -4204,6 +4204,11 @@ msgstr "Inclusies"
 msgid "Interactions"
 msgstr "Interacties"
 
+# SUB_TOPIC_CURR
+#: SUB_TOPIC_CURR
+msgid "* current = {0}"
+msgstr "* huidig = {0}"
+
 # SUB_TOPIC_PREV
 #: SUB_TOPIC_PREV
 msgid "* previous = {0}"
