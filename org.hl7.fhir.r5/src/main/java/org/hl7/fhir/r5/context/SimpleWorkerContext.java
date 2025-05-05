@@ -204,6 +204,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     canNoTS = other.canNoTS;
     xverManager = other.xverManager;
     allowLazyLoading = other.allowLazyLoading;
+    questionnaire = other.questionnaire;
   }
 
 
