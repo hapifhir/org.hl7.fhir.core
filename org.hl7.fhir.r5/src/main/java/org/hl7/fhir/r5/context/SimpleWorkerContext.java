@@ -44,9 +44,6 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.With;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -57,10 +54,18 @@ import org.hl7.fhir.r5.context.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.PackageInformation;
+import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.Questionnaire;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.ResourceType;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
@@ -68,15 +73,15 @@ import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
-import org.hl7.fhir.r5.utils.validation.IResourceValidator;
-import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.r5.utils.R5Hacker;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.ByteProvider;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MagicResources;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -88,6 +93,9 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 
 import ca.uhn.fhir.parser.DataFormatException;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.With;
 
 /*
  * This is a stand alone implementation of worker context for use inside a tool.
@@ -133,6 +141,17 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       cr.setSourcePackage(packageInformation);
       return cr;
     }
+
+    /**
+     * This is not intended for use outside the package loaders
+     * 
+     * @return
+     * @throws IOException 
+     */
+    public InputStream getStream() throws IOException {
+      return ManagedFileAccess.inStream(filename);
+    }
+    
   }
 
   public interface ILoadFilter {
@@ -383,11 +402,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   public void connectToTSServer(ITerminologyClientFactory factory, String address, String software, String log, boolean useEcosystem) {
     try {
       terminologyClientManager.setFactory(factory);
-      if (log != null && (log.endsWith(".htm") || log.endsWith(".html"))) {
-        txLog = new HTMLClientLogger(log);
-      } else {
-        txLog = new TextClientLogger(log);
-      }      
+      if (log != null) {
+        if (log.endsWith(".htm") || log.endsWith(".html")) {
+          txLog = new HTMLClientLogger(log);
+        } else {
+          throw new IllegalArgumentException("Unknown extension for text file logging: \"" + log + "\" expected: .html or .htm");
+        }
+      }
       ITerminologyClient client = factory.makeClient("tx-server", address, software, txLog);
       // txFactory.makeClient("Tx-Server", txServer, "fhir/publisher", null)
 //      terminologyClientManager.setLogger(txLog);
@@ -482,16 +503,18 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return loadFromPackageInt(pi, loader, loader == null ? defaultTypesToLoad() : loader.getTypes());
   }
   
-  public static List<String> defaultTypesToLoad() {
+  public static Set<String> defaultTypesToLoad() {
     // there's no penalty for listing resources that don't exist, so we just all the relevant possibilities for all versions 
-    return Utilities.strings("CodeSystem", "ValueSet", "ConceptMap", "NamingSystem",
+    return Utilities.stringSet("CodeSystem", "ValueSet", "ConceptMap", "NamingSystem", 
                          "StructureDefinition", "StructureMap", 
                          "SearchParameter", "OperationDefinition", "CapabilityStatement", "Conformance",
                          "Questionnaire", "ImplementationGuide", "Measure" );
+    
+    
   }
 
   @Override
-  public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, List<String> types) throws IOException, FHIRException {
+  public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws IOException, FHIRException {
     return loadFromPackageInt(pi, loader, types);
   }
  
@@ -516,7 +539,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
 
-  public int loadFromPackageInt(NpmPackage pi, IContextResourceLoader loader, List<String> types) throws IOException, FHIRException {
+  public int loadFromPackageInt(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws IOException, FHIRException {
     int t = 0;
     if (progress) {
       System.out.println("Load Package "+pi.name()+"#"+pi.version());
@@ -542,7 +565,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (VersionUtilities.isR2Ver(pi.fhirVersion()) || !pi.canLazyLoad() || !allowLazyLoading) {
       // can't lazy load R2 because of valueset/codesystem implementation
       if (types == null || types.size() == 0) {
-        types = Utilities.strings("StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem" );
+        types = Utilities.stringSet("StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem" );
       }
       for (String s : pi.listResources(types)) {
         try {
@@ -554,7 +577,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       }
     } else {
       if (types == null || types.size() == 0) {
-        types = Utilities.strings("StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem", "Measures" );
+        types = Utilities.stringSet("StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem", "Measure" );
+      }
+      if (loader != null) {
+        types = loader.reviewActualTypes(types);
       }
       for (PackageResourceInformation pri : pi.listIndexedResources(types)) {
         if (!pri.getFilename().contains("ig-r4") && (loader == null || loader.wantLoad(pi, pri))) {
@@ -562,7 +588,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
             if (!pri.hasId()) {
               loadDefinitionItem(pri.getFilename(), ManagedFileAccess.inStream(pri.getFilename()), loader, null, pii);
             } else {
-              registerResourceFromPackage(new PackageResourceLoader(pri, loader, pii), pii);
+              PackageResourceLoader pl = new PackageResourceLoader(pri, loader, pii);
+              if  (loader != null) {
+                pl = loader.editInfo(pl);
+              }
+              if (pl != null) {
+                registerResourceFromPackage(pl, pii);
+              }
             }
             t++;
           } catch (FHIRException e) {

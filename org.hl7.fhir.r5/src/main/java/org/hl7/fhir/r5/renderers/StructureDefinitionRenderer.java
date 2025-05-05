@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ElementChoiceGroup;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ExtensionContext;
+import org.hl7.fhir.r5.conformance.profile.SnapshotGenerationPreProcessor;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -560,22 +561,23 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
  
     List<ElementDefinition> list; 
-    if (diff) 
-      list = supplementMissingDiffElements(profile); 
-    else { 
+    if (diff) {
+      list = new SnapshotGenerationPreProcessor(context.getProfileUtilities()).supplementMissingDiffElements(profile);      
+    } else { 
       list = new ArrayList<>(); 
       list.addAll(profile.getSnapshot().getElement()); 
     } 
  
     List<Column> columns = new ArrayList<>(); 
     TableModel model; 
+    boolean obLists = false;
     switch (context.getStructureMode()) { 
     case BINDINGS: 
       scanBindings(columns, list); 
       model = initCustomTable(gen, corePath, false, true, profile.getId()+(diff ? "d" : "s"), rc.getRules() == GenerationRules.IG_PUBLISHER, columns);     
       break; 
     case OBLIGATIONS: 
-      scanObligations(columns, list); 
+      obLists = scanObligations(columns, list); 
       model = initCustomTable(gen, corePath, false, true, profile.getId()+(diff ? "d" : "s"), rc.getRules() == GenerationRules.IG_PUBLISHER, columns);     
       break; 
     case SUMMARY: 
@@ -589,7 +591,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     profiles.add(profile); 
     keyRows.clear(); 
  
-    genElement(status, defFile == null ? null : defFile+"#", gen, model.getRows(), list.get(0), list, profiles, diff, profileBaseFileName, null, snapshot, corePath, imagePath, true, logicalModel, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), allInvariants, null, mustSupport, rc, anchorPrefix, profile, columns, res); 
+    genElement(status, defFile == null ? null : defFile+"#", gen, model.getRows(), list.get(0), list, profiles, diff, profileBaseFileName, null, snapshot, corePath, imagePath, true, logicalModel, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), allInvariants, null, mustSupport, rc, anchorPrefix, profile, columns, res, obLists); 
     try { 
       return gen.generate(model, imagePath, 0, outputTracker); 
     } catch (org.hl7.fhir.exceptions.FHIRException e) { 
@@ -669,9 +671,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
  
-  private void scanObligations(List<Column> columns, List<ElementDefinition> list) { 
+  private boolean scanObligations(List<Column> columns, List<ElementDefinition> list) { 
     Set<String> cols = new HashSet<>(); 
-    scanObligations(cols, list, list.get(0)); 
+    boolean res = scanObligations(cols, list, list.get(0)); 
  
     if (cols.contains("$all")) { 
       columns.add(new Column("$all", context.formatPhrase(RenderingContext.STRUC_DEF_ALL_ACTORS), context.formatPhrase(RenderingContext.STRUC_DEF_OBLIG_ALL))); 
@@ -680,29 +682,44 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (!"$all".equals(col)) { 
         ActorDefinition actor = context.getWorker().fetchResource(ActorDefinition.class, col); 
         if (actor == null) { 
-          columns.add(new Column(col, tail(col), context.formatPhrase(RenderingContext.STRUC_DEF_UNDEF_ACT, col, col)+" "));           
+          columns.add(new Column(col, urlTail(col), context.formatPhrase(RenderingContext.STRUC_DEF_UNDEF_ACT, col, col)+" "));           
         } else { 
           columns.add(new Column(col, actor.present(), context.formatPhrase(RenderingContext.STRUC_DEF_ACT, actor.present(), actor.getWebPath())+" "));                     
         } 
       } 
     } 
+    return res;
   } 
  
-  private void scanObligations(Set<String> cols, List<ElementDefinition> list, ElementDefinition ed) { 
- 
+  private String urlTail(String url) {
+    return url.contains("/") ? url.substring(url.lastIndexOf("/")+1) : url;
+  }
+
+  private boolean scanObligations(Set<String> cols, List<ElementDefinition> list, ElementDefinition ed) { 
+    boolean res = true;
+    Map<String, Integer> nameCounts = new HashMap<>();
     for (Extension ob : ed.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) { 
       if (ob.hasExtension("actor", "actorId")) { 
-        for (Extension a : ob.getExtensionsByUrl("actor", "actorId")) { 
-          cols.add(a.getValueCanonicalType().primitiveValue()); 
-        } 
-      } else  
-        cols.add("$all"); 
+        for (Extension a : ob.getExtensionsByUrl("actor", "actorId")) {
+          String name = a.getValueCanonicalType().primitiveValue();
+          cols.add(name); 
+          nameCounts.put(name, nameCounts.getOrDefault(name, 0) + 1);
+        }
+      } else  {
+        cols.add("$all");
+        nameCounts.put("$all", nameCounts.getOrDefault("$all", 0) + 1);
+      }
     } 
- 
+    for (Map.Entry<String, Integer> entry : nameCounts.entrySet()) {
+      if (entry.getValue() > 1) {
+        res = false;
+      }
+    }
     List<ElementDefinition> children = getChildren(list, ed); 
     for (ElementDefinition element : children) { 
-      scanObligations(cols, list, element); 
+      res = scanObligations(cols, list, element) && res; 
     } 
+    return res;
   } 
  
   public TableModel initCustomTable(HierarchicalTableGenerator gen, String prefix, boolean isLogical, boolean alternating, String id, boolean isActive, List<Column> columns) throws IOException { 
@@ -741,7 +758,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
   
   private Row genElement(RenderingStatus status, String defPath, HierarchicalTableGenerator gen, List<Row> rows, ElementDefinition element, List<ElementDefinition> all, List<StructureDefinition> profiles, boolean showMissing, String profileBaseFileName, Boolean extensions,  
-      boolean snapshot, String corePath, String imagePath, boolean root, boolean logicalModel, boolean isConstraintMode, boolean allInvariants, Row slicingRow, boolean mustSupport, RenderingContext rc, String anchorPrefix, Resource srcSD, List<Column> columns, ResourceWrapper res) throws IOException, FHIRException { 
+      boolean snapshot, String corePath, String imagePath, boolean root, boolean logicalModel, boolean isConstraintMode, boolean allInvariants, Row slicingRow, boolean mustSupport, RenderingContext rc, String anchorPrefix, Resource srcSD, List<Column> columns, ResourceWrapper res, boolean obLists) throws IOException, FHIRException { 
     Row originalRow = slicingRow; 
     StructureDefinition profile = profiles == null ? null : profiles.get(profiles.size()-1); 
     Row typesRow = null; 
@@ -750,7 +767,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     //    if (!snapshot && isExtension && extensions != null && extensions != isExtension) 
     //      return; 
  
-    if (!onlyInformationIsMapping(all, element)) { 
+    if (!(onlyInformationIsMapping(all, element) || (context.getStructureMode() == StructureDefinitionRendererMode.OBLIGATIONS && !elementOrDescendentsHaveObligations(all, element)))) { 
       Row row = gen.new Row();
       // in deeply sliced things, there can be duplicate paths that are not usefully differentiated by id, and anyway, we want path
       String anchor = element.getPath();
@@ -847,7 +864,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         genElementBindings(gen, element, columns, row, profile, corePath); 
         break; 
       case OBLIGATIONS: 
-        genElementObligations(gen, element, columns, row, corePath, profile); 
+        genElementObligations(gen, element, columns, row, corePath, profile, obLists); 
         break; 
       case SUMMARY: 
         genElementCells(status, gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, nc, mustSupport, true, rc, children.size() > 0, defPath, anchorPrefix, all, res);
@@ -975,7 +992,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             } 
  
             if (logicalModel || !child.getPath().endsWith(".id") || (child.getPath().endsWith(".id") && (profile != null) && (profile.getDerivation() == TypeDerivationRule.CONSTRAINT))) {   
-              slicer = genElement(status, defPath, gen, parent.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, slicer, mustSupport, rc, anchorPrefix, srcSD, columns, res); 
+              slicer = genElement(status, defPath, gen, parent.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, slicer, mustSupport, rc, anchorPrefix, srcSD, columns, res, false); 
             } 
           } 
         } 
@@ -989,6 +1006,20 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
     } 
     return slicingRow; 
+  }
+
+  private boolean elementOrDescendentsHaveObligations(List<ElementDefinition> all, ElementDefinition element) {
+    if (element.hasObligations()) {
+      return true;
+    }
+    int i = all.indexOf(element) + 1;
+    while (i < all.size() && all.get(i).getPath().startsWith(element.getPath()+".")) {
+      if (all.get(i).hasObligations()) {
+        return true;
+      }
+      i++;
+    }
+    return false;
   }
 
   private String noTail(String id) {
@@ -1025,11 +1056,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return "Extension".equals(type); 
   } 
  
-  private void genElementObligations(HierarchicalTableGenerator gen, ElementDefinition element, List<Column> columns, Row row, String corePath, StructureDefinition profile) throws IOException { 
+  private void genElementObligations(HierarchicalTableGenerator gen, ElementDefinition element, List<Column> columns, Row row, String corePath, StructureDefinition profile, boolean obLists) throws IOException { 
     for (Column col : columns) {  
       Cell gc = gen.new Cell(); 
       row.getCells().add(gc); 
-      ObligationsRenderer obr = new ObligationsRenderer(corePath, profile, element.getPath(), context, null, this); 
+      ObligationsRenderer obr = new ObligationsRenderer(corePath, profile, element.getPath(), context, null, this, obLists); 
       obr.seeObligations(element, col.id); 
       obr.renderList(gen, gc);       
     } 
@@ -1263,23 +1294,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return cell; 
   } 
  
-  public List<ElementDefinition> supplementMissingDiffElements(StructureDefinition profile) { 
-    List<ElementDefinition> list = new ArrayList<>(); 
-    list.addAll(profile.getDifferential().getElement()); 
-    if (list.isEmpty()) { 
-      ElementDefinition root = new ElementDefinition().setPath(profile.getTypeName()); 
-      root.setId(profile.getTypeName()); 
-      list.add(root); 
-    } else { 
-      if (list.get(0).getPath().contains(".")) { 
-        ElementDefinition root = new ElementDefinition().setPath(profile.getTypeName()); 
-        root.setId(profile.getTypeName()); 
-        list.add(0, root); 
-      } 
-    } 
-    insertMissingSparseElements(list); 
-    return list; 
-  } 
  
   private boolean usesMustSupport(List<ElementDefinition> list) { 
     for (ElementDefinition ed : list) 
@@ -1320,36 +1334,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     row.getCells().add(gen.new Cell()); 
     prow.getSubRows().add(row); 
     return row; 
-  } 
- 
- 
-  private void insertMissingSparseElements(List<ElementDefinition> list) { 
-    int i = 1; 
-    while (i < list.size()) { 
-      String[] pathCurrent = list.get(i).getPath().split("\\."); 
-      String[] pathLast = list.get(i-1).getPath().split("\\."); 
-      int firstDiff = 0; // the first entry must be a match 
-      while (firstDiff < pathCurrent.length && firstDiff < pathLast.length && pathCurrent[firstDiff].equals(pathLast[firstDiff])) { 
-        firstDiff++; 
-      } 
-      if (!(isSibling(pathCurrent, pathLast, firstDiff) || isChild(pathCurrent, pathLast, firstDiff))) { 
-        // now work backwards down to lastMatch inserting missing path nodes 
-        ElementDefinition parent = findParent(list, i, list.get(i).getPath()); 
-        int parentDepth = Utilities.charCount(parent.getPath(), '.')+1; 
-        int childDepth =  Utilities.charCount(list.get(i).getPath(), '.')+1; 
-        if (childDepth > parentDepth + 1) { 
-          String basePath = parent.getPath(); 
-          String baseId = parent.getId(); 
-          for (int index = parentDepth; index >= firstDiff; index--) { 
-            String mtail = makeTail(pathCurrent, parentDepth, index); 
-            ElementDefinition root = new ElementDefinition().setPath(basePath+"."+mtail); 
-            root.setId(baseId+"."+mtail); 
-            list.add(i, root); 
-          } 
-        } 
-      }  
-      i++; 
-    } 
   } 
  
  
@@ -1762,7 +1746,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             } 
           } 
  
-          ObligationsRenderer obr = new ObligationsRenderer(corePath, profile, definition.getPath(), rc, null, this); 
+          ObligationsRenderer obr = new ObligationsRenderer(corePath, profile, definition.getPath(), rc, null, this, false); 
           if (definition.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) { 
             obr.seeObligations(definition.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)); 
           } 
@@ -2212,30 +2196,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return path; 
   } 
  
- 
-  private ElementDefinition findParent(List<ElementDefinition> list, int i, String path) { 
-    while (i > 0 && !path.startsWith(list.get(i).getPath()+".")) { 
-      i--; 
-    } 
-    return list.get(i); 
-  } 
- 
-  private boolean isSibling(String[] pathCurrent, String[] pathLast, int firstDiff) { 
-    return pathCurrent.length == pathLast.length && firstDiff == pathCurrent.length-1; 
-  } 
- 
- 
-  private boolean isChild(String[] pathCurrent, String[] pathLast, int firstDiff) { 
-    return pathCurrent.length == pathLast.length+1 && firstDiff == pathLast.length; 
-  } 
- 
-  private String makeTail(String[] pathCurrent, int start, int index) { 
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("."); 
-    for (int i = start; i <= index; i++) { 
-      b.append(pathCurrent[i]); 
-    } 
-    return b.toString(); 
-  } 
  
   private void genGridElement(String defPath, HierarchicalTableGenerator gen, List<Row> rows, ElementDefinition element, List<ElementDefinition> all, List<StructureDefinition> profiles, boolean showMissing, String profileBaseFileName, Boolean extensions, String corePath, String imagePath, boolean root, boolean isConstraintMode) throws IOException, FHIRException { 
     StructureDefinition profile = profiles == null ? null : profiles.get(profiles.size()-1); 
@@ -2804,7 +2764,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return app == null ? src : src + app; 
   } 
  
-  public boolean hasNonBaseConditions(List<IdType> conditions) { 
+  public static boolean hasNonBaseConditions(List<IdType> conditions) { 
     for (IdType c : conditions) { 
       if (!isBaseCondition(c)) { 
         return true; 
@@ -2814,7 +2774,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
  
-  public boolean hasNonBaseConstraints(List<ElementDefinitionConstraintComponent> constraints) { 
+  public static boolean hasNonBaseConstraints(List<ElementDefinitionConstraintComponent> constraints) { 
     for (ElementDefinitionConstraintComponent c : constraints) { 
       if (!isBaseConstraint(c)) { 
         return true; 
@@ -2845,12 +2805,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return b.toString(); 
   } 
  
-  private boolean isBaseCondition(IdType c) { 
+  private static boolean isBaseCondition(IdType c) { 
     String key = c.asStringValue(); 
     return key != null && (key.startsWith("ele-") || key.startsWith("res-") || key.startsWith("ext-") || key.startsWith("dom-") || key.startsWith("dr-")); 
   } 
  
-  private boolean isBaseConstraint(ElementDefinitionConstraintComponent con) { 
+  private static boolean isBaseConstraint(ElementDefinitionConstraintComponent con) { 
     String key = con.getKey(); 
     return key != null && (key.startsWith("ele-") || key.startsWith("res-") || key.startsWith("ext-") || key.startsWith("dom-") || key.startsWith("dr-")); 
   } 
@@ -3339,7 +3299,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (!child.getPath().endsWith(".id")) { 
           List<StructureDefinition> sdl = new ArrayList<>(); 
           sdl.add(ed); 
-          genElement(status, defFile == null ? "" : defFile+"-definitions.html#extension.", gen, r.getSubRows(), child, ed.getSnapshot().getElement(), sdl, true, defFile, true, full, corePath, imagePath, true, false, false, false, null, false, rc, "", ed, null, res); 
+          genElement(status, defFile == null ? "" : defFile+"-definitions.html#extension.", gen, r.getSubRows(), child, ed.getSnapshot().getElement(), sdl, true, defFile, true, full, corePath, imagePath, true, false, false, false, null, false, rc, "", ed, null, res, false); 
         } 
     } else if (deep) { 
       List<ElementDefinition> children = new ArrayList<ElementDefinition>(); 
@@ -4136,7 +4096,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   private XhtmlNode describeObligations(RenderingStatus status, ElementDefinition d, boolean root, StructureDefinition sdx, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements, ResourceWrapper res) throws IOException {
     XhtmlNode ret = new XhtmlNode(NodeType.Element, "div"); 
-    ObligationsRenderer obr = new ObligationsRenderer(corePath, sdx, d.getPath(), context, hostMd, this); 
+    ObligationsRenderer obr = new ObligationsRenderer(corePath, sdx, d.getPath(), context, hostMd, this, true); 
     obr.seeObligations(d.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)); 
     obr.seeRootObligations(d.getId(), sdx.getExtensionsByUrl(ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)); 
     if (obr.hasObligations() || (root && (sdx.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG) || sdx.hasExtension(ToolingExtensions.EXT_OBLIGATION_INHERITS)))) { 

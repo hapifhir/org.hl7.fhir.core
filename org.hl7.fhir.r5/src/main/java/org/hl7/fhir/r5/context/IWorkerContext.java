@@ -753,7 +753,7 @@ public interface IWorkerContext {
    * @return the number of resources loaded
    */
   @Deprecated
-  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, List<String> types) throws FileNotFoundException, IOException, FHIRException;
+  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws FileNotFoundException, IOException, FHIRException;
 
   /**
    * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package

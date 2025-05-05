@@ -636,7 +636,8 @@ public class MeasureValidator extends BaseValidator {
       return -1;
     }
     BooleanHolder bh = new BooleanHolder();
-    ResolvedReference rr = ((InstanceValidator) parent).localResolve(ref, ns, new ArrayList<>(), ns.getLiteralPath(), valContext.getRootResource(), valContext.getGroupingResource(), sr, bh);
+    BooleanHolder stop = new BooleanHolder();
+    ResolvedReference rr = ((InstanceValidator) parent).localResolve(ref, ns, new ArrayList<>(), ns.getLiteralPath(), valContext.getRootResource(), valContext.getGroupingResource(), sr, bh, stop);
     Element tgt;
     if (rr != null) {
       tgt = rr.getResource();

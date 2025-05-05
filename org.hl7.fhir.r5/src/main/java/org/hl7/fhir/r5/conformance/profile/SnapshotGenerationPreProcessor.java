@@ -4,18 +4,22 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
+import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionDifferentialComponent;
 import org.hl7.fhir.r5.utils.TypesUtilities;
 import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 
@@ -58,6 +62,9 @@ public class SnapshotGenerationPreProcessor {
     }
     public String getType() {
       return type;
+    }
+    public String summary() {
+      return element.getName()+":"+type;
     }
   }
 
@@ -109,7 +116,7 @@ public class SnapshotGenerationPreProcessor {
     this.context = utils.getContext();
   }
 
-  public void process(StructureDefinitionDifferentialComponent diff) {
+  public void process(StructureDefinitionDifferentialComponent diff, StructureDefinition src) {
     // first pass, divide it up 
     for (int cursor = 0; cursor < diff.getElement().size(); cursor++) {      
       ElementDefinition ed = diff.getElement().get(cursor);
@@ -152,16 +159,19 @@ public class SnapshotGenerationPreProcessor {
       if (!si.sliceStuff.isEmpty() && si.slices != null) {
         // for each actual slice, we need to merge sliceStuff in
         for (ElementDefinition slice : si.slices) {
-          mergeElements(diff.getElement(), si.sliceStuff, slice);
+          mergeElements(diff.getElement(), si.sliceStuff, slice, si.slicer);
         }
       } else {
         // we just ignore these - nothing to do
       }
     }
 
+    for (ElementDefinition ed : diff.getElement()) {
+      ProfileUtilities.markExtensions(ed, false, src);
+    }
   }
 
-  private void mergeElements(List<ElementDefinition> elements, List<ElementDefinition> allSlices, ElementDefinition slice) {
+  private void mergeElements(List<ElementDefinition> elements, List<ElementDefinition> allSlices, ElementDefinition slice, ElementDefinition slicer) {
     // we have
     //   elements - the list of all the elements
     //   allSlices which is the content defined for all the slices
@@ -199,7 +209,7 @@ public class SnapshotGenerationPreProcessor {
       }
     } else {
       Set<ElementDefinition> handled = new HashSet<>();
-      
+
       // merge the simple stuff
       for (int j = startOfSlice; j <= endOfSlice; j++) {
         for (int i = 0; i < allSlices.size(); i++) {
@@ -209,7 +219,7 @@ public class SnapshotGenerationPreProcessor {
           }
         }
       }
-      
+
       // we have a lot of work to do
       // the challenge is that the things missing from startOfSlice..endOfSlice have to injected in the correct order 
       // which means that we need to know the definitions
@@ -217,30 +227,64 @@ public class SnapshotGenerationPreProcessor {
       for (ElementDefinition ed : allSlices) {
         if (!handled.contains(ed)) {
           List<ElementAnalysis> edDef = analysePath(ed);
-          int index = determineInsertionPoint(elements, startOfSlice, endOfSlice, ed.getPath(), edDef);
+          String id = ed.getId().replace(slicer.getId(), slice.getId());
+          int index = determineInsertionPoint(elements, startOfSlice, endOfSlice, id, ed.getPath(), edDef);
           ElementDefinition edc = ed.copy();
           edc.setUserData(UserDataNames.SNAPSHOT_PREPROCESS_INJECTED, true);
-          edc.setId(null);
+          edc.setId(id);
           elements.add(index, edc);
           endOfSlice++;
         }
       }
-    }    
+    }   
+
   }
 
-  private int determineInsertionPoint(List<ElementDefinition> elements, int startOfSlice, int endOfSlice, String path, List<ElementAnalysis> edDef) {
-    for (int i = startOfSlice; i <= endOfSlice; i++) {
-      // SNAPSHOT_PREPROCESS_INJECTED maintains the order in what is injected
-      if (!elements.get(i).hasUserData(UserDataNames.SNAPSHOT_PREPROCESS_INJECTED) && comesAfterThis(path, edDef, elements.get(i))) {
-        return i;
+  private int determineInsertionPoint(List<ElementDefinition> elements, int startOfSlice, int endOfSlice, String id, String path, List<ElementAnalysis> edDef) {
+    // we work backwards through the id, looking for peers (this is the only way we can manage slicing)
+    String[] p = id.split("\\.");
+    for (int i = p.length-1; i >= 1; i--) {
+      String subId = p[0];
+      for (int j = 1; j <= i; j++) {
+        subId += "."+p[j];
+      }
+      List<ElementDefinition> peers = findPeers(elements, startOfSlice, endOfSlice, subId);
+      if (!peers.isEmpty()) {
+        // Once we find some, we figure out the insertion point - before one of them, or after the last? 
+        for (ElementDefinition ed : peers) {
+          if (comesAfterThis(id, path, edDef, ed)) {
+            return elements.indexOf(ed);
+          }
+        }
+        return elements.indexOf(peers.get(peers.size() -1))+1;
       }
     }
     return endOfSlice+1;
   }
 
-  private boolean comesAfterThis(String path, List<ElementAnalysis> edDef, ElementDefinition ed) {
-    String[] p1 = path.split("\\.");
-    String[] p2 = ed.getPath().split("\\.");
+  private List<ElementDefinition> findPeers(List<ElementDefinition> elements, int startOfSlice, int endOfSlice, String subId) {
+    List<ElementDefinition> peers =  new ArrayList<>();
+    for (int i = startOfSlice; i <= endOfSlice; i++) {
+      ElementDefinition ed = elements.get(i);
+      if (ed.getId().startsWith(subId)) {
+        peers.add(ed);
+      }
+    }
+    return peers;
+  }
+
+  private String summary(List<ElementAnalysis> edDef) {
+    List<String> s = new ArrayList<>();
+    for (ElementAnalysis ed : edDef) {
+      s.add(ed.summary());
+    }
+
+    return CommaSeparatedStringBuilder.join(",", s);
+  }
+
+  private boolean comesAfterThis(String id, String path, List<ElementAnalysis> edDef, ElementDefinition ed) {
+    String[] p1 = id.split("\\.");
+    String[] p2 = ed.getId().split("\\.");
     for (int i = 0; i < Integer.min(p1.length,  p2.length); i++) {
       if (!p1[i].equals(p2[i])) {
         ElementAnalysis sed = edDef.get(i-1);
@@ -255,6 +299,9 @@ public class SnapshotGenerationPreProcessor {
   }
 
   private int indexOfName(ElementAnalysis sed, String name) {
+    if (name.contains(":")) {
+      name = name.substring(0, name.indexOf(":"));
+    }
     for (int i = 0; i < sed.getChildren().getList().size(); i++) {
       if (name.equals(sed.getChildren().getList().get(i).getName())) {
         return i;
@@ -269,7 +316,7 @@ public class SnapshotGenerationPreProcessor {
       if (res.isEmpty()) {
         StructureDefinition sd = context.fetchTypeDefinition(pn);
         if (sd == null) {
-          String message = context.formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, pn, ed.getPath());
+          String message = context.formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, pn, ed.getId());
           throw new DefinitionException(message);
         }
         res.add(new ElementAnalysis(sd, sd.getSnapshot().getElementFirstRep(), null));
@@ -299,7 +346,7 @@ public class SnapshotGenerationPreProcessor {
         }
         if (t == null) {
           String message = context.formatMessage(I18nConstants.UNKNOWN_PROPERTY, pn, ed.getPath());
-          throw new DefinitionException("Unknown path "+pn+" in path "+ed.getPath());          
+          throw new DefinitionException("Unknown path "+pn+" in path "+ed.getPath()+": "+message);          
         } else {
           res.add(new ElementAnalysis(sed.getChildren().getSource(), t, type));
         }
@@ -426,5 +473,120 @@ public class SnapshotGenerationPreProcessor {
     }
     return null;
   }
+
+  public List<ElementDefinition> supplementMissingDiffElements(StructureDefinition profile) { 
+    List<ElementDefinition> list = new ArrayList<>(); 
+    list.addAll(profile.getDifferential().getElement()); 
+    if (list.isEmpty()) { 
+      ElementDefinition root = new ElementDefinition().setPath(profile.getTypeName()); 
+      root.setId(profile.getTypeName()); 
+      list.add(root); 
+    } else { 
+      if (list.get(0).getPath().contains(".")) { 
+        ElementDefinition root = new ElementDefinition().setPath(profile.getTypeName()); 
+        root.setId(profile.getTypeName()); 
+        list.add(0, root); 
+      } 
+    } 
+    insertMissingSparseElements(list); 
+    return list; 
+  } 
+
+  private void insertMissingSparseElements(List<ElementDefinition> list) { 
+    int i = 1; 
+    while (i < list.size()) { 
+      String[] pathCurrent = list.get(i).getPath().split("\\."); 
+      String[] pathLast = list.get(i-1).getPath().split("\\."); 
+      int firstDiff = 0; // the first entry must be a match 
+      while (firstDiff < pathCurrent.length && firstDiff < pathLast.length && pathCurrent[firstDiff].equals(pathLast[firstDiff])) { 
+        firstDiff++; 
+      } 
+      if (!(isSibling(pathCurrent, pathLast, firstDiff) || isChild(pathCurrent, pathLast, firstDiff))) { 
+        // now work backwards down to lastMatch inserting missing path nodes 
+        ElementDefinition parent = findParent(list, i, list.get(i).getPath()); 
+        int parentDepth = Utilities.charCount(parent.getPath(), '.')+1; 
+        int childDepth =  Utilities.charCount(list.get(i).getPath(), '.')+1; 
+        if (childDepth > parentDepth + 1) { 
+          String basePath = parent.getPath(); 
+          String baseId = parent.getId(); 
+          for (int index = parentDepth; index >= firstDiff; index--) { 
+            String mtail = makeTail(pathCurrent, parentDepth, index); 
+            ElementDefinition root = new ElementDefinition().setPath(basePath+"."+mtail); 
+            root.setId(baseId+"."+mtail); 
+            list.add(i, root); 
+          } 
+        } 
+      }  
+      i++; 
+    } 
+  } 
+
+
+  private ElementDefinition findParent(List<ElementDefinition> list, int i, String path) { 
+    while (i > 0 && !path.startsWith(list.get(i).getPath()+".")) { 
+      i--; 
+    } 
+    return list.get(i); 
+  } 
+
+  private boolean isSibling(String[] pathCurrent, String[] pathLast, int firstDiff) { 
+    return pathCurrent.length == pathLast.length && firstDiff == pathCurrent.length-1; 
+  } 
+
+
+  private boolean isChild(String[] pathCurrent, String[] pathLast, int firstDiff) { 
+    return pathCurrent.length == pathLast.length+1 && firstDiff == pathLast.length; 
+  } 
+
+  private String makeTail(String[] pathCurrent, int start, int index) { 
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("."); 
+    for (int i = start; i <= index; i++) { 
+      b.append(pathCurrent[i]); 
+    } 
+    return b.toString(); 
+  }
+
+  public StructureDefinition trimSnapshot(StructureDefinition profile) {
+    // first pass: mark elements from the diff
+    Stack<ElementDefinition> stack = new Stack<ElementDefinition>();
+    ElementDefinition edRoot = profile.getSnapshot().getElementFirstRep();
+    if (!edRoot.hasUserData(UserDataNames.SNAPSHOT_FROM_DIFF)) {
+      stack.push(edRoot);
+      for (int i = 1; i < profile.getSnapshot().getElement().size(); i++) {
+        ElementDefinition ed = profile.getSnapshot().getElement().get(i);
+        String cpath = ed.getPath();
+        boolean fromDiff = ed.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_DIFF);
+
+        String spath = stack.peek().getPath();
+        while (!(cpath.equals(spath) || cpath.startsWith(spath+"."))) {
+          stack.pop();
+          spath = stack.peek().getPath();
+        }
+        stack.push(ed);
+        if (fromDiff) {
+          for (int j = stack.size() - 1; j >= 0; j--) {
+            if (stack.get(j).hasUserData(UserDataNames.SNAPSHOT_FROM_DIFF)) {
+              break;
+            } else {
+              stack.get(j).setUserData(UserDataNames.SNAPSHOT_FROM_DIFF, true);
+            }
+          }
+        }
+      }
+    }
+    edRoot.setUserData(UserDataNames.SNAPSHOT_FROM_DIFF, true);
+
+    StructureDefinition res = new StructureDefinition();
+    res.setUrl(profile.getUrl());
+    res.setVersion(profile.getVersion());
+    res.setName(profile.getName());
+    res.setBaseDefinition(profile.getBaseDefinition());
+    for (ElementDefinition ed : profile.getSnapshot().getElement()) {
+      if (ed.hasUserData(UserDataNames.SNAPSHOT_FROM_DIFF)) {
+        res.getSnapshot().getElement().add(ed);
+      }
+    }
+    return res;
+  } 
 
 }

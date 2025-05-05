@@ -330,18 +330,25 @@ public class TestCases extends Resource implements ICompositeType {
         /**
          * The resources used in the tests in this suite. How exactly they are used depends on the definition of the runner
          */
-        @Child(name = "setup", type = {Base.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "resource", type = {Base.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Resources used in the tests in this suite", formalDefinition="The resources used in the tests in this suite. How exactly they are used depends on the definition of the runner" )
-        protected List<TestCasesSuiteSetupComponent> setup;
+        protected List<TestCasesSuiteResourceComponent> resource;
+
+        /**
+         * A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner
+         */
+        @Child(name = "parameter", type = {Base.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Parameter passed to the runner", formalDefinition="A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner" )
+        protected List<TestCasesSuiteParameterComponent> parameter;
 
         /**
          * An actual test in the test suite
          */
-        @Child(name = "test", type = {Base.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "test", type = {Base.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="A test in the test suite", formalDefinition="An actual test in the test suite" )
         protected List<TestCasesSuiteTestComponent> test;
 
-        private static final long serialVersionUID = -1946725121L;
+        private static final long serialVersionUID = -1929975715L;
 
     /**
      * Constructor
@@ -502,56 +509,109 @@ public class TestCases extends Resource implements ICompositeType {
         }
 
         /**
-         * @return {@link #setup} (The resources used in the tests in this suite. How exactly they are used depends on the definition of the runner)
+         * @return {@link #resource} (The resources used in the tests in this suite. How exactly they are used depends on the definition of the runner)
          */
-        public List<TestCasesSuiteSetupComponent> getSetup() { 
-          if (this.setup == null)
-            this.setup = new ArrayList<TestCasesSuiteSetupComponent>();
-          return this.setup;
+        public List<TestCasesSuiteResourceComponent> getResource() { 
+          if (this.resource == null)
+            this.resource = new ArrayList<TestCasesSuiteResourceComponent>();
+          return this.resource;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TestCasesSuiteComponent setSetup(List<TestCasesSuiteSetupComponent> theSetup) { 
-          this.setup = theSetup;
+        public TestCasesSuiteComponent setResource(List<TestCasesSuiteResourceComponent> theResource) { 
+          this.resource = theResource;
           return this;
         }
 
-        public boolean hasSetup() { 
-          if (this.setup == null)
+        public boolean hasResource() { 
+          if (this.resource == null)
             return false;
-          for (TestCasesSuiteSetupComponent item : this.setup)
+          for (TestCasesSuiteResourceComponent item : this.resource)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public TestCasesSuiteSetupComponent addSetup() { //3
-          TestCasesSuiteSetupComponent t = new TestCasesSuiteSetupComponent();
-          if (this.setup == null)
-            this.setup = new ArrayList<TestCasesSuiteSetupComponent>();
-          this.setup.add(t);
+        public TestCasesSuiteResourceComponent addResource() { //3
+          TestCasesSuiteResourceComponent t = new TestCasesSuiteResourceComponent();
+          if (this.resource == null)
+            this.resource = new ArrayList<TestCasesSuiteResourceComponent>();
+          this.resource.add(t);
           return t;
         }
 
-        public TestCasesSuiteComponent addSetup(TestCasesSuiteSetupComponent t) { //3
+        public TestCasesSuiteComponent addResource(TestCasesSuiteResourceComponent t) { //3
           if (t == null)
             return this;
-          if (this.setup == null)
-            this.setup = new ArrayList<TestCasesSuiteSetupComponent>();
-          this.setup.add(t);
+          if (this.resource == null)
+            this.resource = new ArrayList<TestCasesSuiteResourceComponent>();
+          this.resource.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #setup}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #resource}, creating it if it does not already exist {3}
          */
-        public TestCasesSuiteSetupComponent getSetupFirstRep() { 
-          if (getSetup().isEmpty()) {
-            addSetup();
+        public TestCasesSuiteResourceComponent getResourceFirstRep() { 
+          if (getResource().isEmpty()) {
+            addResource();
           }
-          return getSetup().get(0);
+          return getResource().get(0);
+        }
+
+        /**
+         * @return {@link #parameter} (A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner)
+         */
+        public List<TestCasesSuiteParameterComponent> getParameter() { 
+          if (this.parameter == null)
+            this.parameter = new ArrayList<TestCasesSuiteParameterComponent>();
+          return this.parameter;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public TestCasesSuiteComponent setParameter(List<TestCasesSuiteParameterComponent> theParameter) { 
+          this.parameter = theParameter;
+          return this;
+        }
+
+        public boolean hasParameter() { 
+          if (this.parameter == null)
+            return false;
+          for (TestCasesSuiteParameterComponent item : this.parameter)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public TestCasesSuiteParameterComponent addParameter() { //3
+          TestCasesSuiteParameterComponent t = new TestCasesSuiteParameterComponent();
+          if (this.parameter == null)
+            this.parameter = new ArrayList<TestCasesSuiteParameterComponent>();
+          this.parameter.add(t);
+          return t;
+        }
+
+        public TestCasesSuiteComponent addParameter(TestCasesSuiteParameterComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.parameter == null)
+            this.parameter = new ArrayList<TestCasesSuiteParameterComponent>();
+          this.parameter.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #parameter}, creating it if it does not already exist {3}
+         */
+        public TestCasesSuiteParameterComponent getParameterFirstRep() { 
+          if (getParameter().isEmpty()) {
+            addParameter();
+          }
+          return getParameter().get(0);
         }
 
         /**
@@ -612,7 +672,8 @@ public class TestCases extends Resource implements ICompositeType {
           children.add(new Property("name", "string", "The name by which this suite is known by in the test system. The name must be unique in the amongst the suites", 0, 1, name));
           children.add(new Property("description", "string", "Description of what this suite does / why it was defined. This should explain to a tester what they should know when deciding which tests to run", 0, 1, description));
           children.add(new Property("mode", "code", "If this mode is not passed to the runner, then this suite will not be run", 0, 1, mode));
-          children.add(new Property("setup", "Base", "The resources used in the tests in this suite. How exactly they are used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, setup));
+          children.add(new Property("resource", "Base", "The resources used in the tests in this suite. How exactly they are used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, resource));
+          children.add(new Property("parameter", "Base", "A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, parameter));
           children.add(new Property("test", "Base", "An actual test in the test suite", 0, java.lang.Integer.MAX_VALUE, test));
         }
 
@@ -622,7 +683,8 @@ public class TestCases extends Resource implements ICompositeType {
           case 3373707: /*name*/  return new Property("name", "string", "The name by which this suite is known by in the test system. The name must be unique in the amongst the suites", 0, 1, name);
           case -1724546052: /*description*/  return new Property("description", "string", "Description of what this suite does / why it was defined. This should explain to a tester what they should know when deciding which tests to run", 0, 1, description);
           case 3357091: /*mode*/  return new Property("mode", "code", "If this mode is not passed to the runner, then this suite will not be run", 0, 1, mode);
-          case 109329021: /*setup*/  return new Property("setup", "Base", "The resources used in the tests in this suite. How exactly they are used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, setup);
+          case -341064690: /*resource*/  return new Property("resource", "Base", "The resources used in the tests in this suite. How exactly they are used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, resource);
+          case 1954460585: /*parameter*/  return new Property("parameter", "Base", "A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, parameter);
           case 3556498: /*test*/  return new Property("test", "Base", "An actual test in the test suite", 0, java.lang.Integer.MAX_VALUE, test);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -635,7 +697,8 @@ public class TestCases extends Resource implements ICompositeType {
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case 3357091: /*mode*/ return this.mode == null ? new Base[0] : new Base[] {this.mode}; // CodeType
-        case 109329021: /*setup*/ return this.setup == null ? new Base[0] : this.setup.toArray(new Base[this.setup.size()]); // TestCasesSuiteSetupComponent
+        case -341064690: /*resource*/ return this.resource == null ? new Base[0] : this.resource.toArray(new Base[this.resource.size()]); // TestCasesSuiteResourceComponent
+        case 1954460585: /*parameter*/ return this.parameter == null ? new Base[0] : this.parameter.toArray(new Base[this.parameter.size()]); // TestCasesSuiteParameterComponent
         case 3556498: /*test*/ return this.test == null ? new Base[0] : this.test.toArray(new Base[this.test.size()]); // TestCasesSuiteTestComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -654,8 +717,11 @@ public class TestCases extends Resource implements ICompositeType {
         case 3357091: // mode
           this.mode = TypeConvertor.castToCode(value); // CodeType
           return value;
-        case 109329021: // setup
-          this.getSetup().add((TestCasesSuiteSetupComponent) value); // TestCasesSuiteSetupComponent
+        case -341064690: // resource
+          this.getResource().add((TestCasesSuiteResourceComponent) value); // TestCasesSuiteResourceComponent
+          return value;
+        case 1954460585: // parameter
+          this.getParameter().add((TestCasesSuiteParameterComponent) value); // TestCasesSuiteParameterComponent
           return value;
         case 3556498: // test
           this.getTest().add((TestCasesSuiteTestComponent) value); // TestCasesSuiteTestComponent
@@ -673,8 +739,10 @@ public class TestCases extends Resource implements ICompositeType {
           this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("mode")) {
           this.mode = TypeConvertor.castToCode(value); // CodeType
-        } else if (name.equals("setup")) {
-          this.getSetup().add((TestCasesSuiteSetupComponent) value); // TestCasesSuiteSetupComponent
+        } else if (name.equals("resource")) {
+          this.getResource().add((TestCasesSuiteResourceComponent) value); // TestCasesSuiteResourceComponent
+        } else if (name.equals("parameter")) {
+          this.getParameter().add((TestCasesSuiteParameterComponent) value); // TestCasesSuiteParameterComponent
         } else if (name.equals("test")) {
           this.getTest().add((TestCasesSuiteTestComponent) value); // TestCasesSuiteTestComponent
         } else
@@ -688,7 +756,8 @@ public class TestCases extends Resource implements ICompositeType {
         case 3373707:  return getNameElement();
         case -1724546052:  return getDescriptionElement();
         case 3357091:  return getModeElement();
-        case 109329021:  return addSetup(); 
+        case -341064690:  return addResource(); 
+        case 1954460585:  return addParameter(); 
         case 3556498:  return addTest(); 
         default: return super.makeProperty(hash, name);
         }
@@ -701,7 +770,8 @@ public class TestCases extends Resource implements ICompositeType {
         case 3373707: /*name*/ return new String[] {"string"};
         case -1724546052: /*description*/ return new String[] {"string"};
         case 3357091: /*mode*/ return new String[] {"code"};
-        case 109329021: /*setup*/ return new String[] {"Base"};
+        case -341064690: /*resource*/ return new String[] {"Base"};
+        case 1954460585: /*parameter*/ return new String[] {"Base"};
         case 3556498: /*test*/ return new String[] {"Base"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -719,8 +789,11 @@ public class TestCases extends Resource implements ICompositeType {
         else if (name.equals("mode")) {
           throw new FHIRException("Cannot call addChild on a singleton property TestCases.suite.mode");
         }
-        else if (name.equals("setup")) {
-          throw new FHIRException("Cannot call addChild on an abstract type TestCases.suite.setup");
+        else if (name.equals("resource")) {
+          throw new FHIRException("Cannot call addChild on an abstract type TestCases.suite.resource");
+        }
+        else if (name.equals("parameter")) {
+          throw new FHIRException("Cannot call addChild on an abstract type TestCases.suite.parameter");
         }
         else if (name.equals("test")) {
           throw new FHIRException("Cannot call addChild on an abstract type TestCases.suite.test");
@@ -740,10 +813,15 @@ public class TestCases extends Resource implements ICompositeType {
         dst.name = name == null ? null : name.copy();
         dst.description = description == null ? null : description.copy();
         dst.mode = mode == null ? null : mode.copy();
-        if (setup != null) {
-          dst.setup = new ArrayList<TestCasesSuiteSetupComponent>();
-          for (TestCasesSuiteSetupComponent i : setup)
-            dst.setup.add(i.copy());
+        if (resource != null) {
+          dst.resource = new ArrayList<TestCasesSuiteResourceComponent>();
+          for (TestCasesSuiteResourceComponent i : resource)
+            dst.resource.add(i.copy());
+        };
+        if (parameter != null) {
+          dst.parameter = new ArrayList<TestCasesSuiteParameterComponent>();
+          for (TestCasesSuiteParameterComponent i : parameter)
+            dst.parameter.add(i.copy());
         };
         if (test != null) {
           dst.test = new ArrayList<TestCasesSuiteTestComponent>();
@@ -760,7 +838,8 @@ public class TestCases extends Resource implements ICompositeType {
           return false;
         TestCasesSuiteComponent o = (TestCasesSuiteComponent) other_;
         return compareDeep(name, o.name, true) && compareDeep(description, o.description, true) && compareDeep(mode, o.mode, true)
-           && compareDeep(setup, o.setup, true) && compareDeep(test, o.test, true);
+           && compareDeep(resource, o.resource, true) && compareDeep(parameter, o.parameter, true) && compareDeep(test, o.test, true)
+          ;
       }
 
       @Override
@@ -776,7 +855,7 @@ public class TestCases extends Resource implements ICompositeType {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, description, mode
-          , setup, test);
+          , resource, parameter, test);
       }
 
   public String fhirType() {
@@ -787,7 +866,7 @@ public class TestCases extends Resource implements ICompositeType {
   }
 
     @Block()
-    public static class TestCasesSuiteSetupComponent extends LogicalBase {
+    public static class TestCasesSuiteResourceComponent extends LogicalBase {
         /**
          * A name that identifies this resource. The runner definition defines whether there must be a name, and what names there are
          */
@@ -821,7 +900,7 @@ public class TestCases extends Resource implements ICompositeType {
     /**
      * Constructor
      */
-      public TestCasesSuiteSetupComponent() {
+      public TestCasesSuiteResourceComponent() {
         super();
       }
 
@@ -831,7 +910,7 @@ public class TestCases extends Resource implements ICompositeType {
         public StringType getNameElement() { 
           if (this.name == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TestCasesSuiteSetupComponent.name");
+              throw new Error("Attempt to auto-create TestCasesSuiteResourceComponent.name");
             else if (Configuration.doAutoCreate())
               this.name = new StringType(); // bb
           return this.name;
@@ -848,7 +927,7 @@ public class TestCases extends Resource implements ICompositeType {
         /**
          * @param value {@link #name} (A name that identifies this resource. The runner definition defines whether there must be a name, and what names there are). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
          */
-        public TestCasesSuiteSetupComponent setNameElement(StringType value) { 
+        public TestCasesSuiteResourceComponent setNameElement(StringType value) { 
           this.name = value;
           return this;
         }
@@ -863,7 +942,7 @@ public class TestCases extends Resource implements ICompositeType {
         /**
          * @param value A name that identifies this resource. The runner definition defines whether there must be a name, and what names there are
          */
-        public TestCasesSuiteSetupComponent setName(String value) { 
+        public TestCasesSuiteResourceComponent setName(String value) { 
           if (Utilities.noString(value))
             this.name = null;
           else {
@@ -880,7 +959,7 @@ public class TestCases extends Resource implements ICompositeType {
         public StringType getFileElement() { 
           if (this.file == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TestCasesSuiteSetupComponent.file");
+              throw new Error("Attempt to auto-create TestCasesSuiteResourceComponent.file");
             else if (Configuration.doAutoCreate())
               this.file = new StringType(); // bb
           return this.file;
@@ -897,7 +976,7 @@ public class TestCases extends Resource implements ICompositeType {
         /**
          * @param value {@link #file} (A file containing a resource used in the tests). This is the underlying object with id, value and extensions. The accessor "getFile" gives direct access to the value
          */
-        public TestCasesSuiteSetupComponent setFileElement(StringType value) { 
+        public TestCasesSuiteResourceComponent setFileElement(StringType value) { 
           this.file = value;
           return this;
         }
@@ -912,7 +991,7 @@ public class TestCases extends Resource implements ICompositeType {
         /**
          * @param value A file containing a resource used in the tests
          */
-        public TestCasesSuiteSetupComponent setFile(String value) { 
+        public TestCasesSuiteResourceComponent setFile(String value) { 
           if (Utilities.noString(value))
             this.file = null;
           else {
@@ -937,7 +1016,7 @@ public class TestCases extends Resource implements ICompositeType {
         /**
          * @param value {@link #resource} (An inline resource used in the tests. How exactly it is used depends on the definition of the runner.)
          */
-        public TestCasesSuiteSetupComponent setResource(Resource value) { 
+        public TestCasesSuiteResourceComponent setResource(Resource value) { 
           this.resource = value;
           return this;
         }
@@ -948,7 +1027,7 @@ public class TestCases extends Resource implements ICompositeType {
         public CodeType getModeElement() { 
           if (this.mode == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TestCasesSuiteSetupComponent.mode");
+              throw new Error("Attempt to auto-create TestCasesSuiteResourceComponent.mode");
             else if (Configuration.doAutoCreate())
               this.mode = new CodeType(); // bb
           return this.mode;
@@ -965,7 +1044,7 @@ public class TestCases extends Resource implements ICompositeType {
         /**
          * @param value {@link #mode} (If this mode is not passed to the runner, then this resource will not be used). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
          */
-        public TestCasesSuiteSetupComponent setModeElement(CodeType value) { 
+        public TestCasesSuiteResourceComponent setModeElement(CodeType value) { 
           this.mode = value;
           return this;
         }
@@ -980,7 +1059,7 @@ public class TestCases extends Resource implements ICompositeType {
         /**
          * @param value If this mode is not passed to the runner, then this resource will not be used
          */
-        public TestCasesSuiteSetupComponent setMode(String value) { 
+        public TestCasesSuiteResourceComponent setMode(String value) { 
           if (Utilities.noString(value))
             this.mode = null;
           else {
@@ -1085,28 +1164,28 @@ public class TestCases extends Resource implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestCases.suite.setup.name");
+          throw new FHIRException("Cannot call addChild on a singleton property TestCases.suite.resource.name");
         }
         else if (name.equals("file")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestCases.suite.setup.file");
+          throw new FHIRException("Cannot call addChild on a singleton property TestCases.suite.resource.file");
         }
         else if (name.equals("resource")) {
-          throw new FHIRException("Cannot call addChild on an abstract type TestCases.suite.setup.resource");
+          throw new FHIRException("Cannot call addChild on an abstract type TestCases.suite.resource.resource");
         }
         else if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestCases.suite.setup.mode");
+          throw new FHIRException("Cannot call addChild on a singleton property TestCases.suite.resource.mode");
         }
         else
           return super.addChild(name);
       }
 
-      public TestCasesSuiteSetupComponent copy() {
-        TestCasesSuiteSetupComponent dst = new TestCasesSuiteSetupComponent();
+      public TestCasesSuiteResourceComponent copy() {
+        TestCasesSuiteResourceComponent dst = new TestCasesSuiteResourceComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(TestCasesSuiteSetupComponent dst) {
+      public void copyValues(TestCasesSuiteResourceComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.file = file == null ? null : file.copy();
@@ -1118,9 +1197,9 @@ public class TestCases extends Resource implements ICompositeType {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof TestCasesSuiteSetupComponent))
+        if (!(other_ instanceof TestCasesSuiteResourceComponent))
           return false;
-        TestCasesSuiteSetupComponent o = (TestCasesSuiteSetupComponent) other_;
+        TestCasesSuiteResourceComponent o = (TestCasesSuiteResourceComponent) other_;
         return compareDeep(name, o.name, true) && compareDeep(file, o.file, true) && compareDeep(resource, o.resource, true)
            && compareDeep(mode, o.mode, true);
       }
@@ -1129,9 +1208,9 @@ public class TestCases extends Resource implements ICompositeType {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof TestCasesSuiteSetupComponent))
+        if (!(other_ instanceof TestCasesSuiteResourceComponent))
           return false;
-        TestCasesSuiteSetupComponent o = (TestCasesSuiteSetupComponent) other_;
+        TestCasesSuiteResourceComponent o = (TestCasesSuiteResourceComponent) other_;
         return compareValues(name, o.name, true) && compareValues(file, o.file, true) && compareValues(mode, o.mode, true)
           ;
       }
@@ -1142,7 +1221,463 @@ public class TestCases extends Resource implements ICompositeType {
       }
 
   public String fhirType() {
-    return "TestCases.suite.setup";
+    return "TestCases.suite.resource";
+
+  }
+
+  }
+
+    @Block()
+    public static class TestCasesSuiteParameterComponent extends LogicalBase {
+        /**
+         * Name of parameter
+         */
+        @Child(name = "name", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Name of parameter", formalDefinition="Name of parameter" )
+        protected StringType name;
+
+        /**
+         * The value of the parameter
+         */
+        @Child(name = "value", type = {StringType.class, BooleanType.class, IntegerType.class, DecimalType.class, DateTimeType.class, UriType.class, Coding.class, Quantity.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Value of this parameter", formalDefinition="The value of the parameter" )
+        protected DataType value;
+
+        /**
+         * If this mode is not passed to the runner, then this parameter will not be used
+         */
+        @Child(name = "mode", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="A mode that must be true for this parameter to be used", formalDefinition="If this mode is not passed to the runner, then this parameter will not be used" )
+        protected CodeType mode;
+
+        private static final long serialVersionUID = -410765611L;
+
+    /**
+     * Constructor
+     */
+      public TestCasesSuiteParameterComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public TestCasesSuiteParameterComponent(String name, DataType value) {
+        super();
+        this.setName(name);
+        this.setValue(value);
+      }
+
+        /**
+         * @return {@link #name} (Name of parameter). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         */
+        public StringType getNameElement() { 
+          if (this.name == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create TestCasesSuiteParameterComponent.name");
+            else if (Configuration.doAutoCreate())
+              this.name = new StringType(); // bb
+          return this.name;
+        }
+
+        public boolean hasNameElement() { 
+          return this.name != null && !this.name.isEmpty();
+        }
+
+        public boolean hasName() { 
+          return this.name != null && !this.name.isEmpty();
+        }
+
+        /**
+         * @param value {@link #name} (Name of parameter). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         */
+        public TestCasesSuiteParameterComponent setNameElement(StringType value) { 
+          this.name = value;
+          return this;
+        }
+
+        /**
+         * @return Name of parameter
+         */
+        public String getName() { 
+          return this.name == null ? null : this.name.getValue();
+        }
+
+        /**
+         * @param value Name of parameter
+         */
+        public TestCasesSuiteParameterComponent setName(String value) { 
+            if (this.name == null)
+              this.name = new StringType();
+            this.name.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #value} (The value of the parameter)
+         */
+        public DataType getValue() { 
+          return this.value;
+        }
+
+        /**
+         * @return {@link #value} (The value of the parameter)
+         */
+        public StringType getValueStringType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new StringType();
+          if (!(this.value instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (StringType) this.value;
+        }
+
+        public boolean hasValueStringType() { 
+          return this != null && this.value instanceof StringType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the parameter)
+         */
+        public BooleanType getValueBooleanType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new BooleanType();
+          if (!(this.value instanceof BooleanType))
+            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (BooleanType) this.value;
+        }
+
+        public boolean hasValueBooleanType() { 
+          return this != null && this.value instanceof BooleanType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the parameter)
+         */
+        public IntegerType getValueIntegerType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new IntegerType();
+          if (!(this.value instanceof IntegerType))
+            throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (IntegerType) this.value;
+        }
+
+        public boolean hasValueIntegerType() { 
+          return this != null && this.value instanceof IntegerType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the parameter)
+         */
+        public DecimalType getValueDecimalType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DecimalType();
+          if (!(this.value instanceof DecimalType))
+            throw new FHIRException("Type mismatch: the type DecimalType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DecimalType) this.value;
+        }
+
+        public boolean hasValueDecimalType() { 
+          return this != null && this.value instanceof DecimalType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the parameter)
+         */
+        public DateTimeType getValueDateTimeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateTimeType();
+          if (!(this.value instanceof DateTimeType))
+            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateTimeType) this.value;
+        }
+
+        public boolean hasValueDateTimeType() { 
+          return this != null && this.value instanceof DateTimeType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the parameter)
+         */
+        public UriType getValueUriType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UriType();
+          if (!(this.value instanceof UriType))
+            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UriType) this.value;
+        }
+
+        public boolean hasValueUriType() { 
+          return this != null && this.value instanceof UriType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the parameter)
+         */
+        public Coding getValueCoding() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Coding();
+          if (!(this.value instanceof Coding))
+            throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Coding) this.value;
+        }
+
+        public boolean hasValueCoding() { 
+          return this != null && this.value instanceof Coding;
+        }
+
+        /**
+         * @return {@link #value} (The value of the parameter)
+         */
+        public Quantity getValueQuantity() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Quantity();
+          if (!(this.value instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Quantity) this.value;
+        }
+
+        public boolean hasValueQuantity() { 
+          return this != null && this.value instanceof Quantity;
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (The value of the parameter)
+         */
+        public TestCasesSuiteParameterComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof DecimalType || value instanceof DateTimeType || value instanceof UriType || value instanceof Coding || value instanceof Quantity))
+            throw new FHIRException("Not the right type for TestCases.suite.parameter.value[x]: "+value.fhirType());
+          this.value = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #mode} (If this mode is not passed to the runner, then this parameter will not be used). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
+         */
+        public CodeType getModeElement() { 
+          if (this.mode == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create TestCasesSuiteParameterComponent.mode");
+            else if (Configuration.doAutoCreate())
+              this.mode = new CodeType(); // bb
+          return this.mode;
+        }
+
+        public boolean hasModeElement() { 
+          return this.mode != null && !this.mode.isEmpty();
+        }
+
+        public boolean hasMode() { 
+          return this.mode != null && !this.mode.isEmpty();
+        }
+
+        /**
+         * @param value {@link #mode} (If this mode is not passed to the runner, then this parameter will not be used). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
+         */
+        public TestCasesSuiteParameterComponent setModeElement(CodeType value) { 
+          this.mode = value;
+          return this;
+        }
+
+        /**
+         * @return If this mode is not passed to the runner, then this parameter will not be used
+         */
+        public String getMode() { 
+          return this.mode == null ? null : this.mode.getValue();
+        }
+
+        /**
+         * @param value If this mode is not passed to the runner, then this parameter will not be used
+         */
+        public TestCasesSuiteParameterComponent setMode(String value) { 
+          if (Utilities.noString(value))
+            this.mode = null;
+          else {
+            if (this.mode == null)
+              this.mode = new CodeType();
+            this.mode.setValue(value);
+          }
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("name", "string", "Name of parameter", 0, 1, name));
+          children.add(new Property("value[x]", "string|boolean|integer|decimal|dateTime|uri|Coding|Quantity", "The value of the parameter", 0, 1, value));
+          children.add(new Property("mode", "code", "If this mode is not passed to the runner, then this parameter will not be used", 0, 1, mode));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3373707: /*name*/  return new Property("name", "string", "Name of parameter", 0, 1, name);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "string|boolean|integer|decimal|dateTime|uri|Coding|Quantity", "The value of the parameter", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "string|boolean|integer|decimal|dateTime|uri|Coding|Quantity", "The value of the parameter", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "The value of the parameter", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of the parameter", 0, 1, value);
+          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "The value of the parameter", 0, 1, value);
+          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "decimal", "The value of the parameter", 0, 1, value);
+          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "The value of the parameter", 0, 1, value);
+          case -1410172357: /*valueUri*/  return new Property("value[x]", "uri", "The value of the parameter", 0, 1, value);
+          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "The value of the parameter", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The value of the parameter", 0, 1, value);
+          case 3357091: /*mode*/  return new Property("mode", "code", "If this mode is not passed to the runner, then this parameter will not be used", 0, 1, mode);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
+        case 3357091: /*mode*/ return this.mode == null ? new Base[0] : new Base[] {this.mode}; // CodeType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3373707: // name
+          this.name = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 111972721: // value
+          this.value = TypeConvertor.castToType(value); // DataType
+          return value;
+        case 3357091: // mode
+          this.mode = TypeConvertor.castToCode(value); // CodeType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("name")) {
+          this.name = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("value[x]")) {
+          this.value = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("mode")) {
+          this.mode = TypeConvertor.castToCode(value); // CodeType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3373707:  return getNameElement();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
+        case 3357091:  return getModeElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3373707: /*name*/ return new String[] {"string"};
+        case 111972721: /*value*/ return new String[] {"string", "boolean", "integer", "decimal", "dateTime", "uri", "Coding", "Quantity"};
+        case 3357091: /*mode*/ return new String[] {"code"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("name")) {
+          throw new FHIRException("Cannot call addChild on a singleton property TestCases.suite.parameter.name");
+        }
+        else if (name.equals("valueString")) {
+          this.value = new StringType();
+          return this.value;
+        }
+        else if (name.equals("valueBoolean")) {
+          this.value = new BooleanType();
+          return this.value;
+        }
+        else if (name.equals("valueInteger")) {
+          this.value = new IntegerType();
+          return this.value;
+        }
+        else if (name.equals("valueDecimal")) {
+          this.value = new DecimalType();
+          return this.value;
+        }
+        else if (name.equals("valueDateTime")) {
+          this.value = new DateTimeType();
+          return this.value;
+        }
+        else if (name.equals("valueUri")) {
+          this.value = new UriType();
+          return this.value;
+        }
+        else if (name.equals("valueCoding")) {
+          this.value = new Coding();
+          return this.value;
+        }
+        else if (name.equals("valueQuantity")) {
+          this.value = new Quantity();
+          return this.value;
+        }
+        else if (name.equals("mode")) {
+          throw new FHIRException("Cannot call addChild on a singleton property TestCases.suite.parameter.mode");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public TestCasesSuiteParameterComponent copy() {
+        TestCasesSuiteParameterComponent dst = new TestCasesSuiteParameterComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestCasesSuiteParameterComponent dst) {
+        super.copyValues(dst);
+        dst.name = name == null ? null : name.copy();
+        dst.value = value == null ? null : value.copy();
+        dst.mode = mode == null ? null : mode.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof TestCasesSuiteParameterComponent))
+          return false;
+        TestCasesSuiteParameterComponent o = (TestCasesSuiteParameterComponent) other_;
+        return compareDeep(name, o.name, true) && compareDeep(value, o.value, true) && compareDeep(mode, o.mode, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof TestCasesSuiteParameterComponent))
+          return false;
+        TestCasesSuiteParameterComponent o = (TestCasesSuiteParameterComponent) other_;
+        return compareValues(name, o.name, true) && compareValues(mode, o.mode, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, value, mode);
+      }
+
+  public String fhirType() {
+    return "TestCases.suite.parameter";
 
   }
 
@@ -1179,27 +1714,27 @@ public class TestCases extends Resource implements ICompositeType {
         protected StringType mode;
 
         /**
-         * A parameter passed to the runner when executing this test. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner
+         * 
          */
-        @Child(name = "parameter", type = {Base.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Parameter passed to the runner", formalDefinition="A parameter passed to the runner when executing this test. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner" )
-        protected List<TestCasesSuiteTestParameterComponent> parameter;
+        @Child(name = "parameter", type = {TestCasesSuiteParameterComponent.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="", formalDefinition="" )
+        protected List<TestCasesSuiteParameterComponent> parameter;
 
         /**
-         * The resources used when executing this test. How exactly they are used depends on the definition of the runner
+         * The resources used when executing this test. How exactly they are used depends on the definition of the runner.
          */
-        @Child(name = "input", type = {TestCasesSuiteSetupComponent.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Resources used when executing this test", formalDefinition="The resources used when executing this test. How exactly they are used depends on the definition of the runner" )
-        protected List<TestCasesSuiteSetupComponent> input;
+        @Child(name = "input", type = {TestCasesSuiteResourceComponent.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Resources used when executing this test (per runner definition)", formalDefinition="The resources used when executing this test. How exactly they are used depends on the definition of the runner." )
+        protected List<TestCasesSuiteResourceComponent> input;
 
         /**
-         * Resources expected as output from this test. Often, but not always, these resource is a Matchetype resources. How exactly it is used depends on the definition of the runner
+         * Resources expected as output from this test. Often, but not always, these resources are Matchetype resources. How exactly it is used depends on the definition of the runner
          */
-        @Child(name = "output", type = {TestCasesSuiteSetupComponent.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Resources expected as output from this test (often Matchetypes)", formalDefinition="Resources expected as output from this test. Often, but not always, these resource is a Matchetype resources. How exactly it is used depends on the definition of the runner" )
-        protected List<TestCasesSuiteSetupComponent> output;
+        @Child(name = "output", type = {TestCasesSuiteResourceComponent.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Resources expected as output from this test (per runner definition, often Matchetypes)", formalDefinition="Resources expected as output from this test. Often, but not always, these resources are Matchetype resources. How exactly it is used depends on the definition of the runner" )
+        protected List<TestCasesSuiteResourceComponent> output;
 
-        private static final long serialVersionUID = 1590648880L;
+        private static final long serialVersionUID = -321392022L;
 
     /**
      * Constructor
@@ -1409,18 +1944,18 @@ public class TestCases extends Resource implements ICompositeType {
         }
 
         /**
-         * @return {@link #parameter} (A parameter passed to the runner when executing this test. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner)
+         * @return {@link #parameter} ()
          */
-        public List<TestCasesSuiteTestParameterComponent> getParameter() { 
+        public List<TestCasesSuiteParameterComponent> getParameter() { 
           if (this.parameter == null)
-            this.parameter = new ArrayList<TestCasesSuiteTestParameterComponent>();
+            this.parameter = new ArrayList<TestCasesSuiteParameterComponent>();
           return this.parameter;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TestCasesSuiteTestComponent setParameter(List<TestCasesSuiteTestParameterComponent> theParameter) { 
+        public TestCasesSuiteTestComponent setParameter(List<TestCasesSuiteParameterComponent> theParameter) { 
           this.parameter = theParameter;
           return this;
         }
@@ -1428,25 +1963,25 @@ public class TestCases extends Resource implements ICompositeType {
         public boolean hasParameter() { 
           if (this.parameter == null)
             return false;
-          for (TestCasesSuiteTestParameterComponent item : this.parameter)
+          for (TestCasesSuiteParameterComponent item : this.parameter)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public TestCasesSuiteTestParameterComponent addParameter() { //3
-          TestCasesSuiteTestParameterComponent t = new TestCasesSuiteTestParameterComponent();
+        public TestCasesSuiteParameterComponent addParameter() { //3
+          TestCasesSuiteParameterComponent t = new TestCasesSuiteParameterComponent();
           if (this.parameter == null)
-            this.parameter = new ArrayList<TestCasesSuiteTestParameterComponent>();
+            this.parameter = new ArrayList<TestCasesSuiteParameterComponent>();
           this.parameter.add(t);
           return t;
         }
 
-        public TestCasesSuiteTestComponent addParameter(TestCasesSuiteTestParameterComponent t) { //3
+        public TestCasesSuiteTestComponent addParameter(TestCasesSuiteParameterComponent t) { //3
           if (t == null)
             return this;
           if (this.parameter == null)
-            this.parameter = new ArrayList<TestCasesSuiteTestParameterComponent>();
+            this.parameter = new ArrayList<TestCasesSuiteParameterComponent>();
           this.parameter.add(t);
           return this;
         }
@@ -1454,7 +1989,7 @@ public class TestCases extends Resource implements ICompositeType {
         /**
          * @return The first repetition of repeating field {@link #parameter}, creating it if it does not already exist {3}
          */
-        public TestCasesSuiteTestParameterComponent getParameterFirstRep() { 
+        public TestCasesSuiteParameterComponent getParameterFirstRep() { 
           if (getParameter().isEmpty()) {
             addParameter();
           }
@@ -1462,18 +1997,18 @@ public class TestCases extends Resource implements ICompositeType {
         }
 
         /**
-         * @return {@link #input} (The resources used when executing this test. How exactly they are used depends on the definition of the runner)
+         * @return {@link #input} (The resources used when executing this test. How exactly they are used depends on the definition of the runner.)
          */
-        public List<TestCasesSuiteSetupComponent> getInput() { 
+        public List<TestCasesSuiteResourceComponent> getInput() { 
           if (this.input == null)
-            this.input = new ArrayList<TestCasesSuiteSetupComponent>();
+            this.input = new ArrayList<TestCasesSuiteResourceComponent>();
           return this.input;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TestCasesSuiteTestComponent setInput(List<TestCasesSuiteSetupComponent> theInput) { 
+        public TestCasesSuiteTestComponent setInput(List<TestCasesSuiteResourceComponent> theInput) { 
           this.input = theInput;
           return this;
         }
@@ -1481,25 +2016,25 @@ public class TestCases extends Resource implements ICompositeType {
         public boolean hasInput() { 
           if (this.input == null)
             return false;
-          for (TestCasesSuiteSetupComponent item : this.input)
+          for (TestCasesSuiteResourceComponent item : this.input)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public TestCasesSuiteSetupComponent addInput() { //3
-          TestCasesSuiteSetupComponent t = new TestCasesSuiteSetupComponent();
+        public TestCasesSuiteResourceComponent addInput() { //3
+          TestCasesSuiteResourceComponent t = new TestCasesSuiteResourceComponent();
           if (this.input == null)
-            this.input = new ArrayList<TestCasesSuiteSetupComponent>();
+            this.input = new ArrayList<TestCasesSuiteResourceComponent>();
           this.input.add(t);
           return t;
         }
 
-        public TestCasesSuiteTestComponent addInput(TestCasesSuiteSetupComponent t) { //3
+        public TestCasesSuiteTestComponent addInput(TestCasesSuiteResourceComponent t) { //3
           if (t == null)
             return this;
           if (this.input == null)
-            this.input = new ArrayList<TestCasesSuiteSetupComponent>();
+            this.input = new ArrayList<TestCasesSuiteResourceComponent>();
           this.input.add(t);
           return this;
         }
@@ -1507,7 +2042,7 @@ public class TestCases extends Resource implements ICompositeType {
         /**
          * @return The first repetition of repeating field {@link #input}, creating it if it does not already exist {3}
          */
-        public TestCasesSuiteSetupComponent getInputFirstRep() { 
+        public TestCasesSuiteResourceComponent getInputFirstRep() { 
           if (getInput().isEmpty()) {
             addInput();
           }
@@ -1515,18 +2050,18 @@ public class TestCases extends Resource implements ICompositeType {
         }
 
         /**
-         * @return {@link #output} (Resources expected as output from this test. Often, but not always, these resource is a Matchetype resources. How exactly it is used depends on the definition of the runner)
+         * @return {@link #output} (Resources expected as output from this test. Often, but not always, these resources are Matchetype resources. How exactly it is used depends on the definition of the runner)
          */
-        public List<TestCasesSuiteSetupComponent> getOutput() { 
+        public List<TestCasesSuiteResourceComponent> getOutput() { 
           if (this.output == null)
-            this.output = new ArrayList<TestCasesSuiteSetupComponent>();
+            this.output = new ArrayList<TestCasesSuiteResourceComponent>();
           return this.output;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TestCasesSuiteTestComponent setOutput(List<TestCasesSuiteSetupComponent> theOutput) { 
+        public TestCasesSuiteTestComponent setOutput(List<TestCasesSuiteResourceComponent> theOutput) { 
           this.output = theOutput;
           return this;
         }
@@ -1534,25 +2069,25 @@ public class TestCases extends Resource implements ICompositeType {
         public boolean hasOutput() { 
           if (this.output == null)
             return false;
-          for (TestCasesSuiteSetupComponent item : this.output)
+          for (TestCasesSuiteResourceComponent item : this.output)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public TestCasesSuiteSetupComponent addOutput() { //3
-          TestCasesSuiteSetupComponent t = new TestCasesSuiteSetupComponent();
+        public TestCasesSuiteResourceComponent addOutput() { //3
+          TestCasesSuiteResourceComponent t = new TestCasesSuiteResourceComponent();
           if (this.output == null)
-            this.output = new ArrayList<TestCasesSuiteSetupComponent>();
+            this.output = new ArrayList<TestCasesSuiteResourceComponent>();
           this.output.add(t);
           return t;
         }
 
-        public TestCasesSuiteTestComponent addOutput(TestCasesSuiteSetupComponent t) { //3
+        public TestCasesSuiteTestComponent addOutput(TestCasesSuiteResourceComponent t) { //3
           if (t == null)
             return this;
           if (this.output == null)
-            this.output = new ArrayList<TestCasesSuiteSetupComponent>();
+            this.output = new ArrayList<TestCasesSuiteResourceComponent>();
           this.output.add(t);
           return this;
         }
@@ -1560,7 +2095,7 @@ public class TestCases extends Resource implements ICompositeType {
         /**
          * @return The first repetition of repeating field {@link #output}, creating it if it does not already exist {3}
          */
-        public TestCasesSuiteSetupComponent getOutputFirstRep() { 
+        public TestCasesSuiteResourceComponent getOutputFirstRep() { 
           if (getOutput().isEmpty()) {
             addOutput();
           }
@@ -1573,9 +2108,9 @@ public class TestCases extends Resource implements ICompositeType {
           children.add(new Property("description", "string", "Description of what this test does / why it was defined. This should explain to a tester what they should know when looking at failing test results", 0, 1, description));
           children.add(new Property("operation", "code", "A code that identifies the operation executed for this test. One of the codes defined in the definition of the runner", 0, 1, operation));
           children.add(new Property("mode", "string", "If this mode is not passed to the runner, then this test will not be run", 0, 1, mode));
-          children.add(new Property("parameter", "Base", "A parameter passed to the runner when executing this test. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, parameter));
-          children.add(new Property("input", "http://hl7.org/fhir/uv/application-feature/StructureDefinition/TestCases@TestCases.suite.setup", "The resources used when executing this test. How exactly they are used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, input));
-          children.add(new Property("output", "http://hl7.org/fhir/uv/application-feature/StructureDefinition/TestCases@TestCases.suite.setup", "Resources expected as output from this test. Often, but not always, these resource is a Matchetype resources. How exactly it is used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, output));
+          children.add(new Property("parameter", "http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.parameter", "", 0, java.lang.Integer.MAX_VALUE, parameter));
+          children.add(new Property("input", "http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.resource", "The resources used when executing this test. How exactly they are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, input));
+          children.add(new Property("output", "http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.resource", "Resources expected as output from this test. Often, but not always, these resources are Matchetype resources. How exactly it is used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, output));
         }
 
         @Override
@@ -1585,9 +2120,9 @@ public class TestCases extends Resource implements ICompositeType {
           case -1724546052: /*description*/  return new Property("description", "string", "Description of what this test does / why it was defined. This should explain to a tester what they should know when looking at failing test results", 0, 1, description);
           case 1662702951: /*operation*/  return new Property("operation", "code", "A code that identifies the operation executed for this test. One of the codes defined in the definition of the runner", 0, 1, operation);
           case 3357091: /*mode*/  return new Property("mode", "string", "If this mode is not passed to the runner, then this test will not be run", 0, 1, mode);
-          case 1954460585: /*parameter*/  return new Property("parameter", "Base", "A parameter passed to the runner when executing this test. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, parameter);
-          case 100358090: /*input*/  return new Property("input", "http://hl7.org/fhir/uv/application-feature/StructureDefinition/TestCases@TestCases.suite.setup", "The resources used when executing this test. How exactly they are used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, input);
-          case -1005512447: /*output*/  return new Property("output", "http://hl7.org/fhir/uv/application-feature/StructureDefinition/TestCases@TestCases.suite.setup", "Resources expected as output from this test. Often, but not always, these resource is a Matchetype resources. How exactly it is used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, output);
+          case 1954460585: /*parameter*/  return new Property("parameter", "http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.parameter", "", 0, java.lang.Integer.MAX_VALUE, parameter);
+          case 100358090: /*input*/  return new Property("input", "http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.resource", "The resources used when executing this test. How exactly they are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, input);
+          case -1005512447: /*output*/  return new Property("output", "http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.resource", "Resources expected as output from this test. Often, but not always, these resources are Matchetype resources. How exactly it is used depends on the definition of the runner", 0, java.lang.Integer.MAX_VALUE, output);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1600,9 +2135,9 @@ public class TestCases extends Resource implements ICompositeType {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case 1662702951: /*operation*/ return this.operation == null ? new Base[0] : new Base[] {this.operation}; // CodeType
         case 3357091: /*mode*/ return this.mode == null ? new Base[0] : new Base[] {this.mode}; // StringType
-        case 1954460585: /*parameter*/ return this.parameter == null ? new Base[0] : this.parameter.toArray(new Base[this.parameter.size()]); // TestCasesSuiteTestParameterComponent
-        case 100358090: /*input*/ return this.input == null ? new Base[0] : this.input.toArray(new Base[this.input.size()]); // TestCasesSuiteSetupComponent
-        case -1005512447: /*output*/ return this.output == null ? new Base[0] : this.output.toArray(new Base[this.output.size()]); // TestCasesSuiteSetupComponent
+        case 1954460585: /*parameter*/ return this.parameter == null ? new Base[0] : this.parameter.toArray(new Base[this.parameter.size()]); // TestCasesSuiteParameterComponent
+        case 100358090: /*input*/ return this.input == null ? new Base[0] : this.input.toArray(new Base[this.input.size()]); // TestCasesSuiteResourceComponent
+        case -1005512447: /*output*/ return this.output == null ? new Base[0] : this.output.toArray(new Base[this.output.size()]); // TestCasesSuiteResourceComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1624,13 +2159,13 @@ public class TestCases extends Resource implements ICompositeType {
           this.mode = TypeConvertor.castToString(value); // StringType
           return value;
         case 1954460585: // parameter
-          this.getParameter().add((TestCasesSuiteTestParameterComponent) value); // TestCasesSuiteTestParameterComponent
+          this.getParameter().add((TestCasesSuiteParameterComponent) value); // TestCasesSuiteParameterComponent
           return value;
         case 100358090: // input
-          this.getInput().add((TestCasesSuiteSetupComponent) value); // TestCasesSuiteSetupComponent
+          this.getInput().add((TestCasesSuiteResourceComponent) value); // TestCasesSuiteResourceComponent
           return value;
         case -1005512447: // output
-          this.getOutput().add((TestCasesSuiteSetupComponent) value); // TestCasesSuiteSetupComponent
+          this.getOutput().add((TestCasesSuiteResourceComponent) value); // TestCasesSuiteResourceComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1648,11 +2183,11 @@ public class TestCases extends Resource implements ICompositeType {
         } else if (name.equals("mode")) {
           this.mode = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("parameter")) {
-          this.getParameter().add((TestCasesSuiteTestParameterComponent) value); // TestCasesSuiteTestParameterComponent
+          this.getParameter().add((TestCasesSuiteParameterComponent) value); // TestCasesSuiteParameterComponent
         } else if (name.equals("input")) {
-          this.getInput().add((TestCasesSuiteSetupComponent) value); // TestCasesSuiteSetupComponent
+          this.getInput().add((TestCasesSuiteResourceComponent) value); // TestCasesSuiteResourceComponent
         } else if (name.equals("output")) {
-          this.getOutput().add((TestCasesSuiteSetupComponent) value); // TestCasesSuiteSetupComponent
+          this.getOutput().add((TestCasesSuiteResourceComponent) value); // TestCasesSuiteResourceComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -1680,9 +2215,9 @@ public class TestCases extends Resource implements ICompositeType {
         case -1724546052: /*description*/ return new String[] {"string"};
         case 1662702951: /*operation*/ return new String[] {"code"};
         case 3357091: /*mode*/ return new String[] {"string"};
-        case 1954460585: /*parameter*/ return new String[] {"Base"};
-        case 100358090: /*input*/ return new String[] {"http://hl7.org/fhir/uv/application-feature/StructureDefinition/TestCases@TestCases.suite.setup"};
-        case -1005512447: /*output*/ return new String[] {"http://hl7.org/fhir/uv/application-feature/StructureDefinition/TestCases@TestCases.suite.setup"};
+        case 1954460585: /*parameter*/ return new String[] {"http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.parameter"};
+        case 100358090: /*input*/ return new String[] {"http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.resource"};
+        case -1005512447: /*output*/ return new String[] {"http://hl7.org/fhir/tools/StructureDefinition/TestCases@TestCases.suite.resource"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1703,7 +2238,7 @@ public class TestCases extends Resource implements ICompositeType {
           throw new FHIRException("Cannot call addChild on a singleton property TestCases.suite.test.mode");
         }
         else if (name.equals("parameter")) {
-          throw new FHIRException("Cannot call addChild on an abstract type TestCases.suite.test.parameter");
+          return addParameter();
         }
         else if (name.equals("input")) {
           return addInput();
@@ -1728,18 +2263,18 @@ public class TestCases extends Resource implements ICompositeType {
         dst.operation = operation == null ? null : operation.copy();
         dst.mode = mode == null ? null : mode.copy();
         if (parameter != null) {
-          dst.parameter = new ArrayList<TestCasesSuiteTestParameterComponent>();
-          for (TestCasesSuiteTestParameterComponent i : parameter)
+          dst.parameter = new ArrayList<TestCasesSuiteParameterComponent>();
+          for (TestCasesSuiteParameterComponent i : parameter)
             dst.parameter.add(i.copy());
         };
         if (input != null) {
-          dst.input = new ArrayList<TestCasesSuiteSetupComponent>();
-          for (TestCasesSuiteSetupComponent i : input)
+          dst.input = new ArrayList<TestCasesSuiteResourceComponent>();
+          for (TestCasesSuiteResourceComponent i : input)
             dst.input.add(i.copy());
         };
         if (output != null) {
-          dst.output = new ArrayList<TestCasesSuiteSetupComponent>();
-          for (TestCasesSuiteSetupComponent i : output)
+          dst.output = new ArrayList<TestCasesSuiteResourceComponent>();
+          for (TestCasesSuiteResourceComponent i : output)
             dst.output.add(i.copy());
         };
       }
@@ -1777,460 +2312,33 @@ public class TestCases extends Resource implements ICompositeType {
 
   }
 
+  public String getParameterStr(String name) {
+    for (TestCasesSuiteParameterComponent p : getParameter()) {
+      if (name.equals(p.getName())) {
+        return p.getValue().primitiveValue();
+      }
+    }
+
+    return null;
   }
 
-    @Block()
-    public static class TestCasesSuiteTestParameterComponent extends LogicalBase {
-        /**
-         * Name of parameter
-         */
-        @Child(name = "name", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Name of parameter", formalDefinition="Name of parameter" )
-        protected StringType name;
-
-        /**
-         * The value of the parameter
-         */
-        @Child(name = "value", type = {StringType.class, BooleanType.class, IntegerType.class, DecimalType.class, DateTimeType.class, UriType.class, Coding.class, Quantity.class}, order=2, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Value of this parameter", formalDefinition="The value of the parameter" )
-        protected DataType value;
-
-        /**
-         * If this mode is not passed to the runner, then this parameter will not be used
-         */
-        @Child(name = "mode", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="A mode that must be true for this parameter to be used", formalDefinition="If this mode is not passed to the runner, then this parameter will not be used" )
-        protected CodeType mode;
-
-        private static final long serialVersionUID = -410765611L;
-
-    /**
-     * Constructor
-     */
-      public TestCasesSuiteTestParameterComponent() {
-        super();
+  public DataType getParameter(String name) {
+    for (TestCasesSuiteParameterComponent p : getParameter()) {
+      if (name.equals(p.getName())) {
+        return p.getValue();
       }
+    }
 
-    /**
-     * Constructor
-     */
-      public TestCasesSuiteTestParameterComponent(String name, DataType value) {
-        super();
-        this.setName(name);
-        this.setValue(value);
+    return null;
+  }
+
+  public TestCasesSuiteResourceComponent getInput(String name) {
+    for (TestCasesSuiteResourceComponent input : getInput()) {
+      if (name.equals(input.getName())) {
+        return input;
       }
-
-        /**
-         * @return {@link #name} (Name of parameter). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-         */
-        public StringType getNameElement() { 
-          if (this.name == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TestCasesSuiteTestParameterComponent.name");
-            else if (Configuration.doAutoCreate())
-              this.name = new StringType(); // bb
-          return this.name;
-        }
-
-        public boolean hasNameElement() { 
-          return this.name != null && !this.name.isEmpty();
-        }
-
-        public boolean hasName() { 
-          return this.name != null && !this.name.isEmpty();
-        }
-
-        /**
-         * @param value {@link #name} (Name of parameter). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-         */
-        public TestCasesSuiteTestParameterComponent setNameElement(StringType value) { 
-          this.name = value;
-          return this;
-        }
-
-        /**
-         * @return Name of parameter
-         */
-        public String getName() { 
-          return this.name == null ? null : this.name.getValue();
-        }
-
-        /**
-         * @param value Name of parameter
-         */
-        public TestCasesSuiteTestParameterComponent setName(String value) { 
-            if (this.name == null)
-              this.name = new StringType();
-            this.name.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #value} (The value of the parameter)
-         */
-        public DataType getValue() { 
-          return this.value;
-        }
-
-        /**
-         * @return {@link #value} (The value of the parameter)
-         */
-        public StringType getValueStringType() throws FHIRException { 
-          if (this.value == null)
-            this.value = new StringType();
-          if (!(this.value instanceof StringType))
-            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (StringType) this.value;
-        }
-
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
-        }
-
-        /**
-         * @return {@link #value} (The value of the parameter)
-         */
-        public BooleanType getValueBooleanType() throws FHIRException { 
-          if (this.value == null)
-            this.value = new BooleanType();
-          if (!(this.value instanceof BooleanType))
-            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (BooleanType) this.value;
-        }
-
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
-        }
-
-        /**
-         * @return {@link #value} (The value of the parameter)
-         */
-        public IntegerType getValueIntegerType() throws FHIRException { 
-          if (this.value == null)
-            this.value = new IntegerType();
-          if (!(this.value instanceof IntegerType))
-            throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (IntegerType) this.value;
-        }
-
-        public boolean hasValueIntegerType() { 
-          return this != null && this.value instanceof IntegerType;
-        }
-
-        /**
-         * @return {@link #value} (The value of the parameter)
-         */
-        public DecimalType getValueDecimalType() throws FHIRException { 
-          if (this.value == null)
-            this.value = new DecimalType();
-          if (!(this.value instanceof DecimalType))
-            throw new FHIRException("Type mismatch: the type DecimalType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (DecimalType) this.value;
-        }
-
-        public boolean hasValueDecimalType() { 
-          return this != null && this.value instanceof DecimalType;
-        }
-
-        /**
-         * @return {@link #value} (The value of the parameter)
-         */
-        public DateTimeType getValueDateTimeType() throws FHIRException { 
-          if (this.value == null)
-            this.value = new DateTimeType();
-          if (!(this.value instanceof DateTimeType))
-            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (DateTimeType) this.value;
-        }
-
-        public boolean hasValueDateTimeType() { 
-          return this != null && this.value instanceof DateTimeType;
-        }
-
-        /**
-         * @return {@link #value} (The value of the parameter)
-         */
-        public UriType getValueUriType() throws FHIRException { 
-          if (this.value == null)
-            this.value = new UriType();
-          if (!(this.value instanceof UriType))
-            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (UriType) this.value;
-        }
-
-        public boolean hasValueUriType() { 
-          return this != null && this.value instanceof UriType;
-        }
-
-        /**
-         * @return {@link #value} (The value of the parameter)
-         */
-        public Coding getValueCoding() throws FHIRException { 
-          if (this.value == null)
-            this.value = new Coding();
-          if (!(this.value instanceof Coding))
-            throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (Coding) this.value;
-        }
-
-        public boolean hasValueCoding() { 
-          return this != null && this.value instanceof Coding;
-        }
-
-        /**
-         * @return {@link #value} (The value of the parameter)
-         */
-        public Quantity getValueQuantity() throws FHIRException { 
-          if (this.value == null)
-            this.value = new Quantity();
-          if (!(this.value instanceof Quantity))
-            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (Quantity) this.value;
-        }
-
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
-        }
-
-        public boolean hasValue() { 
-          return this.value != null && !this.value.isEmpty();
-        }
-
-        /**
-         * @param value {@link #value} (The value of the parameter)
-         */
-        public TestCasesSuiteTestParameterComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof DecimalType || value instanceof DateTimeType || value instanceof UriType || value instanceof Coding || value instanceof Quantity))
-            throw new FHIRException("Not the right type for TestCases.suite.test.parameter.value[x]: "+value.fhirType());
-          this.value = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #mode} (If this mode is not passed to the runner, then this parameter will not be used). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
-         */
-        public CodeType getModeElement() { 
-          if (this.mode == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create TestCasesSuiteTestParameterComponent.mode");
-            else if (Configuration.doAutoCreate())
-              this.mode = new CodeType(); // bb
-          return this.mode;
-        }
-
-        public boolean hasModeElement() { 
-          return this.mode != null && !this.mode.isEmpty();
-        }
-
-        public boolean hasMode() { 
-          return this.mode != null && !this.mode.isEmpty();
-        }
-
-        /**
-         * @param value {@link #mode} (If this mode is not passed to the runner, then this parameter will not be used). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
-         */
-        public TestCasesSuiteTestParameterComponent setModeElement(CodeType value) { 
-          this.mode = value;
-          return this;
-        }
-
-        /**
-         * @return If this mode is not passed to the runner, then this parameter will not be used
-         */
-        public String getMode() { 
-          return this.mode == null ? null : this.mode.getValue();
-        }
-
-        /**
-         * @param value If this mode is not passed to the runner, then this parameter will not be used
-         */
-        public TestCasesSuiteTestParameterComponent setMode(String value) { 
-          if (Utilities.noString(value))
-            this.mode = null;
-          else {
-            if (this.mode == null)
-              this.mode = new CodeType();
-            this.mode.setValue(value);
-          }
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("name", "string", "Name of parameter", 0, 1, name));
-          children.add(new Property("value[x]", "string|boolean|integer|decimal|dateTime|uri|Coding|Quantity", "The value of the parameter", 0, 1, value));
-          children.add(new Property("mode", "code", "If this mode is not passed to the runner, then this parameter will not be used", 0, 1, mode));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case 3373707: /*name*/  return new Property("name", "string", "Name of parameter", 0, 1, name);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "string|boolean|integer|decimal|dateTime|uri|Coding|Quantity", "The value of the parameter", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "string|boolean|integer|decimal|dateTime|uri|Coding|Quantity", "The value of the parameter", 0, 1, value);
-          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "The value of the parameter", 0, 1, value);
-          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of the parameter", 0, 1, value);
-          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "The value of the parameter", 0, 1, value);
-          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "decimal", "The value of the parameter", 0, 1, value);
-          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "The value of the parameter", 0, 1, value);
-          case -1410172357: /*valueUri*/  return new Property("value[x]", "uri", "The value of the parameter", 0, 1, value);
-          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "The value of the parameter", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The value of the parameter", 0, 1, value);
-          case 3357091: /*mode*/  return new Property("mode", "code", "If this mode is not passed to the runner, then this parameter will not be used", 0, 1, mode);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
-        case 3357091: /*mode*/ return this.mode == null ? new Base[0] : new Base[] {this.mode}; // CodeType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 3373707: // name
-          this.name = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 111972721: // value
-          this.value = TypeConvertor.castToType(value); // DataType
-          return value;
-        case 3357091: // mode
-          this.mode = TypeConvertor.castToCode(value); // CodeType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("name")) {
-          this.name = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("value[x]")) {
-          this.value = TypeConvertor.castToType(value); // DataType
-        } else if (name.equals("mode")) {
-          this.mode = TypeConvertor.castToCode(value); // CodeType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3373707:  return getNameElement();
-        case -1410166417:  return getValue();
-        case 111972721:  return getValue();
-        case 3357091:  return getModeElement();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3373707: /*name*/ return new String[] {"string"};
-        case 111972721: /*value*/ return new String[] {"string", "boolean", "integer", "decimal", "dateTime", "uri", "Coding", "Quantity"};
-        case 3357091: /*mode*/ return new String[] {"code"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestCases.suite.test.parameter.name");
-        }
-        else if (name.equals("valueString")) {
-          this.value = new StringType();
-          return this.value;
-        }
-        else if (name.equals("valueBoolean")) {
-          this.value = new BooleanType();
-          return this.value;
-        }
-        else if (name.equals("valueInteger")) {
-          this.value = new IntegerType();
-          return this.value;
-        }
-        else if (name.equals("valueDecimal")) {
-          this.value = new DecimalType();
-          return this.value;
-        }
-        else if (name.equals("valueDateTime")) {
-          this.value = new DateTimeType();
-          return this.value;
-        }
-        else if (name.equals("valueUri")) {
-          this.value = new UriType();
-          return this.value;
-        }
-        else if (name.equals("valueCoding")) {
-          this.value = new Coding();
-          return this.value;
-        }
-        else if (name.equals("valueQuantity")) {
-          this.value = new Quantity();
-          return this.value;
-        }
-        else if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestCases.suite.test.parameter.mode");
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public TestCasesSuiteTestParameterComponent copy() {
-        TestCasesSuiteTestParameterComponent dst = new TestCasesSuiteTestParameterComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(TestCasesSuiteTestParameterComponent dst) {
-        super.copyValues(dst);
-        dst.name = name == null ? null : name.copy();
-        dst.value = value == null ? null : value.copy();
-        dst.mode = mode == null ? null : mode.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof TestCasesSuiteTestParameterComponent))
-          return false;
-        TestCasesSuiteTestParameterComponent o = (TestCasesSuiteTestParameterComponent) other_;
-        return compareDeep(name, o.name, true) && compareDeep(value, o.value, true) && compareDeep(mode, o.mode, true)
-          ;
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof TestCasesSuiteTestParameterComponent))
-          return false;
-        TestCasesSuiteTestParameterComponent o = (TestCasesSuiteTestParameterComponent) other_;
-        return compareValues(name, o.name, true) && compareValues(mode, o.mode, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, value, mode);
-      }
-
-  public String fhirType() {
-    return "TestCases.suite.test.parameter";
-
+    }
+    return null;
   }
 
   }

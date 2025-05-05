@@ -123,7 +123,7 @@ public class JsonResourceTemplateFixer {
       checkJsonPrimitive(parent, name, value.asString());
     } else {
       // ignore?
-      System.out.println("What?");
+      // System.out.println("What?");
     }
   }
 

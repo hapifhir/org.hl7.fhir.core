@@ -1600,6 +1600,23 @@ public String toString() {
       return this;
     }
 
+    public Parameters setParameter(ParametersParameterComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.parameter == null)
+        this.parameter = new ArrayList<ParametersParameterComponent>();
+      ParametersParameterComponent p = getParameter(t.getName());
+      if (p == null) {
+        this.parameter.add(t);
+      } else {
+        p.setValue(t.getValue());
+        p.setResource(t.getResource());
+        p.getPart().clear();
+        p.getPart().addAll(t.getPart());
+      }
+      return this;
+    }
+
     /**
      * @return The first repetition of repeating field {@link #parameter}, creating it if it does not already exist {3}
      */

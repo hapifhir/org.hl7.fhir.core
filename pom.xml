@@ -14,7 +14,7 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.5.16-SNAPSHOT</version>
+    <version>6.5.21-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -23,7 +23,7 @@
         <commons_io_version>2.17.0</commons_io_version>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.7.14-SNAPSHOT</validator_test_case_version>
+        <validator_test_case_version>1.7.19</validator_test_case_version>
         <jackson_version>2.17.0</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
@@ -33,7 +33,7 @@
         <jacoco_version>0.8.12</jacoco_version>
         <lombok_version>1.18.32</lombok_version>
         <byte_buddy_version>1.14.8</byte_buddy_version>
-        <apache_poi_version>5.2.1</apache_poi_version>
+        <apache_poi_version>5.4.1</apache_poi_version>
         <saxon_he_version>11.6</saxon_he_version>
         <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.source>11</maven.compiler.source>
@@ -187,7 +187,7 @@
             <dependency>
                 <groupId>org.fhir</groupId>
                 <artifactId>ucum</artifactId>
-                <version>1.0.9</version>
+                <version>1.0.10</version>
             </dependency>
 
             <!-- Apache POI -->
@@ -340,6 +340,10 @@
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco_version}</version>
                     <configuration>
+                        <includes>
+                            <include>org/hl7/fhir/**/*</include>
+                        </includes>
+
                         <excludes>
                             <!-- These are auto-generated files that will exceed the JVM limit on file size.
                                  If these are not excluded Jacoco complains and won't run the validator tests. -->

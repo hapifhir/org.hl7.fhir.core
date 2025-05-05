@@ -198,9 +198,6 @@ public class JsonParser extends ParserBase {
   }
   
   public Element parse(List<ValidationMessage> errors, JsonObject object, String statedPath) throws FHIRException {
-    if (object == null) {
-      System.out.println("What?");
-    }
     StructureDefinition sd = resolveLogical(object);
     String name;
     String path;      

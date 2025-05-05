@@ -214,8 +214,14 @@ public class TerminologyCache {
     public String getNameForSystem(String system) {
       final int lastPipe = system.lastIndexOf('|');
       final String systemBaseName = lastPipe == -1 ? system : system.substring(0,lastPipe);
-      final String systemVersion = lastPipe == -1 ? null : system.substring(lastPipe + 1);
+      String systemVersion = lastPipe == -1 ? null : system.substring(lastPipe + 1);
 
+      if (systemVersion != null) {
+        if (systemVersion.startsWith("http://snomed.info/sct/")) {
+          systemVersion = systemVersion.substring(23);
+        }
+        systemVersion = systemVersion.replace(":", "").replace("/", "").replace("\\", "").replace("?", "").replace("$", "").replace("*", "").replace("#", "").replace("%", "");
+      }
       if (systemBaseName.equals(SNOMED_SCT_CODESYSTEM_URL))
         return getVersionedSystem("snomed", systemVersion);
       if (systemBaseName.equals(RXNORM_CODESYSTEM_URL))

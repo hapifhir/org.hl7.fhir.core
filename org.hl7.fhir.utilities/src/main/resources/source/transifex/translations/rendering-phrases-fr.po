@@ -616,7 +616,7 @@ msgstr ""
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
-msgid "This code system <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
+msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
 msgstr ""
 
 # CODESYSTEM_DEPRECATED
@@ -3820,7 +3820,7 @@ msgstr ""
 
 # STRUC_DEF_PROF_COMP
 #: STRUC_DEF_PROF_COMP
-msgid "This profile compiles with the profile"
+msgid "This profile complies with the profile"
 msgstr ""
 
 # STRUC_DEF_PROF_REQ
@@ -4202,6 +4202,11 @@ msgstr ""
 # SUB_TOPIC_INT
 #: SUB_TOPIC_INT
 msgid "Interactions"
+msgstr ""
+
+# SUB_TOPIC_CURR
+#: SUB_TOPIC_CURR
+msgid "* current = {0}"
 msgstr ""
 
 # SUB_TOPIC_PREV
@@ -4645,7 +4650,7 @@ msgstr "Inactif"
 # VALUE_SET_INC
 #: VALUE_SET_INC
 msgid "Include"
-msgstr ""
+msgstr "Inclut"
 
 # VALUE_SET_INCLUDED_INTO
 #: VALUE_SET_INCLUDED_INTO
@@ -4737,6 +4742,11 @@ msgstr "L'expension de ce jeu de valeurs (ValueSet) contient {0} concepts."
 msgid "New Zealand Edition"
 msgstr ""
 
+# VALUE_SET_OTHER_DISPLAY
+#: VALUE_SET_OTHER_DISPLAY
+msgid "Other Display ({0})"
+msgstr ""
+
 # VALUE_SET_REGEX
 #: VALUE_SET_REGEX
 msgid "matches (by regex)"
@@ -4795,7 +4805,7 @@ msgstr "Système"
 # VALUE_SET_THESE_CODES_DEF
 #: VALUE_SET_THESE_CODES_DEF
 msgid "these codes as defined in"
-msgstr "ces codes sont définis dans"
+msgstr "les codes sont définis dans"
 
 # VALUE_SET_TOO_COSTLY
 #: VALUE_SET_TOO_COSTLY

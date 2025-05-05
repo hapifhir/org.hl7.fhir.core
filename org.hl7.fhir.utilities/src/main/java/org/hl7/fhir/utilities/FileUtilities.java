@@ -518,4 +518,19 @@ public class FileUtilities {
     return cleanName.toString();
   }
 
+  public static void copyFiles(String source, String dest, String... extensions) throws IOException {
+    for (File f : new File(source).listFiles()) {
+      boolean copy = false;
+      for (String e : extensions) {
+        if (f.getName().endsWith(e)) {
+          copy = true;
+        }
+      }
+      if (copy) {
+        FileUtilities.copyFile(f.getAbsolutePath(), Utilities.path(dest, f.getName()));
+      }
+    }
+    
+  }
+
 }
