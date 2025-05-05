@@ -70,6 +70,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     
   }
 
+  private StringBuilder register = new StringBuilder();
   private StringBuilder parser = new StringBuilder();
   private StringBuilder pregt = new StringBuilder();
   private StringBuilder pregt2 = new StringBuilder();
@@ -84,11 +85,12 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private StringBuilder cregti = new StringBuilder();
   private List<TypeSpecifier> typeSpecifiers  = new ArrayList<>();
   FHIRPathEngine fpe;
+  private String jname;
 
-  public JavaParserJsonGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String packageName) throws UnsupportedEncodingException {
+  public JavaParserJsonGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String packageName, String jname) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, packageName);
     fpe = new FHIRPathEngine(definitions.getContext());
-    
+    this.jname = jname;
   }
 
   public void seeClass(Analysis analysis) throws Exception {
@@ -117,7 +119,9 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
 
+    template = template.replace("{{jname}}", jname);
     template = template.replace("{{parser}}", parser.toString());
+    template = template.replace("{{register}}", register.toString());
     template = template.replace("{{parse-resource}}", pregf.toString());
     template = template.replace("{{parse-type-pfx}}", pregt.toString());
     template = template.replace("{{parse-type}}", pregt2.toString());
@@ -149,6 +153,12 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
 
   private void generateParser(Analysis analysis) throws Exception {
 
+    if (analysis.getAncestor().getName().equals("Resource")) {
+      register.append("    org.hl7.fhir.r5.formats.JsonParser.customResourceHandlers.put(\""+analysis.getName()+"\", new "+jname+"JsonParserFactory());\r\n");
+      pregf.append("    } else if (t.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getClassName()+"(json);\r\n");
+      creg.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+analysis.getName()+"\", ("+analysis.getClassName()+")resource);\r\n");
+      cregn.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(name, ("+analysis.getClassName()+")resource);\r\n");
+    }
     if (analysis.isAbstract()) {
       genInnerAbstract(analysis);
     } else {
@@ -416,13 +426,14 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     composer.append("  protected void compose"+tn+"(String name, "+stn+" element) throws IOException {\r\n");
     composer.append("    if (element != null) {\r\n");
     boolean isResource = ti == analysis.getRootType() && analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE;
-    if (isResource) {
-      composer.append("      prop(\"resourceType\", name);\r\n");
+    if (ti.getAncestorName().equals("Resource")) {
+      composer.append("      prop(\"resourceType\", \""+analysis.getName()+"\");\r\n");
     } else {
-      composer.append("      open(name);\r\n");
+      composer.append("      open(name);\r\n");      
     }
+
     composer.append("      compose"+upFirst(tn).replace(".", "")+"Properties(element);\r\n");
-    if (!isResource) {
+    if (!ti.getAncestorName().equals("Resource")) {
       composer.append("      close();\r\n");
     }
     composer.append("    }\r\n");

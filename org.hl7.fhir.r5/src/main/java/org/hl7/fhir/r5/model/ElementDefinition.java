@@ -13107,6 +13107,9 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
   }
 
   public boolean unbounded() {
+    if (getMax() == null) {
+      throw new Error("No max on "+getPath());
+    }
     return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
   }
 
@@ -13152,6 +13155,27 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
 
   public String getIdOrPath() {
     return hasId() ? getId() : getPath();
+  }
+
+  public int getMaxAsInt() {
+    return "*".equals(getMax()) ? Integer.MAX_VALUE : Integer.parseInt(getMax());
+  }
+
+  public TypeRefComponent getByType(String code) {
+    for (TypeRefComponent tr : getType()) {
+      if (tr.getWorkingCode().equals(code)) {
+        return tr;
+      }
+    }
+    return null;
+  }
+
+  public boolean hasObligations() {
+    boolean res = hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE);
+    for (TypeRefComponent tr : getType()) {
+      res = res || tr.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE);
+    }
+    return res;
   }
   
 // end addition

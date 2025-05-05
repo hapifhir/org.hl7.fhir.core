@@ -76,17 +76,15 @@ import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.hl7.fhir.validation.cli.utils.ValidationLevel;
+import org.hl7.fhir.validation.service.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
@@ -321,10 +319,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return hint(errors, ruleDate, type, stack.line(), stack.col(), stack.getLiteralPath(),  thePass, msg, theMessageArguments);
   }
 
-  protected boolean slicingHint(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, String[] text) {
+  protected boolean slicingHint(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, List<ValidationMessage> info) {
     if (!thePass && doingHints()) {
       addValidationMessage(errors, ruleDate, type, line, col, path, msg, IssueSeverity.INFORMATION, null)
-           .setMessageId(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_).setSlicingHint(true).setSliceHtml(html, text).setCriticalSignpost(isCritical);
+           .setMessageId(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_).setSlicingHint(true).setSliceHtml(html, info).setCriticalSignpost(isCritical);
     }
     return thePass;
   }
@@ -335,10 +333,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean slicingHint(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, String[] text, List<ValidationMessage> sliceInfo,  String id) {
+  protected boolean slicingHint(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, List<ValidationMessage> info, String id) {
     if (!thePass && doingHints()) {
       addValidationMessage(errors, ruleDate, type, line, col, path, msg, IssueSeverity.INFORMATION, id)
-      .setMessageId(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_).setSlicingHint(true).setSliceHtml(html, text).setCriticalSignpost(isCritical).setSliceInfo(sliceInfo);
+      .setMessageId(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_).setSlicingHint(true).setSliceHtml(html, info).setCriticalSignpost(isCritical);
     }
     return thePass;
   }
@@ -528,6 +526,14 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   public boolean rule(List<ValidationMessage> errors, String ruleDate, Source source, IssueType type, String path, boolean thePass, String msg) {
     if (!thePass && doingErrors()) {
       addValidationMessage(errors, ruleDate, type, -1, -1, path, msg, IssueSeverity.ERROR, source, null);
+    }
+    return thePass;
+  }
+
+  protected boolean rule(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, List<ValidationMessage> details, String theMessage, Object... theMessageArguments) {
+    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage)) {
+      String message = context.formatMessage(theMessage, theMessageArguments);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage).setSliceInfo(details);
     }
     return thePass;
   }
@@ -792,6 +798,14 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
       String message = context.formatMessage(msg, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.WARNING, msg);
+    }
+    return thePass;
+  }
+
+  protected boolean warning(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, List<ValidationMessage> details, String msg, Object... theMessageArguments) {
+    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
+      String message = context.formatMessage(msg, theMessageArguments);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.WARNING, msg).setSliceInfo(details);
     }
     return thePass;
   }
@@ -1515,7 +1529,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   protected boolean isExampleUrl(String url) {
-    return Utilities.containsInList(url, "example.org", "acme.com", "acme.org");    
+    return 
+        Utilities.containsInList(url, "example.org/", "acme.com/", "acme.org/", "example.com/", "example.net/") ||
+        Utilities.endsWithInList(url, "example.org", "acme.com", "acme.org", "example.com", "example.net") ||
+        url.startsWith("urn:oid:1.3.6.1.4.1.32473.");    
   }
   
   protected boolean checkDefinitionStatus(List<ValidationMessage> errors, Element element, String path, StructureDefinition ex, CanonicalResource source, String type) {

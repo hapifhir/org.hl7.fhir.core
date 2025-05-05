@@ -30,6 +30,7 @@ import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.OIDUtilities;
@@ -508,6 +509,35 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       }
     }
     return res;
+  }
+
+  public <T extends Resource> List<T> fetchByIdentifier(Class<T> class_, String system) {
+    List<T> list = new ArrayList<>();
+    for (T t : context.fetchResourcesByType(class_)) {
+      if (t instanceof CanonicalResource) {
+        CanonicalResource cr = (CanonicalResource) t;
+        for (Identifier id : cr.getIdentifier()) {
+          if (system.equals(id.getValue())) {
+            list.add(t);
+          }
+        }
+      }
+    }
+    return list;
+  }
+
+  public StructureDefinition fetchStructureByName(String name) {
+    StructureDefinition sd = null;
+    for (StructureDefinition t : context.fetchResourcesByType(StructureDefinition.class)) {
+      if (name.equals(t.getName())) {
+        if (sd == null) {
+          sd = t;
+        } else {
+          throw new FHIRException("Duplicate Structure name "+name+": found both "+t.getVersionedUrl()+" and "+sd.getVersionedUrl());
+        }
+      }
+    }
+    return sd;
   }
 
 }

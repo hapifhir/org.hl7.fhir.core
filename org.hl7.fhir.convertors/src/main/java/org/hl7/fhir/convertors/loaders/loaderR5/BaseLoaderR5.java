@@ -1,8 +1,8 @@
 package org.hl7.fhir.convertors.loaders.loaderR5;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
@@ -38,11 +38,11 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
   protected final String URL_ELEMENT_DEF_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
   protected boolean patchUrls;
   @Getter @Setter protected boolean killPrimitives;
-  @Getter protected List<String> types = new ArrayList<>();
+  @Getter protected Set<String> types = new HashSet<>();
   protected ILoaderKnowledgeProviderR5 lkp;
   private boolean loadProfiles = true;
 
-  public BaseLoaderR5(List<String> types, ILoaderKnowledgeProviderR5 lkp) {
+  public BaseLoaderR5(Set<String> types, ILoaderKnowledgeProviderR5 lkp) {
     super();
     this.types.addAll(types);
     this.lkp = lkp;

@@ -4,17 +4,19 @@ import java.util.List;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 public class ElementInfo {
 
-  public List<ValidationMessage> sliceInfo;
-  public int index; // order of definition in overall order. all slices get the index of the slicing definition
-  public int sliceindex; // order of the definition in the slices (if slice != null)
-  public int count;
-  public ElementDefinition definition;
-  public ElementDefinition slice;
-  public boolean additionalSlice; // If true, indicates that this element is an additional slice
+  private List<ValidationMessage> sliceInfo;
+  private int index; // order of definition in overall order. all slices get the index of the slicing definition
+  private int sliceindex; // order of the definition in the slices (if slice != null)
+  private int count;
+  private StructureDefinition structure;
+  private ElementDefinition definition;
+  private ElementDefinition slice;
+  private boolean additionalSlice; // If true, indicates that this element is an additional slice
   private Element element;
   private String name;
   private String path;
@@ -66,7 +68,12 @@ public class ElementInfo {
     return definition;
   }
 
-  public ElementInfo setDefinition(ElementDefinition definition) {
+  public StructureDefinition getStructure() {
+    return structure;
+  }
+
+  public ElementInfo setDefinition(StructureDefinition sd, ElementDefinition definition) {
+    this.structure = sd;
     this.definition = definition;
     return this;
   }
@@ -123,4 +130,6 @@ public class ElementInfo {
   public String toString() {
     return path;
   }
+  
+  
 }

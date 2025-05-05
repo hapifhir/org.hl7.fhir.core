@@ -110,6 +110,10 @@ public class NPMPackageGenerator {
   private BufferedOutputStream bufferedOutputStream;
   private GzipCompressorOutputStream gzipOutputStream;
   private JsonObject packageJ;
+  public JsonObject getPackageJ() {
+    return packageJ;
+  }
+
   private JsonObject packageManifest;
   private NpmPackageIndexBuilder indexer;
   private String igVersion;

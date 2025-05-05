@@ -415,7 +415,7 @@ public class LanguageUtils {
   }
 
   public static boolean langsMatch(String dstLang, String srcLang) {
-    return dstLang == null || srcLang == null ? false : dstLang.startsWith(srcLang) || "*".equals(srcLang);
+    return dstLang == null || srcLang == null ? Utilities.existsInList(srcLang, "en", "en-US") : dstLang.startsWith(srcLang) || "*".equals(srcLang);
   }
 
   public void fillSupplement(CodeSystem csSrc, CodeSystem csDst, List<TranslationUnit> list) {

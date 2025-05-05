@@ -144,7 +144,7 @@ public class FHIRLexer {
     skipWhitespaceAndComments();
     current = null;
     currentStart = cursor;
-    currentStartLocation = currentLocation;
+    currentStartLocation = currentLocation.copy();
     if (cursor < source.length()) {
       char ch = source.charAt(cursor);
       if (ch == '!' || ch == '>' || ch == '<' || ch == ':' || ch == '-' || ch == '=')  {
@@ -282,6 +282,7 @@ public class FHIRLexer {
         current = source.substring(currentStart, cursor);
       }
     }
+    currentLocation.incColumn(cursor - currentStart);
   }
 
   private void skipWhitespaceAndComments() {
@@ -297,6 +298,7 @@ public class FHIRLexer {
         int start = cursor+2;
         while (cursor < source.length() && !((source.charAt(cursor) == '\r') || source.charAt(cursor) == '\n')) { 
           cursor++;        
+          currentLocation.incColumn();
         }
         comments.add(source.substring(start, cursor).trim());
       } else if (cursor < source.length() - 1 && "/*".equals(source.substring(cursor, cursor+2))) {
@@ -307,16 +309,20 @@ public class FHIRLexer {
         while (cursor < source.length() - 1 && !"*/".equals(source.substring(cursor, cursor+2))) { 
           last13 = currentLocation.checkChar(source.charAt(cursor), last13);
           cursor++;        
+          currentLocation.incColumn();
         }
         if (cursor >= source.length() -1) {
           error("Unfinished comment");
         } else {
           comments.add(source.substring(start, cursor).trim());
           cursor = cursor + 2;
+          currentLocation.incColumn(2);
         }
       } else if (Utilities.isWhitespace(source.charAt(cursor))) {
         last13 = currentLocation.checkChar(source.charAt(cursor), last13);
         cursor++;
+        // checkChar increments the position
+        // currentLocation.incColumn();
       } else {
         done = true;
       }

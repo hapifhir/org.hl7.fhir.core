@@ -15,6 +15,8 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.CSVReader;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -206,7 +208,7 @@ public class MappingAssistant {
         switch (mappingMergeMode) {
         case APPEND:
           if (!Utilities.splitStrings(d.getMap(), "\\,").contains(s.getMap())) {
-            d.setMap(d.getMap()+","+s.getMap());
+            d.setMap(mergeMaps(d.getMap(), s.getMap()));
           }
           return true;
         case DUPLICATE:
@@ -225,6 +227,21 @@ public class MappingAssistant {
     } else {
       return false;
     }
+  }
+
+  private String mergeMaps(String map, String map2) {
+    List<String> csv1 = CSVReader.splitString(map);
+    List<String> csv2 = CSVReader.splitString(map2);
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(",");
+    for (String s : csv1) {
+      b.append(s);
+    }
+    for (String s : csv2) {
+      if (!csv1.contains(s)) {
+        b.append(s);
+      }
+    }
+    return b.toString();
   }
   
 }

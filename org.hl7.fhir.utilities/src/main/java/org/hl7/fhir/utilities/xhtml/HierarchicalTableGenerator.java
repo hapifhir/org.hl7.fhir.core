@@ -820,7 +820,8 @@ public class HierarchicalTableGenerator {
     checkModel(model);
     XhtmlNode table = new XhtmlNode(NodeType.Element, "table").setAttribute("border", Integer.toString(border)).setAttribute("cellspacing", "0").setAttribute("cellpadding", "0");
     if (model.active) {
-      table.setAttribute("fhir", "generated-heirarchy");
+      table.setAttribute("fhir", "generated-heirarchy"); // deprecated - will be removed once everyone has dealt with the change
+      table.setAttribute("data-fhir", "generated-heirarchy");
     }
     if (model.isActive()) {      
       table.setAttribute("id", model.getId());
@@ -833,7 +834,8 @@ public class HierarchicalTableGenerator {
     if (model.isShowHeadings()) {
       XhtmlNode tr = table.addTag("tr");
       if (model.active) {
-        tr.setAttribute("fhir", "generated-heirarchy");
+        tr.setAttribute("fhir", "generated-heirarchy"); // deprecated - will be removed once everyone has dealt with the change
+        tr.setAttribute("data-fhir", "generated-heirarchy");
       }
       tr.setAttribute("style", "border: " + Integer.toString(1 + border) + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top");
       XhtmlNode tc = null;
@@ -845,7 +847,8 @@ public class HierarchicalTableGenerator {
       if (tc != null && model.getDocoRef() != null) {
         XhtmlNode a = tc.addTag("span").setAttribute("style", "float: right").addTag("a").setAttribute("title", "Legend for this format").setAttribute("href", model.getDocoRef());
         if (mode == TableGenerationMode.XHTML) {
-          a.setAttribute("no-external", "true");
+          a.setAttribute("no-external", "true"); // deprecated - will be removed once everyone has dealt with the change
+          a.setAttribute("data-no-external", "true");
         }
         XhtmlNode img = a.addTag("img");
         img.setAttribute("alt", "doco").setAttribute("style", "background-color: inherit").setAttribute("src", model.getDocoImg());
@@ -861,7 +864,8 @@ public class HierarchicalTableGenerator {
     if (model.getDocoRef() != null) {
       XhtmlNode tr = table.addTag("tr");
       if (model.active) {
-        tr.setAttribute("fhir", "generated-heirarchy");
+        tr.setAttribute("fhir", "generated-heirarchy"); // deprecated - will be removed once everyone has dealt with the change
+        tr.setAttribute("data-fhir", "generated-heirarchy");
       }
       XhtmlNode tc = tr.addTag("td");
       tc.setAttribute("class", "hierarchy");
@@ -882,7 +886,8 @@ public class HierarchicalTableGenerator {
     }
     XhtmlNode tr = table.addTag("tr");
     if (model.active) {
-      tr.setAttribute("fhir", "generated-heirarchy");
+      tr.setAttribute("fhir", "generated-heirarchy"); // deprecated - will be removed once everyone has dealt with the change
+      tr.setAttribute("data-fhir", "generated-heirarchy");
     }
     
     String color = "white";
@@ -1017,7 +1022,8 @@ public class HierarchicalTableGenerator {
         XhtmlNode a = addStyle(itc.addTag("a"), p);
         a.setAttribute("href", prefixLocalHref(p.getReference()));
         if (mode == TableGenerationMode.XHTML && suppressExternals) {
-          a.setAttribute("no-external", "true");
+          a.setAttribute("no-external", "true"); // deprecated - will be removed once everyone has dealt with the change
+          a.setAttribute("data-no-external", "true");
         }
         if (!Utilities.noString(p.getHint()))
           a.setAttribute("title", p.getHint());
