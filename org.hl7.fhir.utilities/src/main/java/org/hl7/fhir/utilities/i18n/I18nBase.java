@@ -130,7 +130,7 @@ public abstract class I18nBase {
 
 
   protected Set<String> getPluralSuffixes() {
-    return Collections.unmodifiableSet(pluralRules.getKeywords());
+    return Collections.unmodifiableSet(getPluralRules().getKeywords());
   }
   
   protected String getRootKeyFromPlural(@Nonnull String pluralKey) {
