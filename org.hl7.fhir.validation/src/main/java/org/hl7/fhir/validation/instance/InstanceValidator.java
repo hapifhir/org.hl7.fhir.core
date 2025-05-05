@@ -7713,6 +7713,30 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return IdStatus.REQUIRED;
   }
 
+  private static class ExecutedConstraintCacheKey {
+    private String expression;
+    private ConstraintSeverity severity;
+
+    public ExecutedConstraintCacheKey(String fixedExpr, ConstraintSeverity severity) {
+      this.expression = fixedExpr;
+      this.severity = severity;
+    }
+
+    @Override
+    public int hashCode() {
+      return severity.hashCode() * (expression == null ? 0 : expression.hashCode());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null) return false;
+      if (this.getClass() != o.getClass()) return false;
+      ExecutedConstraintCacheKey otherKey = (ExecutedConstraintCacheKey) o;
+      return StringUtils.equals(expression, otherKey.expression) && severity == otherKey.severity;
+    }
+  }
+
   private boolean checkInvariants(ValidationContext valContext, List<ValidationMessage> errors, String path, StructureDefinition profile, ElementDefinition ed, String typename, String typeProfile, Element resource, Element element, boolean onlyNonInherited) throws FHIRException, FHIRException {
     if (noInvariantChecks) {
       return true;
@@ -7722,7 +7746,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
       if (inv.hasExpression() && (!onlyNonInherited || !inv.hasSource() || (!isInheritedProfile(profile, inv.getSource()) && !isInheritedProfile(ed.getType(), inv.getSource())) )) {
         @SuppressWarnings("unchecked")
-        Map<String, List<ValidationMessage>> invMap = executionId.equals(element.getUserString(EXECUTION_ID)) ? (Map<String, List<ValidationMessage>>) element.getUserData(EXECUTED_CONSTRAINT_LIST) : null;
+        Map<ExecutedConstraintCacheKey, List<ValidationMessage>> invMap = executionId.equals(element.getUserString(EXECUTION_ID)) ? (Map<ExecutedConstraintCacheKey, List<ValidationMessage>>) element.getUserData(EXECUTED_CONSTRAINT_LIST) : null;
         if (invMap == null) {
           invMap = new HashMap<>();
           element.setUserData(EXECUTED_CONSTRAINT_LIST, invMap);
@@ -7730,7 +7754,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         List<ValidationMessage> invErrors = null;
         // We key based on inv.expression rather than inv.key because expressions can change in derived profiles and aren't guaranteed to be consistent across profiles.
-        String key = FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey(), context.getVersion());
+        String fixedExpr = FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey(), context.getVersion());
+        ConstraintSeverity severity = inv.getSeverity();
+        ExecutedConstraintCacheKey key = new ExecutedConstraintCacheKey(fixedExpr, severity);
         if (!invMap.keySet().contains(key)) {
           invErrors = new ArrayList<ValidationMessage>();
           invMap.put(key, invErrors);
