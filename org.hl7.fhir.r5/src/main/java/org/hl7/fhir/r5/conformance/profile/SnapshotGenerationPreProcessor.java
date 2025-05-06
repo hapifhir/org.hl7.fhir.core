@@ -885,52 +885,57 @@ public class SnapshotGenerationPreProcessor {
   private List<ElementAnalysis> analysePath(ElementDefinition ed) {
     List<ElementAnalysis> res = new ArrayList<>();
     for (String pn : ed.getPath().split("\\.")) {
-      if (res.isEmpty()) {
-        StructureDefinition sd = context.fetchTypeDefinition(pn);
-        if (sd == null) {
-          String message = context.formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, pn, ed.getId());
-          throw new DefinitionException(message);
-        }
-        res.add(new ElementAnalysis(sd, sd.getSnapshot().getElementFirstRep(), null));
-      } else {
-        ElementAnalysis sed = res.get(res.size()-1);
-        sed.setChildren(utils.getChildMap(sed.getStructure(), sed.getElement(), true, sed.getType()));
-        ElementDefinition t = null;
-        String type = null;
-        for (ElementDefinition child : sed.getChildren().getList()) {
-          if (pn.equals(child.getName())) {
-            t = child;
-            break;
-          }
-          if (child.getName().endsWith("[x]")) {
-            String rn = child.getName().substring(0, child.getName().length()-3);
-            if (pn.startsWith(rn)) {
-              t = child;
-              String tn = pn.substring(rn.length());
-              if (TypesUtilities.isPrimitive(Utilities.uncapitalize(tn))) {
-                type = Utilities.uncapitalize(tn);
-              } else {
-                type = tn;
-              }
-              break;
-            }
-          }
-        }
-        if (t == null) {
-          String message = context.formatMessage(I18nConstants.UNKNOWN_PROPERTY, pn, ed.getPath());
-          throw new DefinitionException("Unknown path "+pn+" in path "+ed.getPath()+": "+message);          
-        } else {
-          res.add(new ElementAnalysis(sed.getChildren().getSource(), t, type));
-        }
-      }
+      analysePathSegment(ed, res, pn);
     }
     return res;
+  }
+
+  private void analysePathSegment(ElementDefinition ed, List<ElementAnalysis> res, String pn) {
+    if (res.isEmpty()) {
+      StructureDefinition sd = context.fetchTypeDefinition(pn);
+      if (sd == null) {
+        String message = context.formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, pn, ed.getId());
+        throw new DefinitionException(message);
+      }
+      res.add(new ElementAnalysis(sd, sd.getSnapshot().getElementFirstRep(), null));
+    } else {
+      ElementAnalysis sed = res.get(res.size()-1);
+      sed.setChildren(utils.getChildMap(sed.getStructure(), sed.getElement(), true, sed.getType()));
+      ElementDefinition t = null;
+      String type = null;
+      for (ElementDefinition child : sed.getChildren().getList()) {
+        if (pn.equals(child.getName())) {
+          t = child;
+          break;
+        }
+        if (child.getName().endsWith("[x]")) {
+          String rn = child.getName().substring(0, child.getName().length()-3);
+          if (pn.startsWith(rn)) {
+            t = child;
+            String tn = pn.substring(rn.length());
+            if (TypesUtilities.isPrimitive(Utilities.uncapitalize(tn))) {
+              type = Utilities.uncapitalize(tn);
+            } else {
+              type = tn;
+            }
+            break;
+          }
+        }
+      }
+      if (t == null) {
+        String message = context.formatMessage(I18nConstants.UNKNOWN_PROPERTY, pn, ed.getPath());
+        throw new DefinitionException("Unknown path "+pn+" in path "+ed.getPath()+": "+message);          
+      } else {
+        res.add(new ElementAnalysis(sed.getChildren().getSource(), t, type));
+      }
+    }
   }
 
   private int findEndOfSlice(List<ElementDefinition> elements, ElementDefinition slice) {
     for (int i = elements.indexOf(slice); i < elements.size(); i++) {
       ElementDefinition e = elements.get(i);
-      if (e.getPath().length() < slice.getPath().length() || (e.getPath().equals(slice.getPath()) && !slice.getSliceName().equals(e.getSliceName()))) {
+      if (!(e.getPath().startsWith(slice.getPath()+".") ||
+          (e.getPath().equals(slice.getPath()) && slice.getSliceName().equals(e.getSliceName())))) {
         return i-1;
       }
     }
