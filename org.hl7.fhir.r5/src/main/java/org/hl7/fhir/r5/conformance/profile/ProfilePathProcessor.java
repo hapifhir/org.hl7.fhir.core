@@ -12,17 +12,16 @@ import org.hl7.fhir.r5.conformance.ElementRedirection;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -1196,7 +1195,7 @@ public class ProfilePathProcessor {
       outcome.setUserData(UserDataNames.SNAPSHOT_auto_added_slicing, true);
     }
     
-    profileUtilities.markExtensions(outcome, false, cursors.baseSource);
+    ProfileUtilities.markExtensions(outcome, false, cursors.baseSource);
     debugCheck(outcome);
     addToResult(outcome);
 
@@ -1336,19 +1335,42 @@ public class ProfilePathProcessor {
         outcome.setMin(0); // we're in a slice, so it's only a mandatory if it's explicitly marked so
         if (!outcome.getPath().startsWith(cursors.resultPathBase))
           throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.ADDING_WRONG_PATH));
-        profileUtilities.markExtensions(outcome, false, sourceStructureDefinition);
+        ProfileUtilities.markExtensions(outcome, false, sourceStructureDefinition);
         debugCheck(outcome);
         addToResult(outcome);
         profileUtilities.updateFromDefinition(outcome, diffItem, getProfileName(), isTrimDifferential(), getUrl(), getSourceStructureDefinition(), getDerived(), diffPath(diffItem), mapHelper, false);
-        // --- LM Added this
-        cursors.diffCursor = getDifferential().getElement().indexOf(diffItem) + 1;
+        
+        // do we need to pick up constraints from the type?
+        List<String> profiles = new ArrayList<>();
+        for (TypeRefComponent tr : outcome.getType()) {
+          for (CanonicalType ct : tr.getProfile()) {
+            profiles.add(ct.getValueAsString());
+          }
+        }
+        if (profiles.size() == 1) {
+          StructureDefinition sdt = profileUtilities.getContext().fetchResource(StructureDefinition.class, profiles.get(0));
+          if (sdt != null) {
+            ElementDefinition edt = sdt.getSnapshot().getElementFirstRep();
+            if (edt.isMandatory() && !outcome.isMandatory()) {
+              outcome.setMin(edt.getMin());
+            }
+            if (!edt.repeats() && outcome.repeats()) {
+              outcome.setMax(edt.getMax());
+            }
+            // todo: should we consider other constraints?
+            // throw new Error("Not handled yet: "+sdt.getVersionedUrl()+" / "+outcome.getPath()+":"+outcome.getSliceName());
+          }
+        } else if (profiles.size() > 1) {
+          throw new Error("Not handled: multiple profiles at "+outcome.getPath()+":"+outcome.getSliceName()+": "+CommaSeparatedStringBuilder.join(",", profiles));          
+        }
+        cursors.diffCursor = getDifferential().getElement().indexOf(diffItem) + 1;        
         if ((!outcome.getType().isEmpty()) && (/*outcome.getType().get(0).getCode().equals("Extension") || */getDifferential().getElement().size() > cursors.diffCursor) && outcome.getPath().contains(".")/* && isDataType(outcome.getType())*/) {  // don't want to do this for the root, since that's base, and we're already processing it
           if (!profileUtilities.baseWalksInto(cursors.base.getElement(), cursors.baseCursor)) {
             if (getDifferential().getElement().size() > cursors.diffCursor && profileUtilities.pathStartsWith(getDifferential().getElement().get(cursors.diffCursor).getPath(), diffMatches.get(0).getPath() + ".")) {
               if (outcome.getType().size() > 1)
                 for (ElementDefinition.TypeRefComponent t : outcome.getType()) {
                   if (!t.getCode().equals("Reference"))
-                    throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, diffMatches.get(0).getPath(), getDifferential().getElement().get(cursors.diffCursor).getPath(), profileUtilities.typeCode(outcome.getType()), getProfileName()));
+                    throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, diffMatches.get(0).getPath(), getDifferential().getElement().get(cursors.diffCursor).getPath(), ProfileUtilities.typeCode(outcome.getType()), getProfileName()));
                 }
               ElementDefinition.TypeRefComponent t = outcome.getType().get(0);
               if (Utilities.existsInList(t.getCode(), "Base", "Element", "BackboneElement")) {
