@@ -750,7 +750,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     case "11000234105" : return context.formatPhrase(RenderingContext.VALUE_SET_AT);
     case "11000172109" : return context.formatPhrase(RenderingContext.VALUE_SET_BE);
     case "20621000087109" : return context.formatPhrase(RenderingContext.VALUE_SET_CA_EN);
-    case "20611000087101" : return context.formatPhrase(RenderingContext.VALUE_SET_CA_FR);
+    case "20611000087101" : return context.formatPhrase(RenderingContext.VALUE_SET_CA); // was FR but was repurposed
     case "554471000005108" : return context.formatPhrase(RenderingContext.VALUE_SET_DANISH);
     case "11000181102 " : return context.formatPhrase(RenderingContext.VALUE_SET_EE);
     case "11000229106" : return context.formatPhrase(RenderingContext.VALUE_SET_FI);
