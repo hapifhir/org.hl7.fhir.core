@@ -4210,6 +4210,11 @@ msgstr ""
 msgid "Interactions"
 msgstr ""
 
+# SUB_TOPIC_CURR
+#: SUB_TOPIC_CURR
+msgid "* current = {0}"
+msgstr ""
+
 # SUB_TOPIC_PREV
 #: SUB_TOPIC_PREV
 msgid "* previous = {0}"
