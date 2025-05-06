@@ -804,6 +804,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SUB_TOPIC_FILT_PAR = "SUB_TOPIC_FILT_PAR";
   public static final String SUB_TOPIC_INCL = "SUB_TOPIC_INCL";
   public static final String SUB_TOPIC_INT = "SUB_TOPIC_INT";
+  public static final String SUB_TOPIC_CURR = "SUB_TOPIC_CURR";
   public static final String SUB_TOPIC_PREV = "SUB_TOPIC_PREV";
   public static final String SUB_TOPIC_REQ = "SUB_TOPIC_REQ";
   public static final String SUB_TOPIC_RES_TRIG = "SUB_TOPIC_RES_TRIG";
