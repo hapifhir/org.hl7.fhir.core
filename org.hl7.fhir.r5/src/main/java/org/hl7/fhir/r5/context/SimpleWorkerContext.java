@@ -422,8 +422,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       if (log != null) {
         if (log.endsWith(".htm") || log.endsWith(".html")) {
           txLog = new HTMLClientLogger(log);
+        } else if (log.endsWith(".txt") || log.endsWith(".log")) {
+          txLog = new TextClientLogger(log);
         } else {
-          throw new IllegalArgumentException("Unknown extension for text file logging: \"" + log + "\" expected: .html or .htm");
+          throw new IllegalArgumentException("Unknown extension for text file logging: \"" + log + "\" expected: .html, .htm, .txt or .log");
         }
       }
       ITerminologyClient client = factory.makeClient("tx-server", ManagedWebAccess.makeSecureRef(address), software, txLog);
