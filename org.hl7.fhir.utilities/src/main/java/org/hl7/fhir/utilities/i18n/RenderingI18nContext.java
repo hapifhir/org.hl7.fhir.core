@@ -919,6 +919,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VALUE_SET_BE = "VALUE_SET_BE";
   public static final String VALUE_SET_CA_EN = "VALUE_SET_CA_EN";
   public static final String VALUE_SET_CA_FR = "VALUE_SET_CA_FR";
+  public static final String VALUE_SET_CA = "VALUE_SET_CA";
   public static final String VALUE_SET_EE = "VALUE_SET_EE";
   public static final String VALUE_SET_FI = "VALUE_SET_FI";
   public static final String VALUE_SET_DE = "VALUE_SET_DE";
