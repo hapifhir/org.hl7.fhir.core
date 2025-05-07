@@ -61,8 +61,8 @@ public class ImplicitValueSets {
       ValueSet vs = new ValueSet();
       vs.setUrl(url);
       vs.setStatus(PublicationStatus.ACTIVE);
-      vs.setName("LoincVS"+url.substring(21).replace("-",  ""));
-      vs.setTitle("Loinc Implicit ValueSet for "+url.substring(21));
+      vs.setName("LoincVS"+url.substring("http://loinc.org/vs/".length()).replace("-",  ""));
+      vs.setTitle("Loinc Implicit ValueSet for "+url.substring("http://loinc.org/vs/".length()));
       // todo: populate the compose fro the terminology server
       return vs;   
     } else if (url.equals("http://loinc.org/vs")) {
