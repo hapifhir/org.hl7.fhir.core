@@ -341,7 +341,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   /**
    * Returns an extension if one (and only one) matches the given URL.
    * 
-   * Note: BackbdoneElements override this to look in matching Modifier Extensions too
+   * Note: BackboneElements override this to look in matching Modifier Extensions too
    * 
    * @param theUrl The URL. Must not be blank or null.
    * @return the matching extension, or null
@@ -365,7 +365,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
    /**
     * Returns an extension if one (and only one) matches the given URL.
     * 
-    * Note: BackbdoneElements override this to look in matching Modifier Extensions too
+    * Note: BackboneElements override this to look in matching Modifier Extensions too
     * 
     * @param theUrls One or more URLs to match. Must not be blank or null.
     * @return the matching extension, or null
@@ -388,7 +388,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
    /**
     * Remove any extensions that match (by given URL).
     * 
-    * Note: BackbdoneElements override this to remove from Modifier Extensions too
+    * Note: BackboneElements override this to remove from Modifier Extensions too
     * 
     * @param theUrl The URL. Must not be blank or null.
     */
@@ -423,7 +423,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     * Returns an unmodifiable list containing all extensions on this element which 
     * match the given URL.
     * 
-    * Note: BackbdoneElements override this to add matching Modifier Extensions too
+    * Note: BackboneElements override this to add matching Modifier Extensions too
     * 
     * @param theUrl The URL. Must not be blank or null.
     * @return an unmodifiable list containing all extensions on this element which match the given URL
@@ -477,7 +477,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
    /**
     * Returns an true if this element has an extension that matchs the given URL.
     * 
-    * Note: BackbdoneElements override this to check Modifier Extensions too
+    * Note: BackboneElements override this to check Modifier Extensions too
     * 
     * @param theUrl The URL. Must not be blank or null.
     */
@@ -498,7 +498,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
    /**
     * Returns the value as a string if this element has only one extension that matches the given URL, and that can be converted to a string.
     * 
-    * Note: BackbdoneElements override this to check Modifier Extensions too
+    * Note: BackboneElements override this to check Modifier Extensions too
     * 
     * @param theUrl The URL. Must not be blank or null.
     */

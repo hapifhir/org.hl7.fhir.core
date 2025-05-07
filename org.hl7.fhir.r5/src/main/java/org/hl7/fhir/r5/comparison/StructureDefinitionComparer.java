@@ -397,6 +397,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     assert(left != null);
     assert(right != null);
     assert(left.path().equals(right.path()));
+    assert(parents.size() > 0);
+    
     boolean def = false;
     boolean ch = false;
     
