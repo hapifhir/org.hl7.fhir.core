@@ -681,12 +681,6 @@ public class SnapshotGenerationPreProcessor {
     return merged;
   }
 
-  private DataType checkFixedValues(String vurl, String path, DataType v1, DataType v2) {
-    if (!v1.equalsDeep(v2)) {
-      throw new FHIRException(context.formatMessage(I18nConstants.SD_ADDITIONAL_BASE_INCOMPATIBLE_VALUES, vurl, path+".fixed", v1.toString(), v2.toString()));
-    }
-    return v1;
-  }
 
   private void processSlices(StructureDefinitionDifferentialComponent diff, StructureDefinition src) {
     // first pass, divide it up 

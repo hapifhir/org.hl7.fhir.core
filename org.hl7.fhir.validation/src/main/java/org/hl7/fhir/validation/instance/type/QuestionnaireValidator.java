@@ -62,6 +62,9 @@ import ca.uhn.fhir.util.ObjectUtil;
 public class QuestionnaireValidator extends BaseValidator {
 
  
+  private static final String SNOMED_NAME = "SNOMED";
+  private static final String UCUM_NAME = "UCUM";
+
   public enum QuestionnaireDerivationMode {
     EXTENDS, COMPLIES
 
@@ -1123,42 +1126,42 @@ public class QuestionnaireValidator extends BaseValidator {
         if (qItem.hasExtension(ToolingExtensions.EXT_MIN_QUANTITY)) {
           Quantity dt = qItem.getExtensionByUrl(ToolingExtensions.EXT_MIN_QUANTITY).getValueQuantity();
           if (!dt.hasSystem() || !dt.hasCode() || !vdt.hasSystem() || !vdt.hasCode()) {
-            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MIN_UNITS, gen(dt), gen(vdt)) && ok;            
+            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MIN_UNITS, genDisplay(dt), genDisplay(vdt)) && ok;            
           } else if (dt.getSystem().equals(vdt.getSystem()) &&  dt.getCode().equals(vdt.getCode())) {
-            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, dt.getValue().compareTo(vdt.getValue()) >= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MIN, gen(vdt), gen(dt)) && ok;
+            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, dt.getValue().compareTo(vdt.getValue()) >= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MIN, genDisplay(vdt), genDisplay(dt)) && ok;
           } else if ("http://unitsofmeasure.org".equals(dt.getSystem()) && "http://unitsofmeasure.org".equals(vdt.getSystem())) {
             Pair vp = new Pair(new Decimal(vdt.getValue().toPlainString()), vdt.getCode());
             Pair dp = new Pair(new Decimal(dt.getValue().toPlainString()), dt.getCode());
             vp = ucum.getCanonicalForm(vp);
             dp = ucum.getCanonicalForm(dp);
             if (dp.getCode().equals(vp.getCode())) {
-              ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, vp.getValue().comparesTo(dp.getValue()) >= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MIN, gen(vdt), gen(dt)) && ok;
+              ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, vp.getValue().comparesTo(dp.getValue()) >= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MIN, genDisplay(vdt), genDisplay(dt)) && ok;
             } else {
-              ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MIN, gen(dt), gen(vdt)) && ok;                          
+              ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MIN, genDisplay(dt), genDisplay(vdt)) && ok;                          
             }
           } else {
-            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MIN, gen(dt), gen(vdt)) && ok;                        
+            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MIN, genDisplay(dt), genDisplay(vdt)) && ok;                        
           }
         }
         
         if (qItem.hasExtension(ToolingExtensions.EXT_MAX_QUANTITY)) {
           Quantity dt = qItem.getExtensionByUrl(ToolingExtensions.EXT_MAX_QUANTITY).getValueQuantity();
           if (!dt.hasSystem() || !dt.hasCode() || !vdt.hasSystem() || !vdt.hasCode()) {
-            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX_UNITS, gen(dt), gen(vdt)) && ok;            
+            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX_UNITS, genDisplay(dt), genDisplay(vdt)) && ok;            
           } else if (dt.getSystem().equals(vdt.getSystem()) &&  dt.getCode().equals(vdt.getCode())) {
-            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, dt.getValue().compareTo(vdt.getValue()) >= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MAX, gen(vdt), gen(dt)) && ok;
+            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, dt.getValue().compareTo(vdt.getValue()) >= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MAX, genDisplay(vdt), genDisplay(dt)) && ok;
           } else if ("http://unitsofmeasure.org".equals(dt.getSystem()) && "http://unitsofmeasure.org".equals(vdt.getSystem())) {
             Pair vp = new Pair(new Decimal(vdt.getValue().toPlainString()), vdt.getCode());
             Pair dp = new Pair(new Decimal(dt.getValue().toPlainString()), dt.getCode());
             vp = ucum.getCanonicalForm(vp);
             dp = ucum.getCanonicalForm(dp);
             if (dp.getCode().equals(vp.getCode())) {
-              ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, vp.getValue().comparesTo(dp.getValue()) <= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MAX, gen(vdt), gen(dt)) && ok;
+              ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, vp.getValue().comparesTo(dp.getValue()) <= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MAX, genDisplay(vdt), genDisplay(dt)) && ok;
             } else {
-              ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX, gen(dt), gen(vdt)) && ok;                          
+              ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX, genDisplay(dt), genDisplay(vdt)) && ok;                          
             }
           } else {
-            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX, gen(dt), gen(vdt)) && ok;                        
+            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX, genDisplay(dt), genDisplay(vdt)) && ok;                        
           }
         }
         if (qItem.hasExtension(ToolingExtensions.EXT_MAX_DECIMALS)) {
@@ -1169,10 +1172,10 @@ public class QuestionnaireValidator extends BaseValidator {
           boolean matched = false;
           List<String> allowed = new ArrayList<>();
           for (Extension ex : qItem.getExtensionsByUrl(ToolingExtensions.EXT_Q_UNIT_OPTION)) {
-            allowed.add(gen(ex.getValueCoding()));
+            allowed.add(genDisplay(ex.getValueCoding()));
             matched = matched || matchesUnit(vdt, ex.getValueCoding()); 
           }
-          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, matched, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_INVALID_UNITS, gen(vdt), CommaSeparatedStringBuilder.join(",", allowed)) && ok;  
+          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, matched, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_INVALID_UNITS, genDisplay(vdt), CommaSeparatedStringBuilder.join(",", allowed)) && ok;  
         }
         if (qItem.hasExtension(ToolingExtensions.EXT_Q_UNIT_VALUESET)) {
           String url = ToolingExtensions.readStringExtension(qItem, ToolingExtensions.EXT_Q_UNIT_VALUESET);
@@ -1182,7 +1185,7 @@ public class QuestionnaireValidator extends BaseValidator {
           } else {
             ValidationResult vr = context.validateCode(settings, vdt.getSystem(), null, vdt.getCode(), null, vs);
             if (!vr.isOk()) {
-              ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_UNIT_FAIL_VS, gen(vdt), url) && ok;                
+              ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_UNIT_FAIL_VS, genDisplay(vdt), url) && ok;                
             }
           }
         }
@@ -1218,11 +1221,11 @@ public class QuestionnaireValidator extends BaseValidator {
     return ok;
   }
 
-  private String gen(Coding c) {
+  private String genDisplay(Coding c) {
     return (c.hasDisplay() ? c.getDisplay() : "")+(c.hasSystem() || c.hasCode() ? " ("+getSystemName(c.getSystem())+"#"+c.getCode()+")" : "");
   }
 
-  private String gen(Quantity q) {
+  private String genDisplay(Quantity q) {
 
     return (q.hasComparator() ? q.getComparator().toCode() : "") + q.getValueElement().asStringValue()+(q.hasUnit() ? " "+ q.getUnit() : "")+(q.hasSystem() || q.hasCode() ? " ("+getSystemName(q.getSystem())+"#"+q.getCode()+")" : "");
   }
@@ -1232,8 +1235,8 @@ public class QuestionnaireValidator extends BaseValidator {
       return "";
     }
     switch (system) {
-    case "http://unitsofmeasure.org": return "UCUM";
-    case "http://snomed.info/sct": return "SNOMED";
+    case "http://unitsofmeasure.org": return UCUM_NAME;
+    case "http://snomed.info/sct": return SNOMED_NAME;
     }
     return system;
   }
