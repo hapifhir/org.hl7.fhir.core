@@ -997,8 +997,8 @@ public class QuestionnaireValidator extends BaseValidator {
           int ml = ToolingExtensions.readIntegerExtension(qItem, ToolingExtensions.EXT_MIN_LENGTH, -1);
           ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, ml < 0 || v.primitiveValue().length() >= ml, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_MIN_LENGTH, v.primitiveValue(), ml) && ok;        
         }
-        if (qItem.hasExtension(ToolingExtensions.EXT_MAX_LENGTH) ) {
-          int ml = ToolingExtensions.readIntegerExtension(qItem, ToolingExtensions.EXT_MAX_LENGTH, -1);
+        if (qItem.hasMaxLength()) {
+          int ml = qItem.getMaxLength();
           ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, ml < 0 || v.primitiveValue().length() <= ml, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_MAX_LENGTH, v.primitiveValue(), ml) && ok;                
         }
         if (qItem.hasExtension(ToolingExtensions.EXT_REGEX) ) {
