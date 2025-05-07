@@ -4,6 +4,7 @@
 * Fix maxLength validation in Questionnaires
 * Fix issue loading cross-version package
 * Fix for repurposing the SNOMED-CT CA edition concept
+* Fix NPE validating OperationDefinitions with profiles
 * Reenable text based terminology logging
 * Fix for wrong calculation of slice boundaries when pre-processing slices
 * Fix for missing type profile cardinality when generating snapshots
