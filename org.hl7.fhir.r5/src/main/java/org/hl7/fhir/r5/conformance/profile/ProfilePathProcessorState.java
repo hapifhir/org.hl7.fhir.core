@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @MarkedToMoveToAdjunctPackage
 public class ProfilePathProcessorState {
+  protected StructureDefinition baseSource; 
   protected StructureDefinition.StructureDefinitionSnapshotComponent base;
 
   protected int baseCursor;

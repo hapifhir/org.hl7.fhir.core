@@ -87,6 +87,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 
 
@@ -766,7 +767,7 @@ public class HierarchicalTableGenerator {
     if (mode == TableGenerationMode.XML) {
       model.setDocoImg(help16AsData());     
     } else {
-      model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
+      model.setDocoImg(Utilities.pathURL(ManagedWebAccess.makeSecureRef(prefix), "help16.png"));
     }
     model.setDocoRef(Utilities.pathURL("https://build.fhir.org/ig/FHIR/ig-guidance", "readingIgs.html#table-views"));
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_NAME), i18n.formatPhrase(RenderingI18nContext.GENERAL_LOGICAL_NAME), null, 0));
@@ -788,9 +789,9 @@ public class HierarchicalTableGenerator {
     if (mode == TableGenerationMode.XML) {
       model.setDocoImg(help16AsData());    
     } else {
-      model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
+      model.setDocoImg(Utilities.pathURL(ManagedWebAccess.makeSecureRef(prefix), "help16.png"));
     }
-    model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table"));    
+    model.setDocoRef(Utilities.pathURL(ManagedWebAccess.makeSecureRef(prefix), "formats.html#table"));    
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_NAME), i18n.formatPhrase(RenderingI18nContext.GENERAL_LOGICAL_NAME), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_FLAGS_L), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_FLAGS_L_DESC), null, 0).setStyle("border-left: 1px grey solid"));
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_CARD_L), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_CARD_L_DESC), null, 0));

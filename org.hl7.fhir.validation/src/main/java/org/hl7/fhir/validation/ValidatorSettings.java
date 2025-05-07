@@ -21,6 +21,7 @@ public class ValidatorSettings extends ValidationOptions {
   private boolean warnOnDraftOrExperimental; // @configuration 
   private BestPracticeWarningLevel bpWarnings = BestPracticeWarningLevel.Warning; // @configuration
   private List<UsageContext> usageContexts = new ArrayList<UsageContext>(); // @configuration
+  private boolean assumeValidRestReferences;
   
   public Source getSource() {
     return source;
@@ -45,6 +46,12 @@ public class ValidatorSettings extends ValidationOptions {
   }
   public void setAllowExamples(boolean allowExamples) {
     this.allowExamples = allowExamples;
+  }
+  public boolean isAssumeValidRestReferences() {
+    return assumeValidRestReferences;
+  }
+  public void setAssumeValidRestReferences(boolean assumeValidRestReferences) {
+    this.assumeValidRestReferences = assumeValidRestReferences;
   }
   public boolean isForPublication() {
     return forPublication;

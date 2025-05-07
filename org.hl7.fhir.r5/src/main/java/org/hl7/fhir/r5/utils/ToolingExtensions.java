@@ -183,12 +183,14 @@ public class ToolingExtensions {
   public static final String EXT_MAX_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet";
   public static final String EXT_MINOCCURS = "http://hl7.org/fhir/StructureDefinition/questionnaire-minOccurs";  
   public static final String EXT_MIN_LENGTH = "http://hl7.org/fhir/StructureDefinition/minLength";
+  public static final String EXT_MAX_LENGTH = "http://hl7.org/fhir/StructureDefinition/maxLength";
   public static final String EXT_MIN_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-minValueSet";
   public static final String EXT_MUST_SUPPORT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support";
   public static final String EXT_NORMATIVE_VERSION = "http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version";
   public static final String EXT_PROFILE_ELEMENT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-profile-element";
   public static final String EXT_QTYPE = "http://hl7.org/fhir/StructureDefinition/questionnnaire-baseType";
   public static final String EXT_Q_UNIT = "http://hl7.org/fhir/StructureDefinition/questionnaire-unit";
+  public static final String EXT_Q_UNIT_OPTION = "http://hl7.org/fhir/StructureDefinition/questionnaire-unitOption";
   public static final String EXT_REFERENCEFILTER = "http://hl7.org/fhir/StructureDefinition/questionnaire-referenceFilter"; 
   public static final String EXT_REGEX = "http://hl7.org/fhir/StructureDefinition/regex";  
   public static final String EXT_RENDERED_VALUE = "http://hl7.org/fhir/StructureDefinition/rendered-value";
@@ -296,6 +298,17 @@ public class ToolingExtensions {
   public static final String EXT_VALUESET_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/valueset-parameter";
   public static final String EXT_BINDING_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/binding-parameter";
   public static final String EXT_ISSUE_INNER_MESSAGE = "http://hl7.org/fhir/tools/StructureDefinition/operationoutcome-inner-message";
+  public static final String EXT_OBLIGATION_SOURCE = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-source";
+  public static final String EXT_OBLIGATION_SOURCE_SHORT = "source";
+  public static final String EXT_ADDITIONAL_BASE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-additionalBase";
+  public static final String EXT_MIMETYPE = "http://hl7.org/fhir/StructureDefinition/mimeType";
+  public static final String EXT_EXCLUSIVE = "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive";
+  public static final String EXT_MINVALUE = "http://hl7.org/fhir/StructureDefinition/minValue";
+  public static final String EXT_MAXVALUE = "http://hl7.org/fhir/StructureDefinition/maxValue";
+  public static final String EXT_MIN_QUANTITY = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-minQuantity";
+  public static final String EXT_MAX_QUANTITY = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-maxQuantity";
+  public static final String EXT_Q_UNIT_VALUESET = "http://hl7.org/fhir/StructureDefinition/questionnaire-unitValueSet";
+  public static final String EXT_ENTRY_FORMAT = "http://hl7.org/fhir/StructureDefinition/entryFormat";
   
   // specific extension helpers
 
@@ -1040,6 +1053,8 @@ public class ToolingExtensions {
       return defaultValue;
     if (ex.getValue() instanceof IntegerType)
       return ((IntegerType) ex.getValue()).getValue();
+    if (ex.getValue() instanceof DecimalType)
+      return ((DecimalType) ex.getValue()).getValue().intValue();
     throw new Error("Unable to read extension "+uri+" as an integer");
   }
 
