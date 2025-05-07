@@ -1240,7 +1240,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return count;
   }
 
-  private String extractResourceType(String ref) {
+  protected String extractResourceType(String ref) {
     String[] p = ref.split("\\/");
     return p[p.length -2];
   }
