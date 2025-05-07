@@ -16,7 +16,7 @@ public class JsonDrivenPolicyAdvisor extends RulesDrivenPolicyAdvisor {
 
   public JsonDrivenPolicyAdvisor(IValidationPolicyAdvisor base, File source) throws JsonException, IOException {
     super(base);
-    load(JsonParser.parseObject(source));
+    load(JsonParser.parseObject(source, true));
   }
 
   public JsonDrivenPolicyAdvisor(ReferenceValidationPolicy refpol, File source) throws JsonException, IOException {
