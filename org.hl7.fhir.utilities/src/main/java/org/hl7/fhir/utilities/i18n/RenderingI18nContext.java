@@ -982,6 +982,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String GENERAL_PATTERN_VALUE = "GENERAL_PATTERN_VALUE";
   public static final String GENERAL_TYPE_PROFILE = "GENERAL_TYPE_PROFILE";
   public static final String GENERAL_TYPE_TARGET_PROFILE = "GENERAL_TYPE_TARGET_PROFILE";
+  public static final String SDR_EXTENSION_SUMMARY = "SDR_EXTENSION_SUMMARY";
 
 
 

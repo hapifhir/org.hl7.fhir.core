@@ -767,7 +767,7 @@ public class RenderingContext extends RenderingI18nContext {
   public String getLink(KnownLinkType link, boolean secure) {
     String url = links.get(link);
     if (url != null && secure && url.startsWith("http://")) {
-      url = url.replace("http://", "https://");
+      url = "https://" + url.substring("http://".length());
     }
     return url;
   }

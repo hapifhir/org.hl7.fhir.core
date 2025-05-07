@@ -258,8 +258,8 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     return r;     
   } 
 
-  private String getSpecLink(String path, boolean secure) { 
-    return Utilities.pathURL(context.getLink(KnownLinkType.SPEC, secure), path); 
+  private String getSpecLink(String path) { 
+    return Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), path); 
   } 
 
   private String getSDCLink(String url, String path) { 
@@ -311,7 +311,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       } 
       if ("true".equals(i.extensionString(ToolingExtensions.EXT_Q_HIDDEN))) { 
         status.setExtensions(true);
-        flags.addPiece(gen.new Piece(getSpecLink("extension-questionnaire-hidden.html", true), null, context.formatPhrase(RenderingContext.QUEST_HIDDEN)).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", getImgPath("icon-qi-hidden.png")))); 
+        flags.addPiece(gen.new Piece(getSpecLink("extension-questionnaire-hidden.html"), null, context.formatPhrase(RenderingContext.QUEST_HIDDEN)).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", getImgPath("icon-qi-hidden.png")))); 
       } 
       if ("true".equals(i.extensionString(ToolingExtensions.EXT_Q_OTP_DISP))) { 
         status.setExtensions(true);
@@ -324,7 +324,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       if (i.hasExtension(ToolingExtensions.EXT_Q_CHOICE_ORIENT)) { 
         status.setExtensions(true);
         String code = i.extensionString(ToolingExtensions.EXT_Q_CHOICE_ORIENT); 
-        flags.addPiece(gen.new Piece(getSpecLink("extension-questionnaire-choiceorientation.html", true), null, context.formatPhrase(RenderingContext.QUEST_ORIENTATION, code)+" ").addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", getImgPath("icon-qi-" + code + ".png")))); 
+        flags.addPiece(gen.new Piece(getSpecLink("extension-questionnaire-choiceorientation.html"), null, context.formatPhrase(RenderingContext.QUEST_ORIENTATION, code)+" ").addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", getImgPath("icon-qi-" + code + ".png")))); 
       } 
       if (i.hasExtension(ToolingExtensions.EXT_Q_DISPLAY_CAT)) { 
         status.setExtensions(true);
