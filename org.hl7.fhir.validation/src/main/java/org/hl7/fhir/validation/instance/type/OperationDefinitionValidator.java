@@ -49,25 +49,27 @@ public class OperationDefinitionValidator extends BaseValidator {
       DefinitionNavigator profile = new DefinitionNavigator(context, sdt, false, true);
       List<Element> params = od.getChildren("parameter");
       List<Element> matched = new ArrayList<Element>();
-      for (DefinitionNavigator slice : profile.childByName("parameter").slices()) {
-        DefinitionNavigator nameSlice = slice.childByName("name");
-        if (rule(errors, "2025-04-08", IssueType.UNKNOWN, stack, sdt != null, I18nConstants.OPDEF_PROFILE_NO_SLICE, use, slice.current().getSliceName())) {
-          DataType name = nameSlice.current().hasFixed() ? nameSlice.current().getFixed() : nameSlice.current().getPattern();
-          if (rule(errors, "2025-04-08", IssueType.UNKNOWN, stack, sdt != null, I18nConstants.OPDEF_PROFILE_NO_FIXED, use, slice.current().getSliceName())) {
-            String paramName = name.primitiveValue();
-            Element param = getParamByName(params, paramName, use);
-            if (param == null) {
-              warning(errors, "2025-04-08", IssueType.UNKNOWN, stack, false, I18nConstants.OPDEF_PROFILE_NOT_IN_PARAM, use, paramName);
+      if (profile.childByName("parameter") != null && profile.childByName("parameter").hasSlices()) {
+        for (DefinitionNavigator slice : profile.childByName("parameter").slices()) {
+          DefinitionNavigator nameSlice = slice.childByName("name");
+          if (rule(errors, "2025-04-08", IssueType.UNKNOWN, stack, sdt != null, I18nConstants.OPDEF_PROFILE_NO_SLICE, use, slice.current().getSliceName())) {
+            DataType name = nameSlice.current().hasFixed() ? nameSlice.current().getFixed() : nameSlice.current().getPattern();
+            if (rule(errors, "2025-04-08", IssueType.UNKNOWN, stack, sdt != null, I18nConstants.OPDEF_PROFILE_NO_FIXED, use, slice.current().getSliceName())) {
+              String paramName = name.primitiveValue();
+              Element param = getParamByName(params, paramName, use);
+              if (param == null) {
+                warning(errors, "2025-04-08", IssueType.UNKNOWN, stack, false, I18nConstants.OPDEF_PROFILE_NOT_IN_PARAM, use, paramName);
+              } else {
+                matched.add(param);
+                NodeStack nsp = stack.push(param, params.indexOf(param), null, null);
+                ok = compareParameterDefinitions(errors, nsp, use, paramName, slice, param) && ok;
+              }
             } else {
-              matched.add(param);
-              NodeStack nsp = stack.push(param, params.indexOf(param), null, null);
-              ok = compareParameterDefinitions(errors, nsp, use, paramName, slice, param) && ok;
+              ok = false;
             }
           } else {
             ok = false;
           }
-        } else {
-          ok = false;
         }
       }
       int i = 0;
