@@ -501,14 +501,24 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
       } else {
         matchR.add(rp);
         cd.getProperty().add(lp);
-        if (lp.getValue().equalsDeep(rp.getValue())) {
-          cd.getProperty().add(rp.setCode(res.getPropMap().get(rp.getCode())));
+        if (!lp.getValue().equalsDeep(rp.getValue())) {
+          ConceptPropertyComponent pc = rp.copy();
+          String code = res.getPropMap().get(rp.getCode());
+          if (code != null) {
+            pc.setCode(code);
+          }
+          cd.getProperty().add(pc);
         }
       }
     }
     for (ConceptPropertyComponent rp : r.getProperty()) {
       if (!matchR.contains(rp)) {
-        cd.getProperty().add(rp.setCode(res.getPropMap().get(rp.getCode())));        
+        ConceptPropertyComponent pc = rp.copy();
+        String code = res.getPropMap().get(rp.getCode());
+        if (code != null) {
+          pc.setCode(code);
+        }
+        cd.getProperty().add(pc);        
       }
     }
   }

@@ -90,10 +90,10 @@ import org.hl7.fhir.r5.utils.PublicationHacker;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
-import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -132,7 +132,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict", false), false, GEN_MODE_DIFF, "", r); 
       } else { 
         x.addChildNode(generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,  
-            context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r)); 
+            context.getLink(KnownLinkType.SPEC, false), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r)); 
       } 
       status.setExtensions(true); 
     }
@@ -1492,7 +1492,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           String es = definition.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE); 
           if ("named-elements".equals(es)) { 
             if (rc.hasLink(KnownLinkType.JSON_NAMES)) { 
-              c.getPieces().add(gen.new Piece(rc.getLink(KnownLinkType.JSON_NAMES), context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));                         
+              c.getPieces().add(gen.new Piece(rc.getLink(KnownLinkType.JSON_NAMES, true), context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));                         
             } else { 
               c.getPieces().add(gen.new Piece(ToolingExtensions.WEB_EXTENSION_STYLE, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));                         
             } 
@@ -3448,7 +3448,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             // generateElementInner(b, extDefn, extDefn.getSnapshot().getElement().get(0), valueDefn == null ? 2 : 3, valueDefn); 
           } 
         } else { 
-          while (!dstack.isEmpty() && !isParent(dstack.peek(), ec)) { 
+          while (!dstack.isEmpty() && !isParent(dstack.peek(), ec)) {
             finish(status, t, sd, dstack.pop(), mode, "", anchorPrefix, res);
           } 
           dstack.push(ec);             
@@ -3468,7 +3468,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   private void finish(RenderingStatus status, XhtmlNode t, StructureDefinition sd, ElementDefinition ed, int mode, String defPath, String anchorPrefix, ResourceWrapper res) throws FHIRException, IOException {
- 
     for (Base b : VersionComparisonAnnotation.getDeleted(ed == null ? sd : ed, "element")) { 
       ElementDefinition ec = (ElementDefinition) b; 
       String title = ec.getId(); 
@@ -3897,7 +3896,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       String es = d.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE); 
       if ("named-elements".equals(es)) { 
         if (context.hasLink(KnownLinkType.JSON_NAMES)) { 
-          tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_STYLE), context.getLink(KnownLinkType.JSON_NAMES), strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON)); 
+          tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_STYLE), context.getLink(KnownLinkType.JSON_NAMES, true), strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON)); 
         } else { 
           tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_STYLE), ToolingExtensions.WEB_EXTENSION_STYLE, strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON)); 
         } 
