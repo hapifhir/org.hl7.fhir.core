@@ -984,9 +984,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String GENERAL_TYPE_TARGET_PROFILE = "GENERAL_TYPE_TARGET_PROFILE";
   public static final String SDR_EXTENSION_SUMMARY = "SDR_EXTENSION_SUMMARY";
 
-
-
-  
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
   }
@@ -995,7 +992,6 @@ public class RenderingI18nContext extends I18nBase {
   protected String typeOfString() {
     return "phrase";
   }
-
 
   public String formatPhrase(String theMessage, Object... theMessageArguments) {
     return formatMessage(theMessage, theMessageArguments);
