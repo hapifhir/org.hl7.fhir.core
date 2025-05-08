@@ -653,12 +653,12 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   }
 
   public XhtmlNode renderUnion(CodeSystemComparison comp, String id, String prefix, String corePath) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
-    CodeSystemRenderer csr = new CodeSystemRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+    CodeSystemRenderer csr = new CodeSystemRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, session.getContextLeft().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
     return csr.buildNarrative(ResourceWrapper.forResource(csr.getContext(), comp.union));
   }
 
   public XhtmlNode renderIntersection(CodeSystemComparison comp, String id, String prefix, String corePath) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
-    CodeSystemRenderer csr = new CodeSystemRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+    CodeSystemRenderer csr = new CodeSystemRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, session.getContextLeft().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
     return csr.buildNarrative(ResourceWrapper.forResource(csr.getContext(), comp.intersection));
   }
 

@@ -81,16 +81,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected ValueSetExpanderFactory expansionCache = new ValueSetExpansionCache(this);
   protected boolean cacheValidation; // if true, do an expansion and cache the expansion
   private Set<String> failed = new HashSet<String>(); // value sets for which we don't try to do expansion, since the
-                                                      // first attempt to get a comprehensive expansion was not
-                                                      // successful
+                                                      // first attempt to get a comprehensive expansion was not// successful
   protected Map<String, Map<String, ValidationResult>> validationCache = new HashMap<String, Map<String, ValidationResult>>();
-
-  // private ValueSetExpansionCache expansionCache; //
 
   protected FHIRToolingClient txServer;
   private Bundle bndCodeSystems;
-  private Locale locale;
-  private ResourceBundle i18Nmessages;
 
   @Override
   public CodeSystem fetchCodeSystem(String system) {
