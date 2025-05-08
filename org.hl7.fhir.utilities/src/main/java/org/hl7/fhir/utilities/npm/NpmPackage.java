@@ -52,6 +52,7 @@ import java.util.zip.ZipInputStream;
 
 import javax.annotation.Nonnull;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
@@ -86,6 +87,7 @@ import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
  * @author Grahame Grieve
  *
  */
+@Slf4j
 public class NpmPackage {
 
   public interface ITransformingLoader {
@@ -600,6 +602,9 @@ public class NpmPackage {
     } catch (Exception e) {
       throw new IOException("Error reading "+(desc == null ? "package" : desc)+": "+e.getMessage(), e);      
     }
+
+    boolean haveLoggedDotSlashPrefixWarning = false;
+
     try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
       TarArchiveEntry entry;
 
@@ -616,6 +621,10 @@ public class NpmPackage {
           // If resource paths in the TGZ file are prefixed with "./", be tolerant
           // and strip that
           if (dir.startsWith("./")) {
+            if (!haveLoggedDotSlashPrefixWarning) {
+              log.warn("The NPM file contains resource paths that are prefixed with \"./\". This is invalid and should be corrected in the source package.");
+              haveLoggedDotSlashPrefixWarning = true;
+            }
             dir = dir.substring(2);
           }
           if (dir.startsWith("package/")) {
