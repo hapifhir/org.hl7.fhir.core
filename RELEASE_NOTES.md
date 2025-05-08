@@ -21,6 +21,7 @@
 * Fix: add null check for derived definition in ProfileUtilities
 * Fix places where locale was set to null instead of using context
 * Enhance JsonDrivenPolicyAdvisor to support JSON5
+* fix for Implicit LOINC ValueSet Generation Off-by-one Error
 
 ## Other code changes
 
@@ -36,3 +37,4 @@
 * Bump sqlite to 3.49.1.0
 * Fix places where locale was set to null instead of using context
 * Improve lazy load for i18n messages and plural rules
+* fix for underlying cause of missing attribute reference in has<ElementName><TypeName>() methods for multi-typed elements in generated code
