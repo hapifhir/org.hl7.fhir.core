@@ -246,13 +246,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     txCache = new TerminologyCache(lock, null);
-    setValidationMessageLanguage(getLocale());
     clock = new TimeTracker();
   }
 
   public BaseWorkerContext(Locale locale) throws FileNotFoundException, IOException, FHIRException {
+    setLocale(locale);
     txCache = new TerminologyCache(lock, null);
-    setValidationMessageLanguage(locale);
     clock = new TimeTracker();
   }
 
