@@ -19,6 +19,8 @@
 * Handle $versions better in TxTester
 * Fix: R5 FHIRToolingClient should request 5.0 not 4.0 responses
 * Fix: add null check for derived definition in ProfileUtilities
+* Fix places where locale was set to null instead of using context
+* Enhance JsonDrivenPolicyAdvisor to support JSON5
 
 ## Other code changes
 
@@ -31,4 +33,6 @@
 * Track extension provenance when generating snapshots (for obligations)
 * fix code system comparison to not alter code system being compared
 * Modified rendering of SubscriptionTopic.trigger.queryCriteria.current, changing from 'create {0}' to 'current {0}'
-
+* Bump sqlite to 3.49.1.0
+* Fix places where locale was set to null instead of using context
+* Improve lazy load for i18n messages and plural rules
