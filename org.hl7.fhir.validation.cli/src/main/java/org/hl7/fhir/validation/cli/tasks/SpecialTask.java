@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.tasks;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.service.model.ValidationContext;
@@ -7,6 +8,7 @@ import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.special.R4R5MapTester;
 import org.slf4j.Logger;
 
+@Slf4j
 public class SpecialTask extends StandaloneTask{
   @Override
   public String getName() {
@@ -44,7 +46,7 @@ public class SpecialTask extends StandaloneTask{
         new R4R5MapTester().testMaps(target, source, filter);
       }
     } else {
-      System.out.println("Unknown SpecialMode "+specialMode);
+      log.error("Unknown SpecialMode "+specialMode);
     }
   }
 }

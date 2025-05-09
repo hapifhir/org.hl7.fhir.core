@@ -19,6 +19,4 @@
 		<appender-ref ref="COLOR" />
 	</root>
 
-
-
 </configuration>
