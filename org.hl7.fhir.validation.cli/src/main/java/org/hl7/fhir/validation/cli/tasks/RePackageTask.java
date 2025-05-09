@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.cli.tasks;
 
 import java.io.File;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.utilities.TimeTracker;
@@ -16,6 +17,7 @@ import org.hl7.fhir.validation.special.PackageReGenerator.ExpansionPackageGenera
 import org.hl7.fhir.validation.special.PackageReGenerator.ExpansionPackageGeneratorScope;
 import org.slf4j.Logger;
 
+@Slf4j
 public class RePackageTask extends ValidationEngineTask {
 
   @Override
@@ -75,7 +77,7 @@ public class RePackageTask extends ValidationEngineTask {
         scope = ExpansionPackageGeneratorScope.EVERYTHING;
         break;
       default: 
-        System.out.println("Unknown scope "+args[c+1]);
+        log.warn("Unknown scope "+args[c+1]);
       }
     }
     IWorkerContext ctxt = validationEngine.getContext();

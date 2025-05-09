@@ -62,13 +62,13 @@ public class CompareTask extends ValidationEngineTask {
 
   private boolean destinationDirectoryValid(String dest) throws IOException {
     if (dest == null) {
-      System.out.println("no -dest parameter provided");
+      log.info("no -dest parameter provided");
       return false;
     } else if (!ManagedFileAccess.file(dest).isDirectory()) {
-      System.out.println("Specified destination (-dest parameter) is not valid: \"" + dest + "\")");
+      log.info("Specified destination (-dest parameter) is not valid: \"" + dest + "\")");
       return false;
     } else {
-      System.out.println("Valid destination directory provided: \"" + dest + "\")");
+      log.info("Valid destination directory provided: \"" + dest + "\")");
       return true;
     }
   }
