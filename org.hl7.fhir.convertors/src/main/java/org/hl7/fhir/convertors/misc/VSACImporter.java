@@ -178,13 +178,13 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     css.getConcept().clear();
     for (ConceptDefinitionComponent cc : list) {
       String code = cc.getCode();
-      ConceptDefinitionComponent parent = map.get(ini.getStringProperty("parents", code));
+      ConceptDefinitionComponent parent = map.get(ini.getStringProperty("parents-"+css.getVersion(), code));
       if (parent == null) {
         parent = findParent(client, css, css.getConcept(), code);
         if (parent == null) {
-          ini.setStringProperty("parents", code, "null", null);
+          ini.setStringProperty("parents-"+css.getVersion(), code, "null", null);
         } else {
-          ini.setStringProperty("parents", code, parent.getCode(), null);
+          ini.setStringProperty("parents-"+css.getVersion(), code, parent.getCode(), null);
         }
         ini.save();
       }
@@ -216,10 +216,16 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     } 
 
     String reln = getRelationship(client, css, code, last.getCode());
-    if (!"subsumes".equals(reln)) {
-      return null;
-    } else {
+    if ("subsumes".equals(reln)) {
       return last;
+    } else {
+      for (ConceptDefinitionComponent cc : concepts) {
+        reln = getRelationship(client, css, code, cc.getCode());
+        if ("subsumes".equals(reln)) {
+          return cc;        
+        }
+      }
+      return null;
     }
   }
 
