@@ -583,5 +583,21 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     useCount++;    
   }
 
+  public Parameters subsumes(Map<String, String> params) {
+    recordUse();
+    org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
+    try {
+      result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "subsumes", params),
+          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(false), "CodeSystem/$subsumes", timeoutNormal);
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
+          (OperationOutcome) result.getPayload());
+    }
+    return (Parameters) result.getPayload();
+  }
+
   
 }

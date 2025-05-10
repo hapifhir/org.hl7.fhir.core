@@ -433,7 +433,7 @@ public class ResourceAddress {
         } else {
           query = "";
         }
-        query += httpParameterName + "=" + Utilities.encodeUriParam(parameters.get(httpParameterName));
+        query += httpParameterName + "=" + parameters.get(httpParameterName);//Utilities.encodeUriParam(parameters.get(httpParameterName));
       }
 
       return new URI(basePath.getScheme(), basePath.getUserInfo(), basePath.getHost(), basePath.getPort(),

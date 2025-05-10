@@ -46,8 +46,8 @@ public class UMLRenderingTests {
     ToolsRegistration.register();
     TestCases tests = (TestCases) new JsonParser().parse(TestingUtilities.loadTestResource("r5", "uml", "manifest.json"));
     List<Arguments> objects = new ArrayList<>();
-    for (TestCasesSuiteComponent suite : tests.getSuite()) {
-      for (TestCasesSuiteTestComponent test : suite.getTest()) {
+    for (TestCasesSuiteComponent suite : tests.getSuiteList()) {
+      for (TestCasesSuiteTestComponent test : suite.getTestList()) {
         objects.add(Arguments.of(suite.getName()+"/"+test.getName(), test));
       }
     }
@@ -119,7 +119,7 @@ public class UMLRenderingTests {
 
   private String makeClassSvg(TestCasesSuiteTestComponent test) throws FHIRException, IOException {
     StructureDefinition sd = null;
-    for (TestCasesSuiteResourceComponent input : test.getInput()) {
+    for (TestCasesSuiteResourceComponent input : test.getInputList()) {
       if ("source".equals(input.getName())) {
         sd = (StructureDefinition) new JsonParser().parse(TestingUtilities.loadTestResource("r5", "uml", input.getFile()));
       } else if ("template".equals(input.getName())) {
@@ -136,7 +136,7 @@ public class UMLRenderingTests {
 
   private String makeProfileSvg(TestCasesSuiteTestComponent test) throws FHIRFormatError, IOException {
     StructureDefinition sd = null;
-    for (TestCasesSuiteResourceComponent input : test.getInput()) {
+    for (TestCasesSuiteResourceComponent input : test.getInputList()) {
       if ("source".equals(input.getName())) {
         sd = (StructureDefinition) new JsonParser().parse(TestingUtilities.loadTestResource("r5", "uml", input.getFile()));
       } else if ("template".equals(input.getName())) {
@@ -157,7 +157,7 @@ public class UMLRenderingTests {
 
   private String makeSummarySvg(TestCasesSuiteTestComponent test) throws Exception {
     JsonObject ctl = null;
-    for (TestCasesSuiteResourceComponent input : test.getInput()) {
+    for (TestCasesSuiteResourceComponent input : test.getInputList()) {
       if ("source".equals(input.getName())) {
         StructureDefinition sd = (StructureDefinition) new JsonParser().parse(TestingUtilities.loadTestResource("r5", "uml", input.getFile()));
         sd.setWebPath("http://test/path/"+sd.getId());

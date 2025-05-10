@@ -841,9 +841,9 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
      */
     @Child(name = "prefetch", type = {Base.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Key/value pairs of FHIR queries the CDS Client provides on each call", formalDefinition="An object containing key/value pairs of FHIR queries that this Request is requesting the CDS Client to perform and provide on each Request call. The key is a string that describes the type of data being requested and the value is a string representing the FHIR query" )
-    protected List<CDSHooksRequestPrefetchComponent> prefetch;
+    protected List<CDSHooksRequestPrefetchComponent> prefetchList;
 
-    private static final long serialVersionUID = -858270829L;
+    private static final long serialVersionUID = 1427298453L;
 
   /**
    * Constructor
@@ -1042,54 +1042,36 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
     /**
      * @return {@link #prefetch} (An object containing key/value pairs of FHIR queries that this Request is requesting the CDS Client to perform and provide on each Request call. The key is a string that describes the type of data being requested and the value is a string representing the FHIR query)
      */
-    public List<CDSHooksRequestPrefetchComponent> getPrefetch() { 
-      if (this.prefetch == null)
-        this.prefetch = new ArrayList<CDSHooksRequestPrefetchComponent>();
-      return this.prefetch;
+    public List<CDSHooksRequestPrefetchComponent> getPrefetchList() { 
+      if (this.prefetchList == null)
+        this.prefetchList = new ArrayList<CDSHooksRequestPrefetchComponent>();
+      return this.prefetchList;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public CDSHooksRequest setPrefetch(List<CDSHooksRequestPrefetchComponent> thePrefetch) { 
-      this.prefetch = thePrefetch;
+    public CDSHooksRequest setPrefetchList(List<CDSHooksRequestPrefetchComponent> thePrefetch) { 
+      this.prefetchList = thePrefetch;
       return this;
     }
 
     public boolean hasPrefetch() { 
-      if (this.prefetch == null)
+      if (this.prefetchList == null)
         return false;
-      for (CDSHooksRequestPrefetchComponent item : this.prefetch)
+      for (CDSHooksRequestPrefetchComponent item : this.prefetchList)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CDSHooksRequestPrefetchComponent addPrefetch() { //3
-      CDSHooksRequestPrefetchComponent t = new CDSHooksRequestPrefetchComponent();
-      if (this.prefetch == null)
-        this.prefetch = new ArrayList<CDSHooksRequestPrefetchComponent>();
-      this.prefetch.add(t);
-      return t;
-    }
-
-    public CDSHooksRequest addPrefetch(CDSHooksRequestPrefetchComponent t) { //3
+    public CDSHooksRequest addPrefetch(CDSHooksRequestPrefetchComponent t) { //3b
       if (t == null)
         return this;
-      if (this.prefetch == null)
-        this.prefetch = new ArrayList<CDSHooksRequestPrefetchComponent>();
-      this.prefetch.add(t);
+      if (this.prefetchList == null)
+        this.prefetchList = new ArrayList<CDSHooksRequestPrefetchComponent>();
+      this.prefetchList.add(t);
       return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #prefetch}, creating it if it does not already exist {3}
-     */
-    public CDSHooksRequestPrefetchComponent getPrefetchFirstRep() { 
-      if (getPrefetch().isEmpty()) {
-        addPrefetch();
-      }
-      return getPrefetch().get(0);
     }
 
       protected void listChildren(List<Property> children) {
@@ -1099,7 +1081,7 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         children.add(new Property("fhirServer", "url", "The base URL of the CDS Client's FHIR server. If fhirAuthorization is provided, this field is REQUIRED. The scheme MUST be https when production data is exchanged", 0, 1, fhirServer));
         children.add(new Property("fhirAuthorization", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "A structure holding an OAuth 2.0 bearer access token granting the CDS Service access to FHIR resources, along with supplemental information relating to the token", 0, 1, fhirAuthorization));
         children.add(new Property("context", "http://hl7.org/fhir/tools/StructureDefinition/CDSHookContext", "Hook-specific contextual data that the CDS service will need", 0, 1, context));
-        children.add(new Property("prefetch", "Base", "An object containing key/value pairs of FHIR queries that this Request is requesting the CDS Client to perform and provide on each Request call. The key is a string that describes the type of data being requested and the value is a string representing the FHIR query", 0, java.lang.Integer.MAX_VALUE, prefetch));
+        children.add(new Property("prefetch", "Base", "An object containing key/value pairs of FHIR queries that this Request is requesting the CDS Client to perform and provide on each Request call. The key is a string that describes the type of data being requested and the value is a string representing the FHIR query", 0, java.lang.Integer.MAX_VALUE, prefetchList));
       }
 
       @Override
@@ -1110,7 +1092,7 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         case 1314459790: /*fhirServer*/  return new Property("fhirServer", "url", "The base URL of the CDS Client's FHIR server. If fhirAuthorization is provided, this field is REQUIRED. The scheme MUST be https when production data is exchanged", 0, 1, fhirServer);
         case 331089102: /*fhirAuthorization*/  return new Property("fhirAuthorization", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "A structure holding an OAuth 2.0 bearer access token granting the CDS Service access to FHIR resources, along with supplemental information relating to the token", 0, 1, fhirAuthorization);
         case 951530927: /*context*/  return new Property("context", "http://hl7.org/fhir/tools/StructureDefinition/CDSHookContext", "Hook-specific contextual data that the CDS service will need", 0, 1, context);
-        case -1288666633: /*prefetch*/  return new Property("prefetch", "Base", "An object containing key/value pairs of FHIR queries that this Request is requesting the CDS Client to perform and provide on each Request call. The key is a string that describes the type of data being requested and the value is a string representing the FHIR query", 0, java.lang.Integer.MAX_VALUE, prefetch);
+        case -1288666633: /*prefetch*/  return new Property("prefetch", "Base", "An object containing key/value pairs of FHIR queries that this Request is requesting the CDS Client to perform and provide on each Request call. The key is a string that describes the type of data being requested and the value is a string representing the FHIR query", 0, java.lang.Integer.MAX_VALUE, prefetchList);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -1124,7 +1106,7 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         case 1314459790: /*fhirServer*/ return this.fhirServer == null ? new Base[0] : new Base[] {this.fhirServer}; // UrlType
         case 331089102: /*fhirAuthorization*/ return this.fhirAuthorization == null ? new Base[0] : new Base[] {this.fhirAuthorization}; // CDSHooksRequestFhirAuthorizationComponent
         case 951530927: /*context*/ return this.context == null ? new Base[0] : new Base[] {this.context}; // CDSHookContext
-        case -1288666633: /*prefetch*/ return this.prefetch == null ? new Base[0] : this.prefetch.toArray(new Base[this.prefetch.size()]); // CDSHooksRequestPrefetchComponent
+        case -1288666633: /*prefetch*/ return this.prefetchList == null ? new Base[0] : this.prefetchList.toArray(new Base[this.prefetchList.size()]); // CDSHooksRequestPrefetchComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1149,7 +1131,7 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
           this.context = (CDSHookContext) value; // CDSHookContext
           return value;
         case -1288666633: // prefetch
-          this.getPrefetch().add((CDSHooksRequestPrefetchComponent) value); // CDSHooksRequestPrefetchComponent
+          this.getPrefetchList().add((CDSHooksRequestPrefetchComponent) value); // CDSHooksRequestPrefetchComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1169,7 +1151,7 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         } else if (name.equals("context")) {
           this.context = (CDSHookContext) value; // CDSHookContext
         } else if (name.equals("prefetch")) {
-          this.getPrefetch().add((CDSHooksRequestPrefetchComponent) value); // CDSHooksRequestPrefetchComponent
+          this.getPrefetchList().add((CDSHooksRequestPrefetchComponent) value); // CDSHooksRequestPrefetchComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -1182,8 +1164,10 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         case -1195894056:  return getHookInstanceElement();
         case 1314459790:  return getFhirServerElement();
         case 331089102:  return getFhirAuthorization();
-        case 951530927:  return getContext();
-        case -1288666633:  return addPrefetch(); 
+        case 951530927: /*div*/
+          throw new Error("Unable to make an instance of the abstract property 'context'");
+        case -1288666633: /*div*/
+          throw new Error("Unable to make an instance of the abstract property 'prefetch'");
         default: return super.makeProperty(hash, name);
         }
 
@@ -1245,10 +1229,10 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         dst.fhirServer = fhirServer == null ? null : fhirServer.copy();
         dst.fhirAuthorization = fhirAuthorization == null ? null : fhirAuthorization.copy();
         dst.context = context == null ? null : context.copy();
-        if (prefetch != null) {
-          dst.prefetch = new ArrayList<CDSHooksRequestPrefetchComponent>();
-          for (CDSHooksRequestPrefetchComponent i : prefetch)
-            dst.prefetch.add(i.copy());
+        if (prefetchList != null) {
+          dst.prefetchList = new ArrayList<CDSHooksRequestPrefetchComponent>();
+          for (CDSHooksRequestPrefetchComponent i : prefetchList)
+            dst.prefetchList.add(i.copy());
         };
       }
 
@@ -1265,7 +1249,7 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         CDSHooksRequest o = (CDSHooksRequest) other_;
         return compareDeep(hook, o.hook, true) && compareDeep(hookInstance, o.hookInstance, true) && compareDeep(fhirServer, o.fhirServer, true)
            && compareDeep(fhirAuthorization, o.fhirAuthorization, true) && compareDeep(context, o.context, true)
-           && compareDeep(prefetch, o.prefetch, true);
+           && compareDeep(prefetchList, o.prefetchList, true);
       }
 
       @Override
@@ -1281,7 +1265,7 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(hook, hookInstance, fhirServer
-          , fhirAuthorization, context, prefetch);
+          , fhirAuthorization, context, prefetchList);
       }
 
 
