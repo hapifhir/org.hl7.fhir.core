@@ -3,13 +3,15 @@ package org.hl7.fhir.validation.service.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
 public class ValidationRequest {
 
   @JsonProperty("validationContext")
-  @SerializedName("validationContext")
+  @JsonAlias("cliContext") // alias for jackson deserialization
+  @SerializedName(value="validationContext", alternate={"cliContext"})
   private
   ValidationContext validationContext;
 
@@ -18,7 +20,6 @@ public class ValidationRequest {
   private
   List<FileInfo> filesToValidate = new ArrayList<>();
 
-  @SerializedName("validationContext")
   @JsonProperty("validationContext")
   public ValidationContext getValidationContext() {
     return validationContext;
@@ -42,9 +43,16 @@ public class ValidationRequest {
     this.sessionId = sessionToken;
   }
 
-  @SerializedName("validationContext")
   @JsonProperty("validationContext")
   public ValidationRequest setValidationContext(ValidationContext validationContext) {
+    this.validationContext = validationContext;
+    return this;
+  }
+
+  @Deprecated
+  @JsonProperty("cliContext")
+  @SerializedName(value="cliContext")
+  public ValidationRequest setCliContext(ValidationContext validationContext) {
     this.validationContext = validationContext;
     return this;
   }
