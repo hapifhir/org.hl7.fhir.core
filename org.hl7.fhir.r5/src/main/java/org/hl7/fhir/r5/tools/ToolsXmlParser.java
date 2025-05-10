@@ -94,7 +94,7 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("encounterId")) {
       res.setEncounterIdElement(parseId(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("selections")) {
-      res.getSelections().add(parseUri(xpp));
+      res.getSelectionsList().add(parseUri(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("draftOrders")) {
       res.setDraftOrders(parseBundle(xpp));
     } else if (!parseCDSHookContextContent(eventType, xpp, res)){ //2
@@ -174,12 +174,15 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected boolean parseCDSHooksExtensionsContent(int eventType, XmlPullParser xpp, CDSHooksExtensions res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (!parseElementContent(eventType, xpp, res)){ //2
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("extension")) {
+    // todo: Named Element Extensions
+    } else if (!parseBaseContent(eventType, xpp, res)){ //2
       return false;
     }
     return true;
   }
 
+    // todo: Named Element Extensions
   protected CDSHooksRequest parseCDSHooksRequest(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     CDSHooksRequest res = new CDSHooksRequest();
     next(xpp);
@@ -206,7 +209,7 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("context")) {
       res.setContext(parseCDSHookContext(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("prefetch")) {
-      res.getPrefetch().add(parseCDSHooksRequestPrefetchComponent(xpp));
+      res.getPrefetchList().add(parseCDSHooksRequestPrefetchComponent(xpp));
     } else if (!parseCDSHooksElementContent(eventType, xpp, res)){ //2
       return false;
     }
@@ -301,9 +304,9 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
 
   protected boolean parseCDSHooksResponseContent(int eventType, XmlPullParser xpp, CDSHooksResponse res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("cards")) {
-      res.getCards().add(parseCDSHooksResponseCardsComponent(xpp));
+      res.getCardsList().add(parseCDSHooksResponseCardsComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("systemActions")) {
-      res.getSystemActions().add(parseCDSHooksResponseCardsSuggestionsActionsComponent(xpp));
+      res.getSystemActionsList().add(parseCDSHooksResponseCardsSuggestionsActionsComponent(xpp));
     } else if (!parseCDSHooksElementContent(eventType, xpp, res)){ //2
       return false;
     }
@@ -336,13 +339,13 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("source")) {
       res.setSource(parseCDSHooksResponseCardsSourceComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("suggestions")) {
-      res.getSuggestions().add(parseCDSHooksResponseCardsSuggestionsComponent(xpp));
+      res.getSuggestionsList().add(parseCDSHooksResponseCardsSuggestionsComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("selectionBehavior")) {
       res.setSelectionBehaviorElement(parseEnumeration(xpp, CDSHooksResponse.CDSSelectionBehaviorCodesVS.NULL, new CDSHooksResponse.CDSSelectionBehaviorCodesVSEnumFactory()));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("overrideReasons")) {
-      res.getOverrideReasons().add(parseCoding(xpp));
+      res.getOverrideReasonsList().add(parseCoding(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("links")) {
-      res.getLinks().add(parseCDSHooksResponseCardsLinksComponent(xpp));
+      res.getLinksList().add(parseCDSHooksResponseCardsLinksComponent(xpp));
     } else if (!parseCDSHooksElementContent(eventType, xpp, res)){ //2
       return false;
     }
@@ -400,7 +403,7 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("isRecommended")) {
       res.setIsRecommendedElement(parseBoolean(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("actions")) {
-      res.getActions().add(parseCDSHooksResponseCardsSuggestionsActionsComponent(xpp));
+      res.getActionsList().add(parseCDSHooksResponseCardsSuggestionsActionsComponent(xpp));
     } else if (!parseCDSHooksElementContent(eventType, xpp, res)){ //2
       return false;
     }
@@ -481,7 +484,7 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
 
   protected boolean parseCDSHooksServicesContent(int eventType, XmlPullParser xpp, CDSHooksServices res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("services")) {
-      res.getServices().add(parseCDSHooksServicesServicesComponent(xpp));
+      res.getServicesList().add(parseCDSHooksServicesServicesComponent(xpp));
     } else if (!parseCDSHooksElementContent(eventType, xpp, res)){ //2
       return false;
     }
@@ -514,7 +517,7 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("usageRequirements")) {
       res.setUsageRequirementsElement(parseString(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("prefetch")) {
-      res.getPrefetch().add(parseCDSHooksServicesServicesPrefetchComponent(xpp));
+      res.getPrefetchList().add(parseCDSHooksServicesServicesPrefetchComponent(xpp));
     } else if (!parseCDSHooksElementContent(eventType, xpp, res)){ //2
       return false;
     }
@@ -572,9 +575,9 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("runner")) {
       res.setRunnerElement(parseUrl(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
-      res.getMode().add(parseTestCasesModeComponent(xpp));
+      res.getModeList().add(parseTestCasesModeComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("suite")) {
-      res.getSuite().add(parseTestCasesSuiteComponent(xpp));
+      res.getSuiteList().add(parseTestCasesSuiteComponent(xpp));
     } else if (!parseResourceContent(eventType, xpp, res)){ //2
       return false;
     }
@@ -628,11 +631,11 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
       res.setModeElement(parseCode(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("resource")) {
-      res.getResource().add(parseTestCasesSuiteResourceComponent(xpp));
+      res.getResourceList().add(parseTestCasesSuiteResourceComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("parameter")) {
-      res.getParameter().add(parseTestCasesSuiteParameterComponent(xpp));
+      res.getParameterList().add(parseTestCasesSuiteParameterComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("test")) {
-      res.getTest().add(parseTestCasesSuiteTestComponent(xpp));
+      res.getTestList().add(parseTestCasesSuiteTestComponent(xpp));
     } else if (!parseBaseContent(eventType, xpp, res)){ //2
       return false;
     }
@@ -719,11 +722,11 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
       res.setModeElement(parseString(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("parameter")) {
-      res.getParameter().add(parseTestCasesSuiteParameterComponent(xpp));
+      res.getParameterList().add(parseTestCasesSuiteParameterComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("input")) {
-      res.getInput().add(parseTestCasesSuiteResourceComponent(xpp));
+      res.getInputList().add(parseTestCasesSuiteResourceComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("output")) {
-      res.getOutput().add(parseTestCasesSuiteResourceComponent(xpp));
+      res.getOutputList().add(parseTestCasesSuiteResourceComponent(xpp));
     } else if (!parseBaseContent(eventType, xpp, res)){ //2
       return false;
     }
@@ -1020,7 +1023,7 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       composeId("encounterId", element.getEncounterIdElement());
     }
     if (element.hasSelections()) { 
-      for (UriType e : element.getSelections()) 
+      for (UriType e : element.getSelectionsList()) 
           composeUri("selections", e); // a
     }
     if (element.hasDraftOrders()) {
@@ -1085,7 +1088,7 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected void composeCDSHooksExtensionsElements(CDSHooksExtensions element) throws IOException {
-    composeElementElements(element);
+    composeBaseElements(element);
   }
 
   protected void composeCDSHooksRequest(String name, CDSHooksRequest element) throws IOException {
@@ -1115,7 +1118,7 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       composeCDSHookContext("context", element.getContext());
     }
     if (element.hasPrefetch()) { 
-      for (CDSHooksRequest.CDSHooksRequestPrefetchComponent e : element.getPrefetch()) 
+      for (CDSHooksRequest.CDSHooksRequestPrefetchComponent e : element.getPrefetchList()) 
           composeCDSHooksRequestPrefetchComponent("prefetch", e); // a
     }
   }
@@ -1196,11 +1199,11 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   protected void composeCDSHooksResponseElements(CDSHooksResponse element) throws IOException {
     composeCDSHooksElementElements(element);
     if (element.hasCards()) { 
-      for (CDSHooksResponse.CDSHooksResponseCardsComponent e : element.getCards()) 
+      for (CDSHooksResponse.CDSHooksResponseCardsComponent e : element.getCardsList()) 
           composeCDSHooksResponseCardsComponent("cards", e); // a
     }
     if (element.hasSystemActions()) { 
-      for (CDSHooksResponse.CDSHooksResponseCardsSuggestionsActionsComponent e : element.getSystemActions()) 
+      for (CDSHooksResponse.CDSHooksResponseCardsSuggestionsActionsComponent e : element.getSystemActionsList()) 
           composeCDSHooksResponseCardsSuggestionsActionsComponent("systemActions", e); // a
     }
   }
@@ -1231,17 +1234,17 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       composeCDSHooksResponseCardsSourceComponent("source", element.getSource());
     }
     if (element.hasSuggestions()) { 
-      for (CDSHooksResponse.CDSHooksResponseCardsSuggestionsComponent e : element.getSuggestions()) 
+      for (CDSHooksResponse.CDSHooksResponseCardsSuggestionsComponent e : element.getSuggestionsList()) 
           composeCDSHooksResponseCardsSuggestionsComponent("suggestions", e); // a
     }
     if (element.hasSelectionBehaviorElement())
       composeEnumeration("selectionBehavior", element.getSelectionBehaviorElement(), new CDSHooksResponse.CDSSelectionBehaviorCodesVSEnumFactory());
     if (element.hasOverrideReasons()) { 
-      for (Coding e : element.getOverrideReasons()) 
+      for (Coding e : element.getOverrideReasonsList()) 
           composeCoding("overrideReasons", e); // a
     }
     if (element.hasLinks()) { 
-      for (CDSHooksResponse.CDSHooksResponseCardsLinksComponent e : element.getLinks()) 
+      for (CDSHooksResponse.CDSHooksResponseCardsLinksComponent e : element.getLinksList()) 
           composeCDSHooksResponseCardsLinksComponent("links", e); // a
     }
   }
@@ -1292,7 +1295,7 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       composeBoolean("isRecommended", element.getIsRecommendedElement());
     }
     if (element.hasActions()) { 
-      for (CDSHooksResponse.CDSHooksResponseCardsSuggestionsActionsComponent e : element.getActions()) 
+      for (CDSHooksResponse.CDSHooksResponseCardsSuggestionsActionsComponent e : element.getActionsList()) 
           composeCDSHooksResponseCardsSuggestionsActionsComponent("actions", e); // a
     }
   }
@@ -1359,7 +1362,7 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   protected void composeCDSHooksServicesElements(CDSHooksServices element) throws IOException {
     composeCDSHooksElementElements(element);
     if (element.hasServices()) { 
-      for (CDSHooksServices.CDSHooksServicesServicesComponent e : element.getServices()) 
+      for (CDSHooksServices.CDSHooksServicesServicesComponent e : element.getServicesList()) 
           composeCDSHooksServicesServicesComponent("services", e); // a
     }
   }
@@ -1391,7 +1394,7 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       composeString("usageRequirements", element.getUsageRequirementsElement());
     }
     if (element.hasPrefetch()) { 
-      for (CDSHooksServices.CDSHooksServicesServicesPrefetchComponent e : element.getPrefetch()) 
+      for (CDSHooksServices.CDSHooksServicesServicesPrefetchComponent e : element.getPrefetchList()) 
           composeCDSHooksServicesServicesPrefetchComponent("prefetch", e); // a
     }
   }
@@ -1442,11 +1445,11 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       composeUrl("runner", element.getRunnerElement());
     }
     if (element.hasMode()) { 
-      for (TestCases.TestCasesModeComponent e : element.getMode()) 
+      for (TestCases.TestCasesModeComponent e : element.getModeList()) 
           composeTestCasesModeComponent("mode", e); // a
     }
     if (element.hasSuite()) { 
-      for (TestCases.TestCasesSuiteComponent e : element.getSuite()) 
+      for (TestCases.TestCasesSuiteComponent e : element.getSuiteList()) 
           composeTestCasesSuiteComponent("suite", e); // a
     }
   }
@@ -1491,15 +1494,15 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       composeCode("mode", element.getModeElement());
     }
     if (element.hasResource()) { 
-      for (TestCases.TestCasesSuiteResourceComponent e : element.getResource()) 
+      for (TestCases.TestCasesSuiteResourceComponent e : element.getResourceList()) 
           composeTestCasesSuiteResourceComponent("resource", e); // a
     }
     if (element.hasParameter()) { 
-      for (TestCases.TestCasesSuiteParameterComponent e : element.getParameter()) 
+      for (TestCases.TestCasesSuiteParameterComponent e : element.getParameterList()) 
           composeTestCasesSuiteParameterComponent("parameter", e); // a
     }
     if (element.hasTest()) { 
-      for (TestCases.TestCasesSuiteTestComponent e : element.getTest()) 
+      for (TestCases.TestCasesSuiteTestComponent e : element.getTestList()) 
           composeTestCasesSuiteTestComponent("test", e); // a
     }
   }
@@ -1576,15 +1579,15 @@ public class ToolsXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       composeString("mode", element.getModeElement());
     }
     if (element.hasParameter()) { 
-      for (TestCases.TestCasesSuiteParameterComponent e : element.getParameter()) 
+      for (TestCases.TestCasesSuiteParameterComponent e : element.getParameterList()) 
           composeTestCasesSuiteParameterComponent("parameter", e); // a
     }
     if (element.hasInput()) { 
-      for (TestCases.TestCasesSuiteResourceComponent e : element.getInput()) 
+      for (TestCases.TestCasesSuiteResourceComponent e : element.getInputList()) 
           composeTestCasesSuiteResourceComponent("input", e); // a
     }
     if (element.hasOutput()) { 
-      for (TestCases.TestCasesSuiteResourceComponent e : element.getOutput()) 
+      for (TestCases.TestCasesSuiteResourceComponent e : element.getOutputList()) 
           composeTestCasesSuiteResourceComponent("output", e); // a
     }
   }

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.tools;
+package org.hl7.fhir.r5.openehr;
 
 // generated
 
@@ -34,14 +34,35 @@ package org.hl7.fhir.r5.tools;
 
 
 
-public class Constants {
+import org.hl7.fhir.r5.formats.JsonCreator;
+import org.hl7.fhir.r5.formats.JsonParserBase;
+import org.hl7.fhir.r5.formats.ParserBase.IParserFactory;
+import org.hl7.fhir.r5.formats.XmlParserBase;
+import org.hl7.fhir.utilities.xml.IXMLWriter;
 
-  public final static String LOCAL_REF_REGEX = "()\\\\/[A-Za-z0-9\\\\-\\\\.]{1,64}";
-  public final static String NS_SYSTEM_TYPE = "http://hl7.org/fhirpath/System.";
+public class OpenehrParser {
 
-  public final static String VERSION = "current";
-  public final static String VERSION_BASE = "current";
-  public final static String VERSION_MM = "current";
-  public final static String DATE = "Sat, May 10, 2025 04:46+0200";
-  public final static String URI_REGEX = "((http|https):\\/\\/([A-Za-z0-9\\\\\\.\\:\\%\\$\\-]*\\/)*?)?()\\/[A-Za-z0-9\\-\\.]{1,64}(\\/_history\\/[A-Za-z0-9\\-\\.]{1,64})?";
+  public static void register() {    
+
+  }
+
+  public static class OpenehrJsonParserFactory implements IParserFactory {
+    @Override
+    public JsonParserBase composerJson(JsonCreator json) {
+      return new OpenehrJsonParser(json);
+    }
+    @Override
+    public JsonParserBase parserJson(boolean allowUnknownContent, boolean allowComments) {
+      return new OpenehrJsonParser(allowUnknownContent, allowComments);
+    }
+    @Override
+    public XmlParserBase composerXml(IXMLWriter xml) {
+      return new OpenehrXmlParser(xml);
+    }
+    @Override
+    public XmlParserBase parserXml(boolean allowUnknownContent) {
+      return new OpenehrXmlParser(allowUnknownContent);
+    }
+  }
+  
 }
