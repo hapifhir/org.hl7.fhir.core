@@ -4,8 +4,10 @@ import org.hl7.fhir.r4b.model.Base;
 import org.hl7.fhir.r4b.model.DataType;
 import org.hl7.fhir.r4b.model.Property;
 import org.hl7.fhir.r4b.model.Resource;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
+@MarkedToMoveToAdjunctPackage
 public class DataTypeVisitor {
 
   public interface IDatatypeVisitor<T extends DataType> {

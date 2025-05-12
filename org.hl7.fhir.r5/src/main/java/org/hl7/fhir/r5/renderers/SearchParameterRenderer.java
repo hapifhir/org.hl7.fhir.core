@@ -22,10 +22,12 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public class SearchParameterRenderer extends TerminologyRenderer {
 
 
@@ -66,7 +68,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     p.code().tx(spd.getType().toCode());
     addMarkdown(x, spd.getDescription());
 
-    XhtmlNode tbl = x.table("grid");
+    XhtmlNode tbl = x.table("grid", false);
     XhtmlNode tr = tbl.tr();
     tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.GENERAL_RESOURCE), spd.getBase().size()));
     XhtmlNode td = tr.td();
@@ -97,7 +99,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.SEARCH_PAR_REND_TARGET), spd.getTarget().size()));
       td = tr.td();
       if (isAllConcreteResources(spd.getTarget())) {
-        td.ah(context.prefixLocalHref(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "resourcelist.html"))).tx(context.formatPhrase(RenderingContext.SEARCH_PAR_RES));
+        td.ah(context.prefixLocalHref(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "resourcelist.html"))).tx(context.formatPhrase(RenderingContext.SEARCH_PAR_RES));
       } else {
         for (Enumeration<VersionIndependentResourceTypesAll> t : spd.getTarget()) {
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.getCode());
@@ -162,7 +164,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     
     if (spd.hasComponent()) {
       x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMPARATORS));
-      tbl = x.table("grid");
+      tbl = x.table("grid", false);
       for (SearchParameterComponentComponent t : spd.getComponent()) {
         tr = tbl.tr();
         SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), spd);

@@ -44,7 +44,6 @@ import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -67,11 +66,13 @@ import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.formats.XmlLocationAnnotator;
 import org.hl7.fhir.r5.utils.formats.XmlLocationData;
 import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.StringPair;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -91,6 +92,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
+@MarkedToMoveToAdjunctPackage
 public class XmlParser extends ParserBase {
   private boolean allowXsiLocation;
   private String version;
@@ -120,13 +122,13 @@ public class XmlParser extends ParserBase {
 
   public List<ValidatedFragment> parse(InputStream inStream) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
 
-    byte[] content = TextFile.streamToBytes(inStream);
+    byte[] content = FileUtilities.streamToBytes(inStream);
     ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "xml", content, false);
 
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     Document doc = null;
     try {
-      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
       // xxe protection
       factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
       factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
@@ -150,17 +152,11 @@ public class XmlParser extends ParserBase {
         DocumentBuilder docBuilder = factory.newDocumentBuilder();
         doc = docBuilder.newDocument();
         DOMResult domResult = new DOMResult(doc);
-        SAXParserFactory spf = SAXParserFactory.newInstance();
+        SAXParserFactory spf = XMLUtil.newXXEProtectedSaxParserFactory();
         spf.setNamespaceAware(true);
         spf.setValidating(false);
-        // xxe protection
-        spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
-        spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-        SAXParser saxParser = spf.newSAXParser();
-        XMLReader xmlReader = saxParser.getXMLReader();
-        // xxe protection
-        xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-        xmlReader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+
+        XMLReader xmlReader = XMLUtil.getXXEProtectedXMLReader(spf);
 
         XmlLocationAnnotator locationAnnotator = new XmlLocationAnnotator(xmlReader, doc);
         InputSource inputSource = new InputSource(stream);
@@ -741,6 +737,9 @@ public class XmlParser extends ParserBase {
     }
     if (hasTypeAttr(e))
       xml.namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
+    if (Utilities.isAbsoluteUrl(e.getType())) {
+      xml.namespace(urlRoot(e.getType()), "et");
+    }
     addNamespaces(xml, e);
     composeElement(xml, e, e.getType(), true);
     xml.end();
@@ -797,7 +796,11 @@ public class XmlParser extends ParserBase {
     }
     markedXhtml = false;
     xml.start();
-    xml.setDefaultNamespace(e.getProperty().getXmlNamespace());
+    xml.setDefaultNamespace(e.getProperty().getXmlNamespace());    
+    if (Utilities.isAbsoluteUrl(e.getType())) {
+      xml.namespace(urlRoot(e.getType()), "et");
+    }
+
     if (schemaPath != null) {
       xml.setSchemaLocation(FormatUtilities.FHIR_NS, Utilities.pathURL(schemaPath, e.fhirType()+".xsd"));
     }
@@ -809,7 +812,7 @@ public class XmlParser extends ParserBase {
     if (!(isElideElements() && element.isElided())) {
       if (showDecorations) {
         @SuppressWarnings("unchecked")
-        List<ElementDecoration> decorations = (List<ElementDecoration>) element.getUserData("fhir.decorations");
+        List<ElementDecoration> decorations = (List<ElementDecoration>) element.getUserData(UserDataNames.rendering_xml_decorations);
         if (decorations != null)
           for (ElementDecoration d : decorations)
             xml.decorate(d);
@@ -932,7 +935,11 @@ public class XmlParser extends ParserBase {
           String abbrev = makeNamespaceAbbrev(element.getProperty(), xml);
           xml.namespace(element.getProperty().getXmlNamespace(), abbrev);
         }
-        xml.enter(element.getProperty().getXmlNamespace(), elementName);
+        if (Utilities.isAbsoluteUrl(elementName)) {
+          xml.enter(urlRoot(elementName), urlTail(elementName));
+        } else {
+          xml.enter(element.getProperty().getXmlNamespace(), elementName);
+        }
       }
 
       if (!root && element.getSpecial() != null) {
@@ -964,11 +971,19 @@ public class XmlParser extends ParserBase {
       if (!element.getProperty().getDefinition().hasExtension(ToolingExtensions.EXT_ID_CHOICE_GROUP)) {
         if (!root && element.getSpecial() != null)
           xml.exit(element.getProperty().getXmlNamespace(),element.getType());
-        xml.exit(element.getProperty().getXmlNamespace(),elementName);
+        if (Utilities.isAbsoluteUrl(elementName)) {
+          xml.exit(urlRoot(elementName), urlTail(elementName));
+        } else {
+          xml.exit(element.getProperty().getXmlNamespace(),elementName);
+        }
       }
     }
   }
 
+  private String urlRoot(String elementName) {
+    return elementName.substring(0, elementName.lastIndexOf("/"));
+  }
+  
   private String makeNamespaceAbbrev(Property property, IXMLWriter xml) {
     // it's a cosmetic thing, but we're going to try to come up with a nice namespace
 

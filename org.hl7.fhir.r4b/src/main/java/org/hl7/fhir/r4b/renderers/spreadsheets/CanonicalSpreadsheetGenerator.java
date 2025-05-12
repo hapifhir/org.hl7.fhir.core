@@ -14,6 +14,7 @@ import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r4b.renderers.DataRenderer;
 
+@Deprecated
 public class CanonicalSpreadsheetGenerator extends SpreadsheetGenerator {
 
   public CanonicalSpreadsheetGenerator(IWorkerContext context) {

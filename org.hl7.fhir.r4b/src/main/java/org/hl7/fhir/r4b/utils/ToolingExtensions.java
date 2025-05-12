@@ -903,6 +903,9 @@ public class ToolingExtensions {
   }
 
   private static IssueSeverity mapSeverity(org.hl7.fhir.r4b.model.OperationOutcome.IssueSeverity severity) {
+    if (severity == null) {
+      return null;
+    }
     switch (severity) {
     case ERROR:
       return IssueSeverity.ERROR;

@@ -13,8 +13,10 @@ import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public class ActorDefinitionRenderer extends ResourceRenderer {
 
 
@@ -35,7 +37,7 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
   }
 
   public void render(RenderingStatus status, XhtmlNode x, ResourceWrapper acd) throws FHIRFormatError, DefinitionException, IOException {
-    XhtmlNode tbl = x.table("grid");
+    XhtmlNode tbl = x.table("grid", false);
     XhtmlNode tr = tbl.tr();
     tr.td().b().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_ACT, context.getTranslated(acd.child("name")))  + " ");
     tr.td().tx(context.getTranslated(acd.child("title")));

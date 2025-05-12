@@ -294,6 +294,21 @@ msgstr "POST een nieuwe resource (maak interactie)"
 msgid "DELETE a resource (delete interaction)"
 msgstr "DELETE een resource (verwijder interactie)"
 
+# CAPABILITY_DOCUMENT_CAPS
+#: CAPABILITY_DOCUMENT_CAPS
+msgid "FHIR Document Capabilities"
+msgstr ""
+
+# CAPABILITY_ENDPOINTS
+#: CAPABILITY_ENDPOINTS
+msgid "Endpoint(s)"
+msgstr ""
+
+# CAPABILITY_ERR_DET
+#: CAPABILITY_ERR_DET
+msgid "Error detected"
+msgstr ""
+
 # CAPABILITY_EXT_OP
 #: CAPABILITY_EXT_OP
 msgid "Extended Operations"
@@ -344,6 +359,26 @@ msgstr "interactie als volgt omschreven:"
 msgid "Interaction summary"
 msgstr "Interactie samenvatting"
 
+# CAPABILITY_MAY_SUPP
+#: CAPABILITY_MAY_SUPP
+msgid "MAY Support the Following Implementation Guides"
+msgstr ""
+
+# CAPABILITY_MESSAGING_CAP
+#: CAPABILITY_MESSAGING_CAP
+msgid "Messaging Capability"
+msgstr ""
+
+# CAPABILITY_MESSAGING_CAPS
+#: CAPABILITY_MESSAGING_CAPS
+msgid "FHIR Messaging Capabilities"
+msgstr ""
+
+# CAPABILITY_MULT_EXT
+#: CAPABILITY_MULT_EXT
+msgid "this mark indicates that there are more than one expectation extensions present"
+msgstr ""
+
 # CAPABILITY_NOTE_CAP
 #: CAPABILITY_NOTE_CAP
 msgid "Note to Implementers: FHIR Capabilities"
@@ -378,6 +413,11 @@ msgstr "Profielconformance"
 #: CAPABILITY_PROF_MAP
 msgid "Profile Mapping"
 msgstr "Profielmapping"
+
+# CAPABILITY_PROF_RES_DOC
+#: CAPABILITY_PROF_RES_DOC
+msgid "Document Resource Profile"
+msgstr ""
 
 # CAPABILITY_PUB_BY
 #: CAPABILITY_PUB_BY
@@ -489,10 +529,20 @@ msgstr "ondersteunt"
 msgid "Supports"
 msgstr "Ondersteunt"
 
+# CAPABILITY_SUPPS_THE
+#: CAPABILITY_SUPPS_THE
+msgid "Supports the"
+msgstr ""
+
 # CAPABILITY_SUPP_FORM
 #: CAPABILITY_SUPP_FORM
 msgid "Supported Formats:"
 msgstr "Ondersteunde formaten:"
+
+# CAPABILITY_SUPP_MSGS
+#: CAPABILITY_SUPP_MSGS
+msgid "Supported Message(s)"
+msgstr ""
 
 # CAPABILITY_SUPP_PATCH_FORM
 #: CAPABILITY_SUPP_PATCH_FORM
@@ -506,8 +556,8 @@ msgstr "Ondersteunde profielen"
 
 # CAPABILITY_SUPP_THE
 #: CAPABILITY_SUPP_THE
-msgid "Supports the"
-msgstr "Ondersteunt de"
+msgid "support the"
+msgstr "!!Ondersteunt de"
 
 # CAPABILITY_TYPS
 #: CAPABILITY_TYPS
@@ -566,8 +616,8 @@ msgstr "Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> bevat codes
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
-msgid "This code system <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "Dit codesysteem <param name=\"cs\"/> definieert {0} op de volgende code<if test=\"code-count != 1\">s</if>:"
+msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
+msgstr "!!Dit codesysteem <param name=\"cs\"/> definieert {0} op de volgende code<if test=\"code-count != 1\">s</if>:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
@@ -704,16 +754,6 @@ msgstr "Groep {0}"
 msgid "(not specified)"
 msgstr "(niet gespecificeerd)"
 
-# CONC_MAP_NO_PROD_USE
-#: CONC_MAP_NO_PROD_USE
-msgid "(not intended for production usage)."
-msgstr "(niet bedoeld voor gebruik in productie)"
-
-# CONC_MAP_PUB_ON
-#: CONC_MAP_PUB_ON
-msgid "Published on {0}"
-msgstr "Gepubliceerd op {0}"
-
 # CONC_MAP_REL
 #: CONC_MAP_REL
 msgid "Relationship"
@@ -743,6 +783,26 @@ msgstr "Doel code"
 #: CONC_MAP_TRGT_DET
 msgid "Target Concept Details"
 msgstr "Doel conceptdetails"
+
+# DATA_REND_AFTERNOON
+#: DATA_REND_AFTERNOON
+msgid "Afternoon"
+msgstr ""
+
+# DATA_REND_AFTERNOON_EARLY
+#: DATA_REND_AFTERNOON_EARLY
+msgid "Early Afternoon"
+msgstr ""
+
+# DATA_REND_AFTERNOON_LATE
+#: DATA_REND_AFTERNOON_LATE
+msgid "Late Afternoon"
+msgstr ""
+
+# DATA_REND_AFTER_SLEEP
+#: DATA_REND_AFTER_SLEEP
+msgid "After Sleep"
+msgstr ""
 
 # DATA_REND_AFTRBKFST
 #: DATA_REND_AFTRBKFST
@@ -845,6 +905,11 @@ msgstr "Voorwaarde"
 msgid "Count {0}"
 msgstr "Aantal {0}"
 
+# DATA_REND_CURRENCY
+#: DATA_REND_CURRENCY
+msgid "{1} {0}"
+msgstr ""
+
 # DATA_REND_DATA
 #: DATA_REND_DATA
 msgid "Data: {0}"
@@ -857,8 +922,13 @@ msgstr "(Details: {0} code"
 
 # DATA_REND_DETAILS_STATED
 #: DATA_REND_DETAILS_STATED
-msgid "(Details: {0} code {1} {2} {3} '', stated as '' {4} {5}"
-msgstr "(Details: {0} code {1} {2} {3} '', genoemd als '' {4} {5}"
+msgid "(Details: {0} code {1} = ''{2}'')"
+msgstr "!!(Details: {0} code {1} {2} {3} '', genoemd als '' {4} {5}"
+
+# DATA_REND_DETAILS_STATED_ND
+#: DATA_REND_DETAILS_STATED_ND
+msgid "(Details: {0} code {1})"
+msgstr ""
 
 # DATA_REND_DICOM
 #: DATA_REND_DICOM
@@ -879,6 +949,21 @@ msgstr "Duur {0}"
 #: DATA_REND_ERROR
 msgid "Error: {0}"
 msgstr "Fout: {0}"
+
+# DATA_REND_EVENING
+#: DATA_REND_EVENING
+msgid "Evening"
+msgstr ""
+
+# DATA_REND_EVENING_EARLY
+#: DATA_REND_EVENING_EARLY
+msgid "Early Evening"
+msgstr ""
+
+# DATA_REND_EVENING_LATE
+#: DATA_REND_EVENING_LATE
+msgid "Late Evening"
+msgstr ""
 
 # DATA_REND_EVENTS
 #: DATA_REND_EVENTS
@@ -910,6 +995,11 @@ msgstr "Global locatienummer"
 msgid "ICD-9"
 msgstr "ICD-9"
 
+# DATA_REND_IMMEDIATE
+#: DATA_REND_IMMEDIATE
+msgid "Immediate"
+msgstr ""
+
 # DATA_REND_INT
 #: DATA_REND_INT
 msgid "Interval: {0}"
@@ -939,6 +1029,31 @@ msgstr "bij de maaltijd"
 #: DATA_REND_MKDWN_LNK
 msgid "Unable to resolve markdown link"
 msgstr "Kan markdown-link niet volgen"
+
+# DATA_REND_MORNING
+#: DATA_REND_MORNING
+msgid "Morning"
+msgstr ""
+
+# DATA_REND_MORNING_EARLY
+#: DATA_REND_MORNING_EARLY
+msgid "Early Morning"
+msgstr ""
+
+# DATA_REND_MORNING_LATE
+#: DATA_REND_MORNING_LATE
+msgid "Late Morning"
+msgstr ""
+
+# DATA_REND_NIGHT
+#: DATA_REND_NIGHT
+msgid "Night"
+msgstr ""
+
+# DATA_REND_NOON
+#: DATA_REND_NOON
+msgid "Noon"
+msgstr ""
 
 # DATA_REND_NOT_STAT
 #: DATA_REND_NOT_STAT
@@ -1236,10 +1351,10 @@ msgstr "Onbekende ExampleScenario weergavemodus {0}"
 msgid "Unable to find referenced actor {0}"
 msgstr "Kan gerefereerde actor {0} niet vinden"
 
-# EX_SCEN_UN_INST
-#: EX_SCEN_UN_INST
-msgid "Unable to find referenced instance {0}"
-msgstr "Kan gerefereerde instance {0} niet vinden"
+# FMM_TABLE
+#: FMM_TABLE
+msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgstr ""
 
 # GENERAL_ADD_LANG
 #: GENERAL_ADD_LANG
@@ -1250,6 +1365,16 @@ msgstr "Additionele taalweergaven"
 #: GENERAL_BINDING
 msgid "Binding"
 msgstr "Binding"
+
+# GENERAL_BINDING_NO_DESC
+#: GENERAL_BINDING_NO_DESC
+msgid "No description provided"
+msgstr ""
+
+# GENERAL_BINDING_NO_VS
+#: GENERAL_BINDING_NO_VS
+msgid "Binding Description (No ValueSet)"
+msgstr ""
 
 # GENERAL_BIND_MIN_ALLOW
 #: GENERAL_BIND_MIN_ALLOW
@@ -1392,6 +1517,11 @@ msgstr "De logische naam van het element"
 msgid "Max Length:"
 msgstr "Max lengte:"
 
+# GENERAL_MIN_LENGTH
+#: GENERAL_MIN_LENGTH
+msgid "Min Length:"
+msgstr ""
+
 # GENERAL_MODIFIERS
 #: GENERAL_MODIFIERS
 msgid "Modifiers"
@@ -1401,6 +1531,11 @@ msgstr "Modifiers"
 #: GENERAL_NAME
 msgid "Name"
 msgstr "Naam"
+
+# GENERAL_NCI_THES
+#: GENERAL_NCI_THES
+msgid "NCI Thesaurus"
+msgstr ""
 
 # GENERAL_NOTE
 #: GENERAL_NOTE
@@ -1491,6 +1626,7 @@ msgstr "Starter"
 
 # GENERAL_STATUS
 #: GENERAL_STATUS
+msgctxt "GENERAL_STATUS"
 msgid "Status"
 msgstr "Status"
 
@@ -1568,6 +1704,36 @@ msgstr "Xml"
 #: IMP_GUIDE_URL
 msgid "The official URL for this implementation guide is:"
 msgstr "De officiële url voor deze implementatiegids is:"
+
+# IP_INTRO
+#: IP_INTRO
+msgid "This {0} includes IP covered under the following statements."
+msgstr ""
+
+# IP_NONE
+#: IP_NONE
+msgid "No use of external IP"
+msgstr ""
+
+# IP_NONE_EXT
+#: IP_NONE_EXT
+msgid "No use of external IP (other than from the FHIR specification)"
+msgstr ""
+
+# KIND_EXTENSION
+#: KIND_EXTENSION
+msgid "extension"
+msgstr ""
+
+# KIND_LOGICAL
+#: KIND_LOGICAL
+msgid "logical model"
+msgstr ""
+
+# KIND_PROFILE
+#: KIND_PROFILE
+msgid "profile"
+msgstr ""
 
 # LIB_REND_ART
 #: LIB_REND_ART
@@ -1699,6 +1865,27 @@ msgstr "Ongespecificeerd subject"
 #: MAP_DEFAULT_COMMENT
 msgid "This element was not defined prior to R5"
 msgstr "Dit element was niet gedefinieerd vóór R5"
+
+# MATURITY_MATURITY
+#: MATURITY_MATURITY
+msgid "Maturity Level: {0}"
+msgstr ""
+
+# MATURITY_PUBLISHER
+#: MATURITY_PUBLISHER
+msgid "Publisher: {0}"
+msgstr ""
+
+# MATURITY_STATUS
+#: MATURITY_STATUS
+msgctxt "MATURITY_STATUS"
+msgid "Status"
+msgstr ""
+
+# MATURITY_STDS_STATUS
+#: MATURITY_STDS_STATUS
+msgid "Standards Status: {0}"
+msgstr ""
 
 # NAME_SYS_IDEN
 #: NAME_SYS_IDEN
@@ -2553,6 +2740,11 @@ msgstr "Speciale regels van toepassing: {0}!"
 #: RES_REND_TAG
 msgid "Tag"
 msgstr "Tag"
+
+# RES_REND_TEMPLATE_ID
+#: RES_REND_TEMPLATE_ID
+msgid "templateId: {0}"
+msgstr ""
 
 # RES_REND_UNKNOWN
 #: RES_REND_UNKNOWN
@@ -3628,8 +3820,8 @@ msgstr "Dit profiel bouwt op"
 
 # STRUC_DEF_PROF_COMP
 #: STRUC_DEF_PROF_COMP
-msgid "This profile compiles with the profile"
-msgstr "Dit profiel compileert met het profiel"
+msgid "This profile complies with the profile"
+msgstr "!!Dit profiel compileert met het profiel"
 
 # STRUC_DEF_PROF_REQ
 #: STRUC_DEF_PROF_REQ
@@ -4012,6 +4204,11 @@ msgstr "Inclusies"
 msgid "Interactions"
 msgstr "Interacties"
 
+# SUB_TOPIC_CURR
+#: SUB_TOPIC_CURR
+msgid "* current = {0}"
+msgstr "* huidig = {0}"
+
 # SUB_TOPIC_PREV
 #: SUB_TOPIC_PREV
 msgid "* previous = {0}"
@@ -4192,6 +4389,16 @@ msgstr "Slice-item"
 msgid "Display"
 msgstr "Weergave"
 
+# TX_DISPLAY_LANG
+#: TX_DISPLAY_LANG
+msgid "Display ({0})"
+msgstr ""
+
+# VALUE_ES_ES
+#: VALUE_ES_ES
+msgid "Spanish National Edition"
+msgstr ""
+
 # VALUE_SET_ADD_DESIG
 #: VALUE_SET_ADD_DESIG
 msgid "Additional Designations and Language Displays"
@@ -4213,10 +4420,40 @@ msgctxt "VALUE_SET_AND"
 msgid "and"
 msgstr "en"
 
+# VALUE_SET_AR
+#: VALUE_SET_AR
+msgid "Argentinian Edition"
+msgstr ""
+
+# VALUE_SET_AT
+#: VALUE_SET_AT
+msgid "Austrian Edition"
+msgstr ""
+
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
 msgid "Australian"
 msgstr "Australisch"
+
+# VALUE_SET_BE
+#: VALUE_SET_BE
+msgid "Belgian Edition"
+msgstr ""
+
+# VALUE_SET_CA_EN
+#: VALUE_SET_CA_EN
+msgid "Canadian English Edition"
+msgstr ""
+
+# VALUE_SET_CA_FR
+#: VALUE_SET_CA_FR
+msgid "Canadian Canadian French Edition"
+msgstr ""
+
+# VALUE_SET_CH
+#: VALUE_SET_CH
+msgid "Swiss Edition"
+msgstr ""
 
 # VALUE_SET_CODES_FROM
 #: VALUE_SET_CODES_FROM
@@ -4263,6 +4500,11 @@ msgstr "Deze inclusie specificeert een hiërarchie voor wanneer waardelijsten wo
 msgid "Danish"
 msgstr "Deens"
 
+# VALUE_SET_DE
+#: VALUE_SET_DE
+msgid "German Edition"
+msgstr ""
+
 # VALUE_SET_DESCENDENTOF
 #: VALUE_SET_DESCENDENTOF
 msgid "descends from"
@@ -4287,6 +4529,11 @@ msgstr "bestaat niet"
 #: VALUE_SET_DUTCH
 msgid "Dutch"
 msgstr "Nederlands"
+
+# VALUE_SET_EE
+#: VALUE_SET_EE
+msgid "Estonian Edition"
+msgstr ""
 
 # VALUE_SET_EQUAL
 #: VALUE_SET_EQUAL
@@ -4328,10 +4575,35 @@ msgstr "Expansie gebaseerd op"
 msgid "Expansion based on:"
 msgstr "Expansie gebaseerd op:"
 
+# VALUE_SET_EXPANSIONS_INTERNAL
+#: VALUE_SET_EXPANSIONS_INTERNAL
+msgid "Expansion performed internally based on:"
+msgstr ""
+
+# VALUE_SET_EXPANSIONS_SRVR
+#: VALUE_SET_EXPANSIONS_SRVR
+msgid "Expansion from {0} based on:"
+msgstr ""
+
+# VALUE_SET_EXPANSION_INTERNAL
+#: VALUE_SET_EXPANSION_INTERNAL
+msgid "Expansion performed internally based on"
+msgstr ""
+
+# VALUE_SET_EXPANSION_SRVR
+#: VALUE_SET_EXPANSION_SRVR
+msgid "Expansion from {0} based on"
+msgstr ""
+
 # VALUE_SET_EXP_FRAG
 #: VALUE_SET_EXP_FRAG
 msgid "Expansion based on code system fragment"
 msgstr "Expansie gebaseerd op codesysteemfragment"
+
+# VALUE_SET_FI
+#: VALUE_SET_FI
+msgid "Finnish Edition"
+msgstr ""
 
 # VALUE_SET_GENERALIZES
 #: VALUE_SET_GENERALIZES
@@ -4347,6 +4619,11 @@ msgstr "Deze waardelijst bevat {0} codes. Om de publicatiegrootte beheersbaar te
 #: VALUE_SET_HAS_AT_LEAST
 msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
 msgstr "Deze waardelijst bevat tenminste {0} codes. Om de publicatiegrootte beheersbaar te houden, wordt alleen een selectie ({1} codes) van de hele set codes getoond."
+
+# VALUE_SET_IE
+#: VALUE_SET_IE
+msgid "Irish Edition"
+msgstr ""
 
 # VALUE_SET_IMPORT
 #: VALUE_SET_IMPORT
@@ -4395,6 +4672,11 @@ msgstr "is-a"
 msgid "is-not-a"
 msgstr "is-not-a"
 
+# VALUE_SET_KR
+#: VALUE_SET_KR
+msgid "Republic of Korea Edition (South Korea)"
+msgstr ""
+
 # VALUE_SET_LEVEL
 #: VALUE_SET_LEVEL
 msgid "Level"
@@ -4404,6 +4686,11 @@ msgstr "Level"
 #: VALUE_SET_LOINCV
 msgid "Loinc v"
 msgstr "Loinc v"
+
+# VALUE_SET_NO
+#: VALUE_SET_NO
+msgid "Norwegian Edition"
+msgstr ""
 
 # VALUE_SET_NOTE
 #: VALUE_SET_NOTE
@@ -4449,6 +4736,16 @@ msgstr "?ngen-13?"
 #: VALUE_SET_NUMBER_CONCEPTS
 msgid "This value set expansion contains {0} concepts."
 msgstr "Deze waardelijst-expansie bevat {0} concepten."
+
+# VALUE_SET_NZ
+#: VALUE_SET_NZ
+msgid "New Zealand Edition"
+msgstr ""
+
+# VALUE_SET_OTHER_DISPLAY
+#: VALUE_SET_OTHER_DISPLAY
+msgid "Other Display ({0})"
+msgstr ""
 
 # VALUE_SET_REGEX
 #: VALUE_SET_REGEX
@@ -4520,6 +4817,11 @@ msgstr "Deze waardelijst kan niet worden geëxpandeerd omdat de terminologieserv
 msgid "United Kingdom"
 msgstr "Verenigd Koninkrijk"
 
+# VALUE_SET_UK_CLIN
+#: VALUE_SET_UK_CLIN
+msgid "UK Clinical Edition"
+msgstr ""
+
 # VALUE_SET_US
 #: VALUE_SET_US
 msgid "United States"
@@ -4529,6 +4831,16 @@ msgstr "Verenigde Staten"
 #: VALUE_SET_USED_ELSEWHERE
 msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
 msgstr "Deze waardelijst wordt hier niet gebruikt; mogelijk wordt deze elders gebruikt (bijv. specificaties en/of implementaties die deze content gebruiken)"
+
+# VALUE_SET_US_ICD10CM
+#: VALUE_SET_US_ICD10CM
+msgid "US Edition (with ICD-10-CM maps)"
+msgstr ""
+
+# VALUE_SET_UY
+#: VALUE_SET_UY
+msgid "Uruguay Edition"
+msgstr ""
 
 # VALUE_SET_WHERE
 #: VALUE_SET_WHERE
@@ -4544,4 +4856,9 @@ msgstr ". waar de codes staan in"
 #: VS_ABSTRACT_CODE_HINT
 msgid "This code is not selectable (''Abstract'')"
 msgstr "Deze code is niet selecteerbaar (''Abstract'')"
+
+# _NA
+#: _NA
+msgid "n/a"
+msgstr ""
 

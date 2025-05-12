@@ -1,35 +1,30 @@
 package org.hl7.fhir.r4b.terminologies;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 
+@MarkedToMoveToAdjunctPackage
 public class TerminologyCacheManager {
 
   // if either the CACHE_VERSION of the stated maj/min server versions change, the
@@ -63,7 +58,7 @@ public class TerminologyCacheManager {
   public void initialize() throws IOException {
     File f = ManagedFileAccess.file(cacheFolder);
     if (!f.exists()) {
-      Utilities.createDirectory(cacheFolder);
+      FileUtilities.createDirectory(cacheFolder);
     }
     if (!version.equals(getCacheVersion())) {
       clearCache();
@@ -87,7 +82,7 @@ public class TerminologyCacheManager {
     try {
       System.out.println("Initialise terminology cache from " + source);
 
-      HTTPResult res = ManagedWebAccess.get(source + "?nocache=" + System.currentTimeMillis());
+      HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source + "?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       unzip(new ByteArrayInputStream(res.getContent()), cacheFolder);
     } catch (Exception e) {
@@ -105,17 +100,17 @@ public class TerminologyCacheManager {
           throw new RuntimeException("Entry with an illegal path: " + ze.getName());
         }
         if (ze.isDirectory()) {
-          Utilities.createDirectory(pathString);
+          FileUtilities.createDirectory(pathString);
         } else {
-          Utilities.createDirectory(Utilities.getDirectoryForFile(pathString));
-          TextFile.streamToFileNoClose(zipIn, pathString);
+          FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(pathString));
+          FileUtilities.streamToFileNoClose(zipIn, pathString);
         }
       }
     }
   }
 
   private void clearCache() throws IOException {
-    Utilities.clearDirectory(cacheFolder);
+    FileUtilities.clearDirectory(cacheFolder);
   }
 
   private String getCacheVersion() throws IOException {
@@ -156,9 +151,9 @@ public class TerminologyCacheManager {
     String url = "https://tx.fhir.org/post/tx-cache/" + ghOrg + "/" + ghRepo + "/" + ghBranch + ".zip";
     System.out.println("Sending tx-cache to " + url + " (" + Utilities.describeSize(bs.toByteArray().length) + ")");
 
-    HTTPResult res = ManagedWebAccess.builder()
+    HTTPResult res = ManagedWebAccess.accessor(Arrays.asList("web"))
      .withBasicAuth(token.substring(0, token.indexOf(':')), token.substring(token.indexOf(':') + 1))
-     .withAccept("application/zip").put(url, bs.toByteArray(), null);
+     .put(url, bs.toByteArray(), null, "application/zip");
     if (res.getCode() >= 300) {
       System.out.println("sending cache failed: " + res.getCode());
     } else {

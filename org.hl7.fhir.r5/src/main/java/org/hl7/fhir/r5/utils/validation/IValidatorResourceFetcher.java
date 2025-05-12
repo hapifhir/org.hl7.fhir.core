@@ -3,6 +3,8 @@ package org.hl7.fhir.r5.utils.validation;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -10,11 +12,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+@MarkedToMoveToAdjunctPackage
 public interface IValidatorResourceFetcher {
 
   Element fetch(IResourceValidator validator, Object appContext, String url) throws FHIRException, IOException;
 
-  boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical) throws IOException, FHIRException;
+  boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical, List<CanonicalType> targets) throws IOException, FHIRException;
 
   byte[] fetchRaw(IResourceValidator validator, String url) throws IOException; // for attachment checking
 

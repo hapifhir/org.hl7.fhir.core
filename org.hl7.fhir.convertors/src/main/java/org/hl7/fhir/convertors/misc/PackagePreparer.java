@@ -38,6 +38,7 @@ import java.io.IOException;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
@@ -70,7 +71,7 @@ public class PackagePreparer {
             }
           }
         } else if (r.hasId())
-          new org.hl7.fhir.r4.formats.JsonParser().compose(ManagedFileAccess.outStream(Utilities.path(Utilities.getDirectoryForFile(f.getAbsolutePath()), r.fhirType() + "-" + r.getId() + ".json")), VersionConvertorFactory_30_40.convertResource(r));
+          new org.hl7.fhir.r4.formats.JsonParser().compose(ManagedFileAccess.outStream(Utilities.path(FileUtilities.getDirectoryForFile(f.getAbsolutePath()), r.fhirType() + "-" + r.getId() + ".json")), VersionConvertorFactory_30_40.convertResource(r));
         else
           System.out.println(f.getName() + " has no id");
       } catch (Exception e) {

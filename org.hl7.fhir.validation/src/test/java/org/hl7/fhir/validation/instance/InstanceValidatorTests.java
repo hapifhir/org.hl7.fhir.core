@@ -6,6 +6,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ class InstanceValidatorTests {
     IWorkerContext context = mock(IWorkerContext.class);
     when(context.getLocale()).thenReturn(Locale.KOREA);
     when(context.getVersion()).thenReturn("5.0.1");
-    InstanceValidator instanceValidator = new InstanceValidator(context, null, null);
+    InstanceValidator instanceValidator = new InstanceValidator(context, null, null, null, new ValidatorSettings());
 
 
     when(context.validateCode((ValidationOptions) any(ValidationOptions.class), (CodeableConcept) any(CodeableConcept.class), (ValueSet)any(ValueSet.class))).thenReturn(new ValidationResult(ValidationMessage.IssueSeverity.NULL, "Blah!", Collections.emptyList()));

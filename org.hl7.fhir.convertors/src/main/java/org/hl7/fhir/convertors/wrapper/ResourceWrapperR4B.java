@@ -186,8 +186,8 @@ public class ResourceWrapperR4B extends ResourceWrapper {
   }
 
   public void markLanguage(XhtmlNode x, Locale locale) {
-    x.setAttribute("lang", locale.toString());
-    x.setAttribute("xml:lang", locale.toString());
+    x.setAttribute("lang", locale.toLanguageTag());
+    x.setAttribute("xml:lang", locale.toLanguageTag());
     x.addTag(0, "hr");
     x.addTag(0, "p").b().tx(locale.getDisplayName());
     x.addTag(0, "hr");
@@ -240,6 +240,16 @@ public class ResourceWrapperR4B extends ResourceWrapper {
       return ((Enumeration<?>) element).getSystem();
     }
     return null;
+  }
+
+  @Override
+  public boolean hasUserData(String name) {
+    return element.hasUserData(name);
+  }
+
+  @Override
+  public Object getUserData(String name) {
+    return element.getUserData(name);
   }
 
 }

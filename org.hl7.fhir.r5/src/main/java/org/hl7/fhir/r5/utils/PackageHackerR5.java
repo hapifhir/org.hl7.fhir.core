@@ -3,10 +3,12 @@ package org.hl7.fhir.r5.utils;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
+@MarkedToMoveToAdjunctPackage
 public class PackageHackerR5 {
 
   public static void fixLoadedResource(CanonicalResourceProxy r, PackageInformation packageInfo) {
@@ -66,6 +68,23 @@ public class PackageHackerR5 {
        }
      }
    }
+   if ("http://hl7.org/fhir/StructureDefinition/ServiceRequest".equals(r.getUrl()) && "4.0.1".equals(r.getVersion())) {
+     StructureDefinition sd = (StructureDefinition) r.getResource();
+     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+       if (ed.hasBinding()) {
+         if ("Codes for tests or services that can be carried out by a designated individual, organization or healthcare service.  For laboratory, LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred] and a valueset using LOINC Order codes is available [here](valueset-diagnostic-requests.html).".equals(ed.getBinding().getDescription())) {
+           ed.getBinding().setDescription("Codes for tests or services that can be carried out by a designated individual, organization or healthcare service.  For laboratory, LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred].");
+         }
+       }
+     }
+     for (ElementDefinition ed : sd.getDifferential().getElement()) {
+       if (ed.hasBinding()) {
+         if ("Codes for tests or services that can be carried out by a designated individual, organization or healthcare service.  For laboratory, LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred] and a valueset using LOINC Order codes is available [here](valueset-diagnostic-requests.html).".equals(ed.getBinding().getDescription())) {
+           ed.getBinding().setDescription("Codes for tests or services that can be carried out by a designated individual, organization or healthcare service.  For laboratory, LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred].");
+         }
+       }
+     }
+   }
    if (r.getUrl() != null && r.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/") && "StructureDefinition".equals(r.getType()) && "4.0.1".equals(r.getVersion())) {
      // the R4 profile wrongly applies this value set to all types. Fixing it properly is too big a thing to do here, but we can at least back off the binding strength
      StructureDefinition sd = (StructureDefinition) r.getResource();
@@ -97,12 +116,14 @@ public class PackageHackerR5 {
      StructureDefinition sd = (StructureDefinition) r.getResource();
      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
        if (ed.getType().removeIf(tr -> Utilities.existsInList(tr.getCode(), "integer64", "CodeableReference", "RatioRange", "Availability", "ExtendedContactDetail"))) {
-         sd.setUserData("fixed-by-loader", true);
+         // sd.setUserData(UserDataNames.fixed_by_loader, true);
+         // don't need to track this (for now)
        }
      }
      for (ElementDefinition ed : sd.getDifferential().getElement()) {
        if (ed.getType().removeIf(tr -> Utilities.existsInList(tr.getCode(), "integer64", "CodeableReference", "RatioRange", "Availability", "ExtendedContactDetail"))) {
-         sd.setUserData("fixed-by-loader", true);
+         // sd.setUserData(UserDataNames.fixed_by_loader, true);
+         // don't need to track this (for now)
        }
      }
    }

@@ -7,8 +7,10 @@ import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
+@MarkedToMoveToAdjunctPackage
 public class R5Hacker {
 
   public static void fixR5BrokenResources(IWorkerContext context) {
@@ -27,7 +29,7 @@ public class R5Hacker {
   }
 
   private static void fix(ElementDefinition ed) {
-    if (ed.hasDefinition()) {
+    if (ed.hasDefinition() && ed.getDefinition() != null) {
       ed.setDefinition(ed.getDefinition().replace("http://hl7.org/fhir/5.0.0-snapshot3/", "http://hl7.org/fhir/R5/"));
     }
     if (ed.hasBinding() && ed.getBinding().hasExtension(ToolingExtensions.EXT_BINDING_DEFINITION)) {

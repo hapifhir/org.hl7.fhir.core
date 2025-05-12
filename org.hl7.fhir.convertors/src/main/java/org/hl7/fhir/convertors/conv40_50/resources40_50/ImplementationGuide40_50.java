@@ -18,8 +18,10 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Url40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r4.model.MarkdownType;
 import org.hl7.fhir.r4.model.UrlType;
 import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -59,6 +61,7 @@ public class ImplementationGuide40_50 {
   static final String EXT_IG_DEFINITION_PARAM_URL_EXT = "http://hl7.org/fhir/tools/CodeSystem/ig-parameters";
   static final String EXT_IG_DEFINITION_PARAM_URL_BASE = "http://hl7.org/fhir/guide-parameter-code";
   static final String EXT_IG_DEFINITION_RESOURCE_PROFILE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.definition.resource.profile";
+  static final String EXT_IG_DEPENDSON_REASON = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.dependsOn.reason";
 
   public static org.hl7.fhir.r5.model.ImplementationGuide convertImplementationGuide(org.hl7.fhir.r4.model.ImplementationGuide src) throws FHIRException {
     if (src == null)
@@ -180,13 +183,15 @@ public class ImplementationGuide40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, EXT_IG_DEPENDSON_REASON);
     if (src.hasUri())
       tgt.setUriElement(Canonical40_50.convertCanonical(src.getUriElement()));
     if (src.hasPackageId())
       tgt.setPackageIdElement(Id40_50.convertId(src.getPackageIdElement()));
     if (src.hasVersion())
       tgt.setVersionElement(String40_50.convertString(src.getVersionElement()));
+    if (src.hasExtension(EXT_IG_DEPENDSON_REASON))
+      tgt.setReasonElement(MarkDown40_50.convertMarkdown((org.hl7.fhir.r4.model.MarkdownType)src.getExtensionByUrl(EXT_IG_DEPENDSON_REASON).getValue()));
     return tgt;
   }
 
@@ -201,6 +206,8 @@ public class ImplementationGuide40_50 {
       tgt.setPackageIdElement(Id40_50.convertId(src.getPackageIdElement()));
     if (src.hasVersion())
       tgt.setVersionElement(String40_50.convertString(src.getVersionElement()));
+    if (src.hasReason())
+      tgt.addExtension(EXT_IG_DEPENDSON_REASON, MarkDown40_50.convertMarkdown(src.getReasonElement()));
     return tgt;
   }
 
@@ -409,53 +416,61 @@ public class ImplementationGuide40_50 {
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration> convertGuidePageGeneration(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGenerationEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case HTML:
-        tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.HTML);
-        break;
-      case MARKDOWN:
-        tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.MARKDOWN);
-        break;
-      case XML:
-        tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.XML);
-        break;
-      case GENERATED:
-        tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.GENERATED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      Enumeration<ImplementationGuide.GuidePageGeneration> tgt = new Enumeration<>(new ImplementationGuide.GuidePageGenerationEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case HTML:
+                  tgt.setValue(ImplementationGuide.GuidePageGeneration.HTML);
+                  break;
+              case MARKDOWN:
+                  tgt.setValue(ImplementationGuide.GuidePageGeneration.MARKDOWN);
+                  break;
+              case XML:
+                  tgt.setValue(ImplementationGuide.GuidePageGeneration.XML);
+                  break;
+              case GENERATED:
+                  tgt.setValue(ImplementationGuide.GuidePageGeneration.GENERATED);
+                  break;
+              default:
+                  tgt.setValue(ImplementationGuide.GuidePageGeneration.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration> convertGuidePageGeneration(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ImplementationGuide.GuidePageGeneration> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGenerationEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case HTML:
-        tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.HTML);
-        break;
-      case MARKDOWN:
-        tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.MARKDOWN);
-        break;
-      case XML:
-        tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.XML);
-        break;
-      case GENERATED:
-        tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.GENERATED);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.NULL);
-        break;
-    }
-    return tgt;
+      if (src == null || src.isEmpty())
+          return null;
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGenerationEnumFactory());
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+      if (src.getValue() == null) {
+          tgt.setValue(null);
+      } else {
+          switch (src.getValue()) {
+              case HTML:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.HTML);
+                  break;
+              case MARKDOWN:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.MARKDOWN);
+                  break;
+              case XML:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.XML);
+                  break;
+              case GENERATED:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.GENERATED);
+                  break;
+              default:
+                  tgt.setValue(org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration.NULL);
+                  break;
+          }
+      }
+      return tgt;
   }
 
   public static org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent convertImplementationGuideDefinitionParameterComponent(org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent src) throws FHIRException {

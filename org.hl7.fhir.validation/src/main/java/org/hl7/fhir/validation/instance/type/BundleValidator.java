@@ -75,7 +75,6 @@ public class BundleValidator extends BaseValidator {
 
   public boolean validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidationContext hostContext, PercentageTracker pct, ValidationMode mode) {
     boolean ok = true;
-    sessionId = Utilities.makeUuidLC();
     
     String type = bundle.getNamedChildValue(TYPE, false);
     type = StringUtils.defaultString(type);
@@ -190,9 +189,6 @@ public class BundleValidator extends BaseValidator {
     return ok;
   }
 
-  private InstanceValidator validator() {
-    return (InstanceValidator) parent;
-  }
 
   private boolean validateLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack, String type, List<Element> entries) {
     switch (type) {

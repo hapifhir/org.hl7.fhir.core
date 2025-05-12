@@ -25,10 +25,13 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CanonicalPair;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public abstract class TerminologyRenderer extends ResourceRenderer {
   
 
@@ -149,9 +152,9 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     String ref = null;
     boolean addHtml = true;
     if (cs != null) {
-      ref = (String) cs.getUserData("external.url");
+      ref = (String) cs.getUserData(UserDataNames.render_external_link);
       if (Utilities.noString(ref))
-        ref = (String) cs.getUserData("filename");
+        ref = (String) cs.getUserData(UserDataNames.render_filename);
       else
         addHtml = false;
       if (Utilities.noString(ref)) {

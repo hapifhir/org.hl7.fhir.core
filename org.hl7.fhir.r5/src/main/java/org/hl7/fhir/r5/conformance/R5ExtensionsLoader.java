@@ -25,12 +25,14 @@ import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.utils.ResourceSorters;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 
+@MarkedToMoveToAdjunctPackage
 public class R5ExtensionsLoader {
   
   public static class CanonicalResourceSortByUrl<T extends CanonicalResource> implements Comparator<Loadable<T>> {
@@ -174,44 +176,62 @@ public class R5ExtensionsLoader {
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ed.hasBinding() && ed.getBinding().hasValueSet()) {
         String vsu = ed.getBinding().getValueSet();
-        ValueSet vs = context.fetchResource(ValueSet.class, vsu);
-        if (vs == null) {
-          loadValueSet(vsu, context, valueSets, codeSystems);
-        } else if (vs.hasVersion()) {
-          ed.getBinding().setValueSet(vs.getUrl()+"|"+vs.getVersion());
+        ValueSet vs = valueSets.containsKey(vsu) ? valueSets.get(vsu).getResource() : null;
+        if (vs != null) {
+          vsu = makeR5Url(vsu);
+          ed.getBinding().setValueSet(vsu);
+          if (!context.hasResource(ValueSet.class, vsu)) {
+            vs.setUrl(removeVersion(vsu));
+            loadValueSet(vs, context, valueSets, codeSystems);
+          }
         }
       }
     }
   }
 
-  private void loadValueSet(String url, IWorkerContext context, Map<String, Loadable<ValueSet>> valueSets, Map<String, Loadable<CodeSystem>> codeSystems) throws FHIRFormatError, FileNotFoundException, IOException {
-    if (valueSets.containsKey(url)) {
-      ValueSet vs = valueSets.get(url).getResource();      
-      context.cacheResourceFromPackage(vs, vs.getSourcePackage());
-      for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-        for (CanonicalType t : inc.getValueSet()) {
-          ValueSet vsi = context.fetchResource(ValueSet.class, t.getValue());
-          if (vsi == null) {
-            loadValueSet(t.asStringValue(), context, valueSets, codeSystems);
+  private String removeVersion(String url) {
+    if (url.contains("|")) {
+      url = url.substring(0, url.indexOf("|"));
+    }
+    return url;
+  }
+
+  private String makeR5Url(String url) {
+    return url.replace("/fhir/", "/fhir/5.0/");
+  }
+
+  private void loadValueSet(ValueSet vs, IWorkerContext context, Map<String, Loadable<ValueSet>> valueSets, Map<String, Loadable<CodeSystem>> codeSystems) throws FHIRFormatError, FileNotFoundException, IOException {
+    context.cacheResourceFromPackage(vs, vs.getSourcePackage());
+    for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+      for (CanonicalType t : inc.getValueSet()) {
+        String vsu = t.getValue();
+        ValueSet vsi = valueSets.containsKey(vsu) ? valueSets.get(vsu).getResource() : null;
+        if (vsi != null) {
+          vsu = makeR5Url(vsu);
+          t.setValue(vsu);
+          vsi.setUrl(vsu);
+          if (!context.hasResource(ValueSet.class, vsu)) {
+            loadValueSet(vsi, context, valueSets, codeSystems);
           }
         }
-        if (inc.hasSystem()) {
-          if (!inc.hasVersion()) {
-            if (codeSystems.containsKey(inc.getSystem())) {
-              CodeSystem cs = codeSystems.get(inc.getSystem()).getResource();
-              CodeSystem csAlready = context.fetchCodeSystem(inc.getSystem());
-              if (csAlready == null) {
-                context.cacheResourceFromPackage(cs, cs.getSourcePackage());
-              }
-            }
-          } else if (context.fetchResource(CodeSystem.class, inc.getSystem(), inc.getVersion()) == null && codeSystems.containsKey(inc.getSystem()+"|"+inc.getVersion())) {
-            CodeSystem cs1 = codeSystems.get(inc.getSystem()+"|"+inc.getVersion()).getResource();
-            context.cacheResourceFromPackage(cs1, cs1.getSourcePackage());
+      }
+      if (inc.hasSystem()) {
+        CodeSystem cs;
+        if (inc.hasVersion()) {
+          cs = codeSystems.containsKey(inc.getSystem()+"|"+inc.getVersion()) ? codeSystems.get(inc.getSystem()+"|"+inc.getVersion()).getResource() : null;
+        } else {
+          cs = codeSystems.containsKey(inc.getSystem()) ? codeSystems.get(inc.getSystem()).getResource() : null;
+        }
+        if (cs != null) {
+          String csu = makeR5Url(inc.getSystem());
+          cs.setUrl(csu);
+          inc.setSystem(csu);
+          if (!context.hasResource(CodeSystem.class, csu)) {
+            context.cacheResourceFromPackage(cs, cs.getSourcePackage());
           }
         }
       }
     }
-    
   }
 
   private boolean survivesStrippingTypes(StructureDefinition sd, IWorkerContext context, List<String> typeNames) {
@@ -254,7 +274,7 @@ public class R5ExtensionsLoader {
   }
 
   public byte[] getMap() throws IOException {
-   return pckCore.hasFile("other", "spec.internals") ?  TextFile.streamToBytes(pckCore.load("other", "spec.internals")) : null;
+   return pckCore.hasFile("other", "spec.internals") ?  FileUtilities.streamToBytes(pckCore.load("other", "spec.internals")) : null;
   }
 
   public NpmPackage getPckCore() {

@@ -7,8 +7,11 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.utils.sql.Validator.TrueFalseOrUnknown;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class StorageSqlite3 implements Storage {
   
   public static class SQLiteStore extends Store {
@@ -119,18 +122,18 @@ public class StorageSqlite3 implements Storage {
   }
 
   @Override
-  public boolean supportsArrays() {
-    return false;
+  public TrueFalseOrUnknown supportsArrays() {
+    return TrueFalseOrUnknown.FALSE;
   }
 
   @Override
-  public boolean supportsComplexTypes() {
-    return false;
+  public TrueFalseOrUnknown supportsComplexTypes() {
+    return TrueFalseOrUnknown.FALSE;
   }
 
   @Override
-  public boolean needsName() {
-    return true;
+  public TrueFalseOrUnknown needsName() {
+    return TrueFalseOrUnknown.TRUE;
   }
 
   @Override

@@ -13,7 +13,7 @@ import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.MetadataResource;
 import org.hl7.fhir.r4.model.Parameters;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 /**
@@ -22,6 +22,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
  * @author grahamegrieve
  *
  */
+@Deprecated
 public class ParametersBuilder {
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
@@ -45,7 +46,7 @@ public class ParametersBuilder {
     for (File f : ManagedFileAccess.file(folder).listFiles()) {
       if (f.getName().startsWith(baseId)) {
         if (f.getName().startsWith(baseId)) {
-          byte[] cnt = TextFile.fileToBytes(f);
+          byte[] cnt = FileUtilities.fileToBytes(f);
           cnt = shaveZeros(cnt); // bug in tx.fhir.org
           MetadataResource r = (MetadataResource) new JsonParser().parse(cnt);
           if (!ids.contains(r.getUrl()+"|"+r.getVersion())) {

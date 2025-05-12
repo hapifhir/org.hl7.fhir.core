@@ -55,9 +55,11 @@ import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.openapi.ParameterWriter.ParameterLocation;
 import org.hl7.fhir.r5.openapi.ParameterWriter.ParameterStyle;
 import org.hl7.fhir.r5.openapi.SchemaWriter.SchemaType;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
 
+@MarkedToMoveToAdjunctPackage
 public class OpenApiGenerator {
 
   private IWorkerContext context;

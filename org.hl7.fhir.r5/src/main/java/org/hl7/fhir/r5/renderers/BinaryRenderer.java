@@ -5,23 +5,28 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Binary;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public class BinaryRenderer {
 
   private String folder;
   private List<String> filenames = new ArrayList<String>();
+  private Map<String, String> scriptMappings;
 
-  public BinaryRenderer(String folder) {
+  public BinaryRenderer(String folder, Map<String, String> scriptMappings) {
     super();
     this.folder = folder;
+    this.scriptMappings = scriptMappings;
   }
 
   public String getFolder() {
@@ -81,12 +86,19 @@ public class BinaryRenderer {
     } else if (isTtl(ct)) {
       ttl(x, cnt);      
     } else if (isText(ct)) {
-      text(x, cnt);      
+      text(x, cnt, codeForMimeType(ct));      
     } else {
       error(x, "The Content Type '"+ct+"' is not rendered in this context");
     }
   }
 
+
+  private String codeForMimeType(String ct) {
+    switch (ct) {
+    case "text/x-gherkin": return "gherkin language-gherkin";
+    }
+    return scriptMappings.get(ct);
+  }
 
   private void image(XhtmlNode x, String id, String ct, byte[] cnt) throws IOException {
     String ext = null;
@@ -104,7 +116,7 @@ public class BinaryRenderer {
       error(x, "The Image Type '"+ct+"' is not rendered in this context");
     } else {
       String fn = "Binary-Native-"+id+ext;
-      TextFile.bytesToFile(cnt, Utilities.path(folder, fn));
+      FileUtilities.bytesToFile(cnt, Utilities.path(folder, fn));
       filenames.add(fn);
       x.img("Binary-Native-"+id+ext, "binary");
     }
@@ -149,9 +161,9 @@ public class BinaryRenderer {
     return ct.startsWith("text/");
   }
   
-  private void text(XhtmlNode x, byte[] cnt) {
+  private void text(XhtmlNode x, byte[] cnt, String code) {
     String content = "\r\n"+getBinContentAsString(cnt);
-    XhtmlNode pre = x.pre();
+    XhtmlNode pre = x.pre(code);
     pre.code(content);    
   }
   

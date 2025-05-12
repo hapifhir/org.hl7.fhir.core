@@ -54,6 +54,7 @@ import org.hl7.fhir.dstu2.model.OperationOutcome;
  * @author Claude Nanjo
  *
  */
+@Deprecated
 public class EFhirClientException extends RuntimeException {
   private static final long serialVersionUID = 1L;
   private List<OperationOutcome> errors = new ArrayList<OperationOutcome>();

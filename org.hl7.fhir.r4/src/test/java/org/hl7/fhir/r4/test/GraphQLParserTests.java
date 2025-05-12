@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.graphql.EGraphEngine;
 import org.hl7.fhir.utilities.graphql.EGraphQLException;
@@ -23,7 +23,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class GraphQLParserTests {
 
   public static Stream<Arguments> data() throws FileNotFoundException, IOException {
-    String src = TextFile.fileToString(TestingUtilities.resourceNameToFile("graphql", "parser-tests.gql"));
+    String src = FileUtilities.fileToString(TestingUtilities.resourceNameToFile("graphql", "parser-tests.gql"));
     String[] tests = src.split("###");
     List<Arguments> objects = new ArrayList<>();
     for (String s : tests) {

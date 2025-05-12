@@ -1,8 +1,10 @@
 package org.hl7.fhir.r5.utils.validation.constants;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
+@MarkedToMoveToAdjunctPackage
 public enum IdStatus {
   OPTIONAL,
   REQUIRED,

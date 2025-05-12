@@ -41,6 +41,7 @@ import org.commonmark.ext.gfm.tables.TablesExtension;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
+import org.commonmark.renderer.text.TextContentRenderer;
 
 import com.github.rjeschke.txtmark.Configuration;
 import com.github.rjeschke.txtmark.Processor;
@@ -93,6 +94,9 @@ public class MarkDownProcessor {
    */
   // todo: dialect dependency?
   public boolean isProbablyMarkdown(String content, boolean mdIfParagrapghs) {
+    if (content == null) {
+      return false;
+    }
     if (mdIfParagrapghs && content.contains("\n")) {
       return true;
     }
@@ -275,4 +279,15 @@ public class MarkDownProcessor {
     return b.toString();
   }
 
+  public static String markdownToPlainText(String source) {
+    if (source == null) {
+      return "";
+    }
+    Set<Extension> extensions = Collections.singleton(TablesExtension.create());
+    Parser parser = Parser.builder().extensions(extensions).build();
+    Node document = parser.parse(source);
+    TextContentRenderer renderer = TextContentRenderer.builder().stripNewlines(true).extensions(extensions).build();
+    String text = renderer.render(document);
+    return text;  
+  }
 }

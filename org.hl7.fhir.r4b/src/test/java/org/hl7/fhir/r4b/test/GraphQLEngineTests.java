@@ -22,7 +22,7 @@ import org.hl7.fhir.r4b.model.DomainResource;
 import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 import org.hl7.fhir.r4b.utils.GraphQLEngine;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.graphql.*;
@@ -102,7 +102,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
           ManagedFileAccess.outStream(TestingUtilities.tempFile("graphql", source)));
       IOUtils.copy(TestingUtilities.loadTestResourceStream("r4b", "graphql", output),
           ManagedFileAccess.outStream(TestingUtilities.tempFile("graphql", output)));
-      TextFile.stringToFile(actualStringBuilder.toString(), TestingUtilities.tempFile("graphql", output + ".out"));
+      FileUtilities.stringToFile(actualStringBuilder.toString(), TestingUtilities.tempFile("graphql", output + ".out"));
       msg = TestingUtilities.checkJsonIsSame(TestingUtilities.tempFile("graphql", output + ".out"),
           TestingUtilities.tempFile("graphql", output));
       Assertions.assertTrue(Utilities.noString(msg), msg);

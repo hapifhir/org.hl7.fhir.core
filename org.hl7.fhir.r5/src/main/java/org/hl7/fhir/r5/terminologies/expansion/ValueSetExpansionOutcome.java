@@ -3,9 +3,11 @@ package org.hl7.fhir.r5.terminologies.expansion;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 /**
  * Some value sets are just too big to expand. Instead of an expanded value set, 
@@ -13,6 +15,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
  * 
  * @author Grahame
  */
+@MarkedToMoveToAdjunctPackage
 public class ValueSetExpansionOutcome {
   private ValueSet valueset;
   private String error;
@@ -20,6 +23,7 @@ public class ValueSetExpansionOutcome {
   private String txLink;
   private List<String> allErrors = new ArrayList<>();
   private boolean fromServer;
+  private List<OperationOutcomeIssueComponent> issues;
   
   public ValueSetExpansionOutcome(ValueSet valueset) {
     super();
@@ -56,6 +60,20 @@ public class ValueSetExpansionOutcome {
     }
   }
   
+  public ValueSetExpansionOutcome(String error, TerminologyServiceErrorClass errorClass, List<String> errList, List<OperationOutcomeIssueComponent> issueList) {
+    this.valueset = null;
+    this.error = error;
+    this.errorClass = errorClass;
+    this.allErrors.addAll(errList);
+    if (!allErrors.contains(error)) {
+      allErrors.add(error);
+    }
+    if (!errList.contains(error)) {     
+      errList.add(error);
+    }
+    this.issues = issueList;
+  }
+  
   public ValueSet getValueset() {
     return valueset;
   }
@@ -87,5 +105,8 @@ public class ValueSetExpansionOutcome {
       return 0; 
     }
     return ValueSetUtilities.countExpansion(valueset);
+  }
+  public List<OperationOutcomeIssueComponent> getIssues() {
+    return issues;
   }
 }

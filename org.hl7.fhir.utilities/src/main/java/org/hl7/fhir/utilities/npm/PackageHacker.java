@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -31,7 +30,7 @@ public class PackageHacker {
   private static boolean useSecureReferences = false;
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-//    new PackageHacker().massEdit(new File("/Users/grahamegrieve/web/hl7.org/fhir"));
+//    new PackageHacker().massEdit(ManagedFileAccess.file("/Users/grahamegrieve/web/hl7.org/fhir"));
 //    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.core.tgz");
 //    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.corexml.tgz");
 //    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.examples.tgz");
@@ -50,7 +49,7 @@ public class PackageHacker {
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/hl7.terminology.r4b.tgz");
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/1.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/1.0.0/hl7.terminology.r4b.tgz");
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/2.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/2.0.0/hl7.terminology.r4b.tgz");
-    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/2.1.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/2.1.0/hl7.terminology.r4b.tgz");
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/2.1.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/2.1.0/hl7.terminology.r4b.tgz");
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/3.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/3.0.0/hl7.terminology.r4b.tgz");
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/3.1.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/3.1.0/hl7.terminology.r4b.tgz");
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/4.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/4.0.0/hl7.terminology.r4b.tgz");
@@ -62,7 +61,15 @@ public class PackageHacker {
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/5.5.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/5.5.0/hl7.terminology.r4b.tgz");
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/6.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/6.0.0/hl7.terminology.r4b.tgz");
 //    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/6.0.1/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/6.0.1/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/6.0.2/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/6.0.2/hl7.terminology.r4b.tgz");    
+//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/6.0.2/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/6.0.2/hl7.terminology.r4b.tgz");  
+   // self.packFolder("/Users/grahamegrieve/web/hl7.org/fhir/us/core/v610/package");
+    self.edit("/Users/grahamegrieve/web/www.hl7.org.fhir/us/womens-health-registries/0.2.0-withdrawal/package.tgz");
+  }
+
+  private void packFolder(String src) throws FileNotFoundException, IOException {
+    NpmPackage npm = NpmPackage.fromFolder(src);
+    npm.save(new FileOutputStream(src+".tgz"));
+    
   }
 
   private void cloneToR4B(String src, String dst) throws IOException {
@@ -130,7 +137,7 @@ public class PackageHacker {
 //    }
 //  }
 
-  private void edit(String name, String path) throws FileNotFoundException, IOException {
+  private void edit(String name) throws FileNotFoundException, IOException {
     File f = ManagedFileAccess.file(name);
     if (!f.exists())
       throw new Error("Unable to find "+f.getAbsolutePath());
@@ -146,23 +153,23 @@ public class PackageHacker {
     System.out.println("Altering Package "+f.getAbsolutePath());
     System.out.println(nice(pck.getNpm()));
 
-    if (change(pck.getNpm(), path)) {
+    if (change(pck.getNpm())) {
 
-    System.out.println("Revised Package");
-    System.out.println("=======================");
-    System.out.println(nice(pck.getNpm()));
-    System.out.println("=======================");
-    System.out.print("save? y/n: ");
-    int r = System.in.read();
-    if (r == 'y') {
-      f.renameTo(ManagedFileAccess.file(Utilities.changeFileExt(name, ".tgz.bak")));
-      FileOutputStream fso = ManagedFileAccess.outStream(f);
-      try {
-        pck.save(fso);
-      } finally {
-        fso.close();
-      }
-    } 
+      System.out.println("Revised Package");
+      System.out.println("=======================");
+      System.out.println(nice(pck.getNpm()));
+      System.out.println("=======================");
+      System.out.print("save? y/n: ");
+      int r = System.in.read();
+      if (r == 'y') {
+        f.renameTo(ManagedFileAccess.file(FileUtilities.changeFileExt(name, ".tgz.bak")));
+        FileOutputStream fso = ManagedFileAccess.outStream(f);
+        try {
+          pck.save(fso);
+        } finally {
+          fso.close();
+        }
+      } 
     }
   }
 
@@ -181,9 +188,9 @@ public class PackageHacker {
     return JsonParser.compose(json, true);
   }
 
-  private boolean change(JsonObject npm, String path) throws FileNotFoundException, IOException {
-    npm.remove("url");
-    npm.add("url", path);
+  private boolean change(JsonObject npm) throws FileNotFoundException, IOException {
+    npm.remove("version");
+    npm.add("version", "0.2.0-withdrawal");
     return true;
 //    if (npm.has("notForPublication")) {
 //      npm.remove("notForPublication");
@@ -232,9 +239,9 @@ public class PackageHacker {
   private void addContentFrom(String folder, Map<String, byte[]> content) throws FileNotFoundException, IOException {
     for (File f : ManagedFileAccess.file(folder).listFiles()) {
       if (f.getName().endsWith(".json") && !f.getName().endsWith(".canonical.json")) {
-        String cnt = TextFile.fileToString(f);
+        String cnt = FileUtilities.fileToString(f);
         if (cnt.contains("\"resourceType\"")) {
-          content.put("package/"+f.getName(), TextFile.fileToBytes(f));
+          content.put("package/"+f.getName(), FileUtilities.fileToBytes(f));
         }
       }
     }

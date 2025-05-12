@@ -31,7 +31,9 @@ package org.hl7.fhir.r4b.utils;
 
 import org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideDefinitionComponent;
 import org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class IGHelper {
 
   public static final String EXT_SPREADSHEET = ToolingExtensions.EXT_IGP_SPREADSHEET;

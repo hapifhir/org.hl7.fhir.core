@@ -1,7 +1,5 @@
 package org.hl7.fhir.r4b.context;
 
-import java.io.File;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -51,10 +49,8 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
-import org.hl7.fhir.r4b.context.BaseWorkerContext.ResourceProxy;
-import org.hl7.fhir.r4b.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.r4b.context.IWorkerContext.PackageVersion;
-import org.hl7.fhir.r4b.context.IWorkerContext.ILoggingService.LogCategory;
+  import org.hl7.fhir.r4b.context.CanonicalResourceManager.CanonicalResourceProxy;
+  import org.hl7.fhir.r4b.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r4b.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r4b.model.BooleanType;
 import org.hl7.fhir.r4b.model.Bundle;
@@ -111,7 +107,9 @@ import org.hl7.fhir.r4b.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4b.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.r4b.utils.validation.ValidationContextCarrier;
-import org.hl7.fhir.utilities.OIDUtils;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.TranslationServices;
@@ -126,8 +124,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonObject;
 
-import ca.uhn.fhir.model.valueset.BundleEntrySearchModeEnum;
-
+@MarkedToMoveToAdjunctPackage
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   public class ResourceProxy {
@@ -249,13 +246,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     txCache = new TerminologyCache(lock, null);
-    setValidationMessageLanguage(getLocale());
     clock = new TimeTracker();
   }
 
   public BaseWorkerContext(Locale locale) throws FileNotFoundException, IOException, FHIRException {
+    setLocale(locale);
     txCache = new TerminologyCache(lock, null);
-    setValidationMessageLanguage(locale);
     clock = new TimeTracker();
   }
 
@@ -290,7 +286,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       guides.copy(other.guides);
       capstmts.copy(other.capstmts);
       measures.copy(other.measures);
-      libraries.copy(libraries);
+      libraries.copy(other.libraries);
 
       allowLoadingDuplicates = other.allowLoadingDuplicates;
       tsServer = other.tsServer;
@@ -710,12 +706,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     tlog("$expand on " + txCache.summary(vs));
     try {
       ValueSet result = txClient.expandValueset(vs, p, params);
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(),
           TerminologyServiceErrorClass.UNKNOWN);
       if (txLog != null) {
-        res.setTxLink(txLog.getLastId());
+        res.setTxLink(txLog == null ? null : txLog.getLastId());
       }
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
@@ -813,7 +809,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
         }
       }
-      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(),
           TerminologyServiceErrorClass.UNKNOWN, allErrors).setTxLink(txLog == null ? null : txLog.getLastId());
@@ -1110,7 +1106,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       res = validateOnServer(vs, pIn, options);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage())
-          .setTxLink(txLog.getLastId());
+          .setTxLink(txLog == null ? null : txLog.getLastId());
     }
     txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
@@ -1245,15 +1241,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (!ok) {
       return new ValidationResult(IssueSeverity.ERROR, message + " (from " + txClient.getAddress() + ")", err)
-          .setTxLink(txLog.getLastId());
+          .setTxLink(txLog == null ? null : txLog.getLastId());
     } else if (message != null && !message.equals("No Message returned")) {
       return new ValidationResult(IssueSeverity.WARNING, message + " (from " + txClient.getAddress() + ")", system,
-          new ConceptDefinitionComponent().setDisplay(display).setCode(code)).setTxLink(txLog.getLastId());
+          new ConceptDefinitionComponent().setDisplay(display).setCode(code)).setTxLink(txLog == null ? null : txLog.getLastId());
     } else if (display != null) {
       return new ValidationResult(system, new ConceptDefinitionComponent().setDisplay(display).setCode(code))
-          .setTxLink(txLog.getLastId());
+          .setTxLink(txLog == null ? null : txLog.getLastId());
     } else {
-      return new ValidationResult(system, new ConceptDefinitionComponent().setCode(code)).setTxLink(txLog.getLastId());
+      return new ValidationResult(system, new ConceptDefinitionComponent().setCode(code)).setTxLink(txLog == null ? null : txLog.getLastId());
     }
   }
 
@@ -1261,7 +1257,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void initTS(String cachePath) throws Exception {
     if (!ManagedFileAccess.file(cachePath).exists()) {
-      Utilities.createDirectory(cachePath);
+      FileUtilities.createDirectory(cachePath);
     }
     txCache = new TerminologyCache(lock, cachePath);
   }
@@ -1620,7 +1616,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else if ("ValueSet".equals(cls)) {
         return (T) valueSets.get(uri, version);
       } else if ("CodeSystem".equals(cls)) {
-        return (T) codeSystems.get(uri, version);
+        return (T) codeSystems.get(uri, version);       
+      } else if ("NamingSystem".equals(cls)) {
+        return (T) systems.get(uri, version);
       } else if ("ConceptMap".equals(cls)) {
         return (T) maps.get(uri, version);
       } else if ("PlanDefinition".equals(cls)) {
@@ -1628,9 +1626,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else if ("OperationDefinition".equals(cls)) {
         OperationDefinition od = operations.get(uri, version);
         return (T) od;
-      } else if ("Questionnaire.class".equals(cls)) {
+      } else if ("Questionnaire".equals(cls)) {
         return (T) questionnaires.get(uri, version);
-      } else if ("SearchParameter.class".equals(cls)) {
+      } else if ("SearchParameter".equals(cls)) {
         SearchParameter res = searchParameters.get(uri, version);
         return (T) res;
       }
@@ -1939,7 +1937,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return oidCache.get(oid);
       }
 
-      String uri = OIDUtils.getUriForOid(oid);
+      String uri = OIDUtilities.getUriForOid(oid);
       if (uri != null) {
         oidCache.put(oid, uri);
         return uri;

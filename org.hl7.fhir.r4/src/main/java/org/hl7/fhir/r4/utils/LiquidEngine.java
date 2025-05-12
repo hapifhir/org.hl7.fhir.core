@@ -48,8 +48,10 @@ import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.Tuple;
 import org.hl7.fhir.r4.model.ValueSet;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
+@MarkedToMoveToAdjunctPackage
 public class LiquidEngine implements IEvaluationContext {
 
   public interface ILiquidEngineIcludeResolver {
@@ -444,4 +446,8 @@ public class LiquidEngine implements IEvaluationContext {
       return engine.getWorker().fetchResource(ValueSet.class, url);
   }
 
+  @Override
+  public boolean paramIsType(String name, int index) {
+    return false;
+  }
 }

@@ -26,7 +26,7 @@ import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.ByteProvider;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -121,11 +121,11 @@ public class StructureMappingTests {
       fail(e.getMessage());
     }
     if (output.endsWith("json")) {
-      msg = CompareUtilities.checkJsonSrcIsSame(name, s.toString(), outputJson, null);
+      msg = new CompareUtilities().checkJsonSrcIsSame(name, s.toString(), outputJson);
     } else {
-      TextFile.bytesToFile(s.toByteArray(), fileOutputRes);
-      TextFile.bytesToFile(outputJson.getBytes(), fileOutputResOrig);
-      msg = CompareUtilities.checkXMLIsSame(name, ManagedFileAccess.inStream(fileOutputResOrig), ManagedFileAccess.inStream(fileOutputRes));
+      FileUtilities.bytesToFile(s.toByteArray(), fileOutputRes);
+      FileUtilities.bytesToFile(outputJson.getBytes(), fileOutputResOrig);
+      msg = new CompareUtilities().checkXMLIsSame(name, ManagedFileAccess.inStream(fileOutputResOrig), ManagedFileAccess.inStream(fileOutputRes));
     }
     if (!Utilities.noString(msg)) {
       System.out.print(s.toString());

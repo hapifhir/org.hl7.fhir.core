@@ -8,23 +8,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
-import org.hl7.fhir.utilities.http.ManagedWebAccessBuilder;
+import org.hl7.fhir.utilities.http.ManagedWebAccessor;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
@@ -176,25 +171,27 @@ public class PackageClient {
   }
  
   private InputStream fetchUrl(String source, String accept) throws IOException {
-    ManagedWebAccessBuilder client = ManagedWebAccess.builder().withAccept(accept);
+    ManagedWebAccessor webAccessor = ManagedWebAccess.accessor(Arrays.asList("web"));
     if (server.getAuthenticationMode() == HTTPAuthenticationMode.TOKEN) {
-      client.withToken(server.getToken());
+      webAccessor.withToken(server.getToken());
     } else if (server.getAuthenticationMode() == HTTPAuthenticationMode.BASIC) {
-      client.withBasicAuth(server.getUsername(), server.getPassword());
+      webAccessor.withBasicAuth(server.getUsername(), server.getPassword());
+    } else if (server.getAuthenticationMode() == HTTPAuthenticationMode.APIKEY) {
+      webAccessor.withApiKey(server.getApiKey());
     }
-    HTTPResult res = client.get(source);
+    HTTPResult res = webAccessor.get(source, accept);
     res.checkThrowException();
     return new ByteArrayInputStream(res.getContent());
   }
 
   private JsonObject fetchJson(String source) throws IOException {
-    String src = TextFile.streamToString(fetchUrl(source, "application/json"));
+    String src = FileUtilities.streamToString(fetchUrl(source, "application/json"));
     //System.out.println(src);
     return JsonParser.parseObject(src);
   }
   
   private JsonArray fetchJsonArray(String source) throws IOException {
-    String src = TextFile.streamToString(fetchUrl(source, "application/json"));
+    String src = FileUtilities.streamToString(fetchUrl(source, "application/json"));
     //System.out.println(src);
     return (JsonArray) JsonParser.parse(src);
   }
@@ -273,7 +270,7 @@ public class PackageClient {
   
   public List<PackageInfo> listFromRegistry(String name, String canonical, String fhirVersion) throws IOException {
     List<PackageInfo> result = new ArrayList<>();
-    JsonObject packages = JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
+    JsonObject packages = JsonParser.parseObjectFromUrl("https://fhir.github.io/ig-registry/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
     for (JsonObject o : packages.getJsonObjects("guides")) {
       if (o.has("canonical")) {
       final PackageInfo packageInfo = getPackageInfoFromJSON(o, name, canonical, fhirVersion);

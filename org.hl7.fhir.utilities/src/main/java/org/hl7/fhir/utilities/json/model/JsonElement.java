@@ -76,6 +76,7 @@ public abstract class JsonElement {
     return type() == JsonElementType.STRING;
   }
 
+
   public boolean isJsonNumber() {
     return type() == JsonElementType.NUMBER;
   }

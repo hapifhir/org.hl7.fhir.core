@@ -12,9 +12,11 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
 
+@MarkedToMoveToAdjunctPackage
 public class DiagnosticReportRenderer extends ResourceRenderer { 
 
   public class ObservationNode { 
@@ -48,7 +50,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       } 
       h2.tx(") "); 
     } 
-    XhtmlNode tbl = x.table("grid"); 
+    XhtmlNode tbl = x.table("grid", false); 
     XhtmlNode tr; 
     if (dr.has("subject")) { 
       tr = tbl.tr(); 
@@ -99,7 +101,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     
     for (ResourceWrapper cont : dr.children("contained")) {
       x.hr();
-      RendererFactory.factory(cont, context.forContained()).buildNarrative(status, x, cont);
+      RendererFactory.factory(cont, context.forContained()).setInner(true).buildNarrative(status, x, cont);
     }
   } 
 
@@ -178,7 +180,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
   } 
 
   private void buildObservationsTable(RenderingStatus status, XhtmlNode root, List<ObservationNode> observations, ResourceWrapper eff, ResourceWrapper iss) throws UnsupportedEncodingException, FHIRException, IOException { 
-    XhtmlNode tbl = root.table("grid"); 
+    XhtmlNode tbl = root.table("grid", false); 
     boolean refRange = scanObsForRefRange(observations); 
     boolean flags = scanObsForFlags(observations);  
     boolean note = scanObsForNote(observations); 

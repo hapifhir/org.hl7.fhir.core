@@ -7,6 +7,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -18,6 +19,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public class ResourceComparer {
  
   public static class MessageCounts {
@@ -202,7 +204,7 @@ public class ResourceComparer {
         s = s + "<td><a href=\""+getId()+".html\">Failed<a></td>";
         color = COLOR_ISSUE;
       }
-      s = s + "<td>"+(e != null ? Utilities.escapeXml(e.getMessage()) : "")+"</td>";
+      s = s + "<td colspan=\"3\">"+(e != null ? Utilities.escapeXml(e.getMessage()) : "")+"</td>";
       return "<tr style=\"background-color: "+color+"\">"+s+"</tr>\r\n";
     }
 
@@ -252,7 +254,7 @@ public class ResourceComparer {
 
   public XhtmlNode renderErrors(ResourceComparison csc) {
     XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
-    XhtmlNode tbl = div.table("grid");
+    XhtmlNode tbl = div.table("grid", false);
     for (ValidationMessage vm : csc.messages) {
       XhtmlNode tr = tbl.tr();
       tr.style("background-color: "+colorForLevel(vm.getLevel()));

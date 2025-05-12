@@ -13,9 +13,11 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public class LibraryRenderer extends ResourceRenderer {
 
   private static final int DATA_IMG_SIZE_CUTOFF = 4000; 
@@ -42,7 +44,7 @@ public class LibraryRenderer extends ResourceRenderer {
       boolean phone = hasCT(authors, "phone") || hasCT(editors, "phone") || hasCT(reviewers, "phone") || hasCT(endorsers, "phone"); 
       boolean url = hasCT(authors, "url") || hasCT(editors, "url") || hasCT(reviewers, "url") || hasCT(endorsers, "url"); 
       x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_PAR));
-      XhtmlNode t = x.table("grid");
+      XhtmlNode t = x.table("grid", false);
       for (ResourceWrapper cd : authors) {
         participantRow(status, t, (context.formatPhrase(RenderingContext.LIB_REND_AUT)), cd, email, phone, url);
       }
@@ -60,7 +62,7 @@ public class LibraryRenderer extends ResourceRenderer {
     List<ResourceWrapper> artifacts = lib.children("relatedArtifact");
     if (!artifacts.isEmpty()) {
       x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_ART));
-      XhtmlNode t = x.table("grid");
+      XhtmlNode t = x.table("grid", false);
       boolean label = false;
       boolean display = false;
       boolean citation = false;
@@ -76,7 +78,7 @@ public class LibraryRenderer extends ResourceRenderer {
     List<ResourceWrapper> parameters = lib.children("parameter");
     if (!parameters.isEmpty()) {
       x.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
-      XhtmlNode t = x.table("grid");
+      XhtmlNode t = x.table("grid", false);
       boolean doco = false;
       for (ResourceWrapper p : parameters) {
         doco = doco || p.has("documentation");

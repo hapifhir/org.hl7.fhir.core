@@ -67,6 +67,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.utils.CanonicalResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -515,7 +516,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   public static String getOID(CanonicalResource cs) {
-    if (cs.hasIdentifier() && "urn:ietf:rfc:3986".equals(cs.getIdentifierFirstRep().getSystem()) && cs.getIdentifierFirstRep().hasValue() && cs.getIdentifierFirstRep().getValue().startsWith("urn:oid:"))
+    if (cs != null && cs.hasIdentifier() && "urn:ietf:rfc:3986".equals(cs.getIdentifierFirstRep().getSystem()) && cs.getIdentifierFirstRep().hasValue() && cs.getIdentifierFirstRep().getValue().startsWith("urn:oid:"))
         return cs.getIdentifierFirstRep().getValue().substring(8);
     return null;
   }
@@ -590,14 +591,13 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       if (ss == null || ss.isLowerThan(status)) 
         ToolingExtensions.setStandardsStatus(cs, status, normativeVersion);
       if (pckage != null) {
-        if (!cs.hasUserData("ballot.package"))
-          cs.setUserData("ballot.package", pckage);
-        else if (!pckage.equals(cs.getUserString("ballot.package")))
-          if (!"infrastructure".equals(cs.getUserString("ballot.package")))
-            System.out.println("Code System "+cs.getUrl()+": ownership clash "+pckage+" vs "+cs.getUserString("ballot.package"));
+        if (!cs.hasUserData(UserDataNames.kindling_ballot_package))
+          cs.setUserData(UserDataNames.kindling_ballot_package, pckage);
+        else if (!pckage.equals(cs.getUserString(UserDataNames.kindling_ballot_package)))
+          if (!"infrastructure".equals(cs.getUserString(UserDataNames.kindling_ballot_package)))
+            System.out.println("Code System "+cs.getUrl()+": ownership clash "+pckage+" vs "+cs.getUserString(UserDataNames.kindling_ballot_package));
       }
       if (status == StandardsStatus.NORMATIVE) {
-        cs.setExperimental(false);
         cs.setStatus(PublicationStatus.ACTIVE);
       }
     }
@@ -605,9 +605,6 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       String sfmm = ToolingExtensions.readStringExtension(cs, ToolingExtensions.EXT_FMM_LEVEL);
       if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm)) { 
         ToolingExtensions.setIntegerExtension(cs, ToolingExtensions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
-      }
-      if (Integer.parseInt(fmm) <= 1) {
-        cs.setExperimental(true);
       }
     }
   }
@@ -842,7 +839,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     for (CodeSystem sup : supplements) {
       b.append(sup.getVersionedUrl());      
     }
-    ret.setUserData("supplements.installed", b.toString());
+    ret.setUserData(UserDataNames.tx_known_supplements, b.toString());
 
     for (ConceptDefinitionComponent t : ret.getConcept()) {
       mergeSupplements(ret, t, supplements);
@@ -1103,6 +1100,15 @@ public class CodeSystemUtilities extends TerminologyUtilities {
 
   public static boolean isExemptFromMultipleVersionChecking(String url) {
     return Utilities.existsInList(url, "http://snomed.info/sct", "http://loinc.org");
+  }
+
+  public static PropertyComponent getPropertyByUri(CodeSystem cs, String uri) {
+    for (PropertyComponent t : cs.getProperty()) {
+      if (uri.equals(t.getUri())) {
+        return t;
+      }
+    }
+    return null;
   }
 }
 

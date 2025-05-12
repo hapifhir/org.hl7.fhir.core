@@ -66,7 +66,7 @@ import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.dstu3.utils.StructureMapUtilities;
 import org.hl7.fhir.dstu3.utils.StructureMapUtilities.ITransformerServices;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 /**
@@ -196,7 +196,7 @@ public class R2R3ConversionManager implements ITransformerServices {
     needPrepare = true;
     Map<String, InputStream> files = readInputStream(stream);
     for (InputStream s : files.values()) {
-      StructureMap sm = new StructureMapUtilities(contextR3).parse(TextFile.streamToString(s));
+      StructureMap sm = new StructureMapUtilities(contextR3).parse(FileUtilities.streamToString(s));
       library.put(sm.getUrl(), sm);
     }
   }

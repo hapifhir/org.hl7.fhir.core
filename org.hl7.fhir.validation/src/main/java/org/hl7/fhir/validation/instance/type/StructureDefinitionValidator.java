@@ -14,38 +14,43 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
-import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.conformance.profile.CompliesWithChecker;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.extensions.ExtensionConstants;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
+import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
@@ -53,6 +58,28 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
 public class StructureDefinitionValidator extends BaseValidator {
+
+  public class SourcedInvariant {
+
+    private String sd;
+    private String ed;
+    private String inv;
+    protected SourcedInvariant(String sd, String ed, String inv) {
+      super();
+      this.sd = sd;
+      this.ed = ed;
+      this.inv = inv;
+    }
+    public String getSd() {
+      return sd;
+    }
+    public String getEd() {
+      return ed;
+    }
+    public String getInv() {
+      return inv;
+    }
+  }
 
   public class FhirPathSorter implements Comparator<ExpressionNode> {
 
@@ -75,9 +102,12 @@ public class StructureDefinitionValidator extends BaseValidator {
   public boolean validateStructureDefinition(List<ValidationMessage> errors, Element src, NodeStack stack)  {
     boolean ok = true;
     StructureDefinition sd = null;
+    StructureDefinition base = null;
     String typeName = null;
+    boolean experimental = false;
+    String url = null;
     try {
-      String url = src.getNamedChildValue("url", false);
+      url = src.getNamedChildValue("url", false);
 
       sd = loadAsSD(src);
       ok = checkExtensionContext(errors, src, stack) && ok;
@@ -85,8 +115,8 @@ public class StructureDefinitionValidator extends BaseValidator {
       List<ElementDefinition> snapshot = sd.getSnapshot().getElement();
       sd.setSnapshot(null);
       typeName = sd.getTypeName();
-      boolean experimental = "true".equals(src.getNamedChildValue("experimental", false));
-      StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      experimental = "true".equals(src.getNamedChildValue("experimental", false));
+      base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
       if (warning(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), base != null, I18nConstants.UNABLE_TO_FIND_BASE__FOR_, sd.getBaseDefinition(), "StructureDefinition, so can't check the differential")) {
         if (rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasDerivation(), I18nConstants.SD_MUST_HAVE_DERIVATION, sd.getUrl())) {
           checkTypeParameters(errors, stack, base, sd);
@@ -94,10 +124,10 @@ public class StructureDefinitionValidator extends BaseValidator {
           ok = rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), bok, I18nConstants.SD_CONSTRAINED_KIND_NO_MATCH, sd.getKind().toCode(), base.getKind().toCode(), base.getType(), base.getUrl()) && ok;
           if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
             ok = rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasType() && sd.getType().equals(base.getType()), I18nConstants.SD_CONSTRAINED_TYPE_NO_MATCH, sd.getType(), base.getType()) && ok;
-            if (!src.hasUserData("profileutils.snapshot.errors")) { // if it does, we've already logged these errors elsewhere
+            if (!src.hasUserData(UserDataNames.SNAPSHOT_ERRORS)) { // if it does, we've already logged these errors elsewhere
               List<ValidationMessage> msgs = new ArrayList<>();
               ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
-              pu.setForPublication(forPublication);
+              pu.setForPublication(settings.isForPublication());
               pu.setXver(xverManager);
               pu.setNewSlicingProcessing(!sd.hasFhirVersion() || VersionUtilities.isR4Plus(sd.getFhirVersion().toCode()));
               pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/R4/", sd.getName());
@@ -119,6 +149,9 @@ public class StructureDefinitionValidator extends BaseValidator {
                 int is = sd.getSnapshot().getElement().size();
                 ok = rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), was == is, I18nConstants.SNAPSHOT_EXISTING_PROBLEM, was, is) && ok;
               }
+            } else {
+              var snap = (StructureDefinitionSnapshotComponent) src.getUserData(UserDataNames.SNAPSHOT_DETAILS);
+              sd.setSnapshot(snap);
             }
           } else {
             ok = rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasType() && !sd.getType().equals(base.getType()), I18nConstants.SD_SPECIALIZED_TYPE_MATCHES, sd.getType(), base.getType()) && ok;
@@ -132,68 +165,119 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
         warning(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), !base.getExperimental() || experimental, I18nConstants.SD_BASE_EXPERIMENTAL, sd.getBaseDefinition());
       }
-
-      List<Element> differentials = src.getChildrenByName("differential");
-      List<Element> snapshots = src.getChildrenByName("snapshot");
-      boolean logical = "logical".equals(src.getNamedChildValue("kind", false));
-      boolean constraint = "constraint".equals(src.getNamedChildValue("derivation", false));
-      for (Element differential : differentials) {
-        ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("type", false), base, experimental) && ok;
-      }
-      for (Element snapshotE : snapshots) {
-        ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("type", false), base, experimental) && ok;
-      }
-
-      // obligation profile support
-      if (src.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG)) {
-        Element ext = src.getExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG);
-        Element value = ext.getNamedChild("value", false);
-        if (value != null && "true".equals(value.primitiveValue())) {
-          if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), "constraint".equals(src.getNamedChildValue("derivation", false)), I18nConstants.SD_OBGLIGATION_PROFILE_DERIVATION)) {
-            if (warning(errors, "2023-05-27", IssueType.NOTFOUND, stack.getLiteralPath(), base != null, I18nConstants.SD_OBGLIGATION_PROFILE_UKNOWN, src.getNamedChildValue("baseDefinition", false))) {
-              for (Element differential : differentials) {
-                ok = validateObligationProfile(errors, differential, stack.push(differential, -1, null, null), base) && ok;
-              }
-            }
-          } else {
-            ok = false;
-          }
-        }
-      }
-
-      List<Element> extensions = src.getChildren("extension");
-      int c = 0;
-      for (Element extension : extensions) {
-        if (ToolingExtensions.EXT_OBLIGATION_INHERITS.equals(extension.getNamedChildValue("url", false))) {
-          ok = validateInheritsObligationProfile(errors, extension, stack.push(extension, c, null, null), src) && ok;
-        }
-        c++;
-      }
-
-      List<Element> contextInvariants = src.getChildren("contextInvariant");
-      c = 0;
-      for (Element contextInvariant : contextInvariants) {
-        ok = validateContextInvariant(errors, contextInvariant, src, stack.push(contextInvariant, c, null, null)) && ok;
-        c++;
-      }
-
-      // if this is defining an extension, make sure that the extension fixed value matches the URL
-      String type = src.getNamedChildValue("type", false);
-      if ("Extension".equals(type)) {
-        String baseD = src.getNamedChildValue("baseDefinition", false);
-        if ("http://hl7.org/fhir/StructureDefinition/Extension".equals(baseD) && url != null) {
-          String fixedUrl = getFixedValue(src);
-          if (rule(errors, "2023-08-05", IssueType.INVALID, stack.getLiteralPath(), fixedUrl != null, I18nConstants.SD_EXTENSION_URL_MISSING, url)) {
-            ok = rule(errors, "2023-08-05", IssueType.INVALID, stack.getLiteralPath(), url.equals(fixedUrl), I18nConstants.SD_EXTENSION_URL_MISMATCH, url, fixedUrl) && ok;
-          } else {
-            ok = false;
-          }
-        }
-      }
     } catch (Exception e) {
-      //e.printStackTrace();
+      if (settings.isDebug()) { 
+        e.printStackTrace();
+      }
       rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
       ok = false;
+    }
+    if (sd != null && base != null) {
+      try {
+        String abstractV = src.getNamedChildValue("abstract");
+        if ("true".equals(abstractV)) {
+          String burl = src.getNamedChildValue("url");
+          if  (burl != null) {
+            boolean bok = false;
+            for (StructureDefinition sdb : context.fetchResourcesByType(StructureDefinition.class)) {
+              if (burl.equals(sdb.getBaseDefinition())) {
+                bok = true;
+              }
+            }
+            warning(errors, "2024-12-31", IssueType.NOTFOUND, stack.getLiteralPath(), bok, I18nConstants.SD_DERIVATION_NO_CONCRETE, typeName);
+          }
+        }
+        List<Element> differentials = src.getChildrenByName("differential");
+        List<Element> snapshots = src.getChildrenByName("snapshot");
+        boolean logical = "logical".equals(src.getNamedChildValue("kind", false));
+        boolean constraint = "constraint".equals(src.getNamedChildValue("derivation", false));
+        for (Element differential : differentials) {
+          ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("type", false), base, experimental) && ok;
+        }
+        for (Element snapshotE : snapshots) {
+          ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("type", false), base, experimental) && ok;
+        }
+        if (!(differentials.isEmpty()  && snapshots.isEmpty())) {
+          for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+            NodeStack snStack = stack.push(snapshots.isEmpty() ? differentials.get(0) : snapshots.get(0), -1, null, null);
+            ok = validateSDElement(errors, ed, sd.getSnapshot().getElement(), snStack) && ok;
+          }
+        }
+
+        // obligation profile support
+        if (src.hasExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG)) {
+          Element ext = src.getExtension(ToolingExtensions.EXT_OBLIGATION_PROFILE_FLAG);
+          Element value = ext.getNamedChild("value", false);
+          if (value != null && "true".equals(value.primitiveValue())) {
+            if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), "constraint".equals(src.getNamedChildValue("derivation", false)), I18nConstants.SD_OBGLIGATION_PROFILE_DERIVATION)) {
+              if (warning(errors, "2023-05-27", IssueType.NOTFOUND, stack.getLiteralPath(), base != null, I18nConstants.SD_OBGLIGATION_PROFILE_UKNOWN, src.getNamedChildValue("baseDefinition", false))) {
+                for (Element differential : differentials) {
+                  ok = validateObligationProfile(errors, differential, stack.push(differential, -1, null, null), base) && ok;
+                }
+              }
+            } else {
+              ok = false;
+            }
+          }
+        }
+
+        List<Element> extensions = src.getChildren("extension");
+        int c = 0;
+        for (Element extension : extensions) {
+          if (ToolingExtensions.EXT_OBLIGATION_INHERITS.equals(extension.getNamedChildValue("url", false))) {
+            ok = validateInheritsObligationProfile(errors, extension, stack.push(extension, c, null, null), src) && ok;
+          }
+          c++;
+        }
+
+        List<Element> contextInvariants = src.getChildren("contextInvariant");
+        c = 0;
+        for (Element contextInvariant : contextInvariants) {
+          ok = validateContextInvariant(errors, contextInvariant, src, stack.push(contextInvariant, c, null, null)) && ok;
+          c++;
+        }
+
+        // if this is defining an extension, make sure that the extension fixed value matches the URL
+        String type = src.getNamedChildValue("type", false);
+        if ("Extension".equals(type)) {
+          String baseD = src.getNamedChildValue("baseDefinition", false);
+          if ("http://hl7.org/fhir/StructureDefinition/Extension".equals(baseD) && url != null) {
+            String fixedUrl = getFixedValue(src);
+            if (rule(errors, "2023-08-05", IssueType.INVALID, stack.getLiteralPath(), fixedUrl != null, I18nConstants.SD_EXTENSION_URL_MISSING, url)) {
+              ok = rule(errors, "2023-08-05", IssueType.INVALID, stack.getLiteralPath(), url.equals(fixedUrl), I18nConstants.SD_EXTENSION_URL_MISMATCH, url, fixedUrl) && ok;
+            } else {
+              ok = false;
+            }
+          }
+        }
+
+        if (sd.hasExtension(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE)) {
+          for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE)) {
+            String curl = ext.getValue().primitiveValue();
+            StructureDefinition auth = context.fetchResource(StructureDefinition.class, curl, sd);
+            if (auth == null) {
+              ok = rule(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, I18nConstants.SD_EXTENSION_COMPLIES_WITH_UNKNOWN, curl) && ok;
+            } else {
+              List<ValidationMessage> messages = new CompliesWithChecker(context).checkCompliesWith(sd, auth);
+              IssueSeverity level = IssueSeverity.INFORMATION;
+              for (ValidationMessage vm : messages) {
+                level = IssueSeverity.max(level, vm.getLevel());
+              }
+              if (level == IssueSeverity.ERROR) {
+                rule(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, messages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_ERROR, curl);
+              } else if (level == IssueSeverity.WARNING) {
+                warning(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, messages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_WARNING, curl);              
+              }            
+            }
+          }
+        }
+      } catch (Exception e) {
+        if (settings.isDebug()) { 
+          e.printStackTrace();
+        }
+        rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_PROCESSING_SNAPSHOT, e.getMessage());
+        ok = false;
+      }
     }
     return ok;
   }
@@ -292,6 +376,10 @@ public class StructureDefinitionValidator extends BaseValidator {
           }
         } else if (child.getName().equals("mustSupport")) {
           // this is ok, and there's nothing to check 
+        } else if (child.getName().equals("min")) {
+          // this is ok, and what there is to be checked will be checked elsewhere
+        } else if (child.getName().equals("max")) {
+          // this is ok, and what there is to be checked will be checked elsewhere
         } else if (child.getName().equals("id")) {
           // this is ok (it must have this), and there's nothing to check 
         } else if (child.getName().equals("binding")) {
@@ -386,7 +474,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         } else if ("fhirpath".equals(ct)) {        	
           warning(errors, "2023-12-05", IssueType.BUSINESSRULE, n.getLiteralPath(), !isElement(cv), I18nConstants.SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH, cv, src.getNamedChildValue("id", false));
         }
-      } else {
+      } else if (!hasJsonName(src)) { // special case: if there's a json name, it can be used as an extension
         ok = rule(errors, "2023-04-23", IssueType.INVALID, n.getLiteralPath(), false, I18nConstants.SD_NO_CONTEXT_WHEN_NOT_EXTENSION, type) && ok;
       }
     }
@@ -402,6 +490,27 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
 
+  private boolean hasJsonName(Element sd) {
+    Element rootDefn = null;
+    if (sd.hasChild("snapshot")) {
+      Element snapshot = sd.getNamedChild("snapshot");
+      if (snapshot.hasChildren("element")) {
+        rootDefn = snapshot.getChildren("element").get(0);
+      }
+    }
+    if (rootDefn == null && sd.hasChild("differential")) {
+      Element differential = sd.getNamedChild("differential");
+      if (differential.hasChildren("element")) {
+        rootDefn = differential.getChildren("element").get(0);
+      }
+    }
+    if (rootDefn != null) {
+      return rootDefn.hasExtension(ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED);
+    } else {
+      return false;
+    }
+  }
+
   private boolean isElement(String cv) {
     String tn = cv.contains(".") ? cv.substring(0, cv.indexOf(".")) : cv;
     StructureDefinition sd = context.fetchTypeDefinition(tn);
@@ -413,7 +522,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   }
 
   private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, String rootPath, String profileUrl, String profileType, StructureDefinition base, boolean experimental) {
-    Map<String, String> invariantMap = new HashMap<>();
+    Map<String, SourcedInvariant> invariantMap = new HashMap<>();
     boolean ok = true;
     List<Element> elements = elementList.getChildrenByName("element");
     int cc = 0;
@@ -424,7 +533,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, String> invariantMap, String rootPath, String profileUrl, String profileType, StructureDefinition base, boolean experimental) {
+  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, SourcedInvariant> invariantMap, String rootPath, String profileUrl, String profileType, StructureDefinition base, boolean experimental) {
     boolean ok = true;
     boolean typeMustSupport = false;
     String path = element.getNamedChildValue("path", false);
@@ -442,6 +551,48 @@ public class StructureDefinitionValidator extends BaseValidator {
       typeCodes.add(path); // root is type
       addCharacteristics(characteristics, path);
       characteristicsValid = true;
+    }
+    
+    if (element.hasChild("slicing")) {
+      Element slicing = element.getNamedChild("slicing");
+      NodeStack sStack = stack.push(slicing, -1, null, null);
+      
+      // validating slicing. 
+      // slicing can only be present if base cardinality > 1, but we can't always know that on the differential - though we can look it up 
+      String tn = path.contains(".") ? path.substring(0, path.indexOf(".")) : path;
+      StructureDefinition tsd = context.fetchTypeDefinition(tn);
+      ElementDefinition ted = null;
+      if (tsd != null) {
+        ted = tsd.getSnapshot().getElementByPath(path);
+        if (ted != null) {
+          ok = rule(errors, "2022-11-02", IssueType.NOTFOUND, sStack, canSlice(ted), I18nConstants.SD_PATH_NO_SLICING, path) && ok;
+        }
+      }
+      int i = 0;
+      for (Element discriminator : slicing.getChildren("discriminator")) {
+        NodeStack dStack = sStack.push(discriminator, i, null, null);
+        String type = discriminator.getNamedChildValue("type");        
+        if (VersionUtilities.isR5Plus(context.getVersion())) {
+          warning(errors, "2024-11-06", IssueType.BUSINESSRULE, dStack, !"pattern".equals(type), I18nConstants.SD_PATH_SLICING_DEPRECATED_R5, type);
+        } else {
+          hint(errors, "2024-11-06", IssueType.BUSINESSRULE, dStack, !"pattern".equals(type), I18nConstants.SD_PATH_SLICING_DEPRECATED, type);
+        }
+        String pathExp = discriminator.getNamedChildValue("path");
+        if (ted != null) {
+          TypeDetails td = getTypesForElement(elements, element, tn, tsd.getUrl());
+          if (!td.isEmpty()) {
+            List<IssueMessage> warnings = new ArrayList<IssueMessage>();
+            try {
+              TypeDetails eval = fpe.checkOnTypes(this, "Resource", tn, td, fpe.parse(pathExp), warnings, true);
+              if (eval.isEmpty()) {
+                ok = rule(errors, "2024-11-06", IssueType.INVALID, dStack, false, I18nConstants.SD_PATH_NOT_VALID, pathExp, path) && ok;
+              } 
+            } catch (Exception e) {
+                ok = rule(errors, "2024-11-06", IssueType.INVALID, dStack, false, I18nConstants.SD_PATH_ERROR, pathExp, path, e.getMessage()) && ok;                
+            }
+          }
+        }
+      }
     }
 
     if (!snapshot && (element.hasChild("fixed") || element.hasChild("pattern")) && base != null) {
@@ -461,9 +612,13 @@ public class StructureDefinitionValidator extends BaseValidator {
         } else {
           Element pattern = element.getNamedChild("pattern");
           if (pattern != null) {
-            NodeStack fn = stack.push(pattern, 0, null, null);            
-            if (rule(errors, "2024-03-26", IssueType.INVALID, fn, pattern.fhirType().equals(ed.getFixed().fhirType()), I18nConstants.SD_ELEMENT_PATTERN_WRONG_TYPE, pattern.fhirType(), ed.getFixed().fhirType())) {
-              ok = ((org.hl7.fhir.validation.instance.InstanceValidator) parent).checkFixedValue(errors, path, pattern, ed.getFixed(), base.getVersionedUrl(), "pattern", element, true, context.formatMessage(I18nConstants.SD_ELEMENT_REASON_DERIVED, base.getVersionedUrl())) && ok;
+            NodeStack fn = stack.push(pattern, 0, null, null);  
+            if (rule(errors, "2024-03-26", IssueType.INVALID, fn, ed.hasFixed(), I18nConstants.SD_ELEMENT_PATTERN_NO_FIXED, pattern.fhirType())) {
+              if (rule(errors, "2024-03-26", IssueType.INVALID, fn, pattern.fhirType().equals(ed.getFixed().fhirType()), I18nConstants.SD_ELEMENT_PATTERN_WRONG_TYPE, pattern.fhirType(), ed.getFixed().fhirType())) {
+                ok = ((org.hl7.fhir.validation.instance.InstanceValidator) parent).checkFixedValue(errors, path, pattern, ed.getFixed(), base.getVersionedUrl(), "pattern", element, true, context.formatMessage(I18nConstants.SD_ELEMENT_REASON_DERIVED, base.getVersionedUrl())) && ok;
+              } else {
+                ok = false;
+              }
             } else {
               ok = false;
             }
@@ -515,7 +670,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
     if (typeMustSupport) {
       if (snapshot) {
-        ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_SNAPSHOT, path) && ok;
+        warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_SNAPSHOT, path);
       } else {
         hint(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), hasSnapshot || "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_DIFF, path);        
       }
@@ -590,7 +745,93 @@ public class StructureDefinitionValidator extends BaseValidator {
       ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path", false), rootPath, profileUrl, profileType, snapshot, base) && ok;
       cc++;
     }    
+    if (snapshot) {
+      if (constraint) {
+        if (path.contains(".")) {
+          // nothing
+        } else {
+          ok = prohibited(errors, stack, "constraint", element, "sliceName", "slicing", "requirements", "nameReference", "defaultValue", "meaningWhenMissing", "fixed", "pattern", "example", "minValue", "maxValue", "maxLength") && ok;
+        }
+      } else {
+        if (path.contains(".")) {
+          ok = required(errors, stack,  "specialization", element, "min", "max") && ok;
+          ok = prohibited(errors, stack,  "specialization", element, "sliceName", /* allowed in element on .extension "slicing", */
+              "fixed", "pattern", "minValue", "maxValue", "maxLength") && ok;
+        } else {
+          ok = prohibited(errors, stack,  "specialization", element, "sliceName", "slicing", "requirements", "nameReference", "defaultValue", "fixed", "pattern", "example", "minValue", "maxValue", "maxLength") && ok;
+        }      
+      }
+    }
     return ok;
+  }
+
+
+  private boolean validateSDElement(List<ValidationMessage> errors, ElementDefinition element, List<ElementDefinition> elements, NodeStack stack) {
+    boolean ok = true;
+    
+    if (element.hasSlicing()) {
+
+      boolean ms = element.getMustSupport();
+      List<ElementDefinition> slices = getSlices(element, elements);
+      for (ElementDefinition slice : slices) {
+        boolean mss = slice.getMustSupport();
+        warning(errors, "2024-11-06", IssueType.INVALID, stack, !ms || mss, I18nConstants.SD_PATH_SLICE_INCONSISTENT_MS, slice.getSliceName(), element.getPath());
+        for (TypeRefComponent tr : slice.getType()) {
+          if (!hasTypeByCode(tr.getWorkingCode(), element)) {            
+            warning(errors, "2024-11-06", IssueType.INVALID, stack, !ms || mss, I18nConstants.SD_PATH_SLICE_INCONSISTENT_TYPE, slice.getSliceName(), element.getPath(), tr.getWorkingCode(), element.typeSummary());
+          }
+        }
+        // todo: other checks such as obligations, bindings
+      }
+    }
+    return ok;
+  }
+
+  private boolean hasTypeByCode(String workingCode, ElementDefinition element) {
+    for (TypeRefComponent tr : element.getType()) {
+      if (tr.getWorkingCode().equals(workingCode)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private List<ElementDefinition> getSlices(ElementDefinition element, List<ElementDefinition> elements) {
+    String path = element.getPath();
+    int index = elements.indexOf(element)+1;
+    List<ElementDefinition> result = new ArrayList<>();
+    while (index < elements.size()) {
+      String spath = elements.get(index).getPath();
+      if (spath.length() < path.length()) {
+        break; // end of that element
+      } else if (spath.equals(path)) {
+        result.add(elements.get(index));
+      }
+      index++;
+    } 
+    return result;
+  }
+
+  private boolean prohibited(List<ValidationMessage> errors, NodeStack stack, String mode, Element element, String... names) {
+    boolean ok = true;
+    for (String name : names) {
+      List<Element> c = element.getChildren(name);
+      ok = rule(errors, "2025-03-01", IssueType.EXCEPTION, stack, c.isEmpty(), I18nConstants.SD_TABLE_PROHIBITED, name, element.getNamedChildValue("path"), mode) && ok; 
+    }
+    return ok;
+  }
+
+  private boolean required(List<ValidationMessage> errors, NodeStack stack, String mode, Element element, String... names) {
+    boolean ok = true;
+    for (String name : names) {
+      List<Element> c = element.getChildren(name);
+      ok = rule(errors, "2025-03-01", IssueType.EXCEPTION, stack, !c.isEmpty(), I18nConstants.SD_TABLE_REQUIRED, name, element.getNamedChildValue("path"), mode) && ok; 
+    }
+    return ok;
+  }
+
+  private boolean canSlice(ElementDefinition ted) {
+    return !("1".equals(ted.getMax())) || ted.getPath().contains("[x]");
   }
 
   private boolean checkTypeParameters(List<ValidationMessage> errors, NodeStack stack, Element typeE, String tc, StructureDefinition tsd, String path, StructureDefinition sd) {
@@ -605,33 +846,37 @@ public class StructureDefinitionValidator extends BaseValidator {
           boolean found = false;
           for (Element e : extensions) {
             if (ToolingExtensions.EXT_TYPE_PARAMETER.equals(e.getNamedChildValue("url"))) {
-              String ename = e.getExtensionValue("name").primitiveValue();
-              if (name.equals(ename)) {
-                found = true;
-                String etype = e.getExtensionValue("type").primitiveValue();
-                for (Extension ex : sd.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_PARAMETER)) {
-                  String tn = ex.getExtensionString("name");
-                  if (tn != null && tn.equals(etype)) {
-                    etype = ex.getExtensionString("type");
-                    break;
-                  }
-                }
-                StructureDefinition esd = context.fetchTypeDefinition(etype);
-                if (rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), esd != null, I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, tc, etype)) {
-                  StructureDefinition t = esd;
-                  while (t != null && t != psd) {
-                    t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
-                  }
-                  ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_INVALID_REF, tc, etype, tsd.getVersionedUrl(), name, type) & ok;
-                  if (t != null) {
-                    if (!sd.getAbstract() && esd.getAbstract()) {
-                      warning(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_ABSTRACT_WARNING, tc, etype, tsd.getVersionedUrl(), name, type);
+              if (!e.hasExtension("name")) {
+                rule(errors, "2024-12-31", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, tc, "no name");
+              } else {
+                String ename = e.getExtensionValue("name").primitiveValue();
+                if (name.equals(ename)) {
+                  found = true;
+                  String etype = e.getExtensionValue("type").primitiveValue();
+                  for (Extension ex : sd.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_PARAMETER)) {
+                    String tn = ex.getExtensionString("name");
+                    if (tn != null && tn.equals(etype)) {
+                      etype = ex.getExtensionString("type");
+                      break;
                     }
                   }
-                } else {
-                  ok = false;
-                }
-              }              
+                  StructureDefinition esd = context.fetchTypeDefinition(etype);
+                  if (rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), esd != null, I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, tc, etype)) {
+                    StructureDefinition t = esd;
+                    while (t != null && t != psd) {
+                      t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
+                    }
+                    ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_INVALID_REF, tc, etype, tsd.getVersionedUrl(), name, type) & ok;
+                    if (t != null) {
+                      if (!sd.getAbstract() && esd.getAbstract()) {
+                        warning(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_ABSTRACT_WARNING, tc, etype, tsd.getVersionedUrl(), name, type);
+                      }
+                    }
+                  } else {
+                    ok = false;
+                  }
+                }              
+              }
             }
           }
           ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), found, I18nConstants.SD_TYPE_PARAM_NOT_SPECIFIED, tc, tsd.getVersionedUrl(), name, path) && ok;
@@ -652,7 +897,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ed;
   }
 
-  private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, String> invariantMap, List<Element> elements, Element element, 
+  private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, SourcedInvariant> invariantMap, List<Element> elements, Element element, 
       String path, String rootPath, String profileUrl, String profileType, boolean snapshot, StructureDefinition base) {
     boolean ok = true;
     String key = invariant.getNamedChildValue("key", false); 
@@ -664,57 +909,72 @@ public class StructureDefinitionValidator extends BaseValidator {
           if (!Utilities.noString(expression)) {
             if (invariantMap.containsKey(key)) {
               // it's legal - and common - for a list of elements to contain the same invariant more than once, but it's not valid if it's not always the same 
-              ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)) || "ele-1".equals(key), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));
+              ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key).getInv()) || "ele-1".equals(key), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key).getInv());
             } else {
-              invariantMap.put(key, expression);
+              invariantMap.put(key, new SourcedInvariant(profileUrl, path, expression));
             }
             if (Utilities.noString(source) || (source.equals(profileUrl))) { // no need to revalidate FHIRPath from elsewhere 
               try {
                 // we have to figure out the context, and we might be in type slicing. 
                 String exp = expression;
                 Element te = element;
-                List<String> types = getTypesForElement(elements, te, profileType);
-                while (types.size() == 0 && te != null) {
+                TypeDetails types = getTypesForElement(elements, te, profileType, profileUrl);
+                while (types.isEmpty() && te != null) {
                   Element oldte = te;
                   te = getParent(elements, te);
                   if (te != null) {
                     exp = tail(oldte, te)+".all("+exp+")";
-                    types = getTypesForElement(elements, te, profileType);
+                    types = getTypesForElement(elements, te, profileType, profileUrl);
                   }
                 }
-                if (types.size() == 0) {
+                if (types.isEmpty()) {
                   // we got to the root before finding anything typed
-                  types.add(elements.get(0).getNamedChildValue("path", false));
+                  types.addType(elements.get(0).getNamedChildValue("path", false));
                 }
+        
                 List<IssueMessage> warnings = new ArrayList<>();
                 ValidationContext vc = new ValidationContext(invariant);
                 if (Utilities.existsInList(rootPath, context.getResourceNames())) {
-                  fpe.checkOnTypes(vc, rootPath, types, fpe.parse(exp), warnings);
+                  fpe.checkOnTypes(vc, "Resource", rootPath, types, fpe.parse(exp), warnings);
                 } else {
                   StructureDefinition sd = context.fetchTypeDefinition(rootPath);
                   if (sd != null && sd.getKind() == StructureDefinitionKind.RESOURCE) {
-                    fpe.checkOnTypes(vc, rootPath, types, fpe.parse(exp), warnings);
+                    fpe.checkOnTypes(vc, "Resource", rootPath, types, fpe.parse(exp), warnings);
                   } else if (sd != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
                     String tn = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_LOGICAL_CONTAINER);
-                    fpe.checkOnTypes(vc, tn == null ? rootPath : tn, types, fpe.parse(exp), warnings);
+                    fpe.checkOnTypes(vc, "Resource", tn == null ? rootPath : tn, types, fpe.parse(exp), warnings);
                   } else {
-                    fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
+                    fpe.checkOnTypes(vc, "Resource", "DomainResource", types, fpe.parse(exp), warnings);
                   }
                 }
                 for (IssueMessage s : warnings) {
                   warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, s.getId(), false, key+": "+s.getMessage());
                 }
               } catch (Exception e) {
-                if (debug) {
+                if (settings.isDebug()) {
                   e.printStackTrace();
                 }
                 ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
               }         
             }        
           }
-        } else {          
-          ok = rule(errors, "2023-07-27", IssueType.INVALID, stack, source == null || source.equals(profileUrl), I18nConstants.ED_INVARIANT_DIFF_NO_SOURCE, key, source) &&
-              rule(errors, "2023-07-27", IssueType.INVALID, stack, !haseHasInvariant(base, key), I18nConstants.ED_INVARIANT_KEY_ALREADY_USED, key, base.getVersionedUrl());
+        } else {   
+          if (rule(errors, "2023-07-27", IssueType.INVALID, stack, source == null || source.equals(profileUrl), I18nConstants.ED_INVARIANT_DIFF_NO_SOURCE, key, source)) {
+            SourcedInvariant inv = findInvariantInBase(base, key);
+            if (rule(errors, "2023-07-27", IssueType.INVALID, stack, inv == null || inv.getInv().equals(expression), I18nConstants.ED_INVARIANT_KEY_ALREADY_USED, key, inv == null ? "??" : inv.getSd(), inv == null  ? "??" : inv.getInv())) {
+              if (invariantMap.containsKey(key)) { 
+                SourcedInvariant src = invariantMap.get(key);
+                ok = rule(errors, "2023-07-27", IssueType.INVALID, stack, expression.equals(src.getInv()), I18nConstants.ED_INVARIANT_KEY_ALREADY_USED, key, src.getEd(), src.getInv()) && ok;
+                
+              } else {
+                invariantMap.put(key, new SourcedInvariant(profileUrl, path, expression));
+              }
+            } else {
+              ok = false;
+            }
+          } else {
+            ok = false;
+          }
 
         }
       }
@@ -735,12 +995,12 @@ public class StructureDefinitionValidator extends BaseValidator {
         try {
           List<IssueMessage> warnings = new ArrayList<>();
           ValidationContext vc = new ValidationContext(invariant);
-          fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
+          fpe.checkOnTypes(vc, "Resource", "DomainResource", types, fpe.parse(exp), warnings);
           for (IssueMessage s : warnings) {
             warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, s.getId(), false, s.getMessage());
           }
         } catch (Exception e) {
-          if (debug) {
+          if (settings.isDebug()) {
             e.printStackTrace();
           }
           ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_CONTEXT_INVARIANT_EXPRESSION_ERROR, expression, e.getMessage()) && ok;
@@ -777,15 +1037,35 @@ public class StructureDefinitionValidator extends BaseValidator {
     return types;
   }
 
-  private boolean haseHasInvariant(StructureDefinition base, String key) {
-    for (ElementDefinition ed : base.getSnapshot().getElement()) {
-      for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
-        if (key.equals(inv.getKey())) {
-          return true;
+  private SourcedInvariant findInvariantInBase(StructureDefinition base, String key) {
+    if (base != null) {
+      for (ElementDefinition ed : base.getSnapshot().getElement()) {
+        for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+          if (key.equals(inv.getKey())) {
+            return new SourcedInvariant(base.getVersionedUrl(), ed.getPath(), inv.getExpression());
+          }
         }
       }
     }
-    return false;
+    for (StructureDefinition sd : cu.allBaseStructures()) {
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+          if (key.equals(inv.getKey())) {
+            return new SourcedInvariant(sd.getVersionedUrl(), ed.getPath(), inv.getExpression());
+          }
+        }
+      }   
+    }
+    return null;
+  }
+
+
+  private boolean typesHaveInvariant(Map<String, String> invMap, String key, String expression) {
+    if (invMap.containsKey(key)) {
+      return !expression.equals(invMap.get(key));
+    } else {
+      return false;
+    }
   }
 
   private String tail(Element te, Element newte) {
@@ -807,14 +1087,14 @@ public class StructureDefinitionValidator extends BaseValidator {
     return null;
   }
 
-  private List<String> getTypesForElement(List<Element> elements, Element element, String profileType) {
-    List<String> types = new ArrayList<>();
+  private TypeDetails getTypesForElement(List<Element> elements, Element element, String profileType, String profileUrl) {
+    TypeDetails types = new TypeDetails(CollectionStatus.SINGLETON);
     if (element.hasChild("path", false) && !element.getNamedChildValue("path", false).contains(".")) {
       String t = element.getNamedChildValue("path", false);
       if (profileType.equals(t)) {
-        types.add(profileType);
+        types.addType(profileType, profileUrl);
       } else if (profileType.endsWith("/"+t)) {
-        types.add(profileType);
+        types.addType(profileType, profileUrl);
       } else {
         throw new Error("Error: this should not happen: '"+t+"' vs '"+profileType+"'?");
       }      
@@ -827,12 +1107,12 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (t != null) {
           if (isAbstractType(t) && hasChildren(element, elements) ) {
             if (!Utilities.isAbsoluteUrl(profileType)) {
-              types.add(element.getNamedChildValue("path", false));
+              types.addType(profileUrl+ "#"+element.getNamedChildValue("path", false));
             } else {
-              types.add(profileType+"#"+element.getNamedChildValue("path", false));              
+              types.addType(profileType+"#"+element.getNamedChildValue("path", false));              
             }
           } else {
-            types.add(t);
+            types.addType(t);
           }
         }
       }
@@ -1011,7 +1291,9 @@ public class StructureDefinitionValidator extends BaseValidator {
           if (vs != null) {
             if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs instanceof ValueSet, I18nConstants.SD_ED_BIND_NOT_VS, path, ref, vs.fhirType())) {              
               ValueSet vsr = (ValueSet) vs;
-              warning(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), !vsr.getExperimental() || experimental, I18nConstants.SD_ED_EXPERIMENTAL_BINDING, path, ref);
+              if (!"example".equals(binding.getNamedChildValue("strength"))) {
+                warning(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), !vsr.getExperimental() || experimental, I18nConstants.SD_ED_EXPERIMENTAL_BINDING, path, ref);
+              }
             } else {
               ok = false;
             }
@@ -1129,7 +1411,7 @@ public class StructureDefinitionValidator extends BaseValidator {
           }
         }
       } else {
-        warning(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_ED_ADDITIONAL_BINDING_USAGE_UNKNOWN, system, code);
+        hint(errors, "2024-09-17", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_ED_ADDITIONAL_BINDING_USAGE_UNKNOWN, system, code);
       }
     }
     return ok;

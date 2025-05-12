@@ -3,18 +3,10 @@ package org.hl7.fhir.validation;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -32,7 +24,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
@@ -40,7 +32,7 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
-import org.hl7.fhir.validation.cli.model.ScanOutputItem;
+import org.hl7.fhir.validation.service.model.ScanOutputItem;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 
 import lombok.Getter;
@@ -255,7 +247,7 @@ public class Scanner {
 
     b.append("</body>");
     b.append("</html>");
-    TextFile.stringToFile(b.toString(), Utilities.path(folder, "scan.html"));
+    FileUtilities.stringToFile(b.toString(), Utilities.path(folder, "scan.html"));
   }
 
   protected void genScanOutputItem(ScanOutputItem item, String filename) throws IOException, FHIRException, EOperationOutcome {
@@ -277,7 +269,7 @@ public class Scanner {
     b.append(s);
     b.append("</body>");
     b.append("</html>");
-    TextFile.stringToFile(b.toString(), filename);
+    FileUtilities.stringToFile(b.toString(), filename);
   }
 
   protected String genOutcome(List<ScanOutputItem> items, String src, String ig, String profile) {
@@ -319,9 +311,9 @@ public class Scanner {
   }
 
   protected void download(String address, String filename) throws IOException {
-    HTTPResult res = ManagedWebAccess.get(address);
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), address);
     res.checkThrowException();
-    TextFile.bytesToFile(res.getContent(), filename);
+    FileUtilities.bytesToFile(res.getContent(), filename);
   }
 
   protected void transfer(InputStream in, OutputStream out, int buffer) throws IOException {

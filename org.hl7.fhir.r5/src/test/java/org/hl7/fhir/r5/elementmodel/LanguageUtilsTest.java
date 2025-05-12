@@ -40,14 +40,14 @@ class LanguageUtilsTest implements ResourceLoaderTests {
     Writer generatedResource = new StringWriter();
     jp.compose(element, new JsonCreatorDirect(generatedResource, false, false));
 
-    assert result == 3;
+    Assertions.assertEquals(3, result);
 
     InputStream translatedResource = getResourceAsInputStream("languageUtils", "CodeSystem-answer-translated.json");
     String text = new BufferedReader(new InputStreamReader(translatedResource))
       .lines()
       .collect(Collectors.joining("\n"));
 
-    String msg = CompareUtilities.checkJsonSrcIsSame("", generatedResource.toString(),text, null);
+    String msg = new CompareUtilities().checkJsonSrcIsSame("", generatedResource.toString(),text);
     Assertions.assertNull(msg);
 
   }

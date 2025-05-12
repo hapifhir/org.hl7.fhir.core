@@ -10,6 +10,8 @@ import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -17,6 +19,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * This class is used to walk through the resources when rendering, whether
  * the resource is a native resource or loaded by the element model
  */
+@MarkedToMoveToAdjunctPackage
 public class ResourceWrapperNative extends ResourceWrapper {
 
   protected Base element;
@@ -143,7 +146,7 @@ public class ResourceWrapperNative extends ResourceWrapper {
   public void setNarrative(XhtmlNode x, String status, boolean multiLangMode, Locale locale, boolean isPretty) {
     if (element instanceof DomainResource) {
       DomainResource r = (DomainResource) element;    
-      r.getText().setUserData("renderer.generated", true);
+      r.getText().setUserData(UserDataNames.renderer_is_generated, true);
       if (!r.hasText() || !r.getText().hasDiv()) {
         r.setText(new Narrative());
         r.getText().setStatusAsString(status);      
@@ -174,8 +177,8 @@ public class ResourceWrapperNative extends ResourceWrapper {
   }
 
   public void markLanguage(XhtmlNode x, Locale locale) {
-    x.setAttribute("lang", locale.toString());
-    x.setAttribute("xml:lang", locale.toString());
+    x.setAttribute("lang", locale.toLanguageTag());
+    x.setAttribute("xml:lang", locale.toLanguageTag());
     x.addTag(0, "hr");
     x.addTag(0, "p").b().tx(locale.getDisplayName());
     x.addTag(0, "hr");
@@ -229,6 +232,16 @@ public class ResourceWrapperNative extends ResourceWrapper {
       return ((Enumeration<?>) element).getSystem();
     }
     return null;
+  }
+
+  @Override
+  public boolean hasUserData(String name) {
+    return element.hasUserData(name);
+  }
+
+  @Override
+  public Object getUserData(String name) {
+    return element.getUserData(name);
   }
 
 }

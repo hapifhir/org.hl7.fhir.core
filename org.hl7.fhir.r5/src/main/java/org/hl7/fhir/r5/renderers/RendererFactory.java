@@ -4,8 +4,10 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
+@MarkedToMoveToAdjunctPackage
 public class RendererFactory {
 
   public static ResourceRenderer factory(String resourceName, RenderingContext context) {
@@ -24,7 +26,6 @@ public class RendererFactory {
     case "CompartmentDefinition":  return new CompartmentDefinitionRenderer(context);
     case "ConceptMap": return new ConceptMapRenderer(context);
     case "DiagnosticReport": return new DiagnosticReportRenderer(context);
-    case "Encounter": return new EncounterRenderer(context);
     case "ExampleScenario": return new ExampleScenarioRenderer(context);
     case "ImplementationGuide": return new ImplementationGuideRenderer(context);
     case "Library": return new LibraryRenderer(context);
@@ -44,6 +45,8 @@ public class RendererFactory {
     case "SubscriptionTopic": return new SubscriptionTopicRenderer(context);
     case "TestPlan": return new TestPlanRenderer(context);
     case "ValueSet": return new ValueSetRenderer(context);
+    case "ViewDefinition": return new ViewDefinitionRenderer(context);
+    case "WebTemplate": return new WebTemplateRenderer(context);
     }
     return new ProfileDrivenRenderer(context);    
   }
@@ -71,11 +74,14 @@ public class RendererFactory {
     switch (resource.fhirType()) {
     case "DiagnosticReport": return new DiagnosticReportRenderer(context);
     case "Library": return new LibraryRenderer(context);
-    case "Questionnaire": return new LibraryRenderer(context);
+    case "ViewDefinition": return new ViewDefinitionRenderer(context);
+    case "WebTemplate": return new WebTemplateRenderer(context);
+    case "FeatureDefinition": return new FeatureDefinitionRenderer(context);
     case "List": return new ListRenderer(context);
     case "Patient": return new PatientRenderer(context);
     case "Provenance": return new ProvenanceRenderer(context);
     case "Parameters": return new ParametersRenderer(context);
+    case "Questionnaire": return new QuestionnaireRenderer(context);
     case "QuestionnaireResponse": return new QuestionnaireResponseRenderer(context);
     }
     if (resource.isDirect()) {
@@ -87,7 +93,6 @@ public class RendererFactory {
       case "CodeSystem": return new CodeSystemRenderer(context);
       case "CompartmentDefinition":  return new CompartmentDefinitionRenderer(context);
       case "ConceptMap": return new ConceptMapRenderer(context);
-      case "Encounter": return new EncounterRenderer(context);
       case "ExampleScenario": return new ExampleScenarioRenderer(context);
       case "ImplementationGuide": return new ImplementationGuideRenderer(context);
       case "NamingSystem": return new NamingSystemRenderer(context);

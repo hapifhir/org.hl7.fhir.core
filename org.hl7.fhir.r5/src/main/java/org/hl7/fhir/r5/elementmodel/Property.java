@@ -52,9 +52,11 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.TypesUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 
+@MarkedToMoveToAdjunctPackage
 public class Property {
 
 	private IWorkerContext context;
@@ -205,14 +207,35 @@ public class Property {
       return ed.getType().get(0).getWorkingCode();
 	}
 
-  public boolean hasType(String elementName) {
+  public boolean typeIsConsistent(String typeName) {
+    for (TypeRefComponent tr : definition.getType()) {
+      if (typeName.equals(tr.getWorkingCode()) || typeSpecializes(tr.getWorkingCode(), typeName)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  
+  private boolean typeSpecializes(String workingCode, String typeName) {
+    if ("string".equals(typeName)) {
+      return Utilities.existsInList(workingCode, "uri", "oid", "canonical", "url", "uuid", "id", "markdown");
+    }
+    if ("integer".equals(typeName)) {
+      return Utilities.existsInList(workingCode, "positiveInt", "unsignedInt");
+    }
+    return false;
+  }
+
+
+  public boolean hasType(String typeName) {
     if (type != null) {
       return false; // ?
     } else if (definition.getType().size() == 0) {
       return false;
     } else if (isJsonPrimitiveChoice()) { 
       for (TypeRefComponent tr : definition.getType()) {
-        if (elementName.equals(tr.getWorkingCode())) {
+        if (typeName.equals(tr.getWorkingCode())) {
           return true;
         }
       }
@@ -227,7 +250,7 @@ public class Property {
       if (all)
         return true;
       String tail = definition.getPath().substring(definition.getPath().lastIndexOf(".")+1);
-      if (tail.endsWith("[x]") && elementName.startsWith(tail.substring(0, tail.length()-3))) {
+      if (tail.endsWith("[x]") && typeName.startsWith(tail.substring(0, tail.length()-3))) {
 //        String name = elementName.substring(tail.length()-3);
         return true;        
       } else
@@ -281,6 +304,19 @@ public class Property {
 
   public boolean isList() {
     return !"1".equals(definition.getBase().hasMax() ? definition.getBase().getMax() : definition.getMax());
+  }
+
+  /**
+   * This handles a very special case: An extension used with json extensions in CDS hooks, 
+   * where the extension definition, not the base, decides whether it's an array or not 
+   * @return
+   */
+  public boolean isJsonList() {
+    if (definition.hasExtension(ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED)) {
+      return !"1".equals(definition.getMax());
+    } else {
+      return !"1".equals(definition.getBase().hasMax() ? definition.getBase().getMax() : definition.getMax());
+    }
   }
 
   public boolean isBaseList() {
@@ -351,7 +387,7 @@ public class Property {
     ElementDefinition ed = definition;
     StructureDefinition sd = structure;
     boolean isCDA = isCDAElement(structure);
-    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed);
+    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed, false);
     String url = null;
     if (children.getList().isEmpty() || isElementWithOnlyExtension(ed, children.getList())) {
       // ok, find the right definitions
@@ -424,8 +460,8 @@ public class Property {
         }
         sd = context.fetchResource(StructureDefinition.class, url);        
         if (sd == null)
-          throw new DefinitionException("Unable to find type '"+t+"' for name '"+elementName+"' on property "+definition.getPath());
-        children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElement().get(0));
+          throw new DefinitionException("Unable to find definition '"+url+"' for type '"+t+"' for name '"+elementName+"' on property "+definition.getPath());
+        children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElement().get(0), false);
       }
     }
     List<Property> properties = new ArrayList<Property>();
@@ -459,7 +495,7 @@ public class Property {
   protected List<Property> getChildProperties(TypeDetails type) throws DefinitionException {
     ElementDefinition ed = definition;
     StructureDefinition sd = structure;
-    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed);
+    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed, false);
     if (children.getList().isEmpty()) {
       // ok, find the right definitions
       String t = null;
@@ -485,7 +521,7 @@ public class Property {
         sd = context.fetchResource(StructureDefinition.class, t);
         if (sd == null)
           throw new DefinitionException("Unable to find class '"+t+"' for name '"+ed.getPath()+"' on property "+definition.getPath());
-        children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElement().get(0));
+        children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElement().get(0), false);
       }
     }
     List<Property> properties = new ArrayList<Property>();
@@ -706,5 +742,5 @@ public class Property {
     return false;
   }
 
-  
+
 }

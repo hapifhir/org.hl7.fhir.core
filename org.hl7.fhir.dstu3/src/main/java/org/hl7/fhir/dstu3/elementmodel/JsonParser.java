@@ -55,7 +55,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.StringPair;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonTrackingParser.LocationData;
@@ -69,6 +69,7 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
+@Deprecated
 public class JsonParser extends ParserBase {
 
 	private JsonCreator json;
@@ -98,7 +99,7 @@ public class JsonParser extends ParserBase {
 	public Element parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException {
 		// if we're parsing at this point, then we're going to use the custom parser
 		map = new HashMap<JsonElement, LocationData>();
-		String source = TextFile.streamToString(stream);
+		String source = FileUtilities.streamToString(stream);
 		if (policy == ValidationPolicy.EVERYTHING) {
 			JsonObject obj = null; 
       try {

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r5.utils.sql;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+@MarkedToMoveToAdjunctPackage
 public class Store {
 
   private String name;
@@ -13,4 +16,7 @@ public class Store {
     return name;
   }
   
+  public void flush() {
+    
+  }
 }

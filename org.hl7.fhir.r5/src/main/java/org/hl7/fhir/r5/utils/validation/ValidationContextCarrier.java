@@ -8,8 +8,10 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
+@MarkedToMoveToAdjunctPackage
 public class ValidationContextCarrier {
   /**
    * 

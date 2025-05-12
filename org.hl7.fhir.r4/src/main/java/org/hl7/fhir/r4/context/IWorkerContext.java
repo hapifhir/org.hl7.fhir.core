@@ -56,6 +56,7 @@ import org.hl7.fhir.r4.terminologies.ValueSetExpander.TerminologyServiceErrorCla
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.INarrativeGenerator;
 import org.hl7.fhir.r4.utils.validation.IResourceValidator;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -76,6 +77,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  * 
  * @author Grahame
  */
+
 public interface IWorkerContext {
 
   /**
@@ -169,8 +171,10 @@ public interface IWorkerContext {
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri);
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, Resource source);
 
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
+  public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_);
 
   /**
    * Variation of fetchResource when you have a string type, and don't need the
@@ -485,6 +489,7 @@ public interface IWorkerContext {
   public void setOverrideVersionNs(String value);
 
   public StructureDefinition fetchTypeDefinition(String typeName);
+  public List<StructureDefinition> fetchTypeDefinitions(String n);
 
   public void setUcumService(UcumService ucumService);
 

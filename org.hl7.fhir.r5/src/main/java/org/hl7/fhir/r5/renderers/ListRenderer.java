@@ -10,8 +10,10 @@ import org.hl7.fhir.r5.model.ListResource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
  
+@MarkedToMoveToAdjunctPackage
 public class ListRenderer extends ResourceRenderer { 
  
   public ListRenderer(RenderingContext context) { 
@@ -33,7 +35,7 @@ public class ListRenderer extends ResourceRenderer {
     if (list.has("title")) { 
       x.h2().tx(list.primitiveValue("title")); 
     } 
-    XhtmlNode t = x.table("clstu"); 
+    XhtmlNode t = x.table("clstu", false); 
     XhtmlNode tr = t.tr(); 
     if (list.has("date")) { 
       tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_DATE, displayDateTime(list.child("date")))+" "); 
@@ -75,7 +77,7 @@ public class ListRenderer extends ResourceRenderer {
       deleted = deleted || e.has("deleted"); 
       date = date || e.has("date"); 
     } 
-    t = x.table("grid"); 
+    t = x.table("grid", false); 
     tr = t.tr().style("backgound-color: #eeeeee"); 
     tr.td().b().tx(context.formatPhrase(RenderingContext.LIST_REND_ITEM)); 
     if (date) { 
@@ -100,6 +102,12 @@ public class ListRenderer extends ResourceRenderer {
         tr.td().tx(e.has("deleted") ? e.primitiveValue("deleted") : ""); 
       } 
     }     
+    
+    if (list.has("contained") && context.isTechnicalMode()) {
+      x.hr();
+      x.para().b().tx(context.formatMessagePlural(list.children("contained").size(), RenderingContext.PAT_CONTAINED));
+      addContained(status, x, list.children("contained"));
+    }
   } 
   
   public void describe(XhtmlNode x, ListResource list) { 

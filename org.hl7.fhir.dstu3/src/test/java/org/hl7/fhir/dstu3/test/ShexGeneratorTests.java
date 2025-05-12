@@ -11,11 +11,12 @@ import org.hl7.fhir.dstu3.context.SimpleWorkerContext;
 import org.hl7.fhir.dstu3.model.StructureDefinition;
 import org.hl7.fhir.dstu3.test.support.TestingUtilities;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
+@Deprecated
 public class ShexGeneratorTests {
 
   private void doTest(String name) throws FileNotFoundException, IOException, FHIRException {
@@ -31,7 +32,7 @@ public class ShexGeneratorTests {
       throw new FHIRException("StructuredDefinition for " + name + "was null");
     }
     Path outPath = FileSystems.getDefault().getPath(workingDirectory, name.toLowerCase()+".shex");
-    TextFile.stringToFile(new ShExGenerator(TestingUtilities.context).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
+    FileUtilities.stringToFile(new ShExGenerator(TestingUtilities.context).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
   }
 
   @Test

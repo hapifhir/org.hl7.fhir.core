@@ -101,6 +101,7 @@ import org.hl7.fhir.utilities.Utilities;
  *
  */
 
+@Deprecated
 public class ValueSetExpanderSimple implements ValueSetExpander {
 
   private List<ValueSetExpansionContainsComponent> codes = new ArrayList<ValueSet.ValueSetExpansionContainsComponent>();

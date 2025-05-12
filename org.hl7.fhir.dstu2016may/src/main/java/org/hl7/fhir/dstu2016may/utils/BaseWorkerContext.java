@@ -31,14 +31,12 @@ package org.hl7.fhir.dstu2016may.utils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -68,9 +66,10 @@ import org.hl7.fhir.dstu2016may.terminologies.ValueSetExpanderFactory;
 import org.hl7.fhir.dstu2016may.terminologies.ValueSetExpansionCache;
 import org.hl7.fhir.dstu2016may.utils.client.FHIRToolingClient;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 
+@Deprecated
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   // all maps are to the full URI
@@ -82,16 +81,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected ValueSetExpanderFactory expansionCache = new ValueSetExpansionCache(this);
   protected boolean cacheValidation; // if true, do an expansion and cache the expansion
   private Set<String> failed = new HashSet<String>(); // value sets for which we don't try to do expansion, since the
-                                                      // first attempt to get a comprehensive expansion was not
-                                                      // successful
+                                                      // first attempt to get a comprehensive expansion was not// successful
   protected Map<String, Map<String, ValidationResult>> validationCache = new HashMap<String, Map<String, ValidationResult>>();
-
-  // private ValueSetExpansionCache expansionCache; //
 
   protected FHIRToolingClient txServer;
   private Bundle bndCodeSystems;
-  private Locale locale;
-  private ResourceBundle i18Nmessages;
 
   @Override
   public CodeSystem fetchCodeSystem(String system) {
@@ -339,7 +333,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public ValidationResult validateCode(String system, String code, String display, ConceptSetComponent vsi) {
     try {
-      ValueSet vs = new ValueSet().setUrl(Utilities.makeUuidUrn());
+      ValueSet vs = new ValueSet().setUrl(UUIDUtilities.makeUuidUrn());
       vs.getCompose().addInclude(vsi);
       return verifyCodeExternal(vs, new Coding().setSystem(system).setCode(code).setDisplay(display), true);
     } catch (Exception e) {

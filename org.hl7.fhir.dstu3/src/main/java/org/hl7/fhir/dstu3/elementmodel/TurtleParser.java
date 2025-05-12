@@ -54,12 +54,13 @@ import org.hl7.fhir.dstu3.utils.formats.Turtle.TTLObject;
 import org.hl7.fhir.dstu3.utils.formats.Turtle.TTLURL;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
 
+@Deprecated
 public class TurtleParser extends ParserBase {
 
   private String base;
@@ -75,14 +76,14 @@ public class TurtleParser extends ParserBase {
     Turtle src = new Turtle();
     if (policy == ValidationPolicy.EVERYTHING) {
       try {
-        src.parse(TextFile.streamToString(input));
+        src.parse(FileUtilities.streamToString(input));
       } catch (Exception e) {  
         logError(-1, -1, "(document)", IssueType.INVALID, "Error parsing Turtle: "+e.getMessage(), IssueSeverity.FATAL);
         return null;
       }
       return parse(src);  
     } else {
-    src.parse(TextFile.streamToString(input));
+    src.parse(FileUtilities.streamToString(input));
       return parse(src);  
     } 
   }

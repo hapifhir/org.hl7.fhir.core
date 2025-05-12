@@ -47,6 +47,7 @@ import org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.dstu3.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.dstu3.utils.EOperationOutcome;
 
+@Deprecated
 public class ValueSetCheckerSimple implements ValueSetChecker {
 
   private ValueSet valueset;

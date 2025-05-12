@@ -37,6 +37,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -122,7 +123,7 @@ public class SpecDifferenceEvaluator {
 //    b.append(self.getDiffAsHtml(null));
 //    b.append("</body>\r\n");
 //    b.append("</html>\r\n");
-//    TextFile.stringToFile(b.toString(), Utilities.path("[tmp]", "diff.html"));
+//    FileUtilities.stringToFile(b.toString(), Utilities.path("[tmp]", "diff.html"));
 //    System.out.println("done");
 //  }
 //  
@@ -522,8 +523,8 @@ public class SpecDifferenceEvaluator {
     for (ElementDefinition ed : rev.getDifferential().getElement()) {
       ElementDefinition oed = getMatchingElement(rev.getName(), orig.getDifferential().getElement(), ed);
       if (oed != null) {
-        ed.setUserData("match", oed);
-        oed.setUserData("match", ed);
+        ed.setUserData(UserDataNames.comparison_match, oed);
+        oed.setUserData(UserDataNames.comparison_match, ed);
       }
     }
 
@@ -556,9 +557,9 @@ public class SpecDifferenceEvaluator {
       right.ul().li().addText("No Changes");
 
     for (ElementDefinition ed : rev.getDifferential().getElement())
-      ed.clearUserData("match");
+      ed.clearUserData(UserDataNames.comparison_match);
     for (ElementDefinition ed : orig.getDifferential().getElement())
-      ed.clearUserData("match");
+      ed.clearUserData(UserDataNames.comparison_match);
 
   }
 
@@ -1078,8 +1079,8 @@ public class SpecDifferenceEvaluator {
     for (ElementDefinition ed : rev.getDifferential().getElement()) {
       ElementDefinition oed = getMatchingElement(rev.getName(), orig.getDifferential().getElement(), ed);
       if (oed != null) {
-        ed.setUserData("match", oed);
-        oed.setUserData("match", ed);
+        ed.setUserData(UserDataNames.comparison_match, oed);
+        oed.setUserData(UserDataNames.comparison_match, ed);
       }
     }
 
@@ -1121,9 +1122,9 @@ public class SpecDifferenceEvaluator {
       type.addProperty("status", "no-change");
 
     for (ElementDefinition ed : rev.getDifferential().getElement())
-      ed.clearUserData("match");
+      ed.clearUserData(UserDataNames.comparison_match);
     for (ElementDefinition ed : orig.getDifferential().getElement())
-      ed.clearUserData("match");
+      ed.clearUserData(UserDataNames.comparison_match);
 
   }
 
@@ -1137,8 +1138,8 @@ public class SpecDifferenceEvaluator {
     for (ElementDefinition ed : rev.getDifferential().getElement()) {
       ElementDefinition oed = getMatchingElement(rev.getName(), orig.getDifferential().getElement(), ed);
       if (oed != null) {
-        ed.setUserData("match", oed);
-        oed.setUserData("match", ed);
+        ed.setUserData(UserDataNames.comparison_match, oed);
+        oed.setUserData(UserDataNames.comparison_match, ed);
       }
     }
 
@@ -1179,9 +1180,9 @@ public class SpecDifferenceEvaluator {
       type.setAttribute("status", "no-change");
 
     for (ElementDefinition ed : rev.getDifferential().getElement())
-      ed.clearUserData("match");
+      ed.clearUserData(UserDataNames.comparison_match);
     for (ElementDefinition ed : orig.getDifferential().getElement())
-      ed.clearUserData("match");
+      ed.clearUserData(UserDataNames.comparison_match);
 
   }
 

@@ -182,8 +182,8 @@ public class ZipGenerator {
   }
 
   public void addFileSource(String path, String cnt, boolean omitIfExists) throws IOException  {
-		File tmp = Utilities.createTempFile("tmp", ".tmp");
-		TextFile.stringToFile(cnt, tmp.getAbsolutePath());
+		File tmp = FileUtilities.createTempFile("tmp", ".tmp");
+		FileUtilities.stringToFile(cnt, tmp.getAbsolutePath());
 		addFileName(path, tmp.getAbsolutePath(), omitIfExists);
 		tmp.delete();
 	}

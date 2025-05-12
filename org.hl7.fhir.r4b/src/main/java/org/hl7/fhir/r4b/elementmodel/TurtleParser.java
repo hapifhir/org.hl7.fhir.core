@@ -47,7 +47,7 @@ import org.hl7.fhir.r4b.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.utils.SnomedExpressions;
 import org.hl7.fhir.r4b.utils.SnomedExpressions.Expression;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.turtle.Turtle;
@@ -62,6 +62,7 @@ import org.hl7.fhir.utilities.turtle.Turtle.TTLURL;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
+@Deprecated
 public class TurtleParser extends ParserBase {
 
   private String base;
@@ -79,7 +80,7 @@ public class TurtleParser extends ParserBase {
     Turtle src = new Turtle();
     if (policy == ValidationPolicy.EVERYTHING) {
       try {
-        src.parse(TextFile.streamToString(input));
+        src.parse(FileUtilities.streamToString(input));
       } catch (Exception e) {
         logError(-1, -1, "(document)", IssueType.INVALID,
             context.formatMessage(I18nConstants.ERROR_PARSING_TURTLE_, e.getMessage()), IssueSeverity.FATAL);
@@ -90,7 +91,7 @@ public class TurtleParser extends ParserBase {
         res.add(new NamedElement(null, e));
       }
     } else {
-      src.parse(TextFile.streamToString(input));
+      src.parse(FileUtilities.streamToString(input));
       Element e = parse(src);
       if (e != null) {
         res.add(new NamedElement(null, e));

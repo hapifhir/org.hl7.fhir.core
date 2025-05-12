@@ -16,6 +16,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.JsonElement;
@@ -23,6 +24,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.PackageHacker;
 
+@MarkedToMoveToAdjunctPackage
 public class XVerExtensionManager {
 
   public enum XVerExtensionStatus {
@@ -49,6 +51,7 @@ public class XVerExtensionManager {
     if (url.length() < 54) {
       return XVerExtensionStatus.Invalid;
     }
+    url = url.replace("%5Bx%5D", "[x]");
     String v = url.substring(20, 23);
     String e = url.substring(54);
     if (!lists.containsKey(v)) {
@@ -82,6 +85,7 @@ public class XVerExtensionManager {
   }
 
   public StructureDefinition makeDefinition(String url) {
+    url = url.replace("%5Bx%5D", "[x]");
     String verSource = url.substring(20, 23);
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);

@@ -12,7 +12,7 @@ import org.hl7.fhir.r4.elementmodel.Element;
 import org.hl7.fhir.r4.elementmodel.Manager;
 import org.hl7.fhir.r4.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class ValidationTestConvertor {
@@ -28,7 +28,7 @@ public class ValidationTestConvertor {
         .fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
     for (File f : ManagedFileAccess.file("C:\\work\\org.hl7.fhir\\build\\tests\\validation-examples").listFiles()) {
       if (f.getAbsolutePath().endsWith(".xml")) {
-        File t = ManagedFileAccess.file(Utilities.changeFileExt(f.getAbsolutePath(), ".ttl"));
+        File t = ManagedFileAccess.file(FileUtilities.changeFileExt(f.getAbsolutePath(), ".ttl"));
         if (!t.exists()) {
           try {
             System.out.print("Process " + f.getAbsolutePath());
@@ -41,8 +41,8 @@ public class ValidationTestConvertor {
         }
       }
       if (f.getAbsolutePath().endsWith(".json")) {
-        if (!ManagedFileAccess.file(Utilities.changeFileExt(f.getAbsolutePath(), ".ttl")).exists()) {
-          File t = ManagedFileAccess.file(Utilities.changeFileExt(f.getAbsolutePath(), ".ttl"));
+        if (!ManagedFileAccess.file(FileUtilities.changeFileExt(f.getAbsolutePath(), ".ttl")).exists()) {
+          File t = ManagedFileAccess.file(FileUtilities.changeFileExt(f.getAbsolutePath(), ".ttl"));
           if (!t.exists()) {
             try {
               System.out.print("Process " + f.getAbsolutePath());

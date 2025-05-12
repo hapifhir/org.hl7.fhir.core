@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -55,6 +55,9 @@ public class PackageList {
 
     public String status() {
       return json.asString("status");
+    }
+    public void setStatus(String status) {
+      json.set("status", status);
     }
 
     public String desc() {
@@ -159,23 +162,29 @@ public class PackageList {
      * @param fhirVersion
      * @param tcName
      */
-    public void update(String version, String path, String status, String sequence, FhirPublication fhirVersion, String tcPath, String date) {
+    public void addTC(String tcVersion, String tcPath, String date) {
       JsonObject tc = new JsonObject();
       json.forceArray("corrections").add(tc);
-      tc.set("version", json.asString("version"));
+      tc.set("version", tcVersion);
       tc.set("path", tcPath);
       tc.set("date", date);
 
-      json.set("version", version);      
-      json.set("path", path);
-      json.set("status", status);
-      json.set("sequence", sequence);
-      if (fhirVersion != null) {
-        json.set("fhirversion", fhirVersion.toCode());
-      }
-      setDate(date);
     }
 
+    public List<String> languages() {
+      return json.forceArray("languages").asStrings();
+    }
+    
+    public PackageListEntry addLang(String langCode) {
+      json.forceArray("languages").add(langCode);
+      return this;
+    }
+
+    public void takeCorrections(PackageListEntry src) {      
+      json.forceArray("corrections").addAll(src.json.forceArray("corrections"));
+      src.json.remove("corrections");
+      
+    }
   }
   
   private String source;
@@ -290,6 +299,7 @@ public class PackageList {
     }
     cibuild = new PackageListEntry(new JsonObject());
     cibuild.init(version, path, status, status, null);
+    cibuild.describe(desc, null, null);
     json.getJsonArray("list").add(0, cibuild.json);    
   }
 
@@ -303,12 +313,13 @@ public class PackageList {
   }
 
   public void save(String filepath) throws IOException {
-    TextFile.stringToFile(toJson(), filepath);
+    FileUtilities.stringToFile(toJson(), filepath);
   }
 
   public String determineLocalPath(String url, String root) throws IOException {
-    if (canonical().startsWith(url+"/")) {
-      String tail = canonical().substring(url.length()+1);
+    String c = canonical();
+    if (c.startsWith(url+"/")) {
+      String tail = c.substring(url.length()+1);
       return Utilities.path(root, tail);
     } else {
       return null;
@@ -358,6 +369,14 @@ public class PackageList {
       }
     }
     return false;
+  }
+
+  public boolean isCurrentOnly() {
+    return "current-only".equals(json.asString("publish-pattern"));
+  }
+
+  public void setCurrentOnly(boolean b) {
+    json.set("publish-pattern", b ? "current-only" : "normal");
   }
 
 

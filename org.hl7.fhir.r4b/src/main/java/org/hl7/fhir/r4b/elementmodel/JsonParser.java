@@ -55,7 +55,7 @@ import org.hl7.fhir.r4b.formats.JsonCreatorGson;
 import org.hl7.fhir.r4b.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.utilities.StringPair;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
@@ -70,6 +70,7 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
+@Deprecated
 public class JsonParser extends ParserBase {
 
   private JsonCreator json;
@@ -112,7 +113,7 @@ public class JsonParser extends ParserBase {
     // if we're parsing at this point, then we're going to use the custom parser
     List<NamedElement> res = new ArrayList<>();
     map = new IdentityHashMap<JsonElement, LocationData>();
-    String source = TextFile.streamToString(stream);
+    String source = FileUtilities.streamToString(stream);
     if (policy == ValidationPolicy.EVERYTHING) {
       JsonObject obj = null;
       try {

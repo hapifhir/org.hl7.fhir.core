@@ -38,10 +38,12 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@MarkedToMoveToAdjunctPackage
 public class TextClientLogger extends BaseLogger implements ToolingClientLogger {
 
   private PrintStream file;
@@ -63,8 +65,13 @@ public class TextClientLogger extends BaseLogger implements ToolingClientLogger 
     file.println("\r\n--- "+id+" -----------------\r\nRequest: \r\n");
     file.println(method+" "+url+" HTTP/1.0");
     if (headers != null) {
-      for (String s : headers)  
-        file.println(s);
+      for (String s : headers) { 
+        if (s.startsWith("Api-Key")) {
+          file.println("Api-Key: xxxxxxxxxxxxxxxx");        
+        } else {
+          file.println(s);
+        }
+      }
     }
     if (body != null) {
       file.println("");
@@ -76,10 +83,10 @@ public class TextClientLogger extends BaseLogger implements ToolingClientLogger 
   }
 
   @Override
-  public void logResponse(String outcome, List<String> headers, byte[] body) {
+  public void logResponse(String outcome, List<String> headers, byte[] body, long length) {
     if (file == null)
       return;
-    file.println("\r\n\r\nResponse: \r\n");
+    file.println("\r\n\r\nResponse ("+Utilities.describeDuration(length)+"): \r\n");
     file.println(outcome);
     for (String s : headers)  
       file.println(s);

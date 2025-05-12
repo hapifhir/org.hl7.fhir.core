@@ -63,6 +63,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
  * 
  * @author Grahame
  */
+
 public interface IWorkerContext {
 
   // -- Parsers (read and write instances)
@@ -217,6 +218,7 @@ public interface IWorkerContext {
 
   String formatMessage(String theMessage, Object... theMessageArguments);
 
+  @Deprecated
   void setValidationMessageLanguage(Locale locale);
 
   public class ValidationResult {

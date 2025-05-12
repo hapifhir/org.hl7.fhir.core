@@ -129,7 +129,7 @@ public class JsonSchemaTests {
   public void setUp() throws Exception {
     if (sFhir == null) {
 //      String path = TestUtilities.resourceNameToFile("fhir.schema.json"); // todo... what should this be?
-//      String source = TextFile.fileToString(path);
+//      String source = FileUtilities.fileToString(path);
 //      JSONObject rawSchema = new JSONObject(new JSONTokener(source));
 //      sFhir = SchemaLoader.load(rawSchema);
       JSONObject rawSchema = new JSONObject(new JSONTokener(TEST_SCHEMA));

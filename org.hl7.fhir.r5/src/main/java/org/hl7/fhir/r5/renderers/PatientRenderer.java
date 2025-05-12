@@ -17,11 +17,13 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public class PatientRenderer extends ResourceRenderer {
 
 
@@ -144,12 +146,12 @@ public class PatientRenderer extends ResourceRenderer {
       x.hr();
       XhtmlNode tbl;
       if (hasRenderablePhoto(pat)) {
-        tbl = x.table("none");
+        tbl = x.table("none", true);
         XhtmlNode tr = tbl.tr();
-        tbl = tr.td().table("grid");
+        tbl = tr.td().table("grid", false);
         renderPhoto(tr.td(), pat);
       } else {
-        tbl = x.table("grid");
+        tbl = x.table("grid", false);
       }
 
       // the table has 4 columns
@@ -230,19 +232,6 @@ public class PatientRenderer extends ResourceRenderer {
     case "usual": return false; 
     }
     return false;
-  }
-
-
-  private void addContained(RenderingStatus status, XhtmlNode x, List<ResourceWrapper> list) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
-    for (ResourceWrapper c : list) {
-      x.hr();
-      String id = c.getScopedId();
-      if (!context.hasAnchor(id)) {
-        context.addAnchor(id);
-        x.an(context.prefixAnchor(id));
-      }
-      RendererFactory.factory(c, context.forContained()).buildNarrative(status, x, c);
-    }
   }
 
   private void addExtensions(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
@@ -662,7 +651,7 @@ public class PatientRenderer extends ResourceRenderer {
             td.img("data:"+ct+";base64,"+att.primitiveValue("data"), "patient photo");
           } else {
             String n = UUID.randomUUID().toString().toLowerCase()+ext;
-            TextFile.bytesToFile(cnt, ManagedFileAccess.file(Utilities.path(context.getDestDir(), n)));
+            FileUtilities.bytesToFile(cnt, ManagedFileAccess.file(Utilities.path(context.getDestDir(), n)));
             context.registerFile(n);
             td.img(n, context.formatPhrase(RenderingContext.PAT_PHOTO));            
           }

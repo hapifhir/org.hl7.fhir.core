@@ -29,6 +29,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ConceptMapUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.structuremap.ResolvedGroup;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -181,7 +182,7 @@ public class StructureMapValidator extends BaseValidator {
     }
 
     public String summary() {
-      return mode+" "+getWorkingType()+" "+name;
+      return name+" : "+getWorkingType()+" ("+mode+")";
     }
 
     public boolean matches(VariableDefn other) {
@@ -213,6 +214,13 @@ public class StructureMapValidator extends BaseValidator {
       } else {
         return sd.getVersionedUrl();        
       }
+    }
+
+    public void copyType(VariableDefn source) {
+      this.max = source.max;
+      this.sd = source.sd;
+      this.ed = source.ed;
+      this.type = source.type;
     }
 
   }
@@ -332,6 +340,7 @@ public class StructureMapValidator extends BaseValidator {
 
   public boolean validateStructureMap(ValidationContext valContext, List<ValidationMessage> errors, Element src, NodeStack stack)  {
     boolean ok = true;
+
     List<Element> imports = src.getChildrenByName("import");
     int cc = 0;
     for (Element import_ : imports) {
@@ -347,9 +356,9 @@ public class StructureMapValidator extends BaseValidator {
       fired = false;
       cc = 0;
       for (Element group : groups) {
-        if (!group.hasUserData("structuremap.validated")) {
-          if (hasInputTypes(group) || group.hasUserData("structuremap.parameters")) {
-            group.setUserData("structuremap.validated", true);
+        if (!group.hasUserData(UserDataNames.map_validated)) {
+          if (hasInputTypes(group) || group.hasUserData(UserDataNames.map_parameters)) {
+            group.setUserData(UserDataNames.map_validated, true);
             fired = true;
             ok = validateGroup(valContext, errors, src, group, stack.push(group, cc, null, null), grpNames) && ok;
           }
@@ -360,7 +369,7 @@ public class StructureMapValidator extends BaseValidator {
     
     cc = 0;
     for (Element group : groups) {
-      if (!group.hasUserData("structuremap.validated")) {
+      if (!group.hasUserData(UserDataNames.map_validated)) {
         hint(errors, "2023-03-01", IssueType.INFORMATIONAL, group.line(), group.col(), stack.push(group, cc, null, null).getLiteralPath(), ok, I18nConstants.SM_ORPHAN_GROUP, group.getChildValue("name"));
         ok = validateGroup(valContext, errors, src, group, stack.push(group, cc, null, null), grpNames) && ok;
       }
@@ -413,7 +422,7 @@ public class StructureMapValidator extends BaseValidator {
     }
     
     VariableSet variables = new VariableSet(); 
-    VariableSet pvars = (VariableSet) group.getUserData("structuremap.parameters");
+    VariableSet pvars = (VariableSet) group.getUserData(UserDataNames.map_parameters);
 
     // first, load all the inputs
     List<Element> inputs = group.getChildrenByName("input");
@@ -458,7 +467,7 @@ public class StructureMapValidator extends BaseValidator {
 
   private StructureMapGroupComponent makeGroupComponent(Element group) {
     StructureMapGroupComponent grp = new StructureMapGroupComponent();
-    grp.setUserData("element.source", group);
+    grp.setUserData(UserDataNames.map_source, group);
     grp.setName(group.getChildValue("name"));
     List<Element> inputs = group.getChildrenByName("input");
     for (Element input : inputs) {
@@ -649,6 +658,20 @@ public class StructureMapValidator extends BaseValidator {
           }
           // check condition
           // check check
+        } else {
+          String variable = source.getChildValue("variable");
+          VariableDefn vn = null;
+          if (hint(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), variable != null, I18nConstants.SM_RULE_SOURCE_UNASSIGNED)) {
+            if (rule(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), idIsValid(variable), I18nConstants.SM_NAME_INVALID, variable)) {
+              vn = variables.add(variable, v.getMode()); // may overwrite
+              vn.copyType(v);
+              if (loopCounter == 0) {
+                ruleInfo.setDefVariable(variable);
+              }
+            } else {
+              ok = false;
+            }
+          }
         }
       } else {
         String variable = source.getChildValue("variable");
@@ -840,7 +863,7 @@ public class StructureMapValidator extends BaseValidator {
                   String exp = params.get(0).getChildValue("value");
                   if (rule(errors, "2023-03-01", IssueType.INVALID, params.get(0).line(), params.get(0).col(), stack.getLiteralPath(), exp != null, I18nConstants.SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE, "0", params.size())) {
                     try {
-                      TypeDetails td = fpe.check(variables, v.getSd().getUrl(), v.getEd().getPath(), fpe.parse(exp));
+                      TypeDetails td = fpe.check(variables, null, v.getSd().getUrl(), v.getEd().getPath(), fpe.parse(exp));
                       if (td.getTypes().size() == 1) {
                         type = td.getType();
                       }
@@ -1237,7 +1260,8 @@ public class StructureMapValidator extends BaseValidator {
               // target can transition to the source
               v = getParameter(errors, param, pstack, variables, StructureMapInputMode.TARGET);
             }
-            if (rule(errors, "2023-06-27", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), v != null, I18nConstants.SM_DEPENDENT_PARAM_NOT_FOUND, pname, input.getMode().toCode())) {
+
+            if (rule(errors, "2023-06-27", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), v != null, I18nConstants.SM_DEPENDENT_PARAM_NOT_FOUND, pname, input.getMode().toCode(), variables.summary())) {
               if (rule(errors, "2023-03-01", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(),
                     v.mode.equals(input.getMode().toCode()) || (v.mode.equals("target") && input.getMode() == StructureMapInputMode.SOURCE), I18nConstants.SM_DEPENDENT_PARAM_MODE_MISMATCH, param.getChildValue("name"), v.mode, input.getMode().toCode(), grp.getTargetGroup().getName()) &&
                 rule(errors, "2023-03-01", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), typesMatch(v, iType), I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH, 
@@ -1251,13 +1275,13 @@ public class StructureMapValidator extends BaseValidator {
             }
             cc++;
           }
-          if (ok && grp.getTargetGroup().hasUserData("element.source")) {
-            Element g = (Element) grp.getTargetGroup().getUserData("element.source");
-            if (g.hasUserData("structuremap.parameters")) {
-              VariableSet pvars = (VariableSet) g.getUserData("structuremap.parameters");
+          if (ok && grp.getTargetGroup().hasUserData(UserDataNames.map_source)) {
+            Element g = (Element) grp.getTargetGroup().getUserData(UserDataNames.map_source);
+            if (g.hasUserData(UserDataNames.map_parameters)) {
+              VariableSet pvars = (VariableSet) g.getUserData(UserDataNames.map_parameters);
               warning(errors, "2023-03-01", IssueType.INVALID, dependent.line(), dependent.col(), stack.getLiteralPath(), pvars.matches(lvars), I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE, grp.getTargetGroup().getName(), pvars.summary(), lvars.summary());
             } else {
-              g.setUserData("structuremap.parameters", lvars);
+              g.setUserData(UserDataNames.map_parameters, lvars);
             }
           }
         }

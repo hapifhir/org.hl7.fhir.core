@@ -9,7 +9,6 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
@@ -20,6 +19,8 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -30,6 +31,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlNodeList;
 
+@MarkedToMoveToAdjunctPackage
 public class AdditionalBindingsRenderer {
   public class AdditionalBindingDetail {
     private String purpose;
@@ -41,7 +43,7 @@ public class AdditionalBindingsRenderer {
     private boolean isUnchanged = false;
     private boolean matched = false;
     private boolean removed = false;
-    private ValueSet vs;
+//    private ValueSet vs;
     
     private AdditionalBindingDetail compare;
     private int count = 1;
@@ -117,7 +119,7 @@ public class AdditionalBindingsRenderer {
       abr.compare = new AdditionalBindingDetail();
       abr.compare.valueSet = compExt==null ? null : compExt.getValue().primitiveValue();
     } else {
-      abr.isUnchanged = ext.hasUserData(ProfileUtilities.UD_DERIVATION_EQUALS);
+      abr.isUnchanged = ext.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS);
     }
     bindings.add(abr);
   }
@@ -181,7 +183,7 @@ public class AdditionalBindingsRenderer {
       }
     }
     abr.any = "any".equals(ext.getExtensionString("scope"));
-    abr.isUnchanged = ext.hasUserData(ProfileUtilities.UD_DERIVATION_EQUALS);
+    abr.isUnchanged = ext.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS);
     return abr;
   }
 
@@ -193,7 +195,7 @@ public class AdditionalBindingsRenderer {
     abr.docoShort =  ab.getShortDoco();
     abr.usages.addAll(ab.getUsage());
     abr.any = ab.getAny();
-    abr.isUnchanged = ab.hasUserData(ProfileUtilities.UD_DERIVATION_EQUALS);
+    abr.isUnchanged = ab.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS);
     return abr;
   }
 
@@ -358,7 +360,7 @@ public class AdditionalBindingsRenderer {
       if (r5) {
         td.ah(corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-current", context.formatPhrase(RenderingContext.ADD_BIND_NEW_REC)).tx(context.formatPhrase(RenderingContext.ADD_BIND_CURR_BIND));
       } else {
-        td.span(null, context.formatPhrase(RenderingContext.ADD_BIND_NEW_REC)).tx(context.formatPhrase(RenderingContext.GENERAL_REQUIRED));
+        td.span(null, context.formatPhrase(RenderingContext.ADD_BIND_NEW_REC)).tx(context.formatPhrase(RenderingContext.ADD_BIND_CURR_BIND));
       }
       break;
     case "ui" :
@@ -370,14 +372,14 @@ public class AdditionalBindingsRenderer {
       break;
     case "starter" :
       if (r5) {
-        td.ah(corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-starter", "This value set is a good set of codes to start with when designing your system").tx("Starter Set");
+        td.ah(corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-starter",  context.formatPhrase(RenderingContext.ADD_BIND_DESIG_SYS)).tx(context.formatPhrase(RenderingContext.GENERAL_STARTER));
       } else {
         td.span(null, context.formatPhrase(RenderingContext.ADD_BIND_DESIG_SYS)).tx(context.formatPhrase(RenderingContext.GENERAL_STARTER));        
       }
       break;
     case "component" :
       if (r5) {
-        td.ah(corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-component", "This value set is a component of the base value set").tx("Component");
+        td.ah(corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-component", context.formatPhrase(RenderingContext.ADD_BIND_VALUE_COMP)).tx(context.formatPhrase(RenderingContext.GENERAL_COMPONENT));
       } else {
         td.span(null, context.formatPhrase(RenderingContext.ADD_BIND_VALUE_COMP)).tx(context.formatPhrase(RenderingContext.GENERAL_COMPONENT));        
       }
@@ -458,7 +460,6 @@ public class AdditionalBindingsRenderer {
     AdditionalBindingDetail abr = new AdditionalBindingDetail();
     abr.purpose =  purpose;
     abr.valueSet =  valueSet.getUrl();
-    abr.vs = valueSet;
     bindings.add(abr);
   }
 

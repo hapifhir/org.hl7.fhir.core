@@ -3,22 +3,26 @@ package org.hl7.fhir.r5.context;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 
 import com.google.gson.JsonSyntaxException;
 
+@MarkedToMoveToAdjunctPackage
 public interface IContextResourceLoader {
   /** 
    * @return List of the resource types that should be loaded
    */
-  List<String> getTypes();
+  Set<String> getTypes();
 
   /**
    * Request to actually load the resources and do whatever is required
@@ -104,4 +108,19 @@ public interface IContextResourceLoader {
    * @return
    */
   boolean wantLoad(NpmPackage pi, PackageResourceInformation pri);
+
+  /**
+   * let's the loader review the R5 list of resources being asked for, and add Basic or other names as required 
+   * @param types
+   * @return
+   */
+  Set<String> reviewActualTypes(Set<String> types);
+
+  /**
+   * let's the loader change the identified type (e.g. when loading converted Basic resources)
+   *  
+   * @param types
+   * @return
+   */
+  PackageResourceLoader editInfo(PackageResourceLoader pri);
 }

@@ -39,7 +39,6 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -52,7 +51,6 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
 import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.elementmodel.Element.SpecialElement;
-import org.hl7.fhir.r4b.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r4b.formats.FormatUtilities;
 import org.hl7.fhir.r4b.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4b.model.DateTimeType;
@@ -80,6 +78,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+@Deprecated
 public class XmlParser extends ParserBase {
   private boolean allowXsiLocation;
   private String version;
@@ -111,7 +110,7 @@ public class XmlParser extends ParserBase {
     List<NamedElement> res = new ArrayList<>();
     Document doc = null;
     try {
-      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
       // xxe protection
       factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
       factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
@@ -136,17 +135,10 @@ public class XmlParser extends ParserBase {
         DocumentBuilder docBuilder = factory.newDocumentBuilder();
         doc = docBuilder.newDocument();
         DOMResult domResult = new DOMResult(doc);
-        SAXParserFactory spf = SAXParserFactory.newInstance();
+        SAXParserFactory spf = XMLUtil.newXXEProtectedSaxParserFactory();
         spf.setNamespaceAware(true);
         spf.setValidating(false);
-        // xxe protection
-        spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
-        spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-        SAXParser saxParser = spf.newSAXParser();
-        XMLReader xmlReader = saxParser.getXMLReader();
-        // xxe protection
-        xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-        xmlReader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        XMLReader xmlReader = XMLUtil.getXXEProtectedXMLReader(spf);
 
         XmlLocationAnnotator locationAnnotator = new XmlLocationAnnotator(xmlReader, doc);
         InputSource inputSource = new InputSource(stream);

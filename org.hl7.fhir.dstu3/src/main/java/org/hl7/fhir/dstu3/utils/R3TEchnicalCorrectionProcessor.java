@@ -18,9 +18,11 @@ import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.dstu3.model.DomainResource;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@Deprecated
 public class R3TEchnicalCorrectionProcessor {
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
@@ -87,7 +89,7 @@ public class R3TEchnicalCorrectionProcessor {
 
   private void produceDefinitionsJson(Map<String, Resource> definitions, String dest) throws IOException {
     for (String n : definitions.keySet()) {
-      File f = ManagedFileAccess.file(Utilities.path(dest, "definitions.json", Utilities.changeFileExt(n, ".json")));
+      File f = ManagedFileAccess.file(Utilities.path(dest, "definitions.json", FileUtilities.changeFileExt(n, ".json")));
       new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), definitions.get(n));     
     }
   }

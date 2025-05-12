@@ -18,8 +18,8 @@ public class ByteUtils {
   public static <T extends Resource> byte[] resourceToByteArray(T resource, boolean pretty, boolean isJson, boolean noXhtml) {
     ByteArrayOutputStream baos = null;
     byte[] byteArray = null;
+    baos = new ByteArrayOutputStream();
     try {
-      baos = new ByteArrayOutputStream();
       IParser parser = null;
       if (isJson) {
         parser = new JsonParser();
@@ -38,9 +38,9 @@ public class ByteUtils {
       try {
         baos.close();
       } catch (Exception ex) {
-        throw new EFhirClientException("Error closing output stream", ex);
+        throw new EFhirClientException(0, "Error closing output stream", ex);
       }
-      throw new EFhirClientException("Error converting output stream to byte array", e);
+      throw new EFhirClientException(0, "Error converting output stream to byte array", e);
     }
     return byteArray;
   }

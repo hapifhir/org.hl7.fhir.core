@@ -522,7 +522,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       if (!complex)
         for (ParametersParameterComponent p : params.getParameter())
           if (p.getValue() instanceof PrimitiveType)
-            ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
+            ps += p.getName() + "=" + Utilities.encodeUriParam(((PrimitiveType) p.getValue()).asStringValue()) + "&";
       ResourceRequest<T> result;
       if (complex)
         result = utils.issuePostRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps),
@@ -714,7 +714,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       feed = utils.issueGetFeedRequest(new URI(url), getPreferredResourceFormat());
     } catch (Exception e) {
-      handleException("An error has occurred while trying to retrieve history since last update", e);
+      handleException("An error has occurred while trying to read a bundle", e);
     }
     return feed;
   }

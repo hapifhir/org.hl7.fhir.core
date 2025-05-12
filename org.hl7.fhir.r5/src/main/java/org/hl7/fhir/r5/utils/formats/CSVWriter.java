@@ -339,6 +339,9 @@ public class CSVWriter  extends TextStreamWriter  {
     
     flush();
     close();
+    def = null;
+    mapKeys.clear();
+    lines.clear();
   }
 
 }

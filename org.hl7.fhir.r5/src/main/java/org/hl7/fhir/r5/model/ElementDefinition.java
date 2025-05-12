@@ -32,25 +32,21 @@ package org.hl7.fhir.r5.model;
 // Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.DatatypeDef;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
 
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 import  org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import  org.hl7.fhir.r5.model.Enumerations.BindingStrengthEnumFactory;
 import  org.hl7.fhir.r5.utils.ToolingExtensions;
-import  org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import  org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.Utilities;
+
+import ca.uhn.fhir.model.api.annotation.Block;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.Description;
 /**
  * ElementDefinition Type: Captures constraints on each element within the resource, profile, or extension.
  */
@@ -1452,6 +1448,37 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public String toString() {
         return (ordered == null ? "??" : "true".equals(ordered.asStringValue()) ? "ordered" : "unordered")+"/"+
             (rules == null ? "??" : rules.asStringValue())+" "+discriminator.toString();
+      }
+
+      public String summary() {
+        StringBuilder b = new StringBuilder();
+        if (!hasRulesElement() && !hasOrdered() && !hasDiscriminator()) {
+          return "(no slicing)";
+        }
+        if (hasRulesElement() || hasOrdered()) {
+          if (hasRulesElement() && hasOrdered()) {
+            b.append((getOrdered() ? "orderer" : "unordered")+" and " +getRules().toCode()+", by");            
+          } else if (hasRules()) {
+            b.append(getRules().toCode()+", by");
+          } else if (getOrdered()) {
+            b.append("ordered, by");
+          } else {
+            b.append("unordered, by");            
+          }
+        } 
+        boolean first = true;
+        for (ElementDefinitionSlicingDiscriminatorComponent d : getDiscriminator()) {
+          if (first) {
+            first = false;
+          } else {
+            b.append(",");
+          }
+          b.append(" ");
+          b.append(d.getType().toCode());
+          b.append("=");
+          b.append(d.getPath());
+        }
+        return b.toString();
       }
     }
 
@@ -13080,6 +13107,9 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
   }
 
   public boolean unbounded() {
+    if (getMax() == null) {
+      throw new Error("No max on "+getPath());
+    }
     return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
   }
 
@@ -13123,6 +13153,31 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     return !Utilities.existsInList(getMax(), "0", "1");
   }
 
+  public String getIdOrPath() {
+    return hasId() ? getId() : getPath();
+  }
+
+  public int getMaxAsInt() {
+    return "*".equals(getMax()) ? Integer.MAX_VALUE : Integer.parseInt(getMax());
+  }
+
+  public TypeRefComponent getByType(String code) {
+    for (TypeRefComponent tr : getType()) {
+      if (tr.getWorkingCode().equals(code)) {
+        return tr;
+      }
+    }
+    return null;
+  }
+
+  public boolean hasObligations() {
+    boolean res = hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE);
+    for (TypeRefComponent tr : getType()) {
+      res = res || tr.hasExtension(ToolingExtensions.EXT_OBLIGATION_CORE);
+    }
+    return res;
+  }
+  
 // end addition
 
 }

@@ -38,12 +38,14 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.filesystem.CSFileInputStream;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+@MarkedToMoveToAdjunctPackage
 public class Translations {
 
   private String[] lang;
@@ -70,7 +72,7 @@ public class Translations {
    */
   public void load(String filename)
       throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     DocumentBuilder builder = factory.newDocumentBuilder();
     loadMessages(builder.parse(new CSFileInputStream(filename)));
   }

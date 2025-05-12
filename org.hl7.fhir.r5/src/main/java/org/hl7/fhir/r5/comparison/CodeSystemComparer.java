@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.comparison.StructureDefinitionComparer.ProfileComparison;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent;
@@ -16,18 +18,30 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
+import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
+import org.hl7.fhir.r5.renderers.CodeSystemRenderer;
+import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
+import org.hl7.fhir.utilities.xhtml.XhtmlDocument;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public class CodeSystemComparer extends CanonicalResourceComparer {
 
 
@@ -487,14 +501,24 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
       } else {
         matchR.add(rp);
         cd.getProperty().add(lp);
-        if (lp.getValue().equalsDeep(rp.getValue())) {
-          cd.getProperty().add(rp.setCode(res.getPropMap().get(rp.getCode())));
+        if (!lp.getValue().equalsDeep(rp.getValue())) {
+          ConceptPropertyComponent pc = rp.copy();
+          String code = res.getPropMap().get(rp.getCode());
+          if (code != null) {
+            pc.setCode(code);
+          }
+          cd.getProperty().add(pc);
         }
       }
     }
     for (ConceptPropertyComponent rp : r.getProperty()) {
       if (!matchR.contains(rp)) {
-        cd.getProperty().add(rp.setCode(res.getPropMap().get(rp.getCode())));        
+        ConceptPropertyComponent pc = rp.copy();
+        String code = res.getPropMap().get(rp.getCode());
+        if (code != null) {
+          pc.setCode(code);
+        }
+        cd.getProperty().add(pc);        
       }
     }
   }
@@ -626,6 +650,16 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   @Override
   protected String fhirType() {
     return "CodeSystem";
+  }
+
+  public XhtmlNode renderUnion(CodeSystemComparison comp, String id, String prefix, String corePath) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
+    CodeSystemRenderer csr = new CodeSystemRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, session.getContextLeft().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+    return csr.buildNarrative(ResourceWrapper.forResource(csr.getContext(), comp.union));
+  }
+
+  public XhtmlNode renderIntersection(CodeSystemComparison comp, String id, String prefix, String corePath) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
+    CodeSystemRenderer csr = new CodeSystemRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, session.getContextLeft().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+    return csr.buildNarrative(ResourceWrapper.forResource(csr.getContext(), comp.intersection));
   }
 
 }

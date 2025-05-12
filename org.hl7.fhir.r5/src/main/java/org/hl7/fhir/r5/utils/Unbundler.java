@@ -41,9 +41,11 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@Deprecated
 public class Unbundler {
 
   public static void main(String[] args) throws Exception {
@@ -51,7 +53,7 @@ public class Unbundler {
   }
 
   private static void unbundle(String src) throws FHIRFormatError, FileNotFoundException, IOException {
-    String folder = Utilities.getDirectoryForFile(src);
+    String folder = FileUtilities.getDirectoryForFile(src);
     Bundle bnd = (Bundle) new JsonParser().parse(ManagedFileAccess.inStream(src));
     for (BundleEntryComponent be : bnd.getEntry()) {
       Resource r = be.getResource();

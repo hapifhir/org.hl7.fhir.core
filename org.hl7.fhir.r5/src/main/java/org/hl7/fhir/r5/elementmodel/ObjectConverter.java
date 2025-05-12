@@ -52,8 +52,10 @@ import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 
+@MarkedToMoveToAdjunctPackage
 public class ObjectConverter  {
 
   private IWorkerContext context;
@@ -73,7 +75,7 @@ public class ObjectConverter  {
     ByteArrayInputStream bi = new ByteArrayInputStream(bs.toByteArray());
     List<ValidatedFragment> list = new JsonParser(context).parse(bi);
     if (list.size() != 1) {
-      throw new FHIRException("Unable to convert because the source contains multieple resources");
+      throw new FHIRException("Unable to convert because the source contains multiple resources");
     }
     return list.get(0).getElement();
   }
@@ -93,7 +95,7 @@ public class ObjectConverter  {
     if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) 
       res.setValue(((PrimitiveType) base).asStringValue());
 
-    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep()); 
+    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep(), true); 
     for (ElementDefinition child : children.getList()) {
       String n = tail(child.getPath());
       if (sd.getKind() != StructureDefinitionKind.PRIMITIVETYPE || !"value".equals(n)) {

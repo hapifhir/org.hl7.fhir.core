@@ -34,6 +34,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Disabled;
 
 @Disabled
+@Deprecated
 public class SingleTest {
 
   /**

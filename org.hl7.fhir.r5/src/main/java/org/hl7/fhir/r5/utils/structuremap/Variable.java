@@ -2,7 +2,9 @@ package org.hl7.fhir.r5.utils.structuremap;
 
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class Variable {
   private VariableMode mode;
   private String name;

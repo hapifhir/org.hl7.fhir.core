@@ -5,7 +5,9 @@ import org.hl7.fhir.r5.model.Configuration;
 import org.hl7.fhir.r5.model.EnumFactory;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public enum GuideParameterCode {
   /**
    * If the value of this string 0..* parameter is one of the metadata fields then all conformance resources will have any specified [Resource].[field] overwritten with the ImplementationGuide.[field], where field is one of: version, date, status, publisher, contact, copyright, experimental, jurisdiction, useContext.

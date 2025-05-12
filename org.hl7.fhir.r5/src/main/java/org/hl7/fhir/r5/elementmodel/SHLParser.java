@@ -29,7 +29,8 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.HTTPResult;
@@ -60,6 +61,7 @@ import com.nimbusds.jose.crypto.DirectDecrypter;
  * @author grahame
  *
  */
+@MarkedToMoveToAdjunctPackage
 public class SHLParser extends ParserBase {
   private static boolean testMode;
   
@@ -73,11 +75,11 @@ public class SHLParser extends ParserBase {
   }
 
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
-    byte[] content = TextFile.streamToBytes(inStream);
+    byte[] content = FileUtilities.streamToBytes(inStream);
     
     List<ValidatedFragment> res = new ArrayList<>();
     ValidatedFragment shl = addNamedElement(res, "shl", "txt", content);
-    String src = TextFile.bytesToString(content);
+    String src = FileUtilities.bytesToString(content);
     
     if (src.startsWith("shlink:/")) {
       src = src.substring(8);
@@ -243,7 +245,7 @@ public class SHLParser extends ParserBase {
   }
 
   private void processContent(List<ValidatedFragment> res, List<ValidationMessage> errors, String path, String name, String jose, String ct) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
-    ValidatedFragment bin = addNamedElement(res, "encrypted", "jose", TextFile.stringToBytes(jose));
+    ValidatedFragment bin = addNamedElement(res, "encrypted", "jose", FileUtilities.stringToBytes(jose));
     byte[] cnt = null;
     JWEObject jwe;
     try {
@@ -287,19 +289,19 @@ public class SHLParser extends ParserBase {
 
 
   private HTTPResult fetchFile(String url, String ct) throws IOException {
-    HTTPResult res = ManagedWebAccess.get(url, ct);
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), url, ct);
     res.checkThrowException();
     return res;
   }
   
   private HTTPResult fetchManifest() throws IOException {
     if (testMode) {
-      return new HTTPResult(url, 200, "OK", "application/json", TextFile.streamToBytes(TestingUtilities.loadTestResourceStream("validator", "shlink.manifest.json")));
+      return new HTTPResult(url, 200, "OK", "application/json", FileUtilities.streamToBytes(TestingUtilities.loadTestResourceStream("validator", "shlink.manifest.json")));
     }
 
     JsonObject j = new JsonObject();
     j.add("recipient", "FHIR Validator");
-    HTTPResult res = ManagedWebAccess.post(url, org.hl7.fhir.utilities.json.parser.JsonParser.composeBytes(j), "application/json", "application/json");        
+    HTTPResult res = ManagedWebAccess.post(Arrays.asList("web"), url, org.hl7.fhir.utilities.json.parser.JsonParser.composeBytes(j), "application/json", "application/json");
     res.checkThrowException();
     return res;
   }

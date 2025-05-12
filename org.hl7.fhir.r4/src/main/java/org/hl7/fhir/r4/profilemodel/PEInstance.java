@@ -46,6 +46,7 @@ import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.model.Address;
+import org.hl7.fhir.r4.model.BackboneElement;
 import org.hl7.fhir.r4.model.PrimitiveType;
 import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Reference;
@@ -225,6 +226,10 @@ public class PEInstance {
     return (Type) data;
   }
   
+  public BackboneElement asElement() {
+    return (BackboneElement) data;
+  }
+  
   public CodeableConcept asCodeableConcept() {
     return (CodeableConcept) asDataType();
   }
@@ -293,18 +298,33 @@ public class PEInstance {
     return builder.getContext();
   }
 
-  public void addChild(String name, Type value) {
+  public Base addChild(String name, Type value) {
+    PEDefinition child = byName(definition.children(), name);
+    Base b = data.setProperty(child.schemaName(), value);
+    return b;
+}
+
+  public Base addChild(String name, Resource value) {
+    PEDefinition child = byName(definition.children(), name);
+    Base b = data.setProperty(child.schemaName(), value);
+    return b;
+}
+
+  public Base addChild(String name, BackboneElement value) {
       PEDefinition child = byName(definition.children(), name);
       Base b = data.setProperty(child.schemaName(), value);
+      return b;
   }
   
-  public void addChild(String name, String value) {
+  public Base addChild(String name, String value) {
     PEDefinition child = byName(definition.children(), name);
     Base b = data.setProperty(child.schemaName(), new StringType(value));
+    return b;
   }
 
-  public void addChild(String name, Date value) {
+  public Base addChild(String name, Date value) {
     PEDefinition child = byName(definition.children(), name);
     Base b = data.setProperty(child.schemaName(), new DateType(value));
+    return b;
   }
 }

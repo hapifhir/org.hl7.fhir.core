@@ -80,6 +80,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@Deprecated
 public class XmlSchemaGenerator {
 
   public class QName {

@@ -39,10 +39,12 @@ public class NodeStack {
     this.element = element;
     literalPath = (initialPath == null ? "" : initialPath+".") + buildPathForElement(element, true);
     workingLang = validationLanguage;
-    if (!element.getName().equals(element.fhirType())) {
-      logicalPaths = new HashSet<>();
-      logicalPaths.add(element.fhirType());
-    }
+    logicalPaths = new HashSet<>();
+    logicalPaths.add(urlTail(element.fhirType()));
+  }
+
+  private String urlTail(String fhirType) {
+    return Utilities.isAbsoluteUrl(fhirType) ? fhirType.substring(fhirType.lastIndexOf("/") + 1) : fhirType;
   }
 
   private String buildPathForElement(Element e, boolean first) {
@@ -64,7 +66,12 @@ public class NodeStack {
     this.context = context;
     ids = new HashMap<>();
     this.element = element;
-    literalPath = refPath + "->" + element.getName();
+    int i = element.getName().indexOf(".");
+    if (i == -1) {
+      literalPath = refPath+".resolve().ofType(" + element.getName()+")";      
+    } else {
+      literalPath = refPath+".resolve().ofType(" + element.getName().substring(0, i)+")"+element.getName().substring(i);
+    }
     workingLang = validationLanguage;
   }
 

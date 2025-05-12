@@ -45,7 +45,7 @@ public class TerminologyClientFactory implements ITerminologyClientFactory {
       return new TerminologyClientR4(id, checkEndsWith("/r4", url), userAgent).setLogger(logger);
     }
     if (VersionUtilities.isR5Plus(v)) {
-      return new TerminologyClientR5(id, checkEndsWith("/r4", url), userAgent).setLogger(logger); // r4 for now, since the terminology is currently the same      
+      return new TerminologyClientR5(id, checkEndsWith("/r5", url), userAgent).setLogger(logger); // r4 for now, since the terminology is currently the same      
     }
     throw new Error("The version " + v + " is not currently supported");
   }

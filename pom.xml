@@ -14,24 +14,26 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.3.28-SNAPSHOT</version>
+    <version>6.5.22-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
-        <commons_compress_version>1.26.0</commons_compress_version>
+        <commons_lang3_version>3.17.0</commons_lang3_version>
+        <commons_compress_version>1.27.1</commons_compress_version>
+        <commons_io_version>2.17.0</commons_io_version>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.5.24-SNAPSHOT</validator_test_case_version>
+        <validator_test_case_version>1.7.20</validator_test_case_version>
         <jackson_version>2.17.0</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
-        <maven_surefire_version>3.0.0-M5</maven_surefire_version>
+        <maven_surefire_version>3.1.2</maven_surefire_version>
         <maven_clean_version>3.1.0</maven_clean_version>
         <okhttp.version>4.11.0</okhttp.version>
         <jacoco_version>0.8.12</jacoco_version>
         <lombok_version>1.18.32</lombok_version>
         <byte_buddy_version>1.14.8</byte_buddy_version>
-        <apache_poi_version>5.2.1</apache_poi_version>
+        <apache_poi_version>5.4.1</apache_poi_version>
         <saxon_he_version>11.6</saxon_he_version>
         <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.source>11</maven.compiler.source>
@@ -41,6 +43,8 @@
         <maven.compiler.testTarget>11</maven.compiler.testTarget>
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
+        <logback-classic.version>1.5.15</logback-classic.version>
+        <logback.version>1.5.15</logback.version>
     </properties>
 
     <name>HL7 Core Artifacts</name>
@@ -136,9 +140,20 @@
                 <version>0.21.0</version>
             </dependency>
             <dependency>
+
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons_lang3_version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-compress</artifactId>
                 <version>${commons_compress_version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons_io_version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.rjeschke</groupId>
@@ -172,13 +187,7 @@
             <dependency>
                 <groupId>org.fhir</groupId>
                 <artifactId>ucum</artifactId>
-                <version>1.0.8</version>
-            </dependency>
-
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>8.0.30</version>
+                <version>1.0.10</version>
             </dependency>
 
             <!-- Apache POI -->
@@ -300,19 +309,19 @@
             <dependency>
                 <groupId>org.xerial</groupId>
                 <artifactId>sqlite-jdbc</artifactId>
-                <version>3.45.1.0</version>
+                <version>3.49.1.0</version>
             </dependency>
 
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.2.13</version>
+                <version>${logback-classic.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
-                <version>1.2.13</version>
+                <version>${logback.version}</version>
             </dependency>
 
             <dependency>
@@ -331,6 +340,10 @@
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco_version}</version>
                     <configuration>
+                        <includes>
+                            <include>org/hl7/fhir/**/*</include>
+                        </includes>
+
                         <excludes>
                             <!-- These are auto-generated files that will exceed the JVM limit on file size.
                                  If these are not excluded Jacoco complains and won't run the validator tests. -->
@@ -361,7 +374,7 @@
                         <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
                          Surefire testing run. This may appear as an error in some IDEs, but it will run regardless.
                         -->
-                        <argLine>@{argLine} -Xmx5632m</argLine>
+                        <argLine>@{argLine} -Xmx3500m -XX:MaxRAMPercentage=50.0</argLine>
                         <systemPropertyVariables>
                             <java.locale.providers>COMPAT</java.locale.providers>
                             <!--    For JUnit4 use TestUtilities.runningAsSurefire() or
@@ -377,13 +390,26 @@
                 <plugin>
                     <groupId>org.owasp</groupId>
                     <artifactId>dependency-check-maven</artifactId>
-                    <version>8.2.1</version>
+                    <version>12.1.0</version>
                     <configuration>
+                        <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
                         <suppressionFiles>
                             <suppressionFile>cve-suppression.xml</suppressionFile>
                         </suppressionFiles>
                         <formats>sarif,html</formats>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <inherited>false</inherited>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -397,39 +423,30 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>checkstyle</goal>
-                        </goals>
-                <configuration>
-                    <failsOnError>true</failsOnError>
-                    <suppressionsLocation>${project.basedir}/checkstyle_suppressions.xml</suppressionsLocation>
-                    <enableRulesSummary>true</enableRulesSummary>
-                    <enableSeveritySummary>true</enableSeveritySummary>
-                    <consoleOutput>true</consoleOutput>
-                    <configLocation>${checkstyle_config_location}/checkstyle.xml</configLocation>
-                </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
+
                     <release>11</release>
 
-                    <forceJavacCompilerUse>false</forceJavacCompilerUse>
+                    <forceLegacyJavacApi>false</forceLegacyJavacApi>
                     <encoding>UTF-8</encoding>
-                    <!-- Allows running the compiler in a separate process. If false it uses the built in compiler,
+                    <!-- Allows running the compiler in a separate process. If false it uses the built-in compiler,
                     while if true it will use an executable. -->
                     <fork>true</fork>
                     <meminitial>512m</meminitial>
-                    <maxmem>5632m</maxmem>
+                    <maxmem>1000m</maxmem>
                     <debug>true</debug>
+                    <compilerArgs>
+                        <arg>-J-XX:MaxRAMPercentage=50.0</arg>
+                    </compilerArgs>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok_version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
                 <executions>
                     <!-- Replacing default-compile as it is treated specially by maven -->
@@ -833,6 +850,36 @@
                                 <configuration>
                                     <failBuildOnCVSS>10</failBuildOnCVSS>
                                     <skipTestScope>true</skipTestScope>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>CHECKSTYLE</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                         <configuration>
+                             <skip>false</skip>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>process-sources</phase>
+                                <goals>
+                                    <goal>checkstyle</goal>
+                                </goals>
+                                <configuration>
+                                    <failsOnError>true</failsOnError>
+                                    <suppressionsLocation>${project.basedir}/checkstyle_suppressions.xml</suppressionsLocation>
+                                    <enableRulesSummary>true</enableRulesSummary>
+                                    <enableSeveritySummary>true</enableSeveritySummary>
+                                    <consoleOutput>true</consoleOutput>
+                                    <configLocation>${checkstyle_config_location}/checkstyle.xml</configLocation>
                                 </configuration>
                             </execution>
                         </executions>

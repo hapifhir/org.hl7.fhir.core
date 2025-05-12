@@ -87,6 +87,7 @@ import org.hl7.fhir.dstu2016may.utils.IWorkerContext;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.utilities.Utilities;
 
+@Deprecated
 public class ValueSetExpanderSimple implements ValueSetExpander {
 
   private IWorkerContext context;

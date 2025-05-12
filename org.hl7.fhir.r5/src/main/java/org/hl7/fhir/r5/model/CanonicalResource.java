@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
@@ -596,8 +597,8 @@ public abstract class CanonicalResource extends DomainResource {
   }
   
   public String present() {
-    if (hasUserData("presentation")) {
-      return getUserString("presentation");
+    if (hasUserData(UserDataNames.render_presentation)) {
+      return getUserString(UserDataNames.render_presentation);
     }
     if (hasTitle())
       return getTitle();

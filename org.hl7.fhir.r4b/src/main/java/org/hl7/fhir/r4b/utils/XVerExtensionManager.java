@@ -17,6 +17,7 @@ import org.hl7.fhir.r4b.model.StructureDefinition.ExtensionContextType;
 import org.hl7.fhir.r4b.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4b.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r4b.model.UriType;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
@@ -25,6 +26,7 @@ import org.hl7.fhir.utilities.npm.PackageHacker;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+@MarkedToMoveToAdjunctPackage
 public class XVerExtensionManager {
 
   public enum XVerExtensionStatus {
