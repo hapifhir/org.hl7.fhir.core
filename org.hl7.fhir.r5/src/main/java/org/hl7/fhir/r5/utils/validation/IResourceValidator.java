@@ -39,6 +39,7 @@ import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
@@ -53,6 +54,7 @@ import java.util.List;
    * @author Grahame Grieve
    *
    */
+@MarkedToMoveToAdjunctPackage
 public interface IResourceValidator {
   
   IWorkerContext getContext();
@@ -80,7 +82,7 @@ public interface IResourceValidator {
   IResourceValidator setFetcher(IValidatorResourceFetcher value);
 
   IValidationPolicyAdvisor getPolicyAdvisor();
-  IResourceValidator setPolicyAdvisor(IValidationPolicyAdvisor advisor);
+  void setPolicyAdvisor(IValidationPolicyAdvisor advisor);
 
   IValidationProfileUsageTracker getTracker();
   IResourceValidator setTracker(IValidationProfileUsageTracker value);

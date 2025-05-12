@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
@@ -39,7 +39,7 @@ public class XLIFFProducer extends LanguageFileProducer {
       ln("    </body>");
       ln("  </file>");
       ln("</xliff>");
-      TextFile.stringToFile(xml.toString(), Utilities.path(getRootFolder(), getFolderName(), id+".xliff"));
+      FileUtilities.stringToFile(xml.toString(), Utilities.path(getRootFolder(), getFolderName(), id+".xliff"));
       filecount++;
     }
 
@@ -47,9 +47,9 @@ public class XLIFFProducer extends LanguageFileProducer {
     public void entry(TextUnit unit) {
       i++;
       ln("      <trans-unit id=\""+id+"\" resname=\""+unit.getId()+"\">");
-      if (unit.getContext1() != null) {
+      if (unit.getContext() != null) {
         ln("        <notes>");
-        ln("          <note id=\"n"+i+"\">"+Utilities.escapeXml(unit.getContext1())+"</note>");
+        ln("          <note id=\"n"+i+"\">"+Utilities.escapeXml(unit.getContext())+"</note>");
         ln("        </notes>");
       }
       ln("        <source>"+Utilities.escapeXml(unit.getSrcText())+"</source>");
@@ -101,7 +101,7 @@ public class XLIFFProducer extends LanguageFileProducer {
   @Override
   public List<TranslationUnit> loadSource(InputStream source) throws IOException, ParserConfigurationException, SAXException {
     List<TranslationUnit> list = new ArrayList<>();
-    Document dom = XMLUtil.parseToDom(TextFile.streamToBytes(source));
+    Document dom = XMLUtil.parseToDom(FileUtilities.streamToBytes(source));
     Element xliff = dom.getDocumentElement();
     if (!xliff.getNodeName().equals("xliff")) {
       throw new IOException("Not an XLIFF document");
@@ -149,10 +149,10 @@ public class XLIFFProducer extends LanguageFileProducer {
       for (TranslationUnit tu : translations) {
         int i = 0;
         ln(xml, "      <trans-unit id=\""+id+"\" resname=\""+tu.getId()+"\">");
-        if (tu.getContext1() != null) {
+        if (tu.getContext() != null) {
           i++;
           ln(xml, "             <notes>");
-          ln(xml, "               <note id=\"n"+i+"\">"+Utilities.escapeXml(tu.getContext1())+"</note>");
+          ln(xml, "               <note id=\"n"+i+"\">"+Utilities.escapeXml(tu.getContext())+"</note>");
           ln(xml, "             </notes>");
         }
         ln(xml, "        <source>"+Utilities.escapeXml(tu.getSrcText())+"</source>");
@@ -163,7 +163,7 @@ public class XLIFFProducer extends LanguageFileProducer {
       ln(xml, "    </body>");
       ln(xml, "  </file>");
       ln(xml, "</xliff>");
-    TextFile.stringToFile(xml.toString(), getTargetFileName(targetLang, filename));
+    FileUtilities.stringToFile(xml.toString(), getTargetFileName(targetLang, filename));
   }
 
   

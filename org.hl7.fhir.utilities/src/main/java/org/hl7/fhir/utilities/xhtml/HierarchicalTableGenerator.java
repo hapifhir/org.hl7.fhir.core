@@ -84,9 +84,10 @@ import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 
 
@@ -178,8 +179,9 @@ public class HierarchicalTableGenerator {
       return style;
     }
 
-    public void setTag(String tag) {
+    public Piece setTag(String tag) {
       this.tag = tag;
+      return this;
     }
 
     public Piece setText(String text) {
@@ -249,6 +251,7 @@ public class HierarchicalTableGenerator {
     private List<Piece> pieces = new ArrayList<HierarchicalTableGenerator.Piece>();
     private String cellStyle;
     protected int span = 1;
+    private boolean innerTable; // if you want a multiline left cell, you have to set this to true
     private TextAlignment alignment = TextAlignment.LEFT;
     private String id;
  
@@ -270,17 +273,19 @@ public class HierarchicalTableGenerator {
       pieces.add(piece);
       return this;
     }
-
-
     
     public Cell addMarkdown(String md) {
+      return addMarkdown(md, null);
+    }
+    
+    public Cell addMarkdown(String md, String style) {
       if (!Utilities.noString(md)) {
         try {
           Parser parser = Parser.builder().build();
           Node document = parser.parse(md);
           HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).build();
           String html = renderer.render(document);  
-          pieces.addAll(htmlToParagraphPieces(html, null));
+          pieces.addAll(htmlToParagraphPieces(html, style));
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -404,12 +409,22 @@ public class HierarchicalTableGenerator {
       }
       return piece;
     }
-    
+
     public Cell addStyle(String style) {
       for (Piece p : pieces)
         p.addStyle(style);
       return this;
     }
+    
+    public Cell addCellStyle(String style) {
+      if (cellStyle == null) {
+        cellStyle = style;
+      } else {
+        cellStyle = cellStyle+"; "+style;
+      }
+      return this;
+    }
+    
     public void addToHint(String text) {
       for (Piece p : pieces)
         p.addToHint(text);            
@@ -471,6 +486,25 @@ public class HierarchicalTableGenerator {
     public void setId(String id) {
       this.id = id;
     }
+    public Piece addImg(String icon, String hint, String link) {
+      Piece p = new Piece("img");
+      p.attr("src", icon);
+      p.hint = hint;
+      p.reference = link;
+      pieces.add(p);
+      return p;
+    }
+    public void addXhtml(XhtmlNode div) {
+      Piece p = new Piece(null);
+      pieces.add(p);
+      p.children = div.childNodes;
+    }
+    public boolean isInnerTable() {
+      return innerTable;
+    }
+    public void setInnerTable(boolean innerTable) {
+      this.innerTable = innerTable;
+    }
 
   }
 
@@ -504,6 +538,8 @@ public class HierarchicalTableGenerator {
     private int lineColor;
     private String id;
     private String opacity;
+    private String topLine;
+    private boolean partnerRow;
     
     public List<Row> getSubRows() {
       return subRows;
@@ -560,6 +596,13 @@ public class HierarchicalTableGenerator {
       }
       return b.toString();
     }
+    public String getTopLine() {
+      return topLine;
+    }
+    public void setTopLine(String topLine) {
+      this.topLine = topLine;
+    }
+    
   }
 
   public class TableModel {
@@ -570,6 +613,8 @@ public class HierarchicalTableGenerator {
     private String docoRef;
     private String docoImg;
     private boolean alternating;
+    private boolean showHeadings = true;
+    private boolean border = false;
         
     public TableModel(String id, boolean active) {
       super();
@@ -610,6 +655,18 @@ public class HierarchicalTableGenerator {
     public void setAlternating(boolean alternating) {
       this.alternating = alternating;
     }
+    public boolean isShowHeadings() {
+      return showHeadings;
+    }
+    public void setShowHeadings(boolean showHeadings) {
+      this.showHeadings = showHeadings;
+    }
+    public boolean isBorder() {
+      return border;
+    }
+    public void setBorder(boolean border) {
+      this.border = border;
+    }
     
   }
 
@@ -629,6 +686,7 @@ public class HierarchicalTableGenerator {
   private TableGenerationMode mode;
   private RenderingI18nContext i18n;
   private String uniqueLocalPrefix;
+  private boolean treelines = true;
 
   public HierarchicalTableGenerator(RenderingI18nContext i18n) {
     super();
@@ -709,7 +767,7 @@ public class HierarchicalTableGenerator {
     if (mode == TableGenerationMode.XML) {
       model.setDocoImg(help16AsData());     
     } else {
-      model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
+      model.setDocoImg(Utilities.pathURL(ManagedWebAccess.makeSecureRef(prefix), "help16.png"));
     }
     model.setDocoRef(Utilities.pathURL("https://build.fhir.org/ig/FHIR/ig-guidance", "readingIgs.html#table-views"));
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_NAME), i18n.formatPhrase(RenderingI18nContext.GENERAL_LOGICAL_NAME), null, 0));
@@ -723,6 +781,7 @@ public class HierarchicalTableGenerator {
     return model;
   }
 
+
   public TableModel initComparisonTable(String prefix, String id) throws IOException {
     TableModel model = new TableModel(id, true);
     
@@ -730,9 +789,9 @@ public class HierarchicalTableGenerator {
     if (mode == TableGenerationMode.XML) {
       model.setDocoImg(help16AsData());    
     } else {
-      model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
+      model.setDocoImg(Utilities.pathURL(ManagedWebAccess.makeSecureRef(prefix), "help16.png"));
     }
-    model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table"));    
+    model.setDocoRef(Utilities.pathURL(ManagedWebAccess.makeSecureRef(prefix), "formats.html#table"));    
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_NAME), i18n.formatPhrase(RenderingI18nContext.GENERAL_LOGICAL_NAME), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_FLAGS_L), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_FLAGS_L_DESC), null, 0).setStyle("border-left: 1px grey solid"));
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_CARD_L), i18n.formatPhrase(RenderingI18nContext.SD_COMP_HEAD_CARD_L_DESC), null, 0));
@@ -761,38 +820,55 @@ public class HierarchicalTableGenerator {
   public XhtmlNode generate(TableModel model, String imagePath, int border, Set<String> outputTracker) throws IOException, FHIRException  {
     checkModel(model);
     XhtmlNode table = new XhtmlNode(NodeType.Element, "table").setAttribute("border", Integer.toString(border)).setAttribute("cellspacing", "0").setAttribute("cellpadding", "0");
-    
+    if (model.active) {
+      table.setAttribute("fhir", "generated-heirarchy"); // deprecated - will be removed once everyone has dealt with the change
+      table.setAttribute("data-fhir", "generated-heirarchy");
+    }
     if (model.isActive()) {      
       table.setAttribute("id", model.getId());
     }
-    table.setAttribute("style", "border: " + border + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top;");
-    XhtmlNode tr = table.addTag("tr");
-    tr.setAttribute("style", "border: " + Integer.toString(1 + border) + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top");
-    XhtmlNode tc = null;
-    for (Title t : model.getTitles()) {
-      tc = renderCell(tr, t, "th", null, null, null, false, null, "white", 0, imagePath, border, outputTracker, model, null, true);
-      if (t.width != 0)
-        tc.setAttribute("style", "width: "+Integer.toString(t.width)+"px");
+    if (model.isBorder()) {
+      table.setAttribute("style", "border: 2px black solid; font-size: 11px; font-family: verdana; vertical-align: top;");
+    } else {
+      table.setAttribute("style", "border: " + border + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top;");
     }
-    if (tc != null && model.getDocoRef() != null) {
-      XhtmlNode a = tc.addTag("span").setAttribute("style", "float: right").addTag("a").setAttribute("title", "Legend for this format").setAttribute("href", model.getDocoRef());
-      if (mode == TableGenerationMode.XHTML) {
-        a.setAttribute("no-external", "true");
+    if (model.isShowHeadings()) {
+      XhtmlNode tr = table.addTag("tr");
+      if (model.active) {
+        tr.setAttribute("fhir", "generated-heirarchy"); // deprecated - will be removed once everyone has dealt with the change
+        tr.setAttribute("data-fhir", "generated-heirarchy");
       }
-      XhtmlNode img = a.addTag("img");
-      img.setAttribute("alt", "doco").setAttribute("style", "background-color: inherit").setAttribute("src", model.getDocoImg());
-      if (model.isActive()) {
-        img.setAttribute("onLoad", "fhirTableInit(this)");
+      tr.setAttribute("style", "border: " + Integer.toString(1 + border) + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top");
+      XhtmlNode tc = null;
+      for (Title t : model.getTitles()) {
+        tc = renderCell(tr, t, "th", null, null, null, false, null, "white", 0, imagePath, border, outputTracker, model, null, true);
+        if (t.width != 0)
+          tc.setAttribute("style", "width: "+Integer.toString(t.width)+"px");
+      }
+      if (tc != null && model.getDocoRef() != null) {
+        XhtmlNode a = tc.addTag("span").setAttribute("style", "float: right").addTag("a").setAttribute("title", "Legend for this format").setAttribute("href", model.getDocoRef());
+        if (mode == TableGenerationMode.XHTML) {
+          a.setAttribute("no-external", "true"); // deprecated - will be removed once everyone has dealt with the change
+          a.setAttribute("data-no-external", "true");
+        }
+        XhtmlNode img = a.addTag("img");
+        img.setAttribute("alt", "doco").setAttribute("style", "background-color: inherit").setAttribute("src", model.getDocoImg());
+        if (model.isActive()) {
+          img.setAttribute("onLoad", "fhirTableInit(this)");
+        }
       }
     }
-      
     Counter counter = new Counter();
     for (Row r : model.getRows()) {
       renderRow(table, r, 0, new ArrayList<Integer>(), imagePath, border, outputTracker, counter, model);
     }
     if (model.getDocoRef() != null) {
-      tr = table.addTag("tr");
-      tc = tr.addTag("td");
+      XhtmlNode tr = table.addTag("tr");
+      if (model.active) {
+        tr.setAttribute("fhir", "generated-heirarchy"); // deprecated - will be removed once everyone has dealt with the change
+        tr.setAttribute("data-fhir", "generated-heirarchy");
+      }
+      XhtmlNode tc = tr.addTag("td");
       tc.setAttribute("class", "hierarchy");
       tc.setAttribute("colspan", Integer.toString(model.getTitles().size()));
       tc.addTag("br");
@@ -806,15 +882,24 @@ public class HierarchicalTableGenerator {
 
 
   private void renderRow(XhtmlNode table, Row r, int indent, List<Integer> indents, String imagePath, int border, Set<String> outputTracker, Counter counter, TableModel model) throws IOException  {
-    counter.row();
+    if (!r.partnerRow) {
+      counter.row();
+    }
     XhtmlNode tr = table.addTag("tr");
+    if (model.active) {
+      tr.setAttribute("fhir", "generated-heirarchy"); // deprecated - will be removed once everyone has dealt with the change
+      tr.setAttribute("data-fhir", "generated-heirarchy");
+    }
+    
     String color = "white";
     if (r.getColor() != null)
       color = r.getColor();
     else if (model.isAlternating()  && counter.isOdd())
       color = BACKGROUND_ALT_COLOR;
     
-    tr.setAttribute("style", "border: " + border + "px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: "+color+(r.getOpacity() == null ? "" : "; opacity: "+r.getOpacity()));
+    String lineStyle = r.getTopLine() == null ? "" : "; border-top: 1px solid "+r.getTopLine();
+    
+    tr.setAttribute("style", "border: " + border + "px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: "+color+(r.getOpacity() == null ? "" : "; opacity: "+r.getOpacity())+lineStyle);
     if (model.isActive()) {
       tr.setAttribute("id", r.getId());
     }
@@ -847,26 +932,34 @@ public class HierarchicalTableGenerator {
     }
     if (c.getId() != null) {
       tc.setAttribute("id", c.getId());
+    }    
+    String lineStyle = row != null && row.getTopLine() == null ? "" : "; padding-top: 3px; padding-bottom: 3px";
+
+    XhtmlNode itc = tc;
+    XhtmlNode itr = null;
+    if (c.innerTable) {
+      itr = tc.table("none", true).tr();
+      itc = itr.td();
     }
 
     if (indents != null) {
-      tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_spacer.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
-      tc.setAttribute("style", "vertical-align: top; text-align : left; "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url("+imagePath+checkExists(indents, hasChildren, lineColor, outputTracker)+")"+(c.cellStyle != null ? ";"+c.cellStyle : ""));
+      itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_spacer.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+      tc.setAttribute("style", "vertical-align: top; text-align : left; "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap"+(treelines ? "; background-image: url("+imagePath+checkExists(indents, hasChildren, lineColor, outputTracker)+")" : "")+(c.cellStyle != null ? ";"+c.cellStyle : "")+lineStyle);
       for (int i = 0; i < indents.size()-1; i++) {
         switch (indents.get(i)) {
           case NEW_REGULAR:
           case NEW_SLICER:
           case NEW_SLICE:
-            tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_blank.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+            itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_blank.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
             break;
           case CONTINUE_REGULAR:
-            tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vline.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+            itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vline.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
             break;
           case CONTINUE_SLICER:
-            tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vline_slicer.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+            itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vline_slicer.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
             break;
           case CONTINUE_SLICE:
-            tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vline_slice.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
+            itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_vline_slice.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
             break;
           default:
             throw new Error("Unrecognized indent level: " + indents.get(i));
@@ -874,7 +967,7 @@ public class HierarchicalTableGenerator {
       }
       if (!indents.isEmpty()) {
         String sfx = table.isActive() && hasChildren ? "-open" : "";
-        XhtmlNode img = tc.addTag("img");
+        XhtmlNode img = itc.addTag("img");
         switch (indents.get(indents.size()-1)) {
         case NEW_REGULAR:
           img.setAttribute("src", srcFor(imagePath, "tbl_vjoin_end"+sfx+".png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
@@ -902,17 +995,21 @@ public class HierarchicalTableGenerator {
         }
       }
     }
-    else
-      tc.setAttribute("style", "vertical-align: top; text-align : left; "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px"+(c.cellStyle != null ? ";"+c.cellStyle : ""));
+    else {
+      tc.setAttribute("style", "vertical-align: top; text-align : left; "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px"+(c.cellStyle != null ? ";"+c.cellStyle : "")+lineStyle);
+    }
+    if (c.innerTable) {
+      itc = itr.td();
+    }
     if (!Utilities.noString(icon)) {
-      XhtmlNode img = tc.addTag("img").setAttribute("alt", "icon").setAttribute("src", srcFor(imagePath, icon)).setAttribute("class", "hierarchy").setAttribute("style", "background-color: "+color+"; background-color: inherit").setAttribute("alt", ".");
+      XhtmlNode img = itc.addTag("img").setAttribute("alt", "icon").setAttribute("src", srcFor(imagePath, icon)).setAttribute("class", "hierarchy").setAttribute("style", "background-color: "+color+"; background-color: inherit").setAttribute("alt", ".");
       if (hint != null)
         img.setAttribute("title", hint);
-      tc.addText(" ");
+      itc.addText(" ");
     }
     for (Piece p : c.pieces) {
       if (!Utilities.noString(p.getTag())) {
-        XhtmlNode tag = tc.addTag(p.getTag());
+        XhtmlNode tag = itc.addTag(p.getTag());
         if (p.attributes != null)
           for (String n : p.attributes.keySet())
             tag.setAttribute(n, p.attributes.get(n));
@@ -923,10 +1020,11 @@ public class HierarchicalTableGenerator {
           tag.addChildNodes(p.getChildren());
         }
       } else if (!Utilities.noString(p.getReference())) {
-        XhtmlNode a = addStyle(tc.addTag("a"), p);
+        XhtmlNode a = addStyle(itc.addTag("a"), p);
         a.setAttribute("href", prefixLocalHref(p.getReference()));
         if (mode == TableGenerationMode.XHTML && suppressExternals) {
-          a.setAttribute("no-external", "true");
+          a.setAttribute("no-external", "true"); // deprecated - will be removed once everyone has dealt with the change
+          a.setAttribute("data-no-external", "true");
         }
         if (!Utilities.noString(p.getHint()))
           a.setAttribute("title", p.getHint());
@@ -942,25 +1040,25 @@ public class HierarchicalTableGenerator {
         }
         
         if (p.hasChildren()) {
-          tc.addChildNodes(p.getChildren());
+          itc.addChildNodes(p.getChildren());
         }
       } else { 
         if (!Utilities.noString(p.getHint())) {
-          XhtmlNode s = addStyle(tc.addTag("span"), p);
+          XhtmlNode s = addStyle(itc.addTag("span"), p);
           s.setAttribute("title", p.getHint());
           s.addText(p.getText());
         } else if (p.getStyle() != null) {
-          XhtmlNode s = addStyle(tc.addTag("span"), p);
+          XhtmlNode s = addStyle(itc.addTag("span"), p);
           s.addText(p.getText());
         } else {
-          tc.addText(p.getText());
+          itc.addText(p.getText());
         }
         if (p.hasChildren()) {
-          tc.addChildNodes(p.getChildren());
+          itc.addChildNodes(p.getChildren());
         }
         if (p.getTagImg() != null) {
-          tc.tx(" ");
-          tc.img(p.getTagImg(), null);
+          itc.tx(" ");
+          itc.img(p.getTagImg(), null);
         }
       }
     }
@@ -982,6 +1080,15 @@ public class HierarchicalTableGenerator {
   }
   
   private String srcFor(String corePrefix, String filename) throws IOException {
+    if (!treelines && filename.startsWith("tbl")) {
+      if (filename.contains("-open")) {
+        filename = "tbl-open.png";
+      } else if (filename.contains("-closed")) {
+        filename = "tbl-closed.png";
+      } else {
+        filename = "tbl_blank.png";
+      }
+    }
     if (inLineGraphics) {
       if (files.containsKey(filename))
         return files.get(filename);
@@ -990,14 +1097,15 @@ public class HierarchicalTableGenerator {
       byte[] bytes;
       File file = ManagedFileAccess.file(Utilities.path(dest, filename));
       if (!file.exists()) // because sometime this is called real early before the files exist. it will be built again later because of this
-    	bytes = new byte[0]; 
+        bytes = new byte[0]; 
       else
         bytes = FileUtils.readFileToByteArray(file);
       b.append(new String(Base64.encodeBase64(bytes)));
-//      files.put(filename, b.toString());
+      //      files.put(filename, b.toString());
       return b.toString();
-    } else
+    } else {
       return corePrefix+filename;
+    }
   }
 
   public static String help16AsData() throws IOException {
@@ -1005,7 +1113,7 @@ public class HierarchicalTableGenerator {
     InputStream help = classLoader.getResourceAsStream("help16.png");
     StringBuilder b = new StringBuilder();
     b.append("data:image/png;base64,");
-    byte[] bytes = TextFile.streamToBytes(help);
+    byte[] bytes = FileUtilities.streamToBytes(help);
     b.append(new String(Base64.encodeBase64(bytes)));
     return b.toString();
   }
@@ -1071,7 +1179,7 @@ public class HierarchicalTableGenerator {
       b.append(new String(encodeBase64));
       files.put(filename, b.toString());
       return b.toString();
-    } else {
+    } else if (treelines) {
       b.append("tbl_bck");
       for (Integer i : indents)
         b.append(Integer.toString(i));
@@ -1097,6 +1205,8 @@ public class HierarchicalTableGenerator {
         }
       }
       return b.toString();
+    } else {
+      return "tbl_bck0.png";
     }
   }
 
@@ -1175,6 +1285,14 @@ public class HierarchicalTableGenerator {
       return url;
     }
     return "#"+uniqueLocalPrefix+"-"+url.substring(1);
+  }
+
+  public boolean isTreelines() {
+    return treelines;
+  }
+
+  public void setTreelines(boolean treelines) {
+    this.treelines = treelines;
   }
   
 }

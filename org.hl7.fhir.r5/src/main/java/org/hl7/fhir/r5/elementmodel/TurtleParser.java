@@ -51,7 +51,8 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.SnomedExpressions;
 import org.hl7.fhir.r5.utils.SnomedExpressions.Expression;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.turtle.Turtle;
@@ -68,6 +69,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
 
+@MarkedToMoveToAdjunctPackage
 public class TurtleParser extends ParserBase {
 
   private String base;
@@ -82,21 +84,21 @@ public class TurtleParser extends ParserBase {
   }
   @Override
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
-    byte[] content = TextFile.streamToBytes(inStream);
+    byte[] content = FileUtilities.streamToBytes(inStream);
     ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "ttl", content, false);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
 
     Turtle src = new Turtle();
     if (policy == ValidationPolicy.EVERYTHING) {
       try {
-        src.parse(TextFile.streamToString(stream));
+        src.parse(FileUtilities.streamToString(stream));
       } catch (Exception e) {  
         logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, -1, -1, "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_TURTLE_, e.getMessage()), IssueSeverity.FATAL);
         return null;
       }
       focusFragment.setElement(parse(focusFragment.getErrors(), src));
     } else {
-      src.parse(TextFile.streamToString(stream));
+      src.parse(FileUtilities.streamToString(stream));
       focusFragment.setElement(parse(focusFragment.getErrors(), src));
     }
     List<ValidatedFragment> res = new ArrayList<>();
@@ -309,12 +311,15 @@ public class TurtleParser extends ParserBase {
   
   @Override
   public void compose(Element e, OutputStream stream, OutputStyle style, String base) throws IOException, FHIRException {
-    this.base = base;
+	if (base != null) {
+		this.base = base;	
+	} else {
+		this.base = "http://hl7.org/fhir/";
+	}
     this.style = style;
-    
-		Turtle ttl = new Turtle();
-		compose(e, ttl, base);
-		ttl.commit(stream, false);
+	Turtle ttl = new Turtle();
+	compose(e, ttl, base);
+	ttl.commit(stream, false);
   }
 
   public void compose(Element e, Turtle ttl, String base) throws FHIRException {
@@ -323,6 +328,7 @@ public class TurtleParser extends ParserBase {
     }
     
     ttl.prefix("fhir", FHIR_URI_BASE);
+    ttl.prefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
     ttl.prefix("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
     ttl.prefix("owl", "http://www.w3.org/2002/07/owl#");
     ttl.prefix("xsd", "http://www.w3.org/2001/XMLSchema#");
@@ -424,7 +430,7 @@ public class TurtleParser extends ParserBase {
 	  } else {
 	    t = ctxt.linkedPredicate("fhir:"+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
 	  }
-	if (element.getProperty().getName().endsWith("[x]") && !element.hasValue()) {
+	if (element.getProperty().getName().endsWith("[x]")) {
 	  t.linkedPredicate("a", "fhir:" + element.fhirType(), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
 	}
     if (element.getSpecial() != null)
@@ -494,23 +500,31 @@ public class TurtleParser extends ParserBase {
   }
 
   static public String ttlLiteral(String value, String type) {
-	  String xst = "";
-	  if (type.equals("boolean"))
-	    xst = "^^xsd:boolean";
+	boolean quote = true;
+	String xst = "";
+	if (type.equals("boolean"))
+	  quote = false;
     else if (type.equals("integer"))
-      xst = "^^xsd:integer";
+    	quote = false;
     else if (type.equals("integer64"))
       xst = "^^xsd:long";	  
     else if (type.equals("unsignedInt"))
       xst = "^^xsd:nonNegativeInteger";
     else if (type.equals("positiveInt"))
       xst = "^^xsd:positiveInteger";
-    else if (type.equals("decimal"))
-      xst = "^^xsd:decimal";
+    else if (type.equals("decimal")) {
+      if (value.contains(".")) {
+    	  quote = false;
+      } else {
+    	  xst = "^^xsd:decimal";
+      }
+    }
     else if (type.equals("base64Binary"))
       xst = "^^xsd:base64Binary";
     else if (type.equals("canonical") || type.equals("oid") || type.equals("uri") || type.equals("url") || type.equals("uuid"))
   	  xst = "^^xsd:anyURI";
+    else if (type.equals("xhtml"))
+      xst = "^^rdf:XMLLiteral";
     else if (type.equals("instant"))
       xst = "^^xsd:dateTime";
     else if (type.equals("time"))
@@ -532,9 +546,12 @@ public class TurtleParser extends ParserBase {
       else if (v.length() == 4)
         xst = "^^xsd:gYear";
     }
-	  
-		return "\"" +Turtle.escape(value, true) + "\""+xst;
-	}
+	if (quote) {
+	  return "\"" + Turtle.escape(value, true) + "\"" + xst;
+	} else {
+	  return value;	
+	}		
+  }
 
   protected void decorateCoding(Complex t, Element coding, Section section) throws FHIRException {
     String system = coding.getChildValue("system");

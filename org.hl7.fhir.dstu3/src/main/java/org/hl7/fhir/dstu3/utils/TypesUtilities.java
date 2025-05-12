@@ -37,6 +37,7 @@ import java.util.List;
 import org.hl7.fhir.utilities.Utilities;
 
 
+@Deprecated
 public class TypesUtilities {
 
   public static class WildcardInformation {

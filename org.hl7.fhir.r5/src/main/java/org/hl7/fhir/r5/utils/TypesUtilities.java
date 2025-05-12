@@ -36,9 +36,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 
+@MarkedToMoveToAdjunctPackage
 public class TypesUtilities {
   private static final HashSet<String> primitiveTypes = new HashSet<>(Arrays.asList("boolean", "integer", "integer64", "string", "decimal", "uri", "url", "canonical", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "uuid", "markdown", "unsignedInt", "positiveInt", "xhtml"));
 

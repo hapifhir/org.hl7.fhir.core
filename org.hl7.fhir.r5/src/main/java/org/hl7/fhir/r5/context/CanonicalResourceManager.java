@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 /**
@@ -19,6 +20,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
  *
  */
 
+@MarkedToMoveToAdjunctPackage
 public class CanonicalResourceManager<T extends CanonicalResource> {
 
   private final String[] INVALID_TERMINOLOGY_URLS = {
@@ -46,6 +48,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       this.version = version;
       this.supplements = supplements;
       this.content = content;
+      this.derivation = derivation;
     }
     
     public String getType() {
@@ -122,7 +125,24 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       this.version = version;
       this.hacked = true;
 
-    }      
+    }
+    
+    /** 
+     * used in cross version settings by the package loaders.
+     */
+    public void updateInfo() {
+      type = resource.fhirType();
+      id = resource.getId();
+      url = resource.getUrl();
+      version = resource.getVersion();
+      if (resource instanceof CodeSystem) {
+        supplements = ((CodeSystem) resource).getSupplements();
+        content = ((CodeSystem) resource).getContentElement().asStringValue();
+      }
+      if (resource instanceof StructureDefinition) {
+        derivation = ((StructureDefinition) resource).getDerivationElement().asStringValue();
+      }
+    }    
   }
 
   public static class CanonicalListSorter implements Comparator<CanonicalResource> {

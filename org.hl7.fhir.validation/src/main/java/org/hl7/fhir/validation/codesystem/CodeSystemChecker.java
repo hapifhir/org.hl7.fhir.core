@@ -3,14 +3,19 @@ package org.hl7.fhir.validation.codesystem;
 import java.util.EnumSet;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.CodeValidationRule;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.PropertyFilterType;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator.PropertyOperation;
@@ -23,8 +28,8 @@ public abstract class CodeSystemChecker extends BaseValidator {
   private boolean hasDisplay = false;
   protected List<ValidationMessage> errors;
   
-  protected CodeSystemChecker(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, List<ValidationMessage> errors) {
-    super(context, xverManager, debug);
+  protected CodeSystemChecker(IWorkerContext context, @Nonnull ValidatorSettings settings, XVerExtensionManager xverManager, List<ValidationMessage> errors, ValidatorSession session) {
+    super(context, settings, xverManager, session);
     this.errors = errors;
   }
   
@@ -75,8 +80,20 @@ public abstract class CodeSystemChecker extends BaseValidator {
 
   public PropertyValidationRules rulesForFilter(String property, EnumSet<PropertyOperation> ops) {
     switch (property) {
-    case "concept" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf, PropertyOperation.DescendentLeaf, PropertyOperation.IsNotA, PropertyOperation.NotIn));
-    case "code" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.Equals, PropertyOperation.RegEx));
+    case "concept" :
+      return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, 
+          VersionUtilities.isR5Plus(context.getVersion()) ?
+            addToOps(ops, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,  
+              PropertyOperation.DescendentLeaf, PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.ChildOf, PropertyOperation.NotIn) :      
+            addToOps(ops, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,   
+              PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.NotIn));
+    case "code" : 
+      return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, 
+          VersionUtilities.isR5Plus(context.getVersion()) ?
+            addToOps(ops, PropertyOperation.RegEx, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,  
+              PropertyOperation.DescendentLeaf, PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.ChildOf, PropertyOperation.NotIn) :      
+            addToOps(ops, PropertyOperation.RegEx, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,   
+              PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.NotIn));
     case "status" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, ops);
     case "inactive" : return new PropertyValidationRules(PropertyFilterType.Boolean,null,  ops);
     case "effectiveDate" : return new PropertyValidationRules(PropertyFilterType.DateTime, null, ops);

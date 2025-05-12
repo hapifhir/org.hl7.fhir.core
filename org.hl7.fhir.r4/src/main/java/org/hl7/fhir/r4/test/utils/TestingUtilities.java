@@ -50,7 +50,8 @@ import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.context.SimpleWorkerContext;
 import org.hl7.fhir.r4.model.Parameters;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.CSFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -59,6 +60,7 @@ import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.utilities.tests.TestConfig;
+import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -71,6 +73,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
+@MarkedToMoveToAdjunctPackage
 public class TestingUtilities {
   private static final boolean SHOW_DIFF = false;
 
@@ -256,7 +259,7 @@ public class TestingUtilities {
   }
 
   private static Document loadXml(InputStream fn) throws Exception {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
     factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
     factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
@@ -282,10 +285,10 @@ public class TestingUtilities {
       if (System.getProperty("os.name").contains("Linux"))
         diff = Utilities.path("/", "usr", "bin", "meld");
       else {
-        if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"),
+        if (FileUtilities.checkFileExists("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"),
             "\\WinMergeU.exe", null))
           diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
-        else if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"),
+        else if (FileUtilities.checkFileExists("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"),
             "\\Meld.exe", null))
           diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld", "Meld.exe");
       }
@@ -295,8 +298,8 @@ public class TestingUtilities {
       List<String> command = new ArrayList<String>();
       String f1 = Utilities.path("[tmp]", "input" + s1.hashCode() + ".json");
       String f2 = Utilities.path("[tmp]", "output" + s2.hashCode() + ".json");
-      TextFile.stringToFile(s1, f1);
-      TextFile.stringToFile(s2, f2);
+      FileUtilities.stringToFile(s1, f1);
+      FileUtilities.stringToFile(s2, f2);
       command.add(diff);
       if (diff.toLowerCase().contains("meld"))
         command.add("--newtab");
@@ -336,8 +339,8 @@ public class TestingUtilities {
 
   private static String compareJson(String f1, String f2)
       throws JsonSyntaxException, FileNotFoundException, IOException {
-    JsonObject o1 = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(f1));
-    JsonObject o2 = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(f2));
+    JsonObject o1 = (JsonObject) new com.google.gson.JsonParser().parse(FileUtilities.fileToString(f1));
+    JsonObject o2 = (JsonObject) new com.google.gson.JsonParser().parse(FileUtilities.fileToString(f2));
     return compareObjects("", o1, o2);
   }
 
@@ -420,10 +423,10 @@ public class TestingUtilities {
       if (System.getProperty("os.name").contains("Linux"))
         diff = Utilities.path("/", "usr", "bin", "meld");
       else {
-        if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"),
+        if (FileUtilities.checkFileExists("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"),
             "\\WinMergeU.exe", null))
           diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
-        else if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"),
+        else if (FileUtilities.checkFileExists("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"),
             "\\Meld.exe", null))
           diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld", "Meld.exe");
       }
@@ -433,8 +436,8 @@ public class TestingUtilities {
       List<String> command = new ArrayList<String>();
       String f1 = Utilities.path("[tmp]", "input" + s1.hashCode() + ".json");
       String f2 = Utilities.path("[tmp]", "output" + s2.hashCode() + ".json");
-      TextFile.stringToFile(s1, f1);
-      TextFile.stringToFile(s2, f2);
+      FileUtilities.stringToFile(s1, f1);
+      FileUtilities.stringToFile(s2, f2);
       command.add(diff);
       if (diff.toLowerCase().contains("meld"))
         command.add("--newtab");
@@ -514,7 +517,7 @@ public class TestingUtilities {
     if (dir != null && ManagedFileAccess.csfile(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
       // ok, we'll resolve this locally
-      return TextFile.fileToString(ManagedFileAccess.csfile(n));
+      return FileUtilities.fileToString(ManagedFileAccess.csfile(n));
     } else {
       // resolve from the package
       String contents;

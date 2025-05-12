@@ -44,6 +44,7 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -61,7 +62,8 @@ import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -72,10 +74,11 @@ import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 
+@MarkedToMoveToAdjunctPackage
 public class NPMPackageGenerator {
 
   public enum Category {
-    RESOURCE, EXAMPLE, OPENAPI, SCHEMATRON, RDF, OTHER, TOOL, TEMPLATE, JEKYLL, TEST;
+    RESOURCE, EXAMPLE, OPENAPI, SCHEMATRON, RDF, OTHER, TOOL, TEMPLATE, JEKYLL, TEST, ADL, CUSTOM;
 
     private String getDirectory() {
       switch (this) {
@@ -84,11 +87,13 @@ public class NPMPackageGenerator {
       case OPENAPI: return "package/openapi/";
       case SCHEMATRON: return "package/xml/";
       case RDF: return "package/rdf/";      
-      case OTHER: return "package/other/";      
+      case OTHER: return "package/other/";  
+      case ADL: return "package/adl/";      
       case TEMPLATE: return "package/other/";      
       case JEKYLL: return "package/jekyll/";      
       case TEST: return "package/tests/"; 
       case TOOL: return "package/bin/";      
+      case CUSTOM: return "package/custom/";      
       }
       return "/";
     }
@@ -96,25 +101,42 @@ public class NPMPackageGenerator {
 
   private String destFile;
   private Set<String> created = new HashSet<String>();
+  public Set<String> getCreated() {
+    return created;
+  }
+
   private TarArchiveOutputStream tar;
   private ByteArrayOutputStream OutputStream;
   private BufferedOutputStream bufferedOutputStream;
   private GzipCompressorOutputStream gzipOutputStream;
   private JsonObject packageJ;
+  public JsonObject getPackageJ() {
+    return packageJ;
+  }
+
   private JsonObject packageManifest;
   private NpmPackageIndexBuilder indexer;
   private String igVersion;
   private String indexdb;
 
 
-  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, boolean notForPublication) throws FHIRException, IOException {
+  public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, Map<String, String> relatedIgs, boolean notForPublication) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
     start();
     List<String> fhirVersion = new ArrayList<>();
     for (Enumeration<FHIRVersion> v : ig.getFhirVersion())
       fhirVersion.add(v.asStringValue());
-    buildPackageJson(canonical, kind, url, date, ig, fhirVersion, notForPublication);
+    buildPackageJson(pid, canonical, kind, url, date, ig, fhirVersion, notForPublication, relatedIgs);
+  }
+
+  public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, Map<String, String> relatedIgs, boolean notForPublication, String fhirVersion) throws FHIRException, IOException {
+    super();
+    this.destFile = destFile;
+    start();
+    List<String> fhirVersions = new ArrayList<>();
+    fhirVersions.add(fhirVersion);
+    buildPackageJson(pid, canonical, kind, url, date, ig, fhirVersions, notForPublication, relatedIgs);
   }
 
   public static NPMPackageGenerator subset(NPMPackageGenerator master, String destFile, String id, String name, Date date, boolean notForPublication) throws FHIRException, IOException {
@@ -132,11 +154,11 @@ public class NPMPackageGenerator {
     return new NPMPackageGenerator(destFile, p, date, notForPublication);
   }
 
-  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, List<String> fhirVersion, boolean notForPublication) throws FHIRException, IOException {
+  public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, List<String> fhirVersion, Map<String, String> relatedIgs, boolean notForPublication) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
     start();
-    buildPackageJson(canonical, kind, url, date, ig, fhirVersion, notForPublication);
+    buildPackageJson(ig.getPackageId(), canonical, kind, url, date, ig, fhirVersion, notForPublication, relatedIgs);
   }
 
   public NPMPackageGenerator(String destFile, JsonObject npm, Date date, boolean notForPublication) throws FHIRException, IOException {
@@ -160,7 +182,7 @@ public class NPMPackageGenerator {
     }
   }
 
-  private void buildPackageJson(String canonical, PackageType kind, String web, Date date, ImplementationGuide ig, List<String> fhirVersion, boolean notForPublication) throws FHIRException, IOException {
+  private void buildPackageJson(String pid, String canonical, PackageType kind, String web, Date date, ImplementationGuide ig, List<String> fhirVersion, boolean notForPublication, Map<String, String> relatedIgs) throws FHIRException, IOException {
     String dtHuman = new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(date);
     String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
 
@@ -184,7 +206,7 @@ public class NPMPackageGenerator {
     }
 
     JsonObject npm = new JsonObject();
-    npm.add("name", ig.getPackageId());
+    npm.add("name", pid);
     npm.add("version", ig.getVersion());
     igVersion = ig.getVersion();
     npm.add("tools-version", ToolsVersion.TOOLS_VERSION);
@@ -252,6 +274,12 @@ public class NPMPackageGenerator {
     if (ig.hasJurisdiction() && ig.getJurisdiction().size() == 1 && ig.getJurisdictionFirstRep().getCoding().size() == 1) {
       Coding c = ig.getJurisdictionFirstRep().getCodingFirstRep();
       npm.add("jurisdiction", c.getSystem()+"#"+c.getCode());
+    }
+    if (relatedIgs != null) {
+      JsonObject pd = npm.forceObject("peerDependencies");
+      for (String n : relatedIgs.keySet()) {
+        pd.add(n, relatedIgs.get(n));
+      }
     }
     String json = JsonParser.compose(npm, true);
     try {
@@ -332,6 +360,16 @@ public class NPMPackageGenerator {
   }
 
 
+  public boolean hasFile(Category cat, String name) throws IOException {
+    String path = cat.getDirectory()+name;
+    if (path.length() > 100) {
+      name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString()+".json";
+      path = cat.getDirectory()+name;      
+    }
+      
+    return created.contains(path);    
+  }
+  
   public void addFile(Category cat, String name, byte[] content) throws IOException {
     String path = cat.getDirectory()+name;
     if (path.length() > 100) {
@@ -386,16 +424,16 @@ public class NPMPackageGenerator {
     gzipOutputStream.close();
     bufferedOutputStream.close();
     OutputStream.close();
-    TextFile.bytesToFile(OutputStream.toByteArray(), destFile);
+    FileUtilities.bytesToFile(OutputStream.toByteArray(), destFile);
     // also, for cache management on current builds, generate a little manifest
     String json = JsonParser.compose(packageManifest, true);
-    TextFile.stringToFile(json, Utilities.changeFileExt(destFile, ".manifest.json"));
+    FileUtilities.stringToFile(json, FileUtilities.changeFileExt(destFile, ".manifest.json"));
   }
 
   private void buildIndexJson() throws IOException {
-    byte[] content = TextFile.stringToBytes(indexer.build());
+    byte[] content = FileUtilities.stringToBytes(indexer.build());
     addFile(Category.RESOURCE, ".index.json", content); 
-    content = TextFile.fileToBytes(indexdb);
+    content = FileUtilities.fileToBytes(indexdb);
     ManagedFileAccess.file(indexdb).delete();
     addFile(Category.RESOURCE, ".index.db", content); 
   }
@@ -415,7 +453,7 @@ public class NPMPackageGenerator {
           loadFiles(root, f);
         } else {
           String path = f.getAbsolutePath().substring(root.length()+1);
-          byte[] content = TextFile.fileToBytes(f);
+          byte[] content = FileUtilities.fileToBytes(f);
           if (created.contains(path)) 
             System.out.println("Duplicate package file "+path);
           else {

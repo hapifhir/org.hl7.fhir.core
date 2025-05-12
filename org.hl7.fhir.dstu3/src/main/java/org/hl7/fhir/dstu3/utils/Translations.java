@@ -46,6 +46,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+@Deprecated
 public class Translations {
 
   private String[] lang;
@@ -71,7 +72,7 @@ public class Translations {
    * @throws Exception
    */
   public void load(String filename) throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     DocumentBuilder builder = factory.newDocumentBuilder();
     loadMessages(builder.parse(new CSFileInputStream(filename)));
   }

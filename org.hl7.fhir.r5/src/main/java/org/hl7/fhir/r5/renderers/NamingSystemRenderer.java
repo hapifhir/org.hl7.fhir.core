@@ -2,6 +2,8 @@ package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -13,8 +15,10 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public class NamingSystemRenderer extends ResourceRenderer {
 
 
@@ -43,7 +47,7 @@ public class NamingSystemRenderer extends ResourceRenderer {
 
   public void render(RenderingStatus status, XhtmlNode x, NamingSystem ns) throws FHIRFormatError, DefinitionException, IOException {
     x.h3().tx(context.formatPhrase(RenderingContext.GENERAL_SUMM));
-    XhtmlNode tbl = x.table("grid"); 
+    XhtmlNode tbl = x.table("grid", false); 
     row(tbl, (context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)), ns.getUrl());
     if (ns.hasVersion()) {
       row(tbl, (context.formatPhrase(RenderingContext.GENERAL_VER)), ns.getVersion());
@@ -70,16 +74,25 @@ public class NamingSystemRenderer extends ResourceRenderer {
     if (ns.hasCopyright()) {
       addMarkdown(row(tbl, (context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT))), ns.getCopyright());
     }
+    List<NamingSystem> nsl = new ArrayList<>();
+    nsl.add(ns);
+    renderList(x, nsl);
+  }
+  
+  public void renderList(XhtmlNode x, List<NamingSystem> nsl) {
+
     boolean hasPreferred = false;
     boolean hasPeriod = false;
     boolean hasComment = false;
-    for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
-      hasPreferred = hasPreferred || id.hasPreferred();
-      hasPeriod = hasPeriod || id.hasPeriod();
-      hasComment = hasComment || id.hasComment();
+    for (NamingSystem ns : nsl) {
+      for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
+        hasPreferred = hasPreferred || id.hasPreferred();
+        hasPeriod = hasPeriod || id.hasPeriod();
+        hasComment = hasComment || id.hasComment();
+      }
     }
     x.h3().tx(context.formatPhrase(RenderingContext.NAME_SYS_IDEN));
-    tbl = x.table("grid");
+    XhtmlNode tbl = x.table("grid", false);
     XhtmlNode tr = tbl.tr();
     tr.td().b().tx((context.formatPhrase(RenderingContext.GENERAL_TYPE)));
     tr.td().b().tx((context.formatPhrase(RenderingContext.GENERAL_VALUE)));
@@ -92,21 +105,24 @@ public class NamingSystemRenderer extends ResourceRenderer {
     if (hasComment) {
       tr.td().b().tx((context.formatPhrase(RenderingContext.GENERAL_COMMENT)));
     }
-    for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
-      tr = tbl.tr();
-      tr.td().tx(id.getType().getDisplay());
-      tr.td().tx(id.getValue());
-      if (hasPreferred) {
-        tr.td().tx(id.getPreferredElement().primitiveValue());
-      }
-      if (hasPeriod) {
-        tr.td().tx(displayDataType(id.getPeriod()));
-      }
-      if (hasComment) {
-        tr.td().tx(id.getComment());
-      }
-    }    
+    for (NamingSystem ns : nsl) {
+      for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
+        tr = tbl.tr();
+        tr.td().tx(id.getType().getDisplay());
+        tr.td().tx(id.getValue());
+        if (hasPreferred) {
+          tr.td().tx(id.getPreferredElement().primitiveValue());
+        }
+        if (hasPeriod) {
+          tr.td().tx(displayDataType(id.getPeriod()));
+        }
+        if (hasComment) {
+          tr.td().tx(id.getComment());
+        }
+      } 
+    }
   }
+  
 
   private XhtmlNode row(XhtmlNode tbl, String name) {
     XhtmlNode tr = tbl.tr();

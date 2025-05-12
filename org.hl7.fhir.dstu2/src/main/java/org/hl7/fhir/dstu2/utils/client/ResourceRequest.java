@@ -32,11 +32,16 @@ package org.hl7.fhir.dstu2.utils.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
 import org.hl7.fhir.dstu2.model.Resource;
 
+@Deprecated
 public class ResourceRequest<T extends Resource> {
+  @Getter
   private T payload;
+  @Getter
   private int httpStatus = -1;
+  @Getter
   private String location;
   private List<Integer> successfulStatuses = new ArrayList<Integer>();
   private List<Integer> errorStatuses = new ArrayList<Integer>();
@@ -67,14 +72,6 @@ public class ResourceRequest<T extends Resource> {
     this.location = location;
   }
 
-  public int getHttpStatus() {
-    return httpStatus;
-  }
-
-  public T getPayload() {
-    return payload;
-  }
-
   public T getReference() {
     T payloadResource = null;
     if (payload != null) {
@@ -99,7 +96,4 @@ public class ResourceRequest<T extends Resource> {
     this.errorStatuses.add(status);
   }
 
-  public String getLocation() {
-    return location;
-  }
 }

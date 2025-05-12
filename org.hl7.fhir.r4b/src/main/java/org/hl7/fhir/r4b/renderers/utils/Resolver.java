@@ -10,6 +10,7 @@ import org.hl7.fhir.r4b.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r4b.renderers.utils.Resolver.ResourceContextType;
 import org.w3c.dom.Element;
 
+@Deprecated
 public class Resolver {
 
   public enum ResourceContextType {

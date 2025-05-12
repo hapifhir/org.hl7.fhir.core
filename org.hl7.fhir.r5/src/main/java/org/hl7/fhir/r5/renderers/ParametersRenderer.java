@@ -11,8 +11,10 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public class ParametersRenderer extends ResourceRenderer {
 
   public ParametersRenderer(RenderingContext context) { 
@@ -43,7 +45,7 @@ public class ParametersRenderer extends ResourceRenderer {
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     renderResourceTechDetails(r, x);
     x.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
-    XhtmlNode tbl = x.table("grid");
+    XhtmlNode tbl = x.table("grid", false);
     params(status, tbl, r.children("parameter"), 0);
   }
 

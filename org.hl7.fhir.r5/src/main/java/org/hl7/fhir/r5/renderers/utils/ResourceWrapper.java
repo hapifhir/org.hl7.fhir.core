@@ -11,12 +11,14 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /** 
  * This class is used to walk through the resources when rendering, whether
  * the resource is a native resource or loaded by the element model
  */
+@MarkedToMoveToAdjunctPackage
 public abstract class ResourceWrapper {
 
   public enum ElementKind {
@@ -415,8 +417,8 @@ public abstract class ResourceWrapper {
   public abstract String getId();
 
   public void markLanguage(XhtmlNode x, Locale locale) {
-    x.setAttribute("lang", locale.toString());
-    x.setAttribute("xml:lang", locale.toString());
+    x.setAttribute("lang", locale.toLanguageTag());
+    x.setAttribute("xml:lang", locale.toLanguageTag());
     x.addTag(0, "hr");
     x.addTag(0, "p").b().tx(locale.getDisplayName());
     x.addTag(0, "hr");
@@ -522,6 +524,8 @@ public abstract class ResourceWrapper {
   public abstract boolean hasPrimitiveValue();
   public abstract String primitiveValue();
   public abstract boolean isResource();
+  public abstract boolean hasUserData(String name);
+  public abstract Object getUserData(String name);
 
 
 }

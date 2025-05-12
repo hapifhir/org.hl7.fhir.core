@@ -2,7 +2,9 @@ package org.hl7.fhir.r5.utils.structuremap;
 
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupComponent;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class ResolvedGroup {
   private StructureMap.StructureMapGroupComponent targetGroup;
   private StructureMap targetMap;

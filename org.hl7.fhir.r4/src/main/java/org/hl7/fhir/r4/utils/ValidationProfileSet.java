@@ -35,7 +35,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.hl7.fhir.r4.model.StructureDefinition;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class ValidationProfileSet {
 
   public static class ProfileRegistration {

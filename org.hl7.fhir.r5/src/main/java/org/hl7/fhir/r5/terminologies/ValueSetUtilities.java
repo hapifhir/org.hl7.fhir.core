@@ -48,8 +48,10 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Meta;
+import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -65,8 +67,10 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptStatus;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.utils.CanonicalResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -167,7 +171,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
   }
 
   public static void markStatus(ValueSet vs, String wg, StandardsStatus status, String pckage, String fmm, IWorkerContext context, String normativeVersion) throws FHIRException {
-    if (vs.hasUserData("external.url"))
+    if (vs.hasUserData(UserDataNames.render_external_link))
       return;
     
     if (wg != null) {
@@ -181,14 +185,13 @@ public class ValueSetUtilities extends TerminologyUtilities {
       if (ss == null || ss.isLowerThan(status)) 
         ToolingExtensions.setStandardsStatus(vs, status, normativeVersion);
       if (pckage != null) {
-        if (!vs.hasUserData("ballot.package"))        
-          vs.setUserData("ballot.package", pckage);
-        else if (!pckage.equals(vs.getUserString("ballot.package")))
-          if (!"infrastructure".equals(vs.getUserString("ballot.package")))
-          System.out.println("Value Set "+vs.getUrl()+": ownership clash "+pckage+" vs "+vs.getUserString("ballot.package"));
+        if (!vs.hasUserData(UserDataNames.kindling_ballot_package))        
+          vs.setUserData(UserDataNames.kindling_ballot_package, pckage);
+        else if (!pckage.equals(vs.getUserString(UserDataNames.kindling_ballot_package)))
+          if (!"infrastructure".equals(vs.getUserString(UserDataNames.kindling_ballot_package)))
+          System.out.println("Value Set "+vs.getUrl()+": ownership clash "+pckage+" vs "+vs.getUserString(UserDataNames.kindling_ballot_package));
       }
       if (status == StandardsStatus.NORMATIVE) {
-        vs.setExperimental(false);
         vs.setStatus(PublicationStatus.ACTIVE);
       }
     }
@@ -197,12 +200,9 @@ public class ValueSetUtilities extends TerminologyUtilities {
       if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm))  {
         ToolingExtensions.setIntegerExtension(vs, ToolingExtensions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
       }
-      if (Integer.parseInt(fmm) <= 1) {
-        vs.setExperimental(true);
-      }
     }
-    if (vs.hasUserData("cs"))
-      CodeSystemUtilities.markStatus((CodeSystem) vs.getUserData("cs"), wg, status, pckage, fmm, normativeVersion);
+    if (vs.hasUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM))
+      CodeSystemUtilities.markStatus((CodeSystem) vs.getUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM), wg, status, pckage, fmm, normativeVersion);
     else if (status == StandardsStatus.NORMATIVE && context != null) {
       for (ConceptSetComponent csc : vs.getCompose().getInclude()) {
         if (csc.hasSystem()) {
@@ -500,4 +500,131 @@ public class ValueSetUtilities extends TerminologyUtilities {
       }
     }    
   }
+  
+  public static String versionFromExpansionParams(Parameters expParameters, String system, String defaultVersion) {
+    if (expParameters != null) {
+      for (ParametersParameterComponent p : expParameters.getParameter()) {
+        if ("system-version".equals(p.getName()) || "force-system-version".equals(p.getName())) {
+          String v = p.getValue().primitiveValue();
+          if (v.startsWith(system+"|")) {
+            String ver = v.substring(v.indexOf("|")+1);
+            if (defaultVersion == null || ver.startsWith(defaultVersion) || "force-system-version".equals(p.getName())) {
+              return ver;
+            }
+          }
+        }
+      }
+    }
+    return defaultVersion;
+  }
+
+  public static boolean isImplicitLoincValueSet(String url) {
+    return url.startsWith("http://loinc.org/vs");    
+  }
+
+  public static boolean isImplicitSCTValueSet(String url) {
+    return url.startsWith("http://snomed.info/sct") && url.contains("?fhir_vs");
+  }
+
+  public static ValueSet makeImplicitValueSet(String url, String version) {
+    if (url.startsWith("http://snomed.info/sct")) {
+      return makeImplicitSCTVS(url, version);
+    } else if (url.startsWith("http://loinc.org/vs")) {
+      return makeImplicitLoincVS(url, version);
+    } else {
+      throw new FHIRException("Unknown implicit value set URL "+url);
+    }
+  }
+
+  private static ValueSet makeImplicitSCTVS(String url, String version) {
+    String query = url.substring(url.indexOf("?")+1);
+    if ("fhir_vs".equals(query)) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl(url);
+      vs.setVersion(version);
+      vs.getCompose().addInclude().setSystem("http://snomed.info/sct");
+      return vs;
+    } else if (query.startsWith("fhir_vs=isa/")) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl(url);
+      vs.setVersion(version);
+      vs.getCompose().addInclude().setSystem("http://snomed.info/sct").addFilter().setProperty("concept").setOp(FilterOperator.ISA).setValue(query.substring(12));
+      return vs;
+    } else if (query.equals("fhir_vs=refset")) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl(url);
+      vs.setVersion(version);
+      vs.getCompose().addInclude().setSystem("http://snomed.info/sct").addFilter().setProperty("concept").setOp(FilterOperator.ISA).setValue("refset-base");
+      return vs;      
+    } else if (query.startsWith("fhir_vs=refset/")) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl(url);
+      vs.setVersion(version);
+      vs.getCompose().addInclude().setSystem("http://snomed.info/sct").addFilter().setProperty("concept").setOp(FilterOperator.IN).setValue(query.substring(15));
+      return vs;      
+    } else {
+      throw new FHIRException("Unknown implicit SNOMED CT value set URL "+url);
+    }
+  }
+
+  private static ValueSet makeImplicitLoincVS(String url, String version) {
+    if (url.equals("http://loinc.org/vs")) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl(url);
+      vs.setVersion(version);
+      vs.getCompose().addInclude().setSystem("http://loinc.org");
+      return vs;
+    } else if (url.startsWith("http://loinc.org/vs/LP")) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl(url);
+      vs.setVersion(version);
+      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("ancestor").setOp(FilterOperator.EQUAL).setValue(url.substring("http://loinc.org/vs/".length()));
+      return vs;      
+    } else if (url.startsWith("http://loinc.org/vs/LL")) {
+      ValueSet vs = new ValueSet();
+      vs.setUrl(url);
+      vs.setVersion(version);
+      // this isn't the actual definition, but it won't matter to us internally
+      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("answer-list").setOp(FilterOperator.EQUAL).setValue(url.substring("http://loinc.org/vs/".length()));      
+      return vs;
+    } else {
+      throw new FHIRException("Unknown implicit LOINC value set URL "+url);
+    }
+  }
+
+  public static Set<String> checkExpansionSubset(ValueSet vs1, ValueSet vs2) {
+    Set<String> codes = new HashSet<>();
+    checkCodes(codes, vs2.getExpansion().getContains(), vs1.getExpansion().getContains());
+    return codes;
+  }
+
+  private static void checkCodes(Set<String> codes, List<ValueSetExpansionContainsComponent> listS, List<ValueSetExpansionContainsComponent> listT) {
+    for (ValueSetExpansionContainsComponent c : listS) {
+      ValueSetExpansionContainsComponent t = findContained(c, listT);
+      if (t == null) {
+        codes.add(c.getCode());
+      }
+      if (c.hasContains()) {
+        checkCodes(codes, c.getContains(), listT);
+      }
+    }
+    
+  }
+
+  private static ValueSetExpansionContainsComponent findContained(ValueSetExpansionContainsComponent c, List<ValueSetExpansionContainsComponent> listT) {
+    for (ValueSetExpansionContainsComponent t : listT) {
+      if (t.getSystem().equals(c.getSystem()) && t.getCode().equals(c.getCode())) {
+        return t;
+      }
+      if (t.hasContains()) {
+        ValueSetExpansionContainsComponent tt = findContained(c, t.getContains());
+        if (tt != null) {
+          return tt;
+        }
+      }
+    }
+    return null;
+  }
+
+  
 }

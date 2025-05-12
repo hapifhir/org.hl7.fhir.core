@@ -1,8 +1,5 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.CodeSystem;
@@ -11,7 +8,8 @@ import org.hl7.fhir.r4.model.CodeSystem.PropertyType;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -62,7 +60,7 @@ public class SPDXImporter {
     new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(args[1]), cs);
     b = new StringBuilder();
     generateEnum("SPDXLicense", cs);
-    TextFile.stringToFile(b.toString(), Utilities.changeFileExt(args[1], ".java"));
+    FileUtilities.stringToFile(b.toString(), FileUtilities.changeFileExt(args[1], ".java"));
   }
 
   private void write(String s) {
@@ -79,7 +77,7 @@ public class SPDXImporter {
   protected String makeConst(String cc) {
     if (cc.equals("*"))
       cc = "ASTERISK";
-    if (Utilities.isOid(cc) && Utilities.charCount(cc, '.') > 2)
+    if (OIDUtilities.isValidOID(cc) && Utilities.charCount(cc, '.') > 2)
       cc = "OID_"+cc;
     if (cc.equals("%"))
       cc = "pct";

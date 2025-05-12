@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.utils;
 
+import java.util.Collections;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -145,7 +147,7 @@ public class ResourceUtilities {
   
   public static Locale getLocale(String lang, List<CodeableConcept> jurisdictions) {  
     if (lang != null && lang.contains("-")) {
-      return new Locale(lang);        
+      return Locale.forLanguageTag(lang);
     }
     for (CodeableConcept cc : jurisdictions) {
       Locale locale = getLocale(lang, cc);
@@ -159,7 +161,7 @@ public class ResourceUtilities {
 
   private static Locale getLocale(String lang, CodeableConcept cc) {
     if (cc.hasCoding("http://unstats.un.org/unsd/methods/m49/m49.htm", "001")) {
-      return new Locale("en-US");
+      return new Locale("en", "US");
     }
     String c = cc.getCode("urn:iso:std:iso:3166");
     if (c == null) {
@@ -169,9 +171,9 @@ public class ResourceUtilities {
     if (l == null) {
       return null;
     } else if (lang != null) {
-      return new Locale(lang+"-"+l.substring(l.indexOf("-")+1));
+      return Locale.forLanguageTag(lang+"-"+l.substring(l.indexOf("-")+1));
     } else {
-      return new Locale(l);
+      return Locale.forLanguageTag(l);
     }
  }
 
@@ -183,11 +185,14 @@ public class ResourceUtilities {
     return b.toString();
   }
 
-  public static String listStrings(Set<String> set) {
+  public static String listStrings(Set<String> set, boolean sort) {
     List<String> list = Utilities.sorted(set);
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (String s : list) {
       b.append(s);
+    }
+    if (sort) {
+      Collections.sort(list);
     }
     return b.toString();
   }

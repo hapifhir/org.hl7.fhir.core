@@ -1,7 +1,9 @@
 package org.hl7.fhir.r5.conformance;
 
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class ElementRedirection {
 
   private String path;

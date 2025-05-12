@@ -2,6 +2,8 @@ package org.hl7.fhir.r5.utils;
 
 import java.util.List;
 
+import org.hl7.fhir.r5.model.CodeType;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +36,9 @@ import java.util.List;
 
 
 import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.IntegerType;
+import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
@@ -43,13 +47,15 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.xhtml.NodeType;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class OperationOutcomeUtilities {
 
 
   public static OperationOutcomeIssueComponent convertToIssue(ValidationMessage message, OperationOutcome op) {
     OperationOutcomeIssueComponent issue = new OperationOutcome.OperationOutcomeIssueComponent();
-    issue.setUserData("source.vm", message);   
+    issue.setUserData(UserDataNames.validator_source_vm, message);   
     issue.setCode(convert(message.getType()));
     
     if (message.getLocation() != null) {
@@ -73,7 +79,7 @@ public class OperationOutcomeUtilities {
     if (message.getMessageId() != null) {
       issue.getExtension().add(ToolingExtensions.makeIssueMessageId(message.getMessageId()));
     }
-    issue.setUserData("source.msg", message);
+    issue.setUserData(UserDataNames.validator_source_msg, message);
     return issue;
   }
 
@@ -149,7 +155,7 @@ public class OperationOutcomeUtilities {
 
   public static OperationOutcomeIssueComponent convertToIssueSimple(ValidationMessage message, OperationOutcome op) {
     OperationOutcomeIssueComponent issue = new OperationOutcome.OperationOutcomeIssueComponent();
-    issue.setUserData("source.vm", message);   
+    issue.setUserData(UserDataNames.validator_source_vm, message);   
     issue.setCode(convert(message.getType()));
     
     if (message.getLocation() != null) {
@@ -163,13 +169,39 @@ public class OperationOutcomeUtilities {
     CodeableConcept c = new CodeableConcept();
     c.setText(message.getMessage());
     issue.setDetails(c);
-    if (message.sliceText != null) {
-      issue.addExtension(ToolingExtensions.EXT_ISSUE_SLICE_INFO, new StringType(CommaSeparatedStringBuilder.join("; ", message.sliceText)));
+    if (message.hasSliceInfo()) {
+      // issue.addExtension(ToolingExtensions.EXT_ISSUE_SLICE_INFO, new StringType(errorSummaryForSlicingAsText(message.getSliceInfo())));
+      for (ValidationMessage vm : message.getSliceInfo()) {
+        Extension ext = issue.addExtension();
+        ext.setUrl(ToolingExtensions.EXT_ISSUE_INNER_MESSAGE);
+        ext.addExtension("severity", new CodeType(vm.getLevel().toCode()));
+        ext.addExtension("type", new CodeType(vm.getType().toCode()));
+        ext.addExtension("path", new StringType(vm.getLocation()));
+        ext.addExtension("message", new StringType(vm.getMessage()));
+      }
     }
     if (message.getServer() != null) {
       issue.addExtension(ToolingExtensions.EXT_ISSUE_SERVER, new UrlType(message.getServer()));
     }
     return issue;
+  }
+
+  private static String errorSummaryForSlicingAsText(List<ValidationMessage> list) {
+    StringBuilder b = new StringBuilder();
+    for (ValidationMessage vm : list) {
+      if (vm.isSlicingHint()) {
+        if (vm.hasSliceInfo()) {
+          for (ValidationMessage s : vm.getSliceInfo()) {
+            b.append(vm.getLocation() + ": " + s);
+          }
+        } else {
+          b.append(vm.getLocation() + ": " + vm.getMessage());
+        }
+      } else if (vm.getLevel() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR || vm.getLevel() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.FATAL) {
+        b.append(vm.getLocation() + ": " + vm.getHtml());
+      }
+    }
+    return b.toString();
   }
 
   public static OperationOutcome createOutcomeSimple(List<ValidationMessage> messages) {
@@ -178,6 +210,18 @@ public class OperationOutcomeUtilities {
       res.addIssue(convertToIssueSimple(vm, res));
     }
     return res;
+  }
+
+  public static OperationOutcome outcomeFromTextError(String text) {
+    OperationOutcome oo = new OperationOutcome();
+    oo.getText().setStatus(NarrativeStatus.GENERATED);
+    oo.getText().setDiv(new XhtmlNode(NodeType.Element, "div"));
+    oo.getText().getDiv().tx(text);
+    OperationOutcomeIssueComponent issue = oo.addIssue();
+    issue.setSeverity(IssueSeverity.ERROR);
+    issue.setCode(IssueType.EXCEPTION);
+    issue.getDetails().setText(text);
+    return oo;
   }
 
 }

@@ -14,10 +14,15 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.CSVReader;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 
+@MarkedToMoveToAdjunctPackage
 public class MappingAssistant {
 
 
@@ -47,7 +52,7 @@ public class MappingAssistant {
     for (StructureDefinitionMappingComponent m : derived.getMapping()) {
       masterList.add(m);
       if (!isSuppressed(m)) {
-        m.setUserData("private-marked-as-derived", true);
+        m.setUserData(UserDataNames.mappings_inherited, true);
       }
     }
     
@@ -127,7 +132,7 @@ public class MappingAssistant {
     
     derived.getMapping().clear();
     for (StructureDefinitionMappingComponent t : masterList) {
-      if (usedList.contains(t) || t.hasUserData("private-marked-as-derived")) {
+      if (usedList.contains(t) || t.hasUserData(UserDataNames.mappings_inherited)) {
         derived.getMapping().add(t);
       }
     }
@@ -163,7 +168,7 @@ public class MappingAssistant {
           for (ElementDefinitionMappingComponent d : destination) {
             if (compareMaps(name, s, d)) {
               found = true;
-              d.setUserData(ProfileUtilities.UD_DERIVATION_EQUALS, true);
+              d.setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, true);
               break;
             }
           }
@@ -203,7 +208,7 @@ public class MappingAssistant {
         switch (mappingMergeMode) {
         case APPEND:
           if (!Utilities.splitStrings(d.getMap(), "\\,").contains(s.getMap())) {
-            d.setMap(d.getMap()+","+s.getMap());
+            d.setMap(mergeMaps(d.getMap(), s.getMap()));
           }
           return true;
         case DUPLICATE:
@@ -222,6 +227,21 @@ public class MappingAssistant {
     } else {
       return false;
     }
+  }
+
+  private String mergeMaps(String map, String map2) {
+    List<String> csv1 = CSVReader.splitString(map);
+    List<String> csv2 = CSVReader.splitString(map2);
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(",");
+    for (String s : csv1) {
+      b.append(s);
+    }
+    for (String s : csv2) {
+      if (!csv1.contains(s)) {
+        b.append(s);
+      }
+    }
+    return b.toString();
   }
   
 }

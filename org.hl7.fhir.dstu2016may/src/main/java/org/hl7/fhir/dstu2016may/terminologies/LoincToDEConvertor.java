@@ -68,6 +68,7 @@ import org.xmlpull.v1.XmlPullParserException;
  * @author Grahame
  *
  */
+@Deprecated
 public class LoincToDEConvertor {
 
   public static void main(String[] args)
@@ -162,7 +163,7 @@ public class LoincToDEConvertor {
   }
 
   private void loadLoinc() throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
 

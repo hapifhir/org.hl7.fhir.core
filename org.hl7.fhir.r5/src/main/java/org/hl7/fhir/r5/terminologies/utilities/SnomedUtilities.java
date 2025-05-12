@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.terminologies.utilities;
 
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 
 
@@ -19,6 +20,7 @@ import org.hl7.fhir.utilities.Utilities;
 //UK: 83821000000107
 //IPS: 827022005
                        
+@MarkedToMoveToAdjunctPackage
 public class SnomedUtilities {
 
   public static String getVersionFromParameters(Parameters p, String version) {
@@ -45,8 +47,11 @@ public class SnomedUtilities {
     if (version.contains("/")) {
       version = version.substring(0, version.indexOf("/"));
     }
-    if (Utilities.existsInList(version, "900000000000207008", "731000124108", "32506021000036107", "11000172109", "20611000087101",
-        "449081005", "554471000005108", "11000146104", "45991000052106", "2011000195101", "83821000000107", "827022005")) {
+    if (Utilities.existsInList(version, "900000000000207008", "449081005", "11000221109", "32506021000036107", "11000234105", "11000172109",
+        "20621000087109", "20611000087101", "554471000005108", "11000181102", "11000229106",
+        "11000274103", "1121000189102", "11000220105", "11000146104", "21000210109", "51000202101",
+        "11000267109", "900000001000122104", "45991000052106", "2011000195101", "83821000000107",
+        "999000021000000109", "5631000179106", "731000124108", "599100012410")) {
       return version;
     } else {
       return null;
@@ -54,7 +59,7 @@ public class SnomedUtilities {
   }
 
   public static String getSctLink(String version, String code, Parameters p) {
-    if (!Utilities.noString(code)) { 
+    if (!Utilities.noString(code) && !code.contains(":")) { 
       version = SnomedUtilities.getVersionFromParameters(p, version);
       String edId = SnomedUtilities.getEditionFromVersion(version);
       if (edId != null) {

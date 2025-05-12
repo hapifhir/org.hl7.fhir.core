@@ -10,8 +10,10 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public class ProvenanceRenderer extends ResourceRenderer {
 
   public ProvenanceRenderer(RenderingContext context) { 
@@ -43,7 +45,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
     }
     // summary table
     x.para().tx(context.formatPhrase(RenderingContext.GENERAL_SUMM));
-    XhtmlNode t = x.table("grid");
+    XhtmlNode t = x.table("grid", false);
     XhtmlNode tr;
     if (prv.has("occurred")) {
       tr = t.tr();
@@ -88,7 +90,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
       hasOnBehalfOf = hasOnBehalfOf || a.has("onBehalfOf"); 
     }    
     x.para().b().tx(context.formatPhrase(RenderingContext.PROV_AGE));
-    t = x.table("grid");
+    t = x.table("grid", false);
     tr = t.tr();
     if (hasType) {
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_TYPE));

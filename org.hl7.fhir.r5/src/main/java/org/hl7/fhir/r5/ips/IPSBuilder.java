@@ -3,7 +3,6 @@ package org.hl7.fhir.r5.ips;
 import java.util.Date;
 import java.util.List;
 
-import org.hl7.fhir.r5.ips.IPSBuilder.TypeAndId;
 import org.hl7.fhir.r5.model.Age;
 import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.Bundle;
@@ -31,6 +30,7 @@ import org.hl7.fhir.r5.model.Medication;
 import org.hl7.fhir.r5.model.MedicationStatement;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.utils.client.FHIRToolingClient;
+import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -66,7 +66,7 @@ public class IPSBuilder {
   private static Bundle initBundle() {
     Bundle bnd = new Bundle();
     bnd.getIdentifier().setSystem("urn:ietf:rfc:3986");
-    bnd.getIdentifier().setValue(Utilities.makeUuidUrn());
+    bnd.getIdentifier().setValue(UUIDUtilities.makeUuidUrn());
     bnd.setType(BundleType.DOCUMENT);
     bnd.setTimestamp(new Date());
     return bnd;
@@ -74,7 +74,7 @@ public class IPSBuilder {
   
   private static Composition initComposition(Bundle bnd, String url, Patient pat) {
     Composition cmp = new Composition();
-    cmp.setIdBase(Utilities.makeUuidLC());
+    cmp.setIdBase(UUIDUtilities.makeUuidLC());
     cmp.setStatus(CompositionStatus.FINAL);
     cmp.getType().addCoding().setSystem("http://loinc.org").setCode("60591-5");
     cmp.setDate(new Date());
@@ -102,7 +102,7 @@ public class IPSBuilder {
     sct.getCode().addCoding().setSystem("http://loinc.org").setCode("10160-0");
     sct.getText().setStatus(NarrativeStatus.GENERATED);
     var x = sct.getText().getDiv();
-    var tbl = x.table("grid");
+    var tbl = x.table("grid", false);
     var tr = tbl.tr();
     tr.th().tx("Medication");
     tr.th().tx("Category");
@@ -156,7 +156,7 @@ public class IPSBuilder {
     }
     if (!ok) {
       Condition cnd = new Condition();
-      cnd.setId(Utilities.makeUuidLC());
+      cnd.setId(UUIDUtilities.makeUuidLC());
 
       cnd.getText().setStatus(NarrativeStatus.GENERATED);
       var rx = cnd.getText().getDiv();
@@ -229,7 +229,7 @@ public class IPSBuilder {
     sct.getCode().addCoding().setSystem("http://loinc.org").setCode("11450-4");
     sct.getText().setStatus(NarrativeStatus.GENERATED);
     var x = sct.getText().getDiv();
-    var tbl = x.table("grid");
+    var tbl = x.table("grid", false);
     var tr = tbl.tr();
     tr.th().tx("Code");
     tr.th().tx("Category");
@@ -261,7 +261,7 @@ public class IPSBuilder {
     }
     if (!ok) {
       Condition cnd = new Condition();
-      cnd.setId(Utilities.makeUuidLC());
+      cnd.setId(UUIDUtilities.makeUuidLC());
 
       cnd.getText().setStatus(NarrativeStatus.GENERATED);
       var rx = cnd.getText().getDiv();

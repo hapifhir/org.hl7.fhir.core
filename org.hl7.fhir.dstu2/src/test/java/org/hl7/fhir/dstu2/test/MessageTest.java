@@ -12,6 +12,7 @@ import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.junit.jupiter.api.Test;
 
+@Deprecated
 public class MessageTest {
 
   @Test

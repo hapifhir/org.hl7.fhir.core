@@ -3,7 +3,9 @@ package org.hl7.fhir.r5.terminologies.utilities;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.CacheToken;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class CodingValidationRequest {
   private Coding coding;
   private ValidationResult result;

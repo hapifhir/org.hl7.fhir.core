@@ -34,7 +34,9 @@ import java.io.IOException;
 
 import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.r4.model.ValueSet;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public interface ValueSetExpander {
   public enum TerminologyServiceErrorClass {
     UNKNOWN, NOSERVICE, SERVER_ERROR, VALUESET_UNSUPPORTED;
@@ -110,6 +112,10 @@ public interface ValueSetExpander {
     public ValueSetExpansionOutcome setTxLink(String txLink) {
       this.txLink = txLink;
       return this;
+    }
+
+    public boolean isOk() {
+      return error == null;
     }
 
   }

@@ -7,6 +7,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 public class ValidationResult {
@@ -25,6 +26,7 @@ public class ValidationResult {
   private boolean inactive;
   private String status;
   private String server;
+  private boolean errorIsDisplayIssue;
   
   @Override
   public String toString() {
@@ -110,7 +112,7 @@ public class ValidationResult {
   }
 
   public boolean isOk() {
-    return severity == null || severity == IssueSeverity.INFORMATION || severity == IssueSeverity.WARNING;
+    return severity == null || severity == IssueSeverity.INFORMATION || severity == IssueSeverity.WARNING || errorIsDisplayIssue;
   }
 
   public String getSystem() {
@@ -408,4 +410,15 @@ public class ValidationResult {
     }
     return true;
   }
+
+  public boolean isErrorIsDisplayIssue() {
+    return errorIsDisplayIssue;
+  }
+
+  public ValidationResult setErrorIsDisplayIssue(boolean errorIsDisplayIssue) {
+    this.errorIsDisplayIssue = errorIsDisplayIssue;
+    return this;
+  }
+  
+  
 }

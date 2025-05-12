@@ -26,8 +26,11 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 
+@MarkedToMoveToAdjunctPackage
 public class ComparisonSession {
 
   
@@ -191,11 +194,11 @@ public class ComparisonSession {
     if (b == null) {
       return null;
     }
-    if (b.hasUserData(VersionComparisonAnnotation.USER_DATA_NAME)) {
-      return (VersionComparisonAnnotation) b.getUserData(VersionComparisonAnnotation.USER_DATA_NAME);
+    if (b.hasUserData(UserDataNames.COMP_VERSION_ANNOTATION)) {
+      return (VersionComparisonAnnotation) b.getUserData(UserDataNames.COMP_VERSION_ANNOTATION);
     } else {
       VersionComparisonAnnotation vca = new VersionComparisonAnnotation(AnotationType.NoChange);
-      b.setUserData(VersionComparisonAnnotation.USER_DATA_NAME, vca);
+      b.setUserData(UserDataNames.COMP_VERSION_ANNOTATION, vca);
       return vca;
     }
   }

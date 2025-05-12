@@ -21,6 +21,7 @@ import java.io.IOException;
 
 @Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Deprecated
 public class NarrativeGeneratorTests {
 
   private NarrativeGenerator gen;

@@ -111,7 +111,7 @@ public class FHIRPathTests {
 
   @BeforeAll
   public static void setUp() throws FileNotFoundException, FHIRException, IOException {
-    context = new SimpleWorkerContext((SimpleWorkerContext) TestingUtilities.getSharedWorkerContext());
+    context = new SimpleWorkerContext(TestingUtilities.getSharedWorkerContext());
     if (!context.hasPackage("hl7.cda.us.ccda", null)) {
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pcm.loadPackage("hl7.cda.uv.core", "2.0.0");
@@ -219,9 +219,9 @@ public class FHIRPathTests {
       if (!skipStaticCheck) {
         try {
           if (Utilities.noString(input)) {
-            fp.check(null, null, node);
+            fp.check(null, null, null, node);
           } else {
-            fp.check(res, res.fhirType(), res.fhirType(), node);
+            fp.check(res, res.fhirType(), res.fhirType(), res.fhirType(), node);
           }
           Assertions.assertTrue(fail != TestResultType.SEMANTICS, String.format("Expected exception didn't occur checking %s", expression));
         } catch (Exception e) {
@@ -262,7 +262,7 @@ public class FHIRPathTests {
 
       List<Element> expected = new ArrayList<Element>();
       XMLUtil.getNamedChildren(test, "output", expected);
-      assertEquals(outcome.size(), expected.size(), String.format("Expected %d objects but found %d for expression %s", expected.size(), outcome.size(), expression));
+      assertEquals(expected.size(), outcome.size(), String.format("Expected %d objects but found %d for expression %s", expected.size(), outcome.size(), expression));
       if ("false".equals(test.getAttribute("ordered"))) {
         for (int i = 0; i < Math.min(outcome.size(), expected.size()); i++) {
           String tn = outcome.get(i).fhirType();
@@ -336,5 +336,24 @@ public class FHIRPathTests {
     List<Base> results = fp.evaluate(input, "Patient.id");
     assertEquals(1, results.size());
     assertEquals("123", results.get(0).toString());
+  }
+
+  @Test
+  public void testEvaluate_ToStringOnDateValue() {
+    Patient input = new Patient();
+    var dtv = new DateType("2024");
+    input.setBirthDateElement(dtv);
+    List<Base> results = fp.evaluate(input, "Patient.birthDate.toString()");
+    assertEquals(1, results.size());
+    assertEquals("2024", results.get(0).toString());
+  }
+
+  @Test
+  public void testEvaluate_ToStringOnExtensionOnlyValue() {
+    Patient input = new Patient();
+    var dtv = new DateType();
+    input.setBirthDateElement(dtv);
+    List<Base> results = fp.evaluate(input, "Patient.birthDate.toString()");
+    assertEquals(0, results.size());
   }
 }

@@ -53,6 +53,7 @@ import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.model.StructureDefinition.StructureDefinitionKind;
 
+@Deprecated
 public class ObjectConverter {
 
   private IWorkerContext context;
@@ -72,7 +73,7 @@ public class ObjectConverter {
     ByteArrayInputStream bi = new ByteArrayInputStream(bs.toByteArray());
     List<NamedElement> list = new JsonParser(context).parse(bi);
     if (list.size() != 1) {
-      throw new FHIRException("Unable to convert because the source contains multieple resources");
+      throw new FHIRException("Unable to convert because the source contains multiple resources");
     }
     return list.get(0).getElement();
   }
@@ -130,7 +131,7 @@ public class ObjectConverter {
     ByteArrayOutputStream bo = new ByteArrayOutputStream();
     try {
       new JsonParser(context).compose(element, bo, OutputStyle.NORMAL, null);
-//      TextFile.bytesToFile(bo.toByteArray(), Utilities.path("[tmp]", "json.json");
+//      FileUtilities.bytesToFile(bo.toByteArray(), Utilities.path("[tmp]", "json.json");
       return new org.hl7.fhir.r4b.formats.JsonParser().parse(bo.toByteArray());
     } catch (IOException e) {
       // won't happen

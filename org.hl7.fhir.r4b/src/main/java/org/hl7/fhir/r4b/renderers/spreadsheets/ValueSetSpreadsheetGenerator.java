@@ -21,6 +21,7 @@ import org.hl7.fhir.r4b.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r4b.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 
+@Deprecated
 public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
 
   public ValueSetSpreadsheetGenerator(IWorkerContext context) {

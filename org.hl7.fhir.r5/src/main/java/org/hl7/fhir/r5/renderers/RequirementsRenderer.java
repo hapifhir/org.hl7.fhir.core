@@ -18,9 +18,11 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public class RequirementsRenderer extends ResourceRenderer {
 
   public RequirementsRenderer(RenderingContext context) { 
@@ -80,7 +82,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         p.ah(context.prefixLocalHref(c.primitiveValue())).tx(url);
       }
     }
-    XhtmlNode tbl = x.table("grid");
+    XhtmlNode tbl = x.table("grid", false);
 
     for (ResourceWrapper stmt : req.children("statement")) {
       XhtmlNode tr = tbl.tr();

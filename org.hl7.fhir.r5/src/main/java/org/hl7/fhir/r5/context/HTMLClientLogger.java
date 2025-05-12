@@ -38,10 +38,12 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@MarkedToMoveToAdjunctPackage
 public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger {
 
   private static final boolean DEBUG = false;
@@ -87,7 +89,7 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
   }
 
   @Override
-  public void logResponse(String outcome, List<String> headers, byte[] body) {
+  public void logResponse(String outcome, List<String> headers, byte[] body, long start) {
     if (DEBUG) {
       System.out.println(" txlog resp: " +outcome+" "+present(body));
     }

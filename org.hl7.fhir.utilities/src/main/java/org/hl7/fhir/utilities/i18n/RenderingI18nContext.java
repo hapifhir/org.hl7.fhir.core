@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.i18n;
 
+
 public class RenderingI18nContext extends I18nBase {
 
   public static final String ACTOR_DEF_ACT = "ACTOR_DEF_ACT";
@@ -185,8 +186,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONC_MAP_FROM = "CONC_MAP_FROM";
   public static final String CONC_MAP_GRP = "CONC_MAP_GRP";
   public static final String CONC_MAP_NOT_SPEC = "CONC_MAP_NOT_SPEC";
-  public static final String CONC_MAP_NO_PROD_USE = "CONC_MAP_NO_PROD_USE";
-  public static final String CONC_MAP_PUB_ON = "CONC_MAP_PUB_ON"; 
   public static final String CONC_MAP_REL = "CONC_MAP_REL";
   public static final String CONC_MAP_SOURCE = "CONC_MAP_SOURCE";
   public static final String CONC_MAP_SRC_DET = "CONC_MAP_SRC_DET";
@@ -224,6 +223,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_FACT = "DATA_REND_FACT";
   public static final String DATA_REND_FAX = "DATA_REND_FAX";
   public static final String GENERAL_FILTER = "GENERAL_FILTER";
+  public static final String GENERAL_SOURCE = "GENERAL_SOURCE";
+  public static final String OBLIGATION_SOURCE = "OBLIGATION_SOURCE";
   public static final String DATA_REND_GLN = "DATA_REND_GLN";
   public static final String DATA_REND_ICD = "DATA_REND_ICD";
   public static final String DATA_REND_INT = "DATA_REND_INT";
@@ -251,6 +252,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_TIMING = "DATA_REND_TIMING";
   public static final String DATA_REND_TO_DO = "DATA_REND_TO_DO";
   public static final String GENERAL_UCUM = "GENERAL_UCUM";
+  public static final String GENERAL_NCI_THES = "GENERAL_NCI_THES";
   public static final String DATA_REND_UNKNWN = "DATA_REND_UNKNWN";
   public static final String DATA_REND_UNRD_EX = "DATA_REND_UNRD_EX";
   public static final String DATA_REND_UNTIL = "DATA_REND_UNTIL";
@@ -299,7 +301,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String EX_SCEN_TIME = "EX_SCEN_TIME";
   public static final String EX_SCEN_UN = "EX_SCEN_UN";
   public static final String EX_SCEN_UN_ACT = "EX_SCEN_UN_ACT";
-  public static final String EX_SCEN_UN_INST = "EX_SCEN_UN_INST";
   public static final String GENERAL_VER_LOW = "GENERAL_VER_LOW";
   public static final String IMP_GUIDE_URL = "IMP_GUIDE_URL";
   public static final String LIB_REND_ART = "LIB_REND_ART";
@@ -442,6 +443,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String QUEST_LINKID = "QUEST_LINKID";
   public static final String QUEST_MAND = "QUEST_MAND";
   public static final String GENERAL_MAX_LENGTH = "GENERAL_MAX_LENGTH";
+  public static final String GENERAL_MIN_LENGTH = "GENERAL_MIN_LENGTH";
   public static final String QUEST_MAX_LENGTH = "QUEST_MAX_LENGTH";
   public static final String QUEST_NLM = "QUEST_NLM";
   public static final String QUEST_NONE_SPEC = "QUEST_NONE_SPEC";
@@ -509,6 +511,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String RES_REND_UNKNOWN = "RES_REND_UNKNOWN";
   public static final String RES_REND_UPDATED = "RES_REND_UPDATED";
   public static final String RES_REND_VER = "RES_REND_VER";
+  public static final String RES_REND_TEMPLATE_ID = "RES_REND_TEMPLATE_ID";
   public static final String SD_COMP_HEAD_CARD_L = "SD_COMP_HEAD_CARD_L";
   public static final String SD_COMP_HEAD_CARD_L_DESC  ="SD_COMP_HEAD_CARD_L_DESC";
   public static final String SD_COMP_HEAD_CARD_R = "SD_COMP_HEAD_CARD_R";
@@ -801,6 +804,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SUB_TOPIC_FILT_PAR = "SUB_TOPIC_FILT_PAR";
   public static final String SUB_TOPIC_INCL = "SUB_TOPIC_INCL";
   public static final String SUB_TOPIC_INT = "SUB_TOPIC_INT";
+  public static final String SUB_TOPIC_CURR = "SUB_TOPIC_CURR";
   public static final String SUB_TOPIC_PREV = "SUB_TOPIC_PREV";
   public static final String SUB_TOPIC_REQ = "SUB_TOPIC_REQ";
   public static final String SUB_TOPIC_RES_TRIG = "SUB_TOPIC_RES_TRIG";
@@ -837,6 +841,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String TEXT_ICON_SLICE = "TEXT_ICON_SLICE";
   public static final String TEXT_ICON_SLICE_ITEM = "TEXT_ICON_SLICE_ITEM";
   public static final String TX_DISPLAY = "TX_DISPLAY";
+  public static final String TX_DISPLAY_LANG = "TX_DISPLAY_LANG";
   public static final String VALUE_SET_ADD_DESIG = "VALUE_SET_ADD_DESIG";
   public static final String VALUE_SET_ALL_CODE = "VALUE_SET_ALL_CODE";
   public static final String VALUE_SET_ALL_CODES_DEF = "VALUE_SET_ALL_CODES_DEF";
@@ -865,6 +870,10 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VALUE_SET_EXP = "VALUE_SET_EXP";
   public static final String VALUE_SET_EXPANSION = "VALUE_SET_EXPANSION";
   public static final String VALUE_SET_EXPANSIONS = "VALUE_SET_EXPANSIONS";
+  public static final String VALUE_SET_EXPANSION_SRVR = "VALUE_SET_EXPANSION_SRVR";
+  public static final String VALUE_SET_EXPANSIONS_SRVR = "VALUE_SET_EXPANSIONS_SRVR";
+  public static final String VALUE_SET_EXPANSION_INTERNAL = "VALUE_SET_EXPANSION_INTERNAL";
+  public static final String VALUE_SET_EXPANSIONS_INTERNAL = "VALUE_SET_EXPANSIONS_INTERNAL";
   public static final String VALUE_SET_EXP_FRAG = "VALUE_SET_EXP_FRAG";
   public static final String VALUE_SET_GENERALIZES = "VALUE_SET_GENERALIZES";
   public static final String VALUE_SET_HAS = "VALUE_SET_HAS";
@@ -906,6 +915,24 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VALUE_SET_USED_ELSEWHERE = "VALUE_SET_USED_ELSEWHERE";
   public static final String VALUE_SET_WHERE = "VALUE_SET_WHERE"; 
   public static final String VALUE_SET_WHERE_CODES = "VALUE_SET_WHERE_CODES";
+  public static final String VALUE_SET_AR = "VALUE_SET_AR";
+  public static final String VALUE_SET_AT = "VALUE_SET_AT";
+  public static final String VALUE_SET_BE = "VALUE_SET_BE";
+  public static final String VALUE_SET_CA_EN = "VALUE_SET_CA_EN";
+  public static final String VALUE_SET_CA_FR = "VALUE_SET_CA_FR";
+  public static final String VALUE_SET_CA = "VALUE_SET_CA";
+  public static final String VALUE_SET_EE = "VALUE_SET_EE";
+  public static final String VALUE_SET_FI = "VALUE_SET_FI";
+  public static final String VALUE_SET_DE = "VALUE_SET_DE";
+  public static final String VALUE_SET_IE = "VALUE_SET_IE";
+  public static final String VALUE_SET_NZ = "VALUE_SET_NZ";
+  public static final String VALUE_SET_NO = "VALUE_SET_NO";
+  public static final String VALUE_SET_KR = "VALUE_SET_KR";
+  public static final String VALUE_ES_ES = "VALUE_ES_ES";
+  public static final String VALUE_SET_CH = "VALUE_SET_CH";
+  public static final String VALUE_SET_UK_CLIN = "VALUE_SET_UK_CLIN";
+  public static final String VALUE_SET_UY = "VALUE_SET_UY";
+  public static final String VALUE_SET_US_ICD10CM = "VALUE_SET_US_ICD10CM";
   public static final String VS_ABSTRACT_CODE_HINT = "VS_ABSTRACT_CODE_HINT";
   public static final String GENERAL_CODE = "GENERAL_CODE";
   public static final String GENERAL_DESC = "GENERAL_DESC";
@@ -919,7 +946,44 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_ATT_DATA = "DATA_REND_ATT_DATA";
   public static final String GENERAL_DATA_DISPLAY_PROPERTY = "GENERAL_DATA_DISPLAY_PROPERTY";
   public static final String DATA_REND_CURRENCY = "DATA_REND_CURRENCY";
-  
+  public static final String _NA = "_NA";
+  public static final String FMM_TABLE = "FMM_TABLE";
+  public static final String KIND_EXTENSION = "KIND_EXTENSION";
+  public static final String KIND_LOGICAL = "KIND_LOGICAL";
+  public static final String KIND_PROFILE = "KIND_PROFILE";
+  public static final String IP_NONE = "IP_NONE";
+  public static final String IP_NONE_EXT = "IP_NONE_EXT";
+  public static final String IP_INTRO = "IP_INTRO";
+  public static final String MATURITY_PUBLISHER = "MATURITY_PUBLISHER";
+  public static final String MATURITY_STATUS = "MATURITY_STATUS";
+  public static final String MATURITY_MATURITY = "MATURITY_MATURITY";
+  public static final String MATURITY_STDS_STATUS = "MATURITY_STDS_STATUS";
+
+  public static final String DATA_REND_MORNING = "DATA_REND_MORNING";
+  public static final String DATA_REND_MORNING_EARLY = "DATA_REND_MORNING_EARLY";
+  public static final String DATA_REND_MORNING_LATE = "DATA_REND_MORNING_LATE";
+  public static final String DATA_REND_NOON = "DATA_REND_NOON";
+  public static final String DATA_REND_AFTERNOON = "DATA_REND_AFTERNOON";
+  public static final String DATA_REND_AFTERNOON_EARLY = "DATA_REND_AFTERNOON_EARLY";
+  public static final String DATA_REND_AFTERNOON_LATE = "DATA_REND_AFTERNOON_LATE";
+  public static final String DATA_REND_EVENING = "DATA_REND_EVENING";
+  public static final String DATA_REND_EVENING_EARLY = "DATA_REND_EVENING_EARLY";
+  public static final String DATA_REND_EVENING_LATE = "DATA_REND_EVENING_LATE";
+  public static final String DATA_REND_NIGHT = "DATA_REND_NIGHT";
+  public static final String DATA_REND_AFTER_SLEEP = "DATA_REND_AFTER_SLEEP";
+  public static final String DATA_REND_IMMEDIATE = "DATA_REND_IMMEDIATE";
+  public static final String VALUE_SET_OTHER_DISPLAY = "VALUE_SET_OTHER_DISPLAY";
+  public static final String GENERAL_VALUE_BOUNDED = "GENERAL_VALUE_BOUNDED";
+  public static final String GENERAL_VALUE_MAX = "GENERAL_VALUE_MAX";
+  public static final String GENERAL_VALUE_MIN = "GENERAL_VALUE_MIN";
+  public static final String GENERAL_REQUIRED_BINDING = "GENERAL_REQUIRED_BINDING";
+  public static final String GENERAL_ADDITIONAL_BINDING = "GENERAL_ADDITIONAL_BINDING";
+  public static final String GENERAL_FIXED_VALUE = "GENERAL_FIXED_VALUE";
+  public static final String GENERAL_PATTERN_VALUE = "GENERAL_PATTERN_VALUE";
+  public static final String GENERAL_TYPE_PROFILE = "GENERAL_TYPE_PROFILE";
+  public static final String GENERAL_TYPE_TARGET_PROFILE = "GENERAL_TYPE_TARGET_PROFILE";
+  public static final String SDR_EXTENSION_SUMMARY = "SDR_EXTENSION_SUMMARY";
+
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
   }
@@ -929,7 +993,6 @@ public class RenderingI18nContext extends I18nBase {
     return "phrase";
   }
 
-
   public String formatPhrase(String theMessage, Object... theMessageArguments) {
     return formatMessage(theMessage, theMessageArguments);
   }
@@ -937,4 +1000,5 @@ public class RenderingI18nContext extends I18nBase {
   public String formatPhrasePlural(Integer plural, String theMessage, Object... theMessageArguments) {
     return formatMessagePlural(plural, theMessage, theMessageArguments);
   }
+
 }

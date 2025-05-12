@@ -24,14 +24,18 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
+
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.StandardsStatus;
+import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -70,7 +74,40 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  * Timezones: by default, date/times are rendered in their source timezone 
  * 
  */
+@MarkedToMoveToAdjunctPackage
 public class RenderingContext extends RenderingI18nContext {
+
+  public enum DesignationMode {
+    ALL,
+    LANGUAGES,
+    NONE
+  }
+
+  public interface IResourceLinkResolver {
+    public <T extends Resource> T findLinkableResource(Class<T> class_, String uri) throws IOException;
+  }
+
+  public static class RenderingContextLangs {
+    
+    private final RenderingContext defLangRC;
+    private final Map<String, RenderingContext> langs = new HashMap<>();
+
+    public RenderingContextLangs(RenderingContext defLangRC) {
+      this.defLangRC = defLangRC;
+    }
+
+    public void seeLang(String lang, RenderingContext rc) {
+      this.langs.put(lang, rc);
+    }
+    
+    public RenderingContext get(String lang) {
+      if (lang == null || !langs.containsKey(lang)) {
+        return defLangRC;
+      } else {
+        return langs.get(lang);
+      }
+    }
+  }
 
   // provides liquid templates, if they are available for the content
   public interface ILiquidTemplateProvider {
@@ -216,7 +253,7 @@ public class RenderingContext extends RenderingI18nContext {
     ALL // in addition to translations in designations, look for an render translations (WIP)
   }
 
-  private IWorkerContext worker;
+  private final IWorkerContext worker;
   private MarkDownProcessor markdown;
   private ResourceRendererMode mode;
   private GenerationRules rules;
@@ -241,6 +278,8 @@ public class RenderingContext extends RenderingI18nContext {
   private boolean pretty;
   private boolean showSummaryTable; // for canonical resources
   private boolean contained;
+  private boolean oids;
+
 
   private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R5);
   private boolean noSlowLookup;
@@ -267,7 +306,7 @@ public class RenderingContext extends RenderingI18nContext {
   private List<String> files = new ArrayList<String>(); // files created as by-products in destDir
   
   private Map<KnownLinkType, String> links = new HashMap<>();
-  private Map<String, String> namedLinks = new HashMap<>();
+  private Map<String, StringPair> namedLinks = new HashMap<>();
   private boolean addName = false;
   private Map<String, String> typeMap = new HashMap<>(); // type aliases that can be resolved in Markdown type links (mainly for cross-version usage)
   private int base64Limit = 1024;
@@ -275,31 +314,35 @@ public class RenderingContext extends RenderingI18nContext {
   private String uniqueLocalPrefix;
   private Set<String> anchors = new HashSet<>();
   private boolean unknownLocalReferencesNotLinks;
+  private IResourceLinkResolver resolveLinkResolver;
+  private boolean debug;
+  private DesignationMode designationMode;
   
   /**
    * 
-   * @param context - access to all related resources that might be needed
+   * @param workerContext - access to all related resources that might be needed
    * @param markdown - appropriate markdown processing engine 
    * @param terminologyServiceOptions - options to use when looking up codes
    * @param specLink - path to FHIR specification
    * @param locale - i18n for rendering
    */
-  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, Locale locale, ResourceRendererMode mode, GenerationRules rules) {
+  public RenderingContext(IWorkerContext workerContext, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, Locale locale, ResourceRendererMode mode, GenerationRules rules) {
     super();
-    this.worker = worker;
+    this.worker = workerContext;
     this.markdown = markdown;
-    this.locale = locale;
+    this.setLocale(locale);
     this.links.put(KnownLinkType.SPEC, specLink);
     this.localPrefix = localPrefix;
     this.mode = mode;
     this.rules = rules;
+    this.designationMode = DesignationMode.ALL;
     if (terminologyServiceOptions != null) {
       this.terminologyServiceOptions = terminologyServiceOptions;
     }
   }
   
   public RenderingContext copy(boolean copyAnchors) {
-    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC), localPrefix, locale, mode, rules);
+    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC, false), localPrefix, getLocale(), mode, rules);
 
     res.resolver = resolver;
     res.templateProvider = templateProvider;
@@ -344,6 +387,8 @@ public class RenderingContext extends RenderingI18nContext {
        res.anchors = anchors;
     }
     res.unknownLocalReferencesNotLinks = unknownLocalReferencesNotLinks;
+    res.resolveLinkResolver = resolveLinkResolver;
+    res.debug = debug;
     return res;
   }
   
@@ -561,7 +606,7 @@ public class RenderingContext extends RenderingI18nContext {
       return (localPrefix == null ? "" : localPrefix)+ref;
     }
     if (ref.startsWith("http://hl7.org/fhir") && !ref.substring(20).contains("/")) {
-      return getLink(KnownLinkType.SPEC)+ref.substring(20);
+      return getLink(KnownLinkType.SPEC, true)+ref.substring(20);
     }
     return ref;
   }
@@ -718,8 +763,12 @@ public class RenderingContext extends RenderingI18nContext {
     return links.containsKey(link);
   }
   
-  public String getLink(KnownLinkType link) {
-    return links.get(link);
+  public String getLink(KnownLinkType link, boolean secure) {
+    String url = links.get(link);
+    if (url != null && secure && url.startsWith("http://")) {
+      url = "https://" + url.substring("http://".length());
+    }
+    return url;
   }
   public void addLink(KnownLinkType type, String link) {
     links.put(type, link);
@@ -749,7 +798,7 @@ public class RenderingContext extends RenderingI18nContext {
     return this;
   }
 
-  public Map<String, String> getNamedLinks() {
+  public Map<String, StringPair> getNamedLinks() {
     return namedLinks;
   }
 
@@ -787,18 +836,18 @@ public class RenderingContext extends RenderingI18nContext {
 
 
   public String toStr(int v) {
-    NumberFormat nf = NumberFormat.getInstance(locale);
+    NumberFormat nf = NumberFormat.getInstance(getLocale());
     return nf.format(v);
   }
 
 
   public String getTranslated(PrimitiveType<?> t) {
-    if (locale != null) {
-      String v = ToolingExtensions.getLanguageTranslation(t, locale.toString());
+
+      String v = ToolingExtensions.getLanguageTranslation(t, getLocale().toLanguageTag());
       if (v != null) {
         return v;
       }
-    }
+
     return t.asStringValue();
   }
 
@@ -806,26 +855,24 @@ public class RenderingContext extends RenderingI18nContext {
     if (t == null) {
       return null;
     }
-    if (locale != null) {
+
       for (ResourceWrapper e : t.extensions(ToolingExtensions.EXT_TRANSLATION)) {
         String l = e.extensionString("lang");
-        if (l != null && l.equals(locale.toString())) {
+        if (l != null && l.equals(getLocale().toLanguageTag())) {
           String v = e.extensionString("content");
           if (v != null) {
             return v;
           }
         }
       }
-    }
+
     return t.primitiveValue();
   }
 
   public StringType getTranslatedElement(PrimitiveType<?> t) {
-    if (locale != null) {
-      StringType v = ToolingExtensions.getLanguageTranslationElement(t, locale.toString());
-      if (v != null) {
-        return v;
-      }
+    StringType v = ToolingExtensions.getLanguageTranslationElement(t, getLocale().toLanguageTag());
+    if (v != null) {
+      return v;
     }
     if (t instanceof StringType) {
       return (StringType) t;
@@ -835,24 +882,21 @@ public class RenderingContext extends RenderingI18nContext {
   }
 
   public String getTranslatedCode(Base b, String codeSystem) {
-
     if (b instanceof org.hl7.fhir.r5.model.Element) {
       org.hl7.fhir.r5.model.Element e = (org.hl7.fhir.r5.model.Element) b;
-      if (locale != null) {
-        String v = ToolingExtensions.getLanguageTranslation(e, locale.toString());
-        if (v != null) {
-          return v;
+      String v = ToolingExtensions.getLanguageTranslation(e, getLocale().toLanguageTag());
+      if (v != null) {
+        return v;
+      }
+      // no? then see if the tx service can translate it for us
+      try {
+        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(getLocale().toLanguageTag()).withVersionFlexible(true),
+          codeSystem, null, e.primitiveValue(), null);
+        if (t.isOk() && t.getDisplay() != null) {
+          return t.getDisplay();
         }
-        // no? then see if the tx service can translate it for us 
-        try {
-          ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toString()).withVersionFlexible(true),
-              codeSystem, null, e.primitiveValue(), null);
-          if (t.isOk() && t.getDisplay() != null) {
-            return t.getDisplay();
-          }
-        } catch (Exception ex) {
-          // nothing
-        }
+      } catch (Exception ex) {
+        // Do nothing.
       }
       if (e instanceof Enumeration<?>) {
         return ((Enumeration<?>) e).getDisplay();
@@ -867,69 +911,66 @@ public class RenderingContext extends RenderingI18nContext {
   }
 
   public String getTranslatedCode(String code, String codeSystem) {
-
-    if (locale != null) {
       try {
-        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toString()).withVersionFlexible(true), codeSystem, null, code, null);
+        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(getLocale().toLanguageTag()).withVersionFlexible(true), codeSystem, null, code, null);
         if (t.isOk() && t.getDisplay() != null) {
           return t.getDisplay();
+        } else {
+          return code;
         }
       } catch (Exception ex) {
-        // nothing
+        return code;
       }
-    }
-    return code;
   }
   
   public String getTranslatedCode(Enumeration<?> e, String codeSystem) {
-    if (locale != null) {
-      String v = ToolingExtensions.getLanguageTranslation(e, locale.toString());
-      if (v != null) {
-        return v;
-      }
-      // no? then see if the tx service can translate it for us 
-      try {
-        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toString()).withVersionFlexible(true),
-            codeSystem, null, e.getCode(), null);
-        if (t.isOk() && t.getDisplay() != null) {
-          return t.getDisplay();
-        }
-      } catch (Exception ex) {
-        // nothing
-      }
+    String v = ToolingExtensions.getLanguageTranslation(e, getLocale().toLanguageTag());
+    if (v != null) {
+      return v;
     }
+    // no? then see if the tx service can translate it for us
     try {
-      ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withVersionFlexible(true),
-          codeSystem, null, e.getCode(), null);
+      ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(getLocale().toLanguageTag()).withVersionFlexible(true),
+        codeSystem, null, e.getCode(), null);
       if (t.isOk() && t.getDisplay() != null) {
         return t.getDisplay();
       }
     } catch (Exception ex) {
       // nothing
     }
-    
+
+    try {
+      ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withVersionFlexible(true),
+        codeSystem, null, e.getCode(), null);
+      if (t.isOk() && t.getDisplay() != null) {
+        return t.getDisplay();
+      }
+    } catch (Exception ex) {
+      // nothing
+    }
+
     return e.getCode();
   }
   
   public String getTranslatedCode(Element e, String codeSystem) {
-    if (locale != null) {
+
       // first we look through the translation extensions
       for (Element ext : e.getChildrenByName("extension")) {
         String url = ext.getNamedChildValue("url");
         if (url.equals(ToolingExtensions.EXT_TRANSLATION)) {
           Base e1 = ext.getExtensionValue("lang");
 
-          if (e1 != null && e1.primitiveValue() != null && e1.primitiveValue().equals(locale.toString())) {
+          if (e1 != null && e1.primitiveValue() != null && e1.primitiveValue().equals(getLocale().toLanguageTag())) {
             e1 = ext.getExtensionValue("content");
             if (e1 != null && e1.isPrimitive()) {
               return e1.primitiveValue();
             }
           }
         }
-      }
+
       // no? then see if the tx service can translate it for us 
       try {
-        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toString()).withVersionFlexible(true),
+        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(getLocale().toLanguageTag()).withVersionFlexible(true),
             codeSystem, null, e.primitiveValue(), null);
         if (t.isOk() && t.getDisplay() != null) {
           return t.getDisplay();
@@ -947,10 +988,15 @@ public class RenderingContext extends RenderingI18nContext {
   }
 
   public RenderingContext withLocaleCode(String locale) {
-    setLocale(new Locale(locale));
+    setLocale(Locale.forLanguageTag(locale));
     return this;
   }
 
+  public RenderingContext withMode(ResourceRendererMode mode) {
+    setMode(mode);
+    return this;
+  }
+  
   public ContextUtilities getContextUtilities() {
     if (contextUtilities == null) {
       contextUtilities = new ContextUtilities(worker);
@@ -1035,5 +1081,51 @@ public class RenderingContext extends RenderingI18nContext {
 
   public void setUnknownLocalReferencesNotLinks(boolean unknownLocalReferencesNotLinks) {
     this.unknownLocalReferencesNotLinks = unknownLocalReferencesNotLinks;
+  }
+  
+  public <T extends Resource> T findLinkableResource(Class<T> class_, String uri) throws IOException {
+    if (resolveLinkResolver == null) {
+      return null;          
+    } else {
+      return resolveLinkResolver.findLinkableResource(class_, uri);
+    }
+  }
+
+  public IResourceLinkResolver getResolveLinkResolver() {
+    return resolveLinkResolver;
+  }
+
+  public void setResolveLinkResolver(IResourceLinkResolver resolveLinkResolver) {
+    this.resolveLinkResolver = resolveLinkResolver;
+  }
+
+  public boolean isDebug() {
+    return debug;
+  }
+
+  public void setDebug(boolean debug) {
+    this.debug = debug;
+  }
+
+  public DesignationMode getDesignationMode() {
+    return designationMode;
+  }
+
+  public void setDesignationMode(DesignationMode designationMode) {
+    this.designationMode = designationMode;
+  }
+
+  public boolean isOids() {
+    return oids;
+  }
+
+  public void setOids(boolean oids) {
+    this.oids = oids;
+  }
+
+  public RenderingContext withOids(boolean oids) {
+    RenderingContext self = this.copy(false);
+    self.oids = oids;
+    return self;
   }
 }

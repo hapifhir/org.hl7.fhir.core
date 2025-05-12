@@ -70,6 +70,7 @@ import org.hl7.fhir.dstu2016may.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
+@Deprecated
 public class StructureMapUtilities {
 
   public static final String MAP_WHERE_CHECK = "map.where.check";

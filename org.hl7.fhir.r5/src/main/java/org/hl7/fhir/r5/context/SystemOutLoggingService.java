@@ -1,8 +1,11 @@
 package org.hl7.fhir.r5.context;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@MarkedToMoveToAdjunctPackage
 public class SystemOutLoggingService implements ILoggingService {
 
   private final boolean debug;

@@ -66,7 +66,11 @@ public class CodeType extends StringType implements Comparable<CodeType>, ICodin
 			return 1;
 		}
 		return defaultString(getValue()).compareTo(defaultString(theCode.getValue()));
-	}	
+	}
+
+  public boolean equals(CodeType theCode) {
+    return this.getCode().equals(theCode.getCode());
+  }
 
 	@Override
 	protected String parse(String theValue) {

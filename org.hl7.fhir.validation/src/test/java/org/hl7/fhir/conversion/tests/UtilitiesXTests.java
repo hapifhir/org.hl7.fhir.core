@@ -31,7 +31,6 @@ package org.hl7.fhir.conversion.tests;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,12 +57,12 @@ import org.hl7.fhir.r5.context.IContextResourceLoader;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.filesystem.CSFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -104,13 +103,13 @@ public class UtilitiesXTests {
     if (Utilities.noString(version))
       return null;
     if (version.startsWith("1.0"))
-      return new R2ToR5Loader(Utilities.strings("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5());
+      return new R2ToR5Loader(Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5());
     if (version.startsWith("1.4"))
-      return new R2016MayToR5Loader(Utilities.strings("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5()); // special case
+      return new R2016MayToR5Loader(Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5()); // special case
     if (version.startsWith("3.0"))
-      return new R3ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5());
+      return new R3ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5());
     if (version.startsWith("4.0"))
-      return new R4ToR5Loader(Utilities.strings("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5(), version);
+      return new R4ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5(), version);
     return null;
   }
 
@@ -277,7 +276,7 @@ public class UtilitiesXTests {
   }
 
   private static Document loadXml(InputStream fn) throws Exception {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
       factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
       factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
       factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
@@ -301,9 +300,9 @@ public class UtilitiesXTests {
       if (System.getProperty("os.name").contains("Linux"))
         diff = Utilities.path("/", "usr", "bin", "meld");
       else {
-    	if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"), "\\WinMergeU.exe", null))
+    	if (FileUtilities.checkFileExists("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"), "\\WinMergeU.exe", null))
     		diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
-    	else if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"), "\\Meld.exe", null))
+    	else if (FileUtilities.checkFileExists("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"), "\\Meld.exe", null))
     		diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld", "Meld.exe");
       }
       if (diff == null || diff.isEmpty())
@@ -312,8 +311,8 @@ public class UtilitiesXTests {
       List<String> command = new ArrayList<String>();
       String f1 = Utilities.path("[tmp]", "input" + s1.hashCode() + ".json");
       String f2 = Utilities.path("[tmp]", "output" + s2.hashCode() + ".json");
-      TextFile.stringToFile(s1, f1);
-      TextFile.stringToFile(s2, f2);
+      FileUtilities.stringToFile(s1, f1);
+      FileUtilities.stringToFile(s2, f2);
       command.add(diff);
       if (diff.toLowerCase().contains("meld"))
     	  command.add("--newtab");
@@ -349,8 +348,8 @@ public class UtilitiesXTests {
   }
 
   private static String compareJson(String f1, String f2) throws JsonSyntaxException, FileNotFoundException, IOException {
-    JsonObject o1 = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(f1));
-    JsonObject o2 = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(f2));
+    JsonObject o1 = (JsonObject) new com.google.gson.JsonParser().parse(FileUtilities.fileToString(f1));
+    JsonObject o2 = (JsonObject) new com.google.gson.JsonParser().parse(FileUtilities.fileToString(f2));
     return compareObjects("", o1, o2);
   }
 
@@ -439,9 +438,9 @@ public class UtilitiesXTests {
       if (System.getProperty("os.name").contains("Linux"))
         diff = Utilities.path("/", "usr", "bin", "meld");
       else {
-      if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"), "\\WinMergeU.exe", null))
+      if (FileUtilities.checkFileExists("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge"), "\\WinMergeU.exe", null))
         diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
-      else if (Utilities.checkFile("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"), "\\Meld.exe", null))
+      else if (FileUtilities.checkFileExists("WinMerge", Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld"), "\\Meld.exe", null))
         diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "Meld", "Meld.exe");
       }
       if (diff == null || diff.isEmpty())
@@ -450,8 +449,8 @@ public class UtilitiesXTests {
       List<String> command = new ArrayList<String>();
       String f1 = Utilities.path("[tmp]", "input" + s1.hashCode() + ".json");
       String f2 = Utilities.path("[tmp]", "output" + s2.hashCode() + ".json");
-      TextFile.stringToFile(s1, f1);
-      TextFile.stringToFile(s2, f2);
+      FileUtilities.stringToFile(s1, f1);
+      FileUtilities.stringToFile(s2, f2);
       command.add(diff);
       if (diff.toLowerCase().contains("meld"))
         command.add("--newtab");
@@ -501,7 +500,7 @@ public class UtilitiesXTests {
     if (ManagedFileAccess.file("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
       String n = Utilities.path(getUserDirFhirTestCases(), Utilities.path(paths));
       // ok, we'll resolve this locally
-      return TextFile.fileToString(ManagedFileAccess.file(n));
+      return FileUtilities.fileToString(ManagedFileAccess.file(n));
     } else {
       // resolve from the package 
       String contents;
@@ -538,14 +537,14 @@ public class UtilitiesXTests {
   public static byte[] loadTestResourceBytes(String... paths) throws IOException {
     if (ManagedFileAccess.file("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
       String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
-      return TextFile.fileToBytes(n);
+      return FileUtilities.fileToBytes(n);
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
       InputStream s = UtilitiesXTests.class.getResourceAsStream(classpath);
       if (s == null) {
         throw new Error("unable to find resource "+classpath);
       }
-      return TextFile.streamToBytes(s);
+      return FileUtilities.streamToBytes(s);
     }
   }
 
@@ -559,15 +558,15 @@ public class UtilitiesXTests {
     File tmp = ManagedFileAccess.file(Utilities.path("tmp]"));
     if (tmp.exists() && tmp.isDirectory()) {
       String path = Utilities.path("[tmp]", name);
-      Utilities.createDirectory(path);
+      FileUtilities.createDirectory(path);
       return path;
     } else if (ManagedFileAccess.file("/tmp").exists()) {
       String path = Utilities.path("/tmp", name);
-      Utilities.createDirectory(path);
+      FileUtilities.createDirectory(path);
       return path;
     } else {
       String path = Utilities.path(System.getProperty("java.io.tmpdir"), name);
-      Utilities.createDirectory(path);
+      FileUtilities.createDirectory(path);
       return path;
     }
   }

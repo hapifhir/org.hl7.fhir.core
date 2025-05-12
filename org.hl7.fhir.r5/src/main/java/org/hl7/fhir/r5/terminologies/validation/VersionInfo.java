@@ -2,7 +2,9 @@ package org.hl7.fhir.r5.terminologies.validation;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class VersionInfo {
   /**
    * 
@@ -63,8 +65,8 @@ public class VersionInfo {
   }
 
   private String getVersionParameter(String name, String system) {
-    if (this.valueSetCheckerSimple.expansionProfile != null) {
-      for (ParametersParameterComponent pc : this.valueSetCheckerSimple.expansionProfile.getParameter()) {
+    if (this.valueSetCheckerSimple.expansionParameters != null) {
+      for (ParametersParameterComponent pc : this.valueSetCheckerSimple.expansionParameters.getParameter()) {
         if (name.equals(pc.getName()) && pc.hasValue()) {
           String v = pc.getValue().primitiveValue();
           if (v != null && v.startsWith(system+"|")) {

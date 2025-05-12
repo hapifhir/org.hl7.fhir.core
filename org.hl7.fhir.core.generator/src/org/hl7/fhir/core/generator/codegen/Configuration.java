@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
@@ -22,11 +22,11 @@ public class Configuration {
   private Map<String, String> adornments = new HashMap<>();
   
   public Configuration(String path) throws FileNotFoundException, IOException {
-    license = TextFile.fileToString(Utilities.path(path, "license.txt"));
+    license = FileUtilities.fileToString(Utilities.path(path, "license.txt"));
     ini = new IniFile(Utilities.path(path, "configuration.ini"));
     for (File jfn : ManagedFileAccess.file(path).listFiles()) {
       if (jfn.getName().endsWith(".java")) {
-        adornments.put(Utilities.changeFileExt(jfn.getName(), ""), TextFile.fileToString(jfn));
+        adornments.put(Utilities.changeFileExt(jfn.getName(), ""), FileUtilities.fileToString(jfn));
       }
     }
   }

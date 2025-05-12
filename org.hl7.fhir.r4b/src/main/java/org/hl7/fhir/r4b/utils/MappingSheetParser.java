@@ -34,10 +34,12 @@ import org.hl7.fhir.r4b.model.StructureMap.StructureMapTransform;
 import org.hl7.fhir.r4b.model.UrlType;
 import org.hl7.fhir.r4b.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.CSVReader;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@MarkedToMoveToAdjunctPackage
 public class MappingSheetParser {
 
   public class MappingRow {
@@ -443,8 +445,8 @@ public class MappingSheetParser {
         .compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "sm.json")), sm);
     new JsonParser().setOutputStyle(OutputStyle.PRETTY)
         .compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "cm.json")), cm);
-    TextFile.stringToFile(StructureMapUtilities.render(sm), Utilities.path("[tmp]", "sm.txt"));
-    TextFile.stringToFile(PFX + parser.genSheet(cm) + SFX, Utilities.path("[tmp]", "map.html"));
+    FileUtilities.stringToFile(StructureMapUtilities.render(sm), Utilities.path("[tmp]", "sm.txt"));
+    FileUtilities.stringToFile(PFX + parser.genSheet(cm) + SFX, Utilities.path("[tmp]", "map.html"));
   }
 
 }

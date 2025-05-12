@@ -42,6 +42,7 @@ import org.hl7.fhir.r4b.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r4b.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 
+@Deprecated
 public class Manager {
 
   // TODO use EnumMap

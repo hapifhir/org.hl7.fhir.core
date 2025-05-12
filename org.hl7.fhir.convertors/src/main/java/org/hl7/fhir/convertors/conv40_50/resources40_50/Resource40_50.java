@@ -280,6 +280,8 @@ public class Resource40_50 {
       return VerificationResult40_50.convertVerificationResult((org.hl7.fhir.r4.model.VerificationResult) src);
     if (src instanceof org.hl7.fhir.r4.model.VisionPrescription)
       return VisionPrescription40_50.convertVisionPrescription((org.hl7.fhir.r4.model.VisionPrescription) src);
+    if (src instanceof org.hl7.fhir.r4.model.Subscription)
+      return Subscription40_50.convertSubscription((org.hl7.fhir.r4.model.Subscription) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
       throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R4 to R5");
     } else {
@@ -528,6 +530,8 @@ public class Resource40_50 {
       return VerificationResult40_50.convertVerificationResult((org.hl7.fhir.r5.model.VerificationResult) src);
     if (src instanceof org.hl7.fhir.r5.model.VisionPrescription)
       return VisionPrescription40_50.convertVisionPrescription((org.hl7.fhir.r5.model.VisionPrescription) src);
+    if (src instanceof org.hl7.fhir.r5.model.Subscription)
+      return Subscription40_50.convertSubscription((org.hl7.fhir.r5.model.Subscription) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
       throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R5 to R4");
     } else {

@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.formats.Turtle;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ public class TurtleTests {
 
   private void doTest(String filename, boolean ok) throws Exception {
     try {
-      String s = TextFile.fileToString(filename);
+      String s = FileUtilities.fileToString(filename);
       Turtle ttl = new Turtle();
       ttl.parse(s);
       Assertions.assertTrue(ok);
@@ -1950,7 +1950,7 @@ public class TurtleTests {
   public void test_bundle_example() throws FileNotFoundException, IOException, Exception {
     if (!TestingUtilities.silent)
       System.out.println("bundle-example.ttl");
-    new Turtle().parse(TextFile.fileToString(TestingUtilities.resourceNameToFile("bundle-example.ttl")));
+    new Turtle().parse(FileUtilities.fileToString(TestingUtilities.resourceNameToFile("bundle-example.ttl")));
   }
 
 }

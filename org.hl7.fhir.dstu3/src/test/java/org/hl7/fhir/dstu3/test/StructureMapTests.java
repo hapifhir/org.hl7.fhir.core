@@ -8,10 +8,11 @@ import org.hl7.fhir.dstu3.model.StructureMap;
 import org.hl7.fhir.dstu3.test.support.TestingUtilities;
 import org.hl7.fhir.dstu3.utils.StructureMapUtilities;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 
+@Deprecated
 public class StructureMapTests {
 
   private void testParse(String path) throws FileNotFoundException, IOException, FHIRException {
@@ -19,8 +20,8 @@ public class StructureMapTests {
     	TestingUtilities.context = SimpleWorkerContext.fromPack(Utilities.path(TestingUtilities.home(), "publish", "definitions.xml.zip"));
     
     StructureMapUtilities scm = new StructureMapUtilities(TestingUtilities.context, null, null);
-    StructureMap map = scm.parse(TextFile.fileToString(Utilities.path(TestingUtilities.home(), path)));
-    TextFile.stringToFile(scm.render(map), Utilities.path(TestingUtilities.home(), path+".out"));
+    StructureMap map = scm.parse(FileUtilities.fileToString(Utilities.path(TestingUtilities.home(), path)));
+    FileUtilities.stringToFile(scm.render(map), Utilities.path(TestingUtilities.home(), path+".out"));
   }
   
 //  @Test
@@ -83,7 +84,7 @@ public class StructureMapTests {
 //   
 //    for (String f : ManagedFileAccess.file(Utilities.path(TestingUtilities.home(), "guides", "ccda2", "mapping", "map")).list()) {
 //      try {
-//        StructureMap map = scu.parse(TextFile.fileToString(Utilities.path(TestingUtilities.home(), "guides", "ccda2", "mapping", "map", f)));
+//        StructureMap map = scu.parse(FileUtilities.fileToString(Utilities.path(TestingUtilities.home(), "guides", "ccda2", "mapping", "map", f)));
 //        maps.put(map.getUrl(), map);
 //      } catch (Exception e) {
 //        e.printStackTrace();
@@ -117,7 +118,7 @@ public class StructureMapTests {
 //
 //    for (String f : ManagedFileAccess.file("C:\\work\\org.hl7.fhir\\build\\guides\\ccda2\\mapping\\map").list()) {
 //      try {
-//        StructureMap map = scu.parse(TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\guides\\ccda2\\mapping\\map\\"+ f));
+//        StructureMap map = scu.parse(FileUtilities.fileToString("C:\\work\\org.hl7.fhir\\build\\guides\\ccda2\\mapping\\map\\"+ f));
 //        maps.put(map.getUrl(), map);
 //      } catch (Exception e) {
 //      }

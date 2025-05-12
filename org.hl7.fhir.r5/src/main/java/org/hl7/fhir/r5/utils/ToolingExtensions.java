@@ -99,6 +99,7 @@ import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
@@ -182,12 +183,14 @@ public class ToolingExtensions {
   public static final String EXT_MAX_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet";
   public static final String EXT_MINOCCURS = "http://hl7.org/fhir/StructureDefinition/questionnaire-minOccurs";  
   public static final String EXT_MIN_LENGTH = "http://hl7.org/fhir/StructureDefinition/minLength";
+  public static final String EXT_MAX_LENGTH = "http://hl7.org/fhir/StructureDefinition/maxLength";
   public static final String EXT_MIN_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-minValueSet";
   public static final String EXT_MUST_SUPPORT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support";
   public static final String EXT_NORMATIVE_VERSION = "http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version";
   public static final String EXT_PROFILE_ELEMENT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-profile-element";
   public static final String EXT_QTYPE = "http://hl7.org/fhir/StructureDefinition/questionnnaire-baseType";
   public static final String EXT_Q_UNIT = "http://hl7.org/fhir/StructureDefinition/questionnaire-unit";
+  public static final String EXT_Q_UNIT_OPTION = "http://hl7.org/fhir/StructureDefinition/questionnaire-unitOption";
   public static final String EXT_REFERENCEFILTER = "http://hl7.org/fhir/StructureDefinition/questionnaire-referenceFilter"; 
   public static final String EXT_REGEX = "http://hl7.org/fhir/StructureDefinition/regex";  
   public static final String EXT_RENDERED_VALUE = "http://hl7.org/fhir/StructureDefinition/rendered-value";
@@ -237,7 +240,9 @@ public class ToolingExtensions {
   public static final String EXT_JSON_PRIMITIVE_CHOICE = "http://hl7.org/fhir/tools/StructureDefinition/json-primitive-choice";
   public static final String EXT_SUMMARY = "http://hl7.org/fhir/StructureDefinition/structuredefinition-summary";
   public static final String EXT_BINDING_DEFINITION = "http://hl7.org/fhir/tools/StructureDefinition/binding-definition";
-
+  
+  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-questionnaire.item.type"; 
+  public static final String EXT_CM_NOMAP_COMMENT = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.comment";
 
   // unregistered? - don't know what these are used for 
   public static final String EXT_MAPPING_PREFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-prefix";
@@ -276,6 +281,34 @@ public class ToolingExtensions {
   public static final String EXT_TYPE_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/type-parameter";
   public static final String EXT_ALTERNATE_CANONICAL = "http://hl7.org/fhir/StructureDefinition/alternate-canonical";
   public static final String EXT_SUPPRESSED = "http://hl7.org/fhir/StructureDefinition/elementdefinition-suppress";
+  public static final String EXT_SUPPRESS_RESOURCE_TYPE = "http://hl7.org/fhir/tools/StructureDefinition/json-suppress-resourcetype";
+  public static final String EXT_PROFILE_VIEW_HINT = "http://hl7.org/fhir/tools/StructureDefinition/view-hint";
+  public static final String EXT_SNAPSHOT_BEHAVIOR = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-behavior";
+  public static final String EXT_FHIRVERSION_SPECIFIC_USE = "http://hl7.org/fhir/StructureDefinition/version-specific-use";
+  public static final String EXT_FHIRVERSION_SPECIFIC_USE_START = "startFhirVersion";
+  public static final String EXT_FHIRVERSION_SPECIFIC_USE_END = "endFhirVersion";
+  public static final String EXT_VERSION_BASE = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-base-version";
+  public static final String EXT_LOAD_AS_RESOURCE = "http://hl7.org/fhir/tools/StructureDefinition/ig-load-as-resource";
+  public static final String EXT_USE_AS_RESOURCE_ID = "http://hl7.org/fhir/tools/StructureDefinition/ig-use-as-resource-id";
+  public static final String EXT_PROPERTY_VALUESET = "http://hl7.org/fhir/StructureDefinition/codesystem-property-valueset";
+  public static final String EXT_FEATURE = "http://hl7.org/fhir/uv/application-feature/StructureDefinition/feature";
+  
+  public static final String FEATURE_TX_TEST_VERSION = "http://hl7.org/fhir/uv/tx-tests/FeatureDefinition/test-version";
+  public static final String FEATURE_TX_CS_PARAMS = "http://hl7.org/fhir/uv/tx-ecosystem/FeatureDefinition/CodeSystemAsParameter";
+  public static final String EXT_VALUESET_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/valueset-parameter";
+  public static final String EXT_BINDING_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/binding-parameter";
+  public static final String EXT_ISSUE_INNER_MESSAGE = "http://hl7.org/fhir/tools/StructureDefinition/operationoutcome-inner-message";
+  public static final String EXT_OBLIGATION_SOURCE = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-source";
+  public static final String EXT_OBLIGATION_SOURCE_SHORT = "source";
+  public static final String EXT_ADDITIONAL_BASE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-additionalBase";
+  public static final String EXT_MIMETYPE = "http://hl7.org/fhir/StructureDefinition/mimeType";
+  public static final String EXT_EXCLUSIVE = "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive";
+  public static final String EXT_MINVALUE = "http://hl7.org/fhir/StructureDefinition/minValue";
+  public static final String EXT_MAXVALUE = "http://hl7.org/fhir/StructureDefinition/maxValue";
+  public static final String EXT_MIN_QUANTITY = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-minQuantity";
+  public static final String EXT_MAX_QUANTITY = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-maxQuantity";
+  public static final String EXT_Q_UNIT_VALUESET = "http://hl7.org/fhir/StructureDefinition/questionnaire-unitValueSet";
+  public static final String EXT_ENTRY_FORMAT = "http://hl7.org/fhir/StructureDefinition/entryFormat";
   
   // specific extension helpers
 
@@ -472,8 +505,33 @@ public class ToolingExtensions {
     }
     return null;
   }
+  
   public static String readStringExtension(DomainResource c, String uri) {
     Extension ex = getExtension(c, uri);
+    if (ex == null)
+      return null;
+    if ((ex.getValue() instanceof StringType))
+      return ((StringType) ex.getValue()).getValue();
+    if ((ex.getValue() instanceof UriType))
+      return ((UriType) ex.getValue()).getValue();
+    if (ex.getValue() instanceof CodeType)
+      return ((CodeType) ex.getValue()).getValue();
+    if (ex.getValue() instanceof IntegerType)
+      return ((IntegerType) ex.getValue()).asStringValue();
+    if (ex.getValue() instanceof Integer64Type)
+      return ((Integer64Type) ex.getValue()).asStringValue();
+    if (ex.getValue() instanceof DecimalType)
+      return ((DecimalType) ex.getValue()).asStringValue();
+    if ((ex.getValue() instanceof MarkdownType))
+      return ((MarkdownType) ex.getValue()).getValue();
+    return null;
+  }
+
+  public static String readStringSubExtension(DomainResource c, String uri, String name) {
+    Extension ex = getExtension(c, uri);
+    if (ex == null)
+      return null;
+    ex = getExtension(ex, name);
     if (ex == null)
       return null;
     if ((ex.getValue() instanceof StringType))
@@ -539,6 +597,21 @@ public class ToolingExtensions {
 
   public static boolean readBoolExtension(DomainResource c, String uri) {
     Extension ex = ExtensionHelper.getExtension(c, uri);
+    if (ex == null)
+      return false;
+    if (!(ex.getValue() instanceof BooleanType))
+      return false;
+    return ((BooleanType) ex.getValue()).getValue();
+  }
+
+  public static boolean readBoolExtension(DomainResource c, String... uris) {
+    Extension ex = null;
+    for (String uri : uris) {
+      ex = ExtensionHelper.getExtension(c, uri);
+      if (ex != null) {
+        break;
+      }
+    }
     if (ex == null)
       return false;
     if (!(ex.getValue() instanceof BooleanType))
@@ -750,6 +823,17 @@ public class ToolingExtensions {
       ext.setValue(new CodeType(value));
     else
       element.getExtension().add(new Extension(uri).setValue(new CodeType(value)));
+  }
+
+  public static void setMarkdownExtension(DomainResource resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new MarkdownType(value));
+    else
+      resource.getExtension().add(new Extension(uri).setValue(new MarkdownType(value)));
   }
 
   public static void setIntegerExtension(DomainResource resource, String uri, int value) {
@@ -969,6 +1053,8 @@ public class ToolingExtensions {
       return defaultValue;
     if (ex.getValue() instanceof IntegerType)
       return ((IntegerType) ex.getValue()).getValue();
+    if (ex.getValue() instanceof DecimalType)
+      return ((DecimalType) ex.getValue()).getValue().intValue();
     throw new Error("Unable to read extension "+uri+" as an integer");
   }
 
@@ -1032,6 +1118,9 @@ public class ToolingExtensions {
   }
 
   private static IssueType mapType(org.hl7.fhir.r5.model.OperationOutcome.IssueType code) {
+    if (code == null) {
+      return null;
+    }
     switch (code) {
     case BUSINESSRULE: return IssueType.BUSINESSRULE;
     case CODEINVALID: return IssueType.CODEINVALID;
@@ -1070,6 +1159,9 @@ public class ToolingExtensions {
   }
 
   private static IssueSeverity mapSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity severity) {
+    if (severity == null) {
+      return null;
+    }
     switch (severity) {
     case ERROR: return IssueSeverity.ERROR;
     case FATAL: return IssueSeverity.FATAL;
@@ -1202,6 +1294,15 @@ public class ToolingExtensions {
       }
     }
     return res;
+  }
+
+  public static boolean hasExtensionValue(StructureDefinition src, String url, String value) {
+    for (Extension ext : src.getExtension()) {
+      if (url.equals(ext.getUrl()) && ext.hasValue() && value.equals(ext.getValue().primitiveValue())) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

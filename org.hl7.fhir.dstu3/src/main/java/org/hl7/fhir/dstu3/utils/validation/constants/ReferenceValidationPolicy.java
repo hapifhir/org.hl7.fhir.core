@@ -1,5 +1,6 @@
 package org.hl7.fhir.dstu3.utils.validation.constants;
 
+@Deprecated
 public enum ReferenceValidationPolicy {
   IGNORE,
   CHECK_TYPE_IF_EXISTS,

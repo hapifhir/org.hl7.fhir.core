@@ -61,6 +61,7 @@ import org.w3c.dom.Element;
  *
  */
 
+@Deprecated
 public class ICPC2Importer {
 
   public static void main(String[] args) {
@@ -116,7 +117,7 @@ public class ICPC2Importer {
   }
 
   public void go() throws Exception {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     Document doc = builder.parse(ManagedFileAccess.inStream(sourceFileName));

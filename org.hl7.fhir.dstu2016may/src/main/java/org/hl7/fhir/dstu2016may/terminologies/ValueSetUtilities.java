@@ -34,6 +34,7 @@ import org.hl7.fhir.dstu2016may.model.Meta;
 import org.hl7.fhir.dstu2016may.model.UriType;
 import org.hl7.fhir.dstu2016may.model.ValueSet;
 
+@Deprecated
 public class ValueSetUtilities {
 
   public static ValueSet makeShareable(ValueSet vs) {

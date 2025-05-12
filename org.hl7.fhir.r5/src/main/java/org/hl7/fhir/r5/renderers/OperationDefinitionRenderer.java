@@ -22,10 +22,12 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
  
+@MarkedToMoveToAdjunctPackage
 public class OperationDefinitionRenderer extends TerminologyRenderer { 
  
 
@@ -90,7 +92,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
 
     x.h3().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
     //x.para().tx(context.formatPhrase(RenderingContext.GENERAL_PARS)); 
-    XhtmlNode tbl = x.table( "grid"); 
+    XhtmlNode tbl = x.table( "grid", false); 
     XhtmlNode tr = tbl.tr(); 
     tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_USE)); 
     tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_NAME)); 
@@ -138,19 +140,30 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     td = tr.td(); 
     String actualType = translateTypeToVersion(p.getTypeElement()); 
     StructureDefinition sd = actualType != null ? context.getWorker().fetchTypeDefinition(actualType) : null; 
-    if (sd == null) 
-      td.tx(p.hasType() ? actualType : ""); 
-    else if (sd.getAbstract() && p.hasExtension(ToolingExtensions.EXT_ALLOWED_TYPE)) { 
+    if (sd == null) {
+      td.tx(p.hasType() ? actualType : "");  
+    } else if (sd.getAbstract() && p.hasExtension(ToolingExtensions.EXT_ALLOWED_TYPE)) {  
+      boolean first = true;  
+      for (Extension ex : p.getExtensionsByUrl(ToolingExtensions.EXT_ALLOWED_TYPE)) {  
+        if (first) first = false; else td.tx(" | ");  
+        String s = ex.getValue().primitiveValue();  
+        StructureDefinition sdt = context.getWorker().fetchTypeDefinition(s);  
+        if (sdt == null)  
+          td.tx(p.hasType() ? actualType : "");  
+        else  
+          td.ah(context.prefixLocalHref(sdt.getWebPath())).tx(s);           
+      }  
+    } else if (sd.getAbstract() && (p.hasAllowedType())) {
       boolean first = true; 
-      for (Extension ex : p.getExtensionsByUrl(ToolingExtensions.EXT_ALLOWED_TYPE)) { 
+      for (Enumeration<FHIRTypes> ex : p.getAllowedType()) {
         if (first) first = false; else td.tx(" | "); 
-        String s = ex.getValue().primitiveValue(); 
+        String s = ex.primitiveValue();
         StructureDefinition sdt = context.getWorker().fetchTypeDefinition(s); 
         if (sdt == null) 
           td.tx(p.hasType() ? actualType : ""); 
         else 
           td.ah(context.prefixLocalHref(sdt.getWebPath())).tx(s);          
-      } 
+      }
     } else 
       td.ah(context.prefixLocalHref(sd.getWebPath())).tx(actualType); 
     if (p.hasTargetProfile()) { 
@@ -170,7 +183,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (p.hasSearchType()) { 
       td.br(); 
       td.tx("("); 
-      td.ah(context.prefixLocalHref(context.getLink(KnownLinkType.SPEC) == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "search.html#"+p.getSearchType().toCode()))).tx(p.getSearchType().toCode());        
+      td.ah(context.prefixLocalHref(context.getLink(KnownLinkType.SPEC, true) == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "search.html#"+p.getSearchType().toCode()))).tx(p.getSearchType().toCode());        
       td.tx(")"); 
     } 
     td = tr.td(); 

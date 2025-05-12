@@ -5,8 +5,11 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
+@MarkedToMoveToAdjunctPackage
 public class ValidatedFragment {
 
   @Getter

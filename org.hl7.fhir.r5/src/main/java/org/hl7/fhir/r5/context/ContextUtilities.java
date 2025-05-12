@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.context;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -22,15 +20,20 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.NamingSystem;
+import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.utilities.OIDUtils;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -38,6 +41,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
+@MarkedToMoveToAdjunctPackage
 public class ContextUtilities implements ProfileKnowledgeProvider {
 
   private IWorkerContext context;
@@ -70,7 +74,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       return oidCache.get(oid);
     }
 
-    String uri = OIDUtils.getUriForOid(oid);
+    String uri = OIDUtilities.getUriForOid(oid);
     if (uri != null) {
       oidCache.put(oid, uri);
       return uri;
@@ -278,7 +282,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       for (String err : errors) {
         msgs.add(new ValidationMessage(Source.ProfileValidator, IssueType.EXCEPTION, p.getWebPath(), "Error sorting Differential: "+err, ValidationMessage.IssueSeverity.ERROR));
       }
-      pu.generateSnapshot(sd, p, p.getUrl(), sd.getUserString("webroot"), p.getName());
+      pu.generateSnapshot(sd, p, p.getUrl(), sd.getUserString(UserDataNames.render_webroot), p.getName());
       for (ValidationMessage msg : msgs) {
         if ((!ProfileUtilities.isSuppressIgnorableExceptions() && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL) {
           if (!msg.isIgnorableError()) {
@@ -298,9 +302,9 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
 
   // work around the fact that some Implementation guides were published with old snapshot generators that left invalid snapshots behind.
   private boolean isProfileNeedsRegenerate(StructureDefinition p) {
-    boolean needs = !p.hasUserData("hack.regnerated") && Utilities.existsInList(p.getUrl(), "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaireresponse");
+    boolean needs = !p.hasUserData(UserDataNames.SNAPSHOT_regeneration_tracker) && Utilities.existsInList(p.getUrl(), "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaireresponse");
     if (needs) {
-      p.setUserData("hack.regnerated", "yes");
+      p.setUserData(UserDataNames.SNAPSHOT_regeneration_tracker, "yes");
     }
     return needs;
   }
@@ -476,6 +480,64 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   public String getCanonicalForDefaultContext() {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  public String pinValueSet(String valueSet) {
+    return pinValueSet(valueSet, context.getExpansionParameters());
+  }
+
+  public String pinValueSet(String value, Parameters expParams) {
+    if (value.contains("|")) {
+      return value;
+    }
+    for (ParametersParameterComponent p : expParams.getParameter()) {
+      if ("default-valueset-version".equals(p.getName())) {
+        String s = p.getValue().primitiveValue();
+        if (s.startsWith(value+"|")) {
+          return s;
+        }
+      }
+    }
+    return value;
+  }
+
+  public List<StructureDefinition> allBaseStructures() {
+    List<StructureDefinition> res = new ArrayList<>();
+    for (StructureDefinition sd : allStructures()) {
+      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
+        res.add(sd);
+      }
+    }
+    return res;
+  }
+
+  public <T extends Resource> List<T> fetchByIdentifier(Class<T> class_, String system) {
+    List<T> list = new ArrayList<>();
+    for (T t : context.fetchResourcesByType(class_)) {
+      if (t instanceof CanonicalResource) {
+        CanonicalResource cr = (CanonicalResource) t;
+        for (Identifier id : cr.getIdentifier()) {
+          if (system.equals(id.getValue())) {
+            list.add(t);
+          }
+        }
+      }
+    }
+    return list;
+  }
+
+  public StructureDefinition fetchStructureByName(String name) {
+    StructureDefinition sd = null;
+    for (StructureDefinition t : context.fetchResourcesByType(StructureDefinition.class)) {
+      if (name.equals(t.getName())) {
+        if (sd == null) {
+          sd = t;
+        } else {
+          throw new FHIRException("Duplicate Structure name "+name+": found both "+t.getVersionedUrl()+" and "+sd.getVersionedUrl());
+        }
+      }
+    }
+    return sd;
   }
 
 }

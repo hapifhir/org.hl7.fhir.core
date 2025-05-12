@@ -7043,7 +7043,21 @@ public PropertyComponent getProperty(String code) {
     }
     return null;
   }
+  
+
+  public boolean supplements(CodeSystem cs) {
+    if (!hasSupplements()) {
+      return false;      
+    } else if (getSupplements().contains("|")) {
+      return getSupplements().equals(cs.getVersionedUrl());
+      
+    } else {
+      return getSupplements().equals(cs.getUrl());
+    }
+  }
+  
 // end addition
+
 
 }
 

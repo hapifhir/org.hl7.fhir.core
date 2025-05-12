@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.r4b.comparison.ResourceComparer.MessageCounts;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
+@MarkedToMoveToAdjunctPackage
 public class StructuralMatch<T> {
 
   private String name; // this is used in some contexts to carry name when T is a pretty abstract type

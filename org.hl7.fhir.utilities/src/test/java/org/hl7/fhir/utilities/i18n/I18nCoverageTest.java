@@ -272,7 +272,6 @@ public class I18nCoverageTest {
   private static I18nTestClass getI18nTestClass(Locale locale) {
     I18nTestClass testClass = new I18nTestClass();
     testClass.setLocale(locale);
-    testClass.setPluralRules(locale);
     return testClass;
   }
 

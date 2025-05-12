@@ -82,6 +82,7 @@ import org.hl7.fhir.utilities.Utilities;
  * @author Claude Nanjo
  *
  */
+@Deprecated
 public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   public static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssK";
@@ -95,46 +96,19 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   private HttpHost proxy;
   private int maxResultSetSize = -1;// _count
   private Conformance conf;
-  private ClientUtils utils = new ClientUtils();
+  private ClientUtils utils = null;
   private int useCount;
+
+  protected ClientUtils getClientUtils() {
+    return new ClientUtils();
+  }
 
   // Pass enpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_XML;
+    utils = getClientUtils();
     utils.setUserAgent(userAgent);
-    detectProxy();
     initialize(baseServiceUrl);
-  }
-
-  public FHIRToolingClient(String baseServiceUrl, String userAgent, String username, String password)
-      throws URISyntaxException {
-    preferredResourceFormat = ResourceFormat.RESOURCE_XML;
-    utils.setUserAgent(userAgent);
-    utils.setUsername(username);
-    utils.setPassword(password);
-    detectProxy();
-    initialize(baseServiceUrl);
-  }
-
-  public void configureProxy(String proxyHost, int proxyPort) {
-    utils.setProxy(new HttpHost(proxyHost, proxyPort));
-  }
-
-  public void detectProxy() {
-    String host = System.getenv(hostKey);
-    String port = System.getenv(portKey);
-
-    if (host == null) {
-      host = System.getProperty(hostKey);
-    }
-
-    if (port == null) {
-      port = System.getProperty(portKey);
-    }
-
-    if (host != null && port != null) {
-      this.configureProxy(host, Integer.parseInt(port));
-    }
   }
 
   public void initialize(String baseServiceUrl) throws URISyntaxException {
@@ -286,11 +260,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     recordUse();
     ResourceRequest<Resource> result = null;
     try {
-      List<Header> headers = null;
+
       result = utils.issuePutRequest(
           resourceAddress.resolveGetUriFromResourceClassAndId(resource.getClass(), resource.getId()),
           utils.getResourceAsByteArray(resource, false, isJson(getPreferredResourceFormat())),
-          withVer(getPreferredResourceFormat(), "1.0"), headers, timeoutOperation);
+          withVer(getPreferredResourceFormat(), "1.0"), null, timeoutOperation);
       result.addErrorStatus(410);// gone
       result.addErrorStatus(404);// unknown
       result.addErrorStatus(405);
@@ -323,10 +297,12 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     recordUse();
     ResourceRequest<T> result = null;
     try {
-      List<Header> headers = null;
-      result = utils.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
+      result = utils.issuePutRequest(
+        resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
           utils.getResourceAsByteArray(resource, false, isJson(getPreferredResourceFormat())),
-          withVer(getPreferredResourceFormat(), "1.0"), headers, timeoutOperation);
+          withVer(getPreferredResourceFormat(), "1.0"),
+        null,
+        timeoutOperation);
       result.addErrorStatus(410);// gone
       result.addErrorStatus(404);// unknown
       result.addErrorStatus(405);
@@ -355,170 +331,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return result.getPayload();
   }
 
-//	
-//	public <T extends Resource> boolean delete(Class<T> resourceClass, String id) {
-//		try {
-//			return utils.issueDeleteRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id), proxy);
-//		} catch(Exception e) {
-//			throw new EFhirClientException("An error has occurred while trying to delete this resource", e);
-//		}
-//
-//	}
 
-//	
-//	public <T extends Resource> OperationOutcome create(Class<T> resourceClass, T resource) {
-//	  ResourceRequest<T> resourceRequest = null;
-//	  try {
-//	    List<Header> headers = null;
-//	    resourceRequest = utils.issuePostRequest(resourceAddress.resolveGetUriFromResourceClass(resourceClass),utils.getResourceAsByteArray(resource, false, isJson(getPreferredResourceFormat())), withVer(getPreferredResourceFormat(), "1.0"), headers, proxy);
-//	    resourceRequest.addSuccessStatus(201);
-//	    if(resourceRequest.isUnsuccessfulRequest()) {
-//	      throw new EFhirClientException("Server responded with HTTP error code " + resourceRequest.getHttpStatus(), (OperationOutcome)resourceRequest.getPayload());
-//	    }
-//	  } catch(Exception e) {
-//	    handleException("An error has occurred while trying to create this resource", e);
-//	  }
-//	  OperationOutcome operationOutcome = null;;
-//	  try {
-//	    operationOutcome = (OperationOutcome)resourceRequest.getPayload();
-//	    ResourceAddress.ResourceVersionedIdentifier resVersionedIdentifier = 
-//	        ResourceAddress.parseCreateLocation(resourceRequest.getLocation());
-//	    OperationOutcomeIssueComponent issue = operationOutcome.addIssue();
-//	    issue.setSeverity(IssueSeverity.INFORMATION);
-//	    issue.setUserData(ResourceAddress.ResourceVersionedIdentifier.class.toString(),
-//	        resVersionedIdentifier);
-//	    return operationOutcome;
-//	  } catch(ClassCastException e) {
-//	    // some server (e.g. grahams) returns the resource directly
-//	    operationOutcome = new OperationOutcome();
-//	    OperationOutcomeIssueComponent issue = operationOutcome.addIssue();
-//	    issue.setSeverity(IssueSeverity.INFORMATION);
-//	    issue.setUserData(ResourceRequest.class.toString(),
-//	        resourceRequest.getPayload());
-//	    return operationOutcome;
-//	  }	
-//	}
-
-//	
-//	public <T extends Resource> Bundle history(Calendar lastUpdate, Class<T> resourceClass, String id) {
-//		Bundle history = null;
-//		try {
-//			history = utils.issueGetFeedRequest(resourceAddress.resolveGetHistoryForResourceId(resourceClass, id, lastUpdate, maxResultSetSize), withVer(getPreferredResourceFormat(), "1.0"), proxy);
-//		} catch (Exception e) {
-//			handleException("An error has occurred while trying to retrieve history information for this resource", e);
-//		}
-//		return history;
-//	}
-
-//	
-//	public <T extends Resource> Bundle history(Date lastUpdate, Class<T> resourceClass, String id) {
-//		Bundle history = null;
-//		try {
-//			history = utils.issueGetFeedRequest(resourceAddress.resolveGetHistoryForResourceId(resourceClass, id, lastUpdate, maxResultSetSize), withVer(getPreferredResourceFormat(), "1.0"), proxy);
-//		} catch (Exception e) {
-//			handleException("An error has occurred while trying to retrieve history information for this resource", e);
-//		}
-//		return history;
-//	}
-//
-//	
-//	public <T extends Resource> Bundle history(Calendar lastUpdate, Class<T> resourceClass) {
-//		Bundle history = null;
-//		try {
-//			history = utils.issueGetFeedRequest(resourceAddress.resolveGetHistoryForResourceType(resourceClass, lastUpdate, maxResultSetSize), withVer(getPreferredResourceFormat(), "1.0"), proxy);
-//		} catch (Exception e) {
-//			handleException("An error has occurred while trying to retrieve history information for this resource type", e);
-//		}
-//		return history;
-//	}
-//	
-//	
-//	public <T extends Resource> Bundle history(Date lastUpdate, Class<T> resourceClass) {
-//		Bundle history = null;
-//		try {
-//			history = utils.issueGetFeedRequest(resourceAddress.resolveGetHistoryForResourceType(resourceClass, lastUpdate, maxResultSetSize), withVer(getPreferredResourceFormat(), "1.0"), proxy);
-//		} catch (Exception e) {
-//			handleException("An error has occurred while trying to retrieve history information for this resource type", e);
-//		}
-//		return history;
-//	}
-//	
-//	
-//	public <T extends Resource> Bundle history(Class<T> resourceClass) {
-//		Bundle history = null;
-//		try {
-//			history = utils.issueGetFeedRequest(resourceAddress.resolveGetHistoryForResourceType(resourceClass, maxResultSetSize), withVer(getPreferredResourceFormat(), "1.0"), proxy);
-//		} catch (Exception e) {
-//			handleException("An error has occurred while trying to retrieve history information for this resource type", e);
-//		}
-//		return history;
-//	}
-//	
-//	
-//	public <T extends Resource> Bundle history(Class<T> resourceClass, String id) {
-//		Bundle history = null;
-//		try {
-//			history = utils.issueGetFeedRequest(resourceAddress.resolveGetHistoryForResourceId(resourceClass, id, maxResultSetSize), withVer(getPreferredResourceFormat(), "1.0"), proxy);
-//		} catch (Exception e) {
-//			handleException("An error has occurred while trying to retrieve history information for this resource", e);
-//		}
-//		return history;
-//	}
-//
-//	
-//	public <T extends Resource> Bundle history(Date lastUpdate) {
-//		Bundle history = null;
-//		try {
-//			history = utils.issueGetFeedRequest(resourceAddress.resolveGetHistoryForAllResources(lastUpdate, maxResultSetSize), withVer(getPreferredResourceFormat(), "1.0"), proxy);
-//		} catch (Exception e) {
-//			handleException("An error has occurred while trying to retrieve history since last update",e);
-//		}
-//		return history;
-//	}
-//
-//	
-//	public <T extends Resource> Bundle history(Calendar lastUpdate) {
-//		Bundle history = null;
-//		try {
-//			history = utils.issueGetFeedRequest(resourceAddress.resolveGetHistoryForAllResources(lastUpdate, maxResultSetSize), withVer(getPreferredResourceFormat(), "1.0"), proxy);
-//		} catch (Exception e) {
-//			handleException("An error has occurred while trying to retrieve history since last update",e);
-//		}
-//		return history;
-//	}
-//
-//	
-//	public <T extends Resource> Bundle history() {
-//		Bundle history = null;
-//		try {
-//			history = utils.issueGetFeedRequest(resourceAddress.resolveGetHistoryForAllResources(maxResultSetSize), withVer(getPreferredResourceFormat(), "1.0"), proxy);
-//		} catch (Exception e) {
-//			handleException("An error has occurred while trying to retrieve history since last update",e);
-//		}
-//		return history;
-//	}
-//
-//	
-//	public <T extends Resource> Bundle search(Class<T> resourceClass, Map<String, String> parameters) {
-//		Bundle searchResults = null;
-//		try {
-//			searchResults = utils.issueGetFeedRequest(resourceAddress.resolveSearchUri(resourceClass, parameters), withVer(getPreferredResourceFormat(), "1.0"), proxy);
-//		} catch (Exception e) {
-//			handleException("Error performing search with parameters " + parameters, e);
-//		}
-//		return searchResults;
-//	}
-//	
-//  
-//  public <T extends Resource> Bundle searchPost(Class<T> resourceClass, T resource, Map<String, String> parameters) {
-//    Bundle searchResults = null;
-//    try {
-//      searchResults = utils.issuePostFeedRequest(resourceAddress.resolveSearchUri(resourceClass, new HashMap<String, String>()), parameters, "src", resource, getPreferredResourceFormat());
-//    } catch (Exception e) {
-//      handleException("Error performing search with parameters " + parameters, e);
-//    }
-//    return searchResults;
-//  }
 
   public <T extends Resource> Parameters operateType(Class<T> resourceClass, String name, Parameters params) {
     recordUse();
@@ -530,7 +343,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     if (!complex)
       for (ParametersParameterComponent p : params.getParameter())
         if (p.getValue() instanceof PrimitiveType)
-          ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
+          ps += p.getName() + "=" + Utilities.encodeUriParam(((PrimitiveType) p.getValue()).asStringValue()) + "&";
     ResourceRequest<T> result;
     if (complex)
       result = utils.issuePostRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps),
@@ -588,107 +401,15 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return (OperationOutcome) result.getPayload();
   }
 
-  /*
-   * change to meta operations
-   * 
-   * public List<Coding> getAllTags() { TagListRequest result = null; try { result
-   * = utils.issueGetRequestForTagList(resourceAddress.resolveGetAllTags(),
-   * withVer(getPreferredResourceFormat(), "1.0"), null, proxy); } catch (Exception e) {
-   * handleException("An error has occurred while trying to retrieve all tags",
-   * e); } return result.getPayload(); }
-   * 
-   * 
-   * public <T extends Resource> List<Coding> getAllTagsForResourceType(Class<T>
-   * resourceClass) { TagListRequest result = null; try { result =
-   * utils.issueGetRequestForTagList(resourceAddress.
-   * resolveGetAllTagsForResourceType(resourceClass),
-   * withVer(getPreferredResourceFormat(), "1.0"), null, proxy); } catch (Exception e) {
-   * handleException("An error has occurred while trying to retrieve tags for this resource type"
-   * , e); } return result.getPayload(); }
-   * 
-   * 
-   * public <T extends Resource> List<Coding> getTagsForReference(Class<T>
-   * resource, String id) { TagListRequest result = null; try { result =
-   * utils.issueGetRequestForTagList(resourceAddress.resolveGetTagsForReference(
-   * resource, id), withVer(getPreferredResourceFormat(), "1.0"), null, proxy); } catch (Exception
-   * e) {
-   * handleException("An error has occurred while trying to retrieve tags for this resource"
-   * , e); } return result.getPayload(); }
-   * 
-   * 
-   * public <T extends Resource> List<Coding> getTagsForResourceVersion(Class<T>
-   * resource, String id, String versionId) { TagListRequest result = null; try {
-   * result = utils.issueGetRequestForTagList(resourceAddress.
-   * resolveGetTagsForResourceVersion(resource, id, versionId),
-   * withVer(getPreferredResourceFormat(), "1.0"), null, proxy); } catch (Exception e) {
-   * handleException("An error has occurred while trying to retrieve tags for this resource version"
-   * , e); } return result.getPayload(); }
-   * 
-   * // // public <T extends Resource> boolean deleteTagsForReference(Class<T>
-   * resourceClass, String id) { // try { // return
-   * utils.issueDeleteRequest(resourceAddress.resolveGetTagsForReference(
-   * resourceClass, id), proxy); // } catch(Exception e) { //
-   * handleException("An error has occurred while trying to retrieve tags for this resource version"
-   * , e); // throw new
-   * EFhirClientException("An error has occurred while trying to delete this resource"
-   * , e); // } // // } // // // public <T extends Resource> boolean
-   * deleteTagsForResourceVersion(Class<T> resourceClass, String id, List<Coding>
-   * tags, String version) { // try { // return
-   * utils.issueDeleteRequest(resourceAddress.resolveGetTagsForResourceVersion(
-   * resourceClass, id, version), proxy); // } catch(Exception e) { //
-   * handleException("An error has occurred while trying to retrieve tags for this resource version"
-   * , e); // throw new
-   * EFhirClientException("An error has occurred while trying to delete this resource"
-   * , e); // } // }
-   * 
-   * 
-   * public <T extends Resource> List<Coding> createTags(List<Coding> tags,
-   * Class<T> resourceClass, String id) { TagListRequest request = null; try {
-   * request =
-   * utils.issuePostRequestForTagList(resourceAddress.resolveGetTagsForReference(
-   * resourceClass, id),utils.getTagListAsByteArray(tags, false,
-   * isJson(getPreferredResourceFormat())), withVer(getPreferredResourceFormat(), "1.0"), null,
-   * proxy); request.addSuccessStatus(201); request.addSuccessStatus(200);
-   * if(request.isUnsuccessfulRequest()) { throw new
-   * EFhirClientException("Server responded with HTTP error code " +
-   * request.getHttpStatus()); } } catch(Exception e) {
-   * handleException("An error has occurred while trying to set tags for this resource"
-   * , e); } return request.getPayload(); }
-   * 
-   * 
-   * public <T extends Resource> List<Coding> createTags(List<Coding> tags,
-   * Class<T> resourceClass, String id, String version) { TagListRequest request =
-   * null; try { request = utils.issuePostRequestForTagList(resourceAddress.
-   * resolveGetTagsForResourceVersion(resourceClass, id,
-   * version),utils.getTagListAsByteArray(tags, false,
-   * isJson(getPreferredResourceFormat())), withVer(getPreferredResourceFormat(), "1.0"), null,
-   * proxy); request.addSuccessStatus(201); request.addSuccessStatus(200);
-   * if(request.isUnsuccessfulRequest()) { throw new
-   * EFhirClientException("Server responded with HTTP error code " +
-   * request.getHttpStatus()); } } catch(Exception e) {
-   * handleException("An error has occurred while trying to set the tags for this resource version"
-   * , e); } return request.getPayload(); }
-   * 
-   * 
-   * public <T extends Resource> List<Coding> deleteTags(List<Coding> tags,
-   * Class<T> resourceClass, String id, String version) { TagListRequest request =
-   * null; try { request = utils.issuePostRequestForTagList(resourceAddress.
-   * resolveDeleteTagsForResourceVersion(resourceClass, id,
-   * version),utils.getTagListAsByteArray(tags, false,
-   * isJson(getPreferredResourceFormat())), withVer(getPreferredResourceFormat(), "1.0"), null,
-   * proxy); request.addSuccessStatus(201); request.addSuccessStatus(200);
-   * if(request.isUnsuccessfulRequest()) { throw new
-   * EFhirClientException("Server responded with HTTP error code " +
-   * request.getHttpStatus()); } } catch(Exception e) {
-   * handleException("An error has occurred while trying to delete the tags for this resource version"
-   * , e); } return request.getPayload(); }
-   */
 
   /**
-   * Helper method to prevent nesting of previously thrown EFhirClientExceptions
-   * 
-   * @param e
-   * @throws EFhirClientException
+   * Helper method to prevent nesting of previously thrown EFhirClientExceptions. If the e param is an instance of
+   * EFhirClientException, it will be rethrown. Otherwise, a new EFhirClientException will be thrown with e as the
+   * cause.
+   *
+   * @param message The EFhirClientException message.
+   * @param e The exception.
+   * @throws EFhirClientException representing the exception.
    */
   protected void handleException(String message, Exception e) throws EFhirClientException {
     if (e instanceof EFhirClientException) {
@@ -702,8 +423,8 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
    * Helper method to determine whether desired resource representation is Json or
    * XML.
    * 
-   * @param format
-   * @return
+   * @param format the format to check
+   * @return true if JSON, false if XML
    */
   protected boolean isJson(String format) {
     boolean isJson = false;
@@ -719,7 +440,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     try {
       feed = utils.issueGetFeedRequest(new URI(url), getPreferredResourceFormat());
     } catch (Exception e) {
-      handleException("An error has occurred while trying to retrieve history since last update", e);
+      handleException("An error has occurred while trying to read a bundle", e);
     }
     return feed;
   }
@@ -784,13 +505,13 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   public ValueSet expandValueset(ValueSet source, Parameters expParams) {
     recordUse();
-    List<Header> headers = null;
+
     Parameters p = expParams == null ? new Parameters() : expParams.copy();
     p.addParameter().setName("valueSet").setResource(source);
     ResourceRequest<Resource> result = utils.issuePostRequest(
         resourceAddress.resolveOperationUri(ValueSet.class, "expand"),
         utils.getResourceAsByteArray(p, false, isJson(getPreferredResourceFormat())), withVer(getPreferredResourceFormat(), "1.0"),
-        headers, 4);
+        null, 4);
     result.addErrorStatus(410); // gone
     result.addErrorStatus(404); // unknown
     result.addErrorStatus(405);
@@ -812,11 +533,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     recordUse();
     Parameters params = new Parameters();
     params.addParameter().setName("name").setValue(new StringType(name));
-    List<Header> headers = null;
+
     ResourceRequest<Resource> result = utils.issuePostRequest(
         resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
         utils.getResourceAsByteArray(params, false, isJson(getPreferredResourceFormat())), withVer(getPreferredResourceFormat(), "1.0"),
-        headers, timeoutNormal);
+        null, timeoutNormal);
     result.addErrorStatus(410);// gone
     result.addErrorStatus(404);// unknown
     result.addErrorStatus(405);
@@ -835,11 +556,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     Parameters params = new Parameters();
     params.addParameter().setName("name").setValue(new StringType(name));
     params.addParameter().setName("concept").setValue(coding);
-    List<Header> headers = null;
+
     ResourceRequest<Resource> result = utils.issuePostRequest(
         resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
         utils.getResourceAsByteArray(params, false, isJson(getPreferredResourceFormat())), withVer(getPreferredResourceFormat(), "1.0"),
-        headers, timeoutOperation);
+        null, timeoutOperation);
     result.addErrorStatus(410);// gone
     result.addErrorStatus(404);// unknown
     result.addErrorStatus(405);
@@ -859,22 +580,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   public void setTimeout(int timeout) {
     utils.setTimeout(timeout);
-  }
-
-  public String getUsername() {
-    return utils.getUsername();
-  }
-
-  public void setUsername(String username) {
-    utils.setUsername(username);
-  }
-
-  public String getPassword() {
-    return utils.getPassword();
-  }
-
-  public void setPassword(String password) {
-    utils.setPassword(password);
   }
 
   public Parameters getTerminologyCapabilities() {

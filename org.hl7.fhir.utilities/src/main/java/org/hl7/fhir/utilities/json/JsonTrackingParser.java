@@ -37,10 +37,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Stack;
 
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -368,27 +369,27 @@ public class JsonTrackingParser {
   }
   
   public static JsonObject parseJson(InputStream stream) throws IOException {
-    return parse(TextFile.streamToString(stream), null);
+    return parse(FileUtilities.streamToString(stream), null);
   }
   
   public static JsonObject parseJson(byte[] stream) throws IOException {
-    return parse(TextFile.bytesToString(stream), null);
+    return parse(FileUtilities.bytesToString(stream), null);
   }
   
   public static JsonArray parseJsonArray(byte[] stream) throws IOException {
-    return parseArray(TextFile.bytesToString(stream), null);
+    return parseArray(FileUtilities.bytesToString(stream), null);
   }
   
   public static JsonObject parseJson(byte[] stream, boolean allowDuplicates) throws IOException {
-    return parse(TextFile.bytesToString(stream), null, allowDuplicates);
+    return parse(FileUtilities.bytesToString(stream), null, allowDuplicates);
   }
   
   public static JsonObject parseJson(File source) throws IOException {
-    return parse(TextFile.fileToString(source), null);
+    return parse(FileUtilities.fileToString(source), null);
   }
   
   public static JsonObject parseJsonFile(String source) throws IOException {
-    return parse(TextFile.fileToString(source), null);
+    return parse(FileUtilities.fileToString(source), null);
   }
   
   public static JsonObject parse(String source, Map<JsonElement, LocationData> map) throws IOException {
@@ -688,19 +689,19 @@ public class JsonTrackingParser {
   public static void write(JsonObject json, File file) throws IOException {
     Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     String jcnt = gson.toJson(json);
-    TextFile.stringToFile(jcnt, file);    
+    FileUtilities.stringToFile(jcnt, file);    
   }
     
   public static void write(JsonObject json, File file, boolean pretty) throws IOException {
     Gson gson = pretty ? new GsonBuilder().setPrettyPrinting().create() : new GsonBuilder().create();
     String jcnt = gson.toJson(json);
-    TextFile.stringToFile(jcnt, file);    
+    FileUtilities.stringToFile(jcnt, file);    
   }
     
   public static void write(JsonObject json, String fileName) throws IOException {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String jcnt = gson.toJson(json);
-    TextFile.stringToFile(jcnt, fileName);    
+    FileUtilities.stringToFile(jcnt, fileName);    
   }
   
   public static String write(JsonObject json) {
@@ -722,15 +723,25 @@ public class JsonTrackingParser {
       return gson.toJson(json).getBytes(StandardCharsets.UTF_8);    
     }    
   }
+
+  public static byte[] writeBytes(JsonArray json, boolean pretty) {
+    if (pretty) {
+      Gson gson = new GsonBuilder().setPrettyPrinting().create();
+      return gson.toJson(json).getBytes(StandardCharsets.UTF_8);    
+    } else {
+      Gson gson = new GsonBuilder().create();
+      return gson.toJson(json).getBytes(StandardCharsets.UTF_8);    
+    }    
+  }
   
   public static JsonObject fetchJson(String source) throws IOException {
-    HTTPResult res = ManagedWebAccess.get(source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
     res.checkThrowException();
     return parseJson(res.getContent());
   }
   
   public static JsonArray fetchJsonArray(String source) throws IOException {
-    HTTPResult res = ManagedWebAccess.get(source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"),source+"?nocache=" + System.currentTimeMillis(), "application/json, application/fhir+json");
     res.checkThrowException();
     return parseJsonArray(res.getContent());
   }

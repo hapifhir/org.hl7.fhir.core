@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -18,6 +19,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * This class is used to walk through the resources when rendering, whether
  * the resource is a native resource or loaded by the element model
  */
+@MarkedToMoveToAdjunctPackage
 public class ResourceWrapperModel extends ResourceWrapper {
 
   protected Element model;
@@ -192,8 +194,8 @@ public class ResourceWrapperModel extends ResourceWrapper {
   }
 
   public void markLanguage(XhtmlNode x, Locale locale) {
-    x.setAttribute("lang", locale.toString());
-    x.setAttribute("xml:lang", locale.toString());
+    x.setAttribute("lang", locale.toLanguageTag());
+    x.setAttribute("xml:lang", locale.toLanguageTag());
     x.addTag(0, "hr");
     x.addTag(0, "p").b().tx(locale.getDisplayName());
     x.addTag(0, "hr");
@@ -256,7 +258,7 @@ public class ResourceWrapperModel extends ResourceWrapper {
   }
 
   public String getWebPath() {
-    return null;
+    return model.getWebPath();
   }
 
   public String getCodeSystemUri() {
@@ -268,6 +270,16 @@ public class ResourceWrapperModel extends ResourceWrapper {
       } 
     }
     return null;
+  }
+
+  @Override
+  public boolean hasUserData(String name) {
+    return model.hasUserData(name);
+  }
+  
+  @Override
+  public Object getUserData(String name) {
+    return model.getUserData(name);
   }
 
 

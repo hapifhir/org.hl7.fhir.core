@@ -52,6 +52,7 @@ import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.Type;
 
+@Deprecated
 public class ObjectConverter {
 
   private IWorkerContext context;
@@ -123,7 +124,7 @@ public class ObjectConverter {
     ByteArrayOutputStream bo = new ByteArrayOutputStream();
     try {
       new JsonParser(context).compose(element, bo, OutputStyle.NORMAL, null);
-//      TextFile.bytesToFile(bo.toByteArray(), Utilities.path("[tmp]", "json.json");
+//      FileUtilities.bytesToFile(bo.toByteArray(), Utilities.path("[tmp]", "json.json");
       return new org.hl7.fhir.r4.formats.JsonParser().parse(bo.toByteArray());
     } catch (IOException e) {
       // won't happen

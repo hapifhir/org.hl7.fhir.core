@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+@MarkedToMoveToAdjunctPackage
 public class BuildExtensions extends ToolingExtensions {
 
   public static final String EXT_DESCRIPTION = "http://hl7.org/fhir/build/StructureDefinition/description";

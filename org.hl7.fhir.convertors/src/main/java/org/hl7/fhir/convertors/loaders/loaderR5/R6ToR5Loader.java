@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
@@ -39,6 +40,7 @@ import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Bundle;
@@ -53,7 +55,7 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminolog
 
 public class R6ToR5Loader extends BaseLoaderR5 {
 
-  public R6ToR5Loader(List<String> types, ILoaderKnowledgeProviderR5 lkp) {
+  public R6ToR5Loader(Set<String> types, ILoaderKnowledgeProviderR5 lkp) {
     super(types, lkp);
   }
 
@@ -128,5 +130,14 @@ public class R6ToR5Loader extends BaseLoaderR5 {
     return new TerminologyClientFactory(versionString());
   }
 
+  @Override
+  public Set<String> reviewActualTypes(Set<String> types) {
+    return types;
+  }
+  
 
+  @Override
+  public PackageResourceLoader editInfo(PackageResourceLoader pri) {
+    return pri;
+  }
 }

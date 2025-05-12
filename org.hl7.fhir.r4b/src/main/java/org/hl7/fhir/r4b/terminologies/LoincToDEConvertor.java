@@ -47,6 +47,7 @@ import org.hl7.fhir.r4b.model.Coding;
 import org.hl7.fhir.r4b.model.DateTimeType;
 import org.hl7.fhir.r4b.model.InstantType;
 import org.hl7.fhir.r4b.model.Meta;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -62,6 +63,7 @@ import org.xmlpull.v1.XmlPullParserException;
  * @author Grahame
  *
  */
+@MarkedToMoveToAdjunctPackage
 public class LoincToDEConvertor {
 
   public static void main(String[] args)
@@ -156,7 +158,7 @@ public class LoincToDEConvertor {
   }
 
   private void loadLoinc() throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
 

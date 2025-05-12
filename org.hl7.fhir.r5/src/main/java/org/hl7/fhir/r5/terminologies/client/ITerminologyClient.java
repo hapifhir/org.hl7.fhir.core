@@ -36,6 +36,7 @@ import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 
 import java.util.EnumSet;
 import java.util.Map;
@@ -60,13 +61,14 @@ public interface ITerminologyClient {
   ITerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
   int getRetryCount() throws FHIRException;
   ITerminologyClient setRetryCount(int retryCount) throws FHIRException;
+  CapabilityStatement getCapabilitiesStatement() throws FHIRException;
   CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException;
   Parameters lookupCode(Map<String, String> params) throws FHIRException;
   Parameters lookupCode(Parameters params) throws FHIRException;
   Parameters translate(Parameters params) throws FHIRException;
   Bundle validateBatch(Bundle batch);
   CanonicalResource read(String type, String id);
-  ClientHeaders getClientHeaders();
+  Iterable<HTTPHeader> getClientHeaders();
   ITerminologyClient setClientHeaders(ClientHeaders clientHeaders);
   ITerminologyClient setUserAgent(String userAgent);
   ITerminologyClient setAcceptLanguage(String lang);
@@ -74,4 +76,10 @@ public interface ITerminologyClient {
   String getUserAgent();
   int getUseCount();
   Bundle search(String type, String criteria); 
+  
+  // internal conversion logging
+  public interface ITerminologyConversionLogger {
+    void log(String name, String resourceType, String version, byte[] cnt);
+  }
+  void setConversionLogger(ITerminologyConversionLogger logger);
 }

@@ -14,9 +14,11 @@ import org.hl7.fhir.r5.model.Provenance;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+@MarkedToMoveToAdjunctPackage
 public class BundleRenderer extends ResourceRenderer {
 
 
@@ -254,10 +256,18 @@ public class BundleRenderer extends ResourceRenderer {
         ResourceWrapper res = null;
         ResourceWrapper prop = base.child("reference");
         if (prop != null && prop.hasPrimitiveValue()) {
+          String ref = prop.primitiveValue();
           for (ResourceWrapper entry : entries) {
             if (entry.has("fullUrl")) {
               String fu = entry.primitiveValue("fullUrl");
-              if (prop.primitiveValue().equals(fu)) {
+              if (ref.equals(fu)) {
+                res = entry.child("resource");
+              }
+            }
+            if (entry.has("resource")) {
+              String type = entry.child("resource").fhirType();
+              String id = entry.child("resource").primitiveValue("id");
+              if (ref.equals(type+"/"+id)) {
                 res = entry.child("resource");
               }
             }
@@ -289,7 +299,7 @@ public class BundleRenderer extends ResourceRenderer {
   
   public static boolean allEntriesAreHistoryProvenance(List<ResourceWrapper> entries) throws UnsupportedEncodingException, FHIRException, IOException {
     for (ResourceWrapper be : entries) {
-      if (!"Provenance".equals(be.child("resource").fhirType())) {
+      if (!be.has("child") || !"Provenance".equals(be.child("resource").fhirType())) {
         return false;
       }
     }

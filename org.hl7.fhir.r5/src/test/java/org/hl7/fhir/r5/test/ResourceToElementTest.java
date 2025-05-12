@@ -21,6 +21,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;
@@ -31,8 +32,8 @@ public class ResourceToElementTest {
 
 
   private void runTest(String filename) throws IOException, FileNotFoundException, Exception {
-    String src = Utilities.path("[tmp]", Utilities.changeFileExt(filename, ".out.xml"));
-    String dst = Utilities.path("[tmp]", Utilities.changeFileExt(filename, ".in.xml"));
+    String src = Utilities.path("[tmp]", FileUtilities.changeFileExt(filename, ".out.xml"));
+    String dst = Utilities.path("[tmp]", FileUtilities.changeFileExt(filename, ".in.xml"));
     
     IWorkerContext ctxt = TestingUtilities.getSharedWorkerContext();
     ResourceParser p = new ResourceParser(ctxt);
@@ -40,7 +41,7 @@ public class ResourceToElementTest {
     Element e = p.parse(res);
     new org.hl7.fhir.r5.elementmodel.XmlParser(ctxt).compose(e, ManagedFileAccess.outStream(src), OutputStyle.PRETTY, null);
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst), res);
-    String msg = CompareUtilities.checkXMLIsSame(filename, src, dst);
+    String msg = new CompareUtilities().checkXMLIsSame(filename, src, dst);
     Assertions.assertNull(msg);
   }
 

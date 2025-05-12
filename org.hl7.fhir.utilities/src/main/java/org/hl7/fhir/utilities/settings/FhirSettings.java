@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -75,6 +76,11 @@ public class FhirSettings {
   public static String getRubyPath() {
     getInstance();
     return instance.fhirSettings.getRubyPath();
+  }
+
+  public static String getGemPath() {
+    getInstance();
+    return instance.fhirSettings.getGemPath();
   }
 
   public static boolean hasFhirTestCasesPath() {
@@ -221,17 +227,17 @@ public class FhirSettings {
 
   public static boolean isIgnoreDefaultPackageServers() {
     getInstance();
-    if (instance.fhirSettings.getPackageManagement() == null || instance.fhirSettings.getPackageManagement().getIgnoreDefaultServers() == null) {
+    if (instance.fhirSettings.getIgnoreDefaultPackageServers() == null) {
       return false;
     }
-    return instance.fhirSettings.getPackageManagement().getIgnoreDefaultServers();
+    return instance.fhirSettings.getIgnoreDefaultPackageServers();
   }
 
-  public static List<PackageServerPOJO> getPackageServers() {
+  public static List<ServerDetailsPOJO> getServers() {
     getInstance();
-    if (instance.fhirSettings.getPackageManagement() == null) {
+    if (instance.fhirSettings.getServers() == null) {
       return Collections.emptyList();
     }
-    return List.of(instance.fhirSettings.getPackageManagement().getServers().toArray(new PackageServerPOJO[]{}));
+    return Arrays.asList(instance.fhirSettings.getServers().toArray(new ServerDetailsPOJO[]{}));
   }
 }

@@ -1,6 +1,8 @@
 package org.hl7.fhir.r5.terminologies.client;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -8,13 +10,20 @@ import java.util.Set;
 
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.TerminologyClientContextUseCount;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.ENoDump;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.VersionUtilities;
 
+@MarkedToMoveToAdjunctPackage
 public class TerminologyClientContext {
+  
   public enum TerminologyClientContextUseType {
     expand, validate, readVS, readCS
   }
@@ -48,12 +57,17 @@ public class TerminologyClientContext {
     public void setValidates(int validates) {
       this.validates = validates;
     }
-    
   }
+
+  private static final String MIN_TEST_VERSION = "1.6.0";
+  private static boolean allowNonConformantServers = false;
+  private static boolean canAllowNonConformantServers = false;
+
+  private static boolean canUseCacheId;
 
   private ITerminologyClient client;
   private boolean initialised = false;
-  private CapabilityStatement capabilitiesStatementQuick;
+  private CapabilityStatement capabilitiesStatement;
   private TerminologyCapabilities txcaps;
   private TerminologyCache txCache;
   
@@ -83,8 +97,10 @@ public class TerminologyClientContext {
   }
 
   public void seeUse(Set<String> systems, TerminologyClientContextUseType useType) {
-    for (String s : systems) {
-      seeUse(s, useType);
+    if (systems != null) {
+      for (String s : systems) {
+        seeUse(s, useType);
+      }
     }
   }
   
@@ -167,10 +183,11 @@ public class TerminologyClientContext {
   public void initialize() throws IOException {
     if (!initialised) {
       // we don't cache the quick CS - we want to know that the server is with us. 
-      capabilitiesStatementQuick =  client.getCapabilitiesStatementQuick();
+      capabilitiesStatement = client.getCapabilitiesStatement();
+      checkFeature();
       if (txCache != null && txCache.hasTerminologyCapabilities(getAddress())) {
         txcaps = txCache.getTerminologyCapabilities(getAddress());
-        if (txcaps.getSoftware().hasVersion() && !txcaps.getSoftware().getVersion().equals(capabilitiesStatementQuick.getSoftware().getVersion())) {
+        if (txcaps.getSoftware().hasVersion() && !txcaps.getSoftware().getVersion().equals(capabilitiesStatement.getSoftware().getVersion())) {
           txcaps = null;
         }
       } 
@@ -180,7 +197,7 @@ public class TerminologyClientContext {
           txCache.cacheTerminologyCapabilities(getAddress(), txcaps);
         }
       }
-      if (txcaps != null) {
+      if (txcaps != null && TerminologyClientContext.canUseCacheId) {
         for (TerminologyCapabilitiesExpansionParameterComponent t : txcaps.getExpansion().getParameter()) {
           if ("cache-id".equals(t.getName())) {
             setTxCaching(true);
@@ -190,6 +207,46 @@ public class TerminologyClientContext {
       }
       initialised = true;
     }    
+  }
+
+  private void checkFeature() {
+    if (!allowNonConformantServers && capabilitiesStatement != null) {
+      String testVersion = null;
+      boolean csParams = false;
+
+      for (Extension t : capabilitiesStatement.getExtension()) {
+        if (ToolingExtensions.EXT_FEATURE.equals(t.getUrl())) {
+          String defn = t.getExtensionString("definition");
+          if (ToolingExtensions.FEATURE_TX_TEST_VERSION.equals(defn)) {
+            testVersion = t.getExtensionString("value");
+          } else if (ToolingExtensions.FEATURE_TX_CS_PARAMS.equals(defn)) {
+            csParams = "true".equals(t.getExtensionString("value"));
+          } 
+        }
+      }
+
+      if (testVersion == null) {
+        if (canAllowNonConformantServers) {
+          throw new ENoDump("The terminology server "+client.getAddress()+" is not approved for use with this software (it does not pass the required tests).\r\nIf you wish to use this server, add the parameter -authorise-non-conformant-tx-servers to the command line parameters");
+        } else {
+          throw new ENoDump("The terminology server "+client.getAddress()+" is not approved for use with this software (it does not pass the required tests)");
+        }
+      } else if (!VersionUtilities.isThisOrLater(MIN_TEST_VERSION, testVersion)) {
+        if (canAllowNonConformantServers) {
+          throw new ENoDump("The terminology server "+client.getAddress()+" is not approved for use with this software as it is too old (test version = "+testVersion+").\r\nIf you wish to use this server, add the parameter -authorise-non-conformant-tx-servers to the command line parameters");
+        } else {
+          throw new ENoDump("The terminology server "+client.getAddress()+" is not approved for use with this software as it is too old (test version = "+testVersion+")");          
+        }
+      } else if (!csParams) {
+        if (canAllowNonConformantServers) {
+          throw new ENoDump("The terminology server "+client.getAddress()+" is not approved for use as it does not accept code systems in the tx-resource parameter.\r\nIf you wish to use this server, add the parameter -authorise-non-conformant-tx-servers to the command line parameters");
+        } else {
+          throw new ENoDump("The terminology server "+client.getAddress()+" is not approved for use as it does not accept code systems in the tx-resource parameter");          
+        }
+      } else {
+        // all good
+      }
+    }
   }
 
   public boolean supportsSystem(String system) throws IOException {
@@ -206,6 +263,38 @@ public class TerminologyClientContext {
   public String toString() {
     return client.getAddress();
   }
-  
+
+  public static boolean isCanUseCacheId() {
+    return canUseCacheId;
+  }
+
+  public static void setCanUseCacheId(boolean canUseCacheId) {
+    TerminologyClientContext.canUseCacheId = canUseCacheId;
+  }
+
+  public String getHost() {
+    try {
+      URL uri = new URL(getAddress());
+      return uri.getHost();
+    } catch (MalformedURLException e) {
+      return getAddress();
+    }
+  }
+
+  public static boolean isAllowNonConformantServers() {
+    return allowNonConformantServers;
+  }
+
+  public static void setAllowNonConformantServers(boolean allowNonConformantServers) {
+    TerminologyClientContext.allowNonConformantServers = allowNonConformantServers;
+  }
+
+  public static boolean isCanAllowNonConformantServers() {
+    return canAllowNonConformantServers;
+  }
+
+  public static void setCanAllowNonConformantServers(boolean canAllowNonConformantServers) {
+    TerminologyClientContext.canAllowNonConformantServers = canAllowNonConformantServers;
+  }
   
 }

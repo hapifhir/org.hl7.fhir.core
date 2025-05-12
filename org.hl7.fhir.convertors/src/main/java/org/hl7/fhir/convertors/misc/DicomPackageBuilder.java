@@ -22,6 +22,7 @@ import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.utils.NPMPackageGenerator;
 import org.hl7.fhir.r4.utils.NPMPackageGenerator.Category;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -64,7 +65,7 @@ public class DicomPackageBuilder {
   public void execute() throws FileNotFoundException, ParserConfigurationException, SAXException, IOException {
     CodeSystem cs = buildCodeSystem();
     String fn = Utilities.path(dest, pattern.replace("{version}", version));
-    Utilities.createDirectory(Utilities.getDirectoryForFile(fn));
+    FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fn));
     
     NPMPackageGenerator gen = new NPMPackageGenerator(fn, buildPackage());
     int i = 2;
@@ -74,7 +75,7 @@ public class DicomPackageBuilder {
     Set<String> ids = new HashSet<>();
     ids.add(vs.getId());
     
-    for (File f : ManagedFileAccess.file(Utilities.path(source, "Resources", "valuesets", "fhir", "json")).listFiles()) {
+    for (File f : ManagedFileAccess.file(Utilities.path(source, "valuesets", "fhir", "json")).listFiles()) {
       vs = (ValueSet) JsonParser.loadFile(ManagedFileAccess.inStream(f));
       vs.setVersion(version);
       if (vs.getId().length() > 64) {
@@ -131,10 +132,10 @@ public class DicomPackageBuilder {
   }
 
   private CodeSystem buildCodeSystem() throws ParserConfigurationException, FileNotFoundException, SAXException, IOException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    Document doc = builder.parse(ManagedFileAccess.inStream(Utilities.path(source, "Resources", "Ontology", "DCM", "dcm.owl")));
+    Document doc = builder.parse(ManagedFileAccess.inStream(Utilities.path(source, "Ontology", "DCM", "dcm.owl")));
     Element rdf = doc.getDocumentElement();
     Element d = XMLUtil.getFirstChild(rdf);
     version = processVersion(XMLUtil.getNamedChildText(d, "versionInfo"));

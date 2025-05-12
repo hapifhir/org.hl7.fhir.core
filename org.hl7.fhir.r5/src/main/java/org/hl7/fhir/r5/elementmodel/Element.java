@@ -30,15 +30,18 @@ import java.io.PrintStream;
   POSSIBILITY OF SUCH DAMAGE.
   
  */
-
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.elementmodel.Element.SliceDefinition;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.extensions.ExtensionsUtils;
 import org.hl7.fhir.r5.model.Base;
@@ -54,9 +57,11 @@ import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.NamedItemList;
 import org.hl7.fhir.utilities.NamedItemList.NamedItem;
 import org.hl7.fhir.utilities.SourceLocation;
@@ -74,6 +79,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * @author Grahame Grieve
  *
  */
+@MarkedToMoveToAdjunctPackage
 public class Element extends Base implements NamedItem {
   public class SliceDefinition {
 
@@ -163,7 +169,7 @@ public class Element extends Base implements NamedItem {
   private Object nativeObject;
   private List<SliceDefinition> sliceDefinitions;
   private boolean elided;
-
+  
 	public Element(String name) {
 		super();
 		this.name = name;
@@ -205,9 +211,13 @@ public class Element extends Base implements NamedItem {
 		return special;
 	}
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
+
+  public String getJsonName() {
+    return property.getJsonName();
+  }
 
 	public String getType() {
 		if (type == null)
@@ -365,17 +375,18 @@ public class Element extends Base implements NamedItem {
 
   public List<Element> getChildren(String name) {
     List<Element> res = new ArrayList<Element>(); 
-    if (children.size() > 20) {
-      List<Element> l = children.getByName(name);
-      if (l != null) {
-        res.addAll(l);
-      }
-    } else {
-      if (children != null)
+    if (children != null) {
+      if (children.size() > 20) {
+        List<Element> l = children.getByName(name);
+        if (l != null) {
+          res.addAll(l);
+        }
+      } else {
         for (Element child : children) {
           if (name.equals(child.getName()))
             res.add(child);
         }
+      }
     }
 		return res;
 	}
@@ -475,7 +486,7 @@ public class Element extends Base implements NamedItem {
         } else {
           Element ne = new Element(child).setFormat(format);
           children.add(ne);
-          numberChildren();
+          ne.index = children.getSizeByName(ne.getListName()) - 1;
           childForValue = ne;
           break;
         }
@@ -563,7 +574,7 @@ public class Element extends Base implements NamedItem {
         } else {
           Element ne = new Element(child).setFormat(format);
           children.add(ne);
-          numberChildren();
+          ne.index = children.getSizeByName(ne.getListName()) - 1;
           return ne;
         }
       }
@@ -573,6 +584,7 @@ public class Element extends Base implements NamedItem {
       if (p.getName().equals(name)) {
         Element ne = new Element(name, p).setFormat(format);
         children.add(ne);
+        ne.index = children.getSizeByName(ne.getListName()) - 1;
         return ne;
       } else if (p.getDefinition().isChoice() && name.startsWith(p.getName().replace("[x]", ""))) {
         String type = name.substring(p.getName().length()-3);
@@ -582,6 +594,7 @@ public class Element extends Base implements NamedItem {
         Element ne = new Element(name, p).setFormat(format);
         ne.setType(type);
         children.add(ne);
+        ne.index = children.getSizeByName(ne.getListName()) - 1;
         return ne;
         
       }
@@ -600,12 +613,23 @@ public class Element extends Base implements NamedItem {
         return child;
       }
     }
+    
+    int index = -1;
 
     for (Property p : property.getChildProperties(this.name, type)) {
       if (p.getName().equals(name)) {
         Element ne = new Element(name, p).setFormat(format);
-        children.add(ne);
+        children.add(index+1, ne);
+        for (int i = 0; i < children.size(); i++) {
+          children.get(i).index = i;
+        }        
         return ne;
+      } else {
+        for (int i = 0; i < children.size(); i++) {
+          if (children.get(i).getName().equals(p.getName())) {
+            index = i;
+          }
+        }
       }
     }
       
@@ -691,7 +715,7 @@ public class Element extends Base implements NamedItem {
   }
 
 	public void clearDecorations() {
-	  clearUserData("fhir.decorations");
+	  clearUserData(UserDataNames.rendering_xml_decorations);
 	  for (Element e : children) {
 	    e.clearDecorations();	  
 	  }
@@ -699,10 +723,10 @@ public class Element extends Base implements NamedItem {
 	
 	public void markValidation(StructureDefinition profile, ElementDefinition definition) {
 	  @SuppressWarnings("unchecked")
-    List<ElementDecoration> decorations = (List<ElementDecoration>) getUserData("fhir.decorations");
+    List<ElementDecoration> decorations = (List<ElementDecoration>) getUserData(UserDataNames.rendering_xml_decorations);
 	  if (decorations == null) {
 	    decorations = new ArrayList<>();
-	    setUserData("fhir.decorations", decorations);
+	    setUserData(UserDataNames.rendering_xml_decorations, decorations);
 	  }
 	  decorations.add(new ElementDecoration(DecorationType.TYPE, profile.getWebPath(), definition.getPath()));
 	  if (definition.getId() != null && tail(definition.getId()).contains(":")) {
@@ -1109,6 +1133,20 @@ public class Element extends Base implements NamedItem {
     return null;
   }
 
+  public String getExtensionString(String url) {
+    if (children != null) {
+      for (Element child : children) {
+        if (extensionList.contains(child.getName())) {
+          String u = child.getChildValue("url");
+          if (url.equals(u)) {
+            return child.getNamedChildValue("value");
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   public List<Element> getExtensions(String url) {
     List<Element> list = new ArrayList<>();
     if (children != null) {
@@ -1124,12 +1162,12 @@ public class Element extends Base implements NamedItem {
     return list;
   }
 
-  public Base getExtensionValue(String url) {
+  public Base getExtensionValue(String... url) {
     if (children != null) {
       for (Element child : children) {
         if (Utilities.existsInList(child.getName(), "extension", "modifierExtension")) {
           String u = child.getChildValue("url");
-          if (url.equals(u)) {
+          if (Utilities.existsInList(u, url)) {
             return child.getNamedChild("value", false);
           }
         }
@@ -1138,12 +1176,12 @@ public class Element extends Base implements NamedItem {
     return null;
   }
 
-  public boolean hasExtension(String url) {
+  public boolean hasExtension(String... url) {
     if (children != null) {
       for (Element child : children) {
         if (Utilities.existsInList(child.getName(), "extension", "modifierExtension")) {
           String u = child.getChildValue("url");
-          if (url.equals(u)) {
+          if (Utilities.existsInList(u, url)) {
             return true;
           }
         }
@@ -1205,6 +1243,12 @@ public class Element extends Base implements NamedItem {
 
   public void removeChild(String name) {
     if (children.removeIf(n -> name.equals(n.getName()))) {
+      children.clearMap();
+    }
+  }
+
+  public void removeChild(Element child) {
+    if (children.removeIf(n -> n == child)) {
       children.clearMap();
     }
   }
@@ -1647,5 +1691,28 @@ public class Element extends Base implements NamedItem {
 
   public boolean isElided() {
     return this.elided;
+  }
+  
+  public void stripLocations() {
+    line = -1;
+    col = -1;
+    if (children != null) {
+      for (Element child : children) {
+        child.stripLocations();
+      }
+    }
+  }
+
+  public void sortChildren(Comparator<Element> sorter) {
+    children.sort(sorter);
+  }
+
+  public String getStatedResourceId() {
+    for (Property p : getProperty().getChildProperties(null)) {
+      if (ToolingExtensions.readBoolExtension(p.getDefinition(), ToolingExtensions.EXT_USE_AS_RESOURCE_ID)) {
+        return getNamedChildValue(p.getName());
+      }
+    }
+    return null;
   }
 }

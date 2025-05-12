@@ -294,6 +294,21 @@ msgstr ""
 msgid "DELETE a resource (delete interaction)"
 msgstr ""
 
+# CAPABILITY_DOCUMENT_CAPS
+#: CAPABILITY_DOCUMENT_CAPS
+msgid "FHIR Document Capabilities"
+msgstr ""
+
+# CAPABILITY_ENDPOINTS
+#: CAPABILITY_ENDPOINTS
+msgid "Endpoint(s)"
+msgstr ""
+
+# CAPABILITY_ERR_DET
+#: CAPABILITY_ERR_DET
+msgid "Error detected"
+msgstr ""
+
 # CAPABILITY_EXT_OP
 #: CAPABILITY_EXT_OP
 msgid "Extended Operations"
@@ -344,6 +359,26 @@ msgstr ""
 msgid "Interaction summary"
 msgstr ""
 
+# CAPABILITY_MAY_SUPP
+#: CAPABILITY_MAY_SUPP
+msgid "MAY Support the Following Implementation Guides"
+msgstr ""
+
+# CAPABILITY_MESSAGING_CAP
+#: CAPABILITY_MESSAGING_CAP
+msgid "Messaging Capability"
+msgstr ""
+
+# CAPABILITY_MESSAGING_CAPS
+#: CAPABILITY_MESSAGING_CAPS
+msgid "FHIR Messaging Capabilities"
+msgstr ""
+
+# CAPABILITY_MULT_EXT
+#: CAPABILITY_MULT_EXT
+msgid "this mark indicates that there are more than one expectation extensions present"
+msgstr ""
+
 # CAPABILITY_NOTE_CAP
 #: CAPABILITY_NOTE_CAP
 msgid "Note to Implementers: FHIR Capabilities"
@@ -377,6 +412,11 @@ msgstr ""
 # CAPABILITY_PROF_MAP
 #: CAPABILITY_PROF_MAP
 msgid "Profile Mapping"
+msgstr ""
+
+# CAPABILITY_PROF_RES_DOC
+#: CAPABILITY_PROF_RES_DOC
+msgid "Document Resource Profile"
 msgstr ""
 
 # CAPABILITY_PUB_BY
@@ -489,9 +529,19 @@ msgstr ""
 msgid "Supports"
 msgstr ""
 
+# CAPABILITY_SUPPS_THE
+#: CAPABILITY_SUPPS_THE
+msgid "Supports the"
+msgstr ""
+
 # CAPABILITY_SUPP_FORM
 #: CAPABILITY_SUPP_FORM
 msgid "Supported Formats:"
+msgstr ""
+
+# CAPABILITY_SUPP_MSGS
+#: CAPABILITY_SUPP_MSGS
+msgid "Supported Message(s)"
 msgstr ""
 
 # CAPABILITY_SUPP_PATCH_FORM
@@ -506,7 +556,7 @@ msgstr ""
 
 # CAPABILITY_SUPP_THE
 #: CAPABILITY_SUPP_THE
-msgid "Supports the"
+msgid "support the"
 msgstr ""
 
 # CAPABILITY_TYPS
@@ -566,8 +616,8 @@ msgstr "このコードシステム <param name=\"cs\"/> はコード<param name
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
-msgid "This code system <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "このコードシステム <param name=\"cs\"/> は次のコードに {0} を定義します:"
+msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
+msgstr "!!このコードシステム <param name=\"cs\"/> は次のコードに {0} を定義します:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
@@ -704,16 +754,6 @@ msgstr ""
 msgid "(not specified)"
 msgstr ""
 
-# CONC_MAP_NO_PROD_USE
-#: CONC_MAP_NO_PROD_USE
-msgid "(not intended for production usage)."
-msgstr ""
-
-# CONC_MAP_PUB_ON
-#: CONC_MAP_PUB_ON
-msgid "Published on {0}"
-msgstr ""
-
 # CONC_MAP_REL
 #: CONC_MAP_REL
 msgid "Relationship"
@@ -742,6 +782,26 @@ msgstr ""
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
 msgid "Target Concept Details"
+msgstr ""
+
+# DATA_REND_AFTERNOON
+#: DATA_REND_AFTERNOON
+msgid "Afternoon"
+msgstr ""
+
+# DATA_REND_AFTERNOON_EARLY
+#: DATA_REND_AFTERNOON_EARLY
+msgid "Early Afternoon"
+msgstr ""
+
+# DATA_REND_AFTERNOON_LATE
+#: DATA_REND_AFTERNOON_LATE
+msgid "Late Afternoon"
+msgstr ""
+
+# DATA_REND_AFTER_SLEEP
+#: DATA_REND_AFTER_SLEEP
+msgid "After Sleep"
 msgstr ""
 
 # DATA_REND_AFTRBKFST
@@ -845,6 +905,11 @@ msgstr ""
 msgid "Count {0}"
 msgstr ""
 
+# DATA_REND_CURRENCY
+#: DATA_REND_CURRENCY
+msgid "{1} {0}"
+msgstr ""
+
 # DATA_REND_DATA
 #: DATA_REND_DATA
 msgid "Data: {0}"
@@ -857,7 +922,12 @@ msgstr ""
 
 # DATA_REND_DETAILS_STATED
 #: DATA_REND_DETAILS_STATED
-msgid "(Details: {0} code {1} {2} {3} '', stated as '' {4} {5}"
+msgid "(Details: {0} code {1} = ''{2}'')"
+msgstr ""
+
+# DATA_REND_DETAILS_STATED_ND
+#: DATA_REND_DETAILS_STATED_ND
+msgid "(Details: {0} code {1})"
 msgstr ""
 
 # DATA_REND_DICOM
@@ -878,6 +948,21 @@ msgstr ""
 # DATA_REND_ERROR
 #: DATA_REND_ERROR
 msgid "Error: {0}"
+msgstr ""
+
+# DATA_REND_EVENING
+#: DATA_REND_EVENING
+msgid "Evening"
+msgstr ""
+
+# DATA_REND_EVENING_EARLY
+#: DATA_REND_EVENING_EARLY
+msgid "Early Evening"
+msgstr ""
+
+# DATA_REND_EVENING_LATE
+#: DATA_REND_EVENING_LATE
+msgid "Late Evening"
 msgstr ""
 
 # DATA_REND_EVENTS
@@ -910,6 +995,11 @@ msgstr ""
 msgid "ICD-9"
 msgstr ""
 
+# DATA_REND_IMMEDIATE
+#: DATA_REND_IMMEDIATE
+msgid "Immediate"
+msgstr ""
+
 # DATA_REND_INT
 #: DATA_REND_INT
 msgid "Interval: {0}"
@@ -938,6 +1028,31 @@ msgstr ""
 # DATA_REND_MKDWN_LNK
 #: DATA_REND_MKDWN_LNK
 msgid "Unable to resolve markdown link"
+msgstr ""
+
+# DATA_REND_MORNING
+#: DATA_REND_MORNING
+msgid "Morning"
+msgstr ""
+
+# DATA_REND_MORNING_EARLY
+#: DATA_REND_MORNING_EARLY
+msgid "Early Morning"
+msgstr ""
+
+# DATA_REND_MORNING_LATE
+#: DATA_REND_MORNING_LATE
+msgid "Late Morning"
+msgstr ""
+
+# DATA_REND_NIGHT
+#: DATA_REND_NIGHT
+msgid "Night"
+msgstr ""
+
+# DATA_REND_NOON
+#: DATA_REND_NOON
+msgid "Noon"
 msgstr ""
 
 # DATA_REND_NOT_STAT
@@ -1236,9 +1351,9 @@ msgstr ""
 msgid "Unable to find referenced actor {0}"
 msgstr ""
 
-# EX_SCEN_UN_INST
-#: EX_SCEN_UN_INST
-msgid "Unable to find referenced instance {0}"
+# FMM_TABLE
+#: FMM_TABLE
+msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
 msgstr ""
 
 # GENERAL_ADD_LANG
@@ -1249,6 +1364,16 @@ msgstr ""
 # GENERAL_BINDING
 #: GENERAL_BINDING
 msgid "Binding"
+msgstr ""
+
+# GENERAL_BINDING_NO_DESC
+#: GENERAL_BINDING_NO_DESC
+msgid "No description provided"
+msgstr ""
+
+# GENERAL_BINDING_NO_VS
+#: GENERAL_BINDING_NO_VS
+msgid "Binding Description (No ValueSet)"
 msgstr ""
 
 # GENERAL_BIND_MIN_ALLOW
@@ -1392,6 +1517,11 @@ msgstr ""
 msgid "Max Length:"
 msgstr ""
 
+# GENERAL_MIN_LENGTH
+#: GENERAL_MIN_LENGTH
+msgid "Min Length:"
+msgstr ""
+
 # GENERAL_MODIFIERS
 #: GENERAL_MODIFIERS
 msgid "Modifiers"
@@ -1400,6 +1530,11 @@ msgstr ""
 # GENERAL_NAME
 #: GENERAL_NAME
 msgid "Name"
+msgstr ""
+
+# GENERAL_NCI_THES
+#: GENERAL_NCI_THES
+msgid "NCI Thesaurus"
 msgstr ""
 
 # GENERAL_NOTE
@@ -1491,6 +1626,7 @@ msgstr ""
 
 # GENERAL_STATUS
 #: GENERAL_STATUS
+msgctxt "GENERAL_STATUS"
 msgid "Status"
 msgstr ""
 
@@ -1567,6 +1703,36 @@ msgstr ""
 # IMP_GUIDE_URL
 #: IMP_GUIDE_URL
 msgid "The official URL for this implementation guide is:"
+msgstr ""
+
+# IP_INTRO
+#: IP_INTRO
+msgid "This {0} includes IP covered under the following statements."
+msgstr ""
+
+# IP_NONE
+#: IP_NONE
+msgid "No use of external IP"
+msgstr ""
+
+# IP_NONE_EXT
+#: IP_NONE_EXT
+msgid "No use of external IP (other than from the FHIR specification)"
+msgstr ""
+
+# KIND_EXTENSION
+#: KIND_EXTENSION
+msgid "extension"
+msgstr ""
+
+# KIND_LOGICAL
+#: KIND_LOGICAL
+msgid "logical model"
+msgstr ""
+
+# KIND_PROFILE
+#: KIND_PROFILE
+msgid "profile"
 msgstr ""
 
 # LIB_REND_ART
@@ -1698,6 +1864,27 @@ msgstr ""
 # MAP_DEFAULT_COMMENT
 #: MAP_DEFAULT_COMMENT
 msgid "This element was not defined prior to R5"
+msgstr ""
+
+# MATURITY_MATURITY
+#: MATURITY_MATURITY
+msgid "Maturity Level: {0}"
+msgstr ""
+
+# MATURITY_PUBLISHER
+#: MATURITY_PUBLISHER
+msgid "Publisher: {0}"
+msgstr ""
+
+# MATURITY_STATUS
+#: MATURITY_STATUS
+msgctxt "MATURITY_STATUS"
+msgid "Status"
+msgstr ""
+
+# MATURITY_STDS_STATUS
+#: MATURITY_STDS_STATUS
+msgid "Standards Status: {0}"
 msgstr ""
 
 # NAME_SYS_IDEN
@@ -2552,6 +2739,11 @@ msgstr ""
 # RES_REND_TAG
 #: RES_REND_TAG
 msgid "Tag"
+msgstr ""
+
+# RES_REND_TEMPLATE_ID
+#: RES_REND_TEMPLATE_ID
+msgid "templateId: {0}"
 msgstr ""
 
 # RES_REND_UNKNOWN
@@ -3628,7 +3820,7 @@ msgstr ""
 
 # STRUC_DEF_PROF_COMP
 #: STRUC_DEF_PROF_COMP
-msgid "This profile compiles with the profile"
+msgid "This profile complies with the profile"
 msgstr ""
 
 # STRUC_DEF_PROF_REQ
@@ -4012,6 +4204,11 @@ msgstr ""
 msgid "Interactions"
 msgstr ""
 
+# SUB_TOPIC_CURR
+#: SUB_TOPIC_CURR
+msgid "* current = {0}"
+msgstr ""
+
 # SUB_TOPIC_PREV
 #: SUB_TOPIC_PREV
 msgid "* previous = {0}"
@@ -4192,6 +4389,16 @@ msgstr ""
 msgid "Display"
 msgstr ""
 
+# TX_DISPLAY_LANG
+#: TX_DISPLAY_LANG
+msgid "Display ({0})"
+msgstr ""
+
+# VALUE_ES_ES
+#: VALUE_ES_ES
+msgid "Spanish National Edition"
+msgstr ""
+
 # VALUE_SET_ADD_DESIG
 #: VALUE_SET_ADD_DESIG
 msgid "Additional Designations and Language Displays"
@@ -4213,9 +4420,39 @@ msgctxt "VALUE_SET_AND"
 msgid "and"
 msgstr ""
 
+# VALUE_SET_AR
+#: VALUE_SET_AR
+msgid "Argentinian Edition"
+msgstr ""
+
+# VALUE_SET_AT
+#: VALUE_SET_AT
+msgid "Austrian Edition"
+msgstr ""
+
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
 msgid "Australian"
+msgstr ""
+
+# VALUE_SET_BE
+#: VALUE_SET_BE
+msgid "Belgian Edition"
+msgstr ""
+
+# VALUE_SET_CA_EN
+#: VALUE_SET_CA_EN
+msgid "Canadian English Edition"
+msgstr ""
+
+# VALUE_SET_CA_FR
+#: VALUE_SET_CA_FR
+msgid "Canadian Canadian French Edition"
+msgstr ""
+
+# VALUE_SET_CH
+#: VALUE_SET_CH
+msgid "Swiss Edition"
 msgstr ""
 
 # VALUE_SET_CODES_FROM
@@ -4263,6 +4500,11 @@ msgstr ""
 msgid "Danish"
 msgstr ""
 
+# VALUE_SET_DE
+#: VALUE_SET_DE
+msgid "German Edition"
+msgstr ""
+
 # VALUE_SET_DESCENDENTOF
 #: VALUE_SET_DESCENDENTOF
 msgid "descends from"
@@ -4286,6 +4528,11 @@ msgstr ""
 # VALUE_SET_DUTCH
 #: VALUE_SET_DUTCH
 msgid "Dutch"
+msgstr ""
+
+# VALUE_SET_EE
+#: VALUE_SET_EE
+msgid "Estonian Edition"
 msgstr ""
 
 # VALUE_SET_EQUAL
@@ -4328,9 +4575,34 @@ msgstr ""
 msgid "Expansion based on:"
 msgstr ""
 
+# VALUE_SET_EXPANSIONS_INTERNAL
+#: VALUE_SET_EXPANSIONS_INTERNAL
+msgid "Expansion performed internally based on:"
+msgstr ""
+
+# VALUE_SET_EXPANSIONS_SRVR
+#: VALUE_SET_EXPANSIONS_SRVR
+msgid "Expansion from {0} based on:"
+msgstr ""
+
+# VALUE_SET_EXPANSION_INTERNAL
+#: VALUE_SET_EXPANSION_INTERNAL
+msgid "Expansion performed internally based on"
+msgstr ""
+
+# VALUE_SET_EXPANSION_SRVR
+#: VALUE_SET_EXPANSION_SRVR
+msgid "Expansion from {0} based on"
+msgstr ""
+
 # VALUE_SET_EXP_FRAG
 #: VALUE_SET_EXP_FRAG
 msgid "Expansion based on code system fragment"
+msgstr ""
+
+# VALUE_SET_FI
+#: VALUE_SET_FI
+msgid "Finnish Edition"
 msgstr ""
 
 # VALUE_SET_GENERALIZES
@@ -4346,6 +4618,11 @@ msgstr ""
 # VALUE_SET_HAS_AT_LEAST
 #: VALUE_SET_HAS_AT_LEAST
 msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
+msgstr ""
+
+# VALUE_SET_IE
+#: VALUE_SET_IE
+msgid "Irish Edition"
 msgstr ""
 
 # VALUE_SET_IMPORT
@@ -4395,6 +4672,11 @@ msgstr ""
 msgid "is-not-a"
 msgstr ""
 
+# VALUE_SET_KR
+#: VALUE_SET_KR
+msgid "Republic of Korea Edition (South Korea)"
+msgstr ""
+
 # VALUE_SET_LEVEL
 #: VALUE_SET_LEVEL
 msgid "Level"
@@ -4403,6 +4685,11 @@ msgstr ""
 # VALUE_SET_LOINCV
 #: VALUE_SET_LOINCV
 msgid "Loinc v"
+msgstr ""
+
+# VALUE_SET_NO
+#: VALUE_SET_NO
+msgid "Norwegian Edition"
 msgstr ""
 
 # VALUE_SET_NOTE
@@ -4448,6 +4735,16 @@ msgstr ""
 # VALUE_SET_NUMBER_CONCEPTS
 #: VALUE_SET_NUMBER_CONCEPTS
 msgid "This value set expansion contains {0} concepts."
+msgstr ""
+
+# VALUE_SET_NZ
+#: VALUE_SET_NZ
+msgid "New Zealand Edition"
+msgstr ""
+
+# VALUE_SET_OTHER_DISPLAY
+#: VALUE_SET_OTHER_DISPLAY
+msgid "Other Display ({0})"
 msgstr ""
 
 # VALUE_SET_REGEX
@@ -4520,6 +4817,11 @@ msgstr ""
 msgid "United Kingdom"
 msgstr ""
 
+# VALUE_SET_UK_CLIN
+#: VALUE_SET_UK_CLIN
+msgid "UK Clinical Edition"
+msgstr ""
+
 # VALUE_SET_US
 #: VALUE_SET_US
 msgid "United States"
@@ -4528,6 +4830,16 @@ msgstr ""
 # VALUE_SET_USED_ELSEWHERE
 #: VALUE_SET_USED_ELSEWHERE
 msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr ""
+
+# VALUE_SET_US_ICD10CM
+#: VALUE_SET_US_ICD10CM
+msgid "US Edition (with ICD-10-CM maps)"
+msgstr ""
+
+# VALUE_SET_UY
+#: VALUE_SET_UY
+msgid "Uruguay Edition"
 msgstr ""
 
 # VALUE_SET_WHERE
@@ -4543,5 +4855,10 @@ msgstr ""
 # VS_ABSTRACT_CODE_HINT
 #: VS_ABSTRACT_CODE_HINT
 msgid "This code is not selectable (''Abstract'')"
+msgstr ""
+
+# _NA
+#: _NA
+msgid "n/a"
 msgstr ""
 

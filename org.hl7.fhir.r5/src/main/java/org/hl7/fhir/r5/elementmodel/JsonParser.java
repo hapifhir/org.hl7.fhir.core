@@ -53,6 +53,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.r5.elementmodel.JsonParser.ILogicalModelResolver;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -65,7 +66,8 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.StringPair;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -82,7 +84,14 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 
+@MarkedToMoveToAdjunctPackage
 public class JsonParser extends ParserBase {
+
+  public interface ILogicalModelResolver {
+
+    StructureDefinition resolve(JsonObject object);
+
+  }
 
   private JsonCreator json;
   private boolean allowComments;
@@ -91,6 +100,7 @@ public class JsonParser extends ParserBase {
 
   private Element baseElement;
   private boolean markedXhtml;
+  private ILogicalModelResolver logicalModelResolver;
 
   public JsonParser(IWorkerContext context, ProfileUtilities utilities) {
     super(context, utilities);
@@ -142,13 +152,13 @@ public class JsonParser extends ParserBase {
   
   public List<ValidatedFragment> parse(InputStream inStream, int line) throws IOException, FHIRException {
 //    long start = System.currentTimeMillis();
-    byte[] content = TextFile.streamToBytes(inStream);
+    byte[] content = FileUtilities.streamToBytes(inStream);
     ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "json", content, false);
     
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     
     // if we're parsing at this point, then we're going to use the custom parser
-    String source = TextFile.streamToString(stream);
+    String source = FileUtilities.streamToString(stream);
     JsonObject obj = null;
     
     if (policy == ValidationPolicy.EVERYTHING) {
@@ -176,11 +186,19 @@ public class JsonParser extends ParserBase {
     return parse(errors, object, null);
   }
   
-  public Element parse(List<ValidationMessage> errors, JsonObject object, String statedPath) throws FHIRException {
-    if (object == null) {
-      System.out.println("What?");
-    }
+  private StructureDefinition resolveLogical(JsonObject object) {
     StructureDefinition sd = getLogical();
+    if (sd != null) {
+      return sd;
+    } else if (logicalModelResolver != null) {
+      return logicalModelResolver.resolve(object);
+    } else {
+      return null;
+    }
+  }
+  
+  public Element parse(List<ValidationMessage> errors, JsonObject object, String statedPath) throws FHIRException {
+    StructureDefinition sd = resolveLogical(object);
     String name;
     String path;      
     if (sd == null) {
@@ -470,7 +488,6 @@ public class JsonParser extends ParserBase {
             n.getChildren().add(nKey);
             nKey.setValue(pv.getName());
             
-
             boolean ok = true;
             Property pvl = propV;
             if (propV.isJsonPrimitiveChoice()) {
@@ -480,6 +497,9 @@ public class JsonParser extends ParserBase {
                 logError(errors, ValidationMessage.NO_RULE_DATE, line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE, describeType(pv.getValue()), propV.getName(), propV.typeSummary()), IssueSeverity.ERROR);
               } else if (propV.hasType(type)) {
                 pvl = new Property(propV.getContext(), propV.getDefinition(), propV.getStructure(), propV.getUtils(), propV.getContextUtils(), type);
+                ok = true;
+              } else if (propV.getDefinition().getType().size() == 1 && propV.typeIsConsistent(type)) {
+                pvl = new Property(propV.getContext(), propV.getDefinition(), propV.getStructure(), propV.getUtils(), propV.getContextUtils(), propV.getType());
                 ok = true;
               } else {
                 logError(errors, ValidationMessage.NO_RULE_DATE, line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(pv.getValue()), propV.getName(), type, propV.typeSummary()), IssueSeverity.ERROR);
@@ -502,7 +522,7 @@ public class JsonParser extends ParserBase {
         }
       }
     } else {
-      if (property.isList()) {
+      if (property.isJsonList()) {
         logError(errors, ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(e), name, path), IssueSeverity.ERROR);
       }
       parseChildComplexInstance(errors, npath, fpath, element, property, name, e, null, null, null);
@@ -571,7 +591,8 @@ public class JsonParser extends ParserBase {
       n.setNull(true);
       // nothing to do, it's ok, but we treat it like it doesn't exist
     } else {
-      logError(errors, ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e), name, npath), IssueSeverity.ERROR);
+      String msg = context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e), name, npath);
+      logError(errors, ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, msg, IssueSeverity.ERROR);
     }
     return null;
   }
@@ -608,7 +629,7 @@ public class JsonParser extends ParserBase {
       logError(errors, "2022-11-26", line(main.getValue()), col(main.getValue()), path, IssueType.INVALID, context.formatMessage(I18nConstants.JSON_PROPERTY_VALUE_NO_QUOTES, main.getName(), main.getValue().asString()), IssueSeverity.ERROR);
     }
     if (main != null || fork != null) {
-      if (property.isList()) {
+      if (property.isJsonList()) {
         boolean ok = true;
         if (!(main == null || main.getValue() instanceof JsonArray)) {
           logError(errors, ValidationMessage.NO_RULE_DATE, line(main.getValue()), col(main.getValue()), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(main.getValue()), name, path), IssueSeverity.ERROR);
@@ -785,8 +806,9 @@ public class JsonParser extends ParserBase {
     }
     checkComposeComments(e);
     json.beginObject();
-//    if (!isSuppressResourceType())
+    if (!isSuppressResourceType(e.getProperty())) {
       prop("resourceType", e.getType(), null);
+    }
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
       compose(e.getName(), e, done, child);
@@ -794,6 +816,15 @@ public class JsonParser extends ParserBase {
     json.endObject();
     json.finish();
     osw.flush();
+  }
+
+  private boolean isSuppressResourceType(Property property) {
+    StructureDefinition sd = property.getStructure();
+    if (sd != null && sd.hasExtension(ToolingExtensions.EXT_SUPPRESS_RESOURCE_TYPE)) {
+      return ToolingExtensions.readBoolExtension(sd, ToolingExtensions.EXT_SUPPRESS_RESOURCE_TYPE);
+    } else {
+      return false;
+    }
   }
 
   private void checkComposeComments(Element e) {
@@ -811,8 +842,9 @@ public class JsonParser extends ParserBase {
     checkComposeComments(e);
     json.beginObject();
 
-//    if (!isSuppressResourceType())
+    if (!isSuppressResourceType(e.getProperty())) {
       prop("resourceType", e.getType(), linkResolver == null ? null : linkResolver.resolveProperty(e.getProperty()));
+    }
     Set<String> done = new HashSet<String>();
     for (Element child : e.getChildren()) {
       compose(e.getName(), e, done, child);
@@ -829,18 +861,35 @@ public class JsonParser extends ParserBase {
         if (child.isElided() && isElideElements() && json.canElide())
           json.elide();
         else
-          compose(path, child);
+          compose(child.getName(), path, child);
       } else if (!done.contains(child.getName())) {
         done.add(child.getName());
         List<Element> list = e.getChildrenByName(child.getName());
-        if (child.getProperty().getDefinition().hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY))
-          composeKeyList(path, list);
-        else
-          composeList(path, list);
+        boolean skipList = false;
+        if (json.canElide() && isElideElements()) {
+          boolean foundNonElide = false;
+          for (Element listElement: list) {
+            if (!listElement.isElided()) {
+              foundNonElide = true;
+              break;
+            }
+          }
+          if (!foundNonElide) {
+            json.elide();
+            skipList = true;
+          }
+        }
+        if (!skipList) {
+          if (child.getProperty().getDefinition().hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY))
+            composeKeyList(path, list);
+          else 
+            composeList(list.get(0).getName(), path, list);
+        }
       }
     }
   }
 
+  
   private void composeKeyList(String path, List<Element> list) throws IOException {
     String keyName = list.get(0).getProperty().getDefinition().getExtensionString(ToolingExtensions.EXT_JSON_PROP_KEY);
     json.name(list.get(0).getName());
@@ -865,15 +914,14 @@ public class JsonParser extends ParserBase {
           compose(value.getName(), value, done, child);
         }
         json.endObject();
-        compose(path + "." + key.getValue(), value);
+        compose(value.getName(), path + "." + key.getValue(), value);
       }
     }
     json.endObject();
   }
 
-  private void composeList(String path, List<Element> list) throws IOException {
+  private void composeList(String name, String path, List<Element> list) throws IOException {
     // there will be at least one element
-    String name = list.get(0).getName();
     boolean complex = true;
     if (list.get(0).isPrimitive()) {
       boolean prim = false;
@@ -906,13 +954,12 @@ public class JsonParser extends ParserBase {
     }
     if (complex) {
       openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
-      int i = 0;
       for (Element item : list) {
         if (item.isElided() && json.canElide())
           json.elide();
         else if (item.hasChildren()) {
           open(null,null);
-          if (item.getProperty().isResource()) {
+          if (item.getProperty().isResource() && !isSuppressResourceType(item.getProperty())) {
             prop("resourceType", item.getType(), linkResolver == null ? null : linkResolver.resolveType(item.getType()));
           }
           if (linkResolver != null && item.getProperty().isReference()) {
@@ -929,7 +976,6 @@ public class JsonParser extends ParserBase {
         } else {
           json.nullValue();
         }
-        i++;
       }
       closeArray();
     }
@@ -942,22 +988,22 @@ public class JsonParser extends ParserBase {
       json.name(name);
     }
     String type = item.getType();
-    if (Utilities.existsInList(type, "boolean"))
+    if (Utilities.existsInList(type, "boolean")) {
       json.value(item.getValue().trim().equals("true") ? new Boolean(true) : new Boolean(false));
-    else if (Utilities.existsInList(type, "integer", "unsignedInt", "positiveInt"))
+    } else if (Utilities.existsInList(type, "integer", "unsignedInt", "positiveInt")) {
       json.value(new Integer(item.getValue()));
-    else if (Utilities.existsInList(type, "decimal"))
+    } else if (Utilities.existsInList(type, "decimal")) {
       try {
         json.value(new BigDecimal(item.getValue()));
       } catch (Exception e) {
         throw new NumberFormatException(context.formatMessage(I18nConstants.ERROR_WRITING_NUMBER__TO_JSON, item.getValue()));
       }
-    else
+    } else {
       json.value(item.getValue());
+    }
   }
 
-  private void compose(String path, Element element) throws IOException {
-    String name = element.getName();
+  private void compose(String name, String path, Element element) throws IOException {
     if (element.isPrimitive() || isPrimitive(element.getType())) {
       if (element.hasValue())
         primitiveValue(name, element);
@@ -968,7 +1014,7 @@ public class JsonParser extends ParserBase {
     }
     if (element.hasChildren()) {
       open(name, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()));
-      if (element.getProperty().isResource()) {
+      if (element.getProperty().isResource() && !isSuppressResourceType(element.getProperty())) {
         prop("resourceType", element.getType(), linkResolver == null ? null : linkResolver.resolveType(element.getType()));
       }
       if (linkResolver != null && element.getProperty().isReference()) {
@@ -978,14 +1024,48 @@ public class JsonParser extends ParserBase {
         }
       }
 
-      Set<String> done = new HashSet<String>();
-      for (Element child : element.getChildren()) {
-        compose(path + "." + element.getName(), element, done, child);
+      if ("named-elements".equals(element.getProperty().getDefinition().getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE))) {
+        composeNamedChildren(path + "." + element.getJsonName(), element);        
+      } else {
+        Set<String> done = new HashSet<String>();
+        for (Element child : element.getChildren()) {
+          compose(path + "." + element.getJsonName(), element, done, child);
+        }
       }
       close();
     }
   }
 
+  private void composeNamedChildren(String path, Element element) throws IOException {
+    Map<String, StructureDefinition> names = new HashMap<>();
+    for (Element child : element.getChildren()) {
+      String name = child.getJsonName();
+      StructureDefinition sd = child.getProperty().getStructure();
+      if (!names.containsKey(name)) {
+        names.put(name, sd);        
+      } else if (names.get(name) != sd) {
+        throw new FHIRException("Error: conflicting definitions for "+name+" at "+path+": "+sd.getVersionedUrl()+" / "+names.get(name).getVersionedUrl());
+      }
+    }
+    for (String name : Utilities.sorted(names.keySet())) {
+      StructureDefinition sd = names.get(name);
+      ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
+      boolean list = !"1".equals(ed.getMax());
+      List<Element> children = new ArrayList<>();
+      for (Element child : element.getChildren()) {
+        if (name.equals(child.getJsonName())) {
+          children.add(child);
+        }
+      }
+      if (list) {        
+        composeList(name, path+"."+name, children);
+      } else if (children.size() > 1) {
+        throw new FHIRException("Error: definitions for "+name+" ("+sd.getVersionedUrl()+") says it cannot repeat, but "+children.size()+" items found");        
+      } else {
+        compose(name, path+"."+name, children.get(0));
+      }
+    }
+  }
 
   public boolean isAllowComments() {
     return allowComments;
@@ -1014,5 +1094,14 @@ public class JsonParser extends ParserBase {
     return this;
   }
 */
+
+  public ILogicalModelResolver getLogicalModelResolver() {
+    return logicalModelResolver;
+  }
+
+  public JsonParser setLogicalModelResolver(ILogicalModelResolver logicalModelResolver) {
+    this.logicalModelResolver = logicalModelResolver;
+    return this;
+  }
 
 }

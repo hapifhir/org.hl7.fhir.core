@@ -34,7 +34,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -42,6 +43,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
+@MarkedToMoveToAdjunctPackage
 public class Writer extends BaseWriter {
 
   private OutputStream stream;
@@ -60,7 +62,7 @@ public class Writer extends BaseWriter {
 
   private static JsonObject parse(InputStream template) throws JsonSyntaxException, IOException {
     JsonParser parser = new com.google.gson.JsonParser();
-    return parser.parse(TextFile.streamToString(template)).getAsJsonObject();
+    return parser.parse(FileUtilities.streamToString(template)).getAsJsonObject();
   }
 
   public void commit() throws IOException {

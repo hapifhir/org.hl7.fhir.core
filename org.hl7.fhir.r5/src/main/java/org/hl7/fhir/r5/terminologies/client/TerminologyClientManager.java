@@ -8,36 +8,36 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.context.CanonicalResourceManager;
+import org.hl7.fhir.r5.context.ILoggingService;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
+import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.TerminologyClientContextUseType;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ServerOptionList;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedCodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
+@MarkedToMoveToAdjunctPackage
 public class TerminologyClientManager {
   public class ServerOptionList {
     private List<String> authoritative = new ArrayList<String>();
@@ -83,6 +83,56 @@ public class TerminologyClientManager {
     ITerminologyClient makeClient(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException;
     String getVersion();
   }
+  
+  public class InternalLogEvent {
+    private boolean error;
+    private String message;
+    private String server;
+    private String vs;
+    private String systems;
+    private String choices;
+    private String context;
+    private String request;
+    protected InternalLogEvent(String message, String server, String vs, String systems, String choices) {
+      super();
+      this.message = message;
+      this.server = server;
+      this.vs = vs;
+      this.systems = systems;
+      this.choices = choices;
+    }
+    protected InternalLogEvent(String message, String ctxt, String request) {
+      super();
+      error = true;
+      this.message = message;
+      this.context = ctxt;
+      this.request = request;
+    }
+    public String getMessage() {
+      return message;
+    }
+    public String getVs() {
+      return vs;
+    }
+    public String getSystems() {
+      return systems;
+    }
+    public String getChoices() {
+      return choices;
+    }
+    public String getServer() {
+      return server;
+    }
+    public boolean isError() {
+      return error;
+    }
+    public String getContext() {
+      return context;
+    }
+    public String getRequest() {
+      return request;
+    }
+  }
 
   public static final String UNRESOLVED_VALUESET = "--unknown--";
 
@@ -93,7 +143,7 @@ public class TerminologyClientManager {
   private List<TerminologyClientContext> serverList = new ArrayList<>(); // clients by server address
   private Map<String, TerminologyClientContext> serverMap = new HashMap<>(); // clients by server address
   private Map<String, ServerOptionList> resMap = new HashMap<>(); // client resolution list
-  private List<String> internalLog = new ArrayList<>();
+  private List<InternalLogEvent> internalLog = new ArrayList<>();
   protected Parameters expParameters;
 
   private TerminologyCache cache;
@@ -105,10 +155,15 @@ public class TerminologyClientManager {
 
   private boolean useEcosystem;
 
-  public TerminologyClientManager(ITerminologyClientFactory factory, String cacheId) {
+  private ILoggingService logger;
+
+  private int ecosystemfailCount;
+
+  public TerminologyClientManager(ITerminologyClientFactory factory, String cacheId, ILoggingService logger) {
     super();
     this.factory = factory;
     this.cacheId = cacheId;
+    this.logger = logger;
   }
   
   public String getCacheId() {
@@ -124,6 +179,7 @@ public class TerminologyClientManager {
     monitorServiceURL = other.monitorServiceURL;
     factory = other.factory;
     usage = other.usage;
+    internalLog = other.internalLog;
   }
 
 
@@ -150,6 +206,7 @@ public class TerminologyClientManager {
           }
         }
         if (ok) {
+          log(vs, s, systems, choices, "Found authoritative server "+s);
           return findClient(s, systems, expand);
         }
       }
@@ -165,6 +222,7 @@ public class TerminologyClientManager {
           }
         }
         if (ok) {
+          log(vs, s, systems, choices, "Found partially authoritative server "+s);
           return findClient(s, systems, expand);
         }
       }
@@ -180,6 +238,7 @@ public class TerminologyClientManager {
           }
         }
         if (ok) {
+          log(vs, s, systems, choices, "Found candidate server "+s);
           return findClient(s, systems, expand);
         }
       }
@@ -194,42 +253,86 @@ public class TerminologyClientManager {
           "urn:ietf:rfc:3986", "http://www.ama-assn.org/go/cpt", "urn:oid:1.2.36.1.2001.1005.17", "urn:iso:std:iso:3166", 
           "http://varnomen.hgvs.org", "http://unstats.un.org/unsd/methods/m49/m49.htm", "urn:iso:std:iso:4217", 
           "http://hl7.org/fhir/sid/ndc", "http://fhir.ohdsi.org/CodeSystem/concepts", "http://fdasis.nlm.nih.gov", "https://www.usps.com/")) {
+        log(vs, serverList.get(0).getAddress(), systems, choices, "Use primary server for "+uri);
         return serverList.get(0);
       }
     }
 
     // no agreement? Then what we do depends     
     if (vs != null) {
-      if (vs.hasUserData("External.Link")) {
-        if (systems.size() == 1) {
-          internalLog.add(vs.getVersionedUrl()+" uses the system "+systems.toString()+" not handled by any servers. Using source @ '"+vs.getUserString("External.Link")+"'");
-        } else {
-          internalLog.add(vs.getVersionedUrl()+" includes multiple systems "+systems.toString()+" best handled by multiple servers: "+choices.toString()+". Using source @ '"+vs.getUserString("External.Link")+"'");
+      if (vs.hasUserData(UserDataNames.render_external_link)) {
+        String el = vs.getUserString(UserDataNames.render_external_link);
+        if ("https://vsac.nlm.nih.gov".equals(el)) {
+          el = getMaster().getAddress();
         }
-        return findClient(vs.getUserString("External.Link"), systems, expand);
+        if (systems.size() == 1) {
+          log(vs, el, systems, choices, "Not handled by any servers. Using source @ '"+el+"'");
+        } else {
+          log(vs, el, systems, choices, "Handled by multiple servers. Using source @ '"+el+"'");
+        }        
+        return findClient(el, systems, expand);
       } else {
         if (systems.size() == 1) {
-          internalLog.add(vs.getVersionedUrl()+" uses the system "+systems.toString()+" not handled by any servers. Using master @ '"+serverList.get(0)+"'");
+          log(vs, serverList.get(0).getAddress(), systems, choices, "System not handled by any servers. Using primary server");
         } else {
-          internalLog.add(vs.getVersionedUrl()+" includes multiple systems "+systems.toString()+" best handled by multiple servers: "+choices.toString()+". Using master @ '"+serverList.get(0)+"'");
+          log(vs, serverList.get(0).getAddress(), systems, choices, "Systems handled by multiple servers. Using primary server");
         }
         return findClient(serverList.get(0).getAddress(), systems, expand);
       }      
     } else {
       if (systems.size() == 1) {
-        internalLog.add("Request for system "+systems.toString()+" not handled by any servers. Using master @ '"+serverList.get(0)+"'");
+        log(vs, serverList.get(0).getAddress(), systems, choices, "System not handled by any servers. Using primary server");
       } else {
-        internalLog.add("Request for multiple systems "+systems.toString()+" best handled by multiple servers: "+choices.toString()+". Using master @ '"+serverList.get(0)+"'");
+        log(vs, serverList.get(0).getAddress(), systems, choices, "Systems handled by multiple servers. Using primary server");
       }
+      log(vs, serverList.get(0).getAddress(), systems, choices, "Fallback: primary server");
       return findClient(serverList.get(0).getAddress(), systems, expand);
     }
+  }
+
+  public TerminologyClientContext chooseServer(String vs, boolean expand) throws TerminologyServiceException {
+    if (serverList.isEmpty()) {
+      return null;
+    }
+    if (IGNORE_TX_REGISTRY || !useEcosystem) {
+      return findClient(getMasterClient().getAddress(), null, expand);
+    }
+    String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+Utilities.URLEncode(vs));
+    if (usage != null) {
+      request = request + "&usage="+usage;
+    } 
+    try {
+      JsonObject json = JsonParser.parseObjectFromUrl(request);
+      for (JsonObject item : json.getJsonObjects("authoritative")) {
+        return findClient(item.asString("url"), null, expand);
+      }
+      for (JsonObject item : json.getJsonObjects("candidates")) {
+        return findClient(item.asString("url"), null, expand);
+      }
+    } catch (Exception e) {
+      String msg = "Error resolving valueSet "+vs+": "+e.getMessage();
+      if (!hasMessage(msg)) {
+        internalLog.add(new InternalLogEvent(msg, vs, request));
+      }
+      if (logger.isDebugLogging()) {
+        e.printStackTrace();
+      }
+    }
+    return null; 
+  }
+
+  private void log(ValueSet vs, String server, Set<String> systems, List<ServerOptionList> choices, String message) {
+    String svs = (vs == null ? "null" : vs.getVersionedUrl());
+    String sys = systems.isEmpty() ? "--" : systems.size() == 1 ? systems.iterator().next() : systems.toString();
+    String sch = choices.isEmpty() ? "--" : choices.size() == 1 ? choices.iterator().next().toString() : choices.toString();
+    internalLog.add(new InternalLogEvent(message, server, svs, sys, sch));
   }
 
   private TerminologyClientContext findClient(String server, Set<String> systems, boolean expand) {
     TerminologyClientContext client = serverMap.get(server);
     if (client == null) {
       try {
-        client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
+        client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
       } catch (URISyntaxException e) {
         throw new TerminologyServiceException(e);
       }
@@ -247,13 +350,22 @@ public class TerminologyClientManager {
       serverList = decideWhichServer(s);
       // testing support
       try {
-        serverList.replace("tx.fhir.org", new URL(getMasterClient().getAddress()).getHost());
+        serverList.replace("tx.fhir.org", host());
       } catch (MalformedURLException e) {
       }
-      resMap.put(s, serverList);
+      // resMap.put(s, serverList);
       save();
     }
     return serverList;
+  }
+
+  private String host() throws MalformedURLException {
+    URL url = new URL(getMasterClient().getAddress());
+    if (url.getPort() > 0) {
+      return url.getHost()+":"+url.getPort();
+    } else {
+      return url.getHost();
+    }
   }
 
   private ServerOptionList decideWhichServer(String url) {
@@ -292,16 +404,25 @@ public class TerminologyClientManager {
       }
       return ret;
     } catch (Exception e) {
-      String msg = "Error resolving system "+url+": "+e.getMessage()+" ("+request+")";
-      if (!internalLog.contains(msg)) {
-        internalLog.add(msg);
+      String msg = "Error resolving system "+url+": "+e.getMessage();
+      if (!hasMessage(msg)) {
+        internalLog.add(new InternalLogEvent(msg, url, request));
       }
-      if (!monitorServiceURL.contains("tx.fhir.org")) {
+      if (logger.isDebugLogging()) {
         e.printStackTrace();
       }
     }
     return new ServerOptionList( getMasterClient().getAddress());
     
+  }
+
+  private boolean hasMessage(String msg) {
+    for (InternalLogEvent log : internalLog) {
+      if (msg.equals(log.message)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public List<TerminologyClientContext> serverList() {
@@ -406,10 +527,6 @@ public class TerminologyClientManager {
     }
   }
 
-  public List<String> getInternalLog() {
-    return internalLog;
-  }
-
   public List<TerminologyClientContext> getServerList() {
     return serverList;
   }
@@ -442,40 +559,78 @@ public class TerminologyClientManager {
     if (IGNORE_TX_REGISTRY || getMasterClient() == null) {
       return null;
     }
-    String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+Utilities.URLEncode(canonical));
+    String request = null;
+    boolean isImplicit = false;
+    String iVersion = null;
+    if (ValueSetUtilities.isImplicitSCTValueSet(canonical)) {
+      isImplicit = true;
+      iVersion = canonical.substring(0, canonical.indexOf("?fhir_vs"));
+      if ("http://snomed.info/sct".equals(iVersion) && canonical.contains("|")) {
+        iVersion = canonical.substring(canonical.indexOf("|")+1);
+      } 
+      iVersion = ValueSetUtilities.versionFromExpansionParams(expParameters, "http://snomed.info/sct", iVersion); 
+      request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode("http://snomed.info/sct"+(iVersion == null ? "": "|"+iVersion)));
+    } else if (ValueSetUtilities.isImplicitLoincValueSet(canonical)) {
+      isImplicit = true;
+      iVersion = null;
+      if (canonical.contains("|")) {
+        iVersion = canonical.substring(canonical.indexOf("|")+1);
+      } 
+      iVersion = ValueSetUtilities.versionFromExpansionParams(expParameters, "http://loinc.org", iVersion); 
+      request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode("http://loinc.org"+(iVersion == null ? "": "|"+iVersion)));
+    } else {
+      request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+Utilities.URLEncode(canonical));
+    }
     String server = null;
     try {
       if (!useEcosystem) {
         server = getMasterClient().getAddress();
       } else {
-        if (usage != null) {
-          request = request + "&usage="+usage;
-        }
-        JsonObject json = JsonParser.parseObjectFromUrl(request);
-        for (JsonObject item : json.getJsonObjects("authoritative")) {
+        ecosystemfailCount = 0; 
+        try {
+          if (usage != null) {
+            request = request + "&usage="+usage;
+          }
+          JsonObject json = JsonParser.parseObjectFromUrl(request);
+          for (JsonObject item : json.getJsonObjects("authoritative")) {
+            if (server == null) {
+              server = item.asString("url");
+            }
+          }
+          for (JsonObject item : json.getJsonObjects("candidates")) {
+            if (server == null) {
+              server = item.asString("url");
+            }
+          }
           if (server == null) {
-            server = item.asString("url");
+            server = getMasterClient().getAddress();
           }
-        }
-        for (JsonObject item : json.getJsonObjects("candidates")) {
-          if (server == null) {
-            server = item.asString("url");
+          if (server.contains("://tx.fhir.org")) {
+            try {
+              server = server.replace("tx.fhir.org", host());
+            } catch (MalformedURLException e) {
+            }
           }
-        }
-        if (server == null) {
-          return null;
-        }
-        if (server.contains("://tx.fhir.org")) {
-          try {
-            server = server.replace("tx.fhir.org", new URL(getMasterClient().getAddress()).getHost());
-          } catch (MalformedURLException e) {
+        } catch (Exception e) {
+          // the ecosystem cal failed, so we're just going to fall back to 
+          String msg = "Error resolving valueSet "+canonical+": "+e.getMessage();
+          if (!hasMessage(msg)) {
+            internalLog.add(new InternalLogEvent(msg, canonical, request));
           }
+          if (logger.isDebugLogging()) {
+            e.printStackTrace();
+          }
+          ecosystemfailCount++;
+          if (ecosystemfailCount > 3) {
+            useEcosystem = false;
+          }
+          server = getMasterClient().getAddress();
         }
       }
       TerminologyClientContext client = serverMap.get(server);
       if (client == null) {
         try {
-          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
+          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
         } catch (URISyntaxException e) {
           throw new TerminologyServiceException(e);
         }
@@ -491,7 +646,23 @@ public class TerminologyClientManager {
       Bundle bnd = client.getClient().search("ValueSet", criteria);
       String rid = null;
       if (bnd.getEntry().size() == 0) {
-        return null;
+        if (isImplicit) {
+          // couldn't find it, but can we expand on it? 
+          Parameters p= new Parameters();
+          p.addParameter("url", new UriType(canonical));
+          p.addParameter("count", 0);
+          p.addParameters(expParameters);
+          try {
+            ValueSet vs = client.getClient().expandValueset(null, p);
+            if (vs != null) {
+              return new SourcedValueSet(server, ValueSetUtilities.makeImplicitValueSet(canonical, iVersion));
+            }
+          } catch (Exception e) {
+            return null;
+          }
+        } else {
+          return null;
+        }
       } else if (bnd.getEntry().size() > 1) {
         List<ValueSet> vslist = new ArrayList<>();
         for (BundleEntryComponent be : bnd.getEntry()) {
@@ -512,16 +683,16 @@ public class TerminologyClientManager {
       ValueSet vs = (ValueSet) client.getClient().read("ValueSet", rid);
       return new SourcedValueSet(server, vs);
     } catch (Exception e) {
-      e.printStackTrace();
-      String msg = "Error resolving valueSet "+canonical+": "+e.getMessage()+" ("+request+")";
-      if (!internalLog.contains(msg)) {
-        internalLog.add(msg);
+      String msg = "Error resolving valueSet "+canonical+": "+e.getMessage();
+      if (!hasMessage(msg)) {
+        internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
-      e.printStackTrace();
+      if (logger.isDebugLogging()) {
+        e.printStackTrace();
+      }
       return null;
     }
   }
-
   public SourcedCodeSystem findCodeSystemOnServer(String canonical) {
     if (IGNORE_TX_REGISTRY || getMasterClient() == null || !useEcosystem) {
       return null;
@@ -548,14 +719,14 @@ public class TerminologyClientManager {
       }
       if (server.contains("://tx.fhir.org")) {
         try {
-          server = server.replace("tx.fhir.org", new URL(getMasterClient().getAddress()).getHost());
+          server = server.replace("tx.fhir.org", host());
         } catch (MalformedURLException e) {
         }
       }
       TerminologyClientContext client = serverMap.get(server);
       if (client == null) {
         try {
-          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
+          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
         } catch (URISyntaxException e) {
           throw new TerminologyServiceException(e);
         }
@@ -565,7 +736,7 @@ public class TerminologyClientManager {
       }
       client.seeUse(canonical, TerminologyClientContextUseType.readCS);
       String criteria = canonical.contains("|") ? 
-          "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+"&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)): 
+          "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+(canonical.contains("|") ? "&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)) : "") : 
             "?_format=json&url="+Utilities.URLEncode(canonical);
       request = Utilities.pathURL(client.getAddress(), "CodeSystem"+ criteria);
       Bundle bnd = client.getClient().search("CodeSystem", criteria);
@@ -592,12 +763,13 @@ public class TerminologyClientManager {
       CodeSystem vs = (CodeSystem) client.getClient().read("CodeSystem", rid);
       return new SourcedCodeSystem(server, vs);
     } catch (Exception e) {
-      e.printStackTrace();
-      String msg = "Error resolving valueSet "+canonical+": "+e.getMessage()+" ("+request+")";
-      if (!internalLog.contains(msg)) {
-        internalLog.add(msg);
+      String msg = "Error resolving CodeSystem "+canonical+": "+e.getMessage();
+      if (!hasMessage(msg)) {
+        internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
-      e.printStackTrace();
+      if (logger.isDebugLogging()) {
+        e.printStackTrace();
+      }
       return null;
     }
   }
@@ -610,5 +782,18 @@ public class TerminologyClientManager {
     }
     return false;
   }
+
+  public List<InternalLogEvent> getInternalLog() {
+    return internalLog;
+  }
+
+  public ILoggingService getLogger() {
+    return logger;
+  }
+
+  public void setLogger(ILoggingService logger) {
+    this.logger = logger;
+  }
+
   
 }

@@ -58,6 +58,7 @@ import org.hl7.fhir.dstu3.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.stringtemplate.v4.ST;
 
+@Deprecated
 public class ShExGenerator {
 
   public enum HTMLLinkPolicy {

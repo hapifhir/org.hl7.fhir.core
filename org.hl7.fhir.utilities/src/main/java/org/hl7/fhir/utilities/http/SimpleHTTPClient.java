@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import lombok.Getter;
@@ -20,27 +20,10 @@ import lombok.Setter;
 
 public class SimpleHTTPClient {
 
-
-	public static class Header {
-    private String name;
-    private String value;
-    public Header(String name, String value) {
-      super();
-      this.name = name;
-      this.value = value;
-    }
-    public String getName() {
-      return name;
-    }
-    public String getValue() {
-      return value;
-    }
-  }
-
   private static final int MAX_REDIRECTS = 5;
   private static int counter = 1;
 
-  private List<Header> headers = new ArrayList<>();
+  private List<HTTPHeader> headers = new ArrayList<>();
 
   @Getter @Setter
   private HTTPAuthenticationMode authenticationMode;
@@ -54,8 +37,11 @@ public class SimpleHTTPClient {
   @Getter @Setter
   private String token;
   
+  @Getter @Setter
+  private String apiKey;
+  
   public void addHeader(String name, String value) {
-    headers.add(new Header(name, value));
+    headers.add(new HTTPHeader(name, value));
   }
 
   public HTTPResult get(String url) throws IOException {
@@ -106,13 +92,13 @@ public class SimpleHTTPClient {
       }
     }
     
-    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(),  c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
+    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(),  c.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
   }
 
   private void setHeaders(HttpURLConnection c) {
     if (headers != null) {
-      for (Header h : headers) {
-        c.setRequestProperty(h.getName(), h.getValue());        
+      for (HTTPHeader header : headers) {
+        c.setRequestProperty(header.getName(), header.getValue());
       }
     }
     c.setConnectTimeout(15000);
@@ -123,11 +109,13 @@ public class SimpleHTTPClient {
   private void setAuthenticationHeader(HttpURLConnection c) {
     String authHeaderValue = null;
     if (authenticationMode == HTTPAuthenticationMode.TOKEN) {
-      authHeaderValue = "Bearer " + new String(token);
+      authHeaderValue = "Bearer " + token;
     } else if (authenticationMode == HTTPAuthenticationMode.BASIC) {
       String auth = username+":"+password;
       byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
       authHeaderValue = "Basic " + new String(encodedAuth);
+    } else if (authenticationMode == HTTPAuthenticationMode.APIKEY) {
+      c.setRequestProperty("Api-Key", apiKey);
     }
 
     if (authHeaderValue != null) {
@@ -144,14 +132,14 @@ public class SimpleHTTPClient {
     c.setDoOutput(true);
     c.setDoInput(true);
     c.setRequestMethod("POST");
-    c.setRequestProperty("Content-type", contentType);
+    c.setRequestProperty("Content-Type", contentType);
     if (accept != null) {
       c.setRequestProperty("Accept", accept);
     }
     setHeaders(c);
     c.getOutputStream().write(content);
     c.getOutputStream().close();    
-    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(), c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
+    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(), c.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
   }
 
  
@@ -171,7 +159,7 @@ public class SimpleHTTPClient {
     setHeaders(c);
     c.getOutputStream().write(content);
     c.getOutputStream().close();    
-    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(), c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
+    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(), c.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
   }
 
   public static int nextCounter() {

@@ -40,6 +40,7 @@ import org.hl7.fhir.r4.utils.ValidationProfileSet;
 import org.hl7.fhir.r4.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r4.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r4.utils.validation.constants.IdStatus;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 import com.google.gson.JsonObject;
@@ -51,6 +52,7 @@ import com.google.gson.JsonObject;
  * @author Grahame Grieve
  *
  */
+@MarkedToMoveToAdjunctPackage
 public interface IResourceValidator {
 
   /**

@@ -117,6 +117,10 @@ public class FHIRPathTests {
       return TestingUtilities.context().fetchResource(ValueSet.class, url);
     }
 
+    @Override
+    public boolean paramIsType(String name, int index) {
+      return false;
+    }
   }
 
   private static FHIRPathEngine fp;
@@ -220,9 +224,9 @@ public class FHIRPathTests {
 
       try {
         if (Utilities.noString(input)) {
-          fp.check(null, null, node);
+          fp.check(null, null, null, node);
         } else {
-          fp.check(res, res.getResourceType().toString(), res.getResourceType().toString(), node);
+          fp.check(res, "Resource", res.getResourceType().toString(), res.getResourceType().toString(), node);
         }
         Assertions.assertTrue(fail != TestResultType.SEMANTICS,
             String.format("Expected exception didn't occur checking %s", expression));

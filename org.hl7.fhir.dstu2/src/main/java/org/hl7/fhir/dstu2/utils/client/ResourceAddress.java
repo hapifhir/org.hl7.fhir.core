@@ -55,6 +55,7 @@ import org.hl7.fhir.utilities.Utilities;
  * @author Claude Nanjo
  *
  */
+@Deprecated
 public class ResourceAddress {
 
   public static final String REGEX_ID_WITH_HISTORY = "(.*)(/)([a-zA-Z0-9]*)(/)([a-z0-9\\-\\.]{1,64})(/_history/)([a-z0-9\\-\\.]{1,64})$";
@@ -233,9 +234,8 @@ public class ResourceAddress {
   /**
    * For now, assume this type of location header structure. Generalize later:
    * http://hl7connect.healthintersections.com.au/svc/fhir/318/_history/1
-   * 
-   * @param serviceBase
-   * @param locationHeader
+   *
+   * @param locationResponseHeader
    */
   public static ResourceAddress.ResourceVersionedIdentifier parseCreateLocation(String locationResponseHeader) {
     Pattern pattern = Pattern.compile(REGEX_ID_WITH_HISTORY);
@@ -427,7 +427,7 @@ public class ResourceAddress {
         } else {
           query = "";
         }
-        query += httpParameterName + "=" + Utilities.encodeUri(parameters.get(httpParameterName));
+        query += httpParameterName + "=" + Utilities.encodeUriParam(parameters.get(httpParameterName));
       }
 
       return new URI(basePath.getScheme(), basePath.getUserInfo(), basePath.getHost(), basePath.getPort(),

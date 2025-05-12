@@ -14,8 +14,10 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
  
+@MarkedToMoveToAdjunctPackage
 public class OperationOutcomeRenderer extends ResourceRenderer { 
 
 
@@ -66,7 +68,7 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
       x.para().tx(context.formatPhrase(RenderingContext.OP_OUT_OK));
     }
     if (op.has("issue")) { 
-      XhtmlNode tbl = x.table("grid"); // on the basis that we'll most likely be rendered using the standard fhir css, but it doesn't really matter 
+      XhtmlNode tbl = x.table("grid", false); // on the basis that we'll most likely be rendered using the standard fhir css, but it doesn't really matter 
       XhtmlNode tr = tbl.tr(); 
       tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_SEV)); 
       tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_LOCATION)); 

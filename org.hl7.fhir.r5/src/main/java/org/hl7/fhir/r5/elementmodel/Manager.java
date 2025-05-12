@@ -39,11 +39,14 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
+@MarkedToMoveToAdjunctPackage
 public class Manager {
 
   //TODO use EnumMap
@@ -110,6 +113,14 @@ public class Manager {
       }
       return null;
     }
+
+    public static FhirFormat fromCode(String code) {
+      FhirFormat fmt = getFhirFormat(code);
+      if (fmt == null) {
+        fmt = readFromMimeType(code);
+      } 
+      return fmt;
+    }
   }
   
   public static List<ValidatedFragment> parse(IWorkerContext context, InputStream source, FhirFormat inputFormat) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
@@ -144,7 +155,11 @@ public class Manager {
   }
   
   public static Element build(IWorkerContext context, StructureDefinition sd) {
-    Property p = new Property(context, sd.getSnapshot().getElementFirstRep(), sd);
+    return build(context, sd, new ProfileUtilities(context, null, null));
+  }
+  
+  public static Element build(IWorkerContext context, StructureDefinition sd, ProfileUtilities profileUtilities) {
+    Property p = new Property(context, sd.getSnapshot().getElementFirstRep(), sd, profileUtilities, new ContextUtilities(context));
     Element e = new Element(p.getName(), p);
     e.setPath(sd.getType());
     return e;

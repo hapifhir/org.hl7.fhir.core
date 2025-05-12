@@ -64,7 +64,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IIdType;
@@ -76,18 +78,18 @@ import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.test.utils.ClassesLoadedFlags;
-import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
+import org.hl7.fhir.utilities.xml.IXMLWriter;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import org.slf4j.LoggerFactory;
 
 /**
  * General parser for JSON content. You instantiate an JsonParser of these, but you 
@@ -208,6 +210,34 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     osw.flush();
   }
 
+  protected boolean customCompose(Resource resource) throws IOException {
+    if (customResourceHandlers.containsKey(resource.fhirType())) {
+      customResourceHandlers.get(resource.fhirType()).composerJson(json).composeResource(resource);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  protected boolean customCompose(String name, Resource resource) {
+    if (customResourceHandlers.containsKey(resource.fhirType())) {
+      throw new Error("Not sorted yet");
+      // customResourceHandlers.get(resource.fhirType()).parser().composeResource(name, resource);
+      // return true;
+    } else {
+      return false;
+    }
+  }
+
+  protected Resource parseCustomResource(String t, JsonObject json) throws FHIRFormatError, IOException {
+    if (customResourceHandlers.containsKey(t)) {
+      return customResourceHandlers.get(t).parserJson(allowComments, allowUnknownContent).parse(json);
+    } else {
+      return null;
+    }
+  }
+
+    
   /**
    * Compose a resource using a pre-existing JsonWriter
    * @throws IOException 
@@ -242,9 +272,9 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   private JsonObject loadJson(InputStream input) throws JsonSyntaxException, IOException {
     // the GSON parser is the fastest, but the least robust 
     if (allowComments || allowUnknownContent) {
-      return JsonTrackingParser.parse(TextFile.streamToString(input), null, allowUnknownContent, allowComments);      
+      return JsonTrackingParser.parse(FileUtilities.streamToString(input), null, allowUnknownContent, allowComments);      
     } else {
-      return (JsonObject) com.google.gson.JsonParser.parseString(TextFile.streamToString(input));
+      return (JsonObject) com.google.gson.JsonParser.parseString(FileUtilities.streamToString(input));
     }
   }
   
