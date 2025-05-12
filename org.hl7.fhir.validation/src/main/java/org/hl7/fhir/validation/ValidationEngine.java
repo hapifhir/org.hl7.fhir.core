@@ -914,7 +914,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setValidationLanguage(language);
     validator.getSettings().setDisplayWarningMode(isDisplayWarnings());
     if (language != null) {
-      validator.getContext().setValidationMessageLanguage(Locale.forLanguageTag(language));
+      if (locale == null) {
+        locale = Locale.forLanguageTag(language);
+      }
     }
     validator.setAssumeValidRestReferences(assumeValidRestReferences);
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);

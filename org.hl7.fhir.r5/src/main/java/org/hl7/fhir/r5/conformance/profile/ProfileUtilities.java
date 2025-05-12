@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -744,6 +745,8 @@ public class ProfileUtilities {
     }
     derived.setGeneratingSnapshot(true);
     snapshotStack.add(derived.getUrl());
+    boolean oldCopyUserData = Base.isCopyUserData();
+    Base.setCopyUserData(true);
     try {
 
       if (!Utilities.noString(webUrl) && !webUrl.endsWith("/"))
@@ -788,7 +791,7 @@ public class ProfileUtilities {
 
         // we actually delegate the work to a subroutine so we can re-enter it with a different cursors
         StructureDefinitionDifferentialComponent diff = cloneDiff(derived.getDifferential()); // we make a copy here because we're sometimes going to hack the differential while processing it. Have to migrate user data back afterwards
-        new SnapshotGenerationPreProcessor(this).process(diff);
+        new SnapshotGenerationPreProcessor(this).process(diff, derived);
         
         StructureDefinitionSnapshotComponent baseSnapshot  = base.getSnapshot();
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
@@ -815,6 +818,7 @@ public class ProfileUtilities {
               } else {
                 ElementDefinition outcome = updateURLs(url, webUrl, e.copy(), true);
                 e.setUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT, outcome);
+                markExtensions(outcome, true, derived);
                 derived.getSnapshot().addElement(outcome);
                 if (walksInto(diff.getElement(), e)) {
                   if (e.getType().size() > 1) {
@@ -1002,7 +1006,7 @@ public class ProfileUtilities {
         }
         
         i = 0;
-        // last, check for wrong profiles or target profiles
+        // last, check for wrong profiles or target profiles, or unlabeled extensions
         for (ElementDefinition ed : derived.getSnapshot().getElement()) {
           for (TypeRefComponent t : ed.getType()) {
             for (UriType u : t.getProfile()) {
@@ -1052,6 +1056,7 @@ public class ProfileUtilities {
         throw e;
       }
     } finally {
+      Base.setCopyUserData(oldCopyUserData);          
       derived.setGeneratingSnapshot(false);
       snapshotStack.remove(derived.getUrl());
     }
@@ -1213,12 +1218,13 @@ public class ProfileUtilities {
          if (ed.getPath().contains(".")) {
            ElementDefinition outcome = updateURLs(url, weburl, ed.copy(), true);
            outcome.setPath(outcome.getPath().replace(sd.getTypeName(), path));
+           markExtensions(outcome, false, sd);
            snapshot.getElement().add(outcome);
          } else {
            focus.getConstraint().addAll(ed.getConstraint());
            for (Extension ext : ed.getExtension()) {
              if (!Utilities.existsInList(ext.getUrl(), NON_INHERITED_ED_URLS) && !focus.hasExtension(ext.getUrl())) {
-               focus.getExtension().add(ext.copy());
+               focus.getExtension().add(markExtensionSource(ext.copy(), false, sd));
              }
            }
          }
@@ -2552,7 +2558,7 @@ public class ProfileUtilities {
     if (elist.size() == 2) {
       dest.getExtension().remove(elist.get(1));
     }
-    updateExtensionsFromDefinition(dest, source);
+    updateExtensionsFromDefinition(dest, source, derivedSrc, srcSD);
 
     for (ElementDefinition ed : obligationProfileElements) {
       for (Extension ext : ed.getExtension()) {
@@ -2650,7 +2656,7 @@ public class ProfileUtilities {
       }
 
       if (derived.hasDefinitionElement()) {
-        if (derived.getDefinition().startsWith("..."))
+        if (derived.getDefinition() != null && derived.getDefinition().startsWith("..."))
           base.setDefinition(Utilities.appendDerivedTextToBase(base.getDefinition(), derived.getDefinition()));
         else if (!Base.compareDeep(derived.getDefinitionElement(), base.getDefinitionElement(), false)) {
           base.setDefinitionElement(derived.getDefinitionElement().copy());
@@ -2888,7 +2894,7 @@ public class ProfileUtilities {
         hasBinding = hasBinding || ed.hasBinding();
       }
       if (hasBinding) {
-        updateExtensionsFromDefinition(dest.getBinding(), source.getBinding());
+        updateExtensionsFromDefinition(dest.getBinding(), source.getBinding(), derivedSrc, srcSD);
         ElementDefinitionBindingComponent binding = derived.getBinding();
         for (ElementDefinition ed : obligationProfileElements) {
           for (Extension ext : ed.getBinding().getExtension()) {
@@ -2961,7 +2967,9 @@ public class ProfileUtilities {
             nb.getExtension().clear();
           }
           nb.setDescription(null);
-          nb.getExtension().addAll(d.getExtension());
+          for (Extension dex : d.getExtension()) {
+            nb.getExtension().add(markExtensionSource(dex.copy(), false, srcSD));
+          }
           if (d.hasStrength()) {
             nb.setStrength(d.getStrength());
           }
@@ -2986,6 +2994,9 @@ public class ProfileUtilities {
           derived.getBinding().setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, true);
       } else if (base.hasBinding()) {
          base.getBinding().getExtension().removeIf(ext -> Utilities.existsInList(ext.getUrl(), ProfileUtilities.NON_INHERITED_ED_URLS));
+         for (Extension ex : base.getBinding().getExtension()) {
+           markExtensionSource(ex, false, srcSD);
+         }
       }
 
       if (derived.hasIsSummaryElement()) {
@@ -3014,13 +3025,21 @@ public class ProfileUtilities {
             TypeRefComponent tt = t.copy();
             //            tt.setUserData(DERIVATION_EQUALS, true);
             base.getType().add(tt);
+            for (Extension ex : tt.getExtension()) {
+              markExtensionSource(ex, false, srcSD);
+            }
           }
         }
         else if (trimDifferential)
           derived.getType().clear();
-        else
-          for (TypeRefComponent t : derived.getType())
+        else {
+          for (TypeRefComponent t : derived.getType()) {
             t.setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, true);
+            for (Extension ex : t.getExtension()) {
+              markExtensionSource(ex, true, derivedSrc);
+            }
+          }
+        }
       }
       
       mappings.merge(derived, base); // note reversal of names to be correct in .merge()
@@ -3071,18 +3090,35 @@ public class ProfileUtilities {
     //updateURLs(url, webUrl, dest);
   }
 
-  private void updateExtensionsFromDefinition(Element dest, Element source) {
+  private static Extension markExtensionSource(Extension extension, boolean overrideSource, StructureDefinition srcSD) {
+    if (overrideSource || !extension.hasUserData(UserDataNames.SNAPSHOT_EXTENSION_SOURCE)) {
+      extension.setUserData(UserDataNames.SNAPSHOT_EXTENSION_SOURCE, srcSD);
+    }
+    if (Utilities.existsInList(extension.getUrl(), ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
+      Extension sub = extension.getExtensionByUrl(ToolingExtensions.EXT_OBLIGATION_SOURCE, ToolingExtensions.EXT_OBLIGATION_SOURCE_SHORT);
+      if (sub == null || overrideSource) {
+        ToolingExtensions.setUriExtension(extension, ToolingExtensions.EXT_OBLIGATION_SOURCE, srcSD.getVersionedUrl());
+      }
+    }
+    return extension;
+  }
+
+  private void updateExtensionsFromDefinition(Element dest, Element source, StructureDefinition destSD, StructureDefinition srcSD) {
     dest.getExtension().removeIf(ext -> Utilities.existsInList(ext.getUrl(), NON_INHERITED_ED_URLS) || (Utilities.existsInList(ext.getUrl(), DEFAULT_INHERITED_ED_URLS) && source.hasExtension(ext.getUrl())));
 
     for (Extension ext : source.getExtension()) {
       if (!dest.hasExtension(ext.getUrl())) {
-        dest.getExtension().add(ext.copy());
+        dest.getExtension().add(markExtensionSource(ext.copy(), false, srcSD));
       } else if (Utilities.existsInList(ext.getUrl(), NON_OVERRIDING_ED_URLS)) {
         // do nothing
+        for (Extension ex2 : dest.getExtensionsByUrl(ext.getUrl())) {
+          markExtensionSource(ex2, true, destSD);
+        }
       } else if (Utilities.existsInList(ext.getUrl(), OVERRIDING_ED_URLS)) {
         dest.getExtensionByUrl(ext.getUrl()).setValue(ext.getValue());
+        markExtensionSource(dest.getExtensionByUrl(ext.getUrl()), false, srcSD);
       } else {
-        dest.getExtension().add(ext.copy());  
+        dest.getExtension().add(markExtensionSource(ext.copy(), false, srcSD));  
       }
     }
   }
@@ -4796,6 +4832,21 @@ public class ProfileUtilities {
     outcome.getExtension().removeIf(ext -> Utilities.existsInList(ext.getUrl(), ProfileUtilities.NON_INHERITED_ED_URLS));
     if (outcome.hasBinding()) {
       outcome.getBinding().getExtension().removeIf(ext -> Utilities.existsInList(ext.getUrl(), ProfileUtilities.NON_INHERITED_ED_URLS));      
+    }
+
+  }
+  
+  public static void markExtensions(ElementDefinition ed, boolean overrideSource, StructureDefinition src) {
+    for (Extension ex : ed.getExtension()) {
+      markExtensionSource(ex, overrideSource, src);
+    }
+    for (Extension ex : ed.getBinding().getExtension()) {
+      markExtensionSource(ex, overrideSource, src);
+    }
+    for (TypeRefComponent t : ed.getType()) {
+      for (Extension ex : t.getExtension()) {
+        markExtensionSource(ex, overrideSource, src);
+      }
     }
   }
 

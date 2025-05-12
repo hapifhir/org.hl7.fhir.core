@@ -218,6 +218,7 @@ public interface IWorkerContext {
 
   String formatMessage(String theMessage, Object... theMessageArguments);
 
+  @Deprecated
   void setValidationMessageLanguage(Locale locale);
 
   public class ValidationResult {

@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ElementChoiceGroup;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ExtensionContext;
+import org.hl7.fhir.r5.conformance.profile.SnapshotGenerationPreProcessor;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -89,10 +90,10 @@ import org.hl7.fhir.r5.utils.PublicationHacker;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
-import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -131,7 +132,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict", false), false, GEN_MODE_DIFF, "", r); 
       } else { 
         x.addChildNode(generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,  
-            context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r)); 
+            context.getLink(KnownLinkType.SPEC, false), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r)); 
       } 
       status.setExtensions(true); 
     }
@@ -560,9 +561,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
  
     List<ElementDefinition> list; 
-    if (diff) 
-      list = supplementMissingDiffElements(profile); 
-    else { 
+    if (diff) {
+      list = new SnapshotGenerationPreProcessor(context.getProfileUtilities()).supplementMissingDiffElements(profile);      
+    } else { 
       list = new ArrayList<>(); 
       list.addAll(profile.getSnapshot().getElement()); 
     } 
@@ -681,7 +682,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (!"$all".equals(col)) { 
         ActorDefinition actor = context.getWorker().fetchResource(ActorDefinition.class, col); 
         if (actor == null) { 
-          columns.add(new Column(col, tail(col), context.formatPhrase(RenderingContext.STRUC_DEF_UNDEF_ACT, col, col)+" "));           
+          columns.add(new Column(col, urlTail(col), context.formatPhrase(RenderingContext.STRUC_DEF_UNDEF_ACT, col, col)+" "));           
         } else { 
           columns.add(new Column(col, actor.present(), context.formatPhrase(RenderingContext.STRUC_DEF_ACT, actor.present(), actor.getWebPath())+" "));                     
         } 
@@ -690,6 +691,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return res;
   } 
  
+  private String urlTail(String url) {
+    return url.contains("/") ? url.substring(url.lastIndexOf("/")+1) : url;
+  }
+
   private boolean scanObligations(Set<String> cols, List<ElementDefinition> list, ElementDefinition ed) { 
     boolean res = true;
     Map<String, Integer> nameCounts = new HashMap<>();
@@ -1289,23 +1294,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return cell; 
   } 
  
-  public List<ElementDefinition> supplementMissingDiffElements(StructureDefinition profile) { 
-    List<ElementDefinition> list = new ArrayList<>(); 
-    list.addAll(profile.getDifferential().getElement()); 
-    if (list.isEmpty()) { 
-      ElementDefinition root = new ElementDefinition().setPath(profile.getTypeName()); 
-      root.setId(profile.getTypeName()); 
-      list.add(root); 
-    } else { 
-      if (list.get(0).getPath().contains(".")) { 
-        ElementDefinition root = new ElementDefinition().setPath(profile.getTypeName()); 
-        root.setId(profile.getTypeName()); 
-        list.add(0, root); 
-      } 
-    } 
-    insertMissingSparseElements(list); 
-    return list; 
-  } 
  
   private boolean usesMustSupport(List<ElementDefinition> list) { 
     for (ElementDefinition ed : list) 
@@ -1346,36 +1334,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     row.getCells().add(gen.new Cell()); 
     prow.getSubRows().add(row); 
     return row; 
-  } 
- 
- 
-  private void insertMissingSparseElements(List<ElementDefinition> list) { 
-    int i = 1; 
-    while (i < list.size()) { 
-      String[] pathCurrent = list.get(i).getPath().split("\\."); 
-      String[] pathLast = list.get(i-1).getPath().split("\\."); 
-      int firstDiff = 0; // the first entry must be a match 
-      while (firstDiff < pathCurrent.length && firstDiff < pathLast.length && pathCurrent[firstDiff].equals(pathLast[firstDiff])) { 
-        firstDiff++; 
-      } 
-      if (!(isSibling(pathCurrent, pathLast, firstDiff) || isChild(pathCurrent, pathLast, firstDiff))) { 
-        // now work backwards down to lastMatch inserting missing path nodes 
-        ElementDefinition parent = findParent(list, i, list.get(i).getPath()); 
-        int parentDepth = Utilities.charCount(parent.getPath(), '.')+1; 
-        int childDepth =  Utilities.charCount(list.get(i).getPath(), '.')+1; 
-        if (childDepth > parentDepth + 1) { 
-          String basePath = parent.getPath(); 
-          String baseId = parent.getId(); 
-          for (int index = parentDepth; index >= firstDiff; index--) { 
-            String mtail = makeTail(pathCurrent, parentDepth, index); 
-            ElementDefinition root = new ElementDefinition().setPath(basePath+"."+mtail); 
-            root.setId(baseId+"."+mtail); 
-            list.add(i, root); 
-          } 
-        } 
-      }  
-      i++; 
-    } 
   } 
  
  
@@ -1534,7 +1492,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           String es = definition.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE); 
           if ("named-elements".equals(es)) { 
             if (rc.hasLink(KnownLinkType.JSON_NAMES)) { 
-              c.getPieces().add(gen.new Piece(rc.getLink(KnownLinkType.JSON_NAMES), context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));                         
+              c.getPieces().add(gen.new Piece(rc.getLink(KnownLinkType.JSON_NAMES, true), context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));                         
             } else { 
               c.getPieces().add(gen.new Piece(ToolingExtensions.WEB_EXTENSION_STYLE, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));                         
             } 
@@ -2239,30 +2197,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
  
-  private ElementDefinition findParent(List<ElementDefinition> list, int i, String path) { 
-    while (i > 0 && !path.startsWith(list.get(i).getPath()+".")) { 
-      i--; 
-    } 
-    return list.get(i); 
-  } 
- 
-  private boolean isSibling(String[] pathCurrent, String[] pathLast, int firstDiff) { 
-    return pathCurrent.length == pathLast.length && firstDiff == pathCurrent.length-1; 
-  } 
- 
- 
-  private boolean isChild(String[] pathCurrent, String[] pathLast, int firstDiff) { 
-    return pathCurrent.length == pathLast.length+1 && firstDiff == pathLast.length; 
-  } 
- 
-  private String makeTail(String[] pathCurrent, int start, int index) { 
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("."); 
-    for (int i = start; i <= index; i++) { 
-      b.append(pathCurrent[i]); 
-    } 
-    return b.toString(); 
-  } 
- 
   private void genGridElement(String defPath, HierarchicalTableGenerator gen, List<Row> rows, ElementDefinition element, List<ElementDefinition> all, List<StructureDefinition> profiles, boolean showMissing, String profileBaseFileName, Boolean extensions, String corePath, String imagePath, boolean root, boolean isConstraintMode) throws IOException, FHIRException { 
     StructureDefinition profile = profiles == null ? null : profiles.get(profiles.size()-1); 
     String s = tail(element.getPath()); 
@@ -2830,7 +2764,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return app == null ? src : src + app; 
   } 
  
-  public boolean hasNonBaseConditions(List<IdType> conditions) { 
+  public static boolean hasNonBaseConditions(List<IdType> conditions) { 
     for (IdType c : conditions) { 
       if (!isBaseCondition(c)) { 
         return true; 
@@ -2840,7 +2774,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
  
-  public boolean hasNonBaseConstraints(List<ElementDefinitionConstraintComponent> constraints) { 
+  public static boolean hasNonBaseConstraints(List<ElementDefinitionConstraintComponent> constraints) { 
     for (ElementDefinitionConstraintComponent c : constraints) { 
       if (!isBaseConstraint(c)) { 
         return true; 
@@ -2871,12 +2805,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return b.toString(); 
   } 
  
-  private boolean isBaseCondition(IdType c) { 
+  private static boolean isBaseCondition(IdType c) { 
     String key = c.asStringValue(); 
     return key != null && (key.startsWith("ele-") || key.startsWith("res-") || key.startsWith("ext-") || key.startsWith("dom-") || key.startsWith("dr-")); 
   } 
  
-  private boolean isBaseConstraint(ElementDefinitionConstraintComponent con) { 
+  private static boolean isBaseConstraint(ElementDefinitionConstraintComponent con) { 
     String key = con.getKey(); 
     return key != null && (key.startsWith("ele-") || key.startsWith("res-") || key.startsWith("ext-") || key.startsWith("dom-") || key.startsWith("dr-")); 
   } 
@@ -3514,7 +3448,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             // generateElementInner(b, extDefn, extDefn.getSnapshot().getElement().get(0), valueDefn == null ? 2 : 3, valueDefn); 
           } 
         } else { 
-          while (!dstack.isEmpty() && !isParent(dstack.peek(), ec)) { 
+          while (!dstack.isEmpty() && !isParent(dstack.peek(), ec)) {
             finish(status, t, sd, dstack.pop(), mode, "", anchorPrefix, res);
           } 
           dstack.push(ec);             
@@ -3534,7 +3468,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   private void finish(RenderingStatus status, XhtmlNode t, StructureDefinition sd, ElementDefinition ed, int mode, String defPath, String anchorPrefix, ResourceWrapper res) throws FHIRException, IOException {
- 
     for (Base b : VersionComparisonAnnotation.getDeleted(ed == null ? sd : ed, "element")) { 
       ElementDefinition ec = (ElementDefinition) b; 
       String title = ec.getId(); 
@@ -3963,7 +3896,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       String es = d.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE); 
       if ("named-elements".equals(es)) { 
         if (context.hasLink(KnownLinkType.JSON_NAMES)) { 
-          tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_STYLE), context.getLink(KnownLinkType.JSON_NAMES), strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON)); 
+          tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_STYLE), context.getLink(KnownLinkType.JSON_NAMES, true), strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON)); 
         } else { 
           tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_STYLE), ToolingExtensions.WEB_EXTENSION_STYLE, strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON)); 
         } 

@@ -912,7 +912,7 @@ public class ValidationContext {
     if ("uk".equals(snomedCT)) return "83821000000107";
     if ("au".equals(snomedCT)) return "32506021000036107";
     if ("at".equals(snomedCT)) return "11000234105";
-    if ("ca".equals(snomedCT)) return "20621000087109";
+    if ("ca".equals(snomedCT)) return "20611000087101";
     if ("ca-en".equals(snomedCT)) return "20621000087109";
     if ("ca-fr".equals(snomedCT)) return "20611000087101";
     if ("nl".equals(snomedCT)) return "11000146104";
