@@ -14,7 +14,7 @@
 			<level>INFO</level>
 		</filter>
 		<encoder>
-			<pattern>%highlight(%msg%n)</pattern>
+			<pattern>%msg%n</pattern>
 			<immediateFlush>true</immediateFlush>
 		</encoder>
 	</appender>
