@@ -433,7 +433,7 @@ public class ResourceAddress {
         } else {
           query = "";
         }
-        query += httpParameterName + "=" + parameters.get(httpParameterName);//Utilities.encodeUriParam(parameters.get(httpParameterName));
+        query += httpParameterName + "=" + parameters.get(httpParameterName);
       }
 
       return new URI(basePath.getScheme(), basePath.getUserInfo(), basePath.getHost(), basePath.getPort(),
@@ -442,5 +442,4 @@ public class ResourceAddress {
       throw new EFhirClientException(0, "Error appending http parameter", e);
     }
   }
-
 }
