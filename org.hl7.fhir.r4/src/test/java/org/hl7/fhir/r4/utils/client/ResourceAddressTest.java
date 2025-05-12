@@ -1,7 +1,6 @@
 package org.hl7.fhir.r4.utils.client;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,7 +8,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
@@ -59,25 +57,6 @@ public class ResourceAddressTest {
   @MethodSource("getHttpParameters")
   public void appendHttpParametersEscapeTest(Map<String, String> params) {
     URI uri = ResourceAddress.appendHttpParameters(URI.create("http://example.com"), params);
-    System.out.println(uri.toString());
-    List<NameValuePair> actualParams = URLEncodedUtils.parse(uri, StandardCharsets.UTF_8);
-    assertThat(actualParams).hasSize(params.size());
-    for (NameValuePair pair: actualParams) {
-      String expectedValue = params.get(pair.getName());
-      assertThat(pair.getValue()).isEqualTo(expectedValue);
-    }
-  }
-
-  @ParameterizedTest
-  @MethodSource("getHttpParameters")
-  public void appendHttpParametersEscapeTestApache(Map<String, String> params) throws URISyntaxException {
-    URIBuilder uriBuilder = new URIBuilder().setScheme("http")
-      .setHost("example.org");
-    for (Map.Entry<String, String> entry : params.entrySet()) {
-     uriBuilder.addParameter(entry.getKey(), entry.getValue());
-
-    }
-    URI uri =  uriBuilder.build();
     System.out.println(uri.toString());
     List<NameValuePair> actualParams = URLEncodedUtils.parse(uri, StandardCharsets.UTF_8);
     assertThat(actualParams).hasSize(params.size());
