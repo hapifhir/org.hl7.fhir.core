@@ -144,5 +144,12 @@ public class UserDataNames {
   public static final String renderer_title = "renderer_title";
   public static final String matchingParameter = "matchingParameter";
   public static final String SNAPSHOT_SOURCE = "SNAPSHOT_SOURCE";
+  public static final String SvgLeft = "SvgLeft";
+  public static final String SvgTop = "SvgTop";
+  public static final String UmlDir = "UmlDir";
+  public static final String SNAPSHOT_FROM_DIFF = "SNAPSHOT_FROM_DIFF";
+  public static final String SNAPSHOT_EXTENSION_SOURCE = "SNAPSHOT_EXTENSION_SOURCE";
+  public static final String IG_FAKE = "IG_FAKE";
+  public static final String DN_TRANSIENT = "DN_TRANSIENT";
   
 }  

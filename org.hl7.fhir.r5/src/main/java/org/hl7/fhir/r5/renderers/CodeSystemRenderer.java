@@ -591,6 +591,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         td.addText(c.getUserString(UserDataNames.tx_cs_version_notes));
       }
     }
+
     if (properties != null) {
       for (PropertyComponent pc : properties) {
         td = tr.td();
@@ -606,7 +607,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
               if (pcv.hasValueStringType() && Utilities.isAbsoluteUrl(pv)) {
                 CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, pv);
                 if (cr != null) {
-                  td.ah(context.prefixLocalHref(cr.getWebPath()), cr.getVersionedUrl()).tx(cr.present());
+                  if (cr.hasWebPath()) {
+                    td.ah(context.prefixLocalHref(cr.getWebPath()), cr.getVersionedUrl()).tx(cr.present());
+                  } else {
+                    td.ah(cr.getVersionedUrl(), cr.getVersionedUrl()).tx(cr.present());
+                  }
                 } else if (Utilities.isAbsoluteUrlLinkable(pv) && !isInKnownUrlSpace(pv)) {
                   td.ah(context.prefixLocalHref(pv)).tx(pv);
                 } else {
@@ -638,7 +643,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         first = false;
         XhtmlNode span = td.span(null, mapping.comp.hasRelationship() ?  mapping.comp.getRelationship().toCode() : "");
         span.addText(getCharForRelationship(mapping.comp));
-        a = td.ah(context.prefixLocalHref(getContext().getLink(KnownLinkType.SPEC)+m.getLink()+"#"+makeAnchor(mapping.group.getTarget(), mapping.comp.getCode())));
+        a = td.ah(context.prefixLocalHref(getContext().getLink(KnownLinkType.SPEC, true)+m.getLink()+"#"+makeAnchor(mapping.group.getTarget(), mapping.comp.getCode())));
         a.addText(mapping.comp.getCode());
         if (!Utilities.noString(mapping.comp.getComment()))
           td.i().tx("("+mapping.comp.getComment()+")");

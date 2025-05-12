@@ -223,6 +223,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_FACT = "DATA_REND_FACT";
   public static final String DATA_REND_FAX = "DATA_REND_FAX";
   public static final String GENERAL_FILTER = "GENERAL_FILTER";
+  public static final String GENERAL_SOURCE = "GENERAL_SOURCE";
+  public static final String OBLIGATION_SOURCE = "OBLIGATION_SOURCE";
   public static final String DATA_REND_GLN = "DATA_REND_GLN";
   public static final String DATA_REND_ICD = "DATA_REND_ICD";
   public static final String DATA_REND_INT = "DATA_REND_INT";
@@ -802,6 +804,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SUB_TOPIC_FILT_PAR = "SUB_TOPIC_FILT_PAR";
   public static final String SUB_TOPIC_INCL = "SUB_TOPIC_INCL";
   public static final String SUB_TOPIC_INT = "SUB_TOPIC_INT";
+  public static final String SUB_TOPIC_CURR = "SUB_TOPIC_CURR";
   public static final String SUB_TOPIC_PREV = "SUB_TOPIC_PREV";
   public static final String SUB_TOPIC_REQ = "SUB_TOPIC_REQ";
   public static final String SUB_TOPIC_RES_TRIG = "SUB_TOPIC_RES_TRIG";
@@ -917,6 +920,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VALUE_SET_BE = "VALUE_SET_BE";
   public static final String VALUE_SET_CA_EN = "VALUE_SET_CA_EN";
   public static final String VALUE_SET_CA_FR = "VALUE_SET_CA_FR";
+  public static final String VALUE_SET_CA = "VALUE_SET_CA";
   public static final String VALUE_SET_EE = "VALUE_SET_EE";
   public static final String VALUE_SET_FI = "VALUE_SET_FI";
   public static final String VALUE_SET_DE = "VALUE_SET_DE";
@@ -969,6 +973,16 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_AFTER_SLEEP = "DATA_REND_AFTER_SLEEP";
   public static final String DATA_REND_IMMEDIATE = "DATA_REND_IMMEDIATE";
   public static final String VALUE_SET_OTHER_DISPLAY = "VALUE_SET_OTHER_DISPLAY";
+  public static final String GENERAL_VALUE_BOUNDED = "GENERAL_VALUE_BOUNDED";
+  public static final String GENERAL_VALUE_MAX = "GENERAL_VALUE_MAX";
+  public static final String GENERAL_VALUE_MIN = "GENERAL_VALUE_MIN";
+  public static final String GENERAL_REQUIRED_BINDING = "GENERAL_REQUIRED_BINDING";
+  public static final String GENERAL_ADDITIONAL_BINDING = "GENERAL_ADDITIONAL_BINDING";
+  public static final String GENERAL_FIXED_VALUE = "GENERAL_FIXED_VALUE";
+  public static final String GENERAL_PATTERN_VALUE = "GENERAL_PATTERN_VALUE";
+  public static final String GENERAL_TYPE_PROFILE = "GENERAL_TYPE_PROFILE";
+  public static final String GENERAL_TYPE_TARGET_PROFILE = "GENERAL_TYPE_TARGET_PROFILE";
+  public static final String SDR_EXTENSION_SUMMARY = "SDR_EXTENSION_SUMMARY";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
@@ -978,7 +992,6 @@ public class RenderingI18nContext extends I18nBase {
   protected String typeOfString() {
     return "phrase";
   }
-
 
   public String formatPhrase(String theMessage, Object... theMessageArguments) {
     return formatMessage(theMessage, theMessageArguments);

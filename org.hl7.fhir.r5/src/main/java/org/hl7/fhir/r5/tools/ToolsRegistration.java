@@ -40,7 +40,7 @@ import org.hl7.fhir.r5.formats.ParserBase.IParserFactory;
 import org.hl7.fhir.r5.formats.XmlParserBase;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
 
-public class ToolsParser {
+public class ToolsRegistration {
 
   public static void register() {    
     org.hl7.fhir.r5.formats.JsonParser.getCustomResourceHandlers().put("TestCases", new ToolsJsonParserFactory());

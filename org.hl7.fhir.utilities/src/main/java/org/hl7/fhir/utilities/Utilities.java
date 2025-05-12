@@ -14,7 +14,16 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -953,6 +962,20 @@ public class Utilities {
     return res;
   }
 
+
+  public static int startCharCount(String s, char c) {
+    int res = 0;
+    for (char ch : s.toCharArray()) {
+      if (ch == c) {
+        res++;
+      } else {
+        break;
+      }
+    } 
+    return res;
+  }
+
+  
   public static boolean equals(String one, String two) {
     if (one == null && two == null)
       return true;
@@ -1661,6 +1684,14 @@ public class Utilities {
 
   public static List<String> strings(String... members) {
     List<String> ret = new ArrayList<>();
+    for (String m : members) {
+      ret.add(m);
+    }
+    return ret;
+  }
+
+  public static Set<String> stringSet(String... members) {
+    Set<String> ret = new HashSet<>();
     for (String m : members) {
       ret.add(m);
     }

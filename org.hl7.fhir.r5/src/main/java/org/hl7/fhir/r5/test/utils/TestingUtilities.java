@@ -40,7 +40,7 @@ public class TestingUtilities extends BaseTestingUtilities {
 
   }
 
-  static public Map<String, IWorkerContext> fcontexts;
+  static public Map<String, SimpleWorkerContext> fcontexts;
 
   final static public String DEFAULT_CONTEXT_VERSION = "5.0.0";
 
@@ -48,7 +48,7 @@ public class TestingUtilities extends BaseTestingUtilities {
    *
    * This uses the DEFAULT_CONTEXT_VERSION
    * */
-  public static IWorkerContext getSharedWorkerContext() {
+  public static SimpleWorkerContext getSharedWorkerContext() {
     return getSharedWorkerContext(DEFAULT_CONTEXT_VERSION);
   }
 
@@ -58,7 +58,7 @@ public class TestingUtilities extends BaseTestingUtilities {
    * @param version FHIR Version to get context for
    * @return
    */
-  public static IWorkerContext getSharedWorkerContext(String version) {
+  public static SimpleWorkerContext getSharedWorkerContext(String version) {
     if (!Utilities.existsInList(version, "1.0.2", "3.0.1", "4.0.1", "4.3.0", "5.0.0")) {
       throw new Error("illegal version: "+version);
       
@@ -69,18 +69,18 @@ public class TestingUtilities extends BaseTestingUtilities {
       fcontexts = new HashMap<>();
     }
     if (!fcontexts.containsKey(v)) {
-        IWorkerContext fcontext = getWorkerContext(version);
+      SimpleWorkerContext fcontext = getWorkerContext(version);
         fcontexts.put(v, fcontext);
     }
     return fcontexts.get(v);
   }
 
-  public static IWorkerContext getWorkerContext(String version) {
+  public static SimpleWorkerContext getWorkerContext(String version) {
 
     FilesystemPackageCacheManager pcm;
     try {
       pcm = new FilesystemPackageCacheManager.Builder().build();
-      IWorkerContext fcontext = null;
+      SimpleWorkerContext fcontext = null;
       if (VersionUtilities.isR5Ver(version)) {
         // for purposes of stability, the R5 core package comes from the test case repository
         fcontext = getWorkerContext(loadR5CorePackage());
@@ -92,12 +92,12 @@ public class TestingUtilities extends BaseTestingUtilities {
       if (!fcontext.hasPackage("hl7.terminology.r5", null)) {
         NpmPackage utg = pcm.loadPackage("hl7.terminology.r5");
         System.out.println("Loading THO: "+utg.name()+"#"+utg.version());
-        fcontext.loadFromPackage(utg, new TestPackageLoader(Utilities.strings("CodeSystem", "ValueSet")));
+        fcontext.loadFromPackage(utg, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet")));
       } 
       if (!fcontext.hasPackage("hl7.fhir.uv.extensions", null)) {
         NpmPackage ext = pcm.loadPackage("hl7.fhir.uv.extensions", Constants.EXTENSIONS_WORKING_VERSION);
         System.out.println("Loading Extensions: "+ext.name()+"#"+ext.version());
-        fcontext.loadFromPackage(ext, new TestPackageLoader(Utilities.strings("CodeSystem", "ValueSet", "StructureDefinition")));
+        fcontext.loadFromPackage(ext, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "StructureDefinition")));
       } 
       return fcontext;
     } catch (Exception e) {

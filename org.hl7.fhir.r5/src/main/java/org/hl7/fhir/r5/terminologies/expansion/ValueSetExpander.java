@@ -690,6 +690,11 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     
     if (exc.hasSystem()) {
+      String sv = exc.getSystem()+(exc.hasVersion() ? "#"+exc.getVersion(): "");
+      if (dwc.getCountIncompleteSystems().contains(sv)) {
+        dwc.setNoTotal(true);
+      }
+
       CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem());
       if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.supportsSystem(exc.getSystem(), opContext.getOptions().getFhirVersion())) {
         ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), exc, false, false);
@@ -1232,6 +1237,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
       base.checkNoModifiers("Imported ValueSet", "expanding");
       copyImportContains(base.getExpansion().getContains(), null, expParams, imports, noInactive, base.getExpansion().getProperty(), base, exp);
     } else {
+      String sv = inc.getSystem()+(inc.hasVersion() ? "#"+inc.getVersion(): "");
+      if (dwc.getCountIncompleteSystems().contains(sv)) {
+        dwc.setNoTotal(true);
+      }
       CodeSystem cs = context.fetchSupplementedCodeSystem(inc.getSystem());
       if (ValueSetUtilities.isServerSide(inc.getSystem()) || (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT))) {
         doServerIncludeCodes(inc, heirarchical, exp, imports, expParams, extensions, noInactive, valueSet.getExpansion().getProperty());
@@ -1269,7 +1278,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
     if (vs.getExpansion().hasTotal()) {
-      // 0 for now... dwc.incExtraCount(!vs.getExpansion().getTotal());
+      dwc.incExtraCount(vs.getExpansion().getTotal() - countContains(vs.getExpansion().getContains()));
+      dwc.getCountIncompleteSystems().add(inc.getSystem()+(inc.hasVersion() ? "#"+inc.getVersion(): ""));
     } else {
       dwc.setNoTotal(true);
     }
@@ -1290,6 +1300,16 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
+
+  private int countContains(List<ValueSetExpansionContainsComponent> contains) {
+    int count = contains.size();
+    for (ValueSetExpansionContainsComponent cc : contains) {
+      if (cc.hasContains()) {
+        count += countContains(cc.getContains());
+      }
+    }
+    return count;
+  }
 
   public void doInternalIncludeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports, CodeSystem cs, boolean noInactive, Resource vsSrc, String vspath) throws NoTerminologyServiceException, TerminologyServiceException, FHIRException, ETooCostly {
     opContext.deadCheck("doInternalIncludeCodes");

@@ -525,5 +525,19 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return list;
   }
 
+  public StructureDefinition fetchStructureByName(String name) {
+    StructureDefinition sd = null;
+    for (StructureDefinition t : context.fetchResourcesByType(StructureDefinition.class)) {
+      if (name.equals(t.getName())) {
+        if (sd == null) {
+          sd = t;
+        } else {
+          throw new FHIRException("Duplicate Structure name "+name+": found both "+t.getVersionedUrl()+" and "+sd.getVersionedUrl());
+        }
+      }
+    }
+    return sd;
+  }
+
 }
 

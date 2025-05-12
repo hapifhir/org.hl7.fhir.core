@@ -133,9 +133,9 @@ public class CompliesWithChecker {
                 messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath, 
                     context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_EXTRA_SLICE, cpath, cnSlice.current().getSliceName()), IssueSeverity.ERROR));
               }
+              String spath = cpath+":"+cnSlice.current().getSliceName();
+              checkCompliesWith(messages, spath, cnSlice, anChild, true);
             }
-            String spath = cpath+":"+cnSlice.current().getSliceName();
-            checkCompliesWith(messages, spath, cnSlice, anChild, true);
           }            
         }
       }
@@ -442,7 +442,7 @@ public class CompliesWithChecker {
             Set<String> wrong = ValueSetUtilities.checkExpansionSubset(aExp.getValueset(), cExp.getValueset());
             if (!wrong.isEmpty()) {
               messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NO_VS_NO, cVS.getVersionedUrl(), aVS.getVersionedUrl(), 
-                    CommaSeparatedStringBuilder.joinToLimit(", ", 5, "etc", wrong)), c.getBinding().getStrength() != BindingStrength.REQUIRED ? IssueSeverity.ERROR : IssueSeverity.WARNING));
+                    CommaSeparatedStringBuilder.joinToLimit(", ", 5, "etc", wrong)), c.getBinding().getStrength() == BindingStrength.REQUIRED ? IssueSeverity.ERROR : IssueSeverity.WARNING));
             }
           }
         }
