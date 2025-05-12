@@ -726,6 +726,10 @@ public class Utilities {
     return URLEncoder.encode(param, StandardCharsets.UTF_8);
   }
 
+  public static String escapeParamValue(String param) {
+    return param.replace("&", "%26");
+  }
+
   public static String normalize(String s) {
     return normalize(s, true);
   }
