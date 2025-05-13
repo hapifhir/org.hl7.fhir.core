@@ -93,12 +93,6 @@
             <artifactId>logback-classic</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <!-- Use saxon for xml processing -->
-        <dependency>
-            <groupId>net.sf.saxon</groupId>
-            <artifactId>Saxon-HE</artifactId>
-        </dependency>
     </dependencies>
 
     <dependencyManagement>
