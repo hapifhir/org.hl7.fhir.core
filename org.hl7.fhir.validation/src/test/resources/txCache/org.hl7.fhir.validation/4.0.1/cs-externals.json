@@ -33,6 +33,7 @@
   "http://hl7.org/fhir/test/CodeSystem/other|null" : null,
   "http://terminology.gene.com/fhir/usix/uapi/CodeSystem/uapi-product-name|null" : null,
   "http://ohie.org/CodeSystem/iso-8601-derived-periods|null" : null,
+  "http://hl7.org/fhir/fhir-types|null" : null,
   "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9|null" : null,
   "http://ihe.net/qrph/madx/|null" : null,
   "http://fkcfhir.org/fhir/CodeSystem/FMCOrderType|null" : null,
