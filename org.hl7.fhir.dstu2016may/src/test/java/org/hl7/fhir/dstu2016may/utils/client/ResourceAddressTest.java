@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.utils.client;
+package org.hl7.fhir.dstu2016may.utils.client;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -19,9 +19,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ResourceAddressTest {
   public static Stream<Arguments> getHttpParameters() {
     return Stream.of(
-        Arguments.of(Map.of(
-          "param1", "value=",
-          "param2", "value2")),
+      Arguments.of(Map.of(
+        "param1", "value=",
+        "param2", "value2")),
       Arguments.of(Map.of(
         "param1", "value%",
         "param2", "value2")),
@@ -32,8 +32,8 @@ public class ResourceAddressTest {
         "param1", "value_1",
         "param2", "value2")),
       Arguments.of(Map.of(
-          "param1", "urn:oid:1.2.3.4.5",
-          "param2", "value2")),
+        "param1", "urn:oid:1.2.3.4.5",
+        "param2", "value2")),
       Arguments.of(Map.of(
         "param1", "urn:oid:1.2.3.4.5",
         "param2", "value=",
@@ -46,7 +46,7 @@ public class ResourceAddressTest {
 
   @Test
   public void appendHttpParametersTest() {
-   Map<String, String> params = new HashMap<>();
+    Map<String, String> params = new HashMap<>();
     params.put("param1", "value1");
 
     URI uri = ResourceAddress.appendHttpParameters(URI.create("http://example.com"), params);
@@ -60,10 +60,9 @@ public class ResourceAddressTest {
     System.out.println(uri.toString());
     List<NameValuePair> actualParams = URLEncodedUtils.parse(uri, StandardCharsets.UTF_8);
     assertThat(actualParams).hasSize(params.size());
-    for (NameValuePair pair: actualParams) {
+    for (NameValuePair pair : actualParams) {
       String expectedValue = params.get(pair.getName());
       assertThat(pair.getValue()).isEqualTo(expectedValue);
     }
   }
-
 }
