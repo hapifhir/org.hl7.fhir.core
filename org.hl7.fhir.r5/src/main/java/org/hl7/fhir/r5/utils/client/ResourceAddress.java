@@ -104,7 +104,8 @@ public class ResourceAddress {
   public <T extends Resource> URI resolveOperationUri(Class<T> resourceClass, String opName, Map<String,String> parameters) {
     return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"$"+opName), parameters);
   }
-  
+
+  @Deprecated
   public <T extends Resource> URI resolveOperationUriNoEscape(Class<T> resourceClass, String opName, Map<String,String> parameters) {
     return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"$"+opName), parameters);
   }
