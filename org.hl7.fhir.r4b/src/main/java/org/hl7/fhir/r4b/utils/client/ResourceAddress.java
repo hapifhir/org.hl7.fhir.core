@@ -31,19 +31,16 @@ package org.hl7.fhir.r4b.utils.client;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r4b.model.ResourceType;
 import org.hl7.fhir.utilities.Utilities;
@@ -415,20 +412,23 @@ public class ResourceAddress {
 
   public static URI appendHttpParameters(URI basePath, Map<String, String> parameters) {
     try {
-      Set<String> httpParameterNames = parameters.keySet();
-      String query = basePath.getQuery();
+      List<NameValuePair> existingParams = URLEncodedUtils.parse(basePath.getQuery(), StandardCharsets.UTF_8);
 
-      for (String httpParameterName : httpParameterNames) {
-        if (query != null) {
-          query += "&";
-        } else {
-          query = "";
-        }
-        query += httpParameterName + "=" + Utilities.encodeUriParam(parameters.get(httpParameterName));
+      URIBuilder uriBuilder = new URIBuilder()
+        .setScheme(basePath.getScheme())
+        .setHost(basePath.getHost())
+        .setPort(basePath.getPort())
+        .setUserInfo(basePath.getUserInfo())
+        .setFragment(basePath.getFragment());
+      for (NameValuePair pair : existingParams) {
+        uriBuilder.addParameter(pair.getName(), pair.getValue());
       }
+      for (Map.Entry<String, String> entry : parameters.entrySet()) {
+        uriBuilder.addParameter(entry.getKey(), entry.getValue());
+      }
+      uriBuilder.setPath(basePath.getPath());
 
-      return new URI(basePath.getScheme(), basePath.getUserInfo(), basePath.getHost(), basePath.getPort(),
-          basePath.getPath(), query, basePath.getFragment());
+      return uriBuilder.build();
     } catch (Exception e) {
       throw new EFhirClientException("Error appending http parameter", e);
     }
