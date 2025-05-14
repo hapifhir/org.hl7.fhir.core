@@ -42,6 +42,6 @@ public class Constants {
   public final static String VERSION = "current";
   public final static String VERSION_BASE = "current";
   public final static String VERSION_MM = "current";
-  public final static String DATE = "Mon, Mar 17, 2025 08:15+1100";
+  public final static String DATE = "Sat, May 10, 2025 04:46+0200";
   public final static String URI_REGEX = "((http|https):\\/\\/([A-Za-z0-9\\\\\\.\\:\\%\\$\\-]*\\/)*?)?()\\/[A-Za-z0-9\\-\\.]{1,64}(\\/_history\\/[A-Za-z0-9\\-\\.]{1,64})?";
 }
