@@ -40,6 +40,7 @@ public class ExtensionConstants {
   
   public static final String EXT_ADDITIONAL_BINDING = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding"; // Additional Binding Extension
   public static final String EXT_BINDING_DEFINITION = "http://hl7.org/fhir/tools/StructureDefinition/binding-definition"; // Binding Definition
+  public static final String EXT_BINDING_PARAMETER_DECLARATION = "http://hl7.org/fhir/tools/StructureDefinition/binding-parameter"; // Binding Parameter Declaration
   public static final String EXT_TERMINOLOGY_BINDING_STYLE_E_X_T = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style"; // Terminology Binding Style Extension
   public static final String EXT_DATE_FORMAT = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-format"; // Date Format String
   public static final String EXT_DATE_RULES_CONTROL = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-rules"; // Date Validation Rules control
@@ -82,9 +83,11 @@ public class ExtensionConstants {
   public static final String EXT_SELECT_BY_MAP = "http://hl7.org/fhir/tools/StructureDefinition/select-by-map"; // Select By Map
   public static final String EXT_SNAPSHOT_BASE_VERSION = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-base-version"; // Snapshot Base Version
   public static final String EXT_EXTENSION_SNAPSHOT_BEHAVIOR = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-behavior"; // Extension Snapshot Behavior
+  public static final String EXT_EXTENSION_SNAPSHOT_SOURCE = "http://hl7.org/fhir/tools/StructureDefinition/snapshot-source"; // Extension Snapshot Source
   public static final String EXT_TYPE_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/type-parameter"; // Type Parameter Extension
   public static final String EXT_TYPE_SPECIFIER = "http://hl7.org/fhir/tools/StructureDefinition/type-specifier"; // Type Specifier Extension
   public static final String EXT_VALUE_SET_EXPANSION_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter"; // ValueSet Expansion Parameter
+  public static final String EXT_VALUE_SET_PARAMETER_DECLARATION = "http://hl7.org/fhir/tools/StructureDefinition/valueset-parameter"; // ValueSet Parameter Declaration
   public static final String EXT_RENDERING_ENGINE_VIEW_HINTS_EXT = "http://hl7.org/fhir/tools/StructureDefinition/view-hint"; // Viewing Hints for Rendering Engines (Extension)
   public static final String EXT_WEB_SOURCE = "http://hl7.org/fhir/tools/StructureDefinition/web-source"; // Web Source
   public static final String EXT_XMLCHOICE_GROUP = "http://hl7.org/fhir/tools/StructureDefinition/xml-choice-group"; // XML Choice Group

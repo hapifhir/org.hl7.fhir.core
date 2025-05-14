@@ -26,7 +26,6 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -549,5 +548,39 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
         coding, valueSet, new Parameters());
       assertEquals(expectedName + "_dummyVersion", cacheToken.getName());
     }
+  }
+
+  @Test
+  void testHashJsonHandlesDifferentEndOfLine() throws IOException {
+    TerminologyCache terminologyCache = createTerminologyCache();
+    String newLineJson = "{\n" +
+        "  \"resourceType\": \"ValueSet\",\n" +
+        "  \"id\": \"dummyId\"\n" +
+        "}";
+    String newLineAndCarriageReturnJson = "{\r\n" +
+        "  \"resourceType\": \"ValueSet\",\r\n" +
+        "  \"id\": \"dummyId\"\r\n" +
+        "}";
+    String newLineToken = terminologyCache.hashJson(newLineJson);
+    String newLineAndCarriageReturnToken = terminologyCache.hashJson(newLineAndCarriageReturnJson);
+
+    assertEquals(newLineToken, newLineAndCarriageReturnToken);
+  }
+
+  @Test
+  void testHashJsonHandlesLeadingAndTrailingWhitespace() throws IOException {
+    TerminologyCache terminologyCache = createTerminologyCache();
+    String paddedJson = "   {\n" +
+      "  \"resourceType\": \"ValueSet\",\n" +
+      "  \"id\": \"dummyId\"\n" +
+      "}\n   ";
+    String json = "{\n" +
+      "  \"resourceType\": \"ValueSet\",\n" +
+      "  \"id\": \"dummyId\"\n" +
+      "}";
+    String paddedJsonToken = terminologyCache.hashJson(paddedJson);
+    String jsonToken = terminologyCache.hashJson(json);
+
+    assertEquals(paddedJsonToken, jsonToken);
   }
 }
