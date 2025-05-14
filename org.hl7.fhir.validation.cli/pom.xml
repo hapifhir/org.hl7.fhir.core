@@ -261,6 +261,7 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
@@ -347,6 +348,12 @@
                 </configuration>
             </plugin>
 
+
+            <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${jacoco_version}</version>
+            </plugin>
             <!--
             These two plugins provide quality checks that don't make sense to perform
             on a fatjar.
