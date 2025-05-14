@@ -1,6 +1,5 @@
 package org.hl7.fhir.validation.cli.logging;
 
-import ca.uhn.fhir.util.FileUtil;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.core.joran.spi.JoranException;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -857,7 +857,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       tgt = Utilities.path(tgt, "content-"+index+"-"+ne.getFilename());
       FileUtilities.bytesToFile(ne.getContent(), tgt);
     } catch (Exception e) {
-      System.out.println("Error saving internal content to '"+tgt+"': "+e.getLocalizedMessage());
+      log.error("Error saving internal content to '"+tgt+"': "+e.getLocalizedMessage());
     }
     
   }
@@ -5136,8 +5136,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rr.setFocus(focus);
             rr.setExternal(false);
             rr.setStack(nstack);
-//            rr.getStack().qualifyPath(".ofType("+nstack.getElement().fhirType()+")");
-//            System.out.println("-->"+nstack.getLiteralPath());
             return rr;            
           }
           if (focus.getSpecial() == SpecialElement.CONTAINED) {
@@ -5940,9 +5938,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       pct = new PercentageLogger(log, resource.countDescendents(), resource.fhirType(), defn.getVersionedUrl(), logProgress);
     }
     if (BUNDLE.equals(element.fhirType())) {
-      if (settings.isDebug()) {
-        System.out.println("Resolve Bundle Entries "+time());
-      }
+      log.debug("Resolve Bundle Entries "+time());
       resolveBundleReferences(element, new ArrayList<Element>());
     }
     ok = startInner(valContext, errors, resource, element, defn, stack, valContext.isCheckSpecials(), pct, mode, fromContained) && ok;
@@ -6064,7 +6060,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     }
-//    System.out.println("start: "+(System.currentTimeMillis()-st)+" ("+resource.fhirType()+")");
     return ok;
   }
 
@@ -6101,14 +6096,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     return sd;
   }
-
-//  private void plog(String msg) {
-//    long n = System.currentTimeMillis();
-//    String elapsed = Utilities.padLeft(Long.toString(n-start), ' ', 5);
-//    String delta = Utilities.padLeft(lastlog == 0 ? "0" : Long.toString(n-lastlog), ' ', 5);
-//    lastlog = n;
-//    System.out.println("-- "+elapsed+" "+delta+" "+msg);
-//  }
 
   private void resolveBundleReferences(Element element, List<Element> bundles) {
     if (!element.hasUserData(UserDataNames.validator_bundle_resolved)) {
@@ -6816,19 +6803,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     throws FHIRException, DefinitionException {
     boolean ok = true;
 
-    if (settings.isDebug() && ei.getDefinition() != null && ei.getSlice() != null) {
-      System.out.println(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against both "+ei.getDefinition().getId()+" and "+ei.getSlice().getId());
+    if (ei.getDefinition() != null && ei.getSlice() != null) {
+      log.debug(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against both "+ei.getDefinition().getId()+" and "+ei.getSlice().getId());
     }
     if (ei.getDefinition() != null) {
-      if (settings.isDebug()) {
-        System.out.println(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against defn "+ei.getDefinition().getId()+" from "+profile.getVersionedUrl()+time());
-      }
+      log.debug(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against defn "+ei.getDefinition().getId()+" from "+profile.getVersionedUrl()+time());
       ok = checkChildByDefinition(valContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei, extensionUrl, ei.getDefinition(), false, pct, mode) && ok;
     }
     if (ei.getSlice() != null) {
-      if (settings.isDebug()) {
-        System.out.println(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against slice "+ei.getSlice().getId()+time());
-      }
+
+      log.debug(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against slice "+ei.getSlice().getId()+time());
+
       ok = checkChildByDefinition(valContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei, extensionUrl, ei.getSlice(), true, pct, mode) && ok;
     }
     return ok;
@@ -6966,9 +6951,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     NodeStack localStack = stack.push(ei.getElement(), "*".equals(ei.getDefinition().getBase().getMax()) && ei.getCount() == -1 ? 0 : ei.getCount(), checkDefn, type == null ? typeDefn : resolveType(type, checkDefn.getType()));
-    if (settings.isDebug()) {
-      System.out.println("  check " + localStack.getLiteralPath()+" against "+ei.getDefinition().getId()+" in profile "+profile.getVersionedUrl()+time());
-    }
+
+    log.debug("  check " + localStack.getLiteralPath()+" against "+ei.getDefinition().getId()+" in profile "+profile.getVersionedUrl()+time());
+
     EnumSet<ElementValidationAction> actionSet = policyAdvisor.policyForElement(this, valContext.getAppContext(), profile, ei.getDefinition(), localStack.getLiteralPath());
     
     String localStackLiteralPath = localStack.getLiteralPath();
@@ -8150,7 +8135,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 }
                 fpe.check(null, "Resource", sd.getKind() == StructureDefinitionKind.RESOURCE ? sd.getType() : "DomainResource", ed.getPath(), n);
               } catch (Exception e) {
-                System.out.println("Error processing structure [" + sd.getId() + "] path " + ed.getPath() + ":" + inv.getKey() + " ('" + inv.getExpression() + "'): " + e.getMessage());
+                log.info("Error processing structure [" + sd.getId() + "] path " + ed.getPath() + ":" + inv.getKey() + " ('" + inv.getExpression() + "'): " + e.getMessage());
               }
             }
           }

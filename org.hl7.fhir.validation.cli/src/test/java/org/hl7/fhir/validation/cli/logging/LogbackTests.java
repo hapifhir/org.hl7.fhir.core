@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.cli.logging;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.core.joran.spi.JoranException;
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.validation.cli.logging.LogbackUtilities;
 import org.junit.jupiter.api.AfterEach;
 
 import java.util.Set;
