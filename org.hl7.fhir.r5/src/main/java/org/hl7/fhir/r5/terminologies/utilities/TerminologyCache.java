@@ -959,7 +959,10 @@ public class TerminologyCache {
   }
 
   public String hashJson(String s) {
-    return String.valueOf(s.trim().hashCode());
+    return String.valueOf(s
+      .trim()
+      .replaceAll("\\r\\n?", "\n")
+      .hashCode());
   }
 
   // management

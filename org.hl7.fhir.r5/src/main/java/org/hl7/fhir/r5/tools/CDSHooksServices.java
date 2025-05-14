@@ -93,9 +93,9 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
          */
         @Child(name = "prefetch", type = {Base.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Key/value pairs of FHIR queries the CDS Client provides on each call", formalDefinition="An object containing key/value pairs of FHIR queries that this Services is requesting the CDS Client to perform and provide on each Services call. The key is a string that describes the type of data being requested and the value is a string representing the FHIR query" )
-        protected List<CDSHooksServicesServicesPrefetchComponent> prefetch;
+        protected List<CDSHooksServicesServicesPrefetchComponent> prefetchList;
 
-        private static final long serialVersionUID = 1456889325L;
+        private static final long serialVersionUID = 1303422447L;
 
     /**
      * Constructor
@@ -350,54 +350,36 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         /**
          * @return {@link #prefetch} (An object containing key/value pairs of FHIR queries that this Services is requesting the CDS Client to perform and provide on each Services call. The key is a string that describes the type of data being requested and the value is a string representing the FHIR query)
          */
-        public List<CDSHooksServicesServicesPrefetchComponent> getPrefetch() { 
-          if (this.prefetch == null)
-            this.prefetch = new ArrayList<CDSHooksServicesServicesPrefetchComponent>();
-          return this.prefetch;
+        public List<CDSHooksServicesServicesPrefetchComponent> getPrefetchList() { 
+          if (this.prefetchList == null)
+            this.prefetchList = new ArrayList<CDSHooksServicesServicesPrefetchComponent>();
+          return this.prefetchList;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CDSHooksServicesServicesComponent setPrefetch(List<CDSHooksServicesServicesPrefetchComponent> thePrefetch) { 
-          this.prefetch = thePrefetch;
+        public CDSHooksServicesServicesComponent setPrefetchList(List<CDSHooksServicesServicesPrefetchComponent> thePrefetch) { 
+          this.prefetchList = thePrefetch;
           return this;
         }
 
         public boolean hasPrefetch() { 
-          if (this.prefetch == null)
+          if (this.prefetchList == null)
             return false;
-          for (CDSHooksServicesServicesPrefetchComponent item : this.prefetch)
+          for (CDSHooksServicesServicesPrefetchComponent item : this.prefetchList)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CDSHooksServicesServicesPrefetchComponent addPrefetch() { //3
-          CDSHooksServicesServicesPrefetchComponent t = new CDSHooksServicesServicesPrefetchComponent();
-          if (this.prefetch == null)
-            this.prefetch = new ArrayList<CDSHooksServicesServicesPrefetchComponent>();
-          this.prefetch.add(t);
-          return t;
-        }
-
-        public CDSHooksServicesServicesComponent addPrefetch(CDSHooksServicesServicesPrefetchComponent t) { //3
+        public CDSHooksServicesServicesComponent addPrefetch(CDSHooksServicesServicesPrefetchComponent t) { //3b
           if (t == null)
             return this;
-          if (this.prefetch == null)
-            this.prefetch = new ArrayList<CDSHooksServicesServicesPrefetchComponent>();
-          this.prefetch.add(t);
+          if (this.prefetchList == null)
+            this.prefetchList = new ArrayList<CDSHooksServicesServicesPrefetchComponent>();
+          this.prefetchList.add(t);
           return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #prefetch}, creating it if it does not already exist {3}
-         */
-        public CDSHooksServicesServicesPrefetchComponent getPrefetchFirstRep() { 
-          if (getPrefetch().isEmpty()) {
-            addPrefetch();
-          }
-          return getPrefetch().get(0);
         }
 
         protected void listChildren(List<Property> children) {
@@ -407,7 +389,7 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
           children.add(new Property("id", "code", "The {id} portion of the URL to this service which is available at ```{baseUrl}/cds-services/{id}```", 0, 1, id));
           children.add(new Property("description", "string", "The description of this Services", 0, 1, description));
           children.add(new Property("usageRequirements", "string", "Human-friendly description of any preconditions for the use of this CDS Services", 0, 1, usageRequirements));
-          children.add(new Property("prefetch", "Base", "An object containing key/value pairs of FHIR queries that this Services is requesting the CDS Client to perform and provide on each Services call. The key is a string that describes the type of data being requested and the value is a string representing the FHIR query", 0, java.lang.Integer.MAX_VALUE, prefetch));
+          children.add(new Property("prefetch", "Base", "An object containing key/value pairs of FHIR queries that this Services is requesting the CDS Client to perform and provide on each Services call. The key is a string that describes the type of data being requested and the value is a string representing the FHIR query", 0, java.lang.Integer.MAX_VALUE, prefetchList));
         }
 
         @Override
@@ -418,7 +400,7 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
           case 3355: /*id*/  return new Property("id", "code", "The {id} portion of the URL to this service which is available at ```{baseUrl}/cds-services/{id}```", 0, 1, id);
           case -1724546052: /*description*/  return new Property("description", "string", "The description of this Services", 0, 1, description);
           case -512224047: /*usageRequirements*/  return new Property("usageRequirements", "string", "Human-friendly description of any preconditions for the use of this CDS Services", 0, 1, usageRequirements);
-          case -1288666633: /*prefetch*/  return new Property("prefetch", "Base", "An object containing key/value pairs of FHIR queries that this Services is requesting the CDS Client to perform and provide on each Services call. The key is a string that describes the type of data being requested and the value is a string representing the FHIR query", 0, java.lang.Integer.MAX_VALUE, prefetch);
+          case -1288666633: /*prefetch*/  return new Property("prefetch", "Base", "An object containing key/value pairs of FHIR queries that this Services is requesting the CDS Client to perform and provide on each Services call. The key is a string that describes the type of data being requested and the value is a string representing the FHIR query", 0, java.lang.Integer.MAX_VALUE, prefetchList);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -432,7 +414,7 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         case 3355: /*id*/ return this.id == null ? new Base[0] : new Base[] {this.id}; // CodeType
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -512224047: /*usageRequirements*/ return this.usageRequirements == null ? new Base[0] : new Base[] {this.usageRequirements}; // StringType
-        case -1288666633: /*prefetch*/ return this.prefetch == null ? new Base[0] : this.prefetch.toArray(new Base[this.prefetch.size()]); // CDSHooksServicesServicesPrefetchComponent
+        case -1288666633: /*prefetch*/ return this.prefetchList == null ? new Base[0] : this.prefetchList.toArray(new Base[this.prefetchList.size()]); // CDSHooksServicesServicesPrefetchComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -457,7 +439,7 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
           this.usageRequirements = TypeConvertor.castToString(value); // StringType
           return value;
         case -1288666633: // prefetch
-          this.getPrefetch().add((CDSHooksServicesServicesPrefetchComponent) value); // CDSHooksServicesServicesPrefetchComponent
+          this.getPrefetchList().add((CDSHooksServicesServicesPrefetchComponent) value); // CDSHooksServicesServicesPrefetchComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -477,7 +459,7 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         } else if (name.equals("usageRequirements")) {
           this.usageRequirements = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("prefetch")) {
-          this.getPrefetch().add((CDSHooksServicesServicesPrefetchComponent) value); // CDSHooksServicesServicesPrefetchComponent
+          this.getPrefetchList().add((CDSHooksServicesServicesPrefetchComponent) value); // CDSHooksServicesServicesPrefetchComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -491,7 +473,8 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         case 3355:  return getIdElement();
         case -1724546052:  return getDescriptionElement();
         case -512224047:  return getUsageRequirementsElement();
-        case -1288666633:  return addPrefetch(); 
+        case -1288666633: /*div*/
+          throw new Error("Unable to make an instance of the abstract property 'prefetch'");
         default: return super.makeProperty(hash, name);
         }
 
@@ -548,10 +531,10 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         dst.id = id == null ? null : id.copy();
         dst.description = description == null ? null : description.copy();
         dst.usageRequirements = usageRequirements == null ? null : usageRequirements.copy();
-        if (prefetch != null) {
-          dst.prefetch = new ArrayList<CDSHooksServicesServicesPrefetchComponent>();
-          for (CDSHooksServicesServicesPrefetchComponent i : prefetch)
-            dst.prefetch.add(i.copy());
+        if (prefetchList != null) {
+          dst.prefetchList = new ArrayList<CDSHooksServicesServicesPrefetchComponent>();
+          for (CDSHooksServicesServicesPrefetchComponent i : prefetchList)
+            dst.prefetchList.add(i.copy());
         };
       }
 
@@ -564,7 +547,7 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         CDSHooksServicesServicesComponent o = (CDSHooksServicesServicesComponent) other_;
         return compareDeep(hook, o.hook, true) && compareDeep(title, o.title, true) && compareDeep(id, o.id, true)
            && compareDeep(description, o.description, true) && compareDeep(usageRequirements, o.usageRequirements, true)
-           && compareDeep(prefetch, o.prefetch, true);
+           && compareDeep(prefetchList, o.prefetchList, true);
       }
 
       @Override
@@ -581,7 +564,7 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(hook, title, id, description
-          , usageRequirements, prefetch);
+          , usageRequirements, prefetchList);
       }
 
   public String fhirType() {
@@ -846,9 +829,9 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
      */
     @Child(name = "services", type = {CDSHooksElement.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A list of CDS services", formalDefinition="A list of CDS services" )
-    protected List<CDSHooksServicesServicesComponent> services;
+    protected List<CDSHooksServicesServicesComponent> servicesList;
 
-    private static final long serialVersionUID = 2018821345L;
+    private static final long serialVersionUID = 721056483L;
 
   /**
    * Constructor
@@ -860,43 +843,43 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
     /**
      * @return {@link #services} (A list of CDS services)
      */
-    public List<CDSHooksServicesServicesComponent> getServices() { 
-      if (this.services == null)
-        this.services = new ArrayList<CDSHooksServicesServicesComponent>();
-      return this.services;
+    public List<CDSHooksServicesServicesComponent> getServicesList() { 
+      if (this.servicesList == null)
+        this.servicesList = new ArrayList<CDSHooksServicesServicesComponent>();
+      return this.servicesList;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public CDSHooksServices setServices(List<CDSHooksServicesServicesComponent> theServices) { 
-      this.services = theServices;
+    public CDSHooksServices setServicesList(List<CDSHooksServicesServicesComponent> theServices) { 
+      this.servicesList = theServices;
       return this;
     }
 
     public boolean hasServices() { 
-      if (this.services == null)
+      if (this.servicesList == null)
         return false;
-      for (CDSHooksServicesServicesComponent item : this.services)
+      for (CDSHooksServicesServicesComponent item : this.servicesList)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CDSHooksServicesServicesComponent addServices() { //3
+    public CDSHooksServicesServicesComponent addServices() { //3a
       CDSHooksServicesServicesComponent t = new CDSHooksServicesServicesComponent();
-      if (this.services == null)
-        this.services = new ArrayList<CDSHooksServicesServicesComponent>();
-      this.services.add(t);
+      if (this.servicesList == null)
+        this.servicesList = new ArrayList<CDSHooksServicesServicesComponent>();
+      this.servicesList.add(t);
       return t;
     }
 
-    public CDSHooksServices addServices(CDSHooksServicesServicesComponent t) { //3
+    public CDSHooksServices addServices(CDSHooksServicesServicesComponent t) { //3b
       if (t == null)
         return this;
-      if (this.services == null)
-        this.services = new ArrayList<CDSHooksServicesServicesComponent>();
-      this.services.add(t);
+      if (this.servicesList == null)
+        this.servicesList = new ArrayList<CDSHooksServicesServicesComponent>();
+      this.servicesList.add(t);
       return this;
     }
 
@@ -904,21 +887,21 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
      * @return The first repetition of repeating field {@link #services}, creating it if it does not already exist {3}
      */
     public CDSHooksServicesServicesComponent getServicesFirstRep() { 
-      if (getServices().isEmpty()) {
+      if (getServicesList().isEmpty()) {
         addServices();
       }
-      return getServices().get(0);
+      return getServicesList().get(0);
     }
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("services", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "A list of CDS services", 0, java.lang.Integer.MAX_VALUE, services));
+        children.add(new Property("services", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "A list of CDS services", 0, java.lang.Integer.MAX_VALUE, servicesList));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 1379209310: /*services*/  return new Property("services", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "A list of CDS services", 0, java.lang.Integer.MAX_VALUE, services);
+        case 1379209310: /*services*/  return new Property("services", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "A list of CDS services", 0, java.lang.Integer.MAX_VALUE, servicesList);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -927,7 +910,7 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 1379209310: /*services*/ return this.services == null ? new Base[0] : this.services.toArray(new Base[this.services.size()]); // CDSHooksServicesServicesComponent
+        case 1379209310: /*services*/ return this.servicesList == null ? new Base[0] : this.servicesList.toArray(new Base[this.servicesList.size()]); // CDSHooksServicesServicesComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -937,7 +920,7 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 1379209310: // services
-          this.getServices().add((CDSHooksServicesServicesComponent) value); // CDSHooksServicesServicesComponent
+          this.getServicesList().add((CDSHooksServicesServicesComponent) value); // CDSHooksServicesServicesComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -947,7 +930,7 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("services")) {
-          this.getServices().add((CDSHooksServicesServicesComponent) value); // CDSHooksServicesServicesComponent
+          this.getServicesList().add((CDSHooksServicesServicesComponent) value); // CDSHooksServicesServicesComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -993,10 +976,10 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
 
       public void copyValues(CDSHooksServices dst) {
         super.copyValues(dst);
-        if (services != null) {
-          dst.services = new ArrayList<CDSHooksServicesServicesComponent>();
-          for (CDSHooksServicesServicesComponent i : services)
-            dst.services.add(i.copy());
+        if (servicesList != null) {
+          dst.servicesList = new ArrayList<CDSHooksServicesServicesComponent>();
+          for (CDSHooksServicesServicesComponent i : servicesList)
+            dst.servicesList.add(i.copy());
         };
       }
 
@@ -1011,7 +994,7 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         if (!(other_ instanceof CDSHooksServices))
           return false;
         CDSHooksServices o = (CDSHooksServices) other_;
-        return compareDeep(services, o.services, true);
+        return compareDeep(servicesList, o.servicesList, true);
       }
 
       @Override
@@ -1025,7 +1008,7 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(services);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(servicesList);
       }
 
 
