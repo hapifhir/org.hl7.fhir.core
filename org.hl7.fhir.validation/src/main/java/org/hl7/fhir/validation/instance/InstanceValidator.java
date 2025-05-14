@@ -3199,10 +3199,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
 
         if (url != null && url.startsWith("urn:uuid:")) {
-          String s = url.substring(9);
+
+          String s = url;
           if (s.contains("#")) {
             s = s.substring(0, s.indexOf("#"));
           }
+          if (type.equals("canonical") && s.contains("|")) {
+            s = s.substring(0, s.lastIndexOf("|")); 
+          }
+          s = s.substring(9);
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, UUIDUtilities.isValidUUID(s), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VALID, s) && ok;
         }
         if (url != null && url.startsWith("urn:oid:")) {
@@ -3606,6 +3611,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url) && ok;;
           } else if (isExampleUrl(url)) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE, url) && ok;;
+          } else if (isHintableElementForUrlChecking(path)) {
+            hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
           } else {
             warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
           }
@@ -3651,6 +3658,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return ok;
+  }
+
+  private boolean isHintableElementForUrlChecking(String path) {
+     if (Utilities.endsWithInList(path, ".meta.source")) {
+       return true;
+     } else {
+       return false;
+     }
   }
 
   private boolean isCommunicationsUrl(String url) {
