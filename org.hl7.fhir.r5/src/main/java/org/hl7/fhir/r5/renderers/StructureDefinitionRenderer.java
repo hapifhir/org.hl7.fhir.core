@@ -1836,7 +1836,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (base != null) { 
       List<String> newList = Utilities.copyAdd(inscope, base.getVersionedUrl()); 
       if (inscope.contains(base.getVersionedUrl())) {
-        throw new FHIRException("Circular Definition detected in derivation heirarchy: "+CommaSeparatedStringBuilder.join("->", newList));
+        throw new FHIRException("Circular Definition detected in derivation hierarchy: "+CommaSeparatedStringBuilder.join("->", newList));
       }
       getAncestorElements(newList, base, ancestors);      
       for (ElementDefinition ed : base.getDifferential().getElement()) { 
