@@ -83,7 +83,6 @@ import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.cli.param.Params;
-import org.slf4j.MarkerFactory;
 
 
 /**

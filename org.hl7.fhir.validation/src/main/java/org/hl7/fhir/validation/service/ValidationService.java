@@ -161,7 +161,6 @@ public class ValidationService {
     for (FileInfo fileToValidate : request.getFilesToValidate()) {
       if (fileToValidate.getFileType() == null) {
         Manager.FhirFormat format = ResourceChecker.checkIsResource(validationEngine.getContext(),
-          false,
           fileToValidate.getFileContent().getBytes(),
           fileToValidate.getFileName(),
           false);
@@ -918,16 +917,16 @@ public class ValidationService {
           for (StructureDefinition sd : validationEngine.getContext().fetchResourcesByType(StructureDefinition.class)) {
             if (sd.getUrl().startsWith(profile.replace("*", ""))) {
               gen.setCanonical(sd.getUrl());
-              System.out.print("Generate for "+sd.getUrl());
+              log.info("Generating PE code for "+sd.getUrl());
               String s = gen.execute();
-              log.info(": "+s);
+              log.info("Generated PE code for "+sd.getUrl() + ": "+s);
             }
           }
         } else {
           gen.setCanonical(profile);
-          System.out.print("Generate for "+profile);
+          log.info("Generating PE code for "+ profile);
           String s = gen.execute();
-          log.info(": "+s);
+          log.info("Generated PE code for "+ profile + ": "+s);
         }
       }
       log.info("Done");
