@@ -62,7 +62,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
 
     System.out.println("CodeSystems");
     CodeSystem css = fhirToolingClient.fetchResource(CodeSystem.class, "CDCREC");
-    checkHeirarchy(fhirToolingClient, css);
+    checkHierarchy(fhirToolingClient, css);
     json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-CDCREC.json")), css);
     css = fhirToolingClient.fetchResource(CodeSystem.class, "CDCNHSN");
     json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "CodeSystem-CDCNHSN.json")), css);
@@ -123,50 +123,9 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     System.out.println("Done. " + i + " ValueSets in "+Utilities.describeDuration(System.currentTimeMillis() - tt));
   }
 
-  public class RunningAverage {
-    private double runningAvg;    // Current running average in seconds
-    private int queryCount;       // Number of queries processed
-    private final int windowSize; // Size of the sliding window
-
-    public RunningAverage(int windowSize) {
-      this.runningAvg = 0.0;
-      this.queryCount = 0;
-      this.windowSize = windowSize;
-    }
-
-    /**
-     * Update the running average with a new query time
-     * @param newQueryTimeMs New query time in milliseconds
-     * @return Updated running average in seconds
-     */
-    public double update(long newQueryTimeMs) {
-      // Convert milliseconds to seconds
-      double newQueryTimeSeconds = newQueryTimeMs / 1000.0;
-      queryCount++;
-
-      if (queryCount <= windowSize) {
-        // Haven't reached window size yet, calculate regular average
-        runningAvg = (runningAvg * (queryCount - 1) + newQueryTimeSeconds) / queryCount;
-      } else {
-        // Apply sliding window formula
-        runningAvg = runningAvg + (newQueryTimeSeconds - runningAvg) / windowSize;
-      }
-
-      return runningAvg;
-    }
-
-    public double getRunningAverage() {
-      return runningAvg;
-    }
-
-    public int getQueryCount() {
-      return queryCount;
-    }
-  }
-
-  private void checkHeirarchy(FHIRToolingClient client, CodeSystem css) {
+  private void checkHierarchy(FHIRToolingClient client, CodeSystem css) {
     IniFile ini = new IniFile("/Users/grahamegrieve/temp/vsac-cdc-rec.ini");
-    System.out.println("heirarchy:");
+    System.out.println("hierarchy:");
     List<ConceptDefinitionComponent> codes = new ArrayList<>();
     int c = 0;
     List<ConceptDefinitionComponent> list = new ArrayList<>();
@@ -230,11 +189,11 @@ public class VSACImporter extends OIDBasedValueSetImporter {
   }
 
       
-  private String getRelationship(FHIRToolingClient client, CodeSystem css, String code, String c) {
+  private String getRelationship(FHIRToolingClient client, CodeSystem css, String codeA, String codeB) {
     Map<String, String> params = new HashMap<>();
     params.put("system", css.getUrl());
-    params.put("codeA", c);
-    params.put("codeB", code);    
+    params.put("codeA", codeB);
+    params.put("codeB", codeA);    
     Parameters p = client.subsumes(params);
     for (ParametersParameterComponent pp : p.getParameter()) {
       if ("outcome".equals(pp.getName())) {
