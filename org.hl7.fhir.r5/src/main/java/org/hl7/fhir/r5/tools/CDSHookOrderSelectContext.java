@@ -77,7 +77,7 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
      */
     @Child(name = "selections", type = {UriType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The FHIR ids of the newly selected order(s)", formalDefinition="The selections field references FHIR resources in the draftOrders Bundle. For example, MedicationRequest/103" )
-    protected List<UriType> selections;
+    protected List<UriType> selectionsList;
 
     /**
      * FHIR Bundle of MedicationRequest, NutritionOrder, ServiceRequest, VisionPrescription with draft status
@@ -86,7 +86,7 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
     @Description(shortDefinition="FHIR Bundle of MedicationRequest, NutritionOrder, ServiceRequest, VisionPrescription with draft status", formalDefinition="FHIR Bundle of MedicationRequest, NutritionOrder, ServiceRequest, VisionPrescription with draft status" )
     protected Bundle draftOrders;
 
-    private static final long serialVersionUID = -1835325596L;
+    private static final long serialVersionUID = -1513767262L;
 
   /**
    * Constructor
@@ -247,24 +247,24 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
     /**
      * @return {@link #selections} (The selections field references FHIR resources in the draftOrders Bundle. For example, MedicationRequest/103)
      */
-    public List<UriType> getSelections() { 
-      if (this.selections == null)
-        this.selections = new ArrayList<UriType>();
-      return this.selections;
+    public List<UriType> getSelectionsList() { 
+      if (this.selectionsList == null)
+        this.selectionsList = new ArrayList<UriType>();
+      return this.selectionsList;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public CDSHookOrderSelectContext setSelections(List<UriType> theSelections) { 
-      this.selections = theSelections;
+    public CDSHookOrderSelectContext setSelectionsList(List<UriType> theSelections) { 
+      this.selectionsList = theSelections;
       return this;
     }
 
     public boolean hasSelections() { 
-      if (this.selections == null)
+      if (this.selectionsList == null)
         return false;
-      for (UriType item : this.selections)
+      for (UriType item : this.selectionsList)
         if (!item.isEmpty())
           return true;
       return false;
@@ -275,9 +275,9 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
      */
     public UriType addSelectionsElement() {//2 
       UriType t = new UriType();
-      if (this.selections == null)
-        this.selections = new ArrayList<UriType>();
-      this.selections.add(t);
+      if (this.selectionsList == null)
+        this.selectionsList = new ArrayList<UriType>();
+      this.selectionsList.add(t);
       return t;
     }
 
@@ -287,9 +287,9 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
     public CDSHookOrderSelectContext addSelections(String value) { //1
       UriType t = new UriType();
       t.setValue(value);
-      if (this.selections == null)
-        this.selections = new ArrayList<UriType>();
-      this.selections.add(t);
+      if (this.selectionsList == null)
+        this.selectionsList = new ArrayList<UriType>();
+      this.selectionsList.add(t);
       return this;
     }
 
@@ -297,9 +297,9 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
      * @param value {@link #selections} (The selections field references FHIR resources in the draftOrders Bundle. For example, MedicationRequest/103)
      */
     public boolean hasSelections(String value) { 
-      if (this.selections == null)
+      if (this.selectionsList == null)
         return false;
-      for (UriType v : this.selections)
+      for (UriType v : this.selectionsList)
         if (v.getValue().equals(value)) // uri
           return true;
       return false;
@@ -334,7 +334,7 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
         children.add(new Property("userId", "url", "For this hook, the user is expected to be of type Practitioner, PractitionerRole, Patient, or RelatedPerson. Patient or RelatedPerson are appropriate when a patient or their proxy are viewing the record. For example, Practitioner/abc or Patient/123.", 0, 1, userId));
         children.add(new Property("patientId", "id", "The FHIR Patient.id of the current patient in context", 0, 1, patientId));
         children.add(new Property("encounterId", "id", "The FHIR Encounter.id of the current encounter in context", 0, 1, encounterId));
-        children.add(new Property("selections", "uri", "The selections field references FHIR resources in the draftOrders Bundle. For example, MedicationRequest/103", 0, java.lang.Integer.MAX_VALUE, selections));
+        children.add(new Property("selections", "uri", "The selections field references FHIR resources in the draftOrders Bundle. For example, MedicationRequest/103", 0, java.lang.Integer.MAX_VALUE, selectionsList));
         children.add(new Property("draftOrders", "Bundle", "FHIR Bundle of MedicationRequest, NutritionOrder, ServiceRequest, VisionPrescription with draft status", 0, 1, draftOrders));
       }
 
@@ -344,7 +344,7 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
         case -836030906: /*userId*/  return new Property("userId", "url", "For this hook, the user is expected to be of type Practitioner, PractitionerRole, Patient, or RelatedPerson. Patient or RelatedPerson are appropriate when a patient or their proxy are viewing the record. For example, Practitioner/abc or Patient/123.", 0, 1, userId);
         case -343587072: /*patientId*/  return new Property("patientId", "id", "The FHIR Patient.id of the current patient in context", 0, 1, patientId);
         case 107147694: /*encounterId*/  return new Property("encounterId", "id", "The FHIR Encounter.id of the current encounter in context", 0, 1, encounterId);
-        case -1655324569: /*selections*/  return new Property("selections", "uri", "The selections field references FHIR resources in the draftOrders Bundle. For example, MedicationRequest/103", 0, java.lang.Integer.MAX_VALUE, selections);
+        case -1655324569: /*selections*/  return new Property("selections", "uri", "The selections field references FHIR resources in the draftOrders Bundle. For example, MedicationRequest/103", 0, java.lang.Integer.MAX_VALUE, selectionsList);
         case 155667430: /*draftOrders*/  return new Property("draftOrders", "Bundle", "FHIR Bundle of MedicationRequest, NutritionOrder, ServiceRequest, VisionPrescription with draft status", 0, 1, draftOrders);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -357,7 +357,7 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
         case -836030906: /*userId*/ return this.userId == null ? new Base[0] : new Base[] {this.userId}; // UrlType
         case -343587072: /*patientId*/ return this.patientId == null ? new Base[0] : new Base[] {this.patientId}; // IdType
         case 107147694: /*encounterId*/ return this.encounterId == null ? new Base[0] : new Base[] {this.encounterId}; // IdType
-        case -1655324569: /*selections*/ return this.selections == null ? new Base[0] : this.selections.toArray(new Base[this.selections.size()]); // UriType
+        case -1655324569: /*selections*/ return this.selectionsList == null ? new Base[0] : this.selectionsList.toArray(new Base[this.selectionsList.size()]); // UriType
         case 155667430: /*draftOrders*/ return this.draftOrders == null ? new Base[0] : new Base[] {this.draftOrders}; // Bundle
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -377,7 +377,7 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
           this.encounterId = TypeConvertor.castToId(value); // IdType
           return value;
         case -1655324569: // selections
-          this.getSelections().add(TypeConvertor.castToUri(value)); // UriType
+          this.getSelectionsList().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case 155667430: // draftOrders
           this.draftOrders = (Bundle) value; // Bundle
@@ -396,7 +396,7 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
         } else if (name.equals("encounterId")) {
           this.encounterId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("selections")) {
-          this.getSelections().add(TypeConvertor.castToUri(value)); // UriType
+          this.getSelectionsList().add(TypeConvertor.castToUri(value)); // UriType
         } else if (name.equals("draftOrders")) {
           this.draftOrders = (Bundle) value; // Bundle
         } else
@@ -468,10 +468,10 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
         dst.userId = userId == null ? null : userId.copy();
         dst.patientId = patientId == null ? null : patientId.copy();
         dst.encounterId = encounterId == null ? null : encounterId.copy();
-        if (selections != null) {
-          dst.selections = new ArrayList<UriType>();
-          for (UriType i : selections)
-            dst.selections.add(i.copy());
+        if (selectionsList != null) {
+          dst.selectionsList = new ArrayList<UriType>();
+          for (UriType i : selectionsList)
+            dst.selectionsList.add(i.copy());
         };
         dst.draftOrders = draftOrders == null ? null : draftOrders.copy();
       }
@@ -488,7 +488,7 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
           return false;
         CDSHookOrderSelectContext o = (CDSHookOrderSelectContext) other_;
         return compareDeep(userId, o.userId, true) && compareDeep(patientId, o.patientId, true) && compareDeep(encounterId, o.encounterId, true)
-           && compareDeep(selections, o.selections, true) && compareDeep(draftOrders, o.draftOrders, true)
+           && compareDeep(selectionsList, o.selectionsList, true) && compareDeep(draftOrders, o.draftOrders, true)
           ;
       }
 
@@ -500,12 +500,12 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
           return false;
         CDSHookOrderSelectContext o = (CDSHookOrderSelectContext) other_;
         return compareValues(userId, o.userId, true) && compareValues(patientId, o.patientId, true) && compareValues(encounterId, o.encounterId, true)
-           && compareValues(selections, o.selections, true);
+           && compareValues(selectionsList, o.selectionsList, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(userId, patientId, encounterId
-          , selections, draftOrders);
+          , selectionsList, draftOrders);
       }
 
 
