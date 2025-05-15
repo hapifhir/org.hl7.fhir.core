@@ -665,7 +665,7 @@ public class ValidationService {
     validationEngine.setNoExperimentalContent(validationContext.isNoExperimentalContent());
     TerminologyCache.setNoCaching(validationContext.isNoInternalCaching());
     validationEngine.prepare(); // generate any missing snapshots
-    log.info("...go! (" + timeTracker.milestone() + ")");
+    log.info("  ...go! (" + timeTracker.milestone() + ")");
     return validationEngine;
   }
 
