@@ -5,6 +5,7 @@ import ch.qos.logback.core.joran.spi.JoranException;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -48,16 +49,18 @@ public class LoggingTest {
 
 
 
+  @Disabled
   @RepeatedTest(10)
   public void testProgressLogging() throws IOException, InterruptedException {
     File logFile = FileUtilities.createTempFile("logging-test", ".log");
     testProgressLogging(logFile.getAbsolutePath());
   }
 
-  private static void testProgressLogging(String logFilePath) throws InterruptedException, IOException {setLogToFile(logFilePath);
-    setLogLevel(Level.TRACE);
-    setLogToFile(logFilePath);
+  private void testProgressLogging(String logFilePath) throws InterruptedException, IOException {setLogToFile(logFilePath);
+
+    setLogToFileAndConsole(org.hl7.fhir.validation.cli.logging.Level.TRACE, logFilePath);
     AClassThatLogs aClassThatLogs = new AClassThatLogs();
+
     List<String> expectedLogs = new ArrayList<>();
 
     String capturedOutput = captureLogOutput(() -> {

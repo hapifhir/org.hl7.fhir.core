@@ -1,11 +1,15 @@
 package org.hl7.fhir.validation.cli.logging;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.validation.instance.ProgressLogger;
+import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.validation.instance.PercentageLogger;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static org.mockito.Mockito.mock;
 
 @Slf4j
 public class AClassThatLogs {
@@ -34,33 +38,33 @@ public class AClassThatLogs {
   }
 
   public void doSomeLoggingThatTracksProgress() throws InterruptedException {
-    ProgressLogger progressLogger = new ProgressLogger(log, "Reticulating splines", 8);
-    String[] progressMessages = {
-      "0",
-      "20",
-      "40",
-      "60",
-      "80",
-      "100"
-    };
-    for (String progressMessage : progressMessages) {
-      progressLogger.logProgress(progressMessage);
-      Thread.sleep(1000);
+    int totalElements = 20;
+    PercentageLogger progressLogger = new PercentageLogger(log, totalElements, "Dummy FHIR Type", "http://example.com", true);
+    Element dummyElement = mock(Element.class);
+    for (int i = 0; i < totalElements; i++) {
+
+      progressLogger.seeElement(dummyElement);
+
+      //Thread.sleep(1000);
     }
     progressLogger.done();
   }
 
   public List<String> randomProgressAndLogging() throws InterruptedException {
-    ProgressLogger progressLogger = new ProgressLogger(log, "Reticulating splines", 8);
+    int totalElements = 20;
+    PercentageLogger percentageLogger = new PercentageLogger(log, totalElements, "Dummy FHIR Type", "http://example.com", true);
+
     List<String> expectedLogMessages = new ArrayList<>();
-    for (int i = 0; i < 10; i++) {
+    Element dummyElement = mock(Element.class);
+    for (int i = 0; i < totalElements; i++) {
       String log = randomLog(i);
       if (log != null) {
         expectedLogMessages.add(log);
       }
-      progressLogger.logProgress(String.valueOf(i));
+
+      percentageLogger.seeElement(dummyElement);
     }
-    progressLogger.done();
+    percentageLogger.done();
     return expectedLogMessages;
   }
 
