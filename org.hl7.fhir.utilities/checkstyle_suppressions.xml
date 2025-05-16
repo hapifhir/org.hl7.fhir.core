@@ -8,4 +8,6 @@
     <suppress id="documentBuilderFactoryNewInstance" files="/src/main/java/org/hl7/fhir/utilities/xml/XMLUtil.java" lines="532"/>
     <suppress id="saxParserFactoryNewInstance" files="/src/main/java/org/hl7/fhir/utilities/xml/XMLUtil.java" lines="551"/>
     <suppress id="getXMLReader" files="/src/main/java/org/hl7/fhir/utilities/xml/XMLUtil.java" lines="569"/>
+    <suppress id="systemout" files=".*[\\/]src[\\/]test[\\/]java[\\/].*\.java" />
+    <suppress id="systemout" files=".*[\\/]src[\\/]main[\\/]java[\\/]org[\\/]hl7[\\/]fhir[\\/]utilities[\\/]tests[\\/].*\.java" />
 </suppressions>

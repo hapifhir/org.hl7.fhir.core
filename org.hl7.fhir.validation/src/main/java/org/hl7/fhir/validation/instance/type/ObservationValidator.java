@@ -9,7 +9,7 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.instance.PercentageLogger;
+import org.hl7.fhir.validation.instance.ResourcePercentageLogger;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
@@ -20,7 +20,7 @@ public class ObservationValidator extends BaseValidator {
     super(parent);
   }
 
-  public boolean validateObservation(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack, PercentageLogger pct, ValidationMode mode) {
+  public boolean validateObservation(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack, ResourcePercentageLogger pct, ValidationMode mode) {
     boolean ok = true;
     // all observations should have a subject, a performer, and a time
 

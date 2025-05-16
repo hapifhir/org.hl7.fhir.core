@@ -61,6 +61,7 @@ import java.util.zip.ZipInputStream;
 
 import javax.annotation.Nonnull;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
@@ -93,6 +94,7 @@ import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
  * @author Grahame Grieve
  *
  */
+@Slf4j
 public class NpmPackage {
 
   public interface ITransformingLoader {
@@ -640,7 +642,7 @@ public class NpmPackage {
           c++;
           System.out.print(".");
           if (c == 120) {
-            System.out.println("");
+            System.out.println();
             System.out.print("  ");
             c = 2;
           }
@@ -1272,7 +1274,7 @@ public class NpmPackage {
         byte[] b = folder.content.get(s);
         String name = n+"/"+s;
         if (b == null) {
-          System.out.println(name+" is null");
+          log.warn(name+" is null");
         } else {
           indexer.seeFile(s, b);
           if (!s.equals(".index.json") && !s.equals(".index.db") && !s.equals("package.json")) {
@@ -1393,16 +1395,6 @@ public class NpmPackage {
           FileUtilities.bytesToFile(folder.fetchFile(s), fn);
       }      
     }
-  }
-
-  public void debugDump(String purpose) {
-//    System.out.println("Debug Dump of Package for '"+purpose+"'. Path = "+path);
-//    System.out.println("  npm = "+name()+"#"+version()+", canonical = "+canonical());
-//    System.out.println("  folders = "+folders.size());
-//    for (String s : sorted(folders.keySet())) {
-//      NpmPackageFolder folder = folders.get(s);
-//      System.out.println("    "+folder.dump());
-//    }
   }
 
   private List<String> sorted(Set<String> keys) {
