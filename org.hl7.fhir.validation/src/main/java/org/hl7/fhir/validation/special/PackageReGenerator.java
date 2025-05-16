@@ -266,10 +266,10 @@ public class PackageReGenerator {
             } else {
               e.valueSet.setExpansion(null);
               e.error = exp.getError();
-              log.info(exp.getError());
+              log.warn(exp.getError());
             }
           } catch (Exception ex) {
-            log.info("Error= "+ex.getMessage());
+            log.warn("Error= "+ex.getMessage());
             e.error = ex.getMessage();
           }
         }

@@ -194,7 +194,7 @@ public class TxServiceTestHelper {
       if (diff != null) {
          FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(actualResponse, fp);
-        log.info("Test "+name+"failed: "+diff);
+        log.error("Test "+name+"failed: "+diff);
       }
       return diff;
     }
