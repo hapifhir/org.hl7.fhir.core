@@ -209,8 +209,7 @@ public class TxTester {
         return ok;
       }
     } catch (Exception e) {
-      log.info("Exception running Terminology Service Tests: "+e.getMessage());
-      e.printStackTrace();
+      log.error("Exception running Terminology Service Tests: "+e.getMessage(), e);
       return false;
     }
   }
@@ -367,14 +366,14 @@ public class TxTester {
       } else if (vl.has("default")) {
         fhirVersion = vl.asString("default");
       } else {
-        log.info("Unable to interpret response from $versions: "+vl.toString());
+        log.warn("Unable to interpret response from $versions: "+vl.toString());
       }
       if (fhirVersion != null) {
         log.info("Server version "+fhirVersion+" from $versions");
       }
       
     } catch (Exception e) {
-      log.info("Server does not support $versions: "+e.getMessage());
+      log.warn("Server does not support $versions: "+e.getMessage(), e);
     }
     if (fhirVersion == null) {
       try {
@@ -382,8 +381,8 @@ public class TxTester {
         fhirVersion = cs.asString("fhirVersion");
         log.info("Server version "+fhirVersion+" from /metadata");
       } catch (Exception e) {
-        log.info("Error checking server version: "+e.getMessage());
-        log.info("Defaulting to FHIR R4");
+        log.warn("Error checking server version: "+e.getMessage(), e);
+        log.warn("Defaulting to FHIR R4");
         fhirVersion = "4.0";
       }
     }
@@ -505,7 +504,7 @@ public class TxTester {
 
        log.info("  Tested "+ testName +": " + (msg == null ? "Pass" : "Fail") + " ("+Utilities.describeDuration(System.currentTimeMillis() - start)+")");
         if (msg != null) {
-          log.info("    "+msg);
+          log.error("    "+msg);
           error = msg;
           fails.add(suite.asString("name")+"/"+ testName);
         }  
@@ -519,7 +518,7 @@ public class TxTester {
         tr.getActionFirstRep().getOperation().setResult(msg == null ? TestReportActionResult.PASS : TestReportActionResult.FAIL).setMessage(msg);
         return msg == null;
       } catch (Exception e) {
-        log.info("  Tested "+ testName +": "+ "  ... Exception: "+e.getMessage());
+        log.error("  Tested "+ testName +": "+ "  ... Exception: "+e.getMessage());
 
         fails.add(suite.asString("name")+"/"+ testName);
         error = e.getMessage();

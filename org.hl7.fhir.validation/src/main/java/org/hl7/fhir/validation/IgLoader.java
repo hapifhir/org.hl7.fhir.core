@@ -651,9 +651,9 @@ public class IgLoader implements IValidationEngineLoader {
     }
     String fn = Utilities.path("[tmp]", "fetch-resource-error-content.bin");
     FileUtilities.bytesToFile(cnt, fn);
-    log.info("Error Fetching " + src);
-    log.info("Some content was found, saved to " + fn);
-    log.info("1st 100 bytes = " + presentForDebugging(cnt));
+    log.error("Error Fetching " + src);
+    log.error("Some content was found, saved to " + fn);
+    log.error("1st 100 bytes = " + presentForDebugging(cnt));
     throw new FHIRException("Unable to find/resolve/read " + (explore ? "-ig " : "") + src);
   }
 
@@ -798,14 +798,11 @@ public class IgLoader implements IValidationEngineLoader {
       r = loadResourceByVersion(version, t.getValue().getBytes(), fn);
       log.debug(" .. success");
     } catch (Exception e) {
-      if (!isDebug()) {
-        log.info("* load file: " + fn);
-      }
-      log.info(" - ignored due to error: " + (e.getMessage() == null ? " (null - NPE)" : e.getMessage()));
+      log.error("* load file: " + fn + " - ignored due to error: " + (e.getMessage() == null ? " (null - NPE)" : e.getMessage()));
       if (isDebug() || ((e.getMessage() != null && e.getMessage().contains("cannot be cast")))) {
-        e.printStackTrace();
+       log.debug(e.getMessage(), e);
       }
-      e.printStackTrace();
+      log.error(e.getMessage(), e);
     }
     return r;
   }

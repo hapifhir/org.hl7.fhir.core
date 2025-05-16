@@ -148,7 +148,7 @@ public class ValidatorUtils {
       try {
         fpe.parse(vm.getLocation());
       } catch (Exception e) {
-        log.info("Internal error in location for message: '" + e.getMessage() + "', loc = '" + vm.getLocation() + "', err = '" + vm.getMessage() + "'");
+        log.error("Internal error in location for message: '" + e.getMessage() + "', loc = '" + vm.getLocation() + "', err = '" + vm.getMessage() + "'");
       }
       op.getIssue().add(OperationOutcomeUtilities.convertToIssue(vm, op));
     }
@@ -182,7 +182,7 @@ public class ValidatorUtils {
         if (System.console() != null) {
           System.console().printf(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
         } else {
-          log.info(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
+          log.error(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
         }
         throw new IOException("File " + name + " does not exist");
       }
