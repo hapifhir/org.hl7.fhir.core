@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.http.okhttpimpl;
 
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -10,6 +11,7 @@ import java.io.IOException;
  * An {@link Interceptor} for {@link okhttp3.OkHttpClient} that controls the number of times we retry a to execute a
  * given request, before reporting a failure. This includes unsuccessful return codes and timeouts.
  */
+@Slf4j
 public class RetryInterceptor implements Interceptor {
 
   // Delay between retying failed requests, in millis
@@ -45,7 +47,7 @@ public class RetryInterceptor implements Interceptor {
           // Include a small break in between requests.
           Thread.sleep(RETRY_TIME);
         } catch (InterruptedException e1) {
-          System.out.println(chain.request().method() + " to url -> " + chain.request().url() + " interrupted on try <" + retryCounter + ">");
+          log.info(chain.request().method() + " to url -> " + chain.request().url() + " interrupted on try <" + retryCounter + ">");
         }
       } finally {
         retryCounter++;
