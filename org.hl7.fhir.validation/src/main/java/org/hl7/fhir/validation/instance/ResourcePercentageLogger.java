@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.slf4j.Logger;
 
-public class PercentageLogger {
+public class ResourcePercentageLogger {
 
   private final Logger logger;
   private final int total;
@@ -17,7 +17,7 @@ public class PercentageLogger {
   
   private static int instance;
   
-  public PercentageLogger(Logger logger, int total, String fhirType, String url, boolean log) {
+  public ResourcePercentageLogger(Logger logger, int total, String fhirType, String url, boolean log) {
     this.logger = logger;
     this.total = total;
     this.fhirType = fhirType;

@@ -20,7 +20,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.InstanceValidator;
-import org.hl7.fhir.validation.instance.PercentageLogger;
+import org.hl7.fhir.validation.instance.ResourcePercentageLogger;
 import org.hl7.fhir.validation.instance.utils.EntrySummary;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
@@ -67,7 +67,7 @@ public class BundleValidator extends BaseValidator {
     this.serverBase = serverBase;
   }
 
-  public boolean validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidationContext hostContext, PercentageLogger pct, ValidationMode mode) {
+  public boolean validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidationContext hostContext, ResourcePercentageLogger pct, ValidationMode mode) {
     boolean ok = true;
     
     String type = bundle.getNamedChildValue(TYPE, false);

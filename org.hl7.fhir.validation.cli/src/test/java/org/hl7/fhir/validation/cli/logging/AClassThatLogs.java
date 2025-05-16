@@ -2,7 +2,7 @@ package org.hl7.fhir.validation.cli.logging;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.validation.instance.PercentageLogger;
+import org.hl7.fhir.validation.instance.ResourcePercentageLogger;
 
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class AClassThatLogs {
 
   public void doSomeLoggingThatTracksProgress() throws InterruptedException {
     int totalElements = 20;
-    PercentageLogger progressLogger = new PercentageLogger(log, totalElements, "Dummy FHIR Type", "http://example.com", true);
+    ResourcePercentageLogger progressLogger = new ResourcePercentageLogger(log, totalElements, "Dummy FHIR Type", "http://example.com", true);
     Element dummyElement = mock(Element.class);
     for (int i = 0; i < totalElements; i++) {
 
@@ -52,7 +52,7 @@ public class AClassThatLogs {
 
   public List<String> randomProgressAndLogging() throws InterruptedException {
     int totalElements = 20;
-    PercentageLogger percentageLogger = new PercentageLogger(log, totalElements, "Dummy FHIR Type", "http://example.com", true);
+    ResourcePercentageLogger percentageLogger = new ResourcePercentageLogger(log, totalElements, "Dummy FHIR Type", "http://example.com", true);
 
     List<String> expectedLogMessages = new ArrayList<>();
     Element dummyElement = mock(Element.class);

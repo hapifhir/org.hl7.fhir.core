@@ -2455,7 +2455,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
-  private boolean checkExtension(ValidationContext valContext, List<ValidationMessage> errors, String path, Element resource, Element container, Element element, ElementDefinition def, StructureDefinition profile, NodeStack stack, NodeStack containerStack, String extensionUrl, PercentageLogger pct, ValidationMode mode) throws FHIRException {
+  private boolean checkExtension(ValidationContext valContext, List<ValidationMessage> errors, String path, Element resource, Element container, Element element, ElementDefinition def, StructureDefinition profile, NodeStack stack, NodeStack containerStack, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException {
     boolean ok = true;
     String url = element.getNamedChildValue("url", false);
     String u = url.contains("|") ? url.substring(0, url.indexOf("|")) : url;
@@ -4331,7 +4331,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                                  StructureDefinition profile,
                                  ElementDefinition container,
                                  String parentType,
-                                 NodeStack stack, PercentageLogger pct, ValidationMode vmode) throws FHIRException {
+                                 NodeStack stack, ResourcePercentageLogger pct, ValidationMode vmode) throws FHIRException {
     boolean ok = true;
     Reference reference = ObjectConverter.readAsReference(element);
 
@@ -5923,7 +5923,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   // checkSpecials = we're only going to run these tests if we are actually validating this content (as opposed to we looked it up)
-  private boolean start(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, PercentageLogger pct, ValidationMode mode, boolean fromContained) throws FHIRException {
+  private boolean start(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) throws FHIRException {
     boolean ok = !hasErrors(errors);
     
     checkLang(resource, stack);
@@ -5935,7 +5935,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // this method is reentrant, but also the right place to tell the user what is going on if it's the root. 
       // if we're not at the root, we don't report progress
       pctOwned = true;
-      pct = new PercentageLogger(log, resource.countDescendents(), resource.fhirType(), defn.getVersionedUrl(), logProgress);
+      pct = new ResourcePercentageLogger(log, resource.countDescendents(), resource.fhirType(), defn.getVersionedUrl(), logProgress);
     }
     if (BUNDLE.equals(element.fhirType())) {
       log.debug("Resolve Bundle Entries "+time());
@@ -5958,7 +5958,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
           stack.resetIds();
           if (pctOwned) {
-            pct = new PercentageLogger(log, resource.countDescendents(), resource.fhirType(), sdi.getUrl(), logProgress);
+            pct = new ResourcePercentageLogger(log, resource.countDescendents(), resource.fhirType(), sdi.getUrl(), logProgress);
           }
           ok = startInner(valContext, errors, resource, element, sdi, stack, false, pct, mode.withSource(ProfileSource.ProfileDependency), fromContained) && ok;
           if (pctOwned) {
@@ -6006,7 +6006,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
               stack.resetIds();
               if (pctOwned) {
-                pct = new PercentageLogger(log, resource.countDescendents(), resource.fhirType(), sd.getUrl(), logProgress);
+                pct = new ResourcePercentageLogger(log, resource.countDescendents(), resource.fhirType(), sd.getUrl(), logProgress);
               }
               ok = startInner(valContext, errors, resource, element, sd, stack, false, pct, mode.withSource(ProfileSource.MetaProfile), fromContained) && ok;
               if (pctOwned) {
@@ -6023,7 +6023,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     }
                     stack.resetIds();
                     if (pctOwned) {
-                      pct = new PercentageLogger(log, resource.countDescendents(), resource.fhirType(), sdi.getUrl(), logProgress);
+                      pct = new ResourcePercentageLogger(log, resource.countDescendents(), resource.fhirType(), sdi.getUrl(), logProgress);
                     }
                     ok = startInner(valContext, errors, resource, element, sdi, stack, false, pct, mode.withSource(ProfileSource.ProfileDependency), fromContained) && ok;
                     if (pctOwned) {
@@ -6050,7 +6050,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
             stack.resetIds();
             if (pctOwned) {
-              pct = new PercentageLogger(log, resource.countDescendents(), resource.fhirType(), sd.getVersionedUrl(), logProgress);
+              pct = new ResourcePercentageLogger(log, resource.countDescendents(), resource.fhirType(), sd.getVersionedUrl(), logProgress);
             }
             ok = startInner(valContext, errors, resource, element, sd, stack, false, pct, mode.withSource(ProfileSource.GlobalProfile), fromContained) && ok;
             if (pctOwned) {
@@ -6169,7 +6169,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return -1;
   }
 
-  public boolean startInner(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, boolean checkSpecials, PercentageLogger pct, ValidationMode mode, boolean fromContained) {
+  public boolean startInner(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, boolean checkSpecials, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) {
     // the first piece of business is to see if we've validated this resource against this profile before.
     // if we have (*or if we still are*), then we'll just return our existing errors
     boolean ok = true;
@@ -6201,7 +6201,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
-  public boolean checkSpecials(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, PercentageLogger pct, ValidationMode mode, boolean contained, boolean isOk) {
+  public boolean checkSpecials(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, ResourcePercentageLogger pct, ValidationMode mode, boolean contained, boolean isOk) {
     boolean ok = true;
     
     // first, does the policy advisor have profiles it wants us to check? 
@@ -6467,7 +6467,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
  
   private boolean validateContains(ValidationContext valContext, List<ValidationMessage> errors, String path,
                                    ElementDefinition child, ElementDefinition context, Element resource,
-                                   Element element, NodeStack stack, IdStatus idstatus, StructureDefinition parentProfile, PercentageLogger pct, ValidationMode mode) throws FHIRException {
+                                   Element element, NodeStack stack, IdStatus idstatus, StructureDefinition parentProfile, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException {
     boolean ok = true;
 
     if (element.isNull()) {
@@ -6677,7 +6677,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
 
   private boolean validateElement(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition, StructureDefinition cprofile, ElementDefinition context,
-                                  Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl, PercentageLogger pct, ValidationMode mode) throws FHIRException {
+                                  Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException {
     boolean ok = true;
     
     pct.seeElement(element);
@@ -6799,7 +6799,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean checkChild(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition,
-                            Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, ElementInfo ei, String extensionUrl, PercentageLogger pct, ValidationMode mode)
+                            Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, ElementInfo ei, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode)
     throws FHIRException, DefinitionException {
     boolean ok = true;
 
@@ -6828,7 +6828,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public boolean checkChildByDefinition(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile,
                                         ElementDefinition definition, Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept,
-                                        boolean checkDisplayInContext, ElementInfo ei, String extensionUrl, ElementDefinition checkDefn, boolean isSlice, PercentageLogger pct, ValidationMode mode) {
+                                        boolean checkDisplayInContext, ElementInfo ei, String extensionUrl, ElementDefinition checkDefn, boolean isSlice, ResourcePercentageLogger pct, ValidationMode mode) {
     boolean ok = true;
     List<String> profiles = new ArrayList<String>();
     String type = null;
@@ -7876,7 +7876,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * The actual base entry point for internal use (re-entrant)
    */
   private boolean validateResource(ValidationContext valContext, List<ValidationMessage> errors, Element resource,
-                                   Element element, StructureDefinition defn, IdStatus idstatus, NodeStack stack, PercentageLogger pct, ValidationMode mode, boolean forReference, boolean fromContained) throws FHIRException {
+                                   Element element, StructureDefinition defn, IdStatus idstatus, NodeStack stack, ResourcePercentageLogger pct, ValidationMode mode, boolean forReference, boolean fromContained) throws FHIRException {
     boolean ok = true;    
     // check here if we call validation policy here, and then change it to the new interface
     assert stack != null;
