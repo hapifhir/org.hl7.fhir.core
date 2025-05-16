@@ -44,7 +44,12 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.With;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -106,6 +111,7 @@ import lombok.With;
  * very light client to connect to an open unauthenticated terminology service
  */
 
+@Slf4j
 @MarkedToMoveToAdjunctPackage
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext {
 
@@ -263,7 +269,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       locale = null;
       userAgent = null;
       allowLoadingDuplicates = false;
-      loggingService = new SystemOutLoggingService();
+      loggingService = new Slf4JLoggingService(log);
     }
 
     private SimpleWorkerContext getSimpleWorkerContextInstance() throws IOException {
@@ -830,9 +836,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       } catch (Exception e) {
         // not sure what to do in this case?
         System.out.println("Unable to generate snapshot @3 for "+uri+": "+e.getMessage());
-        if (logger.isDebugLogging()) {
-          e.printStackTrace();
-        }
+        logger.logDebugMessage(org.hl7.fhir.r5.context.ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
       }
     }
     return r;

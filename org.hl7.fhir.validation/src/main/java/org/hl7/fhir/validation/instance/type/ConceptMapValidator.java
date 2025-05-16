@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -29,7 +30,7 @@ import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
-
+@Slf4j
 public class ConceptMapValidator extends BaseValidator {
 
   private static final int TOO_MANY_CODES_TO_VALIDATE = 500;
@@ -168,9 +169,7 @@ public class ConceptMapValidator extends BaseValidator {
         try {
           long t = System.currentTimeMillis();
           context.validateCodeBatch(ValidationOptions.defaults(), batch, null);
-          if (settings.isDebug()) {
-            System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
-          }
+          log.debug("  :   .. "+(System.currentTimeMillis()-t)+"ms");
           for (CMCodingValidationRequest cv : batch) {
             if (cv.getResult().getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
               warning(errors, "2023-09-06", IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM, cv.getCoding().getSystem(), cv.getCoding().getCode(), cv.getVsObj().getUrl());                

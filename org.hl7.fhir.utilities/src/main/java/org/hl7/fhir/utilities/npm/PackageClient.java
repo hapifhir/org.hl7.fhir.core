@@ -12,6 +12,7 @@ import java.util.*;
 
 import javax.annotation.Nullable;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -25,6 +26,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
+@Slf4j
 public class PackageClient {
 
   private PackageServer server;
@@ -106,7 +108,7 @@ public class PackageClient {
         Collections.sort(res, new PackageInfo.PackageInfoSorter(false));
       }
     } catch (Exception e) {
-      System.out.println("Error fetching "+url+": "+e.getMessage());
+      log.warn("Error fetching "+url+": "+e.getMessage());
     }
     return res;    
   }
@@ -186,13 +188,11 @@ public class PackageClient {
 
   private JsonObject fetchJson(String source) throws IOException {
     String src = FileUtilities.streamToString(fetchUrl(source, "application/json"));
-    //System.out.println(src);
     return JsonParser.parseObject(src);
   }
   
   private JsonArray fetchJsonArray(String source) throws IOException {
     String src = FileUtilities.streamToString(fetchUrl(source, "application/json"));
-    //System.out.println(src);
     return (JsonArray) JsonParser.parse(src);
   }
 

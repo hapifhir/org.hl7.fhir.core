@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import org.hl7.fhir.validation.service.model.ValidationContext;
+import org.slf4j.Logger;
 
 public abstract class CliTask {
 
@@ -10,8 +11,7 @@ public abstract class CliTask {
 
   public abstract boolean isHidden();
   public abstract boolean shouldExecuteTask(ValidationContext validationContext, String[] args);
-  public abstract void printHelp(java.io.PrintStream out);
 
-
+  public abstract void logHelp(Logger logger);
 
 }

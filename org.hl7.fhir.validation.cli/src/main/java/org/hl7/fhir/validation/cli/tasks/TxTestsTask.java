@@ -2,7 +2,6 @@ package org.hl7.fhir.validation.cli.tasks;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.SystemExitManager;
@@ -14,6 +13,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.validation.service.model.ValidationContext;
 import org.hl7.fhir.validation.cli.param.Params;
 import org.hl7.fhir.validation.special.TxTester;
+import org.slf4j.Logger;
 
 public class TxTestsTask extends StandaloneTask{
   @Override
@@ -37,7 +37,7 @@ public class TxTestsTask extends StandaloneTask{
   }
 
   @Override
-  public void printHelp(PrintStream out) {
+  public void logHelp(Logger logger) {
 
   }
 

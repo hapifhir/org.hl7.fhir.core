@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
@@ -228,9 +229,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
           } catch (Exception e) {
             if (!isSuppressDebugMessages()) {
               System.out.println("Unable to generate snapshot @2 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
-              if (context.getLogger() != null && context.getLogger().isDebugLogging()) {
-                e.printStackTrace();
-              }
+              context.getLogger().logDebugMessage(ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
             }
           }
           allStructuresList.add(sd);

@@ -44,8 +44,6 @@ public class ValidationTimeTracker {
   }
   
   public void tx(long start, String s) {
-    long ms = (System.nanoTime() - start) / 1000000;
-//    System.out.println("tx: "+ms+" "+s);
     txTime = txTime + (System.nanoTime() - start);
   }
   
