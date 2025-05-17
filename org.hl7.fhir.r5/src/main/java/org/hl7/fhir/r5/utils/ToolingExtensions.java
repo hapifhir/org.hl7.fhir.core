@@ -309,6 +309,7 @@ public class ToolingExtensions {
   public static final String EXT_MAX_QUANTITY = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-maxQuantity";
   public static final String EXT_Q_UNIT_VALUESET = "http://hl7.org/fhir/StructureDefinition/questionnaire-unitValueSet";
   public static final String EXT_ENTRY_FORMAT = "http://hl7.org/fhir/StructureDefinition/entryFormat";
+  public static final String EXT_TEXT_LINK = "http://hl7.org/fhir/StructureDefinition/textLink";
   
   // specific extension helpers
 
