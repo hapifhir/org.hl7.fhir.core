@@ -371,11 +371,6 @@ public class POGenerator {
       }
     }
     savePOFile(Utilities.path(source, "source", dest), objects, count, false);
-    if (tgt == null) {
-      savePOFile(Utilities.path(source, "source", "transifex", dest), objects, count, true);
-    } else {
-      savePOFile(Utilities.path(source, "source", "transifex", "translations", dest), objects, count, true);
-    }
     if (tgt != null) {
       savePropFile(Utilities.path(source, tgt), objects);
     }
