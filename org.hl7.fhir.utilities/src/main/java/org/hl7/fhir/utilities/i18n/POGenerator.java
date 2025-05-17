@@ -13,8 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.IniFile;
+import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.DirectoryVisitor;
 import org.hl7.fhir.utilities.filesystem.DirectoryVisitor.IDirectoryVisitorImplementation;
@@ -92,21 +93,13 @@ public class POGenerator {
   private void execute(String core, String igpub, String pascal) throws IOException {
     String source = Utilities.path(core, "/org.hl7.fhir.utilities/src/main/resources");
     if (checkState(source, core, igpub, pascal)) {
+      IniFile ini = new IniFile(Utilities.path(source, "translations-control.ini"));
       generate(source, "rendering-phrases.properties",  "rendering-phrases-en.po",       null, 2);
-      generate(source, "rendering-phrases.properties",  "rendering-phrases-de.po",    "rendering-phrases_de.properties", 2);
-      generate(source, "rendering-phrases.properties",  "rendering-phrases-es.po",    "rendering-phrases_es.properties", 3);
-      generate(source, "rendering-phrases.properties",  "rendering-phrases-ja.po",    "rendering-phrases_ja.properties", 2);
-      generate(source, "rendering-phrases.properties",  "rendering-phrases-fr.po",    "rendering-phrases_fr.properties", 2);
-      generate(source, "rendering-phrases.properties",  "rendering-phrases-nl.po",    "rendering-phrases_nl.properties", 2);
-      generate(source, "rendering-phrases.properties",  "rendering-phrases-pt_BR.po", "rendering-phrases_pt_BR.properties", 2);
-
       generate(source, "Messages.properties", "validator-messages-en.po",    null, 2);
-      generate(source, "Messages.properties", "validator-messages-de.po",    "Messages_de.properties", 2);
-      generate(source, "Messages.properties", "validator-messages-es.po",    "Messages_es.properties", 3);
-      generate(source, "Messages.properties", "validator-messages-ja.po",    "Messages_ja.properties", 2);
-      generate(source, "Messages.properties", "validator-messages-fr.po",    "Messages_fr.properties", 2);
-      generate(source, "Messages.properties", "validator-messages-nl.po",    "Messages_nl.properties", 2);
-      generate(source, "Messages.properties", "validator-messages-pt_BR.po", "Messages_pt_BR.properties", 2);
+      for (String name : ini.getProperties("languages").keySet()) {
+        generate(source, "rendering-phrases.properties",  "rendering-phrases-"+name+".po",    "rendering-phrases_"+name+".properties", ini.getIntegerProperty("languages", name));
+        generate(source, "Messages.properties", "validator-messages-"+name+".po",    "Messages_"+name+".properties", ini.getIntegerProperty("languages", name));        
+      }
 
       System.out.println("Finished");
     } 

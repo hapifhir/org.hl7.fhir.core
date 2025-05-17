@@ -245,11 +245,9 @@ public class I18nConstants {
   public static final String EXTENSION_EXTM_CONTEXT_WRONG = "Extension_EXTM_Context_Wrong";
   public static final String EXTENSION_EXTM_CONTEXT_WRONG_VER = "Extension_EXTM_Context_Wrong_VER";
   public static final String EXTENSION_EXTM_CONTEXT_WRONG_XVER = "EXTENSION_EXTM_CONTEXT_WRONG_XVER";
-  public static final String EXTENSION_EXTM_CONTEXT_WRONG_XVER_VER = "EXTENSION_EXTM_CONTEXT_WRONG_XVER_VER";
   public static final String EXTENSION_EXTP_CONTEXT_WRONG = "Extension_EXTP_Context_Wrong";
   public static final String EXTENSION_EXTP_CONTEXT_WRONG_VER = "Extension_EXTP_Context_Wrong_VER";
   public static final String EXTENSION_EXTP_CONTEXT_WRONG_XVER = "EXTENSION_EXTP_CONTEXT_WRONG_XVER";
-  public static final String EXTENSION_EXTP_CONTEXT_WRONG_XVER_VER = "EXTENSION_EXTP_CONTEXT_WRONG_XVER_VER";
   public static final String EXTENSION_EXT_COUNT_MISMATCH = "Extension_EXT_Count_Mismatch";
   public static final String EXTENSION_EXT_COUNT_NOTFOUND = "Extension_EXT_Count_NotFound";
   public static final String EXTENSION_EXT_FIXED_BANNED = "Extension_EXT_Fixed_Banned";

@@ -1356,6 +1356,11 @@ msgstr ""
 msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
 msgstr ""
 
+# GENERAL_ADDITIONAL_BINDING
+#: GENERAL_ADDITIONAL_BINDING
+msgid "This element has additional bindings"
+msgstr ""
+
 # GENERAL_ADD_LANG
 #: GENERAL_ADD_LANG
 msgid "Additional Language Displays"
@@ -1497,6 +1502,11 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
+# GENERAL_FIXED_VALUE
+#: GENERAL_FIXED_VALUE
+msgid "Fixed Value: {0}"
+msgstr ""
+
 # GENERAL_FLAGS
 #: GENERAL_FLAGS
 msgid "Flags"
@@ -1562,6 +1572,11 @@ msgstr ""
 msgid "Parameters"
 msgstr ""
 
+# GENERAL_PATTERN_VALUE
+#: GENERAL_PATTERN_VALUE
+msgid "Pattern Value: {0}"
+msgstr ""
+
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
 msgctxt "GENERAL_PREFERRED"
@@ -1604,6 +1619,11 @@ msgctxt "GENERAL_REQUIRED"
 msgid "Required"
 msgstr ""
 
+# GENERAL_REQUIRED_BINDING
+#: GENERAL_REQUIRED_BINDING
+msgid "Required Binding to ValueSet {0}"
+msgstr ""
+
 # GENERAL_RESOURCE
 #: GENERAL_RESOURCE
 msgid "Resource"
@@ -1612,6 +1632,12 @@ msgstr ""
 # GENERAL_SECURITY_LABEL
 #: GENERAL_SECURITY_LABEL
 msgid "Security Label"
+msgstr ""
+
+# GENERAL_SOURCE
+#: GENERAL_SOURCE
+msgctxt "GENERAL_SOURCE"
+msgid "Source"
 msgstr ""
 
 # GENERAL_SRC
@@ -1655,6 +1681,16 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
+# GENERAL_TYPE_PROFILE
+#: GENERAL_TYPE_PROFILE
+msgid "This element has profiles on it's type: {0}"
+msgstr ""
+
+# GENERAL_TYPE_TARGET_PROFILE
+#: GENERAL_TYPE_TARGET_PROFILE
+msgid "This element has restrictions/profiles on it's targets: {0}"
+msgstr ""
+
 # GENERAL_UCUM
 #: GENERAL_UCUM
 msgid "UCUM"
@@ -1683,6 +1719,21 @@ msgstr ""
 # GENERAL_VALUESET
 #: GENERAL_VALUESET
 msgid "Value Set"
+msgstr ""
+
+# GENERAL_VALUE_BOUNDED
+#: GENERAL_VALUE_BOUNDED
+msgid "The value must be between {0} and {1} (or equal)"
+msgstr ""
+
+# GENERAL_VALUE_MAX
+#: GENERAL_VALUE_MAX
+msgid "The value must be less or equal to {0}"
+msgstr ""
+
+# GENERAL_VALUE_MIN
+#: GENERAL_VALUE_MIN
+msgid "The value must be greater or equal to {0}"
 msgstr ""
 
 # GENERAL_VER
@@ -1897,6 +1948,11 @@ msgstr ""
 msgid "Period"
 msgstr ""
 
+# OBLIGATION_SOURCE
+#: OBLIGATION_SOURCE
+msgid "This obligation is defined in the profile {0}"
+msgstr ""
+
 # OBLIG_ACT
 #: OBLIG_ACT
 msgid "Actor"
@@ -1959,6 +2015,7 @@ msgstr ""
 
 # OP_OUT_SRC
 #: OP_OUT_SRC
+msgctxt "OP_OUT_SRC"
 msgid "Source"
 msgstr ""
 
@@ -2759,6 +2816,11 @@ msgstr ""
 # RES_REND_VER
 #: RES_REND_VER
 msgid "version: {0}"
+msgstr ""
+
+# SDR_EXTENSION_SUMMARY
+#: SDR_EXTENSION_SUMMARY
+msgid "Simple Extension with the type {0}: {1}"
 msgstr ""
 
 # SD_COMP_HEAD_CARD_L
@@ -4169,6 +4231,11 @@ msgstr ""
 msgid "* create result = {0}"
 msgstr ""
 
+# SUB_TOPIC_CURR
+#: SUB_TOPIC_CURR
+msgid "* current = {0}"
+msgstr ""
+
 # SUB_TOPIC_DELETE
 #: SUB_TOPIC_DELETE
 msgid "* delete result = {0}"
@@ -4202,11 +4269,6 @@ msgstr ""
 # SUB_TOPIC_INT
 #: SUB_TOPIC_INT
 msgid "Interactions"
-msgstr ""
-
-# SUB_TOPIC_CURR
-#: SUB_TOPIC_CURR
-msgid "* current = {0}"
 msgstr ""
 
 # SUB_TOPIC_PREV
@@ -4432,7 +4494,7 @@ msgstr ""
 
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
-msgid "Australian"
+msgid "Australian Edition"
 msgstr ""
 
 # VALUE_SET_BE
@@ -4440,14 +4502,14 @@ msgstr ""
 msgid "Belgian Edition"
 msgstr ""
 
+# VALUE_SET_CA
+#: VALUE_SET_CA
+msgid "Canadian Edition"
+msgstr ""
+
 # VALUE_SET_CA_EN
 #: VALUE_SET_CA_EN
 msgid "Canadian English Edition"
-msgstr ""
-
-# VALUE_SET_CA_FR
-#: VALUE_SET_CA_FR
-msgid "Canadian Canadian French Edition"
 msgstr ""
 
 # VALUE_SET_CH
