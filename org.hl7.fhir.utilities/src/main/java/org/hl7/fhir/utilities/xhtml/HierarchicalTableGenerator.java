@@ -122,7 +122,7 @@ public class HierarchicalTableGenerator {
   public static final int CONTINUE_SLICE = 5;
   private static final String BACKGROUND_ALT_COLOR = "#F7F7F7";
   public static boolean ACTIVE_TABLES = false;
-  public static final String uuid = UUIDUtilities.makeUuidLC();
+  public static String uuid = UUIDUtilities.makeUuidLC();
 
   public enum TextAlignment {
     LEFT, CENTER, RIGHT;  
@@ -1425,6 +1425,10 @@ public class HierarchicalTableGenerator {
 
   public void setTreelines(boolean treelines) {
     this.treelines = treelines;
+  }
+
+  public static void forTesting() {
+    uuid = "d5a880ec-5909-47f0-8053-be62dc5dc2b0";
   }
   
 }
