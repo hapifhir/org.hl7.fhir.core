@@ -79,7 +79,7 @@ msgstr "Min binding"
 # ADD_BIND_NEW_REC
 #: ADD_BIND_NEW_REC
 msgid "New records are required to use this value set, but legacy records may use other codes"
-msgstr "Nieuwe registraties zijn verplicht deze waardelijst te gebruiken, maar bestaande registraties zouden andere kunnen gebruiken"
+msgstr "Nieuwe invoer moet deze waardelijst gebruiken, maar bestaande invoer zou andere codes kunnen gebruiken"
 
 # ADD_BIND_PREF_BIND
 #: ADD_BIND_PREF_BIND
@@ -297,17 +297,17 @@ msgstr "DELETE een resource (verwijder interactie)"
 # CAPABILITY_DOCUMENT_CAPS
 #: CAPABILITY_DOCUMENT_CAPS
 msgid "FHIR Document Capabilities"
-msgstr ""
+msgstr "FHIR Document Capabilities"
 
 # CAPABILITY_ENDPOINTS
 #: CAPABILITY_ENDPOINTS
 msgid "Endpoint(s)"
-msgstr ""
+msgstr "Endpoint(s)"
 
 # CAPABILITY_ERR_DET
 #: CAPABILITY_ERR_DET
 msgid "Error detected"
-msgstr ""
+msgstr "Fout gevonden"
 
 # CAPABILITY_EXT_OP
 #: CAPABILITY_EXT_OP
@@ -362,22 +362,22 @@ msgstr "Interactie samenvatting"
 # CAPABILITY_MAY_SUPP
 #: CAPABILITY_MAY_SUPP
 msgid "MAY Support the Following Implementation Guides"
-msgstr ""
+msgstr "MAG de volgende Implementatiegidsen ondersteunen"
 
 # CAPABILITY_MESSAGING_CAP
 #: CAPABILITY_MESSAGING_CAP
 msgid "Messaging Capability"
-msgstr ""
+msgstr "Messaging Capability"
 
 # CAPABILITY_MESSAGING_CAPS
 #: CAPABILITY_MESSAGING_CAPS
 msgid "FHIR Messaging Capabilities"
-msgstr ""
+msgstr "FHIR Messaging Capabilities"
 
 # CAPABILITY_MULT_EXT
 #: CAPABILITY_MULT_EXT
 msgid "this mark indicates that there are more than one expectation extensions present"
-msgstr ""
+msgstr "deze markering geeft aan dat er meer dan één verwachting-extensies is"
 
 # CAPABILITY_NOTE_CAP
 #: CAPABILITY_NOTE_CAP
@@ -417,7 +417,7 @@ msgstr "Profielmapping"
 # CAPABILITY_PROF_RES_DOC
 #: CAPABILITY_PROF_RES_DOC
 msgid "Document Resource Profile"
-msgstr ""
+msgstr "Document resource-profiel"
 
 # CAPABILITY_PUB_BY
 #: CAPABILITY_PUB_BY
@@ -532,7 +532,7 @@ msgstr "Ondersteunt"
 # CAPABILITY_SUPPS_THE
 #: CAPABILITY_SUPPS_THE
 msgid "Supports the"
-msgstr ""
+msgstr "Ondersteunt de"
 
 # CAPABILITY_SUPP_FORM
 #: CAPABILITY_SUPP_FORM
@@ -542,7 +542,7 @@ msgstr "Ondersteunde formaten:"
 # CAPABILITY_SUPP_MSGS
 #: CAPABILITY_SUPP_MSGS
 msgid "Supported Message(s)"
-msgstr ""
+msgstr "Ondersteunde bericht(en)"
 
 # CAPABILITY_SUPP_PATCH_FORM
 #: CAPABILITY_SUPP_PATCH_FORM
@@ -557,7 +557,7 @@ msgstr "Ondersteunde profielen"
 # CAPABILITY_SUPP_THE
 #: CAPABILITY_SUPP_THE
 msgid "support the"
-msgstr "!!Ondersteunt de"
+msgstr "ondersteunt de"
 
 # CAPABILITY_TYPS
 #: CAPABILITY_TYPS
@@ -617,7 +617,7 @@ msgstr "Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> bevat codes
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "!!Dit codesysteem <param name=\"cs\"/> definieert {0} op de volgende code<if test=\"code-count != 1\">s</if>:"
+msgstr "Dit codesysteem supplement <param name=\"cs\"/> definieert {0} op de volgende code<if test=\"code-count != 1\">s</if>:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
@@ -787,22 +787,22 @@ msgstr "Doel conceptdetails"
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
 msgid "Afternoon"
-msgstr ""
+msgstr "Middag"
 
 # DATA_REND_AFTERNOON_EARLY
 #: DATA_REND_AFTERNOON_EARLY
 msgid "Early Afternoon"
-msgstr ""
+msgstr "Voormiddag"
 
 # DATA_REND_AFTERNOON_LATE
 #: DATA_REND_AFTERNOON_LATE
 msgid "Late Afternoon"
-msgstr ""
+msgstr "Namiddag"
 
 # DATA_REND_AFTER_SLEEP
 #: DATA_REND_AFTER_SLEEP
 msgid "After Sleep"
-msgstr ""
+msgstr "Na slaap"
 
 # DATA_REND_AFTRBKFST
 #: DATA_REND_AFTRBKFST
@@ -908,7 +908,7 @@ msgstr "Aantal {0}"
 # DATA_REND_CURRENCY
 #: DATA_REND_CURRENCY
 msgid "{1} {0}"
-msgstr ""
+msgstr "{1} {0}"
 
 # DATA_REND_DATA
 #: DATA_REND_DATA
@@ -923,12 +923,12 @@ msgstr "(Details: {0} code"
 # DATA_REND_DETAILS_STATED
 #: DATA_REND_DETAILS_STATED
 msgid "(Details: {0} code {1} = ''{2}'')"
-msgstr "!!(Details: {0} code {1} {2} {3} '', genoemd als '' {4} {5}"
+msgstr "(Details: {0} code {1} = ''{2}'')"
 
 # DATA_REND_DETAILS_STATED_ND
 #: DATA_REND_DETAILS_STATED_ND
 msgid "(Details: {0} code {1})"
-msgstr ""
+msgstr "(Details: {0} code {1})"
 
 # DATA_REND_DICOM
 #: DATA_REND_DICOM
@@ -953,17 +953,17 @@ msgstr "Fout: {0}"
 # DATA_REND_EVENING
 #: DATA_REND_EVENING
 msgid "Evening"
-msgstr ""
+msgstr "Avond"
 
 # DATA_REND_EVENING_EARLY
 #: DATA_REND_EVENING_EARLY
 msgid "Early Evening"
-msgstr ""
+msgstr "Vroeg in de avond"
 
 # DATA_REND_EVENING_LATE
 #: DATA_REND_EVENING_LATE
 msgid "Late Evening"
-msgstr ""
+msgstr "Laat in de avond"
 
 # DATA_REND_EVENTS
 #: DATA_REND_EVENTS
@@ -998,7 +998,7 @@ msgstr "ICD-9"
 # DATA_REND_IMMEDIATE
 #: DATA_REND_IMMEDIATE
 msgid "Immediate"
-msgstr ""
+msgstr "Onmiddellijk"
 
 # DATA_REND_INT
 #: DATA_REND_INT
@@ -1033,27 +1033,27 @@ msgstr "Kan markdown-link niet volgen"
 # DATA_REND_MORNING
 #: DATA_REND_MORNING
 msgid "Morning"
-msgstr ""
+msgstr "Morgen"
 
 # DATA_REND_MORNING_EARLY
 #: DATA_REND_MORNING_EARLY
 msgid "Early Morning"
-msgstr ""
+msgstr "Vroeg in de morgen"
 
 # DATA_REND_MORNING_LATE
 #: DATA_REND_MORNING_LATE
 msgid "Late Morning"
-msgstr ""
+msgstr "Laat in de morgen"
 
 # DATA_REND_NIGHT
 #: DATA_REND_NIGHT
 msgid "Night"
-msgstr ""
+msgstr "Nacht"
 
 # DATA_REND_NOON
 #: DATA_REND_NOON
 msgid "Noon"
-msgstr ""
+msgstr "12 uur"
 
 # DATA_REND_NOT_STAT
 #: DATA_REND_NOT_STAT
@@ -1354,7 +1354,7 @@ msgstr "Kan gerefereerde actor {0} niet vinden"
 # FMM_TABLE
 #: FMM_TABLE
 msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
-msgstr ""
+msgstr "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Volwassenheidsniveau</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standaard status\">{2}</a></td></tr></tbody></table>"
 
 # GENERAL_ADD_LANG
 #: GENERAL_ADD_LANG
@@ -1369,12 +1369,12 @@ msgstr "Binding"
 # GENERAL_BINDING_NO_DESC
 #: GENERAL_BINDING_NO_DESC
 msgid "No description provided"
-msgstr ""
+msgstr "Omschrijving ontbreekt"
 
 # GENERAL_BINDING_NO_VS
 #: GENERAL_BINDING_NO_VS
 msgid "Binding Description (No ValueSet)"
-msgstr ""
+msgstr "Binding-omschrijving (geen waardelijst)"
 
 # GENERAL_BIND_MIN_ALLOW
 #: GENERAL_BIND_MIN_ALLOW
@@ -1520,7 +1520,7 @@ msgstr "Max lengte:"
 # GENERAL_MIN_LENGTH
 #: GENERAL_MIN_LENGTH
 msgid "Min Length:"
-msgstr ""
+msgstr "Min lengte:"
 
 # GENERAL_MODIFIERS
 #: GENERAL_MODIFIERS
@@ -1535,7 +1535,7 @@ msgstr "Naam"
 # GENERAL_NCI_THES
 #: GENERAL_NCI_THES
 msgid "NCI Thesaurus"
-msgstr ""
+msgstr "NCI Thesaurus"
 
 # GENERAL_NOTE
 #: GENERAL_NOTE
@@ -1708,32 +1708,32 @@ msgstr "De officiële url voor deze implementatiegids is:"
 # IP_INTRO
 #: IP_INTRO
 msgid "This {0} includes IP covered under the following statements."
-msgstr ""
+msgstr "Deze {0} bevat Intellectueel Eigendom onder de volgende statements."
 
 # IP_NONE
 #: IP_NONE
 msgid "No use of external IP"
-msgstr ""
+msgstr "Geen gebruik van externe Intellectueel Eigendom"
 
 # IP_NONE_EXT
 #: IP_NONE_EXT
 msgid "No use of external IP (other than from the FHIR specification)"
-msgstr ""
+msgstr "Geen gebruik van extern Intellectueel Eigendom (anders dan de FHIR-specificatie)"
 
 # KIND_EXTENSION
 #: KIND_EXTENSION
 msgid "extension"
-msgstr ""
+msgstr "extensie"
 
 # KIND_LOGICAL
 #: KIND_LOGICAL
 msgid "logical model"
-msgstr ""
+msgstr "logisch model"
 
 # KIND_PROFILE
 #: KIND_PROFILE
 msgid "profile"
-msgstr ""
+msgstr "profiel"
 
 # LIB_REND_ART
 #: LIB_REND_ART
@@ -1869,23 +1869,23 @@ msgstr "Dit element was niet gedefinieerd vóór R5"
 # MATURITY_MATURITY
 #: MATURITY_MATURITY
 msgid "Maturity Level: {0}"
-msgstr ""
+msgstr "Volwassenheidsniveau: {0}"
 
 # MATURITY_PUBLISHER
 #: MATURITY_PUBLISHER
 msgid "Publisher: {0}"
-msgstr ""
+msgstr "Uitgever: {0}"
 
 # MATURITY_STATUS
 #: MATURITY_STATUS
 msgctxt "MATURITY_STATUS"
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 # MATURITY_STDS_STATUS
 #: MATURITY_STDS_STATUS
 msgid "Standards Status: {0}"
-msgstr ""
+msgstr "Standaard status: {0}"
 
 # NAME_SYS_IDEN
 #: NAME_SYS_IDEN
@@ -2744,7 +2744,7 @@ msgstr "Tag"
 # RES_REND_TEMPLATE_ID
 #: RES_REND_TEMPLATE_ID
 msgid "templateId: {0}"
-msgstr ""
+msgstr "templateId: {0}"
 
 # RES_REND_UNKNOWN
 #: RES_REND_UNKNOWN
@@ -3430,7 +3430,7 @@ msgstr "Vast waarde"
 # STRUC_DEF_FIXED_VALUE
 #: STRUC_DEF_FIXED_VALUE
 msgid "Fixed Value:"
-msgstr "Vaste value:"
+msgstr "Vaste waarde:"
 
 # STRUC_DEF_FOR_CODE
 #: STRUC_DEF_FOR_CODE
@@ -3440,7 +3440,7 @@ msgstr "Voor codes, zie"
 # STRUC_DEF_FURTHER_INFO
 #: STRUC_DEF_FURTHER_INFO
 msgid "for further information about how to use [x]"
-msgstr "voor verdere informatie over how [x] te gebruiken"
+msgstr "voor verdere informatie over hoe [x] te gebruiken"
 
 # STRUC_DEF_GRADE
 #: STRUC_DEF_GRADE
@@ -3771,7 +3771,7 @@ msgstr "Pad(en)"
 # STRUC_DEF_PATT_VALUE
 #: STRUC_DEF_PATT_VALUE
 msgid "Pattern Value"
-msgstr "Patternwaarde"
+msgstr "Patroonwaarde"
 
 # STRUC_DEF_PREFERRED
 #: STRUC_DEF_PREFERRED
@@ -3821,12 +3821,12 @@ msgstr "Dit profiel bouwt op"
 # STRUC_DEF_PROF_COMP
 #: STRUC_DEF_PROF_COMP
 msgid "This profile complies with the profile"
-msgstr "!!Dit profiel compileert met het profiel"
+msgstr "Dit profiel is conform het profiel"
 
 # STRUC_DEF_PROF_REQ
 #: STRUC_DEF_PROF_REQ
 msgid "This profile also requires that the instance also conform this additional profile:"
-msgstr "Dit profiel vereist ook dat de instance ook voldoet aan dit additionele profiel:"
+msgstr "Dit profiel vereist dat de instance ook voldoet aan dit additionele profiel:"
 
 # STRUC_DEF_PROF_RES
 #: STRUC_DEF_PROF_RES
@@ -3876,7 +3876,7 @@ msgstr "verplicht"
 # STRUC_DEF_REQUIRED_PATT
 #: STRUC_DEF_REQUIRED_PATT
 msgid "Required Pattern:"
-msgstr "Verplicht pattern:"
+msgstr "Verplicht patroon:"
 
 # STRUC_DEF_REQUIREMENTS
 #: STRUC_DEF_REQUIREMENTS
@@ -3891,7 +3891,7 @@ msgstr "Een verplichte binding voor additionele codes, voor ons wanneer de bindi
 # STRUC_DEF_REQ_PATT
 #: STRUC_DEF_REQ_PATT
 msgid "Required Pattern"
-msgstr "Verplicht pattern"
+msgstr "Verplicht patroon"
 
 # STRUC_DEF_ROOT
 #: STRUC_DEF_ROOT
@@ -4087,7 +4087,7 @@ msgstr "Onbekende referentie naar {0}"
 # STRUC_DEF_UNORDERED
 #: STRUC_DEF_UNORDERED
 msgid "Unordered"
-msgstr "Ongeordend"
+msgstr "Zonder volgorde"
 
 # STRUC_DEF_UNSPECIFIED
 #: STRUC_DEF_UNSPECIFIED
@@ -4392,12 +4392,12 @@ msgstr "Weergave"
 # TX_DISPLAY_LANG
 #: TX_DISPLAY_LANG
 msgid "Display ({0})"
-msgstr ""
+msgstr "Weergave ({0})"
 
 # VALUE_ES_ES
 #: VALUE_ES_ES
 msgid "Spanish National Edition"
-msgstr ""
+msgstr "Spaanse, nationale editie"
 
 # VALUE_SET_ADD_DESIG
 #: VALUE_SET_ADD_DESIG
@@ -4423,12 +4423,12 @@ msgstr "en"
 # VALUE_SET_AR
 #: VALUE_SET_AR
 msgid "Argentinian Edition"
-msgstr ""
+msgstr "Argentijnse editie"
 
 # VALUE_SET_AT
 #: VALUE_SET_AT
 msgid "Austrian Edition"
-msgstr ""
+msgstr "Oostenrijkse editie"
 
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
@@ -4438,22 +4438,22 @@ msgstr "Australisch"
 # VALUE_SET_BE
 #: VALUE_SET_BE
 msgid "Belgian Edition"
-msgstr ""
+msgstr "Belgische editie"
 
 # VALUE_SET_CA_EN
 #: VALUE_SET_CA_EN
 msgid "Canadian English Edition"
-msgstr ""
+msgstr "Canadees Engelse editie"
 
 # VALUE_SET_CA_FR
 #: VALUE_SET_CA_FR
 msgid "Canadian Canadian French Edition"
-msgstr ""
+msgstr "Canadees Franse editie"
 
 # VALUE_SET_CH
 #: VALUE_SET_CH
 msgid "Swiss Edition"
-msgstr ""
+msgstr "Zwiterse editie"
 
 # VALUE_SET_CODES_FROM
 #: VALUE_SET_CODES_FROM
@@ -4503,7 +4503,7 @@ msgstr "Deens"
 # VALUE_SET_DE
 #: VALUE_SET_DE
 msgid "German Edition"
-msgstr ""
+msgstr "Duitse editie"
 
 # VALUE_SET_DESCENDENTOF
 #: VALUE_SET_DESCENDENTOF
@@ -4533,7 +4533,7 @@ msgstr "Nederlands"
 # VALUE_SET_EE
 #: VALUE_SET_EE
 msgid "Estonian Edition"
-msgstr ""
+msgstr "Estse editie"
 
 # VALUE_SET_EQUAL
 #: VALUE_SET_EQUAL
@@ -4578,22 +4578,22 @@ msgstr "Expansie gebaseerd op:"
 # VALUE_SET_EXPANSIONS_INTERNAL
 #: VALUE_SET_EXPANSIONS_INTERNAL
 msgid "Expansion performed internally based on:"
-msgstr ""
+msgstr "Expansie intern uitgevoerd gebaseerd op:"
 
 # VALUE_SET_EXPANSIONS_SRVR
 #: VALUE_SET_EXPANSIONS_SRVR
 msgid "Expansion from {0} based on:"
-msgstr ""
+msgstr "Expansie from {0} gebaseerd op:"
 
 # VALUE_SET_EXPANSION_INTERNAL
 #: VALUE_SET_EXPANSION_INTERNAL
 msgid "Expansion performed internally based on"
-msgstr ""
+msgstr "Expansie intern uitgevoerd gebaseerd op:"
 
 # VALUE_SET_EXPANSION_SRVR
 #: VALUE_SET_EXPANSION_SRVR
 msgid "Expansion from {0} based on"
-msgstr ""
+msgstr "Expansie from {0} gebaseerd op"
 
 # VALUE_SET_EXP_FRAG
 #: VALUE_SET_EXP_FRAG
@@ -4603,7 +4603,7 @@ msgstr "Expansie gebaseerd op codesysteemfragment"
 # VALUE_SET_FI
 #: VALUE_SET_FI
 msgid "Finnish Edition"
-msgstr ""
+msgstr "Finse editie"
 
 # VALUE_SET_GENERALIZES
 #: VALUE_SET_GENERALIZES
@@ -4623,7 +4623,7 @@ msgstr "Deze waardelijst bevat tenminste {0} codes. Om de publicatiegrootte behe
 # VALUE_SET_IE
 #: VALUE_SET_IE
 msgid "Irish Edition"
-msgstr ""
+msgstr "Ierse editie"
 
 # VALUE_SET_IMPORT
 #: VALUE_SET_IMPORT
@@ -4675,7 +4675,7 @@ msgstr "is-not-a"
 # VALUE_SET_KR
 #: VALUE_SET_KR
 msgid "Republic of Korea Edition (South Korea)"
-msgstr ""
+msgstr "Zuid-Koreaanse editie"
 
 # VALUE_SET_LEVEL
 #: VALUE_SET_LEVEL
@@ -4690,7 +4690,7 @@ msgstr "Loinc v"
 # VALUE_SET_NO
 #: VALUE_SET_NO
 msgid "Norwegian Edition"
-msgstr ""
+msgstr "Noorse editie"
 
 # VALUE_SET_NOTE
 #: VALUE_SET_NOTE
@@ -4740,12 +4740,12 @@ msgstr "Deze waardelijst-expansie bevat {0} concepten."
 # VALUE_SET_NZ
 #: VALUE_SET_NZ
 msgid "New Zealand Edition"
-msgstr ""
+msgstr "Nieuw-Zeelandse editie"
 
 # VALUE_SET_OTHER_DISPLAY
 #: VALUE_SET_OTHER_DISPLAY
 msgid "Other Display ({0})"
-msgstr ""
+msgstr "Andere weergave ({0})"
 
 # VALUE_SET_REGEX
 #: VALUE_SET_REGEX
@@ -4820,7 +4820,7 @@ msgstr "Verenigd Koninkrijk"
 # VALUE_SET_UK_CLIN
 #: VALUE_SET_UK_CLIN
 msgid "UK Clinical Edition"
-msgstr ""
+msgstr "VK klinische editie"
 
 # VALUE_SET_US
 #: VALUE_SET_US
@@ -4835,12 +4835,12 @@ msgstr "Deze waardelijst wordt hier niet gebruikt; mogelijk wordt deze elders ge
 # VALUE_SET_US_ICD10CM
 #: VALUE_SET_US_ICD10CM
 msgid "US Edition (with ICD-10-CM maps)"
-msgstr ""
+msgstr "VS editie (met ICD-10-CM maps)"
 
 # VALUE_SET_UY
 #: VALUE_SET_UY
 msgid "Uruguay Edition"
-msgstr ""
+msgstr "Uruguayaanse editie"
 
 # VALUE_SET_WHERE
 #: VALUE_SET_WHERE
@@ -4860,5 +4860,5 @@ msgstr "Deze code is niet selecteerbaar (''Abstract'')"
 # _NA
 #: _NA
 msgid "n/a"
-msgstr ""
+msgstr "n.v.t."
 
