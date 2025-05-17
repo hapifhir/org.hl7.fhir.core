@@ -6569,13 +6569,13 @@ msgstr "Espacio de nombres erróneo - se esperaba ''{0}''"
 msgid "Wrong type for resource"
 msgstr "Tipo incorrecto para el recurso"
 
-# XHTML_IDREF_NOT_FOUND
-#: XHTML_IDREF_NOT_FOUND
+# TEXT_LINK_DATA_NOT_FOUND
+#: TEXT_LINK_DATA_NOT_FOUND
 msgid "The target of the HTML idref attribute ''{0}'' was not found in the resource"
 msgstr ""
 
-# XHTML_IDREF_NOT_MULTIPLE_MATCHES
-#: XHTML_IDREF_NOT_MULTIPLE_MATCHES
+# TEXT_LINK_DATA_MULTIPLE_MATCHES
+#: TEXT_LINK_DATA_MULTIPLE_MATCHES
 msgid "Multiple matching targets for the HTML idref attribute ''{0}'' were found in the resource"
 msgstr ""
 

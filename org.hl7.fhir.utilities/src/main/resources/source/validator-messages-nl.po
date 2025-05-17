@@ -6535,18 +6535,18 @@ msgstr "Versies komen niet overeen. De context heeft versie {0} geladen en de ni
 msgid "Wrong namespace - expected ''{0}''"
 msgstr "Verkeerde namespace - verwacht ''{0}''"
 
-# XHTML_IDREF_NOT_FOUND
+# TEXT_LINK_DATA_NOT_FOUND
 #: Wrong_type_for_resource
 msgid "Wrong type for resource"
 msgstr "Verkeerd type voor resource"
 
-# XHTML_IDREF_NOT_MULTIPLE_MATCHES
-#: XHTML_IDREF_NOT_FOUND
+# TEXT_LINK_DATA_MULTIPLE_MATCHES
+#: TEXT_LINK_DATA_NOT_FOUND
 msgid "The target of the HTML idref attribute ''{0}'' was not found in the resource"
 msgstr "Het doel van HTML idref attribuut ''{0}'' is niet gevonden in de resource"
 
 # XHTML_URL_DATA_DATA_INVALID
-#: XHTML_IDREF_NOT_MULTIPLE_MATCHES
+#: TEXT_LINK_DATA_MULTIPLE_MATCHES
 msgid "Multiple matching targets for the HTML idref attribute ''{0}'' were found in the resource"
 msgstr "Er zijn meerdere matches gevonden voor het HTML idref attribuut ''{0}'' in de resource"
 

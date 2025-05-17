@@ -6540,13 +6540,13 @@ msgstr "Falscher Namensraum - erwartet ''{0}''"
 msgid "Wrong type for resource"
 msgstr "Falscher Typ f\u00fcr Ressource"
 
-# XHTML_IDREF_NOT_FOUND
-#: XHTML_IDREF_NOT_FOUND
+# TEXT_LINK_DATA_NOT_FOUND
+#: TEXT_LINK_DATA_NOT_FOUND
 msgid "The target of the HTML idref attribute ''{0}'' was not found in the resource"
 msgstr ""
 
-# XHTML_IDREF_NOT_MULTIPLE_MATCHES
-#: XHTML_IDREF_NOT_MULTIPLE_MATCHES
+# TEXT_LINK_DATA_MULTIPLE_MATCHES
+#: TEXT_LINK_DATA_MULTIPLE_MATCHES
 msgid "Multiple matching targets for the HTML idref attribute ''{0}'' were found in the resource"
 msgstr ""
 
