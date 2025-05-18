@@ -75,7 +75,6 @@ public class POGenerator {
     new POGenerator().execute(args[0], args[1], args[2]);
   }
 
-  private List<String> prefixes = new ArrayList<>();
   private int noTrans = 0;
 
   private void execute(String core, String igpub, String pascal) throws IOException {
@@ -305,11 +304,11 @@ public class POGenerator {
     // update the destination object set for changes from the source file
     // save the destination file 
     String fn = Utilities.path(source, "source", dest);
-    List<POObject> objects;
+    POSource objects;
     if (ManagedFileAccess.file(fn).exists()) {
-      objects = POObject.loadPOFile(prefixes, fn);
+      objects = POSource.loadPOFile(fn);
     } else {
-      objects = new ArrayList<POObject>();
+      objects = new POSource();
     }
     List<PropertyValue> props = loadProperties(Utilities.path(source, src), false);
     for (PropertyValue e : props) {
@@ -323,7 +322,7 @@ public class POGenerator {
         name = name.substring(0, name.length() - 6);
       } 
 
-      POObject o = findObject(objects, name);
+      POObject o = findObject(objects.getEntries(), name);
       if (o == null) {
         if (mode > 1) {
           throw new Error("Not right");
@@ -331,18 +330,18 @@ public class POGenerator {
         o = new POObject();
         o.setId(name);
         o.setComment(name);
-        objects.add(o);
+        objects.getEntries().add(o);
         o.setMsgid(e.getValue());
         o.setOrphan(false);
       } else {
         update(o, mode, e.getValue());
       }
     }
-    objects.removeIf(o -> o.isOrphan());
-    Collections.sort(objects, new POObjectSorter());
+    objects.getEntries().removeIf(o -> o.isOrphan());
+    Collections.sort(objects.getEntries(), new POObjectSorter());
     Map<String, Integer> sources = new HashMap<>();
     Set<String> dups = new HashSet<>();
-    for (POObject o : objects) {
+    for (POObject o : objects.getEntries()) {
       if (sources.containsKey(o.getMsgid())) {
         Integer c = sources.get(o.getMsgid())+1;
         sources.put(o.getMsgid(), c);
@@ -352,15 +351,15 @@ public class POGenerator {
         sources.put(o.getMsgid(), 1);
       }
     }
-    for (POObject o : objects) {
+    for (POObject o : objects.getEntries()) {
       Integer c = sources.get(o.getMsgid());
       if (c > 1) {
         o.setDuplicate(true);
       }
     }
-    noTrans = POObject.savePOFile(prefixes, Utilities.path(source, "source", dest), objects, count, noTrans);
+    noTrans = objects.savePOFile(Utilities.path(source, "source", dest), count, noTrans);
     if (tgt != null) {
-      savePropFile(Utilities.path(source, tgt), objects);
+      savePropFile(Utilities.path(source, tgt), objects.getEntries());
     }
   }
 

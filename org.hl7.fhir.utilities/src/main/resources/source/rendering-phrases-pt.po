@@ -56,7 +56,7 @@ msgstr "Esse conjunto de valores é um bom conjunto de códigos para começar a 
 # ADD_BIND_EXT_PREF
 #: ADD_BIND_EXT_PREF
 msgid "A required binding, for use when the binding strength is ''extensible'' or ''preferred''"
-msgstr "Um vínculo necessário, para utilização quando a força do vínculo é ''extensível'' ou ''preferido''"
+msgstr "Um vínculo obrigatório, para utilização quando a força do vínculo é ''extensível'' ou ''preferido''"
 
 # ADD_BIND_EX_BIND
 #: ADD_BIND_EX_BIND
@@ -335,7 +335,7 @@ msgstr "Obter alterações a um recurso (interação do histórico na instância
 # CAPABILITY_HISTORY_TYPE
 #: CAPABILITY_HISTORY_TYPE
 msgid "GET changes for all resources of the type (history interaction on type)"
-msgstr "Alterações GET para todos os recursos do tipo (interação do histórico no tipo)"
+msgstr "Obter alterações para todos os recursos do tipo (interação do histórico no tipo)"
 
 # CAPABILITY_IMP_VER
 #: CAPABILITY_IMP_VER
@@ -380,7 +380,7 @@ msgstr "Capacidades de mensagens FHIR"
 # CAPABILITY_MULT_EXT
 #: CAPABILITY_MULT_EXT
 msgid "this mark indicates that there are more than one expectation extensions present"
-msgstr "esta marca indica que há mais do que uma extensão de expetativa presente"
+msgstr "esta marca indica que há mais do que uma extensão de expectativa presente"
 
 # CAPABILITY_NOTE_CAP
 #: CAPABILITY_NOTE_CAP
@@ -4926,3 +4926,4 @@ msgstr "Este código não é selecionável (''Abstrato'')"
 #: _NA
 msgid "n/a"
 msgstr "n/a"
+
