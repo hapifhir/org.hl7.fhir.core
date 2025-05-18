@@ -2,6 +2,8 @@ package org.hl7.fhir.utilities.i18n;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,10 +79,18 @@ public class POObject {
     return msgstr;
   }
   
+  public static List<POObject> loadPOFile(List<String> prefixes, InputStream source) throws FileNotFoundException, IOException {
+    return loadPOFile(prefixes, FileUtilities.streamToLines(source));
+  }
+  
   public static List<POObject> loadPOFile(List<String> prefixes, String dest) throws FileNotFoundException, IOException {
+    return loadPOFile(prefixes, FileUtilities.fileToLines(new File(dest)));
+  }
+  
+  private static List<POObject> loadPOFile(List<String> prefixes, String[] lines) throws FileNotFoundException, IOException {
     List<POObject> list = new ArrayList<POObject>();
     POObject obj = null;
-    for (String line : FileUtilities.fileToLines(dest)) {
+    for (String line : lines) {
       if (Utilities.noString(line)) {
         // else 
       } else if (line.startsWith("#:")) {

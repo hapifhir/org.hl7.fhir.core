@@ -630,8 +630,8 @@ public class LanguageUtils {
 
   private void generateTranslations(Element e, String lang, TranslationUnitCollection list, String path) {
     String npath = pathForElement(path, e);
-    if (e.getProperty().isTranslatable()) {
-      String id = npath; // .getProperty().getDefinition().getPath();
+    if (e.getProperty().isTranslatable() && !isExemptFromTranslations(e.getProperty().getDefinition().getBase().getPath())) {
+      String id = e.getProperty().getDefinition().getBase().getPath(); // .getProperty().getDefinition().getPath();
       String context = e.getProperty().getDefinition().getDefinition();
       String src = e.primitiveValue();
       String tgt = getTranslation(e, lang);
@@ -643,6 +643,17 @@ public class LanguageUtils {
       }
     }
     
+  }
+
+  private boolean isExemptFromTranslations(String path) {
+    return Utilities.existsInList(path, 
+        "ImplementationGuide.definition.parameter.value", "ImplementationGuide.dependsOn.version", 
+        "CanonicalResource.name", 
+        "CapabilityStatement.rest.resource.searchRevInclude", "CapabilityStatement.rest.resource.searchInclude", "CapabilityStatement.rest.resource.searchParam.name",
+        "ExampleScenario.actor.actorId", "ExampleScenario.instance.resourceId", "ExampleScenario.instance.containedInstance.resourceId", 
+        "ExampleScenario.process.step.operation.number", "ExampleScenario.process.step.operation.initiator", "ExampleScenario.process.step.operation.receiver",
+        "OperationDefinition.parameter.max", "OperationDefinition.overload.parameterName",
+        "StructureMap.group.rule.source.type", "StructureMap.group.rule.source.element", "StructureMap.group.rule.target.element");
   }
 
   private String getTranslation(Element e, String lang) {
