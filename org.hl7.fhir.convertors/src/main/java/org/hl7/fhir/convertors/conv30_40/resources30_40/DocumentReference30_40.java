@@ -8,6 +8,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Codeab
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Coding30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Period30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Instant30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.dstu3.model.DocumentReference;
 import org.hl7.fhir.dstu3.model.Enumeration;
@@ -45,7 +46,7 @@ public class DocumentReference30_40 {
     if (src.hasSubject())
       tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
     if (src.hasDateElement())
-      tgt.setIndexed(src.getDateElement().getValue());
+      tgt.setIndexedElement(Instant30_40.convertInstant(src.getDateElement()));
     if (src.hasExtension(VersionConvertorConstants.EXT_DOC_REF_CREATED))
       tgt.setCreated(convertCreatedExtension(src));
     if (src.hasAuthenticator())
@@ -87,7 +88,7 @@ public class DocumentReference30_40 {
     if (src.hasSubject())
       tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
     if (src.hasIndexed())
-      tgt.setDateElement(new InstantType(src.getIndexed()));
+      tgt.setDateElement(Instant30_40.convertInstant(src.getIndexedElement()));
     if (src.hasCreated())
       tgt.addExtension(getExtensionForDocumentReferenceCreated(src.getCreated()));
     if (src.hasAuthenticator())
