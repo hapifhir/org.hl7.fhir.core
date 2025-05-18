@@ -58,7 +58,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
 
   public class POGetTextLanguageProducerLanguageSession extends LanguageProducerLanguageSession {
 
-    List<POObject> objects = new ArrayList<>();
+    POSource source = new POSource();
 
     public POGetTextLanguageProducerLanguageSession(String id, String baseLang, String targetLang) {
       super(id, baseLang, targetLang);
@@ -66,7 +66,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
 
     @Override
     public void finish() throws IOException {
-      POObject.savePOFile(new ArrayList<>(), getFileName(id, baseLang, targetLang), objects, 1, 0);
+      source.savePOFile(getFileName(id, baseLang, targetLang), 1, 0);
       filecount++;
     }
 
@@ -75,7 +75,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
     public void entry(TextUnit unit) {
       POObject po = new POObject(unit.getId(), unit.getSrcText(), unit.getTgtText());
       po.setComment(unit.getContext());
-      objects.add(po);      
+      source.getEntries().add(po);      
     }
 
   }
@@ -89,9 +89,9 @@ public class PoGetTextProducer extends LanguageFileProducer {
   @Override
   public List<TranslationUnit> loadSource(InputStream source) throws IOException {
     List<TranslationUnit> list = new ArrayList<>();
-    List<POObject> polist = POObject.loadPOFile(new ArrayList<>(), source);
-    for (POObject po : polist) {
-      TranslationUnit tu = new TranslationUnit(srcLang, po.getId(), null, po.getMsgid(), po.getMsgstr().isEmpty() ? null : po.getMsgstr().get(0));
+    POSource polist = POSource.loadPOFile(source);
+    for (POObject po : polist.getEntries()) {
+      TranslationUnit tu = new TranslationUnit(srcLang == null ? polist.getLang() : srcLang, po.getId(), null, po.getMsgid(), po.getMsgstr().isEmpty() ? null : po.getMsgstr().get(0));
       if (tu.getId() != null) {
         list.add(tu);
       }
@@ -117,15 +117,15 @@ public class PoGetTextProducer extends LanguageFileProducer {
   
   @Override
   public void produce(String id, String baseLang, String targetLang, List<TranslationUnit> translations, String filename) throws IOException {
-    List<POObject> objects = new ArrayList<>();
+    POSource source = new POSource();
     
     for (TranslationUnit unit : translations) {
       POObject po = new POObject(unit.getId(), unit.getSrcText(), unit.getTgtText());
       po.setComment(unit.getContext());
       po.setOldMsgId(unit.getOriginal());
-      objects.add(po);      
+      source.getEntries().add(po);      
     }
-    POObject.savePOFile(new ArrayList<>(), getFileName(id, baseLang, targetLang)+".po", objects, 1, 0);      
+    source.savePOFile(getFileName(id, baseLang, targetLang)+".po", 1, 0);      
   }
 
   private String stripEoln(String s) {
