@@ -462,7 +462,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     } else if (step.hasWorkflow()) {
       XhtmlNode n = row.td().colspan(6);
       n.tx(context.formatPhrase(RenderingContext.EX_SCEN_OTH));
-      String link = new ContextUtilities(context.getWorker()).getLinkForUrl(context.getLink(KnownLinkType.SPEC), step.getWorkflow());
+      String link = new ContextUtilities(context.getWorker()).getLinkForUrl(context.getLink(KnownLinkType.SPEC, true), step.getWorkflow());
       String title = "Unknown title";
       if (step.getWorkflowElement().hasExtension(ExtensionConstants.EXT_DISPLAY_NAME)) {
         title = step.getWorkflowElement().getExtensionString(ExtensionConstants.EXT_DISPLAY_NAME);

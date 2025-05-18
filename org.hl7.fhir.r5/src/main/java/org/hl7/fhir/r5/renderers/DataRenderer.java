@@ -231,7 +231,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       case "11000221109" : return "AR"+dt;      
       case "11000234105" : return "AT"+dt;  
       case "20621000087109" : return "CA-EN"+dt; 
-      case "20611000087101" : return "CA-FR"+dt;
+      case "20611000087101" : return "CA"+dt; // was FR, but was repurposed for the canadian edition early 2024
       case "11000181102 " : return "EE"+dt;
       case "11000229106" : return "FI"+dt;
       case "11000274103" : return "DE"+dt;
@@ -589,7 +589,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   // -- 6. Data type Rendering ----------------------------------------------  
 
   public static String display(IWorkerContext context, DataType type) { 
-    return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE)).displayDataType(type); 
+    return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", context.getLocale(), ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE)).displayDataType(type);
   } 
 
   public String displayBase(Base b) { 

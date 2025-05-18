@@ -80,6 +80,13 @@ public class JsonParser {
     }
     return new JsonParser().setSourceName(source.getAbsolutePath()).parseJsonObject(FileUtilities.fileToString(source), false, false);
   }
+
+  public static JsonObject parseObject(File source, boolean isJson5) throws IOException, JsonException {
+    if (!source.exists()) {
+      throw new IOException("File "+source+" not found");
+    }
+    return new JsonParser().setSourceName(source.getAbsolutePath()).parseJsonObject(FileUtilities.fileToString(source), isJson5, false);
+  }
   
   public static JsonObject parseObjectFromFile(String source) throws IOException, JsonException {
     return new JsonParser().setSourceName(source).parseJsonObject(FileUtilities.fileToString(source), false, false);

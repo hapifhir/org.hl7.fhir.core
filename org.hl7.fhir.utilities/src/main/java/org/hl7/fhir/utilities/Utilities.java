@@ -29,6 +29,8 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -250,6 +252,24 @@ public class Utilities {
         b.append("&amp;");
       else if (c == '"')
         b.append("&quot;");
+      else
+        b.append(c);
+    }
+    return b.toString();
+  }
+
+  public static String escapeXmlText(String doco) {
+    if (doco == null)
+      return "";
+
+    StringBuilder b = new StringBuilder();
+    for (char c : doco.toCharArray()) {
+      if (c == '<')
+        b.append("&lt;");
+      else if (c == '>')
+        b.append("&gt;");
+      else if (c == '&')
+        b.append("&amp;");
       else
         b.append(c);
     }
@@ -722,8 +742,17 @@ public class Utilities {
     return encodeUriParam(string);
   }
 
+  public static String encodeUriParam(String key, String value) {
+    new BasicNameValuePair(key, value);
+    return URLEncodedUtils.format(Collections.singletonList(new BasicNameValuePair(key, value)), StandardCharsets.UTF_8);
+  }
+
+  @Deprecated
+  /* The following should not be used, as encodeUriParam automatically adds the key. The implementation below is a hack
+  * that ensures both methods are using apache utils to do the encoding. */
   public static String encodeUriParam(String param) {
-    return URLEncoder.encode(param, StandardCharsets.UTF_8);
+    String dummyEncode = encodeUriParam("dummy", param);
+    return dummyEncode.substring("dummy=".length());
   }
 
   public static String normalize(String s) {

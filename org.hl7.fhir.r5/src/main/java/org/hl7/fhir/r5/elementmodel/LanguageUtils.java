@@ -630,8 +630,9 @@ public class LanguageUtils {
 
   private void generateTranslations(Element e, String lang, TranslationUnitCollection list, String path) {
     String npath = pathForElement(path, e);
-    if (e.getProperty().isTranslatable()) {
-      String id = npath; // .getProperty().getDefinition().getPath();
+    if ((e.getProperty().isTranslatable() || isTranslatable(e.getProperty().getDefinition().getBase().getPath())) 
+        && !isExemptFromTranslations(e.getProperty().getDefinition().getBase().getPath())) {
+      String id = e.getProperty().getDefinition().getBase().getPath(); // .getProperty().getDefinition().getPath();
       String context = e.getProperty().getDefinition().getDefinition();
       String src = e.primitiveValue();
       String tgt = getTranslation(e, lang);
@@ -642,7 +643,56 @@ public class LanguageUtils {
         generateTranslations(c, lang, list, npath);
       }
     }
-    
+  }
+
+  /**
+   * override specifications
+   * 
+   * @param path
+   * @return
+   */
+  private boolean isTranslatable(String path) {
+    return Utilities.existsInList(path, "TestCases.publisher",
+        "TestCases.contact.telecom.value",
+        "TestCases.definition",
+        "TestCases.parameter.name",
+        "TestCases.parameter.description",
+        "TestCases.scope.description ",
+        "TestCases.dependency.description",
+        "TestCases.mode.description",
+        "TestCases.suite",
+        "TestCases.suite.name",
+        "TestCases.suite.description",
+        "TestCases.suite.test",
+        "TestCases.suite.test.name",
+        "TestCases.suite.test.description",
+        "TestCases.suite.test.assert.human",
+        "ActorDefinition.title",
+        "ActorDefinition.description",
+        "ActorDefinition.purpose",
+        "ActorDefinition.copyright",
+        "ActorDefinition.copyrightLabel",
+        "ActorDefinition.documentation",
+        "Requirements.title",
+        "Requirements.publisher",
+        "Requirements.description",
+        "Requirements.purpose",
+        "Requirements.copyright",
+        "Requirements.copyrightLabel",
+        "Requirements.statement.label",
+        "Requirements.statement.requirement");    
+  }
+
+  private boolean isExemptFromTranslations(String path) {
+    return Utilities.existsInList(path, 
+        "ImplementationGuide.definition.parameter.value", "ImplementationGuide.dependsOn.version", 
+        "CanonicalResource.name", 
+        "CapabilityStatement.rest.resource.searchRevInclude", "CapabilityStatement.rest.resource.searchInclude", "CapabilityStatement.rest.resource.searchParam.name",
+        " SearchParameter.expression",
+        "ExampleScenario.actor.actorId", "ExampleScenario.instance.resourceId", "ExampleScenario.instance.containedInstance.resourceId", 
+        "ExampleScenario.process.step.operation.number", "ExampleScenario.process.step.operation.initiator", "ExampleScenario.process.step.operation.receiver",
+        "OperationDefinition.parameter.max", "OperationDefinition.overload.parameterName",
+        "StructureMap.group.rule.source.type", "StructureMap.group.rule.source.element", "StructureMap.group.rule.target.element");
   }
 
   private String getTranslation(Element e, String lang) {

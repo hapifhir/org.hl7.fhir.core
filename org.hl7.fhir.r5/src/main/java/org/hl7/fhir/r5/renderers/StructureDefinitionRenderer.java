@@ -90,10 +90,10 @@ import org.hl7.fhir.r5.utils.PublicationHacker;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
-import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -132,7 +132,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         renderDict(status, sd, sd.getDifferential().getElement(), x.table("dict", false), false, GEN_MODE_DIFF, "", r); 
       } else { 
         x.addChildNode(generateTable(status, context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false,  
-            context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r)); 
+            context.getLink(KnownLinkType.SPEC, false), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context.withUniqueLocalPrefix(null), "r", r, "X")); 
       } 
       status.setExtensions(true); 
     }
@@ -555,7 +555,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
    
   public XhtmlNode generateTable(RenderingStatus status, String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, 
-      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res) throws IOException, FHIRException { 
+      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res, String idSfx) throws IOException, FHIRException { 
     assert(diff != snapshot);// check it's ok to get rid of one of these 
     anchors.clear();
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
@@ -574,14 +574,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     switch (context.getStructureMode()) { 
     case BINDINGS: 
       scanBindings(columns, list); 
-      model = initCustomTable(gen, corePath, false, true, profile.getId()+(diff ? "d" : "s"), rc.getRules() == GenerationRules.IG_PUBLISHER, columns);     
+      model = initCustomTable(gen, corePath, false, true, profile.getId()+idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, columns);     
       break; 
     case OBLIGATIONS: 
       obLists = scanObligations(columns, list); 
-      model = initCustomTable(gen, corePath, false, true, profile.getId()+(diff ? "d" : "s"), rc.getRules() == GenerationRules.IG_PUBLISHER, columns);     
+      model = initCustomTable(gen, corePath, false, true, profile.getId()+idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, columns);     
       break; 
     case SUMMARY: 
-      model = gen.initNormalTable(corePath, false, true, profile.getId()+(diff ? "d" : "s"), rc.getRules() == GenerationRules.IG_PUBLISHER, rc.getRules() == GenerationRules.IG_PUBLISHER ? TableGenerationMode.XHTML : TableGenerationMode.XML); 
+      model = gen.initNormalTable(corePath, false, true, profile.getId()+idSfx, rc.getRules() == GenerationRules.IG_PUBLISHER, rc.getRules() == GenerationRules.IG_PUBLISHER ? TableGenerationMode.XHTML : TableGenerationMode.XML); 
       break; 
     default: 
       throw new Error(context.formatPhrase(RenderingContext.STRUC_DEF_ERROR)); 
@@ -1492,7 +1492,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           String es = definition.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE); 
           if ("named-elements".equals(es)) { 
             if (rc.hasLink(KnownLinkType.JSON_NAMES)) { 
-              c.getPieces().add(gen.new Piece(rc.getLink(KnownLinkType.JSON_NAMES), context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));                         
+              c.getPieces().add(gen.new Piece(rc.getLink(KnownLinkType.JSON_NAMES, true), context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));                         
             } else { 
               c.getPieces().add(gen.new Piece(ToolingExtensions.WEB_EXTENSION_STYLE, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON), null));                         
             } 
@@ -1651,33 +1651,33 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             binding = makeUnifiedBinding(definition.getBinding(), definition); 
           if (binding!=null && !binding.isEmpty()) { 
             if (!c.getPieces().isEmpty())  
-              c.addPiece(gen.new Piece("br")); 
+              c.addPiece(gen.new Piece("binding", "br")); 
             if (!binding.hasValueSet()) {
-              c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_VS))+": ", null).addStyle("font-weight:bold"))); 
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_VS))+": ", null).addStyle("font-weight:bold"))); 
               if (binding.hasStrength()) { 
-                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, " (", null))); 
-                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));                             
-                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, ")", null))); 
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, " (", null))); 
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));                             
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, ")", null))); 
               } 
               if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) { 
-                c.getPieces().add(gen.new Piece(null, ": ", null)); 
-                c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()))); 
+                c.getPieces().add(gen.new Piece("binding", null, ": ", null)); 
+                c.addMarkdownNoPara("binding", PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()))); 
               } else {
-                c.getPieces().add(gen.new Piece(null, ": ", null)); 
-                c.addMarkdownNoPara(context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_DESC));
+                c.getPieces().add(gen.new Piece("binding", null, ": ", null)); 
+                c.addMarkdownNoPara("binding", context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_DESC));
               }
             } else {
               BindingResolution br = context.getPkp() == null ? makeNullBr(binding) : context.getPkp().resolveBinding(profile, binding, definition.getPath()); 
-              c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_BINDING))+": ", null).addStyle("font-weight:bold"))); 
-              c.getPieces().add(checkForNoChange(binding.getValueSetElement(), checkAddExternalFlag(br, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, br.display, br.uri)))); 
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingContext.GENERAL_BINDING))+": ", null).addStyle("font-weight:bold"))); 
+              c.getPieces().add(checkForNoChange(binding.getValueSetElement(), checkAddExternalFlag(br, gen.new Piece("binding", br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, br.display, br.uri)))); 
               if (binding.hasStrength()) { 
-                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, " (", null))); 
-                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));                             
-                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, ")", null))); 
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, " (", null))); 
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));                             
+                c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, ")", null))); 
               } 
               if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) { 
-                c.getPieces().add(gen.new Piece(null, ": ", null)); 
-                c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()))); 
+                c.getPieces().add(gen.new Piece("binding", null, ": ", null)); 
+                c.addMarkdownNoPara("binding", PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()))); 
               }  
             }
             AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, profile, definition.getPath(), rc, null, this); 
@@ -1697,9 +1697,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 //            if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || allInvariants) { 
             if (!inv.hasSource() || profile == null || allInvariants || (!isAbstractBaseProfile(inv.getSource()) && !"http://hl7.org/fhir/StructureDefinition/Extension".equals(inv.getSource()))) { 
               if (!c.getPieces().isEmpty())  
-                c.addPiece(gen.new Piece("br")); 
-              c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getKey()+": ", null).addStyle("font-weight:bold"))); 
-              c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, gt(inv.getHumanElement()), null))); 
+                c.addPiece(gen.new Piece("constraint", "br")); 
+              c.getPieces().add(checkForNoChange(inv, gen.new Piece("constraint", null, inv.getKey()+": ", null).addStyle("font-weight:bold"))); 
+              c.getPieces().add(checkForNoChange(inv, gen.new Piece("constraint", null, gt(inv.getHumanElement()), null))); 
             } 
           } 
           if ((definition.hasBase() && "*".equals(definition.getBase().getMax())) || (definition.hasMax() && "*".equals(definition.getMax()))) { 
@@ -1836,7 +1836,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (base != null) { 
       List<String> newList = Utilities.copyAdd(inscope, base.getVersionedUrl()); 
       if (inscope.contains(base.getVersionedUrl())) {
-        throw new FHIRException("Circular Definition detected in derivation heirarchy: "+CommaSeparatedStringBuilder.join("->", newList));
+        throw new FHIRException("Circular Definition detected in derivation hierarchy: "+CommaSeparatedStringBuilder.join("->", newList));
       }
       getAncestorElements(newList, base, ancestors);      
       for (ElementDefinition ed : base.getDifferential().getElement()) { 
@@ -3448,7 +3448,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             // generateElementInner(b, extDefn, extDefn.getSnapshot().getElement().get(0), valueDefn == null ? 2 : 3, valueDefn); 
           } 
         } else { 
-          while (!dstack.isEmpty() && !isParent(dstack.peek(), ec)) { 
+          while (!dstack.isEmpty() && !isParent(dstack.peek(), ec)) {
             finish(status, t, sd, dstack.pop(), mode, "", anchorPrefix, res);
           } 
           dstack.push(ec);             
@@ -3468,7 +3468,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   private void finish(RenderingStatus status, XhtmlNode t, StructureDefinition sd, ElementDefinition ed, int mode, String defPath, String anchorPrefix, ResourceWrapper res) throws FHIRException, IOException {
- 
     for (Base b : VersionComparisonAnnotation.getDeleted(ed == null ? sd : ed, "element")) { 
       ElementDefinition ec = (ElementDefinition) b; 
       String title = ec.getId(); 
@@ -3897,7 +3896,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       String es = d.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE); 
       if ("named-elements".equals(es)) { 
         if (context.hasLink(KnownLinkType.JSON_NAMES)) { 
-          tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_STYLE), context.getLink(KnownLinkType.JSON_NAMES), strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON)); 
+          tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_STYLE), context.getLink(KnownLinkType.JSON_NAMES, true), strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON)); 
         } else { 
           tableRow(tbl, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_STYLE), ToolingExtensions.WEB_EXTENSION_STYLE, strikethrough, context.formatPhrase(RenderingContext.STRUC_DEF_EXT_JSON)); 
         } 

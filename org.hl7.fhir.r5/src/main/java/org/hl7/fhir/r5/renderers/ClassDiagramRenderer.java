@@ -1088,11 +1088,11 @@ public class ClassDiagramRenderer {
     if (tc == null) {
       return 0;
     } else if (tc.equals("*")) {
-      var a = text.ah(Utilities.pathURL(rc.getLink(KnownLinkType.SPEC), "datatypes.html#open")).style("text-decoration: none;");;
+      var a = text.ah(Utilities.pathURL(rc.getLink(KnownLinkType.SPEC, true), "datatypes.html#open")).style("text-decoration: none;");;
       a.tx(ls.see(tc));
       return tc.length();
     } else if (tc.equals("Type")) {
-      var a = text.ah(Utilities.pathURL(rc.getLink(KnownLinkType.SPEC), "formats.html#umlchoice")).style("text-decoration: none;");;
+      var a = text.ah(Utilities.pathURL(rc.getLink(KnownLinkType.SPEC, true), "formats.html#umlchoice")).style("text-decoration: none;");;
       a.tx(ls.see(tc));
       return tc.length();
     } else if (tc.startsWith("@")) { 

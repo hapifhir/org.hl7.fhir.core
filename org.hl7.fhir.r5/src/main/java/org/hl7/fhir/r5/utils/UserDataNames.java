@@ -149,5 +149,9 @@ public class UserDataNames {
   public static final String UmlDir = "UmlDir";
   public static final String SNAPSHOT_FROM_DIFF = "SNAPSHOT_FROM_DIFF";
   public static final String SNAPSHOT_EXTENSION_SOURCE = "SNAPSHOT_EXTENSION_SOURCE";
+  public static final String IG_FAKE = "IG_FAKE";
+  public static final String DN_TRANSIENT = "DN_TRANSIENT";
+  public static final String JGEN_ALL_PRIMITIVE = "JGEN_ALL_PRIMITIVE";
+  public static final String IG_DEP_ALIASED = "IG_DEP_ALIASED";
   
 }  

@@ -578,14 +578,14 @@ public class ValueSetUtilities extends TerminologyUtilities {
       ValueSet vs = new ValueSet();
       vs.setUrl(url);
       vs.setVersion(version);
-      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("ancestor").setOp(FilterOperator.EQUAL).setValue(url.substring(21));
+      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("ancestor").setOp(FilterOperator.EQUAL).setValue(url.substring("http://loinc.org/vs/".length()));
       return vs;      
     } else if (url.startsWith("http://loinc.org/vs/LL")) {
       ValueSet vs = new ValueSet();
       vs.setUrl(url);
       vs.setVersion(version);
       // this isn't the actual definition, but it won't matter to us internally
-      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("answer-list").setOp(FilterOperator.EQUAL).setValue(url.substring(21));      
+      vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("answer-list").setOp(FilterOperator.EQUAL).setValue(url.substring("http://loinc.org/vs/".length()));      
       return vs;
     } else {
       throw new FHIRException("Unknown implicit LOINC value set URL "+url);

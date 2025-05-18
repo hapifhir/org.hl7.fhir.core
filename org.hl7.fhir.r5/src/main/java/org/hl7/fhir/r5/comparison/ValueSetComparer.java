@@ -918,12 +918,12 @@ public class ValueSetComparer extends CanonicalResourceComparer {
 
 
   public XhtmlNode renderUnion(ValueSetComparison comp, String id, String prefix, String corePath) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
-    ValueSetRenderer vsr = new ValueSetRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+    ValueSetRenderer vsr = new ValueSetRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, session.getContextLeft().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
     return vsr.buildNarrative(ResourceWrapper.forResource(vsr.getContext(), comp.union));
   }
 
   public XhtmlNode renderIntersection(ValueSetComparison comp, String id, String prefix, String corePath) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
-    ValueSetRenderer vsr = new ValueSetRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+    ValueSetRenderer vsr = new ValueSetRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, session.getContextLeft().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
     return vsr.buildNarrative(ResourceWrapper.forResource(vsr.getContext(), comp.intersection));
   }
   
