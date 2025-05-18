@@ -1,3 +1,6 @@
+#
+msgid ""
+msgstr ""
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
@@ -47,21 +50,13 @@ msgstr "Actual"
 
 # ADD_BIND_DESIG_SYS
 #: ADD_BIND_DESIG_SYS
-msgid ""
-"This value set is a good set of codes to start with when designing your "
-"system"
-msgstr ""
-"Esse conjunto de valores é um bom conjunto de códigos para começar a "
-"conceber o seu sistema"
+msgid "This value set is a good set of codes to start with when designing your system"
+msgstr "Esse conjunto de valores é um bom conjunto de códigos para começar a conceber o seu sistema"
 
 # ADD_BIND_EXT_PREF
 #: ADD_BIND_EXT_PREF
-msgid ""
-"A required binding, for use when the binding strength is ''extensible'' or "
-"''preferred''"
-msgstr ""
-"Um vínculo necessário, para utilização quando a força do vínculo é "
-"''extensível'' ou ''preferido''"
+msgid "A required binding, for use when the binding strength is ''extensible'' or ''preferred''"
+msgstr "Um vínculo necessário, para utilização quando a força do vínculo é ''extensível'' ou ''preferido''"
 
 # ADD_BIND_EX_BIND
 #: ADD_BIND_EX_BIND
@@ -86,12 +81,8 @@ msgstr "Vínculo mínimo"
 
 # ADD_BIND_NEW_REC
 #: ADD_BIND_NEW_REC
-msgid ""
-"New records are required to use this value set, but legacy records may use "
-"other codes"
-msgstr ""
-"Novos registos têm de utilizar este conjunto de valores, mas os registos "
-"antigos podem utilizar outros códigos"
+msgid "New records are required to use this value set, but legacy records may use other codes"
+msgstr "Novos registos têm de utilizar este conjunto de valores, mas os registos antigos podem utilizar outros códigos"
 
 # ADD_BIND_PREF_BIND
 #: ADD_BIND_PREF_BIND
@@ -101,11 +92,8 @@ msgstr "Preferido"
 
 # ADD_BIND_RECOM_VALUE_SET
 #: ADD_BIND_RECOM_VALUE_SET
-msgid ""
-"This is the value set that is recommended (documentation should explain why)"
-msgstr ""
-"Este é o conjunto de valores recomendado (a documentação deve explicar "
-"porquê)"
+msgid "This is the value set that is recommended (documentation should explain why)"
+msgstr "Este é o conjunto de valores recomendado (a documentação deve explicar porquê)"
 
 # ADD_BIND_REQ_BIND
 #: ADD_BIND_REQ_BIND
@@ -142,8 +130,7 @@ msgstr "Os validadores verificarão esta ligação (força = obrigatório)"
 # ADD_BIND_VALUE_COMP
 #: ADD_BIND_VALUE_COMP
 msgid "This value set is a component of the base value set"
-msgstr ""
-"Este conjunto de valores é um componente do conjunto de valores de base"
+msgstr "Este conjunto de valores é um componente do conjunto de valores de base"
 
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
@@ -243,8 +230,7 @@ msgstr "{0} Conjunto, {1} Entradas"
 # BUND_REND_INVALID_DOC
 #: BUND_REND_INVALID_DOC
 msgid "Invalid document ''{0}'' - first entry is not a Composition ({0})"
-msgstr ""
-"Documento inválido ''{0}'' - a primeira entrada não é uma Composição ({0})"
+msgstr "Documento inválido ''{0}'' - a primeira entrada não é uma Composição ({0})"
 
 # CANON_REND_COMMITTEE
 #: CANON_REND_COMMITTEE
@@ -348,11 +334,8 @@ msgstr "Obter alterações a um recurso (interação do histórico na instância
 
 # CAPABILITY_HISTORY_TYPE
 #: CAPABILITY_HISTORY_TYPE
-msgid ""
-"GET changes for all resources of the type (history interaction on type)"
-msgstr ""
-"Alterações GET para todos os recursos do tipo (interação do histórico no "
-"tipo)"
+msgid "GET changes for all resources of the type (history interaction on type)"
+msgstr "Alterações GET para todos os recursos do tipo (interação do histórico no tipo)"
 
 # CAPABILITY_IMP_VER
 #: CAPABILITY_IMP_VER
@@ -396,11 +379,8 @@ msgstr "Capacidades de mensagens FHIR"
 
 # CAPABILITY_MULT_EXT
 #: CAPABILITY_MULT_EXT
-msgid ""
-"this mark indicates that there are more than one expectation extensions "
-"present"
-msgstr ""
-"esta marca indica que há mais do que uma extensão de expetativa presente"
+msgid "this mark indicates that there are more than one expectation extensions present"
+msgstr "esta marca indica que há mais do que uma extensão de expetativa presente"
 
 # CAPABILITY_NOTE_CAP
 #: CAPABILITY_NOTE_CAP
@@ -519,11 +499,8 @@ msgstr "GET todo o conjunto de recursos do tipo (interação de pesquisa)"
 
 # CAPABILITY_SEARCH_PAR
 #: CAPABILITY_SEARCH_PAR
-msgid ""
-"The required, recommended, and some optional search parameters (if any)."
-msgstr ""
-"Os parâmetros de pesquisa obrigatórios, recomendados e alguns opcionais (se "
-"existirem)."
+msgid "The required, recommended, and some optional search parameters (if any)."
+msgstr "Os parâmetros de pesquisa obrigatórios, recomendados e alguns opcionais (se existirem)."
 
 # CAPABILITY_SEARCH_PARS
 #: CAPABILITY_SEARCH_PARS
@@ -537,12 +514,8 @@ msgstr "DEVERÁ suportar os seguintes guias de implementação"
 
 # CAPABILITY_SUMM_RES
 #: CAPABILITY_SUMM_RES
-msgid ""
-"The summary table lists the resources that are part of this configuration, "
-"and for each resource it lists:"
-msgstr ""
-"A tabela de resumo enumera os recursos que fazem parte desta configuração e,"
-" para cada recurso, enumera-os:"
+msgid "The summary table lists the resources that are part of this configuration, and for each resource it lists:"
+msgstr "A tabela de resumo enumera os recursos que fazem parte desta configuração e, para cada recurso, enumera-os:"
 
 # CAPABILITY_SUMM_SYS_INT
 #: CAPABILITY_SUMM_SYS_INT
@@ -596,8 +569,7 @@ msgstr "Tipos"
 
 # CAPABILITY_TYP_PRES
 #: CAPABILITY_TYP_PRES
-msgid ""
-"ype are only present if at least one of the resources has support for them."
+msgid "ype are only present if at least one of the resources has support for them."
 msgstr "só estão presentes se pelo menos um dos recursos os suportar."
 
 # CAPABILITY_UPDATE_INT
@@ -612,15 +584,8 @@ msgstr "OBTER versões anteriores de recursos (interação vread)"
 
 # CAPABILTY_ALLOW_CAP
 #: CAPABILTY_ALLOW_CAP
-msgid ""
-"Any FHIR capability may be ''allowed'' by the system unless explicitly "
-"marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation"
-" Guide to highlight their potential relevance to the use case."
-msgstr ""
-"Qualquer capacidade FHIR pode ser \"permitida\" pelo sistema, exceto se for "
-"explicitamente assinalada como \"NÃO DEVE\". Alguns itens são marcados como "
-"MAY no Guia de Implementação para destacar a sua potencial relevância para o"
-" caso de utilização."
+msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
+msgstr "Qualquer capacidade FHIR pode ser \"permitida\" pelo sistema, exceto se for explicitamente assinalada como \"NÃO DEVE\". Alguns itens são marcados como MAY no Guia de Implementação para destacar a sua potencial relevância para o caso de utilização."
 
 # CAPABILTY_SHALL_SUPP
 #: CAPABILTY_SHALL_SUPP
@@ -634,52 +599,28 @@ msgstr "Conceitos"
 
 # CODESYSTEM_CONTENT_COMPLETE
 #: CODESYSTEM_CONTENT_COMPLETE
-msgid ""
-"This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the "
-"following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr ""
-"Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> define o"
-" seguinte código<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> define o seguinte código<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
 
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
-msgid ""
-"This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some "
-"code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are "
-"example only</b>:"
-msgstr ""
-"Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> fornece "
-"alguns códigos<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>que "
-"são apenas exemplos</b>:"
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
+msgstr "Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> fornece alguns códigos<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>que são apenas exemplos</b>:"
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
-msgid ""
-"This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a "
-"fragment</b> that includes following code<if test=\"code-count != "
-"1\">s</if><param name=\"h\"/>:"
-msgstr ""
-"Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> fornece "
-"<b>um fragmento</b> que inclui o seguinte código<if test=\"code-count != "
-"1\">s</if><param name=\"h\"/>:"
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> fornece <b>um fragmento</b> que inclui o seguinte código<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
-msgid ""
-"This <param name=\"cased\"/> code system <param name=\"cs\"/> defines "
-"codes<param name=\"h\"/>, but no codes are represented here"
-msgstr ""
-"Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> define "
-"códigos<param name=\"h\"/>, mas nenhum código é representado aqui"
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
+msgstr "Este <param name=\"cased\"/> sistema de código <param name=\"cs\"/> define códigos<param name=\"h\"/>, mas nenhum código é representado aqui"
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
-msgid ""
-"This code system supplement <param name=\"cs\"/> defines {0} on the "
-"following code<if test=\"code-count != 1\">s</if>:"
-msgstr ""
-"Este suplemento do sistema de código <param name=\"cs\"/> define {0} no "
-"seguinte código<if test=\"code-count != 1\">s</if>:"
+msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
+msgstr "Este suplemento do sistema de código <param name=\"cs\"/> define {0} no seguinte código<if test=\"code-count != 1\">s</if>:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
@@ -699,27 +640,17 @@ msgstr "Op"
 # CODESYSTEM_PROPS_DESC
 #: CODESYSTEM_PROPS_DESC
 msgid "This code system defines the following properties for its concepts"
-msgstr ""
-"Este sistema de códigos define as seguintes propriedades para os seus "
-"conceitos"
+msgstr "Este sistema de códigos define as seguintes propriedades para os seus conceitos"
 
 # CODE_SYS_CODE_NOT_HERE
 #: CODE_SYS_CODE_NOT_HERE
-msgid ""
-"This CodeSystem is not used here; it may be used elsewhere (e.g. "
-"specifications and/or implementations that use this content)"
-msgstr ""
-"Este CodeSystem não é utilizado aqui; pode ser utilizado noutro local (por "
-"exemplo, em especificações e/ou implementações que utilizem este conteúdo)"
+msgid "This CodeSystem is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr "Este CodeSystem não é utilizado aqui; pode ser utilizado noutro local (por exemplo, em especificações e/ou implementações que utilizem este conteúdo)"
 
 # CODE_SYS_COMPLETE
 #: CODE_SYS_COMPLETE
-msgid ""
-"All the concepts defined by the code system are included in the code system "
-"resource"
-msgstr ""
-"Todos os conceitos definidos pelo sistema de códigos estão incluídos no "
-"recurso do sistema de códigos"
+msgid "All the concepts defined by the code system are included in the code system resource"
+msgstr "Todos os conceitos definidos pelo sistema de códigos estão incluídos no recurso do sistema de códigos"
 
 # CODE_SYS_COPY
 #: CODE_SYS_COPY
@@ -739,9 +670,7 @@ msgstr "ecrãs e propriedades"
 # CODE_SYS_EXAMPLE
 #: CODE_SYS_EXAMPLE
 msgid "A few representative concepts are included in the code system resource"
-msgstr ""
-"Alguns conceitos representativos estão incluídos no recurso do sistema de "
-"códigos"
+msgstr "Alguns conceitos representativos estão incluídos no recurso do sistema de códigos"
 
 # CODE_SYS_FEAT
 #: CODE_SYS_FEAT
@@ -755,12 +684,8 @@ msgstr "{0} (para sistemas terminológicos baseados em OID)"
 
 # CODE_SYS_FRAGMENT
 #: CODE_SYS_FRAGMENT
-msgid ""
-"A subset of the code system concepts are included in the code system "
-"resource"
-msgstr ""
-"Um subconjunto dos conceitos do sistema de códigos está incluído no recurso "
-"do sistema de códigos"
+msgid "A subset of the code system concepts are included in the code system resource"
+msgstr "Um subconjunto dos conceitos do sistema de códigos está incluído no recurso do sistema de códigos"
 
 # CODE_SYS_IN_A_HIERARCHY
 #: CODE_SYS_IN_A_HIERARCHY
@@ -769,12 +694,8 @@ msgstr "numa hierarquia {0}"
 
 # CODE_SYS_NOTPRESENT
 #: CODE_SYS_NOTPRESENT
-msgid ""
-"None of the concepts defined by the code system are included in the code "
-"system resource"
-msgstr ""
-"Nenhum dos conceitos definidos pelo sistema de códigos está incluído no "
-"recurso do sistema de códigos"
+msgid "None of the concepts defined by the code system are included in the code system resource"
+msgstr "Nenhum dos conceitos definidos pelo sistema de códigos está incluído no recurso do sistema de códigos"
 
 # CODE_SYS_PROP
 #: CODE_SYS_PROP
@@ -1340,14 +1261,8 @@ msgstr "Assunto não especificado"
 
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
-msgid ""
-"<param name=\"status\"/> Document at <param name=\"date\"/> by <param "
-"name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = "
-"true\"> in encounter <param name=\"encounter\"/></if>"
-msgstr ""
-"<param name=\"status\"/> Documento em <param name=\"date\"/> por <param "
-"name=\"author\"/> para <param name=\"subject\"/> <if test=\"has-encounter = "
-"true\"> no encontro <param name=\"encounter\"/></if>"
+msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
+msgstr "<param name=\"status\"/> Documento em <param name=\"date\"/> por <param name=\"author\"/> para <param name=\"subject\"/> <if test=\"has-encounter = true\"> no encontro <param name=\"encounter\"/></if>"
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
@@ -1441,16 +1356,8 @@ msgstr "Não foi possível encontrar o ator referenciado {0}"
 
 # FMM_TABLE
 #: FMM_TABLE
-msgid ""
-"<table class=\"cols\"><tbody><tr><td><a "
-"href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: "
-"{0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard "
-"Status\">{2}</a></td></tr></tbody></table>"
-msgstr ""
-"<table class=\"cols\"><tbody><tr><td><a "
-"href=\"http://hl7.org/fhir/versions.html#maturity\">Nível de maturidade</a>:"
-" {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Estado "
-"normalizado\">{2}</a></td></tr></tbody></table>"
+msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgstr "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Nível de maturidade</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Estado normalizado\">{2}</a></td></tr></tbody></table>"
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
@@ -1479,12 +1386,8 @@ msgstr "Descrição da ligação (sem ValueSet)"
 
 # GENERAL_BIND_MIN_ALLOW
 #: GENERAL_BIND_MIN_ALLOW
-msgid ""
-"The minimum allowable value set - any conformant system SHALL support all "
-"these codes"
-msgstr ""
-"O conjunto mínimo de valores admissíveis - qualquer sistema conforme DEVERÁ "
-"suportar todos estes códigos"
+msgid "The minimum allowable value set - any conformant system SHALL support all these codes"
+msgstr "O conjunto mínimo de valores admissíveis - qualquer sistema conforme DEVERÁ suportar todos estes códigos"
 
 # GENERAL_CARD
 #: GENERAL_CARD
@@ -2930,12 +2833,8 @@ msgstr "Cartão L."
 
 # SD_COMP_HEAD_CARD_L_DESC
 #: SD_COMP_HEAD_CARD_L_DESC
-msgid ""
-"Minimum and Maximum # of times the element can appear in the instance - Left"
-" Structure"
-msgstr ""
-"Número mínimo e máximo de vezes que o elemento pode aparecer na instância - "
-"Estrutura esquerda"
+msgid "Minimum and Maximum # of times the element can appear in the instance - Left Structure"
+msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância - Estrutura esquerda"
 
 # SD_COMP_HEAD_CARD_R
 #: SD_COMP_HEAD_CARD_R
@@ -2944,12 +2843,8 @@ msgstr "Cartão R."
 
 # SD_COMP_HEAD_CARD_R_DESC
 #: SD_COMP_HEAD_CARD_R_DESC
-msgid ""
-"Minimum and Maximum # of times the element can appear in the instance - "
-"Right Structure"
-msgstr ""
-"Número mínimo e máximo de vezes que o elemento pode aparecer na instância - "
-"Estrutura direita"
+msgid "Minimum and Maximum # of times the element can appear in the instance - Right Structure"
+msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância - Estrutura direita"
 
 # SD_COMP_HEAD_COMP_DESC
 #: SD_COMP_HEAD_COMP_DESC
@@ -3023,12 +2918,8 @@ msgstr "Documentação para este formato"
 
 # SD_GRID_HEAD_CARD_DESC
 #: SD_GRID_HEAD_CARD_DESC
-msgid ""
-"Minimum and Maximum # of times the element can appear in the instance. "
-"Super-scripts indicate additional constraints on appearance"
-msgstr ""
-"Número mínimo e máximo de vezes que o elemento pode aparecer na instância. "
-"Os sobrescritos indicam restrições adicionais à aparência"
+msgid "Minimum and Maximum # of times the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
+msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância. Os sobrescritos indicam restrições adicionais à aparência"
 
 # SD_GRID_HEAD_DESC
 #: SD_GRID_HEAD_DESC
@@ -3038,18 +2929,12 @@ msgstr "Restrições e utilização"
 # SD_GRID_HEAD_DESC_DESC
 #: SD_GRID_HEAD_DESC_DESC
 msgid "Fixed values, length limits, vocabulary bindings and other usage notes"
-msgstr ""
-"Valores fixos, limites de comprimento, ligações de vocabulário e outras "
-"notas de utilização"
+msgstr "Valores fixos, limites de comprimento, ligações de vocabulário e outras notas de utilização"
 
 # SD_GRID_HEAD_NAME_DESC
 #: SD_GRID_HEAD_NAME_DESC
-msgid ""
-"The name of the element (Slice name in brackets).  Mouse-over provides "
-"definition"
-msgstr ""
-"O nome do elemento (nome da fatia entre parêntesis).  O rato em cima fornece"
-" a definição"
+msgid "The name of the element (Slice name in brackets).  Mouse-over provides definition"
+msgstr "O nome do elemento (nome da fatia entre parêntesis).  O rato em cima fornece a definição"
 
 # SD_GRID_HEAD_TYPE_DESC
 #: SD_GRID_HEAD_TYPE_DESC
@@ -3060,8 +2945,7 @@ msgstr "Referência ao tipo do elemento"
 #: SD_HEAD_CARD_DESC
 msgctxt "SD_HEAD_CARD_DESC"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
-msgstr ""
-"Número mínimo e máximo de vezes que o elemento pode aparecer na instância"
+msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância"
 
 # SD_HEAD_DESC_DESC
 #: SD_HEAD_DESC_DESC
@@ -3101,15 +2985,12 @@ msgstr "Mapeamentos para {0} ({2}{1}{3})"
 # SD_SUMMARY_MISSING_EXTENSION
 #: SD_SUMMARY_MISSING_EXTENSION
 msgid "Unable to summarise extension {0} (no extension found)"
-msgstr ""
-"Não foi possível resumir a extensão {0} (não foi encontrada nenhuma "
-"extensão)"
+msgstr "Não foi possível resumir a extensão {0} (não foi encontrada nenhuma extensão)"
 
 # SD_SUMMARY_MISSING_PROFILE
 #: SD_SUMMARY_MISSING_PROFILE
 msgid "Unable to summarise profile {0} (no profile found)"
-msgstr ""
-"Não foi possível resumir o perfil {0} (não foi encontrado nenhum perfil)"
+msgstr "Não foi possível resumir o perfil {0} (não foi encontrado nenhum perfil)"
 
 # SD_SUMMARY_MUST_SUPPORT
 #: SD_SUMMARY_MUST_SUPPORT
@@ -3175,46 +3056,28 @@ msgstr "multipleAnd: O parâmetro só pode aparecer uma vez"
 
 # SEARCH_PAR_MULTIPLE_AND_REPEAT
 #: SEARCH_PAR_MULTIPLE_AND_REPEAT
-msgid ""
-"multipleAnd: The parameter may repeat in order to specify multiple values "
-"that must all be true"
-msgstr ""
-"multipleAnd: O parâmetro pode repetir-se para especificar valores múltiplos "
-"que devem ser todos verdadeiros"
+msgid "multipleAnd: The parameter may repeat in order to specify multiple values that must all be true"
+msgstr "multipleAnd: O parâmetro pode repetir-se para especificar valores múltiplos que devem ser todos verdadeiros"
 
 # SEARCH_PAR_MULTIPLE_AND_SERVER
 #: SEARCH_PAR_MULTIPLE_AND_SERVER
-msgid ""
-"multipleAnd: It''s up to the server whether the parameter may repeat in "
-"order to specify multiple values that must all be true"
-msgstr ""
-"multipleAnd: Cabe ao servidor decidir se o parâmetro pode ser repetido para "
-"especificar valores múltiplos que devem ser todos verdadeiros"
+msgid "multipleAnd: It''s up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
+msgstr "multipleAnd: Cabe ao servidor decidir se o parâmetro pode ser repetido para especificar valores múltiplos que devem ser todos verdadeiros"
 
 # SEARCH_PAR_MULTIPLE_OR_MULTIPLE
 #: SEARCH_PAR_MULTIPLE_OR_MULTIPLE
-msgid ""
-"multipleOr: The parameter may have multiple values (separated by comma) "
-"where at least one must be true"
-msgstr ""
-"multipleOr: O parâmetro pode ter vários valores (separados por vírgula) em "
-"que pelo menos um tem de ser verdadeiro"
+msgid "multipleOr: The parameter may have multiple values (separated by comma) where at least one must be true"
+msgstr "multipleOr: O parâmetro pode ter vários valores (separados por vírgula) em que pelo menos um tem de ser verdadeiro"
 
 # SEARCH_PAR_MULTIPLE_OR_ONE
 #: SEARCH_PAR_MULTIPLE_OR_ONE
-msgid ""
-"multipleOr: The parameter may only have one value (no comma separators)"
-msgstr ""
-"multipleOr: O parâmetro só pode ter um valor (sem separadores de vírgula)"
+msgid "multipleOr: The parameter may only have one value (no comma separators)"
+msgstr "multipleOr: O parâmetro só pode ter um valor (sem separadores de vírgula)"
 
 # SEARCH_PAR_MULTIPLE_OR_SERVER
 #: SEARCH_PAR_MULTIPLE_OR_SERVER
-msgid ""
-"multipleOr: It''s up to the server whether the parameter can have multiple "
-"values (separated by comma) where at least one must be true"
-msgstr ""
-"multipleOr: Cabe ao servidor decidir se o parâmetro pode ter vários valores "
-"(separados por vírgula) em que pelo menos um tem de ser verdadeiro"
+msgid "multipleOr: It''s up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
+msgstr "multipleOr: Cabe ao servidor decidir se o parâmetro pode ter vários valores (separados por vírgula) em que pelo menos um tem de ser verdadeiro"
 
 # SEARCH_PAR_NONE
 #: SEARCH_PAR_NONE
@@ -3289,12 +3152,8 @@ msgstr "e"
 
 # STRUC_DEF_APPROP_CON
 #: STRUC_DEF_APPROP_CON
-msgid ""
-"Concepts must come from this value set if appropriate concept is in this "
-"value set"
-msgstr ""
-"Os conceitos devem provir deste conjunto de valores se o conceito apropriado"
-" estiver neste conjunto de valores"
+msgid "Concepts must come from this value set if appropriate concept is in this value set"
+msgstr "Os conceitos devem provir deste conjunto de valores se o conceito apropriado estiver neste conjunto de valores"
 
 # STRUC_DEF_AS_SHOWN
 #: STRUC_DEF_AS_SHOWN
@@ -3324,9 +3183,7 @@ msgstr "preto"
 # STRUC_DEF_BUSINESS_ID
 #: STRUC_DEF_BUSINESS_ID
 msgid "This is a business identifier, not a resource identifier (see"
-msgstr ""
-"Trata-se de um identificador de empresa e não de um identificador de recurso"
-" (ver"
+msgstr "Trata-se de um identificador de empresa e não de um identificador de recurso (ver"
 
 # STRUC_DEF_BUSINESS_VERID
 #: STRUC_DEF_BUSINESS_VERID
@@ -3340,19 +3197,13 @@ msgstr "Candidato"
 
 # STRUC_DEF_CAND_SUB
 #: STRUC_DEF_CAND_SUB
-msgid ""
-"This value set is a candidate to substitute for the overall conformance "
-"value set in some situations; usually these are defined in the documentation"
-msgstr ""
-"Este conjunto de valores é um candidato para substituir o conjunto de "
-"valores de conformidade global em algumas situações; normalmente, estes são "
-"definidos na documentação"
+msgid "This value set is a candidate to substitute for the overall conformance value set in some situations; usually these are defined in the documentation"
+msgstr "Este conjunto de valores é um candidato para substituir o conjunto de valores de conformidade global em algumas situações; normalmente, estes são definidos na documentação"
 
 # STRUC_DEF_CANNOT_TARGET
 #: STRUC_DEF_CANNOT_TARGET
 msgid "Instances of this logical model cannot be the target of a Reference"
-msgstr ""
-"As instâncias deste modelo lógico não podem ser objeto de uma referência"
+msgstr "As instâncias deste modelo lógico não podem ser objeto de uma referência"
 
 # STRUC_DEF_CANT_FIND
 #: STRUC_DEF_CANT_FIND
@@ -3421,13 +3272,8 @@ msgstr "(complexo)"
 
 # STRUC_DEF_COMP_DOC
 #: STRUC_DEF_COMP_DOC
-msgid ""
-"This value set is a component of the base value set. Usually this is called "
-"out so that documentation can be written about a portion of the value set"
-msgstr ""
-"Esse conjunto de valores é um componente do conjunto de valores básico. "
-"Normalmente, isso é chamado para que a documentação possa ser escrita sobre "
-"uma parte do conjunto de valores"
+msgid "This value set is a component of the base value set. Usually this is called out so that documentation can be written about a portion of the value set"
+msgstr "Esse conjunto de valores é um componente do conjunto de valores básico. Normalmente, isso é chamado para que a documentação possa ser escrita sobre uma parte do conjunto de valores"
 
 # STRUC_DEF_COMP_EX
 #: STRUC_DEF_COMP_EX
@@ -3482,19 +3328,8 @@ msgstr "Atual"
 
 # STRUC_DEF_CURR_RULE
 #: STRUC_DEF_CURR_RULE
-msgid ""
-"New records are required to use this value set, but legacy records may use "
-"other codes. The definition of ''new record'' is difficult, since systems "
-"often create new records based on pre-existing data. Usually ''current'' "
-"bindings are mandated by an external authority that makes clear rules around"
-" this"
-msgstr ""
-"Os novos registos têm de utilizar este conjunto de valores, mas os registos "
-"antigos podem utilizar outros códigos. A definição de \"novo registo\" é "
-"difícil, uma vez que os sistemas criam frequentemente novos registos com "
-"base em dados pré-existentes. Normalmente, as ligações \"actuais\" são "
-"impostas por uma autoridade externa que estabelece regras claras sobre esta "
-"matéria"
+msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
+msgstr "Os novos registos têm de utilizar este conjunto de valores, mas os registos antigos podem utilizar outros códigos. A definição de \"novo registo\" é difícil, uma vez que os sistemas criam frequentemente novos registos com base em dados pré-existentes. Normalmente, as ligações \"actuais\" são impostas por uma autoridade externa que estabelece regras claras sobre esta matéria"
 
 # STRUC_DEF_DATE
 #: STRUC_DEF_DATE
@@ -3584,9 +3419,7 @@ msgstr "Modo de estrutura desconhecido"
 # STRUC_DEF_ERR_DESC
 #: STRUC_DEF_ERR_DESC
 msgid "Error describing concept- not done yet (no codings, no text)"
-msgstr ""
-"Erro na descrição do conceito - ainda não foi feito (sem codificações, sem "
-"texto)"
+msgstr "Erro na descrição do conceito - ainda não foi feito (sem codificações, sem texto)"
 
 # STRUC_DEF_EXAM
 #: STRUC_DEF_EXAM
@@ -3626,14 +3459,8 @@ msgstr "Para exemplos de códigos, ver"
 
 # STRUC_DEF_EX_DESC
 #: STRUC_DEF_EX_DESC
-msgid ""
-"Instances are not expected or even encouraged to draw from the specified "
-"value set. The value set merely provides examples of the types of concepts "
-"intended to be included."
-msgstr ""
-"Não se espera nem se incentiva que as instâncias se baseiem no conjunto de "
-"valores especificado. O conjunto de valores apenas fornece exemplos dos "
-"tipos de conceitos que se pretende incluir."
+msgid "Instances are not expected or even encouraged to draw from the specified value set. The value set merely provides examples of the types of concepts intended to be included."
+msgstr "Não se espera nem se incentiva que as instâncias se baseiem no conjunto de valores especificado. O conjunto de valores apenas fornece exemplos dos tipos de conceitos que se pretende incluir."
 
 # STRUC_DEF_EX_TYPE
 #: STRUC_DEF_EX_TYPE
@@ -3697,21 +3524,13 @@ msgstr "Expectativa de ID"
 
 # STRUC_DEF_ID_IS
 #: STRUC_DEF_ID_IS
-msgid ""
-"Id may or not be present (this is the default for elements but not "
-"resources)"
-msgstr ""
-"Id pode ou não estar presente (esta é a predefinição para elementos mas não "
-"para recursos)"
+msgid "Id may or not be present (this is the default for elements but not resources)"
+msgstr "Id pode ou não estar presente (esta é a predefinição para elementos mas não para recursos)"
 
 # STRUC_DEF_ID_MAY
 #: STRUC_DEF_ID_MAY
-msgid ""
-"Id is required to be present (this is the default for resources but not "
-"elements)"
-msgstr ""
-"É necessário que o Id esteja presente (esta é a predefinição para recursos "
-"mas não para elementos)"
+msgid "Id is required to be present (this is the default for resources but not elements)"
+msgstr "É necessário que o Id esteja presente (esta é a predefinição para recursos mas não para elementos)"
 
 # STRUC_DEF_ID_NOT_ALLOW
 #: STRUC_DEF_ID_NOT_ALLOW
@@ -3730,8 +3549,7 @@ msgstr "Impor perfil"
 
 # STRUC_DEF_INFERRED_JSON
 #: STRUC_DEF_INFERRED_JSON
-msgid ""
-"The type of this element is inferred from the JSON type in the instance"
+msgid "The type of this element is inferred from the JSON type in the instance"
 msgstr "O tipo deste elemento é inferido a partir do tipo JSON na instância"
 
 # STRUC_DEF_INVAR
@@ -3746,12 +3564,8 @@ msgstr "Este elemento é afetado pelas seguintes invariantes:"
 
 # STRUC_DEF_JSON_ARRAY
 #: STRUC_DEF_JSON_ARRAY
-msgid ""
-"JSON: This element may be present as a JSON Array even when there are no "
-"items in the instance"
-msgstr ""
-"JSON: Este elemento pode estar presente como uma matriz JSON mesmo quando "
-"não existem itens na instância"
+msgid "JSON: This element may be present as a JSON Array even when there are no items in the instance"
+msgstr "JSON: Este elemento pode estar presente como uma matriz JSON mesmo quando não existem itens na instância"
 
 # STRUC_DEF_JSON_CAN_NAME
 #: STRUC_DEF_JSON_CAN_NAME
@@ -3780,39 +3594,23 @@ msgstr "JSON: Se"
 
 # STRUC_DEF_JSON_INFERRED
 #: STRUC_DEF_JSON_INFERRED
-msgid ""
-"JSON: The type of this element is inferred from the JSON type in the "
-"instance"
-msgstr ""
-"JSON: O tipo deste elemento é inferido a partir do tipo JSON na instância"
+msgid "JSON: The type of this element is inferred from the JSON type in the instance"
+msgstr "JSON: O tipo deste elemento é inferido a partir do tipo JSON na instância"
 
 # STRUC_DEF_JSON_IS
 #: STRUC_DEF_JSON_IS
-msgid ""
-"This element is present as a JSON Array even when there are no items in the "
-"instance"
-msgstr ""
-"Este elemento está presente como uma matriz JSON mesmo quando não existem "
-"itens na instância"
+msgid "This element is present as a JSON Array even when there are no items in the instance"
+msgstr "Este elemento está presente como uma matriz JSON mesmo quando não existem itens na instância"
 
 # STRUC_DEF_JSON_MAY
 #: STRUC_DEF_JSON_MAY
-msgid ""
-"This element may be present as a JSON Array even when there are no items in "
-"the instance"
-msgstr ""
-"Este elemento pode estar presente como uma matriz JSON mesmo quando não "
-"existem itens na instância"
+msgid "This element may be present as a JSON Array even when there are no items in the instance"
+msgstr "Este elemento pode estar presente como uma matriz JSON mesmo quando não existem itens na instância"
 
 # STRUC_DEF_JSON_MAY_PRESENT
 #: STRUC_DEF_JSON_MAY_PRESENT
-msgid ""
-"The JSON Array for this property may be present even when there are no items"
-" in the instance (e.g. may be present as an empty array)"
-msgstr ""
-"A matriz JSON para esta propriedade pode estar presente mesmo quando não "
-"existem itens na instância (por exemplo, pode estar presente como uma matriz"
-" vazia)"
+msgid "The JSON Array for this property may be present even when there are no items in the instance (e.g. may be present as an empty array)"
+msgstr "A matriz JSON para esta propriedade pode estar presente mesmo quando não existem itens na instância (por exemplo, pode estar presente como uma matriz vazia)"
 
 # STRUC_DEF_JSON_NAME
 #: STRUC_DEF_JSON_NAME
@@ -3821,30 +3619,18 @@ msgstr "Nome da propriedade JSON"
 
 # STRUC_DEF_JSON_NOT_PRESENT
 #: STRUC_DEF_JSON_NOT_PRESENT
-msgid ""
-"The JSON Array for this property is not present when there are no items in "
-"the instance (e.g. never as an empty array)"
-msgstr ""
-"A matriz JSON para esta propriedade não está presente quando não existem "
-"itens na instância (por exemplo, nunca como uma matriz vazia)"
+msgid "The JSON Array for this property is not present when there are no items in the instance (e.g. never as an empty array)"
+msgstr "A matriz JSON para esta propriedade não está presente quando não existem itens na instância (por exemplo, nunca como uma matriz vazia)"
 
 # STRUC_DEF_JSON_NULL
 #: STRUC_DEF_JSON_NULL
-msgid ""
-"JSON: This object can be represented as null in the JSON structure (which "
-"counts as ''present'' for cardinality purposes)"
-msgstr ""
-"JSON: Este objeto pode ser representado como nulo na estrutura JSON (que "
-"conta como \"presente\" para efeitos de cardinalidade)"
+msgid "JSON: This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
+msgstr "JSON: Este objeto pode ser representado como nulo na estrutura JSON (que conta como \"presente\" para efeitos de cardinalidade)"
 
 # STRUC_DEF_JSON_PRESENT
 #: STRUC_DEF_JSON_PRESENT
-msgid ""
-"The JSON Array for this property is present even when there are no items in "
-"the instance (e.g. as an empty array)"
-msgstr ""
-"A matriz JSON para esta propriedade está presente mesmo quando não existem "
-"itens na instância (por exemplo, como uma matriz vazia)"
+msgid "The JSON Array for this property is present even when there are no items in the instance (e.g. as an empty array)"
+msgstr "A matriz JSON para esta propriedade está presente mesmo quando não existem itens na instância (por exemplo, como uma matriz vazia)"
 
 # STRUC_DEF_JSON_PROPERTY_NAME
 #: STRUC_DEF_JSON_PROPERTY_NAME
@@ -3853,12 +3639,8 @@ msgstr "Esta propriedade aparece em JSON com o nome da propriedade"
 
 # STRUC_DEF_JSON_SINGLE
 #: STRUC_DEF_JSON_SINGLE
-msgid ""
-"This repeating object is represented as a single JSON object with named "
-"properties. The name of the property (key) is the value of the"
-msgstr ""
-"Este objeto de repetição é representado como um único objeto JSON com "
-"propriedades nomeadas. O nome da propriedade (chave) é o valor do parâmetro"
+msgid "This repeating object is represented as a single JSON object with named properties. The name of the property (key) is the value of the"
+msgstr "Este objeto de repetição é representado como um único objeto JSON com propriedades nomeadas. O nome da propriedade (chave) é o valor do parâmetro"
 
 # STRUC_DEF_JSON_TYPE
 #: STRUC_DEF_JSON_TYPE
@@ -3904,8 +3686,7 @@ msgstr "Máximo"
 #: STRUC_DEF_MAX_MIN
 msgctxt "STRUC_DEF_MAX_MIN"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
-msgstr ""
-"Número mínimo e máximo de vezes que o elemento pode aparecer na instância"
+msgstr "Número mínimo e máximo de vezes que o elemento pode aparecer na instância"
 
 # STRUC_DEF_MAX_VALUE
 #: STRUC_DEF_MAX_VALUE
@@ -3969,12 +3750,8 @@ msgstr "[x] Nota"
 
 # STRUC_DEF_NOT_MARK
 #: STRUC_DEF_NOT_MARK
-msgid ""
-"Instances of this logical model are not marked to be the target of a "
-"Reference"
-msgstr ""
-"As instâncias deste modelo lógico não estão marcadas para serem alvo de uma "
-"referência"
+msgid "Instances of this logical model are not marked to be the target of a Reference"
+msgstr "As instâncias deste modelo lógico não estão marcadas para serem alvo de uma referência"
 
 # STRUC_DEF_NO_DESCRIM
 #: STRUC_DEF_NO_DESCRIM
@@ -3998,12 +3775,8 @@ msgstr "Não há Resumo, pois este perfil não tem diferencial"
 
 # STRUC_DEF_NULL_JSON
 #: STRUC_DEF_NULL_JSON
-msgid ""
-"This object can be represented as null in the JSON structure (which counts "
-"as ''present'' for cardinality purposes)"
-msgstr ""
-"Este objeto pode ser representado como nulo na estrutura JSON (que conta "
-"como \"presente\" para efeitos de cardinalidade)"
+msgid "This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
+msgstr "Este objeto pode ser representado como nulo na estrutura JSON (que conta como \"presente\" para efeitos de cardinalidade)"
 
 # STRUC_DEF_OBLIG
 #: STRUC_DEF_OBLIG
@@ -4012,12 +3785,8 @@ msgstr "Este elemento tem obrigações"
 
 # STRUC_DEF_OBLIG_ADD
 #: STRUC_DEF_OBLIG_ADD
-msgid ""
-"This is an obligation profile that only contains obligations and additional "
-"bindings"
-msgstr ""
-"Trata-se de um perfil de obrigações que contém apenas obrigações e ligações "
-"adicionais"
+msgid "This is an obligation profile that only contains obligations and additional bindings"
+msgstr "Trata-se de um perfil de obrigações que contém apenas obrigações e ligações adicionais"
 
 # STRUC_DEF_OBLIG_ALL
 #: STRUC_DEF_OBLIG_ALL
@@ -4081,12 +3850,8 @@ msgstr "é prefixado ao valor antes da validação"
 
 # STRUC_DEF_PREF_CONT
 #: STRUC_DEF_PREF_CONT
-msgid ""
-"This is the value set that is preferred in a given context (documentation "
-"should explain why)"
-msgstr ""
-"Este é o conjunto de valores preferido num determinado contexto (a "
-"documentação deve explicar porquê)"
+msgid "This is the value set that is preferred in a given context (documentation should explain why)"
+msgstr "Este é o conjunto de valores preferido num determinado contexto (a documentação deve explicar porquê)"
 
 # STRUC_DEF_PRIMITIVE
 #: STRUC_DEF_PRIMITIVE
@@ -4095,30 +3860,18 @@ msgstr "Valor primitivo"
 
 # STRUC_DEF_PRIM_ELE
 #: STRUC_DEF_PRIM_ELE
-msgid ""
-"This primitive element may be present, or absent, or replaced by an "
-"extension"
-msgstr ""
-"Este elemento primitivo pode estar presente, ausente ou ser substituído por "
-"uma extensão"
+msgid "This primitive element may be present, or absent, or replaced by an extension"
+msgstr "Este elemento primitivo pode estar presente, ausente ou ser substituído por uma extensão"
 
 # STRUC_DEF_PRIM_TYPE_PRESENT
 #: STRUC_DEF_PRIM_TYPE_PRESENT
-msgid ""
-"This primitive type may be present, or absent if replaced by one of the "
-"following extensions:"
-msgstr ""
-"Este tipo primitivo pode estar presente ou ausente se for substituído por "
-"uma das seguintes extensões:"
+msgid "This primitive type may be present, or absent if replaced by one of the following extensions:"
+msgstr "Este tipo primitivo pode estar presente ou ausente se for substituído por uma das seguintes extensões:"
 
 # STRUC_DEF_PRIM_TYPE_VALUE
 #: STRUC_DEF_PRIM_TYPE_VALUE
-msgid ""
-"This primitive type must have a value (the value must be present, and cannot"
-" be replaced by an extension)"
-msgstr ""
-"Este tipo primitivo deve ter um valor (o valor deve estar presente e não "
-"pode ser substituído por uma extensão)"
+msgid "This primitive type must have a value (the value must be present, and cannot be replaced by an extension)"
+msgstr "Este tipo primitivo deve ter um valor (o valor deve estar presente e não pode ser substituído por uma extensão)"
 
 # STRUC_DEF_PROFILED
 #: STRUC_DEF_PROFILED
@@ -4137,12 +3890,8 @@ msgstr "Este perfil está em conformidade com o perfil"
 
 # STRUC_DEF_PROF_REQ
 #: STRUC_DEF_PROF_REQ
-msgid ""
-"This profile also requires that the instance also conform this additional "
-"profile:"
-msgstr ""
-"Este perfil também exige que a instância esteja em conformidade com este "
-"perfil adicional:"
+msgid "This profile also requires that the instance also conform this additional profile:"
+msgstr "Este perfil também exige que a instância esteja em conformidade com este perfil adicional:"
 
 # STRUC_DEF_PROF_RES
 #: STRUC_DEF_PROF_RES
@@ -4171,20 +3920,13 @@ msgstr "Neste GI, as estruturas seguintes referem-se a este perfil:"
 
 # STRUC_DEF_REND_UNABLE_RES
 #: STRUC_DEF_REND_UNABLE_RES
-msgid ""
-"Unable to resolve StructureDefinition {0} resolving content reference {1}"
-msgstr ""
-"Não foi possível resolver a StructureDefinition {0} que está a resolver a "
-"referência de conteúdo {1}"
+msgid "Unable to resolve StructureDefinition {0} resolving content reference {1}"
+msgstr "Não foi possível resolver a StructureDefinition {0} que está a resolver a referência de conteúdo {1}"
 
 # STRUC_DEF_REPEAT
 #: STRUC_DEF_REPEAT
-msgid ""
-"This is a repeating choice group that does not appear directly in the "
-"instance"
-msgstr ""
-"Este é um grupo de opções repetitivo que não aparece diretamente na "
-"instância"
+msgid "This is a repeating choice group that does not appear directly in the instance"
+msgstr "Este é um grupo de opções repetitivo que não aparece diretamente na instância"
 
 # STRUC_DEF_REPEAT_ELE
 #: STRUC_DEF_REPEAT_ELE
@@ -4208,12 +3950,8 @@ msgstr "Requisitos"
 
 # STRUC_DEF_REQ_BIND
 #: STRUC_DEF_REQ_BIND
-msgid ""
-"A required binding for additional codes, for us when the binding strength is"
-" ''extensible'' or ''preferred''"
-msgstr ""
-"Uma ligação necessária para códigos adicionais, por exemplo, quando a força "
-"da ligação é \"extensível\" ou \"preferida"
+msgid "A required binding for additional codes, for us when the binding strength is ''extensible'' or ''preferred''"
+msgstr "Uma ligação necessária para códigos adicionais, por exemplo, quando a força da ligação é \"extensível\" ou \"preferida"
 
 # STRUC_DEF_REQ_PATT
 #: STRUC_DEF_REQ_PATT
@@ -4257,12 +3995,8 @@ msgstr "Os códigos DEVERÃO ser retirados de"
 
 # STRUC_DEF_SINGLE_JSON_OBJECTS
 #: STRUC_DEF_SINGLE_JSON_OBJECTS
-msgid ""
-"JSON: Represented as a single JSON Object with named properties using the "
-"value of the {0} child as the key"
-msgstr ""
-"JSON: Representado como um único objeto JSON com propriedades nomeadas "
-"utilizando o valor do filho {0} como chave"
+msgid "JSON: Represented as a single JSON Object with named properties using the value of the {0} child as the key"
+msgstr "JSON: Representado como um único objeto JSON com propriedades nomeadas utilizando o valor do filho {0} como chave"
 
 # STRUC_DEF_SLIC
 #: STRUC_DEF_SLIC
@@ -4327,8 +4061,7 @@ msgstr "Estruturas"
 # STRUC_DEF_SUIT_SHALL_CODE
 #: STRUC_DEF_SUIT_SHALL_CODE
 msgid "Unless not suitable, these codes SHALL be taken from"
-msgstr ""
-"A menos que não sejam adequados, estes códigos DEVERÃO ser retirados de"
+msgstr "A menos que não sejam adequados, estes códigos DEVERÃO ser retirados de"
 
 # STRUC_DEF_TARG_SUPP
 #: STRUC_DEF_TARG_SUPP
@@ -4373,8 +4106,7 @@ msgstr "Tipo Parâmetro"
 # STRUC_DEF_TYPE_SET
 #: STRUC_DEF_TYPE_SET
 msgid "This type can be bound to a value set using the"
-msgstr ""
-"Este tipo pode ser ligado a um conjunto de valores utilizando a função"
+msgstr "Este tipo pode ser ligado a um conjunto de valores utilizando a função"
 
 # STRUC_DEF_TYPE_SPEC
 #: STRUC_DEF_TYPE_SPEC
@@ -4394,20 +4126,13 @@ msgstr "IU"
 
 # STRUC_DEF_UI_CONT
 #: STRUC_DEF_UI_CONT
-msgid ""
-"This value set is provided for user look up in a given context. Typically, "
-"these valuesets only include a subset of codes relevant for input in a "
-"context"
-msgstr ""
-"Este conjunto de valores é fornecido para ser consultado pelo utilizador num"
-" determinado contexto. Normalmente, estes conjuntos de valores incluem "
-"apenas um subconjunto de códigos relevantes para entrada num contexto"
+msgid "This value set is provided for user look up in a given context. Typically, these valuesets only include a subset of codes relevant for input in a context"
+msgstr "Este conjunto de valores é fornecido para ser consultado pelo utilizador num determinado contexto. Normalmente, estes conjuntos de valores incluem apenas um subconjunto de códigos relevantes para entrada num contexto"
 
 # STRUC_DEF_UNADORNED
 #: STRUC_DEF_UNADORNED
 msgid "In the XML format, this property is represented as unadorned text."
-msgstr ""
-"No formato XML, esta propriedade é representada como texto sem adornos."
+msgstr "No formato XML, esta propriedade é representada como texto sem adornos."
 
 # STRUC_DEF_UNDEF_ACT
 #: STRUC_DEF_UNDEF_ACT
@@ -4417,9 +4142,7 @@ msgstr "Obrigações que se aplicam ao ator indefinido {0}"
 # STRUC_DEF_UNKNOWN_APPROACH
 #: STRUC_DEF_UNKNOWN_APPROACH
 msgid "Instances of this type are validated using an unknown approach: {0}"
-msgstr ""
-"As instâncias deste tipo são validadas utilizando uma abordagem "
-"desconhecida: {0}"
+msgstr "As instâncias deste tipo são validadas utilizando uma abordagem desconhecida: {0}"
 
 # STRUC_DEF_UNKNOWN_REF
 #: STRUC_DEF_UNKNOWN_REF
@@ -4748,14 +4471,8 @@ msgstr "Designações adicionais e ecrãs de idiomas"
 
 # VALUE_SET_ALL_CODE
 #: VALUE_SET_ALL_CODE
-msgid ""
-"This include specifies a hierarchy for when value sets are generated for use"
-" in a User Interface. The expansion contains all the codes, and also this "
-"structure:"
-msgstr ""
-"Este include especifica uma hierarquia para quando os conjuntos de valores "
-"são gerados para utilização numa interface de utilizador. A expansão contém "
-"todos os códigos e também essa estrutura:"
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"
+msgstr "Este include especifica uma hierarquia para quando os conjuntos de valores são gerados para utilização numa interface de utilizador. A expansão contém todos os códigos e também essa estrutura:"
 
 # VALUE_SET_ALL_CODES_DEF
 #: VALUE_SET_ALL_CODES_DEF
@@ -4815,12 +4532,8 @@ msgstr "O código do item"
 
 # VALUE_SET_CODE_SELEC
 #: VALUE_SET_CODE_SELEC
-msgid ""
-"This value set cannot be fully expanded, but a selection ({0} codes) of the "
-"whole set of codes is shown here."
-msgstr ""
-"Este conjunto de valores não pode ser totalmente expandido, mas é aqui "
-"apresentada uma seleção (códigos {0}) de todo o conjunto de códigos."
+msgid "This value set cannot be fully expanded, but a selection ({0} codes) of the whole set of codes is shown here."
+msgstr "Este conjunto de valores não pode ser totalmente expandido, mas é aqui apresentada uma seleção (códigos {0}) de todo o conjunto de códigos."
 
 # VALUE_SET_COMMA
 #: VALUE_SET_COMMA
@@ -4844,13 +4557,8 @@ msgstr "Este conjunto de valores contém pelo menos {0} conceitos"
 
 # VALUE_SET_CONT_STRUC
 #: VALUE_SET_CONT_STRUC
-msgid ""
-"This include specifies a hierarchy for when value sets are generated for use"
-" in a User Interface. The expansion contains this structure:"
-msgstr ""
-"Esse include especifica uma hierarquia para quando os conjuntos de valores "
-"são gerados para utilização em uma interface de usuário. A expansão contém "
-"essa estrutura:"
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:"
+msgstr "Esse include especifica uma hierarquia para quando os conjuntos de valores são gerados para utilização em uma interface de usuário. A expansão contém essa estrutura:"
 
 # VALUE_SET_DANISH
 #: VALUE_SET_DANISH
@@ -4969,24 +4677,13 @@ msgstr "generaliza"
 
 # VALUE_SET_HAS
 #: VALUE_SET_HAS
-msgid ""
-"This value set has {0} codes in it. In order to keep the publication size "
-"manageable, only a selection ({1} codes) of the whole set of codes is shown."
-msgstr ""
-"Este conjunto de valores contém {0} códigos. A fim de manter o tamanho da "
-"publicação gerível, é apresentada apenas uma seleção ({1} códigos) de todo o"
-" conjunto de códigos."
+msgid "This value set has {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
+msgstr "Este conjunto de valores contém {0} códigos. A fim de manter o tamanho da publicação gerível, é apresentada apenas uma seleção ({1} códigos) de todo o conjunto de códigos."
 
 # VALUE_SET_HAS_AT_LEAST
 #: VALUE_SET_HAS_AT_LEAST
-msgid ""
-"This value set has at least {0} codes in it. In order to keep the "
-"publication size manageable, only a selection ({1} codes) of the whole set "
-"of codes is shown."
-msgstr ""
-"Este conjunto de valores contém pelo menos {0} códigos. A fim de manter o "
-"tamanho da publicação gerível, é apresentada apenas uma seleção ({1} "
-"códigos) de todo o conjunto de códigos."
+msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
+msgstr "Este conjunto de valores contém pelo menos {0} códigos. A fim de manter o tamanho da publicação gerível, é apresentada apenas uma seleção ({1} códigos) de todo o conjunto de códigos."
 
 # VALUE_SET_IE
 #: VALUE_SET_IE
@@ -5072,24 +4769,13 @@ msgstr "não em"
 
 # VALUE_SET_NOT_DEF
 #: VALUE_SET_NOT_DEF
-msgid ""
-"This include specifies a hierarchy for when value sets are generated for use"
-" in a User Interface, but the rules are not properly defined"
-msgstr ""
-"Este include especifica uma hierarquia para quando os conjuntos de valores "
-"são gerados para utilização numa interface de utilizador, mas as regras não "
-"estão corretamente definidas"
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined"
+msgstr "Este include especifica uma hierarquia para quando os conjuntos de valores são gerados para utilização numa interface de utilizador, mas as regras não estão corretamente definidas"
 
 # VALUE_SET_NOT_FOUND
 #: VALUE_SET_NOT_FOUND
-msgid ""
-"This include specifies a hierarchy for when value sets are generated for use"
-" in a User Interface. The expansion contains this structure, and any codes "
-"not found in the structure:"
-msgstr ""
-"Esse include especifica uma hierarquia para quando os conjuntos de valores "
-"são gerados para utilização em uma interface de usuário. A expansão contém "
-"essa estrutura e quaisquer códigos não encontrados na estrutura:"
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:"
+msgstr "Esse include especifica uma hierarquia para quando os conjuntos de valores são gerados para utilização em uma interface de usuário. A expansão contém essa estrutura e quaisquer códigos não encontrados na estrutura:"
 
 # VALUE_SET_NO_VER
 #: VALUE_SET_NO_VER
@@ -5134,24 +4820,17 @@ msgstr "correspondências (por regex)"
 # VALUE_SET_RULES_EXC
 #: VALUE_SET_RULES_EXC
 msgid "This value set excludes codes based on the following rules:"
-msgstr ""
-"Este conjunto de valores exclui códigos com base nas seguintes regras:"
+msgstr "Este conjunto de valores exclui códigos com base nas seguintes regras:"
 
 # VALUE_SET_RULES_INC
 #: VALUE_SET_RULES_INC
 msgid "This value set includes codes based on the following rules:"
-msgstr ""
-"Este conjunto de valores inclui códigos baseados nas seguintes regras:"
+msgstr "Este conjunto de valores inclui códigos baseados nas seguintes regras:"
 
 # VALUE_SET_SEL
 #: VALUE_SET_SEL
-msgid ""
-"This value set has >1000 codes in it. In order to keep the publication size "
-"manageable, only a selection (1000 codes) of the whole set of codes is shown"
-msgstr ""
-"Este conjunto de valores contém mais de 1000 códigos. A fim de manter o "
-"tamanho da publicação gerível, é apresentada apenas uma seleção (1000 "
-"códigos) de todo o conjunto de códigos"
+msgid "This value set has >1000 codes in it. In order to keep the publication size manageable, only a selection (1000 codes) of the whole set of codes is shown"
+msgstr "Este conjunto de valores contém mais de 1000 códigos. A fim de manter o tamanho da publicação gerível, é apresentada apenas uma seleção (1000 códigos) de todo o conjunto de códigos"
 
 # VALUE_SET_SNOMED
 #: VALUE_SET_SNOMED
@@ -5195,12 +4874,8 @@ msgstr "estes códigos, tal como definidos em"
 
 # VALUE_SET_TOO_COSTLY
 #: VALUE_SET_TOO_COSTLY
-msgid ""
-"This value set cannot be expanded because the terminology server(s) deemed "
-"it too costly to do so"
-msgstr ""
-"Este conjunto de valores não pode ser expandido porque o(s) servidor(es) "
-"terminológico(s) considerou(aram) demasiado dispendioso fazê-lo"
+msgid "This value set cannot be expanded because the terminology server(s) deemed it too costly to do so"
+msgstr "Este conjunto de valores não pode ser expandido porque o(s) servidor(es) terminológico(s) considerou(aram) demasiado dispendioso fazê-lo"
 
 # VALUE_SET_UK
 #: VALUE_SET_UK
@@ -5219,13 +4894,8 @@ msgstr "Estados Unidos"
 
 # VALUE_SET_USED_ELSEWHERE
 #: VALUE_SET_USED_ELSEWHERE
-msgid ""
-"This value set is not used here; it may be used elsewhere (e.g. "
-"specifications and/or implementations that use this content)"
-msgstr ""
-"Este conjunto de valores não é utilizado aqui; pode ser utilizado noutro "
-"local (por exemplo, especificações e/ou implementações que utilizem este "
-"conteúdo)"
+msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr "Este conjunto de valores não é utilizado aqui; pode ser utilizado noutro local (por exemplo, especificações e/ou implementações que utilizem este conteúdo)"
 
 # VALUE_SET_US_ICD10CM
 #: VALUE_SET_US_ICD10CM
