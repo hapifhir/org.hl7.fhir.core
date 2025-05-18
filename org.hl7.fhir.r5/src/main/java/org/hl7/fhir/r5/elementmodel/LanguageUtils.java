@@ -643,17 +643,44 @@ public class LanguageUtils {
         generateTranslations(c, lang, list, npath);
       }
     }
-    
   }
 
   /**
-   * override specifiations
+   * override specifications
    * 
    * @param path
    * @return
    */
   private boolean isTranslatable(String path) {
-    return Utilities.existsInList(path, "");    
+    return Utilities.existsInList(path, "TestCases.publisher",
+        "TestCases.contact.telecom.value",
+        "TestCases.definition",
+        "TestCases.parameter.name",
+        "TestCases.parameter.description",
+        "TestCases.scope.description ",
+        "TestCases.dependency.description",
+        "TestCases.mode.description",
+        "TestCases.suite",
+        "TestCases.suite.name",
+        "TestCases.suite.description",
+        "TestCases.suite.test",
+        "TestCases.suite.test.name",
+        "TestCases.suite.test.description",
+        "TestCases.suite.test.assert.human",
+        "ActorDefinition.title",
+        "ActorDefinition.description",
+        "ActorDefinition.purpose",
+        "ActorDefinition.copyright",
+        "ActorDefinition.copyrightLabel",
+        "ActorDefinition.documentation",
+        "Requirements.title",
+        "Requirements.publisher",
+        "Requirements.description",
+        "Requirements.purpose",
+        "Requirements.copyright",
+        "Requirements.copyrightLabel",
+        "Requirements.statement.label",
+        "Requirements.statement.requirement");    
   }
 
   private boolean isExemptFromTranslations(String path) {
