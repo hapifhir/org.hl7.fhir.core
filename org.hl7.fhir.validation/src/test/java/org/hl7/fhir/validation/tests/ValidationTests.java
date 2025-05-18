@@ -101,6 +101,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Charsets;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -119,8 +120,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
-  private static final boolean BUILD_NEW = true;
   private static final boolean CLONE = true;
+  private static final boolean BUILD_NEW = false;
+  private static final boolean REVISING_TEST_CASES = false;
 
   @Parameters(name = "{0} (#{index})")
   public static Iterable<Object[]> data() throws IOException {
@@ -156,18 +158,21 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   private String version;
   private String name;
   private Map<String, String> packageMap = new HashMap<String, String>();
-  
+ 
 
   private static ValidationEngine currentEngine;
   private ValidationEngine vCurr;
+  private String outputFolder;
   private static String thoVersion;
   private static String extensionsVersion;
   private static String currentVersion;
   private static IgLoader igLoader;
 
-  public ValidationTests(String name, JsonObject content) {
+  public ValidationTests(String name, JsonObject content) throws IOException {
     this.name = name;
     this.content = content;
+    this.outputFolder = Utilities.path("[tmp]", "validator", "validation-output");
+    FileUtilities.createDirectory(outputFolder);
   }
 
   @AfterAll
@@ -351,8 +356,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       }
    }
     List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
-    if (content.getAsJsonObject("java").has("debug")) {
-      val.getSettings().setDebug(content.getAsJsonObject("java").get("debug").getAsBoolean());
+    if (content.has("debug")) {
+      val.getSettings().setDebug(content.get("debug").getAsBoolean());
     } else {
       val.getSettings().setDebug(false);
     }
@@ -423,7 +428,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       logOutput(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
       Element res = val.validate(null, errors, new ByteArrayInputStream(testCaseContent), fmt);
       logOutput(val.reportTimes());
-      checkOutcomes(errors, content, null, name, suppress);
+      checkOutcomes(errors, content, "base", null, name, suppress);
+      moveOutcomes(content, name, "base");
       
       if (mtInfo != null) {
         System.out.print("** Matchetype: ");
@@ -432,7 +438,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         MatchetypeValidator mv = new MatchetypeValidator(val.getFHIRPathEngine());
         List<ValidationMessage> mtErrors = new ArrayList<ValidationMessage>();
         mv.compare(mtErrors, "$", exp, res);
-        checkOutcomes(mtErrors, mtInfo, null, name, suppress);
+        checkOutcomes(mtErrors, mtInfo,  "matchetype", null, name, suppress);
       }
     }
     if (content.has("profile")) {
@@ -447,8 +453,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           igLoader.loadIg(vCurr.getIgs(), vCurr.getBinaries(), e.getAsString(), true);
         }
       }
-      if (profile.getAsJsonObject("java").has("debug")) {
-        val.getSettings().setDebug(profile.getAsJsonObject("java").get("debug").getAsBoolean());
+      if (profile.has("debug")) {
+        val.getSettings().setDebug(profile.get("debug").getAsBoolean());
       }
       if (profile.has("supporting")) {
         for (JsonElement e : profile.getAsJsonArray("supporting")) {
@@ -482,7 +488,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
       val.validate(null, errorsProfile, new ByteArrayInputStream(testCaseContent), fmt, asSdList(sd));
       logOutput(val.reportTimes());
-      checkOutcomes(errorsProfile, profile, filename, name, suppress);
+      checkOutcomes(errorsProfile, profile, "profile", filename, name, suppress);
+      moveOutcomes(profile, name, "profile");
     }
     if (content.has("logical")) {
       System.out.print("** Logical: ");
@@ -524,9 +531,35 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           Assert.assertTrue(fp.evaluateToBoolean(null, le, le, le, fp.parse(exp)));
         }
       }
-      checkOutcomes(errorsLogical, logical, "logical", name, suppress);
+      checkOutcomes(errorsLogical, logical, "logical", "logical", name, suppress);
     }
     logger.verifyHasNoRequests();
+  }
+
+  private void moveOutcomes(JsonObject focus, String name, String mode) throws IOException {
+    if (REVISING_TEST_CASES) {
+      if (focus.has("dotnet-brianpos") && focus.get("dotnet-brianpos").isJsonObject()) {
+        byte[] json = JsonTrackingParser.writeBytes(focus.getAsJsonObject("dotnet-brianpos").getAsJsonObject("outcome"), true);
+        String filename = Utilities.path("/Users/grahamegrieve/work/test-cases/validator/outcomes/brianpos", name.replace("/", "-")+"-"+mode+".json"); 
+        FileUtilities.bytesToFile(json, filename);
+        focus.remove("dotnet-brianpos");
+        focus.addProperty("brianpos", "brianpos/"+name.replace("/", "-")+"-"+mode+".json");
+      }
+      if (focus.has("firely-sdk-current") && focus.get("firely-sdk-current").isJsonObject()) {
+        byte[] json = JsonTrackingParser.writeBytes(focus.getAsJsonObject("firely-sdk-current").getAsJsonArray("output"), true);
+        String filename = Utilities.path("/Users/grahamegrieve/work/test-cases/validator/outcomes/firely-sdk-current", name.replace("/", "-")+"-"+mode+".json"); 
+        FileUtilities.bytesToFile(json, filename);
+        focus.remove("firely-sdk-current");
+        focus.addProperty("firely-sdk-current", "firely-sdk-current/"+name.replace("/", "-")+"-"+mode+".json");
+      }
+      if (content.has("firely-sdk-wip") && focus.get("firely-sdk-wip").isJsonObject()) {
+        byte[] json = JsonTrackingParser.writeBytes(focus.getAsJsonObject("firely-sdk-wip").getAsJsonArray("output"), true);
+        String filename = Utilities.path("/Users/grahamegrieve/work/test-cases/validator/outcomes/firely-sdk-wip", name.replace("/", "-")+"-"+mode+".json"); 
+        FileUtilities.bytesToFile(json, filename);
+        focus.remove("firely-sdk-wip");
+        focus.addProperty("firely-sdk-wip", "firely-sdk-wip/"+name.replace("/", "-")+"-"+mode+".json");
+      }
+    }
   }
 
 
@@ -616,15 +649,28 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
   }
 
-  private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String profile, String name, List<String> suppress) throws IOException {
+  private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String mode, String profile, String name, List<String> suppress) throws IOException {
     errors.removeIf(vm -> vm.containsText(suppress));
-    JsonObject java = focus.getAsJsonObject("java");
-    OperationOutcome goal = java.has("outcome") ? (OperationOutcome) new JsonParser().parse(java.getAsJsonObject("outcome")) : new OperationOutcome();
+    
+    if (REVISING_TEST_CASES) {
+      String fnSrc = Utilities.path("/Users/grahamegrieve/work/test-cases/validator/outcomes/java", name.replace("/", "-")+"-"+mode+".json"); 
+      if (!new File(fnSrc).exists()) {
+        JsonObject java = focus.getAsJsonObject("java");
+        OperationOutcome goal = java.has("outcome") ? (OperationOutcome) new JsonParser().parse(java.getAsJsonObject("outcome")) : new OperationOutcome();
+        String jsonGoal =  new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(goal);
+        FileUtilities.stringToFile(jsonGoal, fnSrc);
+      }
+      focus.remove("java");
+      focus.addProperty("java", "java/"+name.replace("/", "-")+"-"+mode+".json");
+    }
+
+    OperationOutcome goal = (OperationOutcome) new JsonParser().parse(TestingUtilities.loadTestResource("validator", "outcomes", "java", name.replace("/", "-")+"-"+mode+".json"));
     OperationOutcome actual = OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
     actual.getIssue().forEach(iss -> iss.removeExtension(ToolingExtensions.EXT_ISSUE_SLICE_INFO));
-    String json = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(actual);
     
+    String json = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(actual);
+    FileUtilities.stringToFile(json, Utilities.path(outputFolder, name.replace("/", "-")+"-"+mode+".json"));
 
     List<String> fails = new ArrayList<>();
     
@@ -669,29 +715,6 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       logOutput("========================================================");
       logOutput("");  
       if (BUILD_NEW) {
-        if (java.has("output")) {
-          java.remove("output");
-        }
-        if (java.has("error-locations")) {
-          java.remove("error-locations");
-        }
-        if (java.has("warningCount")) {
-          java.remove("warningCount");
-        }
-        if (java.has("infoCount")) {
-          java.remove("infoCount");
-        }
-        if (java.has("errorCount")) {
-          java.remove("errorCount");
-        }
-        if (java.has("outcome")) {
-          java.remove("outcome");
-        }
-        if (actual.hasIssue()) {
-          JsonObject oj = JsonTrackingParser.parse(json, null);
-          java.add("outcome", oj);
-        }
-
         File newManifestFile = ManagedFileAccess.file(Utilities.path("[tmp]", "validator", "manifest.new.json"));
         if (!newManifestFile.getParentFile().exists()) {
           newManifestFile.getParentFile().mkdir();

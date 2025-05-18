@@ -533,6 +533,8 @@ public interface IWorkerContext {
    */
   Locale getLocale();
   void setLocale(Locale locale);
+
+  @Deprecated
   void setValidationMessageLanguage(Locale locale);
 
   /**

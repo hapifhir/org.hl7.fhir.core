@@ -42,6 +42,8 @@ import java.util.*;
 
 import javax.annotation.Nonnull;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.Decimal;
@@ -267,7 +269,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       "ul", "ol", "li", "dl", "dt", "dd", "pre", "table", "caption", "colgroup", "col", "thead", "tr", "tfoot", "tbody", "th", "td",
       "code", "samp", "img", "map", "area"));
   private static final HashSet<String> HTML_ATTRIBUTES = new HashSet<>(Arrays.asList(
-      "title", "style", "class", "id", "idref", "lang", "xml:lang", "dir", "accesskey", "tabindex",
+      "title", "style", "class", "id", "lang", "xml:lang", "dir", "accesskey", "tabindex",
       // tables
       "span", "width", "align", "valign", "char", "charoff", "abbr", "axis", "headers", "scope", "rowspan", "colspan"));
 
@@ -574,6 +576,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean wantInvariantInMessage;
   private boolean hintAboutNonMustSupport;
   private boolean showMessagesFromReferences;
+  @Getter
+  @Setter
   private String validationLanguage;
   private boolean baseOnly;
   private boolean noCheckAggregation;
@@ -599,6 +603,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   long time = 0;
   long start = 0;
   long lastlog = 0;
+  @Getter
   private IEvaluationContext externalHostServices;
   private boolean noExtensibleWarnings;
   private String serverBase;
@@ -607,7 +612,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private String executionId;
   private IValidationProfileUsageTracker tracker;
   private ValidatorHostServices validatorServices;
-  private boolean assumeValidRestReferences;
   private boolean securityChecks;
   private ProfileUtilities profileUtilities;
   private boolean crumbTrails;
@@ -709,11 +713,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean isAssumeValidRestReferences() {
-    return this.assumeValidRestReferences;
+    return settings.isAssumeValidRestReferences();
   }
 
   public void setAssumeValidRestReferences(boolean value) {
-    this.assumeValidRestReferences = value;
+    settings.setAssumeValidRestReferences(value);
   }
 
   public boolean isAllowComments() {
@@ -3195,10 +3199,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
 
         if (url != null && url.startsWith("urn:uuid:")) {
-          String s = url.substring(9);
+
+          String s = url;
           if (s.contains("#")) {
             s = s.substring(0, s.indexOf("#"));
           }
+          if (type.equals("canonical") && s.contains("|")) {
+            s = s.substring(0, s.lastIndexOf("|")); 
+          }
+          s = s.substring(9);
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, UUIDUtilities.isValidUUID(s), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VALID, s) && ok;
         }
         if (url != null && url.startsWith("urn:oid:")) {
@@ -3433,7 +3442,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           // check that no illegal elements and attributes have been used
           ok = checkInnerNames(errors, e, path, xhtml.getChildNodes(), false) && ok;
           ok = checkUrls(errors, e, path, xhtml.getChildNodes()) && ok;
-          ok = checkIdRefs(errors, e, path, xhtml, resource, node) && ok;
           if (true) {
             ok = checkReferences(valContext, errors, e, path, "div", xhtml, resource) && ok;
           }
@@ -3596,12 +3604,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         } else {
           if (isExampleUrl(url) && isAllowExamples()) {
             // nothing - these do need to resolve
-          } else if (isExemptPathForUrlChecking(context, isAbsolute(url), eurl)) {
+          } else if (isExemptPathForUrlChecking(context, isAbsolute(url), eurl, e)) {
             // nothing
           } else if (isKnownSpace(url) || internal) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url) && ok;;
           } else if (isExampleUrl(url)) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE, url) && ok;;
+          } else if (isHintableElementForUrlChecking(path)) {
+            hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
           } else {
             warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
           }
@@ -3649,6 +3659,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
+  private boolean isHintableElementForUrlChecking(String path) {
+     if (Utilities.endsWithInList(path, ".meta.source")) {
+       return true;
+     } else {
+       return false;
+     }
+  }
+
   private boolean isCommunicationsUrl(String url) {
     return Utilities.startsWithInList(url, "tel:");
   }
@@ -3673,17 +3691,35 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return Utilities.existsInList(url, "urn:hl7-org:v3", "urn:hl7-org:sdtc", "http://unstats.un.org/unsd/methods/m49/m49.htm");
   }
 
-  private boolean isExemptPathForUrlChecking(ElementDefinition context, boolean absolute, String eurl) {
+  private boolean isExemptPathForUrlChecking(ElementDefinition context, boolean absolute, String eurl, Element element) {
     if (!context.hasBase()) {
       return false;
     }
     if (Utilities.existsInList(eurl, "http://hl7.org/fhir/tools/StructureDefinition/ig-page-name")) {
       return true;
     }
+    if ("Extension.value[x]".equals(context.getBase().getPath())) {
+      String ext = null;
+      Element p = element.getParentForValidator();
+      while (!Utilities.isAbsoluteUrl(ext) && p != null) {
+        if (p.fhirType().equals("Extension")) {
+          ext = p.getNamedChildValue("url");
+        }
+        p = p.getParentForValidator();
+      }
+      if (ext == null) {
+        return true;
+      } else {
+        
+        return Utilities.existsInList(ext, 
+            ToolingExtensions.EXT_TEXT_LINK  // we're going to check that elsewhere
+            );
+      }
+    }
     if (absolute) {
       return Utilities.existsInList(context.getBase().getPath(),
           "ImplementationGuide.definition.page.source[x]", "ImplementationGuide.definition.page.name",  "ImplementationGuide.definition.page.name[x]",
-          "Requirements.statement.satisfiedBy", 
+          "Requirements.statement.satisfiedBy", "Bundle.entry.request.url",
           "StructureDefinition.type", "ElementDefinition.fixed[x]", "ElementDefinition.pattern[x]", "ImplementationGuide.dependsOn.uri", "StructureDefinition.mapping.uri",
           "MessageHeader.source.endpoint", "MessageHeader.source.endpoint[x]", "MessageHeader.destination.endpoint", "MessageHeader.destination.endpoint[x]"
           );
@@ -3692,7 +3728,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return Utilities.existsInList(context.getBase().getPath(),
           "Extension.url", // extension urls are validated elsewhere
          "ImplementationGuide.definition.page.source[x]", "ImplementationGuide.definition.page.name", "ImplementationGuide.definition.page.name[x]",
-         "Requirements.statement.satisfiedBy", 
+         "Requirements.statement.satisfiedBy", "Bundle.entry.request.url", 
          "StructureDefinition.type", "ElementDefinition.fixed[x]", "ElementDefinition.pattern[x]"
          );
     }
@@ -3951,25 +3987,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (node.hasChildren()) {
       for (XhtmlNode child : node.getChildNodes()) {
         checkImageSources(valContext, errors, e, path, path+"/"+child.getName(), child, resource);
-      }        
-    }
-    return ok;
-  }
-
-  private boolean checkIdRefs(List<ValidationMessage> errors, Element e, String path, XhtmlNode node, Element resource, NodeStack stack) {
-    boolean ok = true;
-    if (node.getNodeType() == NodeType.Element && node.getAttribute("idref") != null) {
-      String idref = node.getAttribute("idref");
-      int count = countFragmentMatches(resource, idref, stack);
-      if (count == 0) {
-        ok = warning(errors, "2023-12-01", IssueType.INVALID, e.line(), e.col(), path, idref == null, I18nConstants.XHTML_IDREF_NOT_FOUND, idref) && ok;                
-      } else if (count > 1) {
-        ok = rule(errors, "2023-12-01", IssueType.INVALID, e.line(), e.col(), path, idref == null, I18nConstants.XHTML_IDREF_NOT_MULTIPLE_MATCHES, idref) && ok;                
-      }
-    }
-    if (node.hasChildren()) {
-      for (XhtmlNode child : node.getChildNodes()) {
-        checkIdRefs(errors, e, path, child, resource, stack);
       }        
     }
     return ok;
@@ -4319,6 +4336,106 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
+  private boolean checkNarrative(ValidationContext valContext, List<ValidationMessage> errors, String path,Element element, Element resource, StructureDefinition profile,
+      ElementDefinition container, String parentType, NodeStack stack, PercentageTracker pct, ValidationMode vmode) throws FHIRException {
+    boolean ok = true;
+    if (element.hasExtension(ToolingExtensions.EXT_TEXT_LINK)) {
+      XhtmlNode div = element.hasChild("div") ? element.getNamedChild("div").getXhtml() : null;
+      if (div == null) {
+        ok = rule(errors, "2025-05-17", IssueType.STRUCTURE, element.line(), element.col(), path,
+            !Utilities.noString(element.getNamedChildValue("display", false)), I18nConstants.TEXT_LINK_NO_DIV) && ok;      
+      } else for (Element ex : element.getExtensions(ToolingExtensions.EXT_TEXT_LINK)) {
+        NodeStack estack = stack.push(ex, ex.getIndex(), container, container);  
+        for (Element htmlid : ex.getExtensions("htmlid")) {
+          String id = htmlid.getNamedChildValue("value");
+          if (!divHasId(div, id)) {
+            ok = rule(errors, "2025-05-17", IssueType.STRUCTURE, element.line(), element.col(), path,
+                !Utilities.noString(element.getNamedChildValue("display", false)), I18nConstants.TEXT_LINK_NO_ID, id) && ok;
+          }
+        }
+        String data = ex.getExtensionString("data");
+        String type = null;
+        if (data == null) {
+          ok = rule(errors, "2025-05-17", IssueType.STRUCTURE, element.line(), element.col(), path,
+              !Utilities.noString(element.getNamedChildValue("display", false)), I18nConstants.TEXT_LINK_NO_DATA) && ok;            
+        } else if (data.startsWith("#")) {
+          String idref = data.substring(1);
+          List<Element> matches = getFragmentMatches(resource, idref, stack);
+
+          if (matches.size() == 0) {
+            ok = rule(errors, "2025-05-17", IssueType.NOTFOUND, stack, false, I18nConstants.TEXT_LINK_DATA_NOT_FOUND, data) && ok;                
+          } else {
+            if (matches.size() > 1) {
+              ok = rule(errors, "2025-05-17", IssueType.INVALID, stack, false, I18nConstants.TEXT_LINK_DATA_MULTIPLE_MATCHES, data) && ok;
+            }
+            type = matches.get(0).fhirType();
+          } 
+        } else {
+          String fragment = null;
+          String url = null;
+          if (data.contains("#")) {
+            url = data.substring(0, data.indexOf("#"));
+            fragment = data.substring(data.indexOf("#")+1);
+          } else {
+            url = data;
+          }
+          List<Element> matches = getUrlMatches(resource, url, stack);
+          if (matches.size() == 0) {
+            ok = rule(errors, "2025-05-17", IssueType.NOTFOUND, stack, false, I18nConstants.TEXT_LINK_DATA_NOT_FOUND, data) && ok;                
+          } else {
+            if (matches.size() > 1) {
+              ok = rule(errors, "2025-05-17", IssueType.INVALID, stack, false, I18nConstants.TEXT_LINK_DATA_MULTIPLE_MATCHES, data) && ok;
+            }
+            type = matches.get(0).fhirType();
+            if (fragment != null) {
+              matches = getFragmentMatches(matches.get(0), fragment, stack);
+              if (matches.size() == 0) {
+                ok = rule(errors, "2025-05-17", IssueType.NOTFOUND, stack, false, I18nConstants.TEXT_LINK_DATA_NOT_FOUND, data) && ok;                
+              } else {
+                if (matches.size() > 1) {
+                  ok = rule(errors, "2025-05-17", IssueType.INVALID, stack, false, I18nConstants.TEXT_LINK_DATA_MULTIPLE_MATCHES, data) && ok;
+                }
+                type = matches.get(0).fhirType();
+              } 
+            }
+          } 
+        }
+        if (ex.hasExtension("selector")) {
+          String expression = ex.getExtensionString("selector");
+          try {
+            ExpressionNode expr = fpe.parse(expression);
+            if (type != null) {
+              fpe.check(null, resource.fhirType(), resource.fhirType(), type, expr);
+            }
+          } catch (Exception e) {
+            ok = rule(errors, "2025-05-17", IssueType.INVALID, stack, false, I18nConstants.TEXT_LINK_SELECTOR_INVALID, expression, e.getMessage()) && ok;            
+          }
+        }
+      }
+    }
+      /*
+
+    Complex Extension: Used to denote which portions of the narrative are linked to (usually, generated from) structured data in resources. This information might be used in several different ways, including translating and regenerating narrative in applications that are using/presenting the narrative.
+
+    html: string: The id attribute on an element in the xhtml narrative
+    data: uri: The id attribute on a resource element (#{id}, relative#{id} or https://absolute#{id})
+    selector: string: FHIRPath that selects a subset of the identified data. This sub-extension exists because in some circumstances, the specific data items are in resources where the constructor of the narrative can't introduce specific ids on the relevent elements
+    */
+    return ok;
+  }
+
+  private boolean divHasId(XhtmlNode node, String id) {
+    if (node.hasAttribute("id") && id.equals(node.getAttribute("id"))) {
+      return true;
+    }
+    for (XhtmlNode c : node.getChildNodes()) {
+      if (divHasId(c, id)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private boolean checkReference(ValidationContext valContext,
                               List<ValidationMessage> errors,
                               String path,
@@ -4342,9 +4459,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (Utilities.existsInList(ref, "http://tools.ietf.org/html/bcp47")) {
       // special known URLs that can't be validated but are known to be valid
       return true;
+    } else {
+      ok = rule(errors, "2025-05-07", IssueType.INVALID, element.line(), element.col(), path, ref.matches("\\S+"), I18nConstants.REFERENCE_REF_INVALID_REF, ref) && ok;
     }
 
-    warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, !isSuspiciousReference(ref), I18nConstants.REFERENCE_REF_SUSPICIOUS, ref);      
+    if (ref.matches("\\S+")) {
+      warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, !isSuspiciousReference(ref), I18nConstants.REFERENCE_REF_SUSPICIOUS, ref);
+    }
 
     BooleanHolder bh = new BooleanHolder();
     BooleanHolder stop = new BooleanHolder(false);
@@ -4568,7 +4689,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       boolean okToRef = !type.hasAggregation() || type.hasAggregation(AggregationMode.REFERENCED);
       ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, okToRef, I18nConstants.REFERENCE_REF_NOTFOUND_BUNDLE, ref) && ok;
     }
-    if (we == null && ft != null && assumeValidRestReferences) {
+    if (we == null && ft != null && settings.isAssumeValidRestReferences()) {
       // if we == null, we inferred ft from the reference. if we are told to treat this as gospel
       TypeRefComponent type = getReferenceTypeRef(container.getType());
       Set<String> types = new HashSet<>();
@@ -4610,7 +4731,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean isSuspiciousReference(String url) {
-    if (!assumeValidRestReferences || url == null || Utilities.isAbsoluteUrl(url) || url.startsWith("#")) {
+    if (!settings.isAssumeValidRestReferences() || url == null || Utilities.isAbsoluteUrl(url) || url.startsWith("#")) {
       return false;
     }
     String[] parts = url.split("\\/");
@@ -7008,6 +7129,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         checkDisplay = checkCodeableConcept(checkBindings ? errors : new ArrayList<>(), ei.getPath(), ei.getElement(), profile, checkDefn, localStack, bh);
         ok = (bh.ok() || !checkBindings) & ok;
         thisIsCodeableConcept = true;
+      } else if (type.equals("Narrative")) {
+        ok = checkNarrative(valContext, errors, ei.getPath(), ei.getElement(), resource, profile, checkDefn, actualType, localStack, pct, mode) && ok;
       } else if (type.equals("Reference")) {
         ok = checkReference(valContext, errors, ei.getPath(), ei.getElement(), profile, checkDefn, actualType, localStack, pct, mode) && ok;
         // We only check extensions if we're not in a complex extension or if the element we're dealing with is not defined as part of that complex extension
@@ -8150,20 +8273,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-
-  public IEvaluationContext getExternalHostServices() {
-    return externalHostServices;
-  }
-
-  public String getValidationLanguage() {
-    return validationLanguage;
-  }
-
-  public void setValidationLanguage(String validationLanguage) {
-    this.validationLanguage = validationLanguage;
-  }
-
- 
   private String tail(String path) {
     return path.substring(path.lastIndexOf(".") + 1);
   }

@@ -17,7 +17,7 @@ msgstr "Dérivé de :"
 # ACTOR_DEF_TYP
 #: ACTOR_DEF_TYP
 msgid "Type: {0}"
-msgstr "Type :"
+msgstr "Type : {0}"
 
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
@@ -152,7 +152,7 @@ msgstr ""
 # BUNDLE_HEADER_ROOT
 #: BUNDLE_HEADER_ROOT
 msgid "Bundle {0} of type {1}"
-msgstr ""
+msgstr "Bundle {0} de type {1}"
 
 # BUNDLE_IF_MATCH
 #: BUNDLE_IF_MATCH
@@ -362,7 +362,7 @@ msgstr "Résumé des interactions"
 # CAPABILITY_MAY_SUPP
 #: CAPABILITY_MAY_SUPP
 msgid "MAY Support the Following Implementation Guides"
-msgstr ""
+msgstr "PEUT prendre en charge les guides d'implémentation suivants"
 
 # CAPABILITY_MESSAGING_CAP
 #: CAPABILITY_MESSAGING_CAP
@@ -497,7 +497,7 @@ msgstr ""
 # CAPABILITY_SEARCH_PAR
 #: CAPABILITY_SEARCH_PAR
 msgid "The required, recommended, and some optional search parameters (if any)."
-msgstr ""
+msgstr "Les paramètres de recherche (SearchParameters) requis, recommandés, optionnels (le cas échéant)."
 
 # CAPABILITY_SEARCH_PARS
 #: CAPABILITY_SEARCH_PARS
@@ -512,7 +512,7 @@ msgstr "Doit (SHOULD) supporter les guides d'implémentation suivants"
 # CAPABILITY_SUMM_RES
 #: CAPABILITY_SUMM_RES
 msgid "The summary table lists the resources that are part of this configuration, and for each resource it lists:"
-msgstr ""
+msgstr "Le tableau récapitulatif liste les ressources faisant partie de cette configuration, et pour chaque ressource, il liste :"
 
 # CAPABILITY_SUMM_SYS_INT
 #: CAPABILITY_SUMM_SYS_INT
@@ -567,7 +567,7 @@ msgstr ""
 # CAPABILITY_TYP_PRES
 #: CAPABILITY_TYP_PRES
 msgid "ype are only present if at least one of the resources has support for them."
-msgstr ""
+msgstr "!!les types sont seulement présents si au moins une des ressources les prend en charge."
 
 # CAPABILITY_UPDATE_INT
 #: CAPABILITY_UPDATE_INT
@@ -587,12 +587,12 @@ msgstr ""
 # CAPABILTY_SHALL_SUPP
 #: CAPABILTY_SHALL_SUPP
 msgid "SHALL Support the Following Implementation Guides"
-msgstr ""
+msgstr "DOIT prendre en charge les guides d’implémentation suivants."
 
 # CODESYSTEM_CONCEPTS
 #: CODESYSTEM_CONCEPTS
 msgid "Concepts"
-msgstr ""
+msgstr "Concepts"
 
 # CODESYSTEM_CONTENT_COMPLETE
 #: CODESYSTEM_CONTENT_COMPLETE
@@ -627,7 +627,7 @@ msgstr "Déprécié"
 # CODESYSTEM_FILTERS
 #: CODESYSTEM_FILTERS
 msgid "Filters"
-msgstr ""
+msgstr "Filtres"
 
 # CODESYSTEM_FILTER_OP
 #: CODESYSTEM_FILTER_OP
@@ -1356,6 +1356,11 @@ msgstr ""
 msgid "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
 msgstr ""
 
+# GENERAL_ADDITIONAL_BINDING
+#: GENERAL_ADDITIONAL_BINDING
+msgid "This element has additional bindings"
+msgstr ""
+
 # GENERAL_ADD_LANG
 #: GENERAL_ADD_LANG
 msgid "Additional Language Displays"
@@ -1497,6 +1502,11 @@ msgstr "Expérimental"
 msgid "Filter"
 msgstr "Filtre"
 
+# GENERAL_FIXED_VALUE
+#: GENERAL_FIXED_VALUE
+msgid "Fixed Value: {0}"
+msgstr ""
+
 # GENERAL_FLAGS
 #: GENERAL_FLAGS
 msgid "Flags"
@@ -1562,6 +1572,11 @@ msgstr "Paramètre"
 msgid "Parameters"
 msgstr "Paramètres"
 
+# GENERAL_PATTERN_VALUE
+#: GENERAL_PATTERN_VALUE
+msgid "Pattern Value: {0}"
+msgstr ""
+
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
 msgctxt "GENERAL_PREFERRED"
@@ -1604,6 +1619,11 @@ msgctxt "GENERAL_REQUIRED"
 msgid "Required"
 msgstr "Requis"
 
+# GENERAL_REQUIRED_BINDING
+#: GENERAL_REQUIRED_BINDING
+msgid "Required Binding to ValueSet {0}"
+msgstr ""
+
 # GENERAL_RESOURCE
 #: GENERAL_RESOURCE
 msgid "Resource"
@@ -1613,6 +1633,12 @@ msgstr "Ressource"
 #: GENERAL_SECURITY_LABEL
 msgid "Security Label"
 msgstr "Label de sécurité"
+
+# GENERAL_SOURCE
+#: GENERAL_SOURCE
+msgctxt "GENERAL_SOURCE"
+msgid "Source"
+msgstr ""
 
 # GENERAL_SRC
 #: GENERAL_SRC
@@ -1655,6 +1681,16 @@ msgstr "Pas encore fait"
 msgid "Type"
 msgstr "Type"
 
+# GENERAL_TYPE_PROFILE
+#: GENERAL_TYPE_PROFILE
+msgid "This element has profiles on it's type: {0}"
+msgstr ""
+
+# GENERAL_TYPE_TARGET_PROFILE
+#: GENERAL_TYPE_TARGET_PROFILE
+msgid "This element has restrictions/profiles on it's targets: {0}"
+msgstr ""
+
 # GENERAL_UCUM
 #: GENERAL_UCUM
 msgid "UCUM"
@@ -1684,6 +1720,21 @@ msgstr "Valeur"
 #: GENERAL_VALUESET
 msgid "Value Set"
 msgstr "Jeu de valeurs (Value Set)"
+
+# GENERAL_VALUE_BOUNDED
+#: GENERAL_VALUE_BOUNDED
+msgid "The value must be between {0} and {1} (or equal)"
+msgstr ""
+
+# GENERAL_VALUE_MAX
+#: GENERAL_VALUE_MAX
+msgid "The value must be less or equal to {0}"
+msgstr ""
+
+# GENERAL_VALUE_MIN
+#: GENERAL_VALUE_MIN
+msgid "The value must be greater or equal to {0}"
+msgstr ""
 
 # GENERAL_VER
 #: GENERAL_VER
@@ -1897,6 +1948,11 @@ msgstr "Identifiants"
 msgid "Period"
 msgstr "Période"
 
+# OBLIGATION_SOURCE
+#: OBLIGATION_SOURCE
+msgid "This obligation is defined in the profile {0}"
+msgstr ""
+
 # OBLIG_ACT
 #: OBLIG_ACT
 msgid "Actor"
@@ -1959,6 +2015,7 @@ msgstr ""
 
 # OP_OUT_SRC
 #: OP_OUT_SRC
+msgctxt "OP_OUT_SRC"
 msgid "Source"
 msgstr ""
 
@@ -2206,7 +2263,7 @@ msgstr ""
 # PROF_DRIV_GEN_NARR_TECH
 #: PROF_DRIV_GEN_NARR_TECH
 msgid "Generated Narrative: {0} {1}"
-msgstr ""
+msgstr "Narratif généré : {0} {1}"
 
 # PROF_DRIV_SUMM
 #: PROF_DRIV_SUMM
@@ -2482,7 +2539,7 @@ msgstr ""
 # QUEST_PUB
 #: QUEST_PUB
 msgid "Publication Date"
-msgstr ""
+msgstr "Date de publication"
 
 # QUEST_QUEST
 #: QUEST_QUEST
@@ -2618,27 +2675,27 @@ msgstr ""
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS
 msgid "This row of content has been changed since {0} (was ''{1}'')"
-msgstr ""
+msgstr "Cette ligne a été changé depuis {0} (valeur précédente : ''{1}'')"
 
 # REND_ROW_SINCE
 #: REND_ROW_SINCE
 msgid "This row of content has been added since {0}"
-msgstr ""
+msgstr "Cette ligne a été ajouté depuis {0}"
 
 # REND_SINCE_ADDED
 #: REND_SINCE_ADDED
 msgid "This content has been added since {0}"
-msgstr ""
+msgstr "Ce contenu a été ajouté depuis {0}"
 
 # REND_SINCE_CHANGED
 #: REND_SINCE_CHANGED
 msgid "This content has been changed since {0}"
-msgstr ""
+msgstr "Ce contenu a été changé depuis {0}"
 
 # REND_SINCE_CHANGED_WAS
 #: REND_SINCE_CHANGED_WAS
 msgid "This content has been changed since {0} (was ''{1}'')"
-msgstr ""
+msgstr "Ce contenu a été changé depuis {0} (valeur précédente : ''{1}'')"
 
 # REND_STANDARDS
 #: REND_STANDARDS
@@ -2658,7 +2715,7 @@ msgstr ""
 # REQ_DERIVED
 #: REQ_DERIVED
 msgid "Derived From:"
-msgstr ""
+msgstr "Dérive de :"
 
 # REQ_FOLLOWING_ACTOR
 #: REQ_FOLLOWING_ACTOR
@@ -2689,7 +2746,7 @@ msgstr ""
 # RES_REND_ACT
 #: RES_REND_ACT
 msgid "Active"
-msgstr ""
+msgstr "Actif"
 
 # RES_REND_COND_REF
 #: RES_REND_COND_REF
@@ -2704,7 +2761,7 @@ msgstr ""
 # RES_REND_DRAFT
 #: RES_REND_DRAFT
 msgid "draft"
-msgstr ""
+msgstr "brouillon"
 
 # RES_REND_ERROR
 #: RES_REND_ERROR
@@ -2719,17 +2776,17 @@ msgstr ""
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
 msgid "Language: {0}"
-msgstr ""
+msgstr "Langue : {0}"
 
 # RES_REND_RET
 #: RES_REND_RET
 msgid "retired"
-msgstr ""
+msgstr "retiré"
 
 # RES_REND_SEE_ON_THIS_PAGE
 #: RES_REND_SEE_ON_THIS_PAGE
 msgid "See on this page:"
-msgstr ""
+msgstr "Voir sur cette page :"
 
 # RES_REND_SPEC_RULES
 #: RES_REND_SPEC_RULES
@@ -2754,11 +2811,16 @@ msgstr ""
 # RES_REND_UPDATED
 #: RES_REND_UPDATED
 msgid "Last updated: {0}"
-msgstr ""
+msgstr "Dernière mise à jour : {0}"
 
 # RES_REND_VER
 #: RES_REND_VER
 msgid "version: {0}"
+msgstr ""
+
+# SDR_EXTENSION_SUMMARY
+#: SDR_EXTENSION_SUMMARY
+msgid "Simple Extension with the type {0}: {1}"
 msgstr ""
 
 # SD_COMP_HEAD_CARD_L
@@ -4169,6 +4231,11 @@ msgstr ""
 msgid "* create result = {0}"
 msgstr ""
 
+# SUB_TOPIC_CURR
+#: SUB_TOPIC_CURR
+msgid "* current = {0}"
+msgstr ""
+
 # SUB_TOPIC_DELETE
 #: SUB_TOPIC_DELETE
 msgid "* delete result = {0}"
@@ -4202,11 +4269,6 @@ msgstr ""
 # SUB_TOPIC_INT
 #: SUB_TOPIC_INT
 msgid "Interactions"
-msgstr ""
-
-# SUB_TOPIC_CURR
-#: SUB_TOPIC_CURR
-msgid "* current = {0}"
 msgstr ""
 
 # SUB_TOPIC_PREV
@@ -4432,22 +4494,22 @@ msgstr ""
 
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
-msgid "Australian"
-msgstr "Australien"
+msgid "Australian Edition"
+msgstr "!!Australien"
 
 # VALUE_SET_BE
 #: VALUE_SET_BE
 msgid "Belgian Edition"
 msgstr ""
 
+# VALUE_SET_CA
+#: VALUE_SET_CA
+msgid "Canadian Edition"
+msgstr ""
+
 # VALUE_SET_CA_EN
 #: VALUE_SET_CA_EN
 msgid "Canadian English Edition"
-msgstr ""
-
-# VALUE_SET_CA_FR
-#: VALUE_SET_CA_FR
-msgid "Canadian Canadian French Edition"
 msgstr ""
 
 # VALUE_SET_CH
@@ -4830,7 +4892,7 @@ msgstr "Etats-Unis"
 # VALUE_SET_USED_ELSEWHERE
 #: VALUE_SET_USED_ELSEWHERE
 msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr ""
+msgstr "Ce jeu de valeurs n'est pas utilisé ici ; il peut être utilisé autre part (par exemple dans les spécifications et / ou implémentations qui utilisent ce contenu)"
 
 # VALUE_SET_US_ICD10CM
 #: VALUE_SET_US_ICD10CM

@@ -1180,6 +1180,48 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     }
   }
 
+  protected List<Element> getUrlMatches(Element element, String url, NodeStack stack) {
+    List<Element> result = new ArrayList<>(); 
+    if (element.isResource() && element.hasParentForValidator()) {
+      Element bnd = getElementBundle(element);
+      if (bnd != null) {
+        // in this case, we look into the parent - if there is one - and if it's a bundle, we look at the entries (but not in them)
+        for (Element be : bnd.getChildrenByName("entry")) {
+          if (be.hasChild("resource")) {
+            String t = be.getNamedChild("resource").fhirType()+"/"+be.getNamedChild("resource").getIdBase();
+            if (url.equals(t)) {
+              result.add(be.getNamedChild("resource"));
+            } else {
+              t = be.getNamedChildValue("fullUrl");
+              if (url.equals(t)) {
+                result.add(be.getNamedChild("resource"));
+              }
+            }
+          }
+        }
+      }
+    }
+    return result;
+  }
+
+  protected List<Element> getFragmentMatches(Element element, String fragment, NodeStack stack) {
+    List<Element> result = getFragmentMatches(element, fragment); 
+    if (element.isResource() && element.hasParentForValidator()) {
+      Element bnd = getElementBundle(element);
+      if (bnd != null) {
+        // in this case, we look into the parent - if there is one - and if it's a bundle, we look at the entries (but not in them)
+        for (Element be : bnd.getChildrenByName("entry")) {
+          if (be.hasChild("resource")) {
+            String id = be.getNamedChild("resource").getIdBase();
+            if (fragment.equals(id)) {
+              result.add(be.getNamedChild("resource"));
+            }
+          }
+        }
+      }
+    }
+    return result;
+  }
 
   protected int countFragmentMatches(Element element, String fragment, NodeStack stack) {
     int count = countFragmentMatches(element, fragment); 
@@ -1211,6 +1253,19 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return null;
   }
 
+  protected List<Element> getFragmentMatches(Element element, String fragment) {
+    List<Element> result = new ArrayList<>();
+    if (fragment.equals(element.getIdBase())) {
+      result.add(element);
+    }
+    if (element.hasChildren()) {
+      for (Element child : element.getChildren()) {
+        result.addAll(getFragmentMatches(child, fragment));
+      }
+    }
+    return result;
+  }
+
   protected int countFragmentMatches(Element element, String fragment) {
     int count = 0;
     if (fragment.equals(element.getIdBase())) {
@@ -1240,7 +1295,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return count;
   }
 
-  private String extractResourceType(String ref) {
+  protected String extractResourceType(String ref) {
     String[] p = ref.split("\\/");
     return p[p.length -2];
   }
@@ -1532,7 +1587,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return 
         Utilities.containsInList(url, "example.org/", "acme.com/", "acme.org/", "example.com/", "example.net/") ||
         Utilities.endsWithInList(url, "example.org", "acme.com", "acme.org", "example.com", "example.net") ||
-        url.startsWith("urn:oid:1.3.6.1.4.1.32473.");    
+        url.startsWith("urn:oid:1.3.6.1.4.1.32473.") || url.startsWith("urn:oid:2.999.");    
   }
   
   protected boolean checkDefinitionStatus(List<ValidationMessage> errors, Element element, String path, StructureDefinition ex, CanonicalResource source, String type) {
