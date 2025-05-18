@@ -89,9 +89,9 @@ public class PoGetTextProducer extends LanguageFileProducer {
   @Override
   public List<TranslationUnit> loadSource(InputStream source) throws IOException {
     List<TranslationUnit> list = new ArrayList<>();
-    List<POObject> polist = POSource.loadPOFile(source).getEntries();
-    for (POObject po : polist) {
-      TranslationUnit tu = new TranslationUnit(srcLang, po.getId(), null, po.getMsgid(), po.getMsgstr().isEmpty() ? null : po.getMsgstr().get(0));
+    POSource polist = POSource.loadPOFile(source);
+    for (POObject po : polist.getEntries()) {
+      TranslationUnit tu = new TranslationUnit(srcLang == null ? polist.getLang() : srcLang, po.getId(), null, po.getMsgid(), po.getMsgstr().isEmpty() ? null : po.getMsgstr().get(0));
       if (tu.getId() != null) {
         list.add(tu);
       }
