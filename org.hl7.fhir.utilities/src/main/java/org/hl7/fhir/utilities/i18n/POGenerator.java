@@ -67,21 +67,9 @@ public class POGenerator {
 
     @Override
     public int compare(POObject o1, POObject o2) {
-      return o1.id.compareTo(o2.id);
+      return o1.getId().compareTo(o2.getId());
     }
   }
-
-  private class POObject {
-    private boolean orphan = true;
-    private boolean duplicate;
-    private String id;
-    private String msgid;
-    private String oldMsgId;
-    private String msgidPlural;
-    private String comment;
-    private List<String> msgstr  = new ArrayList<String>();
-  }
-  
 
   public static void main(String[] args) throws IOException {
     new POGenerator().execute(args[0], args[1], args[2]);
@@ -319,9 +307,9 @@ public class POGenerator {
     String fn = Utilities.path(source, "source", dest);
     List<POObject> objects;
     if (ManagedFileAccess.file(fn).exists()) {
-      objects = loadPOFile(fn);
+      objects = POObject.loadPOFile(prefixes, fn);
     } else {
-      objects = new ArrayList<POGenerator.POObject>();
+      objects = new ArrayList<POObject>();
     }
     List<PropertyValue> props = loadProperties(Utilities.path(source, src), false);
     for (PropertyValue e : props) {
@@ -341,36 +329,36 @@ public class POGenerator {
           throw new Error("Not right");
         }
         o = new POObject();
-        o.id = name;
-        o.comment = name;
+        o.setId(name);
+        o.setComment(name);
         objects.add(o);
-        o.msgid = e.getValue();
-        o.orphan = false;
+        o.setMsgid(e.getValue());
+        o.setOrphan(false);
       } else {
         update(o, mode, e.getValue());
       }
     }
-    objects.removeIf(o -> o.orphan);
+    objects.removeIf(o -> o.isOrphan());
     Collections.sort(objects, new POObjectSorter());
     Map<String, Integer> sources = new HashMap<>();
     Set<String> dups = new HashSet<>();
     for (POObject o : objects) {
-      if (sources.containsKey(o.msgid)) {
-        Integer c = sources.get(o.msgid)+1;
-        sources.put(o.msgid, c);
-        dups.add(o.msgid);
+      if (sources.containsKey(o.getMsgid())) {
+        Integer c = sources.get(o.getMsgid())+1;
+        sources.put(o.getMsgid(), c);
+        dups.add(o.getMsgid());
 //        System.out.println("Duplicate in "+dest.substring(dest.lastIndexOf("/")+1)+": "+o.msgid+" on ("+CommaSeparatedStringBuilder.join(",", listIds(objects, o.msgid))+")");
       } else {
-        sources.put(o.msgid, 1);
+        sources.put(o.getMsgid(), 1);
       }
     }
     for (POObject o : objects) {
-      Integer c = sources.get(o.msgid);
+      Integer c = sources.get(o.getMsgid());
       if (c > 1) {
-        o.duplicate = true;
+        o.setDuplicate(true);
       }
     }
-    savePOFile(Utilities.path(source, "source", dest), objects, count, false);
+    noTrans = POObject.savePOFile(prefixes, Utilities.path(source, "source", dest), objects, count, noTrans);
     if (tgt != null) {
       savePropFile(Utilities.path(source, tgt), objects);
     }
@@ -379,193 +367,68 @@ public class POGenerator {
   private Set<String> listIds(List<POObject> objects, String msgid) {
     Set<String> res = new HashSet<>();
     for (POObject o : objects) {
-      if (o.msgid.equals(msgid)) {
-        res.add(o.id);
+      if (o.getMsgid().equals(msgid)) {
+        res.add(o.getId());
       }
     }
     return res;
   }
-
-  private void savePOFile(String dest, List<POObject> objects, int count, boolean tfxMode) throws IOException {
-    prefixes.clear();
-    
-    StringBuilder b = new StringBuilder();
-    for (String p : prefixes) {
-      b.append(p);
-      b.append("\r\n");
-    }
-    b.append("\r\n");
-    for (POObject o : objects) {
-      // for POEdit
-      if (o.oldMsgId != null) {
-        b.append("# "+o.comment+" (!!when last translated was: "+o.oldMsgId+")\r\n");        
-      } else {
-        b.append("# "+o.comment+"\r\n");
-      }
-      b.append("#: "+o.id+"\r\n");
-      if (o.duplicate) {
-        b.append("msgctxt \""+o.id+"\"\r\n");        
-      } 
-      String m = tfxMode && Utilities.noString(o.msgid) ? "-- no content: do not translate #"+(++noTrans )+" --" : o.msgid; 
-      b.append("msgid \""+wrapQuotes(m)+"\"\r\n");
-      if (o.msgidPlural != null) {
-        b.append("msgid_plural \""+wrapQuotes(o.msgidPlural)+"\"\r\n"); 
-        while (o.msgstr.size() < count) {
-          o.msgstr.add("");
-        }
-        for (int i = 0; i < o.msgstr.size(); i++) {
-          String s = o.msgstr.get(i);
-//          if (tfxMode && Utilities.noString(s)) {
-//            s = Utilities.noString(i == 0 ? o.msgid : o.msgidPlural) ? "-- no content: do not translate --" : "";
-//          }
-          b.append("msgstr["+i+"] \""+wrapQuotes(s)+"\"\r\n");
-        }
-      } else {
-        if (o.msgstr.size() == 0) {
-          b.append("msgstr \"\"\r\n");                  
-        } else {
-          b.append("msgstr \""+wrapQuotes(o.msgstr.get(0))+"\"\r\n");                            
-        }
-      } 
-      b.append("\r\n");
-    }
-    FileUtilities.stringToFile(b.toString(), dest);
-  }
-
-  private String wrapQuotes(String s) {
-    return s.replace("\"", "\\\"");
-  }
-
   private void update(POObject o, int mode, String value) {
-    o.orphan = false;
-    if (o.comment == null) {
-      o.comment = o.id;
+    o.setOrphan(false);
+    if (o.getComment() == null) {
+      o.setComment(o.getId());
     }
     if (mode == 0) {
-      if (!value.equals(o.msgid)) {
+      if (!value.equals(o.getMsgid())) {
         // the english string has changed, and the other language string is now out of date
-        if (o.oldMsgId != null && !o.msgstr.isEmpty()) {
-          o.oldMsgId = o.msgid;
+        if (o.getOldMsgId() != null && !o.getMsgstr().isEmpty()) {
+          o.setOldMsgId(o.getMsgid());
         }
-        o.msgid = value;
-        for (int i = 0; i < o.msgstr.size(); i++) {
-          if (!Utilities.noString(o.msgstr.get(i))) {
-            o.msgstr.set(i, "!!"+o.msgstr.get(i));
+        o.setMsgid(value);
+        for (int i = 0; i < o.getMsgstr().size(); i++) {
+          if (!Utilities.noString(o.getMsgstr().get(i))) {
+            o.getMsgstr().set(i, "!!"+o.getMsgstr().get(i));
           }
         }
       } else {
-        o.oldMsgId = null;
+        o.setOldMsgId(null);
       }
     } else if (mode == 1) {
-      if (!value.equals(o.msgid)) {
+      if (!value.equals(o.getMsgid())) {
         // the english string has changed, and the other language string is now out of date 
-        if (o.oldMsgId != null && !o.msgstr.isEmpty()) {
-          o.oldMsgId = o.msgid;
+        if (o.getOldMsgId() != null && !o.getMsgstr().isEmpty()) {
+          o.setOldMsgId(o.getMsgid());
         }
-        o.msgid = value;
-        if (o.msgstr.size() > 0 && !Utilities.noString(o.msgstr.get(0))) {
-          o.msgstr.set(0, "!!"+o.msgstr.get(0));
+        o.setMsgid(value);
+        if (o.getMsgstr().size() > 0 && !Utilities.noString(o.getMsgstr().get(0))) {
+          o.getMsgstr().set(0, "!!"+o.getMsgstr().get(0));
         }
       } else {
-        o.oldMsgId = null;
+        o.setOldMsgId(null);
       }
     } else if (mode == 2) {
-      if (!value.equals(o.msgidPlural)) {
+      if (!value.equals(o.getMsgidPlural())) {
         // the english string has changed, and the other language string is now out of date 
 //        if (o.oldMsgId != null) {
 //          o.oldMsgId = o.msgid;
 //        }
-        o.msgidPlural = value;
-        if (o.msgstr.size() > 1 && !Utilities.noString(o.msgstr.get(1))) {
-          o.msgstr.set(1, "!!"+o.msgstr.get(1));
+        o.setMsgidPlural(value);
+        if (o.getMsgstr().size() > 1 && !Utilities.noString(o.getMsgstr().get(1))) {
+          o.getMsgstr().set(1, "!!"+o.getMsgstr().get(1));
         }
       } else {
-        o.oldMsgId = null;
+        o.setOldMsgId(null);
       }
     }
   }
 
   private POObject findObject(List<POObject> objects, String name) {
     for (POObject t : objects) {
-      if (t.id != null && t.id.equals(name)) {
+      if (t.getId() != null && t.getId().equals(name)) {
         return t;
       }
     }
     return null;
-  }
-
-  private List<POObject> loadPOFile(String dest) throws FileNotFoundException, IOException {
-    List<POObject> list = new ArrayList<POGenerator.POObject>();
-    POObject obj = null;
-    for (String line : FileUtilities.fileToLines(dest)) {
-      if (Utilities.noString(line)) {
-        // else 
-      } else if (line.startsWith("#:")) {
-        if (obj == null || obj.id != null) {
-          obj = new POObject();
-          list.add(obj);
-        }
-        obj.id = line.substring(2).trim();  
-      } else if (line.startsWith("# ")) {
-        if (obj == null || obj.comment != null) {
-          obj = new POObject();
-          list.add(obj);
-        }
-        obj.comment = line.substring(1).trim();
-        if (obj.comment.contains("!!when")) {
-          obj.oldMsgId = obj.comment.substring(obj.comment.indexOf("!!when"));
-          obj.comment = obj.comment.substring(0, obj.comment.indexOf("!!when")-1);
-          obj.oldMsgId = obj.oldMsgId.substring(obj.oldMsgId.indexOf(": ")+2).trim();
-          obj.oldMsgId = obj.oldMsgId.substring(0, obj.oldMsgId.length()-1);
-        }
-      } else if (obj == null) {
-        prefixes.add(line);  
-      } else if (line.startsWith("#|")) {
-        // retired use of #| because it caused problems with the tools
-        obj.oldMsgId = line.substring(2).trim();
-        if (obj.oldMsgId.startsWith("msgid ")) {
-          obj.oldMsgId = trimQuotes(obj.oldMsgId.substring(6));
-        }
-      } else if (line.startsWith("msgid ")) {
-        obj.msgid = trimQuotes(line.substring(5).trim());
-        if (obj.msgid.endsWith("("+obj.id+")")) {
-          obj.msgid = obj.msgid.substring(0, obj.msgid.length() - (obj.id.length()+3));
-        }
-      } else if (line.startsWith("msgid_plural ")) {
-        obj.msgidPlural = trimQuotes(line.substring(12).trim());
-      } else if (line.startsWith("msgstr ")) {
-        obj.msgstr.add(trimQuotes(line.substring(6).trim()));
-      } else if (line.startsWith("msgctxt ")) {
-        // ignore this
-      } else if (line.startsWith("msgstr[")) {
-        String s = line.substring(7);
-        int i = s.indexOf("]");
-        int c = Integer.valueOf(s.substring(0, i));
-        s = trimQuotes(s.substring(i+1).trim());
-        while (s.startsWith("!!")) {
-          s = s.substring(2);
-        }
-        if (c != obj.msgstr.size()) {
-          System.out.println("index issue");   
-        } else { // if (!Utilities.noString(s)) {
-          obj.msgstr.add(s);          
-        }
-      } else {
-        System.out.println("unknown line: "+line);          
-      }
-    }
-    return list;
-  }
-
-  private String trimQuotes(String s) {
-    s = s.trim();
-    if (s.startsWith("\"")) {
-      s = s.substring(1);
-    }
-    if (s.endsWith("\"")) {
-      s = s.substring(0, s.length()-1);
-    }
-    return s.trim().replace("\\\"", "\"");
   }
 
   private List<PropertyValue> loadProperties(String source, boolean checking) throws IOException {
@@ -592,16 +455,16 @@ public class POGenerator {
     StringBuilder b = new StringBuilder();
     b.append(nameLine+"\r\n");
     for (POObject o : objects) {
-      if (o.msgidPlural == null) {
-        String v= o.msgstr.size() > 0 ? o.msgstr.get(0) : "";
+      if (o.getMsgidPlural() == null) {
+        String v= o.getMsgstr().size() > 0 ? o.getMsgstr().get(0) : "";
         if (!Utilities.noString(v)) {
-          b.append(o.id+" = "+v+"\r\n");
+          b.append(o.getId()+" = "+v+"\r\n");
         }
       } else {
         for (int i = 0; i < names.length; i++) {
-          String v = (o.msgstr.size() > i ? o.msgstr.get(i) : "");
+          String v = (o.getMsgstr().size() > i ? o.getMsgstr().get(i) : "");
           if (!Utilities.noString(v)) {
-            b.append(o.id+"_"+names[i].trim()+" = "+v+"\r\n");
+            b.append(o.getId()+"_"+names[i].trim()+" = "+v+"\r\n");
           }
         }
       }

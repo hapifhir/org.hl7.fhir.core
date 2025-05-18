@@ -4482,6 +4482,36 @@ msgstr "De codesysteemverwijzing {0} is incorrect - de codesysteemverwijzing kan
 msgid "The OID ''{0}'' is not known, so the code can''t be validated"
 msgstr "De oid ''{0}'' is onbekend dus de code kan niet worden gevalideerd"
 
+# XHTML_URL_DATA_DATA_INVALID
+#: TEXT_LINK_DATA_MULTIPLE_MATCHES
+msgid "Multiple matching targets for the textLink data reference ''{0}'' were found in the resource"
+msgstr "!!Er zijn meerdere matches gevonden voor het HTML idref attribuut ''{0}'' in de resource"
+
+# TEXT_LINK_DATA_MULTIPLE_MATCHES
+#: TEXT_LINK_DATA_NOT_FOUND
+msgid "The target of the textLink data reference ''{0}'' was not found in the resource"
+msgstr "!!Het doel van HTML idref attribuut ''{0}'' is niet gevonden in de resource"
+
+# TEXT_LINK_NO_DATA
+#: TEXT_LINK_NO_DATA
+msgid "No data element was found in the textLink extension"
+msgstr ""
+
+# TEXT_LINK_NO_DIV
+#: TEXT_LINK_NO_DIV
+msgid "A textLink extension was found, but there was no xhtml element present for that targets of the html references"
+msgstr ""
+
+# TEXT_LINK_NO_ID
+#: TEXT_LINK_NO_ID
+msgid "The html id ''{0}'' was not found in the xhtml"
+msgstr ""
+
+# TEXT_LINK_SELECTOR_INVALID
+#: TEXT_LINK_SELECTOR_INVALID
+msgid "The textLink selector ''{0}'' is invalid: {1}"
+msgstr ""
+
 # TX_GENERAL_CC_ERROR_MESSAGE
 #: TX_GENERAL_CC_ERROR_MESSAGE
 msgid "No valid coding was found for the value set ''{0}''"
@@ -6539,16 +6569,6 @@ msgstr "Verkeerde namespace - verwacht ''{0}''"
 #: Wrong_type_for_resource
 msgid "Wrong type for resource"
 msgstr "Verkeerd type voor resource"
-
-# TEXT_LINK_DATA_MULTIPLE_MATCHES
-#: TEXT_LINK_DATA_NOT_FOUND
-msgid "The target of the HTML idref attribute ''{0}'' was not found in the resource"
-msgstr "Het doel van HTML idref attribuut ''{0}'' is niet gevonden in de resource"
-
-# XHTML_URL_DATA_DATA_INVALID
-#: TEXT_LINK_DATA_MULTIPLE_MATCHES
-msgid "Multiple matching targets for the HTML idref attribute ''{0}'' were found in the resource"
-msgstr "Er zijn meerdere matches gevonden voor het HTML idref attribuut ''{0}'' in de resource"
 
 # XHTML_URL_DATA_DATA_INVALID_COMMA
 #: XHTML_URL_DATA_DATA_INVALID
