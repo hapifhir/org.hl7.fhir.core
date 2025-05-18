@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Attachment30_40;
@@ -12,6 +13,9 @@ import org.hl7.fhir.dstu3.model.DocumentReference;
 import org.hl7.fhir.dstu3.model.Enumeration;
 import org.hl7.fhir.dstu3.model.Enumerations;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.InstantType;
+
+import java.util.Date;
 
 public class DocumentReference30_40 {
 
@@ -41,7 +45,9 @@ public class DocumentReference30_40 {
     if (src.hasSubject())
       tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
     if (src.hasDateElement())
-      tgt.setCreatedElement(convertInstantToDateTime(src.getDateElement()));
+      tgt.setIndexed(src.getDateElement().getValue());
+    if (src.hasExtension(VersionConvertorConstants.EXT_DOC_REF_CREATED))
+      tgt.setCreated(src.getExtensionByUrl(VersionConvertorConstants.EXT_DOC_REF_CREATED).getValue().dateTimeValue().getValue());
     if (src.hasAuthenticator())
       tgt.setAuthenticator(Reference30_40.convertReference(src.getAuthenticator()));
     if (src.hasCustodian())
@@ -80,8 +86,10 @@ public class DocumentReference30_40 {
       tgt.addCategory(CodeableConcept30_40.convertCodeableConcept(src.getClass_()));
     if (src.hasSubject())
       tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
+    if (src.hasIndexed())
+      tgt.setDateElement(new InstantType(src.getIndexed()));
     if (src.hasCreated())
-      tgt.setDateElement(convertDateTimeToInstant(src.getCreatedElement()));
+      tgt.addExtension(getExtensionForDocumentReferenceCreated(src.getCreated()));
     if (src.hasAuthenticator())
       tgt.setAuthenticator(Reference30_40.convertReference(src.getAuthenticator()));
     if (src.hasCustodian())
@@ -390,5 +398,13 @@ public class DocumentReference30_40 {
        }
 }
     return tgt;
+  }
+
+
+  public static org.hl7.fhir.r4.model.Extension getExtensionForDocumentReferenceCreated(Date created) {
+    org.hl7.fhir.r4.model.Extension extension = new  org.hl7.fhir.r4.model.Extension();
+    extension.setUrl(VersionConvertorConstants.EXT_DOC_REF_CREATED);
+    extension.setValue(new org.hl7.fhir.r4.model.InstantType(created));
+    return extension;
   }
 }
