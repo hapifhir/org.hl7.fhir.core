@@ -91,7 +91,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
     List<TranslationUnit> list = new ArrayList<>();
     POSource polist = POSource.loadPOFile(source);
     for (POObject po : polist.getEntries()) {
-      TranslationUnit tu = new TranslationUnit(srcLang == null ? polist.getLang() : srcLang, po.getId(), null, po.getMsgid(), po.getMsgstr().isEmpty() ? null : po.getMsgstr().get(0));
+      TranslationUnit tu = new TranslationUnit(srcLang == null ? polist.getLang() : srcLang, po.getId(), null, po.getMsgid(), po.getMsgstr().isEmpty() ? null : po.getMsgstrFirst());
       if (tu.getId() != null) {
         list.add(tu);
       }
