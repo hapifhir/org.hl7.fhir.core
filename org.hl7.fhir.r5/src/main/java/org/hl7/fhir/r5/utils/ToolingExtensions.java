@@ -902,7 +902,9 @@ public class ToolingExtensions {
 
         if (e1 != null && e1.getValue() != null && e1.getValue() instanceof CodeType && ((CodeType) e1.getValue()).getValue().equals(lang)) {
           e1 = ExtensionHelper.getExtension(e, "content");
-          return ((StringType) e1.getValue()).getValue();
+          if (e1.hasValue()) {
+            return e1.getValue().primitiveValue();
+          }
         }
       }
     }
