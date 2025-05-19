@@ -982,6 +982,9 @@ public class RenderingI18nContext extends I18nBase {
   public static final String GENERAL_TYPE_PROFILE = "GENERAL_TYPE_PROFILE";
   public static final String GENERAL_TYPE_TARGET_PROFILE = "GENERAL_TYPE_TARGET_PROFILE";
   public static final String SDR_EXTENSION_SUMMARY = "SDR_EXTENSION_SUMMARY";
+  public static final String STATUS_MSG_AUTOBUILD = "STATUS_MSG_AUTOBUILD";
+  public static final String STATUS_MSG_PUBLICATION_HOLDER = "STATUS_MSG_PUBLICATION_HOLDER";
+  public static final String STATUS_MSG_LOCAL_BUILD = "STATUS_MSG_LOCAL_BUILD";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
