@@ -394,10 +394,13 @@ public class DocumentReference30_40 {
 
   private static org.hl7.fhir.dstu3.model.DateTimeType convertCreatedExtension(org.hl7.fhir.r4.model.DocumentReference src) {
     org.hl7.fhir.r4.model.Extension extension = src.getExtensionByUrl(VersionConvertorConstants.EXT_DOC_REF_CREATED);
-    if (extension == null || !extension.isDateTime()) {
+    if (extension == null || extension.isEmpty()) {
       return null;
     }
-    return DateTime30_40.convertDateTime(extension.dateTimeValue());
+    if (extension.getValue() == null || extension.getValue().isEmpty()) {
+      return null;
+    }
+    return DateTime30_40.convertDateTime(extension.getValue().dateTimeValue());
   }
 
   public static org.hl7.fhir.r4.model.Extension getExtensionForDocumentReferenceCreated(Date created) {

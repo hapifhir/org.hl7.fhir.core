@@ -39,8 +39,8 @@
   "subject": {
     "reference": "Patient/a2"
   },
-  "created": "2013-07-02T00:00:00+02:00",
-  "indexed": "2013-07-01T15:11:33.000+02:00",
+  "created": "2013-07-02T08:00:00+10:00",
+  "indexed": "2013-07-01T23:11:33+10:00",
   "author": [
     {
       "reference": "Practitioner/a3"
