@@ -217,25 +217,25 @@ public class LanguageUtils {
    * */
   private int importFromTranslationsForSD(Object object, Element resource, List<TranslationUnit> translations, Set<TranslationUnit> usedUnits) {
     int r = 0;
-    r = r + checkForTranslations(translations, usedUnits, resource, "name", "name");
-    r = r + checkForTranslations(translations, usedUnits, resource, "title", "title");
-    r = r + checkForTranslations(translations, usedUnits, resource, "publisher", "publisher");
+    r = r + checkForTranslations(translations, usedUnits, resource, "StructureDefinition.name", "name");
+    r = r + checkForTranslations(translations, usedUnits, resource, "StructureDefinition.title", "title");
+    r = r + checkForTranslations(translations, usedUnits, resource, "StructureDefinition.publisher", "publisher");
     for (Element cd : resource.getChildrenByName("contact")) {
-      r = r + checkForTranslations(translations, usedUnits, cd, "contact.name", "name");
+      r = r + checkForTranslations(translations, usedUnits, cd, "StructureDefinition.contact.name", "name");
     }
-    r = r + checkForTranslations(translations, usedUnits, resource, "purpose", "purpose");
-    r = r + checkForTranslations(translations, usedUnits, resource, "copyright", "copyright");
+    r = r + checkForTranslations(translations, usedUnits, resource, "StructureDefinition.purpose", "purpose");
+    r = r + checkForTranslations(translations, usedUnits, resource, "StructureDefinition.copyright", "copyright");
     Element diff = resource.getNamedChild("differential");
     if (diff != null) {
       for (Element ed : diff.getChildrenByName("element")) {
         String id = ed.getNamedChildValue("id");
-        r = r + checkForTranslations(translations, usedUnits, ed, id+"/label", "label");
-        r = r + checkForTranslations(translations, usedUnits, ed, id+"/short", "short");
-        r = r + checkForTranslations(translations, usedUnits, ed, id+"/definition", "definition");
-        r = r + checkForTranslations(translations, usedUnits, ed, id+"/comment", "comment");
-        r = r + checkForTranslations(translations, usedUnits, ed, id+"/requirements", "requirements");
-        r = r + checkForTranslations(translations, usedUnits, ed, id+"/meaningWhenMissing", "meaningWhenMissing");
-        r = r + checkForTranslations(translations, usedUnits, ed, id+"/orderMeaning", "orderMeaning");
+        r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/label", "label");
+        r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/short", "short");
+        r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/definition", "definition");
+        r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/comment", "comment");
+        r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/requirements", "requirements");
+        r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/meaningWhenMissing", "meaningWhenMissing");
+        r = r + checkForTranslations(translations, usedUnits, ed, "StructureDefinition.element."+id+"/orderMeaning", "orderMeaning");
         //      for (ElementDefinitionConstraintComponent con : ed.getConstraint()) {
         //        addToList(list, lang, con, ed.getId()+"/constraint", "human", con.getHumanElement());
         //      }
@@ -546,30 +546,30 @@ public class LanguageUtils {
   }
 
   private void generateTranslations(List<TranslationUnit> list, StructureDefinition sd, String lang) {
-    addToList(list, lang, sd, "name", "name", sd.getNameElement());
-    addToList(list, lang, sd, "title", "title", sd.getTitleElement());
-    addToList(list, lang, sd, "publisher", "publisher", sd.getPublisherElement());
+    addToList(list, lang, sd, "StructureDefinition.name", "name", sd.getNameElement());
+    addToList(list, lang, sd, "StructureDefinition.title", "title", sd.getTitleElement());
+    addToList(list, lang, sd, "StructureDefinition.publisher", "publisher", sd.getPublisherElement());
     for (ContactDetail cd : sd.getContact()) {
-      addToList(list, lang, cd, "contact.name", "name", cd.getNameElement());
+      addToList(list, lang, cd, "StructureDefinition.contact.name", "name", cd.getNameElement());
     }
-    addToList(list, lang, sd, "purpose", "purpose", sd.getPurposeElement());
-    addToList(list, lang, sd, "copyright", "copyright", sd.getCopyrightElement());
+    addToList(list, lang, sd, "StructureDefinition.purpose", "purpose", sd.getPurposeElement());
+    addToList(list, lang, sd, "StructureDefinition.copyright", "copyright", sd.getCopyrightElement());
     for (ElementDefinition ed : sd.getDifferential().getElement()) {
-      addToList(list, lang, ed, ed.getId()+"/label", "label", ed.getLabelElement());
-      addToList(list, lang, ed, ed.getId()+"/short", "short", ed.getShortElement());
-      addToList(list, lang, ed, ed.getId()+"/definition", "definition", ed.getDefinitionElement());
-      addToList(list, lang, ed, ed.getId()+"/comment", "comment", ed.getCommentElement());
-      addToList(list, lang, ed, ed.getId()+"/requirements", "requirements", ed.getRequirementsElement());
-      addToList(list, lang, ed, ed.getId()+"/meaningWhenMissing", "meaningWhenMissing", ed.getMeaningWhenMissingElement());
-      addToList(list, lang, ed, ed.getId()+"/orderMeaning", "orderMeaning", ed.getOrderMeaningElement());
+      addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/label", "label", ed.getLabelElement());
+      addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/short", "short", ed.getShortElement());
+      addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/definition", "definition", ed.getDefinitionElement());
+      addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/comment", "comment", ed.getCommentElement());
+      addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/requirements", "requirements", ed.getRequirementsElement());
+      addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/meaningWhenMissing", "meaningWhenMissing", ed.getMeaningWhenMissingElement());
+      addToList(list, lang, ed, "StructureDefinition.element."+ed.getId()+"/orderMeaning", "orderMeaning", ed.getOrderMeaningElement());
       for (ElementDefinitionConstraintComponent con : ed.getConstraint()) {
-        addToList(list, lang, con, ed.getId()+"/constraint", "human", con.getHumanElement());
+        addToList(list, lang, con, "StructureDefinition.element."+ed.getId()+"/constraint", "human", con.getHumanElement());
       }
       if (ed.hasBinding()) {
-        addToList(list, lang, ed.getBinding(), ed.getId()+"/b/desc", "description", ed.getBinding().getDescriptionElement());
+        addToList(list, lang, ed.getBinding(), "StructureDefinition.element."+ed.getId()+"/b/desc", "description", ed.getBinding().getDescriptionElement());
         for (ElementDefinitionBindingAdditionalComponent ab : ed.getBinding().getAdditional()) {
-          addToList(list, lang, ab, ed.getId()+"/ab/doco", "documentation", ab.getDocumentationElement());
-          addToList(list, lang, ab, ed.getId()+"/ab/short", "shortDoco", ab.getShortDocoElement());
+          addToList(list, lang, ab, "StructureDefinition.element."+ed.getId()+"/ab/doco", "documentation", ab.getDocumentationElement());
+          addToList(list, lang, ab, "StructureDefinition.element."+ed.getId()+"/ab/short", "shortDoco", ab.getShortDocoElement());
         }
       }
     }
