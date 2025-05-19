@@ -522,7 +522,9 @@ public class LanguageUtils {
       if (res.hasUserData(UserDataNames.LANGUTILS_ORPHAN)) {
         List<TranslationUnit> orphans = (List<TranslationUnit>) res.getUserData(UserDataNames.LANGUTILS_ORPHAN);
         for (TranslationUnit t : orphans) {
-          list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext(), t.getSrcText(), t.getTgtText()));
+          if (!hasInList(list, t.getId(), t.getSrcText())) {
+            list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext(), t.getSrcText(), t.getTgtText()));
+          }
         }
       }
     } else {
@@ -534,7 +536,9 @@ public class LanguageUtils {
       if (cs.hasUserData(UserDataNames.LANGUTILS_ORPHAN)) {
         List<TranslationUnit> orphans = (List<TranslationUnit>) cs.getUserData(UserDataNames.LANGUTILS_ORPHAN);
         for (TranslationUnit t : orphans) {
-          list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext(), t.getSrcText(), t.getTgtText()));
+          if (!hasInList(list, t.getId(), t.getSrcText())) {
+            list.add(new TranslationUnit(lang, "!!"+t.getId(), t.getContext(), t.getSrcText(), t.getTgtText()));
+          }
         }
       }
     }
@@ -573,7 +577,9 @@ public class LanguageUtils {
 
   private void addToList(List<TranslationUnit> list, String lang, Base ctxt, String name, String propName, DataType value) {
     if (value != null && value.hasPrimitiveValue()) {
-      list.add(new TranslationUnit(lang, name, ctxt.getNamedProperty(propName).getDefinition(), value.primitiveValue(), value.getTranslation(lang)));
+      if (!hasInList(list, name, value.primitiveValue())) {
+        list.add(new TranslationUnit(lang, name, ctxt.getNamedProperty(propName).getDefinition(), value.primitiveValue(), value.getTranslation(lang)));
+      }
     }
     
   }
@@ -603,14 +609,16 @@ public class LanguageUtils {
         break;
       }
     }
-    // not sure what to do with context?
-    if (existing == null) {
-      list.add(new TranslationUnit(lang, id, null, srcText, null));
-    } else if (srcText.equals(existing.getSrcText())) {
-      list.add(new TranslationUnit(lang, id, null, srcText, existing.getTgtText()));
-    } else {
-      list.add(new TranslationUnit(lang, id, null, srcText, "!!"+existing.getTgtText()).setOriginal(existing.getSrcText()));
-    }    
+    if (!hasInList(list, id, srcText)) {
+      // not sure what to do with context?
+      if (existing == null) {
+        list.add(new TranslationUnit(lang, id, null, srcText, null));
+      } else if (srcText.equals(existing.getSrcText())) {
+        list.add(new TranslationUnit(lang, id, null, srcText, existing.getTgtText()));
+      } else {
+        list.add(new TranslationUnit(lang, id, null, srcText, "!!"+existing.getTgtText()).setOriginal(existing.getSrcText()));
+      }
+    }
   }
   
   private String getDefinition(ConceptDefinitionComponent cd) {
@@ -636,13 +644,24 @@ public class LanguageUtils {
       String context = e.getProperty().getDefinition().getDefinition();
       String src = e.primitiveValue();
       String tgt = getTranslation(e, lang);
-      list.add(new TranslationUnit(lang, id, context, src, tgt));
+      if (!hasInList(list.list, id, src)) {
+        list.add(new TranslationUnit(lang, id, context, src, tgt));
+      }
     }
     if (e.hasChildren()) {
       for (Element c : e.getChildren()) {
         generateTranslations(c, lang, list, npath);
       }
     }
+  }
+
+  private boolean hasInList(List<TranslationUnit> list, String id, String src) {
+    for (TranslationUnit t : list) {
+      if (t.getId() != null && t.getId().equals(id) && t.getSrcText()!= null && t.getSrcText().equals(src)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
