@@ -4,6 +4,7 @@ import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.*;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Instant30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.dstu3.model.DocumentReference;
@@ -14,12 +15,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import java.util.Date;
 
 public class DocumentReference30_40 {
-
-  public static org.hl7.fhir.r4.model.InstantType convertDateTimeToInstant(org.hl7.fhir.dstu3.model.DateTimeType src) throws FHIRException {
-    org.hl7.fhir.r4.model.InstantType tgt = new org.hl7.fhir.r4.model.InstantType(src.getValueAsString());
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    return tgt;
-  }
 
   public static org.hl7.fhir.dstu3.model.DocumentReference convertDocumentReference(org.hl7.fhir.r4.model.DocumentReference src) throws FHIRException {
     if (src == null)
@@ -43,7 +38,7 @@ public class DocumentReference30_40 {
     if (src.hasDateElement())
       tgt.setIndexedElement(Instant30_40.convertInstant(src.getDateElement()));
     if (src.hasExtension(VersionConvertorConstants.EXT_DOC_REF_CREATED))
-      tgt.setCreated(convertCreatedExtension(src));
+      tgt.setCreatedElement(convertCreatedExtension(src));
     if (src.hasAuthenticator())
       tgt.setAuthenticator(Reference30_40.convertReference(src.getAuthenticator()));
     if (src.hasCustodian())
@@ -397,23 +392,12 @@ public class DocumentReference30_40 {
   }
 
 
-  private static Date convertCreatedExtension(org.hl7.fhir.r4.model.DocumentReference src) {
+  private static org.hl7.fhir.dstu3.model.DateTimeType convertCreatedExtension(org.hl7.fhir.r4.model.DocumentReference src) {
     org.hl7.fhir.r4.model.Extension extension = src.getExtensionByUrl(VersionConvertorConstants.EXT_DOC_REF_CREATED);
-    if (extension == null) {
+    if (extension == null || !extension.isDateTime()) {
       return null;
     }
-
-    org.hl7.fhir.r4.model.Type value = extension.getValue();
-    if (value == null || value.isEmpty()) {
-      return null;
-    }
-
-    org.hl7.fhir.r4.model.BaseDateTimeType datetimeValue = value.dateTimeValue();
-    if (datetimeValue == null || datetimeValue.isEmpty()) {
-      return null;
-    }
-
-    return datetimeValue.getValue();
+    return DateTime30_40.convertDateTime(extension.dateTimeValue());
   }
 
   public static org.hl7.fhir.r4.model.Extension getExtensionForDocumentReferenceCreated(Date created) {
