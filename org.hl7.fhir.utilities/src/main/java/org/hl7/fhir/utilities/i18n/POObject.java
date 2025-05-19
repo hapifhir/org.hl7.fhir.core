@@ -79,4 +79,16 @@ public class POObject {
     return msgstr;
   }
 
+  public String getMsgstrFirst() {
+    if (msgstr == null) {
+      return null;
+    }
+    for (String s : msgstr) {
+      if (!Utilities.noString(s)) {
+        return s;
+      }
+    }
+    return msgstr.get(0);
+  }
+
 }
