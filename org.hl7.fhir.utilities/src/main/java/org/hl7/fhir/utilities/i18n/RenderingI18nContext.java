@@ -957,7 +957,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String MATURITY_STATUS = "MATURITY_STATUS";
   public static final String MATURITY_MATURITY = "MATURITY_MATURITY";
   public static final String MATURITY_STDS_STATUS = "MATURITY_STDS_STATUS";
-
   public static final String DATA_REND_MORNING = "DATA_REND_MORNING";
   public static final String DATA_REND_MORNING_EARLY = "DATA_REND_MORNING_EARLY";
   public static final String DATA_REND_MORNING_LATE = "DATA_REND_MORNING_LATE";
@@ -982,6 +981,35 @@ public class RenderingI18nContext extends I18nBase {
   public static final String GENERAL_TYPE_PROFILE = "GENERAL_TYPE_PROFILE";
   public static final String GENERAL_TYPE_TARGET_PROFILE = "GENERAL_TYPE_TARGET_PROFILE";
   public static final String SDR_EXTENSION_SUMMARY = "SDR_EXTENSION_SUMMARY";
+  public static final String STATUS_MSG_AUTOBUILD = "STATUS_MSG_AUTOBUILD";
+  public static final String STATUS_MSG_PUBLICATION_HOLDER = "STATUS_MSG_PUBLICATION_HOLDER";
+  public static final String STATUS_MSG_LOCAL_BUILD = "STATUS_MSG_LOCAL_BUILD";
+  public static final String SDT_OBLIGATION_PROFILE = "SDT_OBLIGATION_PROFILE";
+  public static final String SDT_EXTENSION = "SDT_EXTENSION";
+  public static final String SDT_DT_PROF = "SDT_DT_PROF";
+  public static final String SDT_DT = "SDT_DT";
+  public static final String SDT_LM_PROF = "SDT_LM_PROF";
+  public static final String SDT_LM = "SDT_LM";
+  public static final String SDT_PT_PROF = "SDT_PT_PROF";
+  public static final String SDT_PT = "SDT_PT";
+  public static final String SDT_RES_PROF = "SDT_RES_PROF";
+  public static final String SDT_RES = "SDT_RES";
+  public static final String SDT_DEF = "SDT_DEF";
+  public static final String SDT_ORIGINAL_SOURCE = "SDT_ORIGINAL_SOURCE";
+  public static final String SDR_USAGE = "SDR_USAGE";
+  public static final String SDR_DERIVED = "SDR_DERIVED";
+  public static final String SDR_DRAW_IN = "SDR_DRAW_IN";
+  public static final String SDR_IMPOSE = "SDR_IMPOSE";
+  public static final String SDR_COMPLY = "SDR_COMPLY";
+  public static final String SDR_USE = "SDR_USE";
+  public static final String SDR_REFER = "SDR_REFER";
+  public static final String SDR_EXAMPLE = "SDR_EXAMPLE";
+  public static final String SDR_SEARCH = "SDR_SEARCH";
+  public static final String SDR_CAPSTMT = "SDR_CAPSTMT";
+  public static final String SDR_NOT_USED = "SDR_NOT_USED";
+  public static final String GENERAL_OBLIGATIONS = "GENERAL_OBLIGATIONS";
+  public static final String GENERAL_CONSTRAINTS = "GENERAL_CONSTRAINTS";
+  public static final String GENERAL_BINDINGS = "GENERAL_BINDINGS";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";

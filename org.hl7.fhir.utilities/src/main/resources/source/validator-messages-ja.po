@@ -3360,7 +3360,7 @@ msgstr "このLinkIdを持つ回答アイテムは1つだけ許可されます"
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
 msgid "-- no content: do not translate #36 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
-msgstr[0] "LinkId {1} を持つ回答アイテムは1つだけ許可されます - {0} 個のアイテムが見つかりました"
+msgstr[0] "!!LinkId {1} を持つ回答アイテムは1つだけ許可されます - {0} 個のアイテムが見つかりました"
 msgstr[1] ""
 
 # Questionnaire_QR_Item_Order
