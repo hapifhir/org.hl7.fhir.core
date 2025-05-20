@@ -45,6 +45,7 @@ import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import lombok.Setter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -75,6 +76,7 @@ import javax.annotation.Nonnull;
  * @author Claude Nanjo
  */
 @Deprecated
+@Slf4j
 public class ClientUtils {
   protected static final String LOCATION_HEADER = "location";
   protected static final String CONTENT_LOCATION_HEADER = "content-location";
@@ -583,7 +585,7 @@ public class ClientUtils {
     String value = null;
     try {
       value = IOUtils.toString(instream, "UTF-8");
-      System.out.println(value);
+      log.info(value);
 
     } catch (IOException ioe) {
       // Do nothing

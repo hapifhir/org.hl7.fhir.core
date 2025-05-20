@@ -7,9 +7,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
+@Slf4j
 public class POSource {
 
   private String lang;
@@ -117,12 +119,12 @@ public class POSource {
           s = s.substring(2);
         }
         if (c != obj.getMsgstr().size()) {
-          System.out.println("index issue");   
+          log.warn("index issue");
         } else { // if (!Utilities.noString(s)) {
           obj.getMsgstr().add(s);          
         }
       } else {
-        System.out.println("unknown line: "+line);          
+        log.warn("unknown line: "+line);
       }
       i++;
     }
