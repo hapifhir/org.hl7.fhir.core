@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
@@ -384,7 +385,7 @@ public class ValueSet43_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent tgt = new org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt, "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.property");
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt, VersionConvertorConstants.EXT_VS_EXP_PROP);
     if (src.hasIdentifier())
       tgt.setIdentifierElement(Uri43_50.convertUri(src.getIdentifierElement()));
     if (src.hasTimestamp())
@@ -396,7 +397,7 @@ public class ValueSet43_50 {
     for (org.hl7.fhir.r4b.model.ValueSet.ValueSetExpansionParameterComponent t : src.getParameter())
       tgt.addParameter(convertValueSetExpansionParameterComponent(t));
     for (org.hl7.fhir.r4b.model.Extension t : src.getExtension()) {
-      if ("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.property".equals(t.getUrl())) {
+      if (VersionConvertorConstants.EXT_VS_EXP_PROP.equals(t.getUrl())) {
         tgt.addProperty().setCode(t.getExtensionString("code")).setUri(t.getExtensionString("uri"));
       }
     }
@@ -421,7 +422,7 @@ public class ValueSet43_50 {
     for (org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent t : src.getParameter())
       tgt.addParameter(convertValueSetExpansionParameterComponent(t));
     for (ValueSet.ValueSetExpansionPropertyComponent t : src.getProperty()) {
-      org.hl7.fhir.r4b.model.Extension ext = tgt.addExtension().setUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.property");
+      org.hl7.fhir.r4b.model.Extension ext = tgt.addExtension().setUrl(VersionConvertorConstants.EXT_VS_EXP_PROP);
       ext.addExtension().setUrl("code").setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getCodeElement()));
       ext.addExtension().setUrl("uri").setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getUriElement()));
     }
@@ -474,7 +475,7 @@ public class ValueSet43_50 {
     for (org.hl7.fhir.r4b.model.ValueSet.ConceptReferenceDesignationComponent t : src.getDesignation())
       tgt.addDesignation(convertConceptReferenceDesignationComponent(t));
     for (org.hl7.fhir.r4b.model.Extension t : src.getExtension()) {
-      if ("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property".equals(t.getUrl())) {
+      if (VersionConvertorConstants.EXT_EXP_VS_CONT_PROP.equals(t.getUrl())) {
         ValueSet.ConceptPropertyComponent prop = tgt.addProperty();
         ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(t, prop, "code", "value[x]");
         prop.setCode(t.getExtensionString("code"));
@@ -510,7 +511,7 @@ public class ValueSet43_50 {
     for (org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent t : src.getDesignation())
       tgt.addDesignation(convertConceptReferenceDesignationComponent(t));
     for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent t : src.getProperty()) {
-      org.hl7.fhir.r4b.model.Extension ext = tgt.addExtension().setUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property");
+      org.hl7.fhir.r4b.model.Extension ext = tgt.addExtension().setUrl(VersionConvertorConstants.EXT_EXP_VS_CONT_PROP);
       ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(t, ext, "code", "value[x]");
       ext.addExtension().setUrl("code").setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getCodeElement()));
       ext.addExtension().setUrl("value[x]").setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getValue()));

@@ -258,6 +258,24 @@ public class Utilities {
     return b.toString();
   }
 
+  public static String escapeXmlText(String doco) {
+    if (doco == null)
+      return "";
+
+    StringBuilder b = new StringBuilder();
+    for (char c : doco.toCharArray()) {
+      if (c == '<')
+        b.append("&lt;");
+      else if (c == '>')
+        b.append("&gt;");
+      else if (c == '&')
+        b.append("&amp;");
+      else
+        b.append(c);
+    }
+    return b.toString();
+  }
+
   public static String titleize(String s) {
     StringBuilder b = new StringBuilder();
     boolean up = true;

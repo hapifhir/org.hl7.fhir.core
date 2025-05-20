@@ -216,6 +216,7 @@ public class ValueSetValidator extends BaseValidator {
           NodeStack estack = stack.push(ext, i, null, null);
           String name = n.getNamedChildValue("value");
           if (d == null) {                     
+            warning(errors, "2025-03-22", IssueType.BUSINESSRULE, estack, name.startsWith("p-"), I18nConstants.VALUESET_PARAMETER_NO_DOCO, name);               
             parameters.add(new ParameterDeclaration(ext, n.primitiveValue(), null));            
           } else {
             parameters.add(new ParameterDeclaration(ext, name, d == null ? null : d.getNamedChildValue("value")));
