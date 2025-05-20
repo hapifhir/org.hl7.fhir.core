@@ -541,8 +541,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
       NpmPackage extractedNpm = NpmPackage.extractFromTgz(packageTgzInputStream, sourceDesc, tempDir, minimalMemory);
 
-      log("");
-      log("Installing " + sid + "#" + version);
+      log.info("");
+      log.info("Installing " + sid + "#" + version);
 
       if ((extractedNpm.name() != null && sid != null && !sid.equalsIgnoreCase(extractedNpm.name()) && !sid.equalsIgnoreCase(extractedNpm.name()+"."+VersionUtilities.getNameForVersion(extractedNpm.fhirVersion())))) {
         if (!suppressErrors && (!sid.equals("hl7.fhir.r5.core") && !sid.equals("hl7.fhir.us.immds"))) {// temporary work around
