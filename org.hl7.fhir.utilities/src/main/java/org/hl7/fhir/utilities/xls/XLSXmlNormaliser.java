@@ -48,6 +48,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -58,6 +59,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+@Slf4j
 public class XLSXmlNormaliser {
   
   private static final String XLS_NS = "urn:schemas-microsoft-com:office:spreadsheet";
@@ -103,7 +105,7 @@ public class XLSXmlNormaliser {
     if (exceptionIfExcelNotNormalised)
       throw new FHIRException("The spreadsheet "+dest+" was committed after editing in excel, but before the build could run *after Excel was closed*");
     
-    System.out.println("normalise: "+source);
+    log.info("normalise: "+source);
     
     XMLUtil.deleteByName(root, "ActiveSheet");
     Element xw = XMLUtil.getNamedChild(root, "ExcelWorkbook");
@@ -130,7 +132,7 @@ public class XLSXmlNormaliser {
       FileUtilities.stringToFile(s, dest);
       ManagedFileAccess.file(dest).setLastModified(time);
     } catch (Exception e) {
-      System.out.println("The file "+dest+" is still open in Excel, and you will have to run the build after closing Excel before committing");
+      log.error("The file "+dest+" is still open in Excel, and you will have to run the build after closing Excel before committing");
     }
   }
 

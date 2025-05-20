@@ -612,16 +612,15 @@ public class NpmPackage {
     try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
       TarArchiveEntry entry;
 
-      int i = 0;
-      int c = 12;
+      NpmPackageReadLogger readLogger = new NpmPackageReadLogger(progress);
       while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
-        i++;
-        String n = entry.getName();
-        if (n.contains("..")) {
-          throw new RuntimeException("Entry with an illegal name: " + n);
+
+        String entryName = entry.getName();
+        if (entryName.contains("..")) {
+          throw new RuntimeException("Entry with an illegal name: " + entryName);
         }
         if (entry.isDirectory()) {
-          String dir = n.substring(0, n.length()-1);
+          String dir = entryName.substring(0, entryName.length()-1);
           if (dir.startsWith("package/")) {
             dir = dir.substring(8);
           }
@@ -636,17 +635,9 @@ public class NpmPackage {
             }
           }
           fos.close();
-          loadFile(n, fos.toByteArray());
+          loadFile(entryName, fos.toByteArray());
         }
-        if (progress && i % 50 == 0) {
-          c++;
-          System.out.print(".");
-          if (c == 120) {
-            System.out.println();
-            System.out.print("  ");
-            c = 2;
-          }
-        }
+        readLogger.entry(entryName);
       }
     } 
     try {
