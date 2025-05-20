@@ -29,13 +29,16 @@ import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.r5.model.Reference;
+import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.utilities.Utilities;
 
 public class ElementDefinition30_50 {
   public static org.hl7.fhir.r5.model.ElementDefinition convertElementDefinition(org.hl7.fhir.dstu3.model.ElementDefinition src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.ElementDefinition tgt = new org.hl7.fhir.r5.model.ElementDefinition();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt, "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.mustHaveValue", "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.valueAlternatives");
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt, VersionConvertorConstants.EXT_MUST_VALUE, VersionConvertorConstants.EXT_VALUE_ALT);
     if (src.hasPath()) tgt.setPathElement(String30_50.convertString(src.getPathElement()));
     tgt.setRepresentation(src.getRepresentation().stream().map(ElementDefinition30_50::convertPropertyRepresentation).collect(Collectors.toList()));
     if (src.hasSliceName()) tgt.setSliceNameElement(String30_50.convertString(src.getSliceNameElement()));
@@ -76,19 +79,19 @@ public class ElementDefinition30_50 {
     if (src.hasMustSupport()) tgt.setMustSupportElement(Boolean30_50.convertBoolean(src.getMustSupportElement()));
     if (src.hasIsModifier()) tgt.setIsModifierElement(Boolean30_50.convertBoolean(src.getIsModifierElement()));
     if (tgt.getIsModifier()) {
-      String reason = org.hl7.fhir.dstu3.utils.ToolingExtensions.readStringExtension(src, VersionConvertorConstants.MODIFIER_REASON_EXTENSION);
-      if (Utilities.noString(reason)) reason = VersionConvertorConstants.MODIFIER_REASON_LEGACY;
+      String reason = org.hl7.fhir.dstu3.utils.ToolingExtensions.readStringExtension(src, VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION);
+      if (Utilities.noString(reason)) reason = VersionConvertorConstants.EXT_MODIFIER_REASON_LEGACY;
       tgt.setIsModifierReason(reason);
     }
     if (src.hasIsSummary()) tgt.setIsSummaryElement(Boolean30_50.convertBoolean(src.getIsSummaryElement()));
-    if (src.hasBinding()) tgt.setBinding(convertElementDefinitionBindingComponent(src.getBinding()));
+    if (src.hasBinding()) tgt.setBinding(ElementDefinition30_50.convertElementDefinitionBindingComponent(src.getBinding()));
     for (org.hl7.fhir.dstu3.model.ElementDefinition.ElementDefinitionMappingComponent t : src.getMapping())
       tgt.addMapping(convertElementDefinitionMappingComponent(t));
 
-    if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.mustHaveValue")) {
-      tgt.setMustHaveValueElement(Boolean30_50.convertBoolean((org.hl7.fhir.dstu3.model.BooleanType) src.getExtensionByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.mustHaveValue").getValueAsPrimitive()));
+    if (src.hasExtension(VersionConvertorConstants.EXT_MUST_VALUE)) {
+      tgt.setMustHaveValueElement(Boolean30_50.convertBoolean((org.hl7.fhir.dstu3.model.BooleanType) src.getExtensionByUrl(VersionConvertorConstants.EXT_MUST_VALUE).getValueAsPrimitive()));
     }
-    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.valueAlternatives")) {
+    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl(VersionConvertorConstants.EXT_VALUE_ALT)) {
       tgt.addValueAlternative(Uri30_50.convertCanonical((org.hl7.fhir.dstu3.model.UriType)ext.getValue()));
     }
 
@@ -138,17 +141,17 @@ public class ElementDefinition30_50 {
       tgt.addConstraint(convertElementDefinitionConstraintComponent(t));
     if (src.hasMustSupport()) tgt.setMustSupportElement(Boolean30_50.convertBoolean(src.getMustSupportElement()));
     if (src.hasIsModifier()) tgt.setIsModifierElement(Boolean30_50.convertBoolean(src.getIsModifierElement()));
-    if (src.hasIsModifierReason() && !VersionConvertorConstants.MODIFIER_REASON_LEGACY.equals(src.getIsModifierReason()))
-      org.hl7.fhir.dstu3.utils.ToolingExtensions.setStringExtension(tgt, VersionConvertorConstants.MODIFIER_REASON_EXTENSION, src.getIsModifierReason());
+    if (src.hasIsModifierReason() && !VersionConvertorConstants.EXT_MODIFIER_REASON_LEGACY.equals(src.getIsModifierReason()))
+      org.hl7.fhir.dstu3.utils.ToolingExtensions.setStringExtension(tgt, VersionConvertorConstants.EXT_MODIFIER_REASON_EXTENSION, src.getIsModifierReason());
     if (src.hasIsSummary()) tgt.setIsSummaryElement(Boolean30_50.convertBoolean(src.getIsSummaryElement()));
     if (src.hasBinding()) tgt.setBinding(convertElementDefinitionBindingComponent(src.getBinding()));
     for (org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent t : src.getMapping())
       tgt.addMapping(convertElementDefinitionMappingComponent(t));
     if (src.hasMustHaveValue()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.mustHaveValue", Boolean30_50.convertBoolean(src.getMustHaveValueElement()));
+      tgt.addExtension(VersionConvertorConstants.EXT_MUST_VALUE, Boolean30_50.convertBoolean(src.getMustHaveValueElement()));
     }
     for (org.hl7.fhir.r5.model.CanonicalType ct : src.getValueAlternatives()) {
-      tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.valueAlternatives", Uri30_50.convertCanonical(ct));      
+      tgt.addExtension(VersionConvertorConstants.EXT_VALUE_ALT, Uri30_50.convertCanonical(ct));      
     }
 
     return tgt;
@@ -649,30 +652,6 @@ public class ElementDefinition30_50 {
     return tgt;
   }
 
-  public static ElementDefinition.ElementDefinitionBindingComponent convertElementDefinitionBindingComponent(org.hl7.fhir.dstu3.model.ElementDefinition.ElementDefinitionBindingComponent src) throws FHIRException {
-    if (src == null) return null;
-    ElementDefinition.ElementDefinitionBindingComponent tgt = new ElementDefinition.ElementDefinitionBindingComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt, VersionConvertor_30_50.EXT_SRC_TYPE, 
-        "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.binding.additional");
-    if (src.hasStrength()) tgt.setStrengthElement(Enumerations30_50.convertBindingStrength(src.getStrengthElement()));
-    if (src.hasDescription()) tgt.setDescriptionElement(String30_50.convertStringToMarkdown(src.getDescriptionElement()));
-    if (src.hasValueSet()) {
-      DataType t = ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValueSet());
-      if (t instanceof org.hl7.fhir.r5.model.Reference) {
-        tgt.setValueSet(((org.hl7.fhir.r5.model.Reference) t).getReference());
-        tgt.getValueSetElement().addExtension(VersionConvertor_30_50.EXT_SRC_TYPE, new org.hl7.fhir.r5.model.UrlType("Reference"));
-      } else {
-        tgt.setValueSet(t.primitiveValue());
-        tgt.getValueSetElement().addExtension(VersionConvertor_30_50.EXT_SRC_TYPE, new org.hl7.fhir.r5.model.UrlType("uri"));
-      }
-      tgt.setValueSet(VersionConvertorConstants.refToVS(tgt.getValueSet()));
-    }
-    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.binding.additional")) {
-      tgt.addAdditional(convertAdditional(ext));
-    }
-    return tgt;
-  }
-
   public static org.hl7.fhir.dstu3.model.ElementDefinition.ElementDefinitionBindingComponent convertElementDefinitionBindingComponent(ElementDefinition.ElementDefinitionBindingComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.dstu3.model.ElementDefinition.ElementDefinitionBindingComponent tgt = new org.hl7.fhir.dstu3.model.ElementDefinition.ElementDefinitionBindingComponent();
@@ -700,7 +679,7 @@ public class ElementDefinition30_50 {
   }
 
 
-  private static ElementDefinitionBindingAdditionalComponent convertAdditional(Extension src) {
+  public static ElementDefinitionBindingAdditionalComponent convertAdditional(Extension src) {
     if (src == null) return null;
     ElementDefinitionBindingAdditionalComponent tgt = new ElementDefinitionBindingAdditionalComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt, "valueSet", "purpose", "documentation", "shortDoco", "usage", "any");
@@ -770,6 +749,30 @@ public class ElementDefinition30_50 {
     if (src.hasLanguage()) tgt.setLanguageElement(Code30_50.convertCode(src.getLanguageElement()));
     if (src.hasMap()) tgt.setMapElement(String30_50.convertString(src.getMapElement()));
     if (src.hasComment()) tgt.setCommentElement(String30_50.convertString(src.getCommentElement()));
+    return tgt;
+  }
+
+  public static ElementDefinition.ElementDefinitionBindingComponent convertElementDefinitionBindingComponent(org.hl7.fhir.dstu3.model.ElementDefinition.ElementDefinitionBindingComponent src) throws FHIRException {
+    if (src == null) return null;
+    ElementDefinition.ElementDefinitionBindingComponent tgt = new ElementDefinition.ElementDefinitionBindingComponent();
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt, VersionConvertor_30_50.EXT_SRC_TYPE, 
+        VersionConvertorConstants.EXT_ADDITIONAL_BINDING);
+    if (src.hasStrength()) tgt.setStrengthElement(Enumerations30_50.convertBindingStrength(src.getStrengthElement()));
+    if (src.hasDescription()) tgt.setDescriptionElement(String30_50.convertStringToMarkdown(src.getDescriptionElement()));
+    if (src.hasValueSet()) {
+      DataType t = ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValueSet());
+      if (t instanceof org.hl7.fhir.r5.model.Reference) {
+        tgt.setValueSet(((org.hl7.fhir.r5.model.Reference) t).getReference());
+        tgt.getValueSetElement().addExtension(VersionConvertor_30_50.EXT_SRC_TYPE, new org.hl7.fhir.r5.model.UrlType("Reference"));
+      } else {
+        tgt.setValueSet(t.primitiveValue());
+        tgt.getValueSetElement().addExtension(VersionConvertor_30_50.EXT_SRC_TYPE, new org.hl7.fhir.r5.model.UrlType("uri"));
+      }
+      tgt.setValueSet(VersionConvertorConstants.refToVS(tgt.getValueSet()));
+    }
+    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl(VersionConvertorConstants.EXT_ADDITIONAL_BINDING)) {
+      tgt.addAdditional(convertAdditional(ext));
+    }
     return tgt;
   }
 }
