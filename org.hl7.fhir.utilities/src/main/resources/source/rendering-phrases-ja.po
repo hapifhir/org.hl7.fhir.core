@@ -1371,6 +1371,11 @@ msgstr ""
 msgid "Binding"
 msgstr ""
 
+# GENERAL_BINDINGS
+#: GENERAL_BINDINGS
+msgid "Bindings;"
+msgstr ""
+
 # GENERAL_BINDING_NO_DESC
 #: GENERAL_BINDING_NO_DESC
 msgid "No description provided"
@@ -1424,6 +1429,12 @@ msgstr ""
 # GENERAL_CONFORMANCE
 #: GENERAL_CONFORMANCE
 msgid "Conformance"
+msgstr ""
+
+# GENERAL_CONSTRAINTS
+#: GENERAL_CONSTRAINTS
+msgctxt "GENERAL_CONSTRAINTS"
+msgid "Constraints"
 msgstr ""
 
 # GENERAL_CONTACT
@@ -1555,6 +1566,13 @@ msgstr ""
 
 # GENERAL_OBLIG
 #: GENERAL_OBLIG
+msgctxt "GENERAL_OBLIG"
+msgid "Obligations"
+msgstr ""
+
+# GENERAL_OBLIGATIONS
+#: GENERAL_OBLIGATIONS
+msgctxt "GENERAL_OBLIGATIONS"
 msgid "Obligations"
 msgstr ""
 
@@ -3431,6 +3449,7 @@ msgstr ""
 
 # STRUC_DEF_CONSTRAINTS
 #: STRUC_DEF_CONSTRAINTS
+msgctxt "STRUC_DEF_CONSTRAINTS"
 msgid "Constraints"
 msgstr ""
 

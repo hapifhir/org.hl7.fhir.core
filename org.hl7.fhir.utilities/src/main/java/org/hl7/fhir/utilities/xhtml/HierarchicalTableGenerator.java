@@ -97,23 +97,6 @@ public class HierarchicalTableGenerator {
     XML, XHTML
   }
 
-  public static final String TEXT_ICON_REFERENCE = "Reference to another Resource";
-  public static final String TEXT_ICON_PRIMITIVE = "Primitive Data Type";
-  public static final String TEXT_ICON_KEY = "JSON Key Value";
-  public static final String TEXT_ICON_DATATYPE = "Data Type";
-  public static final String TEXT_ICON_RESOURCE = "Resource";
-  public static final String TEXT_ICON_ELEMENT = "Element";
-  public static final String TEXT_ICON_OBJECT_BOX = "Object";
-  public static final String TEXT_ICON_REUSE = "Reference to another Element";
-  public static final String TEXT_ICON_EXTENSION = "Extension";
-  public static final String TEXT_ICON_CHOICE = "Choice of Types";
-  public static final String TEXT_ICON_SLICE = "Slice Definition";
-  public static final String TEXT_ICON_SLICE_ITEM = "Slice Item";
-  public static final String TEXT_ICON_FIXED = "Fixed Value";
-  public static final String TEXT_ICON_EXTENSION_SIMPLE = "Simple Extension";
-  public static final String TEXT_ICON_PROFILE = "Profile";
-  public static final String TEXT_ICON_EXTENSION_COMPLEX = "Complex Extension";
-
   public static final int NEW_REGULAR = 0;
   public static final int CONTINUE_REGULAR = 1;
   public static final int NEW_SLICER = 2;
@@ -843,9 +826,9 @@ public class HierarchicalTableGenerator {
     model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_TYPE), i18n.formatPhrase(RenderingI18nContext.SD_GRID_HEAD_TYPE_DESC), null, 100));
     Title t = new Title(null, model.getDocoRef(), i18n.formatPhrase(RenderingI18nContext.GENERAL_DESC_CONST), i18n.formatPhrase(RenderingI18nContext.SD_HEAD_DESC_DESC), null, 0);
     t.setFilter(true);
-    t.checkboxes.put("Obligations", "obligation");
-    t.checkboxes.put("Constraints", "constraint");
-    t.checkboxes.put("Bindings", "binding");
+    t.checkboxes.put(i18n.formatPhrase(RenderingI18nContext.GENERAL_OBLIGATIONS), "obligation");
+    t.checkboxes.put(i18n.formatPhrase(RenderingI18nContext.GENERAL_CONSTRAINTS), "constraint");
+    t.checkboxes.put(i18n.formatPhrase(RenderingI18nContext.GENERAL_BINDINGS), "binding");
     model.getTitles().add(t);
     if (isLogical) {
       model.getTitles().add(new Title(null, prefix+"structuredefinition.html#logical", "Implemented As", "How this logical data item is implemented in a concrete resource", null, 0));

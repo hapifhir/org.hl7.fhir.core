@@ -1371,6 +1371,11 @@ msgstr "Ecrãs de idiomas adicionais"
 msgid "Binding"
 msgstr "Encadernação"
 
+# GENERAL_BINDINGS
+#: GENERAL_BINDINGS
+msgid "Bindings;"
+msgstr ""
+
 # GENERAL_BINDING_NO_DESC
 #: GENERAL_BINDING_NO_DESC
 msgid "No description provided"
@@ -1425,6 +1430,12 @@ msgstr "Componente"
 #: GENERAL_CONFORMANCE
 msgid "Conformance"
 msgstr "Conformidade"
+
+# GENERAL_CONSTRAINTS
+#: GENERAL_CONSTRAINTS
+msgctxt "GENERAL_CONSTRAINTS"
+msgid "Constraints"
+msgstr ""
 
 # GENERAL_CONTACT
 #: GENERAL_CONTACT
@@ -1555,8 +1566,15 @@ msgstr "Nota"
 
 # GENERAL_OBLIG
 #: GENERAL_OBLIG
+msgctxt "GENERAL_OBLIG"
 msgid "Obligations"
 msgstr "Obrigações"
+
+# GENERAL_OBLIGATIONS
+#: GENERAL_OBLIGATIONS
+msgctxt "GENERAL_OBLIGATIONS"
+msgid "Obligations"
+msgstr ""
 
 # GENERAL_OID
 #: GENERAL_OID
@@ -3431,6 +3449,7 @@ msgstr "Restrição de fatias"
 
 # STRUC_DEF_CONSTRAINTS
 #: STRUC_DEF_CONSTRAINTS
+msgctxt "STRUC_DEF_CONSTRAINTS"
 msgid "Constraints"
 msgstr "Restrições"
 

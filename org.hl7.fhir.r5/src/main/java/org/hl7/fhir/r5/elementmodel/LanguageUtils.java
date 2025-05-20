@@ -781,4 +781,14 @@ public class LanguageUtils {
     }
     return e.primitiveValue();
   }
+
+  public Element copyToLanguage(Element element, String lang) {
+    Element result = (Element) element.copy();
+    switchLanguage(result, lang);
+    return result;
+  }
+
+  public Resource copyToLanguage(Resource res, String lang) {
+    return res;
+  }
 }
