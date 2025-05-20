@@ -1007,6 +1007,9 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SDR_SEARCH = "SDR_SEARCH";
   public static final String SDR_CAPSTMT = "SDR_CAPSTMT";
   public static final String SDR_NOT_USED = "SDR_NOT_USED";
+  public static final String GENERAL_OBLIGATIONS = "GENERAL_OBLIGATIONS";
+  public static final String GENERAL_CONSTRAINTS = "GENERAL_CONSTRAINTS";
+  public static final String GENERAL_BINDINGS = "GENERAL_BINDINGS";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
