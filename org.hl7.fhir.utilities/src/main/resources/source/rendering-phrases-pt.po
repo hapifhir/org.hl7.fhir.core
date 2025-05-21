@@ -1376,8 +1376,8 @@ msgstr "Encadernação"
 
 # GENERAL_BINDINGS
 #: GENERAL_BINDINGS
-msgid "Bindings;"
-msgstr ""
+msgid "Bindings"
+msgstr "Vínculos"
 
 # GENERAL_BINDING_NO_DESC
 #: GENERAL_BINDING_NO_DESC
@@ -1438,7 +1438,7 @@ msgstr "Conformidade"
 #: GENERAL_CONSTRAINTS
 msgctxt "GENERAL_CONSTRAINTS"
 msgid "Constraints"
-msgstr ""
+msgstr "Condicionantes"
 
 # GENERAL_CONTACT
 #: GENERAL_CONTACT
@@ -1577,7 +1577,7 @@ msgstr "Obrigações"
 #: GENERAL_OBLIGATIONS
 msgctxt "GENERAL_OBLIGATIONS"
 msgid "Obligations"
-msgstr ""
+msgstr "Obrigações"
 
 # GENERAL_OID
 #: GENERAL_OID
@@ -2845,27 +2845,27 @@ msgstr "versão: {0}"
 # SDR_CAPSTMT
 #: SDR_CAPSTMT
 msgid "CapabilityStatements using this {0}"
-msgstr ""
+msgstr "Declarações de capacidade usando este {0}"
 
 # SDR_COMPLY
 #: SDR_COMPLY
 msgid "Comply with this profile {0}"
-msgstr ""
+msgstr "Cumpre com este perfil {0}"
 
 # SDR_DERIVED
 #: SDR_DERIVED
 msgid "Derived from this {0}"
-msgstr ""
+msgstr "Derivado deste {0}"
 
 # SDR_DRAW_IN
 #: SDR_DRAW_IN
 msgid "Draw in Obligations & Additional Bindings from this {0}"
-msgstr ""
+msgstr "Obtém obrigações e vinculações adicionais a partir deste {0}"
 
 # SDR_EXAMPLE
 #: SDR_EXAMPLE
 msgid "Examples for this {0}"
-msgstr ""
+msgstr "Exemplos para este {0}"
 
 # SDR_EXTENSION_SUMMARY
 #: SDR_EXTENSION_SUMMARY
@@ -2875,96 +2875,96 @@ msgstr "Extensão simples com o tipo {0}: {1}"
 # SDR_IMPOSE
 #: SDR_IMPOSE
 msgid "Impose this profile {0}"
-msgstr ""
+msgstr "Impõe este perfil {0}"
 
 # SDR_NOT_USED
 #: SDR_NOT_USED
 msgid "This {0} is not used by any profiles in this Implementation Guide"
-msgstr ""
+msgstr "Este {0} não é utilizado por nenhum perfil neste guia de implementação"
 
 # SDR_REFER
 #: SDR_REFER
 msgid "Refer to this {0}"
-msgstr ""
+msgstr "Refere a este {0}"
 
 # SDR_SEARCH
 #: SDR_SEARCH
 msgid "Search Parameters using this {0}"
-msgstr ""
+msgstr "Parametros de pesquisa usando este {0}"
 
 # SDR_USAGE
 #: SDR_USAGE
 msgid "Usages"
-msgstr ""
+msgstr "Usos"
 
 # SDR_USE
 #: SDR_USE
 msgid "Use this {0}"
-msgstr ""
+msgstr "Usa este {0}"
 
 # SDT_DEF
 #: SDT_DEF
 msgctxt "SDT_DEF"
 msgid "Definition"
-msgstr ""
+msgstr "Definição"
 
 # SDT_DT
 #: SDT_DT
 msgid "DataType"
-msgstr ""
+msgstr "Tipo de dados"
 
 # SDT_DT_PROF
 #: SDT_DT_PROF
 msgid "DataType Profile"
-msgstr ""
+msgstr "Perfil de tipo de dados"
 
 # SDT_EXTENSION
 #: SDT_EXTENSION
 msgid "Extension"
-msgstr ""
+msgstr "Extensão"
 
 # SDT_LM
 #: SDT_LM
 msgctxt "SDT_LM"
 msgid "Logical Model"
-msgstr ""
+msgstr "Modelo lógico"
 
 # SDT_LM_PROF
 #: SDT_LM_PROF
 msgid "Logical Model Profile"
-msgstr ""
+msgstr "Perfil de modelo lógico"
 
 # SDT_OBLIGATION_PROFILE
 #: SDT_OBLIGATION_PROFILE
 msgid "Obligation Profile"
-msgstr ""
+msgstr "Perfil de obrigação"
 
 # SDT_ORIGINAL_SOURCE
 #: SDT_ORIGINAL_SOURCE
 msgid "Original Source"
-msgstr ""
+msgstr "Fonte original"
 
 # SDT_PT
 #: SDT_PT
 msgid "Primitive Type"
-msgstr ""
+msgstr "Tipo primitivo"
 
 # SDT_PT_PROF
 #: SDT_PT_PROF
 msgid "Primitive Type Profile"
-msgstr ""
+msgstr "Perfil de tipo primitivo"
 
 # SDT_RES
 #: SDT_RES
 msgctxt "SDT_RES"
 msgid "Resource"
-msgstr ""
+msgstr "Recurso"
 
 # SDT_RES_PROF
 #: SDT_RES_PROF
 msgctxt "SDT_RES_PROF"
 msgid "Profile"
-msgstr ""
+msgstr "Perfil"
 
 # SD_COMP_HEAD_CARD_L
 #: SD_COMP_HEAD_CARD_L
@@ -3242,17 +3242,17 @@ msgstr "Todos os recursos"
 # STATUS_MSG_AUTOBUILD
 #: STATUS_MSG_AUTOBUILD
 msgid "{0}, published by {1}. This guide is not an authorized publication; it is the continuous build for version {2}  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href=''{3}''>{3}</a> and changes regularly. See the <a href=''{4}/history.html''>Directory of published versions</a>"
-msgstr ""
+msgstr "{0}, publicado por {1}. Este guia não é uma publicação autorizada; é a compilação contínua para a versão {2} construída pela FHIR (HL7&reg; FHIR&reg; Standard) CI Build. Esta versão é baseada no conteúdo atual de <a href=''{3}''>{3}</a> e muda regularmente. Veja o <a href=''{4}/history.html''>Diretório de versões publicadas</a>"
 
 # STATUS_MSG_LOCAL_BUILD
 #: STATUS_MSG_LOCAL_BUILD
 msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7&reg; FHIR&reg; Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
-msgstr ""
+msgstr "{0} - Compilação de desenvolvimento local (v{1}) construída pelas ferramentas de compilação FHIR (HL7&reg; FHIR&reg; Standard). Veja o <a href=''{2}/history.html''>Diretório de versões publicadas</a>"
 
 # STATUS_MSG_PUBLICATION_HOLDER
 #: STATUS_MSG_PUBLICATION_HOLDER
 msgid "Publication Build: This will be filled in by the publication tooling"
-msgstr ""
+msgstr "Compilação de publicação: isto será preenchido pelas ferramentas de publicação"
 
 # STRUC_DEF_ABSTRACT
 #: STRUC_DEF_ABSTRACT
