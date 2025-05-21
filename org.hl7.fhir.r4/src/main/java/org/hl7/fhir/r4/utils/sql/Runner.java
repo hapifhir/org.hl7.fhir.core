@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
@@ -58,6 +59,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
  */
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class Runner implements IEvaluationContext {
   
   public interface IRunnerObserver {
@@ -302,7 +304,7 @@ public class Runner implements IEvaluationContext {
     }
     Column col = (Column) column.getUserData("column");
     if (col == null) {
-      System.out.println("Error");
+      log.error("Error");
     } else {
       for (List<Cell> row : rows) {
         Cell c = cell(row, col.getName());
