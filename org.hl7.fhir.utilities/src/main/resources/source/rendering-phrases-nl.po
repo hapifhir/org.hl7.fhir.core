@@ -1373,7 +1373,7 @@ msgstr "Binding"
 
 # GENERAL_BINDINGS
 #: GENERAL_BINDINGS
-msgid "Bindings;"
+msgid "Bindings"
 msgstr ""
 
 # GENERAL_BINDING_NO_DESC
