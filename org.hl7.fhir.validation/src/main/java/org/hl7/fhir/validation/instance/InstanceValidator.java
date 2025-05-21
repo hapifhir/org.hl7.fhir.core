@@ -4338,7 +4338,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean checkNarrative(ValidationContext valContext, List<ValidationMessage> errors, String path,Element element, Element resource, StructureDefinition profile,
-      ElementDefinition container, String parentType, NodeStack stack, PercentageTracker pct, ValidationMode vmode) throws FHIRException {
+      ElementDefinition container, String parentType, NodeStack stack, ResourcePercentageLogger pct, ValidationMode vmode) throws FHIRException {
     boolean ok = true;
     if (element.hasExtension(ToolingExtensions.EXT_TEXT_LINK)) {
       XhtmlNode div = element.hasChild("div") ? element.getNamedChild("div").getXhtml() : null;
