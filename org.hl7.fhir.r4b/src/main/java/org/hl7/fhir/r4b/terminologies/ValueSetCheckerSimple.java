@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r4b.context.IWorkerContext;
@@ -65,6 +66,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChecker {
 
   private ValueSet valueset;
@@ -744,7 +746,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     if ("concept".equals(f.getProperty()))
       return codeInConceptFilter(cs, f, code);
     else {
-      System.out.println("todo: handle filters with property = " + f.getProperty());
+      log.error("todo: handle filters with property = " + f.getProperty());
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__FILTER_WITH_PROPERTY__,
           cs.getUrl(), f.getProperty()));
     }
@@ -759,7 +761,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     case DESCENDENTOF:
       return codeInConceptIsAFilter(cs, f, code, true);
     default:
-      System.out.println("todo: handle concept filters with op = " + f.getOp());
+      log.error("todo: handle concept filters with op = " + f.getOp());
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__CONCEPT_FILTER_WITH_OP__,
           cs.getUrl(), f.getOp()));
     }
