@@ -31,7 +31,7 @@ public class I18nCoverageTest {
     Locale.forLanguageTag("nl"),
     Locale.forLanguageTag("ja"),
     Locale.forLanguageTag("pt"),
-    Locale.forLanguageTag("pt_BR")
+    Locale.forLanguageTag("pt-BR")
   );
 
   final Locale sourceLocale = Locale.ENGLISH;
