@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.dstu2016may.model.BooleanType;
 import org.hl7.fhir.dstu2016may.model.Bundle;
 import org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryComponent;
@@ -70,6 +71,7 @@ import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 
 @Deprecated
+@Slf4j
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   // all maps are to the full URI
@@ -102,7 +104,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         || system.startsWith("http://hl7.org/fhir/valueset-") || system.startsWith("urn:oid:"))
       return false;
     else {
-      System.out.println("check system " + system);
+      log.info("check system " + system);
       if (bndCodeSystems == null)
         bndCodeSystems = txServer
             .fetchFeed(txServer.getAddress() + "/CodeSystem?content=not-present&_summary=true&_count=1000");

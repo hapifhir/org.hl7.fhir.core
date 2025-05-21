@@ -585,7 +585,7 @@ public class ClientUtils {
     String value = null;
     try {
       value = IOUtils.toString(instream, "UTF-8");
-      log.info(value);
+      log.debug(value);
 
     } catch (IOException ioe) {
       // Do nothing

@@ -203,7 +203,6 @@ public class RdfGenerator {
 
     public void importTtl(String ttl) throws Exception {
       if (!Utilities.noString(ttl)) {
-        // System.out.println("import ttl: "+ttl);
         TurtleLexer lexer = new TurtleLexer(ttl);
         String subject = null;
         String predicate = null;

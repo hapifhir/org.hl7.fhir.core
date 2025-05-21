@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.dstu2016may.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu2016may.formats.XmlParser;
 import org.hl7.fhir.dstu2016may.metamodel.Element;
@@ -49,6 +50,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 @Deprecated
+@Slf4j
 public class Transformer {
 
   private String txServer;
@@ -110,16 +112,16 @@ public class Transformer {
 
   public boolean process() {
     try {
-      System.out.println("  .. load definitions from " + definitions);
+      log.info("  .. load definitions from " + definitions);
       IWorkerContext context = SimpleWorkerContext.fromPack(definitions);
       scu = new StructureMapUtilities(context, new HashMap<String, StructureMap>(), null);
 
       for (String folder : folders) {
-        System.out.println("  .. load additional definitions from " + folder);
+        log.info("  .. load additional definitions from " + folder);
         ((SimpleWorkerContext) context).loadFromFolder(folder);
         loadMaps(folder);
       }
-      System.out.println("  .. load source from " + source);
+      log.info("  .. load source from " + source);
       Element e = Manager.parse(context, ManagedFileAccess.inStream(source), FhirFormat.XML);
 
       Bundle bundle = new Bundle();
