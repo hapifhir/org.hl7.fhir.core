@@ -45,6 +45,7 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.dstu2016may.formats.IParser;
 import org.hl7.fhir.dstu2016may.formats.JsonParser;
 import org.hl7.fhir.dstu2016may.formats.ParserType;
@@ -83,6 +84,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
  */
 
 @Deprecated
+@Slf4j
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext, ProfileKnowledgeProvider {
 
   // all maps are to the full URI
@@ -138,7 +140,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     for (BundleEntryComponent e : f.getEntry()) {
 
       if (e.getFullUrl() == null) {
-        System.out.println("unidentified resource in " + name + " (no fullUrl)");
+        log.warn("unidentified resource in " + name + " (no fullUrl)");
       }
       seeResource(e.getFullUrl(), e.getResource());
     }
