@@ -1,10 +1,8 @@
-# ABSTRACT_CODE_NOT_ALLOWED
-msgid ""
-msgstr ""
 
+# ABSTRACT_CODE_NOT_ALLOWED
 #: ABSTRACT_CODE_NOT_ALLOWED
 msgid "Code ''{0}#{1}'' is abstract, and not allowed in this context"
-msgstr "O código ''{0}#{1}'' é abstrato e não é permitido neste contexto"
+msgstr ""
 
 # ALL_OK
 #: ALL_OK
@@ -1488,10 +1486,18 @@ msgstr "Não foi possível resolver o discriminador nas definições: ''{0}'' no
 msgid "Unable to resolve discriminator ''{0}'' on ''{2}'' found in the definitions because the extension ''{1}'' wasn''t found in the profile ''{3}''"
 msgstr "Não foi possível resolver o discriminador ''{0}'' em ''{2}'' encontrado nas definições porque a extensão ''{1}'' não foi encontrada no perfil ''{3}''"
 
+# FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
+#: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
+msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
+msgid "-- no content: do not translate #55 --"
+msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
+msgstr[0] ""
+msgstr[1] ""
+
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid ""
+msgid "-- no content: do not translate #56 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
 msgstr[1] ""
@@ -1514,7 +1520,7 @@ msgstr "Utilização inválida de ofType() no discriminador - Type não tem cód
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid ""
+msgid "-- no content: do not translate #57 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
@@ -1537,7 +1543,7 @@ msgstr "Utilização inválida de ofType() no discriminador - nenhum tipo no ele
 # FHIRPATH_FOCUS
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
-msgid ""
+msgid "-- no content: do not translate #58 --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
@@ -1555,7 +1561,7 @@ msgstr "O tipo {0} não é válido"
 # FHIRPATH_LEFT_VALUE
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid ""
+msgid "-- no content: do not translate #59 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
@@ -1653,7 +1659,7 @@ msgstr "Problema com a utilização de resolve() - o perfil {0} em {1} não pôd
 # FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid ""
+msgid "-- no content: do not translate #60 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
@@ -1661,7 +1667,7 @@ msgstr[1] ""
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid ""
+msgid "-- no content: do not translate #61 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
@@ -1758,8 +1764,8 @@ msgstr "LOINC"
 
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
-msgid "This material contains content from <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\\"http://loinc.org/license\\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
-msgstr "Este material contém conteúdo do <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC é copyright &copy; 1995-2020, Regenstrief Institute, Inc. e o Logical Observation Identifiers Names and Codes (LOINC) Committee e está disponível sem custo sob a <a href=\\\"http://loinc.org/license\\\">licença</a>. LOINC&reg; é uma marca registada dos Estados Unidos da América do Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgstr "!!Este material contém conteúdo do <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC é copyright &copy; 1995-2020, Regenstrief Institute, Inc. e o Logical Observation Identifiers Names and Codes (LOINC) Committee e está disponível sem custo sob a <a href=\\\"http://loinc.org/license\\\">licença</a>. LOINC&reg; é uma marca registada dos Estados Unidos da América do Regenstrief Institute, Inc."
 
 # HTA_SCT_DESC
 #: HTA_SCT_DESC
@@ -1768,8 +1774,8 @@ msgstr "Termos clínicos SNOMED&reg; (SNOMED CT&reg;)"
 
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> or <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
-msgstr "Este material contém conteúdo que é copyright da SNOMED International. Os implementadores destas especificações devem ter a licença apropriada de afiliado da SNOMED CT - para mais informações contacte <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> ou <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
+msgstr "!!Este material contém conteúdo que é copyright da SNOMED International. Os implementadores destas especificações devem ter a licença apropriada de afiliado da SNOMED CT - para mais informações contacte <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> ou <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
 #: IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -2479,7 +2485,7 @@ msgstr "Referência à retirada de {2} {0} de {1}"
 # MULTIPLE_LOGICAL_MODELS
 #: MULTIPLE_LOGICAL_MODELS
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid ""
+msgid "-- no content: do not translate #62 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
 msgstr[1] ""
@@ -3352,7 +3358,7 @@ msgstr "Só é permitido um item de resposta com este linkId"
 # Questionnaire_QR_Item_OnlyOneI
 #: Questionnaire_QR_Item_OnlyOneI
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid ""
+msgid "-- no content: do not translate #63 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] ""
 msgstr[1] ""
@@ -4475,6 +4481,36 @@ msgstr "A referência do sistema de códigos {0} está incorrecta - a referênci
 #: TERMINOLOGY_TX_UNKNOWN_OID
 msgid "The OID ''{0}'' is not known, so the code can''t be validated"
 msgstr "O OID ''{0}'' não é conhecido, pelo que o código não pode ser validado"
+
+# TEXT_LINK_DATA_MULTIPLE_MATCHES
+#: TEXT_LINK_DATA_MULTIPLE_MATCHES
+msgid "Multiple matching targets for the textLink data reference ''{0}'' were found in the resource"
+msgstr "!!Foram encontrados vários alvos correspondentes para o atributo HTML idref ''{0}'' no recurso"
+
+# TEXT_LINK_DATA_NOT_FOUND
+#: TEXT_LINK_DATA_NOT_FOUND
+msgid "The target of the textLink data reference ''{0}'' was not found in the resource"
+msgstr "!!O destino do atributo HTML idref ''{0}'' não foi encontrado no recurso"
+
+# TEXT_LINK_NO_DATA
+#: TEXT_LINK_NO_DATA
+msgid "No data element was found in the textLink extension"
+msgstr ""
+
+# TEXT_LINK_NO_DIV
+#: TEXT_LINK_NO_DIV
+msgid "A textLink extension was found, but there was no xhtml element present for that targets of the html references"
+msgstr ""
+
+# TEXT_LINK_NO_ID
+#: TEXT_LINK_NO_ID
+msgid "The html id ''{0}'' was not found in the xhtml"
+msgstr ""
+
+# TEXT_LINK_SELECTOR_INVALID
+#: TEXT_LINK_SELECTOR_INVALID
+msgid "The textLink selector ''{0}'' is invalid: {1}"
+msgstr ""
 
 # TX_GENERAL_CC_ERROR_MESSAGE
 #: TX_GENERAL_CC_ERROR_MESSAGE
@@ -6534,16 +6570,6 @@ msgstr "Espaço de nome incorreto - esperava-se ''{0}''"
 msgid "Wrong type for resource"
 msgstr "Tipo incorreto de recurso"
 
-# TEXT_LINK_DATA_NOT_FOUND
-#: TEXT_LINK_DATA_NOT_FOUND
-msgid "The target of the HTML idref attribute ''{0}'' was not found in the resource"
-msgstr "O destino do atributo HTML idref ''{0}'' não foi encontrado no recurso"
-
-# TEXT_LINK_DATA_MULTIPLE_MATCHES
-#: TEXT_LINK_DATA_MULTIPLE_MATCHES
-msgid "Multiple matching targets for the HTML idref attribute ''{0}'' were found in the resource"
-msgstr "Foram encontrados vários alvos correspondentes para o atributo HTML idref ''{0}'' no recurso"
-
 # XHTML_URL_DATA_DATA_INVALID
 #: XHTML_URL_DATA_DATA_INVALID
 msgid "The data should be valid base64 content for a data: URL: {0}"
@@ -6755,3 +6781,4 @@ msgstr "O atributo XML {0} tem um carácter inválido"
 #: xml_encoding_invalid
 msgid "The XML encoding is invalid (must be UTF-8)"
 msgstr "A codificação XML é inválida (tem de ser UTF-8)"
+
