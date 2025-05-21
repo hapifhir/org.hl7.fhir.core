@@ -16,5 +16,6 @@ public interface ILoggingService {
   public void logDebugMessage(ILoggingService.LogCategory category, String message); // verbose; only when debugging 
 
   @Deprecated(forRemoval = true)
-  public boolean isDebugLogging(); // whether to log debug information
+  public default boolean isDebugLogging() {return false;} // whether to log debug information
+
 }

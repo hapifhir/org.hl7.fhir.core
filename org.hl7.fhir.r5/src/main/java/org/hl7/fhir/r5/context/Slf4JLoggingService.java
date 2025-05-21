@@ -38,9 +38,4 @@ public class Slf4JLoggingService implements ILoggingService {
       .log();
   }
 
-  @Override
-  public boolean isDebugLogging() {
-    return false;
-  }  
-  
 }
