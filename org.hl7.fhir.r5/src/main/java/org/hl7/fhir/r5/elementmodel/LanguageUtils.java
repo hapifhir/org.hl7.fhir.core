@@ -281,20 +281,46 @@ public class LanguageUtils {
         for (TranslationUnit translation : tlist) {
           t++;
           if (!handleAsSpecial(parent, element, translation)) {
-            ToolingExtensions.setLanguageTranslation(e, translation.getLanguage(), translation.getTgtText());
             usedUnits.add(translation);
+            if (translation.getTgtText() != null) {
+              ToolingExtensions.setLanguageTranslation(e, translation.getLanguage(), translation.getTgtText());
+            } else {
+              System.out.println("?");              
+            }
           }
         }
       }
     }
     for (Property c : element.children()) {
       for (Base v : c.getValues()) {
-        if (!c.getName().equals("designation")) {
-          t = t + importResourceFromTranslations(element, v, translations, usedUnits, path+"."+c.getName());
+        if (!c.getName().equals("designation") && !isTranslation(v)) {
+          t = t + importResourceFromTranslations(element, v, translations, usedUnits, genPath(c, v, path, c.getName()));
         }
       }
     }
     return t;
+  }
+
+  private String genPath(Property c, Base v, String path, String name) {
+    // special cases: recursion
+    if ("ImplementationGuide.definition.page".equals(path) && "page".equals(name)) {
+      return path;
+    }
+    if ("ValueSet.expansion.contains".equals(path) && "contains".equals(name)) {
+      return path;
+    }
+    if ("ValueSet.expansion.contains".equals(path) && "contains".equals(name)) {
+      return path;
+    }
+    if (v.isResource() && !"contained".equals(name)) {
+      return v.fhirType();
+    } else {
+      return path+"."+name;
+    }
+  }
+
+  private boolean isTranslation(Base element) {
+    return "Extension".equals(element.fhirType()) && element.getChildByName("url").hasValues()  && ToolingExtensions.EXT_TRANSLATION.equals(element.getChildByName("url").getValues().get(0).primitiveValue());
   }
 
   private boolean handleAsSpecial(Base parent, Base element, TranslationUnit translation) {
@@ -302,7 +328,8 @@ public class LanguageUtils {
   }
 
   private boolean isTranslatable(Base element, String path) {
-    return Utilities.existsInList(element.fhirType(), "string", "markdown");
+    return (Utilities.existsInList(element.fhirType(), "string", "markdown") 
+        || isTranslatable(path)) && !isExemptFromTranslations(path);
   }
 
   private int importFromTranslations(String path, Element parent, Element element, List<TranslationUnit> translations, Set<TranslationUnit> usedUnits) {
@@ -704,6 +731,9 @@ public class LanguageUtils {
   }
 
   private boolean isExemptFromTranslations(String path) {
+    if (path.endsWith(".reference")) {
+      return false;
+    }
     return Utilities.existsInList(path, 
         "ImplementationGuide.definition.parameter.value", "ImplementationGuide.dependsOn.version", 
         "CanonicalResource.name", 
