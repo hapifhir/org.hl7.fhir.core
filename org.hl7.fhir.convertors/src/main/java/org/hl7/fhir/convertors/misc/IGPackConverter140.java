@@ -1,9 +1,5 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -39,6 +35,7 @@ import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@SuppressWarnings("checkstyle:systemout")
 public class IGPackConverter140 {
 
   public static void main(String[] args) throws Exception {

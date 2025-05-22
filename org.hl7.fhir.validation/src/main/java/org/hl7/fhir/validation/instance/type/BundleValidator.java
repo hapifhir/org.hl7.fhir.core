@@ -654,7 +654,6 @@ public class BundleValidator extends BaseValidator {
       foundRevLinks = false;
       for (EntrySummary e : entryList) {
         if (!visited.contains(e)) {
-//          System.out.println("Not visited "+e.getIndex()+" - check for reverse links");             
           boolean add = false;
           for (EntrySummary t : e.getTargets()) {
             if (visited.contains(t)) {

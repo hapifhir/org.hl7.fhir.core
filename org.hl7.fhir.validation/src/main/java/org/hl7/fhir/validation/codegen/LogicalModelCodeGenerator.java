@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.context.ContextResourceLoaderFactory;
 import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
@@ -41,6 +42,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
+@Slf4j
 public class LogicalModelCodeGenerator {
 
   public static void main(String[] args) throws Exception {
@@ -60,13 +62,13 @@ public class LogicalModelCodeGenerator {
     Map<String, AnalysisElementInfo> elementInfo = new HashMap<>();
     Set<String> genClassList = new HashSet<>();
     
-    System.out.println("Load Configuration from "+cfgPath);
+    log.info("Load Configuration from "+cfgPath);
     Configuration config = new Configuration(cfgPath);
     Date ddate = new Date();
     String date = config.DATE_FORMAT().format(ddate);
     
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-    System.out.println("Load R5");
+    log.info("Load R5");
     NpmPackage npm = pcm.loadPackage("hl7.fhir.r5.core");    
     IContextResourceLoader loader = ContextResourceLoaderFactory.makeLoader(npm.fhirVersion(), new NullLoaderKnowledgeProviderR5());
     SimpleWorkerContext context = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm, loader, true);
@@ -77,7 +79,7 @@ public class LogicalModelCodeGenerator {
     
     Definitions master = new Definitions(context);
     for (String pid : packages) {    
-      System.out.println("Load "+pid);
+      log.info("Load "+pid);
       npm = pcm.loadPackage(pid);    
       loader = ContextResourceLoaderFactory.makeLoader(npm.fhirVersion(), new NullLoaderKnowledgeProviderR5());
       load(master, npm, loader); 
@@ -99,12 +101,12 @@ public class LogicalModelCodeGenerator {
     master.fix();
     markValueSets(master, config);
     
-    System.out.println("Generate Model in "+folder);   
-    System.out.println(" .. Constants");
+    log.info("Generate Model in "+folder);
+    log.info(" .. Constants");
     JavaConstantsGenerator cgen = new JavaConstantsGenerator(ManagedFileAccess.outStream(Utilities.path(folder, "Constants.java")), master, config, date, npm.version(), packageName);
     cgen.generate();
     cgen.close();
-    System.out.println(" .. Enumerations");
+    log.info(" .. Enumerations");
     JavaEnumerationsGenerator egen = new JavaEnumerationsGenerator(ManagedFileAccess.outStream(Utilities.path(folder, "Enumerations.java")), master, config, date, npm.version(), packageName);
     egen.generate();
     egen.close();
@@ -163,16 +165,16 @@ public class LogicalModelCodeGenerator {
         }
       }
     }
-    System.out.println(" .. Factory");
+    log.info(" .. Factory");
     fgen.generate();
     fgen.close();
-    System.out.println(" .. Parser");
+    log.info(" .. Parser");
     pgen.generate();
     pgen.close();
-    System.out.println(" .. JsonParser");
+    log.info(" .. JsonParser");
     jgen.generate();
     jgen.close();
-    System.out.println(" .. XmlParser");
+    log.info(" .. XmlParser");
     xgen.generate();
     xgen.close();
     Map<String, StructureDefinition> extensions = new HashMap<>();
@@ -184,7 +186,7 @@ public class LogicalModelCodeGenerator {
     }
     JavaExtensionsGenerator exgen = new JavaExtensionsGenerator(folder, master, config, date, npm.version(), packageName, elementInfo, genClassList);
     exgen.generate(extensions);
-    System.out.println("Done ("+Long.toString(System.currentTimeMillis()-start)+"ms)");   
+    log.info("Done ("+Long.toString(System.currentTimeMillis()-start)+"ms)");
     
   }
 
@@ -224,8 +226,7 @@ public class LogicalModelCodeGenerator {
     try {
       return loader.loadResource(npm.loadResource(t), true);
     } catch (Exception e) {
-      System.out.println("Error reading "+t+": "+e.getMessage());
-      e.printStackTrace();
+      log.error("Error reading "+t+": "+e.getMessage(), e);
       return null;
     }
   }
@@ -275,7 +276,7 @@ public class LogicalModelCodeGenerator {
       throws Exception, IOException, UnsupportedEncodingException, FileNotFoundException {
     String name = javaName(sd.getName());
 
-    System.out.println(" .. "+name);
+    log.info(" .. "+name);
     Analyser jca = new Analyser(master, config, version, context);
     Analysis analysis = jca.analyse(sd, elementInfo);
     

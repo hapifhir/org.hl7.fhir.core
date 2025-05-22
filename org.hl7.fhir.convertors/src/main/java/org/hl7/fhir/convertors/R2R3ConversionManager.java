@@ -83,6 +83,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
  *
  * @author Grahame Grieve
  */
+@SuppressWarnings("checkstyle:systemout")
 public class R2R3ConversionManager implements ITransformerServices {
 
   private final Map<String, StructureMap> library = new HashMap<String, StructureMap>();

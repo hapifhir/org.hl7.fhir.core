@@ -6990,11 +6990,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             (Utilities.existsInList(type, "string", "id") && Utilities.existsInList(stype, "string", "id")), // work around a r4 problem with id/string
             I18nConstants.EXTENSION_PROF_TYPE, profile.getVersionedUrl(), type, stype) && ok;
         } else if (!isResource(type)) {
-//          System.out.println("update type "+type+" to "+stype+"?");
           type = stype;
           typeName = type;
         } else {
-          // this will be sorted out in contains ... System.out.println("update type "+type+" to "+stype+"?");
+          // this will be sorted out in contains ...
         }
       }
 
@@ -7710,7 +7709,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       if (nameMatches(ei.getName(), tail(ed.getPath())))
         try {
-//          System.out.println("match slices for "+stack.getLiteralPath()+": "+slicer.getId()+" = "+slicingSummary(slicer.getSlicing()));
           match = sliceMatches(valContext, ei.getElement(), ei.getPath(), slicer, slicerSlices, ed, profile, errors, sliceInfo, stack, profile);
           if (match) {
             ei.setSlice(slicer);
@@ -8159,13 +8157,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         b.append(vm.getMessageId());
       }
     }
-    String s = b.toString();
-//    if (settings.issettings.isDebug) {
-//      System.out.println("OK = "+ok+" for "+path);
-//      System.out.println("Errs = "+errors.toString());
-//      System.out.println("Ids = "+s);
-//    }
-    return s;
+    return b.toString();
   }
 
   private boolean typeMatchesDefn(String name, StructureDefinition defn) {

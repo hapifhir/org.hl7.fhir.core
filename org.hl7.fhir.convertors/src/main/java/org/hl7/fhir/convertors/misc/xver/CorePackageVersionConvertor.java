@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_30;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
@@ -23,7 +24,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
 
-
+@Slf4j
 public class CorePackageVersionConvertor {
 
   public interface IContentConvertor {
@@ -479,7 +480,7 @@ public class CorePackageVersionConvertor {
     // open the existing package 
     // chose the version converter 
     // build a new package
-    System.out.println("Convert "+packageSource+" to "+versionTarget);
+    log.info("Convert "+packageSource+" to "+versionTarget);
     
     NpmPackage src = NpmPackage.fromPackage(ManagedFileAccess.inStream(packageSource));
     IContentConvertor conv = contentConvertorFactory(src.fhirVersion(), versionTarget);

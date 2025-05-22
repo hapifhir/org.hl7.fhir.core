@@ -51,6 +51,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackagedResourceFile;
 import org.xml.sax.SAXException;
 
+@SuppressWarnings("checkstyle:systemout")
 public class TestGenerationDataGenerator implements IPackageVisitorProcessor {
 
   private static class Counter {

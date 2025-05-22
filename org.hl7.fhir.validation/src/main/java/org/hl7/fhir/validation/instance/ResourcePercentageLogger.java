@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.slf4j.Logger;
 
+@SuppressWarnings("checkstyle:systemout")
 public class ResourcePercentageLogger {
 
   private final Logger logger;

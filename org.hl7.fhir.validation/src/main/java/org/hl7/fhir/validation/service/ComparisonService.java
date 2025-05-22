@@ -43,7 +43,6 @@ public class ComparisonService {
 
   public static void compareCapabilityStatements(String dest, ValidationEngine validator, String left, String right, CanonicalResource resLeft, CanonicalResource resRight) throws IOException {
     throw new Error("CapabilityStatement comparison is not implemented at this time (WIP)");
-//    System.out.println("Comparing CapabilityStatements " + left + " to " + right);
 //    ComparisonSession session = new ComparisonSession(validator.getContext(), validator.getContext(), "Comparing Capability Statements", null);
 //    session.compare(resLeft, resRight);
 //    ComparisonRenderer cr = new ComparisonRenderer(validator.getContext(), validator.getContext(), dest, session);
@@ -53,7 +52,6 @@ public class ComparisonService {
 //    cr.getTemplates().put("Index", new String(validator.getContext().getBinaries().get("template-comparison-index.html")));
 //    File htmlFile = cr.render(left, right);
 //    Desktop.getDesktop().browse(htmlFile.toURI());
-//    System.out.println("Done");
 //    cr.getTemplates().put("CapabilityStatement", new String(context.getBinaries().get("template-comparison-CapabilityStatement.html")));
   }
 

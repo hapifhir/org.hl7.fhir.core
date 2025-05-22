@@ -171,7 +171,7 @@ public class ValidatorCli {
     }
     ManagedWebAccess.loadFromFHIRSettings();
 
-    FileFormat.checkCharsetAndWarnIfNotUTF8(System.out);
+    FileFormat.checkCharsetAndWarnIfNotUTF8(log);
 
     if (shouldDisplayHelpToUser(args)) {
       String helpTarget = Params.getParam(args, "-" + Params.HELP);
