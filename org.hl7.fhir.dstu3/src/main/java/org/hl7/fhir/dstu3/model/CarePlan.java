@@ -1618,7 +1618,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         public boolean hasScheduledTiming() {
-            return this.scheduled != null && this.scheduled instanceof Timing;
+            return this.scheduled instanceof Timing;
         }
 
         /**
@@ -1633,7 +1633,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         public boolean hasScheduledPeriod() {
-            return this.scheduled != null && this.scheduled instanceof Period;
+            return this.scheduled instanceof Period;
         }
 
         /**
@@ -1648,7 +1648,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         public boolean hasScheduledStringType() {
-            return this.scheduled != null && this.scheduled instanceof StringType;
+            return this.scheduled instanceof StringType;
         }
 
         public boolean hasScheduled() { 
@@ -1791,7 +1791,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         public boolean hasProductCodeableConcept() {
-            return this.product != null && this.product instanceof CodeableConcept;
+            return this.product instanceof CodeableConcept;
         }
 
         /**
@@ -1806,7 +1806,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         public boolean hasProductReference() {
-            return this.product != null && this.product instanceof Reference;
+            return this.product instanceof Reference;
         }
 
         public boolean hasProduct() { 

@@ -400,7 +400,7 @@ public class Dosage extends Type implements ICompositeType {
     }
 
     public boolean hasAsNeededBooleanType() {
-        return this.asNeeded != null && this.asNeeded instanceof BooleanType;
+        return this.asNeeded instanceof BooleanType;
     }
 
     /**
@@ -415,7 +415,7 @@ public class Dosage extends Type implements ICompositeType {
     }
 
     public boolean hasAsNeededCodeableConcept() {
-        return this.asNeeded != null && this.asNeeded instanceof CodeableConcept;
+        return this.asNeeded instanceof CodeableConcept;
     }
 
     public boolean hasAsNeeded() { 
@@ -523,7 +523,7 @@ public class Dosage extends Type implements ICompositeType {
     }
 
     public boolean hasDoseRange() {
-        return this.dose != null && this.dose instanceof Range;
+        return this.dose instanceof Range;
     }
 
     /**
@@ -538,7 +538,7 @@ public class Dosage extends Type implements ICompositeType {
     }
 
     public boolean hasDoseSimpleQuantity() {
-        return this.dose != null && this.dose instanceof SimpleQuantity;
+        return this.dose instanceof SimpleQuantity;
     }
 
     public boolean hasDose() { 
@@ -646,7 +646,7 @@ public class Dosage extends Type implements ICompositeType {
     }
 
     public boolean hasRateRatio() {
-        return this.rate != null && this.rate instanceof Ratio;
+        return this.rate instanceof Ratio;
     }
 
     /**
@@ -661,7 +661,7 @@ public class Dosage extends Type implements ICompositeType {
     }
 
     public boolean hasRateRange() {
-        return this.rate != null && this.rate instanceof Range;
+        return this.rate instanceof Range;
     }
 
     /**
@@ -676,7 +676,7 @@ public class Dosage extends Type implements ICompositeType {
     }
 
     public boolean hasRateSimpleQuantity() {
-        return this.rate != null && this.rate instanceof SimpleQuantity;
+        return this.rate instanceof SimpleQuantity;
     }
 
     public boolean hasRate() { 

@@ -319,7 +319,7 @@ public class Provenance extends DomainResource {
         }
 
         public boolean hasWhoUriType() {
-            return this.who != null && this.who instanceof UriType;
+            return this.who instanceof UriType;
         }
 
         /**
@@ -334,7 +334,7 @@ public class Provenance extends DomainResource {
         }
 
         public boolean hasWhoReference() {
-            return this.who != null && this.who instanceof Reference;
+            return this.who instanceof Reference;
         }
 
         public boolean hasWho() { 
@@ -370,7 +370,7 @@ public class Provenance extends DomainResource {
         }
 
         public boolean hasOnBehalfOfUriType() {
-            return this.onBehalfOf != null && this.onBehalfOf instanceof UriType;
+            return this.onBehalfOf instanceof UriType;
         }
 
         /**
@@ -385,7 +385,7 @@ public class Provenance extends DomainResource {
         }
 
         public boolean hasOnBehalfOfReference() {
-            return this.onBehalfOf != null && this.onBehalfOf instanceof Reference;
+            return this.onBehalfOf instanceof Reference;
         }
 
         public boolean hasOnBehalfOf() { 
@@ -707,7 +707,7 @@ public class Provenance extends DomainResource {
         }
 
         public boolean hasWhatUriType() {
-            return this.what != null && this.what instanceof UriType;
+            return this.what instanceof UriType;
         }
 
         /**
@@ -722,7 +722,7 @@ public class Provenance extends DomainResource {
         }
 
         public boolean hasWhatReference() {
-            return this.what != null && this.what instanceof Reference;
+            return this.what instanceof Reference;
         }
 
         /**
@@ -737,7 +737,7 @@ public class Provenance extends DomainResource {
         }
 
         public boolean hasWhatIdentifier() {
-            return this.what != null && this.what instanceof Identifier;
+            return this.what instanceof Identifier;
         }
 
         public boolean hasWhat() { 

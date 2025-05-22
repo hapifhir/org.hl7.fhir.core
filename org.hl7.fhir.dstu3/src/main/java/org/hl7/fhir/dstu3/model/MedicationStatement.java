@@ -836,7 +836,7 @@ public class MedicationStatement extends DomainResource {
     }
 
     public boolean hasMedicationCodeableConcept() {
-        return this.medication != null && this.medication instanceof CodeableConcept;
+        return this.medication instanceof CodeableConcept;
     }
 
     /**
@@ -851,7 +851,7 @@ public class MedicationStatement extends DomainResource {
     }
 
     public boolean hasMedicationReference() {
-        return this.medication != null && this.medication instanceof Reference;
+        return this.medication instanceof Reference;
     }
 
     public boolean hasMedication() { 
@@ -887,7 +887,7 @@ public class MedicationStatement extends DomainResource {
     }
 
     public boolean hasEffectiveDateTimeType() {
-        return this.effective != null && this.effective instanceof DateTimeType;
+        return this.effective instanceof DateTimeType;
     }
 
     /**
@@ -902,7 +902,7 @@ public class MedicationStatement extends DomainResource {
     }
 
     public boolean hasEffectivePeriod() {
-        return this.effective != null && this.effective instanceof Period;
+        return this.effective instanceof Period;
     }
 
     public boolean hasEffective() { 

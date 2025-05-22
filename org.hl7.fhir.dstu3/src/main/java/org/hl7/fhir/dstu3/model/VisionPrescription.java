@@ -2048,7 +2048,7 @@ public class VisionPrescription extends DomainResource {
     }
 
     public boolean hasReasonCodeableConcept() {
-        return this.reason != null && this.reason instanceof CodeableConcept;
+        return this.reason instanceof CodeableConcept;
     }
 
     /**
@@ -2063,7 +2063,7 @@ public class VisionPrescription extends DomainResource {
     }
 
     public boolean hasReasonReference() {
-        return this.reason != null && this.reason instanceof Reference;
+        return this.reason instanceof Reference;
     }
 
     public boolean hasReason() { 

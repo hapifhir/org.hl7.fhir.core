@@ -99,7 +99,7 @@ public class DocumentManifest extends DomainResource {
         }
 
         public boolean hasPAttachment() {
-            return this.p != null && this.p instanceof Attachment;
+            return this.p instanceof Attachment;
         }
 
         /**
@@ -114,7 +114,7 @@ public class DocumentManifest extends DomainResource {
         }
 
         public boolean hasPReference() {
-            return this.p != null && this.p instanceof Reference;
+            return this.p instanceof Reference;
         }
 
         public boolean hasP() { 

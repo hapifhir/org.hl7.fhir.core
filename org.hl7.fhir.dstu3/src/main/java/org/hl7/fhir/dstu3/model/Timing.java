@@ -919,7 +919,7 @@ public class Timing extends Type implements ICompositeType {
         }
 
         public boolean hasBoundsDuration() {
-            return this.bounds != null && this.bounds instanceof Duration;
+            return this.bounds instanceof Duration;
         }
 
         /**
@@ -934,7 +934,7 @@ public class Timing extends Type implements ICompositeType {
         }
 
         public boolean hasBoundsRange() {
-            return this.bounds != null && this.bounds instanceof Range;
+            return this.bounds instanceof Range;
         }
 
         /**
@@ -949,7 +949,7 @@ public class Timing extends Type implements ICompositeType {
         }
 
         public boolean hasBoundsPeriod() {
-            return this.bounds != null && this.bounds instanceof Period;
+            return this.bounds instanceof Period;
         }
 
         public boolean hasBounds() { 

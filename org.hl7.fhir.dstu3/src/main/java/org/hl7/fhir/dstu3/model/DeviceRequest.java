@@ -1232,7 +1232,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     public boolean hasCodeReference() {
-        return this.code != null && this.code instanceof Reference;
+      return this.code instanceof Reference;
     }
 
     /**
@@ -1247,7 +1247,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     public boolean hasCodeCodeableConcept() {
-        return this.code != null && this.code instanceof CodeableConcept;
+      return this.code instanceof CodeableConcept;
     }
 
     public boolean hasCode() { 
@@ -1361,7 +1361,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     public boolean hasOccurrenceDateTimeType() {
-        return this.occurrence != null && this.occurrence instanceof DateTimeType;
+      return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1376,7 +1376,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     public boolean hasOccurrencePeriod() {
-        return this.occurrence != null && this.occurrence instanceof Period;
+      return this.occurrence instanceof Period;
     }
 
     /**
@@ -1391,7 +1391,7 @@ public class DeviceRequest extends DomainResource {
     }
 
     public boolean hasOccurrenceTiming() {
-        return this.occurrence != null && this.occurrence instanceof Timing;
+      return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() { 

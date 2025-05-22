@@ -4191,7 +4191,7 @@ The primary difference between a medication statement and a medication administr
     }
 
     public boolean hasTimingTiming() {
-      return this.timing != null && this.timing instanceof Timing;
+      return this.timing instanceof Timing;
     }
 
     /**
@@ -4206,7 +4206,7 @@ The primary difference between a medication statement and a medication administr
     }
 
     public boolean hasTimingDateTimeType() {
-      return this.timing != null && this.timing instanceof DateTimeType;
+      return this.timing instanceof DateTimeType;
     }
 
     /**
@@ -4221,7 +4221,7 @@ The primary difference between a medication statement and a medication administr
     }
 
     public boolean hasTimingPeriod() {
-      return this.timing != null && this.timing instanceof Period;
+      return this.timing instanceof Period;
     }
 
     /**
@@ -4236,7 +4236,7 @@ The primary difference between a medication statement and a medication administr
     }
 
     public boolean hasTimingRange() {
-      return this.timing != null && this.timing instanceof Range;
+      return this.timing instanceof Range;
     }
 
     public boolean hasTiming() { 
@@ -4369,7 +4369,7 @@ The primary difference between a medication statement and a medication administr
     }
 
     public boolean hasProductReference() {
-      return this.product != null && this.product instanceof Reference;
+      return this.product instanceof Reference;
     }
 
     /**
@@ -4384,7 +4384,7 @@ The primary difference between a medication statement and a medication administr
     }
 
     public boolean hasProductCodeableConcept() {
-      return this.product != null && this.product instanceof CodeableConcept;
+      return this.product instanceof CodeableConcept;
     }
 
     public boolean hasProduct() { 

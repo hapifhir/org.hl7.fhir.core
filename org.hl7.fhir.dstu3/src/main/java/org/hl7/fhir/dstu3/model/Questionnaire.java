@@ -1214,7 +1214,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasInitialBooleanType() {
-            return this.initial != null && this.initial instanceof BooleanType;
+            return this.initial instanceof BooleanType;
         }
 
         /**
@@ -1229,7 +1229,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasInitialDecimalType() {
-            return this.initial != null && this.initial instanceof DecimalType;
+            return this.initial instanceof DecimalType;
         }
 
         /**
@@ -1244,7 +1244,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasInitialIntegerType() {
-            return this.initial != null && this.initial instanceof IntegerType;
+            return this.initial instanceof IntegerType;
         }
 
         /**
@@ -1259,7 +1259,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasInitialDateType() {
-            return this.initial != null && this.initial instanceof DateType;
+            return this.initial instanceof DateType;
         }
 
         /**
@@ -1274,7 +1274,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasInitialDateTimeType() {
-            return this.initial != null && this.initial instanceof DateTimeType;
+            return this.initial instanceof DateTimeType;
         }
 
         /**
@@ -1289,7 +1289,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasInitialTimeType() {
-            return this.initial != null && this.initial instanceof TimeType;
+            return this.initial instanceof TimeType;
         }
 
         /**
@@ -1304,7 +1304,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasInitialStringType() {
-            return this.initial != null && this.initial instanceof StringType;
+            return this.initial instanceof StringType;
         }
 
         /**
@@ -1319,7 +1319,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasInitialUriType() {
-            return this.initial != null && this.initial instanceof UriType;
+            return this.initial instanceof UriType;
         }
 
         /**
@@ -1334,7 +1334,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasInitialAttachment() {
-            return this.initial != null && this.initial instanceof Attachment;
+            return this.initial instanceof Attachment;
         }
 
         /**
@@ -1349,7 +1349,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasInitialCoding() {
-            return this.initial != null && this.initial instanceof Coding;
+            return this.initial instanceof Coding;
         }
 
         /**
@@ -1364,7 +1364,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasInitialQuantity() {
-            return this.initial != null && this.initial instanceof Quantity;
+            return this.initial instanceof Quantity;
         }
 
         /**
@@ -1379,7 +1379,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasInitialReference() {
-            return this.initial != null && this.initial instanceof Reference;
+            return this.initial instanceof Reference;
         }
 
         public boolean hasInitial() { 
@@ -1991,7 +1991,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasAnswerBooleanType() {
-            return this.answer != null && this.answer instanceof BooleanType;
+            return this.answer instanceof BooleanType;
         }
 
         /**
@@ -2006,7 +2006,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasAnswerDecimalType() {
-            return this.answer != null && this.answer instanceof DecimalType;
+            return this.answer instanceof DecimalType;
         }
 
         /**
@@ -2021,7 +2021,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasAnswerIntegerType() {
-            return this.answer != null && this.answer instanceof IntegerType;
+            return this.answer instanceof IntegerType;
         }
 
         /**
@@ -2036,7 +2036,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasAnswerDateType() {
-            return this.answer != null && this.answer instanceof DateType;
+            return this.answer instanceof DateType;
         }
 
         /**
@@ -2051,7 +2051,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasAnswerDateTimeType() {
-            return this.answer != null && this.answer instanceof DateTimeType;
+            return this.answer instanceof DateTimeType;
         }
 
         /**
@@ -2066,7 +2066,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasAnswerTimeType() {
-            return this.answer != null && this.answer instanceof TimeType;
+            return this.answer instanceof TimeType;
         }
 
         /**
@@ -2081,7 +2081,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasAnswerStringType() {
-            return this.answer != null && this.answer instanceof StringType;
+            return this.answer instanceof StringType;
         }
 
         /**
@@ -2096,7 +2096,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasAnswerUriType() {
-            return this.answer != null && this.answer instanceof UriType;
+            return this.answer instanceof UriType;
         }
 
         /**
@@ -2111,7 +2111,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasAnswerAttachment() {
-            return this.answer != null && this.answer instanceof Attachment;
+            return this.answer instanceof Attachment;
         }
 
         /**
@@ -2126,7 +2126,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasAnswerCoding() {
-            return this.answer != null && this.answer instanceof Coding;
+            return this.answer instanceof Coding;
         }
 
         /**
@@ -2141,7 +2141,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasAnswerQuantity() {
-            return this.answer != null && this.answer instanceof Quantity;
+            return this.answer instanceof Quantity;
         }
 
         /**
@@ -2156,7 +2156,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasAnswerReference() {
-            return this.answer != null && this.answer instanceof Reference;
+            return this.answer instanceof Reference;
         }
 
         public boolean hasAnswer() { 
@@ -2416,7 +2416,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasValueIntegerType() {
-            return this.value != null && this.value instanceof IntegerType;
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -2431,7 +2431,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasValueDateType() {
-            return this.value != null && this.value instanceof DateType;
+            return this.value instanceof DateType;
         }
 
         /**
@@ -2446,7 +2446,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasValueTimeType() {
-            return this.value != null && this.value instanceof TimeType;
+            return this.value instanceof TimeType;
         }
 
         /**
@@ -2461,7 +2461,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasValueStringType() {
-            return this.value != null && this.value instanceof StringType;
+            return this.value instanceof StringType;
         }
 
         /**
@@ -2476,7 +2476,7 @@ Any information provided in these elements on a Questionnaire Item overrides the
         }
 
         public boolean hasValueCoding() {
-            return this.value != null && this.value instanceof Coding;
+            return this.value instanceof Coding;
         }
 
         public boolean hasValue() { 
