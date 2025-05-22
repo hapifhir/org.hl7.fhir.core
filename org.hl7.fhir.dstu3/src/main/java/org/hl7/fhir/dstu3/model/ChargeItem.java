@@ -1014,7 +1014,7 @@ public class ChargeItem extends DomainResource {
     }
 
     public boolean hasOccurrenceDateTimeType() {
-        return this.occurrence != null && this.occurrence instanceof DateTimeType;
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1029,7 +1029,7 @@ public class ChargeItem extends DomainResource {
     }
 
     public boolean hasOccurrencePeriod() {
-        return this.occurrence != null && this.occurrence instanceof Period;
+        return this.occurrence instanceof Period;
     }
 
     /**
@@ -1044,7 +1044,7 @@ public class ChargeItem extends DomainResource {
     }
 
     public boolean hasOccurrenceTiming() {
-        return this.occurrence != null && this.occurrence instanceof Timing;
+        return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() { 

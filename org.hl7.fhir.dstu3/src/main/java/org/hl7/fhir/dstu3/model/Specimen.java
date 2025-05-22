@@ -298,7 +298,7 @@ public class Specimen extends DomainResource {
         }
 
         public boolean hasCollectedDateTimeType() {
-            return this.collected != null && this.collected instanceof DateTimeType;
+            return this.collected instanceof DateTimeType;
         }
 
         /**
@@ -313,7 +313,7 @@ public class Specimen extends DomainResource {
         }
 
         public boolean hasCollectedPeriod() {
-            return this.collected != null && this.collected instanceof Period;
+            return this.collected instanceof Period;
         }
 
         public boolean hasCollected() { 
@@ -793,7 +793,7 @@ public class Specimen extends DomainResource {
         }
 
         public boolean hasTimeDateTimeType() {
-            return this.time != null && this.time instanceof DateTimeType;
+            return this.time instanceof DateTimeType;
         }
 
         /**
@@ -808,7 +808,7 @@ public class Specimen extends DomainResource {
         }
 
         public boolean hasTimePeriod() {
-            return this.time != null && this.time instanceof Period;
+            return this.time instanceof Period;
         }
 
         public boolean hasTime() { 
@@ -1239,7 +1239,7 @@ public class Specimen extends DomainResource {
         }
 
         public boolean hasAdditiveCodeableConcept() {
-            return this.additive != null && this.additive instanceof CodeableConcept;
+            return this.additive instanceof CodeableConcept;
         }
 
         /**
@@ -1254,7 +1254,7 @@ public class Specimen extends DomainResource {
         }
 
         public boolean hasAdditiveReference() {
-            return this.additive != null && this.additive instanceof Reference;
+            return this.additive instanceof Reference;
         }
 
         public boolean hasAdditive() { 

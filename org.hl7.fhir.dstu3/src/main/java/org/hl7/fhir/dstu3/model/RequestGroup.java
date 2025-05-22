@@ -2047,7 +2047,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         public boolean hasTimingDateTimeType() {
-            return this.timing != null && this.timing instanceof DateTimeType;
+            return this.timing instanceof DateTimeType;
         }
 
         /**
@@ -2062,7 +2062,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         public boolean hasTimingPeriod() {
-            return this.timing != null && this.timing instanceof Period;
+            return this.timing instanceof Period;
         }
 
         /**
@@ -2077,7 +2077,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         public boolean hasTimingDuration() {
-            return this.timing != null && this.timing instanceof Duration;
+            return this.timing instanceof Duration;
         }
 
         /**
@@ -2092,7 +2092,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         public boolean hasTimingRange() {
-            return this.timing != null && this.timing instanceof Range;
+            return this.timing instanceof Range;
         }
 
         /**
@@ -2107,7 +2107,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         public boolean hasTimingTiming() {
-            return this.timing != null && this.timing instanceof Timing;
+            return this.timing instanceof Timing;
         }
 
         public boolean hasTiming() { 
@@ -3514,7 +3514,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         public boolean hasOffsetDuration() {
-            return this.offset != null && this.offset instanceof Duration;
+            return this.offset instanceof Duration;
         }
 
         /**
@@ -3529,7 +3529,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
         }
 
         public boolean hasOffsetRange() {
-            return this.offset != null && this.offset instanceof Range;
+            return this.offset instanceof Range;
         }
 
         public boolean hasOffset() { 
@@ -4442,7 +4442,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     public boolean hasReasonCodeableConcept() {
-        return this.reason != null && this.reason instanceof CodeableConcept;
+        return this.reason instanceof CodeableConcept;
     }
 
     /**
@@ -4457,7 +4457,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     public boolean hasReasonReference() {
-        return this.reason != null && this.reason instanceof Reference;
+        return this.reason instanceof Reference;
     }
 
     public boolean hasReason() { 

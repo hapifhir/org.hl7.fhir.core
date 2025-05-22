@@ -1230,7 +1230,7 @@ public class EligibilityResponse extends DomainResource {
         }
 
         public boolean hasAllowedUnsignedIntType() {
-            return this.allowed != null && this.allowed instanceof UnsignedIntType;
+            return this.allowed instanceof UnsignedIntType;
         }
 
         /**
@@ -1245,7 +1245,7 @@ public class EligibilityResponse extends DomainResource {
         }
 
         public boolean hasAllowedStringType() {
-            return this.allowed != null && this.allowed instanceof StringType;
+            return this.allowed instanceof StringType;
         }
 
         /**
@@ -1260,7 +1260,7 @@ public class EligibilityResponse extends DomainResource {
         }
 
         public boolean hasAllowedMoney() {
-            return this.allowed != null && this.allowed instanceof Money;
+            return this.allowed instanceof Money;
         }
 
         public boolean hasAllowed() { 
@@ -1296,7 +1296,7 @@ public class EligibilityResponse extends DomainResource {
         }
 
         public boolean hasUsedUnsignedIntType() {
-            return this.used != null && this.used instanceof UnsignedIntType;
+            return this.used instanceof UnsignedIntType;
         }
 
         /**
@@ -1311,7 +1311,7 @@ public class EligibilityResponse extends DomainResource {
         }
 
         public boolean hasUsedMoney() {
-            return this.used != null && this.used instanceof Money;
+            return this.used instanceof Money;
         }
 
         public boolean hasUsed() { 

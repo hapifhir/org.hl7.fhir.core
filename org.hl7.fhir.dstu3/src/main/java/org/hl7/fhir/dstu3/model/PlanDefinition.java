@@ -1695,7 +1695,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasDetailQuantity() {
-            return this.detail != null && this.detail instanceof Quantity;
+          return this.detail instanceof Quantity;
         }
 
         /**
@@ -1710,7 +1710,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasDetailRange() {
-            return this.detail != null && this.detail instanceof Range;
+          return this.detail instanceof Range;
         }
 
         /**
@@ -1725,7 +1725,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasDetailCodeableConcept() {
-            return this.detail != null && this.detail instanceof CodeableConcept;
+          return this.detail instanceof CodeableConcept;
         }
 
         public boolean hasDetail() { 
@@ -2821,7 +2821,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasTimingDateTimeType() {
-            return this.timing != null && this.timing instanceof DateTimeType;
+          return this.timing instanceof DateTimeType;
         }
 
         /**
@@ -2836,7 +2836,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasTimingPeriod() {
-            return this.timing != null && this.timing instanceof Period;
+          return this.timing instanceof Period;
         }
 
         /**
@@ -2851,7 +2851,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasTimingDuration() {
-            return this.timing != null && this.timing instanceof Duration;
+          return this.timing instanceof Duration;
         }
 
         /**
@@ -2866,7 +2866,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasTimingRange() {
-            return this.timing != null && this.timing instanceof Range;
+          return this.timing instanceof Range;
         }
 
         /**
@@ -2881,7 +2881,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasTimingTiming() {
-            return this.timing != null && this.timing instanceof Timing;
+          return this.timing instanceof Timing;
         }
 
         public boolean hasTiming() { 
@@ -4501,7 +4501,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasOffsetDuration() {
-            return this.offset != null && this.offset instanceof Duration;
+          return this.offset instanceof Duration;
         }
 
         /**
@@ -4516,7 +4516,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasOffsetRange() {
-            return this.offset != null && this.offset instanceof Range;
+          return this.offset instanceof Range;
         }
 
         public boolean hasOffset() { 

@@ -3134,7 +3134,7 @@ public class Consent extends DomainResource {
     }
 
     public boolean hasSourceAttachment() {
-        return this.source != null && this.source instanceof Attachment;
+        return this.source instanceof Attachment;
     }
 
     /**
@@ -3149,7 +3149,7 @@ public class Consent extends DomainResource {
     }
 
     public boolean hasSourceIdentifier() {
-        return this.source != null && this.source instanceof Identifier;
+        return this.source instanceof Identifier;
     }
 
     /**
@@ -3164,7 +3164,7 @@ public class Consent extends DomainResource {
     }
 
     public boolean hasSourceReference() {
-        return this.source != null && this.source instanceof Reference;
+        return this.source instanceof Reference;
     }
 
     public boolean hasSource() { 

@@ -1235,7 +1235,7 @@ public class DiagnosticReport extends DomainResource {
     }
 
     public boolean hasEffectiveDateTimeType() {
-        return this.effective != null && this.effective instanceof DateTimeType;
+        return this.effective instanceof DateTimeType;
     }
 
     /**
@@ -1250,7 +1250,7 @@ public class DiagnosticReport extends DomainResource {
     }
 
     public boolean hasEffectivePeriod() {
-        return this.effective != null && this.effective instanceof Period;
+        return this.effective instanceof Period;
     }
 
     public boolean hasEffective() { 

@@ -1153,7 +1153,7 @@ public class OperationDefinition extends MetadataResource {
         }
 
         public boolean hasValueSetUriType() {
-            return this.valueSet != null && this.valueSet instanceof UriType;
+            return this.valueSet instanceof UriType;
         }
 
         /**
@@ -1168,7 +1168,7 @@ public class OperationDefinition extends MetadataResource {
         }
 
         public boolean hasValueSetReference() {
-            return this.valueSet != null && this.valueSet instanceof Reference;
+            return this.valueSet instanceof Reference;
         }
 
         public boolean hasValueSet() { 

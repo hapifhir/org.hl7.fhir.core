@@ -4743,7 +4743,7 @@ public class StructureMap extends MetadataResource {
         }
 
         public boolean hasValueIdType() {
-            return this.value != null && this.value instanceof IdType;
+            return this.value instanceof IdType;
         }
 
         /**
@@ -4758,7 +4758,7 @@ public class StructureMap extends MetadataResource {
         }
 
         public boolean hasValueStringType() {
-            return this.value != null && this.value instanceof StringType;
+            return this.value instanceof StringType;
         }
 
         /**
@@ -4773,7 +4773,7 @@ public class StructureMap extends MetadataResource {
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -4788,7 +4788,7 @@ public class StructureMap extends MetadataResource {
         }
 
         public boolean hasValueIntegerType() {
-            return this.value != null && this.value instanceof IntegerType;
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -4803,7 +4803,7 @@ public class StructureMap extends MetadataResource {
         }
 
         public boolean hasValueDecimalType() {
-            return this.value != null && this.value instanceof DecimalType;
+            return this.value instanceof DecimalType;
         }
 
         public boolean hasValue() { 

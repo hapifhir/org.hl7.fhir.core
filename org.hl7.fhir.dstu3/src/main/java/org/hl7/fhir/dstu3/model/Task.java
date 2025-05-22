@@ -2250,7 +2250,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     public boolean hasDefinitionUriType() {
-        return this.definition != null && this.definition instanceof UriType;
+        return this.definition instanceof UriType;
     }
 
     /**
@@ -2265,7 +2265,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
     }
 
     public boolean hasDefinitionReference() {
-        return this.definition != null && this.definition instanceof Reference;
+        return this.definition instanceof Reference;
     }
 
     public boolean hasDefinition() { 

@@ -437,7 +437,7 @@ public class SupplyRequest extends DomainResource {
         }
 
         public boolean hasItemCodeableConcept() {
-            return this.item != null && this.item instanceof CodeableConcept;
+          return this.item instanceof CodeableConcept;
         }
 
         /**
@@ -452,7 +452,7 @@ public class SupplyRequest extends DomainResource {
         }
 
         public boolean hasItemReference() {
-            return this.item != null && this.item instanceof Reference;
+          return this.item instanceof Reference;
         }
 
         public boolean hasItem() { 
@@ -1152,7 +1152,7 @@ public class SupplyRequest extends DomainResource {
     }
 
     public boolean hasOccurrenceDateTimeType() {
-        return this.occurrence != null && this.occurrence instanceof DateTimeType;
+      return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1167,7 +1167,7 @@ public class SupplyRequest extends DomainResource {
     }
 
     public boolean hasOccurrencePeriod() {
-        return this.occurrence != null && this.occurrence instanceof Period;
+      return this.occurrence instanceof Period;
     }
 
     /**
@@ -1182,7 +1182,7 @@ public class SupplyRequest extends DomainResource {
     }
 
     public boolean hasOccurrenceTiming() {
-        return this.occurrence != null && this.occurrence instanceof Timing;
+      return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() { 
@@ -1366,7 +1366,7 @@ public class SupplyRequest extends DomainResource {
     }
 
     public boolean hasReasonCodeableConcept() {
-        return this.reason != null && this.reason instanceof CodeableConcept;
+      return this.reason instanceof CodeableConcept;
     }
 
     /**
@@ -1381,7 +1381,7 @@ public class SupplyRequest extends DomainResource {
     }
 
     public boolean hasReasonReference() {
-        return this.reason != null && this.reason instanceof Reference;
+      return this.reason instanceof Reference;
     }
 
     public boolean hasReason() { 
