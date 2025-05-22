@@ -767,7 +767,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       Collections.sort(rowSets, new MultipleMappingRowSorter(advisor.sortPolicy(rmmContext) == RenderMultiRowSortPolicy.FIRST_COL));
     }
     XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
-    XhtmlNode tbl = div.table("none", false).style("text-align: left; border-spacing: 0; padding: 5px");
+    XhtmlNode tbl = div.table("none", false).style("text-align: var(--ig-left,left); border-spacing: 0; padding: 5px");
     XhtmlNode tr = tbl.tr();
     styleCell(tr.td(), false, true, 5).b().tx(start);
     for (ConceptMap map : maps) {
