@@ -1041,7 +1041,7 @@ public class HierarchicalTableGenerator {
 
     if (indents != null) {
       itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_spacer.png")).style("background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
-      tc.style("vertical-align: top; text-align : left; "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap"+(treelines ? "; background-image: url("+imagePath+checkExists(indents, hasChildren, lineColor, outputTracker)+")" : "")+(c.cellStyle != null ? ";"+c.cellStyle : "")+lineStyle);
+      tc.style("vertical-align: top; text-align : var(--ig-left,left); "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap"+(treelines ? "; background-image: url("+imagePath+checkExists(indents, hasChildren, lineColor, outputTracker)+")" : "")+(c.cellStyle != null ? ";"+c.cellStyle : "")+lineStyle);
       for (int i = 0; i < indents.size()-1; i++) {
         switch (indents.get(i)) {
           case NEW_REGULAR:
@@ -1093,7 +1093,7 @@ public class HierarchicalTableGenerator {
       }
     }
     else {
-      tc.style("vertical-align: top; text-align : left; "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px"+(c.cellStyle != null ? ";"+c.cellStyle : "")+lineStyle);
+      tc.style("vertical-align: top; text-align : var(--ig-left,left); "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px"+(c.cellStyle != null ? ";"+c.cellStyle : "")+lineStyle);
     }
     if (c.innerTable) {
       itc = itr.td();
