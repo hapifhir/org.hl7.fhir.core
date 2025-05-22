@@ -11,6 +11,7 @@ import org.hl7.fhir.utilities.filesystem.DirectoryVisitor.IDirectoryVisitorImple
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
+@SuppressWarnings("checkstyle:systemout")
 public class SpecMapUnpacker {
 
   public static void main(String[] args) throws IOException {

@@ -11,6 +11,7 @@ import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
+@SuppressWarnings("checkstyle:systemout")
 public class BOMRemover {
 
   public static void main(String[] args) throws FileNotFoundException, IOException {

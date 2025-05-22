@@ -14,6 +14,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
+@SuppressWarnings("checkstyle:systemout")
 public class ExamplesPackageBuilder {
 
   public static void main(String[] args) throws FHIRFormatError, FileNotFoundException, IOException {

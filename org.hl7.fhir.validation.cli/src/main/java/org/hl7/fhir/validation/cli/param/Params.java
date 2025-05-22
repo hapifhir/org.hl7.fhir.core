@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
@@ -21,6 +22,7 @@ import org.hl7.fhir.validation.service.utils.EngineMode;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
+@Slf4j
 public class Params {
 
   public static final String VERSION = "-version";
@@ -665,7 +667,7 @@ public class Params {
         else {
           String s = args[++i];
           if (!s.startsWith("hl7.fhir.core-")) {
-            System.out.println("Load Package: " + s);
+            log.info("Load Package: " + s);
           }
         }
       }
