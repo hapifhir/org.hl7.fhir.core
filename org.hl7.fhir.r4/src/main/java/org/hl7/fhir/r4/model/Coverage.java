@@ -659,7 +659,7 @@ public class Coverage extends DomainResource {
     }
 
     public boolean hasValueQuantity() {
-        return this.value != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -676,7 +676,7 @@ public class Coverage extends DomainResource {
     }
 
     public boolean hasValueMoney() {
-        return this.value != null && this.value instanceof Money;
+        return this.value instanceof Money;
     }
 
     public boolean hasValue() {

@@ -3163,7 +3163,7 @@ public class NutritionOrder extends DomainResource {
     }
 
     public boolean hasRateQuantity() {
-        return this.rate != null && this.rate instanceof Quantity;
+        return this.rate instanceof Quantity;
     }
 
     /**
@@ -3180,7 +3180,7 @@ public class NutritionOrder extends DomainResource {
     }
 
     public boolean hasRateRatio() {
-        return this.rate != null && this.rate instanceof Ratio;
+        return this.rate instanceof Ratio;
     }
 
     public boolean hasRate() {

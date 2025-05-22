@@ -2519,7 +2519,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasSubjectCodeableConcept() {
-    return this.subject != null && this.subject instanceof CodeableConcept;
+    return this.subject instanceof CodeableConcept;
   }
 
   /**
@@ -2536,7 +2536,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasSubjectReference() {
-    return this.subject != null && this.subject instanceof Reference;
+    return this.subject instanceof Reference;
   }
 
   public boolean hasSubject() {
@@ -3980,7 +3980,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasTimingTiming() {
-    return this.timing != null && this.timing instanceof Timing;
+    return this.timing instanceof Timing;
   }
 
   /**
@@ -3997,7 +3997,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasTimingDateTimeType() {
-    return this.timing != null && this.timing instanceof DateTimeType;
+    return this.timing instanceof DateTimeType;
   }
 
   /**
@@ -4014,7 +4014,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasTimingAge() {
-    return this.timing != null && this.timing instanceof Age;
+    return this.timing instanceof Age;
   }
 
   /**
@@ -4031,7 +4031,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasTimingPeriod() {
-    return this.timing != null && this.timing instanceof Period;
+    return this.timing instanceof Period;
   }
 
   /**
@@ -4048,7 +4048,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasTimingRange() {
-    return this.timing != null && this.timing instanceof Range;
+    return this.timing instanceof Range;
   }
 
   /**
@@ -4065,7 +4065,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasTimingDuration() {
-    return this.timing != null && this.timing instanceof Duration;
+    return this.timing instanceof Duration;
   }
 
   public boolean hasTiming() {
@@ -4215,7 +4215,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasProductReference() {
-    return this.product != null && this.product instanceof Reference;
+    return this.product instanceof Reference;
   }
 
   /**
@@ -4232,7 +4232,7 @@ public class ActivityDefinition extends MetadataResource {
   }
 
   public boolean hasProductCodeableConcept() {
-    return this.product != null && this.product instanceof CodeableConcept;
+    return this.product instanceof CodeableConcept;
   }
 
   public boolean hasProduct() {
