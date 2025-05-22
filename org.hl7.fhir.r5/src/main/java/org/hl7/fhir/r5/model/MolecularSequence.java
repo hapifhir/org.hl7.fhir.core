@@ -914,7 +914,7 @@ public class MolecularSequence extends DomainResource {
         }
 
         public boolean hasSequenceCodeableConcept() {
-            return this.sequence != null && this.sequence instanceof CodeableConcept;
+            return this.sequence instanceof CodeableConcept;
         }
 
         /**
@@ -929,7 +929,7 @@ public class MolecularSequence extends DomainResource {
         }
 
         public boolean hasSequenceStringType() {
-            return this.sequence != null && this.sequence instanceof StringType;
+            return this.sequence instanceof StringType;
         }
 
         /**
@@ -944,7 +944,7 @@ public class MolecularSequence extends DomainResource {
         }
 
         public boolean hasSequenceReference() {
-            return this.sequence != null && this.sequence instanceof Reference;
+            return this.sequence instanceof Reference;
         }
 
         public boolean hasSequence() { 

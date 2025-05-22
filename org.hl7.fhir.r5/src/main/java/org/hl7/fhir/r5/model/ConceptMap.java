@@ -3128,7 +3128,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         public boolean hasValueCoding() {
-            return this.value != null && this.value instanceof Coding;
+            return this.value instanceof Coding;
         }
 
         /**
@@ -3143,7 +3143,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         public boolean hasValueStringType() {
-            return this.value != null && this.value instanceof StringType;
+            return this.value instanceof StringType;
         }
 
         /**
@@ -3158,7 +3158,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         public boolean hasValueIntegerType() {
-            return this.value != null && this.value instanceof IntegerType;
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -3173,7 +3173,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -3188,7 +3188,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         public boolean hasValueDateTimeType() {
-            return this.value != null && this.value instanceof DateTimeType;
+            return this.value instanceof DateTimeType;
         }
 
         /**
@@ -3203,7 +3203,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         public boolean hasValueDecimalType() {
-            return this.value != null && this.value instanceof DecimalType;
+            return this.value instanceof DecimalType;
         }
 
         /**
@@ -3218,7 +3218,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         public boolean hasValueCodeType() {
-            return this.value != null && this.value instanceof CodeType;
+            return this.value instanceof CodeType;
         }
 
         public boolean hasValue() { 
@@ -3510,7 +3510,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         public boolean hasValueCodeType() {
-            return this.value != null && this.value instanceof CodeType;
+            return this.value instanceof CodeType;
         }
 
         /**
@@ -3525,7 +3525,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         public boolean hasValueCoding() {
-            return this.value != null && this.value instanceof Coding;
+            return this.value instanceof Coding;
         }
 
         /**
@@ -3540,7 +3540,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         public boolean hasValueStringType() {
-            return this.value != null && this.value instanceof StringType;
+            return this.value instanceof StringType;
         }
 
         /**
@@ -3555,7 +3555,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -3570,7 +3570,7 @@ public class ConceptMap extends MetadataResource {
         }
 
         public boolean hasValueQuantity() {
-            return this.value != null && this.value instanceof Quantity;
+            return this.value instanceof Quantity;
         }
 
         public boolean hasValue() { 
@@ -4788,7 +4788,7 @@ public class ConceptMap extends MetadataResource {
     }
 
     public boolean hasVersionAlgorithmStringType() {
-        return this.versionAlgorithm != null && this.versionAlgorithm instanceof StringType;
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -4803,7 +4803,7 @@ public class ConceptMap extends MetadataResource {
     }
 
     public boolean hasVersionAlgorithmCoding() {
-        return this.versionAlgorithm != null && this.versionAlgorithm instanceof Coding;
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 
@@ -6026,7 +6026,7 @@ public class ConceptMap extends MetadataResource {
     }
 
     public boolean hasSourceScopeUriType() {
-        return this.sourceScope != null && this.sourceScope instanceof UriType;
+        return this.sourceScope instanceof UriType;
     }
 
     /**
@@ -6041,7 +6041,7 @@ public class ConceptMap extends MetadataResource {
     }
 
     public boolean hasSourceScopeCanonicalType() {
-        return this.sourceScope != null && this.sourceScope instanceof CanonicalType;
+        return this.sourceScope instanceof CanonicalType;
     }
 
     public boolean hasSourceScope() { 
@@ -6077,7 +6077,7 @@ public class ConceptMap extends MetadataResource {
     }
 
     public boolean hasTargetScopeUriType() {
-        return this.targetScope != null && this.targetScope instanceof UriType;
+        return this.targetScope instanceof UriType;
     }
 
     /**
@@ -6092,7 +6092,7 @@ public class ConceptMap extends MetadataResource {
     }
 
     public boolean hasTargetScopeCanonicalType() {
-        return this.targetScope != null && this.targetScope instanceof CanonicalType;
+        return this.targetScope instanceof CanonicalType;
     }
 
     public boolean hasTargetScope() { 

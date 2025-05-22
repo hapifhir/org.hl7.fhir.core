@@ -615,7 +615,7 @@ public class EvidenceReport extends MetadataResource {
         }
 
         public boolean hasValueReference() {
-            return this.value != null && this.value instanceof Reference;
+            return this.value instanceof Reference;
         }
 
         /**
@@ -630,7 +630,7 @@ public class EvidenceReport extends MetadataResource {
         }
 
         public boolean hasValueCodeableConcept() {
-            return this.value != null && this.value instanceof CodeableConcept;
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -645,7 +645,7 @@ public class EvidenceReport extends MetadataResource {
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -660,7 +660,7 @@ public class EvidenceReport extends MetadataResource {
         }
 
         public boolean hasValueQuantity() {
-            return this.value != null && this.value instanceof Quantity;
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -675,7 +675,7 @@ public class EvidenceReport extends MetadataResource {
         }
 
         public boolean hasValueRange() {
-            return this.value != null && this.value instanceof Range;
+            return this.value instanceof Range;
         }
 
         public boolean hasValue() { 
@@ -2893,7 +2893,7 @@ public class EvidenceReport extends MetadataResource {
     }
 
     public boolean hasCiteAsReference() {
-        return this.citeAs != null && this.citeAs instanceof Reference;
+        return this.citeAs instanceof Reference;
     }
 
     /**
@@ -2908,7 +2908,7 @@ public class EvidenceReport extends MetadataResource {
     }
 
     public boolean hasCiteAsMarkdownType() {
-        return this.citeAs != null && this.citeAs instanceof MarkdownType;
+        return this.citeAs instanceof MarkdownType;
     }
 
     public boolean hasCiteAs() { 

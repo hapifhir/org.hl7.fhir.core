@@ -2132,7 +2132,7 @@ public class TestReport extends DomainResource {
         }
 
         public boolean hasLinkUriType() {
-            return this.link != null && this.link instanceof UriType;
+            return this.link instanceof UriType;
         }
 
         /**
@@ -2147,7 +2147,7 @@ public class TestReport extends DomainResource {
         }
 
         public boolean hasLinkCanonicalType() {
-            return this.link != null && this.link instanceof CanonicalType;
+            return this.link instanceof CanonicalType;
         }
 
         public boolean hasLink() { 

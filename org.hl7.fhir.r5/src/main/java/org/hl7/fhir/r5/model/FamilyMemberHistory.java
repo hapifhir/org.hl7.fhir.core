@@ -572,7 +572,7 @@ public class FamilyMemberHistory extends DomainResource {
         }
 
         public boolean hasOnsetAge() {
-            return this.onset != null && this.onset instanceof Age;
+            return this.onset instanceof Age;
         }
 
         /**
@@ -587,7 +587,7 @@ public class FamilyMemberHistory extends DomainResource {
         }
 
         public boolean hasOnsetRange() {
-            return this.onset != null && this.onset instanceof Range;
+            return this.onset instanceof Range;
         }
 
         /**
@@ -602,7 +602,7 @@ public class FamilyMemberHistory extends DomainResource {
         }
 
         public boolean hasOnsetPeriod() {
-            return this.onset != null && this.onset instanceof Period;
+            return this.onset instanceof Period;
         }
 
         /**
@@ -617,7 +617,7 @@ public class FamilyMemberHistory extends DomainResource {
         }
 
         public boolean hasOnsetStringType() {
-            return this.onset != null && this.onset instanceof StringType;
+            return this.onset instanceof StringType;
         }
 
         public boolean hasOnset() { 
@@ -1067,7 +1067,7 @@ public class FamilyMemberHistory extends DomainResource {
         }
 
         public boolean hasPerformedAge() {
-            return this.performed != null && this.performed instanceof Age;
+            return this.performed instanceof Age;
         }
 
         /**
@@ -1082,7 +1082,7 @@ public class FamilyMemberHistory extends DomainResource {
         }
 
         public boolean hasPerformedRange() {
-            return this.performed != null && this.performed instanceof Range;
+            return this.performed instanceof Range;
         }
 
         /**
@@ -1097,7 +1097,7 @@ public class FamilyMemberHistory extends DomainResource {
         }
 
         public boolean hasPerformedPeriod() {
-            return this.performed != null && this.performed instanceof Period;
+            return this.performed instanceof Period;
         }
 
         /**
@@ -1112,7 +1112,7 @@ public class FamilyMemberHistory extends DomainResource {
         }
 
         public boolean hasPerformedStringType() {
-            return this.performed != null && this.performed instanceof StringType;
+            return this.performed instanceof StringType;
         }
 
         /**
@@ -1127,7 +1127,7 @@ public class FamilyMemberHistory extends DomainResource {
         }
 
         public boolean hasPerformedDateTimeType() {
-            return this.performed != null && this.performed instanceof DateTimeType;
+            return this.performed instanceof DateTimeType;
         }
 
         public boolean hasPerformed() { 
@@ -2057,7 +2057,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasBornPeriod() {
-        return this.born != null && this.born instanceof Period;
+        return this.born instanceof Period;
     }
 
     /**
@@ -2072,7 +2072,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasBornDateType() {
-        return this.born != null && this.born instanceof DateType;
+        return this.born instanceof DateType;
     }
 
     /**
@@ -2087,7 +2087,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasBornStringType() {
-        return this.born != null && this.born instanceof StringType;
+        return this.born instanceof StringType;
     }
 
     public boolean hasBorn() { 
@@ -2123,7 +2123,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasAgeAge() {
-        return this.age != null && this.age instanceof Age;
+        return this.age instanceof Age;
     }
 
     /**
@@ -2138,7 +2138,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasAgeRange() {
-        return this.age != null && this.age instanceof Range;
+        return this.age instanceof Range;
     }
 
     /**
@@ -2153,7 +2153,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasAgeStringType() {
-        return this.age != null && this.age instanceof StringType;
+        return this.age instanceof StringType;
     }
 
     public boolean hasAge() { 
@@ -2234,7 +2234,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasDeceasedBooleanType() {
-        return this.deceased != null && this.deceased instanceof BooleanType;
+        return this.deceased instanceof BooleanType;
     }
 
     /**
@@ -2249,7 +2249,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasDeceasedAge() {
-        return this.deceased != null && this.deceased instanceof Age;
+        return this.deceased instanceof Age;
     }
 
     /**
@@ -2264,7 +2264,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasDeceasedRange() {
-        return this.deceased != null && this.deceased instanceof Range;
+        return this.deceased instanceof Range;
     }
 
     /**
@@ -2279,7 +2279,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasDeceasedDateType() {
-        return this.deceased != null && this.deceased instanceof DateType;
+        return this.deceased instanceof DateType;
     }
 
     /**
@@ -2294,7 +2294,7 @@ public class FamilyMemberHistory extends DomainResource {
     }
 
     public boolean hasDeceasedStringType() {
-        return this.deceased != null && this.deceased instanceof StringType;
+        return this.deceased instanceof StringType;
     }
 
     public boolean hasDeceased() { 

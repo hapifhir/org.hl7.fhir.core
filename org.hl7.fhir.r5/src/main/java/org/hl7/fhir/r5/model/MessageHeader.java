@@ -225,7 +225,7 @@ public class MessageHeader extends DomainResource {
         }
 
         public boolean hasEndpointUrlType() {
-            return this.endpoint != null && this.endpoint instanceof UrlType;
+            return this.endpoint instanceof UrlType;
         }
 
         /**
@@ -240,7 +240,7 @@ public class MessageHeader extends DomainResource {
         }
 
         public boolean hasEndpointReference() {
-            return this.endpoint != null && this.endpoint instanceof Reference;
+            return this.endpoint instanceof Reference;
         }
 
         public boolean hasEndpoint() { 
@@ -601,7 +601,7 @@ public class MessageHeader extends DomainResource {
         }
 
         public boolean hasEndpointUrlType() {
-            return this.endpoint != null && this.endpoint instanceof UrlType;
+            return this.endpoint instanceof UrlType;
         }
 
         /**
@@ -616,7 +616,7 @@ public class MessageHeader extends DomainResource {
         }
 
         public boolean hasEndpointReference() {
-            return this.endpoint != null && this.endpoint instanceof Reference;
+            return this.endpoint instanceof Reference;
         }
 
         public boolean hasEndpoint() { 
@@ -1405,7 +1405,7 @@ public class MessageHeader extends DomainResource {
     }
 
     public boolean hasEventCoding() {
-        return this.event != null && this.event instanceof Coding;
+        return this.event instanceof Coding;
     }
 
     /**
@@ -1420,7 +1420,7 @@ public class MessageHeader extends DomainResource {
     }
 
     public boolean hasEventCanonicalType() {
-        return this.event != null && this.event instanceof CanonicalType;
+        return this.event instanceof CanonicalType;
     }
 
     public boolean hasEvent() { 

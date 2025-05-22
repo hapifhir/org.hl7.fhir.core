@@ -192,7 +192,7 @@ public class RegulatedAuthorization extends DomainResource {
         }
 
         public boolean hasDatePeriod() {
-            return this.date != null && this.date instanceof Period;
+            return this.date instanceof Period;
         }
 
         /**
@@ -207,7 +207,7 @@ public class RegulatedAuthorization extends DomainResource {
         }
 
         public boolean hasDateDateTimeType() {
-            return this.date != null && this.date instanceof DateTimeType;
+            return this.date instanceof DateTimeType;
         }
 
         public boolean hasDate() { 

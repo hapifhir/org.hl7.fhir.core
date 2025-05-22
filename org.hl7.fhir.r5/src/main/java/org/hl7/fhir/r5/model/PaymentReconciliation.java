@@ -491,7 +491,7 @@ public class PaymentReconciliation extends DomainResource {
         }
 
         public boolean hasTargetItemStringType() {
-            return this.targetItem != null && this.targetItem instanceof StringType;
+            return this.targetItem instanceof StringType;
         }
 
         /**
@@ -506,7 +506,7 @@ public class PaymentReconciliation extends DomainResource {
         }
 
         public boolean hasTargetItemIdentifier() {
-            return this.targetItem != null && this.targetItem instanceof Identifier;
+            return this.targetItem instanceof Identifier;
         }
 
         /**
@@ -521,7 +521,7 @@ public class PaymentReconciliation extends DomainResource {
         }
 
         public boolean hasTargetItemPositiveIntType() {
-            return this.targetItem != null && this.targetItem instanceof PositiveIntType;
+            return this.targetItem instanceof PositiveIntType;
         }
 
         public boolean hasTargetItem() { 

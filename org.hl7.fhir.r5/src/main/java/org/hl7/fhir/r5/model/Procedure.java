@@ -1335,7 +1335,7 @@ public class Procedure extends DomainResource {
     }
 
     public boolean hasOccurrenceDateTimeType() {
-        return this.occurrence != null && this.occurrence instanceof DateTimeType;
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1350,7 +1350,7 @@ public class Procedure extends DomainResource {
     }
 
     public boolean hasOccurrencePeriod() {
-        return this.occurrence != null && this.occurrence instanceof Period;
+        return this.occurrence instanceof Period;
     }
 
     /**
@@ -1365,7 +1365,7 @@ public class Procedure extends DomainResource {
     }
 
     public boolean hasOccurrenceStringType() {
-        return this.occurrence != null && this.occurrence instanceof StringType;
+        return this.occurrence instanceof StringType;
     }
 
     /**
@@ -1380,7 +1380,7 @@ public class Procedure extends DomainResource {
     }
 
     public boolean hasOccurrenceAge() {
-        return this.occurrence != null && this.occurrence instanceof Age;
+        return this.occurrence instanceof Age;
     }
 
     /**
@@ -1395,7 +1395,7 @@ public class Procedure extends DomainResource {
     }
 
     public boolean hasOccurrenceRange() {
-        return this.occurrence != null && this.occurrence instanceof Range;
+        return this.occurrence instanceof Range;
     }
 
     /**
@@ -1410,7 +1410,7 @@ public class Procedure extends DomainResource {
     }
 
     public boolean hasOccurrenceTiming() {
-        return this.occurrence != null && this.occurrence instanceof Timing;
+        return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() { 
@@ -1519,7 +1519,7 @@ public class Procedure extends DomainResource {
     }
 
     public boolean hasReportedBooleanType() {
-        return this.reported != null && this.reported instanceof BooleanType;
+        return this.reported instanceof BooleanType;
     }
 
     /**
@@ -1534,7 +1534,7 @@ public class Procedure extends DomainResource {
     }
 
     public boolean hasReportedReference() {
-        return this.reported != null && this.reported instanceof Reference;
+        return this.reported instanceof Reference;
     }
 
     public boolean hasReported() { 

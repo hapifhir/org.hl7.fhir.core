@@ -945,7 +945,7 @@ public class RequestOrchestration extends DomainResource {
         }
 
         public boolean hasTimingDateTimeType() {
-            return this.timing != null && this.timing instanceof DateTimeType;
+            return this.timing instanceof DateTimeType;
         }
 
         /**
@@ -960,7 +960,7 @@ public class RequestOrchestration extends DomainResource {
         }
 
         public boolean hasTimingAge() {
-            return this.timing != null && this.timing instanceof Age;
+            return this.timing instanceof Age;
         }
 
         /**
@@ -975,7 +975,7 @@ public class RequestOrchestration extends DomainResource {
         }
 
         public boolean hasTimingPeriod() {
-            return this.timing != null && this.timing instanceof Period;
+            return this.timing instanceof Period;
         }
 
         /**
@@ -990,7 +990,7 @@ public class RequestOrchestration extends DomainResource {
         }
 
         public boolean hasTimingDuration() {
-            return this.timing != null && this.timing instanceof Duration;
+            return this.timing instanceof Duration;
         }
 
         /**
@@ -1005,7 +1005,7 @@ public class RequestOrchestration extends DomainResource {
         }
 
         public boolean hasTimingRange() {
-            return this.timing != null && this.timing instanceof Range;
+            return this.timing instanceof Range;
         }
 
         /**
@@ -1020,7 +1020,7 @@ public class RequestOrchestration extends DomainResource {
         }
 
         public boolean hasTimingTiming() {
-            return this.timing != null && this.timing instanceof Timing;
+            return this.timing instanceof Timing;
         }
 
         public boolean hasTiming() { 
@@ -1426,7 +1426,7 @@ public class RequestOrchestration extends DomainResource {
         }
 
         public boolean hasDefinitionCanonicalType() {
-            return this.definition != null && this.definition instanceof CanonicalType;
+            return this.definition instanceof CanonicalType;
         }
 
         /**
@@ -1441,7 +1441,7 @@ public class RequestOrchestration extends DomainResource {
         }
 
         public boolean hasDefinitionUriType() {
-            return this.definition != null && this.definition instanceof UriType;
+            return this.definition instanceof UriType;
         }
 
         public boolean hasDefinition() { 
@@ -3340,7 +3340,7 @@ public class RequestOrchestration extends DomainResource {
         }
 
         public boolean hasOffsetDuration() {
-            return this.offset != null && this.offset instanceof Duration;
+            return this.offset instanceof Duration;
         }
 
         /**
@@ -3355,7 +3355,7 @@ public class RequestOrchestration extends DomainResource {
         }
 
         public boolean hasOffsetRange() {
-            return this.offset != null && this.offset instanceof Range;
+            return this.offset instanceof Range;
         }
 
         public boolean hasOffset() { 
@@ -3805,7 +3805,7 @@ public class RequestOrchestration extends DomainResource {
         }
 
         public boolean hasActorCanonicalType() {
-            return this.actor != null && this.actor instanceof CanonicalType;
+            return this.actor instanceof CanonicalType;
         }
 
         /**
@@ -3820,7 +3820,7 @@ public class RequestOrchestration extends DomainResource {
         }
 
         public boolean hasActorReference() {
-            return this.actor != null && this.actor instanceof Reference;
+            return this.actor instanceof Reference;
         }
 
         public boolean hasActor() { 

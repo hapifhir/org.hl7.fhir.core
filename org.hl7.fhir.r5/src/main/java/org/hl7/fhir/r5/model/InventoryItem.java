@@ -1336,7 +1336,7 @@ public class InventoryItem extends DomainResource {
         }
 
         public boolean hasValueStringType() {
-            return this.value != null && this.value instanceof StringType;
+            return this.value instanceof StringType;
         }
 
         /**
@@ -1351,7 +1351,7 @@ public class InventoryItem extends DomainResource {
         }
 
         public boolean hasValueIntegerType() {
-            return this.value != null && this.value instanceof IntegerType;
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -1366,7 +1366,7 @@ public class InventoryItem extends DomainResource {
         }
 
         public boolean hasValueDecimalType() {
-            return this.value != null && this.value instanceof DecimalType;
+            return this.value instanceof DecimalType;
         }
 
         /**
@@ -1381,7 +1381,7 @@ public class InventoryItem extends DomainResource {
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -1396,7 +1396,7 @@ public class InventoryItem extends DomainResource {
         }
 
         public boolean hasValueUrlType() {
-            return this.value != null && this.value instanceof UrlType;
+            return this.value instanceof UrlType;
         }
 
         /**
@@ -1411,7 +1411,7 @@ public class InventoryItem extends DomainResource {
         }
 
         public boolean hasValueDateTimeType() {
-            return this.value != null && this.value instanceof DateTimeType;
+            return this.value instanceof DateTimeType;
         }
 
         /**
@@ -1426,7 +1426,7 @@ public class InventoryItem extends DomainResource {
         }
 
         public boolean hasValueQuantity() {
-            return this.value != null && this.value instanceof Quantity;
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -1441,7 +1441,7 @@ public class InventoryItem extends DomainResource {
         }
 
         public boolean hasValueRange() {
-            return this.value != null && this.value instanceof Range;
+            return this.value instanceof Range;
         }
 
         /**
@@ -1456,7 +1456,7 @@ public class InventoryItem extends DomainResource {
         }
 
         public boolean hasValueRatio() {
-            return this.value != null && this.value instanceof Ratio;
+            return this.value instanceof Ratio;
         }
 
         /**
@@ -1471,7 +1471,7 @@ public class InventoryItem extends DomainResource {
         }
 
         public boolean hasValueAnnotation() {
-            return this.value != null && this.value instanceof Annotation;
+            return this.value instanceof Annotation;
         }
 
         /**
@@ -1486,7 +1486,7 @@ public class InventoryItem extends DomainResource {
         }
 
         public boolean hasValueAddress() {
-            return this.value != null && this.value instanceof Address;
+            return this.value instanceof Address;
         }
 
         /**
@@ -1501,7 +1501,7 @@ public class InventoryItem extends DomainResource {
         }
 
         public boolean hasValueDuration() {
-            return this.value != null && this.value instanceof Duration;
+            return this.value instanceof Duration;
         }
 
         /**
@@ -1516,7 +1516,7 @@ public class InventoryItem extends DomainResource {
         }
 
         public boolean hasValueCodeableConcept() {
-            return this.value != null && this.value instanceof CodeableConcept;
+            return this.value instanceof CodeableConcept;
         }
 
         public boolean hasValue() { 

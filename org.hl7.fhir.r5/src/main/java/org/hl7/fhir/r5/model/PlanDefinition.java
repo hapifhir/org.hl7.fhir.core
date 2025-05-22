@@ -693,7 +693,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasDetailQuantity() {
-            return this.detail != null && this.detail instanceof Quantity;
+            return this.detail instanceof Quantity;
         }
 
         /**
@@ -708,7 +708,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasDetailRange() {
-            return this.detail != null && this.detail instanceof Range;
+            return this.detail instanceof Range;
         }
 
         /**
@@ -723,7 +723,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasDetailCodeableConcept() {
-            return this.detail != null && this.detail instanceof CodeableConcept;
+            return this.detail instanceof CodeableConcept;
         }
 
         /**
@@ -738,7 +738,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasDetailStringType() {
-            return this.detail != null && this.detail instanceof StringType;
+            return this.detail instanceof StringType;
         }
 
         /**
@@ -753,7 +753,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasDetailBooleanType() {
-            return this.detail != null && this.detail instanceof BooleanType;
+            return this.detail instanceof BooleanType;
         }
 
         /**
@@ -768,7 +768,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasDetailIntegerType() {
-            return this.detail != null && this.detail instanceof IntegerType;
+            return this.detail instanceof IntegerType;
         }
 
         /**
@@ -783,7 +783,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasDetailRatio() {
-            return this.detail != null && this.detail instanceof Ratio;
+            return this.detail instanceof Ratio;
         }
 
         public boolean hasDetail() { 
@@ -2455,7 +2455,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasSubjectCodeableConcept() {
-            return this.subject != null && this.subject instanceof CodeableConcept;
+            return this.subject instanceof CodeableConcept;
         }
 
         /**
@@ -2470,7 +2470,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasSubjectReference() {
-            return this.subject != null && this.subject instanceof Reference;
+            return this.subject instanceof Reference;
         }
 
         /**
@@ -2485,7 +2485,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasSubjectCanonicalType() {
-            return this.subject != null && this.subject instanceof CanonicalType;
+            return this.subject instanceof CanonicalType;
         }
 
         public boolean hasSubject() { 
@@ -2786,7 +2786,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasTimingAge() {
-            return this.timing != null && this.timing instanceof Age;
+            return this.timing instanceof Age;
         }
 
         /**
@@ -2801,7 +2801,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasTimingDuration() {
-            return this.timing != null && this.timing instanceof Duration;
+            return this.timing instanceof Duration;
         }
 
         /**
@@ -2816,7 +2816,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasTimingRange() {
-            return this.timing != null && this.timing instanceof Range;
+            return this.timing instanceof Range;
         }
 
         /**
@@ -2831,7 +2831,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasTimingTiming() {
-            return this.timing != null && this.timing instanceof Timing;
+            return this.timing instanceof Timing;
         }
 
         public boolean hasTiming() { 
@@ -3213,7 +3213,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasDefinitionCanonicalType() {
-            return this.definition != null && this.definition instanceof CanonicalType;
+            return this.definition instanceof CanonicalType;
         }
 
         /**
@@ -3228,7 +3228,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasDefinitionUriType() {
-            return this.definition != null && this.definition instanceof UriType;
+            return this.definition instanceof UriType;
         }
 
         public boolean hasDefinition() { 
@@ -5168,7 +5168,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasOffsetDuration() {
-            return this.offset != null && this.offset instanceof Duration;
+            return this.offset instanceof Duration;
         }
 
         /**
@@ -5183,7 +5183,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         public boolean hasOffsetRange() {
-            return this.offset != null && this.offset instanceof Range;
+            return this.offset instanceof Range;
         }
 
         public boolean hasOffset() { 
@@ -6549,7 +6549,7 @@ public class PlanDefinition extends MetadataResource {
     }
 
     public boolean hasVersionAlgorithmStringType() {
-        return this.versionAlgorithm != null && this.versionAlgorithm instanceof StringType;
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -6564,7 +6564,7 @@ public class PlanDefinition extends MetadataResource {
     }
 
     public boolean hasVersionAlgorithmCoding() {
-        return this.versionAlgorithm != null && this.versionAlgorithm instanceof Coding;
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 
@@ -6861,7 +6861,7 @@ public class PlanDefinition extends MetadataResource {
     }
 
     public boolean hasSubjectCodeableConcept() {
-        return this.subject != null && this.subject instanceof CodeableConcept;
+        return this.subject instanceof CodeableConcept;
     }
 
     /**
@@ -6876,7 +6876,7 @@ public class PlanDefinition extends MetadataResource {
     }
 
     public boolean hasSubjectReference() {
-        return this.subject != null && this.subject instanceof Reference;
+        return this.subject instanceof Reference;
     }
 
     /**
@@ -6891,7 +6891,7 @@ public class PlanDefinition extends MetadataResource {
     }
 
     public boolean hasSubjectCanonicalType() {
-        return this.subject != null && this.subject instanceof CanonicalType;
+        return this.subject instanceof CanonicalType;
     }
 
     public boolean hasSubject() { 
@@ -8089,7 +8089,7 @@ public class PlanDefinition extends MetadataResource {
     }
 
     public boolean hasAsNeededBooleanType() {
-        return this.asNeeded != null && this.asNeeded instanceof BooleanType;
+        return this.asNeeded instanceof BooleanType;
     }
 
     /**
@@ -8104,7 +8104,7 @@ public class PlanDefinition extends MetadataResource {
     }
 
     public boolean hasAsNeededCodeableConcept() {
-        return this.asNeeded != null && this.asNeeded instanceof CodeableConcept;
+        return this.asNeeded instanceof CodeableConcept;
     }
 
     public boolean hasAsNeeded() { 

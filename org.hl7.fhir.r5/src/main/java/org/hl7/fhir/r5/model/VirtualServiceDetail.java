@@ -139,7 +139,7 @@ public class VirtualServiceDetail extends DataType implements ICompositeType {
     }
 
     public boolean hasAddressUrlType() {
-        return this.address != null && this.address instanceof UrlType;
+        return this.address instanceof UrlType;
     }
 
     /**
@@ -154,7 +154,7 @@ public class VirtualServiceDetail extends DataType implements ICompositeType {
     }
 
     public boolean hasAddressStringType() {
-        return this.address != null && this.address instanceof StringType;
+        return this.address instanceof StringType;
     }
 
     /**
@@ -169,7 +169,7 @@ public class VirtualServiceDetail extends DataType implements ICompositeType {
     }
 
     public boolean hasAddressContactPoint() {
-        return this.address != null && this.address instanceof ContactPoint;
+        return this.address instanceof ContactPoint;
     }
 
     /**
@@ -184,7 +184,7 @@ public class VirtualServiceDetail extends DataType implements ICompositeType {
     }
 
     public boolean hasAddressExtendedContactDetail() {
-        return this.address != null && this.address instanceof ExtendedContactDetail;
+        return this.address instanceof ExtendedContactDetail;
     }
 
     public boolean hasAddress() { 

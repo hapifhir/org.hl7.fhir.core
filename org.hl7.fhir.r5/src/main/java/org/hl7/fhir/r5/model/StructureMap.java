@@ -4887,7 +4887,7 @@ public String toString() {
         }
 
         public boolean hasValueIdType() {
-            return this.value != null && this.value instanceof IdType;
+            return this.value instanceof IdType;
         }
 
         /**
@@ -4902,7 +4902,7 @@ public String toString() {
         }
 
         public boolean hasValueStringType() {
-            return this.value != null && this.value instanceof StringType;
+            return this.value instanceof StringType;
         }
 
         /**
@@ -4917,7 +4917,7 @@ public String toString() {
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -4932,7 +4932,7 @@ public String toString() {
         }
 
         public boolean hasValueIntegerType() {
-            return this.value != null && this.value instanceof IntegerType;
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -4947,7 +4947,7 @@ public String toString() {
         }
 
         public boolean hasValueDecimalType() {
-            return this.value != null && this.value instanceof DecimalType;
+            return this.value instanceof DecimalType;
         }
 
         /**
@@ -4962,7 +4962,7 @@ public String toString() {
         }
 
         public boolean hasValueDateType() {
-            return this.value != null && this.value instanceof DateType;
+            return this.value instanceof DateType;
         }
 
         /**
@@ -4977,7 +4977,7 @@ public String toString() {
         }
 
         public boolean hasValueTimeType() {
-            return this.value != null && this.value instanceof TimeType;
+            return this.value instanceof TimeType;
         }
 
         /**
@@ -4992,7 +4992,7 @@ public String toString() {
         }
 
         public boolean hasValueDateTimeType() {
-            return this.value != null && this.value instanceof DateTimeType;
+            return this.value instanceof DateTimeType;
         }
 
         public boolean hasValue() { 
@@ -5783,7 +5783,7 @@ public String toString() {
     }
 
     public boolean hasVersionAlgorithmStringType() {
-        return this.versionAlgorithm != null && this.versionAlgorithm instanceof StringType;
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -5798,7 +5798,7 @@ public String toString() {
     }
 
     public boolean hasVersionAlgorithmCoding() {
-        return this.versionAlgorithm != null && this.versionAlgorithm instanceof Coding;
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 

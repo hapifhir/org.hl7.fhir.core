@@ -1418,7 +1418,7 @@ public class TestPlan extends CanonicalResource {
         }
 
         public boolean hasSourceStringType() {
-            return this.source != null && this.source instanceof StringType;
+            return this.source instanceof StringType;
         }
 
         /**
@@ -1433,7 +1433,7 @@ public class TestPlan extends CanonicalResource {
         }
 
         public boolean hasSourceReference() {
-            return this.source != null && this.source instanceof Reference;
+            return this.source instanceof Reference;
         }
 
         public boolean hasSource() { 
@@ -1704,7 +1704,7 @@ public class TestPlan extends CanonicalResource {
         }
 
         public boolean hasSourceStringType() {
-            return this.source != null && this.source instanceof StringType;
+            return this.source instanceof StringType;
         }
 
         /**
@@ -1719,7 +1719,7 @@ public class TestPlan extends CanonicalResource {
         }
 
         public boolean hasSourceReference() {
-            return this.source != null && this.source instanceof Reference;
+            return this.source instanceof Reference;
         }
 
         public boolean hasSource() { 
@@ -2610,7 +2610,7 @@ public class TestPlan extends CanonicalResource {
     }
 
     public boolean hasVersionAlgorithmStringType() {
-        return this.versionAlgorithm != null && this.versionAlgorithm instanceof StringType;
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -2625,7 +2625,7 @@ public class TestPlan extends CanonicalResource {
     }
 
     public boolean hasVersionAlgorithmCoding() {
-        return this.versionAlgorithm != null && this.versionAlgorithm instanceof Coding;
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 

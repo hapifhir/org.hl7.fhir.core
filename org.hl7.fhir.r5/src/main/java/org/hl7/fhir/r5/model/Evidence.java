@@ -4158,7 +4158,7 @@ public class Evidence extends MetadataResource {
     }
 
     public boolean hasVersionAlgorithmStringType() {
-        return this.versionAlgorithm != null && this.versionAlgorithm instanceof StringType;
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -4173,7 +4173,7 @@ public class Evidence extends MetadataResource {
     }
 
     public boolean hasVersionAlgorithmCoding() {
-        return this.versionAlgorithm != null && this.versionAlgorithm instanceof Coding;
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 
@@ -4307,7 +4307,7 @@ public class Evidence extends MetadataResource {
     }
 
     public boolean hasCiteAsReference() {
-        return this.citeAs != null && this.citeAs instanceof Reference;
+        return this.citeAs instanceof Reference;
     }
 
     /**
@@ -4322,7 +4322,7 @@ public class Evidence extends MetadataResource {
     }
 
     public boolean hasCiteAsMarkdownType() {
-        return this.citeAs != null && this.citeAs instanceof MarkdownType;
+        return this.citeAs instanceof MarkdownType;
     }
 
     public boolean hasCiteAs() { 

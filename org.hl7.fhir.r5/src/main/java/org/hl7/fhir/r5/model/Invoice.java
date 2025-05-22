@@ -530,7 +530,7 @@ public class Invoice extends DomainResource {
         }
 
         public boolean hasServicedDateType() {
-            return this.serviced != null && this.serviced instanceof DateType;
+            return this.serviced instanceof DateType;
         }
 
         /**
@@ -545,7 +545,7 @@ public class Invoice extends DomainResource {
         }
 
         public boolean hasServicedPeriod() {
-            return this.serviced != null && this.serviced instanceof Period;
+            return this.serviced instanceof Period;
         }
 
         public boolean hasServiced() { 
@@ -581,7 +581,7 @@ public class Invoice extends DomainResource {
         }
 
         public boolean hasChargeItemReference() {
-            return this.chargeItem != null && this.chargeItem instanceof Reference;
+            return this.chargeItem instanceof Reference;
         }
 
         /**
@@ -596,7 +596,7 @@ public class Invoice extends DomainResource {
         }
 
         public boolean hasChargeItemCodeableConcept() {
-            return this.chargeItem != null && this.chargeItem instanceof CodeableConcept;
+            return this.chargeItem instanceof CodeableConcept;
         }
 
         public boolean hasChargeItem() { 
@@ -1339,7 +1339,7 @@ public class Invoice extends DomainResource {
     }
 
     public boolean hasPeriodDateType() {
-        return this.period != null && this.period instanceof DateType;
+        return this.period instanceof DateType;
     }
 
     /**
@@ -1354,7 +1354,7 @@ public class Invoice extends DomainResource {
     }
 
     public boolean hasPeriodPeriod() {
-        return this.period != null && this.period instanceof Period;
+        return this.period instanceof Period;
     }
 
     public boolean hasPeriod() { 

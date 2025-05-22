@@ -618,7 +618,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasMeasureScoreQuantity() {
-            return this.measureScore != null && this.measureScore instanceof Quantity;
+            return this.measureScore instanceof Quantity;
         }
 
         /**
@@ -633,7 +633,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasMeasureScoreDateTimeType() {
-            return this.measureScore != null && this.measureScore instanceof DateTimeType;
+            return this.measureScore instanceof DateTimeType;
         }
 
         /**
@@ -648,7 +648,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasMeasureScoreCodeableConcept() {
-            return this.measureScore != null && this.measureScore instanceof CodeableConcept;
+            return this.measureScore instanceof CodeableConcept;
         }
 
         /**
@@ -663,7 +663,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasMeasureScorePeriod() {
-            return this.measureScore != null && this.measureScore instanceof Period;
+            return this.measureScore instanceof Period;
         }
 
         /**
@@ -678,7 +678,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasMeasureScoreRange() {
-            return this.measureScore != null && this.measureScore instanceof Range;
+            return this.measureScore instanceof Range;
         }
 
         /**
@@ -693,7 +693,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasMeasureScoreDuration() {
-            return this.measureScore != null && this.measureScore instanceof Duration;
+            return this.measureScore instanceof Duration;
         }
 
         public boolean hasMeasureScore() { 
@@ -1867,7 +1867,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasValueCodeableConcept() {
-            return this.value != null && this.value instanceof CodeableConcept;
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -1882,7 +1882,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -1897,7 +1897,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasValueQuantity() {
-            return this.value != null && this.value instanceof Quantity;
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -1912,7 +1912,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasValueRange() {
-            return this.value != null && this.value instanceof Range;
+            return this.value instanceof Range;
         }
 
         /**
@@ -1927,7 +1927,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasValueReference() {
-            return this.value != null && this.value instanceof Reference;
+            return this.value instanceof Reference;
         }
 
         public boolean hasValue() { 
@@ -2069,7 +2069,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasMeasureScoreQuantity() {
-            return this.measureScore != null && this.measureScore instanceof Quantity;
+            return this.measureScore instanceof Quantity;
         }
 
         /**
@@ -2084,7 +2084,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasMeasureScoreDateTimeType() {
-            return this.measureScore != null && this.measureScore instanceof DateTimeType;
+            return this.measureScore instanceof DateTimeType;
         }
 
         /**
@@ -2099,7 +2099,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasMeasureScoreCodeableConcept() {
-            return this.measureScore != null && this.measureScore instanceof CodeableConcept;
+            return this.measureScore instanceof CodeableConcept;
         }
 
         /**
@@ -2114,7 +2114,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasMeasureScorePeriod() {
-            return this.measureScore != null && this.measureScore instanceof Period;
+            return this.measureScore instanceof Period;
         }
 
         /**
@@ -2129,7 +2129,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasMeasureScoreRange() {
-            return this.measureScore != null && this.measureScore instanceof Range;
+            return this.measureScore instanceof Range;
         }
 
         /**
@@ -2144,7 +2144,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasMeasureScoreDuration() {
-            return this.measureScore != null && this.measureScore instanceof Duration;
+            return this.measureScore instanceof Duration;
         }
 
         public boolean hasMeasureScore() { 
@@ -2528,7 +2528,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasValueCodeableConcept() {
-            return this.value != null && this.value instanceof CodeableConcept;
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -2543,7 +2543,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -2558,7 +2558,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasValueQuantity() {
-            return this.value != null && this.value instanceof Quantity;
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -2573,7 +2573,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasValueRange() {
-            return this.value != null && this.value instanceof Range;
+            return this.value instanceof Range;
         }
 
         /**
@@ -2588,7 +2588,7 @@ public class MeasureReport extends DomainResource {
         }
 
         public boolean hasValueReference() {
-            return this.value != null && this.value instanceof Reference;
+            return this.value instanceof Reference;
         }
 
         public boolean hasValue() { 

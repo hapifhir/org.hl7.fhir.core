@@ -1773,7 +1773,7 @@ public class GenomicStudy extends DomainResource {
         }
 
         public boolean hasGeneratedByIdentifier() {
-            return this.generatedBy != null && this.generatedBy instanceof Identifier;
+            return this.generatedBy instanceof Identifier;
         }
 
         /**
@@ -1788,7 +1788,7 @@ public class GenomicStudy extends DomainResource {
         }
 
         public boolean hasGeneratedByReference() {
-            return this.generatedBy != null && this.generatedBy instanceof Reference;
+            return this.generatedBy instanceof Reference;
         }
 
         public boolean hasGeneratedBy() { 
