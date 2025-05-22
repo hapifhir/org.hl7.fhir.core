@@ -33,8 +33,10 @@ package org.hl7.fhir.validation.instance;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -224,6 +226,7 @@ import org.hl7.fhir.validation.instance.utils.ResourceValidationTracker;
 import org.hl7.fhir.validation.instance.utils.StructureDefinitionSorterByUrl;
 import org.hl7.fhir.validation.instance.utils.UrlUtil;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+import org.slf4j.Logger;
 import org.w3c.dom.Document;
 
 
@@ -1068,11 +1071,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     
     if (settings.isDebug()) {
-      element.printToOutput();
+      try {
+        debugElement(element, log);
+      } catch (IOException e) {
+       log.error(e.getMessage(), e);
+      }
     }
   }
 
+  protected void debugElement(Element element, Logger log) throws IOException {
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
 
+    element.printToOutput(printStream);
+    log.debug(outputStream.toString());
+  }
   private void checkElementUsage(List<ValidationMessage> errors, Element element, NodeStack stack) {
     if (element.getPath()==null
       || (element.getName().equals("id")  && !element.getPath().substring(0, element.getPath().length()-3).contains("."))

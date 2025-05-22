@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -57,6 +58,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import kotlin.NotImplementedError;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class StructureDefinitionComparer extends CanonicalResourceComparer implements ProfileKnowledgeProvider {
 
   public class ProfileComparison extends CanonicalResourceComparison<StructureDefinition> {
@@ -206,9 +208,9 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
 
     boolean def = false;
     
-    if (session.isDebug()) {
-      System.out.println("Compare elements at "+path);
-    }
+
+      log.debug("Compare elements at "+path);
+
     
     // not allowed to be different:   
 //    ruleEqual(comp, res, left.current().getDefaultValue(), right.current().getDefaultValue(), "defaultValue", path);

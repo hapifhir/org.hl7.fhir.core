@@ -2379,8 +2379,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       // correct (but it's slow)
       if (sourceForReference != null && uri.contains("ValueSet")) {
         if (!ResourceUtilities.hasURL(uri, sourceForReference)) {
-          System.out.print("Claimed source doesn't have url in it: "+sourceForReference.fhirType()+"/"+sourceForReference.getIdPart()+" -> "+uri);
-          System.out.println();
+          log.warn("Claimed source doesn't have url in it: "+sourceForReference.fhirType()+"/"+sourceForReference.getIdPart()+" -> "+uri);
         }
       }
     }
@@ -3151,7 +3150,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
       } catch (Exception e) {
         // not sure what to do in this case?
-        System.out.println("Unable to generate snapshot in @" + breadcrumb + " for " + structureDefinition.getVersionedUrl()+": "+e.getMessage());
+        log.error("Unable to generate snapshot in @" + breadcrumb + " for " + structureDefinition.getVersionedUrl()+": "+e.getMessage());
         logger.logDebugMessage(ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
       }
     }
@@ -3305,7 +3304,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             //          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
           }
         } catch (Exception e) {
-          System.out.println("Unable to generate snapshot @1 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
+          log.error("Unable to generate snapshot @1 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
           logger.logDebugMessage(LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
         }
       }  

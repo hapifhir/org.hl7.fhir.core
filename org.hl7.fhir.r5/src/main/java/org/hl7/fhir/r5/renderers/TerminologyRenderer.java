@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.CanonicalResource;
@@ -32,6 +33,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public abstract class TerminologyRenderer extends ResourceRenderer {
   
 
@@ -296,9 +298,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       }
       else {
         if (value.startsWith("http://hl7.org") && !Utilities.existsInList(value, "http://hl7.org/fhir/sid/icd-10-us")) {
-          if (DEBUG) {
-            System.out.println("Unable to resolve value set "+value);
-          }
+          log.debug("Unable to resolve value set "+value);
         }
         li.addText(value);
       }
