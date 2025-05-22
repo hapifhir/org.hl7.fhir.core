@@ -2882,7 +2882,7 @@ public class Measure extends MetadataResource {
   }
 
   public boolean hasSubjectCodeableConcept() {
-      return this.subject != null && this.subject instanceof CodeableConcept;
+      return this.subject instanceof CodeableConcept;
   }
 
   /**
@@ -2900,7 +2900,7 @@ public class Measure extends MetadataResource {
   }
 
   public boolean hasSubjectReference() {
-      return this.subject != null && this.subject instanceof Reference;
+      return this.subject instanceof Reference;
   }
 
   public boolean hasSubject() {
