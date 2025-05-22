@@ -11,6 +11,7 @@ import java.util.Set;
 import org.checkerframework.checker.units.qual.cd;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -738,7 +739,7 @@ public class LanguageUtils {
     return null;
   }
  
-  public boolean switchLanguage(Element e, String lang) {
+  public boolean switchLanguage(Element e, String lang, boolean markLanguage) {
     if (e.getProperty().isTranslatable()) {
       String cnt = getTranslation(e, lang);
       e.removeExtension(ToolingExtensions.EXT_TRANSLATION);
@@ -748,10 +749,13 @@ public class LanguageUtils {
     }
     if (e.hasChildren()) {
       for (Element c : e.getChildren()) {
-        if (!switchLanguage(c, lang)) {
+        if (!switchLanguage(c, lang, markLanguage)) {
           return false;
         }
       }
+    }
+    if (markLanguage && e.isResource() && e.getSpecial() != SpecialElement.CONTAINED) {
+      e.setChildValue("language", lang);
     }
     return true;
   }
@@ -782,13 +786,13 @@ public class LanguageUtils {
     return e.primitiveValue();
   }
 
-  public Element copyToLanguage(Element element, String lang) {
+  public Element copyToLanguage(Element element, String lang, boolean markLanguage) {
     Element result = (Element) element.copy();
-    switchLanguage(result, lang);
+    switchLanguage(result, lang, markLanguage);
     return result;
   }
 
-  public Resource copyToLanguage(Resource res, String lang) {
+  public Resource copyToLanguage(Resource res, String lang, boolean markLanguage) {
     return res;
   }
 }
