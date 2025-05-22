@@ -385,7 +385,7 @@ public class ServiceRequest extends DomainResource {
         }
 
         public boolean hasValueQuantity() {
-            return this.value != null && this.value instanceof Quantity;
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -400,7 +400,7 @@ public class ServiceRequest extends DomainResource {
         }
 
         public boolean hasValueRatio() {
-            return this.value != null && this.value instanceof Ratio;
+            return this.value instanceof Ratio;
         }
 
         /**
@@ -415,7 +415,7 @@ public class ServiceRequest extends DomainResource {
         }
 
         public boolean hasValueRange() {
-            return this.value != null && this.value instanceof Range;
+            return this.value instanceof Range;
         }
 
         /**
@@ -430,7 +430,7 @@ public class ServiceRequest extends DomainResource {
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -445,7 +445,7 @@ public class ServiceRequest extends DomainResource {
         }
 
         public boolean hasValueCodeableConcept() {
-            return this.value != null && this.value instanceof CodeableConcept;
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -460,7 +460,7 @@ public class ServiceRequest extends DomainResource {
         }
 
         public boolean hasValueStringType() {
-            return this.value != null && this.value instanceof StringType;
+            return this.value instanceof StringType;
         }
 
         /**
@@ -475,7 +475,7 @@ public class ServiceRequest extends DomainResource {
         }
 
         public boolean hasValuePeriod() {
-            return this.value != null && this.value instanceof Period;
+            return this.value instanceof Period;
         }
 
         public boolean hasValue() { 
@@ -701,7 +701,7 @@ public class ServiceRequest extends DomainResource {
         }
 
         public boolean hasInstructionMarkdownType() {
-            return this.instruction != null && this.instruction instanceof MarkdownType;
+            return this.instruction instanceof MarkdownType;
         }
 
         /**
@@ -716,7 +716,7 @@ public class ServiceRequest extends DomainResource {
         }
 
         public boolean hasInstructionReference() {
-            return this.instruction != null && this.instruction instanceof Reference;
+            return this.instruction instanceof Reference;
         }
 
         public boolean hasInstruction() { 
@@ -1761,7 +1761,7 @@ public class ServiceRequest extends DomainResource {
     }
 
     public boolean hasQuantityQuantity() {
-        return this.quantity != null && this.quantity instanceof Quantity;
+        return this.quantity instanceof Quantity;
     }
 
     /**
@@ -1776,7 +1776,7 @@ public class ServiceRequest extends DomainResource {
     }
 
     public boolean hasQuantityRatio() {
-        return this.quantity != null && this.quantity instanceof Ratio;
+        return this.quantity instanceof Ratio;
     }
 
     /**
@@ -1791,7 +1791,7 @@ public class ServiceRequest extends DomainResource {
     }
 
     public boolean hasQuantityRange() {
-        return this.quantity != null && this.quantity instanceof Range;
+        return this.quantity instanceof Range;
     }
 
     public boolean hasQuantity() { 
@@ -1928,7 +1928,7 @@ public class ServiceRequest extends DomainResource {
     }
 
     public boolean hasOccurrenceDateTimeType() {
-        return this.occurrence != null && this.occurrence instanceof DateTimeType;
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1943,7 +1943,7 @@ public class ServiceRequest extends DomainResource {
     }
 
     public boolean hasOccurrencePeriod() {
-        return this.occurrence != null && this.occurrence instanceof Period;
+        return this.occurrence instanceof Period;
     }
 
     /**
@@ -1958,7 +1958,7 @@ public class ServiceRequest extends DomainResource {
     }
 
     public boolean hasOccurrenceTiming() {
-        return this.occurrence != null && this.occurrence instanceof Timing;
+        return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() { 
@@ -1994,7 +1994,7 @@ public class ServiceRequest extends DomainResource {
     }
 
     public boolean hasAsNeededBooleanType() {
-        return this.asNeeded != null && this.asNeeded instanceof BooleanType;
+        return this.asNeeded instanceof BooleanType;
     }
 
     /**
@@ -2009,7 +2009,7 @@ public class ServiceRequest extends DomainResource {
     }
 
     public boolean hasAsNeededCodeableConcept() {
-        return this.asNeeded != null && this.asNeeded instanceof CodeableConcept;
+        return this.asNeeded instanceof CodeableConcept;
     }
 
     public boolean hasAsNeeded() { 

@@ -261,7 +261,7 @@ public class CoverageEligibilityRequest extends DomainResource {
         }
 
         public boolean hasWhenDateTimeType() {
-            return this.when != null && this.when instanceof DateTimeType;
+            return this.when instanceof DateTimeType;
         }
 
         /**
@@ -276,7 +276,7 @@ public class CoverageEligibilityRequest extends DomainResource {
         }
 
         public boolean hasWhenPeriod() {
-            return this.when != null && this.when instanceof Period;
+            return this.when instanceof Period;
         }
 
         public boolean hasWhen() { 
@@ -1846,7 +1846,7 @@ public class CoverageEligibilityRequest extends DomainResource {
         }
 
         public boolean hasDiagnosisCodeableConcept() {
-            return this.diagnosis != null && this.diagnosis instanceof CodeableConcept;
+            return this.diagnosis instanceof CodeableConcept;
         }
 
         /**
@@ -1861,7 +1861,7 @@ public class CoverageEligibilityRequest extends DomainResource {
         }
 
         public boolean hasDiagnosisReference() {
-            return this.diagnosis != null && this.diagnosis instanceof Reference;
+            return this.diagnosis instanceof Reference;
         }
 
         public boolean hasDiagnosis() { 
@@ -2416,7 +2416,7 @@ public class CoverageEligibilityRequest extends DomainResource {
     }
 
     public boolean hasServicedDateType() {
-        return this.serviced != null && this.serviced instanceof DateType;
+        return this.serviced instanceof DateType;
     }
 
     /**
@@ -2431,7 +2431,7 @@ public class CoverageEligibilityRequest extends DomainResource {
     }
 
     public boolean hasServicedPeriod() {
-        return this.serviced != null && this.serviced instanceof Period;
+        return this.serviced instanceof Period;
     }
 
     public boolean hasServiced() { 

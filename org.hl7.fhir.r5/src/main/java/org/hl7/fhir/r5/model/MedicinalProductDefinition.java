@@ -1834,7 +1834,7 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         public boolean hasValueCodeableConcept() {
-            return this.value != null && this.value instanceof CodeableConcept;
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -1849,7 +1849,7 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         public boolean hasValueMarkdownType() {
-            return this.value != null && this.value instanceof MarkdownType;
+            return this.value instanceof MarkdownType;
         }
 
         /**
@@ -1864,7 +1864,7 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         public boolean hasValueQuantity() {
-            return this.value != null && this.value instanceof Quantity;
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -1879,7 +1879,7 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         public boolean hasValueIntegerType() {
-            return this.value != null && this.value instanceof IntegerType;
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -1894,7 +1894,7 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         public boolean hasValueDateType() {
-            return this.value != null && this.value instanceof DateType;
+            return this.value instanceof DateType;
         }
 
         /**
@@ -1909,7 +1909,7 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -1924,7 +1924,7 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         public boolean hasValueAttachment() {
-            return this.value != null && this.value instanceof Attachment;
+            return this.value instanceof Attachment;
         }
 
         public boolean hasValue() { 

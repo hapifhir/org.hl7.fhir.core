@@ -299,7 +299,7 @@ public class SupplyRequest extends DomainResource {
         }
 
         public boolean hasValueCodeableConcept() {
-            return this.value != null && this.value instanceof CodeableConcept;
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -314,7 +314,7 @@ public class SupplyRequest extends DomainResource {
         }
 
         public boolean hasValueQuantity() {
-            return this.value != null && this.value instanceof Quantity;
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -329,7 +329,7 @@ public class SupplyRequest extends DomainResource {
         }
 
         public boolean hasValueRange() {
-            return this.value != null && this.value instanceof Range;
+            return this.value instanceof Range;
         }
 
         /**
@@ -344,7 +344,7 @@ public class SupplyRequest extends DomainResource {
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+            return this.value instanceof BooleanType;
         }
 
         public boolean hasValue() { 
@@ -1025,7 +1025,7 @@ public class SupplyRequest extends DomainResource {
     }
 
     public boolean hasOccurrenceDateTimeType() {
-        return this.occurrence != null && this.occurrence instanceof DateTimeType;
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1040,7 +1040,7 @@ public class SupplyRequest extends DomainResource {
     }
 
     public boolean hasOccurrencePeriod() {
-        return this.occurrence != null && this.occurrence instanceof Period;
+        return this.occurrence instanceof Period;
     }
 
     /**
@@ -1055,7 +1055,7 @@ public class SupplyRequest extends DomainResource {
     }
 
     public boolean hasOccurrenceTiming() {
-        return this.occurrence != null && this.occurrence instanceof Timing;
+        return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() { 

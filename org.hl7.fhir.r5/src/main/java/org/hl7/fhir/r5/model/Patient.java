@@ -1686,7 +1686,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
     }
 
     public boolean hasDeceasedBooleanType() {
-        return this.deceased != null && this.deceased instanceof BooleanType;
+        return this.deceased instanceof BooleanType;
     }
 
     /**
@@ -1701,7 +1701,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
     }
 
     public boolean hasDeceasedDateTimeType() {
-        return this.deceased != null && this.deceased instanceof DateTimeType;
+        return this.deceased instanceof DateTimeType;
     }
 
     public boolean hasDeceased() { 
@@ -1814,7 +1814,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
     }
 
     public boolean hasMultipleBirthBooleanType() {
-        return this.multipleBirth != null && this.multipleBirth instanceof BooleanType;
+        return this.multipleBirth instanceof BooleanType;
     }
 
     /**
@@ -1829,7 +1829,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
     }
 
     public boolean hasMultipleBirthIntegerType() {
-        return this.multipleBirth != null && this.multipleBirth instanceof IntegerType;
+        return this.multipleBirth instanceof IntegerType;
     }
 
     public boolean hasMultipleBirth() { 

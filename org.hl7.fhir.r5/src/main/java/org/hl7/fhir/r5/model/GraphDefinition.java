@@ -2290,7 +2290,7 @@ public class GraphDefinition extends CanonicalResource {
     }
 
     public boolean hasVersionAlgorithmStringType() {
-        return this.versionAlgorithm != null && this.versionAlgorithm instanceof StringType;
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -2305,7 +2305,7 @@ public class GraphDefinition extends CanonicalResource {
     }
 
     public boolean hasVersionAlgorithmCoding() {
-        return this.versionAlgorithm != null && this.versionAlgorithm instanceof Coding;
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 

@@ -3821,7 +3821,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         public boolean hasValueQuantity() {
-            return this.value != null && this.value instanceof Quantity;
+          return this.value instanceof Quantity;
         }
 
         /**
@@ -3836,7 +3836,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         public boolean hasValueCodeableConcept() {
-            return this.value != null && this.value instanceof CodeableConcept;
+          return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -3851,7 +3851,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         public boolean hasValueStringType() {
-            return this.value != null && this.value instanceof StringType;
+          return this.value instanceof StringType;
         }
 
         /**
@@ -3866,7 +3866,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+          return this.value instanceof BooleanType;
         }
 
         /**
@@ -3881,7 +3881,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         public boolean hasValueIntegerType() {
-            return this.value != null && this.value instanceof IntegerType;
+          return this.value instanceof IntegerType;
         }
 
         /**
@@ -3896,7 +3896,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         public boolean hasValueRange() {
-            return this.value != null && this.value instanceof Range;
+          return this.value instanceof Range;
         }
 
         /**
@@ -3911,7 +3911,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
 
         public boolean hasValueAttachment() {
-            return this.value != null && this.value instanceof Attachment;
+          return this.value instanceof Attachment;
         }
 
         public boolean hasValue() { 

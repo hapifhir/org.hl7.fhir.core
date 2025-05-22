@@ -11331,7 +11331,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     public boolean hasSourceUrlType() {
-        return this.source != null && this.source instanceof UrlType;
+        return this.source instanceof UrlType;
     }
 
     /**
@@ -11346,7 +11346,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     public boolean hasSourceStringType() {
-        return this.source != null && this.source instanceof StringType;
+        return this.source instanceof StringType;
     }
 
     /**
@@ -11361,7 +11361,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     public boolean hasSourceMarkdownType() {
-        return this.source != null && this.source instanceof MarkdownType;
+        return this.source instanceof MarkdownType;
     }
 
     public boolean hasSource() { 
@@ -14007,7 +14007,7 @@ public class ImplementationGuide extends CanonicalResource {
   }
 
   public boolean hasVersionAlgorithmStringType() {
-      return this.versionAlgorithm != null && this.versionAlgorithm instanceof StringType;
+      return this.versionAlgorithm instanceof StringType;
   }
 
   /**
@@ -14022,7 +14022,7 @@ public class ImplementationGuide extends CanonicalResource {
   }
 
   public boolean hasVersionAlgorithmCoding() {
-      return this.versionAlgorithm != null && this.versionAlgorithm instanceof Coding;
+      return this.versionAlgorithm instanceof Coding;
   }
 
   public boolean hasVersionAlgorithm() { 

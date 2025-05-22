@@ -981,7 +981,7 @@ public class DocumentReference extends DomainResource {
         }
 
         public boolean hasValueCoding() {
-            return this.value != null && this.value instanceof Coding;
+            return this.value instanceof Coding;
         }
 
         /**
@@ -996,7 +996,7 @@ public class DocumentReference extends DomainResource {
         }
 
         public boolean hasValueUriType() {
-            return this.value != null && this.value instanceof UriType;
+            return this.value instanceof UriType;
         }
 
         /**
@@ -1011,7 +1011,7 @@ public class DocumentReference extends DomainResource {
         }
 
         public boolean hasValueCanonicalType() {
-            return this.value != null && this.value instanceof CanonicalType;
+            return this.value instanceof CanonicalType;
         }
 
         public boolean hasValue() { 

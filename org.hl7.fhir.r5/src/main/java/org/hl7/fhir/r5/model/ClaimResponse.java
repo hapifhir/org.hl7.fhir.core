@@ -132,7 +132,7 @@ public class ClaimResponse extends DomainResource {
         }
 
         public boolean hasWhenDateTimeType() {
-            return this.when != null && this.when instanceof DateTimeType;
+            return this.when instanceof DateTimeType;
         }
 
         /**
@@ -147,7 +147,7 @@ public class ClaimResponse extends DomainResource {
         }
 
         public boolean hasWhenPeriod() {
-            return this.when != null && this.when instanceof Period;
+            return this.when instanceof Period;
         }
 
         public boolean hasWhen() { 
@@ -3353,7 +3353,7 @@ public class ClaimResponse extends DomainResource {
         }
 
         public boolean hasServicedDateType() {
-            return this.serviced != null && this.serviced instanceof DateType;
+            return this.serviced instanceof DateType;
         }
 
         /**
@@ -3368,7 +3368,7 @@ public class ClaimResponse extends DomainResource {
         }
 
         public boolean hasServicedPeriod() {
-            return this.serviced != null && this.serviced instanceof Period;
+            return this.serviced instanceof Period;
         }
 
         public boolean hasServiced() { 
@@ -3404,7 +3404,7 @@ public class ClaimResponse extends DomainResource {
         }
 
         public boolean hasLocationCodeableConcept() {
-            return this.location != null && this.location instanceof CodeableConcept;
+            return this.location instanceof CodeableConcept;
         }
 
         /**
@@ -3419,7 +3419,7 @@ public class ClaimResponse extends DomainResource {
         }
 
         public boolean hasLocationAddress() {
-            return this.location != null && this.location instanceof Address;
+            return this.location instanceof Address;
         }
 
         /**
@@ -3434,7 +3434,7 @@ public class ClaimResponse extends DomainResource {
         }
 
         public boolean hasLocationReference() {
-            return this.location != null && this.location instanceof Reference;
+            return this.location instanceof Reference;
         }
 
         public boolean hasLocation() { 

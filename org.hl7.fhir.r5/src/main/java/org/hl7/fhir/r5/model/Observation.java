@@ -1105,7 +1105,7 @@ Reflex | Repeat | Re-run.
         }
 
         public boolean hasValueQuantity() {
-            return this.value != null && this.value instanceof Quantity;
+          return this.value instanceof Quantity;
         }
 
         /**
@@ -1120,7 +1120,7 @@ Reflex | Repeat | Re-run.
         }
 
         public boolean hasValueCodeableConcept() {
-            return this.value != null && this.value instanceof CodeableConcept;
+          return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -1135,7 +1135,7 @@ Reflex | Repeat | Re-run.
         }
 
         public boolean hasValueStringType() {
-            return this.value != null && this.value instanceof StringType;
+          return this.value instanceof StringType;
         }
 
         /**
@@ -1150,7 +1150,7 @@ Reflex | Repeat | Re-run.
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+          return this.value instanceof BooleanType;
         }
 
         /**
@@ -1165,7 +1165,7 @@ Reflex | Repeat | Re-run.
         }
 
         public boolean hasValueIntegerType() {
-            return this.value != null && this.value instanceof IntegerType;
+          return this.value instanceof IntegerType;
         }
 
         /**
@@ -1180,7 +1180,7 @@ Reflex | Repeat | Re-run.
         }
 
         public boolean hasValueRange() {
-            return this.value != null && this.value instanceof Range;
+          return this.value instanceof Range;
         }
 
         /**
@@ -1195,7 +1195,7 @@ Reflex | Repeat | Re-run.
         }
 
         public boolean hasValueRatio() {
-            return this.value != null && this.value instanceof Ratio;
+          return this.value instanceof Ratio;
         }
 
         /**
@@ -1210,7 +1210,7 @@ Reflex | Repeat | Re-run.
         }
 
         public boolean hasValueSampledData() {
-            return this.value != null && this.value instanceof SampledData;
+          return this.value instanceof SampledData;
         }
 
         /**
@@ -1225,7 +1225,7 @@ Reflex | Repeat | Re-run.
         }
 
         public boolean hasValueTimeType() {
-            return this.value != null && this.value instanceof TimeType;
+          return this.value instanceof TimeType;
         }
 
         /**
@@ -1240,7 +1240,7 @@ Reflex | Repeat | Re-run.
         }
 
         public boolean hasValueDateTimeType() {
-            return this.value != null && this.value instanceof DateTimeType;
+          return this.value instanceof DateTimeType;
         }
 
         /**
@@ -1255,7 +1255,7 @@ Reflex | Repeat | Re-run.
         }
 
         public boolean hasValuePeriod() {
-            return this.value != null && this.value instanceof Period;
+          return this.value instanceof Period;
         }
 
         /**
@@ -1270,7 +1270,7 @@ Reflex | Repeat | Re-run.
         }
 
         public boolean hasValueAttachment() {
-            return this.value != null && this.value instanceof Attachment;
+          return this.value instanceof Attachment;
         }
 
         /**
@@ -1285,7 +1285,7 @@ Reflex | Repeat | Re-run.
         }
 
         public boolean hasValueReference() {
-            return this.value != null && this.value instanceof Reference;
+          return this.value instanceof Reference;
         }
 
         public boolean hasValue() { 
@@ -1980,7 +1980,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasInstantiatesCanonicalType() {
-        return this.instantiates != null && this.instantiates instanceof CanonicalType;
+      return this.instantiates instanceof CanonicalType;
     }
 
     /**
@@ -1995,7 +1995,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasInstantiatesReference() {
-        return this.instantiates != null && this.instantiates instanceof Reference;
+      return this.instantiates instanceof Reference;
     }
 
     public boolean hasInstantiates() { 
@@ -2413,7 +2413,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasEffectiveDateTimeType() {
-        return this.effective != null && this.effective instanceof DateTimeType;
+      return this.effective instanceof DateTimeType;
     }
 
     /**
@@ -2428,7 +2428,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasEffectivePeriod() {
-        return this.effective != null && this.effective instanceof Period;
+      return this.effective instanceof Period;
     }
 
     /**
@@ -2443,7 +2443,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasEffectiveTiming() {
-        return this.effective != null && this.effective instanceof Timing;
+      return this.effective instanceof Timing;
     }
 
     /**
@@ -2458,7 +2458,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasEffectiveInstantType() {
-        return this.effective != null && this.effective instanceof InstantType;
+      return this.effective instanceof InstantType;
     }
 
     public boolean hasEffective() { 
@@ -2596,7 +2596,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasValueQuantity() {
-        return this.value != null && this.value instanceof Quantity;
+      return this.value instanceof Quantity;
     }
 
     /**
@@ -2611,7 +2611,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasValueCodeableConcept() {
-        return this.value != null && this.value instanceof CodeableConcept;
+      return this.value instanceof CodeableConcept;
     }
 
     /**
@@ -2626,7 +2626,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasValueStringType() {
-        return this.value != null && this.value instanceof StringType;
+      return this.value instanceof StringType;
     }
 
     /**
@@ -2641,7 +2641,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasValueBooleanType() {
-        return this.value != null && this.value instanceof BooleanType;
+      return this.value instanceof BooleanType;
     }
 
     /**
@@ -2656,7 +2656,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasValueIntegerType() {
-        return this.value != null && this.value instanceof IntegerType;
+      return this.value instanceof IntegerType;
     }
 
     /**
@@ -2671,7 +2671,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasValueRange() {
-        return this.value != null && this.value instanceof Range;
+      return this.value instanceof Range;
     }
 
     /**
@@ -2686,7 +2686,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasValueRatio() {
-        return this.value != null && this.value instanceof Ratio;
+      return this.value instanceof Ratio;
     }
 
     /**
@@ -2701,7 +2701,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasValueSampledData() {
-        return this.value != null && this.value instanceof SampledData;
+      return this.value instanceof SampledData;
     }
 
     /**
@@ -2716,7 +2716,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasValueTimeType() {
-        return this.value != null && this.value instanceof TimeType;
+      return this.value instanceof TimeType;
     }
 
     /**
@@ -2731,7 +2731,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasValueDateTimeType() {
-        return this.value != null && this.value instanceof DateTimeType;
+      return this.value instanceof DateTimeType;
     }
 
     /**
@@ -2746,7 +2746,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasValuePeriod() {
-        return this.value != null && this.value instanceof Period;
+      return this.value instanceof Period;
     }
 
     /**
@@ -2761,7 +2761,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasValueAttachment() {
-        return this.value != null && this.value instanceof Attachment;
+      return this.value instanceof Attachment;
     }
 
     /**
@@ -2776,7 +2776,7 @@ Reflex | Repeat | Re-run.
     }
 
     public boolean hasValueReference() {
-        return this.value != null && this.value instanceof Reference;
+      return this.value instanceof Reference;
     }
 
     public boolean hasValue() { 

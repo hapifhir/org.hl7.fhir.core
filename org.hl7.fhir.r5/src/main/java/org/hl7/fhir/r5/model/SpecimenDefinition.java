@@ -1183,7 +1183,7 @@ public class SpecimenDefinition extends DomainResource {
         }
 
         public boolean hasMinimumVolumeQuantity() {
-            return this.minimumVolume != null && this.minimumVolume instanceof Quantity;
+            return this.minimumVolume instanceof Quantity;
         }
 
         /**
@@ -1198,7 +1198,7 @@ public class SpecimenDefinition extends DomainResource {
         }
 
         public boolean hasMinimumVolumeStringType() {
-            return this.minimumVolume != null && this.minimumVolume instanceof StringType;
+            return this.minimumVolume instanceof StringType;
         }
 
         public boolean hasMinimumVolume() { 
@@ -1617,7 +1617,7 @@ public class SpecimenDefinition extends DomainResource {
         }
 
         public boolean hasAdditiveCodeableConcept() {
-            return this.additive != null && this.additive instanceof CodeableConcept;
+            return this.additive instanceof CodeableConcept;
         }
 
         /**
@@ -1632,7 +1632,7 @@ public class SpecimenDefinition extends DomainResource {
         }
 
         public boolean hasAdditiveReference() {
-            return this.additive != null && this.additive instanceof Reference;
+            return this.additive instanceof Reference;
         }
 
         public boolean hasAdditive() { 
@@ -2475,7 +2475,7 @@ public class SpecimenDefinition extends DomainResource {
     }
 
     public boolean hasVersionAlgorithmStringType() {
-        return this.versionAlgorithm != null && this.versionAlgorithm instanceof StringType;
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -2490,7 +2490,7 @@ public class SpecimenDefinition extends DomainResource {
     }
 
     public boolean hasVersionAlgorithmCoding() {
-        return this.versionAlgorithm != null && this.versionAlgorithm instanceof Coding;
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 
@@ -2836,7 +2836,7 @@ public class SpecimenDefinition extends DomainResource {
     }
 
     public boolean hasSubjectCodeableConcept() {
-        return this.subject != null && this.subject instanceof CodeableConcept;
+        return this.subject instanceof CodeableConcept;
     }
 
     /**
@@ -2851,7 +2851,7 @@ public class SpecimenDefinition extends DomainResource {
     }
 
     public boolean hasSubjectReference() {
-        return this.subject != null && this.subject instanceof Reference;
+        return this.subject instanceof Reference;
     }
 
     public boolean hasSubject() { 

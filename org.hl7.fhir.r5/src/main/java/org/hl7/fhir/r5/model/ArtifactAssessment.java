@@ -1616,7 +1616,7 @@ public class ArtifactAssessment extends DomainResource {
     }
 
     public boolean hasCiteAsReference() {
-        return this.citeAs != null && this.citeAs instanceof Reference;
+        return this.citeAs instanceof Reference;
     }
 
     /**
@@ -1631,7 +1631,7 @@ public class ArtifactAssessment extends DomainResource {
     }
 
     public boolean hasCiteAsMarkdownType() {
-        return this.citeAs != null && this.citeAs instanceof MarkdownType;
+        return this.citeAs instanceof MarkdownType;
     }
 
     public boolean hasCiteAs() { 
@@ -1863,7 +1863,7 @@ public class ArtifactAssessment extends DomainResource {
     }
 
     public boolean hasArtifactReference() {
-        return this.artifact != null && this.artifact instanceof Reference;
+        return this.artifact instanceof Reference;
     }
 
     /**
@@ -1878,7 +1878,7 @@ public class ArtifactAssessment extends DomainResource {
     }
 
     public boolean hasArtifactCanonicalType() {
-        return this.artifact != null && this.artifact instanceof CanonicalType;
+        return this.artifact instanceof CanonicalType;
     }
 
     /**
@@ -1893,7 +1893,7 @@ public class ArtifactAssessment extends DomainResource {
     }
 
     public boolean hasArtifactUriType() {
-        return this.artifact != null && this.artifact instanceof UriType;
+        return this.artifact instanceof UriType;
     }
 
     public boolean hasArtifact() { 

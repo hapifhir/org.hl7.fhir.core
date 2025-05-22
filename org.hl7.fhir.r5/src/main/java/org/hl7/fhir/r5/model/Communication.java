@@ -98,7 +98,7 @@ public class Communication extends DomainResource {
         }
 
         public boolean hasContentAttachment() {
-            return this.content != null && this.content instanceof Attachment;
+            return this.content instanceof Attachment;
         }
 
         /**
@@ -113,7 +113,7 @@ public class Communication extends DomainResource {
         }
 
         public boolean hasContentReference() {
-            return this.content != null && this.content instanceof Reference;
+            return this.content instanceof Reference;
         }
 
         /**
@@ -128,7 +128,7 @@ public class Communication extends DomainResource {
         }
 
         public boolean hasContentCodeableConcept() {
-            return this.content != null && this.content instanceof CodeableConcept;
+            return this.content instanceof CodeableConcept;
         }
 
         public boolean hasContent() { 

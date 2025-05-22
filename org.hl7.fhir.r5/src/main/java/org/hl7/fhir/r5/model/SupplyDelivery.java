@@ -252,7 +252,7 @@ public class SupplyDelivery extends DomainResource {
         }
 
         public boolean hasItemCodeableConcept() {
-            return this.item != null && this.item instanceof CodeableConcept;
+            return this.item instanceof CodeableConcept;
         }
 
         /**
@@ -267,7 +267,7 @@ public class SupplyDelivery extends DomainResource {
         }
 
         public boolean hasItemReference() {
-            return this.item != null && this.item instanceof Reference;
+            return this.item instanceof Reference;
         }
 
         public boolean hasItem() { 
@@ -847,7 +847,7 @@ public class SupplyDelivery extends DomainResource {
     }
 
     public boolean hasOccurrenceDateTimeType() {
-        return this.occurrence != null && this.occurrence instanceof DateTimeType;
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -862,7 +862,7 @@ public class SupplyDelivery extends DomainResource {
     }
 
     public boolean hasOccurrencePeriod() {
-        return this.occurrence != null && this.occurrence instanceof Period;
+        return this.occurrence instanceof Period;
     }
 
     /**
@@ -877,7 +877,7 @@ public class SupplyDelivery extends DomainResource {
     }
 
     public boolean hasOccurrenceTiming() {
-        return this.occurrence != null && this.occurrence instanceof Timing;
+        return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() { 

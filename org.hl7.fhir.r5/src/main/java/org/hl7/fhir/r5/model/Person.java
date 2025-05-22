@@ -1095,7 +1095,7 @@ public class Person extends DomainResource {
     }
 
     public boolean hasDeceasedBooleanType() {
-        return this.deceased != null && this.deceased instanceof BooleanType;
+        return this.deceased instanceof BooleanType;
     }
 
     /**
@@ -1110,7 +1110,7 @@ public class Person extends DomainResource {
     }
 
     public boolean hasDeceasedDateTimeType() {
-        return this.deceased != null && this.deceased instanceof DateTimeType;
+        return this.deceased instanceof DateTimeType;
     }
 
     public boolean hasDeceased() { 

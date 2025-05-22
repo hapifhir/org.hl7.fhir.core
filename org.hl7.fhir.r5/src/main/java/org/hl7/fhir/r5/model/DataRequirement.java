@@ -891,7 +891,7 @@ public class DataRequirement extends DataType implements ICompositeType {
         }
 
         public boolean hasValueDateTimeType() {
-            return this.value != null && this.value instanceof DateTimeType;
+            return this.value instanceof DateTimeType;
         }
 
         /**
@@ -906,7 +906,7 @@ public class DataRequirement extends DataType implements ICompositeType {
         }
 
         public boolean hasValuePeriod() {
-            return this.value != null && this.value instanceof Period;
+            return this.value instanceof Period;
         }
 
         /**
@@ -921,7 +921,7 @@ public class DataRequirement extends DataType implements ICompositeType {
         }
 
         public boolean hasValueDuration() {
-            return this.value != null && this.value instanceof Duration;
+            return this.value instanceof Duration;
         }
 
         public boolean hasValue() { 
@@ -1313,7 +1313,7 @@ public class DataRequirement extends DataType implements ICompositeType {
         }
 
         public boolean hasValueDateTimeType() {
-            return this.value != null && this.value instanceof DateTimeType;
+            return this.value instanceof DateTimeType;
         }
 
         /**
@@ -1328,7 +1328,7 @@ public class DataRequirement extends DataType implements ICompositeType {
         }
 
         public boolean hasValuePeriod() {
-            return this.value != null && this.value instanceof Period;
+            return this.value instanceof Period;
         }
 
         /**
@@ -1343,7 +1343,7 @@ public class DataRequirement extends DataType implements ICompositeType {
         }
 
         public boolean hasValueDuration() {
-            return this.value != null && this.value instanceof Duration;
+            return this.value instanceof Duration;
         }
 
         public boolean hasValue() { 
@@ -2023,7 +2023,7 @@ The value of mustSupport SHALL be a FHIRPath resolvable on the type of the DataR
     }
 
     public boolean hasSubjectCodeableConcept() {
-        return this.subject != null && this.subject instanceof CodeableConcept;
+        return this.subject instanceof CodeableConcept;
     }
 
     /**
@@ -2038,7 +2038,7 @@ The value of mustSupport SHALL be a FHIRPath resolvable on the type of the DataR
     }
 
     public boolean hasSubjectReference() {
-        return this.subject != null && this.subject instanceof Reference;
+        return this.subject instanceof Reference;
     }
 
     public boolean hasSubject() { 

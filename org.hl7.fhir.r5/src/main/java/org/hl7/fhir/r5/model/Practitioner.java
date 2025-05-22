@@ -1058,7 +1058,7 @@ The `PractitionerRole.communication` property should be used for publishing the 
     }
 
     public boolean hasDeceasedBooleanType() {
-        return this.deceased != null && this.deceased instanceof BooleanType;
+        return this.deceased instanceof BooleanType;
     }
 
     /**
@@ -1073,7 +1073,7 @@ The `PractitionerRole.communication` property should be used for publishing the 
     }
 
     public boolean hasDeceasedDateTimeType() {
-        return this.deceased != null && this.deceased instanceof DateTimeType;
+        return this.deceased instanceof DateTimeType;
     }
 
     public boolean hasDeceased() { 

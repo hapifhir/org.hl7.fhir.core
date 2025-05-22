@@ -336,7 +336,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         public boolean hasAmountQuantity() {
-            return this.amount != null && this.amount instanceof Quantity;
+            return this.amount instanceof Quantity;
         }
 
         /**
@@ -351,7 +351,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         public boolean hasAmountStringType() {
-            return this.amount != null && this.amount instanceof StringType;
+            return this.amount instanceof StringType;
         }
 
         public boolean hasAmount() { 
@@ -1089,7 +1089,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         public boolean hasValueCodeableConcept() {
-            return this.value != null && this.value instanceof CodeableConcept;
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -1104,7 +1104,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         public boolean hasValueQuantity() {
-            return this.value != null && this.value instanceof Quantity;
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -1119,7 +1119,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         public boolean hasValueDateType() {
-            return this.value != null && this.value instanceof DateType;
+            return this.value instanceof DateType;
         }
 
         /**
@@ -1134,7 +1134,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -1149,7 +1149,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         public boolean hasValueAttachment() {
-            return this.value != null && this.value instanceof Attachment;
+            return this.value instanceof Attachment;
         }
 
         public boolean hasValue() { 
@@ -4338,7 +4338,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         public boolean hasSubstanceDefinitionReference() {
-            return this.substanceDefinition != null && this.substanceDefinition instanceof Reference;
+            return this.substanceDefinition instanceof Reference;
         }
 
         /**
@@ -4353,7 +4353,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         public boolean hasSubstanceDefinitionCodeableConcept() {
-            return this.substanceDefinition != null && this.substanceDefinition instanceof CodeableConcept;
+            return this.substanceDefinition instanceof CodeableConcept;
         }
 
         public boolean hasSubstanceDefinition() { 
@@ -4458,7 +4458,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         public boolean hasAmountQuantity() {
-            return this.amount != null && this.amount instanceof Quantity;
+            return this.amount instanceof Quantity;
         }
 
         /**
@@ -4473,7 +4473,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         public boolean hasAmountRatio() {
-            return this.amount != null && this.amount instanceof Ratio;
+            return this.amount instanceof Ratio;
         }
 
         /**
@@ -4488,7 +4488,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         public boolean hasAmountStringType() {
-            return this.amount != null && this.amount instanceof StringType;
+            return this.amount instanceof StringType;
         }
 
         public boolean hasAmount() { 

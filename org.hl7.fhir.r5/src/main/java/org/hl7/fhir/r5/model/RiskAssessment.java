@@ -151,7 +151,7 @@ public class RiskAssessment extends DomainResource {
         }
 
         public boolean hasProbabilityDecimalType() {
-            return this.probability != null && this.probability instanceof DecimalType;
+            return this.probability instanceof DecimalType;
         }
 
         /**
@@ -166,7 +166,7 @@ public class RiskAssessment extends DomainResource {
         }
 
         public boolean hasProbabilityRange() {
-            return this.probability != null && this.probability instanceof Range;
+            return this.probability instanceof Range;
         }
 
         public boolean hasProbability() { 
@@ -293,7 +293,7 @@ public class RiskAssessment extends DomainResource {
         }
 
         public boolean hasWhenPeriod() {
-            return this.when != null && this.when instanceof Period;
+            return this.when instanceof Period;
         }
 
         /**
@@ -308,7 +308,7 @@ public class RiskAssessment extends DomainResource {
         }
 
         public boolean hasWhenRange() {
-            return this.when != null && this.when instanceof Range;
+            return this.when instanceof Range;
         }
 
         public boolean hasWhen() { 
@@ -991,7 +991,7 @@ public class RiskAssessment extends DomainResource {
     }
 
     public boolean hasOccurrenceDateTimeType() {
-        return this.occurrence != null && this.occurrence instanceof DateTimeType;
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1006,7 +1006,7 @@ public class RiskAssessment extends DomainResource {
     }
 
     public boolean hasOccurrencePeriod() {
-        return this.occurrence != null && this.occurrence instanceof Period;
+        return this.occurrence instanceof Period;
     }
 
     public boolean hasOccurrence() { 

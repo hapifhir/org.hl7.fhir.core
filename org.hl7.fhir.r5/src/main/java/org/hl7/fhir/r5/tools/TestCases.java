@@ -1281,7 +1281,7 @@ public class TestCases extends Resource implements ICompositeType {
         }
 
         public boolean hasValueStringType() {
-            return this.value != null && this.value instanceof StringType;
+            return this.value instanceof StringType;
         }
 
         /**
@@ -1296,7 +1296,7 @@ public class TestCases extends Resource implements ICompositeType {
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -1311,7 +1311,7 @@ public class TestCases extends Resource implements ICompositeType {
         }
 
         public boolean hasValueIntegerType() {
-            return this.value != null && this.value instanceof IntegerType;
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -1326,7 +1326,7 @@ public class TestCases extends Resource implements ICompositeType {
         }
 
         public boolean hasValueDecimalType() {
-            return this.value != null && this.value instanceof DecimalType;
+            return this.value instanceof DecimalType;
         }
 
         /**
@@ -1341,7 +1341,7 @@ public class TestCases extends Resource implements ICompositeType {
         }
 
         public boolean hasValueDateTimeType() {
-            return this.value != null && this.value instanceof DateTimeType;
+            return this.value instanceof DateTimeType;
         }
 
         /**
@@ -1356,7 +1356,7 @@ public class TestCases extends Resource implements ICompositeType {
         }
 
         public boolean hasValueUriType() {
-            return this.value != null && this.value instanceof UriType;
+            return this.value instanceof UriType;
         }
 
         /**
@@ -1371,7 +1371,7 @@ public class TestCases extends Resource implements ICompositeType {
         }
 
         public boolean hasValueCoding() {
-            return this.value != null && this.value instanceof Coding;
+            return this.value instanceof Coding;
         }
 
         /**
@@ -1386,7 +1386,7 @@ public class TestCases extends Resource implements ICompositeType {
         }
 
         public boolean hasValueQuantity() {
-            return this.value != null && this.value instanceof Quantity;
+            return this.value instanceof Quantity;
         }
 
         public boolean hasValue() { 

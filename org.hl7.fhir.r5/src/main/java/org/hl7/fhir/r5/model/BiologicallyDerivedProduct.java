@@ -152,7 +152,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         public boolean hasCollectedDateTimeType() {
-            return this.collected != null && this.collected instanceof DateTimeType;
+            return this.collected instanceof DateTimeType;
         }
 
         /**
@@ -167,7 +167,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         public boolean hasCollectedPeriod() {
-            return this.collected != null && this.collected instanceof Period;
+            return this.collected instanceof Period;
         }
 
         public boolean hasCollected() { 
@@ -428,7 +428,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         public boolean hasValueBooleanType() {
-            return this.value != null && this.value instanceof BooleanType;
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -443,7 +443,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         public boolean hasValueIntegerType() {
-            return this.value != null && this.value instanceof IntegerType;
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -458,7 +458,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         public boolean hasValueCodeableConcept() {
-            return this.value != null && this.value instanceof CodeableConcept;
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -473,7 +473,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         public boolean hasValuePeriod() {
-            return this.value != null && this.value instanceof Period;
+            return this.value instanceof Period;
         }
 
         /**
@@ -488,7 +488,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         public boolean hasValueQuantity() {
-            return this.value != null && this.value instanceof Quantity;
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -503,7 +503,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         public boolean hasValueRange() {
-            return this.value != null && this.value instanceof Range;
+            return this.value instanceof Range;
         }
 
         /**
@@ -518,7 +518,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         public boolean hasValueRatio() {
-            return this.value != null && this.value instanceof Ratio;
+            return this.value instanceof Ratio;
         }
 
         /**
@@ -533,7 +533,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         public boolean hasValueStringType() {
-            return this.value != null && this.value instanceof StringType;
+            return this.value instanceof StringType;
         }
 
         /**
@@ -548,7 +548,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         public boolean hasValueAttachment() {
-            return this.value != null && this.value instanceof Attachment;
+            return this.value instanceof Attachment;
         }
 
         public boolean hasValue() { 
