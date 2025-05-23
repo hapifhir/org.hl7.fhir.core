@@ -681,8 +681,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
           return (Ratio) this.rate;
         }
 
-        public boolean hasRateRatio() { 
-          return this != null && this.rate instanceof Ratio;
+        public boolean hasRateRatio() {
+            return this.rate instanceof Ratio;
         }
 
         /**
@@ -696,8 +696,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
           return (Quantity) this.rate;
         }
 
-        public boolean hasRateQuantity() { 
-          return this != null && this.rate instanceof Quantity;
+        public boolean hasRateQuantity() {
+            return this.rate instanceof Quantity;
         }
 
         public boolean hasRate() { 
@@ -1557,8 +1557,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
       return (DateTimeType) this.occurence;
     }
 
-    public boolean hasOccurenceDateTimeType() { 
-      return this != null && this.occurence instanceof DateTimeType;
+    public boolean hasOccurenceDateTimeType() {
+        return this.occurence instanceof DateTimeType;
     }
 
     /**
@@ -1572,8 +1572,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
       return (Period) this.occurence;
     }
 
-    public boolean hasOccurencePeriod() { 
-      return this != null && this.occurence instanceof Period;
+    public boolean hasOccurencePeriod() {
+        return this.occurence instanceof Period;
     }
 
     /**
@@ -1587,8 +1587,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
       return (Timing) this.occurence;
     }
 
-    public boolean hasOccurenceTiming() { 
-      return this != null && this.occurence instanceof Timing;
+    public boolean hasOccurenceTiming() {
+        return this.occurence instanceof Timing;
     }
 
     public boolean hasOccurence() { 

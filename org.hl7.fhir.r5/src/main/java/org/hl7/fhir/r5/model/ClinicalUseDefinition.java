@@ -1145,8 +1145,8 @@ public class ClinicalUseDefinition extends DomainResource {
           return (Range) this.duration;
         }
 
-        public boolean hasDurationRange() { 
-          return this != null && this.duration instanceof Range;
+        public boolean hasDurationRange() {
+            return this.duration instanceof Range;
         }
 
         /**
@@ -1160,8 +1160,8 @@ public class ClinicalUseDefinition extends DomainResource {
           return (StringType) this.duration;
         }
 
-        public boolean hasDurationStringType() { 
-          return this != null && this.duration instanceof StringType;
+        public boolean hasDurationStringType() {
+            return this.duration instanceof StringType;
         }
 
         public boolean hasDuration() { 
@@ -2043,8 +2043,8 @@ public class ClinicalUseDefinition extends DomainResource {
           return (Reference) this.item;
         }
 
-        public boolean hasItemReference() { 
-          return this != null && this.item instanceof Reference;
+        public boolean hasItemReference() {
+            return this.item instanceof Reference;
         }
 
         /**
@@ -2058,8 +2058,8 @@ public class ClinicalUseDefinition extends DomainResource {
           return (CodeableConcept) this.item;
         }
 
-        public boolean hasItemCodeableConcept() { 
-          return this != null && this.item instanceof CodeableConcept;
+        public boolean hasItemCodeableConcept() {
+            return this.item instanceof CodeableConcept;
         }
 
         public boolean hasItem() { 

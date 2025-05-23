@@ -1167,7 +1167,7 @@ public class SpecimenDefinition extends DomainResource {
     }
 
     public boolean hasMinimumVolumeQuantity() {
-      return this != null && this.minimumVolume instanceof Quantity;
+        return this.minimumVolume instanceof Quantity;
     }
 
     /**
@@ -1184,7 +1184,7 @@ public class SpecimenDefinition extends DomainResource {
     }
 
     public boolean hasMinimumVolumeStringType() {
-      return this != null && this.minimumVolume instanceof StringType;
+        return this.minimumVolume instanceof StringType;
     }
 
     public boolean hasMinimumVolume() {
@@ -1681,7 +1681,7 @@ public class SpecimenDefinition extends DomainResource {
     }
 
     public boolean hasAdditiveCodeableConcept() {
-      return this != null && this.additive instanceof CodeableConcept;
+        return this.additive instanceof CodeableConcept;
     }
 
     /**
@@ -1699,7 +1699,7 @@ public class SpecimenDefinition extends DomainResource {
     }
 
     public boolean hasAdditiveReference() {
-      return this != null && this.additive instanceof Reference;
+        return this.additive instanceof Reference;
     }
 
     public boolean hasAdditive() {

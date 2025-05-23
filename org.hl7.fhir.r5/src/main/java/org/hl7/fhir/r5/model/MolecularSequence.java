@@ -913,8 +913,8 @@ public class MolecularSequence extends DomainResource {
           return (CodeableConcept) this.sequence;
         }
 
-        public boolean hasSequenceCodeableConcept() { 
-          return this != null && this.sequence instanceof CodeableConcept;
+        public boolean hasSequenceCodeableConcept() {
+            return this.sequence instanceof CodeableConcept;
         }
 
         /**
@@ -928,8 +928,8 @@ public class MolecularSequence extends DomainResource {
           return (StringType) this.sequence;
         }
 
-        public boolean hasSequenceStringType() { 
-          return this != null && this.sequence instanceof StringType;
+        public boolean hasSequenceStringType() {
+            return this.sequence instanceof StringType;
         }
 
         /**
@@ -943,8 +943,8 @@ public class MolecularSequence extends DomainResource {
           return (Reference) this.sequence;
         }
 
-        public boolean hasSequenceReference() { 
-          return this != null && this.sequence instanceof Reference;
+        public boolean hasSequenceReference() {
+            return this.sequence instanceof Reference;
         }
 
         public boolean hasSequence() { 

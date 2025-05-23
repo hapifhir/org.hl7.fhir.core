@@ -754,8 +754,8 @@ public class Ingredient extends DomainResource {
           return (Ratio) this.presentation;
         }
 
-        public boolean hasPresentationRatio() { 
-          return this != null && this.presentation instanceof Ratio;
+        public boolean hasPresentationRatio() {
+            return this.presentation instanceof Ratio;
         }
 
         /**
@@ -769,8 +769,8 @@ public class Ingredient extends DomainResource {
           return (RatioRange) this.presentation;
         }
 
-        public boolean hasPresentationRatioRange() { 
-          return this != null && this.presentation instanceof RatioRange;
+        public boolean hasPresentationRatioRange() {
+            return this.presentation instanceof RatioRange;
         }
 
         /**
@@ -784,8 +784,8 @@ public class Ingredient extends DomainResource {
           return (CodeableConcept) this.presentation;
         }
 
-        public boolean hasPresentationCodeableConcept() { 
-          return this != null && this.presentation instanceof CodeableConcept;
+        public boolean hasPresentationCodeableConcept() {
+            return this.presentation instanceof CodeableConcept;
         }
 
         /**
@@ -799,8 +799,8 @@ public class Ingredient extends DomainResource {
           return (Quantity) this.presentation;
         }
 
-        public boolean hasPresentationQuantity() { 
-          return this != null && this.presentation instanceof Quantity;
+        public boolean hasPresentationQuantity() {
+            return this.presentation instanceof Quantity;
         }
 
         public boolean hasPresentation() { 
@@ -884,8 +884,8 @@ public class Ingredient extends DomainResource {
           return (Ratio) this.concentration;
         }
 
-        public boolean hasConcentrationRatio() { 
-          return this != null && this.concentration instanceof Ratio;
+        public boolean hasConcentrationRatio() {
+            return this.concentration instanceof Ratio;
         }
 
         /**
@@ -899,8 +899,8 @@ public class Ingredient extends DomainResource {
           return (RatioRange) this.concentration;
         }
 
-        public boolean hasConcentrationRatioRange() { 
-          return this != null && this.concentration instanceof RatioRange;
+        public boolean hasConcentrationRatioRange() {
+            return this.concentration instanceof RatioRange;
         }
 
         /**
@@ -914,8 +914,8 @@ public class Ingredient extends DomainResource {
           return (CodeableConcept) this.concentration;
         }
 
-        public boolean hasConcentrationCodeableConcept() { 
-          return this != null && this.concentration instanceof CodeableConcept;
+        public boolean hasConcentrationCodeableConcept() {
+            return this.concentration instanceof CodeableConcept;
         }
 
         /**
@@ -929,8 +929,8 @@ public class Ingredient extends DomainResource {
           return (Quantity) this.concentration;
         }
 
-        public boolean hasConcentrationQuantity() { 
-          return this != null && this.concentration instanceof Quantity;
+        public boolean hasConcentrationQuantity() {
+            return this.concentration instanceof Quantity;
         }
 
         public boolean hasConcentration() { 
@@ -1554,8 +1554,8 @@ public class Ingredient extends DomainResource {
           return (Ratio) this.strength;
         }
 
-        public boolean hasStrengthRatio() { 
-          return this != null && this.strength instanceof Ratio;
+        public boolean hasStrengthRatio() {
+            return this.strength instanceof Ratio;
         }
 
         /**
@@ -1569,8 +1569,8 @@ public class Ingredient extends DomainResource {
           return (RatioRange) this.strength;
         }
 
-        public boolean hasStrengthRatioRange() { 
-          return this != null && this.strength instanceof RatioRange;
+        public boolean hasStrengthRatioRange() {
+            return this.strength instanceof RatioRange;
         }
 
         /**
@@ -1584,8 +1584,8 @@ public class Ingredient extends DomainResource {
           return (Quantity) this.strength;
         }
 
-        public boolean hasStrengthQuantity() { 
-          return this != null && this.strength instanceof Quantity;
+        public boolean hasStrengthQuantity() {
+            return this.strength instanceof Quantity;
         }
 
         public boolean hasStrength() { 

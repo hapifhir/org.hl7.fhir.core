@@ -642,8 +642,8 @@ public class Specimen extends DomainResource {
           return (DateTimeType) this.collected;
         }
 
-        public boolean hasCollectedDateTimeType() { 
-          return this != null && this.collected instanceof DateTimeType;
+        public boolean hasCollectedDateTimeType() {
+            return this.collected instanceof DateTimeType;
         }
 
         /**
@@ -657,8 +657,8 @@ public class Specimen extends DomainResource {
           return (Period) this.collected;
         }
 
-        public boolean hasCollectedPeriod() { 
-          return this != null && this.collected instanceof Period;
+        public boolean hasCollectedPeriod() {
+            return this.collected instanceof Period;
         }
 
         public boolean hasCollected() { 
@@ -837,8 +837,8 @@ public class Specimen extends DomainResource {
           return (CodeableConcept) this.fastingStatus;
         }
 
-        public boolean hasFastingStatusCodeableConcept() { 
-          return this != null && this.fastingStatus instanceof CodeableConcept;
+        public boolean hasFastingStatusCodeableConcept() {
+            return this.fastingStatus instanceof CodeableConcept;
         }
 
         /**
@@ -852,8 +852,8 @@ public class Specimen extends DomainResource {
           return (Duration) this.fastingStatus;
         }
 
-        public boolean hasFastingStatusDuration() { 
-          return this != null && this.fastingStatus instanceof Duration;
+        public boolean hasFastingStatusDuration() {
+            return this.fastingStatus instanceof Duration;
         }
 
         public boolean hasFastingStatus() { 
@@ -1332,8 +1332,8 @@ public class Specimen extends DomainResource {
           return (DateTimeType) this.time;
         }
 
-        public boolean hasTimeDateTimeType() { 
-          return this != null && this.time instanceof DateTimeType;
+        public boolean hasTimeDateTimeType() {
+            return this.time instanceof DateTimeType;
         }
 
         /**
@@ -1347,8 +1347,8 @@ public class Specimen extends DomainResource {
           return (Period) this.time;
         }
 
-        public boolean hasTimePeriod() { 
-          return this != null && this.time instanceof Period;
+        public boolean hasTimePeriod() {
+            return this.time instanceof Period;
         }
 
         public boolean hasTime() { 
