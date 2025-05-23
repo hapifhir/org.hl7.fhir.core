@@ -1595,12 +1595,13 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     String vurl = ex.getVersionedUrl();
 
     StandardsStatus standardsStatus = ToolingExtensions.getStandardsStatus(ex);
-    Extension ext = ex.getExtensionByUrl(ToolingExtensions.EXT_STANDARDS_STATUS);
-    ext = ext == null || !ext.hasValue() ? null : ext.getValue().getExtensionByUrl(ToolingExtensions.EXT_STANDARDS_STATUS_REASON);
-    String note = ext == null || !ext.hasValue() ? null : MarkDownProcessor.markdownToPlainText(ext.getValue().primitiveValue());
     
     if (standardsStatus == StandardsStatus.DEPRECATED) {
-      if (!statusWarnings.contains(vurl+":DEPRECATED")) {  
+      if (!statusWarnings.contains(vurl+":DEPRECATED")) {
+        Extension ext = ex.getExtensionByUrl(ToolingExtensions.EXT_STANDARDS_STATUS);
+        ext = ext == null || !ext.hasValue() ? null : ext.getValue().getExtensionByUrl(ToolingExtensions.EXT_STANDARDS_STATUS_REASON);
+        String note = ext == null || !ext.hasValue() ? null : MarkDownProcessor.markdownToPlainText(ext.getValue().primitiveValue());
+
         statusWarnings.add(vurl+":DEPRECATED");
         hint(errors, "2023-08-10", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, 
             Utilities.noString(note) ? I18nConstants.MSG_DEPENDS_ON_DEPRECATED : I18nConstants.MSG_DEPENDS_ON_DEPRECATED_NOTE, type, vurl, note);
