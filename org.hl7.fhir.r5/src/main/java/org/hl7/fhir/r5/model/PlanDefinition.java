@@ -692,8 +692,8 @@ public class PlanDefinition extends MetadataResource {
           return (Quantity) this.detail;
         }
 
-        public boolean hasDetailQuantity() { 
-          return this != null && this.detail instanceof Quantity;
+        public boolean hasDetailQuantity() {
+            return this.detail instanceof Quantity;
         }
 
         /**
@@ -707,8 +707,8 @@ public class PlanDefinition extends MetadataResource {
           return (Range) this.detail;
         }
 
-        public boolean hasDetailRange() { 
-          return this != null && this.detail instanceof Range;
+        public boolean hasDetailRange() {
+            return this.detail instanceof Range;
         }
 
         /**
@@ -722,8 +722,8 @@ public class PlanDefinition extends MetadataResource {
           return (CodeableConcept) this.detail;
         }
 
-        public boolean hasDetailCodeableConcept() { 
-          return this != null && this.detail instanceof CodeableConcept;
+        public boolean hasDetailCodeableConcept() {
+            return this.detail instanceof CodeableConcept;
         }
 
         /**
@@ -737,8 +737,8 @@ public class PlanDefinition extends MetadataResource {
           return (StringType) this.detail;
         }
 
-        public boolean hasDetailStringType() { 
-          return this != null && this.detail instanceof StringType;
+        public boolean hasDetailStringType() {
+            return this.detail instanceof StringType;
         }
 
         /**
@@ -752,8 +752,8 @@ public class PlanDefinition extends MetadataResource {
           return (BooleanType) this.detail;
         }
 
-        public boolean hasDetailBooleanType() { 
-          return this != null && this.detail instanceof BooleanType;
+        public boolean hasDetailBooleanType() {
+            return this.detail instanceof BooleanType;
         }
 
         /**
@@ -767,8 +767,8 @@ public class PlanDefinition extends MetadataResource {
           return (IntegerType) this.detail;
         }
 
-        public boolean hasDetailIntegerType() { 
-          return this != null && this.detail instanceof IntegerType;
+        public boolean hasDetailIntegerType() {
+            return this.detail instanceof IntegerType;
         }
 
         /**
@@ -782,8 +782,8 @@ public class PlanDefinition extends MetadataResource {
           return (Ratio) this.detail;
         }
 
-        public boolean hasDetailRatio() { 
-          return this != null && this.detail instanceof Ratio;
+        public boolean hasDetailRatio() {
+            return this.detail instanceof Ratio;
         }
 
         public boolean hasDetail() { 
@@ -2454,8 +2454,8 @@ public class PlanDefinition extends MetadataResource {
           return (CodeableConcept) this.subject;
         }
 
-        public boolean hasSubjectCodeableConcept() { 
-          return this != null && this.subject instanceof CodeableConcept;
+        public boolean hasSubjectCodeableConcept() {
+            return this.subject instanceof CodeableConcept;
         }
 
         /**
@@ -2469,8 +2469,8 @@ public class PlanDefinition extends MetadataResource {
           return (Reference) this.subject;
         }
 
-        public boolean hasSubjectReference() { 
-          return this != null && this.subject instanceof Reference;
+        public boolean hasSubjectReference() {
+            return this.subject instanceof Reference;
         }
 
         /**
@@ -2484,8 +2484,8 @@ public class PlanDefinition extends MetadataResource {
           return (CanonicalType) this.subject;
         }
 
-        public boolean hasSubjectCanonicalType() { 
-          return this != null && this.subject instanceof CanonicalType;
+        public boolean hasSubjectCanonicalType() {
+            return this.subject instanceof CanonicalType;
         }
 
         public boolean hasSubject() { 
@@ -2785,8 +2785,8 @@ public class PlanDefinition extends MetadataResource {
           return (Age) this.timing;
         }
 
-        public boolean hasTimingAge() { 
-          return this != null && this.timing instanceof Age;
+        public boolean hasTimingAge() {
+            return this.timing instanceof Age;
         }
 
         /**
@@ -2800,8 +2800,8 @@ public class PlanDefinition extends MetadataResource {
           return (Duration) this.timing;
         }
 
-        public boolean hasTimingDuration() { 
-          return this != null && this.timing instanceof Duration;
+        public boolean hasTimingDuration() {
+            return this.timing instanceof Duration;
         }
 
         /**
@@ -2815,8 +2815,8 @@ public class PlanDefinition extends MetadataResource {
           return (Range) this.timing;
         }
 
-        public boolean hasTimingRange() { 
-          return this != null && this.timing instanceof Range;
+        public boolean hasTimingRange() {
+            return this.timing instanceof Range;
         }
 
         /**
@@ -2830,8 +2830,8 @@ public class PlanDefinition extends MetadataResource {
           return (Timing) this.timing;
         }
 
-        public boolean hasTimingTiming() { 
-          return this != null && this.timing instanceof Timing;
+        public boolean hasTimingTiming() {
+            return this.timing instanceof Timing;
         }
 
         public boolean hasTiming() { 
@@ -3212,8 +3212,8 @@ public class PlanDefinition extends MetadataResource {
           return (CanonicalType) this.definition;
         }
 
-        public boolean hasDefinitionCanonicalType() { 
-          return this != null && this.definition instanceof CanonicalType;
+        public boolean hasDefinitionCanonicalType() {
+            return this.definition instanceof CanonicalType;
         }
 
         /**
@@ -3227,8 +3227,8 @@ public class PlanDefinition extends MetadataResource {
           return (UriType) this.definition;
         }
 
-        public boolean hasDefinitionUriType() { 
-          return this != null && this.definition instanceof UriType;
+        public boolean hasDefinitionUriType() {
+            return this.definition instanceof UriType;
         }
 
         public boolean hasDefinition() { 
@@ -5167,8 +5167,8 @@ public class PlanDefinition extends MetadataResource {
           return (Duration) this.offset;
         }
 
-        public boolean hasOffsetDuration() { 
-          return this != null && this.offset instanceof Duration;
+        public boolean hasOffsetDuration() {
+            return this.offset instanceof Duration;
         }
 
         /**
@@ -5182,8 +5182,8 @@ public class PlanDefinition extends MetadataResource {
           return (Range) this.offset;
         }
 
-        public boolean hasOffsetRange() { 
-          return this != null && this.offset instanceof Range;
+        public boolean hasOffsetRange() {
+            return this.offset instanceof Range;
         }
 
         public boolean hasOffset() { 
@@ -6548,8 +6548,8 @@ public class PlanDefinition extends MetadataResource {
       return (StringType) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmStringType() { 
-      return this != null && this.versionAlgorithm instanceof StringType;
+    public boolean hasVersionAlgorithmStringType() {
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -6563,8 +6563,8 @@ public class PlanDefinition extends MetadataResource {
       return (Coding) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmCoding() { 
-      return this != null && this.versionAlgorithm instanceof Coding;
+    public boolean hasVersionAlgorithmCoding() {
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 
@@ -6860,8 +6860,8 @@ public class PlanDefinition extends MetadataResource {
       return (CodeableConcept) this.subject;
     }
 
-    public boolean hasSubjectCodeableConcept() { 
-      return this != null && this.subject instanceof CodeableConcept;
+    public boolean hasSubjectCodeableConcept() {
+        return this.subject instanceof CodeableConcept;
     }
 
     /**
@@ -6875,8 +6875,8 @@ public class PlanDefinition extends MetadataResource {
       return (Reference) this.subject;
     }
 
-    public boolean hasSubjectReference() { 
-      return this != null && this.subject instanceof Reference;
+    public boolean hasSubjectReference() {
+        return this.subject instanceof Reference;
     }
 
     /**
@@ -6890,8 +6890,8 @@ public class PlanDefinition extends MetadataResource {
       return (CanonicalType) this.subject;
     }
 
-    public boolean hasSubjectCanonicalType() { 
-      return this != null && this.subject instanceof CanonicalType;
+    public boolean hasSubjectCanonicalType() {
+        return this.subject instanceof CanonicalType;
     }
 
     public boolean hasSubject() { 
@@ -8088,8 +8088,8 @@ public class PlanDefinition extends MetadataResource {
       return (BooleanType) this.asNeeded;
     }
 
-    public boolean hasAsNeededBooleanType() { 
-      return this != null && this.asNeeded instanceof BooleanType;
+    public boolean hasAsNeededBooleanType() {
+        return this.asNeeded instanceof BooleanType;
     }
 
     /**
@@ -8103,8 +8103,8 @@ public class PlanDefinition extends MetadataResource {
       return (CodeableConcept) this.asNeeded;
     }
 
-    public boolean hasAsNeededCodeableConcept() { 
-      return this != null && this.asNeeded instanceof CodeableConcept;
+    public boolean hasAsNeededCodeableConcept() {
+        return this.asNeeded instanceof CodeableConcept;
     }
 
     public boolean hasAsNeeded() { 

@@ -4754,7 +4754,7 @@ public class Evidence extends DomainResource {
   }
 
   public boolean hasCiteAsReference() {
-    return this != null && this.citeAs instanceof Reference;
+      return this.citeAs instanceof Reference;
   }
 
   /**
@@ -4771,7 +4771,7 @@ public class Evidence extends DomainResource {
   }
 
   public boolean hasCiteAsMarkdownType() {
-    return this != null && this.citeAs instanceof MarkdownType;
+      return this.citeAs instanceof MarkdownType;
   }
 
   public boolean hasCiteAs() {

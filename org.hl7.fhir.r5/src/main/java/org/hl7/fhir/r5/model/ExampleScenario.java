@@ -683,8 +683,8 @@ public class ExampleScenario extends CanonicalResource {
           return (CanonicalType) this.structureProfile;
         }
 
-        public boolean hasStructureProfileCanonicalType() { 
-          return this != null && this.structureProfile instanceof CanonicalType;
+        public boolean hasStructureProfileCanonicalType() {
+            return this.structureProfile instanceof CanonicalType;
         }
 
         /**
@@ -698,8 +698,8 @@ public class ExampleScenario extends CanonicalResource {
           return (UriType) this.structureProfile;
         }
 
-        public boolean hasStructureProfileUriType() { 
-          return this != null && this.structureProfile instanceof UriType;
+        public boolean hasStructureProfileUriType() {
+            return this.structureProfile instanceof UriType;
         }
 
         public boolean hasStructureProfile() { 
@@ -4233,8 +4233,8 @@ public class ExampleScenario extends CanonicalResource {
       return (StringType) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmStringType() { 
-      return this != null && this.versionAlgorithm instanceof StringType;
+    public boolean hasVersionAlgorithmStringType() {
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -4248,8 +4248,8 @@ public class ExampleScenario extends CanonicalResource {
       return (Coding) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmCoding() { 
-      return this != null && this.versionAlgorithm instanceof Coding;
+    public boolean hasVersionAlgorithmCoding() {
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 

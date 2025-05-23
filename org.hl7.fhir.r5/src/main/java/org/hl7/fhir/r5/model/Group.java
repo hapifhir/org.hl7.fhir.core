@@ -468,8 +468,8 @@ public class Group extends DomainResource {
           return (CodeableConcept) this.value;
         }
 
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
+        public boolean hasValueCodeableConcept() {
+            return this.value instanceof CodeableConcept;
         }
 
         /**
@@ -483,8 +483,8 @@ public class Group extends DomainResource {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -498,8 +498,8 @@ public class Group extends DomainResource {
           return (Quantity) this.value;
         }
 
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
+        public boolean hasValueQuantity() {
+            return this.value instanceof Quantity;
         }
 
         /**
@@ -513,8 +513,8 @@ public class Group extends DomainResource {
           return (Range) this.value;
         }
 
-        public boolean hasValueRange() { 
-          return this != null && this.value instanceof Range;
+        public boolean hasValueRange() {
+            return this.value instanceof Range;
         }
 
         /**
@@ -528,8 +528,8 @@ public class Group extends DomainResource {
           return (Reference) this.value;
         }
 
-        public boolean hasValueReference() { 
-          return this != null && this.value instanceof Reference;
+        public boolean hasValueReference() {
+            return this.value instanceof Reference;
         }
 
         public boolean hasValue() { 

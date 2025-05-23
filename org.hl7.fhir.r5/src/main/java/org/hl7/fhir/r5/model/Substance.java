@@ -243,8 +243,8 @@ public class Substance extends DomainResource {
           return (CodeableConcept) this.substance;
         }
 
-        public boolean hasSubstanceCodeableConcept() { 
-          return this != null && this.substance instanceof CodeableConcept;
+        public boolean hasSubstanceCodeableConcept() {
+            return this.substance instanceof CodeableConcept;
         }
 
         /**
@@ -258,8 +258,8 @@ public class Substance extends DomainResource {
           return (Reference) this.substance;
         }
 
-        public boolean hasSubstanceReference() { 
-          return this != null && this.substance instanceof Reference;
+        public boolean hasSubstanceReference() {
+            return this.substance instanceof Reference;
         }
 
         public boolean hasSubstance() { 
