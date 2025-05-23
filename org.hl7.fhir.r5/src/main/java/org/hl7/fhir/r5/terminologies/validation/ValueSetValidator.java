@@ -794,7 +794,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private void checkValueSetOptions() {
     if (valueset != null) {
-      for (Extension ext : valueset.getCompose().getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinion/valueset-expansion-param")) {
+      for (Extension ext : valueset.getCompose().getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter")) {
         var name = ext.getExtensionString("name");
         var value = ext.getExtensionByUrl("value").getValue();
         if ("displayLanguage".equals(name)) {
