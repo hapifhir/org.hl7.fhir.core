@@ -1,0 +1,11 @@
+Editors for the various languages (git tags):
+
+* EN: Java Core Developers
+* DE: ?
+* ES: Diego Kaminker ()
+* FR: Nicolas Riss (nriss)
+* JA: ?
+* NL: Alexander Henket (ahenket)
+* PT:  Jose Costa Teixeira (costateixeira)
+* PT_BR: ?
+* RU: Vadim Peretokin ()
