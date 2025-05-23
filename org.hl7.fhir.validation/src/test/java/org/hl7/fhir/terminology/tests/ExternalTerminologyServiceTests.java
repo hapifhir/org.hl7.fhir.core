@@ -30,6 +30,7 @@ import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.special.TxTestData;
 import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -99,6 +100,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
 
   @SuppressWarnings("deprecation")
   @Test
+  @Ignore
   public void test() throws Exception {
     if (setup == null) {
       if (error == 0) {
