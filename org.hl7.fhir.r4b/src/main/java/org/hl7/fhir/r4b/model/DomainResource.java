@@ -614,6 +614,11 @@ public abstract class DomainResource extends Resource
         retVal.add(next);
       }
     }
+    for (Extension next : getModifierExtension()) {
+      if (theUrl.equals(next.getUrl())) {
+        retVal.add(next);
+      }
+    }
     return Collections.unmodifiableList(retVal);
   }
 
