@@ -335,7 +335,7 @@ public class LanguageUtils {
   private int importFromTranslations(String path, Element parent, Element element, List<TranslationUnit> translations, Set<TranslationUnit> usedUnits) {
     String npath = pathForElement(path, element);
     int t = 0;
-    if (element.isPrimitive() && isTranslatable(element)) {
+    if (element.isPrimitive() && isTranslatable(element) && !isExemptFromTranslations(npath)) {
       String base = element.primitiveValue();
       if (base != null) {
         Set<TranslationUnit> tlist = findTranslations(npath, base, translations);
@@ -732,14 +732,15 @@ public class LanguageUtils {
 
   private boolean isExemptFromTranslations(String path) {
     if (path.endsWith(".reference")) {
-      return false;
+      return true;
     }
     return Utilities.existsInList(path, 
-        "ImplementationGuide.definition.parameter.value", "ImplementationGuide.dependsOn.version", 
+        "ImplementationGuide.definition.parameter.value", "ImplementationGuide.dependsOn.version", "ImplementationGuide.dependsOn.id", "ImplementationGuide.definition.resource.name",
         "CanonicalResource.name", 
         "CapabilityStatement.rest.resource.searchRevInclude", "CapabilityStatement.rest.resource.searchInclude", "CapabilityStatement.rest.resource.searchParam.name",
-        " SearchParameter.expression",
-        "ExampleScenario.actor.actorId", "ExampleScenario.instance.resourceId", "ExampleScenario.instance.containedInstance.resourceId", 
+        "SearchParameter.expression", "SearchParameter.xpath",
+        "ExampleScenario.actor.actorId", "ExampleScenario.instance.resourceId", "ExampleScenario.instance.containedInstance.resourceId", "ExampleScenario.instance.version.versionId", 
+          "ExampleScenario.process.step.operation.number", "ExampleScenario.process.step.operation.initiator", "ExampleScenario.process.step.operation.receiver",
         "ExampleScenario.process.step.operation.number", "ExampleScenario.process.step.operation.initiator", "ExampleScenario.process.step.operation.receiver",
         "OperationDefinition.parameter.max", "OperationDefinition.overload.parameterName",
         "StructureMap.group.rule.source.type", "StructureMap.group.rule.source.element", "StructureMap.group.rule.target.element");
@@ -769,25 +770,51 @@ public class LanguageUtils {
     return null;
   }
  
+  public boolean switchLanguage(Base r, String lang, boolean markLanguage, boolean contained) {
+    boolean changed = false;
+    if (r.isPrimitive()) {
+      PrimitiveType<?> dt = (PrimitiveType<?>) r;
+      String cnt = ToolingExtensions.getLanguageTranslation(dt, lang); 
+      dt.removeExtension(ToolingExtensions.EXT_TRANSLATION);
+      if (cnt != null) {
+        dt.setValueAsString(cnt);
+        changed = true;
+      }
+    }
+    
+    for (Property p : r.children()) {
+      for (Base c : p.getValues()) {
+        changed = switchLanguage(c, lang, markLanguage, p.getName().equals("contained")) || changed;
+      }
+    }
+    if (markLanguage && r.isResource() && !contained) {
+      Resource res = (Resource) r;
+      res.setLanguage(lang);
+      changed = true;
+    }
+    return changed;
+  }
+
   public boolean switchLanguage(Element e, String lang, boolean markLanguage) {
+    boolean changed = false;
     if (e.getProperty().isTranslatable()) {
       String cnt = getTranslation(e, lang);
       e.removeExtension(ToolingExtensions.EXT_TRANSLATION);
       if (cnt != null) {
         e.setValue(cnt);
+        changed = true;
       }
     }
     if (e.hasChildren()) {
       for (Element c : e.getChildren()) {
-        if (!switchLanguage(c, lang, markLanguage)) {
-          return false;
-        }
+        changed = switchLanguage(c, lang, markLanguage) || changed;
       }
     }
     if (markLanguage && e.isResource() && e.getSpecial() != SpecialElement.CONTAINED) {
       e.setChildValue("language", lang);
+      changed = true;
     }
-    return true;
+    return changed;
   }
 
   public boolean hasTranslation(org.hl7.fhir.r5.model.Element e, String lang) {
@@ -823,6 +850,8 @@ public class LanguageUtils {
   }
 
   public Resource copyToLanguage(Resource res, String lang, boolean markLanguage) {
-    return res;
+    Resource r = res.copy();
+    switchLanguage(r, lang, markLanguage, false);    
+    return r;
   }
 }
