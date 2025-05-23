@@ -68,6 +68,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.dstu2016may.formats.FormatUtilities;
@@ -165,6 +166,7 @@ import org.hl7.fhir.utilities.xml.XmlGenerator;
 import org.w3c.dom.Element;
 
 @Deprecated
+@Slf4j
 public class NarrativeGenerator implements INarrativeGenerator {
 
   private interface PropertyWrapper {
@@ -787,7 +789,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
               if (ed == null) {
                 if (url.startsWith("http://hl7.org/fhir"))
                   throw new DefinitionException("unknown extension " + url);
-                System.out.println("unknown extension " + url);
+                log.info("unknown extension " + url);
                 pe = new PropertyWrapperDirect(new Property(p.getName() + "[" + url + "]", p.getTypeCode(),
                     p.getDefinition(), p.getMinCardinality(), p.getMaxCardinality(), ex));
               } else {

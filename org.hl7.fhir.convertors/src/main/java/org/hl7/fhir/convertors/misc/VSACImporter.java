@@ -34,6 +34,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 
+@SuppressWarnings("checkstyle:systemout")
 public class VSACImporter extends OIDBasedValueSetImporter {
 
   public VSACImporter() throws FHIRException, IOException {

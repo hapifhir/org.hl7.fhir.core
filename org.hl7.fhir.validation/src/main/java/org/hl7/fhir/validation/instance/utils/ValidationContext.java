@@ -202,10 +202,7 @@ public class ValidationContext {
   }
 
   private void dump(String ctxt) {
-    //      System.out.println("** app = "+(appContext == null ? "(null)" : appContext.toString())+", res = "+resource.toString()+", root = "+rootResource.toString()+" ("+ctxt+")");
-    //      if (rootResource.getName().equals("contained")) {
-    //        System.out.println("** something is wrong!");        
-    //      }
+    // DO NOTHING
   }
 
   public ValidationContext forRemoteReference(StructureDefinition profile, Element resource) {

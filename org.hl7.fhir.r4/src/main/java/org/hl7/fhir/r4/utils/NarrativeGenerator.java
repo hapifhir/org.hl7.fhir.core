@@ -43,6 +43,7 @@ import java.util.Set;
   
  */
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.NotImplementedException;
@@ -202,6 +203,7 @@ Copyright (c) 2011+, HL7, Inc
 */
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class NarrativeGenerator implements INarrativeGenerator {
 
   public interface ILiquidTemplateProvider {
@@ -1326,7 +1328,6 @@ public class NarrativeGenerator implements INarrativeGenerator {
               if (ed == null) {
                 if (url.startsWith("http://hl7.org/fhir") && !url.startsWith("http://hl7.org/fhir/us"))
                   throw new DefinitionException("unknown extension " + url);
-                // System.out.println("unknown extension "+url);
                 pe = new PropertyWrapperDirect(new Property(p.getName() + "[" + url + "]", p.getTypeCode(),
                     p.getDefinition(), p.getMinCardinality(), p.getMaxCardinality(), ex));
               } else {
@@ -3835,7 +3836,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
         a.tx("SNOMED-CT");
       } else {
         if (value.startsWith("http://hl7.org") && !Utilities.existsInList(value, "http://hl7.org/fhir/sid/icd-10-us"))
-          System.out.println("Unable to resolve value set " + value);
+          log.warn("Unable to resolve value set " + value);
         li.addText(value);
       }
     }

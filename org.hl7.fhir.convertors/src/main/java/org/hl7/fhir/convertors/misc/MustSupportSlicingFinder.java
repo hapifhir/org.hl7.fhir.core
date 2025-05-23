@@ -19,6 +19,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageServer;
 import org.xml.sax.SAXException;
 
+@SuppressWarnings("checkstyle:systemout")
 public class MustSupportSlicingFinder implements IPackageVisitorProcessor {
 
 

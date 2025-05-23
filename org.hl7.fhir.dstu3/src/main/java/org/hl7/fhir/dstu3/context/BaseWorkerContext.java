@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu3.formats.JsonParser;
 import org.hl7.fhir.dstu3.model.BooleanType;
@@ -105,6 +106,7 @@ import ca.uhn.fhir.rest.api.Constants;
 
 
 @Deprecated
+@Slf4j
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   // all maps are to the full URI
@@ -137,7 +139,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected boolean noTerminologyServer;
   protected String cache;
   private int expandCodesLimit = 1000;
-  protected ILoggingService logger;
+
   protected ExpansionProfile expProfile;
   private Locale locale;
   private ResourceBundle i18Nmessages;
@@ -284,8 +286,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         } catch (Exception e) {
           if (canRunWithoutTerminology) {
             noTerminologyServer = true;
-            log("==============!! Running without terminology server !!============== (" + e
-              .getMessage() + ")");
+            log.info("==============!! Running without terminology server !!============== (" + e
+                      .getMessage() + ")");
             return false;
           } else {
             throw new TerminologyServiceException(e);
@@ -306,14 +308,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     nonSupportedCodeSystems.add(system);
     return false;
-  }
-
-  private void log(String message) {
-    if (logger != null) {
-      logger.logMessage(message);
-    } else {
-      System.out.println(message);
-    }
   }
 
   @Override
@@ -1074,8 +1068,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.expandCodesLimit = expandCodesLimit;
   }
 
+  @Deprecated
   public void setLogger(ILoggingService logger) {
-    this.logger = logger;
+
   }
 
   public ExpansionProfile getExpansionProfile() {

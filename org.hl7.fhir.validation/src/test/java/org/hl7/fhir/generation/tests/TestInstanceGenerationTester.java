@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Locale;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
 import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -31,6 +32,7 @@ import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class TestInstanceGenerationTester {
 
   @Test
@@ -83,9 +85,9 @@ public class TestInstanceGenerationTester {
     for (JsonObject fact : json.forceArray("factories").asJsonObjects()) {
       TestDataFactory tdf = new TestDataFactory(context, fact, liquid, fpe, "http://hl7.org/fhir/test", path, log, new HashMap<>(), new Locale("us"));
       tdf.setTesting(true); // no randomness
-      System.out.println("Execute Test Data Factory '"+tdf.getName()+"'. Log in "+tdf.statedLog());
+      TestInstanceGenerationTester.log.info("Execute Test Data Factory '"+tdf.getName()+"'. Log in "+tdf.statedLog());
       tdf.execute();
-      System.out.println(FileUtilities.fileToString(Utilities.path(log, tdf.statedLog())));
+      TestInstanceGenerationTester.log.info(FileUtilities.fileToString(Utilities.path(log, tdf.statedLog())));
     }
     
     // now, check output

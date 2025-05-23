@@ -20,6 +20,7 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 @MarkedToMoveToAdjunctPackage
+@SuppressWarnings("checkstyle:systemout")
 public class ResourceFixer {
 
 

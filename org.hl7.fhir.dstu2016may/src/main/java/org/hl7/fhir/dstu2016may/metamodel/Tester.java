@@ -47,12 +47,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 @Deprecated
+@SuppressWarnings("checkstyle:systemout")
 public class Tester {
 
   public static void main(String[] args) throws Exception {
     IWorkerContext context = SimpleWorkerContext
         .fromPack(Utilities.path("C:\\work\\org.hl7.fhir\\build\\publish", "validation-min.xml.zip"));
-    int t = 0;
+    int t = 0;@SuppressWarnings("checkstyle:systemout")
     int ok = 0;
     for (String f : ManagedFileAccess.file("C:\\work\\org.hl7.fhir\\build\\publish").list()) {
       if (f.endsWith(".xml") && !f.endsWith(".canonical.xml") && !f.contains("profile") && !f.contains("questionnaire")

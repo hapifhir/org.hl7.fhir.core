@@ -49,6 +49,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 @Deprecated
+@SuppressWarnings("checkstyle:systemout")
 public class Tester {
 
   public static void main(String[] args) throws Exception {

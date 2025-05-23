@@ -35,6 +35,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -48,6 +49,7 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.stringtemplate.v4.ST;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ShExGenerator {
 
   public enum HTMLLinkPolicy {
@@ -64,6 +66,7 @@ public class ShExGenerator {
   public boolean withComments = true;                // include comments
   public boolean completeModel = false;              // doing complete build (fhir.shex)
 
+  @Deprecated
   public boolean debugMode = false;     // Used for Debugging and testing the code
 
   public boolean processConstraints = false;   // set to false - to skip processing constraints
@@ -405,27 +408,27 @@ public class ShExGenerator {
       // Exclusion Criteria...
       if ((excludedSDUrls != null) &&
         (excludedSDUrls.contains(sd.getUrl()))) {
-        printBuildMessage("SKIPPED Generating ShEx for " + sd.getName() + "  [ " + sd.getUrl() + " ] !");
-        printBuildMessage("Reason: It is in excluded list of structures.");
+        log.trace("SKIPPED Generating ShEx for " + sd.getName() + "  [ " + sd.getUrl() + " ] !");
+        log.trace("Reason: It is in excluded list of structures.");
         continue;
       }
 
       if ("Extension".equals(sd.getType())) {
         if ((!this.selectedExtensionUrls.isEmpty()) && (!this.selectedExtensionUrls.contains(sd.getUrl()))) {
-          printBuildMessage("SKIPPED Generating ShEx for " + sd.getName() + "  [ " + sd.getUrl() + " ] !");
-          printBuildMessage("Reason: It is NOT included in the list of selected extensions.");
+          log.trace("SKIPPED Generating ShEx for " + sd.getName() + "  [ " + sd.getUrl() + " ] !");
+          log.trace("Reason: It is NOT included in the list of selected extensions.");
           continue;
         }
 
         if ((this.constraintPolicy == ConstraintTranslationPolicy.GENERIC_ONLY) && (sd.hasContext())) {
-          printBuildMessage("SKIPPED Generating ShEx for " + sd.getName() + "  [ " + sd.getUrl() + " ] !");
-          printBuildMessage("Reason: ConstraintTranslationPolicy is set to GENERIC_ONLY, and this Structure has Context of Use.");
+          log.trace("SKIPPED Generating ShEx for " + sd.getName() + "  [ " + sd.getUrl() + " ] !");
+          log.trace("Reason: ConstraintTranslationPolicy is set to GENERIC_ONLY, and this Structure has Context of Use.");
           continue;
         }
 
         if ((this.constraintPolicy == ConstraintTranslationPolicy.CONTEXT_OF_USE_ONLY) && (!sd.hasContext())) {
-          printBuildMessage("SKIPPED Generating ShEx for " + sd.getName() + "  [ " + sd.getUrl() + " ] !");
-          printBuildMessage("Reason: ConstraintTranslationPolicy is set to CONTEXT_OF_USE_ONLY, and this Structure has no Context of Use.");
+          log.trace("SKIPPED Generating ShEx for " + sd.getName() + "  [ " + sd.getUrl() + " ] !");
+          log.trace("Reason: ConstraintTranslationPolicy is set to CONTEXT_OF_USE_ONLY, and this Structure has no Context of Use.");
           continue;
         }
       }
@@ -437,14 +440,14 @@ public class ShExGenerator {
     }
 
     for (StructureDefinition sd : uniq_structures) {
-      printBuildMessage(" ---- Generating ShEx for : " + sd.getName() + "  [ " + sd.getUrl() + " ] ...");
+      log.trace(" ---- Generating ShEx for : " + sd.getName() + "  [ " + sd.getUrl() + " ] ...");
       String shapeDefinitionStr = genShapeDefinition(sd, true);
 
       if (!shapeDefinitionStr.isEmpty()) {
         shapeDefinitions.append(shapeDefinitionStr);
       } else {
-        printBuildMessage(" ---- WARNING! EMPTY/No ShEx SCHEMA Body generated for : " + sd.getName() + "  [ " + sd.getUrl() + " ].\n" +
-          "This might not be an issue, if this resource is normative base or a meta resource");
+        log.trace(" ---- WARNING! EMPTY/No ShEx SCHEMA Body generated for : " + sd.getName() + "  [ " + sd.getUrl() + " ].\n" +
+              "This might not be an issue, if this resource is normative base or a meta resource");
         shapeDefinitions.append("<" + sd.getName() + "> CLOSED {\n}");
       }
     }
@@ -501,8 +504,8 @@ public class ShExGenerator {
                 .compareTo(StringUtils.substringBetween(o2, "fhirvs:", " "));
             }
             catch(Exception e){
-              debug("SORT COMPARISON FAILED BETWEEN \n\t\t" + o1 + "\n\t\t and \n\t\t" + o2);
-              debug(e.getMessage());
+              log.debug("SORT COMPARISON FAILED BETWEEN \n\t\t" + o1 + "\n\t\t and \n\t\t" + o2);
+              log.debug(e.getMessage());
               return 0;
             }
           }
@@ -513,9 +516,9 @@ public class ShExGenerator {
       }
 
       if ((unMappedFunctions != null) && (!unMappedFunctions.isEmpty())) {
-        debug("------------------------- Unmapped Functions ---------------------");
+        log.debug("------------------------- Unmapped Functions ---------------------");
         for (String um : unMappedFunctions) {
-          debug(um);
+          log.debug(um);
         }
       }
 
@@ -682,7 +685,7 @@ public class ShExGenerator {
             if ((ed.hasContentReference() && (!ed.hasType())) || (id.equals(sd.getName() + "." + shortId))) {
               if ((sdType.equals(cstype)) || baseDataTypes.contains(sdType)) {
                 if (!isInnerType) {
-                  debug("\n        Key: " + constraint.getKey() + " SD type: " + sd.getType() + " Element: " + ed.getPath() + " Constraint Source: " + constraint.getSource() + " Constraint:" + constraint.getExpression());
+                  log.debug("\n        Key: " + constraint.getKey() + " SD type: " + sd.getType() + " Element: " + ed.getPath() + " Constraint Source: " + constraint.getSource() + " Constraint:" + constraint.getExpression());
                   String transl = translateConstraint(sd, ed, constraint);
                   if (transl.isEmpty() || constraintsList.contains(transl))
                     continue;
@@ -716,7 +719,7 @@ public class ShExGenerator {
           String shortId = id.substring(id.lastIndexOf(".") + 1);
 
           if (!isInInnerTypes(ded)) {
-            debug("\n        Key: " + dconstraint.getKey() + " SD type: " + sd.getType() + " Element: " + ded.getPath() + " Constraint Source: " + dconstraint.getSource() + " Constraint:" + dconstraint.getExpression());
+            log.debug("\n        Key: " + dconstraint.getKey() + " SD type: " + sd.getType() + " Element: " + ded.getPath() + " Constraint Source: " + dconstraint.getSource() + " Constraint:" + dconstraint.getExpression());
             String dtransl = translateConstraint(sd, ded, dconstraint);
             if (dtransl.isEmpty() || constraintsList.contains(dtransl))
               continue;
@@ -743,9 +746,9 @@ public class ShExGenerator {
       for (StructureDefinition.StructureDefinitionContextComponent uc : sd.getContext()) {
         if (!uc.getExpression().isEmpty()) {
           String toStore = uc.getExpression();
-          debug("CONTEXT-OF-USE FOUND: " + toStore);
+          log.debug("CONTEXT-OF-USE FOUND: " + toStore);
           if (toStore.indexOf("http") != -1) {
-            debug("\t\tWARNING: CONTEXT-OF-USE SKIPPED as it has 'http' in it, might be a URL, instead of '.' delimited string");
+            log.debug("\t\tWARNING: CONTEXT-OF-USE SKIPPED as it has 'http' in it, might be a URL, instead of '.' delimited string");
             continue;  // some erroneous context of use may use a URL; ignore them
           }
           String[] backRefs = toStore.split("\\.");
@@ -790,11 +793,11 @@ public class ShExGenerator {
         ExpressionNode expr = fpe.parse(ce);
         String shexConstraint = processExpressionNode(sd, ed, expr, false, 0);
         shexConstraint = shexConstraint.replaceAll("CALLER", "");
-        debug("        Parsed to ShEx Constraint:" + shexConstraint);
+        log.debug("        Parsed to ShEx Constraint:" + shexConstraint);
         if (!shexConstraint.isEmpty())
           translated += "\n" + shexConstraint;
 
-        debug("        TRANSLATED\t"+ed.getPath()+"\t"+constraint.getHuman()+"\t"+constraint.getExpression()+"\t"+shexConstraint);
+        log.debug("        TRANSLATED\t"+ed.getPath()+"\t"+constraint.getHuman()+"\t"+constraint.getExpression()+"\t"+shexConstraint);
 
       } catch (Exception e) {
         //String message = "        FAILED to parse the constraint from Structure Definition: " + constItem + " [ " + e.getMessage() + " ]";
@@ -802,7 +805,7 @@ public class ShExGenerator {
         e.printStackTrace();
 
         translated = "";
-        debug(message);
+        log.debug(message);
       }
     }
     return commentUnmapped(translated);
@@ -1032,7 +1035,7 @@ public class ShExGenerator {
             constantV = evaluated.get(0).primitiveValue();
         }
         catch (Exception e) {
-          debug("Failed to evaluate constant expression: " + constantV);
+          log.debug("Failed to evaluate constant expression: " + constantV);
         }
       }
 
@@ -1323,7 +1326,7 @@ public class ShExGenerator {
       (ed.getType().get(0).getCode().startsWith(Constants.NS_SYSTEM_TYPE))) {
 
       if (changeShortName(sd, ed)) {
-        debug("VALUE NAME CHANGED to v from " + shortId + " for " + sd.getName() + ":" + ed.getPath());
+        log.debug("VALUE NAME CHANGED to v from " + shortId + " for " + sd.getName() + ":" + ed.getPath());
         shortId = "v";
       }
 
@@ -1447,7 +1450,7 @@ public class ShExGenerator {
         Matcher m = p.matcher(typeDefn);
         while (m.find()) {
           String tag = m.group(1);
-          //System.out.println("FOUND IMPORT: " + tag);
+
           if (tag.indexOf(ONE_OR_MORE_PREFIX) != -1) {
             tag = tag.substring(ONE_OR_MORE_PREFIX.length());
           }
@@ -1786,7 +1789,7 @@ public class ShExGenerator {
         if ((ed.hasContentReference() && (!ed.hasType())) || (id.equals(sd.getName() + "." + shortId))) {
           if ((sdType.equals(cstype)) || baseDataTypes.contains(sdType)) {
             //if (!isInInnerTypes(ed)) {
-            debug("\n        (INNER ED) Key: " + constraint.getKey() + " SD type: " + sd.getType() + " Element: " + ed.getPath() + " Constraint Source: " + constraint.getSource() + " Constraint:" + constraint.getExpression());
+            log.debug("\n        (INNER ED) Key: " + constraint.getKey() + " SD type: " + sd.getType() + " Element: " + ed.getPath() + " Constraint Source: " + constraint.getSource() + " Constraint:" + constraint.getExpression());
             String transl = translateConstraint(sd, ed, constraint);
             if (transl.isEmpty() || innerConstraintsList.contains(transl))
               continue;
@@ -1876,14 +1879,5 @@ public class ShExGenerator {
     } catch (Throwable e) {
       return null;
     }
-  }
-
-  private void debug(String message) {
-    if (this.debugMode)
-      System.out.println(message);
-  }
-
-  private void printBuildMessage(String message){
-    // System.out.println("ShExGenerator: " + message);
   }
 }

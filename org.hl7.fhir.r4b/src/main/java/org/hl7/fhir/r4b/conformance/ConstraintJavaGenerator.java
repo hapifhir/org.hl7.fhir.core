@@ -34,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.model.StructureDefinition;
@@ -42,6 +43,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ConstraintJavaGenerator {
 
   private IWorkerContext context; // for doing expansions
@@ -62,7 +64,7 @@ public class ConstraintJavaGenerator {
         ? Utilities.titleize(sd.getName().replace(".", "").replace("-", "").replace("\"", "")).replace(" ", "")
         : "";
     if (!Utilities.nmtokenize(name).equals(name)) {
-      System.out.println("Cannot generate Java code for profile " + sd.getUrl() + " because the name \"" + name
+      log.warn("Cannot generate Java code for profile " + sd.getUrl() + " because the name \"" + name
           + "\" is not a valid Java class name");
       return null;
     }

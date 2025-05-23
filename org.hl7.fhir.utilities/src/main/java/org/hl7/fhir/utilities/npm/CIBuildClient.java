@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.npm;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -18,6 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@Slf4j
 public class CIBuildClient {
 
   private static final String DEFAULT_ROOT_URL = "https://build.fhir.org";
@@ -39,8 +41,6 @@ public class CIBuildClient {
    **/
   private final Map<String, String> ciPackageUrls = new HashMap<>();
 
-  private final boolean silent;
-
   public CIBuildClient() {
    this(DEFAULT_ROOT_URL, DEFAULT_CI_QUERY_INTERVAL, false);
   }
@@ -48,7 +48,6 @@ public class CIBuildClient {
   public CIBuildClient(String rootUrl, long ciQueryInterval, boolean silent) {
     this.rootUrl = rootUrl;
     this.ciQueryInterval = ciQueryInterval;
-    this.silent = silent;
   }
 
   String getPackageId(String canonical) {
@@ -147,9 +146,7 @@ public class CIBuildClient {
           Thread.sleep(1000);
           updateFromCIServer();
         } catch (Exception e2) {
-          if (!silent) {
-            System.out.println("Error connecting to build server - running without build (" + e2.getMessage() + ")");
-          }
+          log.debug("Error connecting to build server - running without build (" + e2.getMessage() + ")");
         }
       }
     }

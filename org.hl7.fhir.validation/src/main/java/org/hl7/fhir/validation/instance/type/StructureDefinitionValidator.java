@@ -1216,9 +1216,6 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "Element" :return  addCharacteristicsForType(set);
     case "Base" :return  addCharacteristicsForType(set);
     default:
-      //      if (!context.getResourceNames().contains(tc)) {
-      //        System.out.println("Unhandled data type in addCharacteristics: "+tc);        
-      //      }
       return addCharacteristicsForType(set);
     }
   }

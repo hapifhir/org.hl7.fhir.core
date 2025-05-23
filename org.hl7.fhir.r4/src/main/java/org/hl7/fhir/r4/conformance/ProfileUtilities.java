@@ -41,6 +41,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -139,6 +142,7 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  *
  */
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ProfileUtilities extends TranslatingUtilities {
 
   public class ElementRedirection {
@@ -246,6 +250,9 @@ public class ProfileUtilities extends TranslatingUtilities {
   private final boolean ADD_REFERENCE_TO_TABLE = true;
 
   private boolean useTableForFixedValues = true;
+  @Setter
+  @Getter
+  @Deprecated
   private boolean debug;
 
   // note that ProfileUtilities are used re-entrantly internally, so nothing with
@@ -517,16 +524,16 @@ public class ProfileUtilities extends TranslatingUtilities {
             + " in " + derived.getUrl() + " from " + base.getUrl());
       updateMaps(base, derived);
 
-      if (debug) {
-        System.out.println("Differential: ");
+
+      log.debug("Differential: ");
         for (ElementDefinition ed : derived.getDifferential().getElement())
-          System.out.println("  " + ed.getPath() + " : " + typeSummaryWithProfile(ed) + "[" + ed.getMin() + ".."
+          log.debug("  " + ed.getPath() + " : " + typeSummaryWithProfile(ed) + "[" + ed.getMin() + ".."
               + ed.getMax() + "]" + sliceSummary(ed) + "  id = " + ed.getId() + " " + constraintSummary(ed));
-        System.out.println("Snapshot: ");
+      log.debug("Snapshot: ");
         for (ElementDefinition ed : derived.getSnapshot().getElement())
-          System.out.println("  " + ed.getPath() + " : " + typeSummaryWithProfile(ed) + "[" + ed.getMin() + ".."
+          log.debug("  " + ed.getPath() + " : " + typeSummaryWithProfile(ed) + "[" + ed.getMin() + ".."
               + ed.getMax() + "]" + sliceSummary(ed) + "  id = " + ed.getId() + " " + constraintSummary(ed));
-      }
+
       setIds(derived, false);
       // Check that all differential elements have a corresponding snapshot element
       for (ElementDefinition e : diff.getElement()) {
@@ -539,7 +546,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             ((Base) e.getUserData("diff-source")).setUserData(DERIVATION_POINTER, e.getUserData(DERIVATION_POINTER));
         }
         if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
-          System.out.println("Error in snapshot generation: Differential for " + derived.getUrl() + " with "
+          log.error("Error in snapshot generation: Differential for " + derived.getUrl() + " with "
               + (e.hasId() ? "id: " + e.getId() : "path: " + e.getPath())
               + " has an element that is not marked with a snapshot match");
           if (exception)
@@ -664,9 +671,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       int diffCursor, int baseLimit, int diffLimit, String url, String webUrl, String profileName,
       String contextPathSrc, String contextPathDst, boolean trimDifferential, String contextName, String resultPathBase,
       boolean slicingDone, List<ElementRedirection> redirector, StructureDefinition srcSD)
-      throws DefinitionException, FHIRException {
-    if (debug)
-      System.out.println(indent + "PP @ " + resultPathBase + " / " + contextPathSrc + " : base = " + baseCursor + " to "
+      throws FHIRException {
+
+      log.debug(indent + "PP @ " + resultPathBase + " / " + contextPathSrc + " : base = " + baseCursor + " to "
           + baseLimit + ", diff = " + diffCursor + " to " + diffLimit + " (slicing = " + slicingDone + ", redirector = "
           + (redirector == null ? "null" : redirector.toString()) + ")");
     ElementDefinition res = null;
@@ -677,8 +684,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       // get the current focus of the base, and decide what to do
       ElementDefinition currentBase = base.getElement().get(baseCursor);
       String cpath = fixedPathSource(contextPathSrc, currentBase.getPath(), redirector);
-      if (debug)
-        System.out.println(indent + " - " + cpath + ": base = " + baseCursor + " ("
+
+        log.debug(indent + " - " + cpath + ": base = " + baseCursor + " ("
             + descED(base.getElement(), baseCursor) + ") to " + baseLimit + " (" + descED(base.getElement(), baseLimit)
             + "), diff = " + diffCursor + " (" + descED(differential.getElement(), diffCursor) + ") to " + diffLimit
             + " (" + descED(differential.getElement(), diffLimit) + ") " + "(slicingDone = " + slicingDone
@@ -1606,19 +1613,19 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (type.hasProfile()) {
       sd = context.fetchResource(StructureDefinition.class, type.getProfile().get(0).getValue());
       if (sd == null)
-        System.out.println("Failed to find referenced profile: " + type.getProfile());
+        log.warn("Failed to find referenced profile: " + type.getProfile());
     }
     if (sd == null)
       sd = context.fetchTypeDefinition(type.getWorkingCode());
     if (sd == null)
-      System.out.println("XX: failed to find profle for type: " + type.getWorkingCode()); // debug GJM
+      log.warn("XX: failed to find profle for type: " + type.getWorkingCode()); // debug GJM
     return sd;
   }
 
   private StructureDefinition getProfileForDataType(String type) {
     StructureDefinition sd = context.fetchTypeDefinition(type);
     if (sd == null)
-      System.out.println("XX: failed to find profle for type: " + type); // debug GJM
+      log.warn("XX: failed to find profile for type: " + type); // debug GJM
     return sd;
   }
 
@@ -5252,14 +5259,6 @@ public class ProfileUtilities extends TranslatingUtilities {
     this.newSlicingProcessing = newSlicingProcessing;
   }
 
-  public boolean isDebug() {
-    return debug;
-  }
-
-  public void setDebug(boolean debug) {
-    this.debug = debug;
-  }
-  
 
   public static boolean isExtensionDefinition(StructureDefinition sd) {
     return sd.getDerivation() == TypeDerivationRule.CONSTRAINT && sd.getType().equals("Extension");

@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
 import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
 import org.junit.platform.engine.TestExecutionResult;
@@ -24,15 +25,17 @@ import org.junit.platform.launcher.listeners.TestExecutionSummary;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
 
 /**
  * This class allows JUnit 5 tests to be run in Java runtime.
- *
+ * <br/>
  * JUnit 4 tests ARE NOT SUPPORTED.
- *
+ * <br/>
  * This mimics for the most part the output of the Maven Surefire plugin, with
  * additional summaries and unique IDs for diagnosing failing tests.
  */
+@Slf4j
 public class JUnit5ModuleTestExecutor extends ModuleTestExecutor {
 
 
@@ -62,11 +65,11 @@ public class JUnit5ModuleTestExecutor extends ModuleTestExecutor {
   class ModuleTestExecutionListener extends SummaryGeneratingListener {
 
     @Setter
-    private PrintStream out;
+    private Logger log;
 
     @Override
     public void executionStarted(TestIdentifier testIdentifier) {
-      ModuleTestExecutor.printTestStarted(out, testIdentifier.getDisplayName());
+      ModuleTestExecutor.printTestStarted(log, testIdentifier.getDisplayName());
       super.executionStarted(testIdentifier);
     }
 
@@ -74,11 +77,11 @@ public class JUnit5ModuleTestExecutor extends ModuleTestExecutor {
     public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
       //
       if (testExecutionResult.getStatus().equals(TestExecutionResult.Status.FAILED)) {
-        ModuleTestExecutor.printTestFailed(out, testIdentifier.getUniqueId(),  testExecutionResult.getThrowable().isPresent()
+        ModuleTestExecutor.printTestFailed(log, testIdentifier.getUniqueId(),  testExecutionResult.getThrowable().isPresent()
           ? testExecutionResult.getThrowable().get()
           :null);
       }
-      ModuleTestExecutor.printTestFinished(out,
+      ModuleTestExecutor.printTestFinished(log,
         testIdentifier.getDisplayName(),
         testExecutionResult.getStatus().name()
       );
@@ -92,14 +95,14 @@ public class JUnit5ModuleTestExecutor extends ModuleTestExecutor {
    * Any stack traces required to diagnose test failures will be output at this
    * stage, along with a unique test ID.
    *
-   * @param out the PrintStream to log execution or test failure.
+   * @param log the Logger to log execution or test failure.
    * @param classNameFilter a Regex to use to select tests. If null, this will
    *                        default to the JUnit console filter.
    * @return The test execution summary.
    *
    * @see org.junit.platform.engine.discovery.ClassNameFilter
    */
-  public CliTestSummary executeTests(PrintStream out, String classNameFilter) {
+  public CliTestSummary executeTests(Logger log, String classNameFilter) {
     LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
       .selectors(
         getPackageSelectors()
@@ -110,7 +113,7 @@ public class JUnit5ModuleTestExecutor extends ModuleTestExecutor {
       .build();
 
     ModuleTestExecutionListener moduleTestExecutionlistener = new ModuleTestExecutionListener();
-    moduleTestExecutionlistener.setOut(out);
+    moduleTestExecutionlistener.setLog(log);
 
     try (LauncherSession session = LauncherFactory.openSession()) {
       Launcher launcher = session.getLauncher();
@@ -126,8 +129,8 @@ public class JUnit5ModuleTestExecutor extends ModuleTestExecutor {
 
     TestExecutionSummary summary = moduleTestExecutionlistener.getSummary();
 
-    out.println("\n" + String.format(MODULE_FINISHED_TEMPLATE, getModuleName()));
-    out.println(String.format(SUMMARY_TEMPLATE, summary.getTestsFoundCount(), summary.getTestsFailedCount(), summary.getTestsAbortedCount(), summary.getTestsSkippedCount()));
+    log.info("\n" + String.format(MODULE_FINISHED_TEMPLATE, getModuleName()));
+    log.info(String.format(SUMMARY_TEMPLATE, summary.getTestsFoundCount(), summary.getTestsFailedCount(), summary.getTestsAbortedCount(), summary.getTestsSkippedCount()));
 
     return new JUnit5TestSummaryAdapter(summary);
   }

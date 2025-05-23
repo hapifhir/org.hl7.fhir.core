@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -50,7 +51,7 @@ import org.hl7.fhir.utilities.Utilities;
  *     contained: generate code for contained resources 
  *     all-elements: generate code for all elements, not just the key elements (makes the code verbose)
  */
-
+@Slf4j
 public class PECodeGenerator {
 
 
@@ -663,7 +664,7 @@ public class PECodeGenerator {
         w(inits, "    "+name+" = \""+Utilities.escapeJava(fixedValue.primitiveValue())+"\";");                     
       } else {
         unfixed.add(name);
-        System.out.println("Unable to handle the fixed value for "+name+" of type "+pType+" = "+fixedValue.toString());
+        log.warn("Unable to handle the fixed value for "+name+" of type "+pType+" = "+fixedValue.toString());
       }
     }
   }

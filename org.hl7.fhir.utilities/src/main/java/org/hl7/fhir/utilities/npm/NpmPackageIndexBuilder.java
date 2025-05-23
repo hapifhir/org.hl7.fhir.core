@@ -10,6 +10,7 @@ import java.sql.Statement;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonToken;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -20,12 +21,13 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 /**
  * This class builds the .index.json for a package 
- * 
+ * <br/>
  * it also builds a .index.db since that may provide faster access
  * 
  * @author grahame
  *
  */
+@Slf4j
 public class NpmPackageIndexBuilder {
   
   public static final Integer CURRENT_INDEX_VERSION = 2;
@@ -137,7 +139,7 @@ public class NpmPackageIndexBuilder {
           psql.execute();
         }
       } catch (Exception e) {
-//        System.out.println("Error parsing "+name+": "+e.getMessage());
+
         if (name.contains("openapi")) {
           return false;
         }
@@ -165,9 +167,9 @@ public class NpmPackageIndexBuilder {
 
 
   public void executeWithStatus(String folder) throws IOException {
-    System.out.print("Index Package "+folder+" ... ");
+    log.info("Indexing Package "+folder+" ... ");
     execute(folder);
-    System.out.println("done");
+    log.info("Indexing Package "+folder+ " done");
   }
   
   public void execute(String folder) throws IOException {

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -22,6 +23,7 @@ import org.hl7.fhir.r4b.model.StructureDefinition.StructureDefinitionMappingComp
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 
 @Deprecated
+@Slf4j
 public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
 
   public ValueSetSpreadsheetGenerator(IWorkerContext context) {
@@ -34,7 +36,7 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
 
   public ValueSetSpreadsheetGenerator renderValueSet(ValueSet vs) throws IOException {
     if (vs == null) {
-      System.out.println("no valueset!");
+      log.warn("no valueset!");
     }
     addValueSetMetadata(renderCanonicalResource(vs), vs);
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {

@@ -34,6 +34,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
  *   * path to the local copy of the ig-publisher repo
  *   * path to the local copy of the fhirserver repo
  */
+@SuppressWarnings("checkstyle:systemout")
 public class POGenerator {
 
   public class PropertyValue extends StringPair {

@@ -41,6 +41,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 @Deprecated
+@SuppressWarnings("checkstyle:systemout")
 public class ConstraintJavaGenerator {
 
   private IWorkerContext context; // for doing expansions

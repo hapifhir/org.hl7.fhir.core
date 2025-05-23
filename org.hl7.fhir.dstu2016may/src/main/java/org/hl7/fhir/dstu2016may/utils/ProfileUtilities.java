@@ -38,6 +38,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.dstu2016may.formats.IParser;
 import org.hl7.fhir.dstu2016may.model.Base;
 import org.hl7.fhir.dstu2016may.model.BooleanType;
@@ -101,6 +102,7 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  *
  */
 @Deprecated
+@Slf4j
 public class ProfileUtilities {
 
   public class ExtensionContext {
@@ -329,8 +331,6 @@ public class ProfileUtilities {
       throw new DefinitionException(
           "Circular snapshot references detected; cannot generate snapshot (stack = " + snapshotStack.toString() + ")");
     snapshotStack.add(derived.getUrl());
-
-//    System.out.println("Generate Snapshot for "+derived.getUrl());
 
     derived.setSnapshot(new StructureDefinitionSnapshotComponent());
 
@@ -790,7 +790,7 @@ public class ProfileUtilities {
     if (sd == null)
       sd = context.fetchTypeDefinition(type.getCode());
     if (sd == null)
-      System.out.println("XX: failed to find profle for type: " + type.getCode()); // debug GJM
+      log.warn("XX: failed to find profle for type: " + type.getCode()); // debug GJM
     return sd;
   }
 
@@ -914,7 +914,7 @@ public class ProfileUtilities {
           && !statedPath.substring(path.length()).contains("."))) {
         result.add(context.getElement().get(i));
       } else if (result.isEmpty()) {
-//        System.out.println("ignoring "+statedPath+" in differential of "+profileName);
+        log.debug("ignoring "+statedPath+" in differential of "+profileName);
       }
     }
     return result;

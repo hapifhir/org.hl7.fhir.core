@@ -34,6 +34,7 @@ import java.util.Map;
   
  */
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.context.IWorkerContext.ValidationResult;
@@ -57,6 +58,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ValueSetCheckerSimple implements ValueSetChecker {
 
   private ValueSet valueset;
@@ -391,7 +393,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     if ("concept".equals(f.getProperty()))
       return codeInConceptFilter(cs, f, code);
     else {
-      System.out.println("todo: handle filters with property = " + f.getProperty());
+      log.error("todo: handle filters with property = " + f.getProperty());
       throw new FHIRException("Unable to handle system " + cs.getUrl() + " filter with property = " + f.getProperty());
     }
   }
@@ -403,7 +405,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     case ISNOTA:
       return !codeInConceptIsAFilter(cs, f, code);
     default:
-      System.out.println("todo: handle concept filters with op = " + f.getOp());
+      log.error("todo: handle concept filters with op = " + f.getOp());
       throw new FHIRException("Unable to handle system " + cs.getUrl() + " concept filter with op = " + f.getOp());
     }
   }

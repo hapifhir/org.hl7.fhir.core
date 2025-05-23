@@ -61,6 +61,7 @@ import java.util.zip.ZipInputStream;
 
 import javax.annotation.Nonnull;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
@@ -93,6 +94,7 @@ import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
  * @author Grahame Grieve
  *
  */
+@Slf4j
 public class NpmPackage {
 
   public interface ITransformingLoader {
@@ -610,16 +612,15 @@ public class NpmPackage {
     try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
       TarArchiveEntry entry;
 
-      int i = 0;
-      int c = 12;
+      NpmPackageReadLogger readLogger = new NpmPackageReadLogger(progress);
       while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
-        i++;
-        String n = entry.getName();
-        if (n.contains("..")) {
-          throw new RuntimeException("Entry with an illegal name: " + n);
+
+        String entryName = entry.getName();
+        if (entryName.contains("..")) {
+          throw new RuntimeException("Entry with an illegal name: " + entryName);
         }
         if (entry.isDirectory()) {
-          String dir = n.substring(0, n.length()-1);
+          String dir = entryName.substring(0, entryName.length()-1);
           if (dir.startsWith("package/")) {
             dir = dir.substring(8);
           }
@@ -634,17 +635,9 @@ public class NpmPackage {
             }
           }
           fos.close();
-          loadFile(n, fos.toByteArray());
+          loadFile(entryName, fos.toByteArray());
         }
-        if (progress && i % 50 == 0) {
-          c++;
-          System.out.print(".");
-          if (c == 120) {
-            System.out.println("");
-            System.out.print("  ");
-            c = 2;
-          }
-        }
+        readLogger.entry(entryName);
       }
     } 
     try {
@@ -1272,7 +1265,7 @@ public class NpmPackage {
         byte[] b = folder.content.get(s);
         String name = n+"/"+s;
         if (b == null) {
-          System.out.println(name+" is null");
+          log.warn(name+" is null");
         } else {
           indexer.seeFile(s, b);
           if (!s.equals(".index.json") && !s.equals(".index.db") && !s.equals("package.json")) {
@@ -1393,16 +1386,6 @@ public class NpmPackage {
           FileUtilities.bytesToFile(folder.fetchFile(s), fn);
       }      
     }
-  }
-
-  public void debugDump(String purpose) {
-//    System.out.println("Debug Dump of Package for '"+purpose+"'. Path = "+path);
-//    System.out.println("  npm = "+name()+"#"+version()+", canonical = "+canonical());
-//    System.out.println("  folders = "+folders.size());
-//    for (String s : sorted(folders.keySet())) {
-//      NpmPackageFolder folder = folders.get(s);
-//      System.out.println("    "+folder.dump());
-//    }
   }
 
   private List<String> sorted(Set<String> keys) {

@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.HTTPResult;
@@ -13,7 +14,7 @@ import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
-
+@Slf4j
 public class ChatGPTAPI extends AIAPI {
   private static final String API_URL = "https://api.openai.com/v1/chat/completions";
   private static final String MODEL = "gpt-4o-mini";
@@ -25,6 +26,7 @@ public class ChatGPTAPI extends AIAPI {
   }
 
   @Override
+  @SuppressWarnings("checkstyle:systemout")
   public List<CodeAndTextValidationResult> validateCodings(List<CodeAndTextValidationRequest> requests) throws IOException {
     // limit to 5 in a batch 
     List<List<CodeAndTextValidationRequest>> chunks = new ArrayList<>();
@@ -33,7 +35,7 @@ public class ChatGPTAPI extends AIAPI {
     }
     List<CodeAndTextValidationResult> results = new ArrayList<CodeAndTextValidationResult>();
     int c = 0;
-    System.out.print(" ");
+
     for (List<CodeAndTextValidationRequest> chunk : chunks) {
 
       StringBuilder prompt = new StringBuilder();
@@ -54,6 +56,7 @@ public class ChatGPTAPI extends AIAPI {
         systemPrompt.append("\n");
       }
       System.out.print(".");
+      log.debug("  processed request");
       JsonArray json = getResponse(prompt.toString(), systemPrompt.toString());
 
        parseValidationResponse(json, chunk, results);

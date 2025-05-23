@@ -119,6 +119,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Element;
 
+@SuppressWarnings("checkstyle:systemout")
 public class ArgonautConverter extends ConverterBase {
   //  public final static String DEF_TS_SERVER = "http://fhir-dev.healthintersections.com.au/open";
   public final static String DEV_TS_SERVER = "http://local.fhir.org:8080/open";

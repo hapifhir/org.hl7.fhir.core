@@ -1,6 +1,5 @@
 package org.hl7.fhir.utilities.tests.execution.junit4;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +14,7 @@ import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
 import lombok.Getter;
+import org.slf4j.Logger;
 
 public class JUnit4TestExecutor extends ModuleTestExecutor {
 
@@ -29,25 +29,25 @@ public class JUnit4TestExecutor extends ModuleTestExecutor {
 
   private class JUnit4RunListener extends RunListener {
 
-    PrintStream writer;
-    public JUnit4RunListener(PrintStream writer) {
-      this.writer = writer;
+    Logger log;
+    public JUnit4RunListener(Logger log) {
+      this.log = log;
     }
 
     @Override
     public void testStarted(Description description) {
-      ModuleTestExecutor.printTestStarted(writer, description.getDisplayName());
+      ModuleTestExecutor.printTestStarted(log, description.getDisplayName());
     }
 
     @Override
     public void testFinished(Description description) {
-      ModuleTestExecutor.printTestFinished(writer, description.getDisplayName(),
+      ModuleTestExecutor.printTestFinished(log, description.getDisplayName(),
         "FINISHED");
     }
 
     @Override
     public void testFailure(Failure failure) {
-      ModuleTestExecutor.printTestFailed(writer,
+      ModuleTestExecutor.printTestFailed(log,
 
         failure.getDescription().getDisplayName(),
         failure.getException()
@@ -55,10 +55,11 @@ public class JUnit4TestExecutor extends ModuleTestExecutor {
     }
   }
 
-  public CliTestSummary executeTests(PrintStream out, String classNameFilter) {
+  public CliTestSummary executeTests(Logger log, String classNameFilter) {
 
     JUnitCore junit = new JUnitCore();
-    junit.addListener(new JUnit4RunListener(System.out));
+
+    junit.addListener(new JUnit4RunListener(log));
 
     Pattern pattern = classNameFilter != null ? Pattern.compile(classNameFilter) : null;
 

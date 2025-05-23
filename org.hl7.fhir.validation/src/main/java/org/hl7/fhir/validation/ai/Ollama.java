@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -14,6 +15,7 @@ import org.hl7.fhir.utilities.http.ManagedWebAccessor;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
+@Slf4j
 public class Ollama extends AIAPI {
 
   private static final String MODEL = "llama3.2";
@@ -46,6 +48,7 @@ public class Ollama extends AIAPI {
   }
 
   @Override
+  @SuppressWarnings("checkstyle:systemout")
   public List<CodeAndTextValidationResult> validateCodings(List<CodeAndTextValidationRequest> requests) throws IOException {
     List<CodeAndTextValidationResult> res = new ArrayList<>();
     for ( CodeAndTextValidationRequest req : requests) {
@@ -58,6 +61,7 @@ public class Ollama extends AIAPI {
       }
       
       System.out.print(".");
+      log.debug("  processed request");
       JsonObject json = getResponse(prompt.toString());
 
       res.add(parseValidationResponse(json, req));

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.utils.sql.Validator.TrueFalseOrUnknown;
 import org.hl7.fhir.r4.context.IWorkerContext;
@@ -53,6 +54,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class Validator {
 
   public enum TrueFalseOrUnknown {
@@ -687,7 +689,7 @@ public class Validator {
 
   public void dump() {
     for (ValidationMessage vm : issues) {
-      System.out.println(vm.summary());
+      log.info(vm.summary());
     }
 
   }

@@ -12,10 +12,9 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
-
+@SuppressWarnings("checkstyle:systemout")
 public class PackageScanner {
 
-  
   public static void main(String[] args) throws IOException {
     List<String> output = new ArrayList<>();
     Set<String> packages = new HashSet<>();
