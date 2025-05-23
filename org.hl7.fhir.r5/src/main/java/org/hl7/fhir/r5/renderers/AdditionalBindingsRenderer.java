@@ -214,7 +214,7 @@ public class AdditionalBindingsRenderer {
     if (bindings.isEmpty()) {
       return;
     } else {
-      Piece piece = gen.new Piece("table").attr("class", "grid");
+      Piece piece = gen.new Piece("binding", "table").attr("class", "grid");
       c.getPieces().add(piece);
       render(piece.getChildren(), false);
     }
