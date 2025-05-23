@@ -1,7 +1,7 @@
 ## Validator Changes
 
-* None
+* no changes
 
 ## Other code changes
 
-* Add modifier extensions to DomainResource get/hasExtension methods that use URL params
+* no changes
