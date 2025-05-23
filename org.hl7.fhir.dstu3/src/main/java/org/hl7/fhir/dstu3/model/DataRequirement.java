@@ -167,8 +167,8 @@ public class DataRequirement extends Type implements ICompositeType {
           return (StringType) this.valueSet;
         }
 
-        public boolean hasValueSetStringType() { 
-          return this != null && this.valueSet instanceof StringType;
+        public boolean hasValueSetStringType() {
+          return this.valueSet instanceof StringType;
         }
 
         /**
@@ -182,8 +182,8 @@ public class DataRequirement extends Type implements ICompositeType {
           return (Reference) this.valueSet;
         }
 
-        public boolean hasValueSetReference() { 
-          return this != null && this.valueSet instanceof Reference;
+        public boolean hasValueSetReference() {
+          return this.valueSet instanceof Reference;
         }
 
         public boolean hasValueSet() { 
@@ -651,8 +651,8 @@ public class DataRequirement extends Type implements ICompositeType {
           return (DateTimeType) this.value;
         }
 
-        public boolean hasValueDateTimeType() { 
-          return this != null && this.value instanceof DateTimeType;
+        public boolean hasValueDateTimeType() {
+          return this.value instanceof DateTimeType;
         }
 
         /**
@@ -666,8 +666,8 @@ public class DataRequirement extends Type implements ICompositeType {
           return (Period) this.value;
         }
 
-        public boolean hasValuePeriod() { 
-          return this != null && this.value instanceof Period;
+        public boolean hasValuePeriod() {
+          return this.value instanceof Period;
         }
 
         /**
@@ -681,8 +681,8 @@ public class DataRequirement extends Type implements ICompositeType {
           return (Duration) this.value;
         }
 
-        public boolean hasValueDuration() { 
-          return this != null && this.value instanceof Duration;
+        public boolean hasValueDuration() {
+          return this.value instanceof Duration;
         }
 
         public boolean hasValue() { 

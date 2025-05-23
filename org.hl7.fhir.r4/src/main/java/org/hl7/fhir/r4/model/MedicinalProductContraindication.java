@@ -142,7 +142,7 @@ public class MedicinalProductContraindication extends DomainResource {
     }
 
     public boolean hasMedicationCodeableConcept() {
-      return this != null && this.medication instanceof CodeableConcept;
+        return this.medication instanceof CodeableConcept;
     }
 
     /**
@@ -160,7 +160,7 @@ public class MedicinalProductContraindication extends DomainResource {
     }
 
     public boolean hasMedicationReference() {
-      return this != null && this.medication instanceof Reference;
+        return this.medication instanceof Reference;
     }
 
     public boolean hasMedication() {

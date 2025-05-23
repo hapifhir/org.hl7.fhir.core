@@ -674,7 +674,7 @@ public class Ingredient extends DomainResource {
     }
 
     public boolean hasPresentationRatio() {
-      return this != null && this.presentation instanceof Ratio;
+        return this.presentation instanceof Ratio;
     }
 
     /**
@@ -692,7 +692,7 @@ public class Ingredient extends DomainResource {
     }
 
     public boolean hasPresentationRatioRange() {
-      return this != null && this.presentation instanceof RatioRange;
+        return this.presentation instanceof RatioRange;
     }
 
     public boolean hasPresentation() {
@@ -792,7 +792,7 @@ public class Ingredient extends DomainResource {
     }
 
     public boolean hasConcentrationRatio() {
-      return this != null && this.concentration instanceof Ratio;
+        return this.concentration instanceof Ratio;
     }
 
     /**
@@ -808,7 +808,7 @@ public class Ingredient extends DomainResource {
     }
 
     public boolean hasConcentrationRatioRange() {
-      return this != null && this.concentration instanceof RatioRange;
+        return this.concentration instanceof RatioRange;
     }
 
     public boolean hasConcentration() {
@@ -1472,7 +1472,7 @@ public class Ingredient extends DomainResource {
     }
 
     public boolean hasStrengthRatio() {
-      return this != null && this.strength instanceof Ratio;
+        return this.strength instanceof Ratio;
     }
 
     /**
@@ -1489,7 +1489,7 @@ public class Ingredient extends DomainResource {
     }
 
     public boolean hasStrengthRatioRange() {
-      return this != null && this.strength instanceof RatioRange;
+        return this.strength instanceof RatioRange;
     }
 
     public boolean hasStrength() {

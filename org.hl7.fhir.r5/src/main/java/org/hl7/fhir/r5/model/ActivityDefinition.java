@@ -1585,8 +1585,8 @@ public class ActivityDefinition extends MetadataResource {
       return (StringType) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmStringType() { 
-      return this != null && this.versionAlgorithm instanceof StringType;
+    public boolean hasVersionAlgorithmStringType() {
+        return this.versionAlgorithm instanceof StringType;
     }
 
     /**
@@ -1600,8 +1600,8 @@ public class ActivityDefinition extends MetadataResource {
       return (Coding) this.versionAlgorithm;
     }
 
-    public boolean hasVersionAlgorithmCoding() { 
-      return this != null && this.versionAlgorithm instanceof Coding;
+    public boolean hasVersionAlgorithmCoding() {
+        return this.versionAlgorithm instanceof Coding;
     }
 
     public boolean hasVersionAlgorithm() { 
@@ -1873,8 +1873,8 @@ public class ActivityDefinition extends MetadataResource {
       return (CodeableConcept) this.subject;
     }
 
-    public boolean hasSubjectCodeableConcept() { 
-      return this != null && this.subject instanceof CodeableConcept;
+    public boolean hasSubjectCodeableConcept() {
+        return this.subject instanceof CodeableConcept;
     }
 
     /**
@@ -1888,8 +1888,8 @@ public class ActivityDefinition extends MetadataResource {
       return (Reference) this.subject;
     }
 
-    public boolean hasSubjectReference() { 
-      return this != null && this.subject instanceof Reference;
+    public boolean hasSubjectReference() {
+        return this.subject instanceof Reference;
     }
 
     /**
@@ -1903,8 +1903,8 @@ public class ActivityDefinition extends MetadataResource {
       return (CanonicalType) this.subject;
     }
 
-    public boolean hasSubjectCanonicalType() { 
-      return this != null && this.subject instanceof CanonicalType;
+    public boolean hasSubjectCanonicalType() {
+        return this.subject instanceof CanonicalType;
     }
 
     public boolean hasSubject() { 
@@ -3207,8 +3207,8 @@ public class ActivityDefinition extends MetadataResource {
       return (Timing) this.timing;
     }
 
-    public boolean hasTimingTiming() { 
-      return this != null && this.timing instanceof Timing;
+    public boolean hasTimingTiming() {
+        return this.timing instanceof Timing;
     }
 
     /**
@@ -3222,8 +3222,8 @@ public class ActivityDefinition extends MetadataResource {
       return (Age) this.timing;
     }
 
-    public boolean hasTimingAge() { 
-      return this != null && this.timing instanceof Age;
+    public boolean hasTimingAge() {
+        return this.timing instanceof Age;
     }
 
     /**
@@ -3237,8 +3237,8 @@ public class ActivityDefinition extends MetadataResource {
       return (Range) this.timing;
     }
 
-    public boolean hasTimingRange() { 
-      return this != null && this.timing instanceof Range;
+    public boolean hasTimingRange() {
+        return this.timing instanceof Range;
     }
 
     /**
@@ -3252,8 +3252,8 @@ public class ActivityDefinition extends MetadataResource {
       return (Duration) this.timing;
     }
 
-    public boolean hasTimingDuration() { 
-      return this != null && this.timing instanceof Duration;
+    public boolean hasTimingDuration() {
+        return this.timing instanceof Duration;
     }
 
     public boolean hasTiming() { 
@@ -3288,8 +3288,8 @@ public class ActivityDefinition extends MetadataResource {
       return (BooleanType) this.asNeeded;
     }
 
-    public boolean hasAsNeededBooleanType() { 
-      return this != null && this.asNeeded instanceof BooleanType;
+    public boolean hasAsNeededBooleanType() {
+        return this.asNeeded instanceof BooleanType;
     }
 
     /**
@@ -3303,8 +3303,8 @@ public class ActivityDefinition extends MetadataResource {
       return (CodeableConcept) this.asNeeded;
     }
 
-    public boolean hasAsNeededCodeableConcept() { 
-      return this != null && this.asNeeded instanceof CodeableConcept;
+    public boolean hasAsNeededCodeableConcept() {
+        return this.asNeeded instanceof CodeableConcept;
     }
 
     public boolean hasAsNeeded() { 
@@ -3416,8 +3416,8 @@ public class ActivityDefinition extends MetadataResource {
       return (Reference) this.product;
     }
 
-    public boolean hasProductReference() { 
-      return this != null && this.product instanceof Reference;
+    public boolean hasProductReference() {
+        return this.product instanceof Reference;
     }
 
     /**
@@ -3431,8 +3431,8 @@ public class ActivityDefinition extends MetadataResource {
       return (CodeableConcept) this.product;
     }
 
-    public boolean hasProductCodeableConcept() { 
-      return this != null && this.product instanceof CodeableConcept;
+    public boolean hasProductCodeableConcept() {
+        return this.product instanceof CodeableConcept;
     }
 
     public boolean hasProduct() { 
