@@ -737,7 +737,7 @@ public class LanguageUtils {
       return true;
     }
     return Utilities.existsInList(path, 
-        "ImplementationGuide.definition.parameter.value", "ImplementationGuide.dependsOn.version", "ImplementationGuide.dependsOn.id", "ImplementationGuide.definition.resource.name",
+        "ImplementationGuide.definition.parameter.value", "ImplementationGuide.dependsOn.version", "ImplementationGuide.dependsOn.id",
         "CanonicalResource.name", 
         "CapabilityStatement.rest.resource.searchRevInclude", "CapabilityStatement.rest.resource.searchInclude", "CapabilityStatement.rest.resource.searchParam.name",
         "SearchParameter.expression", "SearchParameter.xpath",
