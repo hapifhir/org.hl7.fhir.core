@@ -1797,7 +1797,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasTopicCodeableConcept() {
-      return this != null && this.topic instanceof CodeableConcept;
+        return this.topic instanceof CodeableConcept;
     }
 
     /**
@@ -1813,7 +1813,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasTopicReference() {
-      return this != null && this.topic instanceof Reference;
+        return this.topic instanceof Reference;
     }
 
     public boolean hasTopic() {
@@ -4406,7 +4406,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueBooleanType() {
-      return this != null && this.value instanceof BooleanType;
+        return this.value instanceof BooleanType;
     }
 
     /**
@@ -4425,7 +4425,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueDecimalType() {
-      return this != null && this.value instanceof DecimalType;
+        return this.value instanceof DecimalType;
     }
 
     /**
@@ -4444,7 +4444,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueIntegerType() {
-      return this != null && this.value instanceof IntegerType;
+        return this.value instanceof IntegerType;
     }
 
     /**
@@ -4463,7 +4463,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueDateType() {
-      return this != null && this.value instanceof DateType;
+        return this.value instanceof DateType;
     }
 
     /**
@@ -4482,7 +4482,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueDateTimeType() {
-      return this != null && this.value instanceof DateTimeType;
+        return this.value instanceof DateTimeType;
     }
 
     /**
@@ -4501,7 +4501,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueTimeType() {
-      return this != null && this.value instanceof TimeType;
+        return this.value instanceof TimeType;
     }
 
     /**
@@ -4520,7 +4520,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueStringType() {
-      return this != null && this.value instanceof StringType;
+        return this.value instanceof StringType;
     }
 
     /**
@@ -4539,7 +4539,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueUriType() {
-      return this != null && this.value instanceof UriType;
+        return this.value instanceof UriType;
     }
 
     /**
@@ -4558,7 +4558,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueAttachment() {
-      return this != null && this.value instanceof Attachment;
+        return this.value instanceof Attachment;
     }
 
     /**
@@ -4577,7 +4577,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueCoding() {
-      return this != null && this.value instanceof Coding;
+        return this.value instanceof Coding;
     }
 
     /**
@@ -4596,7 +4596,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueQuantity() {
-      return this != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -4615,7 +4615,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasValueReference() {
-      return this != null && this.value instanceof Reference;
+        return this.value instanceof Reference;
     }
 
     public boolean hasValue() {
@@ -6877,7 +6877,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasEntityCodeableConcept() {
-      return this != null && this.entity instanceof CodeableConcept;
+        return this.entity instanceof CodeableConcept;
     }
 
     /**
@@ -6894,7 +6894,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasEntityReference() {
-      return this != null && this.entity instanceof Reference;
+        return this.entity instanceof Reference;
     }
 
     public boolean hasEntity() {
@@ -8668,7 +8668,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasOccurrenceDateTimeType() {
-      return this != null && this.occurrence instanceof DateTimeType;
+        return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -8684,7 +8684,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasOccurrencePeriod() {
-      return this != null && this.occurrence instanceof Period;
+        return this.occurrence instanceof Period;
     }
 
     /**
@@ -8700,7 +8700,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasOccurrenceTiming() {
-      return this != null && this.occurrence instanceof Timing;
+        return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() {
@@ -10816,7 +10816,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasContentAttachment() {
-      return this != null && this.content instanceof Attachment;
+        return this.content instanceof Attachment;
     }
 
     /**
@@ -10834,7 +10834,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasContentReference() {
-      return this != null && this.content instanceof Reference;
+        return this.content instanceof Reference;
     }
 
     public boolean hasContent() {
@@ -11056,7 +11056,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasContentAttachment() {
-      return this != null && this.content instanceof Attachment;
+        return this.content instanceof Attachment;
     }
 
     /**
@@ -11072,7 +11072,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasContentReference() {
-      return this != null && this.content instanceof Reference;
+        return this.content instanceof Reference;
     }
 
     public boolean hasContent() {
@@ -11290,7 +11290,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasContentAttachment() {
-      return this != null && this.content instanceof Attachment;
+        return this.content instanceof Attachment;
     }
 
     /**
@@ -11307,7 +11307,7 @@ public class Contract extends DomainResource {
     }
 
     public boolean hasContentReference() {
-      return this != null && this.content instanceof Reference;
+        return this.content instanceof Reference;
     }
 
     public boolean hasContent() {
@@ -13013,7 +13013,7 @@ public class Contract extends DomainResource {
   }
 
   public boolean hasTopicCodeableConcept() {
-    return this != null && this.topic instanceof CodeableConcept;
+      return this.topic instanceof CodeableConcept;
   }
 
   /**
@@ -13030,7 +13030,7 @@ public class Contract extends DomainResource {
   }
 
   public boolean hasTopicReference() {
-    return this != null && this.topic instanceof Reference;
+      return this.topic instanceof Reference;
   }
 
   public boolean hasTopic() {
@@ -13623,7 +13623,7 @@ public class Contract extends DomainResource {
   }
 
   public boolean hasLegallyBindingAttachment() {
-    return this != null && this.legallyBinding instanceof Attachment;
+      return this.legallyBinding instanceof Attachment;
   }
 
   /**
@@ -13642,7 +13642,7 @@ public class Contract extends DomainResource {
   }
 
   public boolean hasLegallyBindingReference() {
-    return this != null && this.legallyBinding instanceof Reference;
+      return this.legallyBinding instanceof Reference;
   }
 
   public boolean hasLegallyBinding() {

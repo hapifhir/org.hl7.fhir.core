@@ -273,8 +273,8 @@ public class Communication extends DomainResource {
           return (StringType) this.content;
         }
 
-        public boolean hasContentStringType() { 
-          return this != null && this.content instanceof StringType;
+        public boolean hasContentStringType() {
+          return this.content instanceof StringType;
         }
 
         /**
@@ -288,8 +288,8 @@ public class Communication extends DomainResource {
           return (Attachment) this.content;
         }
 
-        public boolean hasContentAttachment() { 
-          return this != null && this.content instanceof Attachment;
+        public boolean hasContentAttachment() {
+          return this.content instanceof Attachment;
         }
 
         /**
@@ -303,8 +303,8 @@ public class Communication extends DomainResource {
           return (Reference) this.content;
         }
 
-        public boolean hasContentReference() { 
-          return this != null && this.content instanceof Reference;
+        public boolean hasContentReference() {
+          return this.content instanceof Reference;
         }
 
         public boolean hasContent() { 

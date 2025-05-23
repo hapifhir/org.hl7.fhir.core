@@ -343,7 +343,7 @@ public class EvidenceVariable extends DomainResource {
     }
 
     public boolean hasDefinitionReference() {
-      return this != null && this.definition instanceof Reference;
+        return this.definition instanceof Reference;
     }
 
     /**
@@ -363,7 +363,7 @@ public class EvidenceVariable extends DomainResource {
     }
 
     public boolean hasDefinitionCanonicalType() {
-      return this != null && this.definition instanceof CanonicalType;
+        return this.definition instanceof CanonicalType;
     }
 
     /**
@@ -383,7 +383,7 @@ public class EvidenceVariable extends DomainResource {
     }
 
     public boolean hasDefinitionCodeableConcept() {
-      return this != null && this.definition instanceof CodeableConcept;
+        return this.definition instanceof CodeableConcept;
     }
 
     /**
@@ -403,7 +403,7 @@ public class EvidenceVariable extends DomainResource {
     }
 
     public boolean hasDefinitionExpression() {
-      return this != null && this.definition instanceof Expression;
+        return this.definition instanceof Expression;
     }
 
     public boolean hasDefinition() {
@@ -1426,7 +1426,7 @@ public class EvidenceVariable extends DomainResource {
     }
 
     public boolean hasValueCodeableConcept() {
-      return this != null && this.value instanceof CodeableConcept;
+        return this.value instanceof CodeableConcept;
     }
 
     /**
@@ -1442,7 +1442,7 @@ public class EvidenceVariable extends DomainResource {
     }
 
     public boolean hasValueQuantity() {
-      return this != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -1458,7 +1458,7 @@ public class EvidenceVariable extends DomainResource {
     }
 
     public boolean hasValueRange() {
-      return this != null && this.value instanceof Range;
+        return this.value instanceof Range;
     }
 
     public boolean hasValue() {

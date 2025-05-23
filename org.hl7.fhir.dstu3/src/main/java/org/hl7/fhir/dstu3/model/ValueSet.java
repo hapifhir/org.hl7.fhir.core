@@ -2734,8 +2734,8 @@ public class ValueSet extends MetadataResource {
           return (StringType) this.value;
         }
 
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
+        public boolean hasValueStringType() {
+            return this.value instanceof StringType;
         }
 
         /**
@@ -2749,8 +2749,8 @@ public class ValueSet extends MetadataResource {
           return (BooleanType) this.value;
         }
 
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
+        public boolean hasValueBooleanType() {
+            return this.value instanceof BooleanType;
         }
 
         /**
@@ -2764,8 +2764,8 @@ public class ValueSet extends MetadataResource {
           return (IntegerType) this.value;
         }
 
-        public boolean hasValueIntegerType() { 
-          return this != null && this.value instanceof IntegerType;
+        public boolean hasValueIntegerType() {
+            return this.value instanceof IntegerType;
         }
 
         /**
@@ -2779,8 +2779,8 @@ public class ValueSet extends MetadataResource {
           return (DecimalType) this.value;
         }
 
-        public boolean hasValueDecimalType() { 
-          return this != null && this.value instanceof DecimalType;
+        public boolean hasValueDecimalType() {
+            return this.value instanceof DecimalType;
         }
 
         /**
@@ -2794,8 +2794,8 @@ public class ValueSet extends MetadataResource {
           return (UriType) this.value;
         }
 
-        public boolean hasValueUriType() { 
-          return this != null && this.value instanceof UriType;
+        public boolean hasValueUriType() {
+            return this.value instanceof UriType;
         }
 
         /**
@@ -2809,8 +2809,8 @@ public class ValueSet extends MetadataResource {
           return (CodeType) this.value;
         }
 
-        public boolean hasValueCodeType() { 
-          return this != null && this.value instanceof CodeType;
+        public boolean hasValueCodeType() {
+            return this.value instanceof CodeType;
         }
 
         public boolean hasValue() { 

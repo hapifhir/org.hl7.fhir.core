@@ -1762,7 +1762,7 @@ public class MessageHeader extends DomainResource {
   }
 
   public boolean hasEventCoding() {
-    return this != null && this.event instanceof Coding;
+      return this.event instanceof Coding;
   }
 
   /**
@@ -1782,7 +1782,7 @@ public class MessageHeader extends DomainResource {
   }
 
   public boolean hasEventUriType() {
-    return this != null && this.event instanceof UriType;
+      return this.event instanceof UriType;
   }
 
   public boolean hasEvent() {

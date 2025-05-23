@@ -390,8 +390,8 @@ public class CoverageEligibilityResponse extends DomainResource {
           return (DateTimeType) this.when;
         }
 
-        public boolean hasWhenDateTimeType() { 
-          return this != null && this.when instanceof DateTimeType;
+        public boolean hasWhenDateTimeType() {
+          return this.when instanceof DateTimeType;
         }
 
         /**
@@ -405,8 +405,8 @@ public class CoverageEligibilityResponse extends DomainResource {
           return (Period) this.when;
         }
 
-        public boolean hasWhenPeriod() { 
-          return this != null && this.when instanceof Period;
+        public boolean hasWhenPeriod() {
+          return this.when instanceof Period;
         }
 
         public boolean hasWhen() { 
@@ -2035,8 +2035,8 @@ public class CoverageEligibilityResponse extends DomainResource {
           return (UnsignedIntType) this.allowed;
         }
 
-        public boolean hasAllowedUnsignedIntType() { 
-          return this != null && this.allowed instanceof UnsignedIntType;
+        public boolean hasAllowedUnsignedIntType() {
+          return this.allowed instanceof UnsignedIntType;
         }
 
         /**
@@ -2050,8 +2050,8 @@ public class CoverageEligibilityResponse extends DomainResource {
           return (StringType) this.allowed;
         }
 
-        public boolean hasAllowedStringType() { 
-          return this != null && this.allowed instanceof StringType;
+        public boolean hasAllowedStringType() {
+          return this.allowed instanceof StringType;
         }
 
         /**
@@ -2065,8 +2065,8 @@ public class CoverageEligibilityResponse extends DomainResource {
           return (Money) this.allowed;
         }
 
-        public boolean hasAllowedMoney() { 
-          return this != null && this.allowed instanceof Money;
+        public boolean hasAllowedMoney() {
+          return this.allowed instanceof Money;
         }
 
         public boolean hasAllowed() { 
@@ -2101,8 +2101,8 @@ public class CoverageEligibilityResponse extends DomainResource {
           return (UnsignedIntType) this.used;
         }
 
-        public boolean hasUsedUnsignedIntType() { 
-          return this != null && this.used instanceof UnsignedIntType;
+        public boolean hasUsedUnsignedIntType() {
+          return this.used instanceof UnsignedIntType;
         }
 
         /**
@@ -2116,8 +2116,8 @@ public class CoverageEligibilityResponse extends DomainResource {
           return (StringType) this.used;
         }
 
-        public boolean hasUsedStringType() { 
-          return this != null && this.used instanceof StringType;
+        public boolean hasUsedStringType() {
+          return this.used instanceof StringType;
         }
 
         /**
@@ -2131,8 +2131,8 @@ public class CoverageEligibilityResponse extends DomainResource {
           return (Money) this.used;
         }
 
-        public boolean hasUsedMoney() { 
-          return this != null && this.used instanceof Money;
+        public boolean hasUsedMoney() {
+          return this.used instanceof Money;
         }
 
         public boolean hasUsed() { 
@@ -2986,8 +2986,8 @@ public class CoverageEligibilityResponse extends DomainResource {
       return (DateType) this.serviced;
     }
 
-    public boolean hasServicedDateType() { 
-      return this != null && this.serviced instanceof DateType;
+    public boolean hasServicedDateType() {
+      return this.serviced instanceof DateType;
     }
 
     /**
@@ -3001,8 +3001,8 @@ public class CoverageEligibilityResponse extends DomainResource {
       return (Period) this.serviced;
     }
 
-    public boolean hasServicedPeriod() { 
-      return this != null && this.serviced instanceof Period;
+    public boolean hasServicedPeriod() {
+      return this.serviced instanceof Period;
     }
 
     public boolean hasServiced() { 
