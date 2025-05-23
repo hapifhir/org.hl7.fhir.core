@@ -1530,6 +1530,9 @@ public class Enumerations {
             default: return "?";
           }
         }
+        public boolean testable() {
+          return this == REQUIRED || this == EXTENSIBLE;
+        }
     }
 
   public static class BindingStrengthEnumFactory implements EnumFactory<BindingStrength> {

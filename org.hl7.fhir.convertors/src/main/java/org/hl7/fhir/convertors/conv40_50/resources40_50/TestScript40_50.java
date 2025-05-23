@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
@@ -58,7 +59,7 @@ public class TestScript40_50 {
       return null;
     org.hl7.fhir.r5.model.TestScript tgt = new org.hl7.fhir.r5.model.TestScript();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestScript.scope")) {
+    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE)) {
       // the advisor will get this ignored.
       TestScriptScopeComponent scope = tgt.addScope();
       scope.setArtifact(ext.getExtensionString("artifact"));
@@ -175,7 +176,7 @@ public class TestScript40_50 {
       tgt.setTeardown(convertTestScriptTeardownComponent(src.getTeardown()));
     for (TestScriptScopeComponent scope : src.getScope()) {
       org.hl7.fhir.r4.model.Extension ext = tgt.addExtension();
-      ext.setUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestScript.scope");
+      ext.setUrl(VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE);
       if (scope.hasArtifact()) {
         org.hl7.fhir.r4.model.Extension se = ext.addExtension();
         se.setUrl("artifact");

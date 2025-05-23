@@ -14,6 +14,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
 
   private int filecount;
   private boolean incLangInFilename;
+  private String srcLang;
 
   public PoGetTextProducer(String rootFolder, String folderName, boolean useLangFolder) {
     super(rootFolder, folderName, useLangFolder);
@@ -21,6 +22,11 @@ public class PoGetTextProducer extends LanguageFileProducer {
 
   public PoGetTextProducer() {
     super();
+  }
+
+  public PoGetTextProducer(String srcLang) {
+    super();
+    this.srcLang = srcLang;
   }
 
   @Override
@@ -52,43 +58,24 @@ public class PoGetTextProducer extends LanguageFileProducer {
 
   public class POGetTextLanguageProducerLanguageSession extends LanguageProducerLanguageSession {
 
-
-    private StringBuilder po;
+    POSource source = new POSource();
 
     public POGetTextLanguageProducerLanguageSession(String id, String baseLang, String targetLang) {
       super(id, baseLang, targetLang);
-      po = new StringBuilder();
-      ln("msgid \"\"");
-      ln("msgstr \"\"");
-      ln("\"Language: pt\\n\"");
-      ln("\"X-Generator: Poedit 3.5\\n\"");
-      ln("");
-      ln("# "+baseLang+" -> "+targetLang);
-      ln("");
-      ln("\"Language: pt\\n\"");
-      ln("");
-      
-    }
-
-    protected void ln(String line) {
-      po.append(line+"\r\n");  
     }
 
     @Override
     public void finish() throws IOException {
-      FileUtilities.stringToFile(po.toString(), getFileName(id, baseLang, targetLang));
+      source.savePOFile(getFileName(id, baseLang, targetLang), 1, 0);
       filecount++;
     }
 
+
     @Override
     public void entry(TextUnit unit) {
-      if (unit.getContext() != null) {
-        ln("#. "+unit.getContext());
-      }
-      ln("msgctxt \""+unit.getId()+"\"");
-      ln("msgid \""+unit.getSrcText()+"\"");
-      ln("msgstr \""+(unit.getTgtText() == null ? "" : unit.getTgtText())+"\"");
-      ln("");
+      POObject po = new POObject(unit.getId(), unit.getSrcText(), unit.getTgtText());
+      po.setComment(unit.getContext());
+      source.getEntries().add(po);      
     }
 
   }
@@ -102,55 +89,18 @@ public class PoGetTextProducer extends LanguageFileProducer {
   @Override
   public List<TranslationUnit> loadSource(InputStream source) throws IOException {
     List<TranslationUnit> list = new ArrayList<>();
-    InputStreamReader r = new InputStreamReader(source, "UTF-8"); // leave charset out for default
-    BufferedReader br = new BufferedReader(r);
-    String lang = null;
-    String s;
-    TranslationUnit tu = null;
-    while ((s = Utilities.stripBOM(br.readLine())) != null) {
-       if (!Utilities.noString(s)) {
-         if (s.trim().startsWith("#")) {
-           if (lang == null) {
-             String[] p = s.substring(1).trim().split("\\-\\>");
-             if (p.length != 2) {
-               throw new IOException("Encountered unexpected starting line '"+s+"'");
-             } else {
-               lang = p[1].trim();
-             }
-           } else if (s.startsWith("#:")) {
-             tu = new TranslationUnit(lang, s.substring(2).trim(), null, null, null);
-           } else if (s.startsWith("#.")) {
-             if (tu != null) {
-               tu.setContext(s.substring(2).trim());
-             }
-           } else {
-             throw new IOException("Encountered unexpected line '"+s+"'");             
-           }
-       } else if (tu != null && s.startsWith("msgid ")) {
-         tu.setSrcText(stripQuotes(s.substring(5).trim()));         
-       } else if (tu != null && s.startsWith("msgstr ")) {
-         tu.setTgtText(stripQuotes(s.substring(6).trim()));
-         if (tu.getTgtText() != null) {
-           list.add(tu);
-         }
-         tu = null;
-       } else {
-         throw new IOException("Encountered unexpected line '"+s+"'");
-       }
-       }
+    POSource polist = POSource.loadPOFile(source);
+    for (POObject po : polist.getEntries()) {
+      TranslationUnit tu = new TranslationUnit(srcLang == null ? polist.getLang() : srcLang, po.getId(), null, po.getMsgid(), po.getMsgstr().isEmpty() ? null : po.getMsgstrFirst());
+      if (tu.getId() != null) {
+        list.add(tu);
+      }
     }
     return list;
   }
 
-  private String stripQuotes(String s) {
-    if (s.length() <= 2) {
-      return null;
-    }
-    return s.substring(1, s.length()-1);
-  }
-
   private String getFileName(String id, String baseLang, String targetLang) throws IOException {
-    return Utilities.path(getRootFolder(), getFolderName(), id+(incLangInFilename ? "-"+baseLang+"-"+targetLang+".po" : ""));
+    return Utilities.path(getRootFolder(), isUseLangFolder() ? targetLang : ".",  getFolderName(), id+(incLangInFilename ? "-"+baseLang+"-"+targetLang+".po" : ""));
   }
 
   public boolean isIncLangInFilename() {
@@ -167,27 +117,15 @@ public class PoGetTextProducer extends LanguageFileProducer {
   
   @Override
   public void produce(String id, String baseLang, String targetLang, List<TranslationUnit> translations, String filename) throws IOException {
-    StringBuilder po = new StringBuilder();
-    ln(po, "msgid \"\"");
-    ln(po, "msgstr \"\"");
-    ln(po, "\"Language: "+targetLang+"\\n\"");
-    ln(po, "\"X-Generator: Poedit 3.5\\n\"");
-    ln(po, "");
-    ln(po, "# "+baseLang+" -> "+targetLang);
-    ln(po, "");
-    for (TranslationUnit tu : translations) {
-      if (tu.getContext() != null) {
-        ln(po, "#. "+tu.getContext());
-      }
-      if (tu.getOriginal() != null) {
-        ln(po, "#| "+tu.getOriginal());
-      }
-      ln(po, "msgctxt \""+tu.getId()+"\"");
-      ln(po, "msgid \""+stripEoln(tu.getSrcText())+"\"");
-      ln(po, "msgstr \""+(tu.getTgtText() == null ? "" : stripEoln(tu.getTgtText()))+"\"");
-      ln(po, "");
+    POSource source = new POSource();
+    
+    for (TranslationUnit unit : translations) {
+      POObject po = new POObject(unit.getId(), unit.getSrcText(), unit.getTgtText());
+      po.setComment(unit.getContext());
+      po.setOldMsgId(unit.getOriginal());
+      source.getEntries().add(po);      
     }
-    FileUtilities.stringToFile(po.toString(), getTargetFileName(targetLang, filename));
+    source.savePOFile(getFileName(id, baseLang, targetLang)+".po", 1, 0);      
   }
 
   private String stripEoln(String s) {
