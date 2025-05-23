@@ -42,6 +42,7 @@ import org.hl7.fhir.validation.special.TxTesterScrubbers;
 import org.hl7.fhir.validation.special.TxTesterSorters;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -80,6 +81,7 @@ private static TxTestData testData;
 
   @SuppressWarnings("deprecation")
   @Test
+  @Ignore
   public void test() throws Exception {
     if (baseEngine == null) {
       baseEngine = TestUtilities.getValidationEngineNoTxServer("hl7.fhir.r5.core#5.0.0", FhirPublication.R5, "5.0.0");

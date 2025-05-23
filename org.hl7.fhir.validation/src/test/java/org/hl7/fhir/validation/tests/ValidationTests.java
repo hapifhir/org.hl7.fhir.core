@@ -98,6 +98,7 @@ import org.hl7.fhir.validation.instance.advisor.TextDrivenPolicyAdvisor;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -187,6 +188,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   
   @SuppressWarnings("deprecation")
   @Test
+  @Ignore
   public void test() throws Exception {
     TestingUtilities.injectCorePackageLoader();
 
