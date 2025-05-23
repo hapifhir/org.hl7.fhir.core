@@ -1655,17 +1655,20 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (!c.getPieces().isEmpty())  
               c.addPiece(gen.new Piece("binding", "br")); 
             if (!binding.hasValueSet()) {
-              c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_VS))+": ", null).addStyle("font-weight:bold"))); 
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_VS_1))+": ", null).addStyle("font-weight:bold"))); 
               if (binding.hasStrength()) { 
                 c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, " (", null))); 
                 c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", corePath+"terminologies.html#"+binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));                             
                 c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, ")", null))); 
+                if (binding.getStrength().testable()) {
+                  c.getPieces().add(gen.new Piece("binding", null, " ", null)); 
+                  c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, "\u26A0", context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_VS_2))).addStyle("font-weight:bold; color: #c97a18"));
+                }
               } 
+              c.getPieces().add(gen.new Piece("binding", null, ": ", null)); 
               if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) { 
-                c.getPieces().add(gen.new Piece("binding", null, ": ", null)); 
                 c.addMarkdownNoPara("binding", PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()))); 
               } else {
-                c.getPieces().add(gen.new Piece("binding", null, ": ", null)); 
                 c.addMarkdownNoPara("binding", context.formatPhrase(RenderingContext.GENERAL_BINDING_NO_DESC));
               }
             } else {
