@@ -645,7 +645,7 @@ public class MedicinalProductAuthorization extends DomainResource {
     }
 
     public boolean hasDatePeriod() {
-      return this != null && this.date instanceof Period;
+        return this.date instanceof Period;
     }
 
     /**
@@ -661,7 +661,7 @@ public class MedicinalProductAuthorization extends DomainResource {
     }
 
     public boolean hasDateDateTimeType() {
-      return this != null && this.date instanceof DateTimeType;
+        return this.date instanceof DateTimeType;
     }
 
     public boolean hasDate() {

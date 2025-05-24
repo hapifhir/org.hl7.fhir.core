@@ -1411,7 +1411,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasTimingDateType() {
-      return this != null && this.timing instanceof DateType;
+        return this.timing instanceof DateType;
     }
 
     /**
@@ -1428,7 +1428,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasTimingPeriod() {
-      return this != null && this.timing instanceof Period;
+        return this.timing instanceof Period;
     }
 
     public boolean hasTiming() {
@@ -1470,7 +1470,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasValueBooleanType() {
-      return this != null && this.value instanceof BooleanType;
+        return this.value instanceof BooleanType;
     }
 
     /**
@@ -1488,7 +1488,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasValueStringType() {
-      return this != null && this.value instanceof StringType;
+        return this.value instanceof StringType;
     }
 
     /**
@@ -1506,7 +1506,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasValueQuantity() {
-      return this != null && this.value instanceof Quantity;
+        return this.value instanceof Quantity;
     }
 
     /**
@@ -1524,7 +1524,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasValueAttachment() {
-      return this != null && this.value instanceof Attachment;
+        return this.value instanceof Attachment;
     }
 
     /**
@@ -1542,7 +1542,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasValueReference() {
-      return this != null && this.value instanceof Reference;
+        return this.value instanceof Reference;
     }
 
     public boolean hasValue() {
@@ -2031,7 +2031,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasDiagnosisCodeableConcept() {
-      return this != null && this.diagnosis instanceof CodeableConcept;
+        return this.diagnosis instanceof CodeableConcept;
     }
 
     /**
@@ -2048,7 +2048,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasDiagnosisReference() {
-      return this != null && this.diagnosis instanceof Reference;
+        return this.diagnosis instanceof Reference;
     }
 
     public boolean hasDiagnosis() {
@@ -2667,7 +2667,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasProcedureCodeableConcept() {
-      return this != null && this.procedure instanceof CodeableConcept;
+        return this.procedure instanceof CodeableConcept;
     }
 
     /**
@@ -2684,7 +2684,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasProcedureReference() {
-      return this != null && this.procedure instanceof Reference;
+        return this.procedure instanceof Reference;
     }
 
     public boolean hasProcedure() {
@@ -3535,7 +3535,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasLocationAddress() {
-      return this != null && this.location instanceof Address;
+        return this.location instanceof Address;
     }
 
     /**
@@ -3551,7 +3551,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasLocationReference() {
-      return this != null && this.location instanceof Reference;
+        return this.location instanceof Reference;
     }
 
     public boolean hasLocation() {
@@ -4504,7 +4504,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasServicedDateType() {
-      return this != null && this.serviced instanceof DateType;
+        return this.serviced instanceof DateType;
     }
 
     /**
@@ -4521,7 +4521,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasServicedPeriod() {
-      return this != null && this.serviced instanceof Period;
+        return this.serviced instanceof Period;
     }
 
     public boolean hasServiced() {
@@ -4559,7 +4559,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasLocationCodeableConcept() {
-      return this != null && this.location instanceof CodeableConcept;
+        return this.location instanceof CodeableConcept;
     }
 
     /**
@@ -4575,7 +4575,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasLocationAddress() {
-      return this != null && this.location instanceof Address;
+        return this.location instanceof Address;
     }
 
     /**
@@ -4591,7 +4591,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasLocationReference() {
-      return this != null && this.location instanceof Reference;
+        return this.location instanceof Reference;
     }
 
     public boolean hasLocation() {
@@ -9328,7 +9328,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasServicedDateType() {
-      return this != null && this.serviced instanceof DateType;
+        return this.serviced instanceof DateType;
     }
 
     /**
@@ -9345,7 +9345,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasServicedPeriod() {
-      return this != null && this.serviced instanceof Period;
+        return this.serviced instanceof Period;
     }
 
     public boolean hasServiced() {
@@ -9383,7 +9383,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasLocationCodeableConcept() {
-      return this != null && this.location instanceof CodeableConcept;
+        return this.location instanceof CodeableConcept;
     }
 
     /**
@@ -9399,7 +9399,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasLocationAddress() {
-      return this != null && this.location instanceof Address;
+        return this.location instanceof Address;
     }
 
     /**
@@ -9415,7 +9415,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasLocationReference() {
-      return this != null && this.location instanceof Reference;
+        return this.location instanceof Reference;
     }
 
     public boolean hasLocation() {
@@ -14096,7 +14096,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasAllowedUnsignedIntType() {
-      return this != null && this.allowed instanceof UnsignedIntType;
+        return this.allowed instanceof UnsignedIntType;
     }
 
     /**
@@ -14113,7 +14113,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasAllowedStringType() {
-      return this != null && this.allowed instanceof StringType;
+        return this.allowed instanceof StringType;
     }
 
     /**
@@ -14130,7 +14130,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasAllowedMoney() {
-      return this != null && this.allowed instanceof Money;
+        return this.allowed instanceof Money;
     }
 
     public boolean hasAllowed() {
@@ -14171,7 +14171,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasUsedUnsignedIntType() {
-      return this != null && this.used instanceof UnsignedIntType;
+        return this.used instanceof UnsignedIntType;
     }
 
     /**
@@ -14188,7 +14188,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     public boolean hasUsedMoney() {
-      return this != null && this.used instanceof Money;
+        return this.used instanceof Money;
     }
 
     public boolean hasUsed() {

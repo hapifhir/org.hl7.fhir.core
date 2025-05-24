@@ -3223,7 +3223,7 @@ public class AuditEvent extends DomainResource {
     }
 
     public boolean hasValueStringType() {
-      return this != null && this.value instanceof StringType;
+        return this.value instanceof StringType;
     }
 
     /**
@@ -3239,7 +3239,7 @@ public class AuditEvent extends DomainResource {
     }
 
     public boolean hasValueBase64BinaryType() {
-      return this != null && this.value instanceof Base64BinaryType;
+        return this.value instanceof Base64BinaryType;
     }
 
     public boolean hasValue() {

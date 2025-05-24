@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.elementmodel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /**
  * in here:
@@ -735,7 +737,7 @@ public class LanguageUtils {
       return true;
     }
     return Utilities.existsInList(path, 
-        "ImplementationGuide.definition.parameter.value", "ImplementationGuide.dependsOn.version", "ImplementationGuide.dependsOn.id", "ImplementationGuide.definition.resource.name",
+        "ImplementationGuide.definition.parameter.value", "ImplementationGuide.dependsOn.version", "ImplementationGuide.dependsOn.id",
         "CanonicalResource.name", 
         "CapabilityStatement.rest.resource.searchRevInclude", "CapabilityStatement.rest.resource.searchInclude", "CapabilityStatement.rest.resource.searchParam.name",
         "SearchParameter.expression", "SearchParameter.xpath",
@@ -773,6 +775,7 @@ public class LanguageUtils {
   public boolean switchLanguage(Base r, String lang, boolean markLanguage, boolean contained) {
     boolean changed = false;
     if (r.isPrimitive()) {
+
       PrimitiveType<?> dt = (PrimitiveType<?>) r;
       String cnt = ToolingExtensions.getLanguageTranslation(dt, lang); 
       dt.removeExtension(ToolingExtensions.EXT_TRANSLATION);
@@ -781,7 +784,19 @@ public class LanguageUtils {
         changed = true;
       }
     }
-    
+
+    if (r.fhirType().equals("Narrative")) {
+      Base div = r.getChildValueByName("div");
+      Base status = r.getChildValueByName("status");
+
+      XhtmlNode xhtml = div.getXhtml();
+      xhtml = adjustToLang(xhtml, lang, status == null ? null : status.primitiveValue());
+      if (xhtml == null) {
+        r.removeChild("div", div);
+      } else {
+        div.setXhtml(xhtml);
+      }
+    }
     for (Property p : r.children()) {
       for (Base c : p.getValues()) {
         changed = switchLanguage(c, lang, markLanguage, p.getName().equals("contained")) || changed;
@@ -795,7 +810,35 @@ public class LanguageUtils {
     return changed;
   }
 
-  public boolean switchLanguage(Element e, String lang, boolean markLanguage) {
+  private XhtmlNode adjustToLang(XhtmlNode xhtml, String lang, String status) {
+    if (xhtml == null) {
+      return null;
+    }
+    //see if there's a language specific section
+    for (XhtmlNode div : xhtml.getChildNodes()) {
+      if ("div".equals(div.getName())) {
+        String l = div.hasAttribute("lang") ? div.getAttribute("lang") : div.getAttribute("xml:lang");
+        if (lang.equals(l)) {
+          return div;
+        }       
+      }
+    }
+    // if the root language is correct
+    // this isn't first because a narrative marked for one language might have other language subsections
+    String l = xhtml.hasAttribute("lang") ? xhtml.getAttribute("lang") : xhtml.getAttribute("xml:lang");
+    if (lang.equals(l)) {
+      return xhtml;
+    }
+    // if the root language is null and the status is not additional
+    // it can be regenerated
+    if (l == null && Utilities.existsInList(status, "generated", "extensions")) {
+      return null;
+    }    
+    // well, really, not much we can do...
+    return xhtml;
+  }
+
+  public boolean switchLanguage(Element e, String lang, boolean markLanguage) throws IOException {
     boolean changed = false;
     if (e.getProperty().isTranslatable()) {
       String cnt = getTranslation(e, lang);
@@ -803,6 +846,15 @@ public class LanguageUtils {
       if (cnt != null) {
         e.setValue(cnt);
         changed = true;
+      }
+    }
+    if (e.fhirType().equals("Narrative") && e.hasChild("div")) {
+      XhtmlNode xhtml = e.getNamedChild("div").getXhtml();
+      xhtml = adjustToLang(xhtml, lang, e.getNamedChildValue("status"));
+      if (xhtml == null) {
+        e.removeChild("div");
+      } else {
+        e.getNamedChild("div").setXhtml(xhtml);
       }
     }
     if (e.hasChildren()) {
@@ -843,13 +895,16 @@ public class LanguageUtils {
     return e.primitiveValue();
   }
 
-  public Element copyToLanguage(Element element, String lang, boolean markLanguage) {
+  public Element copyToLanguage(Element element, String lang, boolean markLanguage) throws IOException {
     Element result = (Element) element.copy();
     switchLanguage(result, lang, markLanguage);
     return result;
   }
 
   public Resource copyToLanguage(Resource res, String lang, boolean markLanguage) {
+    if (res == null) {
+      return null;
+    }
     Resource r = res.copy();
     switchLanguage(r, lang, markLanguage, false);    
     return r;

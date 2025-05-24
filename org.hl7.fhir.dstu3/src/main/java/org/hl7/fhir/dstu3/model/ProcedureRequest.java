@@ -1689,8 +1689,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       return (DateTimeType) this.occurrence;
     }
 
-    public boolean hasOccurrenceDateTimeType() { 
-      return this != null && this.occurrence instanceof DateTimeType;
+    public boolean hasOccurrenceDateTimeType() {
+      return this.occurrence instanceof DateTimeType;
     }
 
     /**
@@ -1704,8 +1704,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       return (Period) this.occurrence;
     }
 
-    public boolean hasOccurrencePeriod() { 
-      return this != null && this.occurrence instanceof Period;
+    public boolean hasOccurrencePeriod() {
+      return this.occurrence instanceof Period;
     }
 
     /**
@@ -1719,8 +1719,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       return (Timing) this.occurrence;
     }
 
-    public boolean hasOccurrenceTiming() { 
-      return this != null && this.occurrence instanceof Timing;
+    public boolean hasOccurrenceTiming() {
+      return this.occurrence instanceof Timing;
     }
 
     public boolean hasOccurrence() { 
@@ -1755,8 +1755,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       return (BooleanType) this.asNeeded;
     }
 
-    public boolean hasAsNeededBooleanType() { 
-      return this != null && this.asNeeded instanceof BooleanType;
+    public boolean hasAsNeededBooleanType() {
+      return this.asNeeded instanceof BooleanType;
     }
 
     /**
@@ -1770,8 +1770,8 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       return (CodeableConcept) this.asNeeded;
     }
 
-    public boolean hasAsNeededCodeableConcept() { 
-      return this != null && this.asNeeded instanceof CodeableConcept;
+    public boolean hasAsNeededCodeableConcept() {
+      return this.asNeeded instanceof CodeableConcept;
     }
 
     public boolean hasAsNeeded() { 

@@ -181,7 +181,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueBase64BinaryType() {
-    return this != null && this.value instanceof Base64BinaryType;
+      return this.value instanceof Base64BinaryType;
   }
 
   /**
@@ -199,7 +199,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueBooleanType() {
-    return this != null && this.value instanceof BooleanType;
+      return this.value instanceof BooleanType;
   }
 
   /**
@@ -217,7 +217,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueCanonicalType() {
-    return this != null && this.value instanceof CanonicalType;
+      return this.value instanceof CanonicalType;
   }
 
   /**
@@ -235,7 +235,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueCodeType() {
-    return this != null && this.value instanceof CodeType;
+      return this.value instanceof CodeType;
   }
 
   /**
@@ -253,7 +253,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueDateType() {
-    return this != null && this.value instanceof DateType;
+      return this.value instanceof DateType;
   }
 
   /**
@@ -271,7 +271,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueDateTimeType() {
-    return this != null && this.value instanceof DateTimeType;
+      return this.value instanceof DateTimeType;
   }
 
   /**
@@ -289,7 +289,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueDecimalType() {
-    return this != null && this.value instanceof DecimalType;
+      return this.value instanceof DecimalType;
   }
 
   /**
@@ -307,7 +307,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueIdType() {
-    return this != null && this.value instanceof IdType;
+      return this.value instanceof IdType;
   }
 
   /**
@@ -325,7 +325,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueInstantType() {
-    return this != null && this.value instanceof InstantType;
+      return this.value instanceof InstantType;
   }
 
   /**
@@ -343,7 +343,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueIntegerType() {
-    return this != null && this.value instanceof IntegerType;
+      return this.value instanceof IntegerType;
   }
 
   /**
@@ -361,7 +361,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueMarkdownType() {
-    return this != null && this.value instanceof MarkdownType;
+      return this.value instanceof MarkdownType;
   }
 
   /**
@@ -379,7 +379,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueOidType() {
-    return this != null && this.value instanceof OidType;
+      return this.value instanceof OidType;
   }
 
   /**
@@ -397,7 +397,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValuePositiveIntType() {
-    return this != null && this.value instanceof PositiveIntType;
+      return this.value instanceof PositiveIntType;
   }
 
   /**
@@ -415,7 +415,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueStringType() {
-    return this != null && this.value instanceof StringType;
+      return this.value instanceof StringType;
   }
 
   /**
@@ -433,7 +433,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueTimeType() {
-    return this != null && this.value instanceof TimeType;
+      return this.value instanceof TimeType;
   }
 
   /**
@@ -451,7 +451,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueUnsignedIntType() {
-    return this != null && this.value instanceof UnsignedIntType;
+      return this.value instanceof UnsignedIntType;
   }
 
   /**
@@ -469,7 +469,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueUriType() {
-    return this != null && this.value instanceof UriType;
+      return this.value instanceof UriType;
   }
 
   /**
@@ -487,7 +487,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueUrlType() {
-    return this != null && this.value instanceof UrlType;
+      return this.value instanceof UrlType;
   }
 
   /**
@@ -505,7 +505,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueUuidType() {
-    return this != null && this.value instanceof UuidType;
+      return this.value instanceof UuidType;
   }
 
   /**
@@ -523,7 +523,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueAddress() {
-    return this != null && this.value instanceof Address;
+      return this.value instanceof Address;
   }
 
   /**
@@ -541,7 +541,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueAge() {
-    return this != null && this.value instanceof Age;
+      return this.value instanceof Age;
   }
 
   /**
@@ -559,7 +559,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueAnnotation() {
-    return this != null && this.value instanceof Annotation;
+      return this.value instanceof Annotation;
   }
 
   /**
@@ -577,7 +577,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueAttachment() {
-    return this != null && this.value instanceof Attachment;
+      return this.value instanceof Attachment;
   }
 
   /**
@@ -595,7 +595,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueCodeableConcept() {
-    return this != null && this.value instanceof CodeableConcept;
+      return this.value instanceof CodeableConcept;
   }
 
   /**
@@ -613,7 +613,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueCodeableReference() {
-    return this != null && this.value instanceof CodeableReference;
+      return this.value instanceof CodeableReference;
   }
 
   /**
@@ -631,7 +631,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueCoding() {
-    return this != null && this.value instanceof Coding;
+      return this.value instanceof Coding;
   }
 
   /**
@@ -649,7 +649,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueContactPoint() {
-    return this != null && this.value instanceof ContactPoint;
+      return this.value instanceof ContactPoint;
   }
 
   /**
@@ -667,7 +667,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueCount() {
-    return this != null && this.value instanceof Count;
+      return this.value instanceof Count;
   }
 
   /**
@@ -685,7 +685,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueDistance() {
-    return this != null && this.value instanceof Distance;
+      return this.value instanceof Distance;
   }
 
   /**
@@ -703,7 +703,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueDuration() {
-    return this != null && this.value instanceof Duration;
+      return this.value instanceof Duration;
   }
 
   /**
@@ -721,7 +721,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueHumanName() {
-    return this != null && this.value instanceof HumanName;
+      return this.value instanceof HumanName;
   }
 
   /**
@@ -739,7 +739,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueIdentifier() {
-    return this != null && this.value instanceof Identifier;
+      return this.value instanceof Identifier;
   }
 
   /**
@@ -757,7 +757,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueMoney() {
-    return this != null && this.value instanceof Money;
+      return this.value instanceof Money;
   }
 
   /**
@@ -775,7 +775,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValuePeriod() {
-    return this != null && this.value instanceof Period;
+      return this.value instanceof Period;
   }
 
   /**
@@ -793,7 +793,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueQuantity() {
-    return this != null && this.value instanceof Quantity;
+      return this.value instanceof Quantity;
   }
 
   /**
@@ -811,7 +811,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueRange() {
-    return this != null && this.value instanceof Range;
+      return this.value instanceof Range;
   }
 
   /**
@@ -829,7 +829,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueRatio() {
-    return this != null && this.value instanceof Ratio;
+      return this.value instanceof Ratio;
   }
 
   /**
@@ -847,7 +847,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueRatioRange() {
-    return this != null && this.value instanceof RatioRange;
+      return this.value instanceof RatioRange;
   }
 
   /**
@@ -865,7 +865,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueReference() {
-    return this != null && this.value instanceof Reference;
+      return this.value instanceof Reference;
   }
 
   /**
@@ -883,7 +883,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueSampledData() {
-    return this != null && this.value instanceof SampledData;
+      return this.value instanceof SampledData;
   }
 
   /**
@@ -901,7 +901,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueSignature() {
-    return this != null && this.value instanceof Signature;
+      return this.value instanceof Signature;
   }
 
   /**
@@ -919,7 +919,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueTiming() {
-    return this != null && this.value instanceof Timing;
+      return this.value instanceof Timing;
   }
 
   /**
@@ -937,7 +937,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueContactDetail() {
-    return this != null && this.value instanceof ContactDetail;
+      return this.value instanceof ContactDetail;
   }
 
   /**
@@ -955,7 +955,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueContributor() {
-    return this != null && this.value instanceof Contributor;
+      return this.value instanceof Contributor;
   }
 
   /**
@@ -973,7 +973,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueDataRequirement() {
-    return this != null && this.value instanceof DataRequirement;
+      return this.value instanceof DataRequirement;
   }
 
   /**
@@ -991,7 +991,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueExpression() {
-    return this != null && this.value instanceof Expression;
+      return this.value instanceof Expression;
   }
 
   /**
@@ -1009,7 +1009,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueParameterDefinition() {
-    return this != null && this.value instanceof ParameterDefinition;
+      return this.value instanceof ParameterDefinition;
   }
 
   /**
@@ -1027,7 +1027,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueRelatedArtifact() {
-    return this != null && this.value instanceof RelatedArtifact;
+      return this.value instanceof RelatedArtifact;
   }
 
   /**
@@ -1045,7 +1045,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueTriggerDefinition() {
-    return this != null && this.value instanceof TriggerDefinition;
+      return this.value instanceof TriggerDefinition;
   }
 
   /**
@@ -1063,7 +1063,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueUsageContext() {
-    return this != null && this.value instanceof UsageContext;
+      return this.value instanceof UsageContext;
   }
 
   /**
@@ -1081,7 +1081,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueDosage() {
-    return this != null && this.value instanceof Dosage;
+      return this.value instanceof Dosage;
   }
 
   /**
@@ -1099,7 +1099,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean hasValueMeta() {
-    return this != null && this.value instanceof Meta;
+      return this.value instanceof Meta;
   }
 
   public boolean hasValue() {

@@ -111,7 +111,7 @@ public class Population extends BackboneType implements ICompositeType {
   }
 
   public boolean hasAgeRange() {
-    return this != null && this.age instanceof Range;
+      return this.age instanceof Range;
   }
 
   /**
@@ -127,7 +127,7 @@ public class Population extends BackboneType implements ICompositeType {
   }
 
   public boolean hasAgeCodeableConcept() {
-    return this != null && this.age instanceof CodeableConcept;
+      return this.age instanceof CodeableConcept;
   }
 
   public boolean hasAge() {

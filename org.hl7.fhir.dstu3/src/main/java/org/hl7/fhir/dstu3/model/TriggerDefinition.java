@@ -385,8 +385,8 @@ public class TriggerDefinition extends Type implements ICompositeType {
       return (Timing) this.eventTiming;
     }
 
-    public boolean hasEventTimingTiming() { 
-      return this != null && this.eventTiming instanceof Timing;
+    public boolean hasEventTimingTiming() {
+        return this.eventTiming instanceof Timing;
     }
 
     /**
@@ -400,8 +400,8 @@ public class TriggerDefinition extends Type implements ICompositeType {
       return (Reference) this.eventTiming;
     }
 
-    public boolean hasEventTimingReference() { 
-      return this != null && this.eventTiming instanceof Reference;
+    public boolean hasEventTimingReference() {
+        return this.eventTiming instanceof Reference;
     }
 
     /**
@@ -415,8 +415,8 @@ public class TriggerDefinition extends Type implements ICompositeType {
       return (DateType) this.eventTiming;
     }
 
-    public boolean hasEventTimingDateType() { 
-      return this != null && this.eventTiming instanceof DateType;
+    public boolean hasEventTimingDateType() {
+        return this.eventTiming instanceof DateType;
     }
 
     /**
@@ -430,8 +430,8 @@ public class TriggerDefinition extends Type implements ICompositeType {
       return (DateTimeType) this.eventTiming;
     }
 
-    public boolean hasEventTimingDateTimeType() { 
-      return this != null && this.eventTiming instanceof DateTimeType;
+    public boolean hasEventTimingDateTimeType() {
+        return this.eventTiming instanceof DateTimeType;
     }
 
     public boolean hasEventTiming() { 

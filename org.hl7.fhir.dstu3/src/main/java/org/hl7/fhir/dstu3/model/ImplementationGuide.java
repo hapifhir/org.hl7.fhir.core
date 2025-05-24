@@ -1203,8 +1203,8 @@ public class ImplementationGuide extends MetadataResource {
           return (UriType) this.source;
         }
 
-        public boolean hasSourceUriType() { 
-          return this != null && this.source instanceof UriType;
+        public boolean hasSourceUriType() {
+            return this.source instanceof UriType;
         }
 
         /**
@@ -1218,8 +1218,8 @@ public class ImplementationGuide extends MetadataResource {
           return (Reference) this.source;
         }
 
-        public boolean hasSourceReference() { 
-          return this != null && this.source instanceof Reference;
+        public boolean hasSourceReference() {
+            return this.source instanceof Reference;
         }
 
         public boolean hasSource() { 
