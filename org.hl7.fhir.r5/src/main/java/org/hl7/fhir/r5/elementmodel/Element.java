@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.elementmodel;
 
+import java.io.IOException;
 import java.io.PrintStream;
 
 /*
@@ -67,6 +68,7 @@ import org.hl7.fhir.utilities.NamedItemList.NamedItem;
 import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /**
@@ -816,6 +818,11 @@ public class Element extends Base implements NamedItem {
 
 	public Element setXhtml(XhtmlNode xhtml) {
 		this.xhtml = xhtml;
+		try {
+      value = new XhtmlComposer(true, false).compose(xhtml);
+    } catch (IOException e) {
+      // can't happen here
+    }
 		return this;
  	}
 
