@@ -404,7 +404,7 @@ public class DocumentReference30_40 {
   }
 
   public static org.hl7.fhir.r4.model.Extension getExtensionForDocumentReferenceCreated(Date created) {
-    org.hl7.fhir.r4.model.Extension extension = new  org.hl7.fhir.r4.model.Extension();
+    org.hl7.fhir.r4.model.Extension extension = new org.hl7.fhir.r4.model.Extension();
     extension.setUrl(VersionConvertorConstants.EXT_DOC_REF_CREATED);
     extension.setValue(new org.hl7.fhir.r4.model.InstantType(created));
     return extension;
