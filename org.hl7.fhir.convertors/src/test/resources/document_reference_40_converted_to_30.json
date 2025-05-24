@@ -7,12 +7,6 @@
     "status": "generated",
     "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n\n\t\t\t\t\t\t<a href=\"http://localhost:9556/svc/fhir/Binary/1e404af3-077f-4bee-b7a6-a9be97e1ce32\">Document: urn:oid:129.6.58.92.88336</a>undefined, created 24/12/2005\n\t\t\t\t\t</div>"
   },
-  "extension": [
-    {
-      "url": "http://hl7.org/fhir/3.0/StructureDefinition/extension-DocumentReference.created",
-      "valueInstant": "2013-07-02T08:00:00+10:00"
-    }
-  ],
   "masterIdentifier": {
     "system": "urn:ietf:rfc:3986",
     "value": "urn:oid:129.6.58.92.88336"

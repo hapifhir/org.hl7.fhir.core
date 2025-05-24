@@ -16,11 +16,15 @@ import java.util.Date;
 
 public class DocumentReference30_40 {
 
+  private static final String[] IGNORED_EXTENSION_URLS = new String[]{
+    VersionConvertorConstants.EXT_DOC_REF_CREATED
+  };
+
   public static org.hl7.fhir.dstu3.model.DocumentReference convertDocumentReference(org.hl7.fhir.r4.model.DocumentReference src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.DocumentReference tgt = new org.hl7.fhir.dstu3.model.DocumentReference();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt, IGNORED_EXTENSION_URLS);
     if (src.hasMasterIdentifier())
       tgt.setMasterIdentifier(Identifier30_40.convertIdentifier(src.getMasterIdentifier()));
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
