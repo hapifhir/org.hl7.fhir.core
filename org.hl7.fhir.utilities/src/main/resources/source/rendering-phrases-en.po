@@ -771,6 +771,7 @@ msgstr ""
 
 # CONC_MAP_TO
 #: CONC_MAP_TO
+msgctxt "CONC_MAP_TO"
 msgid "to"
 msgstr ""
 
@@ -1381,9 +1382,14 @@ msgstr ""
 msgid "No description provided"
 msgstr ""
 
-# GENERAL_BINDING_NO_VS
-#: GENERAL_BINDING_NO_VS
-msgid "Binding Description (No ValueSet)"
+# GENERAL_BINDING_NO_VS_1
+#: GENERAL_BINDING_NO_VS_1
+msgid "Binding Description"
+msgstr ""
+
+# GENERAL_BINDING_NO_VS_2
+#: GENERAL_BINDING_NO_VS_2
+msgid "This binding doesn''t define a testable ValueSet"
 msgstr ""
 
 # GENERAL_BIND_MIN_ALLOW
@@ -1516,6 +1522,7 @@ msgstr ""
 
 # GENERAL_FIXED_VALUE
 #: GENERAL_FIXED_VALUE
+msgctxt "GENERAL_FIXED_VALUE"
 msgid "Fixed Value: {0}"
 msgstr ""
 
@@ -1593,6 +1600,7 @@ msgstr ""
 
 # GENERAL_PATTERN_VALUE
 #: GENERAL_PATTERN_VALUE
+msgctxt "GENERAL_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
 msgstr ""
 
@@ -2839,14 +2847,96 @@ msgstr ""
 msgid "version: {0}"
 msgstr ""
 
+# SDR_ALL_ELEM
+#: SDR_ALL_ELEM
+msgid "**ALL** elements"
+msgstr ""
+
+# SDR_ALL_EXT
+#: SDR_ALL_EXT
+msgid "**ALL** extensions"
+msgstr ""
+
+# SDR_ANY_ORDER
+#: SDR_ANY_ORDER
+msgid "// sliced by {0} in any order"
+msgstr ""
+
+# SDR_BP
+#: SDR_BP
+msgid "best practice"
+msgstr ""
+
 # SDR_CAPSTMT
 #: SDR_CAPSTMT
 msgid "CapabilityStatements using this {0}"
 msgstr ""
 
+# SDR_CH_DET
+#: SDR_CH_DET
+msgid "New Content"
+msgstr ""
+
+# SDR_CH_NO
+#: SDR_CH_NO
+msgid "No changes"
+msgstr ""
+
+# SDR_CLICK_COPY
+#: SDR_CLICK_COPY
+msgid "Click to copy URL"
+msgstr ""
+
+# SDR_CODE_FROM
+#: SDR_CODE_FROM
+msgid "(a valid code from {0})"
+msgstr ""
+
 # SDR_COMPLY
 #: SDR_COMPLY
 msgid "Comply with this profile {0}"
+msgstr ""
+
+# SDR_CONT_CH_DET_CS
+#: SDR_CONT_CH_DET_CS
+msgid "The list of codes defined by the code system has changed"
+msgstr ""
+
+# SDR_CONT_CH_DET_SD
+#: SDR_CONT_CH_DET_SD
+msgid "The data elements list has changed"
+msgstr ""
+
+# SDR_CONT_CH_DET_VS
+#: SDR_CONT_CH_DET_VS
+msgid "The logical definition of the value set has changed"
+msgstr ""
+
+# SDR_CONT_CH_NO
+#: SDR_CONT_CH_NO
+msgid "Unable to evaluate changes to content"
+msgstr ""
+
+# SDR_DEFN_CH_DET_CS
+#: SDR_DEFN_CH_DET_CS
+msgctxt "SDR_DEFN_CH_DET_CS"
+msgid "One or more text definitions/displays have changed"
+msgstr ""
+
+# SDR_DEFN_CH_DET_SD
+#: SDR_DEFN_CH_DET_SD
+msgid "One or more text definitions, invariants or bindings have changed"
+msgstr ""
+
+# SDR_DEFN_CH_DET_VS
+#: SDR_DEFN_CH_DET_VS
+msgctxt "SDR_DEFN_CH_DET_VS"
+msgid "One or more text definitions/displays have changed"
+msgstr ""
+
+# SDR_DEFN_CH_NO
+#: SDR_DEFN_CH_NO
+msgid "Unable to evaluate changes to definitions"
 msgstr ""
 
 # SDR_DERIVED
@@ -2864,9 +2954,108 @@ msgstr ""
 msgid "Examples for this {0}"
 msgstr ""
 
+# SDR_EXPERIMENTAL
+#: SDR_EXPERIMENTAL
+msgid "This is an experimental extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
+msgstr ""
+
 # SDR_EXTENSION_SUMMARY
 #: SDR_EXTENSION_SUMMARY
 msgid "Simple Extension with the type {0}: {1}"
+msgstr ""
+
+# SDR_EXT_ANY
+#: SDR_EXT_ANY
+msgid "This extension does not specify which elements it should be used on"
+msgstr ""
+
+# SDR_EXT_CHANGED
+#: SDR_EXT_CHANGED
+msgid "The extension is represented a little differently in {0}"
+msgstr ""
+
+# SDR_EXT_CTXT_PATH
+#: SDR_EXT_CTXT_PATH
+msgid "In addition, the extension can only be used when this FHIRPath expression is true"
+msgstr ""
+
+# SDR_EXT_CTXT_PATHS
+#: SDR_EXT_CTXT_PATHS
+msgid "In addition, the extension can only be used when these FHIRPath expressions are true"
+msgstr ""
+
+# SDR_EXT_DEPR
+#: SDR_EXT_DEPR
+msgid "This extension is deprecated and should no longer be used"
+msgstr ""
+
+# SDR_EXT_ELEM
+#: SDR_EXT_ELEM
+msgid "This extension may be used on the following element(s)"
+msgstr ""
+
+# SDR_EXT_ELEM_ID
+#: SDR_EXT_ELEM_ID
+msgid "Element ID"
+msgstr ""
+
+# SDR_EXT_EXT
+#: SDR_EXT_EXT
+msgctxt "SDR_EXT_EXT"
+msgid "Extension"
+msgstr ""
+
+# SDR_EXT_PATH
+#: SDR_EXT_PATH
+msgctxt "SDR_EXT_PATH"
+msgid "Path"
+msgstr ""
+
+# SDR_EXT_UNCHANGED
+#: SDR_EXT_UNCHANGED
+msgid "The extension is unchanged in {0}"
+msgstr ""
+
+# SDR_EXT_VER_PFX
+#: SDR_EXT_VER_PFX
+msgid "This extension is allowed for use with"
+msgstr ""
+
+# SDR_EXT_VER_SFX
+#: SDR_EXT_VER_SFX
+msgid "."
+msgstr ""
+
+# SDR_FIXED_VALUE
+#: SDR_FIXED_VALUE
+msgctxt "SDR_FIXED_VALUE"
+msgid "Fixed Value: {0}"
+msgstr ""
+
+# SDR_FROM
+#: SDR_FROM
+msgid "From {0}"
+msgstr ""
+
+# SDR_FROM_ELEM
+#: SDR_FROM_ELEM
+msgid "// from Element: <a href=\"{0}\">extension</a>"
+msgstr ""
+
+# SDR_GUIDANCE_HERE
+#: SDR_GUIDANCE_HERE
+msgid "here"
+msgstr ""
+
+# SDR_GUIDANCE_PFX
+#: SDR_GUIDANCE_PFX
+msgid "Guidance on how to interpret the contents of this table can be found"
+msgstr ""
+
+# SDR_GUIDANCE_SFX
+#: SDR_GUIDANCE_SFX
+msgctxt "SDR_GUIDANCE_SFX"
+msgid "-- no content: do not translate #1 --"
 msgstr ""
 
 # SDR_IMPOSE
@@ -2874,9 +3063,90 @@ msgstr ""
 msgid "Impose this profile {0}"
 msgstr ""
 
+# SDR_INTRP_CH_DET_VS
+#: SDR_INTRP_CH_DET_VS
+msgid "The expansion has changed"
+msgstr ""
+
+# SDR_INTRP_CH_NO_VS
+#: SDR_INTRP_CH_NO_VS
+msgid "Unable to evaluate changes to the expansion"
+msgstr ""
+
+# SDR_LIMITED_ONE
+#: SDR_LIMITED_ONE
+msgid "This element is an array in the base standard, but the profile only allows one element"
+msgstr ""
+
+# SDR_META_CH_DET
+#: SDR_META_CH_DET
+msgid "The resource metadata has changed ({0})"
+msgstr ""
+
+# SDR_META_CH_NO
+#: SDR_META_CH_NO
+msgid "Unable to evaluate changes to metadata"
+msgstr ""
+
+# SDR_MOD
+#: SDR_MOD
+msgid "(this element modifies the meaning of other elements)"
+msgstr ""
+
+# SDR_MOD_SUPP
+#: SDR_MOD_SUPP
+msgid "(this element modifies the meaning of other elements, and must be supported)"
+msgstr ""
+
+# SDR_MULTIPLE_PROFILES
+#: SDR_MULTIPLE_PROFILES
+msgid "Multiple profiles are not supported at this time"
+msgstr ""
+
+# SDR_NOT_DONE_CC
+#: SDR_NOT_DONE_CC
+msgid "Error describing concept - not done yet (no codings, no text)"
+msgstr ""
+
+# SDR_NOT_GEN
+#: SDR_NOT_GEN
+msgid "Generating text summary of fixed value not yet done for type {0}"
+msgstr ""
+
+# SDR_NOT_HANDLED_EXT
+#: SDR_NOT_HANDLED_EXT
+msgid "Not handled yet: complex extension ''{0}''"
+msgstr ""
+
 # SDR_NOT_USED
 #: SDR_NOT_USED
 msgid "This {0} is not used by any profiles in this Implementation Guide"
+msgstr ""
+
+# SDR_OFF_URL
+#: SDR_OFF_URL
+msgid "The official URL for this profile is"
+msgstr ""
+
+# SDR_ONE_OF
+#: SDR_ONE_OF
+msgid "One of these {0}"
+msgstr ""
+
+# SDR_ONLY_ONE
+#: SDR_ONLY_ONE
+msgid "Only One!"
+msgstr ""
+
+# SDR_PATTERN_VALUE
+#: SDR_PATTERN_VALUE
+msgctxt "SDR_PATTERN_VALUE"
+msgid "Pattern Value: {0}"
+msgstr ""
+
+# SDR_PRIM_VALUE
+#: SDR_PRIM_VALUE
+msgid "Primitive Value {0}"
 msgstr ""
 
 # SDR_REFER
@@ -2884,9 +3154,44 @@ msgstr ""
 msgid "Refer to this {0}"
 msgstr ""
 
+# SDR_REQUIRED
+#: SDR_REQUIRED
+msgid "This element is required"
+msgstr ""
+
 # SDR_SEARCH
 #: SDR_SEARCH
 msgid "Search Parameters using this {0}"
+msgstr ""
+
+# SDR_SORTED
+#: SDR_SORTED
+msgid "// sliced by {0} in the specified order {1}"
+msgstr ""
+
+# SDR_SRC_FHIR
+#: SDR_SRC_FHIR
+msgid "the FHIR Standard"
+msgstr ""
+
+# SDR_SRC_IG
+#: SDR_SRC_IG
+msgid "this IG"
+msgstr ""
+
+# SDR_SRC_PACK
+#: SDR_SRC_PACK
+msgid "Package: {0}"
+msgstr ""
+
+# SDR_SUPP
+#: SDR_SUPP
+msgid "(this element must be supported)"
+msgstr ""
+
+# SDR_UNK_EXT
+#: SDR_UNK_EXT
+msgid "Not handled yet: unknown extension ''{0}''"
 msgstr ""
 
 # SDR_USAGE
@@ -2897,6 +3202,69 @@ msgstr ""
 # SDR_USE
 #: SDR_USE
 msgid "Use this {0}"
+msgstr ""
+
+# SDR_VER_BEF
+#: SDR_VER_BEF
+msgid "For versions until {0}"
+msgstr ""
+
+# SDR_VER_FOR
+#: SDR_VER_FOR
+msgid "For version {0}"
+msgstr ""
+
+# SDR_VER_FROM_PFX
+#: SDR_VER_FROM_PFX
+msgid "\"FHIR versions"
+msgstr ""
+
+# SDR_VER_FROM_SFX
+#: SDR_VER_FROM_SFX
+msgid "and after"
+msgstr ""
+
+# SDR_VER_ON
+#: SDR_VER_ON
+msgid "For versions {0} onwards"
+msgstr ""
+
+# SDR_VER_RANGE
+#: SDR_VER_RANGE
+msgid "For versions {0} to {1}"
+msgstr ""
+
+# SDR_VER_RANGE_MID
+#: SDR_VER_RANGE_MID
+msgctxt "SDR_VER_RANGE_MID"
+msgid "to"
+msgstr ""
+
+# SDR_VER_RANGE_PFX
+#: SDR_VER_RANGE_PFX
+msgid "FHIR versions"
+msgstr ""
+
+# SDR_VER_RANGE_SFX
+#: SDR_VER_RANGE_SFX
+msgctxt "SDR_VER_RANGE_SFX"
+msgid "-- no content: do not translate #2 --"
+msgstr ""
+
+# SDR_VER_TO_PFX
+#: SDR_VER_TO_PFX
+msgid "FHIR versions up to"
+msgstr ""
+
+# SDR_VER_TO_SFX
+#: SDR_VER_TO_SFX
+msgctxt "SDR_VER_TO_SFX"
+msgid "-- no content: do not translate #3 --"
+msgstr ""
+
+# SDR_VER_UNK
+#: SDR_VER_UNK
+msgid "For unknown versions"
 msgstr ""
 
 # SDT_DEF
@@ -2917,6 +3285,7 @@ msgstr ""
 
 # SDT_EXTENSION
 #: SDT_EXTENSION
+msgctxt "SDT_EXTENSION"
 msgid "Extension"
 msgstr ""
 
@@ -3979,6 +4348,7 @@ msgstr ""
 
 # STRUC_DEF_PATH
 #: STRUC_DEF_PATH
+msgctxt "STRUC_DEF_PATH"
 msgid "Path"
 msgstr ""
 
@@ -5069,6 +5439,21 @@ msgstr ""
 # VALUE_SET_WHERE_CODES
 #: VALUE_SET_WHERE_CODES
 msgid ", where the codes are contained in"
+msgstr ""
+
+# VSR_LOGICAL
+#: VSR_LOGICAL
+msgid "Logical Definition (CLD)"
+msgstr ""
+
+# VSR_NO_DEF
+#: VSR_NO_DEF
+msgid "No formal definition provided for this value set"
+msgstr ""
+
+# VSR_TRIGGER
+#: VSR_TRIGGER
+msgid "Used as a trigger criteria in"
 msgstr ""
 
 # VS_ABSTRACT_CODE_HINT
