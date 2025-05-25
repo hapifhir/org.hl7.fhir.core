@@ -1491,7 +1491,7 @@ msgstr "Kan discriminator ''{0}'' op ''{2}'' niet vinden, gevonden in de definit
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
-msgid "-- no content: do not translate #46 --"
+msgid "-- no content: do not translate #64 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
 msgstr[1] "Fout in discriminator bij {1}: geen onderliggende elementen, {0} typeprofielen"
@@ -1499,7 +1499,7 @@ msgstr[1] "Fout in discriminator bij {1}: geen onderliggende elementen, {0} type
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #47 --"
+msgid "-- no content: do not translate #65 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
 msgstr[1] "Fout in discriminator bij {1}: geen onderliggende elementen, {0} typen"
@@ -1522,7 +1522,7 @@ msgstr "Onjuist gebruik van ofType() in discriminator - Type heeft geen code op 
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
-msgid "-- no content: do not translate #48 --"
+msgid "-- no content: do not translate #66 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] "Onjuist gebruik van resolve() in discriminator - {0} mogelijke typen op {1} (kan er maar een zijn)"
@@ -1545,7 +1545,7 @@ msgstr "Onjuist gebruik van ofType() in discriminator - geen type op element {0}
 # FHIRPATH_FOCUS
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
-msgid "-- no content: do not translate #49 --"
+msgid "-- no content: do not translate #67 --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "Fout bij evalueren FHIRPath expressie: focus voor {0} kan maar een warde hebben, maar heeft {0} waarden"
@@ -1563,7 +1563,7 @@ msgstr "Het type {0} is ongeldig"
 # FHIRPATH_LEFT_VALUE
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
-msgid "-- no content: do not translate #50 --"
+msgid "-- no content: do not translate #68 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "Fout bij evalueren FHIRPath expressie: linker operandus van {1} kan maar 1 waarde hebben, maar heeft {0} waarden"
@@ -1661,7 +1661,7 @@ msgstr "Probleem met gebruik van resolve() - profiel {0} op {1} is niet gevonden
 # FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
-msgid "-- no content: do not translate #51 --"
+msgid "-- no content: do not translate #69 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] "Onjuist gebruik van resolve() in discriminator - {0} mogelijke doeltypen op {1} (kan er maar één zijn)"
@@ -1669,7 +1669,7 @@ msgstr[1] "Onjuist gebruik van resolve() in discriminator - {0} mogelijke doelty
 # FHIRPATH_RIGHT_VALUE
 #: FHIRPATH_RIGHT_VALUE
 msgctxt "FHIRPATH_RIGHT_VALUE"
-msgid "-- no content: do not translate #52 --"
+msgid "-- no content: do not translate #70 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] "Fout bij evalueren FHIRPath-expressie: rechter operandus van {1} kan maar 1 waarde hebben, maar heeft {0} waarden"
@@ -2487,7 +2487,7 @@ msgstr "Referentie naar teruggetrokken {2} {0} van {1}"
 # MULTIPLE_LOGICAL_MODELS
 #: MULTIPLE_LOGICAL_MODELS
 msgctxt "MULTIPLE_LOGICAL_MODELS"
-msgid "-- no content: do not translate #53 --"
+msgid "-- no content: do not translate #71 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
 msgstr[1] "{0} logische modellen gevonden in de aangegeven profielen, dus niet in staat logisch model te verwerken (kan er maar een zijn, gevonden {1})"
@@ -3360,7 +3360,7 @@ msgstr "Er is slechts een antwoorditem toegestaan bij dit linkId"
 # Questionnaire_QR_Item_OnlyOneI
 #: Questionnaire_QR_Item_OnlyOneI
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
-msgid "-- no content: do not translate #54 --"
+msgid "-- no content: do not translate #72 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] ""
 msgstr[1] "Er is slechts een item toegestaan bij dit linkId {1} - gevonden {0} items"
