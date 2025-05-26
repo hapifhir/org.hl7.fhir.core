@@ -252,6 +252,9 @@ public class RenderingContext extends RenderingI18nContext {
     ALL // in addition to translations in designations, look for an render translations (WIP)
   }
 
+
+
+
   private final IWorkerContext worker;
   private MarkDownProcessor markdown;
   private ResourceRendererMode mode;

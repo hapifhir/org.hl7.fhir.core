@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.service;
 
 import java.awt.Desktop;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 
@@ -65,8 +66,17 @@ public class ComparisonService {
     ComparisonRenderer cr = new ComparisonRenderer(validator.getContext(), validator.getContext(), dest, session);
     cr.loadTemplates(validator.getContext());
     File htmlFile = cr.render(left, right);
-    Desktop.getDesktop().browse(htmlFile.toURI());
-    log.info("Done");
+    // only try to open in browser if not in headless mode
+    if (!GraphicsEnvironment.isHeadless()) {
+      try {
+        Desktop.getDesktop().browse(htmlFile.toURI());
+      } catch (UnsupportedOperationException | IOException e) {
+        System.err.println("Unable to open browser: " + e.getMessage());
+      }
+    } else {
+      System.out.println("Headless environment detected; skipping browser launch.");
+    }
+    System.out.println("Done: " + htmlFile.toURI());
   }
 
 }
